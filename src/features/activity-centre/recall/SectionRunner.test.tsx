@@ -17,6 +17,8 @@ const insert = vi.fn((_rows: Row[]) => Promise.resolve({ error: null }));
 const upload = vi.fn(() => Promise.resolve({ error: null }));
 /** The assignment close: `.update(patch).eq("id", id)`. */
 const update = vi.fn((_patch: Row) => Promise.resolve({ error: null }));
+/** The fire-and-forget ask for a grade. */
+const invoke = vi.fn((_fn: string, _opts: Row) => Promise.resolve({ data: null, error: null }));
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     from: () => ({
@@ -24,6 +26,7 @@ vi.mock("@/integrations/supabase/client", () => ({
       update: (patch: Row) => ({ eq: () => update(patch) }),
     }),
     storage: { from: () => ({ upload: () => upload() }) },
+    functions: { invoke: (fn: string, opts: Row) => invoke(fn, opts) },
   },
 }));
 
@@ -63,6 +66,7 @@ beforeEach(() => {
   insert.mockClear();
   upload.mockClear();
   update.mockClear();
+  invoke.mockClear();
 });
 
 describe("what she sees while working", () => {
@@ -170,6 +174,19 @@ describe("writing it down", () => {
     // is no network call inside the loop at all.
     space();
     expect(insert).not.toHaveBeenCalled();
+  });
+
+  it("asks the server to grade the run, without waiting on it", async () => {
+    renderRun();
+    space();
+    space();
+
+    // The grade is produced by an edge function that transcribes the whole
+    // recording; the student must not be held on that promise, and a closed tab
+    // must not cost her a Report Card.
+    await vi.waitFor(() => expect(invoke).toHaveBeenCalledTimes(1));
+    expect(invoke.mock.calls[0][0]).toBe("grade-rrc-section");
+    expect(invoke.mock.calls[0][1]).toEqual({ body: { assignmentId: "a1" } });
   });
 
   it("marks the assignment completed at the end", async () => {

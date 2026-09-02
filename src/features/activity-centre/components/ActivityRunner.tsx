@@ -24,9 +24,11 @@ import { RecallRunner } from "../recall/RecallRunner";
 import { SectionRunner } from "../recall/SectionRunner";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
+import { SectionReport } from "./SectionReport";
 import "../activity-centre.css";
 
-type Phase = "intro" | "running" | "done";
+/** `report` is the section-only tail: grading runs after she stops. */
+type Phase = "intro" | "running" | "done" | "report";
 
 /**
  * Student player: intro -> split-screen quiz -> completion summary.
@@ -573,6 +575,18 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
      * definition must not be able to rescore a run she has finished.
      */
     if (assignment.mode === "section") {
+      /*
+       * A finished section goes to its Report Card, not back to the intro.
+       * Grading is a post-section job, so the card polls for a result that is
+       * still being produced rather than being handed one.
+       */
+      if (phase === "report") {
+        return (
+          <div className="activity-centre min-h-screen px-4 py-12" data-runner="recall-section-report">
+            <SectionReport assignmentId={assignment.id} onDone={handleLeave ?? handleBackToIntro} />
+          </div>
+        );
+      }
       return (
         <div className="activity-centre min-h-screen" data-runner="recall-section">
           <SectionRunner
@@ -581,7 +595,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             items={assignment.items}
             sourceSection={assignment.source_section}
             timeGoalMinutes={assignment.time_goal_minutes}
-            onComplete={handleBackToIntro}
+            onComplete={() => setPhase("report")}
             onExit={handleBackToIntro}
           />
         </div>

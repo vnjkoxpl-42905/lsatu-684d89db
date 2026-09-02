@@ -295,6 +295,23 @@ export async function completeSectionRun(assignmentId: string): Promise<void> {
 }
 
 /**
+ * Ask the server to grade a finished section.
+ *
+ * Fire and forget, deliberately. The grade is produced by an edge function that
+ * transcribes the recording and judges every stimulus, which takes far longer
+ * than the student should be made to wait on a promise, and a closed tab must
+ * never cost a Report Card. This call is the fast path; the sweeper is the
+ * guarantee. A failure here is logged and swallowed for the same reason.
+ */
+export async function requestSectionGrading(assignmentId: string): Promise<void> {
+  try {
+    await supabase.functions.invoke("grade-rrc-section", { body: { assignmentId } });
+  } catch (err) {
+    console.error("[rrc] could not ask for grading", err);
+  }
+}
+
+/**
  * Student: read my Report Card for a finished section.
  *
  * Null means ungraded, and ungraded is a real state rather than an error: the
