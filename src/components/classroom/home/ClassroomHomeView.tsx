@@ -11,6 +11,7 @@
  */
 
 import * as React from "react";
+import QuestionJump from "@/components/questionfinder/QuestionJump";
 import { ArrowRight, CalendarClock } from "lucide-react";
 import { SwipeableDeleteRow } from "@/components/inbox/SwipeableDeleteRow";
 import type {

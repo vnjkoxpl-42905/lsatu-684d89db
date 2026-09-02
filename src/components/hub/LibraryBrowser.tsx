@@ -10,7 +10,6 @@ import {
   ClipboardList,
   StickyNote,
   File,
-  AudioLines,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -38,7 +37,6 @@ const TYPE_ICON: Record<AssetType, typeof File> = {
   drill: ClipboardList,
   curriculum: BookMarked,
   notes: StickyNote,
-  audio: AudioLines,
 };
 
 const TYPE_LABEL: Record<AssetType, string> = {
@@ -48,7 +46,6 @@ const TYPE_LABEL: Record<AssetType, string> = {
   drill: "Drill",
   curriculum: "Curriculum",
   notes: "Notes",
-  audio: "Audio",
 };
 
 /**
