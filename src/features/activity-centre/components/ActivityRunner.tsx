@@ -20,7 +20,6 @@ import { ActivityIntro } from "./ActivityIntro";
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
-import { RecallRunner } from "../recall/RecallRunner";
 import { SectionRunner } from "../recall/SectionRunner";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
@@ -601,17 +600,37 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
         </div>
       );
     }
-    if (!currentItem) return null;
+    /*
+     * Read, Recall, Colour is a whole section, and only that.
+     *
+     * The one-stimulus runner it used to fall back to here is gone: it walked a
+     * chunk cursor, judged every chunk live and took typed answers, all three of
+     * which section mode forbids (ADRs 0012 and 0013). Keeping it meant the same
+     * name ran two different drills depending on a field, and the wrong one was
+     * what a preview showed.
+     *
+     * An assignment without `mode: "section"` is content that predates the
+     * decision. It is not deleted and nothing about it is lost; there is simply
+     * no runner for it any more, and saying so plainly beats a blank screen.
+     */
     return (
-      <div className="activity-centre min-h-screen" data-runner="recall">
-        <RecallRunner
-          assignmentId={assignment.id}
-          studentId={user.id}
-          item={currentItem}
-          itemOrder={currentItem.order}
-          coach={assignment.instructions?.coach}
-          onComplete={handleBackToIntro}
-        />
+      <div className="activity-centre min-h-screen grid place-items-center px-6">
+        <div className="max-w-md text-center">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            Read, Recall, Colour
+          </p>
+          <p className="mt-3 text-lg text-foreground">
+            This one runs as a whole section now.
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Pick a section from the Activity Centre to start a run.
+          </p>
+          {handleLeave && (
+            <button type="button" className="mt-6 text-sm underline" onClick={handleLeave}>
+              Back to the Activity Centre
+            </button>
+          )}
+        </div>
       </div>
     );
   }
