@@ -90,5 +90,13 @@ Delivering a stimulus as a flat run of facts rather than a story in her own word
 _Avoid_: Shopping list, itemising, enumerating
 
 **Report Card**:
-What a finished section produces: every stimulus graded on its own merits, showing what she missed and what she got perfect, with her own recording playable beside it.
+What a finished section produces: every stimulus graded on its own merits, showing what she missed and what she got perfect, with her own recording playable beside it. One player per stimulus, never per question, because two questions can share a stimulus and she recorded it once.
 _Avoid_: Scorecard (informally taken by the MCQ Drill results screen), Verdict (that is the coach judging live, which this surface never does), results, grade, review
+
+**Clip**:
+One stimulus's worth of her recording, playable on the Report Card. A Clip is cut out of the single unbroken section recording after she finishes; it is never recorded as its own file, because the drill forbids stopping the microphone mid-section.
+_Avoid_: Take, snippet, segment (that is the timing record the Clip is cut from), track
+
+**Attempt**:
+One complete run of one section by one student. A section may be attempted any number of times, and every Attempt keeps its own date, its own recording and its own Report Card. Nothing is overwritten and nothing is hidden once done.
+_Avoid_: Try, retry, session (reserved for a tutoring session), run
