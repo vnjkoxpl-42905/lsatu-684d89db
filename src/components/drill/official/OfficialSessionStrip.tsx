@@ -20,6 +20,8 @@ interface Props {
   onShowAnswer?: () => void;
   /** Disabled while paused, or where revealing mid-section defeats the exercise. */
   showAnswerDisabled?: boolean;
+  /** Whether the answer is currently revealed (toggles pill styling). */
+  showAnswerActive?: boolean;
   /** Opens the question drawer on the Explanation tab. Hidden if omitted. */
   onExplanation?: () => void;
   /** Label for the explanation pill (context-aware). */
