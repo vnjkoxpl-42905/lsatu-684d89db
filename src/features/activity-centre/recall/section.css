@@ -224,3 +224,23 @@
     transition: none;
   }
 }
+
+/* Elapsed time, in the rail beside the position line.
+ *
+ * Counting up, never down. The drill is timed and she has to be able to pace a
+ * 25-minute section, but a number falling towards zero in the corner of her eye
+ * produces exactly the rushed reading this drill treats. The goal sits after it
+ * in lighter type so the elapsed figure is the one that reads first.
+ */
+.ac-section-clock {
+  font-family: var(--sec-sans);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--sec-chrome);
+  white-space: nowrap;
+}
+
+.ac-section-clock i {
+  font-style: normal;
+  opacity: 0.55;
+}

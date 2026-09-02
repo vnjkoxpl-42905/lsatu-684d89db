@@ -195,6 +195,21 @@ function RunBody({
   );
 
   /*
+   * The clock in the rail, ticked once a second.
+   *
+   * State rather than a ref, because it has to redraw. It is deliberately the
+   * only thing in this component that re-renders on a timer: nothing else on
+   * screen changes between her presses, and the recorder is untouched by it --
+   * `mark()` reads refs and the recorder is started once on mount.
+   */
+  const [elapsed, setElapsed] = useState(0);
+  useEffect(() => {
+    if (done) return;
+    const tick = setInterval(() => setElapsed(seconds(startedAt.current)), 1000);
+    return () => clearInterval(tick);
+  }, [done, seconds]);
+
+  /*
    * Press record at the very beginning. Before the first chunk, not on the
    * first keypress: the drill's first act is reading, and a recording that
    * starts on the first Space has already missed it.
@@ -431,6 +446,8 @@ function RunBody({
       totalStimuli={run.stimuli.length}
       error={micError}
       onExit={onExit}
+      elapsedSeconds={elapsed}
+      goalMinutes={run.timeGoalMinutes[accommodation]}
     />
   );
 }

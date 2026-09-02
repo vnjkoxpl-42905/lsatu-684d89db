@@ -52,6 +52,10 @@ export interface SectionStageProps {
   error?: string | null;
   /** Leaving mid-run. A full-screen activity with no way out is a trap. */
   onExit?: () => void;
+  /** Seconds since the section started. Omit to draw no clock at all. */
+  elapsedSeconds?: number;
+  /** Her goal for this section, so the elapsed time has something to sit against. */
+  goalMinutes?: number;
 }
 
 /*
@@ -72,6 +76,14 @@ const KEY_DOES: Record<SectionPhase, string> = {
   recalling: "next stimulus",
 };
 
+/** mm:ss, and hh:mm:ss only if a section ever ran past an hour. */
+function clock(totalSeconds: number): string {
+  const s = Math.max(0, Math.floor(totalSeconds));
+  const mm = Math.floor(s / 60);
+  const ss = String(s % 60).padStart(2, "0");
+  return `${mm}:${ss}`;
+}
+
 export function SectionStage({
   stimulus,
   phase,
@@ -79,6 +91,8 @@ export function SectionStage({
   totalStimuli,
   error,
   onExit,
+  elapsedSeconds,
+  goalMinutes,
 }: SectionStageProps) {
   // Position across the section, drawn as the rail's fill. Progress inside the
   // current stimulus is deliberately not shown: the app does not know it.
@@ -95,6 +109,22 @@ export function SectionStage({
         <div className="ac-section-rail" aria-hidden>
           <span className="ac-section-rail-fill" style={{ transform: `scaleX(${through})` }} />
         </div>
+        {/*
+          * Elapsed, counting UP, against the goal.
+          *
+          * This screen carried no clock at all, on the reasoning that a running
+          * clock produces the rushed reading the drill exists to treat. The
+          * drill is against the clock, though, and a student with no way to see
+          * the time cannot pace a 25-minute section. Counting up rather than
+          * down is the compromise: she can see where she is without a number
+          * falling towards zero in the corner of her eye.
+          */}
+        {elapsedSeconds !== undefined && (
+          <span className="ac-section-clock" aria-live="off">
+            {clock(elapsedSeconds)}
+            {goalMinutes ? <i> / {clock(goalMinutes * 60)}</i> : null}
+          </span>
+        )}
         {onExit ? (
           <button type="button" className="ac-section-exit" onClick={onExit}>
             Leave

@@ -89,12 +89,22 @@ describe("what she sees while working", () => {
     expect(marked).toHaveLength(0);
   });
 
-  it("never tells her she read aloud, and never shows a clock", () => {
+  it("never tells her she read aloud", () => {
     renderRun();
     expect(screen.getByText(/say it back/i)).toBeInTheDocument();
-    // No clock on screen, for the same reason v1 has none: a running clock in
-    // view is what produces the rushed reading this drill exists to treat.
-    expect(document.body.textContent).not.toMatch(/\d+:\d\d/);
+  });
+
+  it("shows elapsed time against her goal, counting up", () => {
+    // This screen carried no clock at all, on the reasoning that a running
+    // clock produces the rushed reading the drill treats. Joshua overruled it:
+    // the drill is timed and she cannot pace 25 minutes blind. Counting UP is
+    // the part that matters -- a number falling towards zero is the version
+    // that was rejected, and a countdown here would be a regression, not a
+    // restyle.
+    renderRun();
+    expect(screen.getByText("0:00")).toBeInTheDocument();
+    expect(screen.getByText(/25:00/)).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/-\d+:\d\d/);
   });
 });
 
