@@ -4,6 +4,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { listEvents, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
+import { userFromRequest } from "../_shared/authClaims.ts";
 
 function zonedMidnightIso(dateOnly: string, timeZone: string): string {
   const [year, month, day] = dateOnly.split("-").map(Number);
@@ -39,8 +40,7 @@ Deno.serve(async (req) => {
     if (token && token === serviceRoleKey) {
       authorized = true;
     } else if (token) {
-      const { data: userRes } = await supabase.auth.getUser(token);
-      const user = userRes?.user;
+      const user = await userFromRequest(req);
       if (user) {
         const { data: roleRow } = await supabase.from("user_roles")
           .select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();

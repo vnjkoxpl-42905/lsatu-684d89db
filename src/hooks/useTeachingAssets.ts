@@ -8,8 +8,7 @@ export type AssetType =
   | "question_set"
   | "drill"
   | "curriculum"
-  | "notes"
-  | "audio";
+  | "notes";
 
 export interface TeachingAsset {
   id: string;

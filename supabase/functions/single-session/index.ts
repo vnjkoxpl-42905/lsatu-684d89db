@@ -36,6 +36,7 @@ import {
   sha256Hex,
 } from "../_shared/singleSessionCrypto.ts";
 import { createCheckoutSession, expireCheckoutSession } from "../_shared/stripe.ts";
+import { userFromRequest } from "../_shared/authClaims.ts";
 
 const MAX_BODY_BYTES = 8192;
 const READ_LIMIT = 30;
@@ -155,12 +156,12 @@ async function callerIsAdmin(req: Request): Promise<boolean> {
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
     );
-    const { data, error } = await admin.auth.getUser(authorization.slice(7));
-    if (error || !data?.user) return false;
+    const caller = await userFromRequest(req);
+    if (!caller) return false;
     const { data: role } = await admin
       .from("user_roles")
       .select("role")
-      .eq("user_id", data.user.id)
+      .eq("user_id", caller.id)
       .eq("role", "admin")
       .maybeSingle();
     return !!role;
@@ -172,9 +173,8 @@ async function callerIsAdmin(req: Request): Promise<boolean> {
 async function optionalUserId(supabase: any, req: Request): Promise<string | null> {
   const authorization = req.headers.get("authorization") || "";
   if (!authorization.startsWith("Bearer ")) return null;
-  const { data, error } = await supabase.auth.getUser(authorization.slice(7));
-  if (error || !data?.user) return null;
-  return data.user.id;
+  const caller = await userFromRequest(req);
+  return caller?.id ?? null;
 }
 
 function checkoutDescription(startAt: string, timezone: string): string {

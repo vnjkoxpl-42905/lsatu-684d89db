@@ -99,6 +99,9 @@ interface StimulusRecord {
   recallSeconds: number;
 }
 
+/** Stable identity so hooks keyed on `now` do not restart every render. */
+const defaultNow = () => Date.now();
+
 export function SectionRunner({
   assignmentId,
   studentId,
@@ -108,7 +111,7 @@ export function SectionRunner({
   accommodation = "standard",
   onComplete,
   onExit,
-  now = () => Date.now(),
+  now = defaultNow,
 }: SectionRunnerProps) {
   const run = useMemo(
     () => buildSectionRun(items, sourceSection, timeGoalMinutes),

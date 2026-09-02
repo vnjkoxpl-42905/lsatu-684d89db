@@ -13,6 +13,7 @@ import {
   meetUrlFromEvent,
   patchEvent,
 } from "../_shared/googleCalendar.ts";
+import { userFromRequest } from "../_shared/authClaims.ts";
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -36,8 +37,7 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
-    const { data: userRes } = await supabase.auth.getUser(authHeader.slice(7));
-    const user = userRes?.user;
+    const user = await userFromRequest(req);
     if (!user) return json({ error: "unauthorized" }, 401);
     const { data: roleRow } = await supabase
       .from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();
