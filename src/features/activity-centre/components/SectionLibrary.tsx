@@ -118,8 +118,17 @@ export function SectionLibrary({
           >
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <p className="text-base font-medium text-foreground">{choice.source_section}</p>
+              {/*
+                * The time, not the stimulus count.
+                *
+                * A stimulus is our grain, not hers, and the counts differ per
+                * section for a reason she has no way to see: two questions can
+                * share a stimulus. Printed on a card to choose from, "22" next
+                * to "26" reads as one section being longer, which is not what
+                * it means. The clock is the thing she actually plans around.
+                */}
               <p className="text-xs text-muted-foreground">
-                {choice.stimulus_count} stimuli · {choice.goal_minutes?.standard ?? 25} min
+                {choice.goal_minutes?.standard ?? 25} min
               </p>
             </div>
 
