@@ -150,6 +150,40 @@ completes in four words, and its Details describe a conclusion that is not on th
 page. Every section will have a few. Nothing in this ADR fixes that, and a
 student will hit the same floor on the same stimuli.
 
+## Validated against a real model, 2026-09-02
+
+The bands above were drawn from judging done by hand and by agent. The grader
+does not use either. `scripts/grade-census.ts` ran the actual judge -- the real
+prompt, `gemini-2.5-flash` at temperature 0 -- over all 71 census stimuli:
+
+| | min | p10 | median | mean |
+|---|---|---|---|---|
+| Census (hand + agent) | 68 | **86** | 95 | 94.7 |
+| Judge (gemini-2.5-flash) | 59 | **85** | 94 | 93.1 |
+
+**The floor holds.** Judge p10 is 85 against a census p10 of 86: the two agree
+within a point, which is validation rather than discrepancy. Mean delta is
+**-1.6 points**, so the model is very slightly stricter than a person, and 58 of
+71 land within 5 points. The floor stays at 86; moving it one point on this
+evidence would claim a precision the measurement does not have.
+
+**87% of correct runs land at the standard**, 11% at "nearly there", one at
+"thin". At section level the mean is 93%, comfortably inside the top band, so a
+correct run reads as correct; the spread is per stimulus.
+
+**Nothing failed to parse.** 71 replies, zero unreadable, zero Details left
+unjudged.
+
+**The decoys caught something, which is the point.** 4 of 71 stimuli had the
+judge credit a Detail belonging to a different stimulus -- one decoy of two,
+each time. That is the failure this ADR's judging rule exists to prevent, it is
+invisible in a Coverage number, and without decoys we would not know it happens
+at a 5.6% rate. It is recorded per grade so a run carrying one can be treated as
+suspect rather than reported as fact.
+
+**Cost is not a consideration.** ~1,750 tokens per stimulus; ~124,000 for the
+whole census; roughly 41,000 to grade one student's section.
+
 ## Alternatives considered
 
 **Normalise each stimulus against Joshua's own Coverage on it, so his run is
