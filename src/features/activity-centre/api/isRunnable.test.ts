@@ -11,12 +11,21 @@ const activity = (over: Partial<Activity>): Activity =>
   ({ id: "a", title: "t", item_format: "free-text", items: [], instructions: {}, ...over }) as Activity;
 
 describe("what the library will offer", () => {
-  it("offers a Read, Recall, Colour section", () => {
-    expect(isRunnable(activity({ item_format: "spoken-recall", mode: "section" }))).toBe(true);
+  it("offers the Read, Recall, Colour library, which is the door", () => {
+    expect(isRunnable(activity({ item_format: "spoken-recall", mode: "section-library" }))).toBe(
+      true,
+    );
   });
 
-  it("hides a spoken-recall Activity that is not a section", () => {
-    // The one-stimulus runner is gone, so there is nothing to run this with.
+  it("hides an individual section, because those are picked inside the door", () => {
+    // A section is content now, not something Joshua assigns. Offering both
+    // would put four Read, Recall, Colour cards in the library again and let
+    // him choose the section she is supposed to choose.
+    expect(isRunnable(activity({ item_format: "spoken-recall", mode: "section" }))).toBe(false);
+  });
+
+  it("hides a spoken-recall Activity that is neither", () => {
+    // The one-stimulus runner is gone, so there is nothing to run these with.
     expect(isRunnable(activity({ item_format: "spoken-recall", mode: null }))).toBe(false);
     expect(isRunnable(activity({ item_format: "spoken-recall" }))).toBe(false);
     expect(isRunnable(activity({ item_format: "spoken-recall", mode: "stimulus" }))).toBe(false);

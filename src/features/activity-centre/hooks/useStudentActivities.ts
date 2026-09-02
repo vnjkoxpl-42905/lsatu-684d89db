@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { getActivity, getStudentAssignment, listStudentAssignments } from "../api/activitiesClient";
+import { getActivity, getAssignmentById, getStudentAssignment, listStudentAssignments } from "../api/activitiesClient";
 import type { Activity, ActivityAssignment, ActivityAssignmentSummary, ActivityStatus } from "../api/types";
 
 /**
@@ -104,8 +104,14 @@ export function useStudentActivity(
         setError(null);
         return;
       }
+      // The student-scoped read comes back empty both for an id that is not
+      // real and for one issued to somebody else. The second is the case where
+      // an admin is opening a link they handed out, so ask again by id alone
+      // and let RLS answer: an admin gets the row, a student gets the same
+      // null they already had. No client-side role check is involved, and the
+      // runner runs a foreign row read-only.
       const row = await getStudentAssignment(assignmentId, user.id);
-      setAssignment(row);
+      setAssignment(row ?? (await getAssignmentById(assignmentId)));
       setError(null);
     } catch (e) {
       console.error("[activity:assign:student:get] failed", { userId: user.id, assignmentId, error: e });

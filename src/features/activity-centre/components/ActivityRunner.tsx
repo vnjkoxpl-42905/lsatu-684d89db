@@ -21,6 +21,7 @@ import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
 import { SectionRunner } from "../recall/SectionRunner";
+import { SectionLibraryPanel } from "./SectionLibraryPanel";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
 import { SectionReport } from "./SectionReport";
@@ -83,6 +84,18 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   const [ownership, setOwnership] = useState<"unknown" | "elsewhere" | "absent">("unknown");
   const { assignment, loading, error } = useStudentActivity(assignmentId, previewActivityId);
 
+  /**
+   * Joshua, opening a link he handed to a student.
+   *
+   * An admin can read every assignment, so the row loads; what must not happen
+   * is his visit being recorded as the student's work. Every write below is
+   * gated on `readOnly` rather than `practice` alone, and the attempt log is
+   * read under the assignment's OWN student id, so what he sees on the screen
+   * is their answers rather than an empty run.
+   */
+  const viewingSomeoneElse = Boolean(assignment && user && assignment.student_id !== user.id);
+  const logStudentId = assignment?.student_id ?? user?.id;
+
   // Only asked when the load has genuinely come back empty, so the ordinary
   // path costs nothing. The probe reads by id alone and returns a boolean, so
   // a student who cannot see the row keeps the plain not-found wording.
@@ -126,8 +139,8 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
    * flight the whole time.
    */
   const logRef = useRef<Promise<Awaited<ReturnType<typeof listItemResponses>>> | null>(null);
-  if (!logRef.current && assignmentId && user && !preview) {
-    logRef.current = listItemResponses(assignmentId, user.id);
+  if (!logRef.current && assignmentId && logStudentId && !preview) {
+    logRef.current = listItemResponses(assignmentId, logStudentId);
     // Nothing awaits this until the effect does, and an unhandled rejection in
     // between would surface as a page-level error. The effect still sees it.
     logRef.current.catch(() => {});
@@ -143,6 +156,8 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   // Ungraded run with no DB writes / score overwrite. True for teacher previews
   // and for a "Practice again" re-run of a completed activity.
   const [practice, setPractice] = useState(preview);
+  /** No row is written under this run: a practice re-run, a preview, or an admin looking. */
+  const readOnly = practice || viewingSomeoneElse;
   /**
    * The item the student stopped ON, mid-attempt, in an earlier sitting: which
    * index it is, how many attempts they had already spent, and what they had
@@ -219,14 +234,14 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   // showing "Start". Best-effort: the assignment is the source of truth.
   const syncClassroom = useCallback(
     async (status: "in_progress" | "completed") => {
-      if (practice || !assignment) return;
+      if (readOnly || !assignment) return;
       try {
         await syncClassroomItemStatusBySource("activity_assignments", assignment.id, status);
       } catch (e) {
         console.error("[activity:classroom:sync] failed", { status, error: e });
       }
     },
-    [assignment, practice],
+    [assignment, readOnly],
   );
 
   // Open behavior: runs once when the assignment loads.
@@ -253,7 +268,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
 
       let log: Awaited<ReturnType<typeof listItemResponses>> = [];
       try {
-        log = await (logRef.current ?? listItemResponses(assignment.id, user.id));
+        log = await (logRef.current ?? listItemResponses(assignment.id, assignment.student_id));
       } catch (e) {
         // A failed read must not silently look like "no progress" and hand the
         // student a blank run over the top of real saved work. Start them at
@@ -287,11 +302,15 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       if (items.length > 0 && progress.resolvedCount >= items.length) {
         setIndex(items.length - 1);
         setPhase("done");
-        try {
-          await completeAssignment(assignment.id, scoreFor(progress.verdicts, items.length));
-          void syncClassroom("completed");
-        } catch (e) {
-          console.error("[activity:resume:complete] failed", e);
+        // An admin looking at the run must not be the one who closes it: the
+        // student's own next open still owes them the completion write.
+        if (!readOnly) {
+          try {
+            await completeAssignment(assignment.id, scoreFor(progress.verdicts, items.length));
+            void syncClassroom("completed");
+          } catch (e) {
+            console.error("[activity:resume:complete] failed", e);
+          }
         }
         setHydrated(true);
         return;
@@ -311,7 +330,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       // works this Activity over five sittings should not pay for it five
       // times. Coming back drops them straight onto the question.
       if (started) setEntered(true);
-      if (started && assignment.status === "assigned") {
+      if (started && assignment.status === "assigned" && !readOnly) {
         // Attempts on record but the status never moved: repair it, so the
         // Centre and the Classroom stop calling this run unopened.
         try {
@@ -323,12 +342,12 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       }
       setHydrated(true);
     })();
-  }, [assignment, user, items, hydrated, preview, syncClassroom]);
+  }, [assignment, user, items, hydrated, preview, readOnly, syncClassroom]);
 
   const handleStart = useCallback(async () => {
     setEntered(false);
     setPhase("running");
-    if (!practice && assignment && assignment.status === "assigned") {
+    if (!readOnly && assignment && assignment.status === "assigned") {
       try {
         await markAssignmentStarted(assignment.id);
       } catch (e) {
@@ -336,7 +355,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       }
       void syncClassroom("in_progress");
     }
-  }, [assignment, practice, syncClassroom]);
+  }, [assignment, readOnly, syncClassroom]);
 
   const handleRecord = useCallback(
     async (args: {
@@ -352,7 +371,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       // The seed has served its purpose the moment this item is written to
       // again; leaving it set would re-apply an old attempt count on a remount.
       setResumeAt((prev) => (prev && items[prev.index]?.order === args.itemOrder ? null : prev));
-      if (practice || !user || !assignment) return; // practice runs are never persisted
+      if (readOnly || !user || !assignment) return; // practice, preview and admin views are never persisted
       const payload: PendingAttempt = {
         assignmentId: assignment.id,
         studentId: user.id,
@@ -382,15 +401,15 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
         });
       }
     },
-    [user, assignment, practice, items, world],
+    [user, assignment, readOnly, items, world],
   );
 
   // Anything stranded by an earlier session goes up as soon as there is a
   // student to attribute it to, without waiting for them to answer again.
   useEffect(() => {
-    if (practice || !user) return;
+    if (readOnly || !user) return;
     void flushOutbox((pending) => recordItemResponse(pending));
-  }, [practice, user]);
+  }, [readOnly, user]);
 
   const handleResolved = useCallback((order: number, finalVerdict: Verdict | null) => {
     setVerdicts((prev) => ({ ...prev, [order]: finalVerdict }));
@@ -407,7 +426,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       setBandExpanded(false); // a new question starts with the answer box in reach
       return;
     }
-    if (!practice && assignment) {
+    if (!readOnly && assignment) {
       try {
         await completeAssignment(assignment.id, scoreFor(verdicts, items.length));
       } catch (e) {
@@ -417,7 +436,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       void syncClassroom("completed");
     }
     setPhase("done");
-  }, [index, items.length, verdicts, assignment, practice, syncClassroom]);
+  }, [index, items.length, verdicts, assignment, readOnly, syncClassroom]);
 
   // Re-run a completed activity for practice. Clears local state, writes nothing.
   const startPractice = useCallback((orders: number[] | null) => {
@@ -497,9 +516,22 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       : null;
   const displayScore = storedScore ?? liveScore;
 
+  /**
+   * The admin's own marker, on every phase of a run he is only looking at.
+   * Without it the screen is indistinguishable from his own work, and the one
+   * thing he must be able to trust is that nothing he types here lands on the
+   * student's record.
+   */
+  const adminBanner = viewingSomeoneElse ? (
+    <div className="mx-auto mb-4 max-w-5xl rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))] px-4 py-2 text-xs text-muted-foreground">
+      Admin view of a student&rsquo;s assignment. Their saved answers are shown; nothing you do here is recorded.
+    </div>
+  ) : null;
+
   if (phase === "intro") {
     return (
       <div className="activity-centre act-home" data-world={world?.slug}>
+        {adminBanner}
         <ActivityIntro
           title={assignment.title}
           subtitle={assignment.subtitle}
@@ -523,6 +555,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
         data-world={world?.slug}
       >
         <div className="mx-auto max-w-5xl">
+          {adminBanner}
           {handleLeave && (
             <div className="mb-6">
               <ActivityExitButton onExit={handleLeave} tone="light" />
@@ -573,6 +606,18 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
      * clock is what her time is scored against, so a later edit to the
      * definition must not be able to rescore a run she has finished.
      */
+    /*
+     * The door. Joshua assigns Read, Recall, Colour; she picks which section to
+     * run tonight, and she runs several. This Activity has no items of its own:
+     * its content is the list.
+     */
+    if (assignment.mode === "section-library") {
+      return (
+        <div className="activity-centre min-h-screen" data-runner="section-library">
+          <SectionLibraryPanel onExit={handleBackToIntro} />
+        </div>
+      );
+    }
     if (assignment.mode === "section") {
       /*
        * A finished section goes to its Report Card, not back to the intro.
