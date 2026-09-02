@@ -387,6 +387,53 @@ export type Database = {
           },
         ]
       }
+      activity_section_grades: {
+        Row: {
+          assignment_id: string
+          created_at: string
+          graded_at: string
+          grader_version: number
+          section: Json
+          source_section: string
+          stimuli: Json
+          student_id: string
+          transcript_engine: string
+          transcript_text: string | null
+        }
+        Insert: {
+          assignment_id: string
+          created_at?: string
+          graded_at?: string
+          grader_version: number
+          section: Json
+          source_section: string
+          stimuli: Json
+          student_id: string
+          transcript_engine: string
+          transcript_text?: string | null
+        }
+        Update: {
+          assignment_id?: string
+          created_at?: string
+          graded_at?: string
+          grader_version?: number
+          section?: Json
+          source_section?: string
+          stimuli?: Json
+          student_id?: string
+          transcript_engine?: string
+          transcript_text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_section_grades_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: true
+            referencedRelation: "activity_assignments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       admin_question_notes: {
         Row: {
           author_id: string
@@ -2832,6 +2879,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      model_runs: {
+        Row: {
+          asr_engine: string | null
+          asr_model: string | null
+          audio_bucket: string
+          audio_bytes: number | null
+          audio_path: string
+          audio_sha256: string | null
+          citation: string | null
+          created_at: string
+          id: string
+          slug: string
+          source_section: string
+          status: string
+          transcribed_at: string | null
+          transcript_sha256: string | null
+          transcript_text: string | null
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          asr_engine?: string | null
+          asr_model?: string | null
+          audio_bucket?: string
+          audio_bytes?: number | null
+          audio_path: string
+          audio_sha256?: string | null
+          citation?: string | null
+          created_at?: string
+          id?: string
+          slug: string
+          source_section: string
+          status?: string
+          transcribed_at?: string | null
+          transcript_sha256?: string | null
+          transcript_text?: string | null
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          asr_engine?: string | null
+          asr_model?: string | null
+          audio_bucket?: string
+          audio_bytes?: number | null
+          audio_path?: string
+          audio_sha256?: string | null
+          citation?: string | null
+          created_at?: string
+          id?: string
+          slug?: string
+          source_section?: string
+          status?: string
+          transcribed_at?: string | null
+          transcript_sha256?: string | null
+          transcript_text?: string | null
+          updated_at?: string
+          version?: number
+        }
+        Relationships: []
       }
       notifications: {
         Row: {
