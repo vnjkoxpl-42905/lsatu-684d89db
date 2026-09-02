@@ -387,3 +387,58 @@ export interface CoachVerdict {
 
 /** Max Coach attempts before the credited answer reveals. */
 export const MAX_ATTEMPTS = 2;
+
+/**
+ * One stimulus on the Report Card.
+ *
+ * Mirrors what `grade-rrc-section` writes. `percent` is Coverage over that
+ * stimulus's own Details; `band` is what the student is actually shown, because
+ * a correct run is not 100% and a raw percentage against an implied maximum
+ * misreports it (ADR 0018).
+ */
+export interface SectionStimulusGrade {
+  slug: string;
+  carried: number;
+  total: number;
+  percent: number;
+  band: "at-the-standard" | "nearly-there" | "thin" | "lost-it";
+  /** The Details she did not carry, as authored. */
+  missed: string[];
+  /** Details from another stimulus the judge wrongly credited. Any at all makes this stimulus suspect. */
+  decoysCarried: string[];
+  /** Details the judge returned no verdict for. Counted as not carried. */
+  unjudged: string[];
+  reciting: boolean;
+  listing: boolean;
+  coloured: boolean;
+  colourSpecific: boolean;
+  dead_air_seconds: number;
+}
+
+export interface SectionGradeSummary {
+  accommodation: string;
+  goal_minutes: number;
+  total_seconds: number;
+  within_goal: boolean;
+  mean_coverage: number;
+  stimuli_graded: number;
+  reciting_count: number;
+  listing_count: number;
+  uncoloured_count: number;
+  worst_dead_air_seconds: number;
+  dead_air_threshold_seconds: number;
+  decoy_failures: number;
+  clock: Record<string, number>;
+}
+
+export interface SectionGrade {
+  assignment_id: string;
+  student_id: string;
+  source_section: string;
+  transcript_engine: string;
+  transcript_text: string | null;
+  grader_version: number;
+  stimuli: SectionStimulusGrade[];
+  section: SectionGradeSummary;
+  graded_at: string;
+}

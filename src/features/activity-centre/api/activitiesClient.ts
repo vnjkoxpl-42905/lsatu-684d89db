@@ -12,6 +12,7 @@ import type {
   Verdict,
 } from "./types";
 import type { RunScore } from "../progress";
+import type { SectionGrade } from "./types";
 
 // Thin data layer for the Activity Centre. The jsonb columns (instructions,
 // items) come back from PostgREST as `Json`; we cast them to the domain shapes
@@ -291,6 +292,50 @@ export async function completeSectionRun(assignmentId: string): Promise<void> {
     })
     .eq("id", assignmentId);
   if (error) throw error;
+}
+
+/**
+ * Student: read my Report Card for a finished section.
+ *
+ * Null means ungraded, and ungraded is a real state rather than an error: the
+ * grader runs after she stops, so between finishing and the row appearing there
+ * is a legitimate window where the answer is "not yet". The absence of a row IS
+ * the pending signal -- there is no status column to trust, and none that she
+ * could set herself (ADR 0019).
+ */
+export async function getSectionGrade(assignmentId: string): Promise<SectionGrade | null> {
+  /*
+   * `activity_section_grades` arrives with its own migration, and `types.ts` is
+   * generated from the DEPLOYED schema, so the generated client does not know
+   * the table until types are pulled against a database that has it. Same
+   * situation, and the same remedy, as the `rrc` column in `RecallRunner`.
+   *
+   * Narrowed to the two calls actually used rather than cast to `any`, so a
+   * typo in the column name is still a type error. Delete the shim once the
+   * types are regenerated.
+   */
+  const table = supabase.from("activity_section_grades" as never) as unknown as {
+    select: (columns: string) => {
+      eq: (
+        column: "assignment_id",
+        value: string,
+      ) => {
+        maybeSingle: () => Promise<{
+          data: unknown;
+          error: { code?: string; message?: string } | null;
+        }>;
+      };
+    };
+  };
+
+  const { data, error } = await table.select("*").eq("assignment_id", assignmentId).maybeSingle();
+  // The table arrives with its own migration. A Report Card that cannot load is
+  // not worth taking the finished-run screen down for.
+  if (error) {
+    if (isUnknownColumn(error) || error.code === "42P01") return null;
+    throw error;
+  }
+  return (data as SectionGrade | null) ?? null;
 }
 
 // --- Admin -----------------------------------------------------------------
