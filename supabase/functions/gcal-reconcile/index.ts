@@ -40,8 +40,18 @@ function json(body: unknown, status = 200) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const workerKey = requiredEnv("BOOKING_WORKER_SECRET");
-    if (req.headers.get("X-Worker-Secret") !== workerKey) {
+    // Two accepted callers: a worker holding BOOKING_WORKER_SECRET, or the
+    // pg_cron job, which authenticates with the service-role key. Requiring
+    // the worker secret unconditionally left the cron run dead on arrival
+    // (`booking_worker_secret_not_configured`), so the header is optional
+    // whenever the bearer token is the service-role key itself.
+    const serviceRoleKey = requiredEnv("SUPABASE_SERVICE_ROLE_KEY");
+    const bearer = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
+    const workerKey = Deno.env.get("BOOKING_WORKER_SECRET") ?? "";
+    const authorized =
+      bearer === serviceRoleKey ||
+      (workerKey.length > 0 && req.headers.get("X-Worker-Secret") === workerKey);
+    if (!authorized) {
       return json({ error: "unauthorized" }, 401);
     }
 

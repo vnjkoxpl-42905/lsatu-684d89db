@@ -57,7 +57,17 @@ export default function DrillLaunchGate({ children }: Props) {
   const stateLaunch = React.useMemo<DrillLaunch | null>(() => {
     if (isCanonicalLink || searchParams.get('mode')) return null;
     const routeState = location.state as (DrillRouteState & { ptRun?: PtLegRef }) | null;
-    return launchFromRouteState(routeState, routeState?.ptRun);
+    const launch = launchFromRouteState(routeState, routeState?.ptRun);
+    if (!launch) return null;
+    // Some callers put the way back in the query string rather than in state
+    // (`/drill?returnTo=/flagged`). The rewrite below emits only what the
+    // launch names, so carry that param onto the launch or the exit falls back
+    // to Classroom Home.
+    const queryReturnTo = searchParams.get('returnTo');
+    if (queryReturnTo && !launch.options?.returnTo) {
+      return { ...launch, options: { ...(launch.options ?? {}), returnTo: queryReturnTo } };
+    }
+    return launch;
   }, [isCanonicalLink, searchParams, location.state]);
 
   const hasWorkToDo = isCanonicalLink || !!stateLaunch;

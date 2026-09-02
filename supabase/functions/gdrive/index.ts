@@ -6,6 +6,7 @@
 //   GET  ?action=download&id=<fileId>&format=<pdf|docx|xlsx|pptx|odt|ods|odp|rtf|txt|html|epub|csv|tsv|svg|png|jpeg>
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { userFromRequest } from "../_shared/authClaims.ts";
 
 const GATEWAY = "https://connector-gateway.lovable.dev/google_drive/drive/v3";
 
@@ -20,8 +21,7 @@ async function requireAdmin(req: Request): Promise<Response | null> {
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
-  const { data: userRes } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
-  const user = userRes?.user;
+  const user = await userFromRequest(req);
   if (!user) {
     return new Response(JSON.stringify({ ok: false, error: "unauthorized" }), {
       status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },

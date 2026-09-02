@@ -20,12 +20,16 @@ interface Props {
   onShowAnswer?: () => void;
   /** Disabled while paused, or where revealing mid-section defeats the exercise. */
   showAnswerDisabled?: boolean;
+  /** Whether the answer is currently revealed (toggles pill styling). */
+  showAnswerActive?: boolean;
   /** Opens the question drawer on the Explanation tab. Hidden if omitted. */
   onExplanation?: () => void;
   /** Label for the explanation pill (context-aware). */
   explanationLabel?: string;
   /** Disabled until something is revealed, so the breakdown cannot leak. */
   explanationDisabled?: boolean;
+  /** Whether the explanation panel is currently open (toggles pill styling). */
+  explanationActive?: boolean;
   /** Noun used in pause/complete labels: "Section" (default) or "Question". */
   pauseNoun?: string;
   /** Label for the complete/end action. Defaults to the LawHub-style full-section wording. */
@@ -54,9 +58,11 @@ export default function OfficialSessionStrip({
   showAnswerVisible,
   onShowAnswer,
   showAnswerDisabled,
+  showAnswerActive,
   onExplanation,
   explanationLabel = "Explanation",
   explanationDisabled,
+  explanationActive,
   pauseNoun = "Section",
   completeLabel = "Complete Section",
   onOpenHelp,
@@ -101,7 +107,8 @@ export default function OfficialSessionStrip({
             type="button"
             onClick={onShowAnswer}
             disabled={showAnswerDisabled}
-            className={PILL_CLASS}
+            aria-pressed={showAnswerActive}
+            className={`${PILL_CLASS}${showAnswerActive ? " bg-slate-200 border-slate-400" : ""}`}
           >
             Answer
           </button>
@@ -111,8 +118,9 @@ export default function OfficialSessionStrip({
             type="button"
             onClick={onExplanation}
             disabled={explanationDisabled}
+            aria-pressed={explanationActive}
             title={explanationDisabled ? "Answer or reveal the question first" : undefined}
-            className={PILL_CLASS}
+            className={`${PILL_CLASS}${explanationActive ? " bg-slate-200 border-slate-400" : ""}`}
           >
             {explanationLabel}
           </button>

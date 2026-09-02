@@ -27,6 +27,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { BUCKET, resolveStudentAuthId } from "../_shared/sessionIngestCore.ts";
+import { userFromRequest } from "../_shared/authClaims.ts";
 const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
 
 
@@ -93,8 +94,7 @@ const ADMIN_PARTS = ["weakness_tags", "drill_recs", "next_agenda", "private_note
 async function verifyAdmin(req: Request, admin: SupabaseClient) {
   const authHeader = req.headers.get("Authorization") ?? "";
   if (!authHeader.startsWith("Bearer ")) return null;
-  const { data: userRes } = await admin.auth.getUser(authHeader.replace("Bearer ", ""));
-  const caller = userRes?.user;
+  const caller = await userFromRequest(req);
   if (!caller) return null;
   const { data: roleRow } = await admin
     .from("user_roles").select("role")
