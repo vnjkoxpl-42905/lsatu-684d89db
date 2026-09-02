@@ -12,7 +12,7 @@
 
 import { DrillLaunchError, launchNeedsResolution, type DrillLaunch } from '@/lib/drillLaunch';
 import { listSavedSets } from '@/lib/savedSets';
-import { getAssignment } from '@/lib/guidedDrills';
+import { supabase } from '@/integrations/supabase/client';
 import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import {
   pickHomeworkForDay,
@@ -53,18 +53,20 @@ export async function resolveDrillLaunch(
     }
 
     case 'assignment': {
-      // The assignment row owns the list. Re-reading it is the whole point: an
-      // assignment edited after the link went out should run what it says now,
-      // not what it said when the student was emailed.
-      const row = (await getAssignment(launch.assignmentId)) as
-        | { question_qids?: string[]; guided_drill?: { question_qids?: string[] } }
-        | null;
-      if (!row) {
+      // `homework_assignments`, which is where the classroom assignment surfaces
+      // read theirs from (`useStudentAssignment`). NOT `guided_drill_assignments`:
+      // those are a different table with different ids, and looking an id up in
+      // the wrong one makes a live assignment read as a dead link.
+      const { data, error } = await supabase
+        .from('homework_assignments')
+        .select('id, question_qids')
+        .eq('id', launch.assignmentId)
+        .maybeSingle();
+      if (error) throw error;
+      const qids = (data as { question_qids?: string[] } | null)?.question_qids ?? [];
+      if (!data) {
         throw new DeadDrillLinkError('That assignment no longer exists.');
       }
-      const qids = row.question_qids?.length
-        ? row.question_qids
-        : (row.guided_drill?.question_qids ?? []);
       if (qids.length === 0) {
         throw new DeadDrillLinkError('That assignment has no questions on it.');
       }
