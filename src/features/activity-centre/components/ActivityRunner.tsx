@@ -6,6 +6,7 @@ import {
   assignmentBelongsToAnotherAccount,
   completeAssignment,
   completeSectionRun,
+  getAccommodation,
   listItemResponses,
   markAssignmentStarted,
   recordItemResponse,
@@ -23,6 +24,7 @@ import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
 import { SectionRunner } from "../recall/SectionRunner";
 import { recoverPendingRecordings } from "../recall/recoverRecordings";
+import type { Accommodation } from "../recall/section";
 import { SectionLibraryPanel } from "./SectionLibraryPanel";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
@@ -149,6 +151,20 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   }
 
   const [phase, setPhase] = useState<Phase>("intro");
+  /**
+   * The student's time accommodation, and the reason the clock was wrong.
+   *
+   * `SectionRunner` has always taken this and nothing ever passed it, so every
+   * run fell back to "standard" and an accommodated student was scored against
+   * a goal 13 or 25 minutes shorter than her own. ADR 0014 gave the section
+   * three goals precisely so that would not happen, and the wire was never
+   * connected.
+   *
+   * Held here rather than fetched inside the runner because the runner starts
+   * recording the moment it mounts, and its clock must not change under her a
+   * second into the section.
+   */
+  const [accommodation, setAccommodation] = useState<Accommodation>("standard");
   const [index, setIndex] = useState(0);
   const [verdicts, setVerdicts] = useState<Record<number, Verdict | null>>({});
   const [responses, setResponses] = useState<Record<number, string>>({});
@@ -301,6 +317,9 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
        */
       if (assignment.item_format === "spoken-recall" && !readOnly) {
         await recoverPendingRecordings(assignment.student_id);
+        // Before the runner mounts, so her own goal is the one on screen from
+        // the first frame rather than 25 minutes that changes a moment later.
+        setAccommodation(await getAccommodation(assignment.student_id));
       }
 
       const progress = reconstructProgress(items, log);
@@ -678,6 +697,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             items={assignment.items}
             sourceSection={assignment.source_section}
             timeGoalMinutes={assignment.time_goal_minutes}
+            accommodation={accommodation}
             onComplete={() => setPhase("report")}
             onExit={handleBackToIntro}
           />

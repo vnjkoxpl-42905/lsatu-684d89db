@@ -9,7 +9,8 @@ import {
   type FinderRcPassageSource,
   type FinderRcQuestionSource,
 } from "@/components/questionfinder/questionFinderSearch";
-import { getResolvedDrillRouteState } from "@/lib/drillRouteState";
+import { parseDrillLaunch, type DrillLaunch } from "@/lib/drillLaunch";
+import { drillRunSpecFromLaunch } from "@/lib/drillRunSpec";
 
 const lr: FinderLrSource[] = [
   {
@@ -233,7 +234,8 @@ describe("landing contracts against the runners that consume them", () => {
     const hit = search("PT90 S1 Q12").exact!;
     const url = new URL(lrHitHref(hit, "/classroom"), "http://x");
 
-    const state = getResolvedDrillRouteState(url.searchParams, null);
+    const launch = parseDrillLaunch(url.searchParams);
+    const state = drillRunSpecFromLaunch(launch as DrillLaunch);
 
     expect(url.pathname).toBe("/drill");
     expect(state.mode).toBe("type-drill");

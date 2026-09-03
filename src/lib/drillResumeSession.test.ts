@@ -10,20 +10,7 @@ vi.mock('@/bootcamps/main-conclusion/lib/practiceSessionStore', () => ({
   ...store,
 }));
 
-import {
-  drillResumeIdentityFromSearch,
-  loadDrillResumeSession,
-} from './drillResumeSession';
-
-describe('reading a Run Record name from the expanded URL', () => {
-  it('recovers the bootcamp day and part', () => {
-    expect(
-      drillResumeIdentityFromSearch(
-        new URLSearchParams('mode=type-drill&bootcampDay=3&bootcampPart=homework'),
-      ),
-    ).toEqual({ kind: 'bootcamp-day', day: 3, part: 'homework' });
-  });
-});
+import { loadDrillResumeSession } from './drillResumeSession';
 
 describe('loading a renamed Run Record', () => {
   beforeEach(() => {

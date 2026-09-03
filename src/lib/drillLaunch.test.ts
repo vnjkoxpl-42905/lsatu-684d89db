@@ -3,15 +3,13 @@ import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import {
   launchDrill,
   parseDrillLaunch,
-  toDrillRouteState,
   launchNeedsResolution,
   launchFromRouteState,
-  expandToLegacySearch,
   DrillLaunchError,
   type DrillLaunch,
   type DrillLaunchBody,
 } from './drillLaunch';
-import { getResolvedDrillRouteState } from './drillRouteState';
+import { drillRunSpecFromLaunch, type DrillRunSpec } from './drillRunSpec';
 import { drillResumeKey } from './drillResumeSession';
 import type { TimerMode } from '@/types/drill';
 
@@ -161,62 +159,185 @@ describe('the kinds that need a row read before they can run', () => {
     expect(launchNeedsResolution({ kind: 'section', pt: 1, section: 1 })).toBe(false);
   });
 
-  it('refuses to translate before the row has been read', () => {
-    expect(() => toDrillRouteState({ kind: 'saved-set', setId: 's' })).toThrow(
+  it('refuses to build a run spec before the row has been read', () => {
+    expect(() => drillRunSpecFromLaunch({ kind: 'saved-set', setId: 's' })).toThrow(
       DrillLaunchError,
     );
   });
 
-  it('translates once it has', () => {
-    const state = toDrillRouteState({ kind: 'saved-set', setId: 's' }, ['q1', 'q2']);
-    expect(state.mode).toBe('type-drill');
-    expect(state.config).toMatchObject({ selectedQids: ['q1', 'q2'], count: 2 });
+  it('builds one once it has', () => {
+    const spec = drillRunSpecFromLaunch({ kind: 'saved-set', setId: 's' }, ['q1', 'q2']);
+    expect(spec.mode).toBe('type-drill');
+    expect(spec.config).toMatchObject({ selectedQids: ['q1', 'q2'], count: 2 });
   });
 });
 
 /**
- * The half of this change that has to be provably invisible. Every URL below is
- * one a launch site actually builds today. Reading it through the new codec and
- * translating it back must produce exactly what the runner receives now.
+ * Every URL below is one a launch site actually builds, or built before the
+ * canonical grammar existed. The runner has one reader now, so what these links
+ * mean is pinned here rather than left to agree with a second parser by
+ * coincidence. A change to any of these values is a change to a live link.
  */
-describe('nothing changes for a link that exists today', () => {
+describe('an older link still names the run it always named', () => {
   const NOW = 1_756_700_000_000;
 
-  beforeAll(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(NOW);
+  const timer = (mode: TimerMode, customMinutes?: number) => ({
+    mode,
+    customMinutes,
+    isPaused: false,
+    elapsedMs: 0,
+    startedAt: NOW,
   });
-  afterAll(() => {
-    vi.useRealTimers();
+  const queue = (...qids: string[]) => ({
+    qtypes: [],
+    difficulties: [],
+    pts: [],
+    count: qids.length,
+    selectedQids: qids,
   });
 
-  const realLinks: Record<string, string> = {
-    'an assigned section': 'mode=full-section&pt=155&section=1&minutes=53&sealed=1',
-    'a plain section': 'mode=full-section&pt=140&section=2',
-    'a section link missing its section': 'mode=full-section&pt=155',
-    'a bootcamp practice set':
+  const realLinks: Record<string, [string, DrillRunSpec]> = {
+    'an assigned section': [
+      'mode=full-section&pt=155&section=1&minutes=53&sealed=1',
+      {
+        mode: 'full-section',
+        config: { pt: 155, section: 1, timer: timer('custom', 53) },
+        sealed: true,
+      },
+    ],
+    // The accommodated clocks. Reducing 70 to a number of minutes, or dropping
+    // it, would re-time an accommodated sitting as a standard one.
+    'an accommodated assigned section': [
+      'mode=full-section&pt=155&section=1&timer=70&sealed=1',
+      {
+        mode: 'full-section',
+        config: { pt: 155, section: 1, timer: timer('70') },
+        sealed: true,
+      },
+    ],
+    'a plain section': [
+      'mode=full-section&pt=140&section=2',
+      {
+        mode: 'full-section',
+        config: { pt: 140, section: 2, timer: timer('35') },
+        sealed: false,
+      },
+    ],
+    // The two values whose loss on refresh left a practice test permanently
+    // open, because the close-out had nothing to write against.
+    'a leg of a sitting': [
+      'mode=full-section&pt=140&section=3&runId=run_abc&leg=2',
+      {
+        mode: 'full-section',
+        config: { pt: 140, section: 3, timer: timer('35') },
+        sealed: false,
+        ptRun: { runId: 'run_abc', legIndex: 2 },
+      },
+    ],
+    // A malformed section fell through to an empty question list rather than
+    // erroring, and still does.
+    'a section link missing its section': [
+      'mode=full-section&pt=155',
+      { mode: 'full-section', config: queue(), sealed: false, isGuidedDrill: false },
+    ],
+    'a bootcamp practice set': [
       'mode=type-drill&qids=PT1-S1-Q1,PT1-S1-Q2&returnTo=%2Fbootcamp&initialIndex=1&focus=Day%203&source=intro&practiceSlug=mc-practice-1',
-    'a guided drill': 'mode=type-drill&qids=PT1-S1-Q1&guided=1&guidedDurationMinutes=20&focus=Flaws',
-    'a guided drill from an assignment':
+      {
+        mode: 'type-drill',
+        config: queue('PT1-S1-Q1', 'PT1-S1-Q2'),
+        returnTo: '/bootcamp',
+        practicingLabel: 'Day 3',
+        initialIndex: 1,
+        sealed: false,
+        isGuidedDrill: false,
+        practiceSource: 'intro',
+        practiceSlug: 'mc-practice-1',
+      },
+    ],
+    'a guided drill': [
+      'mode=type-drill&qids=PT1-S1-Q1&guided=1&guidedDurationMinutes=20&focus=Flaws',
+      {
+        mode: 'type-drill',
+        config: queue('PT1-S1-Q1'),
+        practicingLabel: 'Flaws',
+        sealed: false,
+        isGuidedDrill: true,
+        guidedDurationMinutes: 20,
+      },
+    ],
+    'a guided drill from an assignment': [
       'mode=type-drill&qids=PT1-S1-Q1&guidedAssignmentId=asg_1',
-    'a classroom assignment':
+      {
+        mode: 'type-drill',
+        config: queue('PT1-S1-Q1'),
+        sealed: false,
+        isGuidedDrill: true,
+        guidedAssignmentId: 'asg_1',
+      },
+    ],
+    'a classroom assignment': [
       'mode=type-drill&qids=PT1-S1-Q1,PT1-S1-Q2&assignmentId=asg_1&guidedSetId=gs_1',
-    'a question-finder jump':
+      {
+        mode: 'type-drill',
+        config: queue('PT1-S1-Q1', 'PT1-S1-Q2'),
+        sealed: false,
+        isGuidedDrill: false,
+        assignmentId: 'asg_1',
+        guidedSetId: 'gs_1',
+      },
+    ],
+    'a bootcamp day': [
+      'mode=type-drill&qids=q1,q2&bootcampDay=3&bootcampPart=homework',
+      {
+        mode: 'type-drill',
+        config: queue('q1', 'q2'),
+        sealed: false,
+        isGuidedDrill: false,
+        resumeIdentity: { kind: 'bootcamp-day', day: 3, part: 'homework' },
+      },
+    ],
+    'a question-finder jump': [
       'mode=type-drill&qids=PT155-S2-Q7&present=smart&returnTo=%2Ffinder',
-    'the practice-set alias': 'mode=practice-set&qids=PT1-S1-Q1',
-    'a flagged-question redo': 'mode=type-drill&returnTo=%2Fflagged',
+      {
+        mode: 'type-drill',
+        config: queue('PT155-S2-Q7'),
+        returnTo: '/finder',
+        present: 'smart',
+        sealed: false,
+        isGuidedDrill: false,
+      },
+    ],
+    'the practice-set alias': [
+      'mode=practice-set&qids=PT1-S1-Q1',
+      { mode: 'type-drill', config: queue('PT1-S1-Q1'), sealed: false, isGuidedDrill: false },
+    ],
+    'a flagged-question redo': [
+      'mode=type-drill&returnTo=%2Fflagged',
+      { mode: 'type-drill', config: queue(), returnTo: '/flagged', sealed: false, isGuidedDrill: false },
+    ],
   };
 
-  for (const [name, search] of Object.entries(realLinks)) {
-    it(`resolves identically: ${name}`, () => {
-      const p = params(search);
-      const launch = parseDrillLaunch(p);
+  for (const [name, [search, expected]] of Object.entries(realLinks)) {
+    it(`still means the same run: ${name}`, () => {
+      const launch = parseDrillLaunch(params(search));
       expect(launch).not.toBeNull();
-      expect(toDrillRouteState(launch as DrillLaunch, undefined, NOW)).toEqual(
-        getResolvedDrillRouteState(p, null),
-      );
+      const spec = drillRunSpecFromLaunch(launch as DrillLaunch, undefined, NOW);
+      for (const [key, value] of Object.entries(expected)) {
+        expect({ [key]: spec[key as keyof DrillRunSpec] }).toEqual({ [key]: value });
+      }
     });
   }
+
+  it('never rewrites an older link, so nothing it says can be dropped', () => {
+    // The gate leaves these URLs alone. If that ever changes, everything above
+    // has to survive `launchDrill` as well.
+    const search = 'mode=type-drill&qids=q1&guided=1&assignmentId=asg_1&bootcampDay=3&bootcampPart=practice';
+    const launch = parseDrillLaunch(params(search)) as DrillLaunch;
+    const spec = drillRunSpecFromLaunch(launch, undefined, NOW);
+    expect(spec.isGuidedDrill).toBe(true);
+    expect(spec.assignmentId).toBe('asg_1');
+    expect(spec.resumeIdentity).toEqual({ kind: 'bootcamp-day', day: 3, part: 'practice' });
+  });
 });
 
 /**
@@ -240,7 +361,7 @@ describe('canonicalizing an in-memory launch does not change the run', () => {
     vi.useRealTimers();
   });
 
-  const normalize = (s: ReturnType<typeof getResolvedDrillRouteState>) => ({
+  const normalize = (s: DrillRunSpec) => ({
     mode: s.mode,
     config: s.config,
     returnTo: s.returnTo,
@@ -319,12 +440,13 @@ describe('canonicalizing an in-memory launch does not change the run', () => {
 
   for (const [name, routeState] of Object.entries(inMemoryLaunches)) {
     it(`survives being written to the address bar: ${name}`, () => {
-      const before = getResolvedDrillRouteState(params(''), routeState);
-      const launch = launchFromRouteState(before);
+      const launch = launchFromRouteState(routeState as never);
       expect(launch).not.toBeNull();
+      const before = drillRunSpecFromLaunch(launch as DrillLaunch, undefined, NOW);
 
-      const expanded = params(expandToLegacySearch(launch as DrillLaunch));
-      expect(normalize(getResolvedDrillRouteState(expanded, null))).toEqual(
+      const reread = parseDrillLaunch(params(launchDrill(launch as DrillLaunch)));
+      expect(reread).not.toBeNull();
+      expect(normalize(drillRunSpecFromLaunch(reread as DrillLaunch, undefined, NOW))).toEqual(
         normalize(before),
       );
     });
@@ -339,9 +461,12 @@ describe('canonicalizing an in-memory launch does not change the run', () => {
       },
       { runId: 'run_abc', legIndex: 2 },
     );
-    const expanded = params(expandToLegacySearch(launch as DrillLaunch));
-    expect(expanded.get('runId')).toBe('run_abc');
-    expect(expanded.get('leg')).toBe('2');
+    const written = params(launchDrill(launch as DrillLaunch));
+    expect(written.get('runId')).toBe('run_abc');
+    expect(written.get('leg')).toBe('2');
+    expect(
+      drillRunSpecFromLaunch(parseDrillLaunch(written) as DrillLaunch, undefined, NOW).ptRun,
+    ).toEqual({ runId: 'run_abc', legIndex: 2 });
   });
 
   it('leaves a launch it cannot name alone', () => {
@@ -351,15 +476,15 @@ describe('canonicalizing an in-memory launch does not change the run', () => {
   });
 });
 
-describe('a short link expands to something the runner understands', () => {
+describe('a short link becomes a run the runner can start', () => {
   it('turns a saved set into its questions', () => {
-    const search = expandToLegacySearch({ kind: 'saved-set', setId: 's1' }, ['q1', 'q2']);
-    expect(params(search).get('mode')).toBe('type-drill');
-    expect(params(search).get('qids')).toBe('q1,q2');
+    const spec = drillRunSpecFromLaunch({ kind: 'saved-set', setId: 's1' }, ['q1', 'q2']);
+    expect(spec.mode).toBe('type-drill');
+    expect((spec.config as { selectedQids?: string[] }).selectedQids).toEqual(['q1', 'q2']);
   });
 
-  it('keeps the params the runner reads for a guided drill', () => {
-    const search = expandToLegacySearch(
+  it('keeps the ids the runner needs for a guided drill', () => {
+    const spec = drillRunSpecFromLaunch(
       {
         kind: 'guided-drill',
         drillId: 'gd_7',
@@ -368,74 +493,68 @@ describe('a short link expands to something the runner understands', () => {
       },
       ['q1'],
     );
-    const p = params(search);
-    expect(p.get('guided')).toBe('1');
-    expect(p.get('guidedDrillId')).toBe('gd_7');
-    expect(p.get('guidedAssignmentId')).toBe('asg_1');
-    expect(p.get('guidedDurationMinutes')).toBe('20');
+    expect(spec.isGuidedDrill).toBe(true);
+    expect(spec.guidedDrillId).toBe('gd_7');
+    expect(spec.guidedAssignmentId).toBe('asg_1');
+    expect(spec.guidedDurationMinutes).toBe(20);
   });
 
-  it('keeps a bootcamp day as the Run Record name after expanding its questions', () => {
-    const p = params(
-      expandToLegacySearch(
-        { kind: 'bootcamp-day', day: 3, part: 'homework' },
-        ['q1', 'q2'],
-      ),
+  it('keeps a bootcamp day as the Run Record name after drawing its questions', () => {
+    const spec = drillRunSpecFromLaunch(
+      { kind: 'bootcamp-day', day: 3, part: 'homework' },
+      ['q1', 'q2'],
     );
-    expect(p.get('bootcampDay')).toBe('3');
-    expect(p.get('bootcampPart')).toBe('homework');
+    expect(spec.resumeIdentity).toEqual({ kind: 'bootcamp-day', day: 3, part: 'homework' });
     expect(
       drillResumeKey({
         mode: 'type-drill',
-        config: { selectedQids: ['q1', 'q2'] },
-        identity: { kind: 'bootcamp-day', day: 3, part: 'homework' },
+        config: spec.config,
+        identity: spec.resumeIdentity,
       }),
     ).toBe('drill::bootcamp-day::3::homework');
   });
 
-  it('keeps the params the runner reads for a classroom assignment', () => {
-    const p = params(
-      expandToLegacySearch(
-        { kind: 'assignment', assignmentId: 'asg_1', guidedSetId: 'gs_1' },
-        ['q1', 'q2'],
-      ),
+  it('keeps the ids the runner needs for a classroom assignment', () => {
+    const spec = drillRunSpecFromLaunch(
+      { kind: 'assignment', assignmentId: 'asg_1', guidedSetId: 'gs_1' },
+      ['q1', 'q2'],
     );
-    expect(p.get('assignmentId')).toBe('asg_1');
-    expect(p.get('guidedSetId')).toBe('gs_1');
-    expect(p.get('qids')).toBe('q1,q2');
+    expect(spec.assignmentId).toBe('asg_1');
+    expect(spec.guidedSetId).toBe('gs_1');
+    expect((spec.config as { selectedQids?: string[] }).selectedQids).toEqual(['q1', 'q2']);
   });
 
-  it('keeps the params the runner reads for a practice set', () => {
-    const p = params(expandToLegacySearch({ kind: 'practice-set', slug: 'mc-practice-1' }, ['q1']));
-    expect(p.get('source')).toBe('intro-to-lr-practice-drills');
-    expect(p.get('practiceSlug')).toBe('mc-practice-1');
+  it('keeps the ids the runner needs for a practice set', () => {
+    const spec = drillRunSpecFromLaunch({ kind: 'practice-set', slug: 'mc-practice-1' }, ['q1']);
+    expect(spec.practiceSource).toBe('intro-to-lr-practice-drills');
+    expect(spec.practiceSlug).toBe('mc-practice-1');
   });
-
 });
 
 describe('a handover keeps the mode it named', () => {
   // `natural-drill` has no live launch site today, but the runner reads it down
   // a separate branch. Expanding it as a type-drill would be a silent change of
   // drill, so the round-trip is pinned here rather than left to be rediscovered.
-  it('carries natural-drill through state -> address bar -> route state', () => {
+  it('carries natural-drill through state -> address bar -> run spec', () => {
     const launch = launchFromRouteState({
       mode: 'natural-drill',
       config: { qtypes: [], difficulties: [], pts: [], count: 2, selectedQids: ['PT1-S1-Q1', 'PT1-S1-Q2'] },
     } as never);
     expect(launch).not.toBeNull();
 
-    const search = expandToLegacySearch(launch!);
-    expect(new URLSearchParams(search).get('mode')).toBe('natural-drill');
+    const search = launchDrill(launch!);
+    expect(new URLSearchParams(search).get('runMode')).toBe('natural-drill');
 
     const back = parseDrillLaunch(new URLSearchParams(search));
-    expect(toDrillRouteState(back!).mode).toBe('natural-drill');
+    expect(drillRunSpecFromLaunch(back!).mode).toBe('natural-drill');
   });
 
-  it('still writes practice-set out as the type-drill the runner reads', () => {
+  it('still reads practice-set as the type-drill the runner runs', () => {
     const launch = launchFromRouteState({
       mode: 'practice-set',
       config: { qtypes: [], difficulties: [], pts: [], count: 1, selectedQids: ['PT1-S1-Q1'] },
     } as never);
-    expect(new URLSearchParams(expandToLegacySearch(launch!)).get('mode')).toBe('type-drill');
+    const back = parseDrillLaunch(new URLSearchParams(launchDrill(launch!)));
+    expect(drillRunSpecFromLaunch(back!).mode).toBe('type-drill');
   });
 });

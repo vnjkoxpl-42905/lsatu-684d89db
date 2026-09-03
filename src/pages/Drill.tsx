@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { AdminQuestionNotes } from '@/components/drill/AdminQuestionNotes';
@@ -106,11 +106,8 @@ import { toast } from 'sonner';
 import { QuestionTimer } from '@/lib/questionTimer';
 import { record } from '@rrweb/record';
 import type { eventWithTime } from '@rrweb/types';
-import {
-  getResolvedDrillRouteState,
-  getTimerConfigForDrillRoute,
-  type DrillRouteState,
-} from '@/lib/drillRouteState';
+import { timerConfigForRunSpec } from '@/lib/drillRunSpec';
+import { useDrillRunSpec } from '@/components/drill/DrillRunSpecContext';
 import { closeOutAssignedSection } from '@/lib/closeOutAssignedSection';
 import { getDrillDisplayNumber } from '@/pages/drillDisplayNumber';
 import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
@@ -133,7 +130,6 @@ import {
   isResumableGuidedSession,
 } from '@/lib/guidedDrillSession';
 import {
-  drillResumeIdentityFromSearch,
   drillResumeKey,
   loadDrillResumeSession,
   saveDrillResumeSnapshot,
@@ -164,7 +160,6 @@ function sectionBudgetMs(timer?: TimerConfig): number | undefined {
 
 function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
-  const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
@@ -179,38 +174,29 @@ function DrillContent() {
   const permissions = useUserPermissions();
   const { isLoading: qbLoading } = useQuestionBank();
 
-  // Homework assignments pass mode + qids + assignmentId via URL params so the
-  // context survives page refresh. Existing callers use location.state. URL
-  // params take priority; fall back to state when absent.
-  const assignmentId = searchParams.get('assignmentId');
-  const guidedAssignmentId = searchParams.get('guidedAssignmentId');
-  const guidedDrillId = searchParams.get('guidedDrillId');
-  const guidedSetId = searchParams.get('guidedSetId') ?? undefined;
+  // Everything about the run itself comes from the Drill Run Spec, which the
+  // gate in front of this page built from the launch in the address bar. The
+  // runner does not parse the query string for it: one grammar, one reader.
+  const state = useDrillRunSpec();
+  const assignmentId = state.assignmentId ?? null;
+  const guidedAssignmentId = state.guidedAssignmentId ?? null;
+  const guidedDrillId = state.guidedDrillId ?? null;
+  const guidedSetId = state.guidedSetId;
   const { set: guidedSet } = useHomeworkSet(guidedSetId);
   const [guidedInfoOpen, setGuidedInfoOpen] = React.useState(false);
-  const state = React.useMemo<DrillRouteState>(
-    () => getResolvedDrillRouteState(searchParams, location.state),
-    [searchParams, location.state],
-  );
 
-  const practicingLabel = searchParams.get('focus') || (location.state as { practicingLabel?: string } | null)?.practicingLabel;
+  const practicingLabel = state.practicingLabel;
 
   // Context params for header/breadcrumbs (survive refresh)
   const origin = searchParams.get('origin');
   const returnTo = searchParams.get('returnTo');
   const drillReturnTo = state.returnTo ?? (returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : undefined);
   // Which run and leg this section belongs to, when it belongs to one. Comes
-  // from launch state rather than from returnTo: that string is a routing hint
-  // and nothing load-bearing may depend on it.
-  // Read from the URL first: a refreshed leg used to lose these and then had
-  // nothing to write its close-out against, so the section could never be
-  // marked finished and the practice test stayed open forever.
-  const ptRun = React.useMemo(() => {
-    const runId = searchParams.get('runId');
-    const leg = Number.parseInt(searchParams.get('leg') ?? '', 10);
-    if (runId && Number.isFinite(leg) && leg >= 0) return { runId, legIndex: leg };
-    return (location.state as { ptRun?: { runId: string; legIndex: number } } | null)?.ptRun;
-  }, [searchParams, location.state]);
+  // from the launch rather than from returnTo: that string is a routing hint
+  // and nothing load-bearing may depend on it. A refreshed leg used to lose
+  // these and then had nothing to write its close-out against, so the section
+  // could never be marked finished and the practice test stayed open forever.
+  const ptRun = state.ptRun;
   // Routing and score-UI suppression only. Never a clock or integrity decision.
   const inSitting = isSittingReturn(drillReturnTo);
   /**
@@ -230,14 +216,16 @@ function DrillContent() {
   const revealSealed = inSitting || !!state.sealed;
   const contextLabel = searchParams.get('label');
   const contextFocus = searchParams.get('focus');
-  const initialIndexParam = searchParams.get('initialIndex');
-  const isMcPractice = searchParams.get('source') === 'intro-to-lr-practice-drills';
+  // Kept as a string: `?initialIndex=0` is a real request to open on the first
+  // question, and a number would read as absent.
+  const initialIndexParam = state.initialIndex != null ? String(state.initialIndex) : null;
+  const isMcPractice = state.practiceSource === 'intro-to-lr-practice-drills';
   // Maps the finished MC practice set back to its module-progress completion id
   // so the Intro to LR path cannot report "core path cleared" before the final
   // practice sets are actually done.
   const mcPracticePool = React.useMemo(
-    () => (isMcPractice ? getPracticePool(searchParams.get('practiceSlug') ?? '') : undefined),
-    [isMcPractice, searchParams],
+    () => (isMcPractice ? getPracticePool(state.practiceSlug ?? '') : undefined),
+    [isMcPractice, state.practiceSlug],
   );
   // Once the set is finished, snapshot writes must stop: a late write would
   // flip the stored row back to in_progress and re-offer "Resume" on a set the
@@ -261,10 +249,7 @@ function DrillContent() {
   // snapshot write would flip the row back to in_progress and offer a resume on
   // a drill the student already completed.
   const guidedFinalizedRef = React.useRef(false);
-  const genericResumeIdentity = React.useMemo(
-    () => drillResumeIdentityFromSearch(searchParams),
-    [searchParams],
-  );
+  const genericResumeIdentity = state.resumeIdentity;
   // Every remaining drill surface — Smart Drill, custom type drills, full
   // sections — gets the same durable resume row, so closing the browser or
   // signing out mid-drill is never a loss. Null while the guided/practice-set
@@ -4837,13 +4822,8 @@ function DrillContent() {
 }
 
 export default function Drill() {
-  const location = useLocation();
-  const [searchParams] = useSearchParams();
-  const state = React.useMemo<DrillRouteState>(
-    () => getResolvedDrillRouteState(searchParams, location.state),
-    [searchParams, location.state],
-  );
-  const timerConfig = React.useMemo(() => getTimerConfigForDrillRoute(state), [state]);
+  const state = useDrillRunSpec();
+  const timerConfig = React.useMemo(() => timerConfigForRunSpec(state), [state]);
 
   if (timerConfig) {
     return (
