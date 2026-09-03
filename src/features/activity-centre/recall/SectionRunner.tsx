@@ -5,6 +5,7 @@ import { completeSectionRun, requestSectionGrading } from "../api/activitiesClie
 import { SectionStage } from "./SectionStage";
 import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
 import { sliceTranscript, useSectionTranscript } from "./useSectionTranscript";
+import { beginBackup, discard, putChunk } from "./recordingBackup";
 import {
   advanceCursor,
   buildSectionRun,
@@ -172,13 +173,29 @@ function RunBody({
 }) {
   const [cursor, setCursor] = useState<SectionCursor>(startCursor);
   const [done, setDone] = useState(false);
+  /**
+   * This sitting's own name for its local backup.
+   *
+   * Made before anything else, because pieces of the recording start arriving
+   * long before the Attempt number comes back, and every piece has to be
+   * filed under something. The run record that says where the pieces belong is
+   * written as soon as the Attempt is known.
+   */
+  const runId = useRef<string>(
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `run-${Math.random().toString(36).slice(2)}-${Date.now()}`,
+  );
+  const keepChunk = useCallback((blob: Blob, seq: number) => {
+    void putChunk(runId.current, seq, blob);
+  }, []);
   const {
     start: startRecording,
     mark,
     stop: stopRecording,
     error: micError,
     getMimeType,
-  } = useSectionRecorder(now);
+  } = useSectionRecorder(now, keepChunk);
   // Runs for the whole section, alongside the recording rather than instead of
   // it. The audio file stays the primary record.
   const { transcript } = useSectionTranscript(!done, now);
@@ -400,11 +417,32 @@ function RunBody({
       if (cancelled) return;
       attemptNo.current = (data?.[0]?.attempt_no ?? 0) + 1;
       setAttemptReady(true);
+
+      /*
+       * Tell the local backup where this run's audio belongs.
+       *
+       * Written once the Attempt is known, which is what the path depends on.
+       * Pieces filed before this moment are not lost: they carry the same run
+       * id and this record is what gives them somewhere to be uploaded to.
+       */
+      const path = `${studentId}/${assignmentId}${attemptNo.current > 1 ? `-a${attemptNo.current}` : ""}.${
+        getMimeType().includes("mp4") ? "m4a" : "webm"
+      }`;
+      void beginBackup({
+        runId: runId.current,
+        assignmentId,
+        studentId,
+        attempt: attemptNo.current,
+        path,
+        bucket: RECORDING_BUCKET,
+        mimeType: getMimeType(),
+        startedAt: Date.now(),
+      });
     })();
     return () => {
       cancelled = true;
     };
-  }, [assignmentId, studentId]);
+  }, [assignmentId, studentId, getMimeType]);
 
   /**
    * Save every stimulus that has finished since the last time this ran.
@@ -487,6 +525,10 @@ function RunBody({
           .from(RECORDING_BUCKET)
           .upload(path, finished.blob, { contentType: finished.mimeType, upsert: true });
         if (upload) console.error("[rrc] could not store the recording", upload);
+        // The real recording is safely away, so the local copy has done its
+        // job. Deliberately only on success: an upload that failed is exactly
+        // when the backup is the only copy there is.
+        else void discard(runId.current);
       }
 
       /*
