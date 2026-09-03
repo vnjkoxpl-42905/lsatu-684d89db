@@ -18,6 +18,27 @@ import {
   pickHomeworkForDay,
   pickPracticeForDay,
 } from '@/bootcamps/principle-flaw/lib/dayQuestions';
+import {
+  drillResumeKey,
+  isResumableDrillSession,
+  loadDrillResumeSession,
+} from '@/lib/drillResumeSession';
+import { getRecentExposureSet } from '@/lib/questionExposure';
+import {
+  getAssignment,
+  getGuidedDrill,
+  resolveGuidedDrillQidsForLevel,
+  type GuidedDrill,
+  type GuidedDrillAssignment,
+} from '@/lib/guidedDrills';
+import {
+  getLocalGuidedDrillBySlug,
+  isEmptyBankFilter,
+} from '@/lib/guidedDrillsLocal';
+import {
+  guidedSessionKey,
+  loadGuidedDrillSession,
+} from '@/lib/guidedDrillSession';
 
 /** Raised when the link is well-formed but the thing it names is gone. */
 export class DeadDrillLinkError extends DrillLaunchError {
@@ -85,17 +106,34 @@ export async function resolveDrillLaunch(
     }
 
     case 'bootcamp-day': {
-      // Deterministic for a given day and part, so the same link picks the same
-      // questions even before a Run Record exists.
-      //
-      // Depends on the question bank being loaded: the day's targets are
-      // filtered against it, and an unloaded bank yields nothing and reads as a
-      // dead link. Nothing emits this kind yet, but whatever does must wait for
-      // the bank first — the gate does not.
+      const resumeKey = drillResumeKey({
+        mode: 'type-drill',
+        identity: launch,
+      });
+      let hasIdentityRecord = false;
+      if (userId) {
+        const stored = await loadDrillResumeSession(userId, resumeKey);
+        hasIdentityRecord = !!stored;
+        if (isResumableDrillSession(stored)) return stored.question_queue;
+      }
+
+      // The day picker includes the student's recently-seen cooldown, so a
+      // fresh resolution can legitimately produce a different list. The
+      // identity-keyed Run Record above wins whenever one exists; only a new
+      // run reaches this draw. The gate waits for the question bank first.
+      const excludedQids = userId ? await getRecentExposureSet(userId, 500) : new Set<string>();
       const qids =
         launch.part === 'homework'
-          ? pickHomeworkForDay(launch.day)
-          : pickPracticeForDay(launch.day);
+          ? pickHomeworkForDay(launch.day, undefined, excludedQids)
+          : pickPracticeForDay(launch.day, undefined, excludedQids);
+      if (userId && !hasIdentityRecord && qids.length > 0) {
+        const legacyKey = drillResumeKey({
+          mode: 'type-drill',
+          config: { selectedQids: qids },
+        });
+        const legacy = await loadDrillResumeSession(userId, legacyKey);
+        if (isResumableDrillSession(legacy)) return legacy.question_queue;
+      }
       if (qids.length === 0) {
         throw new DeadDrillLinkError(
           `Day ${launch.day} has no ${launch.part} questions to give yet.`,
@@ -104,12 +142,57 @@ export async function resolveDrillLaunch(
       return qids;
     }
 
+    case 'guided-drill': {
+      let assignment: (GuidedDrillAssignment & { guided_drill?: GuidedDrill }) | null = null;
+      let drill: GuidedDrill | null = null;
+
+      if (launch.assignmentId) {
+        assignment = (await getAssignment(launch.assignmentId)) as typeof assignment;
+        drill = assignment?.guided_drill ?? null;
+      } else if (launch.drillId) {
+        drill = await getGuidedDrill(launch.drillId);
+        if (!drill) drill = getLocalGuidedDrillBySlug(launch.drillId);
+      }
+
+      if (!drill) {
+        throw new DeadDrillLinkError('That guided drill no longer exists.');
+      }
+
+      const local = getLocalGuidedDrillBySlug(drill.slug);
+      if (local && isEmptyBankFilter(drill.bank_filter)) {
+        drill = {
+          ...drill,
+          bank_filter: local.bank_filter,
+          question_count: drill.question_count ?? local.question_count,
+        };
+      }
+
+      if (userId) {
+        const currentKey = guidedSessionKey({
+          assignmentId: launch.assignmentId,
+          drillId: launch.assignmentId ? undefined : launch.drillId,
+        });
+        const legacyKey = launch.assignmentId
+          ? null
+          : guidedSessionKey({ slug: drill.slug });
+        const stored = await loadGuidedDrillSession(userId, currentKey, legacyKey);
+        if (
+          stored?.status === 'in_progress' &&
+          stored.question_queue.length > 0 &&
+          stored.attempts.length > 0
+        ) {
+          return stored.question_queue;
+        }
+      }
+
+      const resolution = resolveGuidedDrillQidsForLevel({ drill, assignment });
+      if (resolution.warning === 'empty' || resolution.qids.length === 0) {
+        throw new DeadDrillLinkError('That guided drill has no questions to give yet.');
+      }
+      return resolution.qids;
+    }
+
     default:
-      // A guided drill is still handed over in the old grammar, which carries
-      // its questions directly. It cannot safely be id-named yet: without an
-      // assignment it resolves through a per-student level band, so
-      // re-resolving on refresh could draw a different set than the one the
-      // student is part-way through.
       throw new DrillLaunchError(
         `${launch.kind} links are not accepted yet — open it from the classroom instead.`,
       );

@@ -40,7 +40,7 @@ describe('resolving a launch that names static data', () => {
     // drill.
     expect(pickHomeworkForDay(1)).toEqual([]);
     await expect(
-      resolveDrillLaunch({ kind: 'bootcamp-day', day: 1, part: 'homework' }, 'user_1'),
+      resolveDrillLaunch({ kind: 'bootcamp-day', day: 1, part: 'homework' }, undefined),
     ).rejects.toBeInstanceOf(DeadDrillLinkError);
   });
 

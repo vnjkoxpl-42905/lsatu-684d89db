@@ -16,7 +16,8 @@
  * namespaced by key so the two can never collide:
  *
  *     practice set   →  pool_slug "mc-practice-1"
- *     guided drill   →  pool_slug "guided::<assignmentId>"
+ *     assigned drill →  pool_slug "guided::<assignmentId>"
+ *     direct drill   →  pool_slug "guided::drill:<drillId>"
  *
  * The `pool_slug`/`completion_id` field names come from that store's schema and
  * are reused as-is rather than forked; read them as "which drill" and "what it
@@ -44,15 +45,19 @@ export type GuidedDrillSnapshot = PracticeSessionSnapshot;
 /**
  * Key one guided drill's resume row. The assignment id is preferred: it is what
  * makes the row per-student-per-assignment, so re-assigning the same drill later
- * gets its own clean run. The slug is the fallback for the `/guided-drills/:slug`
- * library route, which has no assignment.
+ * gets its own clean run. Direct launches use the drill id. The slug remains a
+ * legacy fallback for runs started from `/guided-drills/:slug` before the drill
+ * id travelled with the launch.
  */
 export function guidedSessionKey(input: {
   assignmentId?: string | null;
+  drillId?: string | null;
   slug?: string | null;
 }): string | null {
   const id = input.assignmentId?.trim();
   if (id) return `${GUIDED_SESSION_PREFIX}${id}`;
+  const drillId = input.drillId?.trim();
+  if (drillId) return `${GUIDED_SESSION_PREFIX}drill:${drillId}`;
   const slug = input.slug?.trim();
   if (slug) return `${GUIDED_SESSION_PREFIX}slug:${slug}`;
   return null;
@@ -67,10 +72,14 @@ export function guidedSessionKey(input: {
  */
 export function guidedSessionKeyForRunner(input: {
   guidedAssignmentId?: string | null;
+  guidedDrillId?: string | null;
   returnTo?: string | null;
 }): string | null {
   if (input.guidedAssignmentId?.trim()) {
     return guidedSessionKey({ assignmentId: input.guidedAssignmentId });
+  }
+  if (input.guidedDrillId?.trim()) {
+    return guidedSessionKey({ drillId: input.guidedDrillId });
   }
   const path = (input.returnTo ?? '').split('?')[0];
   const assignmentMatch = path.match(/^\/guided\/([^/]+)/);
@@ -85,12 +94,15 @@ export function guidedSessionKeyForRunner(input: {
 }
 
 /** The stored run for one guided drill, or null when there is nothing to resume. */
-export function loadGuidedDrillSession(
+export async function loadGuidedDrillSession(
   userId: string,
   key: string | null,
+  legacyKey?: string | null,
 ): Promise<GuidedDrillSession | null> {
-  if (!userId || !key) return Promise.resolve(null);
-  return loadPracticeSession(userId, key);
+  if (!userId || !key) return null;
+  const current = await loadPracticeSession(userId, key);
+  if (current || !legacyKey || legacyKey === key) return current;
+  return loadPracticeSession(userId, legacyKey);
 }
 
 /**
@@ -241,8 +253,9 @@ export function guidedSessionToDrillSession(
 export async function loadCompletedGuidedDrillSession(
   userId: string,
   key: string | null,
+  legacyKey?: string | null,
 ): Promise<GuidedDrillSession | null> {
-  const stored = await loadGuidedDrillSession(userId, key);
+  const stored = await loadGuidedDrillSession(userId, key, legacyKey);
   if (!stored || stored.status !== 'completed') return null;
   return stored.attempts.length > 0 ? stored : null;
 }

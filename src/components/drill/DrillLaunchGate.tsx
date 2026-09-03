@@ -25,6 +25,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 
 import { useAuth } from '@/contexts/AuthContext';
+import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import {
   DrillLaunchError,
   expandToLegacySearch,
@@ -35,6 +36,7 @@ import {
   type PtLegRef,
 } from '@/lib/drillLaunch';
 import { resolveDrillLaunch } from '@/lib/drillLaunchResolve';
+import { recordExposures } from '@/lib/questionExposure';
 import type { DrillRouteState } from '@/lib/drillRouteState';
 import { Button } from '@/components/ui/button';
 
@@ -47,6 +49,7 @@ export default function DrillLaunchGate({ children }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isLoading: questionBankLoading } = useQuestionBank();
   const [failure, setFailure] = React.useState<string | null>(null);
 
   const isCanonicalLink = !!searchParams.get('drill');
@@ -71,9 +74,13 @@ export default function DrillLaunchGate({ children }: Props) {
   }, [isCanonicalLink, searchParams, location.state]);
 
   const hasWorkToDo = isCanonicalLink || !!stateLaunch;
+  const canonicalKind = searchParams.get('drill');
+  const waitsForQuestionBank =
+    isCanonicalLink &&
+    (canonicalKind === 'bootcamp-day' || canonicalKind === 'guided-drill');
 
   React.useEffect(() => {
-    if (!hasWorkToDo) return;
+    if (!hasWorkToDo || (waitsForQuestionBank && questionBankLoading)) return;
     let cancelled = false;
 
     const run = async () => {
@@ -84,6 +91,12 @@ export default function DrillLaunchGate({ children }: Props) {
         const qids = launchNeedsResolution(launch)
           ? await resolveDrillLaunch(launch, user?.id)
           : undefined;
+
+        if (launch.kind === 'bootcamp-day' && user?.id && qids?.length) {
+          void recordExposures(user.id, qids).catch((error) => {
+            console.error('[DrillLaunchGate] recordExposures failed', error);
+          });
+        }
 
         if (cancelled) return;
         navigate(
@@ -106,7 +119,7 @@ export default function DrillLaunchGate({ children }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [hasWorkToDo, isCanonicalLink, stateLaunch, searchParams, user?.id, navigate]);
+  }, [hasWorkToDo, waitsForQuestionBank, questionBankLoading, isCanonicalLink, stateLaunch, searchParams, user?.id, navigate]);
 
   if (failure) {
     return (

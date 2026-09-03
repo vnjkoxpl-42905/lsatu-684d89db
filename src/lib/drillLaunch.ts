@@ -116,13 +116,9 @@ export type DrillLaunchBody =
    * works, and the Run Record still holds the questions the student actually
    * got.
    *
-   * Nothing emits this yet, deliberately. The picker excludes questions the
-   * student has recently seen, and the Run Record is keyed by the question
-   * list, so re-picking on refresh would draw a different list, miss the
-   * resume row, and lose the run — the opposite of the point. Emitting it
-   * needs the Run Record keyed by the day instead, which is its own change.
-   * Until then the bootcamp day is canonicalized as a plain question list,
-   * which already survives a refresh.
+   * Its Run Record is keyed by the day and part. The old question-list key is
+   * read only as a migration fallback for runs started before that identity
+   * existed.
    */
   | { kind: 'bootcamp-day'; day: number; part: 'homework' | 'practice' }
   /**
@@ -690,8 +686,15 @@ export function expandToLegacySearch(
       break;
 
     case 'saved-set':
+      asQuestionList(resolvedQids ?? []);
+      break;
+
     case 'bootcamp-day':
       asQuestionList(resolvedQids ?? []);
+      // The runner still reads the legacy grammar, but these two values keep
+      // the Run Record named by the day instead of by the picked question list.
+      p.set('bootcampDay', String(launch.day));
+      p.set('bootcampPart', launch.part);
       break;
 
     case 'assignment':
@@ -703,6 +706,7 @@ export function expandToLegacySearch(
     case 'guided-drill':
       asQuestionList(resolvedQids ?? []);
       p.set('guided', '1');
+      if (launch.drillId) p.set('guidedDrillId', launch.drillId);
       if (launch.assignmentId) p.set('guidedAssignmentId', launch.assignmentId);
       if (launch.durationMinutes) {
         p.set('guidedDurationMinutes', String(launch.durationMinutes));

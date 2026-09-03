@@ -132,6 +132,7 @@ import {
   isResumableGuidedSession,
 } from '@/lib/guidedDrillSession';
 import {
+  drillResumeIdentityFromSearch,
   drillResumeKey,
   loadDrillResumeSession,
   saveDrillResumeSnapshot,
@@ -182,6 +183,7 @@ function DrillContent() {
   // params take priority; fall back to state when absent.
   const assignmentId = searchParams.get('assignmentId');
   const guidedAssignmentId = searchParams.get('guidedAssignmentId');
+  const guidedDrillId = searchParams.get('guidedDrillId');
   const guidedSetId = searchParams.get('guidedSetId') ?? undefined;
   const { set: guidedSet } = useHomeworkSet(guidedSetId);
   const [guidedInfoOpen, setGuidedInfoOpen] = React.useState(false);
@@ -244,13 +246,24 @@ function DrillContent() {
   // Null for every other drill surface, which is what leaves library, flagged,
   // and Smart Drill runs untouched.
   const guidedSessionKey = React.useMemo(
-    () => guidedSessionKeyForRunner({ guidedAssignmentId, returnTo }),
-    [guidedAssignmentId, returnTo],
+    () => guidedSessionKeyForRunner({ guidedAssignmentId, guidedDrillId, returnTo }),
+    [guidedAssignmentId, guidedDrillId, returnTo],
+  );
+  const guidedLegacySessionKey = React.useMemo(
+    () =>
+      guidedDrillId && !guidedAssignmentId
+        ? guidedSessionKeyForRunner({ returnTo })
+        : null,
+    [guidedDrillId, guidedAssignmentId, returnTo],
   );
   // Same reason as mcPracticeFinalizedRef: once the drill is finished, a late
   // snapshot write would flip the row back to in_progress and offer a resume on
   // a drill the student already completed.
   const guidedFinalizedRef = React.useRef(false);
+  const genericResumeIdentity = React.useMemo(
+    () => drillResumeIdentityFromSearch(searchParams),
+    [searchParams],
+  );
   // Every remaining drill surface — Smart Drill, custom type drills, full
   // sections — gets the same durable resume row, so closing the browser or
   // signing out mid-drill is never a loss. Null while the guided/practice-set
@@ -259,8 +272,16 @@ function DrillContent() {
     if (isMcPractice || guidedSessionKey) return null;
     if (!state?.mode) return null;
     const mode = state.mode === 'practice-set' ? 'type-drill' : state.mode;
+    return drillResumeKey({ mode, config: state.config, identity: genericResumeIdentity });
+  }, [isMcPractice, guidedSessionKey, state, genericResumeIdentity]);
+  // Rows written before a bootcamp day had its own identity were named by the
+  // picked question list. Read that key only when the day-keyed row is absent;
+  // every new snapshot and completion still writes the day-keyed row.
+  const genericLegacyResumeKey = React.useMemo(() => {
+    if (!genericResumeIdentity || !state?.mode) return null;
+    const mode = state.mode === 'practice-set' ? 'type-drill' : state.mode;
     return drillResumeKey({ mode, config: state.config });
-  }, [isMcPractice, guidedSessionKey, state]);
+  }, [genericResumeIdentity, state]);
   const genericFinalizedRef = React.useRef(false);
 
   const bootcampPracticeReturnTo =
@@ -741,7 +762,11 @@ function DrillContent() {
       // drill and coming back must return the student to the question they
       // stopped on with their earlier answers intact, not to a fresh shuffle.
       if (guidedSessionKey && user) {
-        const stored = await loadGuidedDrillSession(user.id, guidedSessionKey);
+        const stored = await loadGuidedDrillSession(
+          user.id,
+          guidedSessionKey,
+          guidedLegacySessionKey,
+        );
         if (isResumableGuidedSession(stored, questionQueue)) {
           questionQueue = stored.question_queue;
           initialIndex = guidedResumeIndex(
@@ -780,7 +805,11 @@ function DrillContent() {
       // questions they already answered. An explicit ?initialIndex wins, since
       // that is someone deliberately jumping to a question.
       if (genericResumeKey && user && !initialIndexParam) {
-        const stored = await loadDrillResumeSession(user.id, genericResumeKey);
+        const stored = await loadDrillResumeSession(
+          user.id,
+          genericResumeKey,
+          genericLegacyResumeKey,
+        );
         if (isResumableDrillSession(stored)) {
           // Come back on the clock they left. A timed section that resumed
           // with a fresh 35:00 was handing back time already spent, which
@@ -829,7 +858,7 @@ function DrillContent() {
     };
 
     initializeSession();
-  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, genericResumeKey, userId]);
+  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, guidedLegacySessionKey, genericResumeKey, genericLegacyResumeKey, userId]);
 
   // Shapes the student's current place into a resume snapshot. Shared by the two
   // surfaces that persist one — Intro to LR practice sets and guided drills — and
