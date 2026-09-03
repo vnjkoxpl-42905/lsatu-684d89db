@@ -14,6 +14,7 @@
  *
  *     practice set   →  pool_slug "mc-practice-1"
  *     guided drill   →  pool_slug "guided::<assignmentId>"
+ *     bootcamp day   →  pool_slug "drill::bootcamp-day::<day>::<part>"
  *     everything else→  pool_slug "drill::<mode>::<fingerprint>"
  *
  * Failure policy, inherited: reads degrade to null (a missing resume row must
@@ -32,6 +33,27 @@ export const DRILL_SESSION_PREFIX = 'drill::';
 
 export type DrillResumeSession = PracticeSession;
 export type DrillResumeSnapshot = PracticeSessionSnapshot;
+
+export type DrillResumeIdentity = {
+  kind: 'bootcamp-day';
+  day: number;
+  part: 'homework' | 'practice';
+};
+
+export function drillResumeIdentityFromSearch(
+  searchParams: URLSearchParams,
+): DrillResumeIdentity | undefined {
+  const day = Number.parseInt(searchParams.get('bootcampDay') ?? '', 10);
+  const part = searchParams.get('bootcampPart');
+  if (
+    Number.isFinite(day) &&
+    day > 0 &&
+    (part === 'homework' || part === 'practice')
+  ) {
+    return { kind: 'bootcamp-day', day, part };
+  }
+  return undefined;
+}
 
 /** Short, stable, filename-safe digest of whatever identifies the run. */
 function fingerprint(input: string): string {
@@ -55,7 +77,12 @@ function fingerprint(input: string): string {
 export function drillResumeKey(input: {
   mode: string;
   config?: unknown;
+  identity?: DrillResumeIdentity;
 }): string | null {
+  if (input.identity?.kind === 'bootcamp-day') {
+    return `${DRILL_SESSION_PREFIX}bootcamp-day::${input.identity.day}::${input.identity.part}`;
+  }
+
   const mode = input.mode;
   if (mode === 'adaptive') return `${DRILL_SESSION_PREFIX}adaptive`;
 
@@ -95,12 +122,15 @@ export function drillResumeKey(input: {
 }
 
 /** The stored run for this drill, or null when there is nothing to resume. */
-export function loadDrillResumeSession(
+export async function loadDrillResumeSession(
   userId: string,
   key: string | null,
+  legacyKey?: string | null,
 ): Promise<DrillResumeSession | null> {
-  if (!userId || !key) return Promise.resolve(null);
-  return loadPracticeSession(userId, key);
+  if (!userId || !key) return null;
+  const current = await loadPracticeSession(userId, key);
+  if (current || !legacyKey || legacyKey === key) return current;
+  return loadPracticeSession(userId, legacyKey);
 }
 
 /** Write where the student is right now (local-first, debounced cloud upsert). */

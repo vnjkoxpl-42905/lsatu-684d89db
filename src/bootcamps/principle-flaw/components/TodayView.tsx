@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, Clock, Target, FileSearch, Sparkles, BookOpen, AlertCircle, ArrowRight, ExternalLink, Play } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { toast } from 'sonner';
 import { mirroredSetItem } from '@/lib/cloudMirror';
 import { scheduleData, studyResources, StudyResource, practiceSets, questionBank } from '../data';
 import { Card, CardContent } from './ui/card';
@@ -10,16 +9,12 @@ import { Button } from './ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { recordCompletionToday } from '../lib/streak';
 import {
-  pickHomeworkForDay,
-  pickPracticeForDay,
   dayHasGenerator,
   dayHomeworkCount,
   dayPracticeCount,
 } from '../lib/dayQuestions';
 import { useBootcampProgress } from '@/hooks/useBootcampProgress';
-import { useAuth } from '@/contexts/AuthContext';
-import { useRecentExposures } from '@/hooks/useRecentExposures';
-import { recordExposures } from '@/lib/questionExposure';
+import { launchDrill } from '@/lib/drillLaunch';
 
 const TOTAL_TASK_KEYS = ['open', 'read', 'do', 'review', 'log'];
 
@@ -100,8 +95,6 @@ export default function TodayView({
   };
 
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { excludedQids } = useRecentExposures(500);
   const dayTasks = dailyChecklists[day] || {};
   const isComplete = completedDays.includes(day);
 
@@ -109,28 +102,8 @@ export default function TodayView({
   const hwCount = dayHomeworkCount(day);
   const pCount = dayPracticeCount(day);
 
-  const launchDrill = (kind: 'homework' | 'practice') => {
-    const qids =
-      kind === 'homework'
-        ? pickHomeworkForDay(day, undefined, excludedQids)
-        : pickPracticeForDay(day, undefined, excludedQids);
-    if (qids.length === 0) {
-      toast.error("No questions match today's filters yet. Pick a different day or check back later.");
-      return;
-    }
-    // Fire-and-forget exposure write so subsequent picks (Smart Drill, another
-    // bootcamp day) exclude what we're about to serve.
-    if (user?.id) {
-      recordExposures(user.id, qids).catch((e) =>
-        console.error('[TodayView] recordExposures failed', e),
-      );
-    }
-    navigate('/drill', {
-      state: {
-        mode: 'practice-set',
-        config: { qtypes: [], difficulties: [], pts: [], count: qids.length, selectedQids: qids },
-      },
-    });
+  const launchDayDrill = (part: 'homework' | 'practice') => {
+    navigate(`/drill?${launchDrill({ kind: 'bootcamp-day', day, part })}`);
   };
 
   const todaysQuestions = (() => {
@@ -330,7 +303,7 @@ export default function TodayView({
         <div className="space-y-3">
           <span className="text-[10.5px] font-bold text-zinc-500 uppercase tracking-[0.2em]">Today's Drill</span>
           <button
-            onClick={() => launchDrill('homework')}
+            onClick={() => launchDayDrill('homework')}
             className="group w-full flex items-center justify-between gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/50 transition-colors px-5 py-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
           >
             <span className="flex items-center gap-3">
@@ -343,7 +316,7 @@ export default function TodayView({
             <ArrowRight className="h-4 w-4 text-zinc-500 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition" />
           </button>
           <button
-            onClick={() => launchDrill('practice')}
+            onClick={() => launchDayDrill('practice')}
             className="text-[11px] font-medium text-zinc-500 hover:text-zinc-300 transition-colors"
           >
             Or a longer practice set ({pCount} questions) →
@@ -540,5 +513,4 @@ export default function TodayView({
     </div>
   );
 }
-
 

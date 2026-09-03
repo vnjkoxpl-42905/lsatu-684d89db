@@ -12,6 +12,7 @@ import {
   type DrillLaunchBody,
 } from './drillLaunch';
 import { getResolvedDrillRouteState } from './drillRouteState';
+import { drillResumeKey } from './drillResumeSession';
 import type { TimerMode } from '@/types/drill';
 
 const params = (search: string) => new URLSearchParams(search);
@@ -359,13 +360,37 @@ describe('a short link expands to something the runner understands', () => {
 
   it('keeps the params the runner reads for a guided drill', () => {
     const search = expandToLegacySearch(
-      { kind: 'guided-drill', assignmentId: 'asg_1', durationMinutes: 20 },
+      {
+        kind: 'guided-drill',
+        drillId: 'gd_7',
+        assignmentId: 'asg_1',
+        durationMinutes: 20,
+      },
       ['q1'],
     );
     const p = params(search);
     expect(p.get('guided')).toBe('1');
+    expect(p.get('guidedDrillId')).toBe('gd_7');
     expect(p.get('guidedAssignmentId')).toBe('asg_1');
     expect(p.get('guidedDurationMinutes')).toBe('20');
+  });
+
+  it('keeps a bootcamp day as the Run Record name after expanding its questions', () => {
+    const p = params(
+      expandToLegacySearch(
+        { kind: 'bootcamp-day', day: 3, part: 'homework' },
+        ['q1', 'q2'],
+      ),
+    );
+    expect(p.get('bootcampDay')).toBe('3');
+    expect(p.get('bootcampPart')).toBe('homework');
+    expect(
+      drillResumeKey({
+        mode: 'type-drill',
+        config: { selectedQids: ['q1', 'q2'] },
+        identity: { kind: 'bootcamp-day', day: 3, part: 'homework' },
+      }),
+    ).toBe('drill::bootcamp-day::3::homework');
   });
 
   it('keeps the params the runner reads for a classroom assignment', () => {
@@ -386,4 +411,31 @@ describe('a short link expands to something the runner understands', () => {
     expect(p.get('practiceSlug')).toBe('mc-practice-1');
   });
 
+});
+
+describe('a handover keeps the mode it named', () => {
+  // `natural-drill` has no live launch site today, but the runner reads it down
+  // a separate branch. Expanding it as a type-drill would be a silent change of
+  // drill, so the round-trip is pinned here rather than left to be rediscovered.
+  it('carries natural-drill through state -> address bar -> route state', () => {
+    const launch = launchFromRouteState({
+      mode: 'natural-drill',
+      config: { qtypes: [], difficulties: [], pts: [], count: 2, selectedQids: ['PT1-S1-Q1', 'PT1-S1-Q2'] },
+    } as never);
+    expect(launch).not.toBeNull();
+
+    const search = expandToLegacySearch(launch!);
+    expect(new URLSearchParams(search).get('mode')).toBe('natural-drill');
+
+    const back = parseDrillLaunch(new URLSearchParams(search));
+    expect(toDrillRouteState(back!).mode).toBe('natural-drill');
+  });
+
+  it('still writes practice-set out as the type-drill the runner reads', () => {
+    const launch = launchFromRouteState({
+      mode: 'practice-set',
+      config: { qtypes: [], difficulties: [], pts: [], count: 1, selectedQids: ['PT1-S1-Q1'] },
+    } as never);
+    expect(new URLSearchParams(expandToLegacySearch(launch!)).get('mode')).toBe('type-drill');
+  });
 });

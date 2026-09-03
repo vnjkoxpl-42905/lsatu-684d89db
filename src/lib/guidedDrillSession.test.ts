@@ -39,6 +39,12 @@ describe('guidedSessionKey', () => {
     );
   });
 
+  it('uses the drill id for a named assignment-less run', () => {
+    expect(guidedSessionKey({ drillId: 'gd_7', slug: 'parallel-flaw' })).toBe(
+      `${GUIDED_SESSION_PREFIX}drill:gd_7`,
+    );
+  });
+
   it('namespaces away from practice-pool slugs', () => {
     const key = guidedSessionKey({ slug: 'mc-practice-1' })!;
     expect(key.startsWith(GUIDED_SESSION_PREFIX)).toBe(true);
@@ -68,6 +74,15 @@ describe('guidedSessionKeyForRunner', () => {
     expect(guidedSessionKeyForRunner({ returnTo: '/guided-drills/parallel-flaw?returnTo=/x' })).toBe(
       `${GUIDED_SESSION_PREFIX}slug:parallel-flaw`,
     );
+  });
+
+  it('uses the drill id carried through the expanded URL', () => {
+    expect(
+      guidedSessionKeyForRunner({
+        guidedDrillId: 'gd_7',
+        returnTo: '/guided-drills/parallel-flaw',
+      }),
+    ).toBe(`${GUIDED_SESSION_PREFIX}drill:gd_7`);
   });
 
   it('is null for every non-guided drill surface', () => {

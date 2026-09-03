@@ -33,11 +33,11 @@ Separately, `mode` is not the kind. Six materially different things all launch a
 A **Drill Launch** is carried in the URL and nowhere else, and it carries the
 *name* of a run, not its contents. `location.state` stops being a transport.
 
-The launch is one discriminated union over eight kinds: Smart Drill, Section,
-Saved set, Assignment, Guided drill, Practice set, Questions (an ad-hoc list),
-and Filter. A practice-test leg is a **Section with a run attached**, not a ninth
-kind: it runs, looks and closes out identically, and the only difference is that
-something is waiting on the result.
+The launch is one discriminated union over nine kinds: Smart Drill, Section,
+Saved set, Assignment, Guided drill, Practice set, Bootcamp day, Questions (an
+ad-hoc list), and Filter. A practice-test leg is a **Section with a run
+attached**, not its own kind: it runs, looks and closes out identically, and the
+only difference is that something is waiting on the result.
 
 Anything that has an id is named by that id alone. `?set=abc123` and not the six
 qids inside it, so editing a set cannot leave an old link running last week's
@@ -105,3 +105,13 @@ through. That rules out, for now:
 
 Both become safe the moment their Run Record is keyed by the name in the link —
 the day, or the drill — which is a separate change and the natural next one.
+
+## Follow-up: generated runs are keyed by their name
+
+Implemented 2026-09-03. A Bootcamp day now writes its Run Record under the day
+and part, and an assignment-less Guided drill writes under its drill id. Reads
+try that identity key first and consult the old question-list or guided-drill
+slug key only when the identity-keyed row does not exist. A completed identity
+row therefore cannot resurrect an older in-progress run. The next snapshot
+writes only the identity key, so an old active run migrates forward without a
+bulk data rewrite.

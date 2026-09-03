@@ -100,3 +100,11 @@ _Avoid_: Take, snippet, segment (that is the timing record the Clip is cut from)
 **Attempt**:
 One complete run of one section by one student. A section may be attempted any number of times, and every Attempt keeps its own date, its own recording and its own Report Card. Nothing is overwritten and nothing is hidden once done.
 _Avoid_: Try, retry, session (reserved for a tutoring session), run
+
+**Ungraded**:
+A stimulus the judge never answered for, because the call to it failed. Distinct from a stimulus she said nothing about, which is a real zero: this one has no measurement at all. It is excluded from Coverage and from every count of her habits, because reporting our outage as her behaviour is worse than reporting nothing.
+_Avoid_: Failed, missing, unscored, zero, error
+
+**Sweep**:
+The scheduled re-drive of a finished section that never got a grade, or got a partial one. The client asks for grading the moment she stops and does not wait on the answer; the Sweep is what makes that ask safe to lose. A closed tab never costs a Report Card.
+_Avoid_: Retry, cron, job, backfill, reconcile

@@ -409,10 +409,20 @@ function RunBody({
         console.error("[rrc] could not close the assignment", err);
       }
 
-      // Ask for the grade, but do not wait on it and do not let it fail the
-      // run. The Report Card polls for the result, and the sweeper re-drives
-      // anything this call missed.
-      await requestSectionGrading(assignmentId);
+      /*
+       * Ask for the grade, and genuinely do not wait on it.
+       *
+       * This used to be awaited, which meant the ask's whole round trip stood
+       * between her and the next screen -- and that round trip is the grading
+       * job. On the trial run it was a 504 after two and a half minutes, spent
+       * staring at "Section finished" with a Report Card screen already built
+       * and polling for exactly this result on the other side of it.
+       *
+       * `void` is the fix and the intent: the Report Card polls, and the
+       * sweeper re-drives anything this call missed, so the ask being slow or
+       * lost costs nothing that is not already recovered.
+       */
+      void requestSectionGrading(assignmentId);
 
       if (!cancelled) onComplete?.();
     })();

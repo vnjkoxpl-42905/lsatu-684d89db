@@ -70,8 +70,9 @@ The durable row, per student per run, holding what a run actually consists of:
 the ordered question list, every attempt, the position, and the clock already
 spent. Survives a closed tab, a sign-out, and a different device. It is the
 reason a Drill Launch can be short: the launch names the run and the Run Record
-supplies its contents. Stored via `practiceSessionStore`, keyed by the pool slug
-that `drillResumeKey` derives.
+supplies its contents. A named generated run is keyed by that name, such as a
+Bootcamp day and part or a Guided drill id, so a fresh draw cannot strand the
+record behind a different question list.
 _Avoid_: resume state (that is what it is for, not what it is), snapshot (that is
 one write to it), session (overloaded: `DrillSession` is the in-memory object for
 the current screen, and an auth session is a third thing).

@@ -29,10 +29,21 @@ Install authenticated scheduler calls outside the migration:
 | `single-session-sweeper` | every minute | `POST /functions/v1/single-session-sweeper` |
 | `single-session-outbox` | every minute | `POST /functions/v1/single-session-outbox` |
 | `gcal-reconcile` | every five minutes | `POST /functions/v1/gcal-reconcile` |
+| `sweep-rrc-grading` | every ten minutes | `POST /functions/v1/sweep-rrc-grading` |
 
 Each request carries `X-Worker-Secret` from the scheduler's secret store. Do
 not place its plaintext value in a SQL migration, cron command, or repository
 file.
+
+`sweep-rrc-grading` is not a booking worker and writes no heartbeat, so it is
+absent from `booking_worker_heartbeats` and from `get_booking_health()` by
+design: a Read, Recall, Colour grade that has not been swept is not a booking
+outage. It shares `BOOKING_WORKER_SECRET` because a deployment has one worker
+secret, and needs nothing else -- it reaches the grader with the service role
+key the platform already gives it. Its own health is the `deferred` count in
+its JSON response: a number that climbs run after run means sections are
+arriving faster than three per ten minutes, which no single tutor's students
+can do.
 
 ## Rotation
 

@@ -6,7 +6,6 @@ import {
   markCardRead,
   markStarted,
   resolveGuidedDrillPool,
-  resolveGuidedDrillQidsForLevel,
   type GuidedDrill,
   type GuidedDrillAssignment,
 } from '@/lib/guidedDrills';
@@ -20,7 +19,6 @@ import {
 import { GuidedDrillLaunchFrame } from '@/components/drill/GuidedDrillLaunchFrame';
 import { buildGuidedDrillLaunchHtml } from '@/lib/guidedDrillLaunch';
 import { toast } from 'sonner';
-import type { TypeDrillConfig } from '@/types/drill';
 import {
   getPracticePool,
   type PracticePool,
@@ -115,12 +113,20 @@ export default function GuidedDrillStart({
     }),
     [assignmentId, slug, originReturnTo],
   );
+  const [resolvedGuidedDrillId, setResolvedGuidedDrillId] = React.useState<string | null>(null);
 
   // Keys this drill's durable resume row. Assignment id when there is one, so a
   // re-assignment of the same drill later gets its own clean run.
   const guidedKey = React.useMemo(
-    () => guidedSessionKey({ assignmentId, slug }),
-    [assignmentId, slug],
+    () => guidedSessionKey({ assignmentId, drillId: resolvedGuidedDrillId }),
+    [assignmentId, resolvedGuidedDrillId],
+  );
+  const guidedLegacyKey = React.useMemo(
+    () =>
+      resolvedGuidedDrillId && !assignmentId
+        ? guidedSessionKey({ slug })
+        : null,
+    [resolvedGuidedDrillId, assignmentId, slug],
   );
 
   // An unfinished guided run is loaded before Start so its frozen question queue
@@ -132,14 +138,14 @@ export default function GuidedDrillStart({
     let cancelled = false;
     setStoredGuided(null);
     if (!user || !guidedKey || bootcampOverride) return;
-    void loadGuidedDrillSession(user.id, guidedKey).then((stored) => {
+    void loadGuidedDrillSession(user.id, guidedKey, guidedLegacyKey).then((stored) => {
       if (cancelled) return;
       setStoredGuided(stored && stored.status === 'in_progress' ? stored : null);
     });
     return () => {
       cancelled = true;
     };
-  }, [user, guidedKey, bootcampOverride]);
+  }, [user, guidedKey, guidedLegacyKey, bootcampOverride]);
 
   // A finished run is shown back to the student instead of being silently
   // redrawn. Completion deliberately makes a row unresumable so a re-attempt is
@@ -154,13 +160,13 @@ export default function GuidedDrillStart({
     setCompletedGuided(null);
     setRetaking(false);
     if (!user || !guidedKey || bootcampOverride) return;
-    void loadCompletedGuidedDrillSession(user.id, guidedKey).then((stored) => {
+    void loadCompletedGuidedDrillSession(user.id, guidedKey, guidedLegacyKey).then((stored) => {
       if (!cancelled) setCompletedGuided(stored);
     });
     return () => {
       cancelled = true;
     };
-  }, [user, guidedKey, bootcampOverride]);
+  }, [user, guidedKey, guidedLegacyKey, bootcampOverride]);
 
   const completedSession = React.useMemo(
     () => guidedSessionToDrillSession(completedGuided),
@@ -201,10 +207,12 @@ export default function GuidedDrillStart({
     setLoading(true);
     setAssignment(null);
     setDirectDrill(null);
+    setResolvedGuidedDrillId(null);
 
     if (assignmentId) {
       getAssignment(assignmentId).then((a) => {
         setAssignment(a as AssignmentWithDrill | null);
+        setResolvedGuidedDrillId((a as AssignmentWithDrill | null)?.guided_drill?.id ?? null);
         setLoading(false);
       }).catch((e: unknown) => {
         toast.error(e instanceof Error ? e.message : 'Failed to load assignment');
@@ -219,12 +227,15 @@ export default function GuidedDrillStart({
         // backfill an empty/absent bank_filter from the local seed so the pool
         // can still resolve client-side. Keeps launches working even when the
         // live guided_drills row is incomplete or undeployed.
-        setDirectDrill(reconcileWithLocal(drill, slug));
+        const resolved = reconcileWithLocal(drill, slug);
+        setDirectDrill(resolved);
+        setResolvedGuidedDrillId(resolved?.id ?? null);
         setLoading(false);
       }).catch((e: unknown) => {
         const local = getLocalGuidedDrillBySlug(slug);
         if (local) {
           setDirectDrill(local);
+          setResolvedGuidedDrillId(local.id);
         } else {
           toast.error(e instanceof Error ? e.message : 'Failed to load guided drill');
         }
@@ -327,103 +338,28 @@ export default function GuidedDrillStart({
       return;
     }
 
-    let selectedQids: string[];
-    // Where the student left off wins over a fresh draw. The stored queue is
-    // frozen at first launch, so coming back gives them the SAME questions —
-    // re-running the level draw here is what used to hand them a new set.
-    let resumeAtIndex: number | null = resumeIndex;
-    if (resumeQids.length > 0) {
-      selectedQids = resumeQids;
-    } else if (storedGuided && storedGuided.question_queue.length > 0) {
-      selectedQids = storedGuided.question_queue;
-      resumeAtIndex = Math.min(
-        Math.max(storedGuided.current_index, 0),
-        storedGuided.question_queue.length - 1,
-      );
-    } else if ((bootcampOverride as any)?.selectedQids) {
-      selectedQids = (bootcampOverride as any).selectedQids;
-    } else if (drill) {
-      // The draw happens here, at open time, not at assign time. That is what
-      // keeps a re-attempt fresh, and it is what lets one drill serve a
-      // beginner and an advanced student different questions.
-      //
-      // `assignment` is null on the /guided-drills/:slug route, which is the
-      // library preview and the bootcamp entry point. Level stays null there on
-      // purpose: levelling a preview by the *viewer's* profile would show
-      // Joshua something different from what the student gets.
-      const resolution = resolveGuidedDrillQidsForLevel({ drill, assignment });
-      if (resolution.warning === 'empty') {
-        toast.error('No matching questions found for this drill.');
-        return;
-      }
-      if (resolution.warning === 'out_of_level') {
-        // Not blocking: the student still gets a full drill. Logged so the
-        // mismatch is diagnosable from the console rather than invisible.
-        // eslint-disable-next-line no-console
-        console.warn('[guided-drill] no questions at this level; drew from outside the band', {
-          slug: drill.slug,
-          level: resolution.level,
-          band: resolution.band,
-          poolCount: resolution.poolCount,
-        });
-      }
-      selectedQids = resolution.qids;
-    } else {
-      // eslint-disable-next-line no-console
-      console.error('[guided-drill] start blocked: no qids resolved', { slug });
-      toast.error("Couldn't build this drill. Please refresh and try again.");
-      return;
-    }
-
-    if (!selectedQids || selectedQids.length === 0) {
-      toast.error('No questions are available for this drill yet.');
-      return;
-    }
-
     if (assignment) {
       await markCardRead(assignment.id);
       await markStarted(assignment.id);
     }
+    if (!drill) {
+      toast.error("Couldn't build this drill. Please refresh and try again.");
+      return;
+    }
 
-    const config: TypeDrillConfig = {
-      qtypes: drill?.question_types || (bootcampOverride as any)?.qtypes || ['Main Conclusion'],
-      difficulties: [],
-      pts: [],
-      count: selectedQids.length,
-      selectedQids,
-      unseen_only: false,
-    };
-
-    const drillSearchParams = new URLSearchParams();
-    drillSearchParams.set('mode', 'type-drill');
-    drillSearchParams.set('qids', selectedQids.join(','));
-    drillSearchParams.set('returnTo', launchReturnTo);
-    if (resumeAtIndex != null) {
-      drillSearchParams.set('initialIndex', String(resumeAtIndex));
-    }
-    if ((bootcampOverride as any)?.title ?? drill?.title) {
-      drillSearchParams.set('focus', (bootcampOverride as any)?.title ?? drill!.title);
-    }
-    if (drill) {
-      drillSearchParams.set('guided', '1');
-      if (drill.estimated_minutes && drill.estimated_minutes > 0) {
-        drillSearchParams.set('guidedDurationMinutes', String(drill.estimated_minutes));
-      }
-    }
-    if ((bootcampOverride as any)?.source) {
-      drillSearchParams.set('source', (bootcampOverride as any).source);
-    }
-    if (assignment) drillSearchParams.set('guidedAssignmentId', assignment.id);
-
-    navigate(`/drill?${drillSearchParams.toString()}`, {
-      state: {
-        mode: 'type-drill',
-        config,
-        practicingLabel: (bootcampOverride as any)?.title ?? drill?.title,
-        isGuidedDrill: !!drill,
-        guidedDurationMinutes: drill?.estimated_minutes ?? undefined,
-      },
-    });
+    navigate(
+      `/drill?${launchDrill({
+        kind: 'guided-drill',
+        drillId: drill.id,
+        assignmentId: assignment?.id,
+        durationMinutes: drill.estimated_minutes ?? undefined,
+        options: {
+          returnTo: launchReturnTo,
+          label: drill.title,
+          initialIndex: resumeIndex ?? undefined,
+        },
+      })}`,
+    );
   }, [assignment, drill, navigate, qbLoading, bootcampOverride, slug, resumeQids, resumeIndex, storedGuided, launchReturnTo]);
 
   if (loading) {

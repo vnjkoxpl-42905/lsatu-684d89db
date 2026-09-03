@@ -10,6 +10,17 @@ vi.mock('@/contexts/AuthContext', () => ({
 }));
 
 const resolveDrillLaunch = vi.fn();
+const recordExposures = vi.fn();
+const questionBankState = vi.hoisted(() => ({ isLoading: false }));
+
+vi.mock('@/contexts/QuestionBankContext', () => ({
+  useQuestionBank: () => questionBankState,
+}));
+
+vi.mock('@/lib/questionExposure', () => ({
+  recordExposures: (...args: unknown[]) => recordExposures(...args),
+}));
+
 vi.mock('@/lib/drillLaunchResolve', async () => {
   const actual = await vi.importActual<typeof import('@/lib/drillLaunchResolve')>(
     '@/lib/drillLaunchResolve',
@@ -49,6 +60,9 @@ const searchOf = () => new URLSearchParams(screen.getByTestId('runner').textCont
 describe('the gate', () => {
   beforeEach(() => {
     resolveDrillLaunch.mockReset();
+    recordExposures.mockReset();
+    recordExposures.mockResolvedValue(undefined);
+    questionBankState.isLoading = false;
   });
 
   it('runs a drill that already says what it is, without touching the URL', async () => {
@@ -119,6 +133,47 @@ describe('the gate', () => {
       expect.objectContaining({ kind: 'saved-set', setId: 'set_1' }),
       'user_1',
     );
+  });
+
+  it('keeps a bootcamp day as the Run Record name after resolving its questions', async () => {
+    resolveDrillLaunch.mockResolvedValue(['PT1-S1-Q1', 'PT1-S1-Q2']);
+    renderAt({
+      pathname: '/drill',
+      search: '?drill=bootcamp-day&day=3&part=homework',
+    });
+
+    await screen.findByTestId('runner');
+    await waitFor(() => expect(searchOf().get('qids')).toBe('PT1-S1-Q1,PT1-S1-Q2'));
+    expect(searchOf().get('bootcampDay')).toBe('3');
+    expect(searchOf().get('bootcampPart')).toBe('homework');
+    expect(recordExposures).toHaveBeenCalledWith(
+      'user_1',
+      ['PT1-S1-Q1', 'PT1-S1-Q2'],
+    );
+  });
+
+  it('keeps a guided drill id as the Run Record name after resolving its questions', async () => {
+    resolveDrillLaunch.mockResolvedValue(['PT1-S1-Q1']);
+    renderAt({
+      pathname: '/drill',
+      search: '?drill=guided-drill&guidedDrill=gd_7',
+    });
+
+    await screen.findByTestId('runner');
+    await waitFor(() => expect(searchOf().get('qids')).toBe('PT1-S1-Q1'));
+    expect(searchOf().get('guided')).toBe('1');
+    expect(searchOf().get('guidedDrillId')).toBe('gd_7');
+  });
+
+  it('does not resolve a generated link before the question bank is ready', async () => {
+    questionBankState.isLoading = true;
+    renderAt({
+      pathname: '/drill',
+      search: '?drill=bootcamp-day&day=3&part=homework',
+    });
+
+    expect(await screen.findByText('Opening your drill…')).toBeTruthy();
+    await waitFor(() => expect(resolveDrillLaunch).not.toHaveBeenCalled());
   });
 
   it('says so when the link names something that is gone, rather than drilling anything else', async () => {
