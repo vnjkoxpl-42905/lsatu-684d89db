@@ -397,3 +397,117 @@
     transition: none;
   }
 }
+
+
+/* ---- leaving the drill room -------------------------------------------- */
+
+/* The one composed moment in the drill.
+ *
+ * The runner is a cold indigo mirror of the real section; the Report Card is
+ * warm paper. The jump between them was abrupt because there was nothing
+ * between them: the field cut to the card in one frame, at the end of
+ * twenty-five unbroken minutes, which is the moment she is most likely to
+ * remember and the moment that felt most like a page reload.
+ *
+ * So the field lifts rather than cuts. The paper card holds its position and
+ * fades with it, the indigo warms to the ground the Report Card sits on, and
+ * the handover happens underneath. Nothing waits on it: the save, the upload
+ * and the grading request all run through these nine hundred milliseconds, and
+ * the transition is over long before any of them are.
+ */
+.ac-section.is-finishing {
+  /* The Activity Centre's own canvas, by value rather than by eye.
+     `--background` is scoped to `.activity-centre`, which this element is not
+     inside, and landing two shades off it turns a handover into a visible step
+     at the exact moment it is meant to be invisible. Kept beside the token it
+     copies so a change to one is a change to look for in the other. */
+  background: hsl(38 36% 93%);
+  transition: background 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ac-section.is-finishing .ac-section-head {
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.ac-section.is-finishing .ac-section-paper {
+  border-color: transparent;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
+  transition:
+    box-shadow 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 900ms ease;
+}
+
+/* What she reads while it happens. It arrives after the field has started to
+   warm, so the sentence appears on paper rather than on the drill room. */
+.ac-section-finished {
+  margin: 0;
+  animation: ac-section-finished-in 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
+  color: var(--sec-ink);
+  font-family: Fraunces, ui-serif, Georgia, serif;
+  font-size: 22px;
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 14;
+  text-align: center;
+}
+
+.ac-section-finished span {
+  display: block;
+  margin-top: 0.75rem;
+  color: #64748b;
+  font-family: var(--sec-sans);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+@keyframes ac-section-finished-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-section.is-finishing,
+  .ac-section.is-finishing .ac-section-head,
+  .ac-section.is-finishing .ac-section-paper {
+    transition: none;
+  }
+
+  .ac-section-finished {
+    animation: none;
+  }
+}
+
+
+/* The other half of the handover, on the surface that arrives.
+ *
+ * Applied by the Report Card's own container so the card rises onto the ground
+ * the drill room just warmed to, instead of appearing on it. Slower than a
+ * normal entrance and with no scale: this is the end of twenty-five minutes of
+ * concentration, not a notification.
+ */
+.ac-section-handover {
+  animation: ac-section-handover-in 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ac-section-handover-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-section-handover {
+    animation: none;
+  }
+}

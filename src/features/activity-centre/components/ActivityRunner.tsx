@@ -29,6 +29,9 @@ import { SectionLibraryPanel } from "./SectionLibraryPanel";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
 import { SectionReport } from "./SectionReport";
+// For `ac-section-handover`, the second half of the drill room's handover: the
+// field warms on the way out and the card rises onto it on the way in.
+import "../recall/section.css";
 import "../activity-centre.css";
 
 /** `report` is the section-only tail: grading runs after she stops. */
@@ -719,7 +722,10 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
        */
       if (phase === "report") {
         return (
-          <div className="activity-centre min-h-screen px-4 py-12" data-runner="recall-section-report">
+          <div
+            className="activity-centre ac-section-handover min-h-screen px-4 py-12"
+            data-runner="recall-section-report"
+          >
             <SectionReport assignmentId={assignment.id} onDone={handleLeave ?? handleBackToIntro} />
           </div>
         );

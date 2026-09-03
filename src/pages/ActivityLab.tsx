@@ -2141,7 +2141,8 @@ function SectionPanel() {
    * the lab rendered the stage without a clock or a way out and nobody ever saw
    * the version a student sees.
    */
-  const [beat, setBeat] = useState(false);
+  const [moment, setMoment] = useState<"running" | "ready beat" | "finishing">("running");
+  const beat = moment === "ready beat";
   const [confirming, setConfirming] = useState(false);
 
   useEffect(() => setCursor(startCursor()), [slug]);
@@ -2178,15 +2179,35 @@ function SectionPanel() {
           label="Stimulus"
         />
         <Tabs
-          options={["running", "ready beat"] as const}
-          value={beat ? "ready beat" : "running"}
-          onChange={(v) => setBeat(v === "ready beat")}
+          options={["running", "ready beat", "finishing"] as const}
+          value={moment}
+          onChange={(v) => setMoment(v)}
           label="Moment"
         />
         <span className="text-xs text-zinc-500">
           {cursor.phase} · press space
         </span>
       </div>
+      {moment === "finishing" ? (
+        /*
+         * The handover, which is a nine hundred millisecond CSS transition and
+         * therefore the single hardest thing in this feature to look at: it
+         * happens once, at the end of a twenty-five minute run, and then the
+         * Report Card replaces it.
+         */
+        <div className="ac-section is-finishing">
+          <main className="ac-section-field">
+            <div className="ac-section-paper">
+              <div className="ac-section-body">
+                <p className="ac-section-finished">
+                  Section finished.
+                  <span>{run.stimuli.length} stimuli, end to end. Your Report Card comes next.</span>
+                </p>
+              </div>
+            </div>
+          </main>
+        </div>
+      ) : (
       <SectionStage
         stimulus={stimulus}
         phase={cursor.phase}
@@ -2204,6 +2225,7 @@ function SectionPanel() {
         onConfirmExit={() => setConfirming(false)}
         onCancelExit={() => setConfirming(false)}
       />
+      )}
     </div>
   );
 }

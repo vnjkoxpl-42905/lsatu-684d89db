@@ -753,18 +753,32 @@ function RunBody({
   const stimulus = run.stimuli[cursor.item];
 
   if (done) {
+    /*
+     * The handover, rather than a cut.
+     *
+     * The Report Card replaces this screen the moment the save finishes, and
+     * the two surfaces could not be further apart: a cold indigo field against
+     * warm paper. `is-finishing` warms the field and lifts the chrome over
+     * nine hundred milliseconds so the card arrives on ground that is already
+     * the right colour. It is decoration and it is deliberately on the one
+     * frame she is most likely to remember.
+     */
     return (
-      <div className="ac-section">
-        <div className="ac-section-body">
-          <p className="ac-section-instruction">Section finished</p>
-          <div className="ac-section-stimulus">
-            <span className="ac-section-chunk">
-              {uploadFailed
-                ? `${run.stimuli.length} stimuli, end to end. Your recording did not reach us, so it is still on this computer. Open this section again from the same browser and it will be sent, and then marked.`
-                : `${run.stimuli.length} stimuli, end to end. Your Report Card comes next.`}
-            </span>
+      <div className="ac-section is-finishing">
+        <main className="ac-section-field">
+          <div className="ac-section-paper">
+            <div className="ac-section-body">
+              <p className="ac-section-finished">
+                Section finished.
+                <span>
+                  {uploadFailed
+                    ? `${run.stimuli.length} stimuli, end to end. Your recording did not reach us, so it is still on this computer. Open this section again from the same browser and it will be sent, and then marked.`
+                    : `${run.stimuli.length} stimuli, end to end. Your Report Card comes next.`}
+                </span>
+              </p>
+            </div>
           </div>
-        </div>
+        </main>
       </div>
     );
   }
