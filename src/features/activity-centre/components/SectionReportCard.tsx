@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { bandFor } from "../recall/grading";
-import { signSectionRecording } from "../api/activitiesClient";
+import { listModelRuns, signSectionRecording } from "../api/activitiesClient";
 import type { SectionGrade, SectionStimulusGrade } from "../api/types";
 
 /**
@@ -35,6 +35,8 @@ import type { SectionGrade, SectionStimulusGrade } from "../api/types";
 interface SectionReportCardProps {
   grade: SectionGrade;
   onDone?: () => void;
+  /** Injected in tests and in the lab, which has no database behind it. */
+  loadModelRuns?: (sourceSection: string) => Promise<Record<string, { bucket: string; path: string }>>;
 }
 
 const BAND: Record<SectionStimulusGrade["band"], { label: string; cls: string; dot: string }> = {
@@ -65,11 +67,12 @@ function minutes(seconds: number): string {
  * read without anyone pressing play, and a signed URL fetched for every card
  * that opens is a request per view for a file nobody asked for.
  */
-function useClip(bucket: string | null | undefined, path: string | null | undefined) {
+function useClip() {
   const audio = useRef<HTMLAudioElement | null>(null);
   const stopAt = useRef<number | null>(null);
   const [playing, setPlaying] = useState<string | null>(null);
-  const url = useRef<Promise<string | null> | null>(null);
+  /** One signed link per file, made on first use and reused after. */
+  const urls = useRef<Map<string, Promise<string | null>>>(new Map());
 
   useEffect(() => {
     const el = audio.current;
@@ -78,16 +81,21 @@ function useClip(bucket: string | null | undefined, path: string | null | undefi
     };
   }, []);
 
+  const stop = useCallback(() => {
+    audio.current?.pause();
+    stopAt.current = null;
+    setPlaying(null);
+  }, []);
+
   const play = useCallback(
-    async (key: string, startMs: number, endMs: number) => {
-      if (!bucket || !path) return;
+    async (key: string, file: { bucket: string; path: string }, startMs = 0, endMs?: number) => {
       if (playing === key) {
-        audio.current?.pause();
-        setPlaying(null);
+        stop();
         return;
       }
-      url.current ??= signSectionRecording(bucket, path);
-      const src = await url.current;
+      const id = `${file.bucket}/${file.path}`;
+      if (!urls.current.has(id)) urls.current.set(id, signSectionRecording(file.bucket, file.path));
+      const src = await urls.current.get(id)!;
       if (!src) return;
       let el = audio.current;
       if (!el) {
@@ -106,28 +114,73 @@ function useClip(bucket: string | null | undefined, path: string | null | undefi
         audio.current = el;
       }
       if (el.src !== src) el.src = src;
-      stopAt.current = endMs / 1000;
+      stopAt.current = endMs === undefined ? null : endMs / 1000;
       el.currentTime = startMs / 1000;
       setPlaying(key);
       try {
         await el.play();
       } catch {
-        // Autoplay policy, or a file that will not load. The rest of the card
-        // is the Report Card; this is the part that needs the recording to have
-        // survived its upload.
+        // Autoplay policy, or a file that will not load. The rest of the card is
+        // the Report Card; this is the part that needs a recording to exist.
         setPlaying(null);
       }
     },
-    [bucket, path, playing],
+    [playing, stop],
   );
 
-  return { play, playing, available: Boolean(bucket && path) };
+  return { play, playing };
 }
 
-export function SectionReportCard({ grade, onDone }: SectionReportCardProps) {
+/**
+ * The same stimulus, done properly, in Joshua's own voice.
+ *
+ * 714 of these have been sitting in `model-runs` as the grader's calibration
+ * set, one per stimulus across 109 sections, and not one second of it had ever
+ * reached a student. Every stimulus of all three live sections has one.
+ *
+ * Asked for only once a Report Card is on screen, which is also the only
+ * condition under which the database will return them: a student who could
+ * reach the model run for a section she has not sat could listen to a correct
+ * recall and then "recall" it. After her own grade exists it can no longer help
+ * her and can only teach her.
+ */
+function useModelRuns(
+  sourceSection: string,
+  load: (sourceSection: string) => Promise<Record<string, { bucket: string; path: string }>>,
+) {
+  const [runs, setRuns] = useState<Record<string, { bucket: string; path: string }>>({});
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const found = await load(sourceSection);
+        if (!cancelled) setRuns(found);
+      } catch {
+        // No model runs is the ordinary answer for a section nobody has
+        // finished, and the card simply does not offer the button.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [sourceSection, load]);
+  return runs;
+}
+
+export function SectionReportCard({
+  grade,
+  onDone,
+  loadModelRuns = listModelRuns,
+}: SectionReportCardProps) {
   const [openStimulus, setOpenStimulus] = useState<number | null>(null);
   const { section, stimuli } = grade;
-  const clip = useClip(section.audio_bucket, section.audio_path);
+  const clip = useClip();
+  const modelRuns = useModelRuns(grade.source_section, loadModelRuns);
+  /** Her own recording, when the upload survived. */
+  const hers =
+    section.audio_bucket && section.audio_path
+      ? { bucket: section.audio_bucket, path: section.audio_path }
+      : null;
 
   const overall = useMemo(() => {
     const perfect = stimuli.filter((s) => s.percent === 100).length;
@@ -181,8 +234,7 @@ export function SectionReportCard({ grade, onDone }: SectionReportCardProps) {
     <div className="mx-auto max-w-3xl">
       <div className="rounded-[28px] border border-border bg-[hsl(var(--ac-surface))] p-8 shadow-[0_2px_24px_rgba(30,24,16,0.06)] md:p-12">
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-          Report Card
-          {grade.attempt_no > 1 ? ` · Attempt ${grade.attempt_no}` : ""}
+          {grade.attempt_no > 1 ? `Report Card · Attempt ${grade.attempt_no}` : "Report Card"}
         </p>
 
         {/* The band leads. The number is available and does not go first. */}
@@ -318,6 +370,7 @@ export function SectionReportCard({ grade, onDone }: SectionReportCardProps) {
           const open = openStimulus === i;
           const clipWindow = s.recall_window_ms ?? s.window_ms;
           const key = `s${i}`;
+          const model = modelRuns[s.slug];
           return (
             <li key={s.slug} className="rounded-2xl border border-border bg-[hsl(var(--ac-surface))]">
               <button
@@ -424,21 +477,40 @@ export function SectionReportCard({ grade, onDone }: SectionReportCardProps) {
                     * "only" is the argument ADR 0020 makes for Clips, and the
                     * seek was proved exact on the trial run.
                     */}
-                  {(s.spoken || (clip.available && clipWindow)) && (
+                  {(s.spoken || (hers && clipWindow) || model) && (
                     <div className="mt-4 border-t border-border pt-3">
-                      <div className="flex items-baseline justify-between gap-4">
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                         <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
                           What you said
                         </p>
-                        {clip.available && clipWindow && (
-                          <button
-                            type="button"
-                            className="text-xs text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground"
-                            onClick={() => void clip.play(key, clipWindow.start, clipWindow.end)}
-                          >
-                            {clip.playing === key ? "Stop" : "Hear it back"}
-                          </button>
-                        )}
+                        {/*
+                          * Hers, then his.
+                          *
+                          * The pair is the lesson. One of them is a correction
+                          * and two of them is a demonstration, which is the
+                          * whole argument for putting a recording on this page
+                          * at all.
+                          */}
+                        <span className="flex gap-4">
+                          {hers && clipWindow && (
+                            <button
+                              type="button"
+                              className="text-xs text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground"
+                              onClick={() => void clip.play(key, hers, clipWindow.start, clipWindow.end)}
+                            >
+                              {clip.playing === key ? "Stop" : "Hear it back"}
+                            </button>
+                          )}
+                          {model && (
+                            <button
+                              type="button"
+                              className="text-xs text-[hsl(var(--ac-emerald-strong))] underline decoration-dotted underline-offset-4"
+                              onClick={() => void clip.play(`${key}-model`, model)}
+                            >
+                              {clip.playing === `${key}-model` ? "Stop" : "Hear it done right"}
+                            </button>
+                          )}
+                        </span>
                       </div>
                       {s.spoken ? (
                         <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">

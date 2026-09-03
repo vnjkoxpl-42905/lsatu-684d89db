@@ -490,6 +490,49 @@ export async function signSectionRecording(
   return data?.signedUrl ?? null;
 }
 
+/**
+ * Student: the drill done properly, for a section she has already been graded
+ * on.
+ *
+ * `model_runs` holds 714 recordings across 109 sections, one per stimulus, and
+ * until now every one of them was admin-only. RLS is what makes this safe to
+ * ask for at all: the policy returns rows only for a section she has a Report
+ * Card for, so the recording becomes reachable at the moment it stops being
+ * able to help her and starts being able to teach her.
+ *
+ * Keyed by stimulus slug, because that is what the grade carries. An empty map
+ * is the ordinary answer for a section nobody has finished, and the Report Card
+ * simply does not offer the button.
+ */
+export async function listModelRuns(
+  sourceSection: string,
+): Promise<Record<string, { bucket: string; path: string }>> {
+  const table = supabase.from("model_runs" as never) as unknown as {
+    select: (columns: string) => {
+      eq: (
+        column: "source_section",
+        value: string,
+      ) => Promise<{ data: unknown; error: { code?: string; message?: string } | null }>;
+    };
+  };
+  const { data, error } = await table
+    .select("slug, audio_bucket, audio_path")
+    .eq("source_section", sourceSection);
+  if (error) {
+    // A table that is not there yet, or a policy that says no. Neither is worth
+    // failing a Report Card over.
+    if (isUnknownColumn(error) || error.code === "42P01") return {};
+    console.error("[rrc] could not load the model runs", error);
+    return {};
+  }
+  const rows = (data as { slug: string; audio_bucket: string; audio_path: string }[] | null) ?? [];
+  return Object.fromEntries(
+    rows
+      .filter((r) => r.audio_bucket && r.audio_path)
+      .map((r) => [r.slug, { bucket: r.audio_bucket, path: r.audio_path }]),
+  );
+}
+
 // --- Admin -----------------------------------------------------------------
 
 /**

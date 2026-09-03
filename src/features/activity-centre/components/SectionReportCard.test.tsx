@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { SectionReportCard } from "./SectionReportCard";
+
+/** No database behind a test. A section nobody has finished has none of these. */
+const noModelRuns = () => Promise.resolve({});
 import type { SectionGrade, SectionStimulusGrade } from "../api/types";
 
 // The Report Card is the only thing a student ever sees of the grader, so the
@@ -60,25 +63,25 @@ const grade: SectionGrade = {
 
 describe("what the student sees", () => {
   it("leads with a band, not a raw verdict", () => {
-    render(<SectionReportCard grade={grade} />);
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
     expect(screen.getAllByText("At the standard").length).toBe(2);
     expect(screen.getByText("Thin")).toBeInTheDocument();
   });
 
   it("says how she did against her own time goal", () => {
-    render(<SectionReportCard grade={grade} />);
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
     expect(screen.getByText("23:00 against a 25 minute goal")).toBeInTheDocument();
   });
 
   it("names the stimuli by position, never by the capture's identifier", () => {
-    render(<SectionReportCard grade={grade} />);
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
     expect(screen.getByText("Stimulus 1")).toBeInTheDocument();
     // The slug is the source bank's own id and means nothing to her.
     expect(document.body.textContent).not.toMatch(/PT105_S2_Q/);
   });
 
   it("shows what slipped, and says so plainly when nothing did", () => {
-    render(<SectionReportCard grade={grade} />);
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
     fireEvent.click(screen.getByText("Stimulus 1"));
     expect(screen.getByText("This applies to all employees.")).toBeInTheDocument();
 
@@ -87,7 +90,7 @@ describe("what the student sees", () => {
   });
 
   it("tells her when she recited rather than retold", () => {
-    render(<SectionReportCard grade={grade} />);
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
     fireEvent.click(screen.getByText("Stimulus 3"));
     // Scoped to the tip, not the summary line, which also mentions it.
     expect(
@@ -96,7 +99,7 @@ describe("what the student sees", () => {
   });
 
   it("never shows the grader's own machinery", () => {
-    render(<SectionReportCard grade={grade} />);
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
     for (const s of grade.stimuli) fireEvent.click(screen.getByText(`Stimulus ${grade.stimuli.indexOf(s) + 1}`));
     const text = document.body.textContent ?? "";
     // Decoys, grader versions and engine names are ours. A student reading
@@ -107,7 +110,7 @@ describe("what the student sees", () => {
   });
 
   it("contains no em-dash anywhere on screen", () => {
-    render(<SectionReportCard grade={grade} />);
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
     // Joshua never types one, and a stray em-dash reads as machine-written.
     expect(document.body.textContent ?? "").not.toMatch(/[—–]/);
   });
@@ -128,7 +131,7 @@ describe("the evidence behind the number", () => {
     ({ ...grade, section: { ...grade.section, ...over }, stimuli: stimuliOver ?? grade.stimuli }) as SectionGrade;
 
   it("leads with the run's own band, not the percentage", () => {
-    render(<SectionReportCard grade={withSection({ mean_coverage: 91 })} />);
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ mean_coverage: 91 })} />);
     // 91 is at the standard. The card used to print "91%" in 48px type with no
     // band at all, which is the exact thing its own docstring forbade.
     const hero = document.querySelector(".ac-display");
@@ -137,14 +140,14 @@ describe("the evidence behind the number", () => {
   });
 
   it("still says what she actually got, underneath", () => {
-    render(<SectionReportCard grade={withSection({ mean_coverage: 91 })} />);
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ mean_coverage: 91 })} />);
     expect(screen.getByText(/91% of the details carried/)).toBeInTheDocument();
   });
 
   it("shows The Read beside Coverage", () => {
     render(
       <SectionReportCard
-        grade={withSection({ read_given_count: 3, read_matched_count: 2, no_read_count: 0 })}
+        loadModelRuns={noModelRuns} grade={withSection({ read_given_count: 3, read_matched_count: 2, no_read_count: 0 })}
       />,
     );
     expect(screen.getByText("Understood")).toBeInTheDocument();
@@ -155,18 +158,18 @@ describe("the evidence behind the number", () => {
     // The spec's own rule: the goal counts only with every stimulus recalled,
     // coloured and given a Read. Finishing early with four skipped was being
     // reported as making the goal.
-    render(<SectionReportCard grade={withSection({ within_time: true, within_goal: false })} />);
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ within_time: true, within_goal: false })} />);
     expect(screen.getByText(/Inside the time, but the goal only counts/)).toBeInTheDocument();
   });
 
   it("says plainly when we could not mark part of the run", () => {
-    render(<SectionReportCard grade={withSection({ ungraded_count: 2 })} />);
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ ungraded_count: 2 })} />);
     expect(screen.getByText(/2 stimuli could not be marked/)).toBeInTheDocument();
     expect(screen.getByText(/ours, not yours/)).toBeInTheDocument();
   });
 
   it("warns when its own check on the marking came back unhappy", () => {
-    render(<SectionReportCard grade={withSection({ decoy_failures: 1 })} />);
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ decoy_failures: 1 })} />);
     expect(screen.getByText(/treat the number on one or two of these lightly/)).toBeInTheDocument();
   });
 
@@ -175,7 +178,7 @@ describe("the evidence behind the number", () => {
     // standard the whole method turns on.
     render(
       <SectionReportCard
-        grade={withSection({}, [stimulus({ coloured: true, colourSpecific: false })])}
+        loadModelRuns={noModelRuns} grade={withSection({}, [stimulus({ coloured: true, colourSpecific: false })])}
       />,
     );
     fireEvent.click(screen.getByText("Stimulus 1"));
@@ -183,7 +186,7 @@ describe("the evidence behind the number", () => {
   });
 
   it("shows where she froze inside a recall", () => {
-    render(<SectionReportCard grade={withSection({}, [stimulus({ dead_air_seconds: 7 })])} />);
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({}, [stimulus({ dead_air_seconds: 7 })])} />);
     fireEvent.click(screen.getByText("Stimulus 1"));
     expect(screen.getByText(/quiet for 7s/)).toBeInTheDocument();
   });
@@ -191,7 +194,7 @@ describe("the evidence behind the number", () => {
   it("shows what the machine heard", () => {
     render(
       <SectionReportCard
-        grade={withSection({}, [stimulus({ spoken: "so the director thinks exploiting is bad" })])}
+        loadModelRuns={noModelRuns} grade={withSection({}, [stimulus({ spoken: "so the director thinks exploiting is bad" })])}
       />,
     );
     fireEvent.click(screen.getByText("Stimulus 1"));
@@ -203,31 +206,96 @@ describe("the evidence behind the number", () => {
     const one = [stimulus({ spoken: "x", recall_window_ms: { start: 1000, end: 4000 } })];
     const { unmount } = render(
       <SectionReportCard
-        grade={withSection({ audio_bucket: "drill-recordings", audio_path: "s1/a1.webm" }, one)}
+        loadModelRuns={noModelRuns} grade={withSection({ audio_bucket: "drill-recordings", audio_path: "s1/a1.webm" }, one)}
       />,
     );
     fireEvent.click(screen.getByText("Stimulus 1"));
     expect(screen.getByRole("button", { name: /hear it back/i })).toBeInTheDocument();
     unmount();
 
-    render(<SectionReportCard grade={withSection({ audio_path: null }, one)} />);
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ audio_path: null }, one)} />);
     fireEvent.click(screen.getByText("Stimulus 1"));
     expect(screen.queryByRole("button", { name: /hear it back/i })).not.toBeInTheDocument();
   });
 
   it("names the Attempt only when there has been more than one", () => {
-    const { unmount } = render(<SectionReportCard grade={grade} />);
+    const { unmount } = render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
     expect(document.body.textContent).not.toMatch(/Attempt/);
     unmount();
-    render(<SectionReportCard grade={{ ...grade, attempt_no: 2 }} />);
+    render(<SectionReportCard grade={{ ...grade, attempt_no: 2 }} loadModelRuns={noModelRuns} />);
     expect(screen.getByText(/Attempt 2/)).toBeInTheDocument();
   });
 
   it("does not show a stimulus it could not mark as a score she earned", () => {
-    render(<SectionReportCard grade={withSection({}, [stimulus({ ungraded: "judge timed out", carried: 0, percent: 0, band: "lost-it" })])} />);
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({}, [stimulus({ ungraded: "judge timed out", carried: 0, percent: 0, band: "lost-it" })])} />);
     fireEvent.click(screen.getByText("Stimulus 1"));
     expect(screen.getByText(/could not be marked/)).toBeInTheDocument();
     // And not the reason, which is ours.
     expect(document.body.textContent).not.toMatch(/timed out/);
+  });
+});
+
+/**
+ * The drill done properly, in Joshua's own voice.
+ *
+ * 714 recordings across 109 sections sat in the bucket as the grader's
+ * calibration set and never reached a student, and every stimulus of all three
+ * live sections has one. The pair is the lesson: one recording is a correction
+ * and two is a demonstration.
+ *
+ * The database will only return them for a section she has already been graded
+ * on, so a student cannot listen to a correct recall of a section she has not
+ * sat and then "recall" it. That rule lives in RLS; what is asserted here is
+ * that the card asks, and offers nothing when the answer is nothing.
+ */
+describe("hearing it done right", () => {
+  const model = () =>
+    Promise.resolve({ PT105_S2_Q1: { bucket: "model-runs", path: "PT105_S2_Q1.mp3" } });
+
+  it("offers the model run beside her own recording", async () => {
+    render(
+      <SectionReportCard
+        grade={{
+          ...grade,
+          section: { ...grade.section, audio_bucket: "drill-recordings", audio_path: "s1/a1.webm" },
+          stimuli: [stimulus({ spoken: "x", recall_window_ms: { start: 0, end: 1000 } })],
+        }}
+        loadModelRuns={model}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(await screen.findByRole("button", { name: /hear it done right/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /hear it back/i })).toBeInTheDocument();
+  });
+
+  it("offers nothing when the section has no model run she can reach", async () => {
+    render(
+      <SectionReportCard
+        grade={{ ...grade, stimuli: [stimulus({ spoken: "x" })] }}
+        loadModelRuns={noModelRuns}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    // Waited for, so the empty answer has landed before the absence is asserted.
+    expect(await screen.findByText("What you said")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /hear it done right/i })).not.toBeInTheDocument();
+  });
+
+  it("still offers the model run when her own recording never arrived", async () => {
+    // A failed upload costs her the Clip of herself. It must not also cost her
+    // the one recording that was never hers to lose.
+    render(
+      <SectionReportCard
+        grade={{
+          ...grade,
+          section: { ...grade.section, audio_path: null },
+          stimuli: [stimulus({ spoken: "" })],
+        }}
+        loadModelRuns={model}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(await screen.findByRole("button", { name: /hear it done right/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /hear it back/i })).not.toBeInTheDocument();
   });
 });

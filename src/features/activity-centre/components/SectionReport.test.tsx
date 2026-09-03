@@ -8,6 +8,10 @@ const requestSectionGrading = vi.fn((_id: string) => Promise.resolve());
 vi.mock("../api/activitiesClient", () => ({
   getSectionGrade: (id: string) => getSectionGrade(id),
   requestSectionGrading: (id: string) => requestSectionGrading(id),
+  // Reached by the card this screen hands over to. A section nobody has been
+  // graded on has none of these, which is also what the database returns.
+  listModelRuns: () => Promise.resolve({}),
+  signSectionRecording: () => Promise.resolve(null),
 }));
 
 // The wait between finishing and seeing the Report Card. Everything here is

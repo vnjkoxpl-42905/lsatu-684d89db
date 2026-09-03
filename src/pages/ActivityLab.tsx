@@ -1939,7 +1939,20 @@ function ReportPanel() {
         </p>
       </div>
       <div className="px-4 py-10">
-        <SectionReportCard grade={grade} />
+        <SectionReportCard
+          grade={grade}
+          /*
+           * The lab has no database, so the model runs are named rather than
+           * looked up. The buttons appear and do nothing, which is the point:
+           * a lab that faked a working player would be the one place a broken
+           * one could hide.
+           */
+          loadModelRuns={async () =>
+            Object.fromEntries(
+              grade.stimuli.map((st) => [st.slug, { bucket: "model-runs", path: `${st.slug}.mp3` }]),
+            )
+          }
+        />
       </div>
     </div>
   );
