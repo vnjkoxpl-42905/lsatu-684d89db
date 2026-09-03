@@ -5,6 +5,7 @@ import { useStudentActivity } from "../hooks/useStudentActivities";
 import {
   assignmentBelongsToAnotherAccount,
   completeAssignment,
+  completeSectionRun,
   listItemResponses,
   markAssignmentStarted,
   recordItemResponse,
@@ -290,8 +291,25 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       setVerdicts(progress.verdicts);
       setResponses(progress.responses);
 
+      /*
+       * Where a finished run lands when it is reopened.
+       *
+       * For a Read, Recall, Colour section that is the Report Card, and the
+       * Report Card is the ONLY completion screen it has: the unit judged is
+       * the whole section (ADR 0010), so there are no per-item verdicts for
+       * `CompletionSummary` to summarise and it renders an empty one.
+       *
+       * Landing on `done` instead is how a graded run became unreachable.
+       * Grading finishes minutes after she stops, so the Report Card is
+       * something she comes BACK to -- and coming back was the one path that
+       * did not lead to it. Every reopen, on every device, for the rest of the
+       * assignment's life, showed the blank generic summary instead.
+       */
+      const isSectionRun = assignment.item_format === "spoken-recall" && assignment.mode === "section";
+      const finishedPhase: Phase = isSectionRun ? "report" : "done";
+
       if (assignment.status === "completed") {
-        setPhase("done");
+        setPhase(finishedPhase);
         setHydrated(true);
         return;
       }
@@ -301,12 +319,17 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       // parking the student on a run with nothing left in it.
       if (items.length > 0 && progress.resolvedCount >= items.length) {
         setIndex(items.length - 1);
-        setPhase("done");
+        setPhase(finishedPhase);
         // An admin looking at the run must not be the one who closes it: the
         // student's own next open still owes them the completion write.
         if (!readOnly) {
           try {
-            await completeAssignment(assignment.id, scoreFor(progress.verdicts, items.length));
+            // A section closes without a score. Its grade is not a count of
+            // per-item verdicts -- it has none -- and a grade the student can
+            // write is not a grade (ADR 0019), so nothing goes on the
+            // assignment row. `scoreFor` here would post a fabricated zero.
+            if (isSectionRun) await completeSectionRun(assignment.id);
+            else await completeAssignment(assignment.id, scoreFor(progress.verdicts, items.length));
             void syncClassroom("completed");
           } catch (e) {
             console.error("[activity:resume:complete] failed", e);

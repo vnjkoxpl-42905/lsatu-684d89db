@@ -4,6 +4,7 @@ import {
   buildJudgeEntries,
   buildJudgePrompt,
   gradeStimulus,
+  mapWithConcurrency,
   parseJudgeReply,
   toDetails,
   type StimulusGrade,
@@ -56,8 +57,29 @@ const RECITING_BIGRAM = 0.5;
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
 const DEAD_AIR_SECONDS = 4;
 
+/**
+ * How many stimuli are judged at once.
+ *
+ * A section is 22 of them. Judged in series they took longer than the edge
+ * function is allowed to run, and the whole grade was lost at the end of a
+ * correct recording, a correct upload and a correct transcription. Judged at
+ * this width the judging stage costs about as long as its slowest single call.
+ *
+ * Not unbounded: the judge is a rate-limited API, and 429s would trade a
+ * timeout for a different failure with the same result.
+ */
+const JUDGE_CONCURRENCY = 8;
+
 interface Word { word: string; start: number; end: number; punctuated?: string }
 interface Segment { slug: string; order: number; phase: string; startMs: number; endMs: number }
+
+/** Constant-time string compare, so a secret is not probed a byte at a time. */
+function sameSecret(expected: string, actual: string): boolean {
+  if (expected.length !== actual.length) return false;
+  let difference = 0;
+  for (let i = 0; i < expected.length; i++) difference |= expected.charCodeAt(i) ^ actual.charCodeAt(i);
+  return difference === 0;
+}
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -169,14 +191,31 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    // Who is asking. The caller must own the assignment or be an admin; the
-    // READS below use the service role, so this check is the access control.
-    const caller = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!, {
-      global: { headers: { Authorization: auth } },
-    });
-    const { data: userData } = await caller.auth.getUser();
-    const uid = userData?.user?.id;
-    if (!uid) return json({ error: "unauthorized" }, 401);
+    /*
+     * Who is asking, and one caller that is not a person.
+     *
+     * The sweeper re-drives runs whose student has long since closed the tab,
+     * so it has no user to present. It calls with the service role key, which
+     * never leaves the server and already grants everything the READS below
+     * do -- so accepting it here widens nothing, it just names the caller the
+     * function already trusts. Compared in constant time and checked BEFORE
+     * `getUser`, which returns no user for a service-role token and would
+     * otherwise reject the sweeper as unauthorized.
+     */
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const trusted = sameSecret(`Bearer ${serviceKey}`, auth);
+
+    let uid: string | undefined;
+    if (!trusted) {
+      // The caller must own the assignment or be an admin; the READS below use
+      // the service role, so this check is the access control.
+      const caller = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!, {
+        global: { headers: { Authorization: auth } },
+      });
+      const { data: userData } = await caller.auth.getUser();
+      uid = userData?.user?.id;
+      if (!uid) return json({ error: "unauthorized" }, 401);
+    }
 
     const { data: assignment, error: aErr } = await admin
       .from("activity_assignments")
@@ -187,19 +226,30 @@ serve(async (req) => {
     if (!assignment) return json({ error: "assignment not found" }, 404);
     if (assignment.mode !== "section") return json({ error: "not a section run" }, 400);
 
-    if (assignment.student_id !== uid) {
+    if (!trusted && assignment.student_id !== uid) {
       const { data: isAdmin } = await admin.rpc("has_role", { _user_id: uid, _role: "admin" });
       if (!isAdmin) return json({ error: "forbidden" }, 403);
     }
 
-    // Already graded is a success, not a conflict. The client fires this and a
-    // sweeper fires it again; the second one must be harmless.
+    /*
+     * Already graded is a success, not a conflict. The client fires this and
+     * the sweeper fires it again; the second one must be harmless.
+     *
+     * Unless the grade on record is a partial one. A section whose judging
+     * stage lost some stimuli writes what it has rather than throwing the run
+     * away, and that row must not then look finished to the sweeper -- so an
+     * incomplete grade is re-driven on sight, without needing `force`.
+     */
     const { data: existing } = await admin
       .from("activity_section_grades")
-      .select("assignment_id, graded_at, grader_version")
+      .select("assignment_id, graded_at, grader_version, section")
       .eq("assignment_id", assignmentId)
       .maybeSingle();
-    if (existing && !force) return json({ status: "already-graded", ...existing });
+    const existingIsComplete = (existing?.section as Record<string, unknown> | null)?.complete !== false;
+    if (existing && existingIsComplete && !force) {
+      const { section: _section, ...summary } = existing;
+      return json({ status: "already-graded", ...summary });
+    }
 
     const { data: responses, error: rErr } = await admin
       .from("activity_item_responses")
@@ -249,12 +299,41 @@ serve(async (req) => {
     const items = (assignment.items ?? []) as Record<string, unknown>[];
     const bySlug = new Map(items.map((i) => [String(i.slug), i]));
 
-    const stimuli: (StimulusGrade & { slug: string; dead_air_seconds: number })[] = [];
-    for (const row of responses) {
+    /**
+     * One stimulus's grade.
+     *
+     * `ungraded` carries the reason the judge could not be reached or could not
+     * be understood, and is absent on every grade that worked. It is the one
+     * field a Report Card must not read as a zero: a Detail she did not carry
+     * and a Detail nobody asked about look identical in `missed` otherwise.
+     */
+    type Graded = StimulusGrade & { slug: string; dead_air_seconds: number; ungraded?: string };
+
+    // Rows whose slug is not in the assignment's own snapshot are not this
+    // section's work and were skipped by the loop this replaced.
+    const gradable = responses.filter((r) =>
+      bySlug.has(String((r.rrc as Record<string, unknown>).slug ?? "")),
+    );
+
+    /*
+     * Judged all at once rather than one after another.
+     *
+     * Each stimulus is independent -- its Details, its windows and its decoys
+     * are all in hand before any call is made -- so the only reason this was
+     * ever a series was that it was written as a loop. In series it ran past
+     * the edge function's wall clock on a 22-stimulus section and returned 504
+     * with nothing written, which is how a run that was recorded, uploaded and
+     * transcribed correctly still produced no Report Card.
+     *
+     * A stimulus that fails is caught HERE, inside the map, so it costs its own
+     * grade and not the section's. One unreachable judge call used to throw out
+     * of the loop, past the write, and lose twenty minutes of a student's work
+     * along with the transcription already paid for.
+     */
+    const stimuli: Graded[] = await mapWithConcurrency(gradable, JUDGE_CONCURRENCY, async (row) => {
       const rrc = row.rrc as Record<string, unknown>;
       const slug = String(rrc.slug ?? "");
-      const item = bySlug.get(slug);
-      if (!item) continue;
+      const item = bySlug.get(slug)!;
 
       const chunks = (item.chunks ?? []) as { text: string; details: { text: string }[] }[];
       const detailTexts = chunks.flatMap((c) => c.details.map((d) => d.text));
@@ -272,38 +351,61 @@ serve(async (req) => {
       const decoys = (otherChunks[0]?.details ?? []).slice(0, 2).map((d) => d.text);
 
       const entries = buildJudgeEntries(toDetails(detailTexts), decoys);
+      const nothingCarried = {
+        verdicts: {},
+        reciting: false,
+        recitingReason: "",
+        listing: false,
+        listingReason: "",
+        coloured: false,
+        colourSpecific: false,
+        missingIds: entries.map((e) => e.id),
+      };
 
       if (!spoken) {
         // Nothing captured in her windows. Zero Coverage is the honest number
         // here only because the words genuinely are not there; it is recorded
         // alongside the clock reading so a systematic failure is visible.
-        stimuli.push({
-          slug,
-          ...gradeStimulus(entries, { verdicts: {}, reciting: false, recitingReason: "", listing: false, listingReason: "", coloured: false, colourSpecific: false, missingIds: entries.map((e) => e.id) }),
-          dead_air_seconds: 0,
-        });
-        continue;
+        return { slug, ...gradeStimulus(entries, nothingCarried), dead_air_seconds: 0 };
       }
 
-      const raw = await judge(buildJudgePrompt({ stimulus: stimulusText, entries, spoken }));
-      const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)));
+      try {
+        const raw = await judge(buildJudgePrompt({ stimulus: stimulusText, entries, spoken }));
+        const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)));
 
-      // Reciting is decided in code, not by the model: it is a measurement.
-      const run = longestSharedRun(spoken, stimulusText);
-      const bigram = bigramOverlap(spoken, stimulusText);
-      grade.reciting = run >= RECITING_RUN || bigram >= RECITING_BIGRAM;
+        // Reciting is decided in code, not by the model: it is a measurement.
+        const run = longestSharedRun(spoken, stimulusText);
+        const bigram = bigramOverlap(spoken, stimulusText);
+        grade.reciting = run >= RECITING_RUN || bigram >= RECITING_BIGRAM;
 
-      stimuli.push({
-        slug,
-        ...grade,
-        dead_air_seconds: deadAir(words, segments.filter((s) => s.phase === "recalling")),
-      });
-    }
+        return {
+          slug,
+          ...grade,
+          dead_air_seconds: deadAir(words, segments.filter((s) => s.phase === "recalling")),
+        };
+      } catch (e) {
+        const reason = (e as Error).message ?? String(e);
+        console.error("[grade-rrc-section] stimulus failed", { assignmentId, slug, reason });
+        return {
+          slug,
+          ...gradeStimulus(entries, nothingCarried),
+          dead_air_seconds: deadAir(words, segments.filter((s) => s.phase === "recalling")),
+          ungraded: reason,
+        };
+      }
+    });
 
     const accommodation = String(first.accommodation ?? "standard");
     const goalMinutes = Number((assignment.time_goal_minutes as Record<string, number>)?.[accommodation] ?? 25);
     const totalSeconds = Number(first.section_total_seconds ?? 0);
-    const graded = stimuli.filter((s) => s.total > 0);
+    /*
+     * A stimulus the judge never answered for is not a stimulus she scored
+     * zero on, and every count below has to know the difference. Counted as a
+     * zero it would drag her Coverage down; counted as uncoloured or as a
+     * decoy pass it would invent a habit out of our own outage.
+     */
+    const ungraded = stimuli.filter((s) => s.ungraded);
+    const graded = stimuli.filter((s) => s.total > 0 && !s.ungraded);
     const meanCoverage = graded.length
       ? Math.round(graded.reduce((a, s) => a + s.percent, 0) / graded.length)
       : 0;
@@ -315,12 +417,24 @@ serve(async (req) => {
       within_goal: totalSeconds > 0 && totalSeconds <= goalMinutes * 60,
       mean_coverage: meanCoverage,
       stimuli_graded: graded.length,
-      reciting_count: stimuli.filter((s) => s.reciting).length,
-      listing_count: stimuli.filter((s) => s.listing).length,
-      uncoloured_count: stimuli.filter((s) => !s.coloured).length,
+      reciting_count: graded.filter((s) => s.reciting).length,
+      listing_count: graded.filter((s) => s.listing).length,
+      uncoloured_count: graded.filter((s) => !s.coloured).length,
+      // Measured from the audio, not from the judge, so an ungraded stimulus
+      // still has an honest reading here.
       worst_dead_air_seconds: Math.max(0, ...stimuli.map((s) => s.dead_air_seconds)),
       dead_air_threshold_seconds: DEAD_AIR_SECONDS,
-      decoy_failures: stimuli.filter((s) => s.decoysCarried.length > 0).length,
+      decoy_failures: graded.filter((s) => s.decoysCarried.length > 0).length,
+      /*
+       * Whether every stimulus in this section actually got a judgement.
+       *
+       * The one flag the sweeper reads. A partial grade is written rather than
+       * thrown away -- the recording, the upload and the transcription behind
+       * it all worked -- but it must not pass for a finished one, or the run
+       * that needs re-driving is the one run nothing will ever look at again.
+       */
+      complete: ungraded.length === 0,
+      ungraded_count: ungraded.length,
       clock,
     };
 
@@ -346,7 +460,11 @@ serve(async (req) => {
       .update({ status: "completed", completed_at: new Date().toISOString() })
       .eq("id", assignmentId);
 
-    return json({ status: "graded", stimuli: stimuli.length, section });
+    return json({
+      status: section.complete ? "graded" : "graded-partial",
+      stimuli: stimuli.length,
+      section,
+    });
   } catch (e) {
     console.error("[grade-rrc-section]", e);
     return json({ error: (e as Error).message }, 500);

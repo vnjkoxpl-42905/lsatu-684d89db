@@ -1,0 +1,166 @@
+import { render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ActivityRunner } from "./ActivityRunner";
+import type { ActivityItemResponse, ActivityStatus } from "../api/types";
+
+/**
+ * Where a finished Read, Recall, Colour section lands when it is opened again.
+ *
+ * It has to land on its Report Card, and these pin that, because the Report
+ * Card is the only screen that can ever show the grade and it is not ready when
+ * she stops. Grading is a post-section job: she finishes, the runner asks for a
+ * grade, and the answer arrives minutes later. Coming back is therefore the
+ * NORMAL way to read one -- and coming back was the one path that did not lead
+ * there. A finished section fell through to the generic per-item completion
+ * summary, which for a section has no verdicts to summarise and renders empty,
+ * and the Report Card became unreachable for the rest of the run's life.
+ *
+ * Nothing about it was visible from the outside: the grade existed, the screen
+ * existed, and the run looked finished and fine.
+ */
+
+const navigate = vi.fn();
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
+  return { ...actual, useNavigate: () => navigate };
+});
+
+const activityState = { assignment: null as unknown, loading: false, error: null as string | null };
+vi.mock("../hooks/useStudentActivities", () => ({ useStudentActivity: () => activityState }));
+vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "user-1" } }) }));
+vi.mock("@/hooks/use-toast", () => ({ toast: vi.fn() }));
+vi.mock("@/lib/classroomItems", () => ({
+  syncClassroomItemStatusBySource: vi.fn().mockResolvedValue(undefined),
+}));
+
+const completeAssignment = vi.fn().mockResolvedValue(undefined);
+const completeSectionRun = vi.fn().mockResolvedValue(undefined);
+const listItemResponses = vi.fn().mockResolvedValue([]);
+const getSectionGrade = vi.fn().mockResolvedValue(null);
+const requestSectionGrading = vi.fn().mockResolvedValue(undefined);
+
+vi.mock("../api/activitiesClient", () => ({
+  assignmentBelongsToAnotherAccount: vi.fn().mockResolvedValue(false),
+  completeAssignment: (...a: unknown[]) => completeAssignment(...a),
+  completeSectionRun: (...a: unknown[]) => completeSectionRun(...a),
+  listItemResponses: (...a: unknown[]) => listItemResponses(...a),
+  markAssignmentStarted: vi.fn().mockResolvedValue(undefined),
+  recordItemResponse: vi.fn().mockResolvedValue(undefined),
+  getSectionGrade: (...a: unknown[]) => getSectionGrade(...a),
+  requestSectionGrading: (...a: unknown[]) => requestSectionGrading(...a),
+}));
+
+/*
+ * Stubbed because mounting the real one is the failure this guards against.
+ * `SectionRunner` opens the microphone and starts a clocked, recording run the
+ * moment it mounts, so a regression that sends a finished section back to it
+ * must fail as an assertion rather than as a media error.
+ */
+vi.mock("../recall/SectionRunner", () => ({
+  SectionRunner: () => <div data-testid="section-runner-mounted" />,
+}));
+
+const STIMULI = 3;
+
+function makeSectionAssignment(status: ActivityStatus) {
+  return {
+    id: "assign-1",
+    activity_id: "act-1",
+    student_id: "user-1",
+    assigned_by: "user-1",
+    class_id: "user-1",
+    title: "Read, Recall, Colour",
+    subtitle: "PT102.S3",
+    item_format: "spoken-recall" as const,
+    mode: "section",
+    source_section: "PT102.S3",
+    time_goal_minutes: { standard: 25 },
+    instructions: { task: "Say it back in your own words.", rules: ["Out loud."] },
+    items: Array.from({ length: STIMULI }, (_, i) => ({
+      order: i + 1,
+      slug: `PT102_S3_Q${i + 1}`,
+      prompt: "",
+      credited_answers: [],
+      explanation: "",
+      chunks: [{ text: "A sentence.", details: [{ text: "It is a claim." }] }],
+    })),
+    status,
+    score: null,
+    started_at: new Date().toISOString(),
+    completed_at: status === "completed" ? new Date().toISOString() : null,
+    created_at: new Date().toISOString(),
+  };
+}
+
+/** One row per stimulus, with no verdict: a section is judged whole, not per item. */
+function sectionRows(): ActivityItemResponse[] {
+  return Array.from({ length: STIMULI }, (_, i) => ({
+    id: `r${i}`,
+    assignment_id: "assign-1",
+    student_id: "user-1",
+    item_order: i + 1,
+    attempt_no: 1,
+    verdict: null,
+    response_text: "said something",
+    created_at: new Date().toISOString(),
+  }));
+}
+
+function renderRouted() {
+  return render(
+    <MemoryRouter initialEntries={["/activities/assign-1"]}>
+      <Routes>
+        <Route path="/activities/:assignmentId" element={<ActivityRunner />} />
+      </Routes>
+    </MemoryRouter>,
+  );
+}
+
+describe("reopening a finished Read, Recall, Colour section", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    getSectionGrade.mockResolvedValue(null);
+    listItemResponses.mockResolvedValue(sectionRows());
+    activityState.assignment = makeSectionAssignment("completed");
+    activityState.loading = false;
+    activityState.error = null;
+  });
+
+  it("opens on the Report Card, not the generic completion summary", async () => {
+    const { container } = renderRouted();
+    await waitFor(() =>
+      expect(container.querySelector('[data-runner="recall-section-report"]')).toBeTruthy(),
+    );
+    expect(screen.queryByTestId("section-runner-mounted")).not.toBeInTheDocument();
+  });
+
+  it("does not put her back into a live recording", async () => {
+    const { container } = renderRouted();
+    await waitFor(() =>
+      expect(container.querySelector('[data-runner="recall-section-report"]')).toBeTruthy(),
+    );
+    expect(container.querySelector('[data-runner="recall-section"]')).toBeFalsy();
+  });
+
+  it("reaches for the grade that was produced after she stopped", async () => {
+    getSectionGrade.mockResolvedValue(null);
+    renderRouted();
+    await waitFor(() => expect(getSectionGrade).toHaveBeenCalledWith("assign-1"));
+  });
+
+  /*
+   * The run whose rows all landed but whose completion write did not. It is
+   * finished and must go to the Report Card too -- and it must be closed with
+   * `completeSectionRun`, which writes status alone. `completeAssignment` would
+   * post a score derived from per-item verdicts a section does not have, which
+   * is a fabricated zero on a row the student can write to anyway (ADR 0019).
+   */
+  it("closes an unclosed section without inventing a score for it", async () => {
+    activityState.assignment = makeSectionAssignment("in_progress");
+    const { container } = renderRouted();
+    await waitFor(() => expect(completeSectionRun).toHaveBeenCalledWith("assign-1"));
+    expect(completeAssignment).not.toHaveBeenCalled();
+    expect(container.querySelector('[data-runner="recall-section-report"]')).toBeTruthy();
+  });
+});

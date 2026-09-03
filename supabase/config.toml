@@ -53,3 +53,8 @@ verify_jwt = false
 
 [functions.gcal-smoke]
 verify_jwt = true
+
+# Authenticates with its own worker secret, like the other sweepers, because a
+# scheduler has no user session to present.
+[functions.sweep-rrc-grading]
+verify_jwt = false

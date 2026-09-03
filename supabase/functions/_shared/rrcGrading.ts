@@ -361,3 +361,47 @@ export function gradeStimulus(entries: JudgeEntry[], reply: JudgeReply): Stimulu
     colourSpecific: reply.colourSpecific,
   };
 }
+
+/**
+ * Run `worker` over every item, at most `limit` of them in flight.
+ *
+ * A section is 22 stimuli and each one costs a judge call. Run end to end that
+ * is 22 round trips in series, which on the trial run exceeded the edge
+ * function's wall clock and returned 504 -- so the student's whole run produced
+ * no Report Card, having already been recorded, uploaded and transcribed
+ * correctly. Run at once it is one round trip's worth of waiting.
+ *
+ * Bounded rather than unbounded because the judge is a rate-limited API and a
+ * section is not the only thing that might be grading; 429s at the provider
+ * would trade one failure mode for another.
+ *
+ * Results come back in the order of `items`, not the order they finished. The
+ * caller writes them into a Report Card the student reads top to bottom, and a
+ * section whose stimuli arrive shuffled is worse than a slow one.
+ *
+ * Nothing here touches the network itself -- the worker does -- so this stays
+ * on the pure side of the file.
+ */
+export async function mapWithConcurrency<In, Out>(
+  items: In[],
+  limit: number,
+  worker: (item: In, index: number) => Promise<Out>,
+): Promise<Out[]> {
+  const results = new Array<Out>(items.length);
+  let next = 0;
+
+  const runner = async () => {
+    for (;;) {
+      const index = next++;
+      if (index >= items.length) return;
+      results[index] = await worker(items[index], index);
+    }
+  };
+
+  // `limit` runners share one cursor, so a slow item holds up only its own
+  // runner rather than a whole batch. Never more runners than items.
+  await Promise.all(
+    Array.from({ length: Math.max(1, Math.min(limit, items.length)) }, runner),
+  );
+  return results;
+}
