@@ -9,7 +9,7 @@ import {
   toDetails,
   type StimulusGrade,
 } from "../_shared/rrcGrading.ts";
-import { bigramOverlap, longestSharedRun } from "../_shared/rrcOverlap.ts";
+import { checkReciting } from "../_shared/rrcOverlap.ts";
 
 /**
  * Grade one finished Read, Recall, Colour section.
@@ -41,18 +41,6 @@ const corsHeaders = {
 /** Bumped when the prompt or the scoring changes, so a re-grade is legible. */
 const GRADER_VERSION = 1;
 const ASR_ENGINE = "deepgram/nova-3";
-
-/**
- * Reciting thresholds.
- *
- * Own-words is the one text comparison in RRC that means what it looks like:
- * she is retelling a sentence she just read, so the vocabulary genuinely is
- * shared and high overlap is the failure rather than the success. A long
- * verbatim run is the stronger signal; the bigram share catches a run that is
- * merely close throughout.
- */
-const RECITING_RUN = 12;
-const RECITING_BIGRAM = 0.5;
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
 const DEAD_AIR_SECONDS = 4;
@@ -319,7 +307,14 @@ serve(async (req) => {
      * field a Report Card must not read as a zero: a Detail she did not carry
      * and a Detail nobody asked about look identical in `missed` otherwise.
      */
-    type Graded = StimulusGrade & { slug: string; dead_air_seconds: number; ungraded?: string };
+    type Graded = StimulusGrade & {
+      slug: string;
+      dead_air_seconds: number;
+      /** What Reciting was decided on. Absent where there was nothing to measure. */
+      reciting_run?: number;
+      reciting_bigram?: number;
+      ungraded?: string;
+    };
 
     // Rows whose slug is not in the assignment's own snapshot are not this
     // section's work and were skipped by the loop this replaced.
@@ -385,14 +380,17 @@ serve(async (req) => {
         const raw = await judge(buildJudgePrompt({ stimulus: stimulusText, entries, spoken }));
         const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)));
 
-        // Reciting is decided in code, not by the model: it is a measurement.
-        const run = longestSharedRun(spoken, stimulusText);
-        const bigram = bigramOverlap(spoken, stimulusText);
-        grade.reciting = run >= RECITING_RUN || bigram >= RECITING_BIGRAM;
+        // Reciting is decided in code, not by the model: it is a measurement,
+        // and the reading is kept alongside the verdict so the thresholds can
+        // be argued with from real runs rather than reconstructed later.
+        const recital = checkReciting(spoken, stimulusText);
+        grade.reciting = recital.reciting;
 
         return {
           slug,
           ...grade,
+          reciting_run: recital.run,
+          reciting_bigram: recital.bigram,
           dead_air_seconds: deadAir(words, segments.filter((s) => s.phase === "recalling")),
         };
       } catch (e) {

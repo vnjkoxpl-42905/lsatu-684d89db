@@ -57,3 +57,63 @@ export function bigramOverlap(response: string, source: string): number {
   }
   return shared / total;
 }
+
+/**
+ * The Reciting thresholds, and where they come from.
+ *
+ * Calibrated 2026-09-03 against three measured populations rather than chosen.
+ * The first pair, 12 and 0.50, was neither measured nor written down, and it
+ * flagged **all 22** of Joshua's own model runs -- the recordings that DEFINE a
+ * correct performance -- plus 4 of 21 correct stimuli in the first real trial.
+ * Telling a student she recited when she did not is the drill's named failure
+ * pinned on her for our arithmetic.
+ *
+ *                                    longest run    bigram share
+ *   Joshua, reading aloud + recall       19 - 43    0.180 - 0.404
+ *   a student, done correctly             3 - 18    0.145 - 0.652
+ *   a deliberate recite                        48            0.989
+ *
+ * Two things fall out of that table.
+ *
+ * The longest run is a poor primary signal. Joshua reads each chunk aloud
+ * before recalling it, so his runs sit at 19 to 43 while he is doing the drill
+ * perfectly; a single sentence read out loud pins the measure regardless of
+ * everything said around it. The bigram share is a proportion of EVERYTHING
+ * said, so the same reading-aloud dilutes rather than inflates it -- which is
+ * why his share never passes 0.404 even while reading the whole stimulus.
+ *
+ * So the share is the real test and the run is a backstop, set above the entire
+ * reading-aloud population rather than below it. At these two numbers all 22
+ * model runs and all 21 correct stimuli come back clean and the deliberate
+ * recite is still caught.
+ *
+ * They are deliberately set to avoid false positives rather than to catch every
+ * marginal case: a Reciting flag tells a student something about herself, and a
+ * missed one only fails to. One deliberate recite is thin evidence for the
+ * upper bound, which is why `reciting_run` and `reciting_bigram` are now
+ * recorded on every stimulus -- so the next calibration reads real runs instead
+ * of reconstructing them.
+ */
+export const RECITING_RUN = 45;
+export const RECITING_BIGRAM = 0.8;
+
+export interface RecitingCheck {
+  reciting: boolean;
+  /** The longest run of words shared with the stimulus, in order. */
+  run: number;
+  /** The share of what she said whose word pairs came from the stimulus. */
+  bigram: number;
+}
+
+/**
+ * Whether this is a retelling or a recital, decided in code and not by a model.
+ *
+ * It is a measurement, so it is measured. The numbers come back with the
+ * verdict because a flag with no reading behind it cannot be argued with, and
+ * because the thresholds above were only fixable by going and measuring.
+ */
+export function checkReciting(spoken: string, stimulus: string): RecitingCheck {
+  const run = longestSharedRun(spoken, stimulus);
+  const bigram = bigramOverlap(spoken, stimulus);
+  return { run, bigram: Math.round(bigram * 1000) / 1000, reciting: run >= RECITING_RUN || bigram >= RECITING_BIGRAM };
+}
