@@ -76,6 +76,8 @@ function authorize(req: Request): boolean {
 
 interface Candidate {
   id: string;
+  /** Which sitting needs grading. Each Attempt keeps its own Report Card. */
+  attempt: number;
   /** What made it a candidate, carried through to the response so a sweep is legible. */
   reason: "never-graded" | "graded-partial";
   since: string | null;
@@ -126,32 +128,51 @@ Deno.serve(async (req) => {
      */
     const { data: responded, error: rErr } = await admin
       .from("activity_item_responses")
-      .select("assignment_id")
+      .select("assignment_id, attempt_no")
       .in("assignment_id", ids);
     if (rErr) throw rErr;
-    const hasWork = new Set((responded ?? []).map((r) => r.assignment_id as string));
+    /*
+     * The newest sitting of each assignment, which is the one a grade is about.
+     *
+     * A section can be run more than once against the same assignment, and each
+     * sitting keeps its own Report Card. Asking only "does this assignment have
+     * a grade" would call a second run graded because the first one was, and
+     * that is the exact shape of the bug the per-Attempt key was added to fix:
+     * the run nothing will ever look at again is the one that needed sweeping.
+     */
+    const latestAttempt = new Map<string, number>();
+    for (const r of responded ?? []) {
+      const id = r.assignment_id as string;
+      const n = Number(r.attempt_no ?? 1);
+      latestAttempt.set(id, Math.max(latestAttempt.get(id) ?? 0, n));
+    }
 
     const { data: grades, error: gErr } = await admin
       .from("activity_section_grades")
-      .select("assignment_id, section")
+      .select("assignment_id, attempt_no, section")
       .in("assignment_id", ids);
     if (gErr) throw gErr;
     const gradeFor = new Map(
-      (grades ?? []).map((g) => [g.assignment_id as string, g.section as Record<string, unknown> | null]),
+      (grades ?? []).map((g) => [
+        `${g.assignment_id as string}:${Number(g.attempt_no ?? 1)}`,
+        g.section as Record<string, unknown> | null,
+      ]),
     );
 
     const candidates: Candidate[] = [];
     for (const a of aged) {
-      if (!hasWork.has(a.id)) continue;
-      if (!gradeFor.has(a.id)) {
-        candidates.push({ id: a.id, reason: "never-graded", since: a.completed_at ?? a.started_at });
+      const attempt = latestAttempt.get(a.id);
+      if (attempt === undefined) continue;
+      const key = `${a.id}:${attempt}`;
+      if (!gradeFor.has(key)) {
+        candidates.push({ id: a.id, attempt, reason: "never-graded", since: a.completed_at ?? a.started_at });
         continue;
       }
       // `complete: false` is the grader saying so itself. A grade written before
       // that flag existed has no `complete` key and is left alone: it is a real
       // grade, and re-driving every one of them would be a re-grade, not a sweep.
-      if (gradeFor.get(a.id)?.complete === false) {
-        candidates.push({ id: a.id, reason: "graded-partial", since: a.completed_at ?? a.started_at });
+      if (gradeFor.get(key)?.complete === false) {
+        candidates.push({ id: a.id, attempt, reason: "graded-partial", since: a.completed_at ?? a.started_at });
       }
     }
 
@@ -176,7 +197,11 @@ Deno.serve(async (req) => {
             apikey: serviceKey,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ assignmentId: candidate.id, force: candidate.reason === "graded-partial" }),
+          body: JSON.stringify({
+            assignmentId: candidate.id,
+            attempt: candidate.attempt,
+            force: candidate.reason === "graded-partial",
+          }),
         });
         const body = await res.json().catch(() => ({}));
         swept.push({

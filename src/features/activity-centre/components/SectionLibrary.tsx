@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { listSectionChoices, startSectionAttempt, type SectionChoice } from "../api/activitiesClient";
-import type { ActivityAssignmentSummary } from "../api/types";
+import {
+  listMySectionGrades,
+  listSectionChoices,
+  startSectionAttempt,
+  type SectionChoice,
+} from "../api/activitiesClient";
+import type { ActivityAssignmentSummary, SectionGradeStub } from "../api/types";
 
 /**
  * The sections she can run, and what she has already done.
@@ -30,25 +35,55 @@ export interface SectionLibraryProps {
   attempts: ActivityAssignmentSummary[];
   /** Called with the new assignment id once an Attempt has been created. */
   onStart: (assignmentId: string) => void;
+  /**
+   * Called with the assignment of an Attempt she wants to look at again.
+   *
+   * Its own Report Card is what opens: a completed section routes there rather
+   * than to the generic summary, from any device and at any later date.
+   */
+  onOpenAttempt?: (assignmentId: string) => void;
   /** Injected in tests. */
   loadChoices?: () => Promise<SectionChoice[]>;
+  loadGrades?: () => Promise<SectionGradeStub[]>;
   beginAttempt?: (activityId: string) => Promise<string>;
 }
 
-function attemptLabel(a: ActivityAssignmentSummary): string {
+function attemptDate(a: ActivityAssignmentSummary): string {
   const when = new Date(a.completed_at ?? a.created_at);
-  const date = when.toLocaleDateString(undefined, { day: "numeric", month: "short" });
+  return when.toLocaleDateString(undefined, { day: "numeric", month: "short" });
+}
+
+/**
+ * What one past Attempt says about itself.
+ *
+ * Three states, and they are genuinely different: a run that was never
+ * finished, a finished one still being marked, and a marked one with a number.
+ * The old list said "done" for all three and led nowhere, so an Attempt she had
+ * spent twenty-five minutes on was a line of grey text.
+ */
+function attemptLabel(a: ActivityAssignmentSummary, grade: SectionGradeStub | undefined): string {
+  const date = attemptDate(a);
   if (a.status !== "completed") return `${date} · not finished`;
-  return `${date} · done`;
+  if (!grade) return `${date} · still being marked`;
+  return `${date} · ${grade.section.mean_coverage}% carried`;
 }
 
 export function SectionLibrary({
   attempts,
   onStart,
+  onOpenAttempt,
   loadChoices = listSectionChoices,
+  loadGrades = listMySectionGrades,
   beginAttempt = startSectionAttempt,
 }: SectionLibraryProps) {
   const [choices, setChoices] = useState<SectionChoice[] | null>(null);
+  /**
+   * Her Report Cards, by assignment.
+   *
+   * Loaded beside the sections and never waited on: the list is useful without
+   * them, and a failed read costs a number on a row rather than the screen.
+   */
+  const [grades, setGrades] = useState<Map<string, SectionGradeStub>>(new Map());
   const [error, setError] = useState<string | null>(null);
   const [starting, setStarting] = useState<string | null>(null);
 
@@ -68,6 +103,26 @@ export function SectionLibrary({
       cancelled = true;
     };
   }, [loadChoices]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const rows = await loadGrades();
+        if (cancelled) return;
+        // Newest Attempt per assignment. `listMySectionGrades` returns them
+        // newest first, so the first one seen for an assignment wins.
+        const byAssignment = new Map<string, SectionGradeStub>();
+        for (const g of rows) if (!byAssignment.has(g.assignment_id)) byAssignment.set(g.assignment_id, g);
+        setGrades(byAssignment);
+      } catch {
+        // A missing number is a missing number. The list still works.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [loadGrades]);
 
   /** Her attempts, newest first, grouped by which section they were on. */
   const bySection = useMemo(() => {
@@ -133,12 +188,37 @@ export function SectionLibrary({
             </div>
 
             {done.length > 0 && (
+              /*
+               * Every Attempt, and every one of them a way back in.
+               *
+               * The Report Card used to exist only in the tab that produced it:
+               * this list rendered the same runs as plain text, so a grade she
+               * could not have seen -- grading finishes minutes after she stops
+               * -- was unreachable for ever after. A finished Attempt opens on
+               * its own Report Card; an unfinished one is not a run and does
+               * not pretend to lead anywhere.
+               */
               <ul className="mt-3 flex flex-col gap-1">
-                {done.map((a, i) => (
-                  <li key={a.id} className="text-xs text-muted-foreground">
-                    Attempt {done.length - i} · {attemptLabel(a)}
-                  </li>
-                ))}
+                {done.map((a, i) => {
+                  const grade = grades.get(a.id);
+                  const label = `Attempt ${done.length - i} · ${attemptLabel(a, grade)}`;
+                  const reachable = a.status === "completed" && onOpenAttempt !== undefined;
+                  return (
+                    <li key={a.id} className="text-xs text-muted-foreground">
+                      {reachable ? (
+                        <button
+                          type="button"
+                          className="rounded text-left underline decoration-dotted underline-offset-4 hover:text-foreground"
+                          onClick={() => onOpenAttempt?.(a.id)}
+                        >
+                          {label}
+                        </button>
+                      ) : (
+                        label
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             )}
 

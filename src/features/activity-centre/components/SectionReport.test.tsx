@@ -16,6 +16,7 @@ vi.mock("../api/activitiesClient", () => ({
 
 const grade: SectionGrade = {
   assignment_id: "a1",
+  attempt_no: 1,
   student_id: "s1",
   source_section: "PT105.S2",
   transcript_engine: "deepgram/nova-3",

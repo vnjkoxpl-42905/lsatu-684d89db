@@ -20,12 +20,14 @@ const attempt = (over: Partial<ActivityAssignmentSummary>): ActivityAssignmentSu
   }) as ActivityAssignmentSummary;
 
 const load = () => Promise.resolve(choices);
+/** No Report Cards unless a test says otherwise; the list works without them. */
+const noGrades = () => Promise.resolve([]);
 
 describe("choosing a section", () => {
   it("lists every section and never hides one she has done", async () => {
     // The regular picker drops a section she has sat. Right at 200 sections,
     // wrong at three: she would run out in three nights.
-    render(<SectionLibrary attempts={[attempt({})]} onStart={vi.fn()} loadChoices={load} />);
+    render(<SectionLibrary attempts={[attempt({})]} onStart={vi.fn()} loadChoices={load} loadGrades={noGrades} />);
     await screen.findByText("PT102.S3");
     expect(screen.getByText("PT105.S2")).toBeInTheDocument();
   });
@@ -33,7 +35,7 @@ describe("choosing a section", () => {
   it("shows the clock and not the stimulus count", async () => {
     // A stimulus is our grain, not hers, and the counts differ per section for
     // a reason she cannot see: two questions can share a stimulus.
-    render(<SectionLibrary attempts={[]} onStart={vi.fn()} loadChoices={load} />);
+    render(<SectionLibrary attempts={[]} onStart={vi.fn()} loadChoices={load} loadGrades={noGrades} />);
     await screen.findByText("PT102.S3");
     expect(screen.getAllByText("25 min").length).toBe(2);
     expect(screen.queryByText(/22 stimuli/)).not.toBeInTheDocument();
@@ -49,6 +51,7 @@ describe("choosing a section", () => {
         ]}
         onStart={vi.fn()}
         loadChoices={load}
+        loadGrades={noGrades}
       />,
     );
     await screen.findByText("PT105.S2");
@@ -76,5 +79,82 @@ describe("choosing a section", () => {
     await screen.findByText("PT102.S3");
     fireEvent.click(screen.getAllByRole("button", { name: "Start" })[0]);
     expect(await screen.findByText(/Could not start that section/)).toBeInTheDocument();
+  });
+});
+
+/**
+ * A past Attempt is a way back to its Report Card.
+ *
+ * Grading finishes minutes after she stops, so the Report Card is something she
+ * comes BACK to -- and coming back was the one path that did not lead to it.
+ * This list rendered the same runs as flat grey text, which meant a grade she
+ * could not possibly have seen when it was produced was unreachable for ever
+ * afterwards.
+ */
+describe("getting back to a Report Card", () => {
+  const graded = () =>
+    Promise.resolve([
+      {
+        assignment_id: "r1",
+        attempt_no: 1,
+        source_section: "PT105.S2",
+        graded_at: "2026-09-01T10:40:00Z",
+        section: { mean_coverage: 91 },
+      },
+    ] as never);
+
+  it("opens that Attempt's own assignment", async () => {
+    const onOpenAttempt = vi.fn();
+    render(
+      <SectionLibrary
+        attempts={[attempt({ id: "r1" })]}
+        onStart={vi.fn()}
+        onOpenAttempt={onOpenAttempt}
+        loadChoices={load}
+        loadGrades={graded}
+      />,
+    );
+    fireEvent.click(await screen.findByRole("button", { name: /Attempt 1/ }));
+    expect(onOpenAttempt).toHaveBeenCalledWith("r1");
+  });
+
+  it("says what she scored, rather than only that it is done", async () => {
+    render(
+      <SectionLibrary
+        attempts={[attempt({ id: "r1" })]}
+        onStart={vi.fn()}
+        onOpenAttempt={vi.fn()}
+        loadChoices={load}
+        loadGrades={graded}
+      />,
+    );
+    expect(await screen.findByText(/91% carried/)).toBeInTheDocument();
+  });
+
+  it("says a finished run is still being marked rather than showing it as scored", async () => {
+    render(
+      <SectionLibrary
+        attempts={[attempt({ id: "r1" })]}
+        onStart={vi.fn()}
+        onOpenAttempt={vi.fn()}
+        loadChoices={load}
+        loadGrades={noGrades}
+      />,
+    );
+    expect(await screen.findByText(/still being marked/)).toBeInTheDocument();
+  });
+
+  it("does not offer a way into a run that was never finished", async () => {
+    render(
+      <SectionLibrary
+        attempts={[attempt({ id: "r1", status: "in_progress", completed_at: null })]}
+        onStart={vi.fn()}
+        onOpenAttempt={vi.fn()}
+        loadChoices={load}
+        loadGrades={noGrades}
+      />,
+    );
+    expect(await screen.findByText(/not finished/)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Attempt 1/ })).not.toBeInTheDocument();
   });
 });

@@ -35,7 +35,20 @@ export function SectionLibraryPanel({ onExit }: { onExit?: () => void }) {
       </div>
 
       <div className="mt-8">
-        <SectionLibrary attempts={assignments} onStart={(id) => navigate(`/activities/${id}`)} />
+        {/*
+          * Starting and reopening are the same navigation, on purpose.
+          *
+          * An Attempt IS its assignment, so its Report Card is at the
+          * assignment's own address -- which is what makes a past Attempt
+          * reachable from any device at any later date rather than only from
+          * the tab that produced it. A completed section routes itself to the
+          * card rather than to the runner.
+          */}
+        <SectionLibrary
+          attempts={assignments}
+          onStart={(id) => navigate(`/activities/${id}`)}
+          onOpenAttempt={(id) => navigate(`/activities/${id}`)}
+        />
       </div>
     </div>
   );

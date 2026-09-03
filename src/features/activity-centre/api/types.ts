@@ -440,8 +440,26 @@ export interface SectionGradeSummary {
   clock: Record<string, number>;
 }
 
+/**
+ * Just enough of a Report Card to list it.
+ *
+ * The Attempt list on the section library needs a date and one number per
+ * sitting; the grade itself carries a full transcript and a judgement per
+ * stimulus, and pulling every one of those to draw a line of grey text would
+ * make opening the library the heaviest read in the product.
+ */
+export interface SectionGradeStub {
+  assignment_id: string;
+  attempt_no: number;
+  source_section: string;
+  section: SectionGradeSummary;
+  graded_at: string;
+}
+
 export interface SectionGrade {
   assignment_id: string;
+  /** Which sitting this is. Each Attempt keeps its own Report Card. */
+  attempt_no: number;
   student_id: string;
   source_section: string;
   transcript_engine: string;

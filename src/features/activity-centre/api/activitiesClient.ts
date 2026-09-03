@@ -12,7 +12,7 @@ import type {
   Verdict,
 } from "./types";
 import type { RunScore } from "../progress";
-import type { SectionGrade } from "./types";
+import type { SectionGrade, SectionGradeStub } from "./types";
 import type { Accommodation } from "../recall/section";
 
 // Thin data layer for the Activity Centre. The jsonb columns (instructions,
@@ -377,15 +377,67 @@ export async function requestSectionGrading(assignmentId: string): Promise<void>
  * could set herself (ADR 0019).
  */
 export async function getSectionGrade(assignmentId: string): Promise<SectionGrade | null> {
+  const rows = await readSectionGrades(assignmentId);
+  return rows[0] ?? null;
+}
+
+/**
+ * Student: every Report Card this assignment has produced, newest Attempt
+ * first.
+ *
+ * There can be more than one. A section is judged whole and each sitting keeps
+ * its own grade, "because the point of running a section twice is seeing what
+ * changed" -- so the read that answers "how did I do" is the first row, and the
+ * read that answers "am I getting better at this one" is the list.
+ */
+export async function listSectionGrades(assignmentId: string): Promise<SectionGrade[]> {
+  return readSectionGrades(assignmentId);
+}
+
+/**
+ * Student: the Coverage of every section she has ever been graded on.
+ *
+ * Deliberately not the whole grade. This feeds the Attempt list on the section
+ * library, which needs a number and a date per Attempt and would otherwise pull
+ * every transcript she has ever produced across every section to draw a line of
+ * small grey text. RLS scopes it to her own rows.
+ */
+export async function listMySectionGrades(): Promise<SectionGradeStub[]> {
+  const table = supabase.from("activity_section_grades" as never) as unknown as {
+    select: (columns: string) => {
+      order: (
+        column: string,
+        opts: { ascending: boolean },
+      ) => Promise<{ data: unknown; error: { code?: string; message?: string } | null }>;
+    };
+  };
+  const { data, error } = await table
+    .select("assignment_id, attempt_no, source_section, section, graded_at")
+    .order("graded_at", { ascending: false });
+  if (error) {
+    if (isUnknownColumn(error) || error.code === "42P01") return [];
+    throw error;
+  }
+  return (data as SectionGradeStub[] | null) ?? [];
+}
+
+/**
+ * The one read both of the above are made of.
+ *
+ * Ordered by Attempt rather than by `graded_at`, because a re-grade of Attempt 1
+ * -- which the sweeper does, and `force` does -- gives it a newer timestamp than
+ * Attempt 2 and would otherwise make the older sitting look like the latest.
+ */
+async function readSectionGrades(assignmentId: string): Promise<SectionGrade[]> {
   /*
    * `activity_section_grades` arrives with its own migration, and `types.ts` is
    * generated from the DEPLOYED schema, so the generated client does not know
    * the table until types are pulled against a database that has it. Same
    * situation, and the same remedy, as the `rrc` column in `RecallRunner`.
    *
-   * Narrowed to the two calls actually used rather than cast to `any`, so a
-   * typo in the column name is still a type error. Delete the shim once the
-   * types are regenerated.
+   * Narrowed to the calls actually used rather than cast to `any`, so a typo in
+   * a column name is still a type error. Delete the shim once the types are
+   * regenerated.
    */
   const table = supabase.from("activity_section_grades" as never) as unknown as {
     select: (columns: string) => {
@@ -393,22 +445,25 @@ export async function getSectionGrade(assignmentId: string): Promise<SectionGrad
         column: "assignment_id",
         value: string,
       ) => {
-        maybeSingle: () => Promise<{
-          data: unknown;
-          error: { code?: string; message?: string } | null;
-        }>;
+        order: (
+          column: string,
+          opts: { ascending: boolean },
+        ) => Promise<{ data: unknown; error: { code?: string; message?: string } | null }>;
       };
     };
   };
 
-  const { data, error } = await table.select("*").eq("assignment_id", assignmentId).maybeSingle();
+  const { data, error } = await table
+    .select("*")
+    .eq("assignment_id", assignmentId)
+    .order("attempt_no", { ascending: false });
   // The table arrives with its own migration. A Report Card that cannot load is
   // not worth taking the finished-run screen down for.
   if (error) {
-    if (isUnknownColumn(error) || error.code === "42P01") return null;
+    if (isUnknownColumn(error) || error.code === "42P01") return [];
     throw error;
   }
-  return (data as SectionGrade | null) ?? null;
+  return (data as SectionGrade[] | null) ?? [];
 }
 
 // --- Admin -----------------------------------------------------------------

@@ -171,7 +171,7 @@ serve(async (req) => {
     const auth = req.headers.get("Authorization");
     if (!auth) return json({ error: "unauthorized" }, 401);
 
-    const { assignmentId, force } = await req.json();
+    const { assignmentId, force, attempt: askedFor } = await req.json();
     if (!assignmentId) return json({ error: "assignmentId is required" }, 400);
 
     const admin = createClient(
@@ -228,17 +228,6 @@ serve(async (req) => {
      * away, and that row must not then look finished to the sweeper -- so an
      * incomplete grade is re-driven on sight, without needing `force`.
      */
-    const { data: existing } = await admin
-      .from("activity_section_grades")
-      .select("assignment_id, graded_at, grader_version, section")
-      .eq("assignment_id", assignmentId)
-      .maybeSingle();
-    const existingIsComplete = (existing?.section as Record<string, unknown> | null)?.complete !== false;
-    if (existing && existingIsComplete && !force) {
-      const { section: _section, ...summary } = existing;
-      return json({ status: "already-graded", ...summary });
-    }
-
     const { data: allResponses, error: rErr } = await admin
       .from("activity_item_responses")
       .select("item_order, attempt_no, response_text, rrc")
@@ -256,8 +245,38 @@ serve(async (req) => {
      * two sittings, with the audio of only the last. The newest Attempt is the
      * run this grade is about.
      */
-    const attempt = Math.max(...allResponses.map((r) => Number(r.attempt_no ?? 1)));
+    const latest = Math.max(...allResponses.map((r) => Number(r.attempt_no ?? 1)));
+    const attempt = Number.isFinite(Number(askedFor)) && Number(askedFor) > 0 ? Number(askedFor) : latest;
     const responses = allResponses.filter((r) => Number(r.attempt_no ?? 1) === attempt);
+    if (!responses.length) return json({ error: "no responses for that attempt", attempt }, 409);
+
+    /*
+     * Already graded is a success, not a conflict. The client fires this and
+     * the sweeper fires it again; the second one must be harmless.
+     *
+     * Checked per ATTEMPT, and therefore only once the attempt is known, which
+     * is why it sits below the read rather than above it. Keyed on the
+     * assignment alone it answered "has this section ever been graded", so a
+     * second sitting was reported as already-graded and never marked -- and if
+     * it was marked, it wrote over the first sitting's Report Card. The one
+     * this grade is about is the one that has to be absent.
+     *
+     * Unless the grade on record is a partial one. A section whose judging
+     * stage lost some stimuli writes what it has rather than throwing the run
+     * away, and that row must not then look finished to the sweeper -- so an
+     * incomplete grade is re-driven on sight, without needing `force`.
+     */
+    const { data: existing } = await admin
+      .from("activity_section_grades")
+      .select("assignment_id, attempt_no, graded_at, grader_version, section")
+      .eq("assignment_id", assignmentId)
+      .eq("attempt_no", attempt)
+      .maybeSingle();
+    const existingIsComplete = (existing?.section as Record<string, unknown> | null)?.complete !== false;
+    if (existing && existingIsComplete && !force) {
+      const { section: _section, ...summary } = existing;
+      return json({ status: "already-graded", ...summary });
+    }
 
     const first = responses[0].rrc as Record<string, unknown>;
     const audioPath = first?.audio_path as string | null;
@@ -488,6 +507,7 @@ serve(async (req) => {
     const { error: wErr } = await admin.from("activity_section_grades").upsert(
       {
         assignment_id: assignmentId,
+        attempt_no: attempt,
         student_id: assignment.student_id,
         source_section: assignment.source_section,
         transcript_engine: ASR_ENGINE,
@@ -497,7 +517,7 @@ serve(async (req) => {
         section,
         graded_at: new Date().toISOString(),
       },
-      { onConflict: "assignment_id" },
+      { onConflict: "assignment_id,attempt_no" },
     );
     if (wErr) throw wErr;
 
