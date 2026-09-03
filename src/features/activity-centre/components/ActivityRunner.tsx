@@ -22,6 +22,7 @@ import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
 import { SectionRunner } from "../recall/SectionRunner";
+import { recoverPendingRecordings } from "../recall/recoverRecordings";
 import { SectionLibraryPanel } from "./SectionLibraryPanel";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
 import { CompletionSummary } from "./CompletionSummary";
@@ -285,6 +286,21 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           setHydrated(true);
           return;
         }
+      }
+
+      /*
+       * Rescue any recording left behind by a section that never finished.
+       *
+       * A crash or a closed lid used to cost the whole sitting. The stimulus
+       * rows survive it now, and the audio survives on her own machine -- this
+       * is the moment it gets put where those rows already say it is.
+       *
+       * Awaited so a recovered file is in place before the Report Card below
+       * starts asking for a grade, and swallowed so it can never be the reason
+       * this screen fails to open.
+       */
+      if (assignment.item_format === "spoken-recall" && !readOnly) {
+        await recoverPendingRecordings(assignment.student_id);
       }
 
       const progress = reconstructProgress(items, log);

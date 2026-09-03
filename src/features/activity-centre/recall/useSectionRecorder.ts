@@ -74,9 +74,34 @@ function pickMimeType(): string | undefined {
   return candidates.find((t) => supported.isTypeSupported(t));
 }
 
-export function useSectionRecorder(now: () => number = () => Date.now()) {
+/**
+ * How often the backup recorder hands over a piece.
+ *
+ * The most that can ever be lost to a crash. Ten seconds is short enough that
+ * nothing meaningful goes missing and long enough that a twenty-minute section
+ * costs about 130 small writes to her own disk, which is nothing.
+ */
+const BACKUP_SLICE_MS = 10_000;
+
+export function useSectionRecorder(
+  now: () => number = () => Date.now(),
+  /**
+   * Called with each piece of the parallel backup copy, in order.
+   *
+   * Optional, and the drill runs identically without it. The recorder does not
+   * know or care where the pieces go; keeping the storage decision outside this
+   * hook is what lets the backup be swapped or switched off without touching
+   * the thing that produces the real recording.
+   */
+  onBackupChunk?: (blob: Blob, seq: number) => void,
+) {
   const recorder = useRef<MediaRecorder | null>(null);
+  const backup = useRef<MediaRecorder | null>(null);
+  const backupSeq = useRef(0);
   const stream = useRef<MediaStream | null>(null);
+  /** Kept in a ref so the callback can change without restarting a recorder. */
+  const onChunk = useRef(onBackupChunk);
+  onChunk.current = onBackupChunk;
   const parts = useRef<Blob[]>([]);
   const startedAt = useRef<number | null>(null);
   const segments = useRef<RecordingSegment[]>([]);
@@ -102,6 +127,33 @@ export function useSectionRecorder(now: () => number = () => Date.now()) {
         if (e.data.size > 0) parts.current.push(e.data);
       };
       rec.start();
+
+      /*
+       * The second recorder, on the same microphone.
+       *
+       * `rec` above is the real recording and is deliberately left alone: asked
+       * for pieces as it goes, it can no longer write its own duration and the
+       * file stops being seekable, which is what Clips are cut with. This one
+       * exists only so a crash does not cost twenty minutes, and a recovered
+       * copy only has to be good enough to grade.
+       *
+       * Its failure is swallowed whole. A browser that will not run two
+       * recorders at once still runs the drill.
+       */
+      if (onChunk.current) {
+        try {
+          const copy = new MediaRecorder(media, mimeType ? { mimeType } : undefined);
+          backupSeq.current = 0;
+          copy.ondataavailable = (e) => {
+            if (e.data.size > 0) onChunk.current?.(e.data, backupSeq.current++);
+          };
+          copy.start(BACKUP_SLICE_MS);
+          backup.current = copy;
+        } catch (e) {
+          console.error("[rrc] no local backup copy for this run", e);
+        }
+      }
+
       stream.current = media;
       recorder.current = rec;
       startedAt.current = now();
@@ -144,6 +196,14 @@ export function useSectionRecorder(now: () => number = () => Date.now()) {
       rec.onstop = () => resolve(new Blob(parts.current, { type: mimeType }));
     });
     rec.stop();
+    // Stopped before the tracks are, so its last piece is emitted rather than
+    // cut off with the microphone.
+    try {
+      backup.current?.stop();
+    } catch {
+      // Already stopped, or never started. Neither is worth reporting.
+    }
+    backup.current = null;
     stream.current?.getTracks().forEach((t) => t.stop());
     recorder.current = null;
     stream.current = null;
