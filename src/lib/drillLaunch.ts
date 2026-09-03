@@ -668,6 +668,10 @@ export function expandToLegacySearch(
 
     case 'questions':
       asQuestionList(launch.qids);
+      // `asQuestionList` writes the common case. A handover that named a
+      // different mode keeps it: the runner reads `natural-drill` down a
+      // separate branch, so flattening it here would quietly change the drill.
+      if (launch.legacy?.mode) p.set('mode', launch.legacy.mode);
       if (launch.legacy?.isGuidedDrill) p.set('guided', '1');
       if (launch.legacy?.guidedDurationMinutes) {
         p.set('guidedDurationMinutes', String(launch.legacy.guidedDurationMinutes));

@@ -412,3 +412,30 @@ describe('a short link expands to something the runner understands', () => {
   });
 
 });
+
+describe('a handover keeps the mode it named', () => {
+  // `natural-drill` has no live launch site today, but the runner reads it down
+  // a separate branch. Expanding it as a type-drill would be a silent change of
+  // drill, so the round-trip is pinned here rather than left to be rediscovered.
+  it('carries natural-drill through state -> address bar -> route state', () => {
+    const launch = launchFromRouteState({
+      mode: 'natural-drill',
+      config: { qtypes: [], difficulties: [], pts: [], count: 2, selectedQids: ['PT1-S1-Q1', 'PT1-S1-Q2'] },
+    } as never);
+    expect(launch).not.toBeNull();
+
+    const search = expandToLegacySearch(launch!);
+    expect(new URLSearchParams(search).get('mode')).toBe('natural-drill');
+
+    const back = parseDrillLaunch(new URLSearchParams(search));
+    expect(toDrillRouteState(back!).mode).toBe('natural-drill');
+  });
+
+  it('still writes practice-set out as the type-drill the runner reads', () => {
+    const launch = launchFromRouteState({
+      mode: 'practice-set',
+      config: { qtypes: [], difficulties: [], pts: [], count: 1, selectedQids: ['PT1-S1-Q1'] },
+    } as never);
+    expect(new URLSearchParams(expandToLegacySearch(launch!)).get('mode')).toBe('type-drill');
+  });
+});
