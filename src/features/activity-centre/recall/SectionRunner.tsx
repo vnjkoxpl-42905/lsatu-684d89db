@@ -460,6 +460,16 @@ function RunBody({
   const buildRow = useCallback(
     (r: StimulusRecord, said: ReturnType<typeof transcript>, sectionTotalSeconds: number | null) => {
       const segments = segmentsByOrder.current.get(r.order) ?? [];
+      /*
+       * Every window closed so far, not just this stimulus's.
+       *
+       * The transcript is cut against the whole timeline rather than against
+       * one stimulus's windows in isolation, because the boundaries ARE a
+       * partition of the run and slicing them separately let two stimuli claim
+       * the same words. That is how 21 rows in 22 came to store the previous
+       * stimulus's recall.
+       */
+      const timeline = [...segmentsByOrder.current.values()].flat();
       const path = audioPath();
       return {
         assignment_id: assignmentId,
@@ -482,7 +492,7 @@ function RunBody({
           audio_path: path,
           audio_duration_ms: null,
           audio_segments: segments,
-          transcript_segments: sliceTranscript(said, segments),
+          transcript_segments: sliceTranscript(said, segments, timeline),
           transcript_source: said.length > 0 ? "browser-speech" : null,
         },
       };
