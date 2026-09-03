@@ -119,11 +119,17 @@ export function useSectionRecorder(now: () => number = () => Date.now()) {
    * inside the loop -- which is safe because it touches refs and no network.
    */
   const mark = useCallback(
-    (segment: SegmentBody) => {
-      if (startedAt.current === null) return;
+    (segment: SegmentBody): RecordingSegment | null => {
+      if (startedAt.current === null) return null;
       const at = now() - startedAt.current;
-      segments.current.push({ ...segment, startMs: openAt.current, endMs: at });
+      const closed: RecordingSegment = { ...segment, startMs: openAt.current, endMs: at };
+      segments.current.push(closed);
       openAt.current = at;
+      // Handed back as well as kept, so a caller saving one stimulus as it
+      // finishes can carry that stimulus's own portions with it. Without this
+      // the index is only readable at `stop`, which is the one moment a crash
+      // means it never arrives.
+      return closed;
     },
     [now],
   );
@@ -155,5 +161,17 @@ export function useSectionRecorder(now: () => number = () => Date.now()) {
    */
   const getStream = useCallback(() => stream.current, []);
 
-  return { start, mark, stop, error, recording, getStream };
+  /**
+   * The container the recorder settled on, readable from the first stimulus.
+   *
+   * The file name depends on it, and a row written before the section ends has
+   * to name the file it will belong to. Falls back to the type the picker would
+   * have chosen, so this answers even before the microphone opens.
+   */
+  const getMimeType = useCallback(
+    () => recorder.current?.mimeType || pickMimeType() || "audio/webm",
+    [],
+  );
+
+  return { start, mark, stop, error, recording, getStream, getMimeType };
 }

@@ -11,6 +11,12 @@ import { createClient } from "npm:@supabase/supabase-js@2";
  * `docs/specs/2026-09-01-rrc-section-grader.md` §4 promised and nothing
  * delivered.
  *
+ * It re-drives a run only once that run is FINISHED. Stimuli are written as
+ * they happen now, so a half-done section has rows too, and rows are no longer
+ * evidence that anything is over. A section is the unit of work and half a
+ * section is not a partial score, so the finished mark is the gate. Saving and
+ * judging are different acts.
+ *
  * It re-drives two states, and only after the run has had ten minutes to grade
  * itself:
  *
@@ -93,13 +99,15 @@ Deno.serve(async (req) => {
       .from("activity_assignments")
       .select("id, status, completed_at, started_at, created_at")
       .eq("mode", "section")
+      // Finished, and nothing else. An abandoned run left rows behind and must
+      // never be graded on them.
+      .eq("status", "completed")
       .order("created_at", { ascending: false })
       .limit(SCAN_LIMIT);
     if (aErr) throw aErr;
 
     // Old enough to have graded itself. `completed_at` is the honest clock; a
-    // run whose completion write failed still has a start, and a run with
-    // neither has not produced anything to grade.
+    // run marked finished without one still has a start.
     const aged = (assignments ?? []).filter((a) => {
       const at = a.completed_at ?? a.started_at;
       return typeof at === "string" && at < cutoff;
@@ -111,10 +119,10 @@ Deno.serve(async (req) => {
     /*
      * Only a run that actually recorded something can be graded.
      *
-     * The runner writes its response rows in one go at the end, so an
-     * abandoned section has none. Without this check every abandoned run in
-     * the table would be re-driven every ten minutes for ever, each time to be
-     * told there is nothing to grade.
+     * A section finished with the microphone refused, or one closed before a
+     * single stimulus ended, has no rows. Without this check those would be
+     * re-driven on every sweep for ever, each time to be told there is nothing
+     * to grade.
      */
     const { data: responded, error: rErr } = await admin
       .from("activity_item_responses")
