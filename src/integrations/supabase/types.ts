@@ -3125,6 +3125,7 @@ export type Database = {
           layout_prefs: Json | null
           level: number | null
           longest_streak: number | null
+          lsat_accommodation: string
           onboarding: Json | null
           onboarding_completed_at: string | null
           onboarding_notified_at: string | null
@@ -3163,6 +3164,7 @@ export type Database = {
           layout_prefs?: Json | null
           level?: number | null
           longest_streak?: number | null
+          lsat_accommodation?: string
           onboarding?: Json | null
           onboarding_completed_at?: string | null
           onboarding_notified_at?: string | null
@@ -3201,6 +3203,7 @@ export type Database = {
           layout_prefs?: Json | null
           level?: number | null
           longest_streak?: number | null
+          lsat_accommodation?: string
           onboarding?: Json | null
           onboarding_completed_at?: string | null
           onboarding_notified_at?: string | null
