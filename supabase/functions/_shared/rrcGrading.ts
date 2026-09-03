@@ -162,6 +162,29 @@ export function buildJudgeEntries(details: Detail[], decoyTexts: string[]): Judg
   return out.map((e, i) => ({ id: i + 1, ...e }));
 }
 
+/**
+ * Which Details from another stimulus can serve as decoys.
+ *
+ * A decoy is a Detail she cannot have carried, so crediting one means the judge
+ * invented words she never said. That only holds if the decoy is a fact about
+ * the OTHER stimulus. A structural Detail -- "This is the reason given." -- is
+ * a fact about arguments rather than about any stimulus, and almost any honest
+ * retelling carries it. The trial run's single decoy failure was exactly that,
+ * and it was ours: the integrity check reported the judge hallucinating when
+ * the judge was right, which is the worst possible direction for a check whose
+ * whole job is to be trusted.
+ *
+ * Modality is excluded for the same reason and is a weaker case: "This is
+ * hedged." is about a claim, but the hedge it names is common enough across
+ * stimuli to be carried honestly.
+ *
+ * Drawn across the whole stimulus rather than from its first chunk, which is
+ * where the structural Details tend to live.
+ */
+export function pickDecoys(details: string[], howMany = 2): string[] {
+  return details.filter((text) => classifyDetail(text) === "content").slice(0, howMany);
+}
+
 const KIND_RULE: Record<DetailKind, string> = {
   content:
     'CONTENT — a fact. Carried if she stated it, in any words, in any order. ' +
@@ -181,6 +204,17 @@ export function buildJudgePrompt(input: {
   stimulus: string;
   entries: JudgeEntry[];
   spoken: string;
+  /**
+   * The analytical takeaway she should have arrived at, authored on every one
+   * of the 1,294 stimuli and, until now, graded by nothing.
+   *
+   * Coverage answers "did you hold it". The Read answers "did you understand
+   * it", and it is the criterion the method is actually built around: the
+   * briefing tells her "this is the part that gets checked", the coach rubric
+   * says to score it, and the section spec makes it the drill's accuracy
+   * criterion. Omit it and the run is judged on memory alone, exactly as it was.
+   */
+  theRead?: string | null;
 }): string {
   const kinds = [...new Set(input.entries.map((e) => e.kind))]
     .map((k) => `- ${KIND_RULE[k]}`)
@@ -220,7 +254,24 @@ RULES:
 THE DETAILS:
 ${list}
 
-Also judge the run as a whole:
+${
+    input.theRead
+      ? `THE READ she should have arrived at:
+"""
+${input.theRead}
+"""
+
+Judge her Read, from what she said and nothing else:
+- read_given: did she say anything analytical about what the argument is DOING
+  -- its move, its flaw, what turns on it -- as opposed to retelling what it
+  says? Retelling alone is not a Read.
+- read_matches: did what she said amount to the SAME move as THE READ above? A
+  different name for the same move is fine; missing the move is not. She is not
+  expected to use its words, and it may be shorter or messier than the key.
+
+`
+      : ""
+  }Also judge the run as a whole:
 - reciting: did she say the stimulus back close to word-for-word rather than
   retelling it? Full coverage reached by reciting is a failure.
 - listing: did she deliver it as a flat run of facts rather than as a connected
@@ -232,7 +283,9 @@ Also judge the run as a whole:
 
 Reply with JSON only, no prose and no code fence:
 {"verdicts":[{"id":1,"carried":true}],"reciting":false,"reciting_reason":"",
-"listing":false,"listing_reason":"","coloured":true,"colour_specific":true}
+"listing":false,"listing_reason":"","coloured":true,"colour_specific":true${
+    input.theRead ? ',\n"read_given":true,"read_matches":true,"read_reason":""' : ""
+  }}
 
 Return exactly one verdict for every id from 1 to ${input.entries.length}.`;
 }
@@ -247,6 +300,17 @@ export interface JudgeReply {
   listingReason: string;
   coloured: boolean;
   colourSpecific: boolean;
+  /**
+   * The Read: whether she gave one at all, and whether it was the right move.
+   *
+   * Two flags rather than one, because they fail differently and the coaching
+   * differs. No Read at all is a habit -- she stopped at the retelling. A Read
+   * that missed the move is comprehension, and it is the number that predicts
+   * a score.
+   */
+  readGiven: boolean;
+  readMatches: boolean;
+  readReason: string;
   /** Ids expected but absent from the reply. Counted as not carried. */
   missingIds: number[];
 }
@@ -316,6 +380,12 @@ export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply 
     // forgets the field cannot silently award it.
     coloured: flag("coloured"),
     colourSpecific: flag("colour_specific"),
+    // Absent is "no Read", for the same reason as colour: a judge that forgets
+    // the field must not be able to award it, and a stimulus judged before The
+    // Read was graded at all is honestly reported as not having one.
+    readGiven: flag("read_given"),
+    readMatches: flag("read_matches"),
+    readReason: reason("read_reason"),
     missingIds,
   };
 }
@@ -337,6 +407,10 @@ export interface StimulusGrade {
   listing: boolean;
   coloured: boolean;
   colourSpecific: boolean;
+  /** Did she give a Read at all, and was it the right move. */
+  readGiven: boolean;
+  readMatches: boolean;
+  readReason: string;
 }
 
 export function gradeStimulus(entries: JudgeEntry[], reply: JudgeReply): StimulusGrade {
@@ -359,6 +433,11 @@ export function gradeStimulus(entries: JudgeEntry[], reply: JudgeReply): Stimulu
     listing: reply.listing,
     coloured: reply.coloured,
     colourSpecific: reply.colourSpecific,
+    readGiven: reply.readGiven,
+    // A Read that was never given cannot have matched. Enforced here rather
+    // than trusted, so a judge answering both true cannot invent one.
+    readMatches: reply.readGiven && reply.readMatches,
+    readReason: reply.readReason,
   };
 }
 

@@ -6,10 +6,12 @@ import {
   gradeStimulus,
   mapWithConcurrency,
   parseJudgeReply,
+  pickDecoys,
   toDetails,
   type StimulusGrade,
 } from "../_shared/rrcGrading.ts";
 import { checkReciting } from "../_shared/rrcOverlap.ts";
+import { stripVerbatimReads } from "../_shared/rrcReads.ts";
 
 /**
  * Grade one finished Read, Recall, Colour section.
@@ -329,6 +331,11 @@ serve(async (req) => {
     type Graded = StimulusGrade & {
       slug: string;
       dead_air_seconds: number;
+      /** Which of L, I, C or R this stimulus's Read is. Authored, not inferred. */
+      the_read_type?: string;
+      /** Words cut as read-aloud before judging, and which chunks she read. */
+      read_aloud_words?: number;
+      chunks_read_aloud?: number[];
       /** What Reciting was decided on. Absent where there was nothing to measure. */
       reciting_run?: number;
       reciting_bigram?: number;
@@ -366,15 +373,51 @@ serve(async (req) => {
       const stimulusText = chunks.map((c) => c.text).join(" ");
 
       const segments = ((rrc.audio_segments ?? []) as Segment[]);
-      const spokenWords = wordsIn(words, segments);
-      const spoken = spokenWords.map((w) => w.word).join(" ").trim();
 
-      // Decoys from the next stimulus in the same section: nearest in subject
-      // matter, and therefore the hardest for a judge to reject on vibes.
+      /*
+       * Her words, with the reads cut out of them.
+       *
+       * The Details were calibrated against runs that go through
+       * `student_shaped.py` first, which removes the verbatim reads on the
+       * stated assumption that "the student never does: she reads silently".
+       * Nothing in the app enforces that assumption, and a student who reads
+       * aloud puts the source text into the evidence the judge is shown, where
+       * every Detail is then trivially present. She would score higher for
+       * doing less, on the very recording that also gets her flagged for
+       * Reciting. This is the same cut, on the same side of the same
+       * comparison; see `rrcReads.ts` for why it is safe.
+       *
+       * Only inside the WORKING window. The Recall is from memory by
+       * definition, so a word-for-word passage there is a recital and has to
+       * survive in order to be caught as one.
+       */
+      const workingWords = wordsIn(words, segments.filter((s) => s.phase === "working"));
+      const recallWords = wordsIn(words, segments.filter((s) => s.phase !== "working"));
+      const read = stripVerbatimReads(
+        workingWords.map((w) => w.word),
+        chunks.map((c) => c.text),
+      );
+      const spoken = [...read.kept, ...recallWords.map((w) => w.word)].join(" ").trim();
+
+      /*
+       * Decoys, and why they are content only.
+       *
+       * A decoy is a Detail from another stimulus that she cannot have carried,
+       * and crediting one means the judge invented words she never said. That
+       * only works if the decoy is a fact about the OTHER stimulus. A
+       * structural Detail -- "This is the reason given." -- is a fact about
+       * arguments, not about a stimulus, and almost any retelling carries it
+       * honestly. The trial run's one decoy failure was exactly that, and it
+       * was ours: the check reported the judge hallucinating when the judge was
+       * right.
+       *
+       * Drawn from the whole of the next stimulus rather than its first chunk,
+       * because a first chunk is often where the structural Details live.
+       */
       const idx = items.findIndex((i) => String(i.slug) === slug);
       const other = items[(idx + 1) % items.length] as Record<string, unknown>;
       const otherChunks = (other?.chunks ?? []) as { details: { text: string }[] }[];
-      const decoys = (otherChunks[0]?.details ?? []).slice(0, 2).map((d) => d.text);
+      const decoys = pickDecoys(otherChunks.flatMap((c) => c.details ?? []).map((d) => d.text));
 
       const entries = buildJudgeEntries(toDetails(detailTexts), decoys);
       const nothingCarried = {
@@ -396,7 +439,14 @@ serve(async (req) => {
       }
 
       try {
-        const raw = await judge(buildJudgePrompt({ stimulus: stimulusText, entries, spoken }));
+        const raw = await judge(
+          buildJudgePrompt({
+            stimulus: stimulusText,
+            entries,
+            spoken,
+            theRead: (item.the_read as string | null) ?? null,
+          }),
+        );
         const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)));
 
         // Reciting is decided in code, not by the model: it is a measurement,
@@ -408,6 +458,9 @@ serve(async (req) => {
         return {
           slug,
           ...grade,
+          the_read_type: (item.the_read_type as string | undefined) ?? undefined,
+          read_aloud_words: read.cut,
+          chunks_read_aloud: read.chunksReadAloud,
           reciting_run: recital.run,
           reciting_bigram: recital.bigram,
           dead_air_seconds: deadAir(words, segments.filter((s) => s.phase === "recalling")),
@@ -476,16 +529,57 @@ serve(async (req) => {
       ? Math.round(graded.reduce((a, s) => a + s.percent, 0) / graded.length)
       : 0;
 
+    /*
+     * The goal, and the condition the method puts on it.
+     *
+     * The spec says the goal counts "only if every stimulus was recalled,
+     * coloured, AND given a Read". The grader knew all three -- it counted four
+     * uncoloured stimuli on the trial run -- and used none of them, so a
+     * student who skipped the colouring and finished early was told she made
+     * the goal. That is the drill rewarding the exact shortcut it exists to
+     * treat.
+     *
+     * The raw clock is kept as its own field. "You were inside the time but
+     * skipped the colouring on four" and "you were over" are different things
+     * to be told, and collapsing them into one boolean is what made this
+     * invisible in the first place.
+     */
+    const uncoloured = graded.filter((s) => !s.coloured).length;
+    const noRead = graded.filter((s) => !s.readGiven).length;
+    const withinTime = totalSeconds > 0 && totalSeconds <= goalMinutes * 60;
+
     const section = {
       accommodation,
       goal_minutes: goalMinutes,
       total_seconds: totalSeconds,
-      within_goal: totalSeconds > 0 && totalSeconds <= goalMinutes * 60,
+      within_time: withinTime,
+      within_goal: withinTime && uncoloured === 0 && noRead === 0,
       mean_coverage: meanCoverage,
       stimuli_graded: graded.length,
       reciting_count: graded.filter((s) => s.reciting).length,
       listing_count: graded.filter((s) => s.listing).length,
-      uncoloured_count: graded.filter((s) => !s.coloured).length,
+      uncoloured_count: uncoloured,
+      /*
+       * The Read, measured at last.
+       *
+       * Authored on all 1,294 stimuli, promised to her twice -- the briefing
+       * says "this is the part that gets checked" -- and graded by nothing
+       * until now. Coverage answers "did you hold it"; this answers "did you
+       * understand it", which is the criterion the method is built around.
+       */
+      read_given_count: graded.filter((s) => s.readGiven).length,
+      read_matched_count: graded.filter((s) => s.readMatches).length,
+      no_read_count: noRead,
+      /*
+       * How much of what she said was reading the text aloud.
+       *
+       * Cut before judging, because the standard the Details were calibrated
+       * against has it cut too. Recorded because a student who reads the whole
+       * section aloud is doing a different drill from the one she thinks she is
+       * doing, and nothing else in the product would ever say so.
+       */
+      read_aloud_words: stimuli.reduce((a, s) => a + (s.read_aloud_words ?? 0), 0),
+      chunks_read_aloud: stimuli.reduce((a, s) => a + (s.chunks_read_aloud?.length ?? 0), 0),
       // Measured from the audio, not from the judge, so an ungraded stimulus
       // still has an honest reading here.
       worst_dead_air_seconds: Math.max(0, ...stimuli.map((s) => s.dead_air_seconds)),

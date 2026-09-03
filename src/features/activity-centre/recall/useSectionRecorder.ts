@@ -116,6 +116,10 @@ const AUDIO_CONSTRAINTS: MediaTrackConstraints = {
  * retry is what stops a preference from ever becoming a requirement.
  */
 async function openMicrophone(): Promise<MediaStream> {
+  // No microphone API at all -- an insecure origin, or a browser without it.
+  // That is the refused-microphone case, not a constraint the device would not
+  // take, and retrying it would only produce the same TypeError twice.
+  if (!navigator.mediaDevices?.getUserMedia) throw new Error("no microphone on this device");
   try {
     return await navigator.mediaDevices.getUserMedia({ audio: AUDIO_CONSTRAINTS });
   } catch (e) {

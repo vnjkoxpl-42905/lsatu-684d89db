@@ -10,6 +10,7 @@ import {
   gradeStimulus,
   isKindResidue,
   parseJudgeReply,
+  pickDecoys,
   toDetails,
 } from "./grading";
 
@@ -256,5 +257,101 @@ describe("the score", () => {
     const grade = gradeStimulus([], parseJudgeReply('{"verdicts":[]}', []));
     expect(grade.percent).toBe(0);
     expect(grade.band).toBe("lost-it");
+  });
+});
+
+/**
+ * Decoys have to be facts, not facts about arguments.
+ *
+ * The decoy check is the run's own integrity measure: a Detail from another
+ * stimulus, which she cannot have carried, so a judge that credits one has
+ * invented words she never said. On the trial run it fired once, and the
+ * failure was ours. The decoy was "This is the reason given." -- a structural
+ * Detail that almost any argument retelling carries honestly. A check that
+ * accuses the judge of hallucinating when the judge was right is worse than no
+ * check, because the only thing it has to be is trusted.
+ */
+describe("choosing decoys", () => {
+  it("takes content Details and refuses structural ones", () => {
+    expect(
+      pickDecoys([
+        "This is the reason given.",
+        "The study followed 4,000 nurses.",
+        "This is the conclusion.",
+        "The nurses were in Sweden.",
+      ]),
+    ).toEqual(["The study followed 4,000 nurses.", "The nurses were in Sweden."]);
+  });
+
+  it("refuses modality Details too", () => {
+    expect(pickDecoys(["This is hedged as a possibility.", "Rainfall fell by a third."])).toEqual([
+      "Rainfall fell by a third.",
+    ]);
+  });
+
+  it("returns nothing rather than a bad decoy when a stimulus has only structure", () => {
+    // No decoys is an honest "this run has no integrity check". A structural
+    // decoy is a wrong one, and it reads identically on the Report Card.
+    expect(pickDecoys(["This is the conclusion.", "This is a contrast."])).toEqual([]);
+  });
+});
+
+/**
+ * The Read, graded at last.
+ *
+ * Authored on every one of the 1,294 stimuli, promised to her twice -- the
+ * briefing says "this is the part that gets checked" -- and measured by
+ * nothing. Coverage answers "did you hold it". The Read answers "did you
+ * understand it", and it is the criterion the method is actually built around.
+ */
+describe("The Read", () => {
+  const entries = buildJudgeEntries(toDetails(["A claim is made."]), []);
+
+  it("is put to the judge, with the authored key, when there is one", () => {
+    const prompt = buildJudgePrompt({
+      stimulus: "A stimulus.",
+      entries,
+      spoken: "she said something",
+      theRead: "The author confuses two senses of the word.",
+    });
+    expect(prompt).toContain("The author confuses two senses of the word.");
+    expect(prompt).toContain("read_matches");
+  });
+
+  it("is left out entirely rather than asked about emptily", () => {
+    const prompt = buildJudgePrompt({ stimulus: "A stimulus.", entries, spoken: "x" });
+    expect(prompt).not.toContain("read_matches");
+    expect(prompt).not.toContain("THE READ");
+  });
+
+  it("reads both flags off the reply", () => {
+    const reply = parseJudgeReply(
+      '{"verdicts":[{"id":1,"carried":true}],"read_given":true,"read_matches":true,"read_reason":"named the equivocation"}',
+      [1],
+    );
+    expect(reply.readGiven).toBe(true);
+    expect(reply.readMatches).toBe(true);
+    expect(reply.readReason).toBe("named the equivocation");
+  });
+
+  it("treats an absent verdict as no Read, never as a pass", () => {
+    // Same rule as colour: a judge that forgets the field must not be able to
+    // award it, and an older grade written before The Read was measured is
+    // honestly reported as not having one.
+    const reply = parseJudgeReply('{"verdicts":[{"id":1,"carried":true}]}', [1]);
+    expect(reply.readGiven).toBe(false);
+    expect(reply.readMatches).toBe(false);
+  });
+
+  it("cannot match a Read that was never given", () => {
+    const grade = gradeStimulus(
+      entries,
+      parseJudgeReply(
+        '{"verdicts":[{"id":1,"carried":true}],"read_given":false,"read_matches":true}',
+        [1],
+      ),
+    );
+    expect(grade.readGiven).toBe(false);
+    expect(grade.readMatches).toBe(false);
   });
 });

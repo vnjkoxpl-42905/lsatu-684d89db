@@ -422,18 +422,37 @@ export interface SectionStimulusGrade {
   coloured: boolean;
   colourSpecific: boolean;
   dead_air_seconds: number;
+  /** Did she give a Read at all, and was it the move the key names. */
+  readGiven?: boolean;
+  readMatches?: boolean;
+  readReason?: string;
+  /** L, I, C or R. Authored on the stimulus, not inferred from her run. */
+  the_read_type?: string;
+  /** Words cut as read-aloud before judging, and which chunks she read. */
+  read_aloud_words?: number;
+  chunks_read_aloud?: number[];
 }
 
 export interface SectionGradeSummary {
   accommodation: string;
   goal_minutes: number;
   total_seconds: number;
+  /** Inside the clock, ignoring the method's condition on it. */
+  within_time?: boolean;
+  /** Inside the clock AND with every stimulus coloured and given a Read. */
   within_goal: boolean;
   mean_coverage: number;
   stimuli_graded: number;
   reciting_count: number;
   listing_count: number;
   uncoloured_count: number;
+  read_given_count?: number;
+  read_matched_count?: number;
+  no_read_count?: number;
+  read_aloud_words?: number;
+  chunks_read_aloud?: number;
+  ungraded_count?: number;
+  complete?: boolean;
   worst_dead_air_seconds: number;
   dead_air_threshold_seconds: number;
   decoy_failures: number;
