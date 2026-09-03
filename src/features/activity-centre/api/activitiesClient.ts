@@ -533,6 +533,76 @@ export async function listModelRuns(
   );
 }
 
+/**
+ * Student: her recent runs, with the per-stimulus misses attached.
+ *
+ * The heavier read, and deliberately bounded. `listMySectionGrades` is the
+ * light one and covers every run she has ever done; this adds `stimuli`, which
+ * carries a transcript per stimulus, and is only needed to answer "what do I
+ * keep dropping". Ten runs is a fortnight at the drill's own rhythm and is
+ * plenty of evidence for a share.
+ */
+export async function listMyRecentSectionGrades(limit = 10): Promise<SectionGradeStub[]> {
+  const table = supabase.from("activity_section_grades" as never) as unknown as {
+    select: (columns: string) => {
+      order: (
+        column: string,
+        opts: { ascending: boolean },
+      ) => {
+        limit: (n: number) => Promise<{
+          data: unknown;
+          error: { code?: string; message?: string } | null;
+        }>;
+      };
+    };
+  };
+  const { data, error } = await table
+    // Everything but `transcript_text`, which is the whole run's words again and
+    // is never read outside the grader.
+    .select("assignment_id, attempt_no, source_section, section, graded_at, stimuli")
+    .order("graded_at", { ascending: false })
+    .limit(limit);
+  if (error) {
+    if (isUnknownColumn(error) || error.code === "42P01") return [];
+    console.error("[rrc] could not load recent runs", error);
+    return [];
+  }
+  return (data as SectionGradeStub[] | null) ?? [];
+}
+
+/**
+ * Admin: every Report Card a student has, newest first.
+ *
+ * No teacher surface has ever read `activity_section_grades`. A student
+ * finishes twenty-five minutes of recorded work, it is transcribed and judged
+ * stimulus by stimulus, and Joshua learns nothing about it unless he asks her.
+ * The admin SELECT policy has been on the table since it was created.
+ */
+export async function listStudentSectionGrades(studentId: string): Promise<SectionGrade[]> {
+  const table = supabase.from("activity_section_grades" as never) as unknown as {
+    select: (columns: string) => {
+      eq: (
+        column: "student_id",
+        value: string,
+      ) => {
+        order: (
+          column: string,
+          opts: { ascending: boolean },
+        ) => Promise<{ data: unknown; error: { code?: string; message?: string } | null }>;
+      };
+    };
+  };
+  const { data, error } = await table
+    .select("*")
+    .eq("student_id", studentId)
+    .order("graded_at", { ascending: false });
+  if (error) {
+    if (isUnknownColumn(error) || error.code === "42P01") return [];
+    throw error;
+  }
+  return (data as SectionGrade[] | null) ?? [];
+}
+
 // --- Admin -----------------------------------------------------------------
 
 /**

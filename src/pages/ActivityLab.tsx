@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { SEED_ACTIVITIES } from "@/features/activity-centre/content";
 import { SectionStage } from "@/features/activity-centre/recall/SectionStage";
 import { SectionReportCard } from "@/features/activity-centre/components/SectionReportCard";
+import { SectionRunHistory } from "@/features/activity-centre/components/SectionRunHistory";
 import type { SectionGrade, SectionStimulusGrade } from "@/features/activity-centre/api/types";
 import sectionInstructions from "@/features/activity-centre/content/read-recall-colour-section.instructions.json";
 import {
@@ -155,6 +156,7 @@ const WORLDS = [
   { key: "intro", label: "Activity intro" },
   { key: "section", label: "RRC section (whole section)" },
   { key: "report", label: "RRC Report Card" },
+  { key: "runs", label: "RRC run history" },
   { key: "shell", label: "Runner shell" },
   { key: "switchyard", label: "The Switchyard" },
   { key: "specimen-lab", label: "The Specimen Lab" },
@@ -225,6 +227,7 @@ export default function ActivityLab() {
       {world === "intro" ? <IntroPanel /> : null}
       {world === "section" ? <SectionPanel /> : null}
       {world === "report" ? <ReportPanel /> : null}
+      {world === "runs" ? <RunsPanel /> : null}
       {world === "shell" ? <ShellPanel /> : null}
       {world === "switchyard" ? <SwitchyardPanel /> : null}
       {world === "specimen-lab" ? <SpecimenLabPanel /> : null}
@@ -1958,10 +1961,56 @@ function ReportPanel() {
   );
 }
 
+/**
+ * A fortnight of runs, which is the first thing in the product that is about
+ * her rather than about one sitting.
+ *
+ * Drawn here because it needs a pile of Report Cards to mean anything, and a
+ * pile only exists after two weeks of real use. Without a lab panel the first
+ * look at it would be the first student who reached it.
+ */
+function RunsPanel() {
+  const grades = useMemo(() => {
+    const sections = ["PT102.S3", "PT105.S2", "PT134.S3"];
+    // Climbing, the way a fortnight of this is supposed to look, with the odd
+    // bad night in it.
+    const coverage = [62, 71, 68, 77, 74, 83, 86, 79, 88, 91];
+    return coverage.map((mean, i) => {
+      const base = makeLabGrade(i % 3 === 2 ? "clean" : "faults");
+      return {
+        ...base,
+        assignment_id: `run-${i}`,
+        attempt_no: i % 4 === 3 ? 2 : 1,
+        source_section: sections[i % 3],
+        graded_at: new Date(Date.UTC(2026, 7, 21 + i, 19, 0, 0)).toISOString(),
+        section: {
+          ...base.section,
+          mean_coverage: mean,
+          total_seconds: 1900 - i * 60,
+          within_goal: mean > 80,
+          read_matched_count: Math.max(0, Math.round((mean / 100) * 6) - 1),
+          stimuli_graded: 6,
+        },
+      };
+    });
+  }, []);
+
+  return (
+    <div className="px-6 py-10">
+      <div className="mx-auto max-w-3xl">
+        <SectionRunHistory grades={grades} heading="How it has been going" />
+      </div>
+    </div>
+  );
+}
+
 /** The trial run's own shape, with the two other states worth looking at. */
 function makeLabGrade(kind: "clean" | "faults" | "partial"): SectionGrade {
-  const stim = (over: Partial<SectionStimulusGrade>): SectionStimulusGrade => ({
-    slug: `PT102_S3_Q${over.slug ?? "1"}`,
+  // `over.slug` is the stimulus NUMBER, not the slug. Spread last it would
+  // overwrite the slug it was meant to build, and the run history would then
+  // look up Details for a stimulus called "7" and find none.
+  const stim = ({ slug: n, ...over }: Partial<SectionStimulusGrade>): SectionStimulusGrade => ({
+    slug: `PT102_S3_Q${n ?? "1"}`,
     carried: 20,
     total: 21,
     percent: 95,

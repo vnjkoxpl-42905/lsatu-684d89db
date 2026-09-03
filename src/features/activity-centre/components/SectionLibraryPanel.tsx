@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStudentActivities } from "../hooks/useStudentActivities";
+import { listMyRecentSectionGrades } from "../api/activitiesClient";
 import { SectionLibrary } from "./SectionLibrary";
+import { SectionRunHistory } from "./SectionRunHistory";
 import { ActivityExitButton } from "./ActivityExitButton";
+import type { SectionGradeStub } from "../api/types";
 
 /**
  * The section list, wired to her own record and to the router.
@@ -17,6 +21,26 @@ import { ActivityExitButton } from "./ActivityExitButton";
 export function SectionLibraryPanel({ onExit }: { onExit?: () => void }) {
   const navigate = useNavigate();
   const { assignments } = useStudentActivities();
+  /**
+   * Her recent runs, for the shape of the week.
+   *
+   * The drill's own instruction is three a day, six if she can, and nothing in
+   * the product knew she had done four. One Report Card cannot say whether she
+   * is getting better; the pile of them can, and they were all already stored.
+   * Loaded beside the list and never waited on: picking tonight's section does
+   * not depend on it.
+   */
+  const [recent, setRecent] = useState<SectionGradeStub[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const rows = await listMyRecentSectionGrades();
+      if (!cancelled) setRecent(rows);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-10">
@@ -50,6 +74,12 @@ export function SectionLibraryPanel({ onExit }: { onExit?: () => void }) {
           onOpenAttempt={(id) => navigate(`/activities/${id}`)}
         />
       </div>
+
+      {recent.length > 0 && (
+        <div className="mt-12 border-t border-border pt-8">
+          <SectionRunHistory grades={recent} heading="How it has been going" />
+        </div>
+      )}
     </div>
   );
 }

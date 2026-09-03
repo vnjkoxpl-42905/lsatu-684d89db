@@ -15,6 +15,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
+import { listStudentSectionGrades } from '@/features/activity-centre/api/activitiesClient';
+import { SectionRunHistory } from '@/features/activity-centre/components/SectionRunHistory';
 import { useStudentClassroomItems } from '@/hooks/useClassroomItems';
 import { useStudentExternalUploadsForStudent } from '@/hooks/useExternalWorkUploads';
 import { useStudentWeeklyPlans } from '@/hooks/useWeeklyPlan';
@@ -167,8 +169,17 @@ export default function TeacherStudentDetail() {
         {/* Sessions / Transcripts — pipeline output lives here */}
         {/* Everything they have sat, and when they were on. Read-only: the
             admin policy grants SELECT and nothing else. */}
-        <TabsContent value="work" className="mt-4">
+        <TabsContent value="work" className="mt-4 space-y-8">
           <StudentWorkPanel classId={studentId} />
+          {/*
+            * Read, Recall, Colour, which no teacher surface has ever shown.
+            *
+            * A student finishes twenty-five minutes of recorded work, it is
+            * transcribed and judged stimulus by stimulus, and until now Joshua
+            * learned nothing about it unless he asked her. The admin SELECT
+            * policy has been on the grades table since the day it was created.
+            */}
+          <StudentSectionRuns classId={studentId} />
         </TabsContent>
 
         <TabsContent value="sessions" className="mt-4 space-y-3">
@@ -334,6 +345,30 @@ function SessionWithBundle({
         </div>
       )}
     </li>
+  );
+}
+
+/**
+ * A student's section runs, and what she keeps dropping across all of them.
+ *
+ * Read-only, like everything else on this tab. The interesting half is the
+ * second one: any single Report Card says which Details went missing in one
+ * sitting, and only the pile of them says which KIND she drops when it comes
+ * up. That is the thing worth raising in a session.
+ */
+function StudentSectionRuns({ classId }: { classId?: string }) {
+  const { data: grades = [], isLoading } = useQuery({
+    queryKey: ["teacher-student-section-grades", classId],
+    enabled: !!classId,
+    queryFn: () => listStudentSectionGrades(classId as string),
+  });
+
+  if (isLoading) return null;
+  return (
+    <SectionRunHistory
+      grades={grades}
+      emptyMessage="No Read, Recall, Colour sections run yet."
+    />
   );
 }
 
