@@ -13,7 +13,10 @@ import { SectionRunner } from "./SectionRunner";
 // nothing checking on her, so these are asserted rather than trusted.
 
 type Row = Record<string, unknown>;
-const insert = vi.fn((_rows: Row[]) => Promise.resolve({ error: null }));
+/** Every write of a stimulus row: during the run, and the backstop at the end. */
+const upsert = vi.fn((_rows: Row[]) => Promise.resolve({ error: null }));
+/** The one read: which Attempt is this. */
+const attemptRows = { data: [] as Row[], error: null as unknown };
 const upload = vi.fn(() => Promise.resolve({ error: null }));
 /** The assignment close: `.update(patch).eq("id", id)`. */
 const update = vi.fn((_patch: Row) => Promise.resolve({ error: null }));
@@ -22,8 +25,13 @@ const invoke = vi.fn((_fn: string, _opts: Row) => Promise.resolve({ data: null, 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     from: () => ({
-      insert: (rows: Row[]) => insert(rows),
+      upsert: (rows: Row[]) => upsert(rows),
       update: (patch: Row) => ({ eq: () => update(patch) }),
+      select: () => ({
+        eq: () => ({
+          eq: () => ({ order: () => ({ limit: () => Promise.resolve(attemptRows) }) }),
+        }),
+      }),
     }),
     storage: { from: () => ({ upload: () => upload() }) },
     functions: { invoke: (fn: string, opts: Row) => invoke(fn, opts) },
@@ -63,7 +71,8 @@ function renderRun(overrides: Partial<Parameters<typeof SectionRunner>[0]> = {})
 const space = () => fireEvent.keyDown(document, { code: "Space" });
 
 beforeEach(() => {
-  insert.mockClear();
+  upsert.mockClear();
+  attemptRows.data = [];
   upload.mockClear();
   update.mockClear();
   invoke.mockClear();
@@ -183,7 +192,7 @@ describe("writing it down", () => {
     // A dropped connection must not be able to stall her mid-section, so there
     // is no network call inside the loop at all.
     space();
-    expect(insert).not.toHaveBeenCalled();
+    expect(upsert).not.toHaveBeenCalled();
   });
 
   it("asks the server to grade the run, without waiting on it", async () => {
@@ -235,7 +244,7 @@ describe("writing it down", () => {
   });
 
   it("still closes the run when the rows could not be written", async () => {
-    insert.mockImplementationOnce(() => Promise.resolve({ error: { message: "nope" } }));
+    upsert.mockImplementationOnce(() => Promise.resolve({ error: { message: "nope" } }));
     renderRun();
     space();
     space();
@@ -246,15 +255,15 @@ describe("writing it down", () => {
     expect(update.mock.calls[0][0].status).toBe("completed");
   });
 
-  it("writes one row per stimulus once, at the end, and finishes", async () => {
+  it("writes one row per stimulus, and finishes", async () => {
     const { onComplete } = renderRun();
     space();
     space();
 
-    // The write waits on the recorder being stopped and its file put away, so
-    // it lands a tick after the last press rather than during it.
-    await vi.waitFor(() => expect(insert).toHaveBeenCalledTimes(1));
-    const rows = insert.mock.calls[0][0];
+    // Written as the stimulus finishes, then re-sent by the backstop at the
+    // end. Both carry the same row, so what is asserted below holds of either.
+    await vi.waitFor(() => expect(upsert).toHaveBeenCalled());
+    const rows = upsert.mock.calls[0][0];
     expect(rows).toHaveLength(1);
     expect(rows[0].assignment_id).toBe("a1");
     expect(rows[0].item_order).toBe(ONE.items[0].order);
@@ -283,15 +292,15 @@ describe("writing it down", () => {
     renderRun({ accommodation: "accommodation_70" });
     space();
     space();
-    await vi.waitFor(() => expect(insert).toHaveBeenCalledTimes(1));
-    const rrc = insert.mock.calls[0][0][0].rrc as Record<string, unknown>;
+    await vi.waitFor(() => expect(upsert).toHaveBeenCalled());
+    const rrc = upsert.mock.calls[0][0][0].rrc as Record<string, unknown>;
     // Grading her against the standard goal would score her accommodation as a
     // failure, which is the whole reason the goal is three numbers.
     expect(rrc.accommodation).toBe("accommodation_70");
     expect(rrc.goal_minutes).toBe(ONE.time_goal_minutes.accommodation_70);
   });
 
-  it("writes nothing for a section she abandoned halfway", () => {
+  it("keeps the work of a section abandoned halfway, but never makes it a run", async () => {
     const { unmount } = render(
       <SectionRunner
         assignmentId="a1"
@@ -303,10 +312,63 @@ describe("writing it down", () => {
     );
     space();
     space();
+    await vi.waitFor(() => expect(upsert).toHaveBeenCalled());
+    expect(upsert.mock.calls[0][0]).toHaveLength(1);
     unmount();
-    // A section is the unit of work. Half a section is not a partial score; it
-    // is not a run.
-    expect(insert).not.toHaveBeenCalled();
+
+    /*
+     * Her work is kept, and the run is still not a run.
+     *
+     * These used to be one statement: nothing was written until the last
+     * stimulus, so abandoning a section threw away every word said in it. A
+     * closed lid cost twenty minutes. Saving and judging are different acts and
+     * only the second is refused here -- the assignment is never marked
+     * finished, so nothing will grade this.
+     */
+    expect(update).not.toHaveBeenCalled();
+    expect(invoke).not.toHaveBeenCalled();
+  });
+
+  it("saves a stimulus as it finishes, not only when the section ends", async () => {
+    render(
+      <SectionRunner
+        assignmentId="a1"
+        studentId="s1"
+        items={TWO.items}
+        sourceSection={TWO.source_section}
+        timeGoalMinutes={TWO.time_goal_minutes}
+      />,
+    );
+    // The first stimulus only. The section is nowhere near over.
+    space();
+    space();
+
+    await vi.waitFor(() => expect(upsert).toHaveBeenCalled());
+    expect(upsert.mock.calls[0][0]).toHaveLength(1);
+    const rrc = upsert.mock.calls[0][0][0].rrc as Record<string, unknown>;
+    // The recorder has not stopped and nothing is uploaded, yet the row already
+    // names where its audio will be. The path is a function of the student, the
+    // assignment and the Attempt, so it can be known before the file exists.
+    expect(rrc.audio_path).toBe("s1/a1.webm");
+    // Only the end knows how long the whole section took.
+    expect(rrc.section_total_seconds).toBeNull();
+    expect(update).not.toHaveBeenCalled();
+  });
+
+  it("puts a second sitting under its own Attempt, so it cannot collide with the first", async () => {
+    attemptRows.data = [{ attempt_no: 1 }];
+    renderRun();
+    space();
+    space();
+
+    await vi.waitFor(() => expect(upsert).toHaveBeenCalled());
+    const row = upsert.mock.calls[0][0][0];
+    // An abandoned sitting leaves its stimuli behind now. A second run starting
+    // at stimulus 1 would collide with them on the unique index, lose the
+    // write, and be graded as a mixture of two sittings with one sitting's
+    // audio.
+    expect(row.attempt_no).toBe(2);
+    expect((row.rrc as Record<string, unknown>).audio_path).toBe("s1/a1-a2.webm");
   });
 });
 

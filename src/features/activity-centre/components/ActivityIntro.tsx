@@ -108,18 +108,23 @@ export function ActivityIntro({
    * a spoken Activity that is 1 whatever the chunking is, so a number in this
    * sentence would be a number the intro cannot actually see.
    *
-   * Section mode needed its own line for the same reason the line exists at
-   * all. The spoken sentence below promises that work saves as you go and that
-   * she can stop and pick up where she left off, and a section is the one
-   * Activity for which both are false: it writes nothing until the last
-   * stimulus, and stopping halfway is not a partial score, it is not a run.
-   * Shipping that promise on a section would have been the intro telling her
-   * she could do the exact thing the drill forbids.
+   * Section mode has its own line, and what it can honestly say has changed.
+   *
+   * It used to end "Nothing saves until the end, so it is finished in one go or
+   * not at all", which was true and was the warning of a real hazard: the run
+   * held twenty minutes of work in the tab and a crash took all of it. Each
+   * stimulus is now saved as it finishes, so the sentence is no longer true and
+   * the fear it asked for is no longer owed.
+   *
+   * It still does not promise what the other spoken line promises. Stopping
+   * halfway remains not a partial score and not a run, because a section is
+   * judged whole. The work is kept; the run is not resumable. Those are
+   * different things and the line says only the first.
    */
   const howLine =
     format === "spoken-recall"
       ? mode === "section"
-        ? `${itemCount ?? ""} stimuli, out loud, in one sitting. Nothing saves until the end, so it is finished in one go or not at all.`.trim()
+        ? `${itemCount ?? ""} stimuli, out loud, in one sitting. Each one is saved as you finish it, and the whole section is marked at the end.`.trim()
         : "One stimulus, read and said back a chunk at a time. Every recall saves as you go, so you can stop whenever you like and pick up where you left off."
       : [
           itemCount ? `${itemCount} ${itemCount === 1 ? "question" : "questions"}.` : "",

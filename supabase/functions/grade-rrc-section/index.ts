@@ -251,13 +251,25 @@ serve(async (req) => {
       return json({ status: "already-graded", ...summary });
     }
 
-    const { data: responses, error: rErr } = await admin
+    const { data: allResponses, error: rErr } = await admin
       .from("activity_item_responses")
-      .select("item_order, response_text, rrc")
+      .select("item_order, attempt_no, response_text, rrc")
       .eq("assignment_id", assignmentId)
       .order("item_order");
     if (rErr) throw rErr;
-    if (!responses?.length) return json({ error: "no responses to grade" }, 409);
+    if (!allResponses?.length) return json({ error: "no responses to grade" }, 409);
+
+    /*
+     * The latest Attempt, and only that one.
+     *
+     * Rows are written as each stimulus finishes, so an abandoned run leaves
+     * its stimuli behind and a later sitting adds its own alongside them under
+     * a higher `attempt_no`. Grading the lot would score one Report Card across
+     * two sittings, with the audio of only the last. The newest Attempt is the
+     * run this grade is about.
+     */
+    const attempt = Math.max(...allResponses.map((r) => Number(r.attempt_no ?? 1)));
+    const responses = allResponses.filter((r) => Number(r.attempt_no ?? 1) === attempt);
 
     const first = responses[0].rrc as Record<string, unknown>;
     const audioPath = first?.audio_path as string | null;
@@ -397,7 +409,23 @@ serve(async (req) => {
 
     const accommodation = String(first.accommodation ?? "standard");
     const goalMinutes = Number((assignment.time_goal_minutes as Record<string, number>)?.[accommodation] ?? 25);
-    const totalSeconds = Number(first.section_total_seconds ?? 0);
+    /*
+     * How long the section took.
+     *
+     * Written on the rows only at the end, and a row saved mid-run cannot know
+     * it. So it is read from whichever row carries it, and otherwise derived
+     * from the last stimulus's own finishing time, which is the same number by
+     * construction. A run that crashed before its final write still gets an
+     * honest clock instead of a zero.
+     */
+    const carriedTotal = responses
+      .map((r) => Number((r.rrc as Record<string, unknown>).section_total_seconds ?? 0))
+      .find((n) => n > 0);
+    const lastFinished = Math.max(
+      0,
+      ...responses.map((r) => Number((r.rrc as Record<string, unknown>).finished_at_seconds ?? 0)),
+    );
+    const totalSeconds = carriedTotal ?? lastFinished;
     /*
      * A stimulus the judge never answered for is not a stimulus she scored
      * zero on, and every count below has to know the difference. Counted as a
@@ -462,6 +490,7 @@ serve(async (req) => {
 
     return json({
       status: section.complete ? "graded" : "graded-partial",
+      attempt,
       stimuli: stimuli.length,
       section,
     });
