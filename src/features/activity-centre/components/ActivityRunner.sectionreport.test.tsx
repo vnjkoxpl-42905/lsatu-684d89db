@@ -38,6 +38,7 @@ const completeAssignment = vi.fn().mockResolvedValue(undefined);
 const completeSectionRun = vi.fn().mockResolvedValue(undefined);
 const listItemResponses = vi.fn().mockResolvedValue([]);
 const getSectionGrade = vi.fn().mockResolvedValue(null);
+const getAccommodation = vi.fn().mockResolvedValue("standard");
 const requestSectionGrading = vi.fn().mockResolvedValue(undefined);
 
 vi.mock("../api/activitiesClient", () => ({
@@ -48,6 +49,7 @@ vi.mock("../api/activitiesClient", () => ({
   markAssignmentStarted: vi.fn().mockResolvedValue(undefined),
   recordItemResponse: vi.fn().mockResolvedValue(undefined),
   getSectionGrade: (...a: unknown[]) => getSectionGrade(...a),
+  getAccommodation: (...a: unknown[]) => getAccommodation(...a),
   requestSectionGrading: (...a: unknown[]) => requestSectionGrading(...a),
 }));
 
@@ -57,8 +59,16 @@ vi.mock("../api/activitiesClient", () => ({
  * moment it mounts, so a regression that sends a finished section back to it
  * must fail as an assertion rather than as a media error.
  */
+/** Captures what the runner is handed, which is the whole point below. */
+const sectionRunnerProps = vi.fn();
 vi.mock("../recall/SectionRunner", () => ({
-  SectionRunner: () => <div data-testid="section-runner-mounted" />,
+  SectionRunner: (props: Record<string, unknown>) => {
+    sectionRunnerProps(props);
+    return <div data-testid="section-runner-mounted" />;
+  },
+}));
+vi.mock("../recall/recoverRecordings", () => ({
+  recoverPendingRecordings: vi.fn().mockResolvedValue(0),
 }));
 
 const STIMULI = 3;
@@ -121,6 +131,7 @@ describe("reopening a finished Read, Recall, Colour section", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     getSectionGrade.mockResolvedValue(null);
+    getAccommodation.mockResolvedValue("standard");
     listItemResponses.mockResolvedValue(sectionRows());
     activityState.assignment = makeSectionAssignment("completed");
     activityState.loading = false;
@@ -162,5 +173,45 @@ describe("reopening a finished Read, Recall, Colour section", () => {
     await waitFor(() => expect(completeSectionRun).toHaveBeenCalledWith("assign-1"));
     expect(completeAssignment).not.toHaveBeenCalled();
     expect(container.querySelector('[data-runner="recall-section-report"]')).toBeTruthy();
+  });
+});
+
+/**
+ * The goal an accommodated student is timed against.
+ *
+ * `SectionRunner` has always taken an accommodation and nothing ever passed it,
+ * so every run used the standard 25-minute goal. A student with a 70-minute
+ * accommodation, whose goal is 50, was recorded as fifteen minutes over on a
+ * run she finished ten minutes inside. ADR 0014 gave the section three goals to
+ * stop exactly that, and the wire was never connected -- which is invisible
+ * from the outside, because a wrong goal still renders as a goal.
+ */
+describe("the goal an accommodated student is timed against", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    getSectionGrade.mockResolvedValue(null);
+    getAccommodation.mockResolvedValue("standard");
+    listItemResponses.mockResolvedValue([]);
+    activityState.assignment = makeSectionAssignment("in_progress");
+    activityState.loading = false;
+    activityState.error = null;
+  });
+
+  it("hands the runner her own accommodation, not the standard one", async () => {
+    getAccommodation.mockResolvedValue("accommodation_70");
+    renderRouted();
+    await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
+    expect(sectionRunnerProps.mock.calls.at(-1)![0].accommodation).toBe("accommodation_70");
+  });
+
+  it("asks for it under the student's own id", async () => {
+    renderRouted();
+    await waitFor(() => expect(getAccommodation).toHaveBeenCalledWith("user-1"));
+  });
+
+  it("uses standard when she has none", async () => {
+    renderRouted();
+    await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
+    expect(sectionRunnerProps.mock.calls.at(-1)![0].accommodation).toBe("standard");
   });
 });

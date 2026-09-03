@@ -405,7 +405,28 @@ serve(async (req) => {
       }
     });
 
-    const accommodation = String(first.accommodation ?? "standard");
+    /*
+     * Which goal this run is scored against, read from the profile and not from
+     * the run.
+     *
+     * The row carries an `accommodation` too, written by her own browser, and
+     * it is deliberately not trusted here for the reason ADR 0019 gives about
+     * grades: the accommodation picks the goal, so a value the student can set
+     * is a passing time she can set. The profile column is admin-writable only
+     * and is the answer.
+     *
+     * `standard` on a failed read, because scoring an accommodated student
+     * against the standard goal is the known harm and a missing profile row is
+     * not evidence of anything. It is recorded on the grade either way, so a
+     * wrong goal is visible rather than silent.
+     */
+    const { data: profile, error: pErr } = await admin
+      .from("profiles")
+      .select("lsat_accommodation")
+      .eq("class_id", assignment.student_id)
+      .maybeSingle();
+    if (pErr) console.error("[grade-rrc-section] could not read the accommodation", pErr);
+    const accommodation = String(profile?.lsat_accommodation ?? first.accommodation ?? "standard");
     const goalMinutes = Number((assignment.time_goal_minutes as Record<string, number>)?.[accommodation] ?? 25);
     /*
      * How long the section took.

@@ -13,6 +13,7 @@ import type {
 } from "./types";
 import type { RunScore } from "../progress";
 import type { SectionGrade } from "./types";
+import type { Accommodation } from "../recall/section";
 
 // Thin data layer for the Activity Centre. The jsonb columns (instructions,
 // items) come back from PostgREST as `Json`; we cast them to the domain shapes
@@ -315,6 +316,38 @@ export async function completeSectionRun(assignmentId: string): Promise<void> {
     })
     .eq("id", assignmentId);
   if (error) throw error;
+}
+
+/**
+ * Which time accommodation this student runs under.
+ *
+ * Scales the section goal: 25 minutes standard, 38 at a 53-minute
+ * accommodation, 50 at a 70-minute one (ADR 0014). Read here so the clock on
+ * screen shows her own goal; the GRADE reads the same column server-side
+ * rather than trusting what this sends, because the accommodation picks the
+ * goal and a goal she can set is a passing time she can set.
+ *
+ * `standard` on any failure. Scoring an accommodated student against the
+ * standard goal is the known harm, but a failed read is not evidence that she
+ * has an accommodation either, and the grader is the one that decides.
+ */
+export async function getAccommodation(studentId: string): Promise<Accommodation> {
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("lsat_accommodation")
+      .eq("class_id", studentId)
+      .maybeSingle();
+    if (error) throw error;
+    const value = (data as { lsat_accommodation?: string } | null)?.lsat_accommodation;
+    return value === "accommodation_53" || value === "accommodation_70" ? value : "standard";
+  } catch (err) {
+    // The column arrives with its own migration, so an older database answers
+    // with an unknown-column error rather than a value. Standard is the safe
+    // read and the grader corrects it.
+    console.error("[rrc] could not read the accommodation", err);
+    return "standard";
+  }
 }
 
 /**
