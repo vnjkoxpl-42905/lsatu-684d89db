@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { isRunLive } from "./lib/liveRun";
 import App from "./App.tsx";
 import { BUILD_SHA } from "@/lib/buildInfo";
 import { markSafeLazyReloaded } from "@/lib/safeLazy";
@@ -58,6 +59,20 @@ let latestBuildCheck: Promise<void> | null = null;
 
 async function reloadIfNewBundleIsAvailable() {
   if (latestBuildCheck) return latestBuildCheck;
+  /*
+   * Never over the top of a live recording.
+   *
+   * This check exists so a student is not running a build from two deploys
+   * ago, and everywhere else in the app the cost of it is a flicker. On a Read,
+   * Recall, Colour section the cost is the section: the recorder lives in this
+   * tab, nothing is written until she finishes, and a reload ends up to
+   * twenty-five minutes of an unrepeatable take. It only takes publishing while
+   * she is working and her glancing at another tab.
+   *
+   * Deferred, not cancelled. She stays on the bundle she started on until the
+   * run ends, and the next return to the tab picks the new one up.
+   */
+  if (isRunLive()) return;
 
   latestBuildCheck = (async () => {
     try {

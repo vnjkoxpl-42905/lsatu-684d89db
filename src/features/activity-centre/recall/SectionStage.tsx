@@ -1,4 +1,5 @@
 import type { SectionPhase, SectionStimulus } from "./section";
+import { VoiceLevel } from "./VoiceLevel";
 
 /**
  * One screen of a Read, Recall, Colour SECTION run.
@@ -33,9 +34,11 @@ import type { SectionPhase, SectionStimulus } from "./section";
  *   corrected until the section ends, because a live verdict trains her to vet
  *   before speaking, which is the habit colouring exists to break.
  *
- * There is deliberately no clock on screen. Time is measured and reported at
- * the end for the same reason v1 does it that way: a running clock in view is
- * what produces the rushed reading this drill exists to treat.
+ * The clock counts up rather than down, and the microphone has one quiet
+ * indicator beside the instruction. Both are late additions and both are
+ * concessions to the same finding: a student cannot pace a 25-minute section
+ * she cannot see the time on, and she cannot tell a dead microphone from her
+ * own silence. Neither may ever read as a score.
  */
 
 export interface SectionStageProps {
@@ -56,6 +59,28 @@ export interface SectionStageProps {
   elapsedSeconds?: number;
   /** Her goal for this section, so the elapsed time has something to sit against. */
   goalMinutes?: number;
+  /**
+   * The live input, for the presence indicator. Omit and no indicator is drawn,
+   * which is what a run against a handheld recorder looks like.
+   */
+  getStream?: () => MediaStream | null;
+  /** A whole Recall spent at the noise floor. Raised at the boundary. */
+  onSilentRecall?: () => void;
+  /**
+   * Leaving is confirmed rather than done, because a half-finished section
+   * writes nothing by design and the button is on screen for the whole run.
+   */
+  confirmingExit?: boolean;
+  onConfirmExit?: () => void;
+  onCancelExit?: () => void;
+  /**
+   * Seconds left in the ready beat, or null once the section is running.
+   *
+   * The recorder is already open during it, on purpose: the beat exists so the
+   * first thing an unrepeatable take captures is not a student still settling,
+   * and so she can watch the level move before any of it counts.
+   */
+  countdown?: number | null;
 }
 
 /*
@@ -93,6 +118,12 @@ export function SectionStage({
   onExit,
   elapsedSeconds,
   goalMinutes,
+  getStream,
+  onSilentRecall,
+  confirmingExit,
+  onConfirmExit,
+  onCancelExit,
+  countdown = null,
 }: SectionStageProps) {
   // Position across the section, drawn as the rail's fill. Progress inside the
   // current stimulus is deliberately not shown: the app does not know it.
@@ -134,32 +165,91 @@ export function SectionStage({
         )}
       </header>
 
+      {/*
+        * Leaving throws the run away, so it says so first.
+        *
+        * A half-finished section is deliberately not a partial score and never
+        * becomes one, which is the right rule and is what makes one unguarded
+        * click on a permanently visible button cost up to twenty-five minutes.
+        * The confirmation is the whole guard: the wording names what goes, and
+        * staying is the default the keyboard lands on.
+        */}
+      {confirmingExit ? (
+        <div className="ac-section-confirm" role="dialog" aria-modal="true" aria-label="Leave this section">
+          <div className="ac-section-confirm-card">
+            <p className="ac-section-confirm-title">Leave this section?</p>
+            <p className="ac-section-confirm-body">
+              A section is scored whole. Stopping now throws away{" "}
+              {elapsedSeconds !== undefined ? clock(elapsedSeconds) : "everything"} of work and the
+              recording with it. Nothing is kept and there is no partial score.
+            </p>
+            <div className="ac-section-confirm-row">
+              <button
+                type="button"
+                className="ac-section-confirm-stay"
+                onClick={onCancelExit}
+                autoFocus
+              >
+                Keep going
+              </button>
+              <button type="button" className="ac-section-confirm-go" onClick={onConfirmExit}>
+                Leave and lose it
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <main className="ac-section-field">
         <div className="ac-section-paper">
-          <div className="ac-section-body">
-            {/*
-              While she works, every chunk is rendered in order with nothing
-              marking one out from another: the cuts guide her eye and hold the
-              grader's Details, and that is all they do. During The Recall the
-              stimulus is not rendered at all -- the paper stays, the text goes,
-              and it does not come back until the Report Card.
-            */}
-            {phase === "working" ? (
-              <div className="ac-section-stimulus">
-                {stimulus.chunks.map((chunk) => (
-                  <span key={chunk.n} className="ac-section-chunk">
-                    {chunk.text}{" "}
-                  </span>
-                ))}
-              </div>
-            ) : null}
-          </div>
+          {countdown !== null ? (
+            /*
+             * The beat before the first stimulus.
+             *
+             * The stimulus is deliberately not behind this: it has not started
+             * yet, and a section that opened with its first argument already
+             * readable would be a section she had begun reading before the
+             * recording was worth anything.
+             */
+            <div className="ac-section-ready">
+              <p className="ac-section-ready-title">Recording now</p>
+              <p className="ac-section-ready-body">
+                One take, all the way through, out loud. Space twice per stimulus: once when you
+                have read it and said it back, once when you have given your Read.
+              </p>
+              <span className="ac-section-ready-count">
+                {countdown > 0 ? `Starting in ${countdown}` : "Starting"}
+              </span>
+            </div>
+          ) : (
+            <div className="ac-section-body">
+              {/*
+                While she works, every chunk is rendered in order with nothing
+                marking one out from another: the cuts guide her eye and hold the
+                grader's Details, and that is all they do. During The Recall the
+                stimulus is not rendered at all -- the paper stays, the text goes,
+                and it does not come back until the Report Card.
+              */}
+              {phase === "working" ? (
+                <div className="ac-section-stimulus">
+                  {stimulus.chunks.map((chunk) => (
+                    <span key={chunk.n} className="ac-section-chunk">
+                      {chunk.text}{" "}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          )}
 
           {/* The card's own footer, where the real section keeps its controls.
               What she is doing sits left, the one key that does it sits right. */}
           <div className="ac-section-foot">
             <p className="ac-section-instruction" role="status">
-              {INSTRUCTION[phase]}
+              {countdown !== null ? "Say something to check your microphone." : INSTRUCTION[phase]}
+              {getStream ? (
+                <VoiceLevel getStream={getStream} phase={phase} onSilentRecall={onSilentRecall} />
+              ) : null}
             </p>
             {error ? (
               <p className="ac-section-error" role="status">
@@ -167,7 +257,7 @@ export function SectionStage({
               </p>
             ) : (
               <p className="ac-section-hint">
-                <kbd>space</kbd> {KEY_DOES[phase]}
+                <kbd>space</kbd> {countdown !== null ? "in a moment" : KEY_DOES[phase]}
               </p>
             )}
           </div>

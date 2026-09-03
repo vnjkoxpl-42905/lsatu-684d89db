@@ -34,9 +34,12 @@
 
 /* ---- the white rail ---------------------------------------------------- */
 
+/* Four children, so four columns: position, the rail, the clock, the way out.
+   Declared as three, the exit wrapped onto a second row and the rail grew the
+   header from 46px to 96px on the drill's only screen. */
 .ac-section-head {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   gap: 1.25rem;
   padding: 0.75rem 1.5rem;
@@ -46,9 +49,8 @@
   font-size: 0.8125rem;
 }
 
-/* Where she is in the section, and deliberately not how long it is taking.
-   Time is measured silently and reported at the end: a clock in view is what
-   produces the rushed reading this drill exists to treat. */
+/* Where she is in the section. The clock sits beside it; see
+   `.ac-section-clock` for why it counts up rather than down. */
 .ac-section-where {
   font-variant-numeric: tabular-nums;
 }
@@ -243,4 +245,155 @@
 .ac-section-clock i {
   font-style: normal;
   opacity: 0.55;
+}
+
+/* Presence, not a level meter.
+ *
+ * The one moving thing on a screen she talks at for twenty-one minutes. It
+ * answers "is anything reaching it" and deliberately not "how am I doing":
+ * no target, no colour change, no number, because nothing in this room is
+ * allowed to read as a verdict before the section ends. Graphite, low
+ * contrast, and beside the instruction rather than anywhere near the text.
+ */
+.ac-section-level {
+  display: inline-block;
+  width: 34px;
+  height: 3px;
+  margin-left: 0.625rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #e2e8f0;
+  vertical-align: middle;
+}
+
+.ac-section-level-fill {
+  display: block;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--sec-chrome);
+}
+
+/* ---- leaving ------------------------------------------------------------ */
+
+/* A half-finished section writes nothing by design, so the button that ends one
+   is the most expensive control in the product. It asks first, over the run
+   rather than instead of it: the stimulus stays behind the scrim, because she
+   may well be here by accident and the way back is to see where she was. */
+.ac-section-confirm {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgb(10 8 24 / 0.62);
+  inset: 0;
+}
+
+.ac-section-confirm-card {
+  width: 100%;
+  max-width: 26rem;
+  border-radius: 0.5rem;
+  background: var(--sec-paper);
+  padding: 1.5rem;
+  box-shadow: 0 18px 48px rgb(0 0 0 / 0.45);
+}
+
+.ac-section-confirm-title {
+  margin: 0;
+  color: var(--sec-ink);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.ac-section-confirm-body {
+  margin: 0.5rem 0 0;
+  color: #475569;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.ac-section-confirm-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.ac-section-confirm-stay,
+.ac-section-confirm-go {
+  border-radius: 0.375rem;
+  padding: 0.4375rem 0.875rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+/* Staying is the default and looks like it. */
+.ac-section-confirm-stay {
+  border: 1px solid transparent;
+  background: var(--sec-ink);
+  color: var(--sec-paper);
+  font-weight: 500;
+}
+
+.ac-section-confirm-go {
+  border: 1px solid var(--sec-rule);
+  background: none;
+  color: #475569;
+}
+
+.ac-section-confirm-go:hover {
+  border-color: #cbd5e1;
+  color: var(--sec-warn);
+}
+
+/* ---- the ready beat ----------------------------------------------------- */
+
+/* Three seconds between pressing Start and the first stimulus.
+ *
+ * The microphone opens on mount and the clock starts with it, so without this
+ * the first thing a 25-minute recorded take captures is a student still
+ * settling. It also puts the one instruction she needs -- Space, twice per
+ * stimulus -- on screen at the moment it becomes true. */
+.ac-section-ready {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.ac-section-ready-title {
+  margin: 0;
+  color: var(--sec-ink);
+  font-family: Fraunces, ui-serif, Georgia, serif;
+  font-size: 26px;
+  font-weight: 400;
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 14;
+}
+
+.ac-section-ready-body {
+  max-width: 34ch;
+  margin: 0;
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.ac-section-ready-count {
+  color: #94a3b8;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-section-level-fill {
+    transition: none;
+  }
 }

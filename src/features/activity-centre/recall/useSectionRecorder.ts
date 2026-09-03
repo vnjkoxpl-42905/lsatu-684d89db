@@ -75,6 +75,60 @@ function pickMimeType(): string | undefined {
 }
 
 /**
+ * What the microphone is asked for, and what it is asked NOT to do.
+ *
+ * `{ audio: true }` takes Chrome's defaults, which are tuned for a phone call:
+ * automatic gain, noise suppression and echo cancellation, all on. Measured on
+ * a live 21-minute run, all three were active. For a call that is right. For
+ * this it is not, and in three separate ways.
+ *
+ * The take is twenty-odd minutes with long SILENT reads inside it, so automatic
+ * gain spends those reads winding the input up and then pumps room noise into
+ * the gap before she speaks again. Noise suppression is a speech/not-speech
+ * judgement made by the browser, ahead of ours, and the quiet end of her
+ * delivery -- a trailed-off clause, an aside, the half-swallowed word -- is
+ * exactly what it is most likely to decide is not speech. And what comes off
+ * this file is not listened to, it is transcribed and then graded Detail by
+ * Detail: a word the browser removed is a Detail she is marked as having
+ * dropped.
+ *
+ * So they are asked for explicitly, and off. Mono because the source is one
+ * voice and a second channel is bytes against a bucket cap, not information.
+ *
+ * The constraints are not `exact`. A device that cannot honour one of them
+ * should still record the section: a run with automatic gain is worse than a
+ * run without it and far better than no run. Nothing here can fail the drill.
+ */
+const AUDIO_CONSTRAINTS: MediaTrackConstraints = {
+  autoGainControl: false,
+  noiseSuppression: false,
+  echoCancellation: false,
+  channelCount: 1,
+};
+
+/**
+ * Open the microphone, preferring the untreated stream and accepting the
+ * treated one.
+ *
+ * Older browsers reject an unknown constraint key outright rather than ignoring
+ * it, so a single request would turn "cannot switch off noise suppression" into
+ * "no microphone" -- trading a slightly worse recording for none at all. The
+ * retry is what stops a preference from ever becoming a requirement.
+ */
+async function openMicrophone(): Promise<MediaStream> {
+  try {
+    return await navigator.mediaDevices.getUserMedia({ audio: AUDIO_CONSTRAINTS });
+  } catch (e) {
+    // A refusal is not a constraint failure and must not be retried into a
+    // second permission prompt.
+    const name = (e as DOMException)?.name;
+    if (name === "NotAllowedError" || name === "SecurityError") throw e;
+    console.warn("[rrc] microphone would not take the drill's constraints; using its defaults", e);
+    return await navigator.mediaDevices.getUserMedia({ audio: true });
+  }
+}
+
+/**
  * How often the backup recorder hands over a piece.
  *
  * The most that can ever be lost to a crash. Ten seconds is short enough that
@@ -118,7 +172,7 @@ export function useSectionRecorder(
   const start = useCallback(async () => {
     if (recorder.current) return;
     try {
-      const media = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const media = await openMicrophone();
       const mimeType = pickMimeType();
       const rec = new MediaRecorder(media, mimeType ? { mimeType } : undefined);
       parts.current = [];

@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import pt105 from "../content/read-recall-colour-pt105-s2.json";
 import { SectionRunner } from "./SectionRunner";
+import { isRunLive } from "@/lib/liveRun";
 
 // The section runner, driven the way she drives it: one key, pressed twice per
 // stimulus, start to finish.
@@ -62,6 +63,10 @@ function renderRun(overrides: Partial<Parameters<typeof SectionRunner>[0]> = {})
       sourceSection={ONE.source_section}
       timeGoalMinutes={ONE.time_goal_minutes}
       onComplete={onComplete}
+      // The three-second ready beat is real and tested on its own, below. Every
+      // other test here is about the loop AFTER it, so they start where a
+      // student starts pressing rather than waiting three seconds each.
+      readySeconds={0}
       {...overrides}
     />,
   );
@@ -138,6 +143,7 @@ describe("The Recall", () => {
         items={TWO.items}
         sourceSection={TWO.source_section}
         timeGoalMinutes={TWO.time_goal_minutes}
+        readySeconds={0}
       />,
     );
     space();
@@ -308,6 +314,7 @@ describe("writing it down", () => {
         items={TWO.items}
         sourceSection={TWO.source_section}
         timeGoalMinutes={TWO.time_goal_minutes}
+        readySeconds={0}
       />,
     );
     space();
@@ -337,6 +344,7 @@ describe("writing it down", () => {
         items={TWO.items}
         sourceSection={TWO.source_section}
         timeGoalMinutes={TWO.time_goal_minutes}
+        readySeconds={0}
       />,
     );
     // The first stimulus only. The section is nowhere near over.
@@ -378,5 +386,114 @@ describe("a snapshot that is not a section", () => {
       <SectionRunner assignmentId="a1" studentId="s1" items={[]} sourceSection={null} timeGoalMinutes={null} />,
     );
     expect(screen.getByText(/could not be read/i)).toBeInTheDocument();
+  });
+});
+
+/**
+ * The three seconds before the first stimulus.
+ *
+ * The microphone opens on mount and the clock used to start with it, so the
+ * first thing an unrepeatable 25-minute take captured was a student still
+ * settling -- and her first frame was already stimulus one. The beat is where
+ * the recording is proved: the level indicator is live through it, so a muted
+ * input is visible before anything costs her.
+ */
+describe("the ready beat", () => {
+  it("does not show the first stimulus until the beat has run", () => {
+    renderRun({ readySeconds: 3 });
+    expect(screen.getByText(/recording now/i)).toBeInTheDocument();
+    expect(screen.queryByText(CHUNKS[0].text)).not.toBeInTheDocument();
+  });
+
+  it("ignores Space during it, so a stray press cannot start the section early", () => {
+    renderRun({ readySeconds: 3 });
+    space();
+    space();
+    space();
+    // Still the beat: the presses went nowhere rather than eating stimulus one.
+    expect(screen.getByText(/recording now/i)).toBeInTheDocument();
+  });
+
+  it("holds the section clock at zero through it", () => {
+    // Three seconds of settling must not be charged to a 25-minute goal.
+    renderRun({ readySeconds: 3 });
+    expect(screen.getByText("0:00")).toBeInTheDocument();
+  });
+
+  it("hands over to the first stimulus when it ends", async () => {
+    renderRun({ readySeconds: 0 });
+    expect(await screen.findByText(CHUNKS[0].text)).toBeInTheDocument();
+    expect(screen.queryByText(/recording now/i)).not.toBeInTheDocument();
+  });
+});
+
+/**
+ * Leaving.
+ *
+ * A half-finished section writes nothing and is deliberately never a partial
+ * score, which is the right rule and is exactly what makes one click on a
+ * permanently visible button worth up to twenty-five minutes.
+ */
+describe("the way out", () => {
+  it("does not leave on the first click, and says what would be lost", () => {
+    const onExit = vi.fn();
+    renderRun({ onExit });
+    fireEvent.click(screen.getByRole("button", { name: /leave/i }));
+    expect(onExit).not.toHaveBeenCalled();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText(/no partial score/i)).toBeInTheDocument();
+  });
+
+  it("stays when she says so", () => {
+    const onExit = vi.fn();
+    renderRun({ onExit });
+    fireEvent.click(screen.getByRole("button", { name: /leave/i }));
+    fireEvent.click(screen.getByRole("button", { name: /keep going/i }));
+    expect(onExit).not.toHaveBeenCalled();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    // And she is back on the stimulus she was working, not somewhere new.
+    expect(screen.getByText(CHUNKS[0].text)).toBeInTheDocument();
+  });
+
+  it("leaves when she confirms", () => {
+    const onExit = vi.fn();
+    renderRun({ onExit });
+    fireEvent.click(screen.getByRole("button", { name: /leave/i }));
+    fireEvent.click(screen.getByRole("button", { name: /leave and lose it/i }));
+    expect(onExit).toHaveBeenCalled();
+  });
+
+  it("does not ask during the beat, when there is nothing to lose", () => {
+    const onExit = vi.fn();
+    renderRun({ onExit, readySeconds: 3 });
+    fireEvent.click(screen.getByRole("button", { name: /leave/i }));
+    expect(onExit).toHaveBeenCalled();
+  });
+});
+
+/**
+ * The app must not reload itself over a live take.
+ *
+ * `main.tsx` reloads the tab whenever a newer bundle has been published, on
+ * every return to it. Everywhere else that costs a flicker. Here it costs the
+ * section: the recorder lives in this tab and nothing is written until she
+ * finishes, so publishing while she works and her glancing at another tab was
+ * enough to lose the run.
+ */
+describe("holding the app still", () => {
+  it("marks a run live while it is on screen, and clears it after", () => {
+    const { unmount } = render(
+      <SectionRunner
+        assignmentId="a1"
+        studentId="s1"
+        items={ONE.items}
+        sourceSection={ONE.source_section}
+        timeGoalMinutes={ONE.time_goal_minutes}
+        readySeconds={0}
+      />,
+    );
+    expect(isRunLive()).toBe(true);
+    unmount();
+    expect(isRunLive()).toBe(false);
   });
 });

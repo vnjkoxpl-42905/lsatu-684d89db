@@ -6,6 +6,7 @@ import { SectionStage } from "./SectionStage";
 import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
 import { sliceTranscript, useSectionTranscript } from "./useSectionTranscript";
 import { beginBackup, discard, putChunk } from "./recordingBackup";
+import { beginLiveRun } from "@/lib/liveRun";
 import {
   advanceCursor,
   buildSectionRun,
@@ -87,6 +88,11 @@ export interface SectionRunnerProps {
   onExit?: () => void;
   /** Injected in tests. Real runs use the wall clock. */
   now?: () => number;
+  /**
+   * The ready beat, in seconds. Injected in tests so a run can be driven
+   * without waiting out three real seconds; every real run takes the default.
+   */
+  readySeconds?: number;
 }
 
 /**
@@ -112,6 +118,14 @@ interface StimulusRecord {
 /** Stable identity so hooks keyed on `now` do not restart every render. */
 const defaultNow = () => Date.now();
 
+/**
+ * How long the ready beat runs before the first stimulus.
+ *
+ * Long enough to read one line and see the level move, short enough that it is
+ * never in the way of a student on her fourth section of the week.
+ */
+const READY_SECONDS = 3;
+
 export function SectionRunner({
   assignmentId,
   studentId,
@@ -122,6 +136,7 @@ export function SectionRunner({
   onComplete,
   onExit,
   now = defaultNow,
+  readySeconds = READY_SECONDS,
 }: SectionRunnerProps) {
   const run = useMemo(
     () => buildSectionRun(items, sourceSection, timeGoalMinutes),
@@ -150,6 +165,7 @@ export function SectionRunner({
       onComplete={onComplete}
       onExit={onExit}
       now={now}
+      readySeconds={readySeconds}
     />
   );
 }
@@ -162,6 +178,7 @@ function RunBody({
   onComplete,
   onExit,
   now,
+  readySeconds,
 }: {
   run: NonNullable<ReturnType<typeof buildSectionRun>>;
   assignmentId: string;
@@ -170,9 +187,33 @@ function RunBody({
   onComplete?: () => void;
   onExit?: () => void;
   now: () => number;
+  readySeconds: number;
 }) {
   const [cursor, setCursor] = useState<SectionCursor>(startCursor);
   const [done, setDone] = useState(false);
+  /**
+   * Seconds left in the ready beat, counting to zero, and null once she is
+   * working.
+   *
+   * The microphone opens on mount and the clock used to start with it, so the
+   * first thing a 25-minute unrepeatable take captured was a student still
+   * arranging herself -- and the very first frame she saw was already stimulus
+   * one, with no moment in between that said the recording had begun. Three
+   * seconds is the whole fix: the recorder is live through it, so the level
+   * indicator is moving and a dead microphone is visible BEFORE any of it
+   * costs her anything, and the section's own clock does not start until it
+   * ends.
+   */
+  const [countdown, setCountdown] = useState<number | null>(readySeconds);
+  /** Confirming the way out. Leaving throws the whole run away. */
+  const [confirmingExit, setConfirmingExit] = useState(false);
+  /**
+   * A whole Recall at the noise floor. Shown rather than logged: it is the one
+   * fault that otherwise ends in a perfect-looking run and a card of zeros.
+   */
+  const [deadInput, setDeadInput] = useState(false);
+  /** The recording did not reach the server. Said plainly at the end. */
+  const [uploadFailed, setUploadFailed] = useState(false);
   /**
    * This sitting's own name for its local backup.
    *
@@ -194,6 +235,7 @@ function RunBody({
     mark,
     stop: stopRecording,
     error: micError,
+    getStream,
     getMimeType,
   } = useSectionRecorder(now, keepChunk);
   // Runs for the whole section, alongside the recording rather than instead of
@@ -257,11 +299,66 @@ function RunBody({
    * `mark()` reads refs and the recorder is started once on mount.
    */
   const [elapsed, setElapsed] = useState(0);
+
+  /*
+   * The ready beat, and the moment the section actually starts.
+   *
+   * Every clock in the run is re-zeroed as it ends, so the three seconds are
+   * not charged to her goal. The RECORDER is deliberately not restarted: it
+   * has been running since mount, which is what lets her see the level move
+   * before the first stimulus, and restarting a recorder mid-section is the
+   * one thing the drill forbids outright. The beat simply sits at the head of
+   * the file, inside stimulus one's first window, as three seconds of nothing.
+   */
   useEffect(() => {
-    if (done) return;
+    if (countdown === null) return;
+    if (countdown <= 0) {
+      startedAt.current = now();
+      phaseStartedAt.current = startedAt.current;
+      stimulusStartedAt.current = startedAt.current;
+      setCountdown(null);
+      return;
+    }
+    const t = setTimeout(() => setCountdown((n) => (n === null ? null : n - 1)), 1000);
+    return () => clearTimeout(t);
+  }, [countdown, now]);
+
+  useEffect(() => {
+    if (done || countdown !== null) return;
     const tick = setInterval(() => setElapsed(seconds(startedAt.current)), 1000);
     return () => clearInterval(tick);
   }, [done, seconds]);
+
+  /*
+   * Hold the app still for the length of the run.
+   *
+   * Two things in the browser will end a section without asking. The app's own
+   * freshness check reloads the tab when a newer bundle has been published, on
+   * every return to it -- so publishing mid-section and her glancing away was
+   * enough to lose twenty-five minutes. And a reflex Cmd-R or a closed tab does
+   * the same thing by hand.
+   *
+   * The first is suppressed outright: the reload is deferred until the run
+   * ends, which costs her one stale bundle for one section. The second cannot
+   * be suppressed, so it is questioned -- `beforeunload` is the browser's own
+   * prompt and the only guard available, and it is deliberately registered for
+   * the whole run rather than only once she has spoken, because the expensive
+   * thing to lose is the recording and that starts here.
+   */
+  useEffect(() => {
+    const release = beginLiveRun();
+    const warn = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      // Set for the browsers that still require it; none of them show the
+      // string any more, and the prompt is generic by design.
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warn);
+    return () => {
+      window.removeEventListener("beforeunload", warn);
+      release();
+    };
+  }, []);
 
   /*
    * Press record at the very beginning. Before the first chunk, not on the
@@ -286,7 +383,7 @@ function RunBody({
    * one write at the end.
    */
   const press = useCallback(() => {
-    if (done || saving.current) return;
+    if (done || saving.current || countdown !== null) return;
     setCursor((at) => {
       const stimulus = run.stimuli[at.item];
       const spent = seconds(phaseStartedAt.current);
@@ -331,7 +428,7 @@ function RunBody({
       }
       return next;
     });
-  }, [done, run, seconds, now, mark]);
+  }, [done, countdown, run, seconds, now, mark]);
 
   /**
    * Where this run's recording will live, decided before it exists.
@@ -495,6 +592,19 @@ function RunBody({
   }, [done, press]);
 
   /**
+   * Leaving, in two steps.
+   *
+   * Before the section starts there is nothing to lose and the button is just a
+   * way out. Once she is working, one click on a permanently visible control
+   * would throw away up to twenty-five minutes that is deliberately never
+   * scored in part, so it asks first.
+   */
+  const askToExit = useCallback(() => {
+    if (countdown !== null) onExit?.();
+    else setConfirmingExit(true);
+  }, [countdown, onExit]);
+
+  /**
    * The end of the run: stop the recorder, upload, and re-send everything.
    *
    * The rows are already on record, stimulus by stimulus. What is left that
@@ -521,13 +631,37 @@ function RunBody({
       const finished = await stopRecording();
       const path = audioPath();
       if (finished && finished.blob.size > 0 && path) {
-        const { error: upload } = await supabase.storage
-          .from(RECORDING_BUCKET)
-          .upload(path, finished.blob, { contentType: finished.mimeType, upsert: true });
-        if (upload) console.error("[rrc] could not store the recording", upload);
+        /*
+         * Once, then once more, then say so.
+         *
+         * A failed upload used to be a console line, and its consequence
+         * arrived minutes later somewhere else entirely: the grader refuses a
+         * run with no recording, so a dropped connection at this exact moment
+         * turned twenty-five minutes of correct work into "Not scored" with
+         * nothing anywhere saying why. It is a real fault and it is hers to
+         * know about, because the recovery needs her to open the section again.
+         */
+        let upload = (
+          await supabase.storage
+            .from(RECORDING_BUCKET)
+            .upload(path, finished.blob, { contentType: finished.mimeType, upsert: true })
+        ).error;
+        if (upload) {
+          console.error("[rrc] could not store the recording; retrying once", upload);
+          upload = (
+            await supabase.storage
+              .from(RECORDING_BUCKET)
+              .upload(path, finished.blob, { contentType: finished.mimeType, upsert: true })
+          ).error;
+        }
+        if (upload) {
+          console.error("[rrc] could not store the recording", upload);
+          if (!cancelled) setUploadFailed(true);
+        }
         // The real recording is safely away, so the local copy has done its
         // job. Deliberately only on success: an upload that failed is exactly
-        // when the backup is the only copy there is.
+        // when the backup is the only copy there is, and the next open of this
+        // section is what sends it.
         else void discard(runId.current);
       }
 
@@ -615,7 +749,9 @@ function RunBody({
           <p className="ac-section-instruction">Section finished</p>
           <div className="ac-section-stimulus">
             <span className="ac-section-chunk">
-              {run.stimuli.length} stimuli, end to end. Your Report Card comes next.
+              {uploadFailed
+                ? `${run.stimuli.length} stimuli, end to end. Your recording did not reach us, so it is still on this computer. Open this section again from the same browser and it will be sent, and then marked.`
+                : `${run.stimuli.length} stimuli, end to end. Your Report Card comes next.`}
             </span>
           </div>
         </div>
@@ -629,10 +765,27 @@ function RunBody({
       phase={cursor.phase}
       stimulusNumber={cursor.item + 1}
       totalStimuli={run.stimuli.length}
-      error={micError}
-      onExit={onExit}
-      elapsedSeconds={elapsed}
+      /*
+       * A refused microphone is the loud fault and wins the line. A live one
+       * that heard nothing through a whole Recall is the quiet one, and it is
+       * the one that otherwise ends in a perfect-looking run and a card of
+       * zeros.
+       */
+      error={
+        micError ??
+        (deadInput
+          ? "Nothing is reaching the microphone. Check it is not muted, then keep going."
+          : null)
+      }
+      onExit={onExit ? askToExit : undefined}
+      elapsedSeconds={countdown === null ? elapsed : 0}
       goalMinutes={run.timeGoalMinutes[accommodation]}
+      getStream={getStream}
+      onSilentRecall={() => setDeadInput(true)}
+      confirmingExit={confirmingExit}
+      onConfirmExit={onExit}
+      onCancelExit={() => setConfirmingExit(false)}
+      countdown={countdown}
     />
   );
 }

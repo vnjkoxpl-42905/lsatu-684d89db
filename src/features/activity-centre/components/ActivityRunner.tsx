@@ -374,14 +374,49 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
         return;
       }
 
-      setIndex(progress.resolvedCount);
+      /*
+       * Where the briefing says she is picking up from.
+       *
+       * A section is always at the beginning, because it never resumes: rows
+       * left by an abandoned sitting are kept on purpose and are not progress
+       * through this one. Without this the intro read "Back to stimulus 6" over
+       * a Start button that correctly begins a fresh Attempt at stimulus 1.
+       */
+      setIndex(isSectionRun ? 0 : progress.resolvedCount);
       setResumeAt(
-        progress.pendingAttempts > 0
+        !isSectionRun && progress.pendingAttempts > 0
           ? { index: progress.resolvedCount, attempts: progress.pendingAttempts, text: progress.pendingText }
           : null,
       );
 
-      const started = assignment.status === "in_progress" || progress.resolvedCount > 0;
+      /*
+       * A section never resumes.
+       *
+       * Everything else here is resumable by design: the log says where she
+       * got to, the intro is the front door exactly once, and coming back
+       * drops her onto the question she stopped at. A Read, Recall, Colour
+       * section is the one run where that is wrong in every direction.
+       *
+       * There is nothing to resume INTO. The unit judged is the whole section
+       * (ADR 0010) and the recording is one unbroken take; a run rejoined
+       * halfway is a different sitting with a different recording, and the
+       * grader would score the last Attempt's audio against a mixture of both.
+       *
+       * And resuming it is dangerous rather than merely wrong. Landing on
+       * `running` opens the microphone and starts the clock with the briefing
+       * skipped, so once a section had been opened ONCE -- including by
+       * accident -- every later visit to the link began a live, recording,
+       * clocked run. That is how the trial run began. An abandoned section
+       * also leaves the assignment `in_progress` for ever, which is what made
+       * the state sticky rather than a one-off.
+       *
+       * So it always opens on its briefing and a deliberate start. The rows
+       * from an abandoned sitting stay where they are and cost nothing: the
+       * next run takes the next `attempt_no` and the grader reads only the
+       * newest Attempt.
+       */
+      const started =
+        !isSectionRun && (assignment.status === "in_progress" || progress.resolvedCount > 0);
       setPhase(started ? "running" : "intro");
       // The world's entrance is the ceremony of arriving, and it runs two and a
       // half seconds. It belongs to Start, not to every reopen: a student who

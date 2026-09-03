@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ActivityRunner } from "./ActivityRunner";
@@ -117,6 +117,22 @@ function sectionRows(): ActivityItemResponse[] {
   }));
 }
 
+/**
+ * Press Start, the way she does.
+ *
+ * A section always opens on its briefing now, even one already `in_progress`:
+ * it never resumes, because resuming would open the microphone and start the
+ * clock with the rules skipped. Reaching the runner therefore takes a
+ * deliberate press, in a test exactly as in the product.
+ */
+async function startTheSection() {
+  // The intro renders Start twice -- once in the page and once in the sticky
+  // dock that appears when the page one scrolls away. Either is the same
+  // action; take the first.
+  const [start] = await screen.findAllByRole("button", { name: /^start$/i });
+  fireEvent.click(start);
+}
+
 function renderRouted() {
   return render(
     <MemoryRouter initialEntries={["/activities/assign-1"]}>
@@ -200,6 +216,7 @@ describe("the goal an accommodated student is timed against", () => {
   it("hands the runner her own accommodation, not the standard one", async () => {
     getAccommodation.mockResolvedValue("accommodation_70");
     renderRouted();
+    await startTheSection();
     await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
     expect(sectionRunnerProps.mock.calls.at(-1)![0].accommodation).toBe("accommodation_70");
   });
@@ -211,7 +228,59 @@ describe("the goal an accommodated student is timed against", () => {
 
   it("uses standard when she has none", async () => {
     renderRouted();
+    await startTheSection();
     await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
     expect(sectionRunnerProps.mock.calls.at(-1)![0].accommodation).toBe("standard");
+  });
+});
+
+/**
+ * A section never resumes.
+ *
+ * Every other Activity here does, and should: the log says where she got to and
+ * the intro is the front door exactly once. A Read, Recall, Colour section is
+ * the one run where resuming is both meaningless and dangerous. Meaningless
+ * because the unit judged is the whole section against one unbroken recording,
+ * so there is nothing to rejoin. Dangerous because landing on `running` opens
+ * the microphone and starts the clock with the briefing skipped -- so once the
+ * link had been opened ONCE, every later visit began a live recorded run.
+ *
+ * The state is sticky, which is what makes this worth a test rather than a
+ * comment: an abandoned section leaves the assignment `in_progress` for ever,
+ * so the bad path is the permanent one.
+ */
+describe("a section never resumes", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    getSectionGrade.mockResolvedValue(null);
+    getAccommodation.mockResolvedValue("standard");
+    listItemResponses.mockResolvedValue([]);
+    activityState.loading = false;
+    activityState.error = null;
+  });
+
+  it("opens an in-progress section on its briefing, not in a live run", async () => {
+    activityState.assignment = makeSectionAssignment("in_progress");
+    renderRouted();
+    expect((await screen.findAllByRole("button", { name: /^start$/i })).length).toBeGreaterThan(0);
+    expect(sectionRunnerProps).not.toHaveBeenCalled();
+  });
+
+  it("opens on the briefing even with stimuli already on record", async () => {
+    // An abandoned sitting leaves its rows behind by design -- they are what
+    // makes a crashed run recoverable. They must not be read as "she is
+    // partway through this one".
+    activityState.assignment = makeSectionAssignment("in_progress");
+    listItemResponses.mockResolvedValue(sectionRows().slice(0, 1));
+    renderRouted();
+    expect((await screen.findAllByRole("button", { name: /^start$/i })).length).toBeGreaterThan(0);
+    expect(sectionRunnerProps).not.toHaveBeenCalled();
+  });
+
+  it("reaches the runner once she presses Start", async () => {
+    activityState.assignment = makeSectionAssignment("in_progress");
+    renderRouted();
+    await startTheSection();
+    await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
   });
 });
