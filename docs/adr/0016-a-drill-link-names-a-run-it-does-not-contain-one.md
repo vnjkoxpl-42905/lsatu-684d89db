@@ -115,3 +115,39 @@ slug key only when the identity-keyed row does not exist. A completed identity
 row therefore cannot resurrect an older in-progress run. The next snapshot
 writes only the identity key, so an old active run migrates forward without a
 bulk data rewrite.
+
+## Follow-up: the runner reads the launch
+
+Implemented 2026-09-03. The temporary converter is gone, and with it the second
+grammar. `drillRouteState` was a parallel reader of the same query string, and
+it agreed with the codec only by inspection. The disagreements were latent
+rather than live: `?mode=full-section&timer=70` kept its accommodated clock,
+because the reader that read `timer` was the one the runner used and the reader
+that dropped it was only ever asked about canonical links. Nothing was broken.
+The point is that nothing would have told us when that stopped being true — and
+switching the runner onto the other reader is exactly the change that would have
+made it true. Every such disagreement was closed before the switch, which is
+what the golden table of older links in `drillLaunch.test.ts` now holds in
+place.
+
+`DrillLaunchGate` now resolves the launch and hands `Drill.tsx` a **Drill Run
+Spec** through context. The runner no longer reads the query string for anything
+about the run: not the mode, not the assignment id, not the bootcamp day. There
+is one reader (`parseDrillLaunch`) and one shape (`drillRunSpecFromLaunch`).
+
+The visible change is that a short link stays short. Previously the gate
+resolved `?drill=saved-set&set=…` and immediately replaced the address bar with
+the expanded question list, which threw away the naming the whole ADR is about:
+the first refresh was already replaying a frozen list. Now the link the student
+was sent is the link they keep, and each refresh re-reads the row.
+
+Older links are read but never rewritten, so everything one says has to be read
+in `parseDrillLaunch` — there is no second reader left to pick up what it drops.
+That is why the legacy branch grew: the timer mode, the practice-test leg, the
+initial index, and the identity ids the runner used to read for itself.
+
+An in-memory handover is still written into the address bar, now in the
+canonical grammar. What such a handover carries beyond a bare question list —
+the mode, whether it is guided, whether it is sealed — travels as a `RunCarry`
+under its own params, so writing it out and reading it back cannot quietly turn
+a `natural-drill` into a type-drill.

@@ -65,6 +65,16 @@ and the position in the queue live in the Run Record.
 _Avoid_: route state, config (that word currently means two different things in
 the code, a filter and a fixed question list), params, drill options.
 
+**Drill Run Spec**:
+A Drill Launch after its row has been read: the mode, the question list or the
+filter that draws one, and the ids saying which stored row this run belongs to.
+Built by `drillRunSpecFromLaunch` and handed to the runner through context by
+`DrillLaunchGate`, which is the only way the runner learns what it is running.
+The Drill Launch is what a link says; the Drill Run Spec is what the runner is
+told. One is written and read from a URL, the other never touches one.
+_Avoid_: route state (the shape this replaced, and it read the URL a second
+time), drill config (that word already means a filter or a fixed list), session.
+
 **Run Record**:
 The durable row, per student per run, holding what a run actually consists of:
 the ordered question list, every attempt, the position, and the clock already

@@ -3,7 +3,9 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 
 import DrillLaunchGate from './DrillLaunchGate';
+import { useDrillRunSpec } from './DrillRunSpecContext';
 import { DeadDrillLinkError } from '@/lib/drillLaunchResolve';
+import type { DrillRunSpec } from '@/lib/drillRunSpec';
 
 vi.mock('@/contexts/AuthContext', () => ({
   useAuth: () => ({ user: { id: 'user_1' } }),
@@ -31,10 +33,19 @@ vi.mock('@/lib/drillLaunchResolve', async () => {
   };
 });
 
-/** Stands in for the runner, and reports what the address bar ended up saying. */
+/**
+ * Stands in for the runner. Reports both halves of the gate's contract: what
+ * the address bar ended up saying, and what the runner was actually handed.
+ */
 function Runner() {
   const location = useLocation();
-  return <div data-testid="runner">{location.search}</div>;
+  const spec = useDrillRunSpec();
+  return (
+    <>
+      <div data-testid="runner">{location.search}</div>
+      <div data-testid="spec">{JSON.stringify(spec)}</div>
+    </>
+  );
 }
 
 function renderAt(entry: { pathname: string; search?: string; state?: unknown }) {
@@ -56,6 +67,8 @@ function renderAt(entry: { pathname: string; search?: string; state?: unknown })
 }
 
 const searchOf = () => new URLSearchParams(screen.getByTestId('runner').textContent ?? '');
+const specOf = (): DrillRunSpec => JSON.parse(screen.getByTestId('spec').textContent || '{}');
+const queueOf = () => (specOf().config as { selectedQids?: string[] } | undefined)?.selectedQids;
 
 describe('the gate', () => {
   beforeEach(() => {
@@ -65,11 +78,12 @@ describe('the gate', () => {
     questionBankState.isLoading = false;
   });
 
-  it('runs a drill that already says what it is, without touching the URL', async () => {
+  it('runs an older link without touching the URL', async () => {
     renderAt({ pathname: '/drill', search: '?mode=type-drill&qids=PT1-S1-Q1' });
 
     const runner = await screen.findByTestId('runner');
     expect(runner.textContent).toBe('?mode=type-drill&qids=PT1-S1-Q1');
+    expect(queueOf()).toEqual(['PT1-S1-Q1']);
     expect(resolveDrillLaunch).not.toHaveBeenCalled();
   });
 
@@ -80,8 +94,9 @@ describe('the gate', () => {
     });
 
     await screen.findByTestId('runner');
-    await waitFor(() => expect(searchOf().get('mode')).toBe('adaptive'));
+    await waitFor(() => expect(searchOf().get('drill')).toBe('smart-drill'));
     expect(searchOf().get('returnTo')).toBe('/classroom');
+    expect(specOf().mode).toBe('adaptive');
   });
 
   it('writes a practice-test leg into the address bar, which is what the close-out needs', async () => {
@@ -122,13 +137,17 @@ describe('the gate', () => {
     await waitFor(() => expect(searchOf().get('timer')).toBe('52.5'));
   });
 
-  it('resolves a short link and expands it to the questions it names', async () => {
+  it('resolves a short link into a run, and leaves the link short', async () => {
     resolveDrillLaunch.mockResolvedValue(['PT1-S1-Q1', 'PT1-S1-Q2']);
     renderAt({ pathname: '/drill', search: '?drill=saved-set&set=set_1' });
 
     await screen.findByTestId('runner');
-    await waitFor(() => expect(searchOf().get('qids')).toBe('PT1-S1-Q1,PT1-S1-Q2'));
-    expect(searchOf().get('mode')).toBe('type-drill');
+    await waitFor(() => expect(queueOf()).toEqual(['PT1-S1-Q1', 'PT1-S1-Q2']));
+    expect(specOf().mode).toBe('type-drill');
+    // The point of the short link: the address bar still names the set, so a
+    // refresh re-reads the row instead of replaying a frozen question list.
+    expect(searchOf().get('set')).toBe('set_1');
+    expect(searchOf().get('qids')).toBeNull();
     expect(resolveDrillLaunch).toHaveBeenCalledWith(
       expect.objectContaining({ kind: 'saved-set', setId: 'set_1' }),
       'user_1',
@@ -143,9 +162,12 @@ describe('the gate', () => {
     });
 
     await screen.findByTestId('runner');
-    await waitFor(() => expect(searchOf().get('qids')).toBe('PT1-S1-Q1,PT1-S1-Q2'));
-    expect(searchOf().get('bootcampDay')).toBe('3');
-    expect(searchOf().get('bootcampPart')).toBe('homework');
+    await waitFor(() => expect(queueOf()).toEqual(['PT1-S1-Q1', 'PT1-S1-Q2']));
+    expect(specOf().resumeIdentity).toEqual({
+      kind: 'bootcamp-day',
+      day: 3,
+      part: 'homework',
+    });
     expect(recordExposures).toHaveBeenCalledWith(
       'user_1',
       ['PT1-S1-Q1', 'PT1-S1-Q2'],
@@ -160,9 +182,27 @@ describe('the gate', () => {
     });
 
     await screen.findByTestId('runner');
-    await waitFor(() => expect(searchOf().get('qids')).toBe('PT1-S1-Q1'));
-    expect(searchOf().get('guided')).toBe('1');
-    expect(searchOf().get('guidedDrillId')).toBe('gd_7');
+    await waitFor(() => expect(queueOf()).toEqual(['PT1-S1-Q1']));
+    expect(specOf().isGuidedDrill).toBe(true);
+    expect(specOf().guidedDrillId).toBe('gd_7');
+  });
+
+  it('resolves a link exactly once, even though it also rewrites the URL', async () => {
+    resolveDrillLaunch.mockResolvedValue(['PT1-S1-Q1']);
+    renderAt({
+      pathname: '/drill',
+      state: {
+        mode: 'type-drill',
+        config: { qtypes: [], difficulties: [], pts: [], count: 1, selectedQids: ['PT1-S1-Q1'] },
+      },
+    });
+
+    await screen.findByTestId('runner');
+    await waitFor(() => expect(searchOf().get('drill')).toBe('questions'));
+    // A question list carries its own questions, so nothing is read at all;
+    // what matters is that the rewrite does not send the gate round again.
+    expect(resolveDrillLaunch).not.toHaveBeenCalled();
+    expect(queueOf()).toEqual(['PT1-S1-Q1']);
   });
 
   it('does not resolve a generated link before the question bank is ready', async () => {

@@ -11,10 +11,10 @@
  *
  * See `docs/adr/0016-a-drill-link-names-a-run-it-does-not-contain-one.md`.
  *
- * This module is the codec — `launchDrill` writes a launch to a query string,
- * `parseDrillLaunch` reads one back, and the pair round-trips. `toDrillRouteState`
- * is the translator that hands `Drill.tsx` the shape it already expects, so the
- * page does not have to change yet.
+ * This module is the codec — `launchDrill` writes a launch to a query string
+ * and `parseDrillLaunch` reads one back, and the pair round-trips. The runner
+ * consumes a launch through `drillRunSpecFromLaunch`; there is no second
+ * grammar and no expansion step.
  */
 
 import type {
@@ -23,7 +23,7 @@ import type {
   TimerMode,
   TypeDrillConfig,
 } from '@/types/drill';
-import type { DrillRouteState } from '@/lib/drillRouteState';
+import type { DrillResumeIdentity } from '@/lib/drillResumeSession';
 
 /**
  * Switches that mean the same thing whatever kind of drill is running. Anything
@@ -57,16 +57,34 @@ export interface PtLegRef {
 }
 
 /**
- * What a legacy link said that the canonical grammar has no place for, because
- * the canonical grammar expresses it as a kind instead. Exists purely so the
- * translator can reproduce today's route state byte for byte during the
- * migration, and disappears with the legacy branch.
+ * What a bare list of questions is carrying on its back.
+ *
+ * The canonical grammar expresses most of this as a kind of its own — a guided
+ * drill is `drill=guided-drill`, not a list of qids with a flag beside it. But
+ * two things still produce a list plus a flag: a link already sitting in a
+ * student's inbox, and a button that hands the run over in memory. Both name a
+ * real run, so what they say has to survive being written into the address bar
+ * and read back out.
+ *
+ * Every field here is optional except the two a `questions` launch always
+ * knows. Nothing is inferred: a value that was not sent stays absent rather
+ * than defaulting into a different run.
  */
-interface LegacyCarry {
+export interface RunCarry {
   mode: DrillMode;
   sealed: boolean;
   isGuidedDrill: boolean;
   guidedDurationMinutes?: number;
+  /** A classroom homework assignment the list belongs to. */
+  assignmentId?: string;
+  guidedSetId?: string;
+  guidedDrillId?: string;
+  guidedAssignmentId?: string;
+  practiceSource?: string;
+  practiceSlug?: string;
+  /** Names the Run Record for a bootcamp day rather than for the drawn list. */
+  resumeIdentity?: DrillResumeIdentity;
+  ptLeg?: PtLegRef;
 }
 
 export type DrillLaunchBody =
@@ -130,12 +148,11 @@ export type DrillLaunchBody =
       kind: 'questions';
       qids: string[];
       /**
-       * @deprecated Set only when this came from a legacy link, and only so the
-       * translator can reproduce today's route state exactly. Change two drops
-       * it, when guided drills, assignments and practice sets stop arriving as
-       * a bare list of qids and start arriving as their own kinds.
+       * Set when the list arrived from an older link or an in-memory handover
+       * that also named which stored row the run belongs to. Absent for a
+       * plain "drill these questions" link.
        */
-      legacy?: LegacyCarry;
+      carry?: RunCarry;
     }
   /**
    * "Six Flaw questions, medium." What the student asked for, rather than what
@@ -228,9 +245,34 @@ export function launchDrill(launch: DrillLaunch): string {
       p.set('day', String(launch.day));
       p.set('part', launch.part);
       break;
-    case 'questions':
+    case 'questions': {
       p.set('qids', launch.qids.join(','));
+      // The carry rides in its own params. It never reuses a param that
+      // belongs to another kind, so a `questions` link cannot be mistaken for
+      // a section or a guided drill it merely remembers the id of.
+      const c = launch.carry;
+      if (c) {
+        if (c.mode !== 'type-drill') p.set('runMode', c.mode);
+        if (c.sealed) p.set('runSealed', '1');
+        if (c.isGuidedDrill) p.set('guided', '1');
+        if (c.guidedDrillId) p.set('guidedDrill', c.guidedDrillId);
+        if (c.guidedAssignmentId) p.set('guidedAssignment', c.guidedAssignmentId);
+        if (c.guidedDurationMinutes) p.set('guidedMinutes', String(c.guidedDurationMinutes));
+        if (c.assignmentId) p.set('assignment', c.assignmentId);
+        if (c.guidedSetId) p.set('guidedSet', c.guidedSetId);
+        if (c.practiceSource) p.set('source', c.practiceSource);
+        if (c.practiceSlug) p.set('slug', c.practiceSlug);
+        if (c.resumeIdentity) {
+          p.set('day', String(c.resumeIdentity.day));
+          p.set('part', c.resumeIdentity.part);
+        }
+        if (c.ptLeg) {
+          p.set('runId', c.ptLeg.runId);
+          p.set('leg', String(c.ptLeg.legIndex));
+        }
+      }
       break;
+    }
     case 'filter':
       p.set('count', String(launch.count));
       setList(p, 'qtypes', launch.qtypes);
@@ -296,6 +338,88 @@ function undefinedIfEmpty(options: DrillLaunchOptions): DrillLaunchOptions | und
   return Object.keys(options).length > 0 ? options : undefined;
 }
 
+/**
+ * The heading, under whichever name the older grammar used for it. The generic
+ * branch wrote `focus` and the section branch wrote `label`, and both reach the
+ * runner as the same thing.
+ */
+function legacyLabel(p: URLSearchParams): string | undefined {
+  return p.get('focus') || p.get('label') || undefined;
+}
+
+function readPart(value: string | null): 'homework' | 'practice' | undefined {
+  return value === 'homework' || value === 'practice' ? value : undefined;
+}
+
+function readPtLeg(
+  runIdValue: string | null,
+  legValue: string | null,
+): PtLegRef | undefined {
+  const runId = runIdValue || undefined;
+  const legIndex = nonNegativeInt(legValue);
+  return runId && legIndex != null ? { runId, legIndex } : undefined;
+}
+
+function buildCarry(fields: Omit<RunCarry, 'mode' | 'sealed' | 'isGuidedDrill'> & {
+  mode?: DrillMode;
+  sealed?: boolean;
+  isGuidedDrill?: boolean;
+}): RunCarry | undefined {
+  const { mode, sealed, isGuidedDrill, ...rest } = fields;
+  const carriesSomething =
+    (mode && mode !== 'type-drill') ||
+    !!sealed ||
+    !!isGuidedDrill ||
+    Object.values(rest).some((v) => v !== undefined);
+  if (!carriesSomething) return undefined;
+  return {
+    mode: mode ?? 'type-drill',
+    sealed: !!sealed,
+    isGuidedDrill: !!isGuidedDrill,
+    ...rest,
+  };
+}
+
+/** The carry as the canonical grammar writes it. Mirror of `launchDrill`. */
+function readCarry(p: URLSearchParams): RunCarry | undefined {
+  const day = positiveNumber(p.get('day'));
+  const part = readPart(p.get('part'));
+  return buildCarry({
+    mode: (p.get('runMode') as DrillMode | null) ?? undefined,
+    sealed: p.get('runSealed') === '1',
+    isGuidedDrill: p.get('guided') === '1',
+    guidedDurationMinutes: positiveNumber(p.get('guidedMinutes')),
+    assignmentId: p.get('assignment') || undefined,
+    guidedSetId: p.get('guidedSet') || undefined,
+    guidedDrillId: p.get('guidedDrill') || undefined,
+    guidedAssignmentId: p.get('guidedAssignment') || undefined,
+    practiceSource: p.get('source') || undefined,
+    practiceSlug: p.get('slug') || undefined,
+    resumeIdentity: day && part ? { kind: 'bootcamp-day', day, part } : undefined,
+    ptLeg: readPtLeg(p.get('runId'), p.get('leg')),
+  });
+}
+
+/** The same carry as the older grammar wrote it, under its own param names. */
+function readLegacyCarry(p: URLSearchParams, mode: DrillMode): RunCarry | undefined {
+  const day = positiveNumber(p.get('bootcampDay'));
+  const part = readPart(p.get('bootcampPart'));
+  return buildCarry({
+    mode,
+    sealed: p.get('sealed') === '1',
+    isGuidedDrill: p.get('guided') === '1' || !!p.get('guidedAssignmentId'),
+    guidedDurationMinutes: positiveNumber(p.get('guidedDurationMinutes')),
+    assignmentId: p.get('assignmentId') || undefined,
+    guidedSetId: p.get('guidedSetId') || undefined,
+    guidedDrillId: p.get('guidedDrillId') || undefined,
+    guidedAssignmentId: p.get('guidedAssignmentId') || undefined,
+    practiceSource: p.get('source') || undefined,
+    practiceSlug: p.get('practiceSlug') || undefined,
+    resumeIdentity: day && part ? { kind: 'bootcamp-day', day, part } : undefined,
+    ptLeg: readPtLeg(p.get('runId'), p.get('leg')),
+  });
+}
+
 function readOptions(p: URLSearchParams): DrillLaunchOptions | undefined {
   const options: DrillLaunchOptions = {};
   const returnTo = safeReturnTo(p.get('returnTo'));
@@ -348,8 +472,6 @@ function parseCanonical(p: URLSearchParams): DrillLaunch {
       if (!pt || !section) {
         throw new DrillLaunchError('a section launch needs both pt and section');
       }
-      const runId = p.get('runId') || undefined;
-      const legIndex = nonNegativeInt(p.get('leg'));
       return {
         kind,
         pt,
@@ -357,7 +479,7 @@ function parseCanonical(p: URLSearchParams): DrillLaunch {
         timerMode: readTimerMode(p.get('timer')),
         minutes: positiveNumber(p.get('minutes')),
         sealed: p.get('sealed') === '1' ? true : undefined,
-        ptLeg: runId && legIndex != null ? { runId, legIndex } : undefined,
+        ptLeg: readPtLeg(p.get('runId'), p.get('leg')),
         options,
       };
     }
@@ -420,7 +542,7 @@ function parseCanonical(p: URLSearchParams): DrillLaunch {
       if (qids.length === 0) {
         throw new DrillLaunchError('a questions launch needs at least one qid');
       }
-      return { kind, qids, options };
+      return { kind, qids, carry: readCarry(p), options };
     }
 
     case 'filter': {
@@ -446,13 +568,13 @@ function parseCanonical(p: URLSearchParams): DrillLaunch {
 }
 
 /**
- * Today's grammar, kept so that assigned links already sitting in a student's
+ * The older grammar, kept so that assigned links already sitting in a student's
  * inbox keep opening. Never written — `launchDrill` only emits the canonical
  * form. Deletable once the old links have aged out.
  *
- * Deliberately permissive, matching `getResolvedDrillRouteState` exactly: a
- * legacy link that carried a switch it had no business carrying was ignored
- * before and is ignored now.
+ * Deliberately permissive: an old link that carried a switch it had no business
+ * carrying was ignored before and is ignored now. It is also never rewritten,
+ * so everything it says has to be read here or it is lost.
  */
 function parseLegacy(p: URLSearchParams): DrillLaunch | null {
   const mode = p.get('mode');
@@ -460,6 +582,7 @@ function parseLegacy(p: URLSearchParams): DrillLaunch | null {
 
   const returnTo = safeReturnTo(p.get('returnTo'));
   const sealed = p.get('sealed') === '1';
+  const initialIndex = nonNegativeInt(p.get('initialIndex'));
 
   if (mode === 'full-section') {
     const pt = positiveNumber(p.get('pt'));
@@ -470,11 +593,16 @@ function parseLegacy(p: URLSearchParams): DrillLaunch | null {
         kind: 'section',
         pt,
         section,
+        // 52.5, 70 and unlimited are the accommodated clocks. Reducing them to
+        // a number of minutes would quietly re-time an accommodated sitting.
+        timerMode: readTimerMode(p.get('timer')),
         minutes: positiveNumber(p.get('minutes')),
         sealed: sealed || undefined,
+        ptLeg: readPtLeg(p.get('runId'), p.get('leg')),
         options: undefinedIfEmpty({
           ...(returnTo ? { returnTo } : {}),
-          ...(p.get('label') ? { label: p.get('label') as string } : {}),
+          ...(legacyLabel(p) ? { label: legacyLabel(p) as string } : {}),
+          ...(initialIndex != null ? { initialIndex } : {}),
         }),
       };
     }
@@ -482,22 +610,19 @@ function parseLegacy(p: URLSearchParams): DrillLaunch | null {
     // type-drill rather than an error.
   }
 
-  // ...and today's generic branch is the mirror image: it reads `present` and
-  // never sets a heading, which is why `focus` is not read here even though
-  // several launch sites send it.
   return {
     kind: 'questions',
     qids: list(p.get('qids')),
     options: undefinedIfEmpty({
       ...(returnTo ? { returnTo } : {}),
+      ...(legacyLabel(p) ? { label: legacyLabel(p) as string } : {}),
+      ...(initialIndex != null ? { initialIndex } : {}),
       ...(p.get('present') === 'smart' ? { present: 'smart' as const } : {}),
     }),
-    legacy: {
-      mode: (mode === 'practice-set' ? 'type-drill' : mode) as DrillMode,
-      sealed,
-      isGuidedDrill: p.get('guided') === '1' || !!p.get('guidedAssignmentId'),
-      guidedDurationMinutes: positiveNumber(p.get('guidedDurationMinutes')),
-    },
+    carry: readLegacyCarry(
+      p,
+      (mode === 'practice-set' ? 'type-drill' : mode) as DrillMode,
+    ),
   };
 }
 
@@ -512,226 +637,20 @@ export function parseDrillLaunch(searchParams: URLSearchParams): DrillLaunch | n
   return parseLegacy(searchParams);
 }
 
-// ---------------------------------------------------------------------------
-// Translating
-// ---------------------------------------------------------------------------
-
 /**
- * Hand `Drill.tsx` the shape it already expects, so the page does not change in
- * this half of the work. Temporary: it exists only until the runner reads a
- * `DrillLaunch` directly, at which point this and `drillRouteState` both go.
- *
- * `resolvedQids` is how the id-named kinds arrive: their question list lives in
- * a row, and the caller reads that row before translating. Change two supplies
- * it; nothing calls those paths yet.
+ * What a button puts in router state when it hands a drill over in memory.
+ * Only the fields a handover can actually carry; everything else about a run
+ * lives in the launch or in the Run Record.
  */
-export function toDrillRouteState(
-  launch: DrillLaunch,
-  resolvedQids?: string[],
-  now: number = Date.now(),
-): DrillRouteState {
-  const options = launch.options ?? {};
-  const base: DrillRouteState = {
-    returnTo: options.returnTo,
-    practicingLabel: options.label,
-    present: options.present,
-  };
-
-  const typeDrillConfig = (qids: string[]): TypeDrillConfig => ({
-    qtypes: [],
-    difficulties: [],
-    pts: [],
-    count: qids.length,
-    selectedQids: qids,
-  });
-
-  switch (launch.kind) {
-    case 'smart-drill':
-      return { ...base, mode: 'adaptive', sealed: false };
-
-    case 'section': {
-      const config: FullSectionConfig = {
-        pt: launch.pt,
-        section: launch.section,
-        timer: {
-          mode: launch.timerMode ?? (launch.minutes ? 'custom' : '35'),
-          customMinutes: launch.minutes,
-          isPaused: false,
-          elapsedMs: 0,
-          startedAt: now,
-        },
-      };
-      return {
-        ...base,
-        mode: 'full-section',
-        config,
-        sealed: !!launch.sealed,
-      };
-    }
-
-    case 'questions': {
-      const carry = launch.legacy;
-      return {
-        ...base,
-        mode: carry?.mode ?? 'type-drill',
-        config: typeDrillConfig(launch.qids),
-        sealed: carry?.sealed ?? false,
-        isGuidedDrill: carry?.isGuidedDrill ?? false,
-        guidedDurationMinutes: carry?.guidedDurationMinutes,
-      };
-    }
-
-    case 'filter':
-      return {
-        ...base,
-        mode: 'type-drill',
-        config: {
-          qtypes: launch.qtypes ?? [],
-          difficulties: launch.difficulties ?? [],
-          pts: launch.pts ?? [],
-          sections: launch.sections,
-          qfeatures: launch.qfeatures,
-          count: launch.count,
-        },
-        sealed: false,
-      };
-
-    case 'saved-set':
-    case 'assignment':
-    case 'guided-drill':
-    case 'practice-set':
-    case 'bootcamp-day': {
-      if (!resolvedQids) {
-        throw new DrillLaunchError(
-          `a ${launch.kind} launch must have its questions resolved before it can run`,
-        );
-      }
-      return {
-        ...base,
-        mode: 'type-drill',
-        config: typeDrillConfig(resolvedQids),
-        sealed: false,
-        isGuidedDrill: launch.kind === 'guided-drill',
-        guidedDurationMinutes:
-          launch.kind === 'guided-drill' ? launch.durationMinutes : undefined,
-      };
-    }
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Expanding
-// ---------------------------------------------------------------------------
-
-/**
- * Write a launch in the grammar `Drill.tsx` already reads.
- *
- * The gate in front of the runner uses this: a short link arrives, the gate
- * resolves whatever row it names, and then replaces the address bar with the
- * long form the page understands. That is what lets the page stay untouched
- * while every launch still survives a refresh.
- *
- * Temporary by construction. When the runner reads a `DrillLaunch` directly,
- * this function and the legacy branch of the parser go together.
- */
-export function expandToLegacySearch(
-  launch: DrillLaunch,
-  resolvedQids?: string[],
-): string {
-  const p = new URLSearchParams();
-  const o = launch.options ?? {};
-
-  const asQuestionList = (qids: string[]) => {
-    p.set('mode', 'type-drill');
-    if (qids.length > 0) p.set('qids', qids.join(','));
-  };
-
-  switch (launch.kind) {
-    case 'smart-drill':
-      p.set('mode', 'adaptive');
-      break;
-
-    case 'section':
-      p.set('mode', 'full-section');
-      p.set('pt', String(launch.pt));
-      p.set('section', String(launch.section));
-      if (launch.timerMode) p.set('timer', launch.timerMode);
-      if (launch.minutes) p.set('minutes', String(launch.minutes));
-      if (launch.sealed) p.set('sealed', '1');
-      // The two values whose loss on refresh left a practice test permanently
-      // open. The runner reads them from here now, not only from route state.
-      if (launch.ptLeg) {
-        p.set('runId', launch.ptLeg.runId);
-        p.set('leg', String(launch.ptLeg.legIndex));
-      }
-      break;
-
-    case 'questions':
-      asQuestionList(launch.qids);
-      // `asQuestionList` writes the common case. A handover that named a
-      // different mode keeps it: the runner reads `natural-drill` down a
-      // separate branch, so flattening it here would quietly change the drill.
-      if (launch.legacy?.mode) p.set('mode', launch.legacy.mode);
-      if (launch.legacy?.isGuidedDrill) p.set('guided', '1');
-      if (launch.legacy?.guidedDurationMinutes) {
-        p.set('guidedDurationMinutes', String(launch.legacy.guidedDurationMinutes));
-      }
-      if (launch.legacy?.sealed) p.set('sealed', '1');
-      break;
-
-    case 'filter':
-      p.set('mode', 'type-drill');
-      p.set('count', String(launch.count));
-      setList(p, 'qtypes', launch.qtypes);
-      setList(p, 'difficulties', launch.difficulties);
-      setList(p, 'pts', launch.pts);
-      setList(p, 'sections', launch.sections);
-      setList(p, 'qfeatures', launch.qfeatures);
-      break;
-
-    case 'saved-set':
-      asQuestionList(resolvedQids ?? []);
-      break;
-
-    case 'bootcamp-day':
-      asQuestionList(resolvedQids ?? []);
-      // The runner still reads the legacy grammar, but these two values keep
-      // the Run Record named by the day instead of by the picked question list.
-      p.set('bootcampDay', String(launch.day));
-      p.set('bootcampPart', launch.part);
-      break;
-
-    case 'assignment':
-      asQuestionList(resolvedQids ?? []);
-      p.set('assignmentId', launch.assignmentId);
-      if (launch.guidedSetId) p.set('guidedSetId', launch.guidedSetId);
-      break;
-
-    case 'guided-drill':
-      asQuestionList(resolvedQids ?? []);
-      p.set('guided', '1');
-      if (launch.drillId) p.set('guidedDrillId', launch.drillId);
-      if (launch.assignmentId) p.set('guidedAssignmentId', launch.assignmentId);
-      if (launch.durationMinutes) {
-        p.set('guidedDurationMinutes', String(launch.durationMinutes));
-      }
-      break;
-
-    case 'practice-set':
-      asQuestionList(resolvedQids ?? []);
-      // The two params the runner uses to recognise an Intro to LR practice
-      // set and map it back to its module-progress completion id.
-      p.set('source', launch.source ?? 'intro-to-lr-practice-drills');
-      p.set('practiceSlug', launch.slug);
-      break;
-  }
-
-  if (o.returnTo) p.set('returnTo', o.returnTo);
-  if (o.label) p.set('focus', o.label);
-  if (o.initialIndex != null) p.set('initialIndex', String(o.initialIndex));
-  if (o.present) p.set('present', o.present);
-
-  return p.toString();
+export interface DrillHandoverState {
+  mode?: DrillMode;
+  config?: FullSectionConfig | TypeDrillConfig;
+  practicingLabel?: string;
+  returnTo?: string;
+  isGuidedDrill?: boolean;
+  guidedDurationMinutes?: number;
+  present?: 'smart';
+  sealed?: boolean;
 }
 
 /**
@@ -748,7 +667,7 @@ export function expandToLegacySearch(
  * nothing to canonicalize.
  */
 export function launchFromRouteState(
-  state: DrillRouteState | null | undefined,
+  state: DrillHandoverState | null | undefined,
   ptLeg?: PtLegRef,
 ): DrillLaunch | null {
   if (!state?.mode) return null;
@@ -786,7 +705,7 @@ export function launchFromRouteState(
       kind: 'questions',
       qids: config.selectedQids,
       options: withOptions,
-      legacy: {
+      carry: {
         mode: state.mode === 'practice-set' ? 'type-drill' : state.mode,
         sealed: !!state.sealed,
         isGuidedDrill: !!state.isGuidedDrill,

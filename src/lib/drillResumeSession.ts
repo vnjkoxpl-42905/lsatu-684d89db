@@ -40,21 +40,6 @@ export type DrillResumeIdentity = {
   part: 'homework' | 'practice';
 };
 
-export function drillResumeIdentityFromSearch(
-  searchParams: URLSearchParams,
-): DrillResumeIdentity | undefined {
-  const day = Number.parseInt(searchParams.get('bootcampDay') ?? '', 10);
-  const part = searchParams.get('bootcampPart');
-  if (
-    Number.isFinite(day) &&
-    day > 0 &&
-    (part === 'homework' || part === 'practice')
-  ) {
-    return { kind: 'bootcamp-day', day, part };
-  }
-  return undefined;
-}
-
 /** Short, stable, filename-safe digest of whatever identifies the run. */
 function fingerprint(input: string): string {
   let h = 2166136261;
