@@ -112,3 +112,122 @@ describe("what the student sees", () => {
     expect(document.body.textContent ?? "").not.toMatch(/[—–]/);
   });
 });
+
+/**
+ * What the grader measured and the card used to throw away.
+ *
+ * Every field asserted below was computed on the trial run, stored in
+ * `activity_section_grades`, and rendered nowhere. A number a student cannot
+ * interrogate is a number she has to take on faith, and two of these are not
+ * even about her: a stimulus the judge never answered for is counted as
+ * missed, which scores her for our outage, and she was the only person in a
+ * position to notice the total looked wrong.
+ */
+describe("the evidence behind the number", () => {
+  const withSection = (over: Partial<SectionGrade["section"]>, stimuliOver?: SectionStimulusGrade[]) =>
+    ({ ...grade, section: { ...grade.section, ...over }, stimuli: stimuliOver ?? grade.stimuli }) as SectionGrade;
+
+  it("leads with the run's own band, not the percentage", () => {
+    render(<SectionReportCard grade={withSection({ mean_coverage: 91 })} />);
+    // 91 is at the standard. The card used to print "91%" in 48px type with no
+    // band at all, which is the exact thing its own docstring forbade.
+    const hero = document.querySelector(".ac-display");
+    expect(hero?.textContent).toBe("At the standard");
+    expect(hero?.textContent).not.toMatch(/%/);
+  });
+
+  it("still says what she actually got, underneath", () => {
+    render(<SectionReportCard grade={withSection({ mean_coverage: 91 })} />);
+    expect(screen.getByText(/91% of the details carried/)).toBeInTheDocument();
+  });
+
+  it("shows The Read beside Coverage", () => {
+    render(
+      <SectionReportCard
+        grade={withSection({ read_given_count: 3, read_matched_count: 2, no_read_count: 0 })}
+      />,
+    );
+    expect(screen.getByText("Understood")).toBeInTheDocument();
+    expect(screen.getByText("2 of 3")).toBeInTheDocument();
+  });
+
+  it("says the goal was missed on its condition, not on the clock", () => {
+    // The spec's own rule: the goal counts only with every stimulus recalled,
+    // coloured and given a Read. Finishing early with four skipped was being
+    // reported as making the goal.
+    render(<SectionReportCard grade={withSection({ within_time: true, within_goal: false })} />);
+    expect(screen.getByText(/Inside the time, but the goal only counts/)).toBeInTheDocument();
+  });
+
+  it("says plainly when we could not mark part of the run", () => {
+    render(<SectionReportCard grade={withSection({ ungraded_count: 2 })} />);
+    expect(screen.getByText(/2 stimuli could not be marked/)).toBeInTheDocument();
+    expect(screen.getByText(/ours, not yours/)).toBeInTheDocument();
+  });
+
+  it("warns when its own check on the marking came back unhappy", () => {
+    render(<SectionReportCard grade={withSection({ decoy_failures: 1 })} />);
+    expect(screen.getByText(/treat the number on one or two of these lightly/)).toBeInTheDocument();
+  });
+
+  it("shows a reaction that would have fitted any stimulus", () => {
+    // Measured on 18 of 22 in the trial and shown on none. It is the one
+    // standard the whole method turns on.
+    render(
+      <SectionReportCard
+        grade={withSection({}, [stimulus({ coloured: true, colourSpecific: false })])}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.getByText(/would have fitted any stimulus/)).toBeInTheDocument();
+  });
+
+  it("shows where she froze inside a recall", () => {
+    render(<SectionReportCard grade={withSection({}, [stimulus({ dead_air_seconds: 7 })])} />);
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.getByText(/quiet for 7s/)).toBeInTheDocument();
+  });
+
+  it("shows what the machine heard", () => {
+    render(
+      <SectionReportCard
+        grade={withSection({}, [stimulus({ spoken: "so the director thinks exploiting is bad" })])}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.getByText("What you said")).toBeInTheDocument();
+    expect(screen.getByText(/so the director thinks exploiting is bad/)).toBeInTheDocument();
+  });
+
+  it("offers a Clip when the recording is reachable, and none when it is not", () => {
+    const one = [stimulus({ spoken: "x", recall_window_ms: { start: 1000, end: 4000 } })];
+    const { unmount } = render(
+      <SectionReportCard
+        grade={withSection({ audio_bucket: "drill-recordings", audio_path: "s1/a1.webm" }, one)}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.getByRole("button", { name: /hear it back/i })).toBeInTheDocument();
+    unmount();
+
+    render(<SectionReportCard grade={withSection({ audio_path: null }, one)} />);
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.queryByRole("button", { name: /hear it back/i })).not.toBeInTheDocument();
+  });
+
+  it("names the Attempt only when there has been more than one", () => {
+    const { unmount } = render(<SectionReportCard grade={grade} />);
+    expect(document.body.textContent).not.toMatch(/Attempt/);
+    unmount();
+    render(<SectionReportCard grade={{ ...grade, attempt_no: 2 }} />);
+    expect(screen.getByText(/Attempt 2/)).toBeInTheDocument();
+  });
+
+  it("does not show a stimulus it could not mark as a score she earned", () => {
+    render(<SectionReportCard grade={withSection({}, [stimulus({ ungraded: "judge timed out", carried: 0, percent: 0, band: "lost-it" })])} />);
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.getByText(/could not be marked/)).toBeInTheDocument();
+    // And not the reason, which is ours.
+    expect(document.body.textContent).not.toMatch(/timed out/);
+  });
+});

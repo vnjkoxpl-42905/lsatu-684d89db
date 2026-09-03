@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { SEED_ACTIVITIES } from "@/features/activity-centre/content";
 import { SectionStage } from "@/features/activity-centre/recall/SectionStage";
+import { SectionReportCard } from "@/features/activity-centre/components/SectionReportCard";
+import type { SectionGrade, SectionStimulusGrade } from "@/features/activity-centre/api/types";
 import sectionInstructions from "@/features/activity-centre/content/read-recall-colour-section.instructions.json";
 import {
   advanceCursor,
@@ -152,6 +154,7 @@ const WORLDS = [
   { key: "list", label: "Activity Centre list" },
   { key: "intro", label: "Activity intro" },
   { key: "section", label: "RRC section (whole section)" },
+  { key: "report", label: "RRC Report Card" },
   { key: "shell", label: "Runner shell" },
   { key: "switchyard", label: "The Switchyard" },
   { key: "specimen-lab", label: "The Specimen Lab" },
@@ -221,6 +224,7 @@ export default function ActivityLab() {
       {world === "list" ? <ListPanel /> : null}
       {world === "intro" ? <IntroPanel /> : null}
       {world === "section" ? <SectionPanel /> : null}
+      {world === "report" ? <ReportPanel /> : null}
       {world === "shell" ? <ShellPanel /> : null}
       {world === "switchyard" ? <SwitchyardPanel /> : null}
       {world === "specimen-lab" ? <SpecimenLabPanel /> : null}
@@ -1900,6 +1904,163 @@ function CompletionPanel() {
  * `section.ts` against the real seeded content and skips only the persistence,
  * which is the one part that needs a database.
  */
+/**
+ * The Report Card, against the trial run's own numbers.
+ *
+ * The card is only reachable behind a signed-in student who has finished a
+ * twenty-five minute recorded section and waited for the grader, which made it
+ * the least-looked-at screen in the product and is how it shipped printing a
+ * raw percentage as its hero directly under a docstring forbidding exactly
+ * that. The fixture below is the PT102.S3 trial run: 91% mean Coverage, 17 of
+ * 22 at the standard, one deliberate recite, one stimulus with seven seconds of
+ * dead air, four uncoloured.
+ *
+ * The Clip button appears and does nothing here on purpose. There is no
+ * recording behind a fixture, and a lab that faked one would be the one place
+ * a broken player could hide.
+ */
+function ReportPanel() {
+  const [attempt, setAttempt] = useState<"clean" | "faults" | "partial">("faults");
+
+  const grade = useMemo(() => makeLabGrade(attempt), [attempt]);
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center gap-4 border-b border-border px-6 py-3">
+        <Tabs
+          options={["clean", "faults", "partial"] as const}
+          value={attempt}
+          onChange={(v) => setAttempt(v)}
+          label="Run"
+        />
+        <p className="text-xs text-muted-foreground">
+          clean: everything at the standard · faults: the trial run · partial: stimuli we could not
+          mark
+        </p>
+      </div>
+      <div className="px-4 py-10">
+        <SectionReportCard grade={grade} />
+      </div>
+    </div>
+  );
+}
+
+/** The trial run's own shape, with the two other states worth looking at. */
+function makeLabGrade(kind: "clean" | "faults" | "partial"): SectionGrade {
+  const stim = (over: Partial<SectionStimulusGrade>): SectionStimulusGrade => ({
+    slug: `PT102_S3_Q${over.slug ?? "1"}`,
+    carried: 20,
+    total: 21,
+    percent: 95,
+    band: "at-the-standard",
+    missed: [],
+    decoysCarried: [],
+    unjudged: [],
+    reciting: false,
+    listing: false,
+    coloured: true,
+    colourSpecific: true,
+    readGiven: true,
+    readMatches: true,
+    dead_air_seconds: 0.4,
+    spoken:
+      "so the director says their consultant wants people moved around so everyone is doing what they like and what they are good at",
+    recall_window_ms: { start: 12000, end: 48000 },
+    ...over,
+  });
+
+  const stimuli: SectionStimulusGrade[] =
+    kind === "clean"
+      ? Array.from({ length: 6 }, (_, i) => stim({ slug: String(i + 1) }))
+      : [
+          stim({ slug: "1", carried: 20, total: 21, percent: 95, missed: ["This applies to all employees."] }),
+          stim({ slug: "2" }),
+          stim({
+            slug: "7",
+            carried: 14,
+            total: 19,
+            percent: 74,
+            band: "nearly-there",
+            coloured: false,
+            readGiven: false,
+            readMatches: false,
+            missed: ["The figure is an average.", "This is a contrast."],
+          }),
+          stim({
+            slug: "13",
+            carried: 21,
+            total: 21,
+            percent: 100,
+            reciting: true,
+            spoken: "the director of ace manufacturing company says our management consultant proposes that we reassign staff",
+          }),
+          stim({
+            slug: "15",
+            carried: 12,
+            total: 21,
+            percent: 57,
+            band: "thin",
+            dead_air_seconds: 7,
+            missed: ["The study ran for four years.", "The nurses were in Sweden."],
+            readGiven: true,
+            readMatches: false,
+          }),
+          stim({
+            slug: "19",
+            carried: 15,
+            total: 20,
+            percent: 75,
+            band: "nearly-there",
+            listing: true,
+            colourSpecific: false,
+            missed: ["This is the reason given."],
+          }),
+        ];
+
+  const ungraded =
+    kind === "partial"
+      ? [stim({ slug: "22", carried: 0, total: 18, percent: 0, band: "lost-it", ungraded: "judge timed out", spoken: "" })]
+      : [];
+
+  const graded = stimuli.length;
+  return {
+    assignment_id: "lab",
+    attempt_no: kind === "partial" ? 2 : 1,
+    student_id: "lab",
+    source_section: "PT102.S3",
+    transcript_engine: "deepgram/nova-3",
+    transcript_text: "",
+    grader_version: 1,
+    graded_at: new Date().toISOString(),
+    stimuli: [...stimuli, ...ungraded],
+    section: {
+      accommodation: "standard",
+      audio_bucket: "drill-recordings",
+      audio_path: "lab/lab.webm",
+      goal_minutes: 25,
+      total_seconds: kind === "clean" ? 1294 : 1294,
+      within_time: true,
+      within_goal: kind === "clean",
+      mean_coverage: kind === "clean" ? 95 : 83,
+      stimuli_graded: graded,
+      reciting_count: kind === "clean" ? 0 : 1,
+      listing_count: kind === "clean" ? 0 : 1,
+      uncoloured_count: kind === "clean" ? 0 : 1,
+      read_given_count: kind === "clean" ? graded : graded - 1,
+      read_matched_count: kind === "clean" ? graded : graded - 2,
+      no_read_count: kind === "clean" ? 0 : 1,
+      read_aloud_words: kind === "clean" ? 0 : 214,
+      chunks_read_aloud: kind === "clean" ? 0 : 3,
+      ungraded_count: ungraded.length,
+      complete: ungraded.length === 0,
+      worst_dead_air_seconds: kind === "clean" ? 1.1 : 7,
+      dead_air_threshold_seconds: 4,
+      decoy_failures: kind === "clean" ? 0 : 1,
+      clock: {},
+    },
+  };
+}
+
 function SectionPanel() {
   const [slug, setSlug] = useState("read-recall-colour-pt105-s2");
   const row = SEED_ACTIVITIES.find((a) => a.slug === slug);
@@ -1908,6 +2069,18 @@ function SectionPanel() {
     [row],
   );
   const [cursor, setCursor] = useState<SectionCursor>(() => startCursor());
+  /*
+   * The rail's four children, the ready beat and the confirmation, all drawn
+   * here on purpose.
+   *
+   * The header declared three grid columns and had four children from the day
+   * the clock shipped, so "Leave" wrapped to a second row and the rail grew
+   * from 46px to 96px. It was live for days on the drill's only screen, because
+   * the lab rendered the stage without a clock or a way out and nobody ever saw
+   * the version a student sees.
+   */
+  const [beat, setBeat] = useState(false);
+  const [confirming, setConfirming] = useState(false);
 
   useEffect(() => setCursor(startCursor()), [slug]);
 
@@ -1942,6 +2115,12 @@ function SectionPanel() {
           onChange={(v) => setCursor({ item: Number(v) - 1, phase: "working" })}
           label="Stimulus"
         />
+        <Tabs
+          options={["running", "ready beat"] as const}
+          value={beat ? "ready beat" : "running"}
+          onChange={(v) => setBeat(v === "ready beat")}
+          label="Moment"
+        />
         <span className="text-xs text-zinc-500">
           {cursor.phase} · press space
         </span>
@@ -1951,6 +2130,17 @@ function SectionPanel() {
         phase={cursor.phase}
         stimulusNumber={cursor.item + 1}
         totalStimuli={run.stimuli.length}
+        elapsedSeconds={beat ? 0 : 754}
+        goalMinutes={run.timeGoalMinutes.standard}
+        countdown={beat ? 3 : null}
+        // No microphone in the lab, so the bar mounts and stays flat. That is
+        // exactly what a student with a dead input sees, which is the reason
+        // the indicator exists and the one state worth being able to look at.
+        getStream={() => null}
+        onExit={() => setConfirming(true)}
+        confirmingExit={confirming}
+        onConfirmExit={() => setConfirming(false)}
+        onCancelExit={() => setConfirming(false)}
       />
     </div>
   );

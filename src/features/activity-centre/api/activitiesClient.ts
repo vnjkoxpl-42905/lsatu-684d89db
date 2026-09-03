@@ -466,6 +466,30 @@ async function readSectionGrades(assignmentId: string): Promise<SectionGrade[]> 
   return (data as SectionGrade[] | null) ?? [];
 }
 
+/**
+ * A temporary link to a section's recording.
+ *
+ * The bucket is private and the policy lets exactly two people near a file, so
+ * a Clip is a signed URL rather than a public one. Short-lived on purpose: the
+ * link is for the page that is open, not something to keep.
+ *
+ * Null rather than throwing. A Report Card whose Clips do not load is still the
+ * Report Card, and this is the one part of it that depends on a file having
+ * survived an upload.
+ */
+export async function signSectionRecording(
+  bucket: string,
+  path: string,
+  seconds = 3600,
+): Promise<string | null> {
+  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, seconds);
+  if (error) {
+    console.error("[rrc] could not sign the recording", error);
+    return null;
+  }
+  return data?.signedUrl ?? null;
+}
+
 // --- Admin -----------------------------------------------------------------
 
 /**

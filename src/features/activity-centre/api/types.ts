@@ -431,10 +431,20 @@ export interface SectionStimulusGrade {
   /** Words cut as read-aloud before judging, and which chunks she read. */
   read_aloud_words?: number;
   chunks_read_aloud?: number[];
+  /** What the machine heard for this stimulus, after the reads were cut. */
+  spoken?: string;
+  /** Where this stimulus sits in the recording, for a Clip. */
+  window_ms?: { start: number; end: number };
+  recall_window_ms?: { start: number; end: number };
+  /** Why the judge returned nothing. Absent on every stimulus that was judged. */
+  ungraded?: string;
 }
 
 export interface SectionGradeSummary {
   accommodation: string;
+  /** Where the recording lives, so a Clip is a seek rather than a second query. */
+  audio_bucket?: string | null;
+  audio_path?: string | null;
   goal_minutes: number;
   total_seconds: number;
   /** Inside the clock, ignoring the method's condition on it. */

@@ -99,6 +99,20 @@ async function transcribe(audio: ArrayBuffer, contentType: string): Promise<Word
   }));
 }
 
+/**
+ * The stretch of the recording a set of windows covers, in milliseconds.
+ *
+ * One span rather than the list of windows, because what it is for is a seek:
+ * play from here to there. Null when there is nothing to play.
+ */
+function span(segments: Segment[]): { start: number; end: number } | undefined {
+  if (!segments.length) return undefined;
+  return {
+    start: Math.min(...segments.map((s) => s.startMs)),
+    end: Math.max(...segments.map((s) => s.endMs)),
+  };
+}
+
 /** The words spoken inside any of this stimulus's windows, in order. */
 function wordsIn(words: Word[], segments: Segment[]): Word[] {
   return words.filter((w) =>
@@ -333,6 +347,19 @@ serve(async (req) => {
       dead_air_seconds: number;
       /** Which of L, I, C or R this stimulus's Read is. Authored, not inferred. */
       the_read_type?: string;
+      /**
+       * What the machine heard for this stimulus, and where it sits in the file.
+       *
+       * Both were computed and thrown away. Seeing the words back is the
+       * fastest way to tell a transcription failure from a memory failure, and
+       * the fastest way to trust the number; the window is what makes the
+       * recording playable one stimulus at a time, which ADR 0020 accepted and
+       * nothing built. The trial run proved the seek is exact, so this is a
+       * player and an offset rather than an encoding pipeline.
+       */
+      spoken?: string;
+      window_ms?: { start: number; end: number };
+      recall_window_ms?: { start: number; end: number };
       /** Words cut as read-aloud before judging, and which chunks she read. */
       read_aloud_words?: number;
       chunks_read_aloud?: number[];
@@ -435,7 +462,15 @@ serve(async (req) => {
         // Nothing captured in her windows. Zero Coverage is the honest number
         // here only because the words genuinely are not there; it is recorded
         // alongside the clock reading so a systematic failure is visible.
-        return { slug, ...gradeStimulus(entries, nothingCarried), dead_air_seconds: 0 };
+        return {
+          slug,
+          ...gradeStimulus(entries, nothingCarried),
+          the_read_type: (item.the_read_type as string | undefined) ?? undefined,
+          spoken: "",
+          window_ms: span(segments),
+          recall_window_ms: span(segments.filter((s) => s.phase === "recalling")),
+          dead_air_seconds: 0,
+        };
       }
 
       try {
@@ -459,6 +494,9 @@ serve(async (req) => {
           slug,
           ...grade,
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
+          spoken,
+          window_ms: span(segments),
+          recall_window_ms: span(segments.filter((s) => s.phase === "recalling")),
           read_aloud_words: read.cut,
           chunks_read_aloud: read.chunksReadAloud,
           reciting_run: recital.run,
@@ -471,6 +509,10 @@ serve(async (req) => {
         return {
           slug,
           ...gradeStimulus(entries, nothingCarried),
+          the_read_type: (item.the_read_type as string | undefined) ?? undefined,
+          spoken,
+          window_ms: span(segments),
+          recall_window_ms: span(segments.filter((s) => s.phase === "recalling")),
           dead_air_seconds: deadAir(words, segments.filter((s) => s.phase === "recalling")),
           ungraded: reason,
         };
@@ -550,6 +592,17 @@ serve(async (req) => {
 
     const section = {
       accommodation,
+      /*
+       * Where the recording is, carried onto the grade.
+       *
+       * It has always been on the response rows and the Report Card never had
+       * it, so the one thing a student most wants after being told she dropped
+       * the word "only" -- hearing herself not say it -- needed a second query
+       * she had no reason to know to make. ADR 0020's seek was proved exact on
+       * the trial run, so a stimulus is a play button and two offsets.
+       */
+      audio_bucket: (first.audio_bucket as string | null) ?? null,
+      audio_path: audioPath,
       goal_minutes: goalMinutes,
       total_seconds: totalSeconds,
       within_time: withinTime,

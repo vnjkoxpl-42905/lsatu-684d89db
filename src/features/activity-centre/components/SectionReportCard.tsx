@@ -1,22 +1,32 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { bandFor } from "../recall/grading";
+import { signSectionRecording } from "../api/activitiesClient";
 import type { SectionGrade, SectionStimulusGrade } from "../api/types";
 
 /**
  * What a finished Read, Recall, Colour section produces.
  *
  * Every stimulus graded on its own merits, showing what she missed and what she
- * got perfect. Two rules from the decisions behind it shape what is on screen:
+ * got perfect. Three rules from the decisions behind it shape what is on
+ * screen:
  *
  * - **A band, not a percentage.** A correct run by the author of the standard
  *   sits at a median of 95% and clears 86% nine times in ten, so a raw score
  *   against an implied 100 tells a student she failed at something she did
- *   properly (ADR 0018). The number is still shown, under the band, because
- *   "what did I actually get" is a fair question; it just does not lead.
+ *   properly (ADR 0018). This card's own docstring said that and then printed
+ *   the percentage as the hero in 48px type with no band at all. The band leads
+ *   now; the number is under it, because "what did I actually get" is a fair
+ *   question that just does not go first.
  * - **The band answers "was this good"; the missed Details answer "what did I
  *   drop".** Both are shown even at the standard, which is what stops the top
  *   band reading as nothing left to learn.
+ * - **Everything measured is either shown or deliberately not.** The grader
+ *   computed her transcript, her dead air, whether each reaction was specific,
+ *   whether the judge credited words she never said, and how many stimuli it
+ *   could not mark, and rendered none of it. A number a student cannot
+ *   interrogate is a number she has to take on faith.
  *
  * Internal identifiers never appear. She sees "Stimulus 4", never the capture's
  * own slug, and never the decoy or grader-version machinery.
@@ -44,26 +54,145 @@ function minutes(seconds: number): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
+/**
+ * Play one stimulus's stretch of the section recording.
+ *
+ * The whole run is one file and the trial proved a seek into it lands with zero
+ * error, so a Clip is a start offset, an end offset and one audio element.
+ * Nothing is cut server-side and nothing is downloaded twice.
+ *
+ * The link is signed on first use rather than on mount: most Report Cards are
+ * read without anyone pressing play, and a signed URL fetched for every card
+ * that opens is a request per view for a file nobody asked for.
+ */
+function useClip(bucket: string | null | undefined, path: string | null | undefined) {
+  const audio = useRef<HTMLAudioElement | null>(null);
+  const stopAt = useRef<number | null>(null);
+  const [playing, setPlaying] = useState<string | null>(null);
+  const url = useRef<Promise<string | null> | null>(null);
+
+  useEffect(() => {
+    const el = audio.current;
+    return () => {
+      el?.pause();
+    };
+  }, []);
+
+  const play = useCallback(
+    async (key: string, startMs: number, endMs: number) => {
+      if (!bucket || !path) return;
+      if (playing === key) {
+        audio.current?.pause();
+        setPlaying(null);
+        return;
+      }
+      url.current ??= signSectionRecording(bucket, path);
+      const src = await url.current;
+      if (!src) return;
+      let el = audio.current;
+      if (!el) {
+        el = new Audio();
+        el.preload = "none";
+        // The end of a Clip is a time, not an event the element knows about, so
+        // it is watched for rather than waited on.
+        el.addEventListener("timeupdate", () => {
+          if (stopAt.current !== null && el!.currentTime >= stopAt.current) {
+            el!.pause();
+            stopAt.current = null;
+            setPlaying(null);
+          }
+        });
+        el.addEventListener("ended", () => setPlaying(null));
+        audio.current = el;
+      }
+      if (el.src !== src) el.src = src;
+      stopAt.current = endMs / 1000;
+      el.currentTime = startMs / 1000;
+      setPlaying(key);
+      try {
+        await el.play();
+      } catch {
+        // Autoplay policy, or a file that will not load. The rest of the card
+        // is the Report Card; this is the part that needs the recording to have
+        // survived its upload.
+        setPlaying(null);
+      }
+    },
+    [bucket, path, playing],
+  );
+
+  return { play, playing, available: Boolean(bucket && path) };
+}
+
 export function SectionReportCard({ grade, onDone }: SectionReportCardProps) {
   const [openStimulus, setOpenStimulus] = useState<number | null>(null);
   const { section, stimuli } = grade;
+  const clip = useClip(section.audio_bucket, section.audio_path);
 
   const overall = useMemo(() => {
     const perfect = stimuli.filter((s) => s.percent === 100).length;
     const atStandard = stimuli.filter((s) => s.band === "at-the-standard").length;
-    return { perfect, atStandard };
-  }, [stimuli]);
+    /*
+     * The run's own band, which the card was missing entirely.
+     *
+     * Computed from the mean the same way a stimulus's is from its own percent,
+     * so the headline and the rows cannot disagree about what 86 means.
+     */
+    const band = BAND[bandFor(section.mean_coverage)];
+    /*
+     * Whether the marking of this run can be trusted, in her terms.
+     *
+     * Two measurements, neither of which is about her. `decoy_failures` counts
+     * stimuli where the judge credited a Detail belonging to a different
+     * stimulus, which means it credited words she never said. `ungraded_count`
+     * counts stimuli the judge never answered for, which are otherwise counted
+     * as missed -- scoring her for our outage.
+     */
+    const suspect = (section.decoy_failures ?? 0) > 0;
+    const unmarked = section.ungraded_count ?? 0;
+    /** Whether The Read was measured at all. Older grades predate it. */
+    const readMeasured = section.read_given_count !== undefined;
+
+    /*
+     * What she would change next time, in her own terms.
+     *
+     * Every one of these was measured by the grader and some were shown
+     * nowhere. They are collected rather than rendered inline so a run with
+     * nothing to say about it shows nothing at all, instead of an empty heading.
+     */
+    const notes: string[] = [];
+    if (section.reciting_count > 0)
+      notes.push(`${section.reciting_count} said back close to word for word`);
+    if (section.listing_count > 0)
+      notes.push(`${section.listing_count} told as a list rather than an argument`);
+    if (section.uncoloured_count > 0)
+      notes.push(`${section.uncoloured_count} with no reaction of your own`);
+    if (section.worst_dead_air_seconds >= section.dead_air_threshold_seconds)
+      notes.push(`Longest freeze inside a recall: ${section.worst_dead_air_seconds}s`);
+    if ((section.chunks_read_aloud ?? 0) > 0)
+      notes.push(
+        `You read ${section.chunks_read_aloud} of them out loud before recalling. That is not marked against you, and reading silently is the harder, better version.`,
+      );
+
+    return { perfect, atStandard, band, suspect, unmarked, readMeasured, notes };
+  }, [stimuli, section]);
 
   return (
     <div className="mx-auto max-w-3xl">
       <div className="rounded-[28px] border border-border bg-[hsl(var(--ac-surface))] p-8 shadow-[0_2px_24px_rgba(30,24,16,0.06)] md:p-12">
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
           Report Card
+          {grade.attempt_no > 1 ? ` · Attempt ${grade.attempt_no}` : ""}
         </p>
-        <p className="ac-display mt-3 text-5xl text-foreground">{section.mean_coverage}%</p>
+
+        {/* The band leads. The number is available and does not go first. */}
+        <p className={cn("ac-display mt-3 text-5xl", overall.band.cls)}>{overall.band.label}</p>
         <p className="mt-2 text-sm text-muted-foreground">
-          of the details carried, across {section.stimuli_graded}{" "}
-          {section.stimuli_graded === 1 ? "stimulus" : "stimuli"}
+          {overall.readMeasured
+            ? `${section.stimuli_graded} ${section.stimuli_graded === 1 ? "stimulus" : "stimuli"}, marked`
+            : `${section.mean_coverage}% of the details carried, across ${section.stimuli_graded} ${
+                section.stimuli_graded === 1 ? "stimulus" : "stimuli"
+              }`}
         </p>
 
         <p className="mt-6 text-sm text-foreground">
@@ -71,27 +200,124 @@ export function SectionReportCard({ grade, onDone }: SectionReportCardProps) {
           {overall.perfect > 0 ? `, ${overall.perfect} with nothing dropped` : ""}.
         </p>
 
-        <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-          <span className={section.within_goal ? "text-[hsl(var(--ac-emerald-strong))]" : "text-muted-foreground"}>
+        {/*
+          * The two numbers, side by side.
+          *
+          * Coverage answers "did you hold it". The Read answers "did you
+          * understand it", and it is the criterion the method is built around.
+          * It was authored on every stimulus, promised to her in the briefing,
+          * and measured by nothing until now. Putting them together is the
+          * whole point: one of them is memory and the other is the one that
+          * predicts a score, and a card showing only the first says the drill
+          * is about memory.
+          */}
+        {overall.readMeasured && (
+          <div className="mt-6 grid gap-6 border-t border-border pt-6 sm:grid-cols-2">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                Held
+              </p>
+              <p className="ac-display mt-1 text-3xl text-foreground">{section.mean_coverage}%</p>
+              <p className="mt-1 text-xs text-muted-foreground">of the details, said back</p>
+            </div>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                Understood
+              </p>
+              <p className="ac-display mt-1 text-3xl text-foreground">
+                {section.read_matched_count} of {section.stimuli_graded}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {(section.no_read_count ?? 0) > 0
+                  ? `Reads that found the move. You gave none at all on ${section.no_read_count}.`
+                  : "Reads that found the move"}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/*
+          * The clock, and the condition on it.
+          *
+          * The goal counts only if every stimulus was recalled, coloured and
+          * given a Read. Collapsing that into one boolean is what let a student
+          * skip the colouring, finish early and be told she made the goal, so
+          * the qualifier sits directly under the time rather than beside it in
+          * a wrapped row of unrelated remarks.
+          */}
+        <div className="mt-6 border-t border-border pt-6">
+          <p
+            className={cn(
+              "text-sm",
+              section.within_goal ? "text-[hsl(var(--ac-emerald-strong))]" : "text-foreground",
+            )}
+          >
             {minutes(section.total_seconds)} against a {section.goal_minutes} minute goal
-          </span>
-          {section.reciting_count > 0 && (
-            <span className="text-[hsl(38_92%_34%)]">
-              {section.reciting_count} said back close to word for word
-            </span>
-          )}
-          {section.listing_count > 0 && (
-            <span className="text-[hsl(38_92%_34%)]">
-              {section.listing_count} told as a list rather than an argument
-            </span>
+          </p>
+          {section.within_time && !section.within_goal && (
+            <p className="mt-1 text-xs text-muted-foreground">
+              Inside the time, but the goal only counts with every stimulus coloured and given a
+              Read.
+            </p>
           )}
         </div>
+
+        {/*
+          * The habits, as a list rather than a wrapped row.
+          *
+          * These are five different observations about how she ran the section
+          * and they were laid out as inline spans, so they read as one run-on
+          * sentence in amber. One per line, and the section is absent entirely
+          * when there is nothing to say, which is what makes a clean run look
+          * clean.
+          */}
+        {overall.notes.length > 0 && (
+          <div className="mt-6 border-t border-border pt-6">
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+              Worth working on
+            </p>
+            <ul className="mt-3 space-y-1.5">
+              {overall.notes.map((note) => (
+                <li key={note} className="text-sm text-foreground">
+                  {note}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/*
+          * When the marking itself is in doubt, she is told before the number.
+          *
+          * Both of these are about us. A stimulus the judge never answered for
+          * is counted as missed, which scores her for our outage, and she is
+          * the only person in a position to notice the score looks wrong.
+          */}
+        {(overall.suspect || overall.unmarked > 0) && (
+          <div className="mt-6 rounded-2xl border border-border bg-[hsl(var(--muted))] px-4 py-3 text-sm text-muted-foreground">
+            {overall.unmarked > 0 && (
+              <p>
+                {overall.unmarked} {overall.unmarked === 1 ? "stimulus" : "stimuli"} could not be
+                marked, so {overall.unmarked === 1 ? "it counts" : "they count"} as nothing carried.
+                That is ours, not yours. Come back later and it will have been marked properly.
+              </p>
+            )}
+            {overall.suspect && (
+              <p className={overall.unmarked > 0 ? "mt-2" : undefined}>
+                Our own check on this marking came back unhappy, so treat the number on one or two
+                of these lightly. Joshua can see the same thing.
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       <ol className="mt-6 space-y-3">
         {stimuli.map((s, i) => {
           const band = BAND[s.band];
           const open = openStimulus === i;
+          const clipWindow = s.recall_window_ms ?? s.window_ms;
+          const key = `s${i}`;
           return (
             <li key={s.slug} className="rounded-2xl border border-border bg-[hsl(var(--ac-surface))]">
               <button
@@ -110,7 +336,12 @@ export function SectionReportCard({ grade, onDone }: SectionReportCardProps) {
 
               {open && (
                 <div className="border-t border-border px-5 py-4">
-                  {s.missed.length === 0 ? (
+                  {s.ungraded ? (
+                    <p className="text-sm text-muted-foreground">
+                      This one could not be marked, so it is showing as nothing carried. That is
+                      ours, not yours.
+                    </p>
+                  ) : s.missed.length === 0 ? (
                     <p className="text-sm text-[hsl(var(--ac-emerald-strong))]">
                       You carried every detail in this one.
                     </p>
@@ -129,7 +360,23 @@ export function SectionReportCard({ grade, onDone }: SectionReportCardProps) {
                     </>
                   )}
 
-                  {(s.reciting || s.listing || !s.coloured) && (
+                  {/* Her Read, which is the half that predicts a score. */}
+                  {s.readGiven !== undefined && (
+                    <div className="mt-4 border-t border-border pt-3">
+                      <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                        Your Read
+                      </p>
+                      <p className="mt-2 text-sm text-foreground">
+                        {!s.readGiven
+                          ? "You stopped at the retelling. Say what the argument is doing, not only what it says."
+                          : s.readMatches
+                            ? "You found the move."
+                            : "You gave a Read, but not the one this argument turns on."}
+                      </p>
+                    </div>
+                  )}
+
+                  {(s.reciting || s.listing || !s.coloured || (s.coloured && !s.colourSpecific)) && (
                     <div className="mt-4 space-y-1 border-t border-border pt-3">
                       {s.reciting && (
                         <p className="text-sm text-muted-foreground">
@@ -144,6 +391,62 @@ export function SectionReportCard({ grade, onDone }: SectionReportCardProps) {
                       {!s.coloured && (
                         <p className="text-sm text-muted-foreground">
                           Nothing of your own on this one. React to it, even briefly.
+                        </p>
+                      )}
+                      {/*
+                        * Measured on 18 of 22 in the trial and shown on none.
+                        * It is the one standard the whole method turns on: a
+                        * reaction that would fit any other stimulus is not a
+                        * reaction to this one.
+                        */}
+                      {s.coloured && !s.colourSpecific && (
+                        <p className="text-sm text-muted-foreground">
+                          Your reaction would have fitted any stimulus. React to what this one
+                          actually claims.
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {s.dead_air_seconds >= section.dead_air_threshold_seconds && (
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      You went quiet for {s.dead_air_seconds}s in the middle of this recall. That is
+                      the moment it went, and it is worth finding out what was there.
+                    </p>
+                  )}
+
+                  {/*
+                    * What the machine heard, and her own voice saying it.
+                    *
+                    * Both were produced by the grader and thrown away. Reading
+                    * the words back is the fastest way to tell a transcription
+                    * failure from a memory failure; hearing yourself not say
+                    * "only" is the argument ADR 0020 makes for Clips, and the
+                    * seek was proved exact on the trial run.
+                    */}
+                  {(s.spoken || (clip.available && clipWindow)) && (
+                    <div className="mt-4 border-t border-border pt-3">
+                      <div className="flex items-baseline justify-between gap-4">
+                        <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                          What you said
+                        </p>
+                        {clip.available && clipWindow && (
+                          <button
+                            type="button"
+                            className="text-xs text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground"
+                            onClick={() => void clip.play(key, clipWindow.start, clipWindow.end)}
+                          >
+                            {clip.playing === key ? "Stop" : "Hear it back"}
+                          </button>
+                        )}
+                      </div>
+                      {s.spoken ? (
+                        <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">
+                          {s.spoken}
+                        </p>
+                      ) : (
+                        <p className="mt-2 text-sm text-muted-foreground">
+                          Nothing was picked up here.
                         </p>
                       )}
                     </div>
