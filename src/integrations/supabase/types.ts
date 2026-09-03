@@ -390,6 +390,7 @@ export type Database = {
       activity_section_grades: {
         Row: {
           assignment_id: string
+          attempt_no: number
           created_at: string
           graded_at: string
           grader_version: number
@@ -402,6 +403,7 @@ export type Database = {
         }
         Insert: {
           assignment_id: string
+          attempt_no?: number
           created_at?: string
           graded_at?: string
           grader_version: number
@@ -414,6 +416,7 @@ export type Database = {
         }
         Update: {
           assignment_id?: string
+          attempt_no?: number
           created_at?: string
           graded_at?: string
           grader_version?: number
@@ -428,7 +431,7 @@ export type Database = {
           {
             foreignKeyName: "activity_section_grades_assignment_id_fkey"
             columns: ["assignment_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "activity_assignments"
             referencedColumns: ["id"]
           },
