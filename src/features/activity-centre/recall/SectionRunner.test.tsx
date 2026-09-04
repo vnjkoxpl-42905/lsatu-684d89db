@@ -1,6 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import pt105 from "../content/read-recall-colour-pt105-s2.json";
+import pt134 from "../content/read-recall-colour-pt134-s3.json";
 import { SectionRunner } from "./SectionRunner";
 import { isRunLive } from "@/lib/liveRun";
 
@@ -51,11 +52,13 @@ vi.mock("@/integrations/supabase/client", () => ({
 const ONE = { ...pt105, items: [pt105.items[0]] };
 /** Two, for the rules about what never comes back. */
 const TWO = { ...pt105, items: pt105.items.slice(0, 2) };
+/** The 26-stimulus section observed in the audit. */
+const TWENTY_SIX = pt134;
 const CHUNKS = ONE.items[0].chunks;
 
 function renderRun(overrides: Partial<Parameters<typeof SectionRunner>[0]> = {}) {
   const onComplete = vi.fn();
-  render(
+  const view = render(
     <SectionRunner
       assignmentId="a1"
       studentId="s1"
@@ -70,10 +73,13 @@ function renderRun(overrides: Partial<Parameters<typeof SectionRunner>[0]> = {})
       {...overrides}
     />,
   );
-  return { onComplete };
+  return { ...view, onComplete };
 }
 
 const space = () => fireEvent.keyDown(document, { code: "Space" });
+const finish = (count: number) => {
+  for (let i = 0; i < count * 2; i += 1) space();
+};
 
 beforeEach(() => {
   upsert.mockClear();
@@ -390,6 +396,108 @@ describe("writing it down", () => {
     // audio.
     expect(row.attempt_no).toBe(2);
     expect((row.rrc as Record<string, unknown>).audio_path).toBe("s1/a1-a2.webm");
+  });
+
+  it("retries a row that fails once during the run and finishes without a warning", async () => {
+    let first = true;
+    upsert.mockImplementation((rows: Row[]) => {
+      const order = rows[0]?.item_order;
+      if (order === TWO.items[0].order && first) {
+        first = false;
+        return Promise.resolve({ error: { message: "brief outage" } });
+      }
+      return Promise.resolve({ error: null });
+    });
+    render(
+      <SectionRunner
+        assignmentId="a1"
+        studentId="s1"
+        items={TWO.items}
+        sourceSection={TWO.source_section}
+        timeGoalMinutes={TWO.time_goal_minutes}
+        readySeconds={0}
+      />,
+    );
+
+    finish(1);
+    await vi.waitFor(
+      () =>
+        expect(
+          upsert.mock.calls.filter(([rows]) => rows[0]?.item_order === TWO.items[0].order),
+        ).toHaveLength(2),
+      { timeout: 2500 },
+    );
+    finish(1);
+
+    await vi.waitFor(() => expect(screen.getByText(/Section finished/)).toBeInTheDocument());
+    expect(document.body.textContent).not.toMatch(/answers did not reach us/i);
+  });
+
+  it("does not let one permanently bad row prevent the other 25 from being stored", async () => {
+    const stored = new Set<number>();
+    upsert.mockImplementation((rows: Row[]) => {
+      const order = Number(rows[0]?.item_order);
+      if (rows.length === 1 && order !== 8) stored.add(order);
+      return Promise.resolve({ error: order === 8 ? { message: "row rejected" } : null });
+    });
+    render(
+      <SectionRunner
+        assignmentId="a1"
+        studentId="s1"
+        items={TWENTY_SIX.items}
+        sourceSection={TWENTY_SIX.source_section}
+        timeGoalMinutes={TWENTY_SIX.time_goal_minutes}
+        readySeconds={0}
+      />,
+    );
+    finish(26);
+
+    await vi.waitFor(() => expect(screen.getByText(/1 answer did not reach us/i)).toBeInTheDocument());
+    expect(stored.size).toBe(25);
+    expect(stored.has(8)).toBe(false);
+  });
+
+  it("lets the backstop store a good row when the row beside it is rejected", async () => {
+    const stored = new Set<number>();
+    upsert.mockImplementation((rows: Row[]) => {
+      const order = Number(rows[0]?.item_order);
+      if (order === TWO.items[1].order) stored.add(order);
+      return Promise.resolve({
+        error: order === TWO.items[0].order ? { message: "row rejected" } : null,
+      });
+    });
+    render(
+      <SectionRunner
+        assignmentId="a1"
+        studentId="s1"
+        items={TWO.items}
+        sourceSection={TWO.source_section}
+        timeGoalMinutes={TWO.time_goal_minutes}
+        readySeconds={0}
+      />,
+    );
+    finish(2);
+
+    await vi.waitFor(() => expect(screen.getByText(/1 answer did not reach us/i)).toBeInTheDocument());
+    expect(upsert.mock.calls.every(([rows]) => rows.length === 1)).toBe(true);
+    expect(stored.has(TWO.items[1].order)).toBe(true);
+  });
+
+  it("names an unsaved answer at the end, but says nothing on a clean run", async () => {
+    upsert.mockImplementation((rows: Row[]) =>
+      Promise.resolve({ error: rows[0]?.item_order === ONE.items[0].order ? { message: "down" } : null }),
+    );
+    const { unmount } = renderRun();
+    finish(1);
+    await vi.waitFor(() => expect(screen.getByText(/1 answer did not reach us/i)).toBeInTheDocument());
+    expect(invoke).not.toHaveBeenCalled();
+    unmount();
+
+    upsert.mockImplementation(() => Promise.resolve({ error: null }));
+    renderRun();
+    finish(1);
+    await vi.waitFor(() => expect(screen.getByText(/Section finished/)).toBeInTheDocument());
+    expect(document.body.textContent).not.toMatch(/answers did not reach us/i);
   });
 });
 

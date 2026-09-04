@@ -126,6 +126,11 @@ const defaultNow = () => Date.now();
  */
 const READY_SECONDS = 3;
 
+/** A row gets a few quiet chances while she is still working, never an unbounded loop. */
+const ROW_RETRY_ATTEMPTS = 3;
+const ROW_RETRY_BASE_MS = 500;
+const ROW_RETRY_MAX_MS = 4_000;
+
 export function SectionRunner({
   assignmentId,
   studentId,
@@ -214,6 +219,10 @@ function RunBody({
   const [deadInput, setDeadInput] = useState(false);
   /** The recording did not reach the server. Said plainly at the end. */
   const [uploadFailed, setUploadFailed] = useState(false);
+  /** Response rows still absent after the per-row end-of-run backstop. */
+  const [unsavedCount, setUnsavedCount] = useState(0);
+  /** True only after a real recording has reached storage. */
+  const [recordingStored, setRecordingStored] = useState(false);
   /**
    * This sitting's own name for its local backup.
    *
@@ -282,8 +291,22 @@ function RunBody({
    */
   const attemptNo = useRef<number | null>(null);
   const [attemptReady, setAttemptReady] = useState(false);
-  /** Stimuli already handed to the database. Never sent twice. */
+  /** Stimuli already handed to the database for their first save. */
   const queued = useRef(0);
+  /** Saves still resolving when the section ends. The backstop waits for them before retrying. */
+  const inFlightRows = useRef<Set<Promise<boolean>>>(new Set());
+  /** At most one pending timer per failed attempt, all cancelled at the backstop. */
+  const retryTimers = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+  /** Stops a retry from firing after the run has entered its final backstop. */
+  const finishing = useRef(false);
+
+  useEffect(() => {
+    return () => {
+      finishing.current = true;
+      for (const timer of retryTimers.current) clearTimeout(timer);
+      retryTimers.current.clear();
+    };
+  }, []);
 
   const seconds = useCallback(
     (from: number) => Math.max(0, Math.round((now() - from) / 1000)),
@@ -514,6 +537,23 @@ function RunBody({
   );
 
   /**
+   * Store exactly one row.
+   *
+   * The unique key makes this idempotent. Keeping the database statement at
+   * one row is what prevents one malformed or rejected response from taking
+   * every good response in the same request down with it.
+   */
+  const persistRow = useCallback(async (row: ResponseInsert): Promise<boolean> => {
+    const { error } = await supabase
+      .from("activity_item_responses")
+      .upsert([row], {
+        onConflict: "assignment_id,student_id,item_order,attempt_no",
+        ignoreDuplicates: true,
+      });
+    return !error;
+  }, []);
+
+  /**
    * Find out which Attempt this is, once, at the start.
    *
    * One read before the first stimulus ends. It is deliberately not in the
@@ -572,31 +612,38 @@ function RunBody({
    * repeats. Fired and not awaited: the loop never waits on this, which was the
    * whole point of writing nothing at all before.
    *
-   * A failed write is left alone on purpose. Every record stays in `records`,
-   * and the backstop at the end re-sends the lot, so one dropped request costs
-   * nothing. What this buys is the crash: twenty minutes of work that used to
-   * live only in the tab now lands as it is made.
+   * A failed row is retried with bounded backoff while she keeps working. Every
+   * record also stays in `records`, and the backstop at the end re-sends each
+   * one on its own, so a rejected row cannot take the good ones with it.
    */
   useEffect(() => {
     if (!attemptReady) return;
     if (records.current.length <= queued.current) return;
     const fresh = records.current.slice(queued.current);
     queued.current = records.current.length;
-    const said = transcript();
-    void (async () => {
-      const { error } = await supabase
-        .from("activity_item_responses")
-        .upsert(fresh.map((r) => buildRow(r, said, null)) as ResponseInsert[], {
-          onConflict: "assignment_id,student_id,item_order,attempt_no",
-          // Never overwrite: a row already on record wins. She holds INSERT on
-          // this table and deliberately not UPDATE, because what she said is
-          // what she said (ADR 0019). This is an insert that declines to
-          // collide, not an update in disguise.
-          ignoreDuplicates: true,
+    const saveWithRetry = (record: StimulusRecord, attempt: number) => {
+      if (finishing.current) return;
+      const row = buildRow(record, transcript(), null) as ResponseInsert;
+      const save = persistRow(row);
+      inFlightRows.current.add(save);
+      void save.then((stored) => {
+        inFlightRows.current.delete(save);
+        if (stored || finishing.current) return;
+        console.error("[rrc] could not save a stimulus as it finished", {
+          item_order: record.order,
+          attempt: attempt + 1,
         });
-      if (error) console.error("[rrc] could not save a stimulus as it finished", error);
-    })();
-  }, [cursor, done, attemptReady, buildRow, transcript]);
+        if (attempt + 1 >= ROW_RETRY_ATTEMPTS) return;
+        const delay = Math.min(ROW_RETRY_BASE_MS * 2 ** attempt, ROW_RETRY_MAX_MS);
+        const timer = setTimeout(() => {
+          retryTimers.current.delete(timer);
+          saveWithRetry(record, attempt + 1);
+        }, delay);
+        retryTimers.current.add(timer);
+      });
+    };
+    for (const record of fresh) saveWithRetry(record, 0);
+  }, [cursor, done, attemptReady, buildRow, persistRow, transcript]);
 
   // One key, and only Space. Bound on the document because the loop must not
   // depend on anything holding focus: a stray click on the page would otherwise
@@ -636,6 +683,9 @@ function RunBody({
   useEffect(() => {
     if (!done || saving.current) return;
     saving.current = true;
+    finishing.current = true;
+    for (const timer of retryTimers.current) clearTimeout(timer);
+    retryTimers.current.clear();
     let cancelled = false;
     void (async () => {
       const total = seconds(startedAt.current);
@@ -653,6 +703,7 @@ function RunBody({
        */
       const finished = await stopRecording();
       const path = audioPath();
+      let storedRecording = false;
       if (finished && finished.blob.size > 0 && path) {
         /*
          * Once, then once more, then say so.
@@ -685,8 +736,12 @@ function RunBody({
         // job. Deliberately only on success: an upload that failed is exactly
         // when the backup is the only copy there is, and the next open of this
         // section is what sends it.
-        else void discard(runId.current);
+        else {
+          storedRecording = true;
+          void discard(runId.current);
+        }
       }
+      if (!cancelled) setRecordingStored(storedRecording);
 
       /*
        * Her words, cut at the same boundaries as the audio.
@@ -699,6 +754,7 @@ function RunBody({
       const rows: (ResponseInsert & { rrc: unknown })[] = records.current.map((r) =>
         buildRow(r, said, total),
       );
+      let missingRows = 0;
 
       if (rows.length > 0) {
         /*
@@ -709,16 +765,16 @@ function RunBody({
          * lands, and duplicates are declined rather than treated as failures.
          * On a clean run it inserts nothing at all.
          */
-        const { error } = await supabase
-          .from("activity_item_responses")
-          .upsert(rows as ResponseInsert[], {
-            onConflict: "assignment_id,student_id,item_order,attempt_no",
-            ignoreDuplicates: true,
-          });
-        // Logged rather than shown: she has finished the section, and a storage
-        // failure is ours to fix, not a thing to hand her at the end of twenty
-        // unbroken minutes.
-        if (error) console.error("[rrc] could not record the section", error);
+        // Let every save already in flight settle first. Otherwise an initial
+        // save could succeed just after a failed backstop and make the warning
+        // false before it was even painted.
+        await Promise.allSettled([...inFlightRows.current]);
+        const stored = await Promise.all(rows.map((row) => persistRow(row as ResponseInsert)));
+        missingRows = stored.filter((ok) => !ok).length;
+        if (missingRows > 0) {
+          console.error("[rrc] response rows still missing after the backstop", { missing: missingRows });
+          if (!cancelled) setUnsavedCount(missingRows);
+        }
       }
 
       /*
@@ -754,14 +810,15 @@ function RunBody({
        * sweeper re-drives anything this call missed, so the ask being slow or
        * lost costs nothing that is not already recovered.
        */
-      void requestSectionGrading(assignmentId);
-
-      if (!cancelled) onComplete?.();
+      if (missingRows === 0) {
+        void requestSectionGrading(assignmentId);
+        if (!cancelled) onComplete?.();
+      }
     })();
     return () => {
       cancelled = true;
     };
-  }, [assignmentId, audioPath, buildRow, done, onComplete, seconds, stopRecording, transcript]);
+  }, [assignmentId, audioPath, buildRow, done, onComplete, persistRow, seconds, stopRecording, transcript]);
 
   const stimulus = run.stimuli[cursor.item];
 
@@ -784,11 +841,22 @@ function RunBody({
               <p className="ac-section-finished">
                 Section finished.
                 <span>
-                  {uploadFailed
+                  {unsavedCount > 0 && uploadFailed
+                    ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us. Your recording did not reach us either, so it is still on this computer. Open this section again from the same browser and the recording will be sent.`
+                    : unsavedCount > 0 && recordingStored
+                      ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us, but the recording did.`
+                      : unsavedCount > 0
+                        ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us. There is no recording available to mark instead.`
+                        : uploadFailed
                     ? `${run.stimuli.length} stimuli, end to end. Your recording did not reach us, so it is still on this computer. Open this section again from the same browser and it will be sent, and then marked.`
                     : `${run.stimuli.length} stimuli, end to end. Your Report Card comes next.`}
                 </span>
               </p>
+              {unsavedCount > 0 && onExit && (
+                <button type="button" className="ac-section-exit" onClick={onExit}>
+                  Back to the Activity Centre
+                </button>
+              )}
             </div>
           </div>
         </main>
