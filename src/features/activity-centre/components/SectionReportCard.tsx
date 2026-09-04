@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { bandFor } from "../recall/grading";
+import { nextStep } from "../recall/nextStep";
 import { listModelRuns, signSectionRecording } from "../api/activitiesClient";
 import type { ModelRun } from "../api/activitiesClient";
 import type { SectionGrade, SectionStimulusGrade } from "../api/types";
@@ -306,6 +307,7 @@ export function SectionReportCard({
       perfect,
       atStandard,
       band,
+      next: nextStep(section, stimuli),
       suspect,
       unmarked,
       readMeasured,
@@ -345,6 +347,20 @@ export function SectionReportCard({
           {overall.atStandard} of {stimuli.length} at the standard
           {overall.perfect > 0 ? `, ${overall.perfect} with nothing dropped` : ""}.
         </p>
+
+        {/*
+          * What to do tomorrow, in one sentence or not at all.
+          *
+          * The audit asked whether she would know what to do next and the
+          * answer was no: every other line on this card describes what
+          * happened. This is the only one that asks for something, which is why
+          * it is one line and why a run with nothing clear to say gets none.
+          */}
+        {overall.next && (
+          <p className="mt-4 rounded-2xl border border-border bg-[hsl(var(--muted))] px-4 py-3 text-sm text-foreground">
+            {overall.next}
+          </p>
+        )}
 
         {/*
           * The two numbers, side by side.
@@ -404,6 +420,22 @@ export function SectionReportCard({
             <p className="mt-1 text-xs text-muted-foreground">
               Inside the time, but the goal only counts with every stimulus coloured and given a
               Read.
+            </p>
+          )}
+          {/*
+            * Over the goal, which used to get nothing at all.
+            *
+            * The qualifier above fires only when she is inside the time and
+            * short of the goal, so going over rendered as plain uncoloured
+            * text with no comment on it: the one case most in need of a word.
+            * Not a rebuke. Early runs are slow by design and the briefing
+            * already says to go slower while it is new, so this says what the
+            * time is for rather than that she was late.
+            */}
+          {section.within_time === false && (
+            <p className="mt-1 text-xs text-muted-foreground">
+              Over the goal, which early runs are meant to be. The goal is what the drill costs once
+              it is a habit, not a limit on today.
             </p>
           )}
         </div>
@@ -629,6 +661,27 @@ export function SectionReportCard({
                       ) : (
                         <p className="mt-2 text-sm text-muted-foreground">
                           Nothing was picked up here.
+                        </p>
+                      )}
+                      {/*
+                        * Where the marking came from, said out loud.
+                        *
+                        * The v1 spec named transcription error as the top risk
+                        * and showing her the transcript as the mitigation. The
+                        * transcript was shown and nothing said what it was FOR,
+                        * so a mis-hearing reads as a verdict about her. In the
+                        * audit's run stimulus 5's judge reason quoted her as
+                        * saying "clearly moral characters"; the recording says
+                        * immoral, and she was told she gave the wrong Read.
+                        *
+                        * "Hear it back" above is what lets her check, which is
+                        * why this sits under the words rather than anywhere
+                        * else on the card.
+                        */}
+                      {s.spoken && (
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          The marking is done from these words. If they are not what you said, the
+                          marking is wrong, not you. Play it back and tell Joshua.
                         </p>
                       )}
                       {model?.walkthrough && <Walkthrough md={model.walkthrough} />}

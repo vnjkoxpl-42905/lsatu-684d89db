@@ -359,6 +359,106 @@ describe("the evidence behind the number", () => {
  * sat and then "recall" it. That rule lives in RLS; what is asserted here is
  * that the card asks, and offers nothing when the answer is nothing.
  */
+describe("would she know what to do tomorrow", () => {
+  const withSection = (over: Partial<SectionGrade["section"]>, stimuliOver?: SectionStimulusGrade[]) =>
+    ({ ...grade, section: { ...grade.section, ...over }, stimuli: stimuliOver ?? grade.stimuli }) as SectionGrade;
+
+  it("gives one sentence when the run says something clearly", () => {
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={withSection({ no_read_count: 3, read_given_count: 1, read_matched_count: 1 })}
+      />,
+    );
+    expect(screen.getByText(/no Read at all on 3 of them/i)).toBeInTheDocument();
+  });
+
+  it("gives none at all when nothing is strong enough, rather than an encouragement", () => {
+    // A card that always says something is a card whose advice she skips.
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ reciting_count: 0 })} />);
+    expect(document.body.textContent).not.toMatch(/no Read at all/i);
+    expect(document.body.textContent).not.toMatch(/Say one thing you think/i);
+  });
+
+  it("never gives two", () => {
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={withSection({ no_read_count: 4, reciting_count: 4, uncoloured_count: 4 })}
+      />,
+    );
+    expect(screen.getByText(/no Read at all on 4 of them/i)).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/Cover the text and put it in your own words/i);
+  });
+});
+
+describe("the clock, when she went over", () => {
+  const withSection = (over: Partial<SectionGrade["section"]>) =>
+    ({ ...grade, section: { ...grade.section, ...over } }) as SectionGrade;
+
+  it("says something about a run over the goal, which used to get nothing", () => {
+    // The case most in need of a word rendered as plain uncoloured text.
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={withSection({ within_time: false, within_goal: false, total_seconds: 2772 })}
+      />,
+    );
+    expect(screen.getByText(/46:12 against a 25 minute goal/)).toBeInTheDocument();
+    expect(screen.getByText(/early runs are meant to be/i)).toBeInTheDocument();
+  });
+
+  it("leaves the inside-the-time qualifier exactly as it was", () => {
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={withSection({ within_time: true, within_goal: false })}
+      />,
+    );
+    expect(screen.getByText(/Inside the time, but the goal only counts/i)).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/early runs are meant to be/i);
+  });
+
+  it("says nothing about the clock on a run that made the goal", () => {
+    render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ within_goal: true })} />);
+    expect(document.body.textContent).not.toMatch(/early runs are meant to be/i);
+  });
+});
+
+describe("a verdict that rests on a mis-hearing", () => {
+  it("says what the marking was done from, wherever the words are shown", () => {
+    // The v1 spec named transcription error as the top risk and showing her the
+    // transcript as the mitigation. Nothing said what the transcript was FOR,
+    // so a dropped prefix read as a verdict about her.
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={{ ...grade, stimuli: [stimulus({ spoken: "clearly moral characters" })] } as SectionGrade}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Stimulus 1/i }));
+    expect(screen.getByText(/If they are not what you said, the marking is wrong, not you/i)).toBeInTheDocument();
+  });
+
+  it("does not say it where there are no words to doubt", () => {
+    // The block still opens -- there is a Clip to play -- so this is tied to
+    // there being a transcript rather than to the section being on screen.
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={{
+          ...grade,
+          section: { ...grade.section, audio_bucket: "drill-recordings", audio_path: "s1/a1.webm" },
+          stimuli: [stimulus({ spoken: "", window_ms: { start: 0, end: 1000 } })],
+        } as SectionGrade}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Stimulus 1/i }));
+    expect(screen.getByText(/Nothing was picked up here/i)).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/the marking is wrong, not you/i);
+  });
+});
+
 describe("hearing it done right", () => {
   const WALKTHROUGH =
     "> The allowable blood alcohol level should be cut in half.\n\n" +
