@@ -438,6 +438,8 @@ serve(async (req) => {
      */
     type Graded = StimulusGrade & {
       slug: string;
+      /** The assignment's authored position, so a missing response row cannot renumber later rows. */
+      item_order: number;
       dead_air_seconds: number;
       /** Which of L, I, C or R this stimulus's Read is. Authored, not inferred. */
       the_read_type?: string;
@@ -468,6 +470,35 @@ serve(async (req) => {
     const gradable = responses.filter((r) =>
       bySlug.has(String((r.rrc as Record<string, unknown>).slug ?? "")),
     );
+
+    /*
+     * The standard, so the judge is not marking quality against its own taste.
+     *
+     * Three of the whole-run judgments -- listing, coloured, colour_specific --
+     * are about how good the work is, and until now they were made with no
+     * example of good work anywhere in the prompt. The Details say which facts
+     * had to survive and The Read says what the argument was doing, but neither
+     * says what a correct run SOUNDS like, and that is the part a teacher sets.
+     *
+     * One query for the whole section rather than one per stimulus, and a
+     * failure here is not fatal: a section whose walkthroughs have not been
+     * loaded grades exactly as it did before, without the calibration.
+     */
+    const walkthroughs = new Map<string, string>();
+    {
+      const { data, error } = await admin
+        .from("model_runs")
+        .select("slug, walkthrough_md")
+        .eq("source_section", assignment.source_section)
+        .eq("status", "active");
+      if (error) {
+        console.error("[rrc] no model runs for calibration", error.message);
+      } else {
+        for (const r of (data ?? []) as { slug: string; walkthrough_md: string | null }[]) {
+          if (r.walkthrough_md?.trim()) walkthroughs.set(r.slug, r.walkthrough_md);
+        }
+      }
+    }
 
     /*
      * Judged all at once rather than one after another.
@@ -558,6 +589,7 @@ serve(async (req) => {
         // alongside the clock reading so a systematic failure is visible.
         return {
           slug,
+          item_order: Number(row.item_order),
           ...gradeStimulus(entries, nothingCarried),
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
           spoken: "",
@@ -574,6 +606,7 @@ serve(async (req) => {
             entries,
             spoken,
             theRead: (item.the_read as string | null) ?? null,
+            modelRun: walkthroughs.get(slug) ?? null,
           }),
         );
         const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)));
@@ -586,6 +619,7 @@ serve(async (req) => {
 
         return {
           slug,
+          item_order: Number(row.item_order),
           ...grade,
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
           spoken,
@@ -602,6 +636,7 @@ serve(async (req) => {
         console.error("[grade-rrc-section] stimulus failed", { assignmentId, slug, reason });
         return {
           slug,
+          item_order: Number(row.item_order),
           ...gradeStimulus(entries, nothingCarried),
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
           spoken,
@@ -703,6 +738,7 @@ serve(async (req) => {
       within_goal: withinTime && uncoloured === 0 && noRead === 0,
       mean_coverage: meanCoverage,
       stimuli_graded: graded.length,
+      stimuli_in_section: expectedSlugs.size || stimuli.length,
       reciting_count: graded.filter((s) => s.reciting).length,
       listing_count: graded.filter((s) => s.listing).length,
       uncoloured_count: uncoloured,

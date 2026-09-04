@@ -1946,13 +1946,39 @@ function ReportPanel() {
           grade={grade}
           /*
            * The lab has no database, so the model runs are named rather than
-           * looked up. The buttons appear and do nothing, which is the point:
-           * a lab that faked a working player would be the one place a broken
-           * one could hide.
+           * looked up. The player button appears and does nothing, which is the
+           * point: a lab that faked a working player would be the one place a
+           * broken one could hide.
+           *
+           * The walkthrough is different, and is real text rather than a stub.
+           * It is the part a student actually reads, it is the part most likely
+           * to look wrong at some width or some length, and a lab that showed
+           * the buttons but not the document would be checking the half that
+           * matters least.
            */
           loadModelRuns={async () =>
             Object.fromEntries(
-              grade.stimuli.map((st) => [st.slug, { bucket: "model-runs", path: `${st.slug}.mp3` }]),
+              grade.stimuli.map((st) => [
+                st.slug,
+                {
+                  audio: { bucket: "model-runs", path: `${st.slug}.mp3` },
+                  walkthrough:
+                    "> Ace Manufacturing's consultant proposes that we reassign staff so " +
+                    "that all employees are doing both what they like to do and what they " +
+                    "do well.\n\n" +
+                    "So a management consultant is telling us how to run the company, and " +
+                    "the idea is to move people around so they are doing the things they " +
+                    "like and the things they are good at. Think about McKinsey walking " +
+                    "into Amazon and saying, put the people who like driving on the " +
+                    "delivery routes.\n\n" +
+                    "> This, she says, will \"increase productivity by fully exploiting " +
+                    "our available resources.\"\n\n" +
+                    "So her claim is that productivity goes up because you are getting the " +
+                    "absolute most out of everybody. Well, what if exploit is doing two " +
+                    "jobs in this argument? Getting the most out of something, and taking " +
+                    "advantage of someone, are not the same word twice.",
+                },
+              ]),
             )
           }
         />

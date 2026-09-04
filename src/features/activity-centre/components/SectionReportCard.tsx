@@ -37,7 +37,7 @@ interface SectionReportCardProps {
   grade: SectionGrade;
   onDone?: () => void;
   /** Injected in tests and in the lab, which has no database behind it. */
-  loadModelRuns?: (sourceSection: string) => Promise<Record<string, { bucket: string; path: string }>>;
+  loadModelRuns?: (sourceSection: string) => Promise<Record<string, ModelRun>>;
 }
 
 const BAND: Record<SectionStimulusGrade["band"], { label: string; cls: string; dot: string }> = {
@@ -251,6 +251,15 @@ export function SectionReportCard({
     const unmarked = section.ungraded_count ?? 0;
     /** Whether The Read was measured at all. Older grades predate it. */
     const readMeasured = section.read_given_count !== undefined;
+    /**
+     * New grades carry both the assignment's size and each row's authored
+     * position. Older grades carry neither, so they keep their historical
+     * array-order rendering rather than having a section shape invented for
+     * them from a slug.
+     */
+    const hasStoredPositions = stimuli.every((s) => s.item_order !== undefined);
+    const sectionSize = hasStoredPositions ? section.stimuli_in_section : undefined;
+    const missingRows = sectionSize === undefined ? 0 : Math.max(0, sectionSize - stimuli.length);
 
     /*
      * What she would change next time, in her own terms.
@@ -273,7 +282,17 @@ export function SectionReportCard({
         `You read ${section.chunks_read_aloud} of them out loud before recalling. That is not marked against you, and reading silently is the harder, better version.`,
       );
 
-    return { perfect, atStandard, band, suspect, unmarked, readMeasured, notes };
+    return {
+      perfect,
+      atStandard,
+      band,
+      suspect,
+      unmarked,
+      readMeasured,
+      notes,
+      sectionSize,
+      missingRows,
+    };
   }, [stimuli, section]);
 
   return (
@@ -286,12 +305,21 @@ export function SectionReportCard({
         {/* The band leads. The number is available and does not go first. */}
         <p className={cn("ac-display mt-3 text-5xl", overall.band.cls)}>{overall.band.label}</p>
         <p className="mt-2 text-sm text-muted-foreground">
-          {overall.readMeasured
+          {overall.sectionSize !== undefined
+            ? `${section.stimuli_graded} of ${overall.sectionSize} stimuli, marked`
+            : overall.readMeasured
             ? `${section.stimuli_graded} ${section.stimuli_graded === 1 ? "stimulus" : "stimuli"}, marked`
             : `${section.mean_coverage}% of the details carried, across ${section.stimuli_graded} ${
                 section.stimuli_graded === 1 ? "stimulus" : "stimuli"
               }`}
         </p>
+
+        {overall.missingRows > 0 && overall.sectionSize !== undefined && (
+          <p className="mt-4 rounded-2xl border border-border bg-[hsl(var(--muted))] px-4 py-3 text-sm text-muted-foreground">
+            {overall.missingRows} of the {overall.sectionSize} did not save, so they are not marked
+            here. That is ours, not yours.
+          </p>
+        )}
 
         <p className="mt-6 text-sm text-foreground">
           {overall.atStandard} of {stimuli.length} at the standard
@@ -426,7 +454,9 @@ export function SectionReportCard({
                 aria-expanded={open}
               >
                 <span className={cn("h-2 w-2 shrink-0 rounded-full", band.dot)} aria-hidden />
-                <span className="w-24 shrink-0 text-sm text-muted-foreground">Stimulus {i + 1}</span>
+                <span className="w-24 shrink-0 text-sm text-muted-foreground">
+                  Stimulus {s.item_order ?? i + 1}
+                </span>
                 <span className={cn("text-sm font-medium", band.cls)}>{band.label}</span>
                 <span className="ml-auto text-sm tabular-nums text-muted-foreground">
                   {s.carried} of {s.total}

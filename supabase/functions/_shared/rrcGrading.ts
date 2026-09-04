@@ -215,6 +215,24 @@ export function buildJudgePrompt(input: {
    * criterion. Omit it and the run is judged on memory alone, exactly as it was.
    */
   theRead?: string | null;
+  /**
+   * One correct run of THIS stimulus, as a document: the verbatim read of each
+   * chunk, then the recall of it in his own words.
+   *
+   * The judge had no example of good work. It carried a checklist of facts and
+   * a one-line key for The Read, and was then asked whether her run was a flat
+   * list, whether she engaged with the stimulus at all, and whether that
+   * engagement was specific to it -- three judgments about quality made against
+   * nothing but the model's own idea of quality. This is the standard those
+   * three are measured against, and it is the standard a person set.
+   *
+   * It is emphatically NOT a target to match. A student who reproduced this
+   * would be reciting, which is itself a failure the same prompt checks for.
+   * The prompt says so at some length, because an exemplar dropped into a
+   * grading context without that framing turns into an answer key, and every
+   * run that differs from it starts looking wrong.
+   */
+  modelRun?: string | null;
 }): string {
   const kinds = [...new Set(input.entries.map((e) => e.kind))]
     .map((k) => `- ${KIND_RULE[k]}`)
@@ -268,6 +286,27 @@ Judge her Read, from what she said and nothing else:
 - read_matches: did what she said amount to the SAME move as THE READ above? A
   different name for the same move is fine; missing the move is not. She is not
   expected to use its words, and it may be shorter or messier than the key.
+
+`
+      : ""
+  }${
+    input.modelRun
+      ? `A CORRECT RUN of this same stimulus, for calibration:
+"""
+${input.modelRun}
+"""
+
+How to use it, and how not to:
+- It sets the STANDARD, not the answer. It is one good run, not the only one.
+  Her wording, her examples, her order and her emphasis can all differ from it
+  completely and still be just as good.
+- Use it for the whole-run judgments below: this is what "not a flat list" and
+  "reacted to the stimulus" look like at the level expected here.
+- Do NOT use it as evidence. A Detail is carried only if SHE said it. If it
+  appears here and not in what she said, it is not carried. The verdicts above
+  are decided from her words alone.
+- Do NOT reward similarity to it or penalise difference from it. Matching its
+  phrasing closely is a warning sign, not a good score: that is reciting.
 
 `
       : ""

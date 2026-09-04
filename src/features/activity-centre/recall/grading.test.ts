@@ -355,3 +355,51 @@ describe("The Read", () => {
     expect(grade.readMatches).toBe(false);
   });
 });
+
+/**
+ * The standard, in the prompt.
+ *
+ * The judge was asked whether her run was a flat list, whether she reacted to
+ * the stimulus, and whether that reaction was specific to it -- three judgments
+ * about the quality of teaching work, made against nothing but the model's own
+ * taste. The Details are a checklist of facts and The Read is one line about
+ * the argument; neither says what a correct run sounds like. That is the part a
+ * person sets, and there are now 283 written runs that set it.
+ */
+describe("the model run as the standard", () => {
+  const entries = buildJudgeEntries(toDetails(["All employees are reassigned."]), []);
+  const RUN = "> All employees are reassigned.\n\nSo everybody gets moved around.";
+
+  it("carries the correct run when there is one", () => {
+    const prompt = buildJudgePrompt({
+      stimulus: "A stimulus.",
+      entries,
+      spoken: "she said something",
+      modelRun: RUN,
+    });
+    expect(prompt).toContain("So everybody gets moved around.");
+    expect(prompt).toContain("A CORRECT RUN");
+  });
+
+  it("frames it as the standard rather than as the answer", () => {
+    // An exemplar dropped into a grading context without this framing becomes an
+    // answer key, and every run that differs from it starts looking wrong. Her
+    // wording, examples, order and emphasis are all allowed to differ.
+    const prompt = buildJudgePrompt({
+      stimulus: "A stimulus.",
+      entries,
+      spoken: "x",
+      modelRun: RUN,
+    });
+    expect(prompt).toContain("It sets the STANDARD, not the answer");
+    expect(prompt).toMatch(/Do NOT use it as evidence/);
+    expect(prompt).toMatch(/Do NOT reward similarity to it/);
+  });
+
+  it("is left out entirely for a section whose runs are not loaded", () => {
+    // A section with no walkthroughs grades exactly as it did before, rather
+    // than being asked to calibrate against an empty block.
+    const prompt = buildJudgePrompt({ stimulus: "A stimulus.", entries, spoken: "x" });
+    expect(prompt).not.toContain("A CORRECT RUN");
+  });
+});
