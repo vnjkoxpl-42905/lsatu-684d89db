@@ -78,6 +78,10 @@ function renderAt(id = "assign-1") {
 describe("ActivityRunner, admin viewing a student's assignment", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // `clearAllMocks` forgets the calls and keeps the implementation, so a
+    // resolved value set inside one test would otherwise be the student's
+    // attempt log in every test after it.
+    vi.mocked(listItemResponses).mockResolvedValue([]);
     activityState.assignment = foreignAssignment();
     activityState.loading = false;
     activityState.error = null;
@@ -109,6 +113,39 @@ describe("ActivityRunner, admin viewing a student's assignment", () => {
     await waitFor(() => expect(listItemResponses).toHaveBeenCalled());
     expect(markAssignmentStarted).not.toHaveBeenCalled();
     expect(syncClassroomItemStatusBySource).not.toHaveBeenCalled();
+  });
+
+  /*
+   * The banner made two claims and only one of them was always true. On a
+   * section library -- the drill Joshua opens most, which holds no items at all
+   * -- it told him the student's saved answers were on screen beside an empty
+   * list and a Start button.
+   */
+  it("claims her saved answers are shown on the screen that shows them", async () => {
+    activityState.assignment = foreignAssignment({ status: "completed" });
+    vi.mocked(listItemResponses).mockResolvedValue([
+      { item_order: 1, response_text: "Some cat is not grey.", verdict: "correct", attempt_no: 1 },
+      { item_order: 2, response_text: "Some dog barks.", verdict: "correct", attempt_no: 1 },
+    ] as never);
+    renderAt();
+    expect(await screen.findByText(/their saved answers are shown/i)).toBeInTheDocument();
+  });
+
+  it("does not claim saved answers on a drill that has none", async () => {
+    renderAt();
+    expect(await screen.findByText(/nothing you do here is recorded/i)).toBeInTheDocument();
+    expect(screen.queryByText(/their saved answers are shown/i)).not.toBeInTheDocument();
+  });
+
+  it("does not claim saved answers on a section library, which has no items", async () => {
+    activityState.assignment = foreignAssignment({
+      item_format: "spoken-recall",
+      mode: "section-library",
+      items: [],
+    });
+    renderAt();
+    expect(await screen.findByText(/nothing you do here is recorded/i)).toBeInTheDocument();
+    expect(screen.queryByText(/their saved answers are shown/i)).not.toBeInTheDocument();
   });
 
   it("never closes a run the student left one keystroke from finished", async () => {

@@ -617,10 +617,21 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
    * Without it the screen is indistinguishable from his own work, and the one
    * thing he must be able to trust is that nothing he types here lands on the
    * student's record.
+   *
+   * The second sentence is conditional because it was not always true. It
+   * claimed her saved answers were on screen while Joshua looked at a section
+   * library, which holds no items at all, and at a spoken drill, whose work is
+   * a recording and a set of timings rather than anything a typed-answer view
+   * can show. The half that always holds -- nothing he does here is recorded --
+   * is the half that is always printed.
    */
+  const showsSavedAnswers =
+    assignment.item_format !== "spoken-recall" && Object.keys(responses).length > 0;
   const adminBanner = viewingSomeoneElse ? (
     <div className="mx-auto mb-4 max-w-5xl rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))] px-4 py-2 text-xs text-muted-foreground">
-      Admin view of a student&rsquo;s assignment. Their saved answers are shown; nothing you do here is recorded.
+      {showsSavedAnswers
+        ? "Admin view of a student\u2019s assignment. Their saved answers are shown; nothing you do here is recorded."
+        : "Admin view of a student\u2019s assignment. Nothing you do here is recorded."}
     </div>
   ) : null;
 

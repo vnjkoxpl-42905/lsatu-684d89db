@@ -120,12 +120,28 @@ export function ActivityIntro({
    * halfway remains not a partial score and not a run, because a section is
    * judged whole. The work is kept; the run is not resumable. Those are
    * different things and the line says only the first.
+   *
+   * The library door needs a third line, and used to get the wrong one.
+   *
+   * The branch selected on `mode === "section"` and nothing else, so
+   * `section-library` -- the mode every student actually starts from -- fell
+   * through to the v1 sentence and promised that she could stop whenever she
+   * liked and pick up where she left off. That is the one promise a section
+   * cannot keep (ADR 0023), and it was printed directly above six rules saying
+   * the opposite.
+   *
+   * It cannot borrow the section line either. The door holds no items of its
+   * own, so `itemCount` is 0 there, and that line would open on "0 stimuli".
+   * What is true of the door is that it is a list: she picks, and what she
+   * picks behaves like a section.
    */
   const howLine =
     format === "spoken-recall"
       ? mode === "section"
         ? `${itemCount ?? ""} stimuli, out loud, in one sitting. Each one is saved as you finish it, and the whole section is marked at the end.`.trim()
-        : "One stimulus, read and said back a chunk at a time. Every recall saves as you go, so you can stop whenever you like and pick up where you left off."
+        : mode === "section-library"
+          ? "Pick a section. Each one runs out loud in one sitting, against its own clock, and is marked once you reach the end of it."
+          : "One stimulus, read and said back a chunk at a time. Every recall saves as you go, so you can stop whenever you like and pick up where you left off."
       : [
           itemCount ? `${itemCount} ${itemCount === 1 ? "question" : "questions"}.` : "",
           maxAttempts ? `${maxAttempts} tries each, then the credited answer shows.` : "",
@@ -272,15 +288,28 @@ export function ActivityIntro({
         {instructions.briefing && (
           <motion.section variants={item} className="act-briefing" aria-label="How this drill works">
             <p className="act-brief-label">How this works</p>
+            {/* Authored prose, and authored prose in this codebase carries the
+                bank's own `*mark*` notation. The briefing printed it raw, so
+                the one sentence in Read, Recall, Colour's briefing that was
+                marked for emphasis -- "**Efficiency is never a licence to leave
+                information out.**" -- reached the student with its asterisks
+                showing. The markup is intentional and seeded into two
+                migrations besides the JSON, so the renderer is the thing to
+                change, not the content. Every prose slot goes through it, not
+                just the one that happens to be marked today. */}
             {instructions.briefing.lede && (
-              <p className="act-briefing-lede">{instructions.briefing.lede}</p>
+              <p className="act-briefing-lede">
+                {renderInlineMarks(instructions.briefing.lede, "briefing-lede")}
+              </p>
             )}
             <div className="act-briefing-flow">
               {instructions.briefing.sections.map((section, i) => (
                 <section key={i} className="act-briefing-section">
                   <h2 className="act-briefing-heading">{section.heading}</h2>
                   {section.body.map((para, j) => (
-                    <p key={j} className="act-briefing-body">{para}</p>
+                    <p key={j} className="act-briefing-body">
+                      {renderInlineMarks(para, `briefing-${i}-${j}`)}
+                    </p>
                   ))}
 
                   {/* The procedure, when the section carries one. An ordered
@@ -322,7 +351,9 @@ export function ActivityIntro({
               ))}
             </div>
             {instructions.briefing.closer && (
-              <p className="act-briefing-closer">{instructions.briefing.closer}</p>
+              <p className="act-briefing-closer">
+                {renderInlineMarks(instructions.briefing.closer, "briefing-closer")}
+              </p>
             )}
           </motion.section>
         )}
