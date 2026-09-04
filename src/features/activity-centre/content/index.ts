@@ -20,9 +20,16 @@ import conditionalRephrase from "./conditional-rephrase.json";
 import readRecallColour from "./read-recall-colour.json";
 import readRecallColourPt1S3 from "./read-recall-colour-pt1-s3.json";
 import readRecallColourPt21S3 from "./read-recall-colour-pt21-s3.json";
+import readRecallColourPt101S2 from "./read-recall-colour-pt101-s2.json";
 import readRecallColourPt102S3 from "./read-recall-colour-pt102-s3.json";
+import readRecallColourPt103S1 from "./read-recall-colour-pt103-s1.json";
+import readRecallColourPt104S1 from "./read-recall-colour-pt104-s1.json";
+import readRecallColourPt105S1 from "./read-recall-colour-pt105-s1.json";
 import readRecallColourPt105S2 from "./read-recall-colour-pt105-s2.json";
+import readRecallColourPt106S2 from "./read-recall-colour-pt106-s2.json";
+import readRecallColourPt112S4 from "./read-recall-colour-pt112-s4.json";
 import readRecallColourPt134S3 from "./read-recall-colour-pt134-s3.json";
+import readRecallColourPt140S1 from "./read-recall-colour-pt140-s1.json";
 import dumbItDown from "./dumb-it-down.json";
 import findTheConclusion from "./find-the-conclusion.json";
 import rebuttalRephrase from "./rebuttal-rephrase.json";
@@ -75,9 +82,16 @@ export const SEED_ACTIVITIES: SeedActivity[] = [
   // list does not reshuffle when the next one is built.
   readRecallColourPt1S3 as unknown as SeedActivity,
   readRecallColourPt21S3 as unknown as SeedActivity,
+  readRecallColourPt101S2 as unknown as SeedActivity,
   readRecallColourPt102S3 as unknown as SeedActivity,
+  readRecallColourPt103S1 as unknown as SeedActivity,
+  readRecallColourPt104S1 as unknown as SeedActivity,
+  readRecallColourPt105S1 as unknown as SeedActivity,
   readRecallColourPt105S2 as unknown as SeedActivity,
+  readRecallColourPt106S2 as unknown as SeedActivity,
+  readRecallColourPt112S4 as unknown as SeedActivity,
   readRecallColourPt134S3 as unknown as SeedActivity,
+  readRecallColourPt140S1 as unknown as SeedActivity,
 ];
 
 export const SEED_ACTIVITY_SLUGS = SEED_ACTIVITIES.map((a) => a.slug);
@@ -110,9 +124,16 @@ export const ACTIVITY_LIBRARY_ORDER = [
   "read-recall-colour", // a stimulus, from memory
   "read-recall-colour-pt1-s3", // a whole section, against the clock
   "read-recall-colour-pt21-s3",
+  "read-recall-colour-pt101-s2",
   "read-recall-colour-pt102-s3",
+  "read-recall-colour-pt103-s1",
+  "read-recall-colour-pt104-s1",
+  "read-recall-colour-pt105-s1",
   "read-recall-colour-pt105-s2",
+  "read-recall-colour-pt106-s2",
+  "read-recall-colour-pt112-s4",
   "read-recall-colour-pt134-s3",
+  "read-recall-colour-pt140-s1",
 ] as const;
 
 /**

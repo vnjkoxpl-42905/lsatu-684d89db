@@ -1,7 +1,5 @@
 import { describe, expect, it } from "vitest";
-import pt102 from "./read-recall-colour-pt102-s3.json";
-import pt105 from "./read-recall-colour-pt105-s2.json";
-import pt134 from "./read-recall-colour-pt134-s3.json";
+import { SEED_ACTIVITIES } from "./index";
 import type { ActivityMode, RecallSectionItem, TimeGoalMinutes } from "../api/types";
 
 // The captured sections (spec: docs/specs/2026-08-31-rrc-section-mode.md). Each
@@ -37,11 +35,46 @@ const flat = (text: string): string => text.replace(/\s+/g, " ").trim();
  */
 const ABBREVIATION = /(?:Inc|Ltd|Co|Corp|Mr|Mrs|Ms|Dr|Prof|St|Jr|Sr|vs|etc|e\.g|i\.e|U\.S|No)\.$/;
 
-const SECTIONS: [string, Section][] = [
-  ["PT102.S3", pt102 as unknown as Section],
-  ["PT105.S2", pt105 as unknown as Section],
-  ["PT134.S3", pt134 as unknown as Section],
-];
+/**
+ * Every section that ships, derived from the seed array rather than listed by
+ * hand. Listing them by hand is how PT1.S3 and PT21.S3 shipped in September
+ * 2026 with nothing in this file asserting anything about them: the suite went
+ * green because it was not looking at them. Deriving the list means a section
+ * cannot be seeded and untested at the same time.
+ */
+const SECTIONS: [string, Section][] = SEED_ACTIVITIES.filter(
+  (a) => (a as unknown as Section).mode === "section",
+).map((a) => {
+  const section = a as unknown as Section;
+  return [section.source_section, section];
+});
+
+/**
+ * Every section content file on disk, whether or not it is seeded. The pair of
+ * checks below is the guard: a file that exists but was never added to
+ * SEED_ACTIVITIES is a section that does not ship, and a section that does not
+ * ship is one nothing above this line ever looks at.
+ */
+const SECTION_FILES = import.meta.glob("./read-recall-colour-pt*.json", { eager: true });
+
+describe("the set of sections", () => {
+  it("is not empty", () => {
+    expect(SECTIONS.length).toBeGreaterThan(0);
+  });
+
+  it("seeds every section content file in this directory", () => {
+    const onDisk = Object.keys(SECTION_FILES)
+      .map((path) => path.replace("./", "").replace(".json", ""))
+      .sort();
+    const seeded = SECTIONS.map(([, s]) => s.slug).sort();
+    expect(seeded).toEqual(onDisk);
+  });
+
+  it("names each section once", () => {
+    const citations = SECTIONS.map(([citation]) => citation);
+    expect(new Set(citations).size).toBe(citations.length);
+  });
+});
 
 describe.each(SECTIONS)("%s", (citation, section) => {
   it("is a spoken-recall Activity in section mode, carrying its own clock", () => {
