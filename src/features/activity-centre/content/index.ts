@@ -18,6 +18,8 @@ import type {
 
 import conditionalRephrase from "./conditional-rephrase.json";
 import readRecallColour from "./read-recall-colour.json";
+import readRecallColourPt1S3 from "./read-recall-colour-pt1-s3.json";
+import readRecallColourPt21S3 from "./read-recall-colour-pt21-s3.json";
 import readRecallColourPt102S3 from "./read-recall-colour-pt102-s3.json";
 import readRecallColourPt105S2 from "./read-recall-colour-pt105-s2.json";
 import readRecallColourPt134S3 from "./read-recall-colour-pt134-s3.json";
@@ -71,6 +73,8 @@ export const SEED_ACTIVITIES: SeedActivity[] = [
   // clock, and they sit after the base Activity because they are the same drill
   // at full scale rather than a different skill. Ordered by PrepTest so the
   // list does not reshuffle when the next one is built.
+  readRecallColourPt1S3 as unknown as SeedActivity,
+  readRecallColourPt21S3 as unknown as SeedActivity,
   readRecallColourPt102S3 as unknown as SeedActivity,
   readRecallColourPt105S2 as unknown as SeedActivity,
   readRecallColourPt134S3 as unknown as SeedActivity,
@@ -104,7 +108,9 @@ export const ACTIVITY_LIBRARY_ORDER = [
   "dumb-it-down", // a paragraph
   "spot-the-callback", // a passage
   "read-recall-colour", // a stimulus, from memory
-  "read-recall-colour-pt102-s3", // a whole section, against the clock
+  "read-recall-colour-pt1-s3", // a whole section, against the clock
+  "read-recall-colour-pt21-s3",
+  "read-recall-colour-pt102-s3",
   "read-recall-colour-pt105-s2",
   "read-recall-colour-pt134-s3",
 ] as const;

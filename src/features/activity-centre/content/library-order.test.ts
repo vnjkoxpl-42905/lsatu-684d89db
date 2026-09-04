@@ -10,8 +10,14 @@ import {
 // used to be thrown away at query time in favour of created_at. These pin it.
 
 describe("the library order", () => {
-  it("lists all twelve Activities, including the one outside the seed pipeline", () => {
-    expect(ACTIVITY_LIBRARY_ORDER.length).toBe(12);
+  // Derived rather than a literal count. The literal was 12 and had to be
+  // edited every time a captured section was built, which makes adding content
+  // a test edit and teaches the wrong reflex. What this is actually pinning is
+  // that the order holds every seeded Activity plus the one made by hand, and
+  // that is exactly what the arithmetic says. The ORDER of the list is pinned
+  // literally below, because that one IS a teaching decision.
+  it("lists every seeded Activity plus the one outside the seed pipeline", () => {
+    expect(ACTIVITY_LIBRARY_ORDER.length).toBe(SEED_ACTIVITY_SLUGS.length + 1);
     expect(ACTIVITY_LIBRARY_ORDER).toContain("negation-station");
   });
 
@@ -45,6 +51,8 @@ describe("the library order", () => {
       // section run unbroken against the clock. They follow the Activity they
       // scale up rather than sorting among the scope-ordered ones, and they run
       // by PrepTest so the list does not reshuffle when the next is built.
+      "read-recall-colour-pt1-s3",
+      "read-recall-colour-pt21-s3",
       "read-recall-colour-pt102-s3",
       "read-recall-colour-pt105-s2",
       "read-recall-colour-pt134-s3",
@@ -81,7 +89,9 @@ describe("sorting a library page", () => {
       { slug: "read-recall-colour" },
       { slug: "read-recall-colour-pt134-s3" },
       { slug: "read-recall-colour-pt102-s3" },
+      { slug: "read-recall-colour-pt21-s3" },
       { slug: "read-recall-colour-pt105-s2" },
+      { slug: "read-recall-colour-pt1-s3" },
     ];
     expect(sortForLibrary(fromQuery).map((r) => r.slug)).toEqual([
       ...ACTIVITY_LIBRARY_ORDER,
