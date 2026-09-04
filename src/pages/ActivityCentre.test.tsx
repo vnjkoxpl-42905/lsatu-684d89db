@@ -114,3 +114,56 @@ describe("Activity Centre, as an admin", () => {
     expect(screen.getByText(/this is a read failing rather than an empty/)).toBeTruthy();
   });
 });
+
+/**
+ * One drill, one card, however many times she has run it.
+ *
+ * Starting a section builds an assignment of its own, so a student who had run
+ * three sections saw four Read, Recall, Colour cards: the door and one per run.
+ * It read as Joshua having assigned the same drill four times.
+ */
+describe("Read, Recall, Colour, after she has run some sections", () => {
+  const door = {
+    id: "door",
+    title: "Read, Recall, Colour",
+    subtitle: "A whole section, out loud, against the clock",
+    mode: "section-library",
+    item_format: "spoken-recall",
+    status: "assigned",
+    created_at: "2026-09-01T00:00:00Z",
+    completed_at: null,
+    item_count: 0,
+  };
+  const attempt = (id: string, section: string) => ({
+    ...door,
+    id,
+    mode: "section",
+    source_section: section,
+    status: "completed",
+    completed_at: "2026-09-03T00:00:00Z",
+  });
+
+  it("shows one card, not one per run", () => {
+    studentState.assignments = [
+      door,
+      attempt("r1", "PT134.S3"),
+      attempt("r2", "PT134.S3"),
+      attempt("r3", "PT102.S3"),
+    ];
+    renderPage();
+    expect(screen.getAllByText("Read, Recall, Colour")).toHaveLength(1);
+  });
+
+  it("still shows the door when she has never run a section", () => {
+    studentState.assignments = [door];
+    renderPage();
+    expect(screen.getByText("Read, Recall, Colour")).toBeInTheDocument();
+  });
+
+  it("does not empty the page when every row she has is an attempt", () => {
+    // Not the student's empty state: she has the drill, she has simply run it.
+    studentState.assignments = [door, attempt("r1", "PT134.S3")];
+    renderPage();
+    expect(screen.queryByText(/No activities assigned yet/i)).toBeNull();
+  });
+});

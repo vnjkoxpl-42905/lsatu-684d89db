@@ -35,11 +35,29 @@ export default function ActivityCentre() {
   const { assignments, loading, error } = useStudentActivities();
   const { is_admin } = useUserPermissions();
 
+  /**
+   * Her activities, which is not the same list as her assignment rows.
+   *
+   * Starting a section builds an assignment of its own -- it has to, because
+   * the row carries the Details her Coverage is scored against and cannot be
+   * written by the client (`start_section_attempt`). Listing those rows here
+   * turned one drill into a card per run: three sections done and Read, Recall,
+   * Colour appeared four times, as though Joshua had assigned it four times.
+   *
+   * An Attempt is not something she was assigned. It is a run of something she
+   * was assigned, and it already has a home on the door's section list, where
+   * it opens its own Report Card. The door is the card; the runs are inside it.
+   *
+   * Filtered here rather than in `listStudentAssignments`, because the door
+   * reads the same hook and needs exactly the rows this page is dropping.
+   */
   const ordered = useMemo(
     () =>
-      [...assignments].sort(
-        (a, b) => librarySortIndex(slugFromTitle(a.title)) - librarySortIndex(slugFromTitle(b.title)),
-      ),
+      assignments
+        .filter((a) => a.mode !== "section")
+        .sort(
+          (a, b) => librarySortIndex(slugFromTitle(a.title)) - librarySortIndex(slugFromTitle(b.title)),
+        ),
     [assignments],
   );
 
