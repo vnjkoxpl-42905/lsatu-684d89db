@@ -42,7 +42,10 @@ const grade: SectionGrade = {
   stimuli: [
     stimulus(),
     stimulus({ slug: "PT105_S2_Q2", percent: 100, carried: 12, total: 12, missed: [] }),
-    stimulus({ slug: "PT105_S2_Q3", percent: 64, carried: 7, total: 11, band: "thin", reciting: true }),
+    stimulus({ slug: "PT105_S2_Q3", percent: 64, carried: 7, total: 11, band: "thin" }),
+    // Kept apart from the thin one on purpose: a recital is not a worse score.
+    // It carried everything, and that is exactly what makes it a failure.
+    stimulus({ slug: "PT105_S2_Q4", percent: 100, carried: 12, total: 12, missed: [], reciting: true }),
   ],
   section: {
     accommodation: "standard",
@@ -50,7 +53,7 @@ const grade: SectionGrade = {
     total_seconds: 1380,
     within_goal: true,
     mean_coverage: 83,
-    stimuli_graded: 3,
+    stimuli_graded: 4,
     reciting_count: 1,
     listing_count: 0,
     uncoloured_count: 0,
@@ -91,7 +94,7 @@ describe("what the student sees", () => {
 
   it("tells her when she recited rather than retold", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
-    fireEvent.click(screen.getByText("Stimulus 3"));
+    fireEvent.click(screen.getByText("Stimulus 4"));
     // Scoped to the tip, not the summary line, which also mentions it.
     expect(
       screen.getByText(/Say it in your own words instead/),
@@ -113,6 +116,58 @@ describe("what the student sees", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
     // Joshua never types one, and a stray em-dash reads as machine-written.
     expect(document.body.textContent ?? "").not.toMatch(/[—–]/);
+  });
+});
+
+/*
+ * A recital that carried everything.
+ *
+ * In the audit's run, stimulus 3 was read out verbatim during The Recall, was
+ * correctly flagged, and still wore "At the standard, 20 of 20" in green. ADR
+ * 0018 says coverage reached by reciting is a failure, and the row said the
+ * opposite -- with the recital sentence buried inside the expanded half, which
+ * is the half she has to go looking for.
+ */
+describe("a stimulus she said back word for word", () => {
+  const recited: SectionGrade = {
+    ...grade,
+    stimuli: [
+      stimulus({ slug: "PT105_S2_Q1", percent: 100, carried: 20, total: 20, missed: [], reciting: true }),
+    ],
+  };
+
+  it("does not call it a success on the row she reads", () => {
+    render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
+    expect(screen.queryByText("At the standard")).toBeNull();
+  });
+
+  it("wears no success colour", () => {
+    const { container } = render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
+    const row = container.querySelector("ol li");
+    expect(row?.innerHTML).not.toContain("ac-emerald-strong");
+  });
+
+  it("names the recital on the collapsed row, not only inside it", () => {
+    render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
+    // Present before anything is expanded.
+    expect(screen.getByText(/said back word for word/i)).toBeInTheDocument();
+  });
+
+  it("still shows what it carried, because that reading is true", () => {
+    render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
+    expect(screen.getByText("20 of 20")).toBeInTheDocument();
+  });
+
+  it("does not congratulate it inside the row either", () => {
+    render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.queryByText("You carried every detail in this one.")).toBeNull();
+    expect(screen.getByText(/which is what reciting does/i)).toBeInTheDocument();
+  });
+
+  it("leaves an honest stimulus with its band", () => {
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
+    expect(screen.getAllByText("At the standard").length).toBeGreaterThan(0);
   });
 });
 
@@ -206,7 +261,8 @@ describe("the evidence behind the number", () => {
       />,
     );
     expect(screen.getByText("Understood")).toBeInTheDocument();
-    expect(screen.getByText("2 of 3")).toBeInTheDocument();
+    // Against every stimulus graded, not against the ones she gave a Read on.
+    expect(screen.getByText("2 of 4")).toBeInTheDocument();
   });
 
   it("says the goal was missed on its condition, not on the clock", () => {

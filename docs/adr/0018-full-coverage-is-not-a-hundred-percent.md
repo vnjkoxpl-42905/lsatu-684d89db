@@ -2,6 +2,7 @@
 
 Date: 2026-09-01
 Status: accepted
+Amended: 2026-09-04 (see "Amendment: a recital wore the top band anyway")
 Extends [0012](./0012-the-recall-is-a-recap-from-memory.md).
 
 ## Context
@@ -204,3 +205,48 @@ question, not to stop asking.
 **Weight Details by importance so a proper noun counts less than a conclusion.**
 Rejected for now. It needs a per-Detail authored weight over 1,294 rows, and the
 band already absorbs the variance a weighting would model.
+
+---
+
+## Amendment: a recital wore the top band anyway
+
+Date: 2026-09-04
+
+"Reciting and Listing become load-bearing, not decorative" was written about the
+grader and only about the grader. It was true there: Reciting is graded in code,
+it fired, and the run that recited was flagged.
+
+It was not true on the card. In the 2026-09-03 trial, stimulus 3 was read out
+verbatim during The Recall, was correctly flagged, and its row still read
+**"At the standard, 20 of 20" in green**. The recital sentence lived inside the
+expanded row, which is the half a student has to go looking for. The band is the
+half she reads.
+
+So this ADR said coverage reached by reciting is a failure while the interface
+said it was the best possible result, on the same stimulus, at the same moment.
+
+### Decision
+
+A stimulus flagged Reciting does not wear a band. Its collapsed row says
+**"Said back word for word"** in neutral type, with no success colour and no
+success dot.
+
+Deliberately not a fifth band and deliberately not red. A recital is not a worse
+score -- it can carry every Detail, and that is the whole problem. The row is
+saying that the number beside it did not come from memory, which is a statement
+about the method rather than a mark against her.
+
+The count stays. "20 of 20" is a true reading and suppressing it would hide
+evidence rather than correct a claim; what changes is that nothing beside it
+calls that a success.
+
+### Consequences
+
+**The band and the tip can no longer disagree.** They were two renderings of one
+judgement and only one of them was reachable without a click.
+
+**This depends on the Reciting threshold being right**, which it was not: see
+[0022](./0022-reciting-is-a-share-not-a-streak.md)'s 2026-09-04 amendment, where
+four of Joshua's own 274 model runs were flagging. Suppressing the band on a
+false positive would have turned honest rows grey, so the threshold was fixed
+first.

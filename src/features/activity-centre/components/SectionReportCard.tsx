@@ -51,6 +51,26 @@ const BAND: Record<SectionStimulusGrade["band"], { label: string; cls: string; d
   "lost-it": { label: "Worth another read", cls: "text-[hsl(350_80%_45%)]", dot: "bg-[hsl(350_80%_55%)]" },
 };
 
+/**
+ * What a recited stimulus wears instead of a band.
+ *
+ * ADR 0018 says coverage reached by reciting is a failure, and the row said the
+ * opposite. In the audit's run, stimulus 3 was read out verbatim during The
+ * Recall, was correctly flagged, and still sat on the card as "At the standard,
+ * 20 of 20" in green. The recital sentence was inside the expanded row, which
+ * is the half she has to go looking for, and the band is the half she reads.
+ *
+ * Not a fifth band, because it is not a worse score -- a recital can carry every
+ * detail, and that is exactly the problem. It is the statement that the number
+ * beside it did not come from memory, so it is neutral rather than red: the
+ * point is the method, not a mark against her.
+ */
+const RECITED = {
+  label: "Said back word for word",
+  cls: "text-muted-foreground",
+  dot: "bg-muted-foreground",
+};
+
 function minutes(seconds: number): string {
   const m = Math.floor(seconds / 60);
   const s = Math.round(seconds % 60);
@@ -440,7 +460,8 @@ export function SectionReportCard({
 
       <ol className="mt-6 space-y-3">
         {stimuli.map((s, i) => {
-          const band = BAND[s.band];
+          // A recital does not get a success band, whatever it carried.
+          const band = s.reciting ? RECITED : BAND[s.band];
           const open = openStimulus === i;
           const clipWindow = s.recall_window_ms ?? s.window_ms;
           const key = `s${i}`;
@@ -471,8 +492,19 @@ export function SectionReportCard({
                       ours, not yours.
                     </p>
                   ) : s.missed.length === 0 ? (
-                    <p className="text-sm text-[hsl(var(--ac-emerald-strong))]">
-                      You carried every detail in this one.
+                    /* The same contradiction as the band, one level down. A
+                       recital carries everything by construction, so
+                       congratulating it in green sits directly above the
+                       sentence explaining that it does not count. */
+                    <p
+                      className={cn(
+                        "text-sm",
+                        s.reciting ? "text-muted-foreground" : "text-[hsl(var(--ac-emerald-strong))]",
+                      )}
+                    >
+                      {s.reciting
+                        ? "Every detail is in there, which is what reciting does rather than what you did."
+                        : "You carried every detail in this one."}
                     </p>
                   ) : (
                     <>
@@ -509,7 +541,9 @@ export function SectionReportCard({
                     <div className="mt-4 space-y-1 border-t border-border pt-3">
                       {s.reciting && (
                         <p className="text-sm text-muted-foreground">
-                          This one came back close to word for word. Say it in your own words instead.
+                          This one came back close to word for word, so the details on it were
+                          carried by the page rather than by you. Say it in your own words instead,
+                          even clumsily. That is the version that tells you what you actually have.
                         </p>
                       )}
                       {s.listing && (
