@@ -2,6 +2,7 @@
 
 Date: 2026-09-03
 Status: accepted
+Amended: 2026-09-04 (see "Amendment: the backstop was firing on the standard")
 Extends [0017](./0017-the-grader-hears-the-run-through-the-same-ear-as-the-standard.md).
 
 ## Context
@@ -98,3 +99,69 @@ population costs nothing.
 **Ask the judge to decide Reciting.** Rejected before this ADR and still
 rejected. It is a measurement, it is cheap, and a model's opinion of it would
 vary between two runs of the same recording.
+
+---
+
+## Amendment: the backstop was firing on the standard
+
+Date: 2026-09-04
+
+The decision above is unchanged in principle and was wrong in one detail: the
+run was written as an independent trigger, `run >= RECITING_RUN || bigram >=
+RECITING_BIGRAM`. An OR is not a backstop. It is a second, weaker test with a
+veto.
+
+The table this ADR rests on was measured on PT102.S3 alone, where Joshua's runs
+top out at 43. PT134.S3 contains a 46-word read, and the 2026-09-03 audit caught
+the consequence: his own stimulus in the standard flagged as "said back close to
+word for word" at run 46, share 0.258. A share of 0.258 says plainly that this
+was not a recital. The run arm overrode it.
+
+So the calibration was redone across every captured section rather than one.
+274 model runs, twelve sections, measured by the functions themselves from
+`model_runs.transcript_text` against each stimulus's own chunks, and kept as a
+fixture beside the test rather than transcribed into it.
+
+|                                        | longest run | bigram share  |
+| -------------------------------------- | ----------- | ------------- |
+| Joshua, reading aloud + recall (274)    | 9 – 60      | 0.066 – 0.462 |
+| a student, done correctly (21)          | 3 – 18      | 0.145 – 0.652 |
+| a deliberate recite (2)                 | 48, 57      | 0.952, 0.989  |
+
+The wider corpus makes the asymmetry stark rather than merely visible. The share
+still separates completely, with an empty band from 0.652 to 0.952 around the
+0.80 threshold. The run does not separate at all: it reaches **60** on an honest
+read, and **four of the 274 already sit at or above 45**, with shares of 0.279,
+0.353, 0.357 and 0.366. The old rule flagged the standard four times over.
+
+### Decision
+
+The run is now what this ADR's title always said it was:
+
+```
+reciting = bigram >= RECITING_BIGRAM || (run >= RECITING_RUN && bigram >= RECITING_RUN_SHARE)
+```
+
+`RECITING_RUN_SHARE = 0.70`, set above 0.652 — the highest share ever measured
+in either honest population, which is a student's rather than Joshua's. Between
+0.70 and 0.80 is the band the "Drop the longest run" alternative was rejected
+for: a long recited passage inside an otherwise original retelling, still caught,
+now without the veto.
+
+`RECITING_RUN` stays 45 and `RECITING_BIGRAM` stays 0.80. Neither was the defect.
+
+### Consequences
+
+**Zero of the 274 model runs flag, and both deliberate recites still do.** The
+assertion is derived from the fixture rather than written beside it, so a
+section captured later cannot quietly fall outside the population the numbers
+were chosen against.
+
+**Report Cards already graded keep the old verdict.** `reciting` is stored, not
+recomputed on read, so a run graded before this lands still shows the false
+positive until it is graded again.
+
+**A third calibration should not be needed, and the reason the first two were is
+now fixed.** Both previous attempts generalised from too little: the first from
+nothing measured, the second from one section. This one is every section there
+is, and the fixture makes the next one an append rather than a re-derivation.
