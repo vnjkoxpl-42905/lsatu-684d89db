@@ -56,6 +56,14 @@ look at again. A grade row written before this flag existed has no `complete` ke
 and is treated as complete: it is a real grade, and re-driving every one of them
 would be a re-grade, not a sweep.
 
+**A stored grade keeps the section's authored shape.** Every stimulus grade
+carries its `item_order`, and the section summary carries `stimuli_in_section`
+from the assignment snapshot. The Report Card labels a row with that stored
+position rather than its array index. If response rows are absent, it names the
+real saved count and the real section count, and says the missing rows are ours.
+Grades written before these fields existed keep their array-order labels and do
+not receive a missing-row claim that cannot be proved from their stored data.
+
 **`sweep-rrc-grading` is the guarantee behind the client's ask.** It re-drives
 sections that are ten minutes past finishing and have either no grade row or an
 incomplete one, three per run, oldest first. It is scheduled externally on the
@@ -82,6 +90,11 @@ polling for her Report Card never sees an empty one appear and then fill in.
 **A partial Report Card is now a state the screen can be handed.** Nothing reads
 `ungraded` yet: a Detail she did not carry and a Detail nobody asked about look
 identical in `missed` until it does. That is the next change, not this one.
+
+**A gap no longer renumbers the rows after it.** A section with response rows 1
+to 7 and 9 to 26 shows Stimulus 9 after Stimulus 7. Its headline says how many
+of the stored section were marked, and a separate notice says how many response
+rows did not save.
 
 **The sweeper shares `BOOKING_WORKER_SECRET`.** A deployment has one worker
 secret; splitting it is a rotation exercise, not a security one, and can happen

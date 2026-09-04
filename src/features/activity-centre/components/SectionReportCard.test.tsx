@@ -116,6 +116,61 @@ describe("what the student sees", () => {
   });
 });
 
+describe("a grade with missing response rows", () => {
+  const orders = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 19, 20, 21, 22, 24, 25, 26];
+  const positioned = orders.map((itemOrder) =>
+    stimulus({
+      slug: `PT134_S3_Q${itemOrder}`,
+      item_order: itemOrder,
+    } as Partial<SectionStimulusGrade> & { item_order: number }),
+  );
+  const partial = {
+    ...grade,
+    source_section: "PT134.S3",
+    stimuli: positioned,
+    section: {
+      ...grade.section,
+      stimuli_graded: positioned.length,
+      stimuli_in_section: 26,
+    },
+  } as SectionGrade;
+
+  it("keeps each saved row's true stimulus number after a gap", () => {
+    render(<SectionReportCard grade={partial} loadModelRuns={noModelRuns} />);
+    expect(screen.getByText("Stimulus 9")).toBeInTheDocument();
+    expect(screen.queryByText("Stimulus 8")).not.toBeInTheDocument();
+  });
+
+  it("names the four rows that did not save and what the headline counts", () => {
+    render(<SectionReportCard grade={partial} loadModelRuns={noModelRuns} />);
+    expect(screen.getByText(/4 of the 26 did not save/)).toBeInTheDocument();
+    expect(screen.getByText("22 of 26 stimuli, marked")).toBeInTheDocument();
+  });
+
+  it("shows no missing-row notice for a complete section", () => {
+    const complete = {
+      ...partial,
+      stimuli: Array.from({ length: 26 }, (_, i) =>
+        stimulus({
+          slug: `PT134_S3_Q${i + 1}`,
+          item_order: i + 1,
+        } as Partial<SectionStimulusGrade> & { item_order: number }),
+      ),
+      section: { ...partial.section, stimuli_graded: 26 },
+    } as SectionGrade;
+    render(<SectionReportCard grade={complete} loadModelRuns={noModelRuns} />);
+    expect(screen.queryByText(/did not save/)).not.toBeInTheDocument();
+  });
+
+  it("falls back to array order without inventing a missing-row notice for a legacy grade", () => {
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
+    expect(screen.getByText("Stimulus 1")).toBeInTheDocument();
+    expect(screen.getByText("Stimulus 2")).toBeInTheDocument();
+    expect(screen.getByText("Stimulus 3")).toBeInTheDocument();
+    expect(screen.queryByText(/did not save/)).not.toBeInTheDocument();
+  });
+});
+
 /**
  * What the grader measured and the card used to throw away.
  *

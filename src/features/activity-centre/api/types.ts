@@ -412,6 +412,8 @@ export const MAX_ATTEMPTS = 2;
  */
 export interface SectionStimulusGrade {
   slug: string;
+  /** Authored position in the section. Absent on grades written before ADR 0021's missing-row amendment. */
+  item_order?: number;
   carried: number;
   total: number;
   percent: number;
@@ -458,6 +460,8 @@ export interface SectionGradeSummary {
   within_goal: boolean;
   mean_coverage: number;
   stimuli_graded: number;
+  /** Number of stimuli in the assignment snapshot, including any whose response row never arrived. */
+  stimuli_in_section?: number;
   reciting_count: number;
   listing_count: number;
   uncoloured_count: number;
