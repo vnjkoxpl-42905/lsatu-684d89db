@@ -66,9 +66,26 @@ not receive a missing-row claim that cannot be proved from their stored data.
 
 **`sweep-rrc-grading` is the guarantee behind the client's ask.** It re-drives
 sections that are ten minutes past finishing and have either no grade row or an
-incomplete one, three per run, oldest first. It is scheduled externally on the
-pattern in `docs/ops/native-single-session-workers.md`. It writes no booking
-heartbeat: an ungraded section is not a booking outage.
+incomplete one, three per run, oldest first. It writes no booking heartbeat: an
+ungraded section is not a booking outage.
+
+> **Correction, 2026-09-04.** This paragraph said the sweeper "is scheduled
+> externally on the pattern in `docs/ops/native-single-session-workers.md`". It
+> is not scheduled anywhere, and was not when this was written. Checked three
+> ways: `cron.job` in the project's own Postgres holds four jobs, all of them
+> booking and calendar (`booking-gcal-reconcile`, `booking-gcal-sync-pull`,
+> `booking-upload-cleanup`, and a disabled `gcal-sync-pull-every-5-min`); the
+> 2026-09-03 audit found only three paused transcript jobs in Cloud Scheduler
+> and no launchd agent on Joshua's machine. The doc that paragraph pointed at
+> is a specification of what SHOULD be installed, headed "Install authenticated
+> scheduler calls outside the migration", and nothing installed them.
+>
+> So the guarantee in the sentence above does not exist. A section whose
+> client-side ask is lost is recovered by the 120-second retry or not at all,
+> and since 2026-09-04 by ADR 0028's row recovery on the next entry, which
+> covers a different failure and not this one. Scheduling it is one `cron.schedule`
+> away and needs a decision about where the worker secret lives, so it is
+> Joshua's to make rather than something to do quietly.
 
 **The grader accepts the service role key as a trusted caller.** A sweep has no
 user to present, and `getUser` returns no user for a service-role token, so the

@@ -22,7 +22,21 @@ require the existing Supabase function secrets. The outbox requires
 explicitly to `true` or `false`, plus its Stripe signing secret. Missing secrets
 produce a non-2xx response.
 
-Install authenticated scheduler calls outside the migration:
+Install authenticated scheduler calls outside the migration.
+
+> **Nothing below is installed as of 2026-09-04, and the table is a
+> specification rather than a description.** `cron.job` in this project holds
+> four jobs and all four are booking and calendar work; Cloud Scheduler holds
+> three paused transcript jobs; there is no launchd agent. In particular
+> `sweep-rrc-grading` has no scheduler at all, so the safety net ADR 0021
+> describes does not exist. Verified by reading `cron.job` directly. Anything
+> that says otherwise is describing this table rather than the deployment.
+>
+> Installing one is `cron.schedule` with a `net.http_post`, the shape the four
+> live jobs already use. It needs a decision about where the worker secret
+> lives first: the existing jobs carry a bearer token inline in the command
+> text, which the rotation section below is written against.
+
 
 | Worker | Suggested interval | Request |
 | --- | --- | --- |
