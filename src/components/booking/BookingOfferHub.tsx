@@ -65,6 +65,15 @@ export default function BookingOfferHub({
   // including an intentionally empty one. Never synthesize defaults here:
   // doing so would re-enable disabled offers or override a retained Cal URL.
   const resolvedOffers = offers;
+  // Prices come straight from the live checkout links so the student sees the
+  // cost before clicking instead of having to ask.
+  const priceFor = (offer: BookingOffer) => {
+    if (offer.credits === 5) return "$200 · $40/hr";
+    if (offer.credits === 10) return "$350 · $35/hr";
+    if (offer.id === "single-session" || offer.id === "single-session-native") return "$45/hr";
+    return null;
+  };
+
   const labelFor = (id: string | null) => {
     if (id === "single-session") return "Single session";
     return resolvedOffers.find((offer) => offer.id === id)?.label ?? "Booking";
@@ -138,11 +147,16 @@ export default function BookingOfferHub({
                     : "border-t border-border p-5 @[40rem]:border-l @[40rem]:border-t-0")
               }
             >
-              <div className="flex items-center gap-2 text-sm font-semibold">
+              <div className="flex flex-wrap items-center gap-2 text-sm font-semibold">
                 {isSingle
                   ? <CalendarDays className={demoted ? "h-4 w-4 text-muted-foreground" : "h-4 w-4 text-primary"} />
                   : <PackagePlus className={demoted ? "h-4 w-4 text-muted-foreground" : "h-4 w-4 text-primary"} />}
                 {offer.label}
+                {priceFor(offer) ? (
+                  <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                    {priceFor(offer)}
+                  </span>
+                ) : null}
               </div>
               {demoted ? null : (
                 <p className="mt-2 text-xs leading-5 text-muted-foreground">
@@ -159,11 +173,17 @@ export default function BookingOfferHub({
                 {isNative ? <Link to={offer.url} onClick={() => logOfferClick(offer.id)}>
                   <CalendarDays className="mr-1.5 h-4 w-4" />
                   Book one session
-                </Link> : <a href={offer.url} onClick={() => logOfferClick(offer.id)}>
+                </Link> : <a
+                  href={offer.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => logOfferClick(offer.id)}
+                >
                   <ExternalLink className="mr-1.5 h-4 w-4" />
-                  {isSingle ? "Book one session" : `Buy ${offer.label}`}
+                  {isSingle ? "Book and pay for one session" : `Buy ${offer.label}`}
                 </a>}
               </Button>
+
             </div>
           );
         })}
