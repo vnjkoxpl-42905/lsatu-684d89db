@@ -4,6 +4,13 @@ import pt105 from "../content/read-recall-colour-pt105-s2.json";
 import pt134 from "../content/read-recall-colour-pt134-s3.json";
 import { SectionRunner } from "./SectionRunner";
 import { isRunLive } from "@/lib/liveRun";
+import { stashRows } from "./recordingBackup";
+
+/** The local stash a row that never landed goes into, so it has a way back. */
+vi.mock("./recordingBackup", async (importOriginal) => {
+  const real = await importOriginal<typeof import("./recordingBackup")>();
+  return { ...real, stashRows: vi.fn(() => Promise.resolve()) };
+});
 
 // The section runner, driven the way she drives it: one key, pressed twice per
 // stimulus, start to finish.
@@ -536,6 +543,37 @@ describe("writing it down", () => {
     await vi.waitFor(() => expect(screen.getByText(/1 answer did not reach us/i)).toBeInTheDocument());
     expect(upsert.mock.calls.every(([rows]) => rows.length === 1)).toBe(true);
     expect(stored.has(TWO.items[1].order)).toBe(true);
+  });
+
+  it("stashes exactly the rows that did not land, and tells her they will be sent", async () => {
+    // Without this the rows die with the component and ADR 0027 refuses the run
+    // for ever, including a recording that uploaded perfectly.
+    const stash = vi.mocked(stashRows);
+    stash.mockClear();
+    upsert.mockImplementation((rows: Row[]) =>
+      Promise.resolve({ error: Number(rows[0]?.item_order) === TWO.items[0].order ? { message: "down" } : null }),
+    );
+    render(
+      <SectionRunner
+        assignmentId="a1"
+        studentId="s1"
+        items={TWO.items}
+        sourceSection={TWO.source_section}
+        timeGoalMinutes={TWO.time_goal_minutes}
+        readySeconds={0}
+      />,
+    );
+    await act(async () => {});
+    finish(2);
+
+    await vi.waitFor(() => expect(stash).toHaveBeenCalled());
+    const stashed = stash.mock.calls.at(-1)![0];
+    expect(stashed).toHaveLength(1);
+    expect(stashed[0].itemOrder).toBe(TWO.items[0].order);
+    expect(stashed[0].assignmentId).toBe("a1");
+    expect(stashed[0].studentId).toBe("s1");
+    // The sentence stops being a dead end.
+    expect(screen.getByText(/Open this section again from the same browser/i)).toBeInTheDocument();
   });
 
   it("names an unsaved answer at the end, but says nothing on a clean run", async () => {

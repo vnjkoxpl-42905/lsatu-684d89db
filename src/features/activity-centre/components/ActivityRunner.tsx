@@ -23,7 +23,7 @@ import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
 import { SectionRunner } from "../recall/SectionRunner";
-import { recoverPendingRecordings } from "../recall/recoverRecordings";
+import { recoverPendingRecordings, recoverPendingRows } from "../recall/recoverRecordings";
 import type { Accommodation } from "../recall/section";
 import { SectionLibraryPanel } from "./SectionLibraryPanel";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
@@ -320,6 +320,10 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
        */
       if (assignment.item_format === "spoken-recall" && !readOnly) {
         await recoverPendingRecordings(assignment.student_id);
+        // And the answers of a run whose rows never landed, which without this
+        // made the recording above unmarkable for ever. After the upload, so
+        // the grade the last row asks for has audio to be about.
+        await recoverPendingRows(assignment.student_id);
         // Before the runner mounts, so her own goal is the one on screen from
         // the first frame rather than 25 minutes that changes a moment later.
         setAccommodation(await getAccommodation(assignment.student_id));
@@ -648,6 +652,26 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           format={assignment.item_format}
           mode={assignment.mode}
           resumeAt={index + 1}
+          /*
+           * The goal is per accommodation, so there is no single "target" on the
+           * assignment to read. A student on 70% extra time is not slow when she
+           * takes longer, and showing her the standard clock would print a target
+           * she is not being measured against.
+           */
+          timeGoalMinutes={assignment.time_goal_minutes?.[accommodation] ?? null}
+          sourceSection={assignment.source_section}
+          studentId={assignment.student_id}
+          /*
+           * Two gates, and they guard different things.
+           *
+           * `showHistory` keeps the block off a page Joshua is reading over a
+           * student's shoulder, where "your last three runs" is not addressed to
+           * the person looking at it. The `studentId` above is the one that makes
+           * the READ safe: the admin SELECT policy on the grades table returns
+           * every student's rows, so a flag here could never have been enough on
+           * its own.
+           */
+          showHistory={!practice && !viewingSomeoneElse}
           onStart={handleStart}
           onExit={handleLeave}
         />
@@ -748,7 +772,13 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             studentId={user.id}
             items={assignment.items}
             sourceSection={assignment.source_section}
-            timeGoalMinutes={assignment.time_goal_minutes}
+            /*
+           * The goal is per accommodation, so there is no single "target" on the
+           * assignment to read. A student on 70% extra time is not slow when she
+           * takes longer, and showing her the standard clock would print a target
+           * she is not being measured against.
+           */
+          timeGoalMinutes={assignment.time_goal_minutes?.[accommodation] ?? null}
             accommodation={accommodation}
             onComplete={() => setPhase("report")}
             onExit={handleBackToIntro}

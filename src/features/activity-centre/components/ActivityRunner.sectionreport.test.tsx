@@ -40,6 +40,7 @@ const listItemResponses = vi.fn().mockResolvedValue([]);
 const getSectionGrade = vi.fn().mockResolvedValue(null);
 const getAccommodation = vi.fn().mockResolvedValue("standard");
 const requestSectionGrading = vi.fn().mockResolvedValue(undefined);
+const readMyRecentSectionGrades = vi.fn().mockResolvedValue({ runs: [], failed: false });
 
 vi.mock("../api/activitiesClient", () => ({
   assignmentBelongsToAnotherAccount: vi.fn().mockResolvedValue(false),
@@ -51,6 +52,9 @@ vi.mock("../api/activitiesClient", () => ({
   getSectionGrade: (...a: unknown[]) => getSectionGrade(...a),
   getAccommodation: (...a: unknown[]) => getAccommodation(...a),
   requestSectionGrading: (...a: unknown[]) => requestSectionGrading(...a),
+  // The section's front door reads her recent runs. This file is about what the
+  // runner hands the section runner, so the read is stubbed to "no history".
+  readMyRecentSectionGrades: (...a: unknown[]) => readMyRecentSectionGrades(...a),
 }));
 
 /*
@@ -69,6 +73,7 @@ vi.mock("../recall/SectionRunner", () => ({
 }));
 vi.mock("../recall/recoverRecordings", () => ({
   recoverPendingRecordings: vi.fn().mockResolvedValue(0),
+  recoverPendingRows: vi.fn().mockResolvedValue(0),
 }));
 
 const STIMULI = 3;
@@ -126,10 +131,13 @@ function sectionRows(): ActivityItemResponse[] {
  * deliberate press, in a test exactly as in the product.
  */
 async function startTheSection() {
-  // The intro renders Start twice -- once in the page and once in the sticky
-  // dock that appears when the page one scrolls away. Either is the same
-  // action; take the first.
-  const [start] = await screen.findAllByRole("button", { name: /^start$/i });
+  // The section door labels its action "Start the section"; the editorial intro
+  // this replaced said "Start" and rendered it twice, once in the page and once
+  // in a sticky dock. Matching both keeps the helper honest about either
+  // surface, and taking the first is the same action in both.
+  const [start] = await screen.findAllByRole("button", {
+    name: /^start( the section)?$/i,
+  });
   fireEvent.click(start);
 }
 
@@ -262,7 +270,7 @@ describe("a section never resumes", () => {
   it("opens an in-progress section on its briefing, not in a live run", async () => {
     activityState.assignment = makeSectionAssignment("in_progress");
     renderRouted();
-    expect((await screen.findAllByRole("button", { name: /^start$/i })).length).toBeGreaterThan(0);
+    expect((await screen.findAllByRole("button", { name: /^start( the section)?$/i })).length).toBeGreaterThan(0);
     expect(sectionRunnerProps).not.toHaveBeenCalled();
   });
 
@@ -273,7 +281,7 @@ describe("a section never resumes", () => {
     activityState.assignment = makeSectionAssignment("in_progress");
     listItemResponses.mockResolvedValue(sectionRows().slice(0, 1));
     renderRouted();
-    expect((await screen.findAllByRole("button", { name: /^start$/i })).length).toBeGreaterThan(0);
+    expect((await screen.findAllByRole("button", { name: /^start( the section)?$/i })).length).toBeGreaterThan(0);
     expect(sectionRunnerProps).not.toHaveBeenCalled();
   });
 

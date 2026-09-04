@@ -5,7 +5,7 @@ import { completeSectionRun, requestSectionGrading } from "../api/activitiesClie
 import { SectionStage } from "./SectionStage";
 import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
 import { sliceTranscript, useSectionTranscript } from "./useSectionTranscript";
-import { beginBackup, discard, putChunk } from "./recordingBackup";
+import { beginBackup, discard, putChunk, stashRows } from "./recordingBackup";
 import { beginLiveRun } from "@/lib/liveRun";
 import {
   advanceCursor,
@@ -803,6 +803,32 @@ function RunBody({
         if (missingRows > 0) {
           console.error("[rrc] response rows still missing after the backstop", { missing: missingRows });
           if (!cancelled) setUnsavedCount(missingRows);
+          /*
+           * The way back, which these rows did not have.
+           *
+           * They live in `records.current`, in memory, in a component about to
+           * unmount. She leaves this screen and the answers are gone, and
+           * ADR 0027 then refuses the whole run for ever -- including the
+           * recording, which may have uploaded perfectly. So the ones that did
+           * not land go where the recording's own backup goes, and the next
+           * entry into any section sends them.
+           *
+           * Not conditional on the upload. The common shape of this failure is
+           * exactly the run whose audio is safely away and whose answers are
+           * not.
+           */
+          await stashRows(
+            rows
+              .map((row, i) => ({ row, ok: stored[i] }))
+              .filter((r) => !r.ok)
+              .map(({ row }) => ({
+                runId: runId.current,
+                assignmentId,
+                studentId,
+                itemOrder: row.item_order,
+                row,
+              })),
+          );
         }
       }
 
@@ -847,7 +873,7 @@ function RunBody({
     return () => {
       cancelled = true;
     };
-  }, [assignmentId, audioPath, buildRow, done, onComplete, persistRow, seconds, stopRecording, transcript]);
+  }, [assignmentId, audioPath, buildRow, done, onComplete, persistRow, seconds, stopRecording, studentId, transcript]);
 
   const stimulus = run.stimuli[cursor.item];
 
@@ -871,11 +897,11 @@ function RunBody({
                 Section finished.
                 <span>
                   {unsavedCount > 0 && uploadFailed
-                    ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us. Your recording did not reach us either, so it is still on this computer. Open this section again from the same browser and the recording will be sent.`
+                    ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us. Your recording did not reach us either, so both are still on this computer. Open this section again from the same browser and they will be sent, and then marked.`
                     : unsavedCount > 0 && recordingStored
-                      ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us, but the recording did.`
+                      ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us, but the recording did. Open this section again from the same browser and they will be sent, and then marked.`
                       : unsavedCount > 0
-                        ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us. There is no recording available to mark instead.`
+                        ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us, and there was no recording of this run to mark instead. Open this section again from the same browser and the answers will be sent.`
                         : uploadFailed
                     ? `${run.stimuli.length} stimuli, end to end. Your recording did not reach us, so it is still on this computer. Open this section again from the same browser and it will be sent, and then marked.`
                     : `${run.stimuli.length} stimuli, end to end. Your Report Card comes next.`}

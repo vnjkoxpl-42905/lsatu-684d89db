@@ -47,9 +47,10 @@ import { openDB, type IDBPDatabase } from "idb";
  */
 
 const DB_NAME = "ac-recording-backup";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const CHUNKS = "chunks";
 const RUNS = "runs";
+const ROWS = "rows";
 
 /** Anything older than this was abandoned long ago and is only taking up room. */
 export const STALE_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
@@ -138,6 +139,10 @@ function db(): Promise<IDBPDatabase> {
         }
         if (!instance.objectStoreNames.contains(CHUNKS)) {
           const store = instance.createObjectStore(CHUNKS, { keyPath: "key" });
+          store.createIndex("runId", "runId");
+        }
+        if (!instance.objectStoreNames.contains(ROWS)) {
+          const store = instance.createObjectStore(ROWS, { keyPath: "key" });
           store.createIndex("runId", "runId");
         }
       },
@@ -260,6 +265,98 @@ export async function discard(runId: string): Promise<void> {
   } catch (e) {
     console.error("[rrc] could not clear a local recording backup", e);
   }
+}
+
+/**
+ * A response row that never reached the database, kept where the recording is.
+ *
+ * The other half of the same failure. A recording that does not upload is
+ * stashed above and re-sent on the next entry; a row that does not insert had
+ * nowhere to go at all. It lived in the component's memory, she left the
+ * finishing screen, and the answers were gone -- while the recording, which may
+ * have uploaded perfectly, could then be marked by nothing, ever.
+ */
+export interface StashedRow {
+  key: string;
+  runId: string;
+  assignmentId: string;
+  studentId: string;
+  /** `item_order`, which is what makes the key unique within a run. */
+  itemOrder: number;
+  /** When it was stashed, which is what bounds it. */
+  stashedAt: number;
+  /** The row as `buildRow` made it, ready to be re-sent unchanged. */
+  row: unknown;
+}
+
+/**
+ * Keep the rows a run could not save.
+ *
+ * Deliberately its own store rather than a field on the run record, because
+ * the two have different lifetimes and the obvious shared one is wrong. A run
+ * whose recording uploads is discarded the moment it lands -- that is the
+ * point of `discard` -- and the missing-row case is very often exactly that
+ * run: the audio is safely away and the answers are not. Hung off the run
+ * record, the rows would be deleted by the success of the upload.
+ *
+ * So `discard` does not touch them and `purgeStaleRows` bounds them by their
+ * own age instead, on the same seven days.
+ */
+export async function stashRows(rows: Omit<StashedRow, "key" | "stashedAt">[], now = Date.now()): Promise<void> {
+  if (!available() || !rows.length) return;
+  try {
+    const instance = await db();
+    const tx = instance.transaction(ROWS, "readwrite");
+    await Promise.all([
+      ...rows.map((r) =>
+        tx.objectStore(ROWS).put({
+          ...r,
+          key: `${r.runId}:${String(r.itemOrder).padStart(4, "0")}`,
+          stashedAt: now,
+        } satisfies StashedRow),
+      ),
+      tx.done,
+    ]);
+  } catch (e) {
+    // She has finished twenty unbroken minutes. A stash that cannot be written
+    // leaves the run exactly as ungradable as it already was, and no worse.
+    console.error("[rrc] could not keep a local copy of the unsaved answers", e);
+  }
+}
+
+/** Every row still waiting to be sent, across every run. */
+export async function listStashedRows(): Promise<StashedRow[]> {
+  if (!available()) return [];
+  try {
+    return (await (await db()).getAll(ROWS)) as StashedRow[];
+  } catch {
+    return [];
+  }
+}
+
+/** Forget one row: it is safely stored. */
+export async function discardRow(key: string): Promise<void> {
+  if (!available()) return;
+  try {
+    await (await db()).delete(ROWS, key);
+  } catch (e) {
+    console.error("[rrc] could not clear a recovered answer", e);
+  }
+}
+
+/**
+ * Drop stashed rows nobody is coming back for.
+ *
+ * The rows outlive their run record by design, so `purgeStale` above cannot
+ * bound them and this does it on the same seven days. A row is a few kilobytes
+ * where a recording is fifteen megabytes, which is why this is a separate
+ * sweep rather than a reason to keep the run record alive.
+ */
+export async function purgeStaleRows(now = Date.now(), maxAgeMs = STALE_AFTER_MS): Promise<number> {
+  const rows = await listStashedRows();
+  const stale = rows.filter((r) => now - r.stashedAt > maxAgeMs);
+  for (const row of stale) await discardRow(row.key);
+  return stale.length;
 }
 
 /**
