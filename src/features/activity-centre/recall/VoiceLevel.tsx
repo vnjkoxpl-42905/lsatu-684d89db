@@ -17,9 +17,9 @@ import type { SectionPhase } from "./section";
  * "how am I doing". Deliberately not a level meter with a target: nothing here
  * may look like a score, because nothing is judged until the section ends.
  *
- * **The fault.** If a whole Recall passes with the input never leaving the noise
- * floor, that is said out loud once, at the boundary, while there is still a
- * section left to save.
+ * **The fault.** If the input never leaves the noise floor across a whole
+ * stimulus, that is said out loud at the boundary, while there is still a
+ * section left to save -- and unsaid the moment anything is heard again.
  *
  * Nothing here re-renders the runner. The bar is written to as a DOM node
  * inside an animation frame, because a component that set state at 60Hz would
@@ -38,12 +38,29 @@ import type { SectionPhase } from "./section";
 const NOISE_FLOOR = 0.004;
 
 /**
- * How long a Recall has to run before its silence means anything.
+ * How long a phase has to run before its silence means anything.
  *
  * A Recall she ends in three seconds carries no evidence either way, and
- * accusing the hardware on that is how a warning stops being believed.
+ * accusing the hardware on that is how a warning stops being believed. A window
+ * shorter than this counts neither for the fault nor against it.
  */
-const MIN_RECALL_MS = 8000;
+const MIN_WINDOW_MS = 8000;
+
+/**
+ * Consecutive silent windows before the fault is raised.
+ *
+ * Both halves of a stimulus are spoken -- "Read it. Say it back and colour it in
+ * as you go", then "Say the whole argument back from memory" -- so a dead input
+ * is silent through every window there is. A skip is silent through exactly
+ * one: she had nothing for that Recall, and then she reads the next stimulus
+ * aloud like all the others.
+ *
+ * One window was therefore the wrong unit, and it accused the hardware on the
+ * most ordinary thing a student does. Two consecutive is the shortest run a skip
+ * cannot produce, and it costs a genuinely dead microphone one further stimulus
+ * before it is named.
+ */
+const SILENT_WINDOWS = 2;
 
 /** Full deflection. Chosen so ordinary speech uses most of the bar. */
 const FULL_SCALE = 0.15;
@@ -53,21 +70,29 @@ export interface VoiceLevelProps {
   getStream: () => MediaStream | null;
   phase: SectionPhase;
   /**
-   * A whole Recall spent at the noise floor. Called at the boundary, at most
-   * once per run: a fault repeated every stimulus becomes wallpaper.
+   * Whether nothing is reaching the microphone, called only when the answer
+   * changes.
+   *
+   * It used to be a one-way announcement, fired once and never taken back, and
+   * the runner had no setter that could clear it. One deliberate skip therefore
+   * told a student her hardware was broken, and went on telling her for the
+   * remaining twenty-five stimuli and four minutes of clearly heard speech.
    */
-  onSilentRecall?: () => void;
+  onDeadInput?: (dead: boolean) => void;
 }
 
-export function VoiceLevel({ getStream, phase, onSilentRecall }: VoiceLevelProps) {
+export function VoiceLevel({ getStream, phase, onDeadInput }: VoiceLevelProps) {
   const bar = useRef<HTMLSpanElement>(null);
   const level = useRef(0);
-  /** The loudest thing heard since the current Recall began. */
+  /** The loudest thing heard since the current phase began. */
   const peak = useRef(0);
-  const recallStartedAt = useRef<number | null>(null);
-  const reported = useRef(false);
-  const onSilent = useRef(onSilentRecall);
-  onSilent.current = onSilentRecall;
+  const windowStartedAt = useRef<number | null>(null);
+  /** Consecutive windows that ran long enough to count and carried nothing. */
+  const silentWindows = useRef(0);
+  /** What the runner has been told, so it is told only when that changes. */
+  const dead = useRef(false);
+  const onDead = useRef(onDeadInput);
+  onDead.current = onDeadInput;
 
   /*
    * One analyser for the life of the run.
@@ -110,6 +135,18 @@ export function VoiceLevel({ getStream, phase, onSilentRecall }: VoiceLevelProps
         for (let i = 0; i < samples.length; i++) sum += samples[i] * samples[i];
         const rms = Math.sqrt(sum / samples.length);
         if (rms > peak.current) peak.current = rms;
+        /*
+         * Recovery is immediate, and deliberately not deferred to the next
+         * boundary like the fault is. The fault needs a whole window to be sure;
+         * being heard again needs one frame, and a warning that outlives the
+         * condition it describes is the thing being fixed. Guarded on `dead` so
+         * this is a transition rather than a call at 60Hz.
+         */
+        if (rms >= NOISE_FLOOR && dead.current) {
+          dead.current = false;
+          silentWindows.current = 0;
+          onDead.current?.(false);
+        }
         // Rises fast and falls slowly, so the bar tracks speech rather than
         // flickering on every syllable boundary.
         level.current = rms > level.current ? rms : level.current * 0.88 + rms * 0.12;
@@ -130,25 +167,38 @@ export function VoiceLevel({ getStream, phase, onSilentRecall }: VoiceLevelProps
   }, [getStream]);
 
   /*
-   * The fault, decided at the boundary rather than during the Recall.
+   * The fault, decided at the boundary rather than during a phase.
    *
    * Judging it while she is mid-sentence would fire on a long pause. Judging it
-   * as the Recall closes uses the whole window, which is the only reading that
+   * as a phase closes uses the whole window, which is the only reading that
    * separates "she went quiet" from "nothing is arriving".
+   *
+   * Every boundary is judged now, not only the end of a Recall. The working
+   * phase is spoken too, so its silence is evidence of exactly the same kind,
+   * and using both is what lets a run of them mean something a single one
+   * cannot.
    */
   useEffect(() => {
-    if (phase === "recalling") {
-      peak.current = 0;
-      recallStartedAt.current = Date.now();
+    const started = windowStartedAt.current;
+    const loudest = peak.current;
+    peak.current = 0;
+    windowStartedAt.current = Date.now();
+
+    // The first run of this effect opens the first window; nothing has closed.
+    if (started === null) return;
+    // Too short to carry evidence either way, so it neither raises the fault
+    // nor clears the count towards it.
+    if (Date.now() - started < MIN_WINDOW_MS) return;
+
+    if (loudest >= NOISE_FLOOR) {
+      silentWindows.current = 0;
       return;
     }
-    const started = recallStartedAt.current;
-    recallStartedAt.current = null;
-    if (started === null || reported.current) return;
-    if (Date.now() - started < MIN_RECALL_MS) return;
-    if (peak.current >= NOISE_FLOOR) return;
-    reported.current = true;
-    onSilent.current?.();
+    silentWindows.current += 1;
+    if (silentWindows.current >= SILENT_WINDOWS && !dead.current) {
+      dead.current = true;
+      onDead.current?.(true);
+    }
   }, [phase]);
 
   return (

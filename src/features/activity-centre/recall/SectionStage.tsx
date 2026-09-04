@@ -64,8 +64,11 @@ export interface SectionStageProps {
    * which is what a run against a handheld recorder looks like.
    */
   getStream?: () => MediaStream | null;
-  /** A whole Recall spent at the noise floor. Raised at the boundary. */
-  onSilentRecall?: () => void;
+  /**
+   * Whether nothing is reaching the microphone. Raised at a boundary once the
+   * silence has run past one window, and withdrawn as soon as anything is heard.
+   */
+  onDeadInput?: (dead: boolean) => void;
   /**
    * Leaving is confirmed rather than done, because a half-finished section
    * writes nothing by design and the button is on screen for the whole run.
@@ -119,7 +122,7 @@ export function SectionStage({
   elapsedSeconds,
   goalMinutes,
   getStream,
-  onSilentRecall,
+  onDeadInput,
   confirmingExit,
   onConfirmExit,
   onCancelExit,
@@ -248,18 +251,24 @@ export function SectionStage({
             <p className="ac-section-instruction" role="status">
               {countdown !== null ? "Say something to check your microphone." : INSTRUCTION[phase]}
               {getStream ? (
-                <VoiceLevel getStream={getStream} phase={phase} onSilentRecall={onSilentRecall} />
+                <VoiceLevel getStream={getStream} phase={phase} onDeadInput={onDeadInput} />
               ) : null}
             </p>
-            {error ? (
-              <p className="ac-section-error" role="status">
-                {error}
-              </p>
-            ) : (
+            {/* The fault and the instruction, not the fault INSTEAD of it.
+                These were a ternary, so a microphone warning took away the only
+                thing on the screen telling her which key advances the drill --
+                on precisely the run where something has already gone wrong. The
+                warning leads, because it is the new information. */}
+            <div className="ac-section-foot-right">
+              {error ? (
+                <p className="ac-section-error" role="status">
+                  {error}
+                </p>
+              ) : null}
               <p className="ac-section-hint">
                 <kbd>space</kbd> {countdown !== null ? "in a moment" : KEY_DOES[phase]}
               </p>
-            )}
+            </div>
           </div>
         </div>
       </main>

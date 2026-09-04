@@ -213,8 +213,15 @@ function RunBody({
   /** Confirming the way out. Leaving throws the whole run away. */
   const [confirmingExit, setConfirmingExit] = useState(false);
   /**
-   * A whole Recall at the noise floor. Shown rather than logged: it is the one
+   * Nothing reaching the microphone. Shown rather than logged: it is the one
    * fault that otherwise ends in a perfect-looking run and a card of zeros.
+   *
+   * Two-way, and it was not. `setDeadInput(true)` was the only call in the
+   * tree, so the warning could be raised and never lowered: one skipped Recall
+   * put "Nothing is reaching the microphone" on the screen at 121s and left it
+   * there for the remaining twenty-five stimuli, through four minutes of speech
+   * the drill heard perfectly well. `VoiceLevel` now reports the state rather
+   * than announcing the fault, and this is the setter for both directions.
    */
   const [deadInput, setDeadInput] = useState(false);
   /** The recording did not reach the server. Said plainly at the end. */
@@ -886,7 +893,7 @@ function RunBody({
       elapsedSeconds={countdown === null ? elapsed : 0}
       goalMinutes={run.timeGoalMinutes[accommodation]}
       getStream={getStream}
-      onSilentRecall={() => setDeadInput(true)}
+      onDeadInput={setDeadInput}
       confirmingExit={confirmingExit}
       onConfirmExit={onExit}
       onCancelExit={() => setConfirmingExit(false)}

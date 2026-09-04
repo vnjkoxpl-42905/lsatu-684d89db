@@ -204,6 +204,17 @@
   font-weight: 500;
 }
 
+/* The footer's right-hand slot holds the fault and the key hint together, so
+   neither has to take the other's place. Wraps rather than crushes, because the
+   microphone warning is a whole sentence and the card is not always wide. */
+.ac-section-foot-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .ac-section-hint {
   margin: 0;
   color: #64748b;
