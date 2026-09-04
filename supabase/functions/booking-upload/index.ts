@@ -62,7 +62,9 @@ Deno.serve(async (req) => {
     > {
       if (slug) {
         const { data: pass } = await supabase.rpc("resolve_booking_link_full", { _slug: slug });
-        if (!pass) return json({ error: "invalid_link" }, 404);
+        // A non-resolving slug comes back as an all-NULL composite, which is
+        // truthy over PostgREST. Check the id, not the object.
+        if (!pass?.id) return json({ error: "invalid_link" }, 404);
         return { pass, mode: "slug", userId: null };
       }
       const authHeader = req.headers.get("Authorization") || "";

@@ -99,7 +99,11 @@ Deno.serve(async (req) => {
 
     // Resolve identity from the slug (service-only full row).
     const { data: passRow } = await supabase.rpc("resolve_booking_link_full", { _slug: slug });
-    const pass: BookingPass | null = passRow ?? null;
+    // The resolver RETURNS booking_passes, so a non-resolving slug comes back as
+    // an all-NULL composite, not an empty result. Over PostgREST that is a
+    // truthy object, so `?? null` alone lets a phantom pass through and the
+    // redemptions lookup then filters uuid = 'null' and 500s. Require the id.
+    const pass: BookingPass | null = passRow?.id ? passRow : null;
 
     if (!pass) {
       // Count the miss; lock out after too many.
