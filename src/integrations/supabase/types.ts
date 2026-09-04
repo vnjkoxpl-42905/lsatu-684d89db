@@ -331,6 +331,53 @@ export type Database = {
           },
         ]
       }
+      activity_grade_disputes: {
+        Row: {
+          assignment_id: string
+          attempt_no: number
+          created_at: string
+          disputed_band: string | null
+          disputed_reason: string | null
+          id: string
+          note: string | null
+          source_section: string | null
+          stimulus_slug: string
+          student_id: string
+        }
+        Insert: {
+          assignment_id: string
+          attempt_no: number
+          created_at?: string
+          disputed_band?: string | null
+          disputed_reason?: string | null
+          id?: string
+          note?: string | null
+          source_section?: string | null
+          stimulus_slug: string
+          student_id: string
+        }
+        Update: {
+          assignment_id?: string
+          attempt_no?: number
+          created_at?: string
+          disputed_band?: string | null
+          disputed_reason?: string | null
+          id?: string
+          note?: string | null
+          source_section?: string | null
+          stimulus_slug?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_grade_disputes_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "activity_assignments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       activity_item_responses: {
         Row: {
           assignment_id: string
@@ -6208,6 +6255,19 @@ export type Database = {
         Args: { conv_ids: string[] }
         Returns: {
           conversation_id: string
+        }[]
+      }
+      get_effective_booking_offers: {
+        Args: { _student_id: string }
+        Returns: {
+          credits: number
+          enabled: boolean
+          id: string
+          is_legacy_external_override: boolean
+          label: string
+          provider: string
+          provider_ref: string
+          url: string
         }[]
       }
       get_latest_messages: {
