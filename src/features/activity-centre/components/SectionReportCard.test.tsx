@@ -249,8 +249,19 @@ describe("the evidence behind the number", () => {
  * that the card asks, and offers nothing when the answer is nothing.
  */
 describe("hearing it done right", () => {
+  const WALKTHROUGH =
+    "> The allowable blood alcohol level should be cut in half.\n\n" +
+    "So he wants the limit halved, and the reason is social drinkers.";
   const model = () =>
-    Promise.resolve({ PT105_S2_Q1: { bucket: "model-runs", path: "PT105_S2_Q1.mp3" } });
+    Promise.resolve({
+      PT105_S2_Q1: {
+        walkthrough: WALKTHROUGH,
+        audio: { bucket: "model-runs", path: "PT105_S2_Q1.mp3" },
+      },
+    });
+  /** The nine authored references: written, and never recorded. */
+  const writtenOnly = () =>
+    Promise.resolve({ PT105_S2_Q1: { walkthrough: WALKTHROUGH, audio: null } });
 
   it("offers the model run beside her own recording", async () => {
     render(
@@ -297,5 +308,45 @@ describe("hearing it done right", () => {
     fireEvent.click(screen.getByText("Stimulus 1"));
     expect(await screen.findByRole("button", { name: /hear it done right/i })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /hear it back/i })).not.toBeInTheDocument();
+  });
+
+  /*
+   * Written first, and this is the half that matters most.
+   *
+   * The recording was the deliverable for exactly as long as it took to watch
+   * somebody try to learn from one. She cannot skim it, search it, or sit with
+   * one line while she works out where her own recall lost a quantifier. The
+   * walkthrough is open on the card by default and the recording is the option.
+   */
+  it("shows the walkthrough without being asked, under her own words", async () => {
+    render(
+      <SectionReportCard
+        grade={{ ...grade, stimuli: [stimulus({ spoken: "x" })] }}
+        loadModelRuns={model}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(
+      await screen.findByText(/So he wants the limit halved/),
+    ).toBeInTheDocument();
+    // The verbatim read is rendered as its own line, with the marker stripped.
+    expect(
+      screen.getByText("The allowable blood alcohol level should be cut in half."),
+    ).toBeInTheDocument();
+  });
+
+  it("still teaches when the stimulus was never recorded", async () => {
+    // Nine of the built stimuli have no recording and never will. Under the old
+    // shape the card dropped any run without audio, so those nine could offer
+    // her nothing at all.
+    render(
+      <SectionReportCard
+        grade={{ ...grade, stimuli: [stimulus({ spoken: "x" })] }}
+        loadModelRuns={writtenOnly}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(await screen.findByText(/So he wants the limit halved/)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /hear it done right/i })).not.toBeInTheDocument();
   });
 });

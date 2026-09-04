@@ -183,7 +183,7 @@ export async function beginBackup(run: BackupRun): Promise<void> {
   active.add(run.runId);
   if (!available()) return;
   try {
-    await (await db()).put(RUNS, { liveUntil: Date.now() + LIVE_GRACE_MS, ...run });
+    await (await db()).put(RUNS, { ...run, liveUntil: Date.now() + LIVE_GRACE_MS });
   } catch (e) {
     console.error("[rrc] could not open the local recording backup", e);
   }

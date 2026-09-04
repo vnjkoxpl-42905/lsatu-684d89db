@@ -1,6 +1,13 @@
 import "fake-indexeddb/auto";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { beginBackup, discard, listPendingRuns, putChunk, type BackupRun } from "./recordingBackup";
+import {
+  beginBackup,
+  discard,
+  listPendingRuns,
+  LIVE_GRACE_MS,
+  putChunk,
+  type BackupRun,
+} from "./recordingBackup";
 
 /**
  * Recovery, in a tab that is not the one recording.
@@ -36,6 +43,7 @@ const RUN: BackupRun = {
 };
 
 beforeEach(async () => {
+  vi.restoreAllMocks();
   upload.mockClear();
   for (const run of await listPendingRuns()) await discard(run.runId);
 });
@@ -54,14 +62,13 @@ describe("recovery from a second tab", () => {
   });
 
   it("still uploads a run whose tab has gone quiet", async () => {
-    await beginBackup({ ...RUN, runId: "run-dead", startedAt: Date.now() - 3 * 60 * 60 * 1000 });
+    await beginBackup({ ...RUN, runId: "run-dead" });
     await putChunk("run-dead", 0, new Blob(["header"]));
-    // Silence for well past the grace: the tab crashed.
-    const runs = await listPendingRuns();
-    const dead = runs.find((r) => r.runId === "run-dead")!;
-    dead.liveUntil = Date.now() - 1;
-    // Write the aged marker back the way a stale record would sit on disk.
-    await beginBackup(dead);
+    // Silence for well past the grace: the tab crashed. Age the clock rather
+    // than writing a stale marker back, because announcing a run is itself a
+    // claim that it is live -- `beginBackup` refreshes the heartbeat by design.
+    const now = Date.now();
+    vi.spyOn(Date, "now").mockReturnValue(now + LIVE_GRACE_MS + 1000);
 
     const recovered = await recoverPendingRecordings("s1");
 

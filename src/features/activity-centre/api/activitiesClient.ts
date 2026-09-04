@@ -504,9 +504,27 @@ export async function signSectionRecording(
  * is the ordinary answer for a section nobody has finished, and the Report Card
  * simply does not offer the button.
  */
+export type ModelRun = {
+  /** The run as a readable document. Present for every stimulus in a built section. */
+  walkthrough: string | null;
+  /** The recording, when there is one. Nine of the built stimuli were never recorded. */
+  audio: { bucket: string; path: string } | null;
+};
+
+/**
+ * The model runs for a section, keyed by stimulus slug.
+ *
+ * Written-first. This used to return `{bucket, path}` and drop any row without
+ * both, which encoded "a model run is a recording" one layer above the schema
+ * that said the same thing. It meant the nine authored references were silently
+ * invisible, and that a student on a slow connection got nothing rather than the
+ * text of the same run.
+ *
+ * A row survives here if it can offer her either one.
+ */
 export async function listModelRuns(
   sourceSection: string,
-): Promise<Record<string, { bucket: string; path: string }>> {
+): Promise<Record<string, ModelRun>> {
   const table = supabase.from("model_runs" as never) as unknown as {
     select: (columns: string) => {
       eq: (
@@ -516,20 +534,35 @@ export async function listModelRuns(
     };
   };
   const { data, error } = await table
-    .select("slug, audio_bucket, audio_path")
+    .select("slug, audio_bucket, audio_path, walkthrough_md")
     .eq("source_section", sourceSection);
   if (error) {
     // A table that is not there yet, or a policy that says no. Neither is worth
-    // failing a Report Card over.
+    // failing a Report Card over. `walkthrough_md` is covered by the same
+    // unknown-column branch, so a deploy that runs ahead of the migration
+    // degrades to no model runs rather than to a broken card.
     if (isUnknownColumn(error) || error.code === "42P01") return {};
     console.error("[rrc] could not load the model runs", error);
     return {};
   }
-  const rows = (data as { slug: string; audio_bucket: string; audio_path: string }[] | null) ?? [];
+  const rows =
+    (data as
+      | {
+          slug: string;
+          audio_bucket: string | null;
+          audio_path: string | null;
+          walkthrough_md: string | null;
+        }[]
+      | null) ?? [];
   return Object.fromEntries(
     rows
-      .filter((r) => r.audio_bucket && r.audio_path)
-      .map((r) => [r.slug, { bucket: r.audio_bucket, path: r.audio_path }]),
+      .map((r) => {
+        const audio =
+          r.audio_bucket && r.audio_path ? { bucket: r.audio_bucket, path: r.audio_path } : null;
+        const walkthrough = r.walkthrough_md?.trim() ? r.walkthrough_md : null;
+        return [r.slug, { walkthrough, audio }] as const;
+      })
+      .filter(([, run]) => run.walkthrough || run.audio),
   );
 }
 

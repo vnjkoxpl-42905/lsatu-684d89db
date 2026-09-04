@@ -5,7 +5,7 @@
     "Everything here is out loud. The whole section records in one take, and it never pauses.",
     "Read silently, about a sentence at a time. When you are not sure how much to take on, take less.",
     "Look away and say it back in your own words. Then react to it. Both out loud.",
-    "Keep going like that through the whole stimulus. You pick the pieces. Nothing on screen is counting them.",
+    "Keep going like that through the whole stimulus.",
     "Press space when you have got all of it. The stimulus vanishes and stays gone. Now say the whole argument back from memory, with every detail you can hold.",
     "Press space again and the next one loads. No breaks, no going back, all the way to the end."
   ],
@@ -72,7 +72,7 @@
       {
         "heading": "Twenty-five minutes, and what that number means.",
         "body": [
-          "The goal is twenty-five minutes for a whole section, and it only counts if every stimulus got recalled, coloured, and given a Read. Finishing early with four of them skipped is not finishing early. If you have extra time on test day, your goal scales with it.",
+          "The goal is twenty-five minutes for a whole section, and it only counts if every stimulus got recalled, coloured, and given The Recall. Finishing early with four of them skipped is not finishing early. If you have extra time on test day, your goal scales with it.",
           "The clock in the corner counts up, not down. It is there so you can pace a section, and it is deliberately not counting towards zero, because a number falling away in the corner of your eye produces exactly the skating read this drill exists to fix.",
           "It is not a race. It is the pace at which this stops being a study exercise and starts being how you read under a clock. Go slower while it is new. The speed shows up on its own once the method does."
         ]
@@ -81,7 +81,7 @@
     "closer": "One a day holds you steady. The second one is where you improve."
   },
   "coach": {
-    "drill": "a whole Logical Reasoning section run out loud, where the student reads each line of a stimulus, looks away, says it back from memory in her own words, reacts to it, and gives a Read of the whole stimulus before moving to the next one",
+    "drill": "a whole Logical Reasoning section run out loud, where the student reads each line of a stimulus, looks away, says it back from memory in her own words, reacts to it, and gives The Recall of the whole stimulus before moving to the next one",
     "rubric": [
       "Judge by meaning, never by wording. Her own words are required here, so a good recall will never match the line's phrasing. High overlap with the original is the failure, not the standard.",
       "Order is free. She is encouraged to deliver the ideas out of the order she read them in, and reordering must never cost her anything.",
@@ -89,7 +89,7 @@
       "A detail merely gestured at is not carried. Naming the topic is not the same as saying what was claimed about it.",
       "Numbers, names, dates, quantities and connecting words are each their own detail. Never treat one as carried because the sentence around it was.",
       "A reaction that could be pasted onto any other sentence does not count as a colour. Judge whether it engages this content, never whether it is correct or well put.",
-      "Score The Read against the captured key for that stimulus, not against a retelling. A different name for the same move is fine; missing the move is not.",
+      "Score The Recall against the captured key for that stimulus, not against a retelling. A different name for the same move is fine; missing the move is not.",
       "Silence during a silent read is correct and expected. Only silence inside a recall or a colour counts against her."
     ],
     "partial_rule": "Mark 'partial' when the retelling is real but at least one detail went missing, which is the drill's ordinary state. Mark 'incorrect' only when the response is a gist or a topic label rather than a retelling."

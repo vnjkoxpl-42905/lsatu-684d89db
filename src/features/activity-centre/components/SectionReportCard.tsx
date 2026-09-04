@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { bandFor } from "../recall/grading";
 import { listModelRuns, signSectionRecording } from "../api/activitiesClient";
+import type { ModelRun } from "../api/activitiesClient";
 import type { SectionGrade, SectionStimulusGrade } from "../api/types";
 
 /**
@@ -132,11 +133,15 @@ function useClip() {
 }
 
 /**
- * The same stimulus, done properly, in Joshua's own voice.
+ * The same stimulus, done properly.
  *
- * 714 of these have been sitting in `model-runs` as the grader's calibration
- * set, one per stimulus across 109 sections, and not one second of it had ever
- * reached a student. Every stimulus of all three live sections has one.
+ * Written first: every stimulus of every built section has a walkthrough, the
+ * run cut into the verbatim read with the recall in prose beneath it. Most also
+ * have the recording it was cut from, and nine never will, because the source
+ * never recorded them and they were authored against the measured standard
+ * instead. She reads by default and listens if she wants to, which is the right
+ * way round -- a recording cannot be skimmed, searched, or sat with one line at
+ * a time while she works out where her own recall lost a quantifier.
  *
  * Asked for only once a Report Card is on screen, which is also the only
  * condition under which the database will return them: a student who could
@@ -146,9 +151,9 @@ function useClip() {
  */
 function useModelRuns(
   sourceSection: string,
-  load: (sourceSection: string) => Promise<Record<string, { bucket: string; path: string }>>,
+  load: (sourceSection: string) => Promise<Record<string, ModelRun>>,
 ) {
-  const [runs, setRuns] = useState<Record<string, { bucket: string; path: string }>>({});
+  const [runs, setRuns] = useState<Record<string, ModelRun>>({});
   useEffect(() => {
     let cancelled = false;
     void (async () => {
@@ -165,6 +170,47 @@ function useModelRuns(
     };
   }, [sourceSection, load]);
   return runs;
+}
+
+/**
+ * The model run as something she can read.
+ *
+ * Rendered from the walkthrough's own shape rather than through a markdown
+ * library: the document is exactly two kinds of line, a `> ` quote holding the
+ * chunk as it was read aloud and a paragraph holding the recall of it, and
+ * parsing those two directly means no dependency and nothing that can render
+ * markup the vault put in a file. Anything unexpected falls through as a
+ * paragraph, which is the safe direction.
+ *
+ * Shown open, under her own words, so the comparison is the default rather than
+ * a click. "You dropped the word only" is a correction; her sentence sitting
+ * above his is the lesson.
+ */
+function Walkthrough({ md }: { md: string }) {
+  const lines = md.split("\n").filter((l) => l.trim());
+  return (
+    <div className="mt-5 rounded-xl border border-border bg-background/40 p-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-[hsl(var(--ac-emerald-strong))]">
+        Done right
+      </p>
+      <div className="mt-3 space-y-3">
+        {lines.map((line, i) =>
+          line.startsWith("> ") ? (
+            <p
+              key={i}
+              className="border-l-2 border-[hsl(var(--ac-emerald-strong))] pl-3 text-sm italic leading-relaxed text-foreground"
+            >
+              {line.slice(2)}
+            </p>
+          ) : (
+            <p key={i} className="text-sm leading-relaxed text-muted-foreground">
+              {line}
+            </p>
+          ),
+        )}
+      </div>
+    </div>
+  );
 }
 
 export function SectionReportCard({
@@ -501,11 +547,11 @@ export function SectionReportCard({
                               {clip.playing === key ? "Stop" : "Hear it back"}
                             </button>
                           )}
-                          {model && (
+                          {model?.audio && (
                             <button
                               type="button"
                               className="text-xs text-[hsl(var(--ac-emerald-strong))] underline decoration-dotted underline-offset-4"
-                              onClick={() => void clip.play(`${key}-model`, model)}
+                              onClick={() => void clip.play(`${key}-model`, model.audio!)}
                             >
                               {clip.playing === `${key}-model` ? "Stop" : "Hear it done right"}
                             </button>
@@ -521,6 +567,7 @@ export function SectionReportCard({
                           Nothing was picked up here.
                         </p>
                       )}
+                      {model?.walkthrough && <Walkthrough md={model.walkthrough} />}
                     </div>
                   )}
                 </div>
