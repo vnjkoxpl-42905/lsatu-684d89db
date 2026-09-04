@@ -604,3 +604,32 @@
     animation: none;
   }
 }
+
+/* Advancing without a keyboard.
+
+   The drill is one key and no mouse, and on a laptop it stays exactly that:
+   this control is not rendered where a keyboard exists. It appears only on a
+   coarse pointer, where Space cannot be pressed at all and its absence would
+   otherwise leave her reading stimulus 1 with no way to reach stimulus 2.
+
+   It is drawn as chrome rather than as a call to action. Nothing in the footer
+   may read as a score or a verdict, and a large filled button in the corner of
+   a drill that judges nothing would read as both. */
+.ac-section-advance {
+  border: 1px solid var(--sec-rule);
+  border-bottom-width: 2px;
+  border-radius: 0.375rem;
+  background: var(--sec-paper);
+  color: var(--sec-chrome);
+  padding: 0.5rem 0.875rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  /* A 25-minute run means many presses. Anything under this is a mis-tap. */
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.ac-section-advance:disabled {
+  opacity: 0.55;
+  cursor: default;
+}

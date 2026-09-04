@@ -8,6 +8,7 @@ import {
 import { SectionLaunchFrame } from "./SectionLaunchFrame";
 import { clock, signedClock, statsFor, ticksFor } from "../recall/runStats";
 import "./section-launch.css";
+import { useNoKeyboard } from "../recall/noKeyboard";
 
 /** How many past runs the history block shows. */
 const RUNS_SHOWN = 3;
@@ -69,6 +70,7 @@ export function SectionLaunch({
   onExit,
 }: SectionLaunchProps) {
   const [history, setHistory] = useState<HistoryState>({ kind: "idle" });
+  const noKeyboard = useNoKeyboard();
 
   const canRead = showHistory && Boolean(sourceSection) && Boolean(studentId);
 
@@ -129,6 +131,20 @@ export function SectionLaunch({
           Start the section
           <ArrowRight size={16} strokeWidth={2.25} style={{ marginLeft: 8 }} />
         </button>
+      }
+      /* Warned, not refused: Joshua's call, 2026-09-04. She is told what the
+         run needs and left free to make the call herself, which is why nothing
+         here disables Start. The run itself carries an on-screen way to advance
+         so that going ahead is a real choice rather than a trap. */
+      notice={
+        noKeyboard ? (
+          <p className="sl-notice" role="status">
+            This one is built for a laptop. It records you for the whole section
+            in one take, so a call or a locked screen ends the run, and the
+            microphone on a phone hears you less well. You can carry on if you
+            want to.
+          </p>
+        ) : null
       }
       strip={showHistory ? <StatStrip state={history} stats={stats} /> : null}
     >

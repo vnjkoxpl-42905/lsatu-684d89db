@@ -1,5 +1,6 @@
 import type { SectionPhase, SectionStimulus } from "./section";
 import { VoiceLevel } from "./VoiceLevel";
+import { useNoKeyboard } from "./noKeyboard";
 
 /**
  * One screen of a Read, Recall, Colour SECTION run.
@@ -91,6 +92,18 @@ export interface SectionStageProps {
    * and so she can watch the level move before any of it counts.
    */
   countdown?: number | null;
+  /**
+   * Advance, for a device with no Space key to press.
+   *
+   * The same `press()` the keyboard calls, threaded through because this
+   * component is presentational. It is rendered only where there is no
+   * keyboard (`noKeyboard.ts`), so the desktop loop stays one key with no mouse
+   * in it, and Space stays authoritative on every device including this one.
+   *
+   * Without it, "warn the phone and let her through" is a trap: she can read
+   * stimulus 1 and never reach stimulus 2.
+   */
+  onAdvance?: () => void;
 }
 
 /*
@@ -136,7 +149,9 @@ export function SectionStage({
   onConfirmExit,
   onCancelExit,
   countdown = null,
+  onAdvance,
 }: SectionStageProps) {
+  const noKeyboard = useNoKeyboard();
   // Position across the section, drawn as the rail's fill. Progress inside the
   // current stimulus is deliberately not shown: the app does not know it.
   const through = Math.min(stimulusNumber - 1, totalStimuli) / Math.max(totalStimuli, 1);
@@ -319,6 +334,27 @@ export function SectionStage({
                     : "in a moment"
                   : KEY_DOES[phase]}
               </p>
+              {/* The same act as Space, for a device that has no Space.
+                  Rendered only where there is no keyboard, so the desktop loop
+                  is untouched and no mouse enters it. Disabled through the beat
+                  for the same reason the hint reads "in a moment": nothing may
+                  advance before the section has started. */}
+              {noKeyboard && onAdvance ? (
+                <button
+                  type="button"
+                  className="ac-section-advance"
+                  onClick={onAdvance}
+                  disabled={countdown !== null}
+                >
+                  {countdown !== null
+                    ? micRefused
+                      ? "Waiting for the microphone"
+                      : "Starting"
+                    : KEY_DOES[phase] === "recall full stimulus"
+                      ? "Recall full stimulus"
+                      : "Next stimulus"}
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

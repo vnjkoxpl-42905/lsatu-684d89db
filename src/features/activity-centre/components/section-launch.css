@@ -742,3 +742,20 @@
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+/* The one caution on the door.
+
+   Warned, not refused: it never disables Start, so it is drawn as a note and
+   not as an error. Accent-washed rather than red for the same reason -- the run
+   is allowed, and red would say it is not. */
+.sl-notice {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--sl-ring);
+  border-left: 3px solid var(--sl-accent-soft);
+  border-radius: 8px;
+  background: var(--sl-accent-wash);
+  color: var(--sl-ink-2);
+  font-size: 13.5px;
+  line-height: 1.5;
+}

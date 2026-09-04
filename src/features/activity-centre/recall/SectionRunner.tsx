@@ -952,6 +952,9 @@ function RunBody({
       onConfirmExit={onExit}
       onCancelExit={() => setConfirmingExit(false)}
       countdown={countdown}
+      /* The same act as the Space handler, for a device with no Space key. The
+         stage decides whether to draw it; the runner only supplies the act. */
+      onAdvance={press}
     />
   );
 }

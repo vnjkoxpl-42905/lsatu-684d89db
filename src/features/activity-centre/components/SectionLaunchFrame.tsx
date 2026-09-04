@@ -16,6 +16,15 @@ export interface SectionLaunchFrameProps {
    * section rows, and a button above them would have to mean "start which?".
    */
   primaryAction?: ReactNode;
+  /**
+   * A caution above the method, where there is one.
+   *
+   * It sits under the head rather than beside Start, because it is about
+   * whether to start at all and has to be read before the button is reached. It
+   * never disables anything: the one caution that exists so far is the phone
+   * notice, and Joshua's call is that a phone is warned and let through.
+   */
+  notice?: ReactNode;
   /** Between the head and the method. The four numbers, where there are four. */
   strip?: ReactNode;
   /** The slab below the method: her runs on a section, her sections in the library. */
@@ -42,6 +51,7 @@ export function SectionLaunchFrame({
   instructions,
   meta,
   primaryAction,
+  notice,
   strip,
   children,
   onExit,
@@ -153,6 +163,7 @@ export function SectionLaunchFrame({
             )}
           </div>
         </div>
+        {notice}
 
         {strip}
 
