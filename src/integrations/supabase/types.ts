@@ -437,6 +437,32 @@ export type Database = {
           },
         ]
       }
+      activity_section_grading_claims: {
+        Row: {
+          assignment_id: string
+          attempt_no: number
+          claimed_at: string
+        }
+        Insert: {
+          assignment_id: string
+          attempt_no: number
+          claimed_at?: string
+        }
+        Update: {
+          assignment_id?: string
+          attempt_no?: number
+          claimed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_section_grading_claims_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "activity_assignments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       admin_question_notes: {
         Row: {
           author_id: string
@@ -5858,6 +5884,14 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      claim_section_grading: {
+        Args: {
+          p_assignment_id: string
+          p_attempt_no: number
+          p_stale_seconds?: number
+        }
+        Returns: boolean
+      }
       claim_single_session_slot: {
         Args: {
           _booking_token_hash: string
@@ -6515,6 +6549,10 @@ export type Database = {
       regenerate_manual_booking_link: {
         Args: { _new_slug: string; _new_token_hash: string; _pass_id: string }
         Returns: string
+      }
+      release_section_grading: {
+        Args: { p_assignment_id: string; p_attempt_no: number }
+        Returns: undefined
       }
       resolve_booking_link_full: {
         Args: { _slug: string }
