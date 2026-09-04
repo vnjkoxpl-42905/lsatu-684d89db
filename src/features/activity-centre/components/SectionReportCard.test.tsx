@@ -5,6 +5,27 @@ import { SectionReportCard } from "./SectionReportCard";
 /** No database behind a test. A section nobody has finished has none of these. */
 const noModelRuns = () => Promise.resolve({});
 import type { SectionGrade, SectionStimulusGrade } from "../api/types";
+import { beforeEach, vi } from "vitest";
+
+/*
+ * The write itself is proved in `recall/disputes.test.ts`. What matters here is
+ * that the card passes the RIGHT stimulus and sitting, and that it never
+ * reports a success the write did not have.
+ */
+const raised: { stimulusSlug: string; attemptNo: number }[] = [];
+let disputeResult: unknown = { ok: true, alreadyRaised: false };
+
+vi.mock("../recall/disputes", () => ({
+  raiseDispute: (input: { stimulusSlug: string; attemptNo: number }) => {
+    raised.push(input);
+    return Promise.resolve(disputeResult);
+  },
+}));
+
+beforeEach(() => {
+  raised.length = 0;
+  disputeResult = { ok: true, alreadyRaised: false };
+});
 
 // The Report Card is the only thing a student ever sees of the grader, so the
 // rules asserted here are the ones that would embarrass us quietly: an internal
@@ -456,6 +477,62 @@ describe("a verdict that rests on a mis-hearing", () => {
     fireEvent.click(screen.getByRole("button", { name: /Stimulus 1/i }));
     expect(screen.getByText(/Nothing was picked up here/i)).toBeInTheDocument();
     expect(document.body.textContent).not.toMatch(/the marking is wrong, not you/i);
+  });
+
+  /*
+   * The sentence shipped on 2026-09-04 and the control did not, because where a
+   * dispute lands was Joshua's call and he had not made it. He chose its own
+   * table on 2026-09-04, so the other half of W7 is here.
+   */
+  it("gives her a way to say so, against the stimulus she is looking at", async () => {
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={{ ...grade, stimuli: [stimulus({ spoken: "clearly moral characters" })] } as SectionGrade}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Stimulus 1/i }));
+
+    const control = screen.getByRole("button", { name: /This is not what I said/i });
+    fireEvent.click(control);
+
+    expect(raised).toHaveLength(1);
+    expect(raised[0].stimulusSlug).toBe("PT105_S2_Q1");
+    expect(raised[0].attemptNo).toBe(grade.attempt_no);
+    expect(await screen.findByText(/Noted\. Joshua will see this/i)).toBeInTheDocument();
+  });
+
+  it("does not tell her it was noted when it was not stored", async () => {
+    // The table arrives with its own migration. Reporting success against a
+    // database that has not had it applied would be a lie told on the one
+    // screen whose subject is the app getting her wrong.
+    disputeResult = { ok: false, reason: "not-configured" };
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={{ ...grade, stimuli: [stimulus({ spoken: "clearly moral characters" })] } as SectionGrade}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Stimulus 1/i }));
+    fireEvent.click(screen.getByRole("button", { name: /This is not what I said/i }));
+
+    expect(await screen.findByText(/That did not save/i)).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/Noted\./i);
+  });
+
+  it("offers nothing to dispute where there are no words", () => {
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={{
+          ...grade,
+          section: { ...grade.section, audio_bucket: "drill-recordings", audio_path: "s1/a1.webm" },
+          stimuli: [stimulus({ spoken: "", window_ms: { start: 0, end: 1000 } })],
+        } as SectionGrade}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Stimulus 1/i }));
+    expect(screen.queryByRole("button", { name: /This is not what I said/i })).toBeNull();
   });
 });
 

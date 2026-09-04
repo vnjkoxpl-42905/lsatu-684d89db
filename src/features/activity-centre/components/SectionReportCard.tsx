@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { bandFor } from "../recall/grading";
 import { nextStep } from "../recall/nextStep";
 import { listModelRuns, signSectionRecording } from "../api/activitiesClient";
+import { raiseDispute } from "../recall/disputes";
 import type { ModelRun } from "../api/activitiesClient";
 import type { SectionGrade, SectionStimulusGrade } from "../api/types";
 
@@ -679,10 +680,13 @@ export function SectionReportCard({
                         * else on the card.
                         */}
                       {s.spoken && (
-                        <p className="mt-2 text-xs text-muted-foreground">
-                          The marking is done from these words. If they are not what you said, the
-                          marking is wrong, not you. Play it back and tell Joshua.
-                        </p>
+                        <div className="mt-2">
+                          <p className="text-xs text-muted-foreground">
+                            The marking is done from these words. If they are not what you said, the
+                            marking is wrong, not you. Play it back and say so.
+                          </p>
+                          <DisputeControl grade={grade} stimulus={s} />
+                        </div>
                       )}
                       {model?.walkthrough && <Walkthrough md={model.walkthrough} />}
                     </div>
@@ -700,5 +704,82 @@ export function SectionReportCard({
         </div>
       )}
     </div>
+  );
+}
+
+/**
+ * "This is not what I said."
+ *
+ * One control, one row, no workflow. It is on the expanded row rather than the
+ * card's head because it is about ONE stimulus's verdict, and because the clip
+ * and the transcript are right there -- she can check before she claims, which
+ * is what makes the claim worth storing.
+ *
+ * It is drawn as a quiet text button, not a call to action. The card must not
+ * invite a student to dispute every band she dislikes; it must make it possible
+ * to report the specific failure the audit found, where the app misheard her
+ * and marked her down for its own mistake.
+ *
+ * **It never claims success it did not have.** The table arrives with its own
+ * migration, so on a database that has not had it applied the insert fails, and
+ * a control that showed "Noted" anyway would be lying on the one screen whose
+ * subject is the app getting her wrong. `not-configured` says so plainly.
+ */
+function DisputeControl({
+  grade,
+  stimulus,
+}: {
+  grade: SectionGrade;
+  stimulus: SectionStimulusGrade;
+}) {
+  type State = "idle" | "sending" | "noted" | "unavailable" | "failed";
+  const [state, setState] = useState<State>("idle");
+
+  const send = useCallback(async () => {
+    setState("sending");
+    const result = await raiseDispute({
+      assignmentId: grade.assignment_id,
+      attemptNo: grade.attempt_no,
+      stimulusSlug: stimulus.slug,
+      sourceSection: grade.source_section,
+      studentId: grade.student_id,
+      band: stimulus.reciting ? "recited" : stimulus.band,
+      reason: stimulus.readReason || null,
+    });
+    if (result.ok) {
+      setState("noted");
+      return;
+    }
+    // Narrowed by hand rather than by the discriminant: this project runs with
+    // `strictNullChecks` off, which weakens union narrowing here.
+    const failure = result as { ok: false; reason: "not-configured" | "failed" };
+    setState(failure.reason === "not-configured" ? "unavailable" : "failed");
+  }, [grade, stimulus]);
+
+  if (state === "noted") {
+    return (
+      <p className="mt-1.5 text-xs text-muted-foreground" role="status">
+        Noted. Joshua will see this beside the run.
+      </p>
+    );
+  }
+
+  if (state === "unavailable" || state === "failed") {
+    return (
+      <p className="mt-1.5 text-xs text-muted-foreground" role="status">
+        That did not save. Tell Joshua directly and he will look at the recording.
+      </p>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className="mt-1.5 text-xs underline underline-offset-2 text-muted-foreground hover:text-foreground disabled:opacity-60"
+      onClick={send}
+      disabled={state === "sending"}
+    >
+      {state === "sending" ? "Saving..." : "This is not what I said"}
+    </button>
   );
 }

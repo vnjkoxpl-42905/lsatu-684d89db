@@ -86,6 +86,21 @@ ungraded section is not a booking outage.
 > covers a different failure and not this one. Scheduling it is one `cron.schedule`
 > away and needs a decision about where the worker secret lives, so it is
 > Joshua's to make rather than something to do quietly.
+>
+> **Decided, 2026-09-04: it stays unscheduled.** Joshua's reasoning is that a
+> section grades itself on submit, which it does — the client fires the ask the
+> moment the run ends. So the sweeper is not the grading path, it is the
+> backstop for an ask that was lost, and he is content to carry that risk rather
+> than install a cron whose worker secret would have to live inline in the
+> command text the way the four booking jobs' does.
+>
+> **What that leaves uncovered, stated plainly so a later session does not have
+> to rediscover it:** a run whose grading ask never left the browser — the tab
+> closed on submit, the network dropped, the function was cold — has no second
+> chance and produces no Report Card. The 120-second retry is the only cover.
+> The evidence that would reopen this is a finished run with no grade, not an
+> argument; `select` for `status = 'completed'` section assignments with no
+> matching `activity_section_grades` row and it is visible immediately.
 
 **The grader accepts the service role key as a trusted caller.** A sweep has no
 user to present, and `getUser` returns no user for a service-role token, so the

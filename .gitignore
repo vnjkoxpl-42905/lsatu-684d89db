@@ -101,3 +101,8 @@ scripts/rc-source/data/*
 # Python bytecode from the build scripts
 scripts/__pycache__/
 **/__pycache__/
+
+# Local working snapshots taken before a destructive production action.
+# Never pushed: these hold verbatim transcripts, including speech captured in
+# the room by accident, which is exactly what some of them exist to delete.
+.scratch/

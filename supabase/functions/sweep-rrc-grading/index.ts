@@ -28,9 +28,19 @@ import { createClient } from "npm:@supabase/supabase-js@2";
  * returns an existing complete grade untouched, so two sweeps that overlap cost
  * one wasted request rather than two grades.
  *
- * Scheduled externally, on the pattern in
- * `docs/ops/native-single-session-workers.md`. Nothing here knows its own
- * schedule.
+ * NOT SCHEDULED, and that is a decision rather than an oversight (2026-09-04).
+ *
+ * This comment used to say it was "scheduled externally, on the pattern in
+ * `docs/ops/native-single-session-workers.md`". It never was: `cron.job` holds
+ * four jobs and all four are booking and calendar. Joshua's call, once that was
+ * shown, is to leave it unscheduled -- a section grades itself on submit, so
+ * this is the backstop and not the path, and scheduling it would put a worker
+ * secret inline in a cron command the way the booking jobs' already is.
+ *
+ * So nothing runs this today. It is invoked by hand, and everything below still
+ * holds for when it is. What stays uncovered is a run whose client-side ask
+ * never left the browser: it has the 120-second retry and nothing else. See
+ * `docs/adr/0021-a-partial-grade-is-written-and-says-so.md`.
  */
 
 const WORKER_NAME = "sweep-rrc-grading";
