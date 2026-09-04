@@ -130,6 +130,72 @@
         ],
         "createdAt": "2026-09-01T12:59:39.627Z",
         "reason": "LawHub surface mirror: the real drill screen sets the stimulus in Fraunces at 19px, and section.css documents every value as taken from it rather than invented"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "10px",
+        "createdAt": "2026-09-04T11:13:22.440Z",
+        "reason": "Scoped surface .sl: DESIGN.md's ramp stops at 13px and has no micro-label step; this dense data surface needs 10-12px mono labels and meta. DESIGN.md sanctions per-surface pairings and recall/section.css sets its own scale the same way. Everything 13px+ was snapped onto the documented ramp and both mockup webfonts were dropped."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "11px",
+        "createdAt": "2026-09-04T11:13:22.642Z",
+        "reason": "Scoped surface .sl: DESIGN.md's ramp stops at 13px and has no micro-label step; this dense data surface needs 10-12px mono labels and meta. DESIGN.md sanctions per-surface pairings and recall/section.css sets its own scale the same way. Everything 13px+ was snapped onto the documented ramp and both mockup webfonts were dropped."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "12px",
+        "createdAt": "2026-09-04T11:13:22.875Z",
+        "reason": "Scoped surface .sl: DESIGN.md's ramp stops at 13px and has no micro-label step; this dense data surface needs 10-12px mono labels and meta. DESIGN.md sanctions per-surface pairings and recall/section.css sets its own scale the same way. Everything 13px+ was snapped onto the documented ramp and both mockup webfonts were dropped."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "14px",
+        "createdAt": "2026-09-04T11:14:45.757Z",
+        "reason": "Documented in DESIGN.md's own Hierarchy section (lines 167,170): Headline 18-20px, Body 14px. The detector reads only the typography: YAML block at line 38, which omits them. Steps are sanctioned by the design system; the YAML is the incomplete artefact."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "18px",
+        "createdAt": "2026-09-04T11:14:45.941Z",
+        "reason": "Documented in DESIGN.md's own Hierarchy section (lines 167,170): Headline 18-20px, Body 14px. The detector reads only the typography: YAML block at line 38, which omits them. Steps are sanctioned by the design system; the YAML is the incomplete artefact."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "20px",
+        "createdAt": "2026-09-04T11:14:46.126Z",
+        "reason": "Documented in DESIGN.md's own Hierarchy section (lines 167,170): Headline 18-20px, Body 14px. The detector reads only the typography: YAML block at line 38, which omits them. Steps are sanctioned by the design system; the YAML is the incomplete artefact."
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "4px",
+        "createdAt": "2026-09-04T11:57:03.453Z",
+        "reason": "This IS the documented sm token: DESIGN.md rounded.sm is calc(0.5rem - 4px), which resolves to 4px. The detector matches literals, so the token's computed value does not match its own definition."
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "1px",
+        "createdAt": "2026-09-04T11:57:03.612Z",
+        "reason": "The stimulus tick is a 4px-wide bar. The smallest scale step (4px) would round it into a circle and destroy the tick shape; 1px is a hairline softening, not a corner style."
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "50%",
+        "createdAt": "2026-09-04T11:57:03.780Z",
+        "reason": "The status dot inside the Out Loud chip is a circle. 50% is how a circle is expressed; it is not a point on a corner-radius scale."
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "6px",
+        "createdAt": "2026-09-04T12:01:44.483Z",
+        "reason": "This IS the documented md token: DESIGN.md rounded.md is calc(0.5rem - 2px), which resolves to 6px, and DESIGN.md line 200 names it as the shell button radius. The detector matches literals, so a token written as calc() never matches its own computed value. Same cause as the 4px (sm) entry."
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#06231e",
+        "createdAt": "2026-09-04T13:37:12.154Z",
+        "reason": "on-accent ink for the .sl- teal ramp (dark theme only); its sibling ramp values in this file are already accepted, and the dark accent cannot carry white"
       }
     ]
   }

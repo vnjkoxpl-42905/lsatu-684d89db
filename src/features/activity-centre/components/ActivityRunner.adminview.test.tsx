@@ -22,6 +22,8 @@ const activityState = { assignment: null as unknown, loading: false, error: null
 
 vi.mock("../hooks/useStudentActivities", () => ({
   useStudentActivity: () => activityState,
+  // The section-library door lists her sections, so it reads her assignments.
+  useStudentActivities: () => ({ assignments: [], loading: false, error: null }),
 }));
 
 vi.mock("@/contexts/AuthContext", () => ({
@@ -36,6 +38,9 @@ vi.mock("../api/activitiesClient", () => ({
   listItemResponses: vi.fn().mockResolvedValue([]),
   markAssignmentStarted: vi.fn().mockResolvedValue(undefined),
   recordItemResponse: vi.fn().mockResolvedValue(undefined),
+  listSectionChoices: vi.fn().mockResolvedValue([]),
+  listMySectionGrades: vi.fn().mockResolvedValue([]),
+  startSectionAttempt: vi.fn().mockResolvedValue("new-assignment"),
 }));
 
 vi.mock("@/lib/classroomItems", () => ({

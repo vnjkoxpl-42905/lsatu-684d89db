@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
 import {
   readMyRecentSectionGrades,
   type RecentSectionRun,
 } from "../api/activitiesClient";
-import { ActivityExitButton } from "./ActivityExitButton";
-import { renderInlineMarks } from "../prompt-format";
+import { SectionLaunchFrame } from "./SectionLaunchFrame";
 import { clock, signedClock, statsFor, ticksFor } from "../recall/runStats";
 import "./section-launch.css";
 
@@ -69,21 +68,6 @@ export function SectionLaunch({
   onStart,
   onExit,
 }: SectionLaunchProps) {
-  /**
-   * The four beats are `steps` inside ONE briefing section, not the sections.
-   *
-   * The briefing has six sections and only one of them -- "What you actually
-   * do." -- carries the procedure. Rendering `sections` here would put the essay
-   * headings in the strip and lose the method entirely.
-   */
-  const beatSection = useMemo(
-    () => instructions.briefing?.sections.find((s) => (s.steps?.length ?? 0) > 0),
-    [instructions.briefing],
-  );
-  const beats = beatSection?.steps ?? [];
-
-  const [beat, setBeat] = useState(0);
-  const [pane, setPane] = useState<"beat" | "briefing">("beat");
   const [history, setHistory] = useState<HistoryState>({ kind: "idle" });
 
   const canRead = showHistory && Boolean(sourceSection) && Boolean(studentId);
@@ -127,260 +111,29 @@ export function SectionLaunch({
     [runs, timeGoalMinutes],
   );
 
-  /**
-   * Arrow-key traversal, which is what makes a tablist a tablist rather than a
-   * row of buttons wearing the role.
-   */
-  const beatRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const onBeatKey = useCallback(
-    (e: React.KeyboardEvent) => {
-      const last = beats.length - 1;
-      let next: number | null = null;
-      if (e.key === "ArrowRight" || e.key === "ArrowDown") next = beat === last ? 0 : beat + 1;
-      if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = beat === 0 ? last : beat - 1;
-      if (e.key === "Home") next = 0;
-      if (e.key === "End") next = last;
-      if (next === null) return;
-      e.preventDefault();
-      setBeat(next);
-      setPane("beat");
-      beatRefs.current[next]?.focus();
-    },
-    [beat, beats.length],
-  );
-
-  const paneRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const onPaneKey = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-      e.preventDefault();
-      const next = pane === "beat" ? "briefing" : "beat";
-      setPane(next);
-      paneRefs.current[next === "beat" ? 0 : 1]?.focus();
-    },
-    [pane],
-  );
-
-  const briefing = instructions.briefing;
-  const current = beats[beat];
-
   return (
-    <div className="sl">
-      <div className="sl-sheet">
-        <div className="sl-crumbs">
-          <span className="sl-label">
-            Library / Out Loud / <strong>{title}</strong>
-          </span>
-          <span className="sl-label sl-meta">
-            {sourceSection ? `${sourceSection} · ` : ""}
-            {typeof itemCount === "number" ? `${itemCount} stimuli` : ""}
-            {timeGoalMinutes ? ` · est ${timeGoalMinutes} min` : ""}
-          </span>
-        </div>
-
-        <div className="sl-head">
-          <div>
-            {onExit && (
-              <div style={{ marginBottom: 10 }}>
-                <ActivityExitButton onExit={onExit} tone="light" />
-              </div>
-            )}
-            <span className="sl-chip">Out loud</span>
-            <h2 className="sl-title">{title}</h2>
-            {(instructions.tagline || subtitle) && (
-              <p className="sl-tagline">
-                {instructions.tagline
-                  ? renderInlineMarks(instructions.tagline, "sl-tagline")
-                  : subtitle}
-              </p>
-            )}
-          </div>
-          <div className="sl-cta">
-            <button type="button" className="sl-start" onClick={onStart}>
-              Start the section
-              <ArrowRight size={16} strokeWidth={2.25} style={{ marginLeft: 8 }} />
-            </button>
-            {briefing && (
-              <button
-                type="button"
-                className="sl-brief"
-                onClick={() => {
-                  setPane("briefing");
-                }}
-              >
-                Read the full briefing
-              </button>
-            )}
-          </div>
-        </div>
-
-        {showHistory && <StatStrip state={history} stats={stats} />}
-
-        {beats.length > 0 && (
-          <>
-            <div className="sl-mhead">
-              <h3>The method</h3>
-              <span className="sl-label">Select a beat to read it</span>
-            </div>
-            <div
-              className="sl-beats"
-              role="tablist"
-              aria-label="The method, beat by beat"
-              onKeyDown={onBeatKey}
-              style={{ ["--sl-beat-count" as string]: String(beats.length) }}
-            >
-              {beats.map((step, i) => (
-                <button
-                  key={i}
-                  ref={(el) => {
-                    beatRefs.current[i] = el;
-                  }}
-                  type="button"
-                  role="tab"
-                  id={`sl-beat-tab-${i}`}
-                  aria-controls="sl-beat-panel"
-                  aria-selected={pane === "beat" && beat === i}
-                  tabIndex={beat === i ? 0 : -1}
-                  className="sl-beat"
-                  onClick={() => {
-                    setBeat(i);
-                    setPane("beat");
-                  }}
-                >
-                  <span className="sl-n">0{i + 1}</span>
-                  <span className="sl-l">{renderInlineMarks(step.label, `sl-bl-${i}`)}</span>
-                  <span className="sl-d">{renderInlineMarks(step.body, `sl-bd-${i}`)}</span>
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-
-        {briefing && (
-          <div className="sl-drawer">
-            <div
-              className="sl-dr-tabs"
-              role="tablist"
-              aria-label="Briefing detail"
-              onKeyDown={onPaneKey}
-            >
-              <button
-                ref={(el) => {
-                  paneRefs.current[0] = el;
-                }}
-                type="button"
-                role="tab"
-                id="sl-pane-tab-beat"
-                aria-selected={pane === "beat"}
-                aria-controls="sl-beat-panel"
-                tabIndex={pane === "beat" ? 0 : -1}
-                className="sl-dr-tab"
-                onClick={() => setPane("beat")}
-              >
-                This beat
-              </button>
-              <button
-                ref={(el) => {
-                  paneRefs.current[1] = el;
-                }}
-                type="button"
-                role="tab"
-                id="sl-pane-tab-briefing"
-                aria-selected={pane === "briefing"}
-                aria-controls="sl-beat-panel"
-                tabIndex={pane === "briefing" ? 0 : -1}
-                className="sl-dr-tab"
-                onClick={() => setPane("briefing")}
-              >
-                The full briefing
-              </button>
-              {briefing.closer && (
-                <span className="sl-dr-note">
-                  {renderInlineMarks(briefing.closer, "sl-closer")}
-                </span>
-              )}
-            </div>
-
-            <div
-              className="sl-dr-view"
-              id="sl-beat-panel"
-              role="tabpanel"
-              tabIndex={-1}
-              data-pane={pane}
-              /*
-               * The panel names the tab it is currently showing. Two tablists
-               * swap the same region, so without this a screen reader can reach
-               * the panel and not be told which of the six tabs it belongs to.
-               */
-              aria-labelledby={
-                pane === "beat"
-                  ? `sl-pane-tab-beat sl-beat-tab-${beat}`
-                  : "sl-pane-tab-briefing"
-              }
-            >
-              {pane === "beat" && current ? (
-                <div>
-                  <span className="sl-label">
-                    Briefing · beat {beat + 1} of {beats.length}
-                  </span>
-                  <h3 className="sl-dr-title">
-                    {renderInlineMarks(current.label, `sl-dt-${beat}`)}
-                  </h3>
-                  <p className="sl-dr-body">
-                    {renderInlineMarks(current.body, `sl-db-${beat}`)}
-                  </p>
-                </div>
-              ) : (
-                <div className="sl-essay">
-                  {briefing.lede && <p>{renderInlineMarks(briefing.lede, "sl-lede")}</p>}
-                  {briefing.sections.map((section, i) => (
-                    <section key={i}>
-                      <h4>{renderInlineMarks(section.heading, `sl-h-${i}`)}</h4>
-                      {section.body.map((para, j) => (
-                        <p key={j}>{renderInlineMarks(para, `sl-p-${i}-${j}`)}</p>
-                      ))}
-                      {section.steps && (
-                        <ol>
-                          {section.steps.map((step, j) => (
-                            <li key={j}>
-                              <strong>
-                                {renderInlineMarks(step.label, `sl-sl-${i}-${j}`)}
-                              </strong>{" "}
-                              {renderInlineMarks(step.body, `sl-sb-${i}-${j}`)}
-                            </li>
-                          ))}
-                        </ol>
-                      )}
-                      {section.demo && (
-                        <ol>
-                          {section.demo.beats.map((b, j) => (
-                            <li key={j}>
-                              <strong>{b.kind}</strong>{" "}
-                              {renderInlineMarks(b.text, `sl-demo-${i}-${j}`)}
-                            </li>
-                          ))}
-                        </ol>
-                      )}
-                    </section>
-                  ))}
-                </div>
-              )}
-              {/* Only from the essay. On the beat pane it was an action back to
-                  where she already was, sitting in an otherwise empty column. */}
-              {pane === "briefing" && (
-                <div className="sl-dr-side">
-                  <button type="button" className="sl-close" onClick={() => setPane("beat")}>
-                    Back to the beat
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {showHistory && <RunHistory state={history} />}
-      </div>
-    </div>
+    <SectionLaunchFrame
+      title={title}
+      subtitle={subtitle}
+      instructions={instructions}
+      onExit={onExit}
+      meta={
+        <>
+          {sourceSection ? `${sourceSection} · ` : ""}
+          {typeof itemCount === "number" ? `${itemCount} stimuli` : ""}
+          {timeGoalMinutes ? ` · est ${timeGoalMinutes} min` : ""}
+        </>
+      }
+      primaryAction={
+        <button type="button" className="sl-start" onClick={onStart}>
+          Start the section
+          <ArrowRight size={16} strokeWidth={2.25} style={{ marginLeft: 8 }} />
+        </button>
+      }
+      strip={showHistory ? <StatStrip state={history} stats={stats} /> : null}
+    >
+      {showHistory && <RunHistory state={history} />}
+    </SectionLaunchFrame>
   );
 }
 

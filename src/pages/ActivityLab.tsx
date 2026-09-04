@@ -5,6 +5,7 @@ import { SectionReportCard } from "@/features/activity-centre/components/Section
 import { SectionRunHistory } from "@/features/activity-centre/components/SectionRunHistory";
 import type { SectionGrade, SectionStimulusGrade } from "@/features/activity-centre/api/types";
 import sectionInstructions from "@/features/activity-centre/content/read-recall-colour-section.instructions.json";
+import { SectionLibraryPanel } from "@/features/activity-centre/components/SectionLibraryPanel";
 import {
   advanceCursor,
   buildSectionRun,
@@ -154,6 +155,7 @@ import "@/features/activity-centre/activities-home.css";
 const WORLDS = [
   { key: "list", label: "Activity Centre list" },
   { key: "intro", label: "Activity intro" },
+  { key: "door", label: "RRC door (pick a section)" },
   { key: "section", label: "RRC section (whole section)" },
   { key: "report", label: "RRC Report Card" },
   { key: "runs", label: "RRC run history" },
@@ -225,6 +227,7 @@ export default function ActivityLab() {
 
       {world === "list" ? <ListPanel /> : null}
       {world === "intro" ? <IntroPanel /> : null}
+      {world === "door" ? <DoorPanel /> : null}
       {world === "section" ? <SectionPanel /> : null}
       {world === "report" ? <ReportPanel /> : null}
       {world === "runs" ? <RunsPanel /> : null}
@@ -444,6 +447,23 @@ function IntroPanel() {
       </div>
     </div>
   );
+}
+
+/* ------------------------------------------------------------------ *
+ * The door
+ * ------------------------------------------------------------------ */
+
+/**
+ * The section-library door, against real data.
+ *
+ * It reads her assignments and the section list from the live backend rather
+ * than a fixture, because the door's whole content is that list -- a preview of
+ * it with three invented rows would be a preview of nothing. The harness at
+ * `/src/dev/section-launch-preview.html?state=library` is the fixture version,
+ * for looking at the layout without a session.
+ */
+function DoorPanel() {
+  return <SectionLibraryPanel />;
 }
 
 /* ------------------------------------------------------------------ *

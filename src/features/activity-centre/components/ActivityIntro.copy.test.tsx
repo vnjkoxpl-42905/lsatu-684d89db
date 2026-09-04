@@ -50,22 +50,13 @@ function renderIntro(props: Partial<React.ComponentProps<typeof ActivityIntro>> 
   );
 }
 
-describe("the library door's how-line", () => {
-  it("does not promise a resumable sitting", () => {
-    renderIntro({ format: "spoken-recall", mode: "section-library" });
-    expect(screen.queryByText(/pick up where you left off/i)).toBeNull();
-  });
-
-  it("says the sitting is one go and marked at its end", () => {
-    renderIntro({ format: "spoken-recall", mode: "section-library" });
-    expect(screen.getByText(/one sitting/i)).toBeInTheDocument();
-  });
-
-  it("never opens on a stimulus count the door does not have", () => {
-    renderIntro({ format: "spoken-recall", mode: "section-library" });
-    expect(screen.queryByText(/^0 stimuli/i)).toBeNull();
-  });
-
+/*
+ * The library door's three claims moved to `SectionLibraryLaunch.test.tsx` when
+ * the door stopped being this component. What stays here is the pair that
+ * proves the editorial intro still serves what it always served: the v1 spoken
+ * drill, and a real section.
+ */
+describe("the how-line on the pages this component still draws", () => {
   it("still promises resuming on the v1 spoken drill, where it is true", () => {
     renderIntro({ format: "spoken-recall", mode: null, itemCount: 1 });
     expect(screen.getByText(/pick up where you left off/i)).toBeInTheDocument();

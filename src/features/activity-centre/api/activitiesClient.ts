@@ -662,19 +662,6 @@ export async function readMyRecentSectionGrades(
 }
 
 /**
- * The same read, degraded to an array.
- *
- * The section library has always treated an unreadable history as an empty one
- * and has no surface for the difference. Keeping that behaviour here, explicitly,
- * rather than changing what that panel does as a side effect of this read
- * gaining a failure channel.
- */
-export async function listMyRecentSectionGrades(limit = 10): Promise<SectionGradeStub[]> {
-  const { runs } = await readMyRecentSectionGrades(limit);
-  return runs;
-}
-
-/**
  * Admin: every Report Card a student has, newest first.
  *
  * No teacher surface has ever read `activity_section_grades`. A student

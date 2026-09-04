@@ -11,7 +11,7 @@
  * `/src/dev/section-launch-preview.html` on the dev server. It is not an entry
  * point in the Vite build, which only builds `index.html`, so it never ships.
  *
- * States: ?state=runs|empty|failed|noHistory  ·  ?theme=light|dark
+ * States: ?state=runs|oneRun|empty|failed|noHistory|library  ·  ?theme=light|dark
  */
 import { createRoot } from "react-dom/client";
 // The section JSONs deliberately ship an empty instructions block -- the rules
@@ -109,7 +109,58 @@ window.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
 
 if (theme === "dark") document.documentElement.classList.add("dark");
 
+/*
+ * The library door renders the pure list, not the router-wired panel: the
+ * harness has no router and no session, and the half worth looking at is the
+ * page, not the navigation.
+ */
+async function bootLibrary() {
+  const { SectionLibraryLaunch } = await import(
+    "../features/activity-centre/components/SectionLibraryLaunch"
+  );
+  const { SectionLibrary } = await import(
+    "../features/activity-centre/components/SectionLibrary"
+  );
+  await import("../index.css");
+  document.body.style.margin = "0";
+  const choices = [
+    { id: "a1", source_section: "PT105.S2", goal_minutes: { standard: 25 } },
+    { id: "a2", source_section: "PT102.S3", goal_minutes: { standard: 25 } },
+    { id: "a3", source_section: "PT1.S3", goal_minutes: { standard: 25 } },
+  ];
+  const attempts = [
+    { id: "r1", mode: "section", source_section: "PT105.S2", status: "completed",
+      created_at: "2026-09-02T09:00:00Z", completed_at: "2026-09-02T09:25:00Z" },
+    { id: "r2", mode: "section", source_section: "PT105.S2", status: "completed",
+      created_at: "2026-08-31T09:00:00Z", completed_at: "2026-08-31T09:31:00Z" },
+    { id: "r3", mode: "section", source_section: "PT102.S3", status: "in_progress",
+      created_at: "2026-09-01T09:00:00Z", completed_at: null },
+  ];
+  const grades = [
+    { assignment_id: "r1", attempt_no: 1, source_section: "PT105.S2",
+      graded_at: "2026-09-02T09:40:00Z", section: { mean_coverage: 91 } },
+  ];
+  createRoot(document.getElementById("root")!).render(
+    <SectionLibraryLaunch
+      title="Read, Recall, Colour"
+      subtitle={null}
+      instructions={sectionInstructions as unknown as ActivityInstructions}
+      onExit={() => console.log("[preview] exit")}
+    >
+      <SectionLibrary
+        attempts={attempts as never}
+        onStart={(id) => console.log("[preview] start", id)}
+        onOpenAttempt={(id) => console.log("[preview] open", id)}
+        loadChoices={() => Promise.resolve(choices as never)}
+        loadGrades={() => Promise.resolve(grades as never)}
+        beginAttempt={(id) => Promise.resolve(`new-${id}`)}
+      />
+    </SectionLibraryLaunch>,
+  );
+}
+
 async function boot() {
+  if (state === "library") return bootLibrary();
   const { SectionLaunch } = await import(
     "../features/activity-centre/components/SectionLaunch"
   );

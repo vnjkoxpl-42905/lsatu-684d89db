@@ -639,6 +639,31 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
     </div>
   ) : null;
 
+  /*
+   * The door. Joshua assigns Read, Recall, Colour; she picks which section to
+   * run tonight, and she runs several. This Activity has no items of its own:
+   * its content is the list.
+   *
+   * It sits ABOVE the `phase === "intro"` return rather than below it, because
+   * the door has no intro to precede it -- it IS the first screen. Behind that
+   * return it was unreachable except by pressing Start on an editorial page
+   * written for the typed Activities, which is how a student met three screens
+   * before her first run and only the last of them was designed for this drill.
+   */
+  if (assignment.mode === "section-library") {
+    return (
+      <div className="activity-centre min-h-screen" data-runner="section-library">
+        {adminBanner}
+        <SectionLibraryPanel
+          title={assignment.title}
+          subtitle={assignment.subtitle}
+          instructions={assignment.instructions}
+          onExit={handleLeave}
+        />
+      </div>
+    );
+  }
+
   if (phase === "intro") {
     return (
       <div className="activity-centre act-home" data-world={world?.slug}>
@@ -737,18 +762,6 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
      * clock is what her time is scored against, so a later edit to the
      * definition must not be able to rescore a run she has finished.
      */
-    /*
-     * The door. Joshua assigns Read, Recall, Colour; she picks which section to
-     * run tonight, and she runs several. This Activity has no items of its own:
-     * its content is the list.
-     */
-    if (assignment.mode === "section-library") {
-      return (
-        <div className="activity-centre min-h-screen" data-runner="section-library">
-          <SectionLibraryPanel onExit={handleBackToIntro} />
-        </div>
-      );
-    }
     if (assignment.mode === "section") {
       /*
        * A finished section goes to its Report Card, not back to the intro.

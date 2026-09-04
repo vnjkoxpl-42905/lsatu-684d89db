@@ -154,81 +154,87 @@ export function SectionLibrary({
   );
 
   if (error && !choices) {
-    return <p className="text-sm text-muted-foreground">{error}</p>;
+    return <p className="sl-note">{error}</p>;
   }
   if (!choices) {
-    return <p className="text-sm text-muted-foreground">Loading sections…</p>;
+    return <p className="sl-note">Loading sections\u2026</p>;
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      {error && <p className="text-sm text-destructive">{error}</p>}
+    <div className="sl-sections">
+      {error && (
+        <p className="sl-note" data-tone="bad">
+          {error}
+        </p>
+      )}
       {choices.map((choice) => {
         const done = bySection.get(choice.source_section) ?? [];
         return (
-          <div
-            key={choice.id}
-            className="rounded-[20px] border border-border bg-card p-5"
-            data-section={choice.source_section}
-          >
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <p className="text-base font-medium text-foreground">{choice.source_section}</p>
-              {/*
-                * The time, not the stimulus count.
-                *
-                * A stimulus is our grain, not hers, and the counts differ per
-                * section for a reason she has no way to see: two questions can
-                * share a stimulus. Printed on a card to choose from, "22" next
-                * to "26" reads as one section being longer, which is not what
-                * it means. The clock is the thing she actually plans around.
-                */}
-              <p className="text-xs text-muted-foreground">
-                {choice.goal_minutes?.standard ?? 25} min
-              </p>
-            </div>
+          <div key={choice.id} className="sl-section" data-section={choice.source_section}>
+            <div className="sl-sec-body">
+              <div className="sl-sec-line">
+                <span className="sl-sec-name">{choice.source_section}</span>
+                {/*
+                  * The time, not the stimulus count.
+                  *
+                  * A stimulus is our grain, not hers, and the counts differ per
+                  * section for a reason she has no way to see: two questions can
+                  * share a stimulus. Printed on a row to choose from, "22" next
+                  * to "26" reads as one section being longer, which is not what
+                  * it means. The clock is the thing she actually plans around.
+                  */}
+                <span className="sl-sec-clock">
+                  {choice.goal_minutes?.standard ?? 25} min
+                </span>
+              </div>
 
-            {done.length > 0 && (
-              /*
-               * Every Attempt, and every one of them a way back in.
-               *
-               * The Report Card used to exist only in the tab that produced it:
-               * this list rendered the same runs as plain text, so a grade she
-               * could not have seen -- grading finishes minutes after she stops
-               * -- was unreachable for ever after. A finished Attempt opens on
-               * its own Report Card; an unfinished one is not a run and does
-               * not pretend to lead anywhere.
-               */
-              <ul className="mt-3 flex flex-col gap-1">
-                {done.map((a, i) => {
-                  const grade = grades.get(a.id);
-                  const label = `Attempt ${done.length - i} · ${attemptLabel(a, grade)}`;
-                  const reachable = a.status === "completed" && onOpenAttempt !== undefined;
-                  return (
-                    <li key={a.id} className="text-xs text-muted-foreground">
-                      {reachable ? (
-                        <button
-                          type="button"
-                          className="rounded text-left underline decoration-dotted underline-offset-4 hover:text-foreground"
-                          onClick={() => onOpenAttempt?.(a.id)}
-                        >
-                          {label}
-                        </button>
-                      ) : (
-                        label
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+              {done.length === 0 ? (
+                <p className="sl-note">Not run yet.</p>
+              ) : (
+                /*
+                 * Every Attempt, and every one of them a way back in.
+                 *
+                 * The Report Card used to exist only in the tab that produced it:
+                 * this list rendered the same runs as plain text, so a grade she
+                 * could not have seen -- grading finishes minutes after she stops
+                 * -- was unreachable for ever after. A finished Attempt opens on
+                 * its own Report Card; an unfinished one is not a run and does
+                 * not pretend to lead anywhere.
+                 */
+                <ul className="sl-sec-attempts">
+                  {done.map((a, i) => {
+                    const grade = grades.get(a.id);
+                    const label = `Attempt ${done.length - i} \u00b7 ${attemptLabel(a, grade)}`;
+                    const reachable = a.status === "completed" && onOpenAttempt !== undefined;
+                    return (
+                      <li key={a.id}>
+                        {reachable ? (
+                          <button
+                            type="button"
+                            className="sl-sec-attempt"
+                            onClick={() => onOpenAttempt?.(a.id)}
+                          >
+                            {label}
+                          </button>
+                        ) : (
+                          <span className="sl-sec-attempt" data-flat="true">
+                            {label}
+                          </span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
 
             <button
               type="button"
-              className="mt-4 rounded-full border border-border px-4 py-2 text-sm"
+              className="sl-sec-go"
               disabled={starting !== null}
               onClick={() => void start(choice)}
             >
-              {starting === choice.id ? "Starting…" : done.length > 0 ? "Run it again" : "Start"}
+              {starting === choice.id ? "Starting\u2026" : done.length > 0 ? "Run it again" : "Start"}
             </button>
           </div>
         );

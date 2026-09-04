@@ -30,6 +30,9 @@
   --sl-accent-ring: rgba(11, 154, 131, 0.28);
   --sl-accent-wash: rgba(11, 154, 131, 0.055);
   --sl-accent-soft: #9fd8c9;
+  /* Ink ON the filled accent. Dark theme only: the light accent is dark enough
+     to carry white, the dark one is not. */
+  --sl-accent-ink: #06231e;
   --sl-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   min-height: 100%;
@@ -174,7 +177,7 @@
     box-shadow 0.14s ease;
 }
 .dark .sl-start {
-  color: #06231e;
+  color: var(--sl-accent-ink);
 }
 .sl-start:hover {
   background: var(--sl-accent-hover);
@@ -609,4 +612,133 @@
   .sl-beat::after {
     transition: none !important;
   }
+}
+
+/* ---- the section list ---- */
+/*
+ * A row, not a card. Three sections in a stack of cards read as three
+ * unrelated offers; the drill is one thing with sections inside it, and rows
+ * under one heading say that. The clock sits on the row because it is what she
+ * plans around; the stimulus count deliberately does not appear at all.
+ */
+.sl-sections {
+  display: flex;
+  flex-direction: column;
+}
+.sl-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 13px 0;
+  box-shadow: inset 0 1px 0 var(--sl-ring-2);
+}
+.sl-section:first-child {
+  box-shadow: none;
+}
+.sl-sec-body {
+  min-width: 0;
+}
+.sl-sec-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.sl-sec-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--sl-ink);
+  font-variant-numeric: tabular-nums;
+}
+.sl-sec-clock {
+  font-family: var(--sl-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--sl-ink-3);
+}
+.sl-sec-attempts {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.sl-sec-attempt {
+  font-size: 12px;
+  color: var(--sl-ink-2);
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.sl-sec-attempt[data-flat="true"] {
+  text-decoration: none;
+  cursor: default;
+  color: var(--sl-ink-3);
+}
+.sl-sec-attempt:hover:not([data-flat="true"]) {
+  color: var(--sl-ink);
+}
+.sl-sec-attempt:focus-visible,
+.sl-sec-go:focus-visible {
+  outline: 2px solid var(--sl-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.sl-sec-go {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--sl-ink);
+  background: var(--sl-card);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--sl-ring);
+  padding: 7px 16px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    box-shadow 0.14s ease,
+    background 0.14s ease;
+}
+.sl-sec-go:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px var(--sl-accent-ring);
+  background: var(--sl-accent-wash);
+}
+.sl-sec-go:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+/* No red. This surface has no negative hue and does not need one: the sentence
+   already says what went wrong, and weight is enough to stop the eye. */
+.sl-note[data-tone="bad"] {
+  color: var(--sl-ink);
+  font-weight: 500;
+}
+
+/* The crumb that goes back. Same ink and tracking as the crumb it sits in, so
+   the line still reads as one breadcrumb rather than a control bolted into it. */
+.sl-crumb-back {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}
+.sl-crumb-back:hover {
+  color: var(--sl-ink);
+}
+.sl-crumb-back:focus-visible {
+  outline: 2px solid var(--sl-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
