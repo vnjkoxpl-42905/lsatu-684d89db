@@ -65,6 +65,15 @@ export default function BookingOfferHub({
   // including an intentionally empty one. Never synthesize defaults here:
   // doing so would re-enable disabled offers or override a retained Cal URL.
   const resolvedOffers = offers;
+  // Prices come straight from the live checkout links so the student sees the
+  // cost before clicking instead of having to ask.
+  const priceFor = (offer: BookingOffer) => {
+    if (offer.credits === 5) return "$200 · $40/hr";
+    if (offer.credits === 10) return "$350 · $35/hr";
+    if (offer.id === "single-session" || offer.id === "single-session-native") return "$45/hr";
+    return null;
+  };
+
   const labelFor = (id: string | null) => {
     if (id === "single-session") return "Single session";
     return resolvedOffers.find((offer) => offer.id === id)?.label ?? "Booking";
