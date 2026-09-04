@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import { assemble, discard, isActive, listPendingRuns, purgeStale } from "./recordingBackup";
+import { assemble, discard, isActive, isLive, listPendingRuns, purgeStale } from "./recordingBackup";
 
 /**
  * Upload the recordings of sections that never finished.
@@ -24,9 +24,12 @@ export async function recoverPendingRecordings(studentId: string): Promise<numbe
     await purgeStale();
 
     for (const run of await listPendingRuns()) {
-      // Not hers, and not the one being recorded in this tab right now.
+      // Not hers, and not one still being recorded -- in this tab, or in any
+      // other. `isActive` is this tab's memory; `isLive` is the record's own
+      // heartbeat, and the only one of the two a second tab can see.
       if (run.studentId !== studentId) continue;
       if (isActive(run.runId)) continue;
+      if (isLive(run)) continue;
 
       const blob = await assemble(run);
       if (!blob || blob.size === 0) {

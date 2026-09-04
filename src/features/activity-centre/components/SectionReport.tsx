@@ -27,11 +27,18 @@ const GIVE_UP_MS = 3 * 60 * 1000;
  *
  * The runner already asked once, fire and forget, and that ask can be lost: the
  * tab closed before it left, the network dropped, the function was cold. One
- * repeat after a decent wait recovers all three. It is idempotent on the server
- * -- an already-graded run returns its existing row rather than regrading -- so
- * the cost of a redundant ask is one request.
+ * repeat after a decent wait recovers all three.
+ *
+ * The wait has to be longer than a grading actually takes. At 20 seconds the
+ * repeat arrived while the first grading was still transcribing, nothing was on
+ * record yet, and both ran to the end: two transcriptions, two sets of verdicts
+ * on the same audio, and a card that showed the first while the database kept
+ * the second. A real section grades in one to three minutes. The grader now
+ * also refuses to start while another grading of the same Attempt is running,
+ * so a repeat that does land early costs one request rather than a second
+ * grading; this wait is what keeps that from being the ordinary path.
  */
-const RETRY_ASK_MS = 20000;
+const RETRY_ASK_MS = 120000;
 
 interface SectionReportProps {
   assignmentId: string;

@@ -69,7 +69,10 @@ misremembered.
 **An abandoned run still leaves `in_progress` behind.** Not fixed here, and no
 longer harmful: `status` is advisory (ADR 0019) and nothing now reads it as
 "resume into a live recording". A run that is never finished is simply never
-graded.
+graded. (Superseded on this point by ADR 0027: starting again from the library
+marked the old run `completed`, which is exactly what gets graded. It is now
+marked `abandoned`, and the grader refuses a run that does not cover its
+section.)
 
 ## Alternatives considered
 

@@ -120,6 +120,16 @@ describe("what she sees while working", () => {
     expect(screen.getByText(/25:00/)).toBeInTheDocument();
     expect(document.body.textContent).not.toMatch(/-\d+:\d\d/);
   });
+
+  it("actually counts once the ready beat is over", async () => {
+    // The ticker was started in an effect that ran once, during the beat, and
+    // returned early; nothing re-ran it when the beat ended. Every run of the
+    // 2026-09-03 audit read 0:00 at minute 46. Real timers here, because the
+    // effect and the interval both have to fire on their own.
+    renderRun({ readySeconds: 1 });
+    await vi.waitFor(() => expect(screen.queryByText("0:00")).not.toBeInTheDocument(), { timeout: 4000 });
+    await vi.waitFor(() => expect(screen.getByText(/^0:0[1-9]$/)).toBeInTheDocument(), { timeout: 4000 });
+  }, 10000);
 });
 
 describe("The Recall", () => {
@@ -273,9 +283,12 @@ describe("writing it down", () => {
     expect(rows).toHaveLength(1);
     expect(rows[0].assignment_id).toBe("a1");
     expect(rows[0].item_order).toBe(ONE.items[0].order);
-    // Nothing was transcribed, and an empty string here would record silence
-    // where the truth is "not captured".
-    expect(rows[0].response_text).toBeNull();
+    // Nothing was transcribed. The column is NOT NULL, so a null here is not
+    // "not captured", it is a row Postgres refuses -- and on Safari and
+    // Firefox, which have no SpeechRecognition, that was every row of every
+    // run. "Not captured" lives in `transcript_source`, which stays null.
+    expect(rows[0].response_text).toBe("");
+    expect((rows[0].rrc as Record<string, unknown>).transcript_source).toBeNull();
 
     const rrc = rows[0].rrc as Record<string, unknown>;
     expect(rrc.mode).toBe("section");

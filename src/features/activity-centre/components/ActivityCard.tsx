@@ -7,6 +7,7 @@ const STATUS_LABEL: Record<ActivityAssignmentSummary["status"], string> = {
   assigned: "Not started",
   in_progress: "In progress",
   completed: "Completed",
+  abandoned: "Not finished",
 };
 
 interface ActivityCardProps {

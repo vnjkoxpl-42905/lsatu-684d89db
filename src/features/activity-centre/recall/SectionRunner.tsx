@@ -323,11 +323,17 @@ function RunBody({
     return () => clearTimeout(t);
   }, [countdown, now]);
 
+  /*
+   * `countdown` is a dependency on purpose. This effect returns early during
+   * the beat, so the ticker can only start when the beat ends -- and the beat
+   * ending is a change to `countdown`. Without it the effect ran once, at
+   * mount, and the clock read 0:00 for the whole of every run.
+   */
   useEffect(() => {
     if (done || countdown !== null) return;
     const tick = setInterval(() => setElapsed(seconds(startedAt.current)), 1000);
     return () => clearInterval(tick);
-  }, [done, seconds]);
+  }, [countdown, done, seconds]);
 
   /*
    * Hold the app still for the length of the run.
@@ -475,7 +481,14 @@ function RunBody({
         assignment_id: assignmentId,
         student_id: studentId,
         item_order: r.order,
-        response_text: sliceTranscript(said, segments).join(" ").trim() || null,
+        /*
+         * Empty, never null. The column is NOT NULL and an explicit null bypasses
+         * its default, so a stimulus the recogniser heard nothing in was a row
+         * Postgres refused -- and a browser with no SpeechRecognition at all
+         * (Safari, Firefox) could not save a single one. "Not captured" is
+         * `transcript_source: null` below; this field is only ever the words.
+         */
+        response_text: sliceTranscript(said, segments).join(" ").trim(),
         attempt_no: attemptNo.current ?? 1,
         rrc: {
           mode: "section",

@@ -20,6 +20,7 @@ const STATUS_META: Record<ActivityAssignment["status"], { label: string; cls: st
   assigned: { label: "Not started", cls: "text-zinc-400" },
   in_progress: { label: "In progress", cls: "text-amber-300" },
   completed: { label: "Completed", cls: "text-emerald-300" },
+  abandoned: { label: "Not finished", cls: "text-zinc-400" },
 };
 
 const VERDICT_META: Record<string, { label: string; cls: string }> = {

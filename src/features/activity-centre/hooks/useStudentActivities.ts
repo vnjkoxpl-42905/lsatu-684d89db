@@ -47,6 +47,7 @@ const STATUS_ORDER: Record<ActivityStatus, number> = {
   in_progress: 0,
   assigned: 1,
   completed: 2,
+  abandoned: 3,
 };
 
 /** Student-side list of my activity assignments, sorted by status then recency. */

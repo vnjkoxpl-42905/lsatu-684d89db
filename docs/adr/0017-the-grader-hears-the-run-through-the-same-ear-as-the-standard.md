@@ -24,10 +24,11 @@ The cheap move is to grade the text that is already there. Three things rule it
 out.
 
 `SpeechRecognition` is a Chrome interface. In Safari and Firefox it does not
-exist, `said` is empty, and the writer stores `response_text: null` with
-`transcript_source: null`. The section still records audio, still writes its
-row, and produces no text to grade — a silent, browser-dependent hole rather
-than an error.
+exist, `said` is empty, and the writer stores `response_text: ""` with
+`transcript_source: null` (it stored `null` until ADR 0027, and a null in a
+NOT NULL column meant the row was never saved at all). The section still
+records audio, still writes its row, and produces no text to grade — a silent,
+browser-dependent hole rather than an error.
 
 It carries no usable timing. Dead air is a graded criterion and it is only
 meaningful inside The Recall, where silence is unambiguously a failure rather

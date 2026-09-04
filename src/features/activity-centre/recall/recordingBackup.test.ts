@@ -5,6 +5,8 @@ import {
   beginBackup,
   discard,
   isActive,
+  isLive,
+  LIVE_GRACE_MS,
   listPendingRuns,
   putChunk,
   purgeStale,
@@ -136,5 +138,37 @@ describe("the run happening right now", () => {
     expect(isActive(RUN.runId)).toBe(true);
     await discard(RUN.runId);
     expect(isActive(RUN.runId)).toBe(false);
+  });
+});
+
+describe("a run that is still being recorded", () => {
+  it("is live in storage, not only in this tab's memory", async () => {
+    // `isActive` is a Set in this module, which is to say per tab. Opening any
+    // other section page in a second tab ran recovery there, found this run
+    // pending, uploaded its first minutes over its own path and discarded its
+    // backup. The 2026-09-03 audit did exactly that at minute 2:30 of a live
+    // run. The record itself has to say it is live, so every tab can see it.
+    await beginBackup(RUN);
+    const [run] = await listPendingRuns();
+    expect(isLive(run, Date.now())).toBe(true);
+  });
+
+  it("stays live for as long as pieces keep arriving, and no longer", async () => {
+    const t0 = Date.now();
+    await beginBackup({ ...RUN, startedAt: t0 });
+    // Nothing for a long while: a crashed tab, which is what recovery is for.
+    expect(isLive((await listPendingRuns())[0], t0 + LIVE_GRACE_MS + 1)).toBe(false);
+    // A piece just landed: the tab is alive and the run is hers, whatever the
+    // clock since it started says.
+    await putChunk(RUN.runId, 0, piece(0));
+    const run = (await listPendingRuns())[0];
+    expect(isLive(run, Date.now() + LIVE_GRACE_MS - 1000)).toBe(true);
+    expect(isLive(run, Date.now() + LIVE_GRACE_MS + 1000)).toBe(false);
+  });
+
+  it("treats a record from before the marker existed as not live", () => {
+    // Written by an older build. There is no way to know, and a run that is
+    // pending with no tab claiming it is the case recovery exists for.
+    expect(isLive({ ...RUN }, Date.now())).toBe(false);
   });
 });

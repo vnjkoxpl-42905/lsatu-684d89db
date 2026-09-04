@@ -96,10 +96,16 @@ describe("waiting for the Report Card", () => {
     // Losing the runner's fire-and-forget ask is the likeliest way a finished
     // run ends up with no Report Card. This screen repairs that itself.
     expect(requestSectionGrading).not.toHaveBeenCalled();
-    await vi.advanceTimersByTimeAsync(30000);
+    // Not before the first ask could have finished. At 20 seconds the repeat
+    // arrived while the first grading was still running, and both ran: two
+    // transcriptions, two sets of verdicts, and a card that disagreed with the
+    // database. A real grading takes one to three minutes.
+    await vi.advanceTimersByTimeAsync(60000);
+    expect(requestSectionGrading).not.toHaveBeenCalled();
+    await vi.advanceTimersByTimeAsync(70000);
     expect(requestSectionGrading).toHaveBeenCalledTimes(1);
 
-    await vi.advanceTimersByTimeAsync(60000);
+    await vi.advanceTimersByTimeAsync(40000);
     expect(requestSectionGrading).toHaveBeenCalledTimes(1);
   });
 

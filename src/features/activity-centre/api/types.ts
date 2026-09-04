@@ -26,7 +26,12 @@ export type JudgeSource = "fast-path" | "coach" | "fallback";
  * had no basis for.
  */
 export type FeedbackState = Verdict | "unchecked";
-export type ActivityStatus = "assigned" | "in_progress" | "completed";
+/**
+ * `abandoned` is a Read, Recall, Colour section she started again from the
+ * library without finishing. Its rows are kept and it is never graded; it is
+ * not `completed`, because completed with rows is exactly what gets graded.
+ */
+export type ActivityStatus = "assigned" | "in_progress" | "completed" | "abandoned";
 /**
  * How a student answers an Activity's items.
  *

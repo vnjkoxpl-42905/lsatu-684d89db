@@ -180,8 +180,38 @@ async function judge(prompt: string): Promise<string> {
   return body?.choices?.[0]?.message?.content ?? "";
 }
 
+/**
+ * How long a claim on an Attempt's grading is honoured with no release.
+ *
+ * A grading that dies mid-way never releases its claim. Longer than any grading
+ * has taken (the slowest observed was 163 seconds) and no longer than the
+ * sweeper's grace, so a dead claim is out of the way by the time the sweeper
+ * comes for the run it was on.
+ */
+const CLAIM_STALE_SECONDS = 600;
+
+/**
+ * The least share of transcribed words that must fall inside a recorded
+ * window for the clock proof to pass.
+ *
+ * The windows partition the run, so on a sound recording nearly every word is
+ * inside one. A recording recovered from a crash was graded with 44% inside:
+ * the file and the stamps disagreed by 22 seconds and every stimulus was
+ * scored against the wrong words. Zero inside was the only refusal before.
+ */
+const CLOCK_MIN_SHARE_IN_WINDOW = 0.5;
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+
+  /*
+   * The claim this request holds on an Attempt's grading, if any.
+   *
+   * Released in `finally`, whatever happens after it is taken: a grading that
+   * returns early, throws, or finishes all let go of the Attempt, and one that
+   * dies without reaching `finally` is let go of by the claim going stale.
+   */
+  let release: (() => Promise<void>) | null = null;
 
   try {
     const auth = req.headers.get("Authorization");
@@ -294,6 +324,64 @@ serve(async (req) => {
       return json({ status: "already-graded", ...summary });
     }
 
+    /*
+     * Only a whole section is graded.
+     *
+     * Rows are written as stimuli finish, so a run abandoned at stimulus 3 has
+     * rows, and grading them produced a Report Card that read "0%, 2 stimuli,
+     * inside the time" and numbered them 1 and 2. The section is the unit of
+     * work (ADR 0010); a run that does not cover it is not a run. Refused
+     * rather than marked partial, because ADR 0021's partial grade is the judge
+     * failing on a complete recording, which is a different thing.
+     */
+    const expectedSlugs = new Set(
+      ((assignment.items ?? []) as Record<string, unknown>[]).map((i) => String(i.slug)),
+    );
+    const coveredSlugs = new Set(
+      responses
+        .map((r) => String((r.rrc as Record<string, unknown>)?.slug ?? ""))
+        .filter((slug) => expectedSlugs.has(slug)),
+    );
+    if (expectedSlugs.size > 0 && coveredSlugs.size < expectedSlugs.size) {
+      return json(
+        {
+          error: "this run does not cover the section",
+          attempt,
+          stimuli_recorded: coveredSlugs.size,
+          stimuli_in_section: expectedSlugs.size,
+        },
+        409,
+      );
+    }
+
+    /*
+     * One grading per Attempt at a time.
+     *
+     * The runner asks for a grade as she finishes and the Report Card asks
+     * again while it waits. A grading takes a minute or more and nothing was on
+     * record until it wrote, so the second ask found no grade and ran too: two
+     * transcriptions, two sets of verdicts on the same audio, and a card that
+     * showed the first while the database kept the second. The claim is one
+     * insert, so two asks arriving together cannot both take it. The loser is
+     * told a grading is running, which the Report Card treats exactly like an
+     * ask it sent: it keeps polling for the row.
+     */
+    const { data: claimed, error: cErr } = await admin.rpc("claim_section_grading", {
+      p_assignment_id: assignmentId,
+      p_attempt_no: attempt,
+      p_stale_seconds: CLAIM_STALE_SECONDS,
+    });
+    if (cErr) throw cErr;
+    if (!claimed) return json({ status: "grading", attempt }, 202);
+    release = async () => {
+      const { error } = await admin.rpc("release_section_grading", {
+        p_assignment_id: assignmentId,
+        p_attempt_no: attempt,
+      });
+      // Not fatal: an unreleased claim goes stale on its own.
+      if (error) console.error("[grade-rrc-section] could not release the grading claim", error);
+    };
+
     const first = responses[0].rrc as Record<string, unknown>;
     const audioPath = first?.audio_path as string | null;
     if (!audioPath) return json({ error: "this run has no recording" }, 409);
@@ -329,6 +417,12 @@ serve(async (req) => {
     };
     if (words.length > 0 && inAnyWindow === 0) {
       return json({ error: "clock mismatch: no transcribed word falls inside any recorded window", clock }, 422);
+    }
+    if (words.length > 0 && inAnyWindow / words.length < CLOCK_MIN_SHARE_IN_WINDOW) {
+      return json(
+        { error: "clock mismatch: too few transcribed words fall inside the recorded windows", clock },
+        422,
+      );
     }
 
     const items = (assignment.items ?? []) as Record<string, unknown>[];
@@ -683,5 +777,7 @@ serve(async (req) => {
   } catch (e) {
     console.error("[grade-rrc-section]", e);
     return json({ error: (e as Error).message }, 500);
+  } finally {
+    if (release) await release();
   }
 });

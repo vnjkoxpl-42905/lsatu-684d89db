@@ -180,8 +180,39 @@ Deno.serve(async (req) => {
     // is most likely to have come back for.
     candidates.sort((x, y) => String(x.since ?? "").localeCompare(String(y.since ?? "")));
 
+    /*
+     * Only a run that covers its section can be graded.
+     *
+     * The grader refuses one that does not, so without this check a run that
+     * lost rows would be re-driven every sweep for ever, each time to be told
+     * so. Asked of a short list of candidates only: the snapshot is the whole
+     * section's text and is not worth reading for five hundred rows.
+     */
+    const countFor = new Map<string, number>();
+    for (const r of responded ?? []) {
+      const key = `${r.assignment_id as string}:${Number(r.attempt_no ?? 1)}`;
+      countFor.set(key, (countFor.get(key) ?? 0) + 1);
+    }
+    const shortlist = candidates.slice(0, MAX_PER_RUN * 2);
+    const { data: snapshots, error: sErr } = await admin
+      .from("activity_assignments")
+      .select("id, items")
+      .in("id", shortlist.map((c) => c.id));
+    if (sErr) throw sErr;
+    const sizeFor = new Map((snapshots ?? []).map((a) => [a.id as string, ((a.items ?? []) as unknown[]).length]));
+    const skipped: { assignment_id: string; reason: string }[] = [];
+    const whole = shortlist.filter((c) => {
+      const need = sizeFor.get(c.id) ?? 0;
+      const have = countFor.get(`${c.id}:${c.attempt}`) ?? 0;
+      if (need > 0 && have < need) {
+        skipped.push({ assignment_id: c.id, reason: `incomplete:${have}/${need}` });
+        return false;
+      }
+      return true;
+    });
+
     const swept: { assignment_id: string; reason: string; outcome: string }[] = [];
-    for (const candidate of candidates.slice(0, MAX_PER_RUN)) {
+    for (const candidate of whole.slice(0, MAX_PER_RUN)) {
       try {
         /*
          * Called over HTTP rather than by importing the grader, so there is one
@@ -222,7 +253,10 @@ Deno.serve(async (req) => {
       considered: candidates.length,
       // What is left for the next sweep, so a growing backlog is visible in the
       // scheduler's own logs rather than only in the table.
-      deferred: Math.max(0, candidates.length - swept.length),
+      deferred: Math.max(0, candidates.length - swept.length - skipped.length),
+      // Runs that do not cover their section. Not deferred: no sweep will
+      // ever grade them, and a growing list here is a runner losing rows.
+      skipped,
       swept,
     });
   } catch (error) {

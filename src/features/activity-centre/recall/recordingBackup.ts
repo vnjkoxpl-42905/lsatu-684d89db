@@ -65,6 +65,33 @@ export interface BackupRun {
   bucket: string;
   mimeType: string;
   startedAt: number;
+  /**
+   * Until when this run should be assumed to still be recording.
+   *
+   * Set when the run is announced and pushed forward by every piece written,
+   * so it is a heartbeat rather than a guess about how long a section lasts.
+   * It lives in the record, not in memory, because memory is per tab: a second
+   * tab that opened any section page mid-run found this record pending, saw no
+   * tab of its own claiming it, uploaded the first minutes over the run's own
+   * path and threw the backup away. Absent on records from before it existed,
+   * which read as not live.
+   */
+  liveUntil?: number;
+}
+
+/**
+ * How long after the last piece a run is still treated as live.
+ *
+ * Pieces arrive every few seconds while a tab is recording, so a minute of
+ * silence is a tab that has gone: crashed, closed, or a laptop lid. Long enough
+ * that a stall in writing never lets another tab steal the run; short enough
+ * that a real crash is recoverable on the next open rather than tomorrow.
+ */
+export const LIVE_GRACE_MS = 60 * 1000;
+
+/** True if the record says some tab was still recording this run at `now`. */
+export function isLive(run: BackupRun, now = Date.now()): boolean {
+  return typeof run.liveUntil === "number" && run.liveUntil > now;
 }
 
 interface Chunk {
@@ -156,7 +183,7 @@ export async function beginBackup(run: BackupRun): Promise<void> {
   active.add(run.runId);
   if (!available()) return;
   try {
-    await (await db()).put(RUNS, run);
+    await (await db()).put(RUNS, { liveUntil: Date.now() + LIVE_GRACE_MS, ...run });
   } catch (e) {
     console.error("[rrc] could not open the local recording backup", e);
   }
@@ -173,7 +200,12 @@ export async function putChunk(runId: string, seq: number, blob: Blob): Promise<
         seq,
         bytes: await toArrayBuffer(blob),
       };
-      await (await db()).put(CHUNKS, chunk);
+      const instance = await db();
+      await instance.put(CHUNKS, chunk);
+      // The heartbeat. A piece just landed, so whoever is recording this run
+      // is still here; say so where every tab can read it.
+      const run = (await instance.get(RUNS, runId)) as BackupRun | undefined;
+      if (run) await instance.put(RUNS, { ...run, liveUntil: Date.now() + LIVE_GRACE_MS });
     } catch (e) {
       // A full disk or a private window. The run continues; the primary
       // recording is unaffected and is still the real one.
