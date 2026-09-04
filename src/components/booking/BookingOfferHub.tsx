@@ -138,11 +138,16 @@ export default function BookingOfferHub({
                     : "border-t border-border p-5 @[40rem]:border-l @[40rem]:border-t-0")
               }
             >
-              <div className="flex items-center gap-2 text-sm font-semibold">
+              <div className="flex flex-wrap items-center gap-2 text-sm font-semibold">
                 {isSingle
                   ? <CalendarDays className={demoted ? "h-4 w-4 text-muted-foreground" : "h-4 w-4 text-primary"} />
                   : <PackagePlus className={demoted ? "h-4 w-4 text-muted-foreground" : "h-4 w-4 text-primary"} />}
                 {offer.label}
+                {priceFor(offer) ? (
+                  <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                    {priceFor(offer)}
+                  </span>
+                ) : null}
               </div>
               {demoted ? null : (
                 <p className="mt-2 text-xs leading-5 text-muted-foreground">
@@ -159,11 +164,17 @@ export default function BookingOfferHub({
                 {isNative ? <Link to={offer.url} onClick={() => logOfferClick(offer.id)}>
                   <CalendarDays className="mr-1.5 h-4 w-4" />
                   Book one session
-                </Link> : <a href={offer.url} onClick={() => logOfferClick(offer.id)}>
+                </Link> : <a
+                  href={offer.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => logOfferClick(offer.id)}
+                >
                   <ExternalLink className="mr-1.5 h-4 w-4" />
-                  {isSingle ? "Book one session" : `Buy ${offer.label}`}
+                  {isSingle ? "Book and pay for one session" : `Buy ${offer.label}`}
                 </a>}
               </Button>
+
             </div>
           );
         })}
