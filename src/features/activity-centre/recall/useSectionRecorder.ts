@@ -168,10 +168,18 @@ export function useSectionRecorder(
   const [recording, setRecording] = useState(false);
 
   /**
-   * Ask for the microphone and start. Resolves either way: a refused or missing
-   * microphone must not stop the drill, because the drill is still valid run
-   * against a handheld recorder. It only has to say so, since silence and a
-   * dead input are indistinguishable from her side.
+   * Ask for the microphone and start. Resolves either way, and reports the
+   * refusal rather than throwing it.
+   *
+   * This used to say that a refused microphone must not stop the drill, because
+   * the sitting is still valid against a handheld recorder. It is not: the
+   * grader refuses a run with no recording, and no handheld file has any way to
+   * reach the assignment. The runner now treats a reported refusal as a gate on
+   * the ready beat (ADR 0029), so what this returns decides whether a section
+   * begins at all.
+   *
+   * Safe to call again after a failure, and only after one: nothing has been
+   * opened, so there is no recorder to restart.
    */
   const start = useCallback(async () => {
     if (recorder.current) return;

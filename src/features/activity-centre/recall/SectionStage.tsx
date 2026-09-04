@@ -70,6 +70,13 @@ export interface SectionStageProps {
    */
   onDeadInput?: (dead: boolean) => void;
   /**
+   * The microphone was refused or is missing. The ready beat holds here rather
+   * than counting down into a spoken run that has nothing to mark at the end.
+   */
+  micRefused?: boolean;
+  /** Ask for the microphone again, from the beat, before anything has started. */
+  onRetryMic?: () => void;
+  /**
    * Leaving is confirmed rather than done, because a half-finished section
    * writes nothing by design and the button is on screen for the whole run.
    */
@@ -123,6 +130,8 @@ export function SectionStage({
   goalMinutes,
   getStream,
   onDeadInput,
+  micRefused,
+  onRetryMic,
   confirmingExit,
   onConfirmExit,
   onCancelExit,
@@ -214,15 +223,48 @@ export function SectionStage({
              * readable would be a section she had begun reading before the
              * recording was worth anything.
              */
-            <div className="ac-section-ready">
-              <p className="ac-section-ready-title">Recording now</p>
-              <p className="ac-section-ready-body">
-                One take, all the way through, out loud. Space twice per stimulus: once when you
-                have read it and said it back, once when you have given your Read.
-              </p>
-              <span className="ac-section-ready-count">
-                {countdown > 0 ? `Starting in ${countdown}` : "Starting"}
-              </span>
+            <div className="ac-section-ready" data-mic={micRefused ? "refused" : "live"}>
+              {micRefused ? (
+                /*
+                 * The heading is the fault, not a claim the screen cannot back.
+                 *
+                 * It said "Recording now" while the footer said nothing was
+                 * being recorded, and then counted down into twenty-five
+                 * minutes of spoken work that the grader refuses for having no
+                 * recording. The consequence is the thing she needs, so the
+                 * consequence is what it says, and the two ways forward are
+                 * both here rather than neither.
+                 */
+                <>
+                  <p className="ac-section-ready-title">No microphone.</p>
+                  <p className="ac-section-ready-body">
+                    This drill is spoken all the way through, so without one there is nothing to
+                    mark at the end. Allow the microphone for this site in your browser, then ask
+                    again. Nothing has started, and your time has not begun.
+                  </p>
+                  <div className="ac-section-ready-actions">
+                    <button type="button" className="ac-section-ready-retry" onClick={onRetryMic}>
+                      Ask again
+                    </button>
+                    {onExit && (
+                      <button type="button" className="ac-section-ready-leave" onClick={onExit}>
+                        Leave this section
+                      </button>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="ac-section-ready-title">Recording now</p>
+                  <p className="ac-section-ready-body">
+                    One take, all the way through, out loud. Space twice per stimulus: once when
+                    you have read it and said it back, once when you have given your Read.
+                  </p>
+                  <span className="ac-section-ready-count">
+                    {countdown > 0 ? `Starting in ${countdown}` : "Starting"}
+                  </span>
+                </>
+              )}
             </div>
           ) : (
             <div className="ac-section-body">
@@ -249,7 +291,11 @@ export function SectionStage({
               What she is doing sits left, the one key that does it sits right. */}
           <div className="ac-section-foot">
             <p className="ac-section-instruction" role="status">
-              {countdown !== null ? "Say something to check your microphone." : INSTRUCTION[phase]}
+              {countdown !== null
+                ? micRefused
+                  ? "The section has not started."
+                  : "Say something to check your microphone."
+                : INSTRUCTION[phase]}
               {getStream ? (
                 <VoiceLevel getStream={getStream} phase={phase} onDeadInput={onDeadInput} />
               ) : null}
@@ -266,7 +312,12 @@ export function SectionStage({
                 </p>
               ) : null}
               <p className="ac-section-hint">
-                <kbd>space</kbd> {countdown !== null ? "in a moment" : KEY_DOES[phase]}
+                <kbd>space</kbd>{" "}
+                {countdown !== null
+                  ? micRefused
+                    ? "once the microphone is on"
+                    : "in a moment"
+                  : KEY_DOES[phase]}
               </p>
             </div>
           </div>

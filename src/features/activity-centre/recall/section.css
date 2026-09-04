@@ -437,6 +437,54 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* The refused microphone reads as a fault rather than as a beat, so the heading
+   takes the warning colour the footer uses for the same class of thing. */
+.ac-section-ready[data-mic="refused"] .ac-section-ready-title {
+  color: var(--sec-warn);
+}
+
+/* Two ways forward, neither of which existed. Asking again leads, because it is
+   the one that keeps the section. */
+.ac-section-ready-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ac-section-ready-retry,
+.ac-section-ready-leave {
+  border-radius: 9999px;
+  padding: 0.4rem 1.1rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.ac-section-ready-retry {
+  border: 1px solid var(--sec-ink);
+  background: var(--sec-ink);
+  color: var(--sec-paper);
+}
+
+.ac-section-ready-retry:hover {
+  background: var(--sec-chrome);
+  border-color: var(--sec-chrome);
+}
+
+.ac-section-ready-leave {
+  border: 1px solid var(--sec-rule);
+  background: none;
+  color: var(--sec-chrome);
+}
+
+.ac-section-ready-leave:hover {
+  background: #f1f5f9;
+  color: var(--sec-ink);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ac-section-level-fill {
     transition: none;

@@ -251,9 +251,20 @@ function RunBody({
     mark,
     stop: stopRecording,
     error: micError,
+    recording,
     getStream,
     getMimeType,
   } = useSectionRecorder(now, keepChunk);
+  /**
+   * The microphone said no, and this drill is only spoken.
+   *
+   * The beat used to count down through it into a full 26-stimulus run that
+   * the grader would refuse for having no recording, under a heading that said
+   * "Recording now" while the footer said nothing was being recorded. Every
+   * one of those minutes was spent for nothing, and there was no way to ask
+   * again and no way to stop before the clock started.
+   */
+  const micRefused = micError !== null;
   // Runs for the whole section, alongside the recording rather than instead of
   // it. The audio file stays the primary record.
   const { transcript } = useSectionTranscript(!done, now);
@@ -342,6 +353,17 @@ function RunBody({
    */
   useEffect(() => {
     if (countdown === null) return;
+    /*
+     * The beat is also the gate.
+     *
+     * `getUserMedia` is a prompt she has to answer, and answering it can take
+     * longer than three seconds, so a beat that ticks regardless would start
+     * the section before the microphone had said anything at all. It waits for
+     * an answer, and if the answer is no it holds here rather than spending
+     * twenty-five unrepeatable minutes on a run nothing can mark.
+     */
+    if (!recording && !micRefused) return;
+    if (micRefused) return;
     if (countdown <= 0) {
       startedAt.current = now();
       phaseStartedAt.current = startedAt.current;
@@ -351,7 +373,7 @@ function RunBody({
     }
     const t = setTimeout(() => setCountdown((n) => (n === null ? null : n - 1)), 1000);
     return () => clearTimeout(t);
-  }, [countdown, now]);
+  }, [countdown, now, recording, micRefused]);
 
   /*
    * `countdown` is a dependency on purpose. This effect returns early during
@@ -884,16 +906,22 @@ function RunBody({
        * zeros.
        */
       error={
-        micError ??
-        (deadInput
-          ? "Nothing is reaching the microphone. Check it is not muted, then keep going."
-          : null)
+        // While the beat is held on a refusal, the panel is already saying it
+        // in full. Repeating it in the footer is not emphasis, it is noise.
+        countdown !== null && micRefused
+          ? null
+          : (micError ??
+            (deadInput
+              ? "Nothing is reaching the microphone. Check it is not muted, then keep going."
+              : null))
       }
       onExit={onExit ? askToExit : undefined}
       elapsedSeconds={countdown === null ? elapsed : 0}
       goalMinutes={run.timeGoalMinutes[accommodation]}
       getStream={getStream}
       onDeadInput={setDeadInput}
+      micRefused={micRefused}
+      onRetryMic={startRecording}
       confirmingExit={confirmingExit}
       onConfirmExit={onExit}
       onCancelExit={() => setConfirmingExit(false)}

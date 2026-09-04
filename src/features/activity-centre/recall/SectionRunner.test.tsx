@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import pt105 from "../content/read-recall-colour-pt105-s2.json";
 import pt134 from "../content/read-recall-colour-pt134-s3.json";
 import { SectionRunner } from "./SectionRunner";
@@ -41,12 +41,56 @@ vi.mock("@/integrations/supabase/client", () => ({
 }));
 
 /**
- * jsdom has no `navigator.mediaDevices`, so the recorder takes its own
- * refused-microphone path and captures nothing. That is the case worth having
- * as the default here: the drill has to run to the end and still write its
- * timings when there is no microphone, because she may well be recording on a
- * handheld instead.
+ * A microphone that works, because a section without one no longer runs.
+ *
+ * jsdom has neither `navigator.mediaDevices` nor `MediaRecorder`, so every test
+ * in this file used to take the recorder's refused-microphone path -- which was
+ * the wrong default even before it stopped working. The drill is spoken end to
+ * end and the grader refuses a run with no recording, so the ready beat now
+ * holds rather than counting down into twenty-five minutes nothing can mark.
+ * The beat holding without a microphone is asserted on its own, below.
  */
+class FakeRecorder {
+  static isTypeSupported = () => true;
+  ondataavailable: ((e: { data: Blob }) => void) | null = null;
+  onstop: (() => void) | null = null;
+  state = "inactive";
+  constructor(
+    _stream: MediaStream,
+    readonly options?: { mimeType?: string },
+  ) {}
+  get mimeType() {
+    return this.options?.mimeType ?? "audio/webm";
+  }
+  start() {
+    this.state = "recording";
+  }
+  stop() {
+    this.state = "inactive";
+    this.ondataavailable?.({ data: new Blob(["x"], { type: this.mimeType }) });
+    this.onstop?.();
+  }
+}
+
+/** Granted, unless a test says otherwise. */
+function grantMicrophone() {
+  const stream = { getTracks: () => [{ stop: () => {} }] } as unknown as MediaStream;
+  vi.stubGlobal("MediaRecorder", FakeRecorder);
+  Object.defineProperty(navigator, "mediaDevices", {
+    configurable: true,
+    value: { getUserMedia: vi.fn(() => Promise.resolve(stream)) },
+  });
+}
+
+/** Refused, the way a browser refuses it. */
+function refuseMicrophone() {
+  vi.stubGlobal("MediaRecorder", FakeRecorder);
+  const denied = Object.assign(new Error("denied"), { name: "NotAllowedError" });
+  Object.defineProperty(navigator, "mediaDevices", {
+    configurable: true,
+    value: { getUserMedia: vi.fn(() => Promise.reject(denied)) },
+  });
+}
 
 /** One stimulus, so a full run is two presses. */
 const ONE = { ...pt105, items: [pt105.items[0]] };
@@ -56,7 +100,7 @@ const TWO = { ...pt105, items: pt105.items.slice(0, 2) };
 const TWENTY_SIX = pt134;
 const CHUNKS = ONE.items[0].chunks;
 
-function renderRun(overrides: Partial<Parameters<typeof SectionRunner>[0]> = {}) {
+async function renderRun(overrides: Partial<Parameters<typeof SectionRunner>[0]> = {}) {
   const onComplete = vi.fn();
   const view = render(
     <SectionRunner
@@ -73,6 +117,10 @@ function renderRun(overrides: Partial<Parameters<typeof SectionRunner>[0]> = {})
       {...overrides}
     />,
   );
+  // The microphone is asked for on mount and answers in a microtask. The ready
+  // beat waits for that answer now, so a test that pressed Space before it
+  // arrived would be pressing at a held beat rather than at stimulus one.
+  await act(async () => {});
   return { ...view, onComplete };
 }
 
@@ -82,6 +130,7 @@ const finish = (count: number) => {
 };
 
 beforeEach(() => {
+  grantMicrophone();
   upsert.mockClear();
   attemptRows.data = [];
   upload.mockClear();
@@ -90,8 +139,8 @@ beforeEach(() => {
 });
 
 describe("what she sees while working", () => {
-  it("puts the whole stimulus on screen from the first frame", () => {
-    renderRun();
+  it("puts the whole stimulus on screen from the first frame", async () => {
+    await renderRun();
     // Full stimulus, no cursor, no rail: she reads, recalls and colours in
     // whatever units she likes, and the screen does not mark where she is.
     for (const chunk of CHUNKS) {
@@ -99,8 +148,8 @@ describe("what she sees while working", () => {
     }
   });
 
-  it("marks no chunk as current, done, or upcoming", () => {
-    renderRun();
+  it("marks no chunk as current, done, or upcoming", async () => {
+    await renderRun();
     // A place marker would be the chunk cursor coming back as styling. The
     // grain is hers, so no chunk is treated differently from any other.
     const marked = document.querySelectorAll(
@@ -109,19 +158,19 @@ describe("what she sees while working", () => {
     expect(marked).toHaveLength(0);
   });
 
-  it("never tells her she read aloud", () => {
-    renderRun();
+  it("never tells her she read aloud", async () => {
+    await renderRun();
     expect(screen.getByText(/say it back/i)).toBeInTheDocument();
   });
 
-  it("shows elapsed time against her goal, counting up", () => {
+  it("shows elapsed time against her goal, counting up", async () => {
     // This screen carried no clock at all, on the reasoning that a running
     // clock produces the rushed reading the drill treats. Joshua overruled it:
     // the drill is timed and she cannot pace 25 minutes blind. Counting UP is
     // the part that matters -- a number falling towards zero is the version
     // that was rejected, and a countdown here would be a regression, not a
     // restyle.
-    renderRun();
+    await renderRun();
     expect(screen.getByText("0:00")).toBeInTheDocument();
     expect(screen.getByText(/25:00/)).toBeInTheDocument();
     expect(document.body.textContent).not.toMatch(/-\d+:\d\d/);
@@ -132,15 +181,15 @@ describe("what she sees while working", () => {
     // returned early; nothing re-ran it when the beat ended. Every run of the
     // 2026-09-03 audit read 0:00 at minute 46. Real timers here, because the
     // effect and the interval both have to fire on their own.
-    renderRun({ readySeconds: 1 });
+    await renderRun({ readySeconds: 1 });
     await vi.waitFor(() => expect(screen.queryByText("0:00")).not.toBeInTheDocument(), { timeout: 4000 });
     await vi.waitFor(() => expect(screen.getByText(/^0:0[1-9]$/)).toBeInTheDocument(), { timeout: 4000 });
   }, 10000);
 });
 
 describe("The Recall", () => {
-  it("removes the text on the first press, entirely", () => {
-    renderRun();
+  it("removes the text on the first press, entirely", async () => {
+    await renderRun();
     space();
     // The text vanishes and she says the whole argument back from memory.
     // Truly gone, not hidden: a chunk left in the DOM would be read back to a
@@ -151,7 +200,7 @@ describe("The Recall", () => {
     expect(screen.getByText(/from memory/i)).toBeInTheDocument();
   });
 
-  it("does not bring a finished stimulus back", () => {
+  it("does not bring a finished stimulus back", async () => {
     render(
       <SectionRunner
         assignmentId="a1"
@@ -162,6 +211,7 @@ describe("The Recall", () => {
         readySeconds={0}
       />,
     );
+    await act(async () => {});
     space();
     space();
     // Nothing is revisitable until the Report Card. The second press loads the
@@ -176,8 +226,8 @@ describe("The Recall", () => {
 });
 
 describe("what she never sees", () => {
-  it("judges nothing and shows no verdict at any point in the run", () => {
-    renderRun();
+  it("judges nothing and shows no verdict at any point in the run", async () => {
+    await renderRun();
     for (let i = 0; i < 2; i++) {
       // A live verdict trains her to vet before speaking, which is the exact
       // habit colouring exists to break.
@@ -186,8 +236,8 @@ describe("what she never sees", () => {
     }
   });
 
-  it("shows her no Detail list, which is the answer key", () => {
-    renderRun();
+  it("shows her no Detail list, which is the answer key", async () => {
+    await renderRun();
     const details = CHUNKS.flatMap((c) => c.details.map((d) => d.text));
     for (let i = 0; i < 2; i++) {
       for (const detail of details) {
@@ -197,8 +247,8 @@ describe("what she never sees", () => {
     }
   });
 
-  it("shows her no captured takeaway, which stays unused on purpose", () => {
-    renderRun();
+  it("shows her no captured takeaway, which stays unused on purpose", async () => {
+    await renderRun();
     // The captured key is wired to nothing (ADR 0012). Rendering it would be
     // the accidental version of turning the takeaway back on.
     for (let i = 0; i < 2; i++) {
@@ -209,8 +259,8 @@ describe("what she never sees", () => {
 });
 
 describe("writing it down", () => {
-  it("writes nothing until the section is over", () => {
-    renderRun();
+  it("writes nothing until the section is over", async () => {
+    await renderRun();
     // A dropped connection must not be able to stall her mid-section, so there
     // is no network call inside the loop at all.
     space();
@@ -218,7 +268,7 @@ describe("writing it down", () => {
   });
 
   it("asks the server to grade the run, without waiting on it", async () => {
-    renderRun();
+    await renderRun();
     space();
     space();
 
@@ -231,7 +281,7 @@ describe("writing it down", () => {
   });
 
   it("marks the assignment completed at the end", async () => {
-    renderRun();
+    await renderRun();
     space();
     space();
 
@@ -245,7 +295,7 @@ describe("writing it down", () => {
   });
 
   it("closes the run without claiming a score", async () => {
-    renderRun();
+    await renderRun();
     space();
     space();
 
@@ -267,7 +317,7 @@ describe("writing it down", () => {
 
   it("still closes the run when the rows could not be written", async () => {
     upsert.mockImplementationOnce(() => Promise.resolve({ error: { message: "nope" } }));
-    renderRun();
+    await renderRun();
     space();
     space();
 
@@ -278,7 +328,7 @@ describe("writing it down", () => {
   });
 
   it("writes one row per stimulus, and finishes", async () => {
-    const { onComplete } = renderRun();
+    const { onComplete } = await renderRun();
     space();
     space();
 
@@ -314,7 +364,7 @@ describe("writing it down", () => {
   });
 
   it("scores a student with extra time against her own goal", async () => {
-    renderRun({ accommodation: "accommodation_70" });
+    await renderRun({ accommodation: "accommodation_70" });
     space();
     space();
     await vi.waitFor(() => expect(upsert).toHaveBeenCalled());
@@ -336,6 +386,7 @@ describe("writing it down", () => {
         readySeconds={0}
       />,
     );
+    await act(async () => {});
     space();
     space();
     await vi.waitFor(() => expect(upsert).toHaveBeenCalled());
@@ -366,6 +417,7 @@ describe("writing it down", () => {
         readySeconds={0}
       />,
     );
+    await act(async () => {});
     // The first stimulus only. The section is nowhere near over.
     space();
     space();
@@ -384,7 +436,7 @@ describe("writing it down", () => {
 
   it("puts a second sitting under its own Attempt, so it cannot collide with the first", async () => {
     attemptRows.data = [{ attempt_no: 1 }];
-    renderRun();
+    await renderRun();
     space();
     space();
 
@@ -418,6 +470,7 @@ describe("writing it down", () => {
         readySeconds={0}
       />,
     );
+    await act(async () => {});
 
     finish(1);
     await vi.waitFor(
@@ -450,6 +503,7 @@ describe("writing it down", () => {
         readySeconds={0}
       />,
     );
+    await act(async () => {});
     finish(26);
 
     await vi.waitFor(() => expect(screen.getByText(/1 answer did not reach us/i)).toBeInTheDocument());
@@ -476,6 +530,7 @@ describe("writing it down", () => {
         readySeconds={0}
       />,
     );
+    await act(async () => {});
     finish(2);
 
     await vi.waitFor(() => expect(screen.getByText(/1 answer did not reach us/i)).toBeInTheDocument());
@@ -487,14 +542,14 @@ describe("writing it down", () => {
     upsert.mockImplementation((rows: Row[]) =>
       Promise.resolve({ error: rows[0]?.item_order === ONE.items[0].order ? { message: "down" } : null }),
     );
-    const { unmount } = renderRun();
+    const { unmount } = await renderRun();
     finish(1);
     await vi.waitFor(() => expect(screen.getByText(/1 answer did not reach us/i)).toBeInTheDocument());
     expect(invoke).not.toHaveBeenCalled();
     unmount();
 
     upsert.mockImplementation(() => Promise.resolve({ error: null }));
-    renderRun();
+    await renderRun();
     finish(1);
     await vi.waitFor(() => expect(screen.getByText(/Section finished/)).toBeInTheDocument());
     expect(document.body.textContent).not.toMatch(/answers did not reach us/i);
@@ -502,10 +557,11 @@ describe("writing it down", () => {
 });
 
 describe("a snapshot that is not a section", () => {
-  it("says so instead of rendering a blank screen", () => {
+  it("says so instead of rendering a blank screen", async () => {
     render(
       <SectionRunner assignmentId="a1" studentId="s1" items={[]} sourceSection={null} timeGoalMinutes={null} />,
     );
+    await act(async () => {});
     expect(screen.getByText(/could not be read/i)).toBeInTheDocument();
   });
 });
@@ -520,14 +576,14 @@ describe("a snapshot that is not a section", () => {
  * input is visible before anything costs her.
  */
 describe("the ready beat", () => {
-  it("does not show the first stimulus until the beat has run", () => {
-    renderRun({ readySeconds: 3 });
+  it("does not show the first stimulus until the beat has run", async () => {
+    await renderRun({ readySeconds: 3 });
     expect(screen.getByText(/recording now/i)).toBeInTheDocument();
     expect(screen.queryByText(CHUNKS[0].text)).not.toBeInTheDocument();
   });
 
-  it("ignores Space during it, so a stray press cannot start the section early", () => {
-    renderRun({ readySeconds: 3 });
+  it("ignores Space during it, so a stray press cannot start the section early", async () => {
+    await renderRun({ readySeconds: 3 });
     space();
     space();
     space();
@@ -535,14 +591,14 @@ describe("the ready beat", () => {
     expect(screen.getByText(/recording now/i)).toBeInTheDocument();
   });
 
-  it("holds the section clock at zero through it", () => {
+  it("holds the section clock at zero through it", async () => {
     // Three seconds of settling must not be charged to a 25-minute goal.
-    renderRun({ readySeconds: 3 });
+    await renderRun({ readySeconds: 3 });
     expect(screen.getByText("0:00")).toBeInTheDocument();
   });
 
   it("hands over to the first stimulus when it ends", async () => {
-    renderRun({ readySeconds: 0 });
+    await renderRun({ readySeconds: 0 });
     expect(await screen.findByText(CHUNKS[0].text)).toBeInTheDocument();
     expect(screen.queryByText(/recording now/i)).not.toBeInTheDocument();
   });
@@ -555,19 +611,81 @@ describe("the ready beat", () => {
  * score, which is the right rule and is exactly what makes one click on a
  * permanently visible button worth up to twenty-five minutes.
  */
-describe("the way out", () => {
-  it("does not leave on the first click, and says what would be lost", () => {
+/*
+ * The microphone said no, and the drill is only spoken.
+ *
+ * With `getUserMedia` rejecting, the beat showed the heading "Recording now"
+ * over a footer saying nothing was being recorded, counted to zero anyway, and
+ * handed her a 26-stimulus run that the grader refuses for having no recording.
+ * There was no way to ask again and no way to stop before the clock started.
+ */
+describe("a refused microphone", () => {
+  beforeEach(() => refuseMicrophone());
+
+  it("does not claim to be recording", async () => {
+    await renderRun({ readySeconds: 3 });
+    expect(screen.queryByText(/recording now/i)).toBeNull();
+    expect(screen.getByText(/no microphone/i)).toBeInTheDocument();
+  });
+
+  it("names the consequence rather than the fault", async () => {
+    await renderRun({ readySeconds: 3 });
+    expect(screen.getByText(/nothing to mark at the end/i)).toBeInTheDocument();
+  });
+
+  it("holds the beat instead of counting into a run nothing can mark", async () => {
+    await renderRun({ readySeconds: 3 });
+    expect(screen.queryByText(/starting in/i)).toBeNull();
+    await new Promise((r) => setTimeout(r, 1200));
+    // Still the beat, and still no stimulus: the clock has not started.
+    expect(screen.getByText(/no microphone/i)).toBeInTheDocument();
+    for (const chunk of CHUNKS) {
+      expect(document.body.textContent).not.toContain(chunk.text);
+    }
+  }, 10000);
+
+  it("cannot be started past by pressing the key", async () => {
+    await renderRun({ readySeconds: 3 });
+    space();
+    space();
+    expect(screen.getByText(/no microphone/i)).toBeInTheDocument();
+    expect(upsert).not.toHaveBeenCalled();
+  });
+
+  it("offers a way to ask again, and asking again starts the section", async () => {
+    await renderRun({ readySeconds: 3 });
+    const again = screen.getByRole("button", { name: /ask again/i });
+    grantMicrophone();
+    await act(async () => {
+      fireEvent.click(again);
+    });
+    expect(screen.queryByText(/no microphone/i)).toBeNull();
+    await vi.waitFor(() => expect(screen.getByText(/recording now/i)).toBeInTheDocument(), {
+      timeout: 4000,
+    });
+  }, 10000);
+
+  it("offers a way out, and leaving costs nothing because nothing has begun", async () => {
     const onExit = vi.fn();
-    renderRun({ onExit });
+    await renderRun({ readySeconds: 3, onExit });
+    fireEvent.click(screen.getByRole("button", { name: /leave this section/i }));
+    expect(onExit).toHaveBeenCalled();
+  });
+});
+
+describe("the way out", () => {
+  it("does not leave on the first click, and says what would be lost", async () => {
+    const onExit = vi.fn();
+    await renderRun({ onExit });
     fireEvent.click(screen.getByRole("button", { name: /leave/i }));
     expect(onExit).not.toHaveBeenCalled();
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByText(/no partial score/i)).toBeInTheDocument();
   });
 
-  it("stays when she says so", () => {
+  it("stays when she says so", async () => {
     const onExit = vi.fn();
-    renderRun({ onExit });
+    await renderRun({ onExit });
     fireEvent.click(screen.getByRole("button", { name: /leave/i }));
     fireEvent.click(screen.getByRole("button", { name: /keep going/i }));
     expect(onExit).not.toHaveBeenCalled();
@@ -576,17 +694,17 @@ describe("the way out", () => {
     expect(screen.getByText(CHUNKS[0].text)).toBeInTheDocument();
   });
 
-  it("leaves when she confirms", () => {
+  it("leaves when she confirms", async () => {
     const onExit = vi.fn();
-    renderRun({ onExit });
+    await renderRun({ onExit });
     fireEvent.click(screen.getByRole("button", { name: /leave/i }));
     fireEvent.click(screen.getByRole("button", { name: /leave and lose it/i }));
     expect(onExit).toHaveBeenCalled();
   });
 
-  it("does not ask during the beat, when there is nothing to lose", () => {
+  it("does not ask during the beat, when there is nothing to lose", async () => {
     const onExit = vi.fn();
-    renderRun({ onExit, readySeconds: 3 });
+    await renderRun({ onExit, readySeconds: 3 });
     fireEvent.click(screen.getByRole("button", { name: /leave/i }));
     expect(onExit).toHaveBeenCalled();
   });
@@ -602,7 +720,7 @@ describe("the way out", () => {
  * enough to lose the run.
  */
 describe("holding the app still", () => {
-  it("marks a run live while it is on screen, and clears it after", () => {
+  it("marks a run live while it is on screen, and clears it after", async () => {
     const { unmount } = render(
       <SectionRunner
         assignmentId="a1"
