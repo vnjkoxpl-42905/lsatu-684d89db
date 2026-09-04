@@ -101,11 +101,28 @@
   padding: 1rem;
 }
 
+/* The floor is a floor, not a promise the viewport can keep.
+ *
+ * `min-height: 700px` was written for a desktop and is taller than a 13-inch
+ * laptop has room for. At a 664px viewport the card ran to 778px and pushed the
+ * footer -- the instruction, the presence bar and the microphone error, which
+ * are the only words on the screen telling her what to do and whether she is
+ * being heard -- 55px below the fold. She would never see "Nothing is reaching
+ * the microphone" on that machine.
+ *
+ * The `max-width: 640px` rule below did zero the floor, but it is a WIDTH
+ * query, and the laptop that fails this is 1440 wide. Height is what was short,
+ * so height is what the cap is written against.
+ *
+ * `min()` rather than a smaller constant, so the same bug cannot return at
+ * 600px: the card asks for 700 and takes whatever the viewport can actually
+ * spare, less the header and the field's own padding. On anything taller than
+ * about 800px nothing changes at all. */
 .ac-section-paper {
   display: flex;
   width: 100%;
   max-width: 1400px;
-  min-height: 700px;
+  min-height: min(700px, calc(100vh - 7rem));
   margin: 0 auto;
   flex-direction: column;
   overflow: hidden;
@@ -126,8 +143,13 @@
 .ac-section-body {
   display: flex;
   flex: 1;
+  /* A flex item will not shrink below its content unless it is told it may. The
+     stimulus is the part that can be scrolled past; the footer is not, so the
+     reading area is what gives way when the card is short. */
+  min-height: 0;
   align-items: flex-start;
   justify-content: center;
+  overflow-y: auto;
   padding: 4rem 1.5rem 3rem;
 }
 
@@ -162,8 +184,11 @@
 
 /* ---- the card's footer ------------------------------------------------- */
 
+/* Pinned inside the card, and never the thing that gives way. Whatever else the
+   card has to do with the height it is given, these words stay on screen. */
 .ac-section-foot {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -216,6 +241,15 @@
 
   .ac-section-body {
     padding: 2rem 1.25rem;
+  }
+}
+
+/* A 13-inch laptop, once the browser has taken its chrome. The reading area's
+   4rem of head room is the first thing worth spending when the card is this
+   short, and spending it here keeps the stimulus off the footer. */
+@media (max-height: 800px) {
+  .ac-section-body {
+    padding: 2rem 1.5rem 1.5rem;
   }
 }
 
