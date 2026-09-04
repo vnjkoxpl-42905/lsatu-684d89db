@@ -2915,7 +2915,7 @@ export type Database = {
           asr_model: string | null
           audio_bucket: string
           audio_bytes: number | null
-          audio_path: string
+          audio_path: string | null
           audio_sha256: string | null
           citation: string | null
           created_at: string
@@ -2928,13 +2928,14 @@ export type Database = {
           transcript_text: string | null
           updated_at: string
           version: number
+          walkthrough_md: string | null
         }
         Insert: {
           asr_engine?: string | null
           asr_model?: string | null
           audio_bucket?: string
           audio_bytes?: number | null
-          audio_path: string
+          audio_path?: string | null
           audio_sha256?: string | null
           citation?: string | null
           created_at?: string
@@ -2947,13 +2948,14 @@ export type Database = {
           transcript_text?: string | null
           updated_at?: string
           version?: number
+          walkthrough_md?: string | null
         }
         Update: {
           asr_engine?: string | null
           asr_model?: string | null
           audio_bucket?: string
           audio_bytes?: number | null
-          audio_path?: string
+          audio_path?: string | null
           audio_sha256?: string | null
           citation?: string | null
           created_at?: string
@@ -2966,6 +2968,7 @@ export type Database = {
           transcript_text?: string | null
           updated_at?: string
           version?: number
+          walkthrough_md?: string | null
         }
         Relationships: []
       }
