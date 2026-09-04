@@ -751,8 +751,12 @@
 .sl-notice {
   margin: 14px 0 0;
   padding: 12px 14px;
-  border: 1px solid var(--sl-ring);
-  border-left: 3px solid var(--sl-accent-soft);
+  /* One ring, like everything else on this surface. The 3px accent stripe that
+     was here read as a callout bolted on from another design system -- and this
+     file's whole elevation language is a single hairline. The wash already
+     separates the note from the page; the stripe was doing nothing the ground
+     was not. */
+  box-shadow: 0 0 0 1px var(--sl-ring);
   border-radius: 8px;
   background: var(--sl-accent-wash);
   color: var(--sl-ink-2);
