@@ -61,9 +61,9 @@ _Avoid_: Line, segment, piece, part
 The silent reading of a chunk. Nothing is spoken.
 _Avoid_: Skim, study
 
-**Reading Recall** (step 2):
-Saying a chunk back out loud in her own words.
-_Avoid_: Translate, translation, paraphrase, summary, repeat-back
+**Retelling** (step 2):
+Saying a chunk back out loud in her own words. **Retelling** is the word we use to each other and in code; the label a student reads is always **Tell it back**.
+_Avoid_: Reading Recall (its former name, which put "Recall" on two different steps), Say it back (the old student label), translate, translation, paraphrase, summary, repeat-back
 
 **Colouring In** (step 3):
 Her spoken reaction to the chunk she just recalled — a thought, doubt, example, or joke that fits that chunk and no other.
@@ -71,7 +71,7 @@ _Avoid_: Quip, comment, annotation, reaction
 
 **The Recall** (step 4):
 The end of a stimulus, worked with the text gone: she says the whole argument back from memory.
-_Avoid_: The Read (its former name, which collided with step 1), CLIR, recap, retell, rebound, takeaway
+_Avoid_: The Read (its former name, which collided with step 1), Retelling (that is step 2), CLIR, recap, rebound, takeaway
 
 **Detail**:
 One of the small authored facts a stimulus contains. PT102.S3.Q1 holds 21.
@@ -82,7 +82,7 @@ How many of a stimulus's Details she carried, counted across everything she said
 _Avoid_: Accuracy, completeness, recall rate
 
 **Reciting**:
-Saying a stimulus back close to word-for-word. A failure of Reading Recall, not a step of its own: Coverage looks perfect and nothing was understood.
+Saying a stimulus back close to word-for-word. A failure of the Retelling, not a step of its own: Coverage looks perfect and nothing was understood.
 _Avoid_: Parroting, copying, verbatim recall, memorising
 
 **Listing**:
@@ -108,3 +108,25 @@ _Avoid_: Failed, missing, unscored, zero, error
 **Sweep**:
 The scheduled re-drive of a finished section that never got a grade, or got a partial one. The client asks for grading the moment she stops and does not wait on the answer; the Sweep is what makes that ask safe to lose. A closed tab never costs a Report Card.
 _Avoid_: Retry, cron, job, backfill, reconcile
+
+### The section launch surface
+
+The page a student meets before a section run, and the parts of it that carry
+names. Nothing here is a phase of the runner; these are things drawn on one
+page.
+
+**Section Launch**:
+The page a student lands on before running an RRC section: the method as four Beats, her last few Attempts, and the one control that starts the run. `SectionLaunch` in code, `.sl-` in CSS. It replaces the editorial intro for section mode only; the eight typed Activities keep theirs.
+_Avoid_: The Chamber (the approved mockup's name for it, and already a world under `worlds/chamber/`), Homepage (that is an Activity's own intro page), intro, splash, lobby, dashboard
+
+**Beat**:
+One of the four steps of the method as Section Launch presents them — Read it, Tell it back, Colour it, The Recall — each opening a drawer holding its own authored body. A unit of presentation on that page, and not a phase the runner moves through.
+_Avoid_: Step (the authored JSON's own key, fine in code and ambiguous in prose), Stage (reserved for `SectionStage`), phase, tab, card
+
+**Tick**:
+One mark in the row that draws a past Attempt: one per stimulus slot, placed at its authored `item_order` rather than its array position. Four states, because three would lie — `recorded`, `notJudged` (the judge never answered, so the mark is hollow), `silent` (she spoke nothing into that stimulus), `missing`.
+_Avoid_: Dot, pip, square, cell, bar
+
+**Target**:
+The clock the section was meant to fit, taken from the assignment's time goal at her resolved accommodation. It measures elapsed time and nothing else, and a run is only ever compared against a Target equal to its own.
+_Avoid_: Goal (`within_goal` in the database also carries method conditions, which Target deliberately excludes), limit, par, deadline, pace

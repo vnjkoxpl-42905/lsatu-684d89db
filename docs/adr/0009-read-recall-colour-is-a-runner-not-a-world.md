@@ -104,3 +104,32 @@ none of the rest of it.
 **Ship RRC as a standalone route outside the Activity Centre.** Rejected. It
 would lose assignment, the roster, the snapshot and the teacher's view of
 results, which is most of the reason it lives in the platform at all.
+
+## Amendment — 2026-09-04 — the launch surface is a component, not a world either
+
+The runner needed a page in front of it: what the section is, what the method
+asks, how her last few Attempts went, and the control that starts the run. The
+approved mockup called that page **the Chamber**, and the same instinct that
+wanted RRC to be a world wanted this to be one.
+
+It is not, for two reasons. The first is this ADR: a world replaces the cover
+rail of a *running* screen, and this page exists before anything is running.
+The second is plainer — `worlds/chamber/` already exists and is a different
+Activity's surface. Shipping a second Chamber would have put the word on two
+unrelated things in one module.
+
+**The launch surface is `SectionLaunch`**, a component chosen inside
+`ActivityIntro`, namespaced `.sl-` in CSS. The name "Chamber" stays in
+`docs/design-previews/rrc-section-launch-chamber.html` as the mockup's name and
+is used nowhere in code.
+
+`ActivityIntro` became a hook-free wrapper to do this, not an early return.
+It called four hooks near the top, so a `mode === "section"` return above them
+would have been a conditional hook. The old body moved verbatim into
+`ActivityEditorialIntro`; the wrapper picks between the two. This is scoped to
+section mode: the eight typed Activities and the section-library door still get
+the editorial intro, unchanged.
+
+**Consequence.** `ActivityIntro` is now a two-line switch and carries no logic
+of its own. Anything added to "the intro" has to pick a side, which is the
+point: the two surfaces share a route and a prop, and nothing else.

@@ -1,11 +1,11 @@
 {
   "slug": "read-recall-colour",
   "title": "Read, Recall, Colour",
-  "subtitle": "Read a chunk, lose it, and say it back with every detail intact",
+  "subtitle": "Read a chunk, lose it, and tell it back with every detail intact",
   "item_format": "spoken-recall",
   "instructions": {
     "coach": {
-      "drill": "a spoken recall drill, where the student reads one chunk of a stimulus, loses sight of it, and says it back from memory in her own words",
+      "drill": "a spoken recall drill, where the student reads one chunk of a stimulus, loses sight of it, and tells it back from memory in her own words",
       "rubric": [
         "Judge by meaning, never by wording. Her own words are required here, so a good recall will never match the chunk's phrasing. Equivalent phrasing carries the detail.",
         "Order is free. She is encouraged to deliver the ideas out of the order she read them in, and reordering must never cost her anything.",
@@ -15,11 +15,11 @@
       ],
       "partial_rule": "Mark 'partial' when the retelling is real but at least one detail went missing, which is the drill's ordinary state. Mark 'incorrect' only when the response is a gist or a topic label rather than a retelling."
     },
-    "tagline": "Read it once. Then say it back with nothing on the screen.",
-    "task": "Say the chunk back from memory, out loud, in your own words, keeping every detail.",
+    "tagline": "Read it once. Then tell it back with nothing on the screen.",
+    "task": "Tell the chunk back from memory, out loud, in your own words, keeping every detail.",
     "rules": [
       "Read the chunk once. When you tap Got it, it disappears, and it is not coming back.",
-      "Say it back out loud, in your own words, the way you would tell a friend. Out of order is fine. Laughing is fine.",
+      "Tell it back out loud, in your own words, the way you would tell a friend. Out of order is fine. Laughing is fine.",
       "Keep everything. Names, numbers, dates and small connecting words all count. This is not a summary.",
       "Then react to it out loud. Any reaction counts, nothing is scored, and you cannot move on without one.",
       "Every few chunks you will be asked to say back everything so far, still with nothing on the screen."
@@ -53,7 +53,7 @@
           "body": [
             "Keep everything. Names, numbers, dates, quantities, and the small connecting words that tell you how two ideas are related. Each one is its own detail, and none of them are safe to drop because the sentence around them survived.",
             "The pull is always toward giving the gist and moving on. But you cannot know which parts mattered until after you have read it, so filtering on the way through mostly means quietly throwing out the piece you were going to need.",
-            "You already know what this sounds like from the other side. When someone repeats your problem back to you and half of it is missing, you can tell straight away that they were not really listening. Say it back the way you would want it said back to you."
+            "You already know what this sounds like from the other side. When someone repeats your problem back to you and half of it is missing, you can tell straight away that they were not really listening. Tell it back the way you would want it told back to you."
           ]
         },
         {
@@ -81,7 +81,7 @@
       "closer": "Expect the first few to feel slow and a little ridiculous. That is what this feels like when it is working."
     },
     "answer_label": "What you said",
-    "answer_placeholder": "Say the chunk back from memory, keeping every detail…"
+    "answer_placeholder": "Tell the chunk back from memory, keeping every detail…"
   },
   "items": [
     {

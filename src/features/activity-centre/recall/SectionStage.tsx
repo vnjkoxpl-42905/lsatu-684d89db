@@ -101,7 +101,7 @@ export interface SectionStageProps {
  * back from memory.
  */
 const INSTRUCTION: Record<SectionPhase, string> = {
-  working: "Read it. Say it back and colour it in as you go.",
+  working: "Read it. Tell it back and colour it in as you go.",
   recalling: "Say the whole argument back from memory.",
 };
 

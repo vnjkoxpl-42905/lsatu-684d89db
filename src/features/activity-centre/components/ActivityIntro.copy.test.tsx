@@ -12,8 +12,8 @@ import type { ActivityInstructions } from "../api/types";
  */
 
 const instructions: ActivityInstructions = {
-  tagline: "Say it back before you look again.",
-  task: "Read the stimulus, then say it back without it in front of you.",
+  tagline: "Tell it back before you look again.",
+  task: "Read the stimulus, then tell it back without it in front of you.",
   rules: ["A section is run whole, or not at all."],
   answer_label: "Your recall",
 };
@@ -92,6 +92,35 @@ describe("the briefing's authored marks", () => {
     renderIntro({ instructions: withBriefing });
     expect(screen.getByText("four").tagName).toBe("EM");
     expect(screen.getByText("run it").tagName).toBe("STRONG");
+  });
+
+  it("renders the marks in a heading, a step and a demo beat too", () => {
+    // These four slots printed their asterisks raw while the lede, the closer
+    // and the body paragraphs did not. Authored emphasis is authored emphasis
+    // wherever it lands.
+    render(
+      <ActivityIntro
+        title="Dumb it Down"
+        subtitle={null}
+        instructions={{
+          briefing: {
+            sections: [
+              {
+                heading: "The **hard** part",
+                body: ["plain"],
+                steps: [{ label: "**Recite** it.", body: "Intake **only**." }],
+                demo: { beats: [{ kind: "Read", text: "A **marked** beat." }] },
+              },
+            ],
+          },
+        }}
+        onStart={() => {}}
+      />,
+    );
+    for (const text of ["hard", "Recite", "only", "marked"]) {
+      expect(screen.getByText(text).tagName).toBe("STRONG");
+    }
+    expect(document.body.textContent).not.toContain("**");
   });
 
   it("leaves unmarked prose alone", () => {

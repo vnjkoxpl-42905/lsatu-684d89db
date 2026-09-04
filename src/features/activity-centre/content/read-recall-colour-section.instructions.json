@@ -1,10 +1,10 @@
 {
-  "tagline": "Read it, say it back, react to it. Then the stimulus disappears and you say the whole argument back from memory.",
+  "tagline": "Read it, tell it back, react to it. Then the stimulus disappears and you say the whole argument back from memory.",
   "task": "Work through the stimulus out loud, a piece at a time. When you have got all of it, press space. The text goes away, and you say the entire argument back from memory.",
   "rules": [
     "Everything here is out loud. The whole section records in one take, and it never pauses.",
     "Read silently, about a sentence at a time. When you are not sure how much to take on, take less.",
-    "Look away and say it back in your own words. Then react to it. Both out loud.",
+    "Look away and tell it back in your own words. Then react to it. Both out loud.",
     "Keep going like that through the whole stimulus.",
     "Press space when you have got all of it. The stimulus vanishes and stays gone. Now say the whole argument back from memory, with every detail you can hold.",
     "Press space again and the next one loads. No breaks, no going back, all the way to the end."
@@ -32,8 +32,8 @@
             "body": "Intake only. Nothing comes back out yet. Take on about a sentence, with full intonation so every word gets its weight. When you are unsure how much to take, take less. What gets lost when you grab too much is always the front of it."
           },
           {
-            "label": "Say it back.",
-            "body": "Look away from the screen and say it back in your own words, out loud, like you are telling a friend what it said. Out of order is fine. Casual is fine. Laughing is fine."
+            "label": "Tell it back.",
+            "body": "Look away from the screen and tell it back in your own words, out loud, like you are telling a friend what it said. Out of order is fine. Casual is fine. Laughing is fine."
           },
           {
             "label": "Colour it.",
@@ -64,7 +64,7 @@
       {
         "heading": "Look away. That part is on you.",
         "body": [
-          "While you are working the stimulus, nothing on the screen hides. The whole thing stays readable, which means the only thing stopping you rereading a line while you say it back is you, looking away from it.",
+          "While you are working the stimulus, nothing on the screen hides. The whole thing stays readable, which means the only thing stopping you rereading a line while you tell it back is you, looking away from it.",
           "That is deliberate. Reading while you recall is a one way street with cars coming both ways. It jams. You stop using your memory at all and slide straight back into the author's exact words instead of finding your own.",
           "It is also the version that still works on paper, and on test day. A screen that hides the text for you is a crutch that cannot come with you."
         ]
@@ -81,7 +81,7 @@
     "closer": "One a day holds you steady. The second one is where you improve."
   },
   "coach": {
-    "drill": "a whole Logical Reasoning section run out loud, where the student reads each line of a stimulus, looks away, says it back from memory in her own words, reacts to it, and gives The Recall of the whole stimulus before moving to the next one",
+    "drill": "a whole Logical Reasoning section run out loud, where the student reads each line of a stimulus, looks away, tells it back from memory in her own words, reacts to it, and gives The Recall of the whole stimulus before moving to the next one",
     "rubric": [
       "Judge by meaning, never by wording. Her own words are required here, so a good recall will never match the line's phrasing. High overlap with the original is the failure, not the standard.",
       "Order is free. She is encouraged to deliver the ideas out of the order she read them in, and reordering must never cost her anything.",

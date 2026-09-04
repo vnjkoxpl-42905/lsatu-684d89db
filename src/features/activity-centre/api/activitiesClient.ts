@@ -567,6 +567,34 @@ export async function listModelRuns(
 }
 
 /**
+ * One run as this read returns it.
+ *
+ * `SectionGradeStub` is the light shape, and this read is deliberately heavier:
+ * it carries `stimuli` so a caller can say something per stimulus rather than
+ * per run, and `created_at` because `graded_at` is not stable.
+ *
+ * A regrade rewrites `graded_at`. Order or date a list by it and a regraded run
+ * from a fortnight ago climbs above this morning's, becomes "your last run", and
+ * takes the trend with it. `created_at` is written once and never touched.
+ */
+export type RecentSectionRun = SectionGradeStub &
+  Partial<Pick<SectionGrade, "stimuli">> & { created_at?: string };
+
+/**
+ * What the read returns, with failure distinguishable from emptiness.
+ *
+ * These are different facts and a surface has to be able to tell them apart. A
+ * student who has never run this section should be told that; a student whose
+ * history we could not load must not be told the same thing, because it reads
+ * as her work having been thrown away.
+ */
+export interface RecentSectionRunsResult {
+  runs: RecentSectionRun[];
+  /** The read failed. `runs` is empty because we could not look, not because there is nothing. */
+  failed: boolean;
+}
+
+/**
  * Student: her recent runs, with the per-stimulus misses attached.
  *
  * The heavier read, and deliberately bounded. `listMySectionGrades` is the
@@ -574,33 +602,76 @@ export async function listModelRuns(
  * carries a transcript per stimulus, and is only needed to answer "what do I
  * keep dropping". Ten runs is a fortnight at the drill's own rhythm and is
  * plenty of evidence for a share.
+ *
+ * Both filters are applied to the QUERY, before the order and the limit, and
+ * that placement is the whole point of them:
+ *
+ * - `sourceSection`, because the bound is global otherwise. Ask for ten runs and
+ *   filter to PT105.S2 afterwards and a student who has been working four
+ *   sections gets an empty history for this one while her real runs sit just
+ *   outside the window.
+ * - `studentId`, because the admin SELECT policy on this table returns every
+ *   student's rows. No flag on the calling component can undo that; only the
+ *   query can. Passing the assignment's own `student_id` makes a cross-student
+ *   read impossible regardless of who is looking.
  */
-export async function listMyRecentSectionGrades(limit = 10): Promise<SectionGradeStub[]> {
-  const table = supabase.from("activity_section_grades" as never) as unknown as {
-    select: (columns: string) => {
-      order: (
-        column: string,
-        opts: { ascending: boolean },
-      ) => {
-        limit: (n: number) => Promise<{
-          data: unknown;
-          error: { code?: string; message?: string } | null;
-        }>;
-      };
-    };
+export async function readMyRecentSectionGrades(
+  limit = 10,
+  opts: { sourceSection?: string; studentId?: string } = {},
+): Promise<RecentSectionRunsResult> {
+  type Filterable = {
+    eq: (column: string, value: string) => Filterable;
+    order: (column: string, opts: { ascending: boolean }) => Filterable;
+    limit: (n: number) => Promise<{
+      data: unknown;
+      error: { code?: string; message?: string } | null;
+    }>;
   };
-  const { data, error } = await table
+  const table = supabase.from("activity_section_grades" as never) as unknown as {
+    select: (columns: string) => Filterable;
+  };
+
+  let query = table
     // Everything but `transcript_text`, which is the whole run's words again and
     // is never read outside the grader.
-    .select("assignment_id, attempt_no, source_section, section, graded_at, stimuli")
-    .order("graded_at", { ascending: false })
+    .select(
+      "assignment_id, attempt_no, source_section, section, graded_at, created_at, stimuli",
+    );
+  if (opts.sourceSection) query = query.eq("source_section", opts.sourceSection);
+  if (opts.studentId) query = query.eq("student_id", opts.studentId);
+
+  const { data, error } = await query
+    // Immutable, unlike `graded_at`. Attempt number breaks a tie inside one
+    // assignment, where two rows can share a creation instant.
+    .order("created_at", { ascending: false })
+    .order("attempt_no", { ascending: false })
     .limit(limit);
+
   if (error) {
-    if (isUnknownColumn(error) || error.code === "42P01") return [];
+    // A brain that has not had the migration applied, or a column this build
+    // expects and the database does not have, is not the same as a student with
+    // no history -- but it is equally unreadable, so both say `failed`.
+    if (isUnknownColumn(error) || error.code === "42P01") {
+      console.error("[rrc] section grades unreadable in this environment", error);
+      return { runs: [], failed: true };
+    }
     console.error("[rrc] could not load recent runs", error);
-    return [];
+    return { runs: [], failed: true };
   }
-  return (data as SectionGradeStub[] | null) ?? [];
+  return { runs: (data as RecentSectionRun[] | null) ?? [], failed: false };
+}
+
+/**
+ * The same read, degraded to an array.
+ *
+ * The section library has always treated an unreadable history as an empty one
+ * and has no surface for the difference. Keeping that behaviour here, explicitly,
+ * rather than changing what that panel does as a side effect of this read
+ * gaining a failure channel.
+ */
+export async function listMyRecentSectionGrades(limit = 10): Promise<SectionGradeStub[]> {
+  const { runs } = await readMyRecentSectionGrades(limit);
+  return runs;
 }
 
 /**

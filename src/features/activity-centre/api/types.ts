@@ -212,7 +212,7 @@ export interface ActivityCoach {
  * student would say out loud about it.
  */
 export interface BriefingBeat {
-  /** "Read", "Say it back", "Colour it", "The Read". */
+  /** "Read", "Tell it back", "Colour it", "The Recall". */
   kind: string;
   text: string;
 }

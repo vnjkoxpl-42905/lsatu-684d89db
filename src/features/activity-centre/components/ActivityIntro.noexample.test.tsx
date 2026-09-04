@@ -22,7 +22,7 @@ import type { ActivityInstructions } from "../api/types";
  */
 
 const withoutExample: ActivityInstructions = {
-  tagline: "Read it once. Then say it back with nothing on the screen.",
+  tagline: "Read it once. Then tell it back with nothing on the screen.",
   task: "Say the chunk back from memory, out loud, in your own words.",
   rules: ["Read the chunk once. When you tap Got it, it disappears."],
   answer_label: "What you said",
@@ -61,7 +61,7 @@ describe("ActivityIntro without a worked example", () => {
     const { container } = render(
       <ActivityIntro
         title="Read, Recall, Colour"
-        subtitle="Read a chunk, lose it, and say it back"
+        subtitle="Read a chunk, lose it, and tell it back"
         instructions={withoutExample}
         itemCount={1}
         onStart={() => {}}
@@ -115,7 +115,7 @@ describe("the line describing the sitting", () => {
     render(
       <ActivityIntro
         title="Read, Recall, Colour"
-        subtitle="Read a chunk, lose it, and say it back"
+        subtitle="Read a chunk, lose it, and tell it back"
         instructions={withoutExample}
         itemCount={1}
         maxAttempts={2}
@@ -123,7 +123,7 @@ describe("the line describing the sitting", () => {
         onStart={() => {}}
       />,
     );
-    const how = screen.getByText(/read and said back a chunk at a time/i);
+    const how = screen.getByText(/read and told back a chunk at a time/i);
     expect(how.textContent).not.toMatch(/credited answer/i);
     expect(how.textContent).not.toMatch(/tries each/i);
     // "1 questions" was the old output for any single-item Activity.

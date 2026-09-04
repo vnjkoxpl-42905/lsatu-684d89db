@@ -91,7 +91,7 @@ function makeSectionAssignment(status: ActivityStatus) {
     mode: "section",
     source_section: "PT102.S3",
     time_goal_minutes: { standard: 25 },
-    instructions: { task: "Say it back in your own words.", rules: ["Out loud."] },
+    instructions: { task: "Tell it back in your own words.", rules: ["Out loud."] },
     items: Array.from({ length: STIMULI }, (_, i) => ({
       order: i + 1,
       slug: `PT102_S3_Q${i + 1}`,

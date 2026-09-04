@@ -49,7 +49,7 @@ const MIN_WINDOW_MS = 8000;
 /**
  * Consecutive silent windows before the fault is raised.
  *
- * Both halves of a stimulus are spoken -- "Read it. Say it back and colour it in
+ * Both halves of a stimulus are spoken -- "Read it. Tell it back and colour it in
  * as you go", then "Say the whole argument back from memory" -- so a dead input
  * is silent through every window there is. A skip is silent through exactly
  * one: she had nothing for that Recall, and then she reads the next stimulus

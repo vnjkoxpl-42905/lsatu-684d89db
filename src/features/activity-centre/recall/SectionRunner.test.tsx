@@ -167,7 +167,7 @@ describe("what she sees while working", () => {
 
   it("never tells her she read aloud", async () => {
     await renderRun();
-    expect(screen.getByText(/say it back/i)).toBeInTheDocument();
+    expect(screen.getByText(/tell it back/i)).toBeInTheDocument();
   });
 
   it("shows elapsed time against her goal, counting up", async () => {
