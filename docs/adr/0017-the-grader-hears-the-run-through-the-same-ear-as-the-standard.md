@@ -2,6 +2,7 @@
 
 Date: 2026-09-01
 Status: accepted
+Amended: 2026-09-04 (see "Amendment: the title was a claim the code did not honour")
 Extends [0013](./0013-she-chunks-freely-and-the-app-does-not-track-it.md).
 
 ## Context
@@ -103,3 +104,48 @@ Tempting, and it removes a step. Rejected because it removes the artefact: a
 transcript is inspectable, diffable, replayable against a changed prompt, and
 quotable back to a student who disputes a mark. An audio-native judgement is
 none of those.
+
+---
+
+## Amendment: the title was a claim the code did not honour
+
+Date: 2026-09-04
+
+This ADR's title says the grader hears the run through the same ear as the
+standard. Until 2026-09-04 that was true of the transcription engine and of
+nothing else in the chain.
+
+Same engine, and then two different tokenisations and two different read
+strippers. The standard's transcripts went through `student_shaped.py` and its
+fuzzy aligner, on `[a-z0-9']` tokens. The run went through `rrcReads.ts` and an
+exact eight-word run, on Deepgram's punctuated tokens compared against
+`[a-z0-9]` ones. The 2026-09-03 audit measured what that cost: 38 of 87 chunks
+found on the standard's own recording, where the corpus aligner finds 86.
+
+The engine was the asymmetry this ADR could see, because it was the one with a
+name. The rest of the ear was two implementations that were never compared to
+each other.
+
+**The scope is now the whole ear, not the engine.** ADR 0024's amendment ports
+the corpus aligner into the grader and states where it deliberately departs from
+it and why. This ADR's requirement is the one that generalises past that port:
+
+> A step that shapes what the judge is shown must be the same step on both
+> sides of the comparison, and where it cannot be — where the two sides are
+> genuinely asking different questions — the difference is measured against the
+> corpus and written down, not left to be discovered by an audit.
+
+**The two remaining known differences**, both recorded in 0024:
+
+- The tolerance is 0.80 in the grader and 0.55 in the corpus tool. Deliberate,
+  measured, and the reason is that the grader is asked whether a read happened
+  at all while the corpus tool is told that one did.
+- `rrcOverlap.words` still splits contractions where the alignment's
+  `readWords` keeps them whole. Deliberate: ADR 0022's reciting thresholds were
+  calibrated on the former's output.
+
+**What is still unverified.** That the two ears now agree is measured on the
+stripper's own output — words cut and chunks found — and not yet on a grade.
+The section mean the audit compared, grader 97% against a census 94%, moves only
+when this is deployed and the standard's run is re-graded. That measurement is
+owed to 0024.
