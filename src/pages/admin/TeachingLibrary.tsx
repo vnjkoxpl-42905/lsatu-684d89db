@@ -16,6 +16,7 @@ const TYPE_FILTERS: { value: AssetType | null; label: string }[] = [
   { value: "drill", label: "Drills" },
   { value: "curriculum", label: "Curriculum" },
   { value: "notes", label: "Notes" },
+  { value: "audio", label: "Audio" },
 ];
 
 export default function TeachingLibrary() {

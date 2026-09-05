@@ -32,6 +32,7 @@ const ASSET_TYPES: { value: AssetType; label: string }[] = [
   { value: "drill", label: "Drill" },
   { value: "curriculum", label: "Curriculum" },
   { value: "notes", label: "Notes" },
+  { value: "audio", label: "Audio" },
 ];
 
 // Cap single-upload file size at 25MB. PDFs with more than this tend to stall

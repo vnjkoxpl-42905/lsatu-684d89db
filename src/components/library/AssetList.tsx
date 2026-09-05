@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import AssetEditDialog from "./AssetEditDialog";
+import AssetAudioPlayer from "./AssetAudioPlayer";
 
 interface Props {
   search: string;
@@ -35,6 +36,7 @@ function typeBadge(type: AssetType) {
     drill: "bg-purple-500/15 text-purple-300",
     curriculum: "bg-amber-500/15 text-amber-300",
     notes: "bg-zinc-500/15 text-zinc-300",
+    audio: "bg-cyan-500/15 text-cyan-300",
   };
   return map[type] ?? "bg-zinc-500/15 text-zinc-300";
 }
@@ -105,6 +107,15 @@ export default function AssetList({ search, typeFilter }: Props) {
                   {a.description && (
                     <div className="text-xs text-zinc-500 line-clamp-1">
                       {a.description}
+                    </div>
+                  )}
+                  {a.asset_type === "audio" && (
+                    <div className="mt-2">
+                      <AssetAudioPlayer
+                        filePath={a.file_path}
+                        transcript={a.content_text}
+                        dense
+                      />
                     </div>
                   )}
                 </td>
