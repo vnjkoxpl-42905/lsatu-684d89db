@@ -20,6 +20,7 @@ import type {
 } from "./homeModel";
 import type { SectionBriefing as SectionBriefingData } from "@/lib/sectionBriefing";
 import { SectionBriefing } from "./SectionBriefing";
+import QuestionFinder from "@/components/questionfinder/QuestionFinder";
 
 function Pill({
   children,
@@ -102,12 +103,6 @@ function MessagePreviewBody({ message }: { message: HomeMessage }) {
         <time>{message.timeLabel}</time>
       </span>
       <span className="classroom-home-message-text">{`“${message.body}”`}</span>
-      <span className="classroom-home-message-actions">
-        <span className="classroom-home-pill classroom-home-pill-accent">
-          Open in Messages
-          <ArrowRight size={12} strokeWidth={2.2} />
-        </span>
-      </span>
     </span>
   );
 }
@@ -200,6 +195,16 @@ export function ClassroomHomeView({
           onDismiss={() => setBriefing(null)}
         />
       ) : null}
+
+      {/* ── finder bar ───────────────────────────────────────────────
+          The first thing above the fold, the way LSAT Lab puts Find A Question
+          at the top of its home. A student who arrives holding one question
+          should not have to read a dashboard to get to it. Its own band rather
+          than a masthead utility, because the masthead's right edge is status
+          and this is the page's fastest route out. */}
+      <div className="classroom-home-finderbar">
+        <QuestionFinder returnTo="/classroom" />
+      </div>
 
       {/* ── masthead ─────────────────────────────────────────────────── */}
       <header className="classroom-home-masthead">

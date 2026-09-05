@@ -114,6 +114,14 @@ describe("Home message card visibility", () => {
     expect(result.current.model.unreadMessages).toBe(1);
   });
 
+  it("points the card at the thread itself, not the inbox list", async () => {
+    const { result } = renderHook(() => useClassroomHome(), { wrapper });
+    await waitFor(() => {
+      expect(result.current.model.message?.id).toBe(CONVO_ID);
+    });
+    expect(result.current.model.message?.route).toBe(`/inbox/${CONVO_ID}`);
+  });
+
   it("hides a message that was read in the inbox, with no clear needed", async () => {
     // The single behaviour this whole change exists for: reading it anywhere
     // takes it off Home, because both surfaces read last_read_at.

@@ -145,27 +145,49 @@ describe("QuestionFinder", () => {
     expect(navigate).toHaveBeenCalledWith("/classroom/drill?section=lr&stage=type-drill");
   });
 
-  it("offers both banks in Browse by test, not LR alone", () => {
+  it("offers both banks in the test selector without anything being expanded first", () => {
     const dialog = openFinder();
-    fireEvent.click(within(dialog).getByRole("button", { name: /browse by test/i }));
     const test = within(dialog).getByLabelText(/^test$/i);
     expect(within(test).getByRole("option", { name: "PT 90" })).toBeInTheDocument();
     expect(within(test).getByRole("option", { name: "PT 88" })).toBeInTheDocument();
   });
 
-  it("turns a browse selection into the same query a student could have typed", () => {
+  it("turns a selector choice into the same query a student could have typed", () => {
     const dialog = openFinder();
-    fireEvent.click(within(dialog).getByRole("button", { name: /browse by test/i }));
     fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "90" } });
     expect(within(dialog).getByRole("textbox")).toHaveValue("PT90");
   });
 
-  it("keeps Browse by test synchronized with the active RC bank", () => {
+  it("keeps the selectors synchronized with the active RC bank", () => {
     const dialog = openFinder("rc");
-    fireEvent.click(within(dialog).getByRole("button", { name: /browse by test/i }));
     fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "88" } });
     fireEvent.change(within(dialog).getByLabelText(/^section$/i), { target: { value: "3" } });
     expect(within(dialog).getByRole("option", { name: "Question 3" })).toBeInTheDocument();
     expect(within(dialog).queryByRole("option", { name: "PT 90" })).toBeNull();
+  });
+
+  it("keeps the go arrow disabled until the address resolves to something", () => {
+    const dialog = openFinder();
+    const go = within(dialog).getByRole("button", { name: /open the selected question/i });
+    expect(go).toBeDisabled();
+    fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "90" } });
+    expect(go).toBeEnabled();
+  });
+
+  it("opens the selected question from the go arrow", () => {
+    const dialog = openFinder();
+    fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "90" } });
+    fireEvent.change(within(dialog).getByLabelText(/^section$/i), { target: { value: "1" } });
+    fireEvent.change(within(dialog).getByLabelText(/^question$/i), { target: { value: "12" } });
+    fireEvent.click(within(dialog).getByRole("button", { name: /open the selected question/i }));
+    expect(navigate).toHaveBeenCalledWith(expect.stringContaining("qids=PT90-S1-Q12"));
+  });
+
+  it("crosses to the other bank from the switch, rather than only following its host", async () => {
+    const dialog = openFinder("lr");
+    type(dialog, "stretcher frame");
+    expect(within(dialog).queryByText(/reading comprehension/i)).toBeNull();
+    fireEvent.click(within(dialog).getByRole("button", { name: "RC" }));
+    expect(await within(dialog).findByText(/reading comprehension/i)).toBeInTheDocument();
   });
 });

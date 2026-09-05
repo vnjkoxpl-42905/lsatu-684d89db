@@ -382,7 +382,10 @@ export function useClassroomHome(): {
           timeLabel: timeLabel(last.created_at),
           body: last.body,
           unread: thread.unread,
-          route: "/inbox",
+          // Straight into the thread, not the inbox list: the card already
+          // showed which conversation this is, so landing anywhere else makes
+          // the student find it a second time.
+          route: `/inbox/${thread.id}`,
           lastMessageAt: last.created_at,
         },
       ];

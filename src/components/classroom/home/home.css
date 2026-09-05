@@ -91,6 +91,49 @@
 
 /* ── masthead ───────────────────────────────────────────────────────── */
 
+/* ── finder bar ────────────────────────────────────────────────────────
+   A rule of its own above the greeting, the way LSAT Lab hangs Find A Question
+   over its dashboard. The trigger brings its own pill shape; this band only
+   places it and draws the line under it. */
+
+.classroom-root .classroom-home-finderbar {
+  animation: classroomHomeRise 560ms var(--home-ease) both;
+  display: flex;
+  margin-bottom: 26px;
+  padding-bottom: 18px;
+  position: relative;
+}
+
+.classroom-root .classroom-home-finderbar::after {
+  background: rgba(68, 64, 61, 0.08);
+  bottom: 0;
+  content: "";
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.classroom-root .classroom-home-finderbar .qf-trigger {
+  min-width: 264px;
+}
+
+/* The trigger drops its label on a narrow screen wherever it shares a row.
+   Here it does not share one — the band is its own — and an unlabelled circle
+   alone above the greeting reads as decoration rather than the way in. So the
+   words stay and the pill takes the width instead. */
+@media (max-width: 720px) {
+  .classroom-root .classroom-home-finderbar .qf-trigger {
+    min-width: 0;
+    padding: 10px 12px 10px 14px;
+    width: 100%;
+  }
+
+  .classroom-root .classroom-home-finderbar .qf-trigger-label {
+    display: block;
+  }
+}
+
 .classroom-root .classroom-home-masthead {
   align-items: flex-end;
   animation: classroomHomeRise 560ms var(--home-ease) 40ms both;
@@ -618,8 +661,7 @@
 }
 
 /* A pill nested inside a row button is decoration, not a second control. */
-.classroom-root .classroom-home-row .classroom-home-pill,
-.classroom-root .classroom-home-message .classroom-home-pill {
+.classroom-root .classroom-home-row .classroom-home-pill {
   pointer-events: none;
 }
 
@@ -807,13 +849,6 @@
   font-size: 13.5px;
   line-height: 1.5;
   overflow: hidden;
-}
-
-.classroom-root .classroom-home-message-actions {
-  align-items: center;
-  display: flex;
-  gap: 8px;
-  margin-top: 1px;
 }
 
 /* ── next session ───────────────────────────────────────────────────── */

@@ -5,7 +5,6 @@ import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
-  ChevronDown,
   CornerDownLeft,
   LayoutGrid,
   Loader2,
@@ -25,6 +24,17 @@ import { useQuestionFinderBanks } from "./useQuestionFinderBanks";
 import "./questionFinder.css";
 
 const PER_BANK_LIMIT = 6;
+
+/* The bank switch, as a segmented control rather than a hidden filter.
+   LSAT Lab puts "Modern | Legacy" here, which splits its bank by PrepTest
+   numbering. Ours is PT101-159 end to end — every question is modern — so a
+   Legacy tab would be a control that returns nothing every time it is pressed.
+   The switch that is real here is the one between the two banks. */
+const BANK_TABS: { value: QuestionFinderBank | "all"; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "lr", label: "LR" },
+  { value: "rc", label: "RC" },
+];
 
 export interface QuestionFinderProps {
   /** Where a finished one-question attempt returns to. */
@@ -112,7 +122,9 @@ function FinderPanel({
   const navigate = useNavigate();
   const [query, setQuery] = React.useState("");
   const [active, setActive] = React.useState(0);
-  const [browsing, setBrowsing] = React.useState(false);
+  /* Seeded from the host, not locked to it: the Drill hub opens the finder on
+     its own side of the switch, and the student can still cross to the other. */
+  const [view, setView] = React.useState<QuestionFinderBank | "all">(bank ?? "all");
   const inputRef = React.useRef<HTMLInputElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const listRef = React.useRef<HTMLDivElement>(null);
@@ -128,9 +140,9 @@ function FinderPanel({
         rcPassages: banks.rcPassages,
         rcQuestions: banks.rcQuestions,
         limit: PER_BANK_LIMIT,
-        bank,
+        bank: view === "all" ? undefined : view,
       }),
-    [bank, banks.lr, banks.rcPassages, banks.rcQuestions, query],
+    [view, banks.lr, banks.rcPassages, banks.rcQuestions, query],
   );
 
   const hits = React.useMemo<FinderHit[]>(
@@ -160,6 +172,17 @@ function FinderPanel({
     },
     [navigate, onClose, returnTo],
   );
+
+  /* The go arrow is the selectors' Enter. It opens the best hit for whatever
+     address is currently built, so picking a test and pressing it lands on that
+     test's first question rather than telling the student to pick two more
+     things first. It is disabled when the address resolves to nothing, so it
+     never promises a jump it cannot make. */
+  const canGo = results.address !== null && hits.length > 0;
+  const openTop = React.useCallback(() => {
+    const hit = hits[0];
+    if (hit) openHit(hit);
+  }, [hits, openHit]);
 
   const onKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Escape") {
@@ -230,6 +253,51 @@ function FinderPanel({
           aria-label="Find a question"
           onKeyDown={onKeyDown}
         >
+          {/* The panel names itself and carries its own close, the way LSAT
+              Lab's does. The scrim still closes it; a titled dialog just
+              should not depend on the student knowing that. */}
+          <div className="qf-head">
+            <h2 className="qf-title">Question Finder</h2>
+            <button
+              type="button"
+              className="qf-close"
+              onClick={onClose}
+              aria-label="Close the question finder"
+            >
+              <X size={17} strokeWidth={2} aria-hidden />
+            </button>
+          </div>
+
+          <div className="qf-controls">
+            <div className="qf-banks" role="group" aria-label="Which bank to search">
+              {BANK_TABS.map((tab) => (
+                <button
+                  key={tab.value}
+                  type="button"
+                  className="qf-bank"
+                  data-on={view === tab.value}
+                  aria-pressed={view === tab.value}
+                  onClick={() => setView(tab.value)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* The three selectors lead now, rather than hiding behind a
+                disclosure. Picking a test is the fastest way in for a student
+                holding a printed section, and it was one click too deep. */}
+            <BrowseByTest
+              lr={banks.lr}
+              rcPassages={banks.rcPassages}
+              rcQuestions={banks.rcQuestions}
+              bank={view === "all" ? undefined : view}
+              disabled={banks.loading}
+              onPick={setQuery}
+              onGo={openTop}
+              canGo={canGo}
+            />
+
           <div className="qf-inputrow">
             <Search className="qf-inputrow-icon" size={18} strokeWidth={1.9} aria-hidden />
             <input
@@ -259,6 +327,8 @@ function FinderPanel({
                 <X size={14} strokeWidth={2} aria-hidden />
               </button>
             )}
+          </div>
+
           </div>
 
           <div className="qf-body" ref={listRef}>
@@ -375,28 +445,6 @@ function FinderPanel({
             <button
               type="button"
               className="qf-door"
-              aria-expanded={browsing}
-              onClick={() => setBrowsing((value) => !value)}
-            >
-              <LayoutGrid className="qf-door-icon" size={15} strokeWidth={1.8} aria-hidden />
-              <span className="qf-door-grow">Browse by test</span>
-              <ChevronDown className="qf-door-chevron" size={15} strokeWidth={2} aria-hidden />
-            </button>
-
-            {browsing && (
-              <BrowseByTest
-                lr={banks.lr}
-                rcPassages={banks.rcPassages}
-                rcQuestions={banks.rcQuestions}
-                bank={bank}
-                disabled={banks.loading}
-                onPick={setQuery}
-              />
-            )}
-
-            <button
-              type="button"
-              className="qf-door"
               onClick={() => {
                 navigate(`/classroom/drill?section=${bank ?? "lr"}&stage=type-drill`);
                 onClose();
@@ -469,6 +517,8 @@ function BrowseByTest({
   bank,
   disabled,
   onPick,
+  onGo,
+  canGo,
 }: {
   lr: { pt: number; section: number; qnum: number }[];
   rcPassages: { preptest: number; section: number }[];
@@ -476,9 +526,16 @@ function BrowseByTest({
   bank?: QuestionFinderBank;
   disabled: boolean;
   onPick: (query: string) => void;
+  onGo: () => void;
+  canGo: boolean;
 }) {
   const [pt, setPt] = React.useState("");
   const [section, setSection] = React.useState("");
+  /* The question keeps its choice like the other two. It used to reset itself
+     after every pick, which read as the selector forgetting what was asked
+     for — and left the row saying "PT 159 · Section 1 · Question" while the
+     field below it said Q5. */
+  const [qnum, setQnum] = React.useState("");
 
   const pts = React.useMemo(() => {
     const all = new Set<number>();
@@ -539,6 +596,7 @@ function BrowseByTest({
           onChange={(event) => {
             setPt(event.target.value);
             setSection("");
+            setQnum("");
             pick(event.target.value, "", "");
           }}
         >
@@ -559,6 +617,7 @@ function BrowseByTest({
           disabled={disabled || !pt}
           onChange={(event) => {
             setSection(event.target.value);
+            setQnum("");
             pick(pt, event.target.value, "");
           }}
         >
@@ -575,9 +634,12 @@ function BrowseByTest({
         <span className="qf-field-label">Question</span>
         <select
           className="qf-select"
-          value=""
+          value={qnum}
           disabled={disabled || !section || qnums.length === 0}
-          onChange={(event) => pick(pt, section, event.target.value)}
+          onChange={(event) => {
+            setQnum(event.target.value);
+            pick(pt, section, event.target.value);
+          }}
         >
           <option value="">
             {!section
@@ -593,6 +655,16 @@ function BrowseByTest({
           ))}
         </select>
       </label>
+
+      <button
+        type="button"
+        className="qf-go"
+        onClick={onGo}
+        disabled={!canGo}
+        aria-label="Open the selected question"
+      >
+        <ArrowRight size={17} strokeWidth={2.2} aria-hidden />
+      </button>
     </div>
   );
 }

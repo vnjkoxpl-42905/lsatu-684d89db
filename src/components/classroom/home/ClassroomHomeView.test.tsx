@@ -357,12 +357,15 @@ describe("ClassroomHomeView", () => {
     expect(screen.queryByRole("button", { name: /clear actions/i })).toBeNull();
   });
 
-  // Home is the greeting and the day's state, not a search surface. The
-  // question picker rode onto this page in an Aug-22 checkpoint commit that
-  // swept up uncommitted work from parallel sessions; it was never a decision
-  // about Home. Finding a question belongs on Drill, which the rail already
-  // links. This test is the guard so it does not drift back.
-  it("keeps the question picker off Home", () => {
+  /* Home used to guard against exactly this: the question picker rode onto the
+     page in an Aug-22 checkpoint commit that was never a decision, and the
+     guard sent finding a question back to Drill. Joshua reversed it on
+     2026-09-02, asking for LSAT Lab's Find A Question at the top of Home,
+     where a student who arrives holding one question starts. What the old
+     guard was really protecting is still protected and tested below: the
+     picker is not wedged between the greeting and the hero, and the three
+     selectors stay inside the panel rather than spilling onto the page. */
+  it("puts one Find a question trigger at the top of Home", () => {
     render(
       <ClassroomHomeView
         model={FULL}
@@ -371,7 +374,8 @@ describe("ClassroomHomeView", () => {
         onSeeAllWork={vi.fn()}
       />,
     );
-    expect(screen.queryByRole("button", { name: "Find a question" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
+    // Closed until asked: the selectors live in the panel, not on the page.
     expect(screen.queryByRole("combobox", { name: /test/i })).toBeNull();
     expect(screen.queryByRole("combobox", { name: /section/i })).toBeNull();
     expect(screen.queryByRole("combobox", { name: /question/i })).toBeNull();
