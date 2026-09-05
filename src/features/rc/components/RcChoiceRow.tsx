@@ -16,6 +16,12 @@ import type { RcChoice, RcLetter } from '../lib/rcTypes';
  * Like LR, a revealed question greens the credited answer and leaves the
  * student's pick in the selected slate — there is no red row. The verdict line
  * and the "Your answer" chip carry that.
+ *
+ * The credited answer's colours come from `.rc-choice-correct` in rc.css rather
+ * than Tailwind utilities. They used to be green-500/green-50 here while the
+ * verdict banner directly above used the design system's drill-correct #2f9e64
+ * on #eaf6ef — two greens for one verdict, on one screen. Both read the same
+ * token now, and it is the documented one.
  */
 
 interface Props {
@@ -71,7 +77,7 @@ export function RcChoiceRow({
         'rc-choice group relative rounded-lg border transition-all duration-200',
         'grid grid-cols-[auto_1fr_auto] items-start gap-3 p-3',
         isCorrect
-          ? 'border-green-500 bg-green-50'
+          ? 'rc-choice-correct'
           : selected
             ? 'border-slate-500 bg-slate-100 shadow-sm'
             : eliminated
@@ -87,7 +93,7 @@ export function RcChoiceRow({
         className={cn(
           'rc-choice-badge mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border font-semibold transition-all',
           isCorrect
-            ? 'border-green-600 bg-green-500 text-white'
+            ? ''
             : selected
               ? 'rc-choice-badge-selected border-slate-900 bg-slate-900 text-white'
               : 'border-slate-300 group-hover:border-slate-400',
@@ -104,7 +110,6 @@ export function RcChoiceRow({
         className={cn(
           'rc-choice-text relative text-left leading-relaxed transition-colors',
           eliminated && 'line-through',
-          isCorrect && 'text-green-900',
         )}
         style={textStyle}
       >

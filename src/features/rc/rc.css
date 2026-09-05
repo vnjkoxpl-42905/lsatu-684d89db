@@ -4,6 +4,27 @@
  * falls back to a literal where a token does not exist.
  */
 
+/*
+ * The drill-state palette, named once.
+ *
+ * DESIGN.md documents these under "Drill state" — correct #2f9e64 on a soft
+ * #eaf6ef, wrong #e5484d on a soft #fdecec — but nothing in the codebase turns
+ * them into tokens, so they were pasted as literals here and, separately, as
+ * Tailwind green-500/green-50 in the choice row. That is how one screen ended
+ * up showing two different greens for a single verdict. One source now, and
+ * both the banner and the choice row read from it.
+ */
+:root {
+  --rc-correct: #2f9e64;
+  --rc-correct-soft: #eaf6ef;
+  --rc-correct-ink: #14532d;
+  --rc-wrong: #e5484d;
+  --rc-wrong-soft: #fdecec;
+  --rc-surface-quiet: #fafafc; /* drill-page */
+  --rc-line: #e5e5ea; /* drill-border */
+  --rc-ink: #1d1d1f; /* drill-ink */
+}
+
 /* ----------------------------------------------------------------- buttons */
 
 /*
@@ -64,22 +85,14 @@
   margin-bottom: 14px;
 }
 
-/*
- * One verdict, one green.
- *
- * These used to be #2f9e64 on #eaf6ef while the correct choice row three lines
- * below was Tailwind green-500 on green-50 — two greens for the same verdict on
- * the same screen. They are the row's values now, so the banner and the choice
- * it is describing agree.
- */
 .rc-verdict-right {
-  background: #f0fdf4; /* green-50, as RcChoiceRow */
-  border: 1px solid #22c55e; /* green-500, as RcChoiceRow */
+  background: var(--rc-correct-soft);
+  border: 1px solid var(--rc-correct);
 }
 
 .rc-verdict-wrong {
-  background: #fef2f2; /* red-50 */
-  border: 1px solid #ef4444; /* red-500 */
+  background: var(--rc-wrong-soft);
+  border: 1px solid var(--rc-wrong);
 }
 
 .rc-verdict-detail {
@@ -155,7 +168,7 @@
   background: hsl(var(--muted));
 }
 
-.rc-tag-correct { background: #16a34a; color: #ffffff; } /* green-600, as LR's chip */
+.rc-tag-correct { background: var(--rc-correct); color: #ffffff; }
 
 .rc-tag-outline {
   background: transparent;
@@ -185,9 +198,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border-radius: 6px;
-  background: #f8fafc; /* slate-50, as the toolbar */
-  border: 1px solid #cbd5e1; /* slate-300 */
+  border-radius: var(--radius);
+  background: var(--rc-surface-quiet);
+  border: 1px solid var(--rc-line);
   padding: 10px 14px;
   font-size: 14px;
   margin-bottom: 14px;
@@ -204,7 +217,7 @@
   font-size: 14px;
   cursor: pointer;
   text-decoration: underline;
-  color: #334155; /* slate-700 */
+  color: var(--rc-ink);
   padding: 0;
   /*
    * "Show my answer" was breaking to "Show my / answer" and taking the message
@@ -214,7 +227,7 @@
   flex-shrink: 0;
 }
 
-.rc-skip-link:hover { color: #0f172a; }
+.rc-skip-link:hover { opacity: 0.75; }
 
 .rc-summary-toggle {
   margin-top: 22px;
@@ -538,9 +551,35 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border-top: 1px solid #fca5a5; /* red-300 */
-  background: #fef2f2; /* red-50, as the wrong verdict */
-  color: #7f1d1d;
+  border-top: 1px solid var(--rc-wrong);
+  background: var(--rc-wrong-soft);
+  color: var(--rc-ink);
   padding: 10px 24px;
   font-size: 14px;
+}
+
+/*
+ * The credited answer's row, once feedback is showing.
+ *
+ * These colours lived as Tailwind green-500 / green-50 / green-600 / green-900
+ * inside RcChoiceRow while the verdict banner right above it used the design
+ * system's drill-correct. One verdict, two greens. Both read `--rc-correct` now.
+ *
+ * The accessibility schemes still win the fill: `.rc-exam[class*='rc-scheme-']
+ * .rc-choice` is more specific than this, so a scheme neutralises the row and
+ * the state reads from the border, which is the existing behaviour.
+ */
+.rc-choice-correct {
+  border-color: var(--rc-correct);
+  background: var(--rc-correct-soft);
+}
+
+.rc-choice-correct .rc-choice-badge {
+  border-color: var(--rc-correct);
+  background: var(--rc-correct);
+  color: #ffffff;
+}
+
+.rc-choice-correct .rc-choice-text {
+  color: var(--rc-correct-ink);
 }
