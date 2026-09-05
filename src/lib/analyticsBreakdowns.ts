@@ -1,4 +1,10 @@
 import { questionBank, CANONICAL_QTYPES, type LRQuestion } from '@/lib/questionLoader';
+import {
+  FEATURE_FAMILIES,
+  FEATURE_FAMILY_BY_ID,
+  FALLBACK_FEATURE_FAMILY_LABEL,
+  familyForFeature,
+} from '@/lib/questionFeatureFamilies';
 
 /**
  * Breakdown tables for /analytics.
@@ -56,52 +62,18 @@ const FAMILY_BY_QTYPE = new Map<string, string>(
 );
 
 /**
- * Feature families. The bank carries 60 distinct features with no grouping of
- * their own, so they are bucketed here by the reasoning move they belong to.
- * Anything unlisted falls into "Other" rather than being dropped.
+ * Feature families come from the canonical taxonomy in `questionFeatureFamilies.ts`,
+ * which is derived from the question bank itself and is the single source of truth.
+ *
+ * This file used to carry its own copy of the map. That copy was transcribed from
+ * LSAT Lab's analytics UI, so it inherited their label spellings — `Repetitve Answers`
+ * (their typo), `Necessary vs. Sufficient Flaw`, `Sampling Flaw` — none of which match
+ * the strings in our bank (`Repetitive Answers`, `Sufficient vs. Necessary Flaw`,
+ * `Sampling`). Those rows, plus ~20 real features the copy never listed at all,
+ * silently fell into "Other". See research/lsatlab-analytics-teardown-2026-08-26.
+ *
+ * Do not reintroduce a local map. Add features to `questionFeatureFamilies.ts`.
  */
-const FEATURE_FAMILY: Record<string, string> = {
-  'Conditional Diagramming': 'Conditional logic',
-  'Contrapositive Logic': 'Conditional logic',
-  'Necessary vs. Sufficient Flaw': 'Conditional logic',
-  'Refute a Conditional': 'Conditional logic',
-  Binaries: 'Conditional logic',
-  'Complex Conditionals': 'Conditional logic',
-  'Conditional Conclusion': 'Conditional logic',
-  'Explain Curious Fact': 'Causation',
-  'Anti-Causal': 'Causation',
-  'Causal Difference-Maker': 'Causation',
-  'Plans / Recommendations': 'Comparison',
-  Timeframes: 'Comparison',
-  'Net Effect': 'Comparison',
-  Analogies: 'Comparison',
-  'Assumes Similarity': 'Comparison',
-  Predictions: 'Comparison',
-  Rebuttals: 'Other reasoning moves',
-  'Famous Flaws': 'Other reasoning moves',
-  'Ruling Out Options': 'Other reasoning moves',
-  'Part vs. Whole': 'Other reasoning moves',
-  'Sampling Flaw': 'Other reasoning moves',
-  Science: 'Stimulus traits',
-  'New Concept in Conclusion': 'Stimulus traits',
-  'Math-y Stuff': 'Stimulus traits',
-  'First Sentence Conclusion': 'Stimulus traits',
-  'Important Pivot': 'Stimulus traits',
-  'Dense Stimulus': 'Stimulus traits',
-  'Intermediate Conclusions': 'Stimulus traits',
-  Quantifiers: 'Stimulus traits',
-  Medical: 'Stimulus traits',
-  'Missing Link / Idea': 'Answer traits',
-  Alternatives: 'Answer traits',
-  Defender: 'Answer traits',
-  Plausibility: 'Answer traits',
-  'Abstract Answers': 'Answer traits',
-  'Repetitve Answers': 'Answer traits',
-  '2-Speaker': 'Format',
-  'Principles in Answers': 'Format',
-  EXCEPT: 'Format',
-  'Logical Completion': 'Format',
-};
 
 const DIFFICULTY_LABEL: Record<number, string> = {
   1: 'Level 1',
@@ -152,13 +124,29 @@ function keysFor(kind: BreakdownKind, q: LRQuestion): string[] {
   }
 }
 
+/**
+ * Feature -> family DISPLAY LABEL.
+ *
+ * `familyForFeature()` returns the family *id* ("traps"), while the grouped
+ * renderer and `groupOrder()` both work in labels ("Answer Choice Traps"). This
+ * is the bridge. A feature the taxonomy has never seen falls to the shared
+ * fallback label rather than throwing — but the bank-coverage test
+ * (`questionFeatureBankCoverage.test.ts`) fails the build if that ever happens,
+ * so the fallback is a safety net and not an expected path.
+ */
+function featureFamilyLabel(feature: string): string {
+  const id = familyForFeature(feature);
+  if (!id) return FALLBACK_FEATURE_FAMILY_LABEL;
+  return FEATURE_FAMILY_BY_ID[id]?.label ?? FALLBACK_FEATURE_FAMILY_LABEL;
+}
+
 function groupFor(kind: BreakdownKind, key: string): string {
   switch (kind) {
     case 'qtype':
     case 'wrongByQtype':
       return FAMILY_BY_QTYPE.get(key) ?? 'OTHER';
     case 'questionFeature':
-      return FEATURE_FAMILY[key] ?? 'Other';
+      return featureFamilyLabel(key);
     default:
       return '';
   }
@@ -248,14 +236,8 @@ export function groupOrder(kind: BreakdownKind): string[] {
   }
   if (kind === 'questionFeature') {
     return [
-      'Conditional logic',
-      'Causation',
-      'Comparison',
-      'Other reasoning moves',
-      'Stimulus traits',
-      'Answer traits',
-      'Format',
-      'Other',
+      ...FEATURE_FAMILIES.map((f) => f.label),
+      FALLBACK_FEATURE_FAMILY_LABEL,
     ];
   }
   return [];
