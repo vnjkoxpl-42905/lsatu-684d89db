@@ -1,5 +1,6 @@
 import * as React from "react";
 import { HelpCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface BreadcrumbItem {
   label: string;
@@ -15,12 +16,17 @@ interface Props {
    * Show the Answer pill. Reveals the correct letter plus the inline
    * explanation layer; pressed before an attempt it is the escape hatch and
    * the caller confirms the question will not be scored.
+   *
+   * Both this and Explanation are toggles over the same reveal state: pressed
+   * again they put the question back exactly as it was, with nothing revealed.
+   * A reveal used to be a one-way door, which made the pills useless for
+   * teaching — showing a class the answer meant the question was spent.
    */
   showAnswerVisible?: boolean;
   onShowAnswer?: () => void;
   /** Disabled while paused, or where revealing mid-section defeats the exercise. */
   showAnswerDisabled?: boolean;
-  /** Whether the answer is currently revealed (toggles pill styling). */
+  /** True while the answer is revealed — flips the pill to its "hide" state. */
   showAnswerActive?: boolean;
   /** Opens the question drawer on the Explanation tab. Hidden if omitted. */
   onExplanation?: () => void;
@@ -28,7 +34,7 @@ interface Props {
   explanationLabel?: string;
   /** Disabled until something is revealed, so the breakdown cannot leak. */
   explanationDisabled?: boolean;
-  /** Whether the explanation panel is currently open (toggles pill styling). */
+  /** True while the explanation layer is up — flips the pill to its "hide" state. */
   explanationActive?: boolean;
   /** Noun used in pause/complete labels: "Section" (default) or "Question". */
   pauseNoun?: string;
@@ -45,6 +51,10 @@ interface Props {
 /** Shared gray pill. Narrow padding on small screens so the cluster still fits. */
 const PILL_CLASS =
   "rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-3 sm:px-5 py-1.5 text-[13px] font-medium whitespace-nowrap transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-slate-100";
+
+/** A pill whose state is currently on, so pressing it again undoes it. */
+const ACTIVE_PILL_CLASS =
+  "bg-[#7f1d1d] hover:bg-[#991b1b] border-[#7f1d1d] text-white";
 
 /**
  * Content of the white global header bar. Breadcrumb on the left,
@@ -107,10 +117,11 @@ export default function OfficialSessionStrip({
             type="button"
             onClick={onShowAnswer}
             disabled={showAnswerDisabled}
-            aria-pressed={showAnswerActive}
-            className={`${PILL_CLASS}${showAnswerActive ? " bg-slate-200 border-slate-400" : ""}`}
+            aria-pressed={!!showAnswerActive}
+            title={showAnswerActive ? "Hide the answer and reset the question" : undefined}
+            className={cn(PILL_CLASS, showAnswerActive && ACTIVE_PILL_CLASS)}
           >
-            Answer
+            {showAnswerActive ? "Hide Answer" : "Answer"}
           </button>
         )}
         {onExplanation && (
@@ -118,11 +129,15 @@ export default function OfficialSessionStrip({
             type="button"
             onClick={onExplanation}
             disabled={explanationDisabled}
-            aria-pressed={explanationActive}
-            title={explanationDisabled ? "Answer or reveal the question first" : undefined}
-            className={`${PILL_CLASS}${explanationActive ? " bg-slate-200 border-slate-400" : ""}`}
+            aria-pressed={!!explanationActive}
+            title={
+              explanationActive
+                ? "Collapse the explanations and reset the question"
+                : "Reveal the answer and every choice's explanation"
+            }
+            className={cn(PILL_CLASS, explanationActive && ACTIVE_PILL_CLASS)}
           >
-            {explanationLabel}
+            {explanationActive ? `Hide ${explanationLabel}` : explanationLabel}
           </button>
         )}
         {onOpenHelp && (
