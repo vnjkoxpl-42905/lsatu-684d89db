@@ -15,8 +15,8 @@
  */
 import { createRoot } from "react-dom/client";
 // The section JSONs deliberately ship an empty instructions block -- the rules
-// are authored once and carried from the base Activity at seed time -- so the
-// harness reads the same instructions file the migration seeds.
+// are authored once, in one file, and copied in at seed time -- so the harness
+// reads the same instructions file the migration seeds.
 import sectionInstructions from "../features/activity-centre/content/read-recall-colour-section.instructions.json";
 import type { ActivityInstructions } from "../features/activity-centre/api/types";
 

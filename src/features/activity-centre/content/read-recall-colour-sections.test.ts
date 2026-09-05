@@ -9,10 +9,15 @@ import type { ActivityMode, RecallSectionItem, TimeGoalMinutes } from "../api/ty
 // not read as a bug; it reads as the student being told she dropped a detail
 // she said.
 //
-// The base Activity's own fixture test stays where it is. This file asserts
-// only what is true of a SECTION, which is deliberately not the same set: a
-// section has no cumulative round and no reference retelling, so the invariants
-// that exist to protect those would fail here for the right reason.
+// This file asserts only what is true of a SECTION, which is deliberately not
+// the same set the authored Activities are held to: a section has no cumulative
+// round and no reference retelling, so the invariants that exist to protect
+// those would fail here for the right reason.
+//
+// The base Activity had a fixture test of its own that carried them. Both went
+// on 2026-09-04 when the Activity did, and nothing was lost with them: they
+// asserted the shape of a `credited_answers` and a `cumulative_after` that a
+// section is defined by not having.
 
 type Section = {
   slug: string;
