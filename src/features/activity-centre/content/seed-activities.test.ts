@@ -9,8 +9,8 @@ import { SEED_ACTIVITIES } from "./index";
  * `read-recall-colour-sections.test.ts` instead. They are not authored, they
  * are lifted verbatim from real LR sections, so half of these invariants would
  * fail on them for the right reason: a section has no reference retelling, its
- * rules live on the base Activity rather than its own row, and its prompts are
- * somebody else's punctuation, which we may not edit.
+ * rules are the shared ones the door hands it rather than its own row, and its
+ * prompts are somebody else's punctuation, which we may not edit.
  */
 const AUTHORED = SEED_ACTIVITIES.filter((a) => a.mode !== "section");
 
@@ -20,8 +20,8 @@ const AUTHORED = SEED_ACTIVITIES.filter((a) => a.mode !== "section");
 // rather than trusted.
 
 describe("seed Activities", () => {
-  it("ships the eight authored Activities, plus the captured sections, with unique slugs", () => {
-    expect(AUTHORED).toHaveLength(8);
+  it("ships the seven authored Activities, plus the captured sections, with unique slugs", () => {
+    expect(AUTHORED).toHaveLength(7);
     // Uniqueness spans everything seeded: slug is the conflict target the seed
     // migration upserts on, so a collision would silently overwrite a row.
     const slugs = SEED_ACTIVITIES.map((a) => a.slug);
@@ -33,13 +33,12 @@ describe("seed Activities", () => {
     (_slug, activity) => {
       expect(activity.title.trim()).not.toBe("");
       expect(activity.subtitle.trim()).not.toBe("");
-      // Every Activity is typed until one is spoken. Read, Recall, Colour is
-      // the only `spoken-recall` one, and that string is not cosmetic: it is
-      // what ActivityRunner switches on to hand the whole screen to a different
-      // player (docs/adr/0009). A typo here shows a student the wrong runner.
-      expect(activity.item_format).toBe(
-        activity.slug === "read-recall-colour" ? "spoken-recall" : "free-text",
-      );
+      // Every authored Activity is typed. The spoken ones are the captured
+      // sections, which are filtered out above and asserted in their own file.
+      // That string is not cosmetic: `spoken-recall` is what ActivityRunner
+      // switches on to hand the whole screen to a different player
+      // (docs/adr/0009), so a typo here shows a student the wrong runner.
+      expect(activity.item_format).toBe("free-text");
       expect(activity.items.length).toBeGreaterThan(0);
     },
   );

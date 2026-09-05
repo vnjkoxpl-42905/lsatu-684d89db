@@ -100,9 +100,12 @@ describe.each(SECTIONS)("%s", (citation, section) => {
     expect(accommodation_70).toBe(Math.round((standard * 70) / 35));
   });
 
-  it("leaves instructions to the base Activity", () => {
-    // The rules are authored once and copied in by the seed builder. A section
-    // that carried its own copy would drift from the other two silently.
+  it("leaves its instructions to the shared briefing", () => {
+    // The rules are authored once, in
+    // `read-recall-colour-section.instructions.json`, and copied in by the seed
+    // builder. A section that carried its own copy would drift from the rest
+    // silently, and the door would explain the drill differently from the page
+    // she starts it on.
     expect(Object.keys(section.instructions)).toEqual([]);
   });
 

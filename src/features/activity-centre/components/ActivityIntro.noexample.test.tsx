@@ -2,7 +2,18 @@ import { render, screen } from "@testing-library/react";
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 import { ActivityIntro } from "./ActivityIntro";
 import { SEED_ACTIVITIES } from "../content";
+import sectionInstructions from "../content/read-recall-colour-section.instructions.json";
 import type { ActivityInstructions } from "../api/types";
+
+/**
+ * The briefing these tests draw is the one Read, Recall, Colour actually
+ * ships: six sections and a closer, read on the door and on every section
+ * page. It used to come from the base Activity in SEED_ACTIVITIES, which was
+ * the only seeded Activity carrying a briefing at all. That Activity is gone
+ * -- the drill runs as a whole section now -- so the fixture moved to the
+ * file the surfaces read, which is the copy a student is actually shown.
+ */
+const briefed = sectionInstructions as unknown as ActivityInstructions;
 
 /**
  * The Activity with a task and NO worked example.
@@ -165,17 +176,16 @@ describe("the line describing the sitting", () => {
 
 describe("the breakdown", () => {
   it("renders every section of an Activity that has one", () => {
-    const rrc = SEED_ACTIVITIES.find((a) => a.slug === "read-recall-colour")!;
-    const briefing = rrc.instructions.briefing!;
+    const briefing = briefed.briefing!;
     expect(briefing.sections.length).toBeGreaterThan(0);
 
     const { container } = render(
       <ActivityIntro
-        title={rrc.title}
-        subtitle={rrc.subtitle}
-        instructions={rrc.instructions}
-        itemCount={rrc.items.length}
-        format={rrc.item_format}
+        title="Read, Recall, Colour"
+        subtitle="A whole section, out loud"
+        instructions={briefed}
+        itemCount={22}
+        format="spoken-recall"
         onStart={() => {}}
       />,
     );
@@ -203,8 +213,7 @@ describe("the breakdown", () => {
 
   it("carries no em dash, which Joshua never types", () => {
     // Student-facing copy. An em dash reads as machine-written and costs trust.
-    const rrc = SEED_ACTIVITIES.find((a) => a.slug === "read-recall-colour")!;
-    const prose = JSON.stringify(rrc.instructions.briefing);
+    const prose = JSON.stringify(briefed.briefing);
     expect(prose).not.toMatch(/[—–]/);
   });
 });

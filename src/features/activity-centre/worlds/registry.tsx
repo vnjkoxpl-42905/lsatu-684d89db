@@ -149,20 +149,17 @@ export interface CardIdentity {
   accent: string;
 }
 
-const UNWORLDED: Record<string, CardIdentity> = {
-  "read-recall-colour": {
-    label: "Out Loud",
-    scope: "a stimulus, from memory",
-    accent: "320 60% 62%",
-  },
-};
-
 /**
- * A captured section is Read, Recall, Colour at full scale, and its title names
- * the section it is ("Read, Recall, Colour \u00b7 PT105 Section 2"). It carries the
- * same identity as the base Activity with its own scope, matched by prefix
- * rather than listed: a new section is built roughly whenever the source
- * publishes more recordings, and a card left unlabelled reads as a bug.
+ * Read, Recall, Colour wears one identity across every row it owns: the door
+ * she picks a section from, and each captured section behind it. Their titles
+ * name the section ("Read, Recall, Colour \u00b7 PT105 Section 2"), so they are
+ * matched by prefix rather than listed. A new section is built roughly whenever
+ * the source publishes more recordings, and a card left unlabelled reads as a
+ * bug.
+ *
+ * There used to be a second entry here for the base Activity, a single stimulus
+ * worked from memory. It was removed with the Activity itself: the drill runs
+ * as a whole section now, and one drill gets one card.
  */
 const SECTION_IDENTITY: CardIdentity = {
   label: "Out Loud",
@@ -174,7 +171,6 @@ export function cardIdentityFor(title: string | null | undefined): CardIdentity 
   const world = worldForTitle(title);
   if (world) return { label: world.label, scope: world.scope, accent: world.accent };
   const slug = slugFromTitle(title ?? "");
-  if (UNWORLDED[slug]) return UNWORLDED[slug];
   return slug.startsWith("read-recall-colour-") ? SECTION_IDENTITY : null;
 }
 

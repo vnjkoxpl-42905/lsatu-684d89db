@@ -66,14 +66,17 @@ describe("Activity Centre ordering", () => {
       (x, y) => librarySortIndex(slugFromTitle(x)) - librarySortIndex(slugFromTitle(y)),
     );
     expect(ordered[0]).toBe("Vocab Rehab");
-    // The spoken Activity sits last, and not because its text is longest: it is
-    // off the scope line entirely, working a stimulus from memory rather than
-    // analysing one on the page.
-    // The spoken Activities tail the list, base first and then the captured
-    // sections it scales up. Everything above them is scope-ordered.
+    // The spoken Activities tail the list, and not because their text is the
+    // longest: they are off the scope line entirely, worked out loud from
+    // memory rather than analysed on the page. Everything above them is
+    // scope-ordered.
+    //
+    // Every one of them here is a captured section. The door they are reached
+    // through sits with them in the library order but is not seeded from
+    // `content/`, so it is not among these titles.
     const spoken = ordered.filter((t) => t.startsWith("Read, Recall, Colour"));
     expect(ordered.slice(-spoken.length)).toEqual(spoken);
-    expect(spoken[0]).toBe("Read, Recall, Colour");
+    expect(spoken.every((t) => / \u00b7 PT\d+ Section \d+$/.test(t))).toBe(true);
     expect(ordered[ordered.length - spoken.length - 1]).toBe("Spot the Callback");
   });
 });

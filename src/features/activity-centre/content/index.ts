@@ -17,7 +17,6 @@ import type {
 } from "../api/types";
 
 import conditionalRephrase from "./conditional-rephrase.json";
-import readRecallColour from "./read-recall-colour.json";
 import readRecallColourPt1S3 from "./read-recall-colour-pt1-s3.json";
 import readRecallColourPt21S3 from "./read-recall-colour-pt21-s3.json";
 import readRecallColourPt101S2 from "./read-recall-colour-pt101-s2.json";
@@ -70,16 +69,17 @@ export const SEED_ACTIVITIES: SeedActivity[] = [
   rebuttalRephrase as SeedActivity, // an argument, restated
   dumbItDown as SeedActivity, // a paragraph
   spotTheCallback as SeedActivity, // a passage
-  // Last, and not because its text is the longest. The order above is the scope
-  // of text a skill works on, and this one is a different axis: a stimulus
-  // worked from memory rather than analysed on the page. It is also the only
-  // `spoken-recall` Activity, so it is the only one ActivityRunner hands to a
-  // different player entirely.
-  readRecallColour as unknown as SeedActivity,
   // The captured sections. Each is a whole LR section run unbroken against the
-  // clock, and they sit after the base Activity because they are the same drill
-  // at full scale rather than a different skill. Ordered by PrepTest so the
-  // list does not reshuffle when the next one is built.
+  // clock, and they are last for a reason that is not length: everything above
+  // is ordered by the scope of text a skill works on, and this is a different
+  // axis, a section worked out loud from memory rather than analysed on the
+  // page. Ordered by PrepTest so the list does not reshuffle when the next one
+  // is built.
+  //
+  // The door they are reached through, `read-recall-colour-sections`, is not
+  // seeded from here. It carries no items of its own -- its content is the list
+  // of these -- so it is created by its own migration and appears in
+  // ACTIVITY_LIBRARY_ORDER below without a row in this array.
   readRecallColourPt1S3 as unknown as SeedActivity,
   readRecallColourPt21S3 as unknown as SeedActivity,
   readRecallColourPt101S2 as unknown as SeedActivity,
@@ -121,7 +121,7 @@ export const ACTIVITY_LIBRARY_ORDER = [
   "rebuttal-rephrase", // an argument, restated
   "dumb-it-down", // a paragraph
   "spot-the-callback", // a passage
-  "read-recall-colour", // a stimulus, from memory
+  "read-recall-colour-sections", // the door: a whole section, out loud
   "read-recall-colour-pt1-s3", // a whole section, against the clock
   "read-recall-colour-pt21-s3",
   "read-recall-colour-pt101-s2",

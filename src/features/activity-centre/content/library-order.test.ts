@@ -21,10 +21,10 @@ const TEACHING_ORDER = [
   "spot-the-callback", // a passage
   // Last, and deliberately not because its text is the longest. Everything
   // above is ordered by the scope of text a skill works on. Read, Recall,
-  // Colour is a different axis: a stimulus worked from memory rather than
-  // analysed on the page. Sitting at the end says "different kind of thing"
-  // rather than "bigger version of the last one".
-  "read-recall-colour", // a stimulus, from memory
+  // Colour is a different axis: a section worked out loud from memory rather
+  // than analysed on the page. Sitting at the end says "different kind of
+  // thing" rather than "bigger version of the last one".
+  "read-recall-colour-sections", // the door: a whole section, out loud
 ];
 
 /** The captured sections, in the order the library actually lists them. */
@@ -46,12 +46,21 @@ describe("the library order", () => {
   // Derived rather than a literal count. The literal was 12 and had to be
   // edited every time a captured section was built, which makes adding content
   // a test edit and teaches the wrong reflex. What this is actually pinning is
-  // that the order holds every seeded Activity plus the one made by hand, and
+  // that the order holds every seeded Activity plus the ones made by hand, and
   // that is exactly what the arithmetic says. The ORDER of the list is pinned
   // literally below, because that one IS a teaching decision.
-  it("lists every seeded Activity plus the one outside the seed pipeline", () => {
-    expect(ACTIVITY_LIBRARY_ORDER.length).toBe(SEED_ACTIVITY_SLUGS.length + 1);
-    expect(ACTIVITY_LIBRARY_ORDER).toContain("negation-station");
+  it("lists every seeded Activity plus the ones outside the seed pipeline", () => {
+    // Two Activities exist that no content file produces. Negation Station
+    // predates the pipeline. The door onto the captured sections carries no
+    // items of its own -- its content is the list of them -- so it is created
+    // by its own migration rather than seeded from `content/`.
+    const outsideThePipeline = ["negation-station", "read-recall-colour-sections"];
+    expect(ACTIVITY_LIBRARY_ORDER.length).toBe(
+      SEED_ACTIVITY_SLUGS.length + outsideThePipeline.length,
+    );
+    for (const slug of outsideThePipeline) {
+      expect(ACTIVITY_LIBRARY_ORDER, `${slug} is missing from the library order`).toContain(slug);
+    }
   });
 
   it("covers every seeded Activity", () => {
@@ -79,8 +88,10 @@ describe("the library order", () => {
   it("keeps the spoken Activities last, where a scope-ordered list cannot rank them", () => {
     const spoken = ACTIVITY_LIBRARY_ORDER.filter((s) => s.startsWith("read-recall-colour"));
     expect(ACTIVITY_LIBRARY_ORDER.slice(-spoken.length)).toEqual(spoken);
-    // The base Activity comes before the sections it scales up.
-    expect(spoken[0]).toBe("read-recall-colour");
+    // The door comes before the sections it opens onto, and it is the only one
+    // of them a student is ever given: the sections are reached through it.
+    expect(spoken[0]).toBe("read-recall-colour-sections");
+    expect(spoken.slice(1).every((s) => /-pt\d+-s\d+$/.test(s))).toBe(true);
   });
 
   it("keeps the two statement-level Activities together", () => {
