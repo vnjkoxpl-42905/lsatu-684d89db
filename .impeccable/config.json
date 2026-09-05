@@ -5,7 +5,8 @@
       "src/features/rc/player.css",
       "src/components/drill/official/**",
       "src/features/rc/components/**",
-      "src/features/rc/pages/RcPlayer.tsx"
+      "src/features/rc/pages/RcPlayer.tsx",
+      "src/features/activity-centre/components/section-launch.css"
     ],
     "ignoreValues": [
       {
