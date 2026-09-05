@@ -73,10 +73,15 @@ const CONTENT_DESPITE_OPENING = /^this is (about|what|true of|after|conditional 
 
 const STRUCTURE = [
   /^this is (the|a|an) (conclusion|contrast|reason|reason given|result|example|additional point|additional reason|additional fact|additional premise|premise|second premise|first reason given|conditional claim|correction|other case|puzzle|definition|consequent|editorial)\.$/,
-  /^this is (his|her|their) (conclusion|reason|recommendation|example)\.$/,
+  // A possessive proper noun as well as a pronoun. PT134.S3 named its speakers
+  // so the key would stop inventing their gender, and "This is Tanner's reason."
+  // is the same discourse role as "This is his reason." Without this, fixing the
+  // gender defect creates a kind defect: the role falls through to `content` and
+  // the judge asks "did she say this?" of something that is not a claim.
+  /^this is (his|her|their|[a-z]+'s) (conclusion|reason|recommendation|example)\.$/,
   /^this is further support for the claim\.$/,
   /^this is (an example|the contrast)\.$/,
-  /^this is a contrast with .*\.$/,
+  /^this is a contrast (with|about) .*\.$/,
   /^this is despite something\.$/,
   /^(a|an|the) [a-z ]+ is speaking\.$/,
   /^(he|she|they) asks? a question\.$/,

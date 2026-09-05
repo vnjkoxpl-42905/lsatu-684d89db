@@ -26,14 +26,26 @@ function everyDetail(): string[] {
 describe("the classifier agrees with the one that produced the census", () => {
   const details = everyDetail();
 
+  /*
+   * 1294 -> 1295 and modality 24 -> 25 on 2026-09-04, when W14 rewrote
+   * PT134.S3's key. One detail was added (Q15's conclusion, which the key had
+   * recorded as one more fact in a list), and one hedge was marked as a hedge
+   * instead of stated as a fact.
+   *
+   * `content` and `structure` are unchanged, and that is the load-bearing part.
+   * The first pass of the rewrite moved six details OUT of structure by naming
+   * the speakers -- "This is Tanner's reason." for "This is his reason." -- and
+   * this test is what caught it. The vocabulary was widened to take a
+   * possessive proper noun rather than the counts being edited to match.
+   */
   it("sees the whole authored key", () => {
-    expect(details).toHaveLength(1294);
+    expect(details).toHaveLength(1295);
   });
 
   it("splits it exactly as Python did", () => {
     const counts: Record<DetailKind, number> = { content: 0, structure: 0, modality: 0 };
     for (const text of details) counts[classifyDetail(text)]++;
-    expect(counts).toEqual({ content: 1133, structure: 137, modality: 24 });
+    expect(counts).toEqual({ content: 1133, structure: 137, modality: 25 });
   });
 
   it("leaves the same four residue lines, all of them correctly content", () => {

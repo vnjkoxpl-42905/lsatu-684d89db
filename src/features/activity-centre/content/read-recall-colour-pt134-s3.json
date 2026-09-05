@@ -18,7 +18,7 @@
    "prompt": "\"Hot spot\" is a term that ecologists use to describe those habitats with the greatest concentrations of species found only in one place\u2014so-called \"endemic\" species. Many of these hot spots are vulnerable to habitat loss due to commercial development. Furthermore, loss of endemic species accounts for most modern-day extinctions. Thus, given that only a limited number of environmental battles can be waged, it would be reasonable for organizations dedicated to preserving species to _______.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) Hot spot is a term. \u00b7 Ecologists use that term. \u00b7 It describes certain habitats. \u00b7 Those habitats have the greatest concentrations of species. \u00b7 The species are found only in one place. \u00b7 Such species are called endemic. (2) This is about the hot spots. \u00b7 Many of them are vulnerable. \u00b7 What they are vulnerable to is habitat loss. \u00b7 The loss is due to commercial development. (3) This is an additional point. \u00b7 It is about loss of endemic species. \u00b7 That loss accounts for extinctions. \u00b7 It accounts for most of them. \u00b7 The extinctions are modern-day ones. (4) This is the conclusion. \u00b7 It rests on a given. \u00b7 The given is that only a limited number of battles can be waged. \u00b7 The battles are environmental ones. \u00b7 Something would be reasonable. \u00b7 It would be reasonable for certain organizations. \u00b7 Those organizations are dedicated to preserving species.",
+   "explanation": "The details your recall has to carry, by chunk: (1) Hot spot is a term. \u00b7 Ecologists use that term. \u00b7 It describes certain habitats. \u00b7 Those habitats have the greatest concentrations of species. \u00b7 The species are found only in one place. \u00b7 Such species are called endemic. (2) This is about the hot spots. \u00b7 Many of them are vulnerable. \u00b7 What they are vulnerable to is habitat loss. \u00b7 The loss is due to commercial development. (3) This is an additional point. \u00b7 It is about loss of endemic species. \u00b7 That loss accounts for extinctions. \u00b7 It accounts for most of them. \u00b7 The extinctions are modern-day ones. (4) This is the conclusion. \u00b7 It rests on a given. \u00b7 The given is that only a limited number of battles can be waged. \u00b7 The battles are environmental ones. \u00b7 It would be reasonable for certain organizations to do something. \u00b7 Those organizations are dedicated to preserving species. \u00b7 The conclusion itself is left blank.",
    "category": "Fill In",
    "chunks": [
     {
@@ -121,15 +121,15 @@
       },
       {
        "n": 5,
-       "text": "Something would be reasonable."
+       "text": "It would be reasonable for certain organizations to do something."
       },
       {
        "n": 6,
-       "text": "It would be reasonable for certain organizations."
+       "text": "Those organizations are dedicated to preserving species."
       },
       {
        "n": 7,
-       "text": "Those organizations are dedicated to preserving species."
+       "text": "The conclusion itself is left blank."
       }
      ]
     }
@@ -151,7 +151,7 @@
    "prompt": "Principle: If you sell an item that you know to be defective, telling the buyer that the item is sound, you thereby commit fraud.\n\nApplication: Wilton sold a used bicycle to Harris, knowing very little about its condition. Wilton told Harris that the bicycle was in good working condition, but Harris soon learned that the brakes were defective. Wilton was therefore guilty of fraud.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) This states a principle. \u00b7 It is conditional on selling an item. \u00b7 You know the item to be defective. \u00b7 You tell the buyer the item is sound. \u00b7 Doing that commits fraud. (2) This applies the principle. \u00b7 Wilton sold a bicycle. \u00b7 The bicycle was used. \u00b7 He sold it to Harris. \u00b7 Wilton knew little about its condition. \u00b7 He knew very little. (3) Wilton told Harris something. \u00b7 He said the bicycle was in good working condition. \u00b7 This is a contrast. \u00b7 Harris found something out. \u00b7 He learned it soon. \u00b7 The brakes were defective. (4) This is the conclusion. \u00b7 Wilton was guilty of something. \u00b7 What he was guilty of is fraud.",
+   "explanation": "The details your recall has to carry, by chunk: (1) This states a principle. \u00b7 It is conditional on selling an item. \u00b7 You know the item to be defective. \u00b7 You tell the buyer the item is sound. \u00b7 Doing that commits fraud. (2) This applies the principle. \u00b7 Wilton sold a bicycle. \u00b7 The bicycle was used. \u00b7 Wilton sold it to Harris. \u00b7 Wilton knew little about its condition. \u00b7 What Wilton knew was very little. (3) Wilton told Harris something. \u00b7 Wilton said the bicycle was in good working condition. \u00b7 This is a contrast. \u00b7 Harris found something out. \u00b7 Harris learned it soon. \u00b7 The brakes were defective. (4) This is the conclusion. \u00b7 Wilton was guilty of something. \u00b7 What Wilton was guilty of is fraud.",
    "category": "Classic Flaw",
    "chunks": [
     {
@@ -198,7 +198,7 @@
       },
       {
        "n": 4,
-       "text": "He sold it to Harris."
+       "text": "Wilton sold it to Harris."
       },
       {
        "n": 5,
@@ -206,7 +206,7 @@
       },
       {
        "n": 6,
-       "text": "He knew very little."
+       "text": "What Wilton knew was very little."
       }
      ]
     },
@@ -220,7 +220,7 @@
       },
       {
        "n": 2,
-       "text": "He said the bicycle was in good working condition."
+       "text": "Wilton said the bicycle was in good working condition."
       },
       {
        "n": 3,
@@ -232,7 +232,7 @@
       },
       {
        "n": 5,
-       "text": "He learned it soon."
+       "text": "Harris learned it soon."
       },
       {
        "n": 6,
@@ -254,7 +254,7 @@
       },
       {
        "n": 3,
-       "text": "What he was guilty of is fraud."
+       "text": "What Wilton was guilty of is fraud."
       }
      ]
     }
@@ -401,7 +401,7 @@
    "prompt": "Journalist: A manufacturers' trade group that has long kept its membership list secret inadvertently sent me a document listing hundreds of manufacturing companies. A representative of the trade group later confirmed that every company listed in the document does indeed belong to the trade group. Because Bruch Industries is not listed on the document, it is evidently not a member of the trade group.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) A journalist is speaking. \u00b7 There is a manufacturers' trade group. \u00b7 The group keeps its membership list secret. \u00b7 It has done so for a long time. \u00b7 The group sent him a document. \u00b7 The sending was inadvertent. \u00b7 The document lists manufacturing companies. \u00b7 It lists hundreds of them. (2) A representative confirmed something. \u00b7 The representative is of the trade group. \u00b7 The confirmation came later. \u00b7 Every company listed does belong to the group. \u00b7 The companies meant are those in the document. (3) This is the reason given. \u00b7 Bruch Industries is not listed on the document. \u00b7 This is the conclusion. \u00b7 Bruch Industries is not a member of the group. \u00b7 This is marked as evident.",
+   "explanation": "The details your recall has to carry, by chunk: (1) A journalist is speaking. \u00b7 There is a manufacturers' trade group. \u00b7 The group keeps its membership list secret. \u00b7 It has done so for a long time. \u00b7 The group sent the journalist a document. \u00b7 The sending was inadvertent. \u00b7 The document lists manufacturing companies. \u00b7 It lists hundreds of them. (2) A representative confirmed something. \u00b7 The representative is of the trade group. \u00b7 The confirmation came later. \u00b7 Every company listed does belong to the group. \u00b7 The companies meant are those in the document. (3) This is the reason given. \u00b7 Bruch Industries is not listed on the document. \u00b7 This is the conclusion. \u00b7 Bruch Industries is not a member of the group. \u00b7 This is marked as evident.",
    "category": "Classic Flaw",
    "chunks": [
     {
@@ -426,7 +426,7 @@
       },
       {
        "n": 5,
-       "text": "The group sent him a document."
+       "text": "The group sent the journalist a document."
       },
       {
        "n": 6,
@@ -512,7 +512,7 @@
    "prompt": "Peter: Unlike in the past, most children's stories nowadays don't have clearly immoral characters in them. They should, though. Children need to learn the consequences of being bad.\n\nYoko: Children's stories still tend to have clearly immoral characters in them, but now these characters tend not to be the sort that frighten children. Surely that's an improvement.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) Peter is the first speaker. \u00b7 This is a contrast with the past. \u00b7 It is about children's stories nowadays. \u00b7 Most of them lack immoral characters. \u00b7 Those characters would be clearly immoral. (2) This is a contrast. \u00b7 He says they should. \u00b7 What they should have is such characters. (3) This is his reason. \u00b7 Children need to learn something. \u00b7 What they learn is consequences. \u00b7 The consequences are of being bad. (4) Yoko is the second speaker. \u00b7 Children's stories still tend to have such characters. \u00b7 The characters are clearly immoral. \u00b7 This is a contrast. \u00b7 The characters now tend to be different. \u00b7 They are not the sort that frighten children. (5) This is her conclusion. \u00b7 The change is an improvement. \u00b7 She treats this as sure.",
+   "explanation": "The details your recall has to carry, by chunk: (1) Peter is the first speaker. \u00b7 This is a contrast with the past. \u00b7 It is about children's stories nowadays. \u00b7 Most of them lack immoral characters. \u00b7 Those characters would be clearly immoral. (2) This is a contrast. \u00b7 Peter says they should. \u00b7 What they should have is such characters. (3) This is Peter's reason. \u00b7 Children need to learn something. \u00b7 What they learn is consequences. \u00b7 The consequences are of being bad. (4) Yoko is the second speaker. \u00b7 Children's stories still tend to have such characters. \u00b7 The characters are clearly immoral. \u00b7 This is a contrast about those characters. \u00b7 The characters now tend to be different. \u00b7 They are not the sort that frighten children. (5) This is Yoko's conclusion. \u00b7 The change is an improvement. \u00b7 Yoko treats this as sure.",
    "category": "Controversy",
    "chunks": [
     {
@@ -551,7 +551,7 @@
       },
       {
        "n": 2,
-       "text": "He says they should."
+       "text": "Peter says they should."
       },
       {
        "n": 3,
@@ -565,7 +565,7 @@
      "details": [
       {
        "n": 1,
-       "text": "This is his reason."
+       "text": "This is Peter's reason."
       },
       {
        "n": 2,
@@ -599,7 +599,7 @@
       },
       {
        "n": 4,
-       "text": "This is a contrast."
+       "text": "This is a contrast about those characters."
       },
       {
        "n": 5,
@@ -617,7 +617,7 @@
      "details": [
       {
        "n": 1,
-       "text": "This is her conclusion."
+       "text": "This is Yoko's conclusion."
       },
       {
        "n": 2,
@@ -625,7 +625,7 @@
       },
       {
        "n": 3,
-       "text": "She treats this as sure."
+       "text": "Yoko treats this as sure."
       }
      ]
     }
@@ -647,7 +647,7 @@
    "prompt": "Local resident: An overabundance of algae must be harmful to the smaller fish in this pond. During the fifteen or so years that I have lived here, the few times that I have seen large numbers of dead small fish wash ashore in late summer coincide exactly with the times that I have noticed abnormally large amounts of algae in the water.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) A local resident is speaking. \u00b7 This is the conclusion. \u00b7 It is about an overabundance of algae. \u00b7 The algae must be harmful. \u00b7 What it harms is the smaller fish. \u00b7 The fish are in this pond. (2) This is about a period of years. \u00b7 The number is about fifteen. \u00b7 He has lived here that long. (3) He has seen dead small fish wash ashore. \u00b7 The numbers were large. \u00b7 He saw this only a few times. \u00b7 It happened in late summer. \u00b7 Those times coincide with other times. \u00b7 The coincidence is exact. \u00b7 The other times are when he noticed large amounts of algae. \u00b7 The amounts were abnormally large.",
+   "explanation": "The details your recall has to carry, by chunk: (1) A local resident is speaking. \u00b7 This is the conclusion. \u00b7 It is about an overabundance of algae. \u00b7 The algae must be harmful. \u00b7 What it harms is the smaller fish. \u00b7 The fish are in this pond. (2) This is about a period of years. \u00b7 The number is fifteen or so. \u00b7 The resident has lived here that long. (3) The resident has seen dead small fish wash ashore. \u00b7 The numbers were large. \u00b7 The resident saw this only a few times. \u00b7 It happened in late summer. \u00b7 Those times coincide with other times. \u00b7 The coincidence is exact. \u00b7 The other times are when the resident noticed large amounts of algae. \u00b7 The amounts were abnormally large.",
    "category": "Classic Flaw",
    "chunks": [
     {
@@ -690,11 +690,11 @@
       },
       {
        "n": 2,
-       "text": "The number is about fifteen."
+       "text": "The number is fifteen or so."
       },
       {
        "n": 3,
-       "text": "He has lived here that long."
+       "text": "The resident has lived here that long."
       }
      ]
     },
@@ -704,7 +704,7 @@
      "details": [
       {
        "n": 1,
-       "text": "He has seen dead small fish wash ashore."
+       "text": "The resident has seen dead small fish wash ashore."
       },
       {
        "n": 2,
@@ -712,7 +712,7 @@
       },
       {
        "n": 3,
-       "text": "He saw this only a few times."
+       "text": "The resident saw this only a few times."
       },
       {
        "n": 4,
@@ -728,7 +728,7 @@
       },
       {
        "n": 7,
-       "text": "The other times are when he noticed large amounts of algae."
+       "text": "The other times are when the resident noticed large amounts of algae."
       },
       {
        "n": 8,
@@ -754,7 +754,7 @@
    "prompt": "Tanner: The public should demand political debates before any election. Voters are better able to choose the candidate best suited for office if they watch the candidates seriously debate one another.\n\nSaldana: Political debates almost always benefit the candidate who has the better debating skills. Thus, they don't really help voters determine which candidate is most qualified for office.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) Tanner is the first speaker. \u00b7 This is his recommendation. \u00b7 The public should demand political debates. \u00b7 The debates would come before an election. \u00b7 This applies to any election. (2) This is his reason. \u00b7 Voters would be better able to choose. \u00b7 They would choose the candidate best suited for office. \u00b7 This holds if they watch the candidates debate. \u00b7 The debating is serious. \u00b7 The candidates debate one another. (3) Saldana is the second speaker. \u00b7 Political debates benefit one candidate. \u00b7 That candidate has the better debating skills. \u00b7 This is almost always so. (4) This is her conclusion. \u00b7 Debates do not help voters. \u00b7 What voters would determine is which candidate is most qualified. \u00b7 The qualification is for office.",
+   "explanation": "The details your recall has to carry, by chunk: (1) Tanner is the first speaker. \u00b7 This is Tanner's recommendation. \u00b7 The public should demand political debates. \u00b7 The debates would come before an election. \u00b7 This applies to any election. (2) This is Tanner's reason. \u00b7 Voters would be better able to choose. \u00b7 They would choose the candidate best suited for office. \u00b7 This holds if they watch the candidates debate. \u00b7 The debating is serious. \u00b7 The candidates debate one another. (3) Saldana is the second speaker. \u00b7 Political debates benefit one candidate. \u00b7 That candidate has the better debating skills. \u00b7 This is almost always so. (4) This is Saldana's conclusion. \u00b7 Debates do not help voters. \u00b7 What voters would determine is which candidate is most qualified. \u00b7 The qualification is for office.",
    "category": "Controversy",
    "chunks": [
     {
@@ -767,7 +767,7 @@
       },
       {
        "n": 2,
-       "text": "This is his recommendation."
+       "text": "This is Tanner's recommendation."
       },
       {
        "n": 3,
@@ -789,7 +789,7 @@
      "details": [
       {
        "n": 1,
-       "text": "This is his reason."
+       "text": "This is Tanner's reason."
       },
       {
        "n": 2,
@@ -841,7 +841,7 @@
      "details": [
       {
        "n": 1,
-       "text": "This is her conclusion."
+       "text": "This is Saldana's conclusion."
       },
       {
        "n": 2,
@@ -1007,7 +1007,7 @@
    "prompt": "People often admonish us to learn the lessons of history, but, even if it were easy to discover what the past was really like, it is nearly impossible to discover its lessons. We are supposed, for example, to learn the lessons of World War I. But what are they? And were we ever to discover what they are, it is not clear that we could ever apply them, for we shall never again have a situation just like World War I.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) People admonish us to learn history's lessons. \u00b7 They do this often. \u00b7 This is a contrast. \u00b7 Discovering what the past was like might be easy. \u00b7 Discovering its lessons is nearly impossible. (2) This is an example. \u00b7 We are supposed to learn some lessons. \u00b7 Those lessons are World War I's. (3) This is a contrast. \u00b7 He asks a question. \u00b7 The question is what those lessons are. (4) This is conditional on discovering them. \u00b7 It is not clear we could apply them. \u00b7 We could never apply them. \u00b7 This is the reason given. \u00b7 We shall never again have such a situation. \u00b7 The situation would be just like World War I.",
+   "explanation": "The details your recall has to carry, by chunk: (1) People admonish us to learn history's lessons. \u00b7 They do this often. \u00b7 This is a contrast. \u00b7 What is conceded is that discovering the past might be easy. \u00b7 Discovering its lessons is nearly impossible. (2) This is an example. \u00b7 We are supposed to learn some lessons. \u00b7 Those lessons are World War I's. (3) This is a contrast with that example. \u00b7 The argument asks a question. \u00b7 The question is what those lessons are. (4) This is conditional on discovering them. \u00b7 It is not clear that we could ever apply them. \u00b7 This is stated as unclear rather than denied. \u00b7 This is the reason given. \u00b7 We shall never again have such a situation. \u00b7 The situation would be just like World War I.",
    "category": "Argument Part",
    "chunks": [
     {
@@ -1028,7 +1028,7 @@
       },
       {
        "n": 4,
-       "text": "Discovering what the past was like might be easy."
+       "text": "What is conceded is that discovering the past might be easy."
       },
       {
        "n": 5,
@@ -1060,11 +1060,11 @@
      "details": [
       {
        "n": 1,
-       "text": "This is a contrast."
+       "text": "This is a contrast with that example."
       },
       {
        "n": 2,
-       "text": "He asks a question."
+       "text": "The argument asks a question."
       },
       {
        "n": 3,
@@ -1082,11 +1082,11 @@
       },
       {
        "n": 2,
-       "text": "It is not clear we could apply them."
+       "text": "It is not clear that we could ever apply them."
       },
       {
        "n": 3,
-       "text": "We could never apply them."
+       "text": "This is stated as unclear rather than denied."
       },
       {
        "n": 4,
@@ -1423,7 +1423,7 @@
    "prompt": "Newspaper subscriber: Arnot's editorial argues that by making certain fundamental changes in government we would virtually eliminate our most vexing social ills. But clearly this conclusion is false. After all, the argument Arnot makes for this claim depends on the dubious assumption that government can be trusted to act in the interest of the public.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) A newspaper subscriber is speaking. \u00b7 Arnot wrote an editorial. \u00b7 The editorial makes an argument. \u00b7 It is about making changes in government. \u00b7 The changes are fundamental ones. \u00b7 Making them would eliminate social ills. \u00b7 The ills are our most vexing ones. \u00b7 The elimination would be virtually complete. (2) This is a contrast. \u00b7 His conclusion is that Arnot's conclusion is false. \u00b7 He treats this as clear. (3) This is the reason given. \u00b7 Arnot makes an argument for the claim. \u00b7 The argument depends on an assumption. \u00b7 The assumption is dubious. \u00b7 The assumption is that government can be trusted. \u00b7 It would be trusted to act in the public's interest.",
+   "explanation": "The details your recall has to carry, by chunk: (1) A newspaper subscriber is speaking. \u00b7 Arnot wrote an editorial. \u00b7 The editorial makes an argument. \u00b7 It is about making changes in government. \u00b7 The changes are fundamental ones. \u00b7 Making them would eliminate social ills. \u00b7 The ills are our most vexing ones. \u00b7 The elimination would be virtually complete. (2) This is a contrast. \u00b7 The subscriber's conclusion is that Arnot's conclusion is false. \u00b7 The subscriber treats this as clear. (3) This is the reason given. \u00b7 Arnot makes an argument for the claim. \u00b7 The argument depends on an assumption. \u00b7 The assumption is dubious. \u00b7 The assumption is that government can be trusted. \u00b7 It would be trusted to act in the public's interest.",
    "category": "Classic Flaw",
    "chunks": [
     {
@@ -1474,11 +1474,11 @@
       },
       {
        "n": 2,
-       "text": "His conclusion is that Arnot's conclusion is false."
+       "text": "The subscriber's conclusion is that Arnot's conclusion is false."
       },
       {
        "n": 3,
-       "text": "He treats this as clear."
+       "text": "The subscriber treats this as clear."
       }
      ]
     },
@@ -1530,7 +1530,7 @@
    "prompt": "Columnist: Shortsighted motorists learn the hard way about the wisdom of preventive auto maintenance; such maintenance almost always pays off in the long run. Our usually shortsighted city council should be praised for using similar wisdom when they hired a long-term economic development adviser. In hiring this adviser, the council made an investment that is likely to have a big payoff in several years. Other cities in this region that have devoted resources to economic development planning have earned large returns on such an investment.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) A columnist is speaking. \u00b7 Some motorists are shortsighted. \u00b7 They learn the hard way. \u00b7 What they learn is the wisdom of preventive auto maintenance. \u00b7 Such maintenance pays off. \u00b7 It pays off in the long run. \u00b7 It does so almost always. (2) This is about the city council. \u00b7 The council is usually shortsighted. \u00b7 The council should be praised. \u00b7 It used similar wisdom. \u00b7 It hired an adviser. \u00b7 The adviser is for long-term economic development. (3) Hiring the adviser was an investment. \u00b7 The council made it. \u00b7 The investment is likely to have a payoff. \u00b7 The payoff would be big. \u00b7 It would come in several years. (4) This is about other cities. \u00b7 Those cities are in this region. \u00b7 They devoted resources to economic development planning. \u00b7 Those cities earned returns. \u00b7 The returns were large. \u00b7 The returns came on such an investment.",
+   "explanation": "The details your recall has to carry, by chunk: (1) A columnist is speaking. \u00b7 The motorists meant are the shortsighted ones. \u00b7 They learn the hard way. \u00b7 What they learn is the wisdom of preventive auto maintenance. \u00b7 Such maintenance pays off. \u00b7 It pays off in the long run. \u00b7 It does so almost always. (2) This is about the city council. \u00b7 The council is usually shortsighted. \u00b7 This is the conclusion. \u00b7 The council should be praised. \u00b7 It used similar wisdom. \u00b7 It hired an adviser. \u00b7 The adviser is for long-term economic development. (3) Hiring the adviser was an investment. \u00b7 The council made it. \u00b7 The investment is likely to have a payoff. \u00b7 The payoff would be big. \u00b7 It would come in several years. (4) This is about other cities. \u00b7 Those cities are in this region. \u00b7 They devoted resources to economic development planning. \u00b7 Those cities earned returns. \u00b7 The returns were large. \u00b7 The returns came on such an investment.",
    "category": "Weaken",
    "chunks": [
     {
@@ -1543,7 +1543,7 @@
       },
       {
        "n": 2,
-       "text": "Some motorists are shortsighted."
+       "text": "The motorists meant are the shortsighted ones."
       },
       {
        "n": 3,
@@ -1581,18 +1581,22 @@
       },
       {
        "n": 3,
-       "text": "The council should be praised."
+       "text": "This is the conclusion."
       },
       {
        "n": 4,
-       "text": "It used similar wisdom."
+       "text": "The council should be praised."
       },
       {
        "n": 5,
-       "text": "It hired an adviser."
+       "text": "It used similar wisdom."
       },
       {
        "n": 6,
+       "text": "It hired an adviser."
+      },
+      {
+       "n": 7,
        "text": "The adviser is for long-term economic development."
       }
      ]
@@ -1951,7 +1955,7 @@
    "prompt": "Lawyer: One is justified in accessing information in computer files without securing authorization from the computer's owner only if the computer is typically used in the operation of a business. If, in addition, there exist reasonable grounds for believing that such a computer contains data usable as evidence in a legal proceeding against the computer's owner, then accessing the data in those computer files without the owner's authorization is justified.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) A lawyer is speaking. \u00b7 This states a necessary condition. \u00b7 It is about accessing information in computer files. \u00b7 The access is without the owner's authorization. \u00b7 Justification requires one thing. \u00b7 The computer must be typically used in the operation of a business. (2) This adds a further condition. \u00b7 There must exist grounds for a belief. \u00b7 The grounds must be reasonable. \u00b7 The belief is that the computer contains data. \u00b7 The data would be usable as evidence. \u00b7 The evidence would be in a legal proceeding. \u00b7 The proceeding would be against the computer's owner. (3) This is the consequent. \u00b7 Accessing the data is justified. \u00b7 The data is in those computer files. \u00b7 The access is without the owner's authorization.",
+   "explanation": "The details your recall has to carry, by chunk: (1) A lawyer is speaking. \u00b7 This states a necessary condition. \u00b7 It is about accessing information in computer files. \u00b7 The access is without the owner's authorization. \u00b7 Justification requires one thing. \u00b7 The computer must be typically used in the operation of a business. (2) This adds a further condition. \u00b7 There must exist grounds for a belief. \u00b7 The grounds must be reasonable. \u00b7 The belief is that the computer contains data. \u00b7 The data would be usable as evidence. \u00b7 The evidence would be in a legal proceeding. \u00b7 The proceeding would be against the computer's owner. (3) This is the consequent. \u00b7 Accessing the data is justified. \u00b7 The data is in those computer files. \u00b7 The access to that data is without the owner's authorization.",
    "category": "Most Strongly Supported",
    "chunks": [
     {
@@ -2036,7 +2040,7 @@
       },
       {
        "n": 4,
-       "text": "The access is without the owner's authorization."
+       "text": "The access to that data is without the owner's authorization."
       }
      ]
     }
@@ -2183,7 +2187,7 @@
    "prompt": "One should not play a practical joke on someone if it shows contempt for that person or if one believes it might bring significant harm to that person.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) One should not play a practical joke. \u00b7 The joke would be on someone. \u00b7 Two conditions are given. \u00b7 One condition is that it shows contempt. \u00b7 The contempt would be for that person. \u00b7 The other condition is a belief. \u00b7 The belief is that it might bring harm. \u00b7 The harm would be significant.",
+   "explanation": "The details your recall has to carry, by chunk: (1) One should not play a practical joke. \u00b7 The joke would be on someone. \u00b7 Either of two conditions is enough. \u00b7 One condition is that it shows contempt. \u00b7 The contempt would be for that person. \u00b7 The other condition is a belief. \u00b7 The belief is that it might bring harm. \u00b7 The harm would be significant.",
    "category": "Most Strongly Supported",
    "chunks": [
     {
@@ -2200,7 +2204,7 @@
       },
       {
        "n": 3,
-       "text": "Two conditions are given."
+       "text": "Either of two conditions is enough."
       },
       {
        "n": 4,
@@ -2242,7 +2246,7 @@
    "prompt": "Economics professor: Marty's Pizza and Checkers Pizza are the two major pizza parlors in our town. Marty's sold coupon books including coupons good for one large plain pizza at any local pizza parlor, at Marty's expense. But Checkers refused to accept these coupons, even though they were redeemed by all other local pizza parlors. Accepting them would have cost Checkers nothing and would have satisfied those of its potential customers who had purchased the coupon books. This shows that Checkers's motive in refusing to accept the coupons was simply to hurt Marty's Pizza.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) An economics professor is speaking. \u00b7 There are two major pizza parlors. \u00b7 One is Marty's Pizza. \u00b7 The other is Checkers Pizza. \u00b7 They are in his town. (2) Marty's sold coupon books. \u00b7 The books included coupons. \u00b7 Each coupon was good for one large plain pizza. \u00b7 The coupon was good at any local pizza parlor. \u00b7 The cost fell on Marty's. (3) This is a contrast. \u00b7 Checkers refused to accept the coupons. \u00b7 This is despite something. \u00b7 All other local pizza parlors redeemed them. (4) Accepting them would have cost Checkers nothing. \u00b7 It would also have satisfied some people. \u00b7 Those people are its potential customers. \u00b7 Those customers had purchased the coupon books. (5) This is the conclusion. \u00b7 It is about Checkers's motive. \u00b7 The motive was in refusing the coupons. \u00b7 The motive was to hurt Marty's Pizza. \u00b7 That was the only motive.",
+   "explanation": "The details your recall has to carry, by chunk: (1) An economics professor is speaking. \u00b7 There are two major pizza parlors. \u00b7 One is Marty's Pizza. \u00b7 The other is Checkers Pizza. \u00b7 They are in the professor's town. (2) Marty's sold coupon books. \u00b7 The books included coupons. \u00b7 Each coupon was good for one large plain pizza. \u00b7 The coupon was good at any local pizza parlor. \u00b7 The cost fell on Marty's. (3) This is a contrast. \u00b7 Checkers refused to accept the coupons. \u00b7 This is despite something. \u00b7 All other local pizza parlors redeemed them. (4) Accepting them would have cost Checkers nothing. \u00b7 It would also have satisfied some people. \u00b7 Those people are its potential customers. \u00b7 Those customers had purchased the coupon books. (5) This is the conclusion. \u00b7 It is about Checkers's motive. \u00b7 The motive was in refusing the coupons. \u00b7 The motive was to hurt Marty's Pizza. \u00b7 That was the only motive.",
    "category": "Sufficient Assumption",
    "chunks": [
     {
@@ -2267,7 +2271,7 @@
       },
       {
        "n": 5,
-       "text": "They are in his town."
+       "text": "They are in the professor's town."
       }
      ]
     },
@@ -2385,7 +2389,7 @@
    "prompt": "Science writer: Scientists' astounding success rate with research problems they have been called upon to solve causes the public to believe falsely that science can solve any problem. In fact, the problems scientists are called upon to solve are typically selected by scientists themselves. When the problems are instead selected by politicians or business leaders, their formulation is nevertheless guided by scientists in such a way as to make scientific solutions feasible. Scientists are almost never asked to solve problems that are not subject to such formulation.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) A science writer is speaking. \u00b7 Scientists have a success rate. \u00b7 The rate is astounding. \u00b7 It is with problems they were called upon to solve. \u00b7 That success causes a public belief. \u00b7 The belief is that science can solve any problem. \u00b7 The belief is false. (2) This is the correction. \u00b7 It is about the problems scientists are called upon to solve. \u00b7 Scientists themselves select them. \u00b7 This is typically so. (3) This is the other case. \u00b7 The problems are selected by someone else. \u00b7 Politicians may select them. \u00b7 Business leaders may select them. (4) This is a contrast. \u00b7 The problems still get formulated. \u00b7 Scientists guide the formulation. \u00b7 The guidance has a purpose. \u00b7 The purpose is to make scientific solutions feasible. (5) Scientists are almost never asked something. \u00b7 What they are not asked is to solve certain problems. \u00b7 Those problems are not subject to such formulation.",
+   "explanation": "The details your recall has to carry, by chunk: (1) A science writer is speaking. \u00b7 Scientists have a success rate. \u00b7 The rate is astounding. \u00b7 It is with problems they were called upon to solve. \u00b7 That success causes a public belief. \u00b7 The belief is that science can solve any problem. \u00b7 The belief is false. (2) This is the correction. \u00b7 It is about the problems scientists are called upon to solve. \u00b7 Scientists themselves select them. \u00b7 This is typically so. (3) This is the other case. \u00b7 The problems are selected by someone else. \u00b7 Either politicians or business leaders select them. \u00b7 In that case scientists do not select them. (4) This is a contrast. \u00b7 This is about their formulation. \u00b7 Scientists guide the formulation. \u00b7 The guidance has a purpose. \u00b7 The purpose is to make scientific solutions feasible. (5) Scientists are almost never asked something. \u00b7 What they are not asked is to solve certain problems. \u00b7 Those problems are not subject to such formulation.",
    "category": "Most Strongly Supported",
    "chunks": [
     {
@@ -2458,11 +2462,11 @@
       },
       {
        "n": 3,
-       "text": "Politicians may select them."
+       "text": "Either politicians or business leaders select them."
       },
       {
        "n": 4,
-       "text": "Business leaders may select them."
+       "text": "In that case scientists do not select them."
       }
      ]
     },
@@ -2476,7 +2480,7 @@
       },
       {
        "n": 2,
-       "text": "The problems still get formulated."
+       "text": "This is about their formulation."
       },
       {
        "n": 3,
@@ -2528,7 +2532,7 @@
    "prompt": "Most auto mechanics have extensive experience. Furthermore, most mechanics with extensive experience understand electronic circuits. Thus, most auto mechanics understand electronic circuits.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) This is about auto mechanics. \u00b7 Most of them have experience. \u00b7 The experience is extensive. (2) This is an additional premise. \u00b7 It is about mechanics with extensive experience. \u00b7 Most of them understand electronic circuits. (3) This is the conclusion. \u00b7 It is about auto mechanics. \u00b7 Most of them understand electronic circuits.",
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about auto mechanics. \u00b7 Most of them have experience. \u00b7 The experience is extensive. (2) This is an additional premise. \u00b7 It is about mechanics with extensive experience. \u00b7 Most of those experienced mechanics understand electronic circuits. (3) This is the conclusion. \u00b7 It is about auto mechanics. \u00b7 Most auto mechanics understand electronic circuits.",
    "category": "Parallel Flaw",
    "chunks": [
     {
@@ -2563,7 +2567,7 @@
       },
       {
        "n": 3,
-       "text": "Most of them understand electronic circuits."
+       "text": "Most of those experienced mechanics understand electronic circuits."
       }
      ]
     },
@@ -2581,7 +2585,7 @@
       },
       {
        "n": 3,
-       "text": "Most of them understand electronic circuits."
+       "text": "Most auto mechanics understand electronic circuits."
       }
      ]
     }
