@@ -7,6 +7,8 @@ export interface SectionLaunchFrameProps {
   title: string;
   subtitle: string | null;
   instructions: ActivityInstructions;
+  /** Whether this page needs the breadcrumb bar above its own heading. */
+  showBreadcrumbs?: boolean;
   /** The right half of the breadcrumb line: what this page is a page of. */
   meta?: ReactNode;
   /**
@@ -49,6 +51,7 @@ export function SectionLaunchFrame({
   title,
   subtitle,
   instructions,
+  showBreadcrumbs = true,
   meta,
   primaryAction,
   notice,
@@ -121,20 +124,22 @@ export function SectionLaunchFrame({
           * floating above the chip. A breadcrumb that goes where it says it
           * goes is the control this page already had.
           */}
-        <div className="sl-crumbs">
-          <span className="sl-label">
-            {onExit ? (
-              <button type="button" className="sl-crumb-back" onClick={onExit}>
-                Library
-              </button>
-            ) : (
-              "Library"
-            )}
-            {" / Out Loud / "}
-            <strong>{title}</strong>
-          </span>
-          <span className="sl-label sl-meta">{meta}</span>
-        </div>
+        {showBreadcrumbs && (
+          <div className="sl-crumbs">
+            <span className="sl-label">
+              {onExit ? (
+                <button type="button" className="sl-crumb-back" onClick={onExit}>
+                  Library
+                </button>
+              ) : (
+                "Library"
+              )}
+              {" / Out Loud / "}
+              <strong>{title}</strong>
+            </span>
+            <span className="sl-label sl-meta">{meta}</span>
+          </div>
+        )}
 
         <div className="sl-head">
           <div>

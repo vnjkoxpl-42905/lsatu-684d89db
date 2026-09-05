@@ -75,6 +75,12 @@ describe("the library door", () => {
     expect(screen.getByText("the sections go here")).toBeInTheDocument();
   });
 
+  it("does not repeat the page location in a breadcrumb bar", () => {
+    renderDoor();
+    expect(screen.queryByText(/^Library$/)).toBeNull();
+    expect(screen.queryByText("Pick a section")).toBeNull();
+  });
+
   it("keeps internal writing terms off the student-facing page", () => {
     render(
       <SectionLibraryLaunch
@@ -86,5 +92,26 @@ describe("the library door", () => {
       </SectionLibraryLaunch>,
     );
     expect(document.body.textContent).not.toMatch(/\b(?:beat|beats|briefing|intake)\b/i);
+  });
+
+  it("states the reading and recording instructions in direct language", () => {
+    render(
+      <SectionLibraryLaunch
+        title="Read, Recall, Colour"
+        subtitle={null}
+        instructions={sectionInstructions as ActivityInstructions}
+      >
+        <p>the sections go here</p>
+      </SectionLibraryLaunch>,
+    );
+
+    const pageText = document.body.textContent ?? "";
+    expect(pageText).toContain(
+      "Read roughly one sentence at a time, without saying it aloud.",
+    );
+    expect(pageText).toContain("Your entire section is recorded in one take");
+    expect(pageText).not.toMatch(
+      /One section keeps the method steady|Read about a sentence|Say each retelling|The whole section records/i,
+    );
   });
 });

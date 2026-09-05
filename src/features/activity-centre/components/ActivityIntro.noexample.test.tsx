@@ -195,7 +195,9 @@ describe("the breakdown", () => {
     for (const section of briefing.sections) {
       expect(screen.getByText(section.heading)).toBeInTheDocument();
     }
-    expect(screen.getByText(briefing.closer!)).toBeInTheDocument();
+    if (briefing.closer) {
+      expect(screen.getByText(briefing.closer)).toBeInTheDocument();
+    }
   });
 
   it("is absent, not empty, on an Activity without one", () => {

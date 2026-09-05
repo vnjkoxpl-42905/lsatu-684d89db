@@ -3,12 +3,12 @@
   "task": "Read each piece silently. Look away, say it back in your own words, then give it a reaction. After the final piece, press space. The stimulus disappears, and you recall the whole argument out loud from memory.",
   "rules": [
     "Read each piece silently. Everything you say back, including your reaction and final recall, is out loud.",
-    "Read about a sentence at a time. When you are unsure how much to take on, take less.",
+    "Read roughly one sentence at a time, without saying it aloud. If you are unsure how much to read at once, choose a shorter piece.",
     "Look away from the screen and say it back in your own words, like you are telling a friend what it said.",
     "Then colour it: react to that specific piece with a thought, question, doubt, example, joke, or feeling.",
     "Repeat these steps through the whole stimulus.",
     "After the final piece, press space. The stimulus disappears and stays gone. Say the entire argument back from memory, with every detail you can still hold.",
-    "Press space again to move on. The whole section records in one take, with no pauses or breaks."
+    "Press space again to move on. Your entire section is recorded in one take. You cannot pause the recording or return to an earlier stimulus."
   ],
   "briefing": {
     "lede": "Read these instructions once before your first section. After that, come back when you need a reminder.",
@@ -30,7 +30,7 @@
         "steps": [
           {
             "label": "Read it",
-            "body": "Read about a sentence silently. Give every word enough attention to hear the sentence naturally in your head. When you are unsure how much to take on, take less. If you take on too much, the beginning is usually what disappears first."
+            "body": "Read roughly one sentence at a time, without saying it aloud. Give each word enough attention to hear the sentence naturally in your head. If you are unsure how much to read at once, choose a shorter piece. When you take on too much, the beginning is usually the first part you lose."
           },
           {
             "label": "Tell it back",
@@ -78,8 +78,7 @@
           "Do the method correctly before you try to do it quickly. Go slower while it is new. Speed follows once the method becomes automatic."
         ]
       }
-    ],
-    "closer": "One section keeps the method steady. Improvement starts with the second."
+    ]
   },
   "coach": {
     "drill": "a whole Logical Reasoning section run out loud, where the student reads each line of a stimulus, looks away, tells it back from memory in her own words, reacts to it, and gives The Recall of the whole stimulus before moving to the next one",
