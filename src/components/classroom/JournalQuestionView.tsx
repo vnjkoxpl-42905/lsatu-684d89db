@@ -109,7 +109,16 @@ export function JournalQuestionView({
                 >
                   <i>{key}</i>
                   <span>{text}</span>
+                  {/*
+                    The correct row has always carried a word; the wrong row did
+                    not, so the student's own pick was identified by crimson fill
+                    alone. Correct-green and incorrect-rose sit at OKLab dE 5.7
+                    under deuteranopia — below the floor of 8 — and this surface
+                    renders the two adjacent, which is the worst case for it.
+                    See docs/chart-palette.md §3.
+                  */}
                   {isCorrect ? <em>Correct</em> : null}
+                  {isChosenWrong ? <em>You chose</em> : null}
                 </button>
                 {isChosenWrong ? (
                   <ReasoningCallout

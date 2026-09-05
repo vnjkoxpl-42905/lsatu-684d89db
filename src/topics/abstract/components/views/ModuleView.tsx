@@ -783,6 +783,21 @@ function MultipleChoiceCard({
       )}
       {submitted && (
         <div className="mt-5 bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
+          {/*
+            The verdict in words. Its two siblings in this file
+            (KeywordExtractionRenderer, DecodingGauntletRenderer) both render this
+            and this one did not, so the only signal that you got it wrong was
+            brutal-green vs brutal-red fill — a pair that is not separable under
+            deuteranopia. The "Why" copy below explains the answer but never says
+            whether you got it.
+          */}
+          <div className="mb-3">
+            <VerdictHeader
+              verdict={
+                picked === correctIndex ? (hintUsed ? "partial" : "correct") : "incorrect"
+              }
+            />
+          </div>
           <p className="text-xs font-black uppercase tracking-widest mb-2">Why</p>
           <p className="font-bold">{explanation}</p>
           {hintUsed && (

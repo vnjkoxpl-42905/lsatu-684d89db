@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../../store/AppContext';
 import { LESSONS, ABSTRACT_CHOICES } from '../../data/mockData';
-import { CheckCircle, CheckCircle2, ChevronRight, ChevronLeft, ChevronDown, ChevronUp, MessageSquare, Search } from 'lucide-react';
+import { CheckCircle, CheckCircle2, ChevronRight, ChevronLeft, ChevronDown, ChevronUp, MessageSquare, Search, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -319,7 +319,24 @@ const DecodeGauntlet = ({ onComplete }: { onComplete: () => void }) => {
                     "w-6 h-6 border-2 border-brutal-ink mt-0.5 flex-shrink-0 flex items-center justify-center",
                     checked ? "bg-brutal-ink text-white" : "bg-white"
                   )}>
-                    {(checked || (isApplied && isCorrect)) && <CheckCircle className="w-4 h-4" />}
+                    {/*
+                      The glyph has to agree with the fill. It used to render a
+                      CheckCircle whenever `checked || (isApplied && isCorrect)`,
+                      which put a tick on a wrongly-checked row — the icon said
+                      "right" while the red fill said "wrong", and for anyone who
+                      cannot separate brutal-green from brutal-red the tick was the
+                      only signal they had. Post-grading the glyph now states the
+                      verdict for this row on its own.
+                    */}
+                    {isApplied
+                      ? checked
+                        ? isCorrect
+                          ? <CheckCircle className="w-4 h-4" aria-label="Correctly selected" />
+                          : <X className="w-4 h-4" strokeWidth={3} aria-label="Wrongly selected" />
+                        : isCorrect
+                          ? <CheckCircle className="w-4 h-4 opacity-60" aria-label="Missed — should have been selected" />
+                          : null
+                      : checked && <CheckCircle className="w-4 h-4" aria-label="Selected" />}
                   </div>
                   <span className="text-[17px] font-bold leading-tight uppercase tracking-tight">{req}</span>
                 </button>

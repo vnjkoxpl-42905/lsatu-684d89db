@@ -12,7 +12,7 @@
  * this is the dark journal sibling.
  */
 import * as React from 'react';
-import { Lightbulb } from 'lucide-react';
+import { Check, Lightbulb, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { LRQuestion } from '@/lib/questionLoader';
 import type { AnnotationStroke } from '@/lib/wajNotesService';
@@ -109,8 +109,8 @@ export function JournalQuestionPane({
             {stimulusText}
           </div>
           {questionSummary.trim() && (
-            <div className="mt-5 rounded-md border-l-2 border-accent-bronze bg-accent-bronze/10 px-3 py-2">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-accent-bronze">
+            <div className="mt-5 rounded-md border border-border bg-muted px-3 py-2">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">
                 Your question summary
               </div>
               <p className="mt-1 whitespace-pre-wrap text-[13px] leading-relaxed text-foreground/90">
@@ -160,7 +160,7 @@ export function JournalQuestionPane({
                         : undefined
                     }
                     className={cn(
-                      'grid grid-cols-[auto_1fr_auto] items-start gap-3 rounded-lg border p-3 transition-colors',
+                      'grid grid-cols-[auto_1fr_auto_auto] items-start gap-3 rounded-lg border p-3 transition-colors',
                       isCorrect
                         ? 'border-emerald-500/70 bg-emerald-500/[0.07]'
                         : isChosenWrong
@@ -183,6 +183,28 @@ export function JournalQuestionPane({
                       {key}
                     </span>
                     <span className="text-[13px] leading-relaxed text-foreground/90">{text}</span>
+                    {/*
+                      Non-colour verdict. emerald #0fb781 and rose #f53d5c sit at OKLab
+                      dE 5.7 under deuteranopia — below the accessibility floor of 8 — so
+                      on this surface, where the correct answer and the student's wrong
+                      pick are rendered adjacent, hue alone is not a legible signal.
+                      The ReasoningCallout below cannot carry it either: it returns null
+                      when the student has written no reasoning.
+                      See docs/chart-palette.md §3.
+                    */}
+                    {(isCorrect || isChosenWrong) && (
+                      <span
+                        className={cn(
+                          'mt-0.5 flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-semibold',
+                          isCorrect
+                            ? 'bg-emerald-500/15 text-emerald-300'
+                            : 'bg-rose-500/15 text-rose-300',
+                        )}
+                      >
+                        {isCorrect ? <Check size={12} aria-hidden /> : <X size={12} aria-hidden />}
+                        {isCorrect ? 'Correct' : 'You chose'}
+                      </span>
+                    )}
                     {/* Inert lightbulb (per-choice explanations are a later phase) */}
                     <button
                       type="button"

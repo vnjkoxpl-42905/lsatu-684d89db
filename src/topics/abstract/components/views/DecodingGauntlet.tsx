@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, CheckCircle, Layers, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle, Layers, Sparkles, X } from "lucide-react";
 import { ABSTRACT_CHOICES } from "../../data/mockData";
 import { cn } from "../../lib/utils";
 import { useApp } from "../../store/AppContext";
@@ -222,7 +222,20 @@ export default function DecodingGauntlet() {
                     checked ? "bg-brutal-ink text-brutal-paper" : "bg-brutal-paper",
                   )}
                 >
-                  {(checked || (isApplied && isCorrect)) && <CheckCircle className="w-4 h-4" aria-hidden="true" />}
+                  {/*
+                    Same fix as LessonReader: the tick used to render on a
+                    wrongly-checked row, contradicting the red fill. See the note
+                    there and docs/chart-palette.md §3.
+                  */}
+                  {isApplied
+                    ? checked
+                      ? isCorrect
+                        ? <CheckCircle className="w-4 h-4" aria-label="Correctly selected" />
+                        : <X className="w-4 h-4" strokeWidth={3} aria-label="Wrongly selected" />
+                      : isCorrect
+                        ? <CheckCircle className="w-4 h-4 opacity-60" aria-label="Missed — should have been selected" />
+                        : null
+                    : checked && <CheckCircle className="w-4 h-4" aria-label="Selected" />}
                 </div>
                 <span className="text-base sm:text-lg font-bold leading-tight uppercase tracking-tight">
                   {req}
