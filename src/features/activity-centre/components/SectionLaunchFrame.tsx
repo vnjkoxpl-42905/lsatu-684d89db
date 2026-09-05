@@ -252,7 +252,7 @@ export function SectionLaunchFrame({
                 </>
               )}
             </span>
-            <span className="rd-meta">{meta ?? "One section · out loud · no pauses"}</span>
+            {meta && <span className="rd-meta">{meta}</span>}
           </div>
 
           <motion.div
@@ -278,11 +278,7 @@ export function SectionLaunchFrame({
                   title
                 )
               ) : (
-                <>
-                  Read it once.
-                  <br />
-                  Then say it <em>back</em>.
-                </>
+                <>Recall Rephrase Colour</>
               )}
             </h1>
             <p className="sl-tagline">
@@ -292,13 +288,11 @@ export function SectionLaunchFrame({
               {primaryAction ?? (
                 <button type="button" className="sl-start" onClick={goToSections}>
                   Choose a section
-                  <ArrowDown size={16} strokeWidth={2.4} aria-hidden="true" />
                 </button>
               )}
               {briefing && (
                 <button type="button" className="sl-brief" onClick={openBriefing}>
                   Read the full instructions
-                  <ArrowRight size={14} strokeWidth={2.4} aria-hidden="true" />
                 </button>
               )}
             </div>
@@ -317,16 +311,7 @@ export function SectionLaunchFrame({
 
       {/* -------------------------------------------------------------- method */}
       {beats.length > 0 && (
-        <motion.section className="rd-method" aria-labelledby="rd-method-title" {...reveal}>
-          <div className="rd-method-head">
-            <h2 id="rd-method-title" className="rd-h2">
-              The method, in <em>four</em> moves.
-            </h2>
-            <p className="rd-method-sub">
-              One stimulus at a time, one piece at a time. Select a step to read it in full.
-            </p>
-          </div>
-
+        <motion.section className="rd-method" aria-label="Recall Rephrase Colour steps" {...reveal}>
           <div
             className="sl-beats"
             role="tablist"
@@ -394,9 +379,6 @@ export function SectionLaunchFrame({
                 >
                   Full instructions
                 </button>
-                {briefing.closer && (
-                  <span className="sl-dr-note">{renderInlineMarks(briefing.closer, "sl-closer")}</span>
-                )}
               </div>
 
               <div

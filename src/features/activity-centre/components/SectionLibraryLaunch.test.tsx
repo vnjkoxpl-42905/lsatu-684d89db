@@ -17,6 +17,7 @@ const instructions = {
   rules: ["Everything here is out loud."],
   briefing: {
     lede: "The drill in one line.",
+    closer: "One a day holds you steady. The second one is where you improve.",
     sections: [
       {
         heading: "What you actually do.",
@@ -48,7 +49,14 @@ describe("the library door", () => {
     expect(screen.queryByText(/pick up where you left off/i)).toBeNull();
   });
 
-  it("says the sitting is one go", () => {
+  it("uses the requested title and omits the old hero slogan", () => {
+    renderDoor();
+    expect(screen.getByRole("heading", { name: "Recall Rephrase Colour" })).toBeInTheDocument();
+    expect(screen.queryByText(/Read it once/i)).toBeNull();
+    expect(screen.queryByText(/One section · out loud · no pauses/i)).toBeNull();
+  });
+
+  it("keeps the sitting rule in the instructions rather than the hero metadata", () => {
     renderDoor();
     expect(screen.getByText(/one take/i)).toBeInTheDocument();
   });
@@ -62,6 +70,20 @@ describe("the library door", () => {
     renderDoor();
     expect(screen.getByRole("tab", { name: /Read it/ })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /Tell it back/ })).toBeInTheDocument();
+  });
+
+  it("opens directly on the steps without the removed method copy", () => {
+    renderDoor();
+    expect(screen.queryByText(/The method, in/i)).toBeNull();
+    expect(screen.queryByText(/One stimulus at a time/i)).toBeNull();
+    expect(screen.queryByText(/One a day holds you steady/i)).toBeNull();
+  });
+
+  it("shows the hero actions without decorative arrows", () => {
+    renderDoor();
+    const hero = document.querySelector(".rd-hero");
+    expect(hero?.querySelector(".sl-start svg")).toBeNull();
+    expect(hero?.querySelector(".sl-brief svg")).toBeNull();
   });
 
   it("shows no stat strip, because trend and target are per section", () => {
