@@ -78,7 +78,10 @@ const STRUCTURE = [
   // is the same discourse role as "This is his reason." Without this, fixing the
   // gender defect creates a kind defect: the role falls through to `content` and
   // the judge asks "did she say this?" of something that is not a claim.
-  /^this is (his|her|their|[a-z]+'s) (conclusion|reason|recommendation|example)\.$/,
+  // An article too: a named speaker gives "Tanner's reason.", a speaker the
+  // stimulus gives only a role gives "the legislator's conclusion.", and English
+  // will not drop that "the". Same discourse role either way.
+  /^this is (his|her|their|(?:the )?[a-z]+'s) (conclusion|reason|recommendation|example)\.$/,
   /^this is further support for the claim\.$/,
   /^this is (an example|the contrast)\.$/,
   /^this is a contrast (with|about) .*\.$/,

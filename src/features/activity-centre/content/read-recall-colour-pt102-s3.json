@@ -246,7 +246,7 @@
    "prompt": "In a recession, a decrease in consumer spending causes many businesses to lay off workers or even to close. Workers who lose their jobs in a recession usually cannot find new jobs. The result is an increase in the number of people who are jobless. Recovery from a recession is defined by an increase in consumer spending and an expansion of business activity that creates a need for additional workers. But businesspeople generally have little confidence in the economy after a recession and therefore delay hiring additional workers as long as possible.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) This is about a recession. \u00b7 Consumer spending goes down. \u00b7 The decrease causes an effect on businesses. \u00b7 Many businesses lay off workers. \u00b7 Some businesses even close. (2) This is about workers who lose their jobs. \u00b7 They lose them in a recession. \u00b7 They cannot find new jobs. \u00b7 This is usually so. (3) This is the result. \u00b7 There is an increase. \u00b7 What increases is the number of people who are jobless. (4) This defines recovery from a recession. \u00b7 Consumer spending goes up. \u00b7 There is an expansion of business activity. \u00b7 The expansion creates a need. \u00b7 The need is for additional workers. (5) This is a contrast. \u00b7 Businesspeople have little confidence in the economy. \u00b7 This is after a recession. \u00b7 It is generally so. \u00b7 They therefore delay hiring additional workers. \u00b7 They delay as long as possible.",
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about a recession. \u00b7 Consumer spending goes down. \u00b7 The decrease causes an effect on businesses. \u00b7 Many businesses lay off workers. \u00b7 Or they even close. (2) This is about workers who lose their jobs. \u00b7 They lose them in a recession. \u00b7 They cannot find new jobs. \u00b7 This is usually so. (3) This is the result. \u00b7 There is an increase. \u00b7 What increases is the number of people who are jobless. (4) This defines recovery from a recession. \u00b7 Consumer spending goes up. \u00b7 There is an expansion of business activity. \u00b7 The expansion creates a need. \u00b7 The need is for additional workers. (5) This is a contrast. \u00b7 Businesspeople have little confidence in the economy. \u00b7 This is after a recession. \u00b7 It is generally so. \u00b7 They therefore delay hiring additional workers. \u00b7 They delay as long as possible.",
    "category": "Most Strongly Supported",
    "chunks": [
     {
@@ -271,7 +271,7 @@
       },
       {
        "n": 5,
-       "text": "Some businesses even close."
+       "text": "Or they even close."
       }
      ]
     },
@@ -593,7 +593,7 @@
    "prompt": "Legislator: Your agency is responsible for regulating an industry shaken by severe scandals. You were given funds to hire 500 investigators to examine the scandals, but you hired no more than 400. I am forced to conclude that you purposely limited hiring in an attempt to prevent the full extent of the scandals from being revealed.\n\nRegulator: We tried to hire the 500 investigators but the starting salaries for these positions had been frozen so low by the legislature that it was impossible to attract enough qualified applicants.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) A legislator is speaking. \u00b7 He addresses an agency. \u00b7 The agency is responsible for regulating an industry. \u00b7 The industry has been shaken by scandals. \u00b7 The scandals are severe. (2) The agency was given funds. \u00b7 The funds were to hire investigators. \u00b7 The number funded was 500. \u00b7 The investigators were to examine the scandals. \u00b7 This is a contrast. \u00b7 The agency hired no more than 400. (3) This is his conclusion. \u00b7 He says he is forced to it. \u00b7 The agency limited hiring. \u00b7 The limiting was purposeful. \u00b7 It was an attempt to prevent something. \u00b7 What would be prevented is the full extent of the scandals being revealed. (4) A regulator answers him. \u00b7 They tried to hire the 500 investigators. \u00b7 This is a contrast. \u00b7 The starting salaries had been frozen. \u00b7 The legislature froze them. \u00b7 They were frozen very low. \u00b7 It was impossible to attract enough qualified applicants.",
+   "explanation": "The details your recall has to carry, by chunk: (1) A legislator is speaking. \u00b7 The legislator addresses an agency. \u00b7 The agency is responsible for regulating an industry. \u00b7 The industry has been shaken by scandals. \u00b7 The scandals are severe. (2) The agency was given funds. \u00b7 The funds were to hire investigators. \u00b7 The number funded was 500. \u00b7 The investigators were to examine the scandals. \u00b7 This is a contrast. \u00b7 The agency hired no more than 400. (3) This is the legislator's conclusion. \u00b7 The legislator claims to be forced to it. \u00b7 The agency limited hiring. \u00b7 The limiting was purposeful. \u00b7 It was an attempt to prevent something. \u00b7 What would be prevented is the full extent of the scandals being revealed. (4) A regulator answers the legislator. \u00b7 They tried to hire the 500 investigators. \u00b7 This is a contrast with that attempt. \u00b7 The starting salaries had been frozen. \u00b7 The legislature froze them. \u00b7 They were frozen very low. \u00b7 It was impossible to attract enough qualified applicants.",
    "category": "Method",
    "chunks": [
     {
@@ -606,7 +606,7 @@
       },
       {
        "n": 2,
-       "text": "He addresses an agency."
+       "text": "The legislator addresses an agency."
       },
       {
        "n": 3,
@@ -658,11 +658,11 @@
      "details": [
       {
        "n": 1,
-       "text": "This is his conclusion."
+       "text": "This is the legislator's conclusion."
       },
       {
        "n": 2,
-       "text": "He says he is forced to it."
+       "text": "The legislator claims to be forced to it."
       },
       {
        "n": 3,
@@ -688,7 +688,7 @@
      "details": [
       {
        "n": 1,
-       "text": "A regulator answers him."
+       "text": "A regulator answers the legislator."
       },
       {
        "n": 2,
@@ -696,7 +696,7 @@
       },
       {
        "n": 3,
-       "text": "This is a contrast."
+       "text": "This is a contrast with that attempt."
       },
       {
        "n": 4,
@@ -807,7 +807,7 @@
    "prompt": "Ornithologist: The curvature of the claws of modern tree-dwelling birds enables them to perch in trees. The claws of Archeopteryx, the earliest known birdlike creature, show similar curvature that must have enabled the creature to perch on tree limbs. Therefore, Archeopteryx was probably a tree-dwelling creature.\n\nPaleontologist: No, the ability to perch in trees is not good evidence that Archeopteryx was a tree-dwelling bird. Chickens also spend time perched in trees, yet chickens are primarily ground-dwelling.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) An ornithologist is speaking. \u00b7 It is about the claws of modern birds. \u00b7 Those birds are tree-dwelling. \u00b7 The claws have a curvature. \u00b7 The curvature enables them to perch in trees. (2) This is about the claws of Archeopteryx. \u00b7 Archeopteryx is the earliest known birdlike creature. \u00b7 Its claws show a similar curvature. \u00b7 The curvature must have enabled it to perch. \u00b7 It would perch on tree limbs. (3) This is the conclusion. \u00b7 Archeopteryx was a tree-dwelling creature. \u00b7 This is hedged as probable. (4) A paleontologist answers him. \u00b7 The answer is no. \u00b7 It is about the ability to perch in trees. \u00b7 That ability is not good evidence. \u00b7 What it would be evidence for is Archeopteryx being a tree-dwelling bird. (5) Chickens spend time perched in trees. \u00b7 They do this too. \u00b7 This is a contrast. \u00b7 Chickens are ground-dwelling. \u00b7 They are primarily so.",
+   "explanation": "The details your recall has to carry, by chunk: (1) An ornithologist is speaking. \u00b7 It is about the claws of modern birds. \u00b7 Those birds are tree-dwelling. \u00b7 The claws have a curvature. \u00b7 The curvature enables them to perch in trees. (2) This is about the claws of Archeopteryx. \u00b7 Archeopteryx is the earliest known birdlike creature. \u00b7 Its claws show a similar curvature. \u00b7 The curvature must have enabled it to perch. \u00b7 It would perch on tree limbs. (3) This is the conclusion. \u00b7 Archeopteryx was a tree-dwelling creature. \u00b7 This is hedged as probable. (4) A paleontologist answers the ornithologist. \u00b7 The answer is no. \u00b7 It is about the ability to perch in trees. \u00b7 That ability is not good evidence. \u00b7 What it would be evidence for is Archeopteryx being a tree-dwelling bird. (5) Chickens spend time perched in trees. \u00b7 They do this too. \u00b7 This is a contrast. \u00b7 Chickens are ground-dwelling. \u00b7 They are primarily so.",
    "category": "Method",
    "chunks": [
     {
@@ -886,7 +886,7 @@
      "details": [
       {
        "n": 1,
-       "text": "A paleontologist answers him."
+       "text": "A paleontologist answers the ornithologist."
       },
       {
        "n": 2,
@@ -956,7 +956,7 @@
    "prompt": "There are rumors that the Premier will reshuffle the cabinet this week. However, every previous reshuffle that the Premier has made was preceded by meetings between the Premier and senior cabinet members. No such meetings have occurred or are planned. Therefore the rumors are most likely false.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) There are rumors going around. \u00b7 The rumors are about the Premier. \u00b7 He will reshuffle the cabinet. \u00b7 The reshuffle would be this week. (2) This is a contrast. \u00b7 It is about the Premier's previous reshuffles. \u00b7 This holds for every one of them. \u00b7 Each was preceded by meetings. \u00b7 The meetings were between the Premier and cabinet members. \u00b7 Those members were senior. (3) This is about those meetings. \u00b7 No such meetings have occurred. \u00b7 No such meetings are planned. (4) This is the conclusion. \u00b7 It is about the rumors. \u00b7 The rumors are false. \u00b7 This is hedged as most likely.",
+   "explanation": "The details your recall has to carry, by chunk: (1) There are rumors going around. \u00b7 The rumors are about the Premier. \u00b7 The Premier will reshuffle the cabinet. \u00b7 The reshuffle would be this week. (2) This is a contrast. \u00b7 It is about the Premier's previous reshuffles. \u00b7 This holds for every one of them. \u00b7 Each was preceded by meetings. \u00b7 The meetings were between the Premier and cabinet members. \u00b7 Those members were senior. (3) This is about those meetings. \u00b7 No such meetings have occurred. \u00b7 No such meetings are planned either. (4) This is the conclusion. \u00b7 It is about the rumors. \u00b7 The rumors are false. \u00b7 This is hedged as most likely.",
    "category": "Principle Conform",
    "chunks": [
     {
@@ -973,7 +973,7 @@
       },
       {
        "n": 3,
-       "text": "He will reshuffle the cabinet."
+       "text": "The Premier will reshuffle the cabinet."
       },
       {
        "n": 4,
@@ -1025,7 +1025,7 @@
       },
       {
        "n": 3,
-       "text": "No such meetings are planned."
+       "text": "No such meetings are planned either."
       }
      ]
     },
@@ -1069,7 +1069,7 @@
    "prompt": "Carl: Researchers who perform operations on animals for experimental purposes are legally required to complete detailed pain protocols indicating whether the animals will be at risk of pain and, if so, what steps will be taken to minimize or alleviate it. Yet when human beings undergo operations, such protocols are never required. If lawmakers were as concerned about human beings as they seem to be about animals, there would be pain protocols for human beings too.\n\nDebbie: But consider this: a person for whom a doctor wants to schedule surgery can simply be told what pain to expect and can then decide whether or not to undergo the operation. So you see, pain protocols are unnecessary for human beings.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) Carl is the first speaker. \u00b7 It is about researchers who operate on animals. \u00b7 The operations are for experimental purposes. \u00b7 Those researchers are legally required to do something. \u00b7 They must complete pain protocols. \u00b7 The protocols are detailed. \u00b7 The protocols indicate whether the animals will be at risk of pain. (2) This is conditional on the animals being at risk. \u00b7 The protocol also indicates steps. \u00b7 The steps would be taken to minimize pain. \u00b7 They could instead alleviate it. (3) This is a contrast. \u00b7 It is about human beings undergoing operations. \u00b7 Such protocols are not required. \u00b7 They are never required. (4) This is a conditional claim. \u00b7 It is about lawmakers' concern for human beings. \u00b7 The comparison is with how concerned they seem about animals. \u00b7 There would then be pain protocols for human beings. \u00b7 There would be those as well as for animals. (5) Debbie is the second speaker. \u00b7 This is a contrast. \u00b7 It is about a person whose doctor wants to schedule surgery. \u00b7 That person can be told what pain to expect. \u00b7 Being told is simple. \u00b7 The person can then decide. \u00b7 The decision is whether to undergo the operation. (6) This is her conclusion. \u00b7 It is about pain protocols. \u00b7 Those protocols are unnecessary. \u00b7 They are unnecessary for human beings.",
+   "explanation": "The details your recall has to carry, by chunk: (1) Carl is the first speaker. \u00b7 It is about researchers who operate on animals. \u00b7 The operations are for experimental purposes. \u00b7 Those researchers are legally required to do something. \u00b7 They must complete pain protocols. \u00b7 The protocols are detailed. \u00b7 The protocols indicate whether the animals will be at risk of pain. (2) This is conditional on the animals being at risk. \u00b7 The protocol also indicates steps. \u00b7 The steps would be taken to minimize pain. \u00b7 They could instead alleviate it. (3) This is a contrast. \u00b7 It is about human beings undergoing operations. \u00b7 Such protocols are not required. \u00b7 They are never required. (4) This is a conditional claim. \u00b7 It is about lawmakers' concern for human beings. \u00b7 The comparison is with how concerned they seem about animals. \u00b7 There would then be pain protocols for human beings. \u00b7 There would be those as well as for animals. (5) Debbie is the second speaker. \u00b7 This is a contrast with Carl's point. \u00b7 It is about a person whose doctor wants to schedule surgery. \u00b7 That person can be told what pain to expect. \u00b7 Being told is simple. \u00b7 The person can then decide. \u00b7 The decision is whether or not to undergo the operation. (6) This is Debbie's conclusion. \u00b7 It is about pain protocols. \u00b7 Those protocols are unnecessary. \u00b7 They are unnecessary for human beings.",
    "category": "Method",
    "chunks": [
     {
@@ -1186,7 +1186,7 @@
       },
       {
        "n": 2,
-       "text": "This is a contrast."
+       "text": "This is a contrast with Carl's point."
       },
       {
        "n": 3,
@@ -1206,7 +1206,7 @@
       },
       {
        "n": 7,
-       "text": "The decision is whether to undergo the operation."
+       "text": "The decision is whether or not to undergo the operation."
       }
      ]
     },
@@ -1216,7 +1216,7 @@
      "details": [
       {
        "n": 1,
-       "text": "This is her conclusion."
+       "text": "This is Debbie's conclusion."
       },
       {
        "n": 2,
@@ -1363,7 +1363,7 @@
    "prompt": "Herbalist: Many of my customers find that their physical coordination improves after drinking juice containing certain herbs. A few doctors assert that the herbs are potentially harmful, but doctors are always trying to maintain a monopoly over medical therapies. So there is no reason not to try my herb juice.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) A herbalist is speaking. \u00b7 Many of his customers find something. \u00b7 Their physical coordination improves. \u00b7 The improvement follows drinking juice. \u00b7 The juice contains certain herbs. (2) Some doctors make an assertion. \u00b7 Only a few do. \u00b7 They say the herbs are potentially harmful. \u00b7 This is a contrast. \u00b7 Doctors try to maintain a monopoly. \u00b7 The monopoly is over medical therapies. \u00b7 They always do this. (3) This is the conclusion. \u00b7 There is no reason against it. \u00b7 What there is no reason against is trying his herb juice.",
+   "explanation": "The details your recall has to carry, by chunk: (1) A herbalist is speaking. \u00b7 Many of the herbalist's customers find something. \u00b7 Their physical coordination improves. \u00b7 The improvement follows drinking juice. \u00b7 The juice contains certain herbs. (2) Some doctors make an assertion. \u00b7 Only a few do. \u00b7 They say the herbs are potentially harmful. \u00b7 This is a contrast. \u00b7 Doctors try to maintain a monopoly. \u00b7 The monopoly is over medical therapies. \u00b7 They always do this. (3) This is the conclusion. \u00b7 There is no reason against it. \u00b7 What there is no reason against is trying the herbalist's herb juice.",
    "category": "Classic Flaw",
    "chunks": [
     {
@@ -1376,7 +1376,7 @@
       },
       {
        "n": 2,
-       "text": "Many of his customers find something."
+       "text": "Many of the herbalist's customers find something."
       },
       {
        "n": 3,
@@ -1440,7 +1440,7 @@
       },
       {
        "n": 3,
-       "text": "What there is no reason against is trying his herb juice."
+       "text": "What there is no reason against is trying the herbalist's herb juice."
       }
      ]
     }
@@ -1543,7 +1543,7 @@
    "prompt": "Motorcoach driver: Professional drivers spend much more time driving, on average, than do other people and hence are more competent drivers than are other, less experienced drivers. Therefore, the speed limit on major highways should not be reduced, because that action would have the undesirable effect of forcing some people who are now both law-abiding and competent drivers to break the law.\n\nPolice officer: All drivers can drive within the legal speed limit if they wish, so it is not true to say that reducing the speed limit would be the cause of such illegal behavior.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) A motorcoach driver is speaking. \u00b7 It is about professional drivers. \u00b7 They spend more time driving. \u00b7 The difference is large. \u00b7 This is an average. (2) The comparison is with other people. \u00b7 A conclusion is drawn from that. \u00b7 Professional drivers are more competent. \u00b7 The second comparison is with other drivers. \u00b7 Those other drivers are less experienced. (3) This is his conclusion. \u00b7 It is about the speed limit. \u00b7 The limit is on major highways. \u00b7 The limit should not be reduced. (4) This is his reason. \u00b7 Reducing the limit would have an effect. \u00b7 The effect is undesirable. \u00b7 It would force some people to break the law. \u00b7 Those people are law-abiding now. \u00b7 They are also competent drivers. (5) A police officer answers. \u00b7 All drivers can drive within the legal speed limit. \u00b7 They can do so if they wish. \u00b7 A conclusion is drawn from that. \u00b7 It is not true that reducing the limit would cause the behavior. \u00b7 The behavior meant is the illegal one.",
+   "explanation": "The details your recall has to carry, by chunk: (1) A motorcoach driver is speaking. \u00b7 It is about professional drivers. \u00b7 They spend more time driving. \u00b7 The difference is large. \u00b7 This is an average. (2) The comparison is with other people. \u00b7 A conclusion is drawn from that. \u00b7 Professional drivers are more competent. \u00b7 The second comparison is with other drivers. \u00b7 Those other drivers are less experienced. (3) This is the driver's conclusion. \u00b7 It is about the speed limit. \u00b7 The limit is on major highways. \u00b7 The limit should not be reduced. (4) This is the driver's reason. \u00b7 Reducing the limit would have an effect. \u00b7 The effect is undesirable. \u00b7 It would force some people to break the law. \u00b7 Those people are law-abiding now. \u00b7 They are also competent drivers. (5) A police officer answers. \u00b7 All drivers can drive within the legal speed limit. \u00b7 They can do so if they wish. \u00b7 A conclusion is drawn from that ability. \u00b7 It is not true that reducing the limit would cause the behavior. \u00b7 The behavior meant is the illegal one.",
    "category": "Controversy",
    "chunks": [
     {
@@ -1604,7 +1604,7 @@
      "details": [
       {
        "n": 1,
-       "text": "This is his conclusion."
+       "text": "This is the driver's conclusion."
       },
       {
        "n": 2,
@@ -1626,7 +1626,7 @@
      "details": [
       {
        "n": 1,
-       "text": "This is his reason."
+       "text": "This is the driver's reason."
       },
       {
        "n": 2,
@@ -1668,7 +1668,7 @@
       },
       {
        "n": 4,
-       "text": "A conclusion is drawn from that."
+       "text": "A conclusion is drawn from that ability."
       },
       {
        "n": 5,
@@ -2170,7 +2170,7 @@
    "prompt": "Medieval Arabs had manuscripts of many ancient Greek texts, which were translated into Arabic when there was a demand for them. Medieval Arab philosophers were very interested in Aristotle's Poetics, an interest that evidently was not shared by medieval Arab poets, because a poet interested in the Poetics would certainly have wanted to read Homer, to whose epics Aristotle frequently refers. But Homer was not translated into Arabic until modern times.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) Medieval Arabs had manuscripts. \u00b7 The manuscripts were of ancient Greek texts. \u00b7 There were many of them. \u00b7 The texts were translated into Arabic. \u00b7 Translation happened when there was demand. (2) Medieval Arab philosophers were interested in a text. \u00b7 The text is Aristotle's Poetics. \u00b7 The interest was very great. \u00b7 Medieval Arab poets did not share it. \u00b7 This is marked as evident. (3) This is the reason given. \u00b7 It is about a poet interested in the Poetics. \u00b7 Such a poet would have wanted to read Homer. \u00b7 This is stated with certainty. \u00b7 Aristotle refers to Homer's epics. \u00b7 He refers to them frequently. (4) This is a contrast. \u00b7 Homer was not translated into Arabic. \u00b7 This held until modern times.",
+   "explanation": "The details your recall has to carry, by chunk: (1) Medieval Arabs had manuscripts. \u00b7 The manuscripts were of ancient Greek texts. \u00b7 There were many of them. \u00b7 The texts were translated into Arabic. \u00b7 Translation happened when there was demand. (2) Medieval Arab philosophers were interested in a text. \u00b7 The text is Aristotle's Poetics. \u00b7 The interest was very great. \u00b7 Medieval Arab poets did not share it. \u00b7 This is marked as evident. (3) This is the reason given. \u00b7 It is about a poet interested in the Poetics. \u00b7 Such a poet would have wanted to read Homer. \u00b7 This is stated with certainty. \u00b7 Aristotle refers to Homer's epics. \u00b7 Aristotle refers to them frequently. (4) This is a contrast. \u00b7 Homer was not translated into Arabic. \u00b7 This held until modern times.",
    "category": "Strengthen",
    "chunks": [
     {
@@ -2251,7 +2251,7 @@
       },
       {
        "n": 6,
-       "text": "He refers to them frequently."
+       "text": "Aristotle refers to them frequently."
       }
      ]
     },
@@ -2376,7 +2376,7 @@
    "prompt": "A museum director, in order to finance expensive new acquisitions, discreetly sold some paintings by major artists. All of them were paintings that the director privately considered inferior. Critics roundly condemned the sale, charging that the museum had lost first-rate pieces, thereby violating its duty as a trustee of art for future generations. A few months after being sold by the museum, those paintings were resold, in an otherwise stagnant art market, at two to three times the price paid to the museum. Clearly, these prices settle the issue, since they demonstrate the correctness of the critics' evaluation.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) A museum director sold paintings. \u00b7 The paintings are by major artists. \u00b7 Only some were sold. \u00b7 The selling was discreet. \u00b7 The purpose was to finance new acquisitions. \u00b7 The acquisitions are expensive. (2) This is about all of the paintings sold. \u00b7 The director considered them inferior. \u00b7 He did so privately. (3) Critics condemned the sale. \u00b7 The condemnation was round. \u00b7 They made a charge. \u00b7 The charge is that the museum lost first-rate pieces. \u00b7 Doing so violated a duty. \u00b7 The duty is as a trustee of art. \u00b7 The art is held for future generations. (4) The paintings were resold. \u00b7 This was a few months after the museum sold them. \u00b7 The art market was otherwise stagnant. \u00b7 The resale price was higher. \u00b7 It was two to three times higher. \u00b7 The comparison is with the price paid to the museum. (5) This is the conclusion. \u00b7 It is treated as clear. \u00b7 The prices settle the issue. \u00b7 This is the reason given. \u00b7 The prices demonstrate something. \u00b7 What they demonstrate is that the critics' evaluation was correct.",
+   "explanation": "The details your recall has to carry, by chunk: (1) A museum director sold paintings. \u00b7 The paintings are by major artists. \u00b7 Only some were sold. \u00b7 The selling was discreet. \u00b7 The purpose was to finance new acquisitions. \u00b7 The acquisitions are expensive. (2) This is about all of the paintings sold. \u00b7 The director considered them inferior. \u00b7 The director did so privately. (3) Critics condemned the sale. \u00b7 The condemnation was round. \u00b7 They made a charge. \u00b7 The charge is that the museum lost first-rate pieces. \u00b7 Doing so violated a duty. \u00b7 The duty is as a trustee of art. \u00b7 The art is held for future generations. (4) The paintings were resold. \u00b7 This was a few months after the museum sold them. \u00b7 The art market was otherwise stagnant. \u00b7 The resale price was higher. \u00b7 It was two to three times higher. \u00b7 The comparison is with the price paid to the museum. (5) This is the conclusion. \u00b7 It is treated as clear. \u00b7 The prices settle the issue. \u00b7 This is the reason given. \u00b7 The prices demonstrate something. \u00b7 What they demonstrate is that the critics' evaluation was correct.",
    "category": "Classic Flaw",
    "chunks": [
     {
@@ -2423,7 +2423,7 @@
       },
       {
        "n": 3,
-       "text": "He did so privately."
+       "text": "The director did so privately."
       }
      ]
     },
@@ -2539,7 +2539,7 @@
    "prompt": "The United States ranks far behind countries such as Sweden and Canada when it comes to workplace safety. In all three countries, joint labor-management committees that oversee workplace safety conditions have been very successful in reducing occupational injuries. In the United States, such committees are found only in the few companies that have voluntarily established them. However, in Sweden and several Canadian provinces, joint safety committees are required by law and exist in all medium-sized and large workplaces.",
    "credited_answers": [],
    "cumulative_after": [],
-   "explanation": "The details your recall has to carry, by chunk: (1) This is about the United States. \u00b7 It ranks behind other countries. \u00b7 It ranks far behind. \u00b7 Sweden is one of them. \u00b7 Canada is another of them. \u00b7 The subject is workplace safety. (2) This holds in all three countries. \u00b7 There are joint labor-management committees. \u00b7 The committees oversee workplace safety conditions. \u00b7 The committees have been successful. \u00b7 They have been very successful. \u00b7 What they reduced is occupational injuries. (3) This is about the United States. \u00b7 Such committees are found only in some companies. \u00b7 Those companies are few. \u00b7 Those companies established them voluntarily. (4) This is a contrast. \u00b7 This is about Sweden. \u00b7 It is also about Canadian provinces. \u00b7 Several provinces are meant. \u00b7 Joint safety committees are required by law. \u00b7 They exist in all medium-sized workplaces. \u00b7 They exist in all large workplaces.",
+   "explanation": "The details your recall has to carry, by chunk: (1) This is about the United States. \u00b7 It ranks behind other countries. \u00b7 It ranks far behind. \u00b7 Sweden is one of them. \u00b7 Canada is another of them. \u00b7 The subject is workplace safety. (2) This holds in all three countries. \u00b7 There are joint labor-management committees. \u00b7 The committees oversee workplace safety conditions. \u00b7 The committees have been successful. \u00b7 They have been very successful. \u00b7 What they reduced is occupational injuries. (3) This returns to the United States. \u00b7 Such committees are found only in some companies. \u00b7 Those companies are few. \u00b7 Those companies established them voluntarily. (4) This is a contrast. \u00b7 This is about Sweden. \u00b7 It is also about Canadian provinces. \u00b7 Several provinces are meant. \u00b7 Joint safety committees are required by law. \u00b7 They exist in all medium-sized workplaces. \u00b7 They exist in all large workplaces.",
    "category": "Inference",
    "chunks": [
     {
@@ -2608,7 +2608,7 @@
      "details": [
       {
        "n": 1,
-       "text": "This is about the United States."
+       "text": "This returns to the United States."
       },
       {
        "n": 2,
