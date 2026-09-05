@@ -97,9 +97,6 @@ export default {
         "text-primary": "hsl(var(--text-primary))",
         "text-secondary": "hsl(var(--text-secondary))",
         "text-tertiary": "hsl(var(--text-tertiary))",
-        "accent-bronze": "hsl(var(--accent-bronze))",
-        "accent-warm": "hsl(var(--accent-warm))",
-        "glow-bronze": "hsl(var(--glow-bronze))",
 
         /* ── Main Conclusion bootcamp tokens (scoped to .mc-bootcamp) ─────────
          * These resolve only inside .mc-bootcamp ancestors, where the matching
@@ -197,7 +194,6 @@ export default {
         md: "var(--shadow-md)",
         lg: "var(--shadow-lg)",
         glow: "var(--shadow-glow)",
-        "glow-sm": "0 0 12px 0 rgba(176, 106, 62, 0.2)",
         /* Abstract bootcamp brutalist hard-offset shadows. Reference
          * --brutal-ink so the tinted-neutral rule holds; --brutal-ink is
          * defined inside .topic-abstract. Outside the wrapper these tokens

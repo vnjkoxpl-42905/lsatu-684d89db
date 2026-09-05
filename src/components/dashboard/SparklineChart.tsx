@@ -25,7 +25,7 @@ export function SparklineChart({ data, total }: SparklineChartProps) {
                 <TooltipTrigger asChild>
                   <div className="flex-1 group cursor-default">
                     <div 
-                      className="w-full bg-primary/20 rounded-[2px] transition-all duration-200 group-hover:bg-accent-bronze group-hover:shadow-glow-xs"
+                      className="w-full bg-primary/20 rounded-[2px] transition-all duration-200 group-hover:bg-primary"
                       style={{ height: `${Math.max(height, 4)}%` }}
                     />
                   </div>

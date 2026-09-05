@@ -186,6 +186,18 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  /* Focus indicator floor.
+     Zero specificity via :where(), so any component that defines its own focus
+     treatment still wins (the Academy's cyan, the scoped bootcamp rings). This
+     exists so a control that defines nothing is never left without one: the
+     shared Button shipped for five months with no visible focus at all, because
+     it removed the browser default and replaced it with a ring class that did
+     not exist pointing at a token that was never defined. */
+  :where(a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus-visible {
+    outline: 2px solid hsl(var(--foreground));
+    outline-offset: 2px;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Lexend', 'Outfit', ui-sans-serif, system-ui, -apple-system, sans-serif;

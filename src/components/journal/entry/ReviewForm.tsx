@@ -63,14 +63,14 @@ function TourTip({
 }) {
   if (!active) return null;
   return (
-    <div className="mt-2 rounded-md border border-accent-bronze/60 bg-accent-bronze/10 p-3">
+    <div className="mt-2 rounded-md border border-border bg-muted p-3">
       <p className="text-[12px] leading-relaxed text-foreground/90">{text}</p>
       <div className="mt-2 flex items-center justify-between">
         <div className="flex gap-1">
           {Array.from({ length: total }).map((_, i) => (
             <span
               key={i}
-              className={cn('h-1.5 w-1.5 rounded-full', i === stepIndex ? 'bg-accent-bronze' : 'bg-border')}
+              className={cn('h-1.5 w-1.5 rounded-full', i === stepIndex ? 'bg-foreground' : 'bg-border')}
             />
           ))}
         </div>
@@ -83,7 +83,7 @@ function TourTip({
           <button
             type="button"
             onClick={onNext}
-            className="rounded bg-accent-bronze px-2.5 py-1 text-[11px] font-medium text-background"
+            className="rounded bg-primary px-2.5 py-1 text-[11px] font-medium text-primary-foreground"
           >
             {stepIndex === total - 1 ? 'Got it' : 'Next'}
           </button>

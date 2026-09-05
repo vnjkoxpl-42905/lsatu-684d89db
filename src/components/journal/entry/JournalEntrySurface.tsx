@@ -369,7 +369,7 @@ export function JournalEntrySurface({ embedded = false }: JournalEntrySurfacePro
                     className={cn(
                       'flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[12px] font-medium transition-colors',
                       annotateActive
-                        ? 'border-accent-bronze bg-accent-bronze/15 text-accent-bronze'
+                        ? 'border-foreground bg-secondary text-foreground'
                         : 'border-border text-muted-foreground hover:text-foreground',
                     )}
                   >
