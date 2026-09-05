@@ -1,51 +1,130 @@
 import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { ArrowDown, ArrowRight, Mic } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
 import { renderInlineMarks } from "../prompt-format";
+import { MeadowScene } from "./MeadowScene";
+import { RecallDemo } from "./RecallDemo";
 import "./section-launch.css";
 
 export interface SectionLaunchFrameProps {
   title: string;
   subtitle: string | null;
   instructions: ActivityInstructions;
-  /** Whether this page needs the breadcrumb bar above its own heading. */
+  /** Whether this page needs the breadcrumb line above its own heading. */
   showBreadcrumbs?: boolean;
-  /** The right half of the breadcrumb line: what this page is a page of. */
+  /** The right half of the crumb line: what this page is a page of. */
   meta?: ReactNode;
   /**
    * The page's own primary action, if it has one.
    *
-   * A section has one: Start. The library does not — its actions are the
-   * section rows, and a button above them would have to mean "start which?".
+   * A section has one: Start. The library does not; its actions are the
+   * section rows, so its hero button carries her down to them instead.
    */
   primaryAction?: ReactNode;
   /**
-   * A caution above the method, where there is one.
-   *
-   * It sits under the head rather than beside Start, because it is about
-   * whether to start at all and has to be read before the button is reached. It
-   * never disables anything: the one caution that exists so far is the phone
-   * notice, and Joshua's call is that a phone is warned and let through.
+   * The same action again at the foot of the page, worded for where it sits.
+   * A section passes a second Start here; the library needs nothing, since its
+   * default carries her back up to the sections.
    */
+  closingAction?: ReactNode;
+  /** A caution under the hero, where there is one. It never disables anything. */
   notice?: ReactNode;
-  /** Between the head and the method. The four numbers, where there are four. */
+  /** Between the hero and the method. The four numbers, where there are four. */
   strip?: ReactNode;
   /** The slab below the method: her runs on a section, her sections in the library. */
   children?: ReactNode;
   onExit?: () => void;
 }
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/** One authored entrance, shared by every block below the hero. */
+const reveal = {
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-12% 0px" },
+  transition: { duration: 0.8, ease: EASE },
+} as const;
+
+const STEP_KINDS = ["read", "tell", "colour", "recall"] as const;
+
 /**
- * The chrome both Read, Recall, Colour doors are drawn in.
+ * The little painted scene above each step.
+ *
+ * Four small dioramas drawn in the door's own vocabulary: a page, a voice, a
+ * stroke of colour, a page emptying. They move while the step is in view and
+ * stop under reduced motion; none of them carries anything the words do not.
+ */
+function StepScene({ kind }: { kind: (typeof STEP_KINDS)[number] }) {
+  if (kind === "read") {
+    return (
+      <div className="rd-scene rd-sc-read" aria-hidden="true">
+        <div className="rd-sc-page">
+          <i className="rd-sc-line" style={{ width: "88%" }} />
+          <i className="rd-sc-line" style={{ width: "72%" }} />
+          <i className="rd-sc-line" style={{ width: "94%" }} />
+          <i className="rd-sc-line" style={{ width: "58%" }} />
+          <span className="rd-sc-sweep" />
+        </div>
+      </div>
+    );
+  }
+  if (kind === "tell") {
+    return (
+      <div className="rd-scene rd-sc-tell" aria-hidden="true">
+        <div className="rd-sc-bubble">
+          <Mic size={13} strokeWidth={2.4} />
+          <span className="rd-wave" data-live="true">
+            {Array.from({ length: 7 }, (_, i) => (
+              <i key={i} style={{ animationDelay: `${(i * 0.09).toFixed(2)}s` }} />
+            ))}
+          </span>
+          <span className="rd-sc-bubble-text">in your own words</span>
+        </div>
+        <div className="rd-sc-page rd-sc-page-turned">
+          <i className="rd-sc-line" style={{ width: "80%" }} />
+          <i className="rd-sc-line" style={{ width: "64%" }} />
+        </div>
+      </div>
+    );
+  }
+  if (kind === "colour") {
+    return (
+      <div className="rd-scene rd-sc-colour" aria-hidden="true">
+        <span className="rd-sc-stroke" />
+        <div className="rd-sc-chip">
+          <span className="rd-sc-chip-head">Colour it</span>
+          “Who counted that?”
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="rd-scene rd-sc-recall" aria-hidden="true">
+      <div className="rd-sc-page rd-sc-page-fading">
+        <i className="rd-sc-line" style={{ width: "88%" }} />
+        <i className="rd-sc-line" style={{ width: "72%" }} />
+        <i className="rd-sc-line" style={{ width: "94%" }} />
+        <i className="rd-sc-line" style={{ width: "58%" }} />
+      </div>
+      <span className="rd-sc-key">space</span>
+    </div>
+  );
+}
+
+/**
+ * The door to Read, Recall, Colour, drawn once for both of its pages.
  *
  * There are two doors and one design. The library is where she picks tonight's
  * section; the section page is where she reads its clock and starts it. They
- * carry the same crumbs, the same head, the same four beats and the same
- * briefing drawer, and differ only in the slab underneath — so the method is
- * one component rather than two copies that drift.
+ * share the hero, the demonstration, the four steps and the briefing, and
+ * differ only in the slab underneath.
  *
- * This owns the beat and pane state because both are about reading the method,
- * which is the part that is genuinely shared. Everything about *runs* stays out
- * in the surfaces, where the data lives.
+ * The page is built to be understood in one viewport: the method is performed
+ * in the hero before it is explained, the four steps are the next thing she
+ * meets, and the sections she can run sit directly beneath. The long briefing
+ * is one tab away and never in the way.
  */
 export function SectionLaunchFrame({
   title,
@@ -54,17 +133,18 @@ export function SectionLaunchFrame({
   showBreadcrumbs = true,
   meta,
   primaryAction,
+  closingAction,
   notice,
   strip,
   children,
   onExit,
 }: SectionLaunchFrameProps) {
+  const reduced = useReducedMotion();
+
   /**
    * The four beats are `steps` inside ONE briefing section, not the sections.
-   *
-   * The briefing has six sections and only one of them -- "What you actually
-   * do." -- carries the procedure. Rendering `sections` here would put the essay
-   * headings in the strip and lose the method entirely.
+   * Only "How the method works" carries the procedure; rendering `sections`
+   * here would put the essay headings in the strip and lose the method.
    */
   const beatSection = useMemo(
     () => instructions.briefing?.sections.find((s) => (s.steps?.length ?? 0) > 0),
@@ -75,10 +155,20 @@ export function SectionLaunchFrame({
   const [beat, setBeat] = useState(0);
   const [pane, setPane] = useState<"beat" | "briefing">("beat");
 
+  const heroRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+
   /**
-   * Arrow-key traversal, which is what makes a tablist a tablist rather than a
-   * row of buttons wearing the role.
+   * The hero's scroll, 0 while it is fully on screen and 1 once it has left.
+   * The scene planes and the headline all ride this one number, so they move
+   * as one picture rather than as separate effects.
    */
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, 160]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const copyFilter = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(14px)"]);
+  const copyScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.94]);
+
   const beatRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const onBeatKey = useCallback(
     (e: React.KeyboardEvent) => {
@@ -109,232 +199,343 @@ export function SectionLaunchFrame({
     [pane],
   );
 
+  const openBriefing = useCallback(() => {
+    setPane("briefing");
+    drawerRef.current?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  }, [reduced]);
+
+  const goToSections = useCallback(() => {
+    document
+      .getElementById("sl-sections")
+      ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  }, [reduced]);
+
   const briefing = instructions.briefing;
   const current = beats[beat];
 
   return (
     <div className="sl">
-      <div className="sl-sheet">
-        {/*
-          * The crumb IS the way out.
-          *
-          * `ActivityExitButton` was drawn here first and could not be read: it
-          * takes its ink from the world shell's `--aw-ink`, and this surface is
-          * not a world, so on the dark theme it landed as a near-invisible pill
-          * floating above the chip. A breadcrumb that goes where it says it
-          * goes is the control this page already had.
-          */}
-        {showBreadcrumbs && (
-          <div className="sl-crumbs">
-            <span className="sl-label">
-              {onExit ? (
-                <button type="button" className="sl-crumb-back" onClick={onExit}>
-                  Library
-                </button>
-              ) : (
-                "Library"
-              )}
-              {" / Out Loud / "}
-              <strong>{title}</strong>
-            </span>
-            <span className="sl-label sl-meta">{meta}</span>
-          </div>
-        )}
+      {/* ---------------------------------------------------------------- hero */}
+      <section className="rd-hero" ref={heroRef} aria-labelledby="rd-title">
+        <div className="rd-hero-panel">
+          <MeadowScene progress={scrollYProgress}>
+            <RecallDemo />
+          </MeadowScene>
 
-        <div className="sl-head">
-          <div>
-            <span className="sl-chip">Out loud</span>
-            <h2 className="sl-title">{title}</h2>
-            {(instructions.tagline || subtitle) && (
-              <p className="sl-tagline">
-                {instructions.tagline
-                  ? renderInlineMarks(instructions.tagline, "sl-tagline")
-                  : subtitle}
-              </p>
-            )}
+          <div className="rd-hero-top">
+            <span className="rd-crumbs">
+              {showBreadcrumbs ? (
+                <>
+                  {onExit ? (
+                    <button type="button" className="sl-crumb-back" onClick={onExit}>
+                      Library
+                    </button>
+                  ) : (
+                    "Library"
+                  )}
+                  <span className="rd-crumb-sep">/</span>
+                  Out loud
+                  <span className="rd-crumb-sep">/</span>
+                  <strong>{title}</strong>
+                </>
+              ) : (
+                <>
+                  {onExit && (
+                    <>
+                      <button type="button" className="sl-crumb-back" onClick={onExit}>
+                        Library
+                      </button>
+                      <span className="rd-crumb-sep">/</span>
+                    </>
+                  )}
+                  <strong>Out loud</strong>
+                </>
+              )}
+            </span>
+            <span className="rd-meta">{meta ?? "One section · out loud · no pauses"}</span>
           </div>
-          <div className="sl-cta">
-            {primaryAction}
-            {briefing && (
+
+          <motion.div
+            className="rd-hero-copy"
+            style={reduced ? undefined : { y: copyY, opacity: copyOpacity, filter: copyFilter, scale: copyScale }}
+          >
+            <span className="sl-chip">
+              <Mic size={11} strokeWidth={2.6} aria-hidden="true" />
+              Read, Recall, Colour
+            </span>
+            <h1 className="sl-title" id="rd-title">
+              {showBreadcrumbs ? (
+                /* "Read, Recall, Colour · PT102 Section 3" is one title in the
+                   record and two lines on the door: the drill, then the section
+                   it is run on, in the same italic the library gives "back". */
+                title.includes(" · ") ? (
+                  <>
+                    {title.slice(0, title.indexOf(" · "))}
+                    <br />
+                    <em>{title.slice(title.indexOf(" · ") + 3)}</em>
+                  </>
+                ) : (
+                  title
+                )
+              ) : (
+                <>
+                  Read it once.
+                  <br />
+                  Then say it <em>back</em>.
+                </>
+              )}
+            </h1>
+            <p className="sl-tagline">
+              {instructions.tagline ? renderInlineMarks(instructions.tagline, "sl-tagline") : subtitle}
+            </p>
+            <div className="sl-cta">
+              {primaryAction ?? (
+                <button type="button" className="sl-start" onClick={goToSections}>
+                  Choose a section
+                  <ArrowDown size={16} strokeWidth={2.4} aria-hidden="true" />
+                </button>
+              )}
+              {briefing && (
+                <button type="button" className="sl-brief" onClick={openBriefing}>
+                  Read the full instructions
+                  <ArrowRight size={14} strokeWidth={2.4} aria-hidden="true" />
+                </button>
+              )}
+            </div>
+          </motion.div>
+
+          <div className="rd-hero-space" aria-hidden="true" />
+        </div>
+      </section>
+
+      {(notice || strip) && (
+        <div className="rd-band">
+          {notice}
+          {strip}
+        </div>
+      )}
+
+      {/* -------------------------------------------------------------- method */}
+      {beats.length > 0 && (
+        <motion.section className="rd-method" aria-labelledby="rd-method-title" {...reveal}>
+          <div className="rd-method-head">
+            <h2 id="rd-method-title" className="rd-h2">
+              The method, in <em>four</em> moves.
+            </h2>
+            <p className="rd-method-sub">
+              One stimulus at a time, one piece at a time. Select a step to read it in full.
+            </p>
+          </div>
+
+          <div
+            className="sl-beats"
+            role="tablist"
+            aria-label="The method, step by step"
+            onKeyDown={onBeatKey}
+            style={{ ["--sl-beat-count" as string]: String(beats.length) }}
+          >
+            {beats.map((step, i) => (
               <button
+                key={i}
+                ref={(el) => {
+                  beatRefs.current[i] = el;
+                }}
                 type="button"
-                className="sl-brief"
+                role="tab"
+                id={`sl-beat-tab-${i}`}
+                aria-controls="sl-beat-panel"
+                aria-selected={pane === "beat" && beat === i}
+                tabIndex={beat === i ? 0 : -1}
+                className="sl-beat rd-step"
+                data-kind={STEP_KINDS[i] ?? "read"}
                 onClick={() => {
-                  setPane("briefing");
+                  setBeat(i);
+                  setPane("beat");
                 }}
               >
-                Read the full instructions
+                <StepScene kind={STEP_KINDS[i] ?? "read"} />
+                <span className="rd-step-n">Step {i + 1}</span>
+                <span className="sl-l">{renderInlineMarks(step.label, `sl-bl-${i}`)}</span>
+                <span className="sl-d">{renderInlineMarks(step.body, `sl-bd-${i}`)}</span>
               </button>
-            )}
+            ))}
           </div>
-        </div>
-        {notice}
 
-        {strip}
-
-        {beats.length > 0 && (
-          <>
-            <div className="sl-mhead">
-              <h3>The method</h3>
-            </div>
-            <div
-              className="sl-beats"
-              role="tablist"
-              aria-label="The method, step by step"
-              onKeyDown={onBeatKey}
-              style={{ ["--sl-beat-count" as string]: String(beats.length) }}
-            >
-              {beats.map((step, i) => (
+          {briefing && (
+            <div className="sl-drawer" ref={drawerRef}>
+              <div className="sl-dr-tabs" role="tablist" aria-label="Instruction detail" onKeyDown={onPaneKey}>
                 <button
-                  key={i}
                   ref={(el) => {
-                    beatRefs.current[i] = el;
+                    paneRefs.current[0] = el;
                   }}
                   type="button"
                   role="tab"
-                  id={`sl-beat-tab-${i}`}
+                  id="sl-pane-tab-beat"
+                  aria-selected={pane === "beat"}
                   aria-controls="sl-beat-panel"
-                  aria-selected={pane === "beat" && beat === i}
-                  tabIndex={beat === i ? 0 : -1}
-                  className="sl-beat"
-                  onClick={() => {
-                    setBeat(i);
-                    setPane("beat");
-                  }}
+                  tabIndex={pane === "beat" ? 0 : -1}
+                  className="sl-dr-tab"
+                  onClick={() => setPane("beat")}
                 >
-                  <span className="sl-n">0{i + 1}</span>
-                  <span className="sl-l">{renderInlineMarks(step.label, `sl-bl-${i}`)}</span>
-                  <span className="sl-d">{renderInlineMarks(step.body, `sl-bd-${i}`)}</span>
+                  This step
                 </button>
-              ))}
-            </div>
-          </>
-        )}
+                <button
+                  ref={(el) => {
+                    paneRefs.current[1] = el;
+                  }}
+                  type="button"
+                  role="tab"
+                  id="sl-pane-tab-briefing"
+                  aria-selected={pane === "briefing"}
+                  aria-controls="sl-beat-panel"
+                  tabIndex={pane === "briefing" ? 0 : -1}
+                  className="sl-dr-tab"
+                  onClick={() => setPane("briefing")}
+                >
+                  Full instructions
+                </button>
+                {briefing.closer && (
+                  <span className="sl-dr-note">{renderInlineMarks(briefing.closer, "sl-closer")}</span>
+                )}
+              </div>
 
-        {briefing && (
-          <div className="sl-drawer">
-            <div
-              className="sl-dr-tabs"
-              role="tablist"
-              aria-label="Instruction detail"
-              onKeyDown={onPaneKey}
-            >
-              <button
-                ref={(el) => {
-                  paneRefs.current[0] = el;
-                }}
-                type="button"
-                role="tab"
-                id="sl-pane-tab-beat"
-                aria-selected={pane === "beat"}
-                aria-controls="sl-beat-panel"
-                tabIndex={pane === "beat" ? 0 : -1}
-                className="sl-dr-tab"
-                onClick={() => setPane("beat")}
+              <div
+                className="sl-dr-view"
+                id="sl-beat-panel"
+                role="tabpanel"
+                tabIndex={-1}
+                data-pane={pane}
+                aria-labelledby={pane === "beat" ? `sl-pane-tab-beat sl-beat-tab-${beat}` : "sl-pane-tab-briefing"}
               >
-                This step
-              </button>
-              <button
-                ref={(el) => {
-                  paneRefs.current[1] = el;
-                }}
-                type="button"
-                role="tab"
-                id="sl-pane-tab-briefing"
-                aria-selected={pane === "briefing"}
-                aria-controls="sl-beat-panel"
-                tabIndex={pane === "briefing" ? 0 : -1}
-                className="sl-dr-tab"
-                onClick={() => setPane("briefing")}
-              >
-                Full instructions
-              </button>
-              {briefing.closer && (
-                <span className="sl-dr-note">
-                  {renderInlineMarks(briefing.closer, "sl-closer")}
-                </span>
-              )}
+                {pane === "beat" && current ? (
+                  <div className="rd-dr-step">
+                    <span className="sl-label">
+                      Step {beat + 1} of {beats.length}
+                    </span>
+                    <h3 className="sl-dr-title">{renderInlineMarks(current.label, `sl-dt-${beat}`)}</h3>
+                    <p className="sl-dr-body">{renderInlineMarks(current.body, `sl-db-${beat}`)}</p>
+                    <div className="rd-dr-nav">
+                      {beat > 0 && (
+                        <button type="button" className="sl-close" onClick={() => setBeat(beat - 1)}>
+                          Previous step
+                        </button>
+                      )}
+                      {beat < beats.length - 1 ? (
+                        <button type="button" className="sl-close" onClick={() => setBeat(beat + 1)}>
+                          Next step
+                          <ArrowRight size={13} strokeWidth={2.4} aria-hidden="true" />
+                        </button>
+                      ) : (
+                        <button type="button" className="sl-close" onClick={goToSections}>
+                          Choose a section
+                          <ArrowDown size={13} strokeWidth={2.4} aria-hidden="true" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="sl-essay">
+                    {briefing.lede && <p className="rd-lede">{renderInlineMarks(briefing.lede, "sl-lede")}</p>}
+                    {briefing.sections.map((section, i) => (
+                      <section key={i}>
+                        <h4>{renderInlineMarks(section.heading, `sl-h-${i}`)}</h4>
+                        {section.body.map((para, j) => (
+                          <p key={j}>{renderInlineMarks(para, `sl-p-${i}-${j}`)}</p>
+                        ))}
+                        {section.steps && (
+                          <ol>
+                            {section.steps.map((step, j) => (
+                              <li key={j}>
+                                <strong>{renderInlineMarks(step.label, `sl-sl-${i}-${j}`)}</strong>{" "}
+                                {renderInlineMarks(step.body, `sl-sb-${i}-${j}`)}
+                              </li>
+                            ))}
+                          </ol>
+                        )}
+                        {section.demo && (
+                          <ol>
+                            {section.demo.beats.map((b, j) => (
+                              <li key={j}>
+                                <strong>{b.kind}</strong> {renderInlineMarks(b.text, `sl-demo-${i}-${j}`)}
+                              </li>
+                            ))}
+                          </ol>
+                        )}
+                      </section>
+                    ))}
+                  </div>
+                )}
+                {pane === "briefing" && (
+                  <div className="sl-dr-side">
+                    <button type="button" className="sl-close" onClick={() => setPane("beat")}>
+                      Back to the steps
+                    </button>
+                    <button type="button" className="sl-close" onClick={goToSections}>
+                      Choose a section
+                      <ArrowDown size={13} strokeWidth={2.4} aria-hidden="true" />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
+          )}
+        </motion.section>
+      )}
 
-            <div
-              className="sl-dr-view"
-              id="sl-beat-panel"
-              role="tabpanel"
-              tabIndex={-1}
-              data-pane={pane}
-              /*
-               * The panel names the tab it is currently showing. Two tablists
-               * swap the same region, so without this a screen reader can reach
-               * the panel and not be told which of the six tabs it belongs to.
-               */
-              aria-labelledby={
-                pane === "beat"
-                  ? `sl-pane-tab-beat sl-beat-tab-${beat}`
-                  : "sl-pane-tab-briefing"
-              }
-            >
-              {pane === "beat" && current ? (
-                <div>
-                  <span className="sl-label">
-                    Step {beat + 1} of {beats.length}
-                  </span>
-                  <h3 className="sl-dr-title">
-                    {renderInlineMarks(current.label, `sl-dt-${beat}`)}
-                  </h3>
-                  <p className="sl-dr-body">
-                    {renderInlineMarks(current.body, `sl-db-${beat}`)}
-                  </p>
-                </div>
-              ) : (
-                <div className="sl-essay">
-                  {briefing.lede && <p>{renderInlineMarks(briefing.lede, "sl-lede")}</p>}
-                  {briefing.sections.map((section, i) => (
-                    <section key={i}>
-                      <h4>{renderInlineMarks(section.heading, `sl-h-${i}`)}</h4>
-                      {section.body.map((para, j) => (
-                        <p key={j}>{renderInlineMarks(para, `sl-p-${i}-${j}`)}</p>
-                      ))}
-                      {section.steps && (
-                        <ol>
-                          {section.steps.map((step, j) => (
-                            <li key={j}>
-                              <strong>
-                                {renderInlineMarks(step.label, `sl-sl-${i}-${j}`)}
-                              </strong>{" "}
-                              {renderInlineMarks(step.body, `sl-sb-${i}-${j}`)}
-                            </li>
-                          ))}
-                        </ol>
-                      )}
-                      {section.demo && (
-                        <ol>
-                          {section.demo.beats.map((b, j) => (
-                            <li key={j}>
-                              <strong>{b.kind}</strong>{" "}
-                              {renderInlineMarks(b.text, `sl-demo-${i}-${j}`)}
-                            </li>
-                          ))}
-                        </ol>
-                      )}
-                    </section>
-                  ))}
-                </div>
-              )}
-              {/* Only from the essay. On the beat pane it was an action back to
-                  where she already was, sitting in an otherwise empty column. */}
-              {pane === "briefing" && (
-                <div className="sl-dr-side">
-                  <button type="button" className="sl-close" onClick={() => setPane("beat")}>
-                    Back to the steps
-                  </button>
-                </div>
-              )}
-            </div>
+      {/* ------------------------------------------------------- what counts */}
+      <motion.section className="rd-counts" aria-labelledby="rd-counts-title" {...reveal}>
+        <div className="rd-counts-head">
+          <h2 id="rd-counts-title" className="rd-h2">
+            Your own words, <em>every</em> detail.
+          </h2>
+          <p className="rd-method-sub">
+            Three ways to say the same stimulus back. Only one of them is the drill.
+          </p>
+        </div>
+        <div className="rd-counts-grid">
+          <div className="rd-count" data-tone="good">
+            <span className="rd-count-tag">Retelling</span>
+            <p className="rd-count-quote">
+              “The planners want to widen the road, but the last three cities that tried it got a fifth
+              more traffic in two years, so it will probably backfire.”
+            </p>
+            <p className="rd-count-note">Own words. Every detail. Held together as an argument. This is the drill.</p>
           </div>
-        )}
+          <div className="rd-count">
+            <span className="rd-count-tag">Reciting</span>
+            <p className="rd-count-quote">
+              “City planners argue that widening Elm Street will ease congestion. But in the three cities
+              that widened comparable roads…”
+            </p>
+            <p className="rd-count-note">Word for word. Coverage looks perfect and nothing was understood.</p>
+          </div>
+          <div className="rd-count">
+            <span className="rd-count-tag">Listing</span>
+            <p className="rd-count-quote">“Elm Street. Planners. Three cities. A fifth. Two years. Worse.”</p>
+            <p className="rd-count-note">Every fact, no argument. Nothing holds it together.</p>
+          </div>
+        </div>
+      </motion.section>
 
+      {/* --------------------------------------------------------------- slab */}
+      <motion.section className="rd-slab" id="sl-sections" {...reveal}>
         {children}
-      </div>
+      </motion.section>
+
+      {/* -------------------------------------------------------------- close */}
+      <section className="rd-close" aria-label="Start">
+        <div className="rd-close-panel">
+          <p className="rd-close-line">
+            Twenty-five minutes. No pause button. <em>Every detail you can still hold.</em>
+          </p>
+          {closingAction ?? (
+            <button type="button" className="sl-start" onClick={goToSections}>
+              Choose a section
+              <ArrowDown size={16} strokeWidth={2.4} aria-hidden="true" />
+            </button>
+          )}
+        </div>
+      </section>
     </div>
   );
 }

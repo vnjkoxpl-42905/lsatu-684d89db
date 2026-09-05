@@ -41,3 +41,13 @@ Statement/body text across dark worlds runs Spectral 300; micro-labels stay on t
 
 - Negation Station is not in `SEED_ACTIVITIES`, so its diorama only shows once assigned.
 - Progress ornaments (chips, plaques, mileposts, seals…) remain unreachable from the runner; feeding them real verdicts is its own piece of work.
+
+## Read, Recall, Colour door (locked 2026-09-05)
+
+The two RRC doors (`SectionLibraryLaunch`, `SectionLaunch`, both drawn by `SectionLaunchFrame`) are a committed world of their own, mode **Persuade** at the top and **Operate** in the slab. Joshua's brief: a layered, high-end landing page in the spirit of heylemon.ai (cream ground, painted panels, serif display with italic emphasis, mono micro-labels, a dictation demo) with fora.so's depth-plane hero, and bold step 1 to 4 instructions.
+
+- **World:** one dusk. The runner's indigo (`#1a1635`) lifted into a sky over a painted meadow, cream paper (`#f6f3ea`) beneath. Display is Fraunces at opsz 144; body Inter; labels IBM Plex Mono. Marigold marks the Colour step, emerald marks a carried detail, nothing else is coloured.
+- **Hero:** `MeadowScene` paints five depth planes generatively in SVG (seeded ridges, seeded grass blades, feTurbulence grain) so no raster ships; each plane rides `useScroll` at its own rate and the foreground grass crosses in front of the demo card. The headline blurs and recedes on the same scroll value.
+- **Signature moment:** `RecallDemo`, a looping performance of the method on a synthetic stimulus, labelled as such, whose text literally dissolves at the Recall step.
+- **Steps:** four cards, each with a small drawn scene, doubling as the ARIA tablist the tests already contract (`sl-beat`, `sl-beat-tab-N`, `sl-beat-panel`). The full briefing is the second tab of the drawer.
+- **Tokens:** scoped to `.sl` as `--rd-*`. The design detector reports them as outside DESIGN.md; that is the sanctioned-world exception above, not drift.

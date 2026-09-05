@@ -106,3 +106,4 @@ scripts/__pycache__/
 # Never pushed: these hold verbatim transcripts, including speech captured in
 # the room by accident, which is exactly what some of them exist to delete.
 .scratch/
+.impeccable/review/

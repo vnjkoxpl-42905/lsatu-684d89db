@@ -129,7 +129,13 @@ export function SectionLaunch({
       primaryAction={
         <button type="button" className="sl-start" onClick={onStart}>
           Start the section
-          <ArrowRight size={16} strokeWidth={2.25} style={{ marginLeft: 8 }} />
+          <ArrowRight size={16} strokeWidth={2.4} aria-hidden="true" />
+        </button>
+      }
+      closingAction={
+        <button type="button" className="sl-start" onClick={onStart}>
+          Start now
+          <ArrowRight size={16} strokeWidth={2.4} aria-hidden="true" />
         </button>
       }
       /* Warned, not refused: Joshua's call, 2026-09-04. She is told what the
