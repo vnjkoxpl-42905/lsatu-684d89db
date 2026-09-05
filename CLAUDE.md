@@ -75,7 +75,7 @@ No Prettier. Formatting is ESLint-only.
 - **Practice surfaces** — Drill and Wrong Answer Journal (WAJ) are real product surfaces, not launchers. Core logic in `src/lib/`: `adaptiveEngine`, `drillIntelligence`, `achievementEngine`, `gamification`, `questionLoader`, `streakSystem`, `wajService`.
 - **Admin** — `AdminDashboard` + `admin-manage-users` edge function. Must be desktop AND mobile responsive. Needs granular per-feature toggle control.
 - **UI primitives** — shadcn/ui (Radix + `class-variance-authority`) in `src/components/ui/`. Icons from `lucide-react` and `@tabler/icons-react`. Framer Motion for animation. Spline for 3D.
-- **Styling** — Tailwind 3.4 with custom design tokens (bronze accent, glass blur, glow effects) in `tailwind.config.ts`. Prefer tokens over ad-hoc hex values.
+- **Styling** — Tailwind 3.4 over HSL custom properties in `src/index.css`, surfaced as tokens in `tailwind.config.ts`. `DESIGN.md` is the visual authority; `.impeccable/design.json` is its machine-readable sidecar. Prefer tokens over ad-hoc hex values, and never add a token name whose CSS variable is not defined - three such names (`accent-bronze`, `accent-warm`, `glow-bronze`) shipped broken for five months and silently removed the focus ring from every shared Button.
 
 ## Conventions
 
@@ -122,3 +122,17 @@ Any change to `src/components/` or `src/pages/` is not "done" until it has been 
 ## Skill / agent / command vault
 
 The full skill/agent/command vault lives in the brain root at `~/ai-os/skills/`, `~/ai-os/agents/`, `~/ai-os/commands/` (split into `claude/` and `codex/` subtrees, indexed by `~/ai-os/skills/INDEX.md`). It is inert storage — nothing here auto-loads. To use a vault skill in this project, symlink it into `.claude/skills/` (Codex: `.agents/skills/`). When you create a new skill/agent/command, save it to BOTH this project's `.claude/<kind>/` and the vault, so the vault stays the complete catalog.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on `vnjkoxpl-42905/lsatu-684d89db`, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical roles, unchanged: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Multi-context: `CONTEXT-MAP.md` points at eight per-context glossaries; ADRs are all at the root. See `docs/agents/domain.md`.

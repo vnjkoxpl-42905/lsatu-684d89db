@@ -95,3 +95,17 @@ This checkout currently has Claude settings and hooks under `.claude/`, but no `
 - Vitest specs exist (80 `src/**/*.test.ts(x)` files as of 2026-07-16); run with `npm run test`. Playwright is wired with one e2e spec (`e2e/smoke.spec.ts`), run via `npm run test:e2e`.
 - No Prettier config and no CI workflows.
 - `README.md` is still minimal.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on `vnjkoxpl-42905/lsatu-684d89db`, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical roles, unchanged: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Multi-context: `CONTEXT-MAP.md` points at eight per-context glossaries; ADRs are all at the root. See `docs/agents/domain.md`.

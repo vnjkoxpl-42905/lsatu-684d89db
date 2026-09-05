@@ -88,3 +88,23 @@ Lab's own question table has no record of them:
 - `practiceTest.bank.test.ts` asserts every sitting has a full-length RC section.
   That is the assertion that fails first if `recovered/questions.ndjson` ever goes
   missing and someone rebuilds the bank.
+
+## The three that stay missing, and why (verified against LSAT Lab, 2026-08-27)
+
+All three are absent from LSAT Lab's own bank, not lost by our import. Each was
+checked against the live authenticated API rather than inferred, and the three
+fail in three different ways:
+
+| Question | Evidence | Reading |
+|---|---|---|
+| PT119 S1 Q9 | ids run 6560 (pos 8), **6561 → HTTP 404**, 6562 (pos 10) | An id was allocated and the record later removed. A tombstone: it existed once. |
+| PT136 S3 Q15 | ids 2911 (pos 14) and 2912 (pos 16) are **consecutive** | No id was ever allocated. Their bank simply skips position 15. |
+| PT138 S4 Q19 | `/api/questions/filter?type=LR` returns sec4 = 24 questions, max position 25, missing 19 | Absent upstream. Our transcription did not drop it; there was nothing to drop. |
+
+For contrast, PT138's other two LR sections come back whole from the same call
+(sec2 26 of 26, sec3 25 of 25), which is what makes the sec4 hole a fact about
+their bank rather than about the query.
+
+None of the three is recoverable by any amount of scraping, and none costs an
+offered test its completeness: PT119 S1 and PT136 S3 top out at 26 of a real 27,
+and PT138 S4 at 24 of 25. Do not re-open this without new evidence from LSAT Lab.
