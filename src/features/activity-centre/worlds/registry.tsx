@@ -151,15 +151,21 @@ export interface CardIdentity {
 
 /**
  * Read, Recall, Colour wears one identity across every row it owns: the door
- * she picks a section from, and each captured section behind it. Their titles
- * name the section ("Read, Recall, Colour \u00b7 PT105 Section 2"), so they are
- * matched by prefix rather than listed. A new section is built roughly whenever
- * the source publishes more recordings, and a card left unlabelled reads as a
- * bug.
+ * she picks a section from, and each captured section behind it. One drill, one
+ * card, one label.
  *
- * There used to be a second entry here for the base Activity, a single stimulus
- * worked from memory. It was removed with the Activity itself: the drill runs
- * as a whole section now, and one drill gets one card.
+ * Matched by title prefix rather than listed, because the sections are titled
+ * for the section they are ("Read, Recall, Colour \u00b7 PT105 Section 2") and a
+ * new one is built roughly whenever the source publishes more recordings. A
+ * card left unlabelled reads as a bug rather than as a different kind of thing.
+ *
+ * The prefix has no trailing hyphen and that is load-bearing. The door is
+ * titled plain "Read, Recall, Colour", so `read-recall-colour-` would miss it
+ * and leave the one card a student is actually given as the unlabelled row.
+ * There used to be a second entry here, keyed on that exact slug, for the base
+ * Activity; it was removed with the Activity itself, and it had been holding
+ * the door up by accident while telling her the wrong thing about it ("a
+ * stimulus, from memory", on a page that starts a whole section).
  */
 const SECTION_IDENTITY: CardIdentity = {
   label: "Out Loud",
@@ -171,7 +177,7 @@ export function cardIdentityFor(title: string | null | undefined): CardIdentity 
   const world = worldForTitle(title);
   if (world) return { label: world.label, scope: world.scope, accent: world.accent };
   const slug = slugFromTitle(title ?? "");
-  return slug.startsWith("read-recall-colour-") ? SECTION_IDENTITY : null;
+  return slug.startsWith("read-recall-colour") ? SECTION_IDENTITY : null;
 }
 
 const WORLDS: WorldBinding[] = [

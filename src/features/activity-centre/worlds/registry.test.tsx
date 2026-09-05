@@ -16,7 +16,7 @@ import { SEED_ACTIVITIES } from "../content";
  * Activity should be excluded automatically, not remembered.
  */
 const WORLDED = SEED_ACTIVITIES.filter((a) => a.item_format !== "spoken-recall");
-import { WORLD_BINDINGS, slugFromTitle, worldForTitle } from "./registry";
+import { WORLD_BINDINGS, cardIdentityFor, slugFromTitle, worldForTitle } from "./registry";
 
 // Eight worlds were built, one per Activity, and none was reachable: the only
 // importer was the dev-only Activity Lab, so every Activity rendered the same
@@ -119,5 +119,43 @@ describe("world registry", () => {
     for (const w of WORLD_BINDINGS) {
       expect(() => w.render({ item: unreadable, answered: false })).not.toThrow();
     }
+  });
+});
+
+/**
+ * The card label on the rows that have no world.
+ *
+ * Read, Recall, Colour is matched by title prefix, and the titles are not
+ * uniform: the door is plain "Read, Recall, Colour" and the sections carry the
+ * section they are. This caught a real one. Removing the base Activity took
+ * with it a lookup keyed on the exact slug `read-recall-colour`, and the prefix
+ * left behind had a trailing hyphen, so the door -- the one card a student is
+ * ever given for this drill -- came back unlabelled while every section it
+ * opens onto stayed fine.
+ */
+describe("the card identity of a drill with no world", () => {
+  it.each([
+    ["the door", "Read, Recall, Colour"],
+    ["a section", "Read, Recall, Colour \u00b7 PT105 Section 2"],
+    ["a section named another way", "Read, Recall, Colour \u00b7 PT1 Section 3"],
+  ])("labels %s", (_what, title) => {
+    const identity = cardIdentityFor(title);
+    expect(identity, `${title} came back unlabelled`).not.toBeNull();
+    expect(identity!.label).toBe("Out Loud");
+    expect(identity!.scope.trim()).not.toBe("");
+  });
+
+  it("gives the door and its sections the same identity, because they are one drill", () => {
+    expect(cardIdentityFor("Read, Recall, Colour")).toEqual(
+      cardIdentityFor("Read, Recall, Colour \u00b7 PT105 Section 2"),
+    );
+  });
+
+  it("leaves a worlded Activity wearing its world, and labels nothing else", () => {
+    // The world branch runs first, so this prefix never reaches an Activity
+    // that has a room of its own.
+    expect(cardIdentityFor("Vocab Rehab")?.label).toBe("The Specimen Lab");
+    expect(cardIdentityFor("Something Nobody Built")).toBeNull();
+    expect(cardIdentityFor(null)).toBeNull();
   });
 });
