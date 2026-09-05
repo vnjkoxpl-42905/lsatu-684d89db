@@ -1,96 +1,106 @@
 # Product
 
+<!-- impeccable:product-schema 1 -->
+
 ## Scope
 
-LSAT U — the full application. This file covers all surfaces: foyer, classroom, messenger/inbox, drills, admin workspace, and the bootcamp. Each surface may extend the global principles with specific guidance in dedicated sub-sections below.
+App-wide only. Every statement in this file must be true of all of LSAT U.
 
-The bootcamp's visual tokens remain governed by `DESIGN.md` (`/bootcamp/intro-to-lr/*`, `src/bootcamps/main-conclusion/`).
+A rule that binds one surface does not belong here. It goes in that surface's brief under `.impeccable/surfaces/`. This split is deliberate and is the correction to a real failure: the previous PRODUCT.md was written on 2026-05-02 for the Intro to LR bootcamp alone, then widened app-wide on 2026-05-08 in a commit whose stated purpose was adding messenger principles. Bootcamp anti-references silently became binding on the drills, and stayed binding for four months. A one-surface rule written into an app-wide file has no boundary that can hold it. Keeping the file app-wide only removes the mechanism.
 
-## Register
+The repo already carries eight bounded contexts with their own glossaries (`CONTEXT-MAP.md`). Surface-specific product truth follows those boundaries, not this file.
 
-product
+## Platform
+
+web
 
 ## Users
 
-Two roles, one coaching relationship.
+**Primary: Aspiring Attorneys clients.** Students who are paying Joshua for one-to-one LSAT coaching. They have consultations, scheduled sessions, transcripts, assigned work, and a real back-and-forth with him. The platform is where their coaching lives between sessions. They arrive already knowing who their coach is, and design decisions are made for them first.
 
-**Students (design north):** Paying clients in Joshua's Aspiring Attorneys program, or independent LSAT learners who arrived without prior coaching context. They are preparing seriously for the LSAT. On any given session they might be working through a bootcamp module, drilling weaknesses, reviewing an assignment, or sending Joshua a question. They expect every minute to be purposeful. They use the product on desktop and mobile, often in focused study sessions.
+**Secondary: independent self-study learners.** Students using the platform without an active coaching relationship. They are served by the same surfaces but are not the audience a tradeoff is resolved in favour of.
 
-**Joshua (admin/instructor):** The sole instructor. He manages student access, sends assignments, publishes weekly plans, and maintains real back-and-forth with students through the messenger. The admin surface must be fully responsive — Joshua works from any device, at any hour.
+**Operator: Joshua.** The sole instructor and the product, voice, and content authority. He assigns work, publishes material, reviews student activity, and answers messages. He works from any device at any hour, so operator surfaces are as responsive as student surfaces.
 
 ## Product Purpose
 
-LSAT U is the operational platform for Joshua's coaching practice. It delivers the method, tracks the work, and keeps the coaching relationship alive between sessions.
+LSAT U is the operational platform for Joshua's coaching practice. It delivers the method, holds the student's work, and keeps the coaching relationship live between sessions.
 
-For students: a focused learning environment that compounds toward LSAT fluency — bootcamp modules, adaptive drills, assignments, and direct access to ask Joshua.
+For a student: one place that knows what they have done, what they got wrong, and what to do next.
 
-For Joshua: a workspace to manage students, assign and publish content, and stay in real communication without losing the one-on-one feel that defines his coaching style.
+For Joshua: one workspace to assign, publish, review, and reply without losing the one-to-one feel that his practice is sold on.
 
-Success looks like a student who logs in daily, knows exactly what to do next, and feels the presence of a real coach even when Joshua is not in the room.
+Success is a student who logs in without being chased, knows the next action without asking, and can point to what improved.
 
-## Brand Personality
+## Positioning
 
-**Confident, considered, alive — and personal.**
+**A real coach is in it.**
 
-The app speaks like a coach who built the system from scratch. No hedging, no softening, no "you might consider." Instructions are direct because the method is direct. The product never softens an instruction into a suggestion.
+The claim a competing product cannot truthfully copy is that a named human being is on the other side of the platform, has met this student, and has looked at this student's work. Assignments come from him. Messages are answered by him. The material was authored by him. Nothing in the product should be built in a way that would still be true if the coach were removed, and nothing should imply a coach is present where one is not.
 
-**Voice update (warm coach):** Student-facing copy across bootcamp lessons, drills, and coaching moments follows the warm-coach voice: collaborative second person ("let's," "you"), short calm sentences, struggle normalized, hard moments closed with a small lift. Directness still governs structure and instruction; warmth governs tone. The "no hedging" line above is about the method's confidence, not coldness. Route all student-facing copy through the vault's teaching-voice note before shipping.
+## Operating Context
 
-**Messenger-specific voice:** one-on-one, hi-tech, interactive, engaging. The inbox is the closest thing to being in the room with Joshua. It should feel like a real conversation — not a support ticket, not a legal file. Fast enough to feel like messaging, structured enough to feel like coaching.
+The platform sits inside a coaching practice that runs partly outside it. Future work must not assume the app is the whole system.
 
-## Anti-references
+- Coaching sessions happen on video and are transcribed. Session records, notes, and recaps originate outside the app.
+- Booking and payment run through their own flow (packages, booking passes, a public booking microsite, single sessions).
+- Students also practice on third-party platforms. Work done elsewhere is real work, and the app is not the only record of a student's effort.
+- Joshua authors material ahead of time and assigns it, rather than the system generating it on demand.
+- Students use both desktop and mobile, in focused study blocks and in short check-ins.
 
-**App-wide:**
-- Generic LSAT prep platforms: 7Sage, Khan Academy LSAT, LSAT Demon, Blueprint. Card-grid hubs, hero-metric dashboards, gamification masking thin content.
-- SaaS-cream startup aesthetic: pastels, gradient blobs, big-number stats tiles, "Get started in seconds" tone.
-- Cookie-cutter LMS shells: linear "Lesson 1.1" pacing, generic progress bars, no coaching voice.
-- Duolingo-shaped gamification: streak flames, XP bars, trophy popovers. The product does not reward attendance.
+## Capabilities and Constraints
 
-**Messenger-specific:**
-- Legal client portal (too cold): formal, transactional, case-number adjacent. Every interaction feels like filing a document.
-- Intercom/support chat (too service-desk): "How can I help you today?" patterns, ticket threads, canned responses, SLA framing.
-- Slack/team chat (too busy): channels, reactions, status dots, workplace overhead. This is a coaching thread, not a team workspace.
+Confirmed surfaces: authentication and onboarding, the foyer, the classroom, guided drills and the question bank, full-passage Reading Comprehension, the Activity Centre, the Testing Centre and practice test runs, the wrong answer journal, saved sets, analytics and history, scheduling and booking, the inbox, the bootcamps, and an admin and teacher workspace.
 
-**Drills / Labs-specific:**
-- The multiple-choice quiz: a bare stem, five options, a right/wrong mark, a score. No coaching, no reason the answer is right, no takeaway that transfers to the next question. A drill that could have been a Google Form has failed.
-- Blends into the drill page: a lab that reuses default app primitives with no identity of its own, so it reads like a generic list row instead of a built surface. This is the current ConclusionTypeLab problem.
-- The score screen as ending: "you got X/Y" with no per-item insight, no view of which skill slipped, nothing concrete to do next.
+Technical constraints:
 
-## Design Principles
+- React, TypeScript, Vite, Tailwind, shadcn/ui and Radix primitives, React Router, TanStack Query, Supabase.
+- One motion library (`framer-motion`). One primary icon library (`lucide-react`). New work composes existing primitives before introducing a new dependency.
+- Deployment is not a side effect of pushing to `main`. Production at lsatprep.study requires an explicit publish step.
+- Database migrations in `supabase/migrations/` are an archive, not an applied ledger. Production schema changes go through their own path, and UI must not assume a table exists because a migration file does.
 
-**App-wide:**
+Terminology is not defined here. It is defined per bounded context and mapped by `CONTEXT-MAP.md`. A word can carry different weight in different contexts, and collapsing them has already caused real bugs (a **flag** is not a **wrong answer**; **Set** and **Position** were separated for this reason).
 
-1. **Compute the next step; do not present a grid.** Every hub leads with one computed CTA. The student should never arrive at a screen and wonder what to do. Point, do not present.
-2. **Truthfulness over performance.** Every progress claim, status badge, and CTA traces to real data. Honest empty states beat fabricated content. If Joshua hasn't assigned anything, say so plainly and stop there.
-3. **Coach voice, not industry voice.** The product speaks like Joshua, not like an LSAT test-prep editor. "The argument" not "stimulus." No spec language in student-visible copy. No em dashes in computed or utility copy.
-4. **Personal at scale.** Even when Joshua is not responding in real time, the product should feel like a one-on-one relationship. Assignments, feedback, classroom content, and inbox messages all carry the same direct, individual tone.
-5. **Reuse the system; do not fork.** One motion library (framer-motion v12), one icon library (lucide-react), the app-wide neutral dark design system for all non-bootcamp surfaces. New components compose existing primitives first.
+## Brand Commitments
 
-**Messenger-specific:**
+- **Name:** LSAT U, operating under Aspiring Attorneys. Production domain lsatprep.study.
+- **No em-dashes in anything a student or prospect reads.** Joshua does not type them. A stray em-dash reads as machine-written and costs trust. This binds computed copy, utility copy, and authored copy alike.
+- **Voice: undecided, deliberately.** The previous record carried a "coach voice, not industry voice" principle and two named voice registers (R1 procedural, R2 metaphor-led). Both were removed on 2026-09-05 by Joshua's decision, on the grounds that they were not stated clearly enough to be usable. They are being redone. Until a replacement is written, no work should cite the old voice rules, and no work should invent a voice rule to fill the gap. Route student-facing copy to Joshua.
 
-6. **Between email and instant messaging.** The inbox is not a support ticket queue and not a live chat widget. Messages may be read hours later or replied to in seconds. The interface handles both without imposing urgency where there is none, or friction where speed is needed.
-7. **One thread, one relationship.** Each student has exactly one thread with Joshua. The inbox is not a channel list. It is a record of a coaching relationship. Design for depth in a single thread, not breadth across many.
-8. **Linear UI discipline meets iMessage warmth.** Crisp, purposeful, zero noise — but human. Every element earns its place by either carrying information or making the conversation feel real. Nothing is decorative for its own sake; nothing is so clinical it loses the person behind the message.
+## Evidence on Hand
 
-**Bootcamp-specific (preserved):**
+Real:
 
-9. **Attempt before reveal.** Passive reading is the enemy. Every lesson runs through the phase machine: briefing, demo, attempt, reveal, coach, checkpoint, cleared. Continue is gated until the student submits. Reveal copy references the student's actual attempt, not a generic answer.
-10. **Compute the next step; do not present a grid.** Module hubs lead with one computed CTA. Card grids are how generic LSAT prep apps shrug at the student; this product points.
+- A live production deployment at lsatprep.study with real enrolled students.
+- Authored LSAT curriculum: bootcamp modules, guided drill banks, RC passages with per-question explanations, and practice test content.
+- Real student work in the database: attempts, sessions, flags, wrong answers, assignments.
+- A real named instructor with a real coaching practice behind the product.
 
-**Drills / Labs-specific:**
+Absent, and never to be fabricated:
 
-11. **The reveal teaches the weakness, not just the answer.** (the primary mandate) Naming the correct answer is the floor. The payoff is the predictable weakness that answer's category carries, tied to what the student actually picked. A student who finishes a Conclusion Type set should leave with a transferable reflex ("a recommendation conclusion is attacked on whether the action actually solves the stated problem"), not a tally. Reveal copy speaks to their pick, not a generic key.
-12. **First Sentence vs Rebuttal is the craft bar.** Every lab rises to the `FirstSentenceVsRebuttalLab` standard: a distinct built identity, in-the-moment coaching feedback on a wrong pick, a saved session, and an end-of-set review that shows which skill slipped (per-component or per-type miss tracking) with an answer key to revisit any item. A single-skill classify drill keeps its single attempt per item but earns that same depth of reveal and review. It is not exempt from the bar because it is simpler.
-13. **A lab is a built surface, not a list row.** Each drill carries its own visual signature within the bootcamp tokens. It must not read as a default card or blend into the drill index. The index lists labs; a lab, once entered, stands on its own.
-14. **Calibration, not gatekeeping.** (echoes teach-first-calibrate-after) A drill measures after teaching, never gates before it. The verdict frames a miss as the next thing to work, warmly. `DrillVerdict`'s "Re-run open" framing, never "Failed," never a grade.
+- No testimonials, case studies, press coverage, score-improvement statistics, or named customer references exist in this repo. Do not write them into any surface.
+- No pricing, licensing, or availability claims are established here.
+- No third-party or copyright framing anywhere in student-facing copy.
+
+## Product Principles
+
+1. **Truthfulness over performance.** Every number, badge, streak, status, and progress claim traces to real stored data. An honest empty state beats invented content. If nothing has been assigned, the product says so and stops. This is the one principle carried forward unchanged from the previous record, and it is the hardest of the five.
+
+2. **Compute the next step; do not present a grid.** A student arriving at a surface should be told what to do, not shown a menu and left to choose. A card grid is what a product offers when it does not know the student.
+
+3. **Attempt before explanation.** The student commits to an answer before the product explains anything. Passive reading does not build the skill. Reveal copy addresses what the student actually chose, not a generic key.
+
+4. **A measurement is never a gate.** Drills and checks measure after teaching. A miss is framed as the next thing to work on, not a grade or a failure. Nothing in the product rewards attendance rather than work.
+
+5. **The coach is not simulated.** Where the product speaks for Joshua, it is because Joshua said it. Where he has not, the product does not fill the silence with something that sounds like him. This is the operational form of the positioning claim.
 
 ## Accessibility & Inclusion
 
-WCAG 2.1 AA is the floor across all surfaces.
+**WCAG 2.1 AA is a binding floor across every surface.** It is a defect gate, not an aspiration. A finding below the AA bar is a bug and is fixed, not argued.
 
-- Visible focus rings on every interactive element.
-- `prefers-reduced-motion` respected throughout. Motion is decorative, never load-bearing.
-- Touch targets meet 44×44px minimum.
-- Screen reader announcements on unread counts, message send confirmation, and realtime inbox updates.
-- Body text contrast is AAA-aspirational on extended reading surfaces (bootcamp lessons, conversation threads).
-- Dark theme is the default across all non-bootcamp surfaces. Light mode is available via ThemeToggle and toggled per-user.
+- Text contrast is at least 4.5:1 against its actual rendered background, and at least 3:1 for large text and for the visual boundaries of interactive controls. Students read dense argument text on this platform for hours at a time.
+- Every interactive element has a visible focus indicator.
+- `prefers-reduced-motion` is respected. Motion is never load-bearing for understanding or for completing a task.
+- Interactive targets meet the 44x44px minimum, and meet it by being that size rather than by a side effect such as wrapped text.
+- Screen readers are informed of state that changes without a page load: unread counts, send confirmations, and live updates.
+- Contrast is verified against what actually renders in the browser, not against the token values a theme is assumed to apply. The theme layer has shipped a light card on a near-black page while the token file read as correct.

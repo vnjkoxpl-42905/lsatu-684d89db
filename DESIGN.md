@@ -1,76 +1,89 @@
 ---
-name: LSAT U
-description: A premium coaching platform for serious LSAT preparation, documented as it ships today.
+name: LSAT Academy
+description: Two registers under one roof - a dark marble hall at the door, a quiet neutral workroom inside.
 colors:
-  # ── App shell (dark-first HSL token system; hex here is the resolved dark value) ──
-  shell-background: "#0a0a0a"
-  shell-foreground: "#fafafa"
-  shell-card: "#121212"
-  shell-secondary: "#262626"
-  shell-border: "#262626"
-  shell-muted-foreground: "#a3a3a3"
-  shell-primary: "#fafafa"
-  accent-bronze: "#b06a3e"
-  status-success: "#21b659"
+  # ── The Hall (unauthenticated register; dark ground) ──
+  hall-night: "#070606"
+  hall-night-raised: "#0a0908"
+  hall-marble: "#eae5da"
+  hall-marble-secondary: "#a6a093"
+  hall-marble-muted: "#6e695e"
+  hall-bronze: "#c6a467"
+  hall-bronze-bright: "#e8cf96"
+  hall-bronze-deep: "#8a6f3e"
+  hall-cyan: "#8ad8e2"
+  hall-cyan-bright: "#c3eef4"
+  # ── The Workroom (authenticated register; light is the shipped default) ──
+  workroom-page: "#fcfcfc"
+  workroom-card: "#ffffff"
+  workroom-raised: "#f7f7f7"
+  workroom-fill: "#f2f2f2"
+  workroom-ink: "#121212"
+  workroom-ink-muted: "#737373"
+  workroom-ink-faint: "#8c8c8c"
+  workroom-hairline: "#e0e0e0"
+  workroom-field: "#e6e6e6"
+  # ── The Workroom, dark alternate (opt-in via the theme toggle) ──
+  workroom-night-page: "#0a0a0a"
+  workroom-night-card: "#121212"
+  workroom-night-raised: "#1a1a1a"
+  workroom-night-ink: "#fafafa"
+  workroom-night-ink-muted: "#a3a3a3"
+  workroom-night-hairline: "#262626"
+  # ── Meaning (identical in both themes; semantic only) ──
+  state-correct: "#10b77f"
+  state-incorrect: "#f43e5c"
+  state-warn: "#f59f0a"
+  status-success: "#21c45d"
   status-warning: "#f59f0a"
-  status-destructive: "#de3b3b"
-  state-correct: "#0fb781"
-  state-incorrect: "#f53d5c"
-  # ── Drill zone (graphite near-monochrome, light) ──
-  drill-page: "#fafafc"
-  drill-card: "#ffffff"
-  drill-ink: "#1d1d1f"
-  drill-muted: "#86868b"
-  drill-border: "#e5e5ea"
-  drill-correct: "#2f9e64"
-  drill-wrong: "#e5484d"
-  drill-warning: "#d9881f"
-  # ── Inbox island (warm paper, light) ──
-  inbox-paper: "#efe4d3"
-  inbox-paper-bright: "#f7f3ea"
-  inbox-ink: "#151a24"
-  inbox-green: "#2f6a4f"
-  inbox-crimson: "#a14f43"
-  inbox-gold: "#f4d995"
-  # ── Mainhub island (Apple-slate, light) ──
-  mainhub-surface: "#fbfcff"
-  mainhub-slate-border: "#e2e8f0"
+  status-destructive: "#dc2828"
+  # ── Teacher workspace (theme-independent, light ground only) ──
+  teacher-accent: "#c7841f"
+  teacher-accent-hover: "#af7318"
+  teacher-accent-strong: "#895910"
+  teacher-accent-soft: "#e0a648"
 typography:
-  shell-body:
+  body:
+    fontFamily: "Lexend, Outfit, ui-sans-serif, system-ui, -apple-system, sans-serif"
+    fontSize: "14px"
+    fontWeight: 400
+    lineHeight: 1.6
+    fontFeature: "'rlig' 1, 'calt' 1, 'cv11' 1"
+  title:
+    fontFamily: "Lexend, Outfit, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "24px"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "-0.025em"
+  label:
+    fontFamily: "Lexend, Outfit, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "14px"
+    fontWeight: 500
+    lineHeight: 1.4
+  question:
     fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, sans-serif"
     fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.6
-    fontFeature: "'rlig' 1, 'calt' 1, 'cv11' 1"
-  drill-title:
-    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
-    fontSize: "24px"
-    fontWeight: 650
-    lineHeight: 1.12
-  drill-stimulus:
-    fontFamily: "Fraunces, ui-serif, Georgia, serif"
-    fontSize: "17px"
-    fontWeight: 400
-    lineHeight: 1.7
-    fontVariationSettings: "'opsz' 14"
-    fontOpticalSizing: "none"
-    maxWidth: "52ch"
-  drill-question:
-    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif"
-    fontSize: "16px"
-    fontWeight: 400
-    lineHeight: 1.6
-  label:
-    fontFamily: "Outfit, ui-sans-serif, system-ui, sans-serif"
+  hall-display:
+    fontFamily: "Fraunces, 'Iowan Old Style', 'Times New Roman', serif"
+    fontWeight: 380
+    lineHeight: 1.1
+    letterSpacing: "-0.015em"
+  hall-inscription:
+    fontFamily: "Cinzel, 'Trajan Pro', 'Times New Roman', serif"
+    fontWeight: 500
+    letterSpacing: "0.05em"
+  hall-mono:
+    fontFamily: "'IBM Plex Mono', ui-monospace, 'SF Mono', monospace"
     fontSize: "13px"
-    fontWeight: 700
+    fontWeight: 400
     letterSpacing: "0.04em"
 rounded:
-  sm: "calc(0.5rem - 4px)"
-  md: "calc(0.5rem - 2px)"
-  lg: "0.5rem"
-  drill-card: "20px"
-  drill-inset: "14px"
+  sm: "4px"
+  md: "6px"
+  lg: "8px"
+  hall: "2px"
   pill: "9999px"
 spacing:
   xs: "4px"
@@ -80,167 +93,271 @@ spacing:
   xl: "32px"
 components:
   button-primary:
-    backgroundColor: "{colors.shell-primary}"
-    textColor: "{colors.shell-background}"
+    backgroundColor: "{colors.workroom-ink}"
+    textColor: "{colors.workroom-page}"
     rounded: "{rounded.md}"
     padding: "8px 16px"
-  button-primary-drill:
-    backgroundColor: "{colors.drill-ink}"
-    textColor: "#ffffff"
-    rounded: "{rounded.pill}"
-    padding: "12px 24px"
     height: "44px"
-  card-shell:
-    backgroundColor: "{colors.shell-card}"
-    textColor: "{colors.shell-foreground}"
+  button-primary-hover:
+    backgroundColor: "{colors.workroom-ink}"
+    textColor: "{colors.workroom-page}"
+  button-outline:
+    backgroundColor: "{colors.workroom-page}"
+    textColor: "{colors.workroom-ink}"
+    rounded: "{rounded.md}"
+    padding: "8px 16px"
+    height: "44px"
+  button-ghost:
+    backgroundColor: "transparent"
+    textColor: "{colors.workroom-ink}"
+    rounded: "{rounded.md}"
+    padding: "8px 16px"
+    height: "44px"
+  card:
+    backgroundColor: "{colors.workroom-card}"
+    textColor: "{colors.workroom-ink}"
     rounded: "{rounded.lg}"
-  card-drill-stimulus:
-    backgroundColor: "{colors.drill-card}"
-    textColor: "{colors.drill-ink}"
-    rounded: "{rounded.drill-card}"
-    padding: "32px"
+    padding: "24px"
+  input:
+    backgroundColor: "{colors.workroom-page}"
+    textColor: "{colors.workroom-ink}"
+    rounded: "{rounded.md}"
+    padding: "8px 12px"
+    height: "44px"
+  hall-cta:
+    backgroundColor: "transparent"
+    textColor: "{colors.hall-marble}"
+    rounded: "{rounded.hall}"
+    padding: "0 38px"
+    height: "60px"
 ---
 
-# Design System: LSAT U
+# Design System: LSAT Academy
 
-## 1. Overview
+## Overview
 
-**Creative North Star: "The Coach's Workspace, in Four Rooms"**
+**Creative North Star: "LSAT Academy"**
 
-LSAT U is documented here as it actually ships, not as an idealized single system. The product is one app that currently speaks in four distinct but related visual dialects, each tuned to its room. The chassis (sidebar, foyer, admin, settings) is a disciplined **dark-first graphite** system built on HSL design tokens with a bronze ember of an accent. From that chassis, three lighter rooms open off: the **drill zone** (graphite near-monochrome on near-white, Apple-HIG restraint, color reserved for state), the **inbox** (a warm paper-and-ink editorial surface, the most human room in the app), and the **mainhub island** (an Apple-slate light card stack). The bootcamps then run their own fully scoped worlds (Main Conclusion warm-serif, Fallacy/Flaw verdigris-and-cake, Abstract brutalist) behind `.mc-bootcamp` / `.ff-bootcamp` / `.topic-abstract` wrappers.
+One institution with two registers, and the seam between them is deliberate.
 
-The through-line is restraint and truthfulness, never decoration. Color carries meaning (correct, wrong, warning, current selection), never identity. Motion conveys state, never theatre. The system explicitly rejects the things its `PRODUCT.md` names as anti-references: SaaS-cream pastels and gradient blobs, Duolingo streak-flame gamification, card-grid hubs that present options instead of computing the next step, and support-desk chat patterns in the messenger.
+**The Hall** is the door. Unauthenticated, dark, and material: near-black ground, warm marble text, a bronze that carries the light, and a serif that behaves like carved lettering. Its own source calls it a museum nocturne, carved marble filmed in darkness, read by modern instruments. Its job is to make a prospective student feel they are entering somewhere, not signing up for something. It is the only place in the product where atmosphere outranks throughput.
 
-The honest tension in this spec, surfaced rather than hidden: the four rooms do not yet share one token vocabulary. The shell is tokenized; the inbox and mainhub are hand-painted in inline hex. A user crossing room to room can feel the seams. This document records that truth so a future convergence can be deliberate.
+**The Workroom** is everything past sign-in. Light, neutral, and quiet, because a student sits inside it for an hour reading dense argument text and the interface must not compete with the passage. There is no warmth here and that is the decision, not an oversight: warm accents need a dark ground to read, and on the Workroom's white they collapse. The Hall's bronze measures 8.58:1 on its own night and 2.30:1 on the Workroom's page. The two registers do not share a palette because they cannot.
+
+What they do share is restraint about meaning. In both, colour is a signal. Green, red and amber say something happened. Nothing is coloured to be warm, to look premium, or to fill a space. Depth comes from hairlines and background tone rather than shadow, and hierarchy comes from size, weight and position rather than hue.
+
+Inside the Workroom, individual rooms may commit fully to their own world. The eight Activity Centre worlds, the scoped bootcamps and the inbox each carry a painted identity behind a wrapper class. That is sanctioned and it is what an academy is: neutral corridors, characterful rooms. The corridor never takes on a room's paint.
 
 **Key Characteristics:**
-- Dark-first shell, light task rooms; depth via near-black layering and soft shadow, not glow.
-- Color is semantic, not brand. The only "brand color" is a bronze ember used sparingly.
-- One accent rule per room; no room runs a saturated identity color across its surface.
-- Heavy use of scoped CSS-variable systems (`.mc-bootcamp`, `.ff-bootcamp`, `.topic-abstract`) so bootcamp worlds never leak into the chassis.
-- Attempt-state colors are deliberately named apart from system-status colors so a self-report can never read as a judgment.
+- Two registers, one institution: a dark marble Hall at the door, a light neutral Workroom inside.
+- Colour means something or it is absent.
+- Flat surfaces, hairline separation, no drop shadows.
+- Precise and quiet controls that stay out of the reader's way.
+- Rooms may be worlds; corridors never are.
 
-## 2. Colors
+## Colors
 
-The palette is best read as one tokenized chassis plus three hand-painted rooms. Group by role within each.
+Two grounds, one shared vocabulary of meaning.
 
 ### Primary
-- **Shell Graphite-White** (`#fafafa`, `hsl(0 0% 98%)`): the shell's primary interactive color. On the dark chassis, "primary" is near-white: white fills, white text on dark, white primary buttons with dark text behind them.
-- **Drill Ink** (`#1d1d1f`): the drill zone's primary fill and text. Primary drill buttons are ink-on-white pills. Replaces both the old FSvR Apple-blue and the bootcamp gold so the drill reads brand-neutral.
+
+- **Workroom Ink** (`#121212`): the Workroom's near-black. It is the text colour, the fill of every primary button, and the colour of the focus ring. The Workroom has no accent, so ink carries emphasis by itself.
+- **Hall Bronze** (`#c6a467`): the Hall's warm light. Hairline borders on the call to action, a sheen across it on hover, and the selection highlight. It exists only on the Hall's night ground and never crosses into the Workroom.
 
 ### Secondary
-- **Bronze Ember** (`#b06a3e`): the one true brand accent, used sparingly as a warm glow (`box-shadow: 0 0 12px rgba(176,106,62,0.2)`) and warm highlight on the dark shell. Its rarity is the point; it is never a surface color.
 
-### Tertiary (per-room signatures, light surfaces)
-- **Inbox Pine + Clay** (green `#2f6a4f`, crimson `#a14f43`): the inbox's two-voice signature, distinguishing speakers on warm paper. Gold (`#f4d995`) is a sparing accent.
-- **Mainhub Sky-Slate** (slate `#1e293b`–`#e2e8f0`, sky `#7dd3fc`): the mainhub island's Apple-slate scale on a `#fbfcff` surface.
+- **Hall Cyan** (`#8ad8e2`): the Hall's cool instrument note against the bronze, and the colour of its focus outlines. Rare by design; it marks precision where bronze marks warmth.
+- **Teacher Amber** (`#c7841f`): the single accent of the teacher workspace, with a hue-locked ramp for hover (`#af7318`), text on tinted fills (`#895910`) and a light step (`#e0a648`). Deliberately theme-independent: the workspace is always the light format. It is the one accent in the product, and it belongs to the operator, not the student.
+
+### Tertiary
+
+Individual rooms carry their own palettes behind a wrapper class and are documented in their own surface briefs, not here. The wrappers in use are `.mc-bootcamp`, `.ff-bootcamp`, `.rc-bootcamp`, `.topic-abstract`, `.cs-punk`, and the eight Activity Centre worlds.
 
 ### Neutral
-- **Shell ramp** (`#0a0a0a` background → `#121212` card → `#262626` border/secondary → `#a3a3a3` muted text → `#fafafa` foreground): the dark chassis structure. All defined as HSL tokens; a `.light` class flips the same tokens to a near-white ramp.
-- **Drill ramp** (`#fafafc` page → `#ffffff` card → `#e5e5ea` border → `#f0f0f2` hairline → `#86868b` muted → `#1d1d1f` ink): the drill zone's near-monochrome structure.
-- **Inbox paper** (`#efe4d3` / `#f7f3ea` / `#eadfcf` paper tones, `#151a24` ink, `#5f513f` muted): the warm editorial substrate.
+
+- **Workroom Page** (`#fcfcfc`) and **Card** (`#ffffff`): the page ground and the surface that sits on it. One step of separation, no more.
+- **Workroom Raised** (`#f7f7f7`) and **Fill** (`#f2f2f2`): the two tonal steps available for layering and for resting fills.
+- **Workroom Ink Muted** (`#737373`): secondary text. Measures 4.62:1 on the page, which clears the floor with almost nothing to spare. Do not lighten it.
+- **Workroom Hairline** (`#e0e0e0`) and **Field** (`#e6e6e6`): the borders that do the work shadows used to.
+- **Hall Marble** (`#eae5da`), with secondary (`#a6a093`) and muted (`#6e695e`) steps: warm off-white text on the night ground.
 
 ### State (semantic only, never decorative)
-- **Shell status:** success `#21b659` (`142 71% 45%`), warning `#f59f0a` (`38 92% 50%`), destructive `#de3b3b` (`0 72% 51%`).
-- **Attempt state:** correct `#0fb781` (emerald), incorrect `#f53d5c` (rose), with `again`/`easy` aliased to the same hues under distinct names on purpose.
-- **Drill state:** correct `#2f9e64` (soft bg `#eaf6ef`), wrong `#e5484d` (soft bg `#fdecec`), warning `#d9881f` (soft bg `#fbf1e3`).
+
+- **Correct** (`#10b77f`) and **Incorrect** (`#f43e5c`): a student's attempt was right or wrong. Held under their own names, separate from system status, so a future shift to one cannot silently reframe the other.
+- **Warn** (`#f59f0a`): a bonus, a stretch, a non-blocking notice.
+- **Success** (`#21c45d`), **Warning** (`#f59f0a`), **Destructive** (`#dc2828`): system status, not student performance.
 
 ### Named Rules
-**The Meaning-Not-Identity Rule.** Chromatic color appears only to signal state: correct, the student's wrong pick, warning, current selection. No room uses a saturated color as its identity. The bronze ember is the only brand hue, and it stays under 10% of any surface.
 
-**The Self-Report Firewall Rule.** `--state-again` and `--state-easy` are aliased to the same hues as wrong/correct but kept under distinct token names, so a future hue shift to attempt-judgment colors can never silently reframe a spaced-repetition self-report as a right/wrong verdict.
+**The Ground Decides Rule.** A warm colour is legible on the Hall's night and illegible on the Workroom's page. Never carry a colour across the seam on the strength of liking it; measure it against the ground it will land on first.
 
-**The Scoped-World Rule.** Every bootcamp palette lives behind a wrapper class (`.mc-bootcamp`, `.ff-bootcamp`, `.topic-abstract`) with `mc-`/`ff-`/`brutal-` prefixed tokens. Bootcamp color never resolves outside its wrapper and never collides with the shell's HSL tokens.
+**The Meaning-Only Rule.** A colour appears in the Workroom because something is right, wrong, cautionary, or dangerous. There is no fifth reason. If a surface feels flat and the impulse is to add a colour, the answer is type and space.
 
-## 3. Typography
+**The Named Ground Rule.** No colour is written as a literal hex in a component. It resolves from a token, and a token that resolves to nothing is a defect, not a subtle effect. Three colour names in this codebase pointed at variables that were never defined, and the product silently lost its focus ring for five months.
 
-**Shell Font:** Outfit (with `ui-sans-serif, system-ui, -apple-system` fallback)
-**Drill Fonts:** Fraunces for the stimulus; `"Helvetica Neue", Helvetica, Arial` for the question stem and answer choices.
-**Bootcamp Fonts:** scoped per world (Georgia serif for Main Conclusion lessons and Fallacy/Flaw display, Inter for MC sans).
+## Typography
 
-**Character:** The shell runs Outfit, a warm geometric sans, with OpenType features on (`cv11`, `calt`). The drill zone runs a deliberate two-family pairing: the stimulus is set in Fraunces so the argument reads as a document, and the stem plus answer choices are set in a neutral grotesque so the task reads as interface. That contrast is the point — it tells a student at a glance which half of the screen is the thing being reasoned about and which half is the thing being answered. Bootcamps each carry their own pairing.
+**Workroom Body:** Lexend (with Outfit, then the system stack)
+**Hall Display:** Fraunces (with Iowan Old Style, Times New Roman, serif)
+**Hall Inscription:** Cinzel (with Trajan Pro, serif)
+**Mono:** IBM Plex Mono
+**Question Lock:** Outfit, held deliberately for LSAT question surfaces
 
-Because Fraunces is a variable font with an optical-size axis, the drill pins `font-optical-sizing: none` with `"opsz" 14`. Left on `auto` the cut drifts as the student changes text size, and the hairlines thin out at the larger settings.
+**Character:** The Workroom is one humanist sans doing everything, sized and weighted rather than swapped. The Hall is a serif institution: an optical serif for its headings and an inscriptional face for its few carved lines. The split is the whole typographic idea. Inside, type gets out of the way; at the door, type is the architecture.
 
 ### Hierarchy
-- **Display / Drill hero title** (650 weight, 24px, line-height 1.12): drill question titles; Apple-tight letter-spacing.
-- **Headline** (600–700, 18–20px): section heads, step titles.
-- **Stimulus / argument text** (Fraunces, 400, 17px, line-height 1.7, capped at 52ch): the close-reading surface in drills; the only place type runs airy, and the only serif in the drill zone.
-- **Question stem / answer choices** (400, 16px, line-height 1.6): the task half of the drill, in the neutral grotesque.
-- **Body** (400, 14px mobile / 16px desktop, line-height 1.6): shell body copy. Cap prose at 65–75ch.
-- **Label / eyebrow** (700, 13px, uppercase, `soft` color): meta labels, eyebrows, section tags.
-- **KPI number** (700, 42px, tabular): drill review scores.
+
+- **Title** (600, 24px, line-height 1, tracking -0.025em): card and section headings in the Workroom.
+- **Body** (400, 14px rising to 16px at 640px and above, line-height 1.6): everything a student reads in the Workroom chrome.
+- **Question** (400, 16px, line-height 1.6, Outfit): LSAT stimulus and answer choices. Font-locked to Outfit even though the rest of the app moved to Lexend, so question text does not shift when the shell's face changes.
+- **Label** (500, 14px): button and control labels.
+- **Hall Display** (380, fluid, tracking -0.015em, Fraunces): Hall headings. The unusually light 380 weight is the point; it reads as carved rather than printed.
+- **Hall Inscription** (500, tracking 0.05em, Cinzel): the Hall's few short carved lines. Never body copy.
+- **Hall Mono** (400, 13px, tracking 0.04em, IBM Plex Mono): the Hall's instrument labels.
 
 ### Named Rules
-**The Serif-Is-The-Stimulus Rule.** Inside a drill, serif marks exactly one thing: the argument under examination. The stimulus is Fraunces; the stem, the answer choices, the toolbar, and every control around them are sans. Serif never leaks into the task half or the chrome. The shell stays sans-only. (This supersedes the older No-Serif-In-Drills rule, which predated the two-family drill pairing.)
 
-**The Measure Rule.** The stimulus is capped at `52ch`. Note that `ch` is the width of the "0" glyph, which is narrow in Fraunces — 52ch measures out to roughly 60 real characters, inside the 45–75 readable band. Do not re-tune this by the `ch` number alone; measure the rendered characters per line.
+**The One Face Rule.** The Workroom uses a single family. Hierarchy is built from size, weight and space. A second family inside the Workroom is a defect unless it is the Outfit question lock.
 
-**The Tabular-Numerals Rule.** Counters, scores, and KPIs use tabular figures so digits never jitter as values change.
+**The Question Never Moves Rule.** LSAT question text is font-locked. A change to the shell's typeface must not reflow a passage a student is mid-way through reading.
 
-## 4. Elevation
+**The Serif Stays At The Door Rule.** Fraunces and Cinzel belong to the Hall. A serif appearing in the Workroom chrome means the seam has leaked.
 
-Hybrid, and split by room. The **dark shell** conveys depth through near-black tonal layering (`#0a0a0a` page → `#121212` card → `#1a1a1a` elevated surface) plus dark-tuned shadows that read as deeper black rather than gray. Glow is rare: a single `--shadow-glow` (`0 0 24px rgba(255,255,255,0.06)`) and the bronze `glow-sm`. The **light rooms** (drill, inbox, mainhub) use soft, low-opacity ambient shadows to float white work-cards on near-white surfaces.
+## Layout
 
-### Shadow Vocabulary
-- **Shell sm/md/lg** (`0 1px 3px rgba(0,0,0,0.4)` → `0 8px 32px rgba(0,0,0,0.7)`): dark-chassis elevation, opacity scaling with lift.
-- **Shell glow** (`0 0 24px rgba(255,255,255,0.06)`): rare ambient halo on key dark surfaces.
-- **Bronze glow-sm** (`0 0 12px rgba(176,106,62,0.2)`): the single warm-accent glow.
-- **Drill stimulus** (`0 20px 48px rgba(0,0,0,0.05)`): the diffuse lift under a floating white work-card.
-- **Drill control / soft** (`0 10px 26px rgba(0,0,0,0.035)` / `0 4px 16px rgba(0,0,0,0.035)`): lighter secondary surfaces.
+The Workroom is a centred single column with generous side gutters. The container centres by default, carries 32px of horizontal padding, and stops widening at 1400px.
+
+Breakpoints are the framework defaults up to 1280px, with the largest step pulled in to 1400px. Body type steps from 14px to 16px at 640px, and form controls are forced to 16px below 768px so that iOS does not zoom the page when a field takes focus. Named breakpoints `phone` (up to 600px), `tablet` (601 to 900px) and `desktop` (901px and up) exist for bootcamp surfaces.
+
+Spacing runs on a 4px base. The steps in real use are 4, 8, 16, 24 and 32. Card padding is 24px on all sides; button padding is 8px vertical and 16px horizontal.
+
+Reading measure matters more here than in most products. Passage and stimulus text is held to a comfortable line length rather than allowed to run the full container width.
 
 ### Named Rules
-**The Layer-Don't-Glow Rule.** On the dark shell, depth comes from near-black tonal steps and shadow opacity, not from neon glows. Glow is a rare punctuation, never the structural language.
 
-**The Diffuse-Soft-Shadow Rule.** Light-room shadows are large-radius and very low opacity (≤0.05). A drill card floats; it does not cast a hard 2014-app drop shadow.
+**The Reading Measure Rule.** Any surface carrying an LSAT passage, stimulus, or explanation constrains its own line length. The container's maximum is a ceiling for layout, never a licence for prose.
 
-## 5. Components
+## Elevation & Depth
+
+**Flat, with hairline separation.** Surfaces sit on the page rather than above it. A card is distinguished from its ground by a one-pixel border and, where more is needed, by one step of background tone. There are no drop shadows in the Workroom.
+
+This is a decision, not a description. The codebase currently ships five shadow tokens tuned for a dark ground, from `0 1px 3px rgba(0,0,0,0.4)` up to `0 8px 32px rgba(0,0,0,0.7)`, and applies the smallest of them to every card. Because the app ships light by default, those shadows land at 40 percent black under a white card. The light theme never redefined them, and the one glow token is white, so it is invisible on white. The tokens are retired by this record and the code has not caught up yet.
+
+The Hall is the exception and keeps its own depth: fixed ambience gradients, a grain overlay, and an inset highlight on its call to action. That depth is atmospheric rather than structural, and it does not transfer.
+
+### Named Rules
+
+**The Flat Rule.** Depth in the Workroom comes from a hairline or a tonal step. A `box-shadow` on a Workroom surface is a defect.
+
+**The Two-Step Rule.** Page, then card, then at most one raised step. A surface that needs a fourth level of layering is a surface that needs restructuring.
+
+## Shapes
+
+Corners are gently rounded and consistent: 8px for cards and containers, 6px for buttons and inputs, 4px for the smallest chips and insets, and a full pill only for genuine badges. The scale derives from one 0.5rem radius token, so a change to the base moves the whole system together.
+
+The Hall uses a near-square 2px radius instead. Its edges are cut, not softened, which is what separates a carved surface from a card.
+
+Borders are one pixel. There is no second border weight in the Workroom.
+
+### Named Rules
+
+**The Hairline Rule.** One pixel, always. A thicker border used as a coloured accent stripe on the leading edge of a surface is banned, including when faked with an inset shadow. Active state is carried by background tone.
+
+## Components
 
 ### Buttons
-- **Shape:** shell buttons use the token radius (`0.5rem` / `md` = `calc(0.5rem - 2px)`); drill buttons are full pills (`9999px`).
-- **Shell Primary:** near-white fill (`#fafafa`) with dark text (`#0a0a0a`), `8px 16px` padding. The inverse of the dark surface.
-- **Drill Primary:** ink fill (`#1d1d1f`), white text, pill, 44px min height.
-- **Secondary / Ghost:** bordered, transparent or white fill, foreground text. Disabled at 0.66 opacity, no hover.
-- **Hover / Focus:** subtle background shift and 1px rise; focus ring is graphite (`outline: 3px solid rgba(29,29,31,0.35)`), never an accent hue.
+
+- **Character:** precise and quiet. A button is a plain rectangle with a label. It darkens slightly on hover and does nothing else. It does not lift, does not cast a shadow, and does not scale on press.
+- **Shape:** gently rounded (6px).
+- **Primary:** ink fill (`#121212`), page-coloured label, 8px by 16px padding.
+- **Outline:** page background, one-pixel field border, ink label.
+- **Ghost:** no fill at rest, a tonal fill on hover.
+- **Sizes:** default 44px tall, small 40px, large 48px, icon 44 by 44. Every size clears the 44px touch minimum by being that height, never by relying on wrapped text or padding accidents.
+- **Focus:** a solid two-pixel ink outline, offset two pixels from the edge. This is the only focus treatment in the Workroom.
+- **Hall CTA:** 60px tall, near-square corners, transparent fill over a bronze hairline, with a bronze sheen that sweeps across on hover and a cyan outline on focus.
 
 ### Cards / Containers
-- **Corner Style:** shell `0.5rem`; drill stimulus `20px`, insets `14px`.
-- **Background:** shell cards `#121212` on `#0a0a0a`; drill cards pure white on `#fafafc`.
-- **Shadow Strategy:** see Elevation; dark cards layer, light cards float on diffuse soft shadow.
-- **Border:** 1px `#262626` (shell) or `#e5e5ea` (drill). Hairlines `#f0f0f2`.
-- **Internal Padding:** 28–40px in drills (stimulus roomiest), tighter in shell chrome.
+
+- **Corner:** 8px.
+- **Background:** card white on the page ground.
+- **Border:** one-pixel hairline. This is what separates the card, not a shadow.
+- **Shadow:** none.
+- **Padding:** 24px, with header, content and footer sharing that inset.
 
 ### Inputs / Fields
-- **Style:** bordered (`--input` `#262626` dark, `#e5e5ea` light), token radius, surface-matched fill.
-- **Focus:** border shift to ring color plus the graphite focus ring; no glow.
-- **Mobile:** inputs render at 16px to prevent iOS zoom.
+
+- **Style:** page background, one-pixel field border, 6px corners, 44px minimum height, 8px by 12px padding.
+- **Focus:** the same two-pixel ink outline as buttons, offset two pixels. Do not express focus as a border colour change alone; a border shift is too quiet to serve as the only indicator.
+- **Mobile:** 16px text below 768px, so focusing a field never zooms the viewport.
 
 ### Navigation
-- **Foyer (primary nav):** `FoyerSidebar` (state blocks + workspace nav) plus `FoyerHeroRing` orbital (3 nodes: Smart Drill, Resume, Ask Joshua). The foyer additionally hosts a `GooeyDock` quick-launch row, allowed only on `/foyer`.
-- **Sidebar:** label + icon rows under a single "Workspace" header, permission-filtered. Default / hover / active states by background tint, not a colored left stripe.
 
-### Signature Component — The Drill Surface
-Every lab composes one fixed anatomy so all drills read as the same surface: top bar (autosave pill + home link) → header (eyebrow + counter + thin graphite progress bar) → white stimulus card with an inset "THE CONCLUSION" sub-block → neutral option grid (2-up desktop, 1-up mobile) → in-flow reveal/teach block → pill footer nav → end-of-set review (verdict, KPI, where-it-slipped breakdown, tappable answer key). On reveal, the correct option paints `correct`, the student's wrong pick paints `wrong`, unpicked options recede. The reveal teaches the predictable weakness of the correct type, written to the student's actual pick. Verdict copy reads `Calibrated.` or `Re-run open.`, never "Failed," never a letter grade.
+Neutral chrome throughout. The sidebar runs one tonal step off the page ground with a hairline edge, and the active item is marked by background tone rather than by a coloured rule on its leading edge.
 
-### Signature Component — The Inbox Thread
-A warm paper-and-ink 1:1 messaging surface, one ongoing thread per student with Joshua. Two-voice color (pine green / clay crimson) distinguishes speakers. Fast enough to feel like messaging, structured enough to feel like coaching. Supports PDF attachments. Not a support ticket, not a legal file.
+### Signature Component: the scoped world
 
-## 6. Do's and Don'ts
+The product's distinctive pattern is not a control, it is a container. A room commits fully to its own palette, typefaces and atmosphere behind a single wrapper class, and nothing inside it leaks out. Scene layers are `aria-hidden` furniture painted beneath the content, so the accessible tree is identical whether the room is painted or bare. A new world is added by writing a new wrapper and its prefixed tokens, never by adding hex to a shared component.
+
+## Do's and Don'ts
 
 ### Do:
-- **Do** build new chassis surfaces on the HSL token vocabulary (`bg-background`, `text-foreground`, `border-border`, `bg-primary`, the `state-*` tokens). The shell is tokenized; extend the tokens, don't inline hex.
-- **Do** keep color semantic. Use `state-correct` / `state-incorrect` / `state-warn` to mark meaning, the bronze ember for rare warmth, and nothing chromatic for pure decoration.
-- **Do** scope any new bootcamp world behind its own wrapper class with prefixed tokens, the way `.mc-bootcamp` / `.ff-bootcamp` / `.topic-abstract` do.
-- **Do** compute the next step and present one CTA. Every hub leads with one computed action, never a grid of equal options.
-- **Do** float light-room cards on diffuse, low-opacity soft shadow (≤0.05), and convey dark-shell depth through near-black layering.
-- **Do** route every progress claim, badge, and CTA to real data. Honest empty states beat fabricated numbers.
+
+- **Do** resolve every colour from a token, and treat a token that resolves to nothing as a defect. Verify a new token renders before documenting it.
+- **Do** give every interactive element a visible focus indicator: a solid two-pixel ink outline offset two pixels in the Workroom, cyan in the Hall.
+- **Do** check contrast against the ground the colour will actually land on, in the theme that actually ships, in a browser. The theme file has read as correct while the page rendered a light card on a near-black ground.
+- **Do** separate surfaces with a one-pixel hairline and one tonal step.
+- **Do** keep colour semantic: correct, incorrect, warning, danger. Nothing else earns it.
+- **Do** scope a new room's identity behind its own wrapper class with prefixed tokens, the way the bootcamps and the eight Activity worlds already do.
+- **Do** hold LSAT passage and stimulus text to a readable line length, and leave it on the Outfit question lock.
+- **Do** end every world's stylesheet with a `prefers-reduced-motion` block that stops continuous motion rather than speeding it up.
 
 ### Don't:
-- **Don't** use `border-left` / `border-right` greater than 1px as a colored accent stripe (including via inset box-shadow). Convey active or speaker state with background tint or avatar.
-- **Don't** ship gradient text (`background-clip: text` over a gradient). Emphasis comes from weight and size, in a single solid color.
-- **Don't** spray glassmorphism. The one `backdropBlur.glass` token is for rare, purposeful use, not decoration.
-- **Don't** build the hero-metric template: a giant number plus tiny label plus gradient accent. That is the SaaS-dashboard cliché `PRODUCT.md` rejects.
-- **Don't** add new inline-hex palettes. The inbox and mainhub already diverged into hand-painted warm-paper and Apple-slate; do not start a fifth dialect. If a room needs its own identity, promote it to named tokens.
-- **Don't** import the generic LSAT-prep playbook: card-grid hubs, Duolingo streak flames and XP bars, or support-desk chat patterns ("How can I help you today?"). The product does not reward attendance and the inbox is not a ticket queue.
-- **Don't** animate layout properties (width, height, padding, margin) except the drill progress bar. Animate `opacity`, `transform`, `color`, `box-shadow`. No bounce, no elastic.
-- **Don't** show fabricated telemetry (placeholder energy/status values) as if it were real progress. No fake data, no dead buttons.
+
+- **Don't** add a `box-shadow` to a Workroom surface. Depth is hairline and tone.
+- **Don't** carry a Hall colour into the Workroom. Bronze reads 8.58:1 on the Hall's night and 2.30:1 on the Workroom's page.
+- **Don't** introduce a warm or metallic accent into the Workroom to make it feel premium. Premium here is depth, hierarchy and type.
+- **Don't** remove the browser's focus outline without shipping a replacement in the same rule. `outline-none` with no working ring is worse than leaving the default alone.
+- **Don't** animate the focus indicator. A `transition-all` on a control means the ring fades in, which delays the one signal a keyboard user depends on.
+- **Don't** use a border thicker than one pixel as a coloured accent stripe, including when faked with an inset shadow.
+- **Don't** put a second typeface into the Workroom chrome, and don't let a serif cross in from the Hall.
+- **Don't** animate layout properties. Animate `opacity`, `transform` and `color`. No bounce, no elastic, no lift on hover.
+- **Don't** write a hex value into a component. If a room needs its own colour, promote it to named tokens behind that room's wrapper.
+
+<!--
+Known gaps between this record and the code, as of 2026-09-05. Recorded rather
+than hidden; none of them were fixed by writing this file.
+
+1. FIXED 2026-09-05. The shared Button and Input had no visible focus indicator:
+   `focus-visible:outline-none` worked, `focus-visible:ring-3` generated no CSS
+   (Tailwind 3 has no `ring-3`), and `focus-visible:ring-accent-bronze/50` pointed at
+   an undefined variable. Both now use `outline-2 outline-offset-2 outline-foreground`,
+   and `transition-all` was narrowed so the ring no longer fades in. A zero-specificity
+   `:where(...):focus-visible` floor in `src/index.css` catches any control that
+   defines nothing, while still losing to the Hall's cyan and the scoped bootcamp rings.
+   Verified in a browser on all five Button variants and the Input: 18.26:1 in light,
+   18.97:1 in the dark alternate, against the 3:1 an indicator needs.
+
+2. FIXED 2026-09-05. `--accent-bronze`, `--accent-warm` and `--glow-bronze` were
+   consumed by tailwind.config.ts and defined in no commit in the repo's history.
+   They arrived 2026-04-06 in "Imported LSATATTORNEYS project files". `#b06a3e` was
+   inferred from a literal rgba in the `glow-sm` shadow on 2026-06-26 and written into
+   the previous DESIGN.md as a brand accent it never was. All three names and the
+   bronze-literal `glow-sm` shadow are removed, and their thirteen call sites now use
+   neutral tokens. Three of those call sites were visibly broken, not merely untokenized:
+   the journal ReviewForm's Next button rendered near-white text on a transparent
+   background, its active step dot was invisible while the inactive dots showed, and the
+   Annotate toggle's active state was indistinguishable from its inactive state.
+   `docs/chart-palette.md` and `scripts/validate-chart-palette.mjs` still carry the
+   inherited hex and have not been touched.
+
+3. Shadow tokens are dark-tuned and the app ships light. `shadow-sm` puts
+   rgba(0,0,0,0.4) under a white card. Retired above; still applied by `ui/card.tsx`.
+
+4. Contrast failures in the shipped light theme, measured: `--text-tertiary` 3.28:1,
+   `--success` 2.24:1, `--warning` 2.08:1, `--state-correct` 2.53:1,
+   `--state-incorrect` 3.60:1, `--teacher-accent` 3.03:1 as text. In the dark
+   alternate, `--text-tertiary` 4.18:1. AA needs 4.5:1 for normal text.
+
+5. Components are tactile today, not quiet. Buttons lift, scale on press, and gain
+   a shadow on hover; cards carry `shadow-sm`. The record above chooses quiet and flat.
+-->
