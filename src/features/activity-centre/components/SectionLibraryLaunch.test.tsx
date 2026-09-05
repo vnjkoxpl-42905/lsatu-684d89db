@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { SectionLibraryLaunch } from "./SectionLibraryLaunch";
 import type { ActivityInstructions } from "../api/types";
+import sectionInstructions from "../content/read-recall-colour-section.instructions.json";
 
 /**
  * The door to the whole drill, and what it must not say.
@@ -72,5 +73,18 @@ describe("the library door", () => {
   it("puts the sections on the page itself", () => {
     renderDoor();
     expect(screen.getByText("the sections go here")).toBeInTheDocument();
+  });
+
+  it("keeps internal writing terms off the student-facing page", () => {
+    render(
+      <SectionLibraryLaunch
+        title="Read, Recall, Colour"
+        subtitle={null}
+        instructions={sectionInstructions as ActivityInstructions}
+      >
+        <p>the sections go here</p>
+      </SectionLibraryLaunch>,
+    );
+    expect(document.body.textContent).not.toMatch(/\b(?:beat|beats|briefing|intake)\b/i);
   });
 });

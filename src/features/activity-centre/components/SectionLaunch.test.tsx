@@ -147,15 +147,15 @@ describe("the method strip", () => {
 describe("the briefing switch", () => {
   it("reaches the full briefing and back", async () => {
     renderIt();
-    fireEvent.click(await screen.findByRole("tab", { name: "The full briefing" }));
+    fireEvent.click(await screen.findByRole("tab", { name: "Full instructions" }));
     expect(await screen.findByText("Why this is hard")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("tab", { name: "This beat" }));
+    fireEvent.click(screen.getByRole("tab", { name: "This step" }));
     await waitFor(() => expect(screen.queryByText("Why this is hard")).toBeNull());
   });
 
   it("renders authored emphasis rather than printing its asterisks", async () => {
     renderIt();
-    fireEvent.click(await screen.findByRole("tab", { name: "The full briefing" }));
+    fireEvent.click(await screen.findByRole("tab", { name: "Full instructions" }));
     const marked = await screen.findByText("Efficiency is never a licence.");
     expect(marked.tagName).toBe("STRONG");
     expect(document.body.textContent).not.toContain("**");
@@ -299,7 +299,7 @@ describe("the tab contract", () => {
     renderIt();
     const panel = await screen.findByRole("tabpanel");
     expect(panel.getAttribute("aria-labelledby")).toBe("sl-pane-tab-beat sl-beat-tab-0");
-    fireEvent.click(screen.getByRole("tab", { name: "The full briefing" }));
+    fireEvent.click(screen.getByRole("tab", { name: "Full instructions" }));
     expect(screen.getByRole("tabpanel").getAttribute("aria-labelledby")).toBe(
       "sl-pane-tab-briefing",
     );

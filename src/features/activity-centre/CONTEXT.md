@@ -120,8 +120,8 @@ The page a student lands on before running an RRC section: the method as four Be
 _Avoid_: The Chamber (the approved mockup's name for it, and already a world under `worlds/chamber/`), Homepage (that is an Activity's own intro page), intro, splash, lobby, dashboard
 
 **Beat**:
-One of the four steps of the method as Section Launch presents them — Read it, Tell it back, Colour it, The Recall — each opening a drawer holding its own authored body. A unit of presentation on that page, and not a phase the runner moves through.
-_Avoid_: Step (the authored JSON's own key, fine in code and ambiguous in prose), Stage (reserved for `SectionStage`), phase, tab, card
+Internal code term for one of the four method steps shown on Section Launch. It may remain in implementation names, but it is never student-facing. Students see **step**: Read it, Tell it back, Colour it, Recall it.
+_Avoid in student-facing copy_: Beat, beats, phase, tab, card
 
 **Tick**:
 One mark in the row that draws a past Attempt: one per stimulus slot, placed at its authored `item_order` rather than its array position. Four states, because three would lie — `recorded`, `notJudged` (the judge never answered, so the mark is hollow), `silent` (she spoke nothing into that stimulus), `missing`.

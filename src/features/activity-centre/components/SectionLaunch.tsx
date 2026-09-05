@@ -317,8 +317,8 @@ function RunHistory({ state }: { state: HistoryState }) {
       <aside className="sl-aside">
         <span className="sl-label">Before you start</span>
         <p>
-          Everything here is out loud. The whole section records in{" "}
-          <strong>one take</strong>, and it never pauses.
+          Read silently. Say each retelling, reaction, and final recall out loud.
+          The whole section records in <strong>one take</strong> and never pauses.
         </p>
         <p>
           <span className="sl-key">Space</span> is the only key, and you press it twice

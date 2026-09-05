@@ -40,7 +40,7 @@ export function SectionLibraryLaunch({
       subtitle={subtitle}
       instructions={instructions}
       onExit={onExit}
-      meta="Pick a section · three a day is the rhythm"
+      meta="Pick a section · aim for three in a row"
     >
       <div className="sl-runs">
         <div>
@@ -51,12 +51,13 @@ export function SectionLibraryLaunch({
         <aside className="sl-aside">
           <span className="sl-label">Before you start</span>
           <p>
-            Everything here is out loud. The whole section records in{" "}
-            <strong>one take</strong>, and it never pauses.
+            Read silently. Say each retelling, reaction, and final recall out
+            loud. The whole section records in <strong>one take</strong> and
+            never pauses.
           </p>
           <p>
-            Nothing disappears once you have done it. Running a section again is
-            the point, not a retake.
+            Every completed attempt stays here. Running a section again creates
+            a new attempt and never replaces an earlier one.
           </p>
         </aside>
       </div>

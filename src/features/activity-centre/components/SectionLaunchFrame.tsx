@@ -158,7 +158,7 @@ export function SectionLaunchFrame({
                   setPane("briefing");
                 }}
               >
-                Read the full briefing
+                Read the full instructions
               </button>
             )}
           </div>
@@ -171,12 +171,11 @@ export function SectionLaunchFrame({
           <>
             <div className="sl-mhead">
               <h3>The method</h3>
-              <span className="sl-label">Select a beat to read it</span>
             </div>
             <div
               className="sl-beats"
               role="tablist"
-              aria-label="The method, beat by beat"
+              aria-label="The method, step by step"
               onKeyDown={onBeatKey}
               style={{ ["--sl-beat-count" as string]: String(beats.length) }}
             >
@@ -212,7 +211,7 @@ export function SectionLaunchFrame({
             <div
               className="sl-dr-tabs"
               role="tablist"
-              aria-label="Briefing detail"
+              aria-label="Instruction detail"
               onKeyDown={onPaneKey}
             >
               <button
@@ -228,7 +227,7 @@ export function SectionLaunchFrame({
                 className="sl-dr-tab"
                 onClick={() => setPane("beat")}
               >
-                This beat
+                This step
               </button>
               <button
                 ref={(el) => {
@@ -243,7 +242,7 @@ export function SectionLaunchFrame({
                 className="sl-dr-tab"
                 onClick={() => setPane("briefing")}
               >
-                The full briefing
+                Full instructions
               </button>
               {briefing.closer && (
                 <span className="sl-dr-note">
@@ -272,7 +271,7 @@ export function SectionLaunchFrame({
               {pane === "beat" && current ? (
                 <div>
                   <span className="sl-label">
-                    Briefing · beat {beat + 1} of {beats.length}
+                    Step {beat + 1} of {beats.length}
                   </span>
                   <h3 className="sl-dr-title">
                     {renderInlineMarks(current.label, `sl-dt-${beat}`)}
@@ -321,7 +320,7 @@ export function SectionLaunchFrame({
               {pane === "briefing" && (
                 <div className="sl-dr-side">
                   <button type="button" className="sl-close" onClick={() => setPane("beat")}>
-                    Back to the beat
+                    Back to the steps
                   </button>
                 </div>
               )}
