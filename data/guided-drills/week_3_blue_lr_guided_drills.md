@@ -375,7 +375,7 @@ question_count: 5
 timed_length: 8 mins
 source_tests:
   - PT 72
-difficulty_level: 1-2
+difficulty_level: 1-5
 question_type:
   - Role
   - Main Conclusion
@@ -386,6 +386,8 @@ start_button_label: Start
 ### Pre-Start Instruction Card
 
 #### Left Column
+
+
 
 # Role and Main Conclusion
 
@@ -404,6 +406,8 @@ If it **provides** support, we can call it a Premise.
 If it **has** support and also **provides** support, an Intermediate Conclusion.
 
 #### Right Column
+
+
 
 Length -- **5 questions, 8 mins**  
 Types -- Role and Main Conclusion  

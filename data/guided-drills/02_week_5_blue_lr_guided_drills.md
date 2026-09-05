@@ -400,7 +400,7 @@ source_tests:
   - PT 65
   - PT 71
   - June 2007
-difficulty_level: 1-4
+difficulty_level: 1-5
 question_type:
   - Role
   - Method
@@ -412,6 +412,8 @@ start_button_label: Start
 ### Pre-Start Instruction Card
 
 #### Left Column
+
+
 
 This 10 question set is comprised of three questions from the Match Family, which test our ability to understand what role certain claims are playing: Role, Method, and Main Conclusion.
 
@@ -441,6 +443,8 @@ We should get used to the most typical types of reasoning moves:
 - Flawed Implications of a Claim or Plan
 
 #### Right Column
+
+
 
 Length -- **10 questions, 15 mins** (1.5x = 23, 2x = 30)  
 Types -- **Role, Method, and Main Conclusion**  
@@ -478,24 +482,31 @@ start_button_label: Start
 
 #### Left Column
 
-TYPE: **Agree / Disagree**  
-LENGTH: 5 questions, 8 mins (1.5x = 12, 2x = 16)  
-TESTS: 50-54  
-LEVEL: 2, 3, 4
+
+
+## Find the one claim they actually clash on
+
+Agree / Disagree questions (also called Point at Issue) give you two speakers. The correct answer is the single statement where one speaker would **affirm** it and the other would **deny** it.
+
+Most wrong answers fail one of two tests:
+- Only one speaker addresses it, so we cannot know the other's view.
+- Both speakers would actually take the same side.
+
+You are not hunting for conclusion versus support here. You are mapping what each person commits to, then finding the one point of genuine collision.
 
 #### Right Column
 
-- **Read each person's statements**  
-  (don't worry about finding conclusion vs. support)
 
-- After you've read each person's paragraph, **revisit each claim the 1st person made.**
 
-- For each claim, ask yourself,  
-  "**Did Person 2 agree, disagree, or no comment?**"
+## Try these 5 in 8 minutes
 
-- If there aren't any explicit claims that the 2nd person is agreeing / disagreeing with, then ask yourself whether the 1st person is assuming anything the 2nd person would agree/disagree with.
+(1.5x = 12, 2x = 16). Read each person's paragraph for what they claim, not for argument structure.
 
----
+Then, for each claim the first speaker made, ask:
+- Did the second speaker **agree**, **disagree**, or give **no comment**?
+- If no one stated it outright, would the first speaker's reasoning force a view the second speaker rejects?
+
+The right answer is the claim where one says yes and the other says no. Run each choice through a simple check: could both speakers fill in a clear "I agree" or "I disagree"? If either has to shrug, that answer is out.
 
 ## 9. Conditional Logic (Medium) Set 1
 

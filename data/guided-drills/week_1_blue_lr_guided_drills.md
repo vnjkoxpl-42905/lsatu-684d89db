@@ -238,7 +238,7 @@ title: Paradox - (First Taste)
 category: Process
 estimated_time: 50 mins
 question_count: 6
-difficulty_level: 1-3
+difficulty_level: 1-5
 source_tests:
   - PT 71
   - PT 73
@@ -253,6 +253,8 @@ start_button_label: Start
 
 #### Left Column
 
+
+
 Try these 6 **Paradox** questions from test 73 and 71 (141 and 140).
 
 These questions are all about initially understanding how the the paragraph is creating some cognitive dissonance (the feeling when two ideas don't fit well together), and then picking an answer that resolves that tension, and helps give us a way to understand how both things can be true.
@@ -265,6 +267,8 @@ _Which of the following, if true, most ..._
 That lead-in means, "Don't worry whether it's true in the real world or whether it sounds too strong or unlikely. _Pretend_ it's true, and assess whether it would have any impact on this conversation."
 
 #### Right Column
+
+
 
 # Set a timer for 9 minutes
 

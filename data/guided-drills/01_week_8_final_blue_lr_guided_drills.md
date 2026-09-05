@@ -62,23 +62,44 @@ start_button_label: Start
 
 #### Left Column
 
-# Try 5 Famous Flaw problems
 
-tests: 50-54 / levels: 3-4
 
-Get better at spotting some famous flaw moves in the argument, and better at spotting some "decoy" famous flaws appearing in wrong answer choices.
+## The flaw is usually one of the famous ten
 
-Many of the answers are not describing famous flaws. Some of the answer choices that are describing famous flaws will sound like the "classic" abstract language definition of that flaw, while others will use more unique or specific language to allude to the famous flaw.
+Medium Flaw questions reward pattern recognition. The author makes a reasoning move that breaks in a predictable way, and the LSAT reuses the same handful of breaks again and again. We call these the **Famous Flaws**.
+
+The ten that show up most:
+- **Necessary vs. Sufficient** (a rule used backwards or negated)
+- **Causation** (correlation treated as cause, reversed cause, third factor)
+- **Sampling** (an unrepresentative group)
+- **Equivocation** (one word, two meanings)
+- **Percent vs. Amount** (a rate confused for a count)
+- **Ad Hominem** (attacking the source, not the claim)
+- **Circular** (the conclusion smuggled into the evidence)
+- **Whole vs. Part**
+- **Appeal to Authority / Popularity**
+- **False Choice** (only two options when more exist)
+
+At the medium level the trap answers also describe famous flaws. A wrong answer names a real flaw that this argument simply never made.
 
 #### Right Column
 
-- Set a timer for **8 mins** (1.5x = 12, 2x = 16)
 
-- Try to get an answer to all 5 of these problems.
 
-- Flag any of them that feel like a struggle or a low-confidence guess.
+## Try these 5, then time them
 
----
+Set a timer for **8 minutes** (1.5x = 12, 2x = 16). Get an answer to all five, and flag any that felt like a low-confidence guess.
+
+For each argument:
+- Find the conclusion, then ask what the author had to assume to get there.
+- Name the broken move in your own words before you read the answers.
+- Match your prephrase to the famous-flaw list.
+
+When you read the answers:
+- A choice can describe a real flaw and still be wrong because the argument never made it. Ask, did this argument actually do this?
+- Some correct answers state the flaw in plain, specific language, not the textbook phrasing. Do not wait for the classic wording.
+
+After the timer, take a slow untimed second pass before you confirm. Note any flaw you keep missing.
 
 ## 2. Conditional Logic (Medium) Set 6
 
@@ -226,34 +247,35 @@ start_button_label: Start
 
 #### Left Column
 
-On **Parallel Flaw** questions, the flaw is usually bad conditional logic, bad quantifier logic, or some Famous Flaw.
 
-Specifically, lookout for this subset of the 10 Famous Flaws:
 
-- Necessary vs. Sufficient
-- Part vs. Whole
-- Ad Hominem
-- Sampling
-- Correlation vs. Causality
+## Same broken move, new clothes
+
+This set blends two tasks that lean on the same skill: spotting the **Famous Flaw** in an argument, then finding another argument that breaks the *same* way.
+
+On **Parallel Flaw**, the correct answer matches the structure of the error, not the topic. A stimulus about vitamins and a correct answer about city budgets can be a perfect match if both commit the same Necessary vs. Sufficient slip.
+
+The flaws you will see most here:
+- **Necessary vs. Sufficient** (a conditional rule used backwards or negated)
+- **Causation** (correlation read as cause)
+- **Whole vs. Part** and **Part vs. Whole**
+- **Percent vs. Amount**
+- **Equivocation**
+
+Name the flaw in abstract terms and the matching gets much easier.
 
 #### Right Column
 
-# Try these five questions, untimed.
 
-Is the author committing one of the famous flaws?
 
-- Necessary vs. Sufficient
-- Part vs. Whole
-- Ad Hominem
-- Sampling
-- Unproven vs. Proven False
-- Causal
-- Equivocation
-- Circular
-- Self-Contradiction
-- Inappropriate Appeals
+## Work the set untimed first
 
----
+For each argument:
+- Find the conclusion and the support, then state the broken move as a rule: "the author treats a necessary condition as if it were sufficient."
+- On **Parallel Flaw**, carry that abstract sentence to the answers and find the one that commits the identical move. Ignore the subject matter.
+- On straight **Flaw**, pick the choice that describes that same move, and watch for traps that name a different famous flaw the argument never made.
+
+Check answers and explanations as you go. When two answers feel close on a Parallel question, the tie-breaker is usually whether the conclusion type matches: a prediction parallels a prediction, a recommendation parallels a recommendation.
 
 ## 5. Relative vs. Absolute
 

@@ -3291,6 +3291,76 @@
     "level": "beginner"
   },
   {
+    "title": "Necessary, Not Helpful",
+    "slug": "w13-01-necessary-not-helpful",
+    "category": "Process",
+    "estimated_minutes": 60,
+    "question_count": 8,
+    "difficulty_min": 4,
+    "difficulty_max": 5,
+    "question_types": [
+      "Necessary Assumption"
+    ],
+    "question_features": [],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "Eight Necessary Assumption questions at difficulty 4 and 5, mixed across both jobs an assumption\ncan do: supplying a missing idea, and ruling out an objection.\n\nYou do not get told which one you are looking at. The tell is in the argument. Conditional logic,\nor a phrase repeated twice inside the paragraph, points at a missing idea. A recommendation, a\nprediction, or a hypothesis offered to explain some curious background data points at an\nobjection.\n\nAt this difficulty both kinds are dressed to look like the other. A conditional stimulus can still\nwant a Defender, and a causal stimulus can still want a plain missing link.",
+      "right_md": "# Try these 8 questions, untimed\n\n- Is there a **New Concept** in the conclusion that the evidence never defined? If so, what idea\n  from the evidence is it being connected to?\n\n- Is the author assuming two things are **similar**, or assuming they are **different**? Spell out\n  the obvious version. At this level the obvious version is frequently the answer.\n\n- If neither worked, argue the Anti-Conclusion and see what you had to assume.\n\n- Run the negation test on your pick before you commit. It is the only check that separates\n  necessary from merely helpful.\n\nAs you review these,\n\n**correct answers -** which of the two jobs was it doing? Which question found it?\n\n**incorrect answers -** **Too Strong**, a **Reversal** of the link you wanted, or an idea that\nhelps the argument without being required?\n\n---"
+    },
+    "bank_filter": {
+      "qtypes": [
+        "Necessary Assumption"
+      ],
+      "features": [],
+      "reasoning_types": [],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "count": 8
+    },
+    "week": 13,
+    "order_in_week": 1,
+    "source_file": "06_week_13_necessary_assumption_harder_guided_drills.md",
+    "level": "advanced"
+  },
+  {
+    "title": "Block the Objection",
+    "slug": "w13-02-block-the-objection",
+    "category": "Process",
+    "estimated_minutes": 60,
+    "question_count": 8,
+    "difficulty_min": 4,
+    "difficulty_max": 5,
+    "question_types": [
+      "Necessary Assumption"
+    ],
+    "question_features": [
+      "Defender"
+    ],
+    "reasoning_types": [],
+    "start_button_label": "Start",
+    "instruction_card": {
+      "left_md": "Every Necessary Assumption does one of two jobs. It supplies an idea the author was clearly\nthinking, or it rules out an objection that would hurt the argument.\n\nThese 8 questions are all the second kind. The **Defender** answer does not add a new link to\nthe argument. It stands in front of the argument and blocks something that would have knocked\nit over.\n\nThat is why these answers so often feel like they come from outside the paragraph. The author\nnever mentioned the objection, so the correct answer names something that was never discussed\nand tells you it is not happening. Test-takers throw those answers out for being \"out of scope\",\nand that instinct is exactly what is being punished here.\n\nThese are difficulty 4 and 5. Expect the objection to be one you have to build yourself rather\nthan one the stimulus hands you.",
+      "right_md": "# Try these 8 questions, untimed\n\n- Find the conclusion, then argue the **Anti-Conclusion**. Accept every word of the evidence and\n  try to reach the opposite result anyway. What did you have to assume to get there?\n\n- Whatever objection you just built, the author is assuming it is **not** the case. That is the\n  answer, in some form.\n\n- If the author is making a recommendation, predicting an outcome, or explaining a curious fact,\n  the objection is usually an alternate explanation, a hidden downside, or a reason the plan\n  fails on its own terms.\n\n- Negate the answer you picked. If the argument still stands, it was not necessary.\n\nAs you review these,\n\n**correct answers -** did it block an objection you had already thought of? If it blocked one you\nhad not, what question would have surfaced it?\n\n**incorrect answers -** was it **Too Strong** for a necessary assumption? Did it defend against\nsomething the argument never actually needed? Did it strengthen without being required?\n\n---"
+    },
+    "bank_filter": {
+      "qtypes": [
+        "Necessary Assumption"
+      ],
+      "features": [
+        "Defender"
+      ],
+      "reasoning_types": [],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "count": 8
+    },
+    "week": 13,
+    "order_in_week": 2,
+    "source_file": "06_week_13_necessary_assumption_harder_guided_drills.md",
+    "level": "advanced"
+  },
+  {
     "title": "First Sentence Conclusions",
     "slug": "w1-01-first-sentence-conclusions",
     "category": "Patterns",

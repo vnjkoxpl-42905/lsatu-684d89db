@@ -161,23 +161,38 @@ start_button_label: Start
 
 #### Left Column
 
-In the world of **Comparisons**, there are several recurring assumptions:
 
-- What was true in the past is also true today.
-- What is true today will be true in the future.
-- What was true for this thing / this group / this person, will also be true for that thing / that group / that person.
 
-When authors lean on Comparisons like this, they are **assuming similarities**. We can Weaken these arguments by pointing out salient differences or we can Strengthen these arguments by providing more similarities or affirming the assumed similarity.
+## Every comparison hides an assumed sameness
+
+In the world of **Comparisons**, authors lean on a few recurring assumptions:
+- What was true in the **past** is still true **today**.
+- What is true **today** will be true in the **future**.
+- What was true for **this** group, person, or thing is true for **that** one.
+
+Whenever an argument reasons across time or across cases, it is assuming the two sides are similar enough to carry the conclusion.
+
+That gives you both attack and support:
+- **Weaken** by pointing out a salient difference between the two sides.
+- **Strengthen** by adding a similarity or affirming the assumed one.
 
 #### Right Column
 
-# Try these 5 questions, untimed.
 
-Focus on what sort of comparison is being made.
 
-Where is the author assuming that one thing is similar to another?
+## Try these 5, untimed
 
----
+Go for accuracy and pattern recognition, not speed.
+
+For each argument:
+- Name the comparison. What two things, groups, or moments is the author treating as alike?
+- Find where that sameness is assumed rather than proven.
+- Prephrase the gap: "this only works if the two sides are similar in the way that matters."
+
+Then judge the answers:
+- A weakener surfaces a **difference** that breaks the link.
+- A strengthener shores up the **similarity**.
+- Wrong answers often raise a difference that does not matter to the conclusion, or restate the comparison without testing it.
 
 ## 4. Conditional Logic (Medium) Set 3
 

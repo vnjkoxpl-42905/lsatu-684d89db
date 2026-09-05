@@ -134,7 +134,7 @@ title: Must Be True - First Taste
 category: Process
 estimated_time: 50 mins
 question_count: 6
-difficulty_level: 1-3
+difficulty_level: 1-5
 question_type: Must Be True
 question_feature: First Taste
 start_button_label: Continue
@@ -143,6 +143,8 @@ start_button_label: Continue
 ### Pre-Start Instruction Card
 
 #### Left Column
+
+
 
 # Must Be True recap
 
@@ -167,6 +169,8 @@ It is provable based on only the provided information. It does not need to use a
 Since we're trying to pick an answer we can prove, we'd prefer seeing weaker language. It's easier to prove a weakly worded claim. But since most of the inferences on Must Be True come from Conditional or Mathematical thinking, they often are strongly worded, because we can often derive certainty using conditional / mathematical thinking.
 
 #### Right Column
+
+
 
 # Try these 6 questions untimed
 
@@ -517,7 +521,7 @@ title: Most Supported - First Taste
 category: Process
 estimated_time: 1 hr
 question_count: 8
-difficulty_level: 1-3
+difficulty_level: 1-5
 source_tests:
   - PT 71
   - PT 73
@@ -532,6 +536,8 @@ start_button_label: Start
 
 #### Left Column
 
+
+
 Try these eight Level 1-3 **Most Supported** questions from tests 73 and 71.
 
 In general, Most Supported just gives us a paragraph of **statements / information**, and then the correct answer is the most derivable answer choice available.
@@ -545,6 +551,8 @@ If they're providing us with a Principle and asking us to **Apply the Principle*
 If they're asking which **Proposition / Generalization** can be best supported, pick an answer that matches the situation described, but _beware language that is Too Strong!_
 
 #### Right Column
+
+
 
 - Be careful with **overly strong/specific language** in answer choices, because frequently we can't support that extremity or specificity.
 

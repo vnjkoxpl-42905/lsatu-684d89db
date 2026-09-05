@@ -197,29 +197,37 @@ start_button_label: Start
 
 #### Left Column
 
-Try these 7 questions that feature **conditional logic**,  
-from tests 65, 71, and June 2007.
 
-The LR question types that most often would prompt us to consider diagramming the Conditional Logic are
 
-- Must Be True
-- Most Supported
-- Sufficient Assumption
-- Parallel / Parallel Flaw
-- Principle-Strengthen
-- Principle-Conform
+## When to reach for the diagram
+
+This set mixes question types, but they share one trigger: **conditional logic** dense enough that diagramming pays off. The types that most often reward a diagram:
+- **Must Be True** and **Most Supported**
+- **Sufficient Assumption**
+- **Parallel** and **Parallel Flaw**
+- **Principle-Strengthen** and **Principle-Conform**
+
+The move is always the same. Translate each conditional into an arrow, chain the arrows that connect, and read off what must follow. The contrapositive is half your toolkit, so write it down.
+
+On **Flaw** questions with conditional logic, expect the author to abuse a rule with an illegal **reversal** or **negation**: the Necessary vs. Sufficient flaw.
 
 #### Right Column
 
-- Look out for conditional trigger words.
 
-- Practice diagramming some of them on your paper.
 
-- Look for conditionals that could chain together.
+## Try these 7, on paper
 
-- On Flaw questions with conditional logic, look for authors to abuse conditional logic with illegal reversals or negations.
+From tests 65, 71, and June 2007. Keep a pen moving.
 
----
+For each stimulus:
+- Spot the conditional **trigger words** (if, only if, unless, no, all, none) and diagram them.
+- Write the **contrapositive** of any rule you diagram.
+- Look for conditionals that **chain** together, then read the chain end to end.
+
+Judging answers:
+- On inference questions, the answer must be forced by the chain, not merely consistent with it.
+- On **Sufficient Assumption**, find the missing link that completes the chain from evidence to conclusion.
+- On **Flaw / Parallel Flaw**, name the illegal move (reversal or negation) and match it exactly.
 
 ## 32. Speedwalking LR (set 2)
 

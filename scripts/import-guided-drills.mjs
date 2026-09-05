@@ -163,21 +163,108 @@ function parseFile(file) {
   return drills;
 }
 
+// Fields the markdown is the author of. Everything else on an existing row is
+// carried forward: `level` is set by hand in the DB, and question_types /
+// reasoning_types / bank_filter are normalized afterwards by
+// apply-guided-drill-taxonomy.mjs (which also rewrites question_features to
+// real bank feature names). Overwriting them from a fresh parse reverts
+// both, which is how 98 level tags and 108 taxonomy fixes were silently lost
+// on 2026-08-26. Pass --overwrite-taxonomy to take the parsed values anyway.
+const MARKDOWN_OWNS = [
+  'title', 'category', 'estimated_minutes', 'question_count',
+  'difficulty_min', 'difficulty_max',
+  'start_button_label', 'instruction_card', 'week', 'order_in_week',
+  'source_file', 'slug',
+];
+
+// A parsed value only wins when the parse actually found something. Several of
+// the week 4+ files use a layout this parser reads only partially, so a fresh
+// parse yields null difficulty ranges, null counts, and empty instruction
+// cards for drills whose committed rows are complete. Letting those nulls
+// through is a silent erase, not an update.
+function meaningful(v) {
+  if (v == null || v === '') return false;
+  if (Array.isArray(v)) return v.length > 0;
+  if (typeof v === 'object') return Object.values(v).some(meaningful);
+  return true;
+}
+
+function mergeRow(existing, parsed, overwriteTaxonomy) {
+  if (!existing) return parsed;
+  const out = { ...existing };
+  for (const k of MARKDOWN_OWNS) {
+    if (meaningful(parsed[k]) || !meaningful(existing[k])) out[k] = parsed[k];
+  }
+  if (overwriteTaxonomy) {
+    out.question_types = parsed.question_types;
+    out.question_features = parsed.question_features;
+    out.reasoning_types = parsed.reasoning_types;
+    out.bank_filter = parsed.bank_filter;
+  } else {
+    // The count and difficulty window still come from the markdown even when
+    // the taxonomy fields are preserved, or editing a drill's size would do
+    // nothing.
+    out.bank_filter = {
+      ...(existing.bank_filter || {}),
+      difficulty_min: out.difficulty_min,
+      difficulty_max: out.difficulty_max,
+      count: out.question_count,
+    };
+  }
+  return out;
+}
+
 function main() {
+  const overwriteTaxonomy = process.argv.includes('--overwrite-taxonomy');
   const files = fs.readdirSync(DIR).filter(f => f.endsWith('.md') && !f.startsWith('_'));
-  const all = [];
+  const parsed = [];
   for (const f of files.sort()) {
     const drills = parseFile(f);
-    all.push(...drills);
+    parsed.push(...drills);
     console.log(`${f}: ${drills.length} drills`);
   }
+
+  const prior = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : [];
+  const priorBySlug = new Map(prior.map(d => [d.slug, d]));
+  const parsedSlugs = new Set(parsed.map(d => d.slug));
+
+  const merged = parsed.map(d => mergeRow(priorBySlug.get(d.slug), d, overwriteTaxonomy));
+
+  // Any existing row the markdown actually changes is named, not applied
+  // silently. These are real divergences between the markdown and whatever
+  // edited the seed afterwards, and they deserve a human's eye.
+  const touched = [];
+  for (const row of merged) {
+    const before = priorBySlug.get(row.slug);
+    if (!before) continue;
+    const fields = Object.keys(row).filter(
+      k => JSON.stringify(before[k] ?? null) !== JSON.stringify(row[k] ?? null),
+    );
+    if (fields.length) touched.push(`${row.slug}: ${fields.join(', ')}`);
+  }
+
+  // Rows that no markdown file produces (the lsatlab-studyplan drills, merged
+  // in by a different generator) survive rather than being deleted.
+  const carried = prior.filter(d => !parsedSlugs.has(d.slug));
+  const all = [...merged, ...carried];
+
   fs.writeFileSync(OUT, JSON.stringify(all, null, 2));
+
+  const added = parsed.filter(d => !priorBySlug.has(d.slug)).map(d => d.slug);
   console.log(`\nWrote ${all.length} drills → ${OUT}`);
+  console.log(`  ${merged.length} from markdown (${added.length} new), ${carried.length} carried forward`);
+  if (added.length) console.log('  new:', added.join(', '));
+  if (carried.length) console.log('  carried (no markdown source):', carried.map(d => d.slug).join(', '));
+  if (touched.length) {
+    console.log(`  CHANGED ${touched.length} existing rows from markdown:`);
+    for (const t of touched) console.log(`    ${t}`);
+  }
+  console.log(`  taxonomy fields: ${overwriteTaxonomy ? 'OVERWRITTEN from markdown' : 'preserved on existing rows'}`);
 
   // Coverage report
   const byWeek = all.reduce((acc, d) => { acc[d.week] = (acc[d.week] || 0) + 1; return acc; }, {});
   console.log('Per-week counts:', byWeek);
-  const noQT = all.filter(d => d.question_types.length === 0);
+  const noQT = all.filter(d => (d.question_types || []).length === 0);
   if (noQT.length) console.log(`WARN: ${noQT.length} drills with no question_type:`, noQT.map(d => d.slug));
 }
 
