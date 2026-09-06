@@ -525,9 +525,12 @@ export function SectionLaunchFrame({
       </motion.section>
 
       {/* --------------------------------------------------------------- slab */}
-      <motion.section className="rd-slab" id="sl-sections" {...reveal}>
-        {children}
-      </motion.section>
+      {!sectionsFirst && (
+        <motion.section className="rd-slab" id="sl-sections" {...reveal}>
+          {children}
+        </motion.section>
+      )}
+
 
       {/* -------------------------------------------------------------- close */}
       <section className="rd-close" aria-label="Start">
