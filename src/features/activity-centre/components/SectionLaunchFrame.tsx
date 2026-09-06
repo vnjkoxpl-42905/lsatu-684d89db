@@ -168,6 +168,7 @@ export function SectionLaunchFrame({
 
   const heroRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
+  const sectionsRef = useRef<HTMLElement>(null);
 
   /**
    * The hero's scroll, 0 while it is fully on screen and 1 once it has left.
@@ -216,15 +217,14 @@ export function SectionLaunchFrame({
   }, [reduced]);
 
   const goToSections = useCallback(() => {
-    const slab = document.getElementById("sl-sections");
+    const slab = sectionsRef.current;
     if (!slab) return;
-    slab.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
-    // Some shells scroll an inner container that ignores a smooth request from
-    // a transformed hero. Falling back to the first Start keeps the click
-    // meaningful instead of leaving her exactly where she was.
-    const first = slab.querySelector<HTMLButtonElement>("button.sl-sec-go");
-    if (first) window.setTimeout(() => first.focus({ preventScroll: false }), reduced ? 0 : 420);
-  }, [reduced]);
+    // The app can run inside an editor frame whose scrolling container swallows
+    // smooth document scrolling. Jump first, then focus the destination without
+    // starting a second browser-controlled scroll back toward the hero.
+    slab.scrollIntoView({ behavior: "auto", block: "start" });
+    slab.focus({ preventScroll: true });
+  }, []);
 
 
   const briefing = instructions.briefing;
@@ -320,7 +320,14 @@ export function SectionLaunchFrame({
       </section>
 
       {sectionsFirst && (
-        <motion.section className="rd-slab" id="sl-sections" {...reveal}>
+        <motion.section
+          className="rd-slab"
+          id="sl-sections"
+          ref={sectionsRef}
+          tabIndex={-1}
+          aria-label="Choose a section"
+          {...reveal}
+        >
           {children}
         </motion.section>
       )}
@@ -526,7 +533,14 @@ export function SectionLaunchFrame({
 
       {/* --------------------------------------------------------------- slab */}
       {!sectionsFirst && (
-        <motion.section className="rd-slab" id="sl-sections" {...reveal}>
+        <motion.section
+          className="rd-slab"
+          id="sl-sections"
+          ref={sectionsRef}
+          tabIndex={-1}
+          aria-label="Choose a section"
+          {...reveal}
+        >
           {children}
         </motion.section>
       )}
