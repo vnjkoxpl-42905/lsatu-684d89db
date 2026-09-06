@@ -34,7 +34,16 @@ export interface SectionLaunchFrameProps {
   strip?: ReactNode;
   /** The slab below the method: her runs on a section, her sections in the library. */
   children?: ReactNode;
+  /**
+   * Put the slab directly under the hero instead of at the foot of the page.
+   *
+   * The library's slab IS the point of the page — the sections she can start.
+   * Burying it under the editorial meant "Choose a section" was a long scroll
+   * away, and a student who did not scroll never found a way in.
+   */
+  sectionsFirst?: boolean;
   onExit?: () => void;
+
 }
 
 const EASE = [0.22, 1, 0.36, 1] as const;
