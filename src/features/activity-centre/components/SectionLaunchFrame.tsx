@@ -146,7 +146,9 @@ export function SectionLaunchFrame({
   notice,
   strip,
   children,
+  sectionsFirst = false,
   onExit,
+
 }: SectionLaunchFrameProps) {
   const reduced = useReducedMotion();
 
