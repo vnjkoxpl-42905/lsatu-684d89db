@@ -41,6 +41,7 @@ export function SectionLibraryLaunch({
       instructions={instructions}
       onExit={onExit}
       showBreadcrumbs={false}
+      sectionsFirst
     >
       <div className="sl-runs">
         <div>

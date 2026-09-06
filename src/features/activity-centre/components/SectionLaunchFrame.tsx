@@ -34,7 +34,16 @@ export interface SectionLaunchFrameProps {
   strip?: ReactNode;
   /** The slab below the method: her runs on a section, her sections in the library. */
   children?: ReactNode;
+  /**
+   * Put the slab directly under the hero instead of at the foot of the page.
+   *
+   * The library's slab IS the point of the page — the sections she can start.
+   * Burying it under the editorial meant "Choose a section" was a long scroll
+   * away, and a student who did not scroll never found a way in.
+   */
+  sectionsFirst?: boolean;
   onExit?: () => void;
+
 }
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -137,7 +146,9 @@ export function SectionLaunchFrame({
   notice,
   strip,
   children,
+  sectionsFirst = false,
   onExit,
+
 }: SectionLaunchFrameProps) {
   const reduced = useReducedMotion();
 
@@ -205,10 +216,16 @@ export function SectionLaunchFrame({
   }, [reduced]);
 
   const goToSections = useCallback(() => {
-    document
-      .getElementById("sl-sections")
-      ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+    const slab = document.getElementById("sl-sections");
+    if (!slab) return;
+    slab.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+    // Some shells scroll an inner container that ignores a smooth request from
+    // a transformed hero. Falling back to the first Start keeps the click
+    // meaningful instead of leaving her exactly where she was.
+    const first = slab.querySelector<HTMLButtonElement>("button.sl-sec-go");
+    if (first) window.setTimeout(() => first.focus({ preventScroll: false }), reduced ? 0 : 420);
   }, [reduced]);
+
 
   const briefing = instructions.briefing;
   const current = beats[beat];
@@ -301,6 +318,14 @@ export function SectionLaunchFrame({
           <div className="rd-hero-space" aria-hidden="true" />
         </div>
       </section>
+
+      {sectionsFirst && (
+        <motion.section className="rd-slab" id="sl-sections" {...reveal}>
+          {children}
+        </motion.section>
+      )}
+
+
 
       {(notice || strip) && (
         <div className="rd-band">
@@ -500,9 +525,12 @@ export function SectionLaunchFrame({
       </motion.section>
 
       {/* --------------------------------------------------------------- slab */}
-      <motion.section className="rd-slab" id="sl-sections" {...reveal}>
-        {children}
-      </motion.section>
+      {!sectionsFirst && (
+        <motion.section className="rd-slab" id="sl-sections" {...reveal}>
+          {children}
+        </motion.section>
+      )}
+
 
       {/* -------------------------------------------------------------- close */}
       <section className="rd-close" aria-label="Start">
