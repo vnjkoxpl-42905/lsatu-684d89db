@@ -216,10 +216,16 @@ export function SectionLaunchFrame({
   }, [reduced]);
 
   const goToSections = useCallback(() => {
-    document
-      .getElementById("sl-sections")
-      ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+    const slab = document.getElementById("sl-sections");
+    if (!slab) return;
+    slab.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+    // Some shells scroll an inner container that ignores a smooth request from
+    // a transformed hero. Falling back to the first Start keeps the click
+    // meaningful instead of leaving her exactly where she was.
+    const first = slab.querySelector<HTMLButtonElement>("button.sl-sec-go");
+    if (first) window.setTimeout(() => first.focus({ preventScroll: false }), reduced ? 0 : 420);
   }, [reduced]);
+
 
   const briefing = instructions.briefing;
   const current = beats[beat];
