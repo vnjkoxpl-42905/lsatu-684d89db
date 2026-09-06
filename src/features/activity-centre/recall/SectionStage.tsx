@@ -257,10 +257,27 @@ export function SectionStage({
                     mark at the end. Allow the microphone for this site in your browser, then ask
                     again. Nothing has started, and your time has not begun.
                   </p>
+                  {isEmbedded() && (
+                    <p className="ac-section-ready-body">
+                      This page is inside a preview window, and a preview window is never given the
+                      microphone. Open the drill in its own tab and start it there.
+                    </p>
+                  )}
                   <div className="ac-section-ready-actions">
                     <button type="button" className="ac-section-ready-retry" onClick={onRetryMic}>
                       Ask again
                     </button>
+                    {isEmbedded() && (
+                      <button
+                        type="button"
+                        className="ac-section-ready-retry"
+                        onClick={() =>
+                          window.open(window.location.href, "_blank", "noopener,noreferrer")
+                        }
+                      >
+                        Open in its own tab
+                      </button>
+                    )}
                     {onExit && (
                       <button type="button" className="ac-section-ready-leave" onClick={onExit}>
                         Leave this section
@@ -268,6 +285,7 @@ export function SectionStage({
                     )}
                   </div>
                 </>
+
               ) : (
                 <>
                   <p className="ac-section-ready-title">Recording now</p>
