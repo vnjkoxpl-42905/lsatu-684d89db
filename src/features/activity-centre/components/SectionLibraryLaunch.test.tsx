@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { SectionLibraryLaunch } from "./SectionLibraryLaunch";
 import type { ActivityInstructions } from "../api/types";
@@ -95,6 +95,18 @@ describe("the library door", () => {
   it("puts the sections on the page itself", () => {
     renderDoor();
     expect(screen.getByText("the sections go here")).toBeInTheDocument();
+  });
+
+  it("moves directly to the section choices when asked", () => {
+    const scrollIntoView = vi.fn();
+    HTMLElement.prototype.scrollIntoView = scrollIntoView;
+    renderDoor();
+
+    fireEvent.click(screen.getByRole("button", { name: "Choose a section" }));
+
+    const destination = screen.getByRole("region", { name: "Choose a section" });
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" });
+    expect(destination).toHaveFocus();
   });
 
   it("does not repeat the page location in a breadcrumb bar", () => {
