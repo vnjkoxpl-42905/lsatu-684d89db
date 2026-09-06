@@ -91,6 +91,7 @@ const AdminInspector = safeLazy(() => import("./pages/admin/Inspector"));
 const LsatKnowledgeImport = safeLazy(() => import("./pages/LsatKnowledgeImport"));
 const GuidedDrillStart = safeLazy(() => import("./pages/GuidedDrillStart"));
 const ActivityCentre = safeLazy(() => import("./pages/ActivityCentre"));
+const ActivitySections = safeLazy(() => import("./pages/ActivitySections"));
 const ActivityRunner = safeLazy(() => import("./features/activity-centre/components/ActivityRunner"));
 
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
@@ -453,6 +454,16 @@ const App = () => {
                     <ProtectedRoute requireAdmin>
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                         <ActivityRunner preview />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+                  {/* The Read, Recall, Colour door at a permanent address, so
+                      a student can pick a section without having been assigned
+                      the library. Must sit before :assignmentId. */}
+                  <Route path="/activities/sections" element={
+                    <ProtectedRoute flag="has_activity_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ActivitySections />
                       </React.Suspense>
                     </ProtectedRoute>
                   } />
