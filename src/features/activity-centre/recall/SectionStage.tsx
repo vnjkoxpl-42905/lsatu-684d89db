@@ -3,6 +3,27 @@ import { VoiceLevel } from "./VoiceLevel";
 import { useNoKeyboard } from "./noKeyboard";
 
 /**
+ * Is this page running inside another page's frame?
+ *
+ * A preview frame is never handed the microphone: the embed carries no
+ * microphone permission, so `getUserMedia` is refused before the student is
+ * ever asked. That looks identical to a student saying no, and "allow the
+ * microphone for this site" is advice she cannot act on. So when the drill is
+ * framed, the refusal names the real cause and offers the one thing that
+ * works: the same address in a tab of its own.
+ *
+ * A cross-origin frame throws on the read, and a throw means framed.
+ */
+function isEmbedded(): boolean {
+  try {
+    return window.self !== window.top;
+  } catch {
+    return true;
+  }
+}
+
+
+/**
  * One screen of a Read, Recall, Colour SECTION run.
  *
  * Presentational, like `RecallStage`, and separate from it because the rule it
