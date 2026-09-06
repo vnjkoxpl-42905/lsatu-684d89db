@@ -7,6 +7,7 @@ import {
   listSectionGrades,
 } from "../api/activitiesClient";
 import { SectionReportCard } from "./SectionReportCard";
+import "../activity-centre.css";
 import { reconstructProgress } from "../progress";
 import type {
   ActivityAssignment,
