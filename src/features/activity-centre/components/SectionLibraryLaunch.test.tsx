@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { SectionLibraryLaunch } from "./SectionLibraryLaunch";
 import type { ActivityInstructions } from "../api/types";
 import sectionInstructions from "../content/read-recall-colour-section.instructions.json";
