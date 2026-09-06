@@ -425,6 +425,32 @@ export function ClassroomHomeView({
           </section>
           ) : null}
 
+          {model.access.activities ? (
+            <section
+              className="classroom-home-card classroom-home-session"
+              aria-label="Read, Recall, Colour"
+            >
+              <span className="classroom-home-session-icon" aria-hidden="true">
+                <ArrowRight size={17} strokeWidth={1.8} />
+              </span>
+              <span className="classroom-home-session-text">
+                <span className="classroom-home-card-label classroom-home-card-label-muted">
+                  READ, RECALL, COLOUR
+                </span>
+                <span className="classroom-home-session-value">Start a section</span>
+                <span className="classroom-home-session-meta">
+                  Read a full section aloud, then get it graded.
+                </span>
+              </span>
+              <span className="classroom-home-session-actions">
+                <Pill emphasis onClick={() => handleOpen("/activities/sections")}>
+                  Choose a section
+                </Pill>
+              </span>
+            </section>
+          ) : null}
+
+
           <section className="classroom-home-card classroom-home-session" aria-label="Next session">
             <span className="classroom-home-session-icon" aria-hidden="true">
               <CalendarClock size={17} strokeWidth={1.8} />
