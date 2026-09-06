@@ -319,6 +319,14 @@ export function SectionLaunchFrame({
         </div>
       </section>
 
+      {sectionsFirst && (
+        <motion.section className="rd-slab" id="sl-sections" {...reveal}>
+          {children}
+        </motion.section>
+      )}
+
+
+
       {(notice || strip) && (
         <div className="rd-band">
           {notice}
