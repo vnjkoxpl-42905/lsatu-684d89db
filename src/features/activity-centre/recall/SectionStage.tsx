@@ -3,6 +3,27 @@ import { VoiceLevel } from "./VoiceLevel";
 import { useNoKeyboard } from "./noKeyboard";
 
 /**
+ * Is this page running inside another page's frame?
+ *
+ * A preview frame is never handed the microphone: the embed carries no
+ * microphone permission, so `getUserMedia` is refused before the student is
+ * ever asked. That looks identical to a student saying no, and "allow the
+ * microphone for this site" is advice she cannot act on. So when the drill is
+ * framed, the refusal names the real cause and offers the one thing that
+ * works: the same address in a tab of its own.
+ *
+ * A cross-origin frame throws on the read, and a throw means framed.
+ */
+function isEmbedded(): boolean {
+  try {
+    return window.self !== window.top;
+  } catch {
+    return true;
+  }
+}
+
+
+/**
  * One screen of a Read, Recall, Colour SECTION run.
  *
  * Presentational, like `RecallStage`, and separate from it because the rule it
@@ -257,10 +278,27 @@ export function SectionStage({
                     mark at the end. Allow the microphone for this site in your browser, then ask
                     again. Nothing has started, and your time has not begun.
                   </p>
+                  {isEmbedded() && (
+                    <p className="ac-section-ready-body">
+                      This page is inside a preview window, and a preview window is never given the
+                      microphone. Open the drill in its own tab and start it there.
+                    </p>
+                  )}
                   <div className="ac-section-ready-actions">
                     <button type="button" className="ac-section-ready-retry" onClick={onRetryMic}>
                       Ask again
                     </button>
+                    {isEmbedded() && (
+                      <button
+                        type="button"
+                        className="ac-section-ready-retry"
+                        onClick={() =>
+                          window.open(window.location.href, "_blank", "noopener,noreferrer")
+                        }
+                      >
+                        Open in its own tab
+                      </button>
+                    )}
                     {onExit && (
                       <button type="button" className="ac-section-ready-leave" onClick={onExit}>
                         Leave this section
@@ -268,6 +306,7 @@ export function SectionStage({
                     )}
                   </div>
                 </>
+
               ) : (
                 <>
                   <p className="ac-section-ready-title">Recording now</p>
