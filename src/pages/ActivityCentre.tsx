@@ -61,6 +61,15 @@ export default function ActivityCentre() {
     [assignments],
   );
 
+  /**
+   * The door is already on her list when the library was assigned to her, and
+   * that card leads to the same place. Only the unassigned case needs a way in.
+   */
+  const hasDoorAssignment = useMemo(
+    () => ordered.some((a) => a.mode === "section-library"),
+    [ordered],
+  );
+
   return (
     // No back link of its own: the classroom rail is the way back, and it was
     // pointing at /foyer, which only redirects to /classroom anyway. One name
@@ -120,6 +129,7 @@ export default function ActivityCentre() {
           * behind an assignment only hid a drill she was already allowed to
           * run. It stays visible whether or not the library was assigned.
           */}
+        {!hasDoorAssignment && (
         <section className="mt-10">
           <button
             type="button"
@@ -139,6 +149,7 @@ export default function ActivityCentre() {
             </span>
           </button>
         </section>
+        )}
 
         {is_admin && <AdminLibrary assignedCount={ordered.length} />}
       </div>
