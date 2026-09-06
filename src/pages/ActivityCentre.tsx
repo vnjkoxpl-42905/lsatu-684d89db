@@ -112,6 +112,34 @@ export default function ActivityCentre() {
           )}
         </div>
 
+        {/*
+          * Read, Recall, Colour is open to anyone with Activities.
+          *
+          * Every section behind this door is startable on demand -- the Attempt
+          * is built server-side when she picks one -- so gating the door itself
+          * behind an assignment only hid a drill she was already allowed to
+          * run. It stays visible whether or not the library was assigned.
+          */}
+        <section className="mt-10">
+          <button
+            type="button"
+            onClick={() => navigate("/activities/sections")}
+            className="w-full rounded-[24px] border border-border bg-card p-6 text-left transition-colors hover:border-foreground/30"
+          >
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Out loud
+            </span>
+            <h2 className="ac-display mt-2 text-2xl text-foreground">Read, Recall, Colour</h2>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+              Say each argument back from memory, one whole section in a single take. Choose any
+              section and start it now — every attempt is kept.
+            </p>
+            <span className="mt-4 inline-flex items-center text-sm font-semibold text-foreground underline underline-offset-4">
+              Choose a section
+            </span>
+          </button>
+        </section>
+
         {is_admin && <AdminLibrary assignedCount={ordered.length} />}
       </div>
     </div>
