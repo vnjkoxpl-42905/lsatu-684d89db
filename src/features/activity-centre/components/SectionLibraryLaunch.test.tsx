@@ -102,7 +102,7 @@ describe("the library door", () => {
     HTMLElement.prototype.scrollIntoView = scrollIntoView;
     renderDoor();
 
-    fireEvent.click(screen.getByRole("button", { name: "Choose a section" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Choose a section" })[0]);
 
     const destination = screen.getByRole("region", { name: "Choose a section" });
     expect(scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" });
