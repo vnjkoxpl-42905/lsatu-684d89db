@@ -179,7 +179,7 @@ describe("what she sees while working", () => {
     // restyle.
     await renderRun();
     expect(screen.getByText("0:00")).toBeInTheDocument();
-    expect(screen.getByText(/25:00/)).toBeInTheDocument();
+    expect(screen.getByText(/Goal 25:00/)).toBeInTheDocument();
     expect(document.body.textContent).not.toMatch(/-\d+:\d\d/);
   });
 
