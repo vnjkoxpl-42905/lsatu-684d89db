@@ -201,7 +201,7 @@ export function SectionStage({
         {elapsedSeconds !== undefined && (
           <span className="ac-section-clock" aria-live="off">
             {clock(elapsedSeconds)}
-            {goalMinutes ? <i> / {clock(goalMinutes * 60)}</i> : null}
+            {goalMinutes ? <i> · Goal {clock(goalMinutes * 60)}</i> : null}
           </span>
         )}
         {onExit ? (
