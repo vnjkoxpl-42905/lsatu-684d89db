@@ -123,6 +123,15 @@ export interface SectionStageProps {
    * stimulus 1 and never reach stimulus 2.
    */
   onAdvance?: () => void;
+  /**
+   * The first-run walkthrough note, for the first few stimuli only.
+   *
+   * Text beside the paper, never a step in the loop: it takes no key, gates
+   * nothing and is gone after the third stimulus whether or not she dismissed
+   * it. Omit and no card is drawn at all, which is every run after the first.
+   */
+  coach?: CoachNote | null;
+  onDismissCoach?: () => void;
 }
 
 /*
