@@ -178,6 +178,8 @@ export function SectionStage({
   onCancelExit,
   countdown = null,
   onAdvance,
+  coach = null,
+  onDismissCoach,
 }: SectionStageProps) {
   const noKeyboard = useNoKeyboard();
   // Position across the section, drawn as the rail's fill. Progress inside the
