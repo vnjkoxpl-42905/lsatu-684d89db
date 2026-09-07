@@ -1,4 +1,5 @@
 import type { SectionPhase, SectionStimulus } from "./section";
+import type { CoachNote } from "./coach";
 import { VoiceLevel } from "./VoiceLevel";
 import { useNoKeyboard } from "./noKeyboard";
 
