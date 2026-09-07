@@ -943,7 +943,6 @@ function RunBody({
       }
       onExit={onExit ? askToExit : undefined}
       elapsedSeconds={countdown === null ? elapsed : 0}
-      goalMinutes={run.timeGoalMinutes[accommodation]}
       getStream={getStream}
       onDeadInput={setDeadInput}
       micRefused={micRefused}
