@@ -430,7 +430,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
        * newest Attempt.
        */
       const started = isSectionRun
-        ? startSectionOnOpen && assignment.status !== "completed"
+        ? startSectionOnOpen
         : assignment.status === "in_progress" || progress.resolvedCount > 0;
       setPhase(started ? "running" : "intro");
       // The world's entrance is the ceremony of arriving, and it runs two and a
