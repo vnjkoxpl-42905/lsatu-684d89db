@@ -79,8 +79,6 @@ export interface SectionStageProps {
   onExit?: () => void;
   /** Seconds since the section started. Omit to draw no clock at all. */
   elapsedSeconds?: number;
-  /** Her goal for this section, so the elapsed time has something to sit against. */
-  goalMinutes?: number;
   /**
    * The live input, for the presence indicator. Omit and no indicator is drawn,
    * which is what a run against a handheld recorder looks like.
@@ -161,7 +159,6 @@ export function SectionStage({
   error,
   onExit,
   elapsedSeconds,
-  goalMinutes,
   getStream,
   onDeadInput,
   micRefused,
@@ -201,7 +198,6 @@ export function SectionStage({
         {elapsedSeconds !== undefined && (
           <span className="ac-section-clock" aria-live="off">
             {clock(elapsedSeconds)}
-            {goalMinutes ? <i> · Goal {clock(goalMinutes * 60)}</i> : null}
           </span>
         )}
         {onExit ? (
