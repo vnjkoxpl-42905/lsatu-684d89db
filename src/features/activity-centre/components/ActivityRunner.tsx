@@ -23,6 +23,7 @@ import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
 import { SectionRunner } from "../recall/SectionRunner";
+import { SectionBriefingPage } from "./SectionBriefingPage";
 import { recoverPendingRecordings, recoverPendingRows } from "../recall/recoverRecordings";
 import type { Accommodation } from "../recall/section";
 import { SectionLibraryPanel } from "./SectionLibraryPanel";
@@ -429,8 +430,13 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
        * next run takes the next `attempt_no` and the grader reads only the
        * newest Attempt.
        */
+      /*
+       * A section ALWAYS opens on its instructions page now, even when it was
+       * launched with Start from the library. The briefing is a full page of
+       * its own with its own Start; nothing records until she presses it.
+       */
       const started = isSectionRun
-        ? startSectionOnOpen
+        ? false
         : assignment.status === "in_progress" || progress.resolvedCount > 0;
       setPhase(started ? "running" : "intro");
       // The world's entrance is the ceremony of arriving, and it runs two and a
@@ -666,6 +672,31 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           title={assignment.title}
           subtitle={assignment.subtitle}
           instructions={assignment.instructions}
+          onExit={handleLeave}
+        />
+      </div>
+    );
+  }
+
+  /*
+   * A section's front door is its instructions, in full, on their own page.
+   *
+   * The editorial intro folded the method into tabs, so a student pressing
+   * Start from the library either met a page she had to unfold or -- when the
+   * launch skipped it -- a live microphone with no explanation at all.
+   */
+  if (phase === "intro" && assignment.mode === "section" && assignment.item_format === "spoken-recall") {
+    return (
+      <div className="activity-centre min-h-screen" data-runner="section-briefing">
+        {adminBanner}
+        <SectionBriefingPage
+          title={assignment.title}
+          subtitle={assignment.subtitle}
+          instructions={assignment.instructions}
+          itemCount={items.length}
+          timeGoalMinutes={assignment.time_goal_minutes?.[accommodation] ?? null}
+          sourceSection={assignment.source_section}
+          onStart={handleStart}
           onExit={handleLeave}
         />
       </div>

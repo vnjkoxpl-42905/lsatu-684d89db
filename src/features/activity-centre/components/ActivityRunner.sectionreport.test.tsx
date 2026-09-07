@@ -235,11 +235,14 @@ describe("the goal an accommodated student is timed against", () => {
     expect(sectionRunnerProps.mock.calls.at(-1)![0].accommodation).toBe("accommodation_70");
   });
 
-  it("opens the recorder directly when started from the section library", async () => {
+  it("shows the full instructions page first, even when started from the library", async () => {
     const { container } = renderRouted(true);
+    await waitFor(() =>
+      expect(container.querySelector('[data-runner="section-briefing"]')).toBeTruthy(),
+    );
+    expect(sectionRunnerProps).not.toHaveBeenCalled();
+    await startTheSection();
     await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
-    expect(container.querySelector('[data-runner="recall-section"]')).toBeTruthy();
-    expect(screen.queryByRole("button", { name: /^start( the section)?$/i })).toBeNull();
     expect(sectionRunnerProps.mock.calls.at(-1)?.[0].timeGoalMinutes).toEqual({
       standard: 25,
       accommodation_53: 38,
