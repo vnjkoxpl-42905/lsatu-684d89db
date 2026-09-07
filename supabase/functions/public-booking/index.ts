@@ -153,7 +153,18 @@ Deno.serve(async (req) => {
       const bufferMs = BOOKING_CFG.bufferMin * 60_000;
       const rangeStart = new Date(nowMs + BOOKING_CFG.leadMin * 60_000 - bufferMs).toISOString();
       const rangeEnd = new Date(nowMs + daysAhead * 86_400_000 + bufferMs).toISOString();
-      const busy = await loadBusyIntervals({ supabase, gcal, rangeStartIso: rangeStart, rangeEndIso: rangeEnd });
+      // Calendar lookups fail for reasons the student cannot act on (expired
+      // Google credentials, a transient query error). Let that surface as a
+      // named, retryable condition instead of an opaque 500.
+      let busy;
+      try {
+        busy = await loadBusyIntervals({ supabase, gcal, rangeStartIso: rangeStart, rangeEndIso: rangeEnd });
+      } catch (e) {
+        console.error("public-booking slots availability lookup failed", {
+          slug, error: e instanceof Error ? e.message : String(e),
+        });
+        return json({ error: "availability_check_failed" }, 503);
+      }
 
       const { data: avail } = await supabase.rpc("get_booking_availability");
       const { hostTz, rangesByDow } = parseAvailability(avail);

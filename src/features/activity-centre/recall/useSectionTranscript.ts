@@ -197,6 +197,10 @@ export function sliceTranscript(
 ): string[] {
   const timeline = all && all.length ? [...all].sort((a, b) => a.startMs - b.startMs) : segments;
   const out = segments.map(() => [] as string[]);
+  // No windows means nothing can be filed anywhere -- a stimulus recorded
+  // before the microphone opened. Blank rows are the right answer; a throw here
+  // would take the whole section's save down with it.
+  if (timeline.length === 0) return out.map(() => "");
 
   for (const piece of pieces) {
     // Anything said before the first window opened is not part of the run.
