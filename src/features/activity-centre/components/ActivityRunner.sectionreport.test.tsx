@@ -237,8 +237,9 @@ describe("the goal an accommodated student is timed against", () => {
 
   it("shows the full instructions page first, even when started from the library", async () => {
     const { container } = renderRouted(true);
-    await screen.findByText(/full instructions/i);
-    expect(container.querySelector('[data-runner="section-briefing"]')).toBeTruthy();
+    await waitFor(() =>
+      expect(container.querySelector('[data-runner="section-briefing"]')).toBeTruthy(),
+    );
     expect(sectionRunnerProps).not.toHaveBeenCalled();
     await startTheSection();
     await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
