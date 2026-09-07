@@ -170,16 +170,16 @@ describe("what she sees while working", () => {
     expect(screen.getByText(/tell it back/i)).toBeInTheDocument();
   });
 
-  it("shows elapsed time against her goal, counting up", async () => {
+  it("shows elapsed time counting up", async () => {
     // This screen carried no clock at all, on the reasoning that a running
     // clock produces the rushed reading the drill treats. Joshua overruled it:
     // the drill is timed and she cannot pace 25 minutes blind. Counting UP is
     // the part that matters -- a number falling towards zero is the version
     // that was rejected, and a countdown here would be a regression, not a
-    // restyle.
+    // restyle. The goal itself is not shown; the clock is only a pace cue.
     await renderRun();
     expect(screen.getByText("0:00")).toBeInTheDocument();
-    expect(screen.getByText(/Goal 25:00/)).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/Goal/);
     expect(document.body.textContent).not.toMatch(/-\d+:\d\d/);
   });
 
