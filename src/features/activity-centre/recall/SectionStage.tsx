@@ -1,4 +1,5 @@
 import type { SectionPhase, SectionStimulus } from "./section";
+import type { CoachNote } from "./coach";
 import { VoiceLevel } from "./VoiceLevel";
 import { useNoKeyboard } from "./noKeyboard";
 
@@ -123,6 +124,15 @@ export interface SectionStageProps {
    * stimulus 1 and never reach stimulus 2.
    */
   onAdvance?: () => void;
+  /**
+   * The first-run walkthrough note, for the first few stimuli only.
+   *
+   * Text beside the paper, never a step in the loop: it takes no key, gates
+   * nothing and is gone after the third stimulus whether or not she dismissed
+   * it. Omit and no card is drawn at all, which is every run after the first.
+   */
+  coach?: CoachNote | null;
+  onDismissCoach?: () => void;
 }
 
 /*
@@ -168,6 +178,8 @@ export function SectionStage({
   onCancelExit,
   countdown = null,
   onAdvance,
+  coach = null,
+  onDismissCoach,
 }: SectionStageProps) {
   const noKeyboard = useNoKeyboard();
   // Position across the section, drawn as the rail's fill. Progress inside the
@@ -393,6 +405,27 @@ export function SectionStage({
             </div>
           </div>
         </div>
+
+        {/* The first-run walkthrough. Beside the paper, never on it, and it
+            holds nothing up: no key of its own, nothing to acknowledge, gone
+            of its own accord after the third stimulus. */}
+        {coach && countdown === null ? (
+          <aside className="ac-section-coach" aria-label="Walkthrough">
+            <p className="ac-section-coach-step">
+              Walkthrough · {coach.step} of {coach.of}
+            </p>
+            <p className="ac-section-coach-title">{coach.title}</p>
+            <p className="ac-section-coach-body">{coach.body}</p>
+            <p className="ac-section-coach-next">
+              <span>Next</span> {coach.next}
+            </p>
+            {onDismissCoach ? (
+              <button type="button" className="ac-section-coach-hide" onClick={onDismissCoach}>
+                Hide this
+              </button>
+            ) : null}
+          </aside>
+        ) : null}
       </main>
     </div>
   );

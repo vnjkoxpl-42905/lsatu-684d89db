@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { completeSectionRun, requestSectionGrading } from "../api/activitiesClient";
 import { SectionStage } from "./SectionStage";
+import { coachNote, hasSeenWalkthrough, markWalkthroughSeen } from "./coach";
 import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
 import { sliceTranscript, useSectionTranscript } from "./useSectionTranscript";
 import { beginBackup, discard, putChunk, stashRows } from "./recordingBackup";
@@ -196,6 +197,19 @@ function RunBody({
 }) {
   const [cursor, setCursor] = useState<SectionCursor>(startCursor);
   const [done, setDone] = useState(false);
+  /**
+   * The first-run walkthrough, on for a student who has never run a section.
+   *
+   * Read once, at mount, and marked seen at the same moment: it is a
+   * first-section thing, not a first-finished-section thing, so an abandoned
+   * first run does not bring it back. She can also hide it early.
+   */
+  const [coachOn, setCoachOn] = useState(() => !hasSeenWalkthrough(studentId));
+  useEffect(() => {
+    if (coachOn) markWalkthroughSeen(studentId);
+    // Deliberately once, on mount, against the value read at mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   /**
    * Seconds left in the ready beat, counting to zero, and null once she is
    * working.
@@ -954,6 +968,9 @@ function RunBody({
       /* The same act as the Space handler, for a device with no Space key. The
          stage decides whether to draw it; the runner only supplies the act. */
       onAdvance={press}
+      /* First section only, first three stimuli only, and never in the loop. */
+      coach={coachOn ? coachNote(cursor.item, cursor.phase) : null}
+      onDismissCoach={() => setCoachOn(false)}
     />
   );
 }
