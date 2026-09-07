@@ -159,6 +159,21 @@ export function SectionLibrary({
   if (!choices) {
     return <p className="sl-note">Loading sections\u2026</p>;
   }
+  /*
+   * An empty list is a fact, not a blank space.
+   *
+   * "Choose a section" carries her to this slab, and a slab with nothing in it
+   * is the dead end she reports as the drill being broken. Say what is true:
+   * nothing has been built for her yet.
+   */
+  if (choices.length === 0) {
+    return (
+      <p className="sl-note">
+        No sections are ready for you yet. Joshua adds them here as they are built — check
+        back, or message him if you were expecting one tonight.
+      </p>
+    );
+  }
 
   return (
     <div className="sl-sections">

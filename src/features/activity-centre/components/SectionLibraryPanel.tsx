@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { recoverPendingRecordings, recoverPendingRows } from "../recall/recoverRecordings";
 import { useStudentActivities } from "../hooks/useStudentActivities";
 import { SectionLibrary } from "./SectionLibrary";
 import { SectionLibraryLaunch } from "./SectionLibraryLaunch";
@@ -33,7 +36,34 @@ export function SectionLibraryPanel({
   instructions?: ActivityInstructions;
 }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { assignments } = useStudentActivities();
+
+  /*
+   * Send up anything a previous run left on this machine.
+   *
+   * The runner already does this on the way into an Attempt, which only helps
+   * a student who starts another one. This is the door she actually comes back
+   * through, so a recording or a set of answers stranded by a crash goes up as
+   * soon as she opens the drill -- and is markable from that moment. Silent and
+   * best-effort: a failed pass must never keep this page from opening.
+   */
+  useEffect(() => {
+    if (!user?.id) return;
+    let cancelled = false;
+    void (async () => {
+      try {
+        await recoverPendingRecordings(user.id);
+        if (cancelled) return;
+        await recoverPendingRows(user.id);
+      } catch {
+        // Nothing to say here. The next open tries again.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   return (
     <SectionLibraryLaunch
