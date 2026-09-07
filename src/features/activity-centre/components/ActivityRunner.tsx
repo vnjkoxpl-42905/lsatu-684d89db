@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { useStudentActivity } from "../hooks/useStudentActivities";
 import {
@@ -63,6 +63,13 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
   const previewActivityId = preview ? params.activityId : undefined;
   const assignmentId = assignmentIdProp ?? params.assignmentId;
   const navigate = useNavigate();
+  const location = useLocation();
+  const startSectionOnOpen =
+    !preview &&
+    typeof location.state === "object" &&
+    location.state !== null &&
+    "startSection" in location.state &&
+    location.state.startSection === true;
   // Only the routed runner owns the whole viewport and therefore needs its own
   // way out. Embedded (teacher preview) sits inside chrome that already closes.
   const routed = assignmentIdProp === undefined;
@@ -422,8 +429,9 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
        * next run takes the next `attempt_no` and the grader reads only the
        * newest Attempt.
        */
-      const started =
-        !isSectionRun && (assignment.status === "in_progress" || progress.resolvedCount > 0);
+      const started = isSectionRun
+        ? startSectionOnOpen && assignment.status !== "completed"
+        : assignment.status === "in_progress" || progress.resolvedCount > 0;
       setPhase(started ? "running" : "intro");
       // The world's entrance is the ceremony of arriving, and it runs two and a
       // half seconds. It belongs to Start, not to every reopen: a student who
@@ -442,7 +450,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       }
       setHydrated(true);
     })();
-  }, [assignment, user, items, hydrated, preview, readOnly, syncClassroom]);
+  }, [assignment, user, items, hydrated, preview, readOnly, startSectionOnOpen, syncClassroom]);
 
   const handleStart = useCallback(async () => {
     setEntered(false);

@@ -141,9 +141,15 @@ async function startTheSection() {
   fireEvent.click(start);
 }
 
-function renderRouted() {
+function renderRouted(startSection = false) {
   return render(
-    <MemoryRouter initialEntries={["/activities/assign-1"]}>
+    <MemoryRouter
+      initialEntries={[
+        startSection
+          ? { pathname: "/activities/assign-1", state: { startSection: true } }
+          : "/activities/assign-1",
+      ]}
+    >
       <Routes>
         <Route path="/activities/:assignmentId" element={<ActivityRunner />} />
       </Routes>
@@ -227,6 +233,13 @@ describe("the goal an accommodated student is timed against", () => {
     await startTheSection();
     await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
     expect(sectionRunnerProps.mock.calls.at(-1)![0].accommodation).toBe("accommodation_70");
+  });
+
+  it("opens the recorder directly when started from the section library", async () => {
+    const { container } = renderRouted(true);
+    await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
+    expect(container.querySelector('[data-runner="recall-section"]')).toBeTruthy();
+    expect(screen.queryByRole("button", { name: /^start( the section)?$/i })).toBeNull();
   });
 
   it("asks for it under the student's own id", async () => {

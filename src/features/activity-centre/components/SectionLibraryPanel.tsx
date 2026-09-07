@@ -11,10 +11,10 @@ import type { ActivityInstructions } from "../api/types";
  * `SectionLibrary` stays pure so it can be rendered in a test without a session
  * or a router. This is the half that knows about both.
  *
- * Starting an Attempt navigates to that Attempt's own assignment, which shows
- * the instructions before it runs. That is deliberate: the instructions are the
- * same for every section and she sees them every time she starts one, rather
- * than once when the drill was first assigned.
+ * Starting an Attempt navigates to that Attempt's own assignment and opens the
+ * recorder immediately. The library already shows the complete instructions;
+ * repeating them on a second page made Start look as though it had not opened
+ * the drill at all.
  */
 export function SectionLibraryPanel({
   onExit,
@@ -53,7 +53,7 @@ export function SectionLibraryPanel({
         */}
       <SectionLibrary
         attempts={assignments}
-        onStart={(id) => navigate(`/activities/${id}`)}
+        onStart={(id) => navigate(`/activities/${id}`, { state: { startSection: true } })}
         onOpenAttempt={(id) => navigate(`/activities/${id}`)}
       />
     </SectionLibraryLaunch>
