@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { recoverPendingRecordings, recoverPendingRows } from "../recall/recoverRecordings";
 import { useStudentActivities } from "../hooks/useStudentActivities";
 import { SectionLibrary } from "./SectionLibrary";
 import { SectionLibraryLaunch } from "./SectionLibraryLaunch";
