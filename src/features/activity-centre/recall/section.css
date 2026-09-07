@@ -722,6 +722,6 @@
 
 @media (max-width: 640px) {
   .ac-section-coach {
-    display: none;
+    padding: 0.85rem 0.9rem 1rem;
   }
 }
