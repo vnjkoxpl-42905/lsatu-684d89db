@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { completeSectionRun, requestSectionGrading } from "../api/activitiesClient";
 import { SectionStage } from "./SectionStage";
+import { coachNote, hasSeenWalkthrough, markWalkthroughSeen } from "./coach";
 import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
 import { sliceTranscript, useSectionTranscript } from "./useSectionTranscript";
 import { beginBackup, discard, putChunk, stashRows } from "./recordingBackup";
