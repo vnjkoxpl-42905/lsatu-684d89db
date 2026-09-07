@@ -968,6 +968,9 @@ function RunBody({
       /* The same act as the Space handler, for a device with no Space key. The
          stage decides whether to draw it; the runner only supplies the act. */
       onAdvance={press}
+      /* First section only, first three stimuli only, and never in the loop. */
+      coach={coachOn ? coachNote(cursor.item, cursor.phase) : null}
+      onDismissCoach={() => setCoachOn(false)}
     />
   );
 }
