@@ -405,6 +405,27 @@ export function SectionStage({
             </div>
           </div>
         </div>
+
+        {/* The first-run walkthrough. Beside the paper, never on it, and it
+            holds nothing up: no key of its own, nothing to acknowledge, gone
+            of its own accord after the third stimulus. */}
+        {coach && countdown === null ? (
+          <aside className="ac-section-coach" aria-label="Walkthrough">
+            <p className="ac-section-coach-step">
+              Walkthrough · {coach.step} of {coach.of}
+            </p>
+            <p className="ac-section-coach-title">{coach.title}</p>
+            <p className="ac-section-coach-body">{coach.body}</p>
+            <p className="ac-section-coach-next">
+              <span>Next</span> {coach.next}
+            </p>
+            {onDismissCoach ? (
+              <button type="button" className="ac-section-coach-hide" onClick={onDismissCoach}>
+                Hide this
+              </button>
+            ) : null}
+          </aside>
+        ) : null}
       </main>
     </div>
   );
