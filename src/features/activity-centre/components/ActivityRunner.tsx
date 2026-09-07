@@ -794,12 +794,11 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             items={assignment.items}
             sourceSection={assignment.source_section}
             /*
-           * The goal is per accommodation, so there is no single "target" on the
-           * assignment to read. A student on 70% extra time is not slow when she
-           * takes longer, and showing her the standard clock would print a target
-           * she is not being measured against.
-           */
-          timeGoalMinutes={assignment.time_goal_minutes?.[accommodation] ?? null}
+             * The section builder needs the complete set of goals to validate
+             * and build the run. `accommodation` tells it which one applies to
+             * this student when the clock and grade are calculated.
+             */
+            timeGoalMinutes={assignment.time_goal_minutes}
             accommodation={accommodation}
             onComplete={() => setPhase("report")}
             onExit={handleBackToIntro}
