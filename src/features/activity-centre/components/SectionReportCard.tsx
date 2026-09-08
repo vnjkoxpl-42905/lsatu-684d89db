@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { bandFor } from "../recall/grading";
 import { nextStep } from "../recall/nextStep";
+import { pickFocusSet } from "../recall/focusSet";
 import { listModelRuns, signSectionRecording } from "../api/activitiesClient";
 import { raiseDispute } from "../recall/disputes";
 import type { ModelRun } from "../api/activitiesClient";
@@ -1171,5 +1172,89 @@ function DisputeControl({
     >
       {state === "sending" ? "Saving..." : "This is not what I said"}
     </button>
+  );
+}
+
+/**
+ * "Run these again."
+ *
+ * The one thing on the card that asks for work. It appears only when the run
+ * left something weak behind -- a band below the standard, a recital, a
+ * stimulus with no reaction of her own, or a Read that was not the move the key
+ * names. A run with none of those shows nothing here at all, because being made
+ * to redo work you did properly is the fastest way to teach someone that the
+ * Report Card is not worth reading.
+ *
+ * Pressing it builds a fresh Attempt containing only those stimuli, run exactly
+ * the way the full section runs, recorded, saved and graded the same way. Its
+ * own Report Card is the check on whether the quality bar has been cleared.
+ */
+function FocusSetPanel({
+  grade,
+  onStart,
+}: {
+  grade: SectionGrade;
+  onStart: (slugs: string[]) => Promise<void> | void;
+}) {
+  const set = useMemo(() => pickFocusSet(grade), [grade]);
+  const [starting, setStarting] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  if (!set) {
+    return (
+      <div className="border-t border-[var(--rc-hairline)] px-6 py-6 md:px-9">
+        <p className="rc__label">Nothing to run again</p>
+        <p className="mt-2 max-w-[58ch] text-sm leading-relaxed text-[var(--rc-ink-muted)]">
+          Every stimulus in this run came back at the standard, said in your own words with a
+          reaction of your own. There is no focus set for this one.
+        </p>
+      </div>
+    );
+  }
+
+  const go = async () => {
+    setFailed(false);
+    setStarting(true);
+    try {
+      await onStart(set.slugs);
+    } catch {
+      setFailed(true);
+      setStarting(false);
+    }
+  };
+
+  return (
+    <div className="border-t border-[var(--rc-hairline)] px-6 py-7 md:px-9">
+      <p className="rc__label">Your focus set</p>
+      <p className="mt-2 max-w-[58ch] text-[15px] leading-relaxed text-[var(--rc-ink)]">
+        {set.weakCount === 1
+          ? "One stimulus fell short of the standard."
+          : `${set.weakCount} stimuli fell short of the standard.`}{" "}
+        Run these {set.slugs.length} again on their own, one recording, marked the same way.
+      </p>
+
+      <ul className="mt-4 flex flex-wrap gap-2">
+        {set.stimuli.map((s, i) => (
+          <li key={s.slug} className="rc__chip rc__chip--dropped">
+            Stimulus {(s.item_order ?? i) + 1} · {s.reciting ? "said back word for word" : `${s.percent}%`}
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-5 flex items-center gap-4">
+        <Button onClick={() => void go()} disabled={starting}>
+          {starting ? "Setting it up..." : `Run these ${set.slugs.length} again`}
+        </Button>
+        <span className="text-xs text-[var(--rc-ink-faint)]">
+          Optional. This run and its recording are saved either way.
+        </span>
+      </div>
+
+      {failed && (
+        <p className="mt-3 text-xs text-[var(--rc-ink-faint)]" role="status">
+          That did not start. Try again in a moment — nothing has been lost.
+        </p>
+      )}
+    </div>
   );
 }
