@@ -1756,6 +1756,21 @@
   align-items: flex-start;
   justify-content: space-between;
 }
+/* The hero classes are written for the door's dark purple ground: .sl-title is
+   white at up to 96px, .sl-tagline is white with a drop shadow. This page sits
+   on paper, so both were being drawn in white on cream. The briefing page uses
+   the same classes for the same copy, so it restates the colour and the size
+   here rather than forking them. */
+.sl-briefing-page .sl-title {
+  color: var(--rd-ink);
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  margin: 14px 0 0;
+}
+.sl-briefing-page .sl-title em {
+  color: var(--rd-ink-2);
+}
 /* .sl-tagline is white with a drop shadow, which is right on the door's dark
    hero and unreadable here: this page sits on paper. The briefing page reuses
    the class for the same line of copy, so it restates the colour rather than

@@ -22,9 +22,9 @@ export interface SectionBriefingPageProps {
  *
  * Pressing Start on a section used to open the microphone straight away, and
  * the method was folded into tabs on a page she had already scrolled past. This
- * page is the whole briefing laid out in order — every step numbered and open,
- * every section of the written instructions on screen — with one Start button
- * at the top and the same one at the foot. Nothing here begins the run.
+ * page is the whole briefing laid out in order, every step numbered and open,
+ * with one Start button at the top and the same one at the foot. The written
+ * instructions sit under it, closed. Nothing here begins the run.
  */
 export function SectionBriefingPage({
   title,
@@ -58,13 +58,19 @@ export function SectionBriefingPage({
           <p className="sl-tagline">
             {instructions.tagline ? renderInlineMarks(instructions.tagline, "sl-bp-tag") : subtitle}
           </p>
+          {/* The section is named in the title already, as its second line, so
+              it is not repeated here. What is left is what the title cannot
+              say: how much work this is.
+
+              Not "pieces". A piece is one chunk, roughly a sentence, and the
+              instructions on this very page use the word that way ("Read each
+              piece silently"). Counting stimuli in pieces made the line read as
+              22 sentences. */}
           <p className="sl-bp-meta">
             {[
-              sourceSection,
-              // Not "pieces". A piece is one chunk, roughly a sentence, and the
-              // instructions on this very page use it that way ("Read each piece
-              // silently"). The count here is stimuli, so "22 pieces" read as 22
-              // sentences and made the line impossible to parse.
+              // Only when the title does not already carry it, which it does for
+              // every section ("Read, Recall, Colour · PT104 Section 1").
+              title.includes(" · ") ? null : sourceSection,
               typeof itemCount === "number" ? `${itemCount} stimuli` : null,
               timeGoalMinutes ? `about ${timeGoalMinutes} min` : null,
             ]

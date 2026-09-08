@@ -40,6 +40,20 @@ describe("the section briefing page", () => {
     expect(text).not.toContain("22 pieces");
   });
 
+  it("names the section once, in the title, not again in the meta line", () => {
+    renderPage();
+    const meta = document.querySelector(".sl-bp-meta")?.textContent ?? "";
+    expect(document.querySelector(".sl-title")?.textContent).toContain("PT1 Section 3");
+    expect(meta).toBe("22 stimuli · about 25 min");
+  });
+
+  it("falls back to the section in the meta line when the title omits it", () => {
+    renderPage({ title: "Read, Recall, Colour" });
+    expect(document.querySelector(".sl-bp-meta")?.textContent).toBe(
+      "PT1.S3 · 22 stimuli · about 25 min",
+    );
+  });
+
   it("says only that nothing is recording, and does not re-explain the take", () => {
     renderPage();
     const notice = document.querySelector(".sl-notice")?.textContent ?? "";
