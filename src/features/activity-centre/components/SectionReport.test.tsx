@@ -1,7 +1,17 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import type { SectionGrade } from "../api/types";
 import { SectionReport } from "./SectionReport";
+
+/*
+ * The screen navigates now.
+ *
+ * A Report Card can start a fresh Attempt built from this run's weakest
+ * stimuli, and that lands the student in the runner, so `SectionReport` calls
+ * `useNavigate` and cannot be rendered outside a Router.
+ */
+const inRouter = (ui: React.ReactElement) => render(<MemoryRouter>{ui}</MemoryRouter>);
 
 const getSectionGrade = vi.fn();
 const requestSectionGrading = vi.fn((_id: string) => Promise.resolve());
@@ -71,26 +81,26 @@ afterEach(() => vi.useRealTimers());
 describe("waiting for the Report Card", () => {
   it("says the run is being marked, not that anything failed", async () => {
     getSectionGrade.mockResolvedValue(null);
-    render(<SectionReport assignmentId="a1" />);
+    inRouter(<SectionReport assignmentId="a1" />);
     await vi.waitFor(() => expect(screen.getByText("Marking your run")).toBeInTheDocument());
   });
 
   it("shows the card as soon as the grade lands", async () => {
     getSectionGrade.mockResolvedValue(grade);
-    render(<SectionReport assignmentId="a1" />);
+    inRouter(<SectionReport assignmentId="a1" />);
     await vi.waitFor(() => expect(screen.getByText("Report Card")).toBeInTheDocument());
   });
 
   it("keeps waiting when the read itself fails", async () => {
     // A failed read is not a failed run, and must not be shown as one.
     getSectionGrade.mockRejectedValue(new Error("offline"));
-    render(<SectionReport assignmentId="a1" />);
+    inRouter(<SectionReport assignmentId="a1" />);
     await vi.waitFor(() => expect(screen.getByText("Marking your run")).toBeInTheDocument());
   });
 
   it("asks for the grade again if none has arrived, and only once", async () => {
     getSectionGrade.mockResolvedValue(null);
-    render(<SectionReport assignmentId="a1" />);
+    inRouter(<SectionReport assignmentId="a1" />);
     await vi.waitFor(() => expect(getSectionGrade).toHaveBeenCalled());
 
     // Losing the runner's fire-and-forget ask is the likeliest way a finished
@@ -111,7 +121,7 @@ describe("waiting for the Report Card", () => {
 
   it("eventually tells her the run is saved rather than spinning for ever", async () => {
     getSectionGrade.mockResolvedValue(null);
-    render(<SectionReport assignmentId="a1" />);
+    inRouter(<SectionReport assignmentId="a1" />);
     await vi.advanceTimersByTimeAsync(4 * 60 * 1000);
     await vi.waitFor(() => expect(screen.getByText("Still being marked")).toBeInTheDocument());
     expect(screen.getByText(/Your run is saved/)).toBeInTheDocument();

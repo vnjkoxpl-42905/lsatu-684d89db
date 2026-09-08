@@ -20,6 +20,7 @@ import type {
 } from "./homeModel";
 import type { SectionBriefing as SectionBriefingData } from "@/lib/sectionBriefing";
 import { SectionBriefing } from "./SectionBriefing";
+import { markReportCardSeen } from "./reportCardSeen";
 import QuestionFinder from "@/components/questionfinder/QuestionFinder";
 
 function Pill({
@@ -181,6 +182,23 @@ export function ClassroomHomeView({
       else onOpen(route);
     },
     [briefingByRoute, onOpen],
+  );
+
+  /*
+   * Opening a Report Card is what closes it.
+   *
+   * "Assigned to you" is a list of work outstanding, and a card she has read is
+   * not outstanding. There is nothing for her to tick off, so the row has no
+   * Done control: pressing through to the card is the whole signal, and the
+   * Section Library keeps the Attempt afterwards.
+   */
+  const handleOpenRow = React.useCallback(
+    (row: { key: string; route: string }) => {
+      const report = /^report:(.+):(\d+)$/.exec(row.key);
+      if (report) markReportCardSeen(report[1], Number(report[2]));
+      handleOpen(row.route);
+    },
+    [handleOpen],
   );
 
   return (
@@ -357,7 +375,7 @@ export function ClassroomHomeView({
                 <WorkRow
                   key={row.key}
                   row={row}
-                  onOpen={handleOpen}
+                  onOpen={() => handleOpenRow(row)}
                   onMarkDone={onMarkDone}
                   completing={completingKey === row.key}
                 />

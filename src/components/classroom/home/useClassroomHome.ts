@@ -34,7 +34,9 @@ import { useCurrentWeeklyPlan } from "@/hooks/useWeeklyPlan";
 import {
   listStudentAssignments,
   listItemResponses,
+  listMySectionGrades,
 } from "@/features/activity-centre/api/activitiesClient";
+import { shouldPromptReportCard } from "./reportCardSeen";
 import type { ActivityAssignmentSummary } from "@/features/activity-centre/api/types";
 import { localDayISO } from "@/lib/localDate";
 import {
@@ -227,6 +229,54 @@ export function useClassroomHome(): {
    * Unread first, and an unread one counts as new, which is what drives the
    * NEW badge and lets it clear itself once the note has been opened.
    */
+  /*
+   * Her Report Cards, while they are still news.
+   *
+   * Grading finishes minutes after she stops, by which point the run is over
+   * and its row has left this page: `workRows` above drops anything completed,
+   * which is right for a list of things still to do and is exactly why a
+   * finished section had nowhere to announce itself. Celia sat one, saw a
+   * percentage somewhere else, and had to ask where the graded responses were.
+   *
+   * So a graded card gets a row of its own until she opens it, and then it
+   * stops: "Assigned to you" is work outstanding, and a card she has read is
+   * not outstanding. The Section Library keeps every Attempt for ever, which is
+   * where it lives afterwards.
+   */
+  const gradesQuery = useQuery({
+    queryKey: ["classroom-home:section-grades", user?.id],
+    enabled: !!user && !permissions.is_admin,
+    queryFn: () => listMySectionGrades(),
+  });
+
+  const reportRows = React.useMemo<HomeRow[]>(() => {
+    if (permissions.is_admin || !access.activities) return [];
+    return (gradesQuery.data ?? [])
+      .filter((g) =>
+        shouldPromptReportCard(g.graded_at, g.assignment_id, g.attempt_no, now.getTime()),
+      )
+      .sort((x, y) => new Date(y.graded_at).getTime() - new Date(x.graded_at).getTime())
+      .map((g) => ({
+        key: `report:${g.assignment_id}:${g.attempt_no}`,
+        title: "Your Report Card is ready",
+        kind: "activity" as HomeKind,
+        tone: KIND_TONE.activity,
+        meta: ["Read, Recall, Colour", g.source_section, assignedLabel(g.graded_at, now)]
+          .filter(Boolean)
+          .join(" · "),
+        route: `/activities/${g.assignment_id}`,
+        // Not "Open". She has already done the work; what this offers is the
+        // part she asked for by name.
+        actionLabel: "See what you missed",
+        emphasis: false,
+        isNew: true,
+        dueToday: false,
+        overdue: false,
+        // Nothing for her to tick off. Opening it is what closes it.
+        canComplete: false,
+      }));
+  }, [gradesQuery.data, permissions.is_admin, access.activities, now]);
+
   const readingRows = React.useMemo<HomeRow[]>(() => {
     // Same rule as the work rows: notes addressed to the admin account are
     // verification artefacts, not reading the teacher owes anyone.
@@ -290,15 +340,26 @@ export function useClassroomHome(): {
     const rest = ranked.filter((row) => !(row.overdue || row.dueToday));
     const unreadReading = readingRows.filter((row) => row.isNew);
     const readReading = readingRows.filter((row) => !row.isNew);
-    const all = [...urgent, ...unreadReading, ...rest, ...readReading];
+    /*
+     * A ready Report Card sits above ordinary work and below anything overdue.
+     * Only four rows are drawn, so anything appended to the end is invisible to
+     * a student with a full week, and this is news with a short life: it is
+     * worth reading tonight and stale by the weekend.
+     */
+    const all = [...urgent, ...reportRows, ...unreadReading, ...rest, ...readReading];
     if (all.length) all[0] = { ...all[0], emphasis: true };
     return all;
-  }, [readingRows, workRows]);
+  }, [readingRows, reportRows, workRows]);
 
   // The hero takes the top row. The list below repeats it deliberately: the
   // hero is the argument for doing it now, the list is the inventory, and a
   // student scanning only the list should still find the thing that is due.
-  const heroRow = rows[0] ?? null;
+  /*
+   * Never a Report Card. The hero argues for doing something next and takes its
+   * button label from the kind of work it is, so a finished run would be
+   * offered back to her as "Start". It belongs in the inventory below.
+   */
+  const heroRow = rows.find((row) => !row.key.startsWith("report:")) ?? null;
   const listRows = rows.slice(0, 4);
 
   const heroActivity = React.useMemo(() => {
