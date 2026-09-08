@@ -88,13 +88,18 @@ const grade: SectionGrade = {
 describe("what the student sees", () => {
   it("leads with a band, not a raw verdict", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
-    expect(screen.getAllByText("At the standard").length).toBe(2);
+    // The headline band, plus the band of whichever stimulus is open. The
+    // ledger draws a mark per stimulus rather than repeating four labels
+    // twenty-two times, so the other bands are reached by opening them.
+    expect(screen.getByText("At the standard")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Stimulus 3"));
     expect(screen.getByText("Thin")).toBeInTheDocument();
   });
 
   it("says how she did against her own time goal", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
-    expect(screen.getByText("23:00 against a 25 minute goal")).toBeInTheDocument();
+    expect(screen.getByText("23:00")).toBeInTheDocument();
+    expect(screen.getByText("against a 25 minute goal")).toBeInTheDocument();
   });
 
   it("names the stimuli by position, never by the capture's identifier", () => {
@@ -110,7 +115,7 @@ describe("what the student sees", () => {
     expect(screen.getByText("This applies to all employees.")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("Stimulus 2"));
-    expect(screen.getByText("You carried every detail in this one.")).toBeInTheDocument();
+    expect(screen.getByText("Nothing slipped on this one. You kept the whole thing.")).toBeInTheDocument();
   });
 
   it("tells her when she recited rather than retold", () => {
@@ -164,8 +169,9 @@ describe("a stimulus she said back word for word", () => {
 
   it("wears no success colour", () => {
     const { container } = render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
-    const row = container.querySelector("ol li");
-    expect(row?.innerHTML).not.toContain("ac-emerald-strong");
+    const mark = container.querySelector(".rc__mark");
+    expect(mark?.className).toContain("rc__mark--recited");
+    expect(mark?.className).not.toContain("rc__mark--at-the-standard");
   });
 
   it("names the recital on the collapsed row, not only inside it", () => {
@@ -176,14 +182,15 @@ describe("a stimulus she said back word for word", () => {
 
   it("still shows what it carried, because that reading is true", () => {
     render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
-    expect(screen.getByText("20 of 20")).toBeInTheDocument();
+    // Said in words now. A Detail is our unit and she never saw one.
+    expect(screen.getByText("All of it came back.")).toBeInTheDocument();
   });
 
   it("does not congratulate it inside the row either", () => {
     render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
     fireEvent.click(screen.getByText("Stimulus 1"));
     expect(screen.queryByText("You carried every detail in this one.")).toBeNull();
-    expect(screen.getByText(/which is what reciting does/i)).toBeInTheDocument();
+    expect(screen.getByText(/which is what saying it back word for word does/i)).toBeInTheDocument();
   });
 
   it("leaves an honest stimulus with its band", () => {
@@ -220,7 +227,9 @@ describe("a grade with missing response rows", () => {
   it("names the four rows that did not save and what the headline counts", () => {
     render(<SectionReportCard grade={partial} loadModelRuns={noModelRuns} />);
     expect(screen.getByText(/4 of the 26 did not save/)).toBeInTheDocument();
-    expect(screen.getByText("22 of 26 stimuli, marked")).toBeInTheDocument();
+    expect(
+      screen.getByText("said back in your own words, across the 22 of 26 that saved"),
+    ).toBeInTheDocument();
   });
 
   it("shows no missing-row notice for a complete section", () => {
@@ -265,14 +274,15 @@ describe("the evidence behind the number", () => {
     render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ mean_coverage: 91 })} />);
     // 91 is at the standard. The card used to print "91%" in 48px type with no
     // band at all, which is the exact thing its own docstring forbade.
-    const hero = document.querySelector(".ac-display");
+    const hero = document.querySelector(".rc__display");
     expect(hero?.textContent).toBe("At the standard");
     expect(hero?.textContent).not.toMatch(/%/);
   });
 
   it("still says what she actually got, underneath", () => {
     render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ mean_coverage: 91 })} />);
-    expect(screen.getByText(/91% of the details carried/)).toBeInTheDocument();
+    expect(screen.getByText("Held")).toBeInTheDocument();
+    expect(screen.getByText("91%")).toBeInTheDocument();
   });
 
   it("shows The Read beside Coverage", () => {
@@ -425,7 +435,8 @@ describe("the clock, when she went over", () => {
         grade={withSection({ within_time: false, within_goal: false, total_seconds: 2772 })}
       />,
     );
-    expect(screen.getByText(/46:12 against a 25 minute goal/)).toBeInTheDocument();
+    expect(screen.getByText("46:12")).toBeInTheDocument();
+    expect(screen.getByText("against a 25 minute goal")).toBeInTheDocument();
     expect(screen.getByText(/early runs are meant to be/i)).toBeInTheDocument();
   });
 
@@ -783,7 +794,7 @@ describe("the standard beside her words", () => {
     fireEvent.click(screen.getByText("Stimulus 1"));
     expect(await screen.findByText(/So deep wounds are hard to keep clean/)).toBeInTheDocument();
     expect(screen.getByText(/Even the strong drugs do not manage it/)).toBeInTheDocument();
-    expect(screen.getByText("Held: The wounds are deep.")).toBeInTheDocument();
+    expect(screen.getByText("The wounds are deep.")).toBeInTheDocument();
     // Paired under the lines, so the whole-run block is not repeated beneath.
     expect(screen.queryByText("Done right", { selector: "p" })).toBeNull();
   });

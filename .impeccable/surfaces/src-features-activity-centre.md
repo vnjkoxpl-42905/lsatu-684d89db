@@ -51,3 +51,50 @@ The two RRC doors (`SectionLibraryLaunch`, `SectionLaunch`, both drawn by `Secti
 - **Signature moment:** `RecallDemo`, a looping performance of the method on a synthetic stimulus, labelled as such, whose text literally dissolves at the Recall step.
 - **Steps:** four cards, each with a small drawn scene, doubling as the ARIA tablist the tests already contract (`sl-beat`, `sl-beat-tab-N`, `sl-beat-panel`). The full briefing is the second tab of the drawer.
 - **Tokens:** scoped to `.sl` as `--rd-*`. The design detector reports them as outside DESIGN.md; that is the sanctioned-world exception above, not drift.
+
+## The Report Card (locked 2026-09-08)
+
+Its own world, scoped to `.rc` in `report-card.css`. Joshua's brief: highly
+organised, easy to run through, high-end, with her recording and the standard's
+side by side and the transcript following the sound. Explicitly **not cream, not
+emerald, and not grey** ("the cream paper colour is overdone and too AI
+looking", "I don't want emerald", "it should be much more colorful"). The second
+sanctioned departure from the wing's surface after the RRC door.
+
+- **Two grounds.** A deep plum console (`oklch(0.245 0.058 312)`) holds the
+  verdict, the transport and the ledger; a violet-cast white page
+  (`oklch(0.979 0.008 312)`) holds everything she reads at length.
+- **Colour means a KIND of feedback, never a severity.** The mechanic is
+  Grammarly's, which colours by category and reserves red for outright errors.
+  Four fixed tones: **Detail** plum-rose, **Read** teal, **Colour** gold,
+  **Method** indigo. A miss is the colour of the thing it is a miss of, which is
+  what stops twenty-two stimuli of corrections reading as a heat map of failure.
+- **Signal magenta is sound, not a category.** It marks the line currently
+  playing and nothing else, held at hue 328 so it separates from the
+  plum-rose dropped chips it shares a line with.
+- **Hues chosen from research, not taste** (Firecrawl, 2026-09-08). Saturated
+  right now: acid yellow, electric cobalt, orange and coral, warm sand and
+  terracotta, black plus one neon accent. Under-used: violet and plum, soft
+  cyan, dusty rose as a field, complex cool neutrals. Green and cream are the
+  owner's veto; orange-red was this file's first answer and is on the over-used
+  list. The neutrals are tinted toward violet the way Material 3's baseline is
+  (`#fffbfe` paper, `#7d5260` plum tertiary), a system built to hold AA.
+- **Band is fill, not hue.** The ledger's marks differ by how full they are, in
+  gold; a recital is dashed and a lost one is a hollow rose ring. It survives
+  grayscale, which is what lets category own the colour.
+- **One stimulus at a time.** Twenty-two accordion rows became a ledger of
+  twenty-two marks plus one open stimulus in a fixed order: the passage, what
+  you held, what slipped, your Read, line by line, what you said, next time.
+- **No Detail arithmetic on screen.** A Detail is our grading unit and she has
+  never seen one enumerated, so "20 of 21 details" is gone: `howMuch()` says
+  "Almost all of it came back" instead (Joshua, 2026-09-08).
+- **Contrast is measured, not assumed.** `scripts/_rc_contrast.mjs` converts
+  computed colours through a canvas (Chrome serialises them as `oklch()`) and
+  every text node clears 4.5:1 on its own ground, in the default, playing and
+  clean states.
+- **Type ramp:** Fraunces display, Lexend body, IBM Plex Mono labels. The design
+  detector reports the sizes as outside DESIGN.md; that is this sanctioned world,
+  not drift, the same exception the RRC door's `--rd-*` tokens carry.
+- **Harness:** `/src/dev/report-card-preview.html` renders it at twenty-two
+  stimuli without `App.tsx`. `?state=clean|faults|partial`, `?playing=N` to
+  freeze the playhead on a line. `scripts/_rc_shots.mjs` captures the matrix.
