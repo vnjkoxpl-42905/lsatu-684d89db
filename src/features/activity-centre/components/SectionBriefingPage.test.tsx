@@ -39,6 +39,17 @@ describe("the section briefing page", () => {
     expect(text).not.toContain("pieces to read");
   });
 
+  it("keeps the internal writing vocabulary off the page", () => {
+    renderPage();
+    // CONTEXT.md: "Beat" is the internal code term for one of the four method
+    // steps. Students see "step". The door already forbids these words, but the
+    // door never renders the written instructions and this page does, so
+    // "Three beats through the stimulus" reached a student through the gap.
+    expect(document.body.textContent ?? "").not.toMatch(
+      /(?:beat|beats|briefing|intake|chunk|chunks)/i,
+    );
+  });
+
   it("says only that nothing is recording, and does not re-explain the take", () => {
     renderPage();
     const notice = document.querySelector(".sl-notice")?.textContent ?? "";
