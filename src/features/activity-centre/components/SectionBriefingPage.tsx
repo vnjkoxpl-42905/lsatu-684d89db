@@ -1,4 +1,4 @@
-import { ArrowRight, Mic } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
 import { renderInlineMarks } from "../prompt-format";
 import "./section-launch.css";
@@ -41,14 +41,14 @@ export function SectionBriefingPage({
     <div className="sl sl-briefing-page">
       <header className="sl-bp-head">
         <div>
-          <span className="sl-chip">
-            <Mic size={11} strokeWidth={2.6} aria-hidden="true" />
-            Read, Recall, Colour
-          </span>
+          {/* No chip. The title already names the drill, and on the door the
+              chip earns its place because the H1 there is the bare name. */}
           <h1 className="sl-title">{title}</h1>
-          <p className="sl-tagline">
-            {instructions.tagline ? renderInlineMarks(instructions.tagline, "sl-bp-tag") : subtitle}
-          </p>
+          {(instructions.tagline || subtitle) && (
+            <p className="sl-tagline">
+              {instructions.tagline ? renderInlineMarks(instructions.tagline, "sl-bp-tag") : subtitle}
+            </p>
+          )}
         </div>
         <div className="sl-cta">
           {startButton("Start the section")}
@@ -61,9 +61,12 @@ export function SectionBriefingPage({
       </header>
 
       {/* One fact, the one that lowers her shoulders before she reads. That the
-          section records in one take with no pause is said in Step 4 and again
-          in the full instructions; saying it a third time here made the notice
-          a paragraph she skipped. */}
+          section records in one take with no pause is said at the foot, beside
+          the Start she presses after reading; saying it here as well made the
+          notice a paragraph she skipped. (An earlier version of this comment
+          claimed Step 4 carried it. It did not: the sentence lived only in
+          `instructions.rules`, which this page never renders, so for a day the
+          page did not say it anywhere.) */}
       {/* No role="status". A live region is for state that changes without a page
           load; this sentence is the same every time, and announcing it as an
           update is noise. */}
@@ -131,8 +134,21 @@ export function SectionBriefingPage({
         </details>
       )}
 
+      {/* The two facts she needs at the moment she presses Start, said where
+          she presses it: it does not pause, and what the time is for. The
+          closer is the authored last beat before Start and belongs here too. */}
       <footer className="sl-bp-foot">
-        <p>When you are ready, press Start. The clock begins counting up and the recording begins.</p>
+        <p className="sl-bp-fact">
+          It runs in one take and does not pause. Twenty-five minutes for the whole section is
+          the goal you are working toward, not a limit.
+        </p>
+        {briefing?.closer && (
+          <p className="sl-bp-closer">{renderInlineMarks(briefing.closer, "sl-bp-closer")}</p>
+        )}
+        <p>
+          When you are ready, press Start. The microphone opens and the clock starts counting up.
+          The first time, your browser will ask to use your microphone. Allow it.
+        </p>
         <div className="sl-cta">{startButton("Start the section")}</div>
       </footer>
     </div>

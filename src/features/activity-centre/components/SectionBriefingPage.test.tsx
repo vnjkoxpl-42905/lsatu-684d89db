@@ -23,6 +23,16 @@ function renderPage(props?: Partial<Parameters<typeof SectionBriefingPage>[0]>) 
 }
 
 describe("the section briefing page", () => {
+  it("says at the foot, beside Start, that it is one take with no pause and what the time is for", () => {
+    renderPage();
+    const foot = document.querySelector(".sl-bp-foot")?.textContent ?? "";
+    expect(foot).toMatch(/one take/i);
+    expect(foot).toMatch(/does not pause/i);
+    expect(foot).toMatch(/goal/i);
+    // The authored closer is the last beat before Start, and it renders here.
+    expect(foot).toContain("One a day holds you steady.");
+  });
+
   it("carries no em dash, which Joshua never types", () => {
     renderPage();
     expect(document.body.textContent ?? "").not.toMatch(/[—–]/);

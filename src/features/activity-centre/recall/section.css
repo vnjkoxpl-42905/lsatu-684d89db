@@ -39,7 +39,7 @@
    header from 46px to 96px on the drill's only screen. */
 .ac-section-head {
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto auto;
   align-items: center;
   gap: 1.25rem;
   padding: 0.75rem 1.5rem;
@@ -290,6 +290,48 @@
 .ac-section-clock i {
   font-style: normal;
   opacity: 0.55;
+}
+
+/* "Recording", in the rail, for the whole run.
+ *
+ * The one thing she asked to be able to see mid-section: that it is on. A
+ * word and a dot, in the chrome rather than on the paper, so it is always in
+ * the corner of her eye and never near the text. The word carries the meaning;
+ * the red is on top of it. */
+.ac-section-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--sec-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sec-ink);
+  white-space: nowrap;
+}
+.ac-section-rec--off {
+  width: 0;
+}
+.ac-section-rec i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: oklch(0.58 0.2 27);
+  animation: ac-section-rec-pulse 1.6s ease-in-out infinite;
+}
+@keyframes ac-section-rec-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ac-section-rec i {
+    animation: none;
+  }
 }
 
 /* Presence, not a level meter.

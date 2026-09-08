@@ -81,6 +81,13 @@ export interface SectionStageProps {
   /** Seconds since the section started. Omit to draw no clock at all. */
   elapsedSeconds?: number;
   /**
+   * True while the microphone is open and the file is being written. Drawn as
+   * a plain "Recording" mark in the rail so she never has to wonder, mid-run,
+   * whether the thing is on. The voice bar in the footer answers "is anything
+   * reaching it"; this answers the prior question.
+   */
+  recording?: boolean;
+  /**
    * The live input, for the presence indicator. Omit and no indicator is drawn,
    * which is what a run against a handheld recorder looks like.
    */
@@ -169,6 +176,7 @@ export function SectionStage({
   error,
   onExit,
   elapsedSeconds,
+  recording = false,
   getStream,
   onDeadInput,
   micRefused,
@@ -211,6 +219,17 @@ export function SectionStage({
           <span className="ac-section-clock" aria-live="off">
             {clock(elapsedSeconds)}
           </span>
+        )}
+        {/* Said in words as well as drawn, so it survives grayscale and a
+            screen reader alike. Announced once when it turns on; never
+            re-announced. */}
+        {recording ? (
+          <span className="ac-section-rec" role="status">
+            <i aria-hidden="true" />
+            Recording
+          </span>
+        ) : (
+          <span className="ac-section-rec ac-section-rec--off" aria-hidden="true" />
         )}
         {onExit ? (
           <button type="button" className="ac-section-exit" onClick={onExit}>

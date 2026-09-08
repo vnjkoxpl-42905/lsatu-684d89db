@@ -957,6 +957,7 @@ function RunBody({
       }
       onExit={onExit ? askToExit : undefined}
       elapsedSeconds={countdown === null ? elapsed : 0}
+      recording={recording && !micRefused}
       getStream={getStream}
       onDeadInput={setDeadInput}
       micRefused={micRefused}

@@ -1151,7 +1151,10 @@
 .sl-essay {
   max-width: 68ch;
 }
-.rd-lede {
+/* `.sl-essay p` outranks a bare class, so the lede was rendering at body
+   size. Written at the same specificity so it leads. */
+.rd-lede,
+.sl-essay p.rd-lede {
   font-family: var(--rd-display);
   font-style: italic;
   font-size: 20px;
@@ -1753,12 +1756,35 @@
   display: grid;
   gap: 32px;
 }
+/* Stacked on purpose. It was space-between, and at this page's width the
+   title block and the CTA never fit on one line, so the CTA always wrapped
+   under the tagline: the layout that shipped was accidental. */
 .sl-bp-head {
   display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
+  flex-direction: column;
+  gap: 22px;
   align-items: flex-start;
-  justify-content: space-between;
+}
+/* The notice, un-boxed. It shared fill, hairline and radius with the four step
+   cards below it, so the one sentence written to lower her shoulders read as a
+   fifth thing to do. A plain line in ink, the page speaking. */
+.sl-briefing-page .sl-notice {
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--rd-ink);
+  max-width: 62ch;
+}
+/* A landing-page pill on a task page. The lift and outer shadow are the
+   door's persuade register; on paper the fill darkening is enough. */
+.sl-briefing-page .sl-start,
+.sl-briefing-page .sl-start:hover,
+.sl-briefing-page .sl-start:active {
+  transform: none;
+  box-shadow: none;
 }
 /* The hero classes are written for the door's dark purple ground: .sl-title is
    white at up to 96px, .sl-tagline is white with a drop shadow. This page sits
@@ -1838,42 +1864,49 @@
   padding: 14px 0;
   border-top: 1px solid var(--rd-line);
 }
+/* The summary's heading used to inherit body weight, so the only help on the
+   page looked like a stray sentence beside an uppercase h2. Same treatment as
+   its sibling, and a drawn chevron instead of a " +" that some readers spoke. */
+.sl-bp-more > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .sl-bp-more > summary > h2 {
   display: inline;
   margin: 0;
-  font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  color: inherit;
 }
 .sl-bp-more > summary::-webkit-details-marker {
   display: none;
 }
 .sl-bp-more > summary::after {
-  content: " +";
-  color: var(--rd-ink-2);
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid var(--rd-ink-2);
+  border-bottom: 1.5px solid var(--rd-ink-2);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 180ms var(--rd-ease);
 }
 .sl-bp-more[open] > summary::after {
-  content: " –";
+  transform: translateY(2px) rotate(225deg);
 }
 .sl-bp-more > summary:focus-visible {
-  outline: 2px solid var(--rd-ink-2);
+  outline: 2px solid var(--rd-ink);
   outline-offset: 3px;
 }
 /* --rd-ink-soft is not a token this file defines, so both of these were falling
    through to the global muted colour and landing at 5.9:1 on cream: fainter than
    the body copy they sit beside. They use the real tokens now. */
-.sl-bp-meta {
-  margin-top: 10px;
-  font-size: 14px;
-  letter-spacing: 0.02em;
-  color: var(--rd-ink-2);
-}
+/* One micro-label style, the mono one the file declares as such. Section
+   headings and step numbers were two different Inter uppercase styles beside
+   the mono chip: three looks for one rank. */
 .sl-bp-h2 {
-  font-size: 15px;
-  font-weight: 600;
+  font-family: var(--rd-mono);
+  font-size: 12px;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   margin-bottom: 16px;
   color: var(--rd-ink);
 }
@@ -1891,10 +1924,11 @@
 }
 .sl-bp-n {
   display: block;
-  font-size: 12px;
-  letter-spacing: 0.14em;
+  font-family: var(--rd-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  opacity: 0.7;
+  color: var(--rd-ink-3);
   margin-bottom: 6px;
 }
 .sl-bp-list li strong {
@@ -1902,9 +1936,29 @@
   font-size: 18px;
   margin-bottom: 6px;
 }
+/* The sentences she has to follow ran past 100 characters a line. The essay
+   already holds 68ch; the steps get a measure too. */
 .sl-bp-list li p {
   margin: 0;
   line-height: 1.6;
+  max-width: 62ch;
+}
+.sl-bp-foot p {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--rd-ink-2);
+}
+.sl-bp-fact {
+  font-size: 17px;
+  color: var(--rd-ink);
+}
+.sl-bp-foot .sl-bp-fact {
+  color: var(--rd-ink);
+}
+.sl-bp-closer {
+  font-family: var(--rd-display);
+  font-style: italic;
+  font-size: 19px;
 }
 .sl-bp-foot {
   border-top: 1px solid var(--rd-line, hsl(var(--border)));
