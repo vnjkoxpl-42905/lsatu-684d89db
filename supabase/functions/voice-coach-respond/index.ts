@@ -101,7 +101,7 @@ Generate your 2-3 sentence coaching response.`;
         'X-Internal-Key': Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'gemini-3.8-flash',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }

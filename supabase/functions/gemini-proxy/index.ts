@@ -29,89 +29,35 @@ function timingSafeEqual(a: string, b: string): boolean {
 }
 
 
+const GOOGLE_BASE = "https://generativelanguage.googleapis.com/v1beta/openai";
 const GATEWAY_BASE = "https://ai.gateway.lovable.dev/v1";
 
-// Supported Lovable AI chat models (vendor/model form). Unknown ids are
-// normalized to a nearest supported equivalent so old callers keep working.
-const SUPPORTED_CHAT = new Set([
-  "google/gemini-3-flash-preview",
-  "google/gemini-3.1-flash-lite",
-  "google/gemini-3.5-flash",
-  "google/gemini-3.1-pro-preview",
-  "google/gemini-2.5-pro",
-  "google/gemini-2.5-flash",
-  "google/gemini-2.5-flash-lite",
-  "openai/gpt-5",
-  "openai/gpt-5-mini",
-  "openai/gpt-5-nano",
-  "openai/gpt-5.2",
-  "openai/gpt-5.4",
-  "openai/gpt-5.4-mini",
-  "openai/gpt-5.4-nano",
-  "openai/gpt-5.5",
-]);
+// One model for every AI feature on the platform, run on Joshua's own
+// GEMINI_API_KEY. Anything a caller asks for is normalised to it, so a legacy
+// id left in an old function cannot quietly route somewhere else.
+const CHAT_MODEL = "gemini-3.8-flash";
+const EMBED_MODEL = "gemini-embedding-001";
 
-function mapChatModel(model: string | undefined): string {
-  if (!model) return "google/gemini-2.5-flash";
-  const raw = model.trim();
-  if (SUPPORTED_CHAT.has(raw)) return raw;
-  const lower = raw.toLowerCase();
-  // Strip vendor prefix for pattern matching
-  const bare = lower.replace(/^google\//, "").replace(/^openai\//, "");
-  // Google Gemini families
-  if (bare.startsWith("gemini")) {
-    if (bare.includes("embedding")) return "google/gemini-2.5-flash"; // wrong route; caller error
-    if (bare.includes("3-flash-preview")) return "google/gemini-3-flash-preview";
-    if (bare.includes("3.1-flash-lite") || bare.includes("3.1-lite")) return "google/gemini-3.1-flash-lite";
-    if (bare.includes("3.5-flash")) return "google/gemini-3.5-flash";
-    if (bare.includes("3.1-pro")) return "google/gemini-3.1-pro-preview";
-    if (bare.includes("2.5-pro") || bare.includes("pro-latest")) return "google/gemini-2.5-pro";
-    if (bare.includes("2.5-flash-lite") || bare.includes("flash-lite")) return "google/gemini-2.5-flash-lite";
-    if (bare.includes("2.5-flash") || bare.includes("flash-latest") || bare.includes("2.0-flash")) return "google/gemini-2.5-flash";
-    if (bare.includes("pro")) return "google/gemini-2.5-pro";
-    if (bare.includes("lite") || bare.includes("nano")) return "google/gemini-2.5-flash-lite";
-    return "google/gemini-2.5-flash";
-  }
-  // OpenAI GPT families
-  if (bare.startsWith("gpt-5.5")) return "openai/gpt-5.5";
-  if (bare.startsWith("gpt-5.4")) {
-    if (bare.includes("nano")) return "openai/gpt-5.4-nano";
-    if (bare.includes("mini")) return "openai/gpt-5.4-mini";
-    return "openai/gpt-5.4";
-  }
-  if (bare.startsWith("gpt-5.2")) return "openai/gpt-5.2";
-  if (bare.startsWith("gpt-5")) {
-    if (bare.includes("nano")) return "openai/gpt-5-nano";
-    if (bare.includes("mini")) return "openai/gpt-5-mini";
-    return "openai/gpt-5";
-  }
-  // Default fallback
-  return "google/gemini-2.5-flash";
+function mapChatModel(_model: string | undefined): string {
+  return CHAT_MODEL;
 }
 
-// Embeddings MUST be 3072-dim to match the DB vector(3072) columns
-// (lsatu_content_index, match_lsatu_content, memory-OS tables).
-// Both google/gemini-embedding-001 and openai/text-embedding-3-large default to 3072.
-function mapEmbedModel(model: string | undefined): string {
-  const raw = (model ?? "").trim();
-  if (!raw) return "google/gemini-embedding-001";
-  const lower = raw.toLowerCase();
-  if (lower === "google/gemini-embedding-001" || lower === "google/gemini-embedding-2") return raw;
-  if (lower === "openai/text-embedding-3-large") return raw;
-  if (lower.includes("text-embedding-3-large")) return "openai/text-embedding-3-large";
-  if (lower.includes("gemini-embedding-2")) return "google/gemini-embedding-2";
-  // gemini-embedding-001, text-embedding-004 (legacy 768-dim), text-embedding-3-small,
-  // ada, or anything else → default to the 3072-dim Gemini model.
-  return "google/gemini-embedding-001";
+// Embeddings MUST be 3072-dim to match the DB vector(3072) columns.
+function mapEmbedModel(_model: string | undefined): string {
+  return EMBED_MODEL;
 }
 
 async function forward(
   path: string,
   body: unknown,
-  key: string,
   stream: boolean,
 ): Promise<Response> {
-  const upstream = await fetch(`${GATEWAY_BASE}${path}`, {
+  // Joshua's own Gemini key first: it is the platform's AI account. The Lovable
+  // gateway stays as a fallback so nothing goes dark if the key is ever unset.
+  const googleKey = Deno.env.get("GEMINI_API_KEY");
+  const base = googleKey ? GOOGLE_BASE : GATEWAY_BASE;
+  const key = googleKey ?? Deno.env.get("LOVABLE_API_KEY") ?? "";
+  const upstream = await fetch(`${base}${path}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -171,18 +117,18 @@ function sanitizeTools(body: any): void {
   });
 }
 
-async function handleChat(req: Request, key: string): Promise<Response> {
+async function handleChat(req: Request): Promise<Response> {
   const body = await req.json().catch(() => ({} as any));
   body.model = mapChatModel(body.model);
   sanitizeTools(body);
   const stream = !!body.stream;
-  return forward("/chat/completions", body, key, stream);
+  return forward("/chat/completions", body, stream);
 }
 
-async function handleEmbeddings(req: Request, key: string): Promise<Response> {
+async function handleEmbeddings(req: Request): Promise<Response> {
   const body = await req.json().catch(() => ({} as any));
   body.model = mapEmbedModel(body.model);
-  return forward("/embeddings", body, key, false);
+  return forward("/embeddings", body, false);
 }
 
 serve(async (req) => {
@@ -198,11 +144,11 @@ serve(async (req) => {
     );
   }
 
-  const key = Deno.env.get("LOVABLE_API_KEY");
+  const key = Deno.env.get("GEMINI_API_KEY") ?? Deno.env.get("LOVABLE_API_KEY");
 
   if (!key) {
     return new Response(
-      JSON.stringify({ error: { message: "LOVABLE_API_KEY is not configured" } }),
+      JSON.stringify({ error: { message: "GEMINI_API_KEY is not configured" } }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
@@ -210,8 +156,8 @@ serve(async (req) => {
   const url = new URL(req.url);
   const path = url.pathname.replace(/^.*\/gemini-proxy/, "") || "/";
   try {
-    if (path.endsWith("/embeddings")) return await handleEmbeddings(req, key);
-    return await handleChat(req, key);
+    if (path.endsWith("/embeddings")) return await handleEmbeddings(req);
+    return await handleChat(req);
   } catch (e) {
     console.error("gemini-proxy fatal", e);
     return new Response(

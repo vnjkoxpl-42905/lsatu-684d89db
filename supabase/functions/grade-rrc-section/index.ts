@@ -170,7 +170,7 @@ async function judge(prompt: string): Promise<string> {
   const direct = Deno.env.get("GEMINI_API_KEY");
   if (direct) {
     const res = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
       {
         method: "POST",
         headers: { "x-goog-api-key": direct, "Content-Type": "application/json" },
@@ -191,7 +191,7 @@ async function judge(prompt: string): Promise<string> {
     method: "POST",
     headers: { Authorization: `Bearer ${gatewayKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "google/gemini-2.5-flash",
+      model: "gemini-3.8-flash",
       temperature: 0,
       messages: [{ role: "user", content: prompt }],
     }),

@@ -28,7 +28,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 const GEMINI_API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
-const GEMINI_MODEL = Deno.env.get("TA_AGENT_GEMINI_MODEL") ?? "gemini-2.5-flash";
+const GEMINI_MODEL = Deno.env.get("TA_AGENT_GEMINI_MODEL") ?? "gemini-3.8-flash";
 const GMAIL_API = "https://gmail.googleapis.com/gmail/v1";
 const GMAIL_OAUTH_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const DIRECT_GMAIL_NOT_CONFIGURED =

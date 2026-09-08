@@ -156,7 +156,7 @@ serve(async (req) => {
         "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "gemini-3.8-flash",
         response_format: { type: "json_object" },
         // The rubric asks for a verdict and two to three sentences. Uncapped,
         // the call is roughly four seconds; capped it is roughly one, and the

@@ -286,11 +286,18 @@ Process:
 Be specific and grounded in what you actually read. No filler, no em-dashes.`;
 
 async function callGateway(messages: GatewayMessage[], apiKey: string) {
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const geminiKey = Deno.env.get("GEMINI_API_KEY");
+  const base = geminiKey
+    ? "https://generativelanguage.googleapis.com/v1beta/openai"
+    : "https://ai.gateway.lovable.dev/v1";
+  const res = await fetch(`${base}/chat/completions`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${geminiKey ?? apiKey}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
-      model: "google/gemini-3.1-pro-preview",
+      model: "gemini-3.8-flash",
       messages,
       tools: TOOLS,
       tool_choice: "auto",
