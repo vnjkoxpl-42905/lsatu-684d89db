@@ -1077,6 +1077,8 @@ export function SectionReportCard({
         </div>
       )}
 
+      {onStartFocusSet && <FocusSetPanel grade={grade} onStart={onStartFocusSet} />}
+
       {onDone && (
         <div className="border-t border-[var(--rc-hairline)] px-6 py-6 text-center">
           <Button onClick={onDone}>Done</Button>
