@@ -51,7 +51,7 @@ describe("the library door", () => {
 
   it("uses the requested title and omits the old hero slogan", () => {
     renderDoor();
-    expect(screen.getByRole("heading", { name: "Recall Rephrase Colour" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Read, Recall, Colour" })).toBeInTheDocument();
     expect(screen.queryByText(/Read it once/i)).toBeNull();
     expect(screen.queryByText(/One section · out loud · no pauses/i)).toBeNull();
   });
@@ -129,7 +129,7 @@ describe("the library door", () => {
 
     const pageText = document.body.textContent ?? "";
     expect(pageText).toContain(
-      "Read roughly one sentence at a time, without saying it aloud.",
+      "Read about one sentence at a time, silently. Give each word enough attention to hear it naturally in your head. If that feels like too much to hold, take a shorter piece. When you take on too much, the part that slips is always the beginning.",
     );
     expect(pageText).toContain("Your entire section is recorded in one take");
     expect(pageText).not.toMatch(

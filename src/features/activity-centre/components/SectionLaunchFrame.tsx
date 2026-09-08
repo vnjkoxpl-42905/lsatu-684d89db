@@ -264,21 +264,21 @@ export function SectionLaunchFrame({
               Read, Recall, Colour
             </span>
             <h1 className="sl-title" id="rd-title">
-              {showBreadcrumbs ? (
-                /* "Read, Recall, Colour · PT102 Section 3" is one title in the
-                   record and two lines on the door: the drill, then the section
-                   it is run on, in the same italic the library gives "back". */
-                title.includes(" · ") ? (
-                  <>
-                    {title.slice(0, title.indexOf(" · "))}
-                    <br />
-                    <em>{title.slice(title.indexOf(" · ") + 3)}</em>
-                  </>
-                ) : (
-                  title
-                )
+              {/* "Read, Recall, Colour · PT102 Section 3" is one title in the
+                  record and two lines on the door: the drill, then the section
+                  it is run on, in the same italic the library gives "back".
+                  The library door's own title carries no " · ", so it renders
+                  whole. It used to hardcode "Recall Rephrase Colour" here, a
+                  name the product does not have, one line under a chip reading
+                  "Read, Recall, Colour". */}
+              {title.includes(" · ") ? (
+                <>
+                  {title.slice(0, title.indexOf(" · "))}
+                  <br />
+                  <em>{title.slice(title.indexOf(" · ") + 3)}</em>
+                </>
               ) : (
-                <>Recall Rephrase Colour</>
+                title
               )}
             </h1>
             <p className="sl-tagline">
@@ -311,7 +311,7 @@ export function SectionLaunchFrame({
 
       {/* -------------------------------------------------------------- method */}
       {beats.length > 0 && (
-        <motion.section className="rd-method" aria-label="Recall Rephrase Colour steps" {...reveal}>
+        <motion.section className="rd-method" aria-label="Read, Recall, Colour steps" {...reveal}>
           <div
             className="sl-beats"
             role="tablist"
