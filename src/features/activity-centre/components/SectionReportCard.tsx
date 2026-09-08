@@ -374,6 +374,7 @@ function Movement({
 export function SectionReportCard({
   grade,
   onDone,
+  onStartFocusSet,
   loadModelRuns = listModelRuns,
 }: SectionReportCardProps) {
   const { section, stimuli } = grade;
