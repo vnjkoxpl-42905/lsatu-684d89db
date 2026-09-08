@@ -624,7 +624,7 @@ serve(async (req) => {
         return {
           slug,
           item_order: Number(row.item_order),
-          ...gradeStimulus(entries, nothingCarried),
+          ...gradeStimulus(entries, nothingCarried, lineSpans),
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
           spoken: "",
           window_ms: span(segments),
@@ -641,9 +641,12 @@ serve(async (req) => {
             spoken,
             theRead: (item.the_read as string | null) ?? null,
             modelRun: walkthroughs.get(slug) ?? null,
+            lines: lineSpans.map((l) => ({ n: l.n, text: l.text, spoken: l.spoken })),
+            recall: recallText || null,
           }),
         );
-        const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)));
+        const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)), lineSpans);
+
 
         // Reciting is decided in code, not by the model: it is a measurement,
         // and the reading is kept alongside the verdict so the thresholds can
