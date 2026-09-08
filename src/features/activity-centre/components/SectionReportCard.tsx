@@ -612,6 +612,86 @@ export function SectionReportCard({
                   )}
 
                   {/*
+                    * Line by line, because that is how she worked.
+                    *
+                    * She reads one line silently, looks away and says it back,
+                    * and until now the card could only tell her a point went
+                    * missing somewhere in the stimulus. The cut is worked out
+                    * after the run from the silence in front of each spoken
+                    * line, so it is approximate -- which is why it says what she
+                    * carried and dropped rather than scoring the line. Coverage
+                    * above is unchanged.
+                    */}
+                  {!!s.lines?.length && (
+                    <div className="mt-4 border-t border-border pt-3">
+                      <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                        Line by line
+                      </p>
+                      <ol className="mt-3 space-y-3">
+                        {s.lines.map((line) => (
+                          <li key={line.n} className="rounded-xl bg-[hsl(var(--ac-surface-muted,var(--muted)))] px-3 py-2">
+                            <div className="flex items-baseline justify-between gap-3">
+                              <p className="text-sm font-medium text-foreground">
+                                {line.n}. {line.text}
+                              </p>
+                              <span className="flex shrink-0 items-baseline gap-3">
+                                <span
+                                  className={cn(
+                                    "text-xs uppercase tracking-[0.12em]",
+                                    line.verdict === "strong"
+                                      ? "text-[hsl(var(--ac-emerald-strong))]"
+                                      : line.verdict === "skipped"
+                                        ? "text-[hsl(350_80%_45%)]"
+                                        : "text-muted-foreground",
+                                  )}
+                                >
+                                  {line.verdict === "skipped" ? "nothing said" : line.verdict}
+                                </span>
+                                {hers && line.startMs !== undefined && line.endMs !== undefined && (
+                                  <button
+                                    type="button"
+                                    className="text-xs text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground"
+                                    onClick={() =>
+                                      void clip.play(`${key}-l${line.n}`, hers, line.startMs, line.endMs)
+                                    }
+                                  >
+                                    {clip.playing === `${key}-l${line.n}` ? "Stop" : "Hear it"}
+                                  </button>
+                                )}
+                              </span>
+                            </div>
+                            <p className="mt-1 text-sm text-muted-foreground">
+                              {line.spoken || "You did not say anything for this line."}
+                            </p>
+                            {line.note && <p className="mt-1 text-sm text-foreground">{line.note}</p>}
+                            {line.dropped.length > 0 && (
+                              <p className="mt-1 text-sm text-[hsl(24_85%_42%)]">
+                                Dropped: {line.dropped.join("; ")}
+                              </p>
+                            )}
+                          </li>
+                        ))}
+                      </ol>
+                      {s.recall && (
+                        <div className="mt-3 rounded-xl border border-border px-3 py-2">
+                          <p className="text-sm font-medium text-foreground">
+                            The whole thing, text off screen — {s.recall.verdict}
+                          </p>
+                          {s.recall.note && (
+                            <p className="mt-1 text-sm text-muted-foreground">{s.recall.note}</p>
+                          )}
+                        </div>
+                      )}
+                      {!!s.bigMisses?.length && (
+                        <p className="mt-3 text-sm text-foreground">
+                          Biggest misses: {s.bigMisses.join("; ")}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+
+                  {/*
                     * What the machine heard, and her own voice saying it.
                     *
                     * Both were produced by the grader and thrown away. Reading
