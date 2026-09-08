@@ -40,6 +40,14 @@ import "./report-card.css";
 interface SectionReportCardProps {
   grade: SectionGrade;
   onDone?: () => void;
+  /**
+   * Start the focus set: the weakest stimuli of this run, again.
+   *
+   * Absent on a read-only card (the teacher's view of somebody else's run), and
+   * the panel itself is absent on a run with nothing weak in it -- a student who
+   * ran it well is asked for nothing.
+   */
+  onStartFocusSet?: (slugs: string[]) => Promise<void> | void;
   /** Injected in tests and in the lab, which has no database behind it. */
   loadModelRuns?: (sourceSection: string) => Promise<Record<string, ModelRun>>;
 }
