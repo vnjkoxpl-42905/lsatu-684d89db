@@ -674,7 +674,7 @@ serve(async (req) => {
         return {
           slug,
           item_order: Number(row.item_order),
-          ...gradeStimulus(entries, nothingCarried),
+          ...gradeStimulus(entries, nothingCarried, lineSpans),
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
           spoken,
           window_ms: span(segments),
