@@ -783,7 +783,7 @@ export function SectionReportCard({
                       {s.recall && (
                         <div className="mt-3 rounded-xl border border-border px-3 py-2">
                           <p className="text-sm font-medium text-foreground">
-                            The whole thing, text off screen — {s.recall.verdict}
+                            The whole thing, text off screen: {s.recall.verdict}
                           </p>
                           {s.recall.note && (
                             <p className="mt-1 text-sm text-muted-foreground">{s.recall.note}</p>

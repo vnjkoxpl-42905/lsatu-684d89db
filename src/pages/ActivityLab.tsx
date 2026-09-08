@@ -2074,6 +2074,12 @@ function makeLabGrade(kind: "clean" | "faults" | "partial"): SectionGrade {
     spoken:
       "so the director says their consultant wants people moved around so everyone is doing what they like and what they are good at",
     recall_window_ms: { start: 12000, end: 48000 },
+    stimulus_text:
+      "Ace Manufacturing's consultant proposes that we reassign staff so that all employees are doing both what they like to do and what they do well. This, she says, will \"increase productivity by fully exploiting our available resources.\"",
+    the_read: "What if exploit is doing two jobs in this argument?",
+    readReason: "She said the consultant may be assuming everyone wants to move, which is a different move from the one the argument turns on.",
+    nextTime:
+      "Say the quantifier on purpose as you read: all employees, not the staff. It is the one word this argument leans on.",
     ...over,
   });
 
@@ -2081,8 +2087,41 @@ function makeLabGrade(kind: "clean" | "faults" | "partial"): SectionGrade {
     kind === "clean"
       ? Array.from({ length: 6 }, (_, i) => stim({ slug: String(i + 1) }))
       : [
-          stim({ slug: "1", carried: 20, total: 21, percent: 95, missed: ["This applies to all employees."] }),
-          stim({ slug: "2" }),
+          stim({
+            slug: "1",
+            carried: 20,
+            total: 21,
+            percent: 95,
+            missed: ["This applies to all employees."],
+            readMatches: false,
+            lines: [
+              {
+                n: 1,
+                text: "Ace Manufacturing's consultant proposes that we reassign staff so that all employees are doing both what they like to do and what they do well.",
+                spoken: "so the director says their consultant wants people moved around so everyone is doing what they like and what they are good at",
+                startMs: 12000,
+                endMs: 26000,
+                verdict: "partial",
+                note: "Dropped that it applies to all employees; you said everyone, which is close, but the staff being reassigned was every employee.",
+                carried: ["A consultant is proposing this.", "Staff would be reassigned.", "People would do what they like and what they do well."],
+                dropped: ["This applies to all employees."],
+              },
+              {
+                n: 2,
+                text: "This, she says, will \"increase productivity by fully exploiting our available resources.\"",
+                spoken: "and she thinks that makes the place more productive because you get the most out of everyone",
+                startMs: 26000,
+                endMs: 40000,
+                verdict: "strong",
+                note: "",
+                carried: ["This is the conclusion.", "Productivity would increase.", "The reason is fully exploiting resources."],
+                dropped: [],
+              },
+            ],
+            recall: { verdict: "partial", note: "The recall kept the proposal and the claim, and lost the quantifier again." },
+            bigMisses: ["all employees"],
+          }),
+          stim({ slug: "2", nextTime: "", missed: [], carried: 21, percent: 100 }),
           stim({
             slug: "7",
             carried: 14,
