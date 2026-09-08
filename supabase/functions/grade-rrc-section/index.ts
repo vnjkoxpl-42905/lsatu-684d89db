@@ -78,15 +78,27 @@ function json(body: unknown, status = 200) {
   });
 }
 
-async function transcribe(audio: ArrayBuffer, contentType: string): Promise<Word[]> {
+/**
+ * Transcribe the recording Deepgram can fetch at `audioUrl`.
+ *
+ * By URL, never by bytes. This function used to download the recording and
+ * post the buffer, which held the whole file in an edge function's memory
+ * twice over. A 20-minute section fit; a 66-minute one (112 MB, Celia,
+ * 2026-09-08) did not, and the function died with WORKER_RESOURCE_LIMIT before
+ * a single word was transcribed -- the one failure the sweeper cannot repair
+ * by re-driving, because every re-drive dies the same way. Deepgram fetches
+ * the file itself from a short-lived signed URL, so this function never holds
+ * the audio and the length of a section stops being a limit on grading it.
+ */
+async function transcribe(audioUrl: string): Promise<Word[]> {
   const key = Deno.env.get("DEEPGRAM_API_KEY");
   if (!key) throw new Error("DEEPGRAM_API_KEY is not configured");
   const res = await fetch(
     "https://api.deepgram.com/v1/listen?model=nova-3&punctuate=true&smart_format=true",
     {
       method: "POST",
-      headers: { Authorization: `Token ${key}`, "Content-Type": contentType },
-      body: audio,
+      headers: { Authorization: `Token ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ url: audioUrl }),
     },
   );
   const body = await res.json();
@@ -386,13 +398,18 @@ serve(async (req) => {
     const audioPath = first?.audio_path as string | null;
     if (!audioPath) return json({ error: "this run has no recording" }, 409);
 
-    const { data: file, error: dErr } = await admin.storage
+    /*
+     * A signed read, good for long enough to transcribe the longest section
+     * anyone has recorded and no longer. The bucket is private; the URL is the
+     * only thing Deepgram is handed, and it is never stored.
+     */
+    const { data: signed, error: sErr } = await admin.storage
       .from((first.audio_bucket as string) ?? "drill-recordings")
-      .download(audioPath);
-    if (dErr) throw dErr;
+      .createSignedUrl(audioPath, 15 * 60);
+    if (sErr) throw sErr;
+    if (!signed?.signedUrl) throw new Error("could not sign a URL for the recording");
 
-    const bytes = await file.arrayBuffer();
-    const words = await transcribe(bytes, audioPath.endsWith(".m4a") ? "audio/mp4" : "audio/webm");
+    const words = await transcribe(signed.signedUrl);
 
     /*
      * The clock proof, asserted rather than assumed.
