@@ -19,13 +19,12 @@ export interface ModelOption {
 
 export const AUTO_MODEL_ID = 'auto';
 
-// Only real Google Gemini models the public API accepts with a GEMINI_API_KEY.
-// The gemini-proxy edge function normalises any legacy id into one of these.
+// Every AI feature on the platform runs on Joshua's own GEMINI_API_KEY, on
+// Gemini 3.8 Flash. The gemini-proxy edge function normalises any legacy id to
+// it, so this list stays a single truthful choice rather than a fake menu.
 export const AVAILABLE_MODELS: ModelOption[] = [
-  { id: AUTO_MODEL_ID, short: 'Auto', label: 'Auto', provider: 'Auto', hint: 'picks the cheapest Gemini model that fits the task' },
-  { id: 'google/gemini-2.5-pro', short: 'Gemini 2.5 Pro', label: 'Gemini 2.5 Pro', provider: 'Google — Gemini', hint: 'strongest reasoning' },
-  { id: 'google/gemini-2.5-flash', short: 'Gemini 2.5 Flash', label: 'Gemini 2.5 Flash', provider: 'Google — Gemini', hint: 'balanced default · best for tools' },
-  { id: 'google/gemini-2.5-flash-lite', short: 'Gemini 2.5 Lite', label: 'Gemini 2.5 Flash Lite', provider: 'Google — Gemini', hint: 'fastest · cheapest' },
+  { id: AUTO_MODEL_ID, short: 'Auto', label: 'Auto', provider: 'Auto', hint: 'Gemini 3.8 Flash' },
+  { id: 'gemini-3.8-flash', short: 'Gemini 3.8 Flash', label: 'Gemini 3.8 Flash', provider: 'Google — Gemini', hint: 'latest Gemini · runs every AI feature here' },
 ];
 
 export const DEFAULT_MODEL_ID = AUTO_MODEL_ID;
