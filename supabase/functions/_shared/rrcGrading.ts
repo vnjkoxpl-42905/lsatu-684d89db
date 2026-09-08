@@ -436,7 +436,25 @@ export interface JudgeReply {
   readReason: string;
   /** Ids expected but absent from the reply. Counted as not carried. */
   missingIds: number[];
+  /** At most three plain-words phrases naming what she dropped that mattered. */
+  bigMisses: string[];
+  /** Per-line judgement, keyed by line number. Absent when lines were not sent. */
+  lineVerdicts: Record<number, { verdict: LineVerdict; note: string }>;
+  /** The same judgement for the whole-stimulus recall, when it was sent. */
+  recallVerdict?: { verdict: LineVerdict; note: string };
 }
+
+export type LineVerdict = "strong" | "partial" | "thin" | "skipped";
+
+const LINE_VERDICTS: LineVerdict[] = ["strong", "partial", "thin", "skipped"];
+
+function toLineVerdict(value: unknown): LineVerdict {
+  const v = String(value ?? "").toLowerCase() as LineVerdict;
+  // Anything unrecognised is "thin" rather than "strong": a judge that garbles
+  // the field must not be able to award a line she may never have spoken.
+  return LINE_VERDICTS.includes(v) ? v : "thin";
+}
+
 
 export class JudgeReplyError extends Error {}
 
