@@ -1761,6 +1761,28 @@
    on paper, so both were being drawn in white on cream. The briefing page uses
    the same classes for the same copy, so it restates the colour and the size
    here rather than forking them. */
+/* Two more hero classes drawn in white for the door's dark panel. On paper they
+   were invisible: the drill's own name, and a Back button nobody could see. */
+.sl-briefing-page .sl-chip {
+  color: var(--rd-ink);
+  background: var(--rd-paper);
+  border-color: var(--rd-line);
+  backdrop-filter: none;
+}
+.sl-briefing-page .sl-brief {
+  color: var(--rd-ink-2);
+  text-decoration-color: var(--rd-line);
+}
+.sl-briefing-page .sl-brief:hover {
+  color: var(--rd-ink);
+  text-decoration-color: var(--rd-ink-2);
+}
+/* A heading inside the long version was set larger than the section heading
+   above it, so the page read as if the essay outranked its own label. */
+.sl-briefing-page .sl-bp-essay h4 {
+  font-size: 20px;
+  margin-top: 28px;
+}
 .sl-briefing-page .sl-title {
   color: var(--rd-ink);
   font-size: clamp(30px, 3.4vw, 46px);
@@ -1804,18 +1826,22 @@
   outline: 2px solid var(--rd-ink-2);
   outline-offset: 3px;
 }
+/* --rd-ink-soft is not a token this file defines, so both of these were falling
+   through to the global muted colour and landing at 5.9:1 on cream: fainter than
+   the body copy they sit beside. They use the real tokens now. */
 .sl-bp-meta {
   margin-top: 10px;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.02em;
-  color: var(--rd-ink-soft, hsl(var(--muted-foreground)));
+  color: var(--rd-ink-2);
 }
 .sl-bp-h2 {
   font-size: 15px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin-bottom: 16px;
-  color: var(--rd-ink-soft, hsl(var(--muted-foreground)));
+  color: var(--rd-ink);
 }
 .sl-bp-list {
   display: grid;
