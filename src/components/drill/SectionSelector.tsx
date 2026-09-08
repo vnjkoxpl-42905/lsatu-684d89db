@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { PrepTestCombobox } from '@/components/testing/PrepTestCombobox';
 import { cn } from '@/lib/utils';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
 import type { FullSectionConfig, TimerMode } from '@/types/drill';
@@ -208,6 +209,8 @@ export function SectionSelector({
   );
 
   /** Sections of the chosen PrepTest, in published order. */
+  const ptOptions = useMemo(() => pickablePTs.map((pt) => ({ pt })), [pickablePTs]);
+
   const sectionsForPT = useMemo(
     () => pickableSections.filter((s) => s.pt === selectedPT).map((s) => s.section),
     [pickableSections, selectedPT],
@@ -369,7 +372,7 @@ export function SectionSelector({
               >
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="drill-observatory-launcher-panel">
+              <SelectContent className="testing-menu">
                 {/* "Fresh" on its own is our word, not the student's, so it
                     says what it filters to. Single-line, because the
                     trigger renders the chosen item's children and has to
@@ -413,34 +416,23 @@ export function SectionSelector({
           >
             PrepTest
           </label>
-          <Select
-            value={selectedPT ? String(selectedPT) : ''}
-            onValueChange={(val) => {
-              setSelectedPT(Number(val));
+          {/* Same combobox as the practice-test door. This was a plain Select
+              until an audit put the two side by side: 54 rows of scroll here,
+              type-to-filter there, for the identical decision. */}
+          <PrepTestCombobox
+            emptyMessage="No PrepTest by that number, under this filter."
+            id="preptest-select"
+            labelId="preptest-select-label"
+            onChange={(pt) => {
+              setSelectedPT(pt);
               // The section number means a different section in a different
               // test, so carrying it across would start the wrong thing.
               setSelectedSection(null);
             }}
-          >
-            <SelectTrigger
-              aria-labelledby="preptest-select-label preptest-select"
-              className="text-sm"
-              id="preptest-select"
-            >
-              <SelectValue placeholder="Select a PrepTest" />
-            </SelectTrigger>
-            <SelectContent className="drill-observatory-launcher-panel">
-              {pickablePTs.map((pt) => (
-                <SelectItem
-                  key={pt}
-                  value={String(pt)}
-                  className="text-sm focus:bg-foreground/5"
-                >
-                  PrepTest {pt}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            options={ptOptions}
+            placeholder="Select a PrepTest"
+            value={selectedPT}
+          />
         </div>
 
         <div className="space-y-3">
@@ -465,7 +457,7 @@ export function SectionSelector({
                 placeholder={selectedPT ? 'Select a section' : 'Pick a PrepTest first'}
               />
             </SelectTrigger>
-            <SelectContent className="drill-observatory-launcher-panel">
+            <SelectContent className="testing-menu">
               {sectionsForPT.map((section) => (
                 <SelectItem
                   key={section}
@@ -501,7 +493,7 @@ export function SectionSelector({
           labels={{ 100: 'Standard', 150: 'Time and a half', 200: 'Double time' }}
           accommodationNote={kind === 'rc' ? undefined : <AccommodationNote baseMinutes={baseMinutes} />}
           className="min-h-[44px] rounded-md"
-          contentClassName="drill-observatory-launcher-panel"
+          contentClassName="testing-menu"
         />
 
         {/* Nothing under the control. No counts, no caveats — the clock

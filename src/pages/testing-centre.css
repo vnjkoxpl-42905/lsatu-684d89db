@@ -116,9 +116,22 @@
    measures 4.24:1 on its own --muted fill — and that pairing is exactly the
    segmented control in the section launcher, where the unpicked half is a
    choice a student has to be able to read. Same hue, darkened to the
-   classroom's text-safe meta: 4.80:1 on the fill, 5.37:1 on the panel. */
+   classroom's text-safe meta: 4.80:1 on the fill, 5.37:1 on the panel.
+
+   A menu needs one step further. Three of this room's dropdowns used to carry
+   the drill hub's token block, which is not media-gated: they opened as
+   near-black panels on the white page. Moving them onto the classroom's own
+   tokens fixed that and exposed the same pairing one layer out — the selected
+   row of a menu fills to #ebebeb, darker than the panel, and #737373 on it is
+   3.98:1. 41.6% would clear the bar at 4.51:1, which is a pass with nothing
+   left over; 39% is 5.00:1, and a 12px clock reading is not the place to spend
+   the last hundredth. */
 .classroom-root .testing-panel {
   --muted-foreground: 30 2.8% 41.6%;
+}
+
+.testing-menu {
+  --muted-foreground: 30 2.8% 39%;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────

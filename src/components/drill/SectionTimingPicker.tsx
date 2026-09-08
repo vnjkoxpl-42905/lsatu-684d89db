@@ -232,6 +232,11 @@ export default function SectionTimingPicker({
 
   /* ---------------------------------------------------------------- render */
 
+  // Stable per instance, so two pickers on one page cannot collide.
+  const reactId = React.useId();
+  const fieldLabelId = `${reactId}-timing-label`;
+  const valueLabelId = `${reactId}-timing-value`;
+
   const triggerTitle = isTimed ? labelFor(currentPercent) : 'Unlimited';
   const triggerDetail = isTimed ? describe(currentPercent) : 'No clock';
 
@@ -240,7 +245,20 @@ export default function SectionTimingPicker({
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label="Section timing"
+          /* Three corrections, all from one audit finding.
+             `aria-haspopup` said "dialog" while what opens is a listbox, so a
+             screen reader announced a dialog and then landed in a list of
+             options. Radix defaults that attribute for a Popover; the popup
+             here is a listbox, so it has to be said explicitly, and
+             `role="combobox"` matches the four sibling controls in this form.
+             The name is now built from the visible text instead of an
+             aria-label, so it carries the current value: every other control
+             in the panel announces its setting and this one announced only its
+             field name. */
+          role="combobox"
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-labelledby={`${fieldLabelId} ${valueLabelId}`}
           className={cn(
             'w-full flex items-center justify-between gap-3 rounded-xl border border-border bg-background px-4 py-3 text-left transition-colors hover:bg-accent/40',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20',
@@ -248,10 +266,13 @@ export default function SectionTimingPicker({
           )}
         >
           <span className="min-w-0">
-            <span className="block text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <span
+              className="block text-xs font-medium uppercase tracking-wider text-muted-foreground"
+              id={fieldLabelId}
+            >
               Timing
             </span>
-            <span className="mt-0.5 flex flex-wrap items-baseline gap-x-2">
+            <span className="mt-0.5 flex flex-wrap items-baseline gap-x-2" id={valueLabelId}>
               <span className="text-sm font-semibold text-foreground">{triggerTitle}</span>
               <span className="text-xs text-muted-foreground">{triggerDetail}</span>
             </span>

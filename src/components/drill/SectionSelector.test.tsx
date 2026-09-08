@@ -80,8 +80,24 @@ const openSelectShowing = async (text: RegExp) => {
   fireEvent.keyDown(trigger, { key: 'Enter', code: 'Enter' });
 };
 
+/**
+ * The PrepTest field is a Popover, not a Select, so it opens on click rather
+ * than on the Select keyboard path above. Both doors of the Testing Centre now
+ * share this one control; it used to be a 54-row scroll here and a searchable
+ * combobox on the other door, for the same decision.
+ */
+const openPrepTests = async () => {
+  fireEvent.click(await screen.findByRole('combobox', { name: /PrepTest/ }));
+};
+
+const searchPrepTests = async (query: string) => {
+  fireEvent.change(await screen.findByPlaceholderText(/Search by number/), {
+    target: { value: query },
+  });
+};
+
 const pickSection = async () => {
-  await openSelectShowing(/Select a PrepTest/);
+  await openPrepTests();
   fireEvent.click(await screen.findByText(/^PrepTest 130$/));
   await openSelectShowing(/Select a section/);
   fireEvent.click(await screen.findByText(/^Section 3$/));
@@ -110,7 +126,7 @@ describe('SectionSelector', () => {
 
   it("offers the PrepTests newest first, then that test's own sections", async () => {
     renderSelector();
-    await openSelectShowing(/Select a PrepTest/);
+    await openPrepTests();
 
     await screen.findByText(/^PrepTest 131$/);
     const tests = screen
@@ -145,6 +161,45 @@ describe('SectionSelector', () => {
     expect(line.textContent).toMatch(/blind review comes after/);
   });
 
+  it('filters the PrepTests by substring, not by fuzzy score', async () => {
+    renderSelector();
+    await openPrepTests();
+    await screen.findByText(/^PrepTest 131$/);
+
+    // commandScore keeps "PrepTest 130" alive for the query 131, because the
+    // characters are all present in order. A PrepTest number is an identifier.
+    await searchPrepTests('131');
+    await waitFor(() =>
+      expect(screen.getAllByRole('option').map((el) => el.textContent)).toEqual([
+        'PrepTest 131',
+      ]),
+    );
+  });
+
+  it('announces how many PrepTests a search left', async () => {
+    renderSelector();
+    await openPrepTests();
+    await screen.findByText(/^PrepTest 131$/);
+
+    // Filtering is a status change with no other signal for a screen reader:
+    // the list collapsing is a visual event only.
+    await searchPrepTests('130');
+    const status = await screen.findByRole('status');
+    await waitFor(() => expect(status.textContent).toBe('1 PrepTest'));
+  });
+
+  it('says the timing trigger opens a listbox, because it does', async () => {
+    renderSelector();
+    await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
+
+    // It claimed aria-haspopup="dialog" while opening a role="listbox", so a
+    // screen reader announced a dialog and then landed in a list of options.
+    const trigger = screen.getByRole('combobox', { name: /Timing/i });
+    expect(trigger.getAttribute('aria-haspopup')).toBe('listbox');
+    expect(trigger.getAttribute('aria-labelledby')).toBeTruthy();
+    expect(trigger.textContent).toMatch(/Standard/);
+  });
+
   it('does not promise a clock that Unlimited never starts', async () => {
     renderSelector();
 
@@ -155,7 +210,10 @@ describe('SectionSelector', () => {
     // and never meets this; a test holding a reference across a render does.
     await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
 
-    fireEvent.click(screen.getByRole('button', { name: /Section timing/i }));
+    // Named by its visible text now, so the name carries the current value
+    // rather than only the field. It was aria-label="Section timing", which
+    // announced the field and dropped "Standard / 35:00".
+    fireEvent.click(screen.getByRole('combobox', { name: /Timing/i }));
     fireEvent.click(await screen.findByRole('option', { name: /Unlimited/ }));
     await pickSection();
 

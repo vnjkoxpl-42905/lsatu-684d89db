@@ -14,16 +14,8 @@
  */
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -33,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { SectionSelector } from "@/components/drill/SectionSelector";
+import { PrepTestCombobox } from "@/components/testing/PrepTestCombobox";
 import { loadAllIndexPassages } from "@/features/rc/lib/rcBank";
 import { buildRcSections, type RcSection } from "@/features/rc/lib/rcSections";
 import {
@@ -104,83 +97,6 @@ function Working({ children }: { children: React.ReactNode }) {
   );
 }
 
-/**
- * Picking one of 59 PrepTests.
- *
- * A plain select made this a 59-row scroll starting at the oldest test, with no
- * way to say "117" and be done. Newest first, because a student reaching for a
- * practice test reaches for a recent one, and because the section door next
- * door already orders them that way.
- */
-function PrepTestPicker({
-  tests,
-  value,
-  onChange,
-}: {
-  tests: PracticeTestBlueprint[];
-  value: PracticeTestBlueprint | null;
-  onChange: (test: PracticeTestBlueprint) => void;
-}) {
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          id="testing-pt"
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          aria-labelledby="testing-pt-label testing-pt"
-          className="w-full justify-between font-normal"
-        >
-          {value ? `PrepTest ${value.pt} · ${value.questionCount} questions` : "Choose a PrepTest"}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" aria-hidden />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        align="start"
-        className="testing-menu w-[--radix-popover-trigger-width] p-0"
-      >
-        {/* Substring, not cmdk's default fuzzy score. A PrepTest number is an
-            identifier, and fuzzy matching keeps "PrepTest 130" on screen for a
-            student who typed 131. Either the number is in the label or it is
-            not. */}
-        <Command
-          filter={(value, search) => {
-            const query = search.trim().toLowerCase();
-            if (!query) return 1;
-            return value.toLowerCase().includes(query) ? 1 : 0;
-          }}
-        >
-          <CommandInput placeholder="Search by number" />
-          <CommandList>
-            <CommandEmpty>No PrepTest by that number can be sat end to end.</CommandEmpty>
-            {tests.map((t) => (
-              <CommandItem
-                key={t.pt}
-                value={`PrepTest ${t.pt}`}
-                onSelect={() => {
-                  onChange(t);
-                  setOpen(false);
-                }}
-              >
-                <Check
-                  className={
-                    value?.pt === t.pt ? "mr-2 h-4 w-4 opacity-100" : "mr-2 h-4 w-4 opacity-0"
-                  }
-                  aria-hidden
-                />
-                PrepTest {t.pt} · {t.questionCount} questions
-              </CommandItem>
-            ))}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
 function PracticeTestSelector({
   tests,
   onBegin,
@@ -191,10 +107,13 @@ function PracticeTestSelector({
   const [pt, setPt] = React.useState<number | null>(null);
   const [pace, setPace] = React.useState<PracticeTestPaceId>("standard");
 
-  // Newest first. buildPracticeTests walks the bank in its own order, which is
-  // ascending, and the oldest PrepTest is the last one a student wants offered.
-  const ordered = React.useMemo(() => [...tests].sort((a, b) => b.pt - a.pt), [tests]);
-  const chosen = ordered.find((t) => t.pt === pt) ?? null;
+  // The combobox orders its own rows newest-first. This page still needs the
+  // blueprint behind the chosen number, for the shape table below.
+  const ptOptions = React.useMemo(
+    () => tests.map((t) => ({ pt: t.pt, detail: `${t.questionCount} questions` })),
+    [tests],
+  );
+  const chosen = tests.find((t) => t.pt === pt) ?? null;
   const clock = formatPracticeTestClock(pace);
 
   if (tests.length === 0) {
@@ -215,7 +134,14 @@ function PracticeTestSelector({
         <label htmlFor="testing-pt" id="testing-pt-label">
           PrepTest
         </label>
-        <PrepTestPicker tests={ordered} value={chosen} onChange={(t) => setPt(t.pt)} />
+        <PrepTestCombobox
+          emptyMessage="No PrepTest by that number can be sat end to end."
+          id="testing-pt"
+          labelId="testing-pt-label"
+          onChange={setPt}
+          options={ptOptions}
+          value={pt}
+        />
       </div>
 
       <div className="testing-field">
