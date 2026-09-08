@@ -43,6 +43,14 @@ const corsHeaders = {
 
 /** Bumped when the prompt or the scoring changes, so a re-grade is legible. */
 const GRADER_VERSION = 1;
+/**
+ * Which deploy is answering. Bumped on every change to this function.
+ *
+ * Lovable deploys edge functions on its own schedule and gives no receipt, so
+ * this is the only way to prove from outside that a fix is the one running.
+ * Returned on the 202 body and on the admin diagnostic below.
+ */
+const BUILD = "2026-09-08d";
 const ASR_ENGINE = "deepgram/nova-3";
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
@@ -291,8 +299,8 @@ serve(async (req) => {
     const auth = req.headers.get("Authorization");
     if (!auth) return json({ error: "unauthorized" }, 401);
 
-    const { assignmentId, force, attempt: askedFor } = await req.json();
-    if (!assignmentId) return json({ error: "assignmentId is required" }, 400);
+    const { assignmentId, force, attempt: askedFor, diagnose } = await req.json();
+    if (!assignmentId && !diagnose) return json({ error: "assignmentId is required" }, 400);
 
     const admin = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -323,6 +331,39 @@ serve(async (req) => {
       const { data: userData } = await caller.auth.getUser();
       uid = userData?.user?.id;
       if (!uid) return json({ error: "unauthorized" }, 401);
+    }
+
+    /*
+     * The admin diagnostic: which build, and which judge, with the key proven.
+     *
+     * "Is it using the Gemini key I added?" has no honest answer from outside
+     * without this: secrets cannot be read, and a grade row does not say which
+     * backend judged it. So an admin can ask, and the answer includes one
+     * one-word call through the same path a real grading takes.
+     */
+    if (diagnose) {
+      if (!trusted) {
+        const { data: isAdmin } = await admin.rpc("has_role", { _user_id: uid, _role: "admin" });
+        if (!isAdmin) return json({ error: "forbidden" }, 403);
+      }
+      const backend = Deno.env.get("GEMINI_API_KEY") ? "gemini-direct" : "lovable-gateway";
+      let judgeOk = false;
+      let judgeError: string | null = null;
+      try {
+        const reply = await judge('Reply with exactly this JSON and nothing else: {"ok":true}');
+        judgeOk = /"ok"\s*:\s*true/.test(reply);
+        if (!judgeOk) judgeError = `unexpected reply: ${reply.slice(0, 120)}`;
+      } catch (e) {
+        judgeError = (e as Error).message;
+      }
+      return json({
+        build: BUILD,
+        grader_version: GRADER_VERSION,
+        judge: backend,
+        judge_ok: judgeOk,
+        judge_error: judgeError,
+        transcriber: Deno.env.get("DEEPGRAM_API_KEY") ? "deepgram" : "missing DEEPGRAM_API_KEY",
+      });
     }
 
     const { data: assignment, error: aErr } = await admin
@@ -446,7 +487,7 @@ serve(async (req) => {
       p_stale_seconds: CLAIM_STALE_SECONDS,
     });
     if (cErr) throw cErr;
-    if (!claimed) return json({ status: "grading", attempt, build: GRADER_VERSION }, 202);
+    if (!claimed) return json({ status: "grading", attempt, build: BUILD }, 202);
     release = async () => {
       const { error } = await admin.rpc("release_section_grading", {
         p_assignment_id: assignmentId,

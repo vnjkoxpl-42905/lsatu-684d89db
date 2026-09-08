@@ -116,61 +116,137 @@ export function lineSimilarity(spoken: string, line: string): number {
 }
 
 /**
- * Attribute bursts to lines, in order.
+ * How a spoken content word scores against a line.
  *
- * A monotone alignment: burst 1 cannot belong to a later line than burst 2. The
- * best such alignment is found exactly rather than greedily, because a greedy
- * pass that mis-assigns one burst pushes every later burst onto the wrong line
- * and the whole stimulus reads as somebody else's work -- the same failure the
- * transcript slicing already had once.
+ * A word the line contains is a hit. A word some OTHER line contains, and this
+ * one does not, is evidence the stretch has run on into a neighbour, and costs
+ * a little; it is what stops one line's span from swallowing the next line's
+ * retelling when she never paused between them. A word in no line at all -- a
+ * reaction, a filler, her own phrasing -- is free either way, which is what
+ * keeps a reaction with the line it followed.
+ */
+const FOREIGN_WORD_COST = 0.5;
+/**
+ * Starting a new line's span somewhere other than at a silence costs this
+ * much, in hit units. Silence is still the strongest evidence of a boundary;
+ * this is only what lets content overrule it when the silence is not there.
+ */
+const CUT_WITHOUT_SILENCE_COST = 0.75;
+
+/**
+ * Attribute her words to lines, in order.
+ *
+ * Every line takes one contiguous stretch of her words, or nothing, and the
+ * stretches come in line order: she works top to bottom, so line 3's retelling
+ * cannot come before line 2's. Within that rule the split is chosen to put each
+ * line's content words with that line, which is what the silence alone could
+ * not do. The first cut keyed off silence and dealt whole bursts to lines, so a
+ * student who retold three lines in one breath had all three filed under line
+ * 1 and lines 2 and 3 shown as skipped -- on the same card whose detail lists
+ * said she carried them (PT1.S3 stimulus 1, 2026-09-08).
+ *
+ * Found exactly, by dynamic programming over word positions, for the same
+ * reason the burst alignment was: one greedy mis-cut pushes every later line
+ * onto the wrong words. Words are never left out. Whatever she said between two
+ * retellings belongs to the earlier one, since that is what she had just read.
  *
  * A line she never spoke about comes back with an empty `spoken`, which is a
  * skip and must never be read as a pass.
  */
-export function attributeLines(utterances: Utterance[], lines: string[]): LineSpan[] {
+export function attributeWords(words: TimedWord[], lines: string[], gapMs = LINE_GAP_MS): LineSpan[] {
   const spans: LineSpan[] = lines.map((text, i) => ({ n: i + 1, text, spoken: "" }));
-  if (!lines.length || !utterances.length) return spans;
-
-  const m = utterances.length;
+  const n = words.length;
   const k = lines.length;
-  const sim: number[][] = utterances.map((u) => lines.map((l) => lineSimilarity(u.text, l)));
+  if (!k || !n) return spans;
 
-  // dp[i][j]: best score having placed the first i bursts within the first j
-  // lines. Either line j takes nothing, or it takes burst i.
-  const dp: number[][] = Array.from({ length: m + 1 }, () => new Array(k + 1).fill(-Infinity));
-  for (let j = 0; j <= k; j++) dp[0][j] = 0;
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= k; j++) {
-      const skipLine = dp[i][j - 1];
-      const takeBurst = dp[i - 1][j] === -Infinity ? -Infinity : dp[i - 1][j] + sim[i - 1][j - 1];
-      dp[i][j] = Math.max(skipLine, takeBurst);
+  const lineTokens = lines.map((l) => new Set(contentTokens(l)));
+  const wordTokens = words.map((w) => contentTokens(w.word)[0] ?? null);
+
+  // gain[j][i]: what line j earns from the first i words, as a prefix sum, so
+  // any stretch scores in O(1).
+  const gain: number[][] = lineTokens.map((own) => {
+    const prefix = new Array<number>(n + 1).fill(0);
+    for (let i = 0; i < n; i++) {
+      const t = wordTokens[i];
+      let v = 0;
+      if (t) {
+        if (own.has(t)) v = 1;
+        else if (lineTokens.some((other) => other.has(t))) v = -FOREIGN_WORD_COST;
+      }
+      prefix[i + 1] = prefix[i] + v;
     }
-  }
-
-  const assigned = new Array<number>(m).fill(k - 1);
-  let i = m;
-  let j = k;
-  while (i > 0 && j > 0) {
-    const takeBurst = dp[i - 1][j] === -Infinity ? -Infinity : dp[i - 1][j] + sim[i - 1][j - 1];
-    if (dp[i][j] === takeBurst) {
-      assigned[i - 1] = j - 1;
-      i--;
-    } else {
-      j--;
-    }
-  }
-  // Anything left over belongs to the first line: she cannot have been ahead of
-  // where she started.
-  for (; i > 0; i--) assigned[i - 1] = 0;
-
-  utterances.forEach((u, index) => {
-    const line = spans[assigned[index]];
-    line.spoken = line.spoken ? `${line.spoken} ${u.text}` : u.text;
-    line.startMs = line.startMs === undefined ? u.startMs : Math.min(line.startMs, u.startMs);
-    line.endMs = line.endMs === undefined ? u.endMs : Math.max(line.endMs, u.endMs);
+    return prefix;
   });
 
+  // Where a stretch may begin cheaply: the first word, or a word after silence.
+  const afterSilence = words.map((w, i) => i === 0 || w.start * 1000 - words[i - 1].end * 1000 >= gapMs);
+
+  // best[j][i]: the best score with lines 0..j-1 placed and the first i words
+  // used; the words 0..i-1 are all taken, by construction. from[j][i] records
+  // the choice for the walk back: -1 means line j-1 took nothing.
+  const NEG = -Infinity;
+  const best: number[][] = Array.from({ length: k + 1 }, () => new Array<number>(n + 1).fill(NEG));
+  const from: number[][] = Array.from({ length: k + 1 }, () => new Array<number>(n + 1).fill(-2));
+  best[0][0] = 0;
+  for (let j = 1; j <= k; j++) {
+    for (let i = 0; i <= n; i++) {
+      // Line j-1 takes nothing.
+      let value = best[j - 1][i];
+      let choice = -1;
+      // Line j-1 takes words p..i-1.
+      for (let p = 0; p < i; p++) {
+        if (best[j - 1][p] === NEG) continue;
+        const cut = afterSilence[p] ? 0 : CUT_WITHOUT_SILENCE_COST;
+        const v = best[j - 1][p] + gain[j - 1][i] - gain[j - 1][p] - cut;
+        if (v > value) {
+          value = v;
+          choice = p;
+        }
+      }
+      best[j][i] = value;
+      from[j][i] = choice;
+    }
+  }
+
+  // Every word is taken, so the answer ends at i = n. Walk back.
+  let i = n;
+  for (let j = k; j >= 1; j--) {
+    const p = from[j][i];
+    if (p === -1) continue;
+    const span = spans[j - 1];
+    const taken = words.slice(p, i);
+    span.spoken = taken.map((w) => w.word).join(" ").trim();
+    span.startMs = Math.round(taken[0].start * 1000);
+    span.endMs = Math.round(taken[taken.length - 1].end * 1000);
+    i = p;
+  }
+  // The DP always reaches i = 0 (line 1 may take from word 0), so nothing is
+  // left over; if it ever were, it belongs to the first line.
+  if (i > 0) {
+    const first = spans[0];
+    const taken = words.slice(0, i);
+    first.spoken = `${taken.map((w) => w.word).join(" ").trim()} ${first.spoken}`.trim();
+    first.startMs = Math.round(taken[0].start * 1000);
+    first.endMs = first.endMs ?? Math.round(taken[taken.length - 1].end * 1000);
+  }
   return spans;
+}
+
+/**
+ * The burst alignment this replaced, kept for the callers that still deal in
+ * whole utterances. New code should go through `attributeWords`.
+ */
+export function attributeLines(utterances: Utterance[], lines: string[]): LineSpan[] {
+  const words: TimedWord[] = [];
+  for (const u of utterances) {
+    const parts = u.text.split(/\s+/).filter(Boolean);
+    const step = parts.length ? (u.endMs - u.startMs) / 1000 / parts.length : 0;
+    parts.forEach((word, idx) => {
+      const start = u.startMs / 1000 + idx * step;
+      words.push({ word, start, end: start + step });
+    });
+  }
+  return attributeWords(words, lines);
 }
 
 /** The whole job: the words she said with the text on screen, cut into lines. */
@@ -179,5 +255,5 @@ export function linesFromWords(
   lines: string[],
   gapMs = LINE_GAP_MS,
 ): LineSpan[] {
-  return attributeLines(splitUtterances(workingWords, gapMs), lines);
+  return attributeWords(workingWords, lines, gapMs);
 }
