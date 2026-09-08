@@ -556,6 +556,21 @@ export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply 
 
 // --- The score ---------------------------------------------------------------
 
+export interface LineGrade {
+  n: number;
+  /** The line as authored. */
+  text: string;
+  /** What she said for it. Empty means she said nothing there. */
+  spoken: string;
+  startMs?: number;
+  endMs?: number;
+  verdict: LineVerdict;
+  note: string;
+  /** Details authored under this line that she carried, and those she did not. */
+  carried: string[];
+  dropped: string[];
+}
+
 export interface StimulusGrade {
   carried: number;
   total: number;
@@ -575,15 +590,46 @@ export interface StimulusGrade {
   readGiven: boolean;
   readMatches: boolean;
   readReason: string;
+  /**
+   * Line-by-line feedback, in authored order. Empty when the run could not be
+   * cut into lines. Reporting only -- `percent` above is untouched by it.
+   */
+  lines: LineGrade[];
+  /** The whole-stimulus recall she gave after the text disappeared. */
+  recall?: { verdict: LineVerdict; note: string };
+  /** At most three plain-words phrases naming what she dropped that mattered. */
+  bigMisses: string[];
 }
 
-export function gradeStimulus(entries: JudgeEntry[], reply: JudgeReply): StimulusGrade {
+export function gradeStimulus(
+  entries: JudgeEntry[],
+  reply: JudgeReply,
+  /** Her run cut into lines, when it could be. Feedback only, never scored. */
+  lineSpans: { n: number; text: string; spoken: string; startMs?: number; endMs?: number }[] = [],
+): StimulusGrade {
   const own = entries.filter((e) => !e.decoy);
   const carriedEntries = own.filter((e) => reply.verdicts[e.id] === true);
   const total = own.length;
   // Guard the empty stimulus rather than dividing by zero into NaN, which
   // renders as a blank band and looks like a rendering bug.
   const percent = total === 0 ? 0 : Math.round((carriedEntries.length / total) * 100);
+
+  const lines: LineGrade[] = lineSpans.map((span) => {
+    const forLine = own.filter((e) => e.line === span.n);
+    const judged = reply.lineVerdicts[span.n];
+    return {
+      n: span.n,
+      text: span.text,
+      spoken: span.spoken,
+      startMs: span.startMs,
+      endMs: span.endMs,
+      // She said nothing here, so it is a skip whatever the judge called it.
+      verdict: span.spoken.trim() === "" ? "skipped" : (judged?.verdict ?? "thin"),
+      note: judged?.note ?? "",
+      carried: forLine.filter((e) => reply.verdicts[e.id] === true).map((e) => e.text),
+      dropped: forLine.filter((e) => reply.verdicts[e.id] !== true).map((e) => e.text),
+    };
+  });
 
   return {
     carried: carriedEntries.length,
@@ -602,7 +648,11 @@ export function gradeStimulus(entries: JudgeEntry[], reply: JudgeReply): Stimulu
     // than trusted, so a judge answering both true cannot invent one.
     readMatches: reply.readGiven && reply.readMatches,
     readReason: reply.readReason,
+    lines,
+    recall: reply.recallVerdict,
+    bigMisses: reply.bigMisses,
   };
+
 }
 
 /**
