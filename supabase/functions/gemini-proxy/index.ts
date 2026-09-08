@@ -128,6 +128,9 @@ async function handleChat(req: Request): Promise<Response> {
 async function handleEmbeddings(req: Request): Promise<Response> {
   const body = await req.json().catch(() => ({} as any));
   body.model = mapEmbedModel(body.model);
+  // The DB columns are vector(3072); ask for it explicitly so a provider
+  // default change can never silently write short vectors.
+  body.dimensions = 3072;
   return forward("/embeddings", body, false);
 }
 
