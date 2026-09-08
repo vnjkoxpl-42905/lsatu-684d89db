@@ -103,6 +103,28 @@ describe("getting back to a Report Card", () => {
       },
     ] as never);
 
+  /*
+   * Reported by a student, not found by a test.
+   *
+   * Celia finished her first section, saw "87% carried" on this row, and asked
+   * where the graded responses were. The button already went to her Report
+   * Card. It just read as a caption with a number on it, so she never pressed
+   * it. A row that is the only way back to the card has to say so.
+   */
+  it("says what the row opens, so a percentage is not the end of the road", async () => {
+    render(
+      <SectionLibrary
+        attempts={[attempt({ id: "r1" })]}
+        onStart={vi.fn()}
+        onOpenAttempt={vi.fn()}
+        loadChoices={load}
+        loadGrades={graded}
+        beginAttempt={vi.fn()}
+      />,
+    );
+    expect(await screen.findByText("See what you missed")).toBeInTheDocument();
+  });
+
   it("opens that Attempt's own assignment", async () => {
     const onOpenAttempt = vi.fn();
     render(

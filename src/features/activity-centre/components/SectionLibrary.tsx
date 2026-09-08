@@ -68,6 +68,28 @@ function attemptLabel(a: ActivityAssignmentSummary, grade: SectionGradeStub | un
   return `${date} · ${grade.section.mean_coverage}% carried`;
 }
 
+/**
+ * What the row is FOR, said on the row.
+ *
+ * Celia, on the morning after her first graded section: "I see the percentage,
+ * but I'm not seeing a way to look back at the attempt to see what information
+ * I was missing in my responses." The Report Card was already at the end of
+ * this button and had been for weeks. The row simply never said so. It was
+ * 13.5px muted text with a dotted underline, which is what a caption looks
+ * like, and the label stopped at the number.
+ *
+ * A percentage is a verdict she cannot act on. The card behind it is the whole
+ * point of the drill, so the row names it.
+ */
+function attemptAction(
+  a: ActivityAssignmentSummary,
+  grade: SectionGradeStub | undefined,
+): string | null {
+  if (a.status !== "completed") return null;
+  if (!grade) return "Check back shortly";
+  return "See what you missed";
+}
+
 export function SectionLibrary({
   attempts,
   onStart,
@@ -220,6 +242,7 @@ export function SectionLibrary({
                   {done.map((a, i) => {
                     const grade = grades.get(a.id);
                     const label = `Attempt ${done.length - i} \u00b7 ${attemptLabel(a, grade)}`;
+                    const action = attemptAction(a, grade);
                     const reachable = a.status === "completed" && onOpenAttempt !== undefined;
                     return (
                       <li key={a.id}>
@@ -229,11 +252,13 @@ export function SectionLibrary({
                             className="sl-sec-attempt"
                             onClick={() => onOpenAttempt?.(a.id)}
                           >
-                            {label}
+                            <span className="sl-sec-attempt-label">{label}</span>
+                            {action && <span className="sl-sec-attempt-go">{action}</span>}
                           </button>
                         ) : (
                           <span className="sl-sec-attempt" data-flat="true">
-                            {label}
+                            <span className="sl-sec-attempt-label">{label}</span>
+                            {action && <span className="sl-sec-attempt-go">{action}</span>}
                           </span>
                         )}
                       </li>

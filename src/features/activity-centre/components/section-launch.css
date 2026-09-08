@@ -1358,26 +1358,51 @@
 .sl-sec-body > .sl-note {
   margin-top: 10px;
 }
+/* A past Attempt is the way back to its Report Card, so it is a control and
+   not a footnote. It was 13.5px muted text with a dotted underline and no
+   padding, which is what a caption looks like, and the student it was built
+   for read the score off it and asked where the graded responses were
+   (Celia, 2026-09-08). Bordered, full width, and 44px of target. */
 .sl-sec-attempt {
+  align-items: center;
+  background: var(--rd-paper, #fff);
+  border: 1px solid var(--rd-line, rgba(0, 0, 0, 0.12));
+  border-radius: 10px;
+  color: var(--rd-ink-2);
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
   font: inherit;
   font-size: 13.5px;
-  color: var(--rd-ink-2);
-  background: none;
-  border: 0;
-  padding: 0;
+  gap: 4px 12px;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 8px 14px;
   text-align: left;
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-underline-offset: 4px;
-  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+  width: 100%;
 }
 .sl-sec-attempt[data-flat="true"] {
-  text-decoration: none;
-  cursor: default;
+  background: none;
+  border-style: dashed;
   color: var(--rd-ink-3);
+  cursor: default;
 }
 .sl-sec-attempt:hover:not([data-flat="true"]) {
+  border-color: currentColor;
   color: var(--rd-ink);
+}
+/* What the row opens, said on the row rather than left to be guessed. */
+.sl-sec-attempt-go {
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.sl-sec-attempt:not([data-flat="true"]) .sl-sec-attempt-go {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .sl-sec-go {
   appearance: none;
