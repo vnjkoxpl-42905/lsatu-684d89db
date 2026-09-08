@@ -17,6 +17,19 @@
   --qj-hair: rgba(68, 64, 61, 0.09);
   --qj-ui: "Outfit", ui-sans-serif, system-ui, sans-serif;
 
+  /* The field rules (.qf-field-label, .qf-select) are the finder's and read
+     --qf-* tokens, which only exist under .qf. Outside it they resolved to
+     nothing and the row inherited its host's ink: ivory on the drill hub's
+     cream stage, at 1.06:1. The jump row declares its own values under the
+     names the rules actually use. */
+  --qf-ink: var(--qj-ink);
+  --qf-muted: var(--qj-muted);
+  --qf-surface: #ffffff;
+  --qf-hair-08: var(--qj-hair);
+  --qf-accent: #ff8906;
+  --qf-ui: var(--qj-ui);
+  --qf-mono: "JetBrains Mono", ui-monospace, monospace;
+
   width: 100%;
 }
 
@@ -25,6 +38,7 @@
   --qj-muted: #8b837b;
   --qj-sunk: rgba(255, 255, 255, 0.03);
   --qj-hair: rgba(255, 255, 255, 0.1);
+  --qf-surface: #17161c;
 }
 
 .qj-row {
