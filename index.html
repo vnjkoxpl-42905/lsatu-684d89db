@@ -11,6 +11,22 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="apple-touch-icon" href="/pwa-192x192.png" />
 
+    <!-- The drill hub's hero photograph is the LCP element on /classroom/drill.
+         It is a CSS background, so Chrome cannot discover it until the React
+         bundle has booted and rendered the hero: a signed-in mobile trace on
+         2026-09-08 measured it queued at 5,260ms for an LCP of 6,542ms, while
+         the download itself took only 550ms. Preloading it here puts the
+         request in the initial document, in parallel with the boot, at high
+         priority. The webp is 37 KB; the type attribute keeps browsers without
+         webp support from fetching it at all. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/mainhub/hub-horizon.webp"
+      fetchpriority="high"
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://prod.spline.design" crossorigin />

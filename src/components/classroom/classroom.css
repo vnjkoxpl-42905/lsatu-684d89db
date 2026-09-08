@@ -1382,8 +1382,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .drill-observatory-console {
   align-self: center;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   background: var(--observatory-glass) !important;
   border: 0 !important;
   border-radius: var(--observatory-radius-panel) !important;
@@ -1785,19 +1785,11 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .drill-observatory-today-inner {
-  background-color: var(--observatory-surface-image) !important;
-  background-image: url("/mainhub/hub-eclipse.png");
-  background-image: image-set(
-    url("/mainhub/hub-eclipse.webp") type("image/webp"),
-    url("/mainhub/hub-eclipse.png") type("image/png")
-  );
-  background-position: 82% 30%;
-  background-repeat: no-repeat;
-  background-size: 160% auto;
+  background: var(--observatory-surface-card) !important;
   border-radius: var(--observatory-radius-shell) !important;
   box-shadow:
     0 0 0 1px var(--observatory-ring),
-    var(--observatory-shadow-image) !important;
+    var(--observatory-shadow-card) !important;
   gap: var(--observatory-space-3);
   height: 100%;
   overflow: hidden;
@@ -1805,26 +1797,10 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   position: relative;
 }
 
-.drill-observatory-today-inner::before {
-  background: linear-gradient(
-    180deg,
-    rgba(4, 4, 6, 0.55),
-    rgba(4, 4, 6, 0.25) 40%,
-    rgba(4, 4, 6, 0.75)
-  );
-  content: "";
-  inset: 0;
-  pointer-events: none;
-  position: absolute;
-  z-index: 0;
-}
-
-.drill-observatory-today-primary {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background: var(--observatory-glass-soft) !important;
-  border-radius: var(--observatory-radius-inner) !important;
-  box-shadow: 0 0 0 1px var(--observatory-ring) !important;
+.drill-observatory-root .drill-observatory-today-primary {
+  background: rgba(244, 241, 234, 0.04);
+  border-radius: var(--observatory-radius-inner);
+  box-shadow: 0 0 0 1px var(--observatory-ring);
   min-height: 0 !important;
   overflow: hidden;
   padding: 0 !important;
@@ -1865,31 +1841,27 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background-color: rgba(244, 241, 234, 0.05);
 }
 
-.drill-observatory-today-rail {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background: var(--observatory-glass-row) !important;
-  border-radius: var(--observatory-radius-control) !important;
-  box-shadow: 0 0 0 1px var(--observatory-ring-quiet) !important;
-  padding: var(--observatory-space-3) var(--observatory-space-4) !important;
-  transition: transform var(--observatory-motion), box-shadow var(--observatory-motion);
+.drill-observatory-root .drill-observatory-today-rail {
+  background: rgba(244, 241, 234, 0.035);
+  border-radius: var(--observatory-radius-control);
+  box-shadow: 0 0 0 1px var(--observatory-ring-quiet);
+  padding: var(--observatory-space-3) var(--observatory-space-4);
+  transition: transform var(--observatory-motion), box-shadow var(--observatory-motion),
+    background-color var(--observatory-motion);
 }
 
-.drill-observatory-today-rail:hover {
-  box-shadow:
-    0 0 0 1px var(--observatory-ring-glass),
-    0 10px 24px rgba(0, 0, 0, 0.28) !important;
+.drill-observatory-root .drill-observatory-today-rail:hover {
+  background: rgba(244, 241, 234, 0.06);
+  box-shadow: 0 0 0 1px var(--observatory-ring-glass);
   transform: translateY(-2px);
 }
 
-.drill-observatory-today-rail:active {
+.drill-observatory-root .drill-observatory-today-rail:active {
   transform: translateY(0.5px);
 }
 
-.drill-observatory-today-quiet {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background: var(--observatory-glass-row);
+.drill-observatory-root .drill-observatory-today-quiet {
+  background: rgba(244, 241, 234, 0.035);
   border-radius: var(--observatory-radius-control);
   box-shadow: 0 0 0 1px var(--observatory-ring-quiet);
   color: var(--observatory-ink-50);

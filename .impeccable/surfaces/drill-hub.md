@@ -12,7 +12,7 @@ Order of the page, top to bottom: utilities (jump, search, LR/RC), the hero (gre
 
 ## The ground
 
-The stage is cream (`--classroom-drill-page`). The cards on it are near-black (`--observatory-surface-card` `#08080b`). Two of the three cards carry a photograph (the horizon behind the hero, the eclipse behind Today), and those two photographs are the only decoration on the page. No accent colour. No gradients. No grid textures.
+The stage is cream (`--classroom-drill-page`). The cards on it are near-black (`--observatory-surface-card` `#08080b`). One card, the hero, carries a photograph (the horizon), and it is the only decoration on the page. Today was flattened to the same near-black surface as the practice card on 2026-09-08; two photographs on one screen read as a template. No accent colour. No gradients. No grid textures.
 
 Controls that sit on the stage itself (the jump row, the section switch) are inked for the stage: `--observatory-stage-*`. Controls on a card are inked ivory: the `--observatory-ink*` ladder. The 2026-09-08 audit found the jump row inked for the cards while sitting on the stage, at 1.07:1. Tone is decided by what a control sits on, never by what is near it.
 
@@ -34,7 +34,7 @@ Three families, on purpose, one job each:
 
 ## Depth
 
-Hairline rings (`0 0 0 1px`) separate surfaces. Shadows are quiet: `0 12px 32px` at 12 to 16 percent, not the 60px at 25 to 35 percent the page shipped with. Glass (`backdrop-filter`) appears only where text sits over a photograph: the hero console and Today's inner surfaces. A glass panel on the flat black practice card is a defect.
+Hairline rings (`0 0 0 1px`) separate surfaces. Shadows are quiet: `0 12px 32px` at 12 to 16 percent, not the 60px at 25 to 35 percent the page shipped with. Glass appears only on the hero console. It is the one `backdrop-filter` on the page, at `blur(12px)`, and it is there because it sits over the photograph. A glass panel anywhere else, including on Today, is a defect.
 
 ## Controls
 
