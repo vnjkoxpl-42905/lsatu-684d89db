@@ -180,3 +180,100 @@ describe("getting back to a Report Card", () => {
     expect(screen.queryByRole("button", { name: /Attempt 1/ })).not.toBeInTheDocument();
   });
 });
+
+/*
+ * Work Joshua assigned, waiting in the library.
+ *
+ * On 2026-09-08 eight sections were assigned to Yahunathan directly, one row
+ * per section, each with its own message and classroom link. The library read
+ * every one of those rows as a run: it showed "Attempt 1 - not finished" for
+ * sections he had never opened, offered "Run it again", and pressing it called
+ * `start_section_attempt`, which DELETES a never-started row for that same
+ * section. The row died and the message he had been sent pointed at nothing.
+ *
+ * A row he has never opened is not an Attempt. It is the assignment itself,
+ * and the library opens it rather than replacing it.
+ */
+describe("a section she was assigned and has not opened", () => {
+  const waiting = (over: Partial<ActivityAssignmentSummary> = {}) =>
+    attempt({
+      id: "assigned-105",
+      status: "assigned",
+      started_at: null,
+      completed_at: null,
+      source_section: "PT105.S2",
+      ...over,
+    });
+
+  it("is not counted as an Attempt", async () => {
+    render(
+      <SectionLibrary attempts={[waiting()]} onStart={vi.fn()} loadChoices={load} loadGrades={noGrades} />,
+    );
+    await screen.findByText("PT105.S2");
+    expect(screen.queryByText(/Attempt 1/)).not.toBeInTheDocument();
+    expect(screen.getAllByText("Not run yet.").length).toBe(2);
+  });
+
+  it("still reads Start, because he has not run it", async () => {
+    render(
+      <SectionLibrary attempts={[waiting()]} onStart={vi.fn()} loadChoices={load} loadGrades={noGrades} />,
+    );
+    await screen.findByText("PT105.S2");
+    expect(screen.queryByRole("button", { name: "Run it again" })).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "Start" }).length).toBe(2);
+  });
+
+  it("opens the row he was given instead of creating one that deletes it", async () => {
+    const onStart = vi.fn();
+    const beginAttempt = vi.fn(() => Promise.resolve("server-made"));
+    render(
+      <SectionLibrary
+        attempts={[waiting()]}
+        onStart={onStart}
+        loadChoices={load}
+        loadGrades={noGrades}
+        beginAttempt={beginAttempt}
+      />,
+    );
+    await screen.findByText("PT105.S2");
+    fireEvent.click(screen.getAllByRole("button", { name: "Start" })[1]);
+    expect(onStart).toHaveBeenCalledWith("assigned-105");
+    expect(beginAttempt).not.toHaveBeenCalled();
+  });
+
+  it("still asks the server for a section he was never assigned", async () => {
+    const onStart = vi.fn();
+    const beginAttempt = vi.fn(() => Promise.resolve("server-made"));
+    render(
+      <SectionLibrary
+        attempts={[waiting()]}
+        onStart={onStart}
+        loadChoices={load}
+        loadGrades={noGrades}
+        beginAttempt={beginAttempt}
+      />,
+    );
+    await screen.findByText("PT102.S3");
+    fireEvent.click(screen.getAllByRole("button", { name: "Start" })[0]);
+    expect(beginAttempt).toHaveBeenCalledWith("a1");
+  });
+
+  it("does not reuse a run he started and walked away from", async () => {
+    // A half-run has no valid audio to resume into (ADR 0023). Only a row he
+    // has never opened is safe to hand back.
+    const onStart = vi.fn();
+    const beginAttempt = vi.fn(() => Promise.resolve("server-made"));
+    render(
+      <SectionLibrary
+        attempts={[waiting({ status: "in_progress", started_at: "2026-09-08T18:00:00Z" })]}
+        onStart={onStart}
+        loadChoices={load}
+        loadGrades={noGrades}
+        beginAttempt={beginAttempt}
+      />,
+    );
+    await screen.findByText("PT105.S2");
+    fireEvent.click(screen.getAllByRole("button", { name: /Start|Run it again/ })[1]);
+    expect(beginAttempt).toHaveBeenCalledWith("a2");
+  });
+});

@@ -54,6 +54,18 @@ function attemptDate(a: ActivityAssignmentSummary): string {
 }
 
 /**
+ * A section she was handed and has not opened.
+ *
+ * Not an Attempt: nothing was recorded, nothing was answered, and calling it
+ * "Attempt 1 - not finished" tells her she abandoned a run she never began.
+ * `started_at` is the honest test, because a teacher-assigned row and a
+ * server-made one both arrive as rows and only one of them has a clock.
+ */
+function isWaiting(a: ActivityAssignmentSummary): boolean {
+  return a.status === "assigned" && !a.started_at;
+}
+
+/**
  * What one past Attempt says about itself.
  *
  * Three states, and they are genuinely different: a run that was never
@@ -151,6 +163,8 @@ export function SectionLibrary({
     const map = new Map<string, ActivityAssignmentSummary[]>();
     for (const a of attempts) {
       if (a.mode !== "section" || !a.source_section) continue;
+      // A row she has never opened is not a run. See `waitingBySection`.
+      if (isWaiting(a)) continue;
       const list = map.get(a.source_section) ?? [];
       list.push(a);
       map.set(a.source_section, list);
@@ -161,8 +175,42 @@ export function SectionLibrary({
     return map;
   }, [attempts]);
 
+  /**
+   * Sections Joshua handed her that she has not opened yet.
+   *
+   * These carry their own message and their own classroom link, so the row IS
+   * her assignment rather than a spare copy of one.
+   */
+  const waitingBySection = useMemo(() => {
+    const map = new Map<string, ActivityAssignmentSummary>();
+    for (const a of attempts) {
+      if (a.mode !== "section" || !a.source_section || !isWaiting(a)) continue;
+      const held = map.get(a.source_section);
+      // Oldest wins: it is the one whose message she was actually sent.
+      if (!held || new Date(a.created_at) < new Date(held.created_at)) {
+        map.set(a.source_section, a);
+      }
+    }
+    return map;
+  }, [attempts]);
+
   const start = useCallback(
     async (choice: SectionChoice) => {
+      /*
+       * Open the row she was given, rather than making a second one.
+       *
+       * `start_section_attempt` DELETES a never-started row for the same
+       * section before inserting its own. On 2026-09-08 eight sections were
+       * assigned to Yahunathan one row at a time, each with its own message and
+       * classroom link; pressing Start here would have deleted the row those
+       * links point at and left him with "Activity not found." Her assignment
+       * and her Attempt are the same row, so this opens it.
+       */
+      const waiting = waitingBySection.get(choice.source_section);
+      if (waiting) {
+        onStart(waiting.id);
+        return;
+      }
       setStarting(choice.id);
       setError(null);
       try {
@@ -172,7 +220,7 @@ export function SectionLibrary({
         setStarting(null);
       }
     },
-    [beginAttempt, onStart],
+    [beginAttempt, onStart, waitingBySection],
   );
 
   if (error && !choices) {
