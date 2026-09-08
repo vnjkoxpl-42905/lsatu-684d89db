@@ -82,8 +82,9 @@ export default function QuestionFinder({ returnTo, tone = "light", bank }: Quest
       {/* ONE trigger, not one per breakpoint. Two buttons behind a CSS
           display swap would both stay in the accessibility tree, and a screen
           reader would announce "Find a question" twice on every visit. The
-          label and the shortcut hint are what collapse on a phone; the control
-          and its accessible name do not change. */}
+          label is what collapses on a phone; the control and its accessible
+          name do not change. The shortcut still works but is not advertised
+          on the trigger: Joshua's call, 2026-09-08. */}
       <button
         type="button"
         className="qf-trigger"
@@ -95,9 +96,6 @@ export default function QuestionFinder({ returnTo, tone = "light", bank }: Quest
         <Search className="qf-trigger-icon" size={15} strokeWidth={1.9} aria-hidden />
         <span className="qf-trigger-label" aria-hidden>
           Find a question
-        </span>
-        <span className="qf-trigger-kbd" aria-hidden>
-          ⌘K
         </span>
       </button>
 

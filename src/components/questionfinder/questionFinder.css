@@ -105,20 +105,6 @@ html.dark .qf {
   white-space: nowrap;
 }
 
-/* Not a decoration: it teaches the accelerator to the students who want one,
-   while the label keeps the control findable by everyone else. */
-.qf-trigger-kbd {
-  background: var(--qf-sunk);
-  border-radius: 6px;
-  box-shadow: 0 0 0 1px var(--qf-hair-06);
-  color: var(--qf-muted);
-  flex: none;
-  font-family: var(--qf-mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  padding: 4px 7px;
-}
 
 /* Phones: the masthead is already carrying the greeting and the due pill, so
    the label and the shortcut hint fall away and the trigger becomes an icon.
@@ -131,9 +117,6 @@ html.dark .qf {
   }
 
   .qf-trigger-label,
-  .qf-trigger-kbd {
-    display: none;
-  }
 }
 
 /* ── portal, scrim, panel ─────────────────────────────────────────────── */
