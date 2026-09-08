@@ -127,11 +127,15 @@ export function lineSimilarity(spoken: string, line: string): number {
  */
 const FOREIGN_WORD_COST = 0.5;
 /**
- * Starting a new line's span somewhere other than at a silence costs this
- * much, in hit units. Silence is still the strongest evidence of a boundary;
- * this is only what lets content overrule it when the silence is not there.
+ * Starting a new line's span mid-phrase costs this much, in hit units. A stray
+ * word from the neighbouring line is worth 1.5 to the wrong side (a hit for
+ * one line, a foreign-word cost avoided for the other), so this sits above
+ * that: one such word ("mathematical", in "the mathematical theory was based
+ * on...") cannot buy a cut inside a phrase when a full stop or a breath sits a
+ * few words away, and two lines' worth of content still can. Silence and sentence
+ * ends are free; a comma is half price.
  */
-const CUT_WITHOUT_SILENCE_COST = 0.75;
+const CUT_WITHOUT_SILENCE_COST = 2;
 
 /**
  * Attribute her words to lines, in order.
@@ -178,8 +182,17 @@ export function attributeWords(words: TimedWord[], lines: string[], gapMs = LINE
     return prefix;
   });
 
-  // Where a stretch may begin cheaply: the first word, or a word after silence.
-  const afterSilence = words.map((w, i) => i === 0 || w.start * 1000 - words[i - 1].end * 1000 >= gapMs);
+  // What it costs to begin a stretch at word i. Free after silence or a full
+  // stop, since those are where a retelling of one line actually ends; cheap
+  // after a comma; and the full price mid-phrase, so a cut never lands inside
+  // "mathematical theory" when a breath or a period was a few words away.
+  const cutCost = words.map((w, i) => {
+    if (i === 0 || w.start * 1000 - words[i - 1].end * 1000 >= gapMs) return 0;
+    const prev = words[i - 1].word;
+    if (/[.?!]["')]*$/.test(prev)) return 0;
+    if (/[,;:]["')]*$/.test(prev)) return CUT_WITHOUT_SILENCE_COST / 2;
+    return CUT_WITHOUT_SILENCE_COST;
+  });
 
   // best[j][i]: the best score with lines 0..j-1 placed and the first i words
   // used; the words 0..i-1 are all taken, by construction. from[j][i] records
@@ -196,8 +209,7 @@ export function attributeWords(words: TimedWord[], lines: string[], gapMs = LINE
       // Line j-1 takes words p..i-1.
       for (let p = 0; p < i; p++) {
         if (best[j - 1][p] === NEG) continue;
-        const cut = afterSilence[p] ? 0 : CUT_WITHOUT_SILENCE_COST;
-        const v = best[j - 1][p] + gain[j - 1][i] - gain[j - 1][p] - cut;
+        const v = best[j - 1][p] + gain[j - 1][i] - gain[j - 1][p] - cutCost[p];
         if (v > value) {
           value = v;
           choice = p;

@@ -86,6 +86,22 @@ Deno.test("a line she never spoke about is empty, not borrowed", () => {
   assert(/sugar/.test(lines[2].spoken));
 });
 
+Deno.test("a cut lands at the sentence end, not inside a phrase", () => {
+  // Celia, PT1.S3 Q4: "mathematical theory" straddled lines 1 and 2 because
+  // "mathematical" is a line-1 word and "theory" is not.
+  const words = say(
+    "So this person is writing to an editor in 1960. In 1960, an astronomer proposed a mathematical theory for whether or not extraterrestrial life exists. " +
+      "The mathematical theory was based on the assumption that life as we know it could only be based on a planet.",
+    0,
+  );
+  const lines = linesFromWords(words, [
+    "To the Editor: In 1960, an astronomer proposed a mathematical model for determining whether extraterrestrial life exists.",
+    "It was based on the assumptions that life as we know it could exist only on a planet and that many stars are, like our Sun, orbited by planets.",
+  ]);
+  assert(/exists\.$/.test(lines[0].spoken), `line 1 should end at the full stop, got: …${lines[0].spoken.slice(-40)}`);
+  assert(/^The mathematical theory/.test(lines[1].spoken), `line 2 should start the next sentence, got: ${lines[1].spoken.slice(0, 40)}`);
+});
+
 Deno.test("nothing said means every line is empty", () => {
   const lines = linesFromWords([], CELIA_Q1_LINES);
   assertEquals(lines.map((l) => l.spoken), ["", "", ""]);
