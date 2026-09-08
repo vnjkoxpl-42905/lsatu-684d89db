@@ -90,19 +90,42 @@ async function main() {
   }
 
   if (pull) {
-    // The door carries the same briefing as every section, so any row is a
-    // faithful source. Take the library door: it is the one a reader lands on.
-    const { data: door, error: doorErr } = await supabase
+    // Not the door. The library door row carries an older copy of this briefing
+    // than the twelve sections do: it still says "say it back" and "The Read",
+    // both of which CONTEXT.md retires in favour of "tell it back" and "The
+    // Recall". Take the copy the most rows agree on, and say so when they do
+    // not all agree, rather than trusting any one row's name.
+    const { data: rows, error: rowErr } = await supabase
       .from("activities")
       .select("slug,instructions")
-      .eq("slug", `${SLUG_PREFIX}sections`)
-      .maybeSingle();
-    if (doorErr) throw doorErr;
-    if (!door) {
-      console.error(`content-push: no ${SLUG_PREFIX}sections row to pull from.`);
+      .like("slug", `${SLUG_PREFIX}%`)
+      .order("slug");
+    if (rowErr) throw rowErr;
+    if (!rows?.length) {
+      console.error(`content-push: no ${SLUG_PREFIX}* rows to pull from.`);
       process.exit(1);
     }
-    if (stable(door.instructions) === want) {
+
+    const groups = new Map<string, { slugs: string[]; value: unknown }>();
+    for (const r of rows) {
+      const k = stable(r.instructions);
+      const g = groups.get(k) ?? { slugs: [], value: r.instructions };
+      g.slugs.push(r.slug);
+      groups.set(k, g);
+    }
+    const ranked = [...groups.values()].sort((a, b) => b.slugs.length - a.slugs.length);
+    const winner = ranked[0];
+
+    if (ranked.length > 1) {
+      console.log(`The ${rows.length} rows carry ${ranked.length} different briefings:`);
+      for (const g of ranked) {
+        console.log(`  ${String(g.slugs.length).padStart(3)} rows  ${g.slugs.slice(0, 3).join(", ")}${g.slugs.length > 3 ? " ..." : ""}`);
+      }
+      console.log(`Taking the copy ${winner.slugs.length} of them agree on.
+`);
+    }
+
+    if (stable(winner.value) === want) {
       console.log("Already in sync. Nothing to pull.");
       return;
     }
@@ -114,9 +137,9 @@ async function main() {
       );
       return;
     }
-    fs.writeFileSync(SOURCE, `${JSON.stringify(door.instructions, null, 2)}
+    fs.writeFileSync(SOURCE, `${JSON.stringify(winner.value, null, 2)}
 `, "utf8");
-    console.log(`Pulled ${door.slug} into ${path.relative(REPO, SOURCE)}.`);
+    console.log(`Pulled into ${path.relative(REPO, SOURCE)}.`);
     console.log("Review the diff, run the tests, then commit it.");
     return;
   }
