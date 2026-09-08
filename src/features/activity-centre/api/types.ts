@@ -443,9 +443,38 @@ export interface SectionStimulusGrade {
   /** Where this stimulus sits in the recording, for a Clip. */
   window_ms?: { start: number; end: number };
   recall_window_ms?: { start: number; end: number };
+  /**
+   * Her run cut into the lines she was rephrasing, in authored order.
+   *
+   * Feedback only -- `percent` above is the same number it always was, scored
+   * over the whole stimulus. Absent on grades written before line attribution
+   * existed, so every reader has to treat it as optional.
+   */
+  lines?: SectionLineGrade[];
+  /** The whole-stimulus recall she gave once the text disappeared. */
+  recall?: { verdict: SectionLineVerdict; note: string };
+  /** At most three plain-words phrases naming what she dropped that mattered. */
+  bigMisses?: string[];
   /** Why the judge returned nothing. Absent on every stimulus that was judged. */
   ungraded?: string;
 }
+
+export type SectionLineVerdict = "strong" | "partial" | "thin" | "skipped";
+
+export interface SectionLineGrade {
+  /** 1-based line number within the stimulus. */
+  n: number;
+  text: string;
+  /** What she said for that line. Empty means she said nothing there. */
+  spoken: string;
+  startMs?: number;
+  endMs?: number;
+  verdict: SectionLineVerdict;
+  note: string;
+  carried: string[];
+  dropped: string[];
+}
+
 
 export interface SectionGradeSummary {
   accommodation: string;

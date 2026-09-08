@@ -28,7 +28,17 @@ export interface Detail {
   n: number;
   text: string;
   kind: DetailKind;
+  /**
+   * Which authored line this Detail lives in, when the caller knows.
+   *
+   * Coverage is still per stimulus (ADR 0013) and this changes no score. It is
+   * how a marked Detail finds its way back to the line she was rephrasing when
+   * she should have carried it, so the Report Card can say "on line 2 you
+   * dropped the quantifier" instead of handing her a list of 21.
+   */
+  line?: number;
 }
+
 
 export type Band = "at-the-standard" | "nearly-there" | "thin" | "lost-it";
 
@@ -128,6 +138,23 @@ export function toDetails(texts: string[]): Detail[] {
   return texts.map((text, i) => ({ n: i + 1, text, kind: classifyDetail(text) }));
 }
 
+/**
+ * The same list, but each Detail remembers the line it was authored under.
+ *
+ * Flattened in authored order, exactly as `toDetails` over the flattened texts
+ * would produce, so ids and scores are identical either way. The only addition
+ * is the line number, which no score reads.
+ */
+export function toDetailsByLine(lines: { details: { text: string }[] }[]): Detail[] {
+  const out: Detail[] = [];
+  lines.forEach((line, index) => {
+    for (const d of line.details ?? []) {
+      out.push({ n: out.length + 1, text: d.text, kind: classifyDetail(d.text), line: index + 1 });
+    }
+  });
+  return out;
+}
+
 // --- The one model call ------------------------------------------------------
 
 export interface JudgeEntry {
@@ -136,6 +163,8 @@ export interface JudgeEntry {
   kind: DetailKind;
   /** Not sent to the model. A decoy must come back missed. */
   decoy: boolean;
+  /** The authored line this Detail belongs to, when known. Never on a decoy. */
+  line?: number;
 }
 
 /**
@@ -153,8 +182,9 @@ export interface JudgeEntry {
  * the same prompt and a disagreement between two runs is the model's, not ours.
  */
 export function buildJudgeEntries(details: Detail[], decoyTexts: string[]): JudgeEntry[] {
-  const real = details.map((d) => ({ text: d.text, kind: d.kind, decoy: false }));
+  const real = details.map((d) => ({ text: d.text, kind: d.kind, decoy: false, line: d.line }));
   const decoys = decoyTexts.map((text) => ({ text, kind: classifyDetail(text), decoy: true }));
+
   if (decoys.length === 0) return real.map((e, i) => ({ id: i + 1, ...e }));
 
   // Spread them through the list instead of appending: a judge that sees two
@@ -241,6 +271,20 @@ export function buildJudgePrompt(input: {
    * run that differs from it starts looking wrong.
    */
   modelRun?: string | null;
+  /**
+   * Her run cut into the lines she was rephrasing, and her whole-stimulus
+   * recall on its own.
+   *
+   * The drill is line by line -- read one line silently, look away, say that
+   * line back -- and until now the judge saw the whole thing as one block of
+   * text. It could say a fact was dropped; it could not say WHERE, which is the
+   * only form of that feedback she can act on. The cut comes from the silence
+   * before each spoken line (`rrcLines.ts`), so it is evidence about her run
+   * and not a boundary she is scored against.
+   */
+  lines?: { n: number; text: string; spoken: string }[];
+  /** What she said after the text disappeared. Part of `spoken` as well. */
+  recall?: string | null;
 }): string {
   const kinds = [...new Set(input.entries.map((e) => e.kind))]
     .map((k) => `- ${KIND_RULE[k]}`)
@@ -251,9 +295,11 @@ export function buildJudgePrompt(input: {
 
   return `You are grading one stimulus of a memory drill.
 
-A student read the stimulus below, then said it back out loud in her own words
-from memory. Your job is to decide, for each numbered Detail, whether she
-carried it.
+The student read the stimulus one line at a time. She reads a line silently,
+looks away from the screen, and says that line back out loud in her own words
+from memory; then the next line, and so on. When every line is done the text
+disappears and she restates the whole stimulus from memory. She never reads
+aloud. Your job is to decide, for each numbered Detail, whether she carried it.
 
 THE STIMULUS (context only — see the rule below):
 """
@@ -264,6 +310,23 @@ WHAT SHE SAID (this is your ONLY evidence):
 """
 ${input.spoken}
 """
+${
+    input.lines?.length
+      ? `
+HER RUN, LINE BY LINE (the same words, split by which line she had just read):
+${input.lines
+          .map((l) => `Line ${l.n}: ${l.text}\n  She said: ${l.spoken || "(nothing)"}`)
+          .join("\n")}
+${input.recall ? `\nHER FULL RECALL, text off screen:\n"""\n${input.recall}\n"""\n` : ""}
+Judge each line: how much of that line survived in what she said for it, and
+say in one short sentence what she dropped. A line she said nothing for is
+"skipped". Then judge the full recall the same way. The split is approximate --
+if she clearly covered a line's content while talking about a neighbouring
+line, do not mark it skipped.
+`
+      : ""
+  }
+
 
 HOW TO JUDGE EACH KIND:
 ${kinds}
@@ -327,15 +390,28 @@ How to use it, and how not to:
   joke — beyond retelling it?
 - colour_specific: was that reaction specific to THIS stimulus rather than
   something that would fit any stimulus?
+- big_misses: at most three short phrases naming the most important things she
+  dropped, in plain words she can act on. Empty if she dropped nothing that
+  matters.
 
 Reply with JSON only, no prose and no code fence:
 {"verdicts":[{"id":1,"carried":true}],"reciting":false,"reciting_reason":"",
-"listing":false,"listing_reason":"","coloured":true,"colour_specific":true${
+"listing":false,"listing_reason":"","coloured":true,"colour_specific":true,
+"big_misses":[]${
     input.theRead ? ',\n"read_given":true,"read_matches":true,"read_reason":""' : ""
+  }${
+    input.lines?.length
+      ? ',\n"lines":[{"n":1,"verdict":"strong","note":""}],\n"recall":{"verdict":"partial","note":""}'
+      : ""
   }}
-
+${
+    input.lines?.length
+      ? `\nEvery line verdict is one of: strong, partial, thin, skipped. Return one\nentry for every line from 1 to ${input.lines.length}.\n`
+      : ""
+  }
 Return exactly one verdict for every id from 1 to ${input.entries.length}.`;
 }
+
 
 // --- Reading the answer ------------------------------------------------------
 
@@ -360,7 +436,25 @@ export interface JudgeReply {
   readReason: string;
   /** Ids expected but absent from the reply. Counted as not carried. */
   missingIds: number[];
+  /** At most three plain-words phrases naming what she dropped that mattered. */
+  bigMisses: string[];
+  /** Per-line judgement, keyed by line number. Absent when lines were not sent. */
+  lineVerdicts: Record<number, { verdict: LineVerdict; note: string }>;
+  /** The same judgement for the whole-stimulus recall, when it was sent. */
+  recallVerdict?: { verdict: LineVerdict; note: string };
 }
+
+export type LineVerdict = "strong" | "partial" | "thin" | "skipped";
+
+const LINE_VERDICTS: LineVerdict[] = ["strong", "partial", "thin", "skipped"];
+
+function toLineVerdict(value: unknown): LineVerdict {
+  const v = String(value ?? "").toLowerCase() as LineVerdict;
+  // Anything unrecognised is "thin" rather than "strong": a judge that garbles
+  // the field must not be able to award a line she may never have spoken.
+  return LINE_VERDICTS.includes(v) ? v : "thin";
+}
+
 
 export class JudgeReplyError extends Error {}
 
@@ -417,6 +511,19 @@ export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply 
   const flag = (k: string) => obj[k] === true;
   const reason = (k: string) => (typeof obj[k] === "string" ? (obj[k] as string) : "");
 
+  const lineVerdicts: Record<number, { verdict: LineVerdict; note: string }> = {};
+  if (Array.isArray(obj.lines)) {
+    for (const row of obj.lines as Record<string, unknown>[]) {
+      const n = Number(row?.n);
+      if (!Number.isFinite(n)) continue;
+      lineVerdicts[n] = {
+        verdict: toLineVerdict(row.verdict),
+        note: typeof row.note === "string" ? row.note : "",
+      };
+    }
+  }
+  const recallRow = obj.recall as Record<string, unknown> | undefined;
+
   return {
     verdicts,
     reciting: flag("reciting"),
@@ -434,10 +541,35 @@ export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply 
     readMatches: flag("read_matches"),
     readReason: reason("read_reason"),
     missingIds,
+    bigMisses: Array.isArray(obj.big_misses)
+      ? (obj.big_misses as unknown[])
+          .filter((m): m is string => typeof m === "string" && m.trim() !== "")
+          .slice(0, 3)
+      : [],
+    lineVerdicts,
+    recallVerdict: recallRow
+      ? { verdict: toLineVerdict(recallRow.verdict), note: typeof recallRow.note === "string" ? recallRow.note : "" }
+      : undefined,
   };
 }
 
+
 // --- The score ---------------------------------------------------------------
+
+export interface LineGrade {
+  n: number;
+  /** The line as authored. */
+  text: string;
+  /** What she said for it. Empty means she said nothing there. */
+  spoken: string;
+  startMs?: number;
+  endMs?: number;
+  verdict: LineVerdict;
+  note: string;
+  /** Details authored under this line that she carried, and those she did not. */
+  carried: string[];
+  dropped: string[];
+}
 
 export interface StimulusGrade {
   carried: number;
@@ -458,15 +590,46 @@ export interface StimulusGrade {
   readGiven: boolean;
   readMatches: boolean;
   readReason: string;
+  /**
+   * Line-by-line feedback, in authored order. Empty when the run could not be
+   * cut into lines. Reporting only -- `percent` above is untouched by it.
+   */
+  lines: LineGrade[];
+  /** The whole-stimulus recall she gave after the text disappeared. */
+  recall?: { verdict: LineVerdict; note: string };
+  /** At most three plain-words phrases naming what she dropped that mattered. */
+  bigMisses: string[];
 }
 
-export function gradeStimulus(entries: JudgeEntry[], reply: JudgeReply): StimulusGrade {
+export function gradeStimulus(
+  entries: JudgeEntry[],
+  reply: JudgeReply,
+  /** Her run cut into lines, when it could be. Feedback only, never scored. */
+  lineSpans: { n: number; text: string; spoken: string; startMs?: number; endMs?: number }[] = [],
+): StimulusGrade {
   const own = entries.filter((e) => !e.decoy);
   const carriedEntries = own.filter((e) => reply.verdicts[e.id] === true);
   const total = own.length;
   // Guard the empty stimulus rather than dividing by zero into NaN, which
   // renders as a blank band and looks like a rendering bug.
   const percent = total === 0 ? 0 : Math.round((carriedEntries.length / total) * 100);
+
+  const lines: LineGrade[] = lineSpans.map((span) => {
+    const forLine = own.filter((e) => e.line === span.n);
+    const judged = reply.lineVerdicts[span.n];
+    return {
+      n: span.n,
+      text: span.text,
+      spoken: span.spoken,
+      startMs: span.startMs,
+      endMs: span.endMs,
+      // She said nothing here, so it is a skip whatever the judge called it.
+      verdict: span.spoken.trim() === "" ? "skipped" : (judged?.verdict ?? "thin"),
+      note: judged?.note ?? "",
+      carried: forLine.filter((e) => reply.verdicts[e.id] === true).map((e) => e.text),
+      dropped: forLine.filter((e) => reply.verdicts[e.id] !== true).map((e) => e.text),
+    };
+  });
 
   return {
     carried: carriedEntries.length,
@@ -485,7 +648,11 @@ export function gradeStimulus(entries: JudgeEntry[], reply: JudgeReply): Stimulu
     // than trusted, so a judge answering both true cannot invent one.
     readMatches: reply.readGiven && reply.readMatches,
     readReason: reply.readReason,
+    lines,
+    recall: reply.recallVerdict,
+    bigMisses: reply.bigMisses,
   };
+
 }
 
 /**

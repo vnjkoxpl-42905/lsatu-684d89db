@@ -7,11 +7,12 @@ import {
   mapWithConcurrency,
   parseJudgeReply,
   pickDecoys,
-  toDetails,
+  toDetailsByLine,
   type StimulusGrade,
 } from "../_shared/rrcGrading.ts";
 import { checkReciting } from "../_shared/rrcOverlap.ts";
 import { stripVerbatimReads } from "../_shared/rrcReads.ts";
+import { linesFromWords } from "../_shared/rrcLines.ts";
 
 /**
  * Grade one finished Read, Recall, Colour section.
@@ -384,7 +385,7 @@ serve(async (req) => {
       p_stale_seconds: CLAIM_STALE_SECONDS,
     });
     if (cErr) throw cErr;
-    if (!claimed) return json({ status: "grading", attempt, build: BUILD }, 202);
+    if (!claimed) return json({ status: "grading", attempt, build: GRADER_VERSION }, 202);
     release = async () => {
       const { error } = await admin.rpc("release_section_grading", {
         p_assignment_id: assignmentId,
@@ -538,7 +539,6 @@ serve(async (req) => {
       const item = bySlug.get(slug)!;
 
       const chunks = (item.chunks ?? []) as { text: string; details: { text: string }[] }[];
-      const detailTexts = chunks.flatMap((c) => c.details.map((d) => d.text));
       const stimulusText = chunks.map((c) => c.text).join(" ");
 
       const segments = ((rrc.audio_segments ?? []) as Segment[]);
@@ -588,7 +588,21 @@ serve(async (req) => {
       const otherChunks = (other?.chunks ?? []) as { details: { text: string }[] }[];
       const decoys = pickDecoys(otherChunks.flatMap((c) => c.details ?? []).map((d) => d.text));
 
-      const entries = buildJudgeEntries(toDetails(detailTexts), decoys);
+      const entries = buildJudgeEntries(toDetailsByLine(chunks), decoys);
+
+      /*
+       * Her run cut into the lines she was rephrasing.
+       *
+       * She reads each line silently and speaks only while looking away, so the
+       * cut keys off the silence in front of each spoken line plus the order she
+       * works in (`rrcLines.ts`). It is worked out here, after the run, and the
+       * drill is untouched by it. Nothing in the score reads it: Coverage stays
+       * per stimulus, and this exists so the Report Card can say WHERE a point
+       * went missing and play back the seconds it went missing in.
+       */
+      const lineSpans = linesFromWords(workingWords, chunks.map((c) => c.text));
+      const recallText = recallWords.map((w) => w.word).join(" ").trim();
+
       const nothingCarried = {
         verdicts: {},
         reciting: false,
@@ -597,8 +611,14 @@ serve(async (req) => {
         listingReason: "",
         coloured: false,
         colourSpecific: false,
+        readGiven: false,
+        readMatches: false,
+        readReason: "",
         missingIds: entries.map((e) => e.id),
+        bigMisses: [],
+        lineVerdicts: {},
       };
+
 
       if (!spoken) {
         // Nothing captured in her windows. Zero Coverage is the honest number
@@ -607,7 +627,7 @@ serve(async (req) => {
         return {
           slug,
           item_order: Number(row.item_order),
-          ...gradeStimulus(entries, nothingCarried),
+          ...gradeStimulus(entries, nothingCarried, lineSpans),
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
           spoken: "",
           window_ms: span(segments),
@@ -624,9 +644,12 @@ serve(async (req) => {
             spoken,
             theRead: (item.the_read as string | null) ?? null,
             modelRun: walkthroughs.get(slug) ?? null,
+            lines: lineSpans.map((l) => ({ n: l.n, text: l.text, spoken: l.spoken })),
+            recall: recallText || null,
           }),
         );
-        const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)));
+        const grade = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)), lineSpans);
+
 
         // Reciting is decided in code, not by the model: it is a measurement,
         // and the reading is kept alongside the verdict so the thresholds can
@@ -654,7 +677,7 @@ serve(async (req) => {
         return {
           slug,
           item_order: Number(row.item_order),
-          ...gradeStimulus(entries, nothingCarried),
+          ...gradeStimulus(entries, nothingCarried, lineSpans),
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
           spoken,
           window_ms: span(segments),
