@@ -777,6 +777,26 @@ export async function startSectionAttempt(activityId: string): Promise<string> {
   return data;
 }
 
+/**
+ * Start a focus set: the weakest stimuli of a finished run, as their own
+ * Attempt.
+ *
+ * The row is built server-side from the run she already owns; the slugs only
+ * narrow her own snapshot and can never widen it.
+ */
+export async function startSectionFocusAttempt(
+  assignmentId: string,
+  slugs: string[],
+): Promise<string> {
+  const { data, error } = await supabase.rpc("start_section_focus_attempt" as never, {
+    p_assignment_id: assignmentId,
+    p_slugs: slugs,
+  } as never);
+  if (error) throw error;
+  if (typeof data !== "string") throw new Error("start_section_focus_attempt returned no id");
+  return data;
+}
+
 /** Teaching order, with anything unlisted kept in the query's own order. */
 export function sortForLibrary<T extends { slug?: string | null }>(rows: T[]): T[] {
   return [...rows].sort((a, b) => librarySortIndex(a.slug) - librarySortIndex(b.slug));
