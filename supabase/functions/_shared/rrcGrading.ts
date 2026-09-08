@@ -390,15 +390,28 @@ How to use it, and how not to:
   joke — beyond retelling it?
 - colour_specific: was that reaction specific to THIS stimulus rather than
   something that would fit any stimulus?
+- big_misses: at most three short phrases naming the most important things she
+  dropped, in plain words she can act on. Empty if she dropped nothing that
+  matters.
 
 Reply with JSON only, no prose and no code fence:
 {"verdicts":[{"id":1,"carried":true}],"reciting":false,"reciting_reason":"",
-"listing":false,"listing_reason":"","coloured":true,"colour_specific":true${
+"listing":false,"listing_reason":"","coloured":true,"colour_specific":true,
+"big_misses":[]${
     input.theRead ? ',\n"read_given":true,"read_matches":true,"read_reason":""' : ""
+  }${
+    input.lines?.length
+      ? ',\n"lines":[{"n":1,"verdict":"strong","note":""}],\n"recall":{"verdict":"partial","note":""}'
+      : ""
   }}
-
+${
+    input.lines?.length
+      ? `\nEvery line verdict is one of: strong, partial, thin, skipped. Return one\nentry for every line from 1 to ${input.lines.length}.\n`
+      : ""
+  }
 Return exactly one verdict for every id from 1 to ${input.entries.length}.`;
 }
+
 
 // --- Reading the answer ------------------------------------------------------
 
