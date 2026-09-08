@@ -741,6 +741,18 @@ export function SectionReportCard({
                     </Movement>
                   )}
 
+                  {/*
+                    * The three that mattered, ahead of the whole list.
+                    *
+                    * Every language app that does spoken feedback well surfaces
+                    * a small actionable set rather than every imperfection
+                    * (Busuu names three), and the grader has been returning
+                    * exactly that in `bigMisses` since the day it was written.
+                    * It was rendered as one grey line at the bottom of the
+                    * line-by-line block, under everything, which is the same as
+                    * not rendering it. A student who reads one thing here
+                    * should read these.
+                    */}
                   <Movement label="What slipped" tone="detail">
                     {s.missed.length === 0 ? (
                       <p className="text-[15px] leading-relaxed text-[var(--rc-ink-muted)]">
@@ -748,6 +760,35 @@ export function SectionReportCard({
                           ? "It is all in there, which is what saying it back word for word does rather than what you did."
                           : "Nothing slipped on this one. You kept the whole thing."}
                       </p>
+                    ) : s.bigMisses?.length ? (
+                      <>
+                        <ul className="space-y-1.5">
+                          {s.bigMisses.map((m) => (
+                            <li key={m} className="text-[15px] leading-relaxed text-[var(--rc-ink)]">
+                              {m}
+                            </li>
+                          ))}
+                        </ul>
+                        {/* The rest, for a student who wants all of it. Folded,
+                            because the three above are the ones to act on. */}
+                        {s.missed.length > 0 && (
+                          <details className="mt-3">
+                            <summary className="rc__label cursor-pointer">
+                              Everything else that slipped ({s.missed.length})
+                            </summary>
+                            <ul className="mt-2 space-y-1.5">
+                              {s.missed.map((m) => (
+                                <li
+                                  key={m}
+                                  className="text-sm leading-relaxed text-[var(--rc-ink-muted)]"
+                                >
+                                  {m}
+                                </li>
+                              ))}
+                            </ul>
+                          </details>
+                        )}
+                      </>
                     ) : (
                       <ul className="space-y-1.5">
                         {s.missed.map((m) => (
@@ -942,11 +983,6 @@ export function SectionReportCard({
                             </p>
                           )}
                         </div>
-                      )}
-                      {!!s.bigMisses?.length && (
-                        <p className="mt-3 text-sm leading-relaxed text-[var(--rc-ink)]">
-                          Biggest misses: {s.bigMisses.join("; ")}
-                        </p>
                       )}
                     </Movement>
                   )}
