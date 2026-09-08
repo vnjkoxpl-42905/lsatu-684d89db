@@ -138,6 +138,23 @@ export function toDetails(texts: string[]): Detail[] {
   return texts.map((text, i) => ({ n: i + 1, text, kind: classifyDetail(text) }));
 }
 
+/**
+ * The same list, but each Detail remembers the line it was authored under.
+ *
+ * Flattened in authored order, exactly as `toDetails` over the flattened texts
+ * would produce, so ids and scores are identical either way. The only addition
+ * is the line number, which no score reads.
+ */
+export function toDetailsByLine(lines: { details: { text: string }[] }[]): Detail[] {
+  const out: Detail[] = [];
+  lines.forEach((line, index) => {
+    for (const d of line.details ?? []) {
+      out.push({ n: out.length + 1, text: d.text, kind: classifyDetail(d.text), line: index + 1 });
+    }
+  });
+  return out;
+}
+
 // --- The one model call ------------------------------------------------------
 
 export interface JudgeEntry {
@@ -146,6 +163,8 @@ export interface JudgeEntry {
   kind: DetailKind;
   /** Not sent to the model. A decoy must come back missed. */
   decoy: boolean;
+  /** The authored line this Detail belongs to, when known. Never on a decoy. */
+  line?: number;
 }
 
 /**
@@ -163,8 +182,9 @@ export interface JudgeEntry {
  * the same prompt and a disagreement between two runs is the model's, not ours.
  */
 export function buildJudgeEntries(details: Detail[], decoyTexts: string[]): JudgeEntry[] {
-  const real = details.map((d) => ({ text: d.text, kind: d.kind, decoy: false }));
+  const real = details.map((d) => ({ text: d.text, kind: d.kind, decoy: false, line: d.line }));
   const decoys = decoyTexts.map((text) => ({ text, kind: classifyDetail(text), decoy: true }));
+
   if (decoys.length === 0) return real.map((e, i) => ({ id: i + 1, ...e }));
 
   // Spread them through the list instead of appending: a judge that sees two
