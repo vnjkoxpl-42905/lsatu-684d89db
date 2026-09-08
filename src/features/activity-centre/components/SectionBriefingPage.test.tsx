@@ -16,9 +16,6 @@ function renderPage(props?: Partial<Parameters<typeof SectionBriefingPage>[0]>) 
       title="Read, Recall, Colour · PT1 Section 3"
       subtitle="A whole section, out loud, against the clock"
       instructions={sectionInstructions as ActivityInstructions}
-      itemCount={22}
-      timeGoalMinutes={25}
-      sourceSection="PT1.S3"
       onStart={vi.fn()}
       {...props}
     />,
@@ -31,27 +28,15 @@ describe("the section briefing page", () => {
     expect(document.body.textContent ?? "").not.toMatch(/[—–]/);
   });
 
-  it("counts stimuli, never pieces", () => {
+  it("carries no meta line: the title names the section and nothing else belongs there", () => {
     renderPage();
+    expect(document.querySelector(".sl-bp-meta")).toBeNull();
     const text = document.body.textContent ?? "";
-    expect(text).toContain("22 stimuli");
-    // A "piece" is one chunk, roughly a sentence, in the instructions on this
-    // same page. Counting stimuli in pieces made the line say 22 sentences.
-    expect(text).not.toContain("22 pieces");
-  });
-
-  it("names the section once, in the title, not again in the meta line", () => {
-    renderPage();
-    const meta = document.querySelector(".sl-bp-meta")?.textContent ?? "";
-    expect(document.querySelector(".sl-title")?.textContent).toContain("PT1 Section 3");
-    expect(meta).toBe("22 stimuli · about 25 min");
-  });
-
-  it("falls back to the section in the meta line when the title omits it", () => {
-    renderPage({ title: "Read, Recall, Colour" });
-    expect(document.querySelector(".sl-bp-meta")?.textContent).toBe(
-      "PT1.S3 · 22 stimuli · about 25 min",
-    );
+    expect(text).not.toMatch(/\d+ stimuli/);
+    expect(text).not.toMatch(/about \d+ min/);
+    // The count and the clock were the whole line, and both were noise here.
+    // The clock is stated where it matters, at the foot and in the long version.
+    expect(text).not.toContain("pieces to read");
   });
 
   it("says only that nothing is recording, and does not re-explain the take", () => {

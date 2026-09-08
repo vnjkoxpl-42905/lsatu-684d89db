@@ -7,12 +7,6 @@ export interface SectionBriefingPageProps {
   title: string;
   subtitle: string | null;
   instructions: ActivityInstructions;
-  /** Stimuli in this section, from the assignment snapshot. */
-  itemCount?: number;
-  /** The clock this section is run against, for this student. */
-  timeGoalMinutes?: number | null;
-  /** `PT105.S2`. */
-  sourceSection?: string | null;
   onStart: () => void;
   onExit?: () => void;
 }
@@ -30,9 +24,6 @@ export function SectionBriefingPage({
   title,
   subtitle,
   instructions,
-  itemCount,
-  timeGoalMinutes,
-  sourceSection,
   onStart,
   onExit,
 }: SectionBriefingPageProps) {
@@ -57,25 +48,6 @@ export function SectionBriefingPage({
           <h1 className="sl-title">{title}</h1>
           <p className="sl-tagline">
             {instructions.tagline ? renderInlineMarks(instructions.tagline, "sl-bp-tag") : subtitle}
-          </p>
-          {/* The section is named in the title already, as its second line, so
-              it is not repeated here. What is left is what the title cannot
-              say: how much work this is.
-
-              Not "pieces". A piece is one chunk, roughly a sentence, and the
-              instructions on this very page use the word that way ("Read each
-              piece silently"). Counting stimuli in pieces made the line read as
-              22 sentences. */}
-          <p className="sl-bp-meta">
-            {[
-              // Only when the title does not already carry it, which it does for
-              // every section ("Read, Recall, Colour · PT104 Section 1").
-              title.includes(" · ") ? null : sourceSection,
-              typeof itemCount === "number" ? `${itemCount} stimuli` : null,
-              timeGoalMinutes ? `about ${timeGoalMinutes} min` : null,
-            ]
-              .filter(Boolean)
-              .join(" · ")}
           </p>
         </div>
         <div className="sl-cta">

@@ -693,9 +693,6 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
           title={assignment.title}
           subtitle={assignment.subtitle}
           instructions={assignment.instructions}
-          itemCount={items.length}
-          timeGoalMinutes={assignment.time_goal_minutes?.[accommodation] ?? null}
-          sourceSection={assignment.source_section}
           onStart={handleStart}
           onExit={handleLeave}
         />
