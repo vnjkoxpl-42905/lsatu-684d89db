@@ -91,16 +91,25 @@ async function main() {
   }
 
   // Read, Recall, Colour grades
-  const { data: grades } = await supabase
+  // There is no carried_pct column: the coverage figure lives inside the
+  // `section` JSON as mean_coverage. Naming a column that does not exist makes
+  // PostgREST answer 400, which this client surfaces as data: null, which read
+  // for a week as "she has no graded runs". Hence the explicit error print.
+  const { data: grades, error: gradeErr } = await supabase
     .from("activity_section_grades")
-    .select("source_section,attempt_no,carried_pct,stimuli_graded,created_at")
+    .select("source_section,attempt_no,section,graded_at,created_at")
     .eq("student_id", id)
     .order("created_at", { ascending: false });
+  if (gradeErr) console.log(`\nREAD, RECALL, COLOUR — could not read grades: ${gradeErr.message}`);
   if (grades?.length) {
     console.log(`\nREAD, RECALL, COLOUR — graded runs (${grades.length})`);
     for (const g of grades) {
-      const pct = g.carried_pct == null ? "  —" : `${String(Math.round(Number(g.carried_pct))).padStart(3)}%`;
-      console.log(`  ${d(g.created_at)}  ${pct} carried   ${g.source_section ?? "?"}  attempt ${g.attempt_no ?? "?"}`);
+      const s = (g.section ?? {}) as Record<string, unknown>;
+      const cov = s.mean_coverage;
+      const pct = cov == null ? "  —" : `${String(Math.round(Number(cov))).padStart(3)}%`;
+      const done = s.complete === false ? "  (partial)" : "";
+      const mins = s.total_seconds == null ? "" : `  ${Math.round(Number(s.total_seconds) / 60)} min`;
+      console.log(`  ${d(g.graded_at ?? g.created_at)}  ${pct} coverage   ${g.source_section ?? "?"}  attempt ${g.attempt_no ?? "?"}${mins}${done}`);
     }
   }
 
