@@ -57,6 +57,32 @@ describe("the section briefing page", () => {
     expect(notice).not.toMatch(/one take|cannot pause/i);
   });
 
+  it("steps its headings down without skipping a level", () => {
+    renderPage();
+    const levels = [...document.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) =>
+      Number(h.tagName[1]),
+    );
+    expect(levels[0]).toBe(1);
+    // WCAG 1.3.1. The page ran H1 to H2 to H4, because the long version's
+    // label looked like a heading without being one.
+    for (let i = 1; i < levels.length; i += 1) {
+      expect(levels[i] - levels[i - 1]).toBeLessThanOrEqual(1);
+    }
+  });
+
+  it("makes the long version's label a real heading, not just heading-shaped", () => {
+    renderPage();
+    const heading = document.querySelector(".sl-bp-more > summary > h2");
+    expect(heading?.textContent).toBe("Read the long version");
+  });
+
+  it("does not announce static copy as a live region", () => {
+    renderPage();
+    // A live region is for state that changes without a page load. This
+    // sentence is the same every time.
+    expect(document.querySelector(".sl-notice")?.getAttribute("role")).toBeNull();
+  });
+
   it("does not open on the long version, so the four steps read as the instruction", () => {
     renderPage();
     const details = document.querySelector(".sl-bp-more");

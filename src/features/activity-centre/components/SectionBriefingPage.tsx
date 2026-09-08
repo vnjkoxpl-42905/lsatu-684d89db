@@ -64,7 +64,10 @@ export function SectionBriefingPage({
           section records in one take with no pause is said in Step 4 and again
           in the full instructions; saying it a third time here made the notice
           a paragraph she skipped. */}
-      <p className="sl-notice" role="status">
+      {/* No role="status". A live region is for state that changes without a page
+          load; this sentence is the same every time, and announcing it as an
+          update is noise. */}
+      <p className="sl-notice">
         Nothing is recording yet. The microphone opens when you press Start.
       </p>
 
@@ -89,12 +92,17 @@ export function SectionBriefingPage({
           default, one click from anyone who wants the long version. */}
       {briefing && (
         <details className="sl-bp-more">
-          <summary className="sl-bp-h2">Read the long version</summary>
+          {/* The summary carries a real heading rather than only looking like one.
+              It read as a section title and was absent from the heading outline,
+              which is what left the page jumping H2 to H4. */}
+          <summary>
+            <h2 className="sl-bp-h2">Read the long version</h2>
+          </summary>
           <section className="sl-essay sl-bp-essay" aria-label="Full instructions">
           {briefing.lede && <p className="rd-lede">{renderInlineMarks(briefing.lede, "sl-bp-lede")}</p>}
           {briefing.sections.map((section, i) => (
             <section key={i}>
-              <h4>{renderInlineMarks(section.heading, `sl-bp-h-${i}`)}</h4>
+              <h3>{renderInlineMarks(section.heading, `sl-bp-h-${i}`)}</h3>
               {section.body.map((para, j) => (
                 <p key={j}>{renderInlineMarks(para, `sl-bp-p-${i}-${j}`)}</p>
               ))}

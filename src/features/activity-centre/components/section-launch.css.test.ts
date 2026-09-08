@@ -24,12 +24,22 @@ describe("section-launch.css", () => {
     expect(missing).toEqual([]);
   });
 
+  it("gives the two buttons their own focus ring, not the world's", () => {
+    // `.sl :focus-visible` sets one ring for the whole world and loses the
+    // cascade on these two classes, so Start and Back matched :focus-visible
+    // and computed outline-style: none. Measured in the browser, not inferred.
+    expect(CSS).toContain(".sl .sl-start:focus-visible");
+    expect(CSS).toContain(".sl .sl-brief:focus-visible");
+    // The door draws both on a dark panel, where an ink ring is invisible.
+    expect(CSS).toContain(".rd-hero .sl-start:focus-visible");
+  });
+
   it("draws no text in flat white on the briefing page, which sits on cream", () => {
     // The hero classes are white for the door's dark panel. Any of them reused
     // on .sl-briefing-page must restate a colour.
     const scoped = [...CSS.matchAll(/\.sl-briefing-page\s+\.([a-z0-9-]+)\s*\{([^}]*)\}/g)];
     for (const [, cls, body] of scoped) {
-      expect(`${cls}: ${body}`).not.toMatch(/color:\s*#fff\b/i);
+      expect(`${cls}: ${body}`).not.toMatch(new RegExp(String.raw`color:\s*(#fff\b|var\(--rd-on-dark\))`, "i"));
     }
   });
 });
