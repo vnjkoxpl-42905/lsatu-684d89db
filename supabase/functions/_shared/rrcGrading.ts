@@ -49,14 +49,22 @@ export type Band = "at-the-standard" | "nearly-there" | "thin" | "lost-it";
  * census, so nine correct runs in ten clear it. It is deliberately not the
  * minimum of that census, which is a stimulus whose recording is broken.
  *
+ * The floor belongs to a JUDGE, not to the drill. ADR 0018 measured 86 by
+ * hand and validated it on gemini-2.5-flash (p10 85). ADR 0035 re-ran the
+ * same 71 runs through the live function on gemini-3.8-flash and measured
+ * 82, with no decoy failures where 2.5 had four. When the judge's model moves,
+ * `scripts/rrc-census.ts` is re-run and this number moves with it; a floor
+ * measured on one model and applied by another is a guess.
+ *
  * The other two are PROVISIONAL and marked so. The corpus holds only correct
  * runs, so it can say where good ends and cannot say where "nearly there"
- * stops being nearly. Those move once student runs exist.
+ * stops being nearly. They keep ADR 0018's widths below the measured floor
+ * and move once student runs exist.
  */
 export const BAND_FLOOR = {
-  atTheStandard: 86,
-  nearlyThere: 72,
-  thin: 55,
+  atTheStandard: 82,
+  nearlyThere: 68,
+  thin: 51,
 } as const;
 
 export function bandFor(percent: number): Band {

@@ -73,7 +73,7 @@ const grade: SectionGrade = {
     goal_minutes: 25,
     total_seconds: 1380,
     within_goal: true,
-    mean_coverage: 83,
+    mean_coverage: 79,
     stimuli_graded: 4,
     reciting_count: 1,
     listing_count: 0,
@@ -636,5 +636,155 @@ describe("hearing it done right", () => {
     fireEvent.click(screen.getByText("Stimulus 1"));
     expect(await screen.findByText(/So he wants the limit halved/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /hear it done right/i })).not.toBeInTheDocument();
+  });
+});
+
+/*
+ * The row that tells her what to change, and the standard beside her words.
+ *
+ * Every number on the card was a description. These are the three things a
+ * student can act on: what to do next time, what the Read should have named,
+ * and what the standard says for the very line she was rephrasing.
+ */
+describe("what to do next time", () => {
+  it("shows the judge's advice on a stimulus with something to fix", () => {
+    render(
+      <SectionReportCard
+        grade={{ ...grade, stimuli: [stimulus({ nextTime: "Say the quantifier out loud: all, not some." })] }}
+        loadModelRuns={noModelRuns}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.getByText("Next time")).toBeInTheDocument();
+    expect(screen.getByText("Say the quantifier out loud: all, not some.")).toBeInTheDocument();
+  });
+
+  it("says every cylinder when there is nothing to fix, and gives no advice", () => {
+    render(
+      <SectionReportCard
+        grade={{
+          ...grade,
+          stimuli: [
+            stimulus({
+              percent: 100,
+              carried: 12,
+              total: 12,
+              missed: [],
+              readGiven: true,
+              readMatches: true,
+              nextTime: "",
+            }),
+          ],
+        }}
+        loadModelRuns={noModelRuns}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.getByText(/Every cylinder on this one/)).toBeInTheDocument();
+    expect(screen.queryByText("Next time")).toBeNull();
+  });
+
+  it("does not call a recital every cylinder, whatever it carried", () => {
+    render(
+      <SectionReportCard
+        grade={{
+          ...grade,
+          stimuli: [
+            stimulus({ percent: 100, missed: [], readGiven: true, readMatches: true, reciting: true, nextTime: "" }),
+          ],
+        }}
+        loadModelRuns={noModelRuns}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.queryByText(/Every cylinder/)).toBeNull();
+  });
+
+  it("stays quiet on a grade written before advice existed", () => {
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.queryByText("Next time")).toBeNull();
+    expect(screen.queryByText(/Every cylinder/)).toBeNull();
+  });
+});
+
+describe("the standard beside her words", () => {
+  it("names the Read the key turns on, and the judge's reason", () => {
+    render(
+      <SectionReportCard
+        grade={{
+          ...grade,
+          stimuli: [
+            stimulus({
+              readGiven: true,
+              readMatches: false,
+              readReason: "She named the flaw as sampling rather than causation.",
+              the_read: "What if sugar creates an inhospitable environment for bacteria?",
+            }),
+          ],
+        }}
+        loadModelRuns={noModelRuns}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.getByText(/The Read this one turns on: What if sugar/)).toBeInTheDocument();
+    expect(screen.getByText("She named the flaw as sampling rather than causation.")).toBeInTheDocument();
+  });
+
+  it("shows the passage, folded, when the grade carries it", () => {
+    render(
+      <SectionReportCard
+        grade={{ ...grade, stimuli: [stimulus({ stimulus_text: "It is difficult to keep deep wounds free of bacteria." })] }}
+        loadModelRuns={noModelRuns}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(screen.getByText("The passage")).toBeInTheDocument();
+    expect(screen.getByText("It is difficult to keep deep wounds free of bacteria.")).toBeInTheDocument();
+  });
+
+  it("puts the standard's recall of a line under her own line, and shows what she held", async () => {
+    const md =
+      "> It is difficult to keep deep wounds free of bacteria.\n\nSo deep wounds are hard to keep clean.\n\n" +
+      "> Even strong antibiotics fail.\n\nEven the strong drugs do not manage it.";
+    render(
+      <SectionReportCard
+        grade={{
+          ...grade,
+          stimuli: [
+            stimulus({
+              spoken: "x",
+              lines: [
+                {
+                  n: 1,
+                  text: "It is difficult to keep deep wounds free of bacteria.",
+                  spoken: "deep wounds are hard to keep clean",
+                  verdict: "strong",
+                  note: "",
+                  carried: ["The wounds are deep."],
+                  dropped: [],
+                },
+                {
+                  n: 2,
+                  text: "Even strong antibiotics fail.",
+                  spoken: "antibiotics struggle",
+                  verdict: "partial",
+                  note: "Dropped that even the strong ones fail.",
+                  carried: [],
+                  dropped: ["Even the strong ones fail."],
+                },
+              ],
+            }),
+          ],
+        }}
+        loadModelRuns={() => Promise.resolve({ PT105_S2_Q1: { walkthrough: md, audio: null } })}
+      />,
+    );
+    fireEvent.click(screen.getByText("Stimulus 1"));
+    expect(await screen.findByText(/So deep wounds are hard to keep clean/)).toBeInTheDocument();
+    expect(screen.getByText(/Even the strong drugs do not manage it/)).toBeInTheDocument();
+    expect(screen.getByText("Held: The wounds are deep.")).toBeInTheDocument();
+    // Paired under the lines, so the whole-run block is not repeated beneath.
+    expect(screen.queryByText("Done right", { selector: "p" })).toBeNull();
   });
 });

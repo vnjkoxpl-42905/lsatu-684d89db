@@ -76,20 +76,21 @@ describe("what a Detail asserts", () => {
 
 describe("the bands", () => {
   it("starts the top band at the census 10th percentile", () => {
-    // 86 is measured (ADR 0018) and is not a round number by accident. If this
-    // changes, the ADR changed with it or something is wrong.
-    expect(BAND_FLOOR.atTheStandard).toBe(86);
+    // 82 is measured (ADR 0035, on gemini-3.8-flash; ADR 0018 measured 86 on
+    // 2.5-flash) and is not a round number by accident. If this changes, an
+    // ADR changed with it or something is wrong.
+    expect(BAND_FLOOR.atTheStandard).toBe(82);
   });
 
   it("puts a correct run at the standard and a poor one below", () => {
     expect(bandFor(100)).toBe("at-the-standard");
-    expect(bandFor(95)).toBe("at-the-standard"); // census median
-    expect(bandFor(86)).toBe("at-the-standard"); // exactly the floor
-    expect(bandFor(85)).toBe("nearly-there");
-    expect(bandFor(72)).toBe("nearly-there");
-    expect(bandFor(71)).toBe("thin");
-    expect(bandFor(55)).toBe("thin");
-    expect(bandFor(54)).toBe("lost-it");
+    expect(bandFor(93)).toBe("at-the-standard"); // census median on the live judge
+    expect(bandFor(82)).toBe("at-the-standard"); // exactly the floor
+    expect(bandFor(81)).toBe("nearly-there");
+    expect(bandFor(68)).toBe("nearly-there");
+    expect(bandFor(67)).toBe("thin");
+    expect(bandFor(51)).toBe("thin");
+    expect(bandFor(50)).toBe("lost-it");
     expect(bandFor(0)).toBe("lost-it");
   });
 });

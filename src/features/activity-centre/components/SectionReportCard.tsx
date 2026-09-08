@@ -16,7 +16,8 @@ import type { SectionGrade, SectionStimulusGrade } from "../api/types";
  * screen:
  *
  * - **A band, not a percentage.** A correct run by the author of the standard
- *   sits at a median of 95% and clears 86% nine times in ten, so a raw score
+ *   sits at a median of 93% and clears 82% nine times in ten on the live
+ *   judge (ADR 0035; ADR 0018 measured 95 and 86 by hand), so a raw score
  *   against an implied 100 tells a student she failed at something she did
  *   properly (ADR 0018). This card's own docstring said that and then printed
  *   the percentage as the hero in 48px type with no band at all. The band leads
@@ -208,6 +209,43 @@ function useModelRuns(
  * a click. "You dropped the word only" is a correction; her sentence sitting
  * above his is the lesson.
  */
+/**
+ * The walkthrough cut into (read, recall) pairs, one per authored line.
+ *
+ * The document is a `> ` quote holding the line as read, then one or more
+ * paragraphs recalling it. Paired up, it can sit under HER line rather than
+ * at the bottom of the row, which is the comparison the drill is about: what
+ * she said for line 2, and what the standard says for line 2, together.
+ */
+function walkthroughPairs(md: string): { read: string; recall: string }[] {
+  const pairs: { read: string; recall: string }[] = [];
+  for (const raw of md.split("\n")) {
+    const line = raw.trim();
+    if (!line) continue;
+    if (line.startsWith("> ")) pairs.push({ read: line.slice(2), recall: "" });
+    else if (pairs.length) pairs[pairs.length - 1].recall += (pairs[pairs.length - 1].recall ? " " : "") + line;
+    else pairs.push({ read: "", recall: line });
+  }
+  return pairs;
+}
+
+/**
+ * Whether a stimulus hit every cylinder: every Detail, the Read, a reaction
+ * of her own, in her own words and not as a list. The one case where the
+ * card has nothing to ask of her, and says so rather than going quiet.
+ */
+function everyCylinder(s: SectionStimulusGrade): boolean {
+  return (
+    !s.ungraded &&
+    s.missed.length === 0 &&
+    s.readMatches === true &&
+    s.coloured &&
+    s.colourSpecific &&
+    !s.reciting &&
+    !s.listing
+  );
+}
+
 function Walkthrough({ md }: { md: string }) {
   const lines = md.split("\n").filter((l) => l.trim());
   return (
@@ -499,6 +537,10 @@ export function SectionReportCard({
           const clipWindow = s.recall_window_ms ?? s.window_ms;
           const key = `s${i}`;
           const model = modelRuns[s.slug];
+          const pairs = model?.walkthrough ? walkthroughPairs(model.walkthrough) : [];
+          // Paired only when the standard's run has exactly one recall per
+          // authored line; anything else is shown whole, as before.
+          const pairedByLine = !!s.lines?.length && pairs.length === s.lines.length;
           return (
             <li key={s.slug} className="rounded-2xl border border-border bg-[hsl(var(--ac-surface))]">
               <button
@@ -519,6 +561,43 @@ export function SectionReportCard({
 
               {open && (
                 <div className="border-t border-border px-5 py-4">
+                  {/*
+                    * The passage itself, so she can reread what she was
+                    * holding without leaving the card. Stored on the grade
+                    * since 2026-09-08; older cards have only the lines.
+                    */}
+                  {s.stimulus_text && (
+                    <details className="mb-4 rounded-xl border border-border bg-background/40 px-3 py-2">
+                      <summary className="cursor-pointer text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                        The passage
+                      </summary>
+                      <p className="mt-2 text-sm leading-relaxed text-foreground">{s.stimulus_text}</p>
+                    </details>
+                  )}
+
+                  {/*
+                    * What to do next time, or that there is nothing to.
+                    *
+                    * The one line on the row that asks for something. It is
+                    * the judge's, written from this run, and it is empty when
+                    * she carried everything, found the Read and reacted; then
+                    * the card says so, because silence reads as an oversight.
+                    */}
+                  {!s.ungraded && everyCylinder(s) && (
+                    <p className="mb-4 rounded-xl border border-[hsl(var(--ac-emerald-strong))]/40 bg-background/40 px-3 py-2 text-sm text-[hsl(var(--ac-emerald-strong))]">
+                      Every cylinder on this one: every detail, the Read, and a reaction of your own,
+                      in your own words.
+                    </p>
+                  )}
+                  {!s.ungraded && !everyCylinder(s) && s.nextTime && (
+                    <div className="mb-4 rounded-xl border border-border bg-[hsl(var(--muted))] px-3 py-2">
+                      <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                        Next time
+                      </p>
+                      <p className="mt-1 text-sm text-foreground">{s.nextTime}</p>
+                    </div>
+                  )}
+
                   {s.ungraded ? (
                     <p className="text-sm text-muted-foreground">
                       This one could not be marked, so it is showing as nothing carried. That is
@@ -567,6 +646,22 @@ export function SectionReportCard({
                             ? "You found the move."
                             : "You gave a Read, but not the one this argument turns on."}
                       </p>
+                      {/*
+                        * Why, in the judge's words, and what the key names.
+                        *
+                        * Both were stored and neither was shown, so "not the
+                        * one this argument turns on" was a verdict with no
+                        * reason and no answer. The reason is what she can
+                        * dispute; the key is what she can learn from.
+                        */}
+                      {s.readReason && (
+                        <p className="mt-1 text-sm text-muted-foreground">{s.readReason}</p>
+                      )}
+                      {s.the_read && (
+                        <p className="mt-2 border-l-2 border-[hsl(var(--ac-emerald-strong))] pl-3 text-sm italic leading-relaxed text-foreground">
+                          The Read this one turns on: {s.the_read}
+                        </p>
+                      )}
                     </div>
                   )}
 
@@ -669,6 +764,19 @@ export function SectionReportCard({
                                 Dropped: {line.dropped.join("; ")}
                               </p>
                             )}
+                            {line.carried.length > 0 && (
+                              <p className="mt-1 text-sm text-[hsl(var(--ac-emerald-strong))]">
+                                Held: {line.carried.join("; ")}
+                              </p>
+                            )}
+                            {pairedByLine && pairs[line.n - 1]?.recall && (
+                              <p className="mt-2 border-l-2 border-[hsl(var(--ac-emerald-strong))] pl-3 text-sm leading-relaxed text-muted-foreground">
+                                <span className="text-xs font-medium uppercase tracking-wide text-[hsl(var(--ac-emerald-strong))]">
+                                  Done right
+                                </span>{" "}
+                                {pairs[line.n - 1].recall}
+                              </p>
+                            )}
                           </li>
                         ))}
                       </ol>
@@ -768,7 +876,7 @@ export function SectionReportCard({
                           <DisputeControl grade={grade} stimulus={s} />
                         </div>
                       )}
-                      {model?.walkthrough && <Walkthrough md={model.walkthrough} />}
+                      {model?.walkthrough && !pairedByLine && <Walkthrough md={model.walkthrough} />}
                     </div>
                   )}
                 </div>
