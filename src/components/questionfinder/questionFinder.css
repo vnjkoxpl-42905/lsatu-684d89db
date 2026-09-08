@@ -61,6 +61,7 @@ html.dark .qf {
    radius and mono voice rather than introducing a third idiom. */
 
 .qf-trigger {
+  min-height: 44px;
   align-items: center;
   background: var(--qf-surface);
   border: 0;

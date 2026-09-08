@@ -1,423 +1,49 @@
 import * as React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { format, isToday } from "date-fns";
+import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  ArrowRight,
-  Bell,
-  BookOpenCheck,
-  ClipboardList,
-  MessageSquare,
-  RotateCcw,
-  Signal,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
-import { useInbox, type Conversation } from "@/hooks/useInbox";
-import { useLastActivity } from "@/hooks/useLastActivity";
-import { useNotifications, type Notification } from "@/hooks/useNotifications";
-import {
-  useStudentAssignments,
-  useStudentTAAssignments,
-  type AssignmentStatus,
-  type StudentAssignment,
-  type StudentTAAssignment,
-  type TAAssignmentStatus,
-} from "@/hooks/useStudentAssignments";
-import {
-  listAssignmentsForStudent,
-  type GuidedDrill,
-  type GuidedDrillAssignment,
-} from "@/lib/guidedDrills";
-import { resolveItemRoute } from "@/lib/classroomItems";
-import {
-  labelFor,
-  resolveResumeTarget,
-  type LastActivityRow,
-} from "@/lib/lastActivity";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-type GuidedAssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill };
-
-type TodayFocusType =
-  | "assignment"
-  | "message"
-  | "bootcamp"
-  | "set"
-  | "drill"
-  | "notification";
-
-type TodayActionLabel = "Start" | "Continue" | "Reply" | "Resume" | "Review" | "Practice" | "Open";
-
-interface TodayFocusItem {
-  id: string;
-  type: TodayFocusType;
-  title: string;
-  sourceLine: string;
-  status?: string;
-  actionLabel: TodayActionLabel;
-  actionCue?: string;
-  route?: string | null;
-  routeState?: unknown;
-  priority: number;
-  preview?: string;
-  progress?: string;
-  estimatedTime?: string;
-  updatedAt?: string;
-  Icon: React.ElementType;
-  onOpen?: () => void | Promise<void>;
-}
-
-const ACTION_BY_STATUS: Record<string, TodayActionLabel> = {
-  assigned: "Start",
-  in_progress: "Continue",
-  viewed: "Continue",
-  read: "Continue",
-  started: "Continue",
-  completed: "Review",
-  draft: "Open",
-  archived: "Open",
-};
-
-const STATUS_LABEL: Record<AssignmentStatus | TAAssignmentStatus | ClassroomItem["status"], string> = {
-  assigned: "Ready",
-  in_progress: "In progress",
-  viewed: "In progress",
-  completed: "Done",
-  draft: "Draft",
-  archived: "Archived",
-};
+import {
+  actionText,
+  contextLineFor,
+  railTitle,
+  useTodayFocus,
+  type TodayFocus,
+  type TodayFocusItem,
+} from "@/components/mainhub/useTodayFocus";
 
 /* The per-type gradient tone map is gone with the 2026-08-01 reskin. Six near-
    identical washes were carrying no information a student could read — the type
    is already stated by the icon and the source line — and they fought the
    eclipse behind them. One glass surface now, for every type. */
 
-function compactText(text: string | null | undefined, max = 92) {
-  const value = text?.replace(/\s+/g, " ").trim();
-  if (!value) return null;
-  return value.length > max ? `${value.slice(0, max - 3)}...` : value;
-}
-
-function dueLabel(dueAt: string | null | undefined) {
-  if (!dueAt) return null;
-  const date = new Date(dueAt);
-  if (Number.isNaN(date.getTime())) return null;
-  return isToday(date) ? "Due today" : `Due ${format(date, "MMM d")}`;
-}
-
-function statusOrder(status?: string) {
-  if (status === "In progress") return 0;
-  if (status === "Ready") return 1;
-  if (status === "Done") return 3;
-  return 2;
-}
-
-function itemSort(a: TodayFocusItem, b: TodayFocusItem) {
-  const priorityDelta = b.priority - a.priority;
-  if (priorityDelta !== 0) return priorityDelta;
-  const statusDelta = statusOrder(a.status) - statusOrder(b.status);
-  if (statusDelta !== 0) return statusDelta;
-  return new Date(b.updatedAt ?? 0).getTime() - new Date(a.updatedAt ?? 0).getTime();
-}
-
-function isActiveStatus(status: string) {
-  return status === "assigned" || status === "in_progress" || status === "viewed" || status === "read" || status === "started";
-}
-
-function classroomItemToFocus(item: ClassroomItem): TodayFocusItem | null {
-  if (!isActiveStatus(item.status)) return null;
-  const route = resolveItemRoute(item);
-  const due = dueLabel(item.due_at);
-  const type: TodayFocusType = item.type === "bootcamp_module" ? "bootcamp" : "assignment";
-  const isPlan = item.type === "weekly_plan_task";
-  return {
-    id: `classroom-${item.id}`,
-    type,
-    title: item.title,
-    sourceLine:
-      item.type === "bootcamp_module"
-        ? "Bootcamp progress"
-        : isPlan
-          ? "Assigned in your study plan"
-          : "Assigned by Joshua",
-    status: due ?? STATUS_LABEL[item.status] ?? "Ready",
-    actionLabel: ACTION_BY_STATUS[item.status] ?? "Open",
-    actionCue: due ?? undefined,
-    route,
-    priority: 900 + item.priority,
-    updatedAt: item.due_at ?? item.created_at,
-    preview: compactText(item.description, 110) ?? undefined,
-    Icon: item.type === "bootcamp_module" || isPlan ? BookOpenCheck : ClipboardList,
-  };
-}
-
-function homeworkToFocus(a: StudentAssignment): TodayFocusItem | null {
-  if (!isActiveStatus(a.status)) return null;
-  const questionCount = a.question_qids?.length ?? 0;
-  return {
-    id: `homework-${a.id}`,
-    type: "assignment",
-    title: a.set_title || "Homework",
-    sourceLine: "Assigned by Joshua",
-    status: STATUS_LABEL[a.status],
-    actionLabel: ACTION_BY_STATUS[a.status],
-    actionCue: questionCount > 0 ? `${questionCount} questions` : undefined,
-    route: `/classroom/${encodeURIComponent(a.id)}`,
-    priority: 820,
-    progress: a.score != null ? `${Math.round(a.score)}%` : undefined,
-    updatedAt: a.created_at,
-    preview: compactText(a.set_description, 110) ?? undefined,
-    Icon: ClipboardList,
-  };
-}
-
-function taToFocus(a: StudentTAAssignment): TodayFocusItem | null {
-  if (!isActiveStatus(a.status)) return null;
-  return {
-    id: `ta-${a.id}`,
-    type: "assignment",
-    title: a.title || "Instructor assignment",
-    sourceLine: "Assigned by Joshua",
-    status: STATUS_LABEL[a.status],
-    actionLabel: ACTION_BY_STATUS[a.status],
-    actionCue: a.pdf_url ? "PDF" : undefined,
-    route: `/classroom/ta/${encodeURIComponent(a.id)}`,
-    priority: 840,
-    updatedAt: a.assigned_at || a.created_at,
-    Icon: BookOpenCheck,
-  };
-}
-
-function guidedToFocus(
-  a: GuidedAssignmentWithDrill,
-  drillReturnTo: string,
-): TodayFocusItem | null {
-  if (!isActiveStatus(a.status)) return null;
-  const count = a.guided_drill?.question_count;
-  const minutes = a.guided_drill?.estimated_minutes;
-  return {
-    id: `guided-${a.id}`,
-    type: "assignment",
-    title: a.guided_drill?.title || "Guided drill",
-    sourceLine: "Assigned guided practice",
-    status: a.status === "assigned" ? "Ready" : "In progress",
-    actionLabel: ACTION_BY_STATUS[a.status] ?? "Open",
-    actionCue: minutes ? `${minutes} min` : count != null ? `${count} questions` : undefined,
-    estimatedTime: minutes ? `${minutes} min` : undefined,
-    route: `/guided/${encodeURIComponent(a.id)}?returnTo=${encodeURIComponent(drillReturnTo)}`,
-    priority: 830,
-    updatedAt: a.assigned_at,
-    Icon: ClipboardList,
-  };
-}
-
-function instructorMessageToFocus(c: Conversation): TodayFocusItem | null {
-  if (!c.unread || !c.last_message) return null;
-  const fromInstructor = c.participants.some((p) => p.is_admin && p.user_id === c.last_message?.sender_id);
-  if (!fromInstructor) return null;
-  return {
-    id: `conversation-${c.id}`,
-    type: "message",
-    title: c.subject || "Message from Joshua",
-    sourceLine: "Message from Joshua",
-    status: "New",
-    actionLabel: "Reply",
-    actionCue: "New",
-    route: `/inbox/${encodeURIComponent(c.id)}`,
-    priority: 700,
-    preview: compactText(c.last_message.body, 92) ?? undefined,
-    updatedAt: c.last_message.created_at,
-    Icon: MessageSquare,
-  };
-}
-
-function notificationToFocus(n: Notification, markRead: (id: string) => Promise<void>): TodayFocusItem | null {
-  if (n.read || n.type === "message") return null;
-  return {
-    id: `notification-${n.id}`,
-    type: "notification",
-    title: n.title,
-    sourceLine: n.type === "assignment" ? "Assigned by Joshua" : "Notification",
-    status: "New",
-    actionLabel: n.link ? "Open" : "Review",
-    actionCue: n.type === "assignment" ? "New" : undefined,
-    route: n.link,
-    priority: n.type === "assignment" ? 760 : 220,
-    preview: compactText(n.body, 100) ?? undefined,
-    updatedAt: n.created_at,
-    Icon: n.type === "assignment" ? ClipboardList : Bell,
-    onOpen: () => markRead(n.id),
-  };
-}
-
-function lastActivityToFocus(
-  row: LastActivityRow | null | undefined,
-  drillReturnTo: string,
-): TodayFocusItem | null {
-  if (!row) return null;
-  const snapshot = row.state_snapshot;
-  const target = resolveResumeTarget(snapshot);
-  const label = labelFor(snapshot);
-  if (snapshot.kind === "bootcamp_step") {
-    return {
-      id: `last-${row.activity_id}`,
-      type: "bootcamp",
-      title: label,
-      sourceLine: "Bootcamp progress",
-      status: "In progress",
-      actionLabel: "Continue",
-      route: target.path,
-      routeState: target.state,
-      priority: 520,
-      updatedAt: row.updated_at,
-      Icon: BookOpenCheck,
-    };
-  }
-
-  const total = snapshot.qids.length;
-  const left = Math.max(0, total - snapshot.current_index);
-  const progress = total > 0 ? `${Math.min(100, Math.round((snapshot.current_index / total) * 100))}%` : undefined;
-  return {
-    id: `last-${row.activity_id}`,
-    type: snapshot.kind === "section" ? "set" : "drill",
-    title: label,
-    sourceLine: snapshot.kind === "section" ? "Active practice set" : "Unfinished drill",
-    status: "In progress",
-    actionLabel: "Resume",
-    actionCue: left > 0 ? `${left} left` : undefined,
-    route: target.path,
-    routeState:
-      target.path === "/drill"
-        ? { ...(target.state as object), returnTo: drillReturnTo }
-        : target.state,
-    priority: snapshot.kind === "section" ? 480 : 460,
-    progress,
-    updatedAt: row.updated_at,
-    Icon: snapshot.kind === "section" ? Signal : RotateCcw,
-  };
-}
-
-function visibleRails(items: TodayFocusItem[], primaryId: string | null) {
-  return items.filter((item) => item.id !== primaryId).slice(0, 2);
-}
-
 export default function TodayFocusPanel({
   drillReturnTo = "/classroom",
+  focus: focusProp,
+  heroOwnsPrimary = false,
 }: {
   drillReturnTo?: string;
+  /**
+   * The hub computes Today once and hands it here so the hero and this panel
+   * agree on what is first. Standalone mounts (and the tests) leave it out and
+   * the panel computes its own.
+   */
+  focus?: TodayFocus;
+  /**
+   * When the hero already leads with the primary item, the panel does not say
+   * it a second time: it carries the queue behind it and nothing else.
+   */
+  heroOwnsPrimary?: boolean;
 }) {
-  const navigate = useNavigate();
-  const { user } = useAuth();
+  const ownFocus = useTodayFocus(drillReturnTo);
+  const focus = focusProp ?? ownFocus;
   const [expanded, setExpanded] = React.useState(false);
-  const [selectedId, setSelectedId] = React.useState<string | null>(null);
+  const { primary, rails, loading, hasError, promote, open } = focus;
 
-  const {
-    data: classroomItems = [],
-    isLoading: classroomLoading,
-    isError: classroomError,
-  } = useClassroomItems();
-  const { assignments: homework, loading: homeworkLoading, error: homeworkError } = useStudentAssignments();
-  const { assignments: taAssignments, loading: taLoading, error: taError } = useStudentTAAssignments();
-  const { notifications, loading: notificationsLoading, error: notificationsError, markRead } = useNotifications();
-  const { conversations, loading: inboxLoading } = useInbox();
-  const {
-    data: lastActivity = null,
-    isLoading: lastActivityLoading,
-    isError: lastActivityError,
-  } = useLastActivity();
-  const {
-    data: guided = [],
-    isLoading: guidedLoading,
-    isError: guidedError,
-  } = useQuery<GuidedAssignmentWithDrill[]>({
-    queryKey: ["guided-drill-assignments", user?.id],
-    enabled: !!user,
-    staleTime: 60_000,
-    queryFn: async () => (
-      await listAssignmentsForStudent(user!.id) as GuidedAssignmentWithDrill[]
-    ),
-  });
-
-  const focusItems = React.useMemo(() => {
-    const seenSourceIds = new Set<string>();
-    const fromClassroom = classroomItems
-      .map(classroomItemToFocus)
-      .filter((item): item is TodayFocusItem => item !== null);
-
-    for (const item of classroomItems) {
-      if (item.source_id) seenSourceIds.add(item.source_id);
-    }
-
-    const fromHomework = homework
-      .filter((a) => !seenSourceIds.has(a.id))
-      .map(homeworkToFocus)
-      .filter((item): item is TodayFocusItem => item !== null);
-    const fromTa = taAssignments
-      .filter((a) => !seenSourceIds.has(a.id))
-      .map(taToFocus)
-      .filter((item): item is TodayFocusItem => item !== null);
-    const fromGuided = guided
-      .filter((a) => !seenSourceIds.has(a.id))
-      .map((assignment) => guidedToFocus(assignment, drillReturnTo))
-      .filter((item): item is TodayFocusItem => item !== null);
-    const fromNotifications = notifications
-      .map((n) => notificationToFocus(n, markRead))
-      .filter((item): item is TodayFocusItem => item !== null);
-    const fromMessages = conversations
-      .map(instructorMessageToFocus)
-      .filter((item): item is TodayFocusItem => item !== null);
-    const fromLastActivity = lastActivityToFocus(lastActivity, drillReturnTo);
-
-    const byId = new Map<string, TodayFocusItem>();
-    for (const item of [
-      ...fromClassroom,
-      ...fromTa,
-      ...fromGuided,
-      ...fromHomework,
-      ...fromNotifications,
-      ...fromMessages,
-      ...(fromLastActivity ? [fromLastActivity] : []),
-    ]) {
-      byId.set(item.id, item);
-    }
-    return Array.from(byId.values()).sort(itemSort);
-  }, [classroomItems, conversations, drillReturnTo, guided, homework, lastActivity, markRead, notifications, taAssignments]);
-
-  React.useEffect(() => {
-    if (selectedId && !focusItems.some((item) => item.id === selectedId)) {
-      setSelectedId(null);
-    }
-  }, [focusItems, selectedId]);
-
-  const loading =
-    classroomLoading ||
-    homeworkLoading ||
-    taLoading ||
-    guidedLoading ||
-    notificationsLoading ||
-    inboxLoading ||
-    lastActivityLoading;
-  const hasError =
-    classroomError ||
-    !!homeworkError ||
-    !!taError ||
-    !!notificationsError ||
-    guidedError ||
-    lastActivityError;
-  const primary = focusItems.find((item) => item.id === selectedId) ?? focusItems[0] ?? null;
-  const rails = primary ? visibleRails(focusItems, primary.id) : [];
-
-  const openItem = React.useCallback(
-    async (item: TodayFocusItem) => {
-      await item.onOpen?.();
-      if (item.route) {
-        navigate(item.route, item.routeState ? { state: item.routeState } : undefined);
-      }
-    },
-    [navigate],
-  );
+  /* The hero carries the primary only when one exists. Loading, error and empty
+     all fall back to the panel's own surfaces, so the panel must still draw
+     them even in hero mode. */
+  const queueOnly = heroOwnsPrimary && !loading && !hasError && primary != null;
 
   return (
     /* Surface, eclipse image and scrim live in .drill-observatory-today-inner. */
@@ -425,9 +51,9 @@ export default function TodayFocusPanel({
       <div className="drill-observatory-today-inner flex flex-col">
         <div className="relative flex flex-col gap-3">
           <div className="flex items-center justify-between px-0.5">
-            <p className="drill-observatory-label drill-observatory-ink-60">
-              Today
-            </p>
+            <h2 className="drill-observatory-label drill-observatory-ink-60">
+              {queueOnly ? "Also today" : "Today"}
+            </h2>
             <time
               className="drill-observatory-label drill-observatory-ink-50"
               dateTime={format(new Date(), "yyyy-MM-dd")}
@@ -442,25 +68,33 @@ export default function TodayFocusPanel({
             <TodayErrorState />
           ) : primary ? (
             <div aria-live="polite">
-              <TodayPrimarySurface
-                item={primary}
-                expanded={expanded}
-                onToggle={() => setExpanded((value) => !value)}
-                onActivate={() => void openItem(primary)}
-              />
-              <div className="mt-3 grid gap-3">
+              {!queueOnly && (
+                <TodayPrimarySurface
+                  item={primary}
+                  expanded={expanded}
+                  onToggle={() => setExpanded((value) => !value)}
+                  onActivate={() => void open(primary)}
+                />
+              )}
+              <div className={cn("grid gap-3", !queueOnly && "mt-3")}>
                 {rails.map((item) => (
                   <TodayRailItem
                     key={item.id}
                     item={item}
-                    muted={expanded}
+                    muted={!queueOnly && expanded}
                     onPromote={() => {
-                      setSelectedId(item.id);
+                      promote(item.id);
                       setExpanded(false);
                     }}
                   />
                 ))}
-                {rails.length === 0 && <EmptyRailQuiet />}
+                {rails.length === 0 && (
+                  <div className="drill-observatory-today-quiet">
+                    {queueOnly
+                      ? "Nothing else is waiting. The next step is above."
+                      : "No secondary focus items."}
+                  </div>
+                )}
               </div>
             </div>
           ) : (
@@ -497,7 +131,7 @@ function TodayPrimarySurface({
           type="button"
           aria-expanded={expanded}
           onClick={onToggle}
-          className="relative flex w-full flex-col items-start px-5 pb-4 pt-5 text-left outline-none focus-visible:ring-2 focus-visible:ring-[rgba(244,241,234,0.55)] focus-visible:ring-inset"
+          className="drill-observatory-focus-inset relative flex w-full flex-col items-start px-5 pb-4 pt-5 text-left"
         >
           <div className="flex w-full items-start justify-between gap-4">
             <span className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55 flex items-center gap-2">
@@ -517,7 +151,7 @@ function TodayPrimarySurface({
           </div>
 
           <div className="mt-[26px] w-full">
-            <h2 className="drill-observatory-today-title">{item.title}</h2>
+            <h3 className="drill-observatory-today-title">{item.title}</h3>
             <p className="drill-observatory-ink-55 mt-[5px] text-[13px]">{item.sourceLine}</p>
             <AnimatePresence initial={false}>
               {expanded && (
@@ -534,7 +168,7 @@ function TodayPrimarySurface({
                     </p>
                   )}
                   {(item.estimatedTime || item.progress) && (
-                    <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-45">
+                    <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55">
                       {[item.estimatedTime, item.progress].filter(Boolean).join(" / ")}
                     </p>
                   )}
@@ -550,7 +184,7 @@ function TodayPrimarySurface({
             onActivate();
           }}
           disabled={!item.route && !item.onOpen}
-          className="drill-observatory-today-action relative flex w-full items-center justify-between px-5 py-[13px] text-left text-[13.5px] font-semibold text-[#f4f1ea] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[rgba(244,241,234,0.55)] disabled:cursor-not-allowed disabled:text-[rgba(244,241,234,0.38)]"
+          className="drill-observatory-today-action drill-observatory-focus-inset drill-observatory-ink-full relative flex w-full items-center justify-between px-5 py-[13px] text-left text-[13.5px] font-semibold disabled:cursor-not-allowed"
         >
           <span>{actionText(item)}</span>
           <span className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55 flex items-center gap-2">
@@ -578,14 +212,17 @@ function TodayRailItem({
 }) {
   const Icon = item.Icon;
   return (
+    /* min-w-0 is load-bearing: the rail is a grid item, and a grid item's
+       min-width is `auto`, which is the un-truncated title's full length. On a
+       375px phone that pushed the row to 432px and clipped the trailing label
+       off the right edge. */
     <motion.button
       type="button"
       layout
       onClick={onPromote}
       className={cn(
-        "drill-observatory-today-rail",
-        "flex w-full items-center gap-3 text-left outline-none",
-        "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[rgba(244,241,234,0.55)]",
+        "drill-observatory-today-rail drill-observatory-focus-inset",
+        "flex w-full min-w-0 items-center gap-3 text-left",
         muted && "opacity-60",
       )}
       transition={{ type: "spring", stiffness: 180, damping: 24 }}
@@ -614,9 +251,9 @@ function TodaySkeleton() {
   return (
     <div aria-label="Loading today" className="animate-pulse">
       <div className="drill-observatory-today-primary min-h-[186px] p-5">
-        <div className="h-2.5 w-16 rounded-full bg-[rgba(244,241,234,0.14)]" />
-        <div className="mt-8 h-6 w-3/4 rounded-full bg-[rgba(244,241,234,0.12)]" />
-        <div className="mt-3 h-3.5 w-1/2 rounded-full bg-[rgba(244,241,234,0.08)]" />
+        <div className="drill-observatory-skeleton-bar h-2.5 w-16" />
+        <div className="drill-observatory-skeleton-bar mt-8 h-6 w-3/4" />
+        <div className="drill-observatory-skeleton-bar mt-3 h-3.5 w-1/2" />
       </div>
       <div className="mt-3 grid gap-3">
         <div className="drill-observatory-today-rail h-[52px]" />
@@ -633,16 +270,16 @@ function TodayEmptyState() {
         <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55">
           Next up
         </p>
-        <h2 className="drill-observatory-today-title mt-[26px]">All caught up</h2>
+        <h3 className="drill-observatory-today-title mt-[26px]">All caught up</h3>
         <p className="drill-observatory-ink-55 mt-[5px] text-[13px]">
           Nothing assigned for today.
         </p>
-        <p className="drill-observatory-ink-45 mt-6 text-[12.5px] leading-[1.45]">
+        <p className="drill-observatory-ink-55 mt-6 text-[12.5px] leading-[1.45]">
           Assigned work and instructor messages will appear here when they exist.
         </p>
       </div>
       <div className="mt-3 grid gap-3">
-        <EmptyRailQuiet />
+        <div className="drill-observatory-today-quiet">No secondary focus items.</div>
       </div>
     </div>
   );
@@ -655,9 +292,9 @@ function TodayErrorState() {
         <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55">
           Next up
         </p>
-        <h2 className="drill-observatory-today-title mt-[26px]">
+        <h3 className="drill-observatory-today-title mt-[26px]">
           Couldn&apos;t load today.
-        </h2>
+        </h3>
         <p className="drill-observatory-ink-55 mt-[5px] text-[13px]">
           Refresh the page to try again.
         </p>
@@ -669,32 +306,4 @@ function TodayErrorState() {
       </div>
     </div>
   );
-}
-
-function EmptyRailQuiet() {
-  return (
-    <div className="drill-observatory-today-quiet">No secondary focus items.</div>
-  );
-}
-
-function contextLineFor(item: TodayFocusItem) {
-  if (item.type === "message") return "This is next because Joshua sent an unread message.";
-  if (item.type === "bootcamp") return "This is next because you have bootcamp progress in motion.";
-  if (item.type === "drill" || item.type === "set") return "This is next because you have unfinished practice.";
-  if (item.type === "notification") return "This is next because a new notification is waiting.";
-  return "This is next because it is assigned work.";
-}
-
-function actionText(item: TodayFocusItem) {
-  if (item.actionLabel === "Start" && item.type === "bootcamp") return "Start lesson";
-  if (item.actionLabel === "Practice") return "Practice";
-  if (item.actionLabel === "Resume") return "Resume drill";
-  return item.actionLabel;
-}
-
-function railTitle(item: TodayFocusItem) {
-  if (item.type === "message") return "Message from Joshua";
-  if (item.type === "drill") return "Smart LR Drill";
-  if (item.type === "bootcamp") return "Bootcamp Lesson";
-  return item.title;
 }

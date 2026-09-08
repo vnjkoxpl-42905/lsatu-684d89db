@@ -160,12 +160,16 @@ describe("AcademyMainhub", () => {
     expect(
       screen.getByRole("region", { name: "Practice and insight workspace" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
-    expect(screen.getByText("Build a Set")).toBeInTheDocument();
+    // One door to the builder: the hero console. The "Build a Set" tile and
+    // the carousel's "Build targeted set" were two more doors to the same room.
+    expect(screen.getByText("Your practice")).toBeInTheDocument();
+    expect(screen.queryByText("Build a Set")).not.toBeInTheDocument();
     // Sitting a section is the Testing Centre's job. Two doors to the same
     // thing is what made this hub feel packed.
     expect(screen.queryByText("Full Section")).not.toBeInTheDocument();
-    expect(screen.getByText("Insight preview")).toBeInTheDocument();
+    // Insights are a static list now, not a rotating carousel.
+    expect(screen.getByRole("list", { name: "Insights" })).toBeInTheDocument();
+    expect(screen.queryByRole("tablist", { name: "Insight slides" })).not.toBeInTheDocument();
     // The Question finder's second mount. Without it, a student standing on the
     // page that exists for picking questions has to go back to Home to search.
     expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
@@ -179,5 +183,9 @@ describe("AcademyMainhub", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Set up an LR drill" }));
     expect(screen.getByRole("region", { name: "Unified LR drill builder" })).toBeInTheDocument();
+    // The hero leaves while a stage is open: the launcher carries its own
+    // title and Cancel, and a 400px hero above it said "Set up an LR drill"
+    // twice on one screen.
+    expect(screen.queryByRole("heading", { name: "Build the drill you need." })).not.toBeInTheDocument();
   });
 });

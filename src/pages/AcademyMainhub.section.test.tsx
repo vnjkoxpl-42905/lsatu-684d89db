@@ -192,7 +192,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   it("opens on LR when nothing says otherwise", () => {
     renderHub("/classroom/drill");
     expect(screen.getByRole("button", { name: "Start Smart Drill" })).toBeInTheDocument();
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
     expect(lrSwitch()).toHaveAttribute("aria-pressed", "true");
     expect(rcSwitch()).toHaveAttribute("aria-pressed", "false");
   });
@@ -203,24 +203,21 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.getByRole("button", { name: "Start One Passage" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Build the reading set you need." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Set up an RC drill" })).toBeInTheDocument();
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
     expect(rcSwitch()).toHaveAttribute("aria-pressed", "true");
   });
 
-  it("offers Build a Set named for the RC bank, and does not offer a section to sit", () => {
+  it("keeps the console as the one door to the RC builder, and does not offer a section to sit", () => {
     renderHub("/classroom/drill?section=rc");
-    expect(
-      screen.getByRole("button", {
-        name: "Build a Set Choose passages by topic, format, and difficulty.",
-      }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Set up an RC drill" })).toBeInTheDocument();
+    expect(screen.queryByText("Build a Set")).not.toBeInTheDocument();
     // Sitting a real section lives in the Testing Centre, in RC as in LR.
     expect(screen.queryByText("Full Section")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Search passages/ })).not.toBeInTheDocument();
     // The bay is shared, but the panel under the tools is not: the carousel is
     // built from LR attempts, so RC shows its own drill history instead.
     expect(screen.getByText("Your reading drills")).toBeInTheDocument();
-    expect(screen.queryByText("Insight preview")).not.toBeInTheDocument();
+    expect(screen.queryByRole("list", { name: "Insights" })).not.toBeInTheDocument();
   });
 
   it("treats an unrecognised section as LR rather than as an error", () => {
@@ -233,10 +230,10 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     renderHub("/classroom/drill");
     fireEvent.click(rcSwitch());
     expect(url().get("section")).toBe("rc");
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
     fireEvent.click(lrSwitch());
     expect(url().get("section")).toBe("lr");
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
   it("remembers the last section for the next silent visit, and a link still wins", () => {
@@ -245,7 +242,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     first.unmount();
 
     renderHub("/classroom/drill");
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
   it("lets an explicit ?section=lr outrank the remembered RC", () => {
@@ -254,7 +251,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     first.unmount();
 
     renderHub("/classroom/drill?section=lr");
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
   it("drops the launcher stage on the way across — an LR stage has no RC twin", () => {
@@ -263,7 +260,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     fireEvent.click(rcSwitch());
     expect(url().get("stage")).toBeNull();
     expect(screen.queryByRole("region", { name: "Unified LR drill builder" })).not.toBeInTheDocument();
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
   it("switches silently — a half-built LR set is discarded with no prompt", () => {
@@ -279,13 +276,13 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     // MOVED by the time Back returns to it, so Back re-resolves to the section
     // the student just switched TO and the switch looks stuck.
     renderHub("/classroom/drill");
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
 
     fireEvent.click(rcSwitch());
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "go back" }));
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
   it("keeps Today mounted across the toggle — it is status, not a section", () => {
@@ -350,6 +347,6 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
     fireEvent.click(rcSwitch());
     expect(url().get("section")).toBe("rc");
-    expect(screen.getByText("Practice tools")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 });

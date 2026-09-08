@@ -292,7 +292,7 @@
   font-weight: 500;
   letter-spacing: var(--observatory-track-label);
   text-transform: uppercase;
-  color: var(--observatory-ink-42);
+  color: var(--observatory-ink-50);
   margin: 0 0 var(--observatory-space-4);
 }
 
@@ -318,13 +318,13 @@
   font-weight: 500;
   letter-spacing: var(--observatory-track-label);
   text-transform: uppercase;
-  color: var(--observatory-ink-42);
+  color: var(--observatory-ink-50);
   margin-bottom: var(--observatory-space-3);
 }
 
 .rc-field-hint {
   font-size: var(--observatory-text-meta);
-  color: var(--observatory-ink-48);
+  color: var(--observatory-ink-50);
   margin-top: var(--observatory-space-2);
 }
 
@@ -354,7 +354,7 @@
 .rc-segment-caption {
   display: block;
   font-size: var(--observatory-text-meta);
-  color: var(--observatory-ink-48);
+  color: var(--observatory-ink-50);
   margin-top: var(--observatory-space-1);
 }
 
@@ -418,7 +418,7 @@
   font-weight: 500;
   letter-spacing: var(--observatory-track-label);
   text-transform: uppercase;
-  color: var(--observatory-ink-42);
+  color: var(--observatory-ink-50);
 }
 
 .rc-hero-meta { font-size: var(--observatory-text-meta); color: var(--observatory-ink-55); }
@@ -453,7 +453,7 @@
 
 .rc-empty {
   font-size: var(--observatory-text-body);
-  color: var(--observatory-ink-48);
+  color: var(--observatory-ink-50);
   padding: var(--observatory-space-5) 0;
 }
 

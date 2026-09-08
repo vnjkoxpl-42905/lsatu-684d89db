@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
+import { actionText, useTodayFocus, type TodayFocus } from "@/components/mainhub/useTodayFocus";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import QuestionJump from "@/components/questionfinder/QuestionJump";
 import QuestionFinder from "@/components/questionfinder/QuestionFinder";
@@ -71,30 +72,41 @@ function MainhubHero({
   section,
   firstName,
   drillReturnTo,
+  focus,
   onOpenBuilder,
   onStartSmartRc,
 }: {
   section: DrillSection;
   firstName: string;
   drillReturnTo: string;
+  focus: TodayFocus;
   onOpenBuilder: () => void;
   onStartSmartRc: () => void;
 }) {
   const navigate = useNavigate();
 
-  const todayLabel = React.useMemo(
-    () =>
-      new Date().toLocaleDateString(undefined, {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-      }),
-    [],
-  );
+  /* Same shape as Classroom Home's dateline ("TUESDAY · SEPTEMBER 8 · 2026"),
+     so the two mounts one click apart do not print the date two ways. */
+  const todayLabel = React.useMemo(() => {
+    const d = new Date();
+    const weekday = d.toLocaleDateString(undefined, { weekday: "long" });
+    const monthDay = d.toLocaleDateString(undefined, { month: "long", day: "numeric" });
+    return `${weekday} · ${monthDay} · ${d.getFullYear()}`;
+  }, []);
 
   const startSmartDrill = React.useCallback(() => {
     navigate("/drill", { state: { mode: "adaptive", returnTo: drillReturnTo } });
   }, [drillReturnTo, navigate]);
+
+  const startFallback = section === "rc" ? onStartSmartRc : startSmartDrill;
+  const fallbackLabel = section === "rc" ? "Start One Passage" : "Start Smart Drill";
+
+  /* The hero leads with the computed next step when there is one. Assigned
+     work is section-agnostic (Joshua assigns it, the student does not choose
+     a bank first), so it leads on RC too. Smart Drill / One Passage become
+     the quiet second option; with nothing assigned they are the first. */
+  const primary = !focus.loading && !focus.hasError ? focus.primary : null;
+  const NextIcon = primary?.Icon;
 
   return (
     /* Surface, scrim and grid live in .drill-observatory-hero / -hero-grid: the
@@ -107,13 +119,13 @@ function MainhubHero({
       <div className="drill-observatory-hero-grid">
         <div className="drill-observatory-greeting flex flex-col justify-end">
           <div className="flex flex-col gap-[9px]">
-            <p className="drill-observatory-label drill-observatory-ink-50">
+            <p className="drill-observatory-label drill-observatory-ink-60">
               {todayLabel}
             </p>
             {/* Size, face and the italic on the name come from
-                .drill-observatory-greeting h2 — the CSS rule outranks utilities
+                .drill-observatory-greeting h1 — the CSS rule outranks utilities
                 here, so putting them in className would be dead code. */}
-            <h2>
+            <h1>
               {firstName ? (
                 <>
                   Welcome back, <em>{firstName}</em>
@@ -121,35 +133,76 @@ function MainhubHero({
               ) : (
                 "Welcome back"
               )}
-            </h2>
-            {/* Says what the button below actually does. It used to open
-                "Pick up where you left off" on both sections, and neither CTA
-                resumes anything — resuming lives in Today, one card over. */}
-            <p className="drill-observatory-ink-62 text-sm leading-[1.55]">
-              {section === "rc"
-                ? "Read one passage now, untimed, with the answers after it. Or build a set of passages around exactly what you want to read."
-                : "Start an adaptive set that follows your weakest question types, or build a drill around exactly what you want to practice."}
-            </p>
+            </h1>
+
+            {focus.loading ? (
+              /* Same height as the next-up block so the CTA does not jump when
+                 Today resolves. */
+              <div className="drill-observatory-next animate-pulse" aria-label="Loading today">
+                <div className="drill-observatory-skeleton-bar h-2.5 w-28" />
+                <div className="drill-observatory-skeleton-bar mt-2 h-5 w-64 max-w-full" />
+                <div className="drill-observatory-skeleton-bar mt-1 h-3 w-20" />
+              </div>
+            ) : primary ? (
+              <div className="drill-observatory-next">
+                <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-60 flex items-center gap-2">
+                  {NextIcon && <NextIcon className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden />}
+                  Next up · {primary.sourceLine}
+                </p>
+                <p className="drill-observatory-next-title">{primary.title}</p>
+                {(primary.status || primary.actionCue) && (
+                  <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55">
+                    {[primary.status, primary.actionCue].filter(Boolean).join(" · ")}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p className="drill-observatory-ink-70 text-sm leading-[1.55]">
+                {section === "rc"
+                  ? "Read one passage now, untimed, with the answers after it. Or build a set of passages around exactly what you want to read."
+                  : "Start an adaptive set that follows your weakest question types, or build a drill around exactly what you want to practice."}
+              </p>
+            )}
           </div>
-          <Button
-            onClick={section === "rc" ? onStartSmartRc : startSmartDrill}
-            className="drill-observatory-cta mt-5 w-fit"
-          >
-            {/* RC's "smart" is one untimed passage, not the adaptive engine
-                LR's button opens. Same word, two promises — so it says what it
-                starts. */}
-            {section === "rc" ? "Start One Passage" : "Start Smart Drill"}
-            <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-          </Button>
+
+          <div className="drill-observatory-cta-row">
+            {primary ? (
+              <>
+                <Button
+                  onClick={() => void focus.open(primary)}
+                  disabled={!primary.route && !primary.onOpen}
+                  className="drill-observatory-cta w-fit"
+                >
+                  {actionText(primary)}
+                  <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
+                </Button>
+                <button
+                  type="button"
+                  onClick={startFallback}
+                  className="drill-observatory-quiet-link"
+                >
+                  {section === "rc" ? "Read one passage instead" : "Start a Smart Drill instead"}
+                </button>
+              </>
+            ) : (
+              <Button onClick={startFallback} className="drill-observatory-cta w-fit">
+                {/* RC's "smart" is one untimed passage, not the adaptive engine
+                    LR's button opens. Same word, two promises — so it says what
+                    it starts. */}
+                {fallbackLabel}
+                <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
+              </Button>
+            )}
+          </div>
         </div>
 
         <div className="drill-observatory-console w-full">
           <div className="flex h-full flex-col justify-between gap-6">
             <div className="space-y-3">
-              <h3 className="text-[clamp(1.35rem,3cqi,2rem)] font-semibold leading-tight tracking-[-0.025em] text-[#f4f1ea]">
+              <h2 className="drill-observatory-ink-full text-[clamp(1.35rem,3cqi,2rem)] font-semibold leading-tight tracking-[-0.025em]">
                 {section === "rc" ? "Build the reading set you need." : "Build the drill you need."}
-              </h3>
-              <p className="drill-observatory-ink-62 max-w-[48ch] text-sm leading-[1.6]">
+              </h2>
+              <p className="drill-observatory-ink-70 max-w-[48ch] text-sm leading-[1.6]">
                 {section === "rc"
                   ? "Choose PrepTests, topics, formats, frameworks, and difficulty independently. Hand-pick the exact passages, or let the set fill itself."
                   : "Choose PrepTests, question types, reasoning, features, and levels independently. Preview the exact set before you start."}
@@ -215,16 +268,25 @@ function LauncherStage({
           Cancel control, so adding one would show two titles and two Cancels. */}
       <div className="relative z-10">
         {isLoading && (
-          <div className="flex flex-col items-center justify-center gap-3 py-14">
-            <Loader2 className="h-5 w-5 animate-spin text-white/50" aria-hidden />
-            <p className="drill-observatory-label drill-observatory-ink-45">
+          <div className="flex flex-col items-center justify-center gap-3 py-14" role="status">
+            <Loader2 className="drill-observatory-ink-70 h-5 w-5 animate-spin" aria-hidden />
+            <p className="drill-observatory-label drill-observatory-ink-60">
               Loading questions…
             </p>
           </div>
         )}
 
         {!isLoading && error && (
-          <div className="py-14 text-center text-sm font-medium text-white/60">{error}</div>
+          <div className="flex flex-col items-center gap-4 py-14 text-center" role="alert">
+            <p className="drill-observatory-ink-85 text-sm font-medium">{error}</p>
+            <Button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="drill-observatory-console-start !w-auto px-6"
+            >
+              Reload the question bank
+            </Button>
+          </div>
         )}
 
         {!isLoading && !error && manifest && (
@@ -254,6 +316,8 @@ export default function AcademyMainhub({
   const [searchParams, setSearchParams] = useSearchParams();
   const firstName = useGreetingName();
   const navigate = useNavigate();
+  /* Computed once, read by the hero and by Today. See useTodayFocus. */
+  const focus = useTodayFocus(drillReturnTo);
 
   /* Which section the hub is showing. URL first, then what this browser
      remembers, then LR — see `src/lib/drillSection.ts`. Reading it from the
@@ -393,11 +457,16 @@ export default function AcademyMainhub({
             same place it occupies on Classroom Home — the band directly under
             the top of the surface — so it is one control in one position across
             both mounts. No access check here: the whole route is behind
-            has_drill_access. */}
+            has_drill_access.
+
+            Light tone, not dark: the row sits on the cream STAGE, not on a
+            card. Dark tone inked its labels ivory-on-cream at 1.07:1, which is
+            invisible. The section switch beside it made the same correction
+            earlier; the finder's trigger is a dark pill either way. */}
         <div className="drill-observatory-tools">
           <QuestionJump
             returnTo={drillReturnTo}
-            tone="dark"
+            tone="light"
             bank={section}
             withSearch={false}
           />
@@ -412,16 +481,22 @@ export default function AcademyMainhub({
           </div>
         </div>
 
-        {/* The same hero stays mounted across section changes. Swapping its
-            content in place prevents the LR/RC control from producing a flash
-            or an intermediate empty frame. */}
-        <MainhubHero
-          section={section}
-          firstName={firstName}
-          drillReturnTo={drillReturnTo}
-          onOpenBuilder={() => openLauncher("type-drill")}
-          onStartSmartRc={startSmartRc}
-        />
+        {/* The hero stays mounted across section changes (its content swaps in
+            place so the LR/RC switch never shows an empty frame), and leaves
+            the page entirely while a stage is open. The launcher carries its
+            own title and Cancel; keeping a 400px hero above it put "Set up an
+            LR drill" on screen twice, 500px apart, and pushed the builder's
+            own title below the fold. */}
+        {stage === "default" && (
+          <MainhubHero
+            section={section}
+            firstName={firstName}
+            drillReturnTo={drillReturnTo}
+            focus={focus}
+            onOpenBuilder={() => openLauncher("type-drill")}
+            onStartSmartRc={startSmartRc}
+          />
+        )}
 
         {stage === "analytics" ? (
           <section
@@ -492,8 +567,15 @@ export default function AcademyMainhub({
               )}
             </section>
 
+            {/* The hero owns the primary item only while it is on the page.
+                With a stage open the hero is gone, so Today says the next step
+                itself again. */}
             <section className="drill-observatory-today-bay">
-              <TodayFocusPanel drillReturnTo={drillReturnTo} />
+              <TodayFocusPanel
+                drillReturnTo={drillReturnTo}
+                focus={focus}
+                heroOwnsPrimary={stage === "default"}
+              />
             </section>
           </section>
         )}

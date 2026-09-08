@@ -894,7 +894,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                           commitExactRefs();
                         }
                       }}
-                      placeholder="Add exact questions — PT101.S2.Q1, PT101.S2.Q6"
+                      placeholder="Add exact questions, e.g. PT101.S2.Q1, PT101.S2.Q6"
                       aria-label="Add exact questions"
                       aria-invalid={exactIssues.length > 0}
                       aria-describedby={exactIssues.length > 0 ? 'exact-errors' : undefined}

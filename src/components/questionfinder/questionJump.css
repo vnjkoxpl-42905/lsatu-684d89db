@@ -12,7 +12,7 @@
 
 .qj {
   --qj-ink: #332f2c;
-  --qj-muted: #a7a29f;
+  --qj-muted: #6b6662;
   --qj-sunk: #fbf8f3;
   --qj-hair: rgba(68, 64, 61, 0.09);
   --qj-ui: "Outfit", ui-sans-serif, system-ui, sans-serif;
@@ -76,4 +76,10 @@
   .qj-search .qf-trigger {
     width: 100%;
   }
+}
+
+/* Touch floor. The selects sat at 39px; 44px is the product's binding minimum
+   and it is met by height, not by wrapped text. */
+.qj .qf-select {
+  min-height: 44px;
 }

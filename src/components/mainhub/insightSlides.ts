@@ -23,7 +23,7 @@ export interface InsightSlide {
 }
 
 function fmtPct(v: number | null): string {
-  return v === null ? "—" : `${Math.round(v)}%`;
+  return v === null ? "not yet" : `${Math.round(v)}%`;
 }
 
 const ANALYTICS = "/classroom/drill?stage=analytics";

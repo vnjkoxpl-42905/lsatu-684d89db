@@ -871,10 +871,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   --observatory-ink-60: rgba(244, 241, 234, 0.6);
   --observatory-ink-55: rgba(244, 241, 234, 0.55);
   --observatory-ink-50: rgba(244, 241, 234, 0.5);
-  --observatory-ink-48: rgba(244, 241, 234, 0.48);
-  --observatory-ink-45: rgba(244, 241, 234, 0.45);
-  --observatory-ink-42: rgba(244, 241, 234, 0.42);
-  --observatory-ink-38: rgba(244, 241, 234, 0.38);
 
   /* Surfaces. Tinted blacks, never #000. */
   --observatory-surface-card: #08080b;
@@ -892,9 +888,9 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   --observatory-ring-strong: rgba(244, 241, 234, 0.2);
   --observatory-ring-chip: rgba(244, 241, 234, 0.25);
 
-  --observatory-shadow-card: 0 24px 60px rgba(0, 0, 0, 0.2);
-  --observatory-shadow-image: 0 24px 60px rgba(0, 0, 0, 0.25);
-  --observatory-shadow-glass: 0 18px 50px rgba(0, 0, 0, 0.35);
+  --observatory-shadow-card: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --observatory-shadow-image: 0 12px 32px rgba(0, 0, 0, 0.16);
+  --observatory-shadow-glass: 0 10px 28px rgba(0, 0, 0, 0.22);
 
   /* Kept for the side rail, which is out of this redesign's scope and still
      draws its active dot from them. Nothing in the main column uses them. */
@@ -942,6 +938,21 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
   /* Motion: 150-180ms, standard easing, transform and opacity only. */
   --observatory-motion: 160ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* The stage the cards sit on is cream. The two controls that ride on it
+     directly (the section switch, the jump row) are inked for the stage, not
+     for the cards. Measured on #fbf8f3: ink 12.9:1, muted 5.3:1. */
+  --observatory-stage-well: #fbf8f3;
+  --observatory-stage-ink: #332f2c;
+  --observatory-stage-muted: #6b6662;
+  --observatory-stage-hair: rgba(68, 64, 61, 0.09);
+  --observatory-stage-lit: #f5f1ec;
+
+  /* One focus treatment for every control on the black cards: a solid ivory
+     outline offset from the edge, 15:1 against the card. Inset variant for
+     full-bleed rows whose outline would be clipped by their container. */
+  --observatory-focus: rgba(244, 241, 234, 0.85);
+  --observatory-skeleton: rgba(244, 241, 234, 0.12);
 }
 
 .classroom-root.classroom-root-drill .classroom-stage {
@@ -994,7 +1005,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    an explicit class rather than a blanket `.uppercase` selector — the
    observatory hosts launcher stages whose labels are not part of this set. */
 .drill-observatory-label {
-  color: var(--observatory-ink-42);
+  color: var(--observatory-ink-50);
   font-family: var(--observatory-label-font) !important;
   font-size: var(--observatory-text-label) !important;
   font-weight: 500 !important;
@@ -1017,10 +1028,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .drill-observatory-ink-60 { color: var(--observatory-ink-60) !important; }
 .drill-observatory-ink-55 { color: var(--observatory-ink-55) !important; }
 .drill-observatory-ink-50 { color: var(--observatory-ink-50) !important; }
-.drill-observatory-ink-48 { color: var(--observatory-ink-48) !important; }
-.drill-observatory-ink-45 { color: var(--observatory-ink-45) !important; }
-.drill-observatory-ink-42 { color: var(--observatory-ink-42) !important; }
-.drill-observatory-ink-38 { color: var(--observatory-ink-38) !important; }
 
 /* ── Hero ────────────────────────────────────────────────────────────────── */
 
@@ -1119,51 +1126,53 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    pass shipped, was invisible here. */
 .drill-observatory-section-toggle {
   align-items: center;
-  background: #fbf8f3;
+  background: var(--observatory-stage-well);
   border-radius: 999px;
-  box-shadow: inset 0 0 0 1px rgba(68, 64, 61, 0.09);
+  box-shadow: inset 0 0 0 1px var(--observatory-stage-hair);
   display: inline-flex;
   flex: 0 0 auto;
   gap: 2px;
   margin-left: auto;
-  padding: 3px;
+  padding: 0 2px;
 }
 
 .drill-observatory-section-toggle-option {
   background: none;
   border: 0;
   border-radius: 999px;
-  color: #a7a29f;
+  color: var(--observatory-stage-muted);
   cursor: pointer;
   font-family: var(--observatory-label-font);
   font-size: var(--observatory-text-label);
   font-weight: 600;
   letter-spacing: var(--observatory-track-route);
   line-height: 1;
-  padding: 7px 16px;
+  /* 44px by height: the product's touch floor, met by the control itself. */
+  min-height: 44px;
+  padding: 0 16px;
   position: relative;
   transition: color 200ms cubic-bezier(0.22, 0.68, 0.24, 1);
 }
 
 .drill-observatory-section-toggle-option:hover {
-  color: #332f2c;
+  color: var(--observatory-stage-ink);
 }
 
 .drill-observatory-section-toggle-option.is-active {
-  color: #f5f1ec;
+  color: var(--observatory-stage-lit);
 }
 
 .drill-observatory-section-toggle-option:focus-visible {
-  box-shadow: 0 0 0 2px rgba(51, 47, 44, 0.35);
-  outline: none;
+  outline: 2px solid var(--observatory-stage-ink);
+  outline-offset: 2px;
 }
 
 /* The travelling lit slot. Sits behind the label — the label carries
    `position: relative` and a z-index of its own so it is never covered. */
 .drill-observatory-section-toggle-indicator {
-  background: #332f2c;
+  background: var(--observatory-stage-ink);
   border-radius: 999px;
-  inset: 0;
+  inset: 4px 0;
   position: absolute;
   z-index: 0;
 }
@@ -1206,12 +1215,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .drill-observatory-greeting {
   align-self: end;
   gap: var(--observatory-space-5) !important;
-  max-width: 400px;
+  max-width: 440px;
   min-height: 0 !important;
   padding: 0 0 6px !important;
 }
 
-.drill-observatory-greeting h2 {
+.drill-observatory-greeting h1 {
   color: var(--observatory-ink);
   font-family: var(--observatory-display-font);
   font-size: clamp(1.9rem, 3.4vw, var(--observatory-text-display)) !important;
@@ -1222,7 +1231,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
 }
 
-.drill-observatory-greeting h2 em {
+.drill-observatory-greeting h1 em {
   font-style: italic;
 }
 
@@ -1253,6 +1262,85 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .drill-observatory-cta:active {
   transform: translateY(0.5px);
+}
+
+/* The primary CTA had no focus indicator at all: border 0 plus a shadow, and
+   the shared Button ring never reached it through the overrides. One rule for
+   every pill-shaped control on the cards. */
+.drill-observatory-cta:focus-visible,
+.drill-observatory-console-start:focus-visible,
+.drill-observatory-secondary-link:focus-visible,
+.drill-observatory-insight-action:focus-visible,
+.drill-observatory-quiet-link:focus-visible,
+.drill-observatory-rc-chip:focus-visible,
+.drill-observatory-practice-tile:focus-visible {
+  box-shadow: none !important;
+  outline: 2px solid var(--observatory-focus) !important;
+  outline-offset: 3px !important;
+}
+
+.drill-observatory-focus-inset {
+  outline: none;
+}
+
+.drill-observatory-focus-inset:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--observatory-focus) !important;
+}
+
+.drill-observatory-skeleton-bar {
+  background: var(--observatory-skeleton);
+  border-radius: 999px;
+}
+
+/* ── Next up, in the hero ─────────────────────────────────────────────── */
+
+.drill-observatory-next {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.drill-observatory-next-title {
+  color: var(--observatory-ink);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+}
+
+.drill-observatory-cta-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 20px;
+}
+
+/* The second option, when the first is assigned work. A link, not a second
+   button: two buttons of equal weight is the grid the page is trying not to be. */
+.drill-observatory-quiet-link {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: var(--observatory-ink-70);
+  cursor: pointer;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  min-height: 44px;
+  padding: 0 4px;
+  text-decoration: underline;
+  text-decoration-color: rgba(244, 241, 234, 0.35);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  text-underline-offset: 4px;
+  transition: color var(--observatory-motion);
+}
+
+.drill-observatory-quiet-link:hover {
+  color: var(--observatory-ink);
 }
 
 /* ── Finder console ──────────────────────────────────────────────────────── */
@@ -1326,7 +1414,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .drill-observatory-console button[role="combobox"]:disabled {
-  color: var(--observatory-ink-38) !important;
+  color: var(--observatory-ink-50) !important;
   opacity: 1 !important;
 }
 
@@ -1472,18 +1560,14 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   transform: translateY(0.5px);
 }
 
-.drill-observatory-practice-tile:focus-visible {
-  box-shadow: 0 0 0 2px rgba(244, 241, 234, 0.35);
-  outline: none;
-}
-
 /* Reading Comprehension turns the tool row over instead of navigating away.
    The faces are absolutely stacked and the deck's height is set from JS, so
    the container has to be positioned and its height transitioned here. */
 .drill-observatory-flip {
   perspective: 1400px;
   position: relative;
-  transition: height 420ms cubic-bezier(0.22, 0.68, 0.24, 1);
+  /* Height is set from JS and snaps. It was transitioned, which animates a
+     layout property; the faces' rotation carries the motion on its own. */
 }
 
 .drill-observatory-flip-face {
@@ -1565,11 +1649,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   color: var(--observatory-ink) !important;
 }
 
-.drill-observatory-rc-chip:focus-visible {
-  box-shadow: 0 0 0 2px rgba(244, 241, 234, 0.35) !important;
-  outline: none;
-}
-
 .drill-observatory-secondary-link {
   background: transparent !important;
   border: 1px solid var(--observatory-ring-glass) !important;
@@ -1578,7 +1657,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   font-size: var(--observatory-text-meta) !important;
   font-weight: 500 !important;
   gap: 7px;
-  padding: 8px 14px !important;
+  min-height: 44px;
+  padding: 0 16px !important;
   transition: border-color var(--observatory-motion), color var(--observatory-motion),
     transform var(--observatory-motion);
 }
@@ -1592,19 +1672,40 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   transform: translateY(0.5px);
 }
 
-/* Insight preview is a section under a hairline, not a nested card. */
-.drill-observatory-insight-section {
-  border-top: 1px solid var(--observatory-ring-quiet);
-  padding-top: var(--observatory-space-5);
+/* Insights are rows under hairlines, not a carousel and not nested cards.
+   Every real signal is on the page at once; nothing rotates. */
+.drill-observatory-insights {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .drill-observatory-insight {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  backdrop-filter: none !important;
-  min-height: 84px !important;
-  padding: 0 !important;
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  justify-content: space-between;
+  padding: 18px 0;
+}
+
+.drill-observatory-insight:first-child {
+  padding-top: 0;
+}
+
+.drill-observatory-insight:last-child {
+  padding-bottom: 0;
+}
+
+.drill-observatory-insight + .drill-observatory-insight {
+  border-top: 1px solid var(--observatory-ring-quiet);
+}
+
+/* Analytics and Journal are records, not tools; they sit under their own
+   hairline at the foot of the card. */
+.drill-observatory-records {
+  border-top: 1px solid var(--observatory-ring-quiet);
 }
 
 .drill-observatory-insight-value {
@@ -1623,7 +1724,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   color: var(--observatory-ink-90) !important;
   font-size: 12.5px !important;
   font-weight: 500 !important;
-  padding: 11px 18px !important;
+  min-height: 44px;
+  padding: 0 18px !important;
   transition: box-shadow var(--observatory-motion), transform var(--observatory-motion);
   white-space: nowrap;
 }
@@ -1755,7 +1857,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background: var(--observatory-glass-row);
   border-radius: var(--observatory-radius-control);
   box-shadow: 0 0 0 1px var(--observatory-ring-quiet);
-  color: var(--observatory-ink-45);
+  color: var(--observatory-ink-50);
   font-size: var(--observatory-text-meta);
   padding: var(--observatory-space-3) var(--observatory-space-4);
 }
@@ -1841,8 +1943,11 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 @media (max-width: 1023px) {
+  /* 72px top: clears the fixed "Open classroom menu" button (44px at 16px), the
+     same inset every other classroom column takes below this width. Without
+     it the button sat over the jump row and the launcher's title. */
   .classroom-root.classroom-root-drill .classroom-stage {
-    padding: var(--observatory-space-4) var(--observatory-space-5) var(--observatory-space-5);
+    padding: 72px var(--observatory-space-5) var(--observatory-space-5);
   }
 
 }
@@ -1872,7 +1977,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 @media (max-width: 759px) {
   .classroom-root.classroom-root-drill .classroom-stage {
-    padding: var(--observatory-space-3) var(--observatory-space-4) var(--observatory-space-5);
+    padding: 72px var(--observatory-space-4) var(--observatory-space-5);
   }
 
   .drill-observatory-hero-grid {
@@ -2294,12 +2399,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   border-radius: var(--classroom-radius);
   cursor: pointer;
   display: none;
-  height: 38px;
+  height: 44px;
   justify-content: center;
   left: 16px;
   position: fixed;
   top: 16px;
-  width: 38px;
+  width: 44px;
   z-index: 70;
 }
 
