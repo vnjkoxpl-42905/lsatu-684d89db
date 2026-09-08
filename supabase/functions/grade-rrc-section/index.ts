@@ -588,7 +588,21 @@ serve(async (req) => {
       const otherChunks = (other?.chunks ?? []) as { details: { text: string }[] }[];
       const decoys = pickDecoys(otherChunks.flatMap((c) => c.details ?? []).map((d) => d.text));
 
-      const entries = buildJudgeEntries(toDetails(detailTexts), decoys);
+      const entries = buildJudgeEntries(toDetailsByLine(chunks), decoys);
+
+      /*
+       * Her run cut into the lines she was rephrasing.
+       *
+       * She reads each line silently and speaks only while looking away, so the
+       * cut keys off the silence in front of each spoken line plus the order she
+       * works in (`rrcLines.ts`). It is worked out here, after the run, and the
+       * drill is untouched by it. Nothing in the score reads it: Coverage stays
+       * per stimulus, and this exists so the Report Card can say WHERE a point
+       * went missing and play back the seconds it went missing in.
+       */
+      const lineSpans = linesFromWords(workingWords, chunks.map((c) => c.text));
+      const recallText = recallWords.map((w) => w.word).join(" ").trim();
+
       const nothingCarried = {
         verdicts: {},
         reciting: false,
@@ -598,7 +612,10 @@ serve(async (req) => {
         coloured: false,
         colourSpecific: false,
         missingIds: entries.map((e) => e.id),
+        bigMisses: [],
+        lineVerdicts: {},
       };
+
 
       if (!spoken) {
         // Nothing captured in her windows. Zero Coverage is the honest number
