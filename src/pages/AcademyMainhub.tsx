@@ -117,7 +117,10 @@ function MainhubHero({
       className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none"
     >
       <div className="drill-observatory-hero-grid">
-        <div className="drill-observatory-greeting flex flex-col justify-end">
+        {/* data-next: with an assignment leading, the greeting steps down one
+            size. The assignment is the headline and the greeting its caption;
+            at full size the two wrapped into four lines in a narrow window. */}
+        <div className="drill-observatory-greeting flex flex-col justify-end" data-next={primary ? "true" : undefined}>
           <div className="flex flex-col gap-[9px]">
             <p className="drill-observatory-label drill-observatory-ink-60">
               {todayLabel}
@@ -145,16 +148,13 @@ function MainhubHero({
               </div>
             ) : primary ? (
               <div className="drill-observatory-next">
+                {/* One line of facts, not a label above and an orphaned chip
+                    word below. */}
                 <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-60 flex items-center gap-2">
                   {NextIcon && <NextIcon className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden />}
-                  Next up · {primary.sourceLine}
+                  {["Next up", primary.sourceLine, primary.status, primary.actionCue].filter(Boolean).join(" · ")}
                 </p>
                 <p className="drill-observatory-next-title">{primary.title}</p>
-                {(primary.status || primary.actionCue) && (
-                  <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55">
-                    {[primary.status, primary.actionCue].filter(Boolean).join(" · ")}
-                  </p>
-                )}
               </div>
             ) : (
               <p className="drill-observatory-ink-70 text-sm leading-[1.55]">
@@ -537,6 +537,9 @@ export default function AcademyMainhub({
                 "@[760px]:grid-cols-[minmax(0,1.2fr)_minmax(340px,1fr)]",
             )}
             data-stacked={isWideLauncherStage ? "true" : undefined}
+            /* With the hero carrying the next step, Today is a short queue and
+               no longer needs to match the practice card's height. */
+            data-queue={stage === "default" && focus.primary ? "true" : undefined}
           >
             {/* The bay itself stays mounted and only its contents change. This
                 makes LR/RC a true in-place toggle, while Today remains the

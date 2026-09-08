@@ -80,7 +80,7 @@ export default function PracticeInsightStage({
           <RcSessionHistory tone="dark" />
         ) : (
           <ul className="drill-observatory-insights" aria-label="Insights">
-            {shown.map((slide) => (
+            {shown.map((slide, index) => (
               <li key={slide.id} className="drill-observatory-insight">
                 <div className="min-w-0">
                   <span className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55 block">
@@ -101,7 +101,12 @@ export default function PracticeInsightStage({
                 <button
                   type="button"
                   onClick={() => handleSlideAction(slide)}
-                  className="drill-observatory-insight-action inline-flex items-center gap-2"
+                  /* Only the top insight earns a pill. Three pills in a column
+                     read as three primary actions. */
+                  className={cn(
+                    "inline-flex items-center gap-2",
+                    index === 0 ? "drill-observatory-insight-action" : "drill-observatory-insight-link",
+                  )}
                 >
                   {slide.actionLabel}
                   <ArrowRight className="h-[13px] w-[13px]" strokeWidth={2} aria-hidden />
