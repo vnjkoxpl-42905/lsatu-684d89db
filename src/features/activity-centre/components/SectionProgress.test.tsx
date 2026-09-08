@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { SectionProgress } from "./SectionProgress";
 import type { SectionGradeStub } from "../api/types";
 
@@ -40,7 +39,7 @@ describe("the record of every graded run", () => {
   it("opens the report card for the run that was pressed", async () => {
     const onOpen = vi.fn();
     render(<SectionProgress loadGrades={async () => [stub({ coverage: 70 })]} onOpen={onOpen} />);
-    await userEvent.click(await screen.findByText("70%"));
+    fireEvent.click(await screen.findByText("70%"));
     expect(onOpen).toHaveBeenCalledWith("a1");
   });
 
