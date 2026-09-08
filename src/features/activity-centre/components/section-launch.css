@@ -1966,6 +1966,53 @@
   display: grid;
   gap: 16px;
 }
+/* The page arrives in reading order: head, notice, then each step a beat
+   after the last, so the eye is led down the method rather than handed a
+   wall. Opacity and transform only; nothing here moves layout. */
+@keyframes sl-bp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.sl-briefing-page .sl-bp-head,
+.sl-briefing-page .sl-notice,
+.sl-briefing-page .sl-bp-h2,
+.sl-briefing-page .sl-bp-list li,
+.sl-briefing-page .sl-bp-more,
+.sl-briefing-page .sl-bp-foot {
+  animation: sl-bp-rise 560ms var(--rd-ease) both;
+}
+.sl-briefing-page .sl-notice {
+  animation-delay: 120ms;
+}
+.sl-briefing-page .sl-bp-h2 {
+  animation-delay: 200ms;
+}
+.sl-briefing-page .sl-bp-list li {
+  animation-delay: calc(260ms + var(--i, 0) * 90ms);
+}
+.sl-briefing-page .sl-bp-more,
+.sl-briefing-page .sl-bp-foot {
+  animation-delay: 640ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sl-briefing-page .sl-bp-head,
+  .sl-briefing-page .sl-notice,
+  .sl-briefing-page .sl-bp-h2,
+  .sl-briefing-page .sl-bp-list li,
+  .sl-briefing-page .sl-bp-more,
+  .sl-briefing-page .sl-bp-foot {
+    animation: none;
+  }
+  .sl-bp-more > summary::after {
+    transition: none;
+  }
+}
 @media (max-width: 640px) {
   .sl-bp-head {
     flex-direction: column;

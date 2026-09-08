@@ -1,3 +1,4 @@
+import type React from "react";
 import { ArrowRight } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
 import { renderInlineMarks } from "../prompt-format";
@@ -79,7 +80,7 @@ export function SectionBriefingPage({
           <h2 className="sl-bp-h2">What you do, step by step</h2>
           <ol className="sl-bp-list">
             {steps.map((step, i) => (
-              <li key={i}>
+              <li key={i} style={{ "--i": i } as React.CSSProperties}>
                 <span className="sl-bp-n">Step {i + 1}</span>
                 <strong>{renderInlineMarks(step.label, `sl-bps-l-${i}`)}</strong>
                 <p>{renderInlineMarks(step.body, `sl-bps-b-${i}`)}</p>
@@ -145,9 +146,12 @@ export function SectionBriefingPage({
         {briefing?.closer && (
           <p className="sl-bp-closer">{renderInlineMarks(briefing.closer, "sl-bp-closer")}</p>
         )}
+        {/* Says what happens to her, not how the clock works. "Counting up"
+            described the mechanism and left her wondering what it counted
+            toward. */}
         <p>
-          When you are ready, press Start. The microphone opens and the clock starts counting up.
-          The first time, your browser will ask to use your microphone. Allow it.
+          When you are ready, press Start. Recording begins the moment you do, and the timer
+          starts with it. The first time, your browser will ask to use your microphone. Allow it.
         </p>
         <div className="sl-cta">{startButton("Start the section")}</div>
       </footer>
