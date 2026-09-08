@@ -14,6 +14,20 @@ import {
 } from "./recordingBackup";
 
 /**
+ * Storage's answer when the object is already there.
+ *
+ * supabase-js reports it as a `StorageApiError` with `statusCode` "409" and
+ * the message "The resource already exists". Both are matched, because the
+ * status has changed type across versions and the message has not.
+ */
+function alreadyStored(error: unknown): boolean {
+  const e = error as { statusCode?: string | number; status?: number; message?: string } | null;
+  if (!e) return false;
+  if (String(e.statusCode ?? e.status ?? "") === "409") return true;
+  return /already exists/i.test(e.message ?? "");
+}
+
+/**
  * Upload the recordings of sections that never finished.
  *
  * A section that crashed, or whose lid closed at minute nineteen, left its
@@ -35,7 +49,18 @@ export async function recoverPendingRecordings(studentId: string): Promise<numbe
     // Anything abandoned long enough that nobody is coming back for it.
     await purgeStale();
 
-    for (const run of await listPendingRuns()) {
+    /*
+     * Newest sitting first.
+     *
+     * Two pending runs can name the same path: a sitting that crashed before
+     * its first row kept the Attempt number, so the next sitting of that
+     * section took the same name. Only one of them can land, now that the
+     * upload refuses to overwrite, and it should be the one she actually ran,
+     * which is the later one. The earlier then meets a conflict and is
+     * forgotten, which is what it deserves.
+     */
+    const pending = (await listPendingRuns()).sort((a, b) => b.startedAt - a.startedAt);
+    for (const run of pending) {
       // Not hers, and not one still being recorded -- in this tab, or in any
       // other. `isActive` is this tab's memory; `isLive` is the record's own
       // heartbeat, and the only one of the two a second tab can see.
@@ -51,10 +76,24 @@ export async function recoverPendingRecordings(studentId: string): Promise<numbe
         continue;
       }
 
+      /*
+       * Never over the top of a recording that is already there.
+       *
+       * The backup is for a run that never reached its own upload. A path that
+       * already holds a file was written by a sitting that finished, and that
+       * file is the evidence its grade rests on. This used to upsert, and on
+       * 2026-09-08 it put an orphaned recorder's 116-minute backup over a
+       * finished 66-minute run, which the grader then refused. A conflict here
+       * means the real recording landed; the pieces are surplus and go.
+       */
       const { error } = await supabase.storage
         .from(run.bucket)
-        .upload(run.path, blob, { contentType: run.mimeType, upsert: true });
+        .upload(run.path, blob, { contentType: run.mimeType, upsert: false });
       if (error) {
+        if (alreadyStored(error)) {
+          await discard(run.runId);
+          continue;
+        }
         // Keep it. The next open tries again, and until then this copy is the
         // only one that exists.
         console.error("[rrc] could not upload a recovered recording", error);

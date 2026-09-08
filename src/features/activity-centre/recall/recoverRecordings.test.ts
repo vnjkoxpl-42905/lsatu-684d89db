@@ -77,3 +77,57 @@ describe("recovery from a second tab", () => {
     expect(await listPendingRuns()).toEqual([]);
   });
 });
+
+/**
+ * A recovered file must never replace one the run itself stored.
+ *
+ * The backup exists for a run that never reached its own upload. A path that
+ * already holds a recording was written by a sitting that finished, and that
+ * file is the whole of the evidence for its grade. On 2026-09-08 an orphaned
+ * recorder's 116-minute backup was uploaded over a finished 66-minute run
+ * because the recovery upload overwrote whatever was there.
+ */
+describe("recovery never overwrites a stored recording", () => {
+  const dead = () => {
+    const now = Date.now();
+    vi.spyOn(Date, "now").mockReturnValue(now + LIVE_GRACE_MS + 1000);
+  };
+
+  it("uploads without overwrite", async () => {
+    await beginBackup({ ...RUN, runId: "run-a" });
+    await putChunk("run-a", 0, new Blob(["header"]));
+    dead();
+
+    await recoverPendingRecordings("s1");
+
+    expect(upload).toHaveBeenCalledTimes(1);
+    const options = (upload.mock.calls[0] as unknown[])[2] as { upsert?: boolean };
+    expect(options.upsert).toBe(false);
+  });
+
+  it("forgets a run whose path already holds a recording", async () => {
+    upload.mockResolvedValueOnce({
+      error: { statusCode: "409", message: "The resource already exists" },
+    } as never);
+    await beginBackup({ ...RUN, runId: "run-b" });
+    await putChunk("run-b", 0, new Blob(["header"]));
+    dead();
+
+    const recovered = await recoverPendingRecordings("s1");
+
+    expect(recovered).toBe(0);
+    expect(await listPendingRuns()).toEqual([]);
+  });
+
+  it("keeps a run whose upload failed for any other reason", async () => {
+    upload.mockResolvedValueOnce({ error: { statusCode: "500", message: "boom" } } as never);
+    await beginBackup({ ...RUN, runId: "run-c" });
+    await putChunk("run-c", 0, new Blob(["header"]));
+    dead();
+
+    const recovered = await recoverPendingRecordings("s1");
+
+    expect(recovered).toBe(0);
+    expect((await listPendingRuns()).map((r) => r.runId)).toEqual(["run-c"]);
+  });
+});

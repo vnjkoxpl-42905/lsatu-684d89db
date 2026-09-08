@@ -444,6 +444,32 @@ function RunBody({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /*
+   * A run she leaves has no backup worth keeping.
+   *
+   * Leaving throws the whole run away (ADR 0023), and the recorder closes with
+   * the hook. What the backup store still holds for this run id is the pieces
+   * of a sitting that will never be graded: recovery would take them for a
+   * crashed run and upload them, and on 2026-09-08 it did exactly that, over
+   * the finished recording of the same assignment. So they go now.
+   *
+   * A run that ENDED is a different case and is left alone: its own finish
+   * path discards the backup once the upload lands, and if she leaves the
+   * Report Card handover mid-upload the pieces are the only copy there is.
+   * Ordering matters here: React runs cleanups in the order the effects were
+   * declared, and the one that cancels retries has already run by now.
+   */
+  useEffect(
+    () => () => {
+      // `saving`, not `finishing`: the unmount cleanup above raises `finishing`
+      // for every unmount, ended or abandoned, while `saving` is set by the
+      // finish path alone.
+      if (saving.current) return;
+      void discard(runId.current);
+    },
+    [],
+  );
+
   /**
    * One key press, twice per stimulus. This is the whole interaction: no mouse
    * in the loop, and no other signal either -- advancing on detected silence

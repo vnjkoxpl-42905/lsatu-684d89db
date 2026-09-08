@@ -177,6 +177,16 @@ function serialised<T>(runId: string, work: () => Promise<T>): Promise<T> {
  * half-recording uploaded over the top of itself. Cleared when the run ends.
  */
 const active = new Set<string>();
+/**
+ * Runs this tab has thrown away.
+ *
+ * A recorder's last piece arrives AFTER it is told to stop, as an event, so a
+ * run discarded on the way out of a section can be resurrected by its own
+ * final chunk: `putChunk` would re-file the piece and put the run record
+ * back, and recovery would upload the pieces of a sitting that was abandoned
+ * on purpose. A discarded run takes no more pieces.
+ */
+const discarded = new Set<string>();
 
 /** True while this tab is still producing that run. */
 export function isActive(runId: string): boolean {
@@ -186,6 +196,7 @@ export function isActive(runId: string): boolean {
 /** Announce a run, so a recovered pile of pieces knows where it belongs. */
 export async function beginBackup(run: BackupRun): Promise<void> {
   active.add(run.runId);
+  discarded.delete(run.runId);
   if (!available()) return;
   try {
     await (await db()).put(RUNS, { ...run, liveUntil: Date.now() + LIVE_GRACE_MS });
@@ -197,7 +208,9 @@ export async function beginBackup(run: BackupRun): Promise<void> {
 /** One piece of the recording, in the order it was produced. */
 export async function putChunk(runId: string, seq: number, blob: Blob): Promise<void> {
   if (!available()) return;
+  if (discarded.has(runId)) return;
   await serialised(runId, async () => {
+    if (discarded.has(runId)) return;
     try {
       const chunk: Chunk = {
         key: `${runId}:${String(seq).padStart(6, "0")}`,
@@ -251,20 +264,25 @@ export async function assemble(run: BackupRun): Promise<Blob | null> {
 /** Forget a run: it is safely uploaded, or it is not worth keeping. */
 export async function discard(runId: string): Promise<void> {
   active.delete(runId);
+  discarded.add(runId);
   if (!available()) return;
-  try {
-    const instance = await db();
-    const keys = await instance.getAllKeysFromIndex(CHUNKS, "runId", runId);
-    const tx = instance.transaction([CHUNKS, RUNS], "readwrite");
-    await Promise.all([
-      ...keys.map((k) => tx.objectStore(CHUNKS).delete(k)),
-      tx.objectStore(RUNS).delete(runId),
-      tx.done,
-    ]);
-    writeChains.delete(runId);
-  } catch (e) {
-    console.error("[rrc] could not clear a local recording backup", e);
-  }
+  // Behind every piece still being written, so none of them lands after the
+  // sweep and leaves the run half-present.
+  await serialised(runId, async () => {
+    try {
+      const instance = await db();
+      const keys = await instance.getAllKeysFromIndex(CHUNKS, "runId", runId);
+      const tx = instance.transaction([CHUNKS, RUNS], "readwrite");
+      await Promise.all([
+        ...keys.map((k) => tx.objectStore(CHUNKS).delete(k)),
+        tx.objectStore(RUNS).delete(runId),
+        tx.done,
+      ]);
+    } catch (e) {
+      console.error("[rrc] could not clear a local recording backup", e);
+    }
+  });
+  writeChains.delete(runId);
 }
 
 /**

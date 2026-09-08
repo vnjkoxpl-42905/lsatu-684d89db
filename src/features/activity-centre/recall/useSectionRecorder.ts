@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * The section's recording: one unbroken file, plus an index of what is where.
@@ -277,6 +277,42 @@ export function useSectionRecorder(
     const blob = await finished;
     return { blob, mimeType, durationMs, segments: segments.current.slice() };
   }, [now]);
+
+  /**
+   * A recorder does not outlive the component that started it.
+   *
+   * `stop` is the run's own ending and the only place this used to close the
+   * microphone. A section she LEFT -- the exit button, a route change, any
+   * unmount before `done` -- left both recorders running with the microphone
+   * open, invisible, for as long as the tab lived. On 2026-09-07 one such
+   * orphan ran for two hours: through the student's real sitting of the same
+   * section and past its end, feeding its backup the whole time. When the tab
+   * finally reloaded, the recovery pass took that orphan's 116-minute file for
+   * a crashed run and uploaded it over the 66-minute recording the real run
+   * had stored, and the grader refused the section for a clock that sat 37
+   * minutes off.
+   *
+   * So the tracks close with the hook. Nothing is handed back: whatever this
+   * recorder held belongs to a run that is, by the drill's own rule, thrown
+   * away (ADR 0023). A run that ended properly has already been through `stop`
+   * and there is nothing here left to close.
+   */
+  useEffect(
+    () => () => {
+      for (const rec of [recorder.current, backup.current]) {
+        try {
+          if (rec && rec.state !== "inactive") rec.stop();
+        } catch {
+          // Already stopped. Nothing to close twice.
+        }
+      }
+      stream.current?.getTracks().forEach((t) => t.stop());
+      recorder.current = null;
+      backup.current = null;
+      stream.current = null;
+    },
+    [],
+  );
 
   /**
    * The live input, for anything that needs to listen rather than store.
