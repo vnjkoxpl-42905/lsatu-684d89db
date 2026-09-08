@@ -7,11 +7,12 @@ import {
   mapWithConcurrency,
   parseJudgeReply,
   pickDecoys,
-  toDetails,
+  toDetailsByLine,
   type StimulusGrade,
 } from "../_shared/rrcGrading.ts";
 import { checkReciting } from "../_shared/rrcOverlap.ts";
 import { stripVerbatimReads } from "../_shared/rrcReads.ts";
+import { linesFromWords } from "../_shared/rrcLines.ts";
 
 /**
  * Grade one finished Read, Recall, Colour section.
@@ -538,7 +539,6 @@ serve(async (req) => {
       const item = bySlug.get(slug)!;
 
       const chunks = (item.chunks ?? []) as { text: string; details: { text: string }[] }[];
-      const detailTexts = chunks.flatMap((c) => c.details.map((d) => d.text));
       const stimulusText = chunks.map((c) => c.text).join(" ");
 
       const segments = ((rrc.audio_segments ?? []) as Segment[]);
