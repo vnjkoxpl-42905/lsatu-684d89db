@@ -126,6 +126,7 @@ const BookingAccess = safeLazy(() => import("./pages/teacher/BookingAccess"));
 const BootcampReferenceDetail = safeLazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 const PublicBooking = safeLazy(() => import("./pages/PublicBooking"));
 const SingleSession = safeLazy(() => import("./pages/SingleSession"));
+const OneOffBooking = safeLazy(() => import("./pages/OneOffBooking"));
 /** Dev-only; the route that mounts it is gated on import.meta.env.DEV. */
 const ActivityLab = safeLazy(() => import("./pages/ActivityLab"));
 import Inbox from "./pages/Inbox";
@@ -250,6 +251,11 @@ const App = () => {
                 what booking_event_types says it is -- 30 minutes, buffered, and
                 free, so it books without a Stripe leg. */}
             <Route path="/book/consultation" element={<React.Suspense fallback={null}><SingleSession event="consultation" /></React.Suspense>} />
+            {/* A one-off link. The slug names a booking_event_types row minted for
+                one person -- its own price, length, notice and sometimes one
+                pinned time -- and it sells exactly one session. Nested under
+                /book/x/ so it cannot collide with the bearer-slug route below. */}
+            <Route path="/book/x/:slug" element={<React.Suspense fallback={null}><OneOffBooking /></React.Suspense>} />
             {/* Public, no-login per-student booking link (Calendly-style). */}
             <Route path="/book/:slug" element={<React.Suspense fallback={null}><PublicBooking /></React.Suspense>} />
             {/* Legacy booking-workspace URLs used to mount a second app shell.

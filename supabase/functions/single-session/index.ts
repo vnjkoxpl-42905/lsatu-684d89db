@@ -259,6 +259,17 @@ async function loadEvent(supabase: any, slug: unknown): Promise<BookingEventConf
   return toEventConfig(data);
 }
 
+/**
+ * Has this one-off link already been used. Ordinary events are never spent, so
+ * this is a single indexed lookup that answers false for every existing caller.
+ */
+async function linkSpent(supabase: any, event: BookingEventConfig): Promise<boolean> {
+  if (!event.singleUse) return false;
+  const { data, error } = await supabase.rpc("booking_event_is_spent", { _event_slug: event.slug });
+  if (error) throw error;
+  return data === true;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
@@ -291,11 +302,19 @@ Deno.serve(async (req) => {
         currency: event.currency,
         requires_payment: event.requiresPayment,
         timezone: SINGLE_SESSION.hostTimezone,
+        single_use: event.singleUse,
+        // A one-off link that has been used still resolves -- the page needs to
+        // say so rather than show an empty calendar. `note` is never included:
+        // it is Joshua's reminder of who the link was for.
+        available: !(await linkSpent(supabase, event)),
       });
     }
 
     if (action === "slots") {
       const event = await loadEvent(supabase, body.event);
+      // A spent one-off link sells nothing. Checked before the cache, because
+      // whether a link is used changes on a booking, not on a 15-second timer.
+      if (await linkSpent(supabase, event)) return json({ slots: [], timezone: SINGLE_SESSION.hostTimezone });
       // Keyed by event: a consultation and a session have different lengths,
       // buffers and windows, so one cached answer cannot serve both.
       const cached = slotsCache.get(event.slug);
@@ -376,6 +395,9 @@ Deno.serve(async (req) => {
         _event_slug: event.slug,
       });
       if (claimError) {
+        // P0410 is a one-off link that was already used. It is a 409 like a
+        // taken slot, but it needs its own word: no other time will work either.
+        if (claimError.code === "P0410") return json({ error: "link_already_used" }, 409);
         const status = claimError.code === "P0429" ? 429
           : ["P0409", "P0425"].includes(claimError.code) ? 409
           : claimError.code === "P0400" ? 400
@@ -566,6 +588,10 @@ Deno.serve(async (req) => {
     return json({ error: "unknown_action" }, 400);
   } catch (error) {
     if (error instanceof Error && error.message === "payload_too_large") return json({ error: "payload_too_large" }, 413);
+    // A slug that names no active event is not a fault in the server. It is a
+    // revoked, mistyped or retired link, and the page can only say so if it
+    // arrives as its own answer rather than as a 500 with the reason withheld.
+    if (error instanceof Error && error.message === "unknown_event") return json({ error: "unknown_event" }, 404);
     const detail = error instanceof Error ? error.message : String(error);
     console.error("single-session error", { error: detail });
     // Students see nothing but "server_error". An admin, proven by their own

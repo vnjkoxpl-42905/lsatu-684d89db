@@ -47,7 +47,33 @@ export type EventInfo = {
   amount_cents: number;
   currency: string;
   requires_payment?: boolean;
+  /** True for a one-off link: this URL sells one session and then stops. */
+  single_use?: boolean;
+  /** False once a one-off link has been used. Undefined for ordinary events. */
+  available?: boolean;
 };
+
+/** "1h 10m", "30m" -- the event's own length, not a constant. */
+function durationLabel(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  if (!hours) return `${rest}m`;
+  return rest ? `${hours}h ${rest}m` : `${hours}h`;
+}
+
+/** The wire words the edge function uses, as something a person can read. */
+const ERROR_TEXT: Record<string, string> = {
+  unknown_event: "This booking link is no longer active.",
+  link_already_used: "This link has already been used to book a session.",
+  slot_unavailable: "That time was taken while you were filling this in. Please pick another.",
+  rate_limited: "Too many attempts. Please wait a moment and try again.",
+  security_check_failed: "The security check did not pass. Please reload and try again.",
+  security_check_unavailable: "The security check could not load. Please reload and try again.",
+};
+
+function readableError(message: string): string {
+  return ERROR_TEXT[message] ?? message;
+}
 
 export type SingleSessionApi = {
   info: () => Promise<EventInfo>;
@@ -82,7 +108,15 @@ declare global {
 
 async function invoke<T>(action: string, extra: Record<string, unknown> = {}): Promise<T> {
   const { data, error } = await supabase.functions.invoke("single-session", { body: { action, ...extra } });
-  if (error) throw new Error(error.message);
+  if (error) {
+    // supabase-js turns any non-2xx into "Edge Function returned a non-2xx
+    // status code" and keeps the body on the error object. That body is where
+    // the reason lives -- unknown_event, link_already_used -- and it is the
+    // whole difference between "something went wrong" and "this link is spent".
+    const body = (error as { context?: { json?: () => Promise<{ error?: string }> } }).context;
+    const reason = await body?.json?.().then((parsed) => parsed?.error).catch(() => undefined);
+    throw new Error(reason || error.message);
+  }
   const result = data as { error?: string } & T;
   if (result?.error) throw new Error(result.error);
   return result;
@@ -390,8 +424,13 @@ export default function SingleSession({
     ? (info.requires_payment === false || info.amount_cents === 0
         ? "Free"
         : new Intl.NumberFormat(undefined, { style: "currency", currency: info.currency.toUpperCase() }).format(info.amount_cents / 100))
-    : "$45.00";
+    // Never a number while the event is unknown: a one-off link carries its own
+    // price, and guessing $45 at it would be a lie in the reader's favour.
+    : "—";
   const title = info?.host.title ?? "LSAT Session";
+  // A one-off link the edge function has already marked spent. Nothing on this
+  // page is actionable in that state, so it replaces the picker outright.
+  const linkUsed = info?.available === false;
   return <main className="booking-holo single-session-page min-h-screen px-3 py-4 sm:px-6 sm:py-8 lg:flex lg:items-center">
     <section className="booking-shadow mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-border bg-card">
       <div className="grid lg:grid-cols-[280px_minmax(0,1fr)]">
@@ -400,7 +439,7 @@ export default function SingleSession({
           <p className="mt-4 text-sm font-medium text-muted-foreground">{info?.host.name ?? "Joshua"}</p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight">{title}</h1>
           <dl className="mt-5 space-y-3 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2"><Clock className="h-4 w-4" /><dt className="sr-only">Duration</dt><dd>1h 10m</dd></div>
+            <div className="flex items-center gap-2"><Clock className="h-4 w-4" /><dt className="sr-only">Duration</dt><dd>{info ? durationLabel(info.duration_minutes) : "—"}</dd></div>
             <div className="flex items-center gap-2"><Video className="h-4 w-4" /><dt className="sr-only">Location</dt><dd>Google Meet</dd></div>
             <div className="flex items-center gap-2"><ShieldCheck className="h-4 w-4" /><dt className="sr-only">Price</dt><dd>{price}</dd></div>
           </dl>
@@ -408,11 +447,15 @@ export default function SingleSession({
         </aside>
 
         <div className="min-w-0 p-4 sm:p-6 lg:p-7">
-          {error ? <div role="alert" className="mb-5 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">{error}</div> : null}
-          {selected ? <form onSubmit={submit} className="mx-auto max-w-2xl">
+          {error ? <div role="alert" className="mb-5 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">{readableError(error)}</div> : null}
+          {linkUsed ? <div className="py-16 text-center">
+            <CalendarDays className="mx-auto mb-3 h-6 w-6 text-muted-foreground" />
+            <h2 className="text-xl font-semibold">This link has already been used</h2>
+            <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">It booked one session and is now closed. If you still need a time, reply to Joshua and he'll send you a new link.</p>
+          </div> : selected ? <form onSubmit={submit} className="mx-auto max-w-2xl">
             <Button type="button" variant="ghost" className="mb-4 -ml-3" onClick={() => setSelected(null)}><ChevronLeft className="mr-1 h-4 w-4" />Back to times</Button>
             <h2 className="text-xl font-semibold">Your details</h2>
-            <div className="mt-4 flex flex-wrap gap-2 text-sm"><span className="rounded-full bg-primary/10 px-3 py-1.5 font-medium text-primary">{formatSlot(selected.start_at)}</span><span className="rounded-full bg-muted px-3 py-1.5">70 minutes</span></div>
+            <div className="mt-4 flex flex-wrap gap-2 text-sm"><span className="rounded-full bg-primary/10 px-3 py-1.5 font-medium text-primary">{formatSlot(selected.start_at)}</span><span className="rounded-full bg-muted px-3 py-1.5">{info ? `${info.duration_minutes} minutes` : ""}</span></div>
             <div className="mt-6 grid gap-5">
               <div><Label htmlFor="single-session-name">Your name*</Label><Input id="single-session-name" value={name} onChange={(event) => setName(event.target.value)} required autoComplete="name" className="mt-2 min-h-11" /></div>
               <div><Label htmlFor="single-session-email">Email address*</Label><Input id="single-session-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required autoComplete="email" className="mt-2 min-h-11" /></div>

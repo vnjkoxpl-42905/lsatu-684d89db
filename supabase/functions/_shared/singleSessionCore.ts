@@ -29,6 +29,14 @@ export type BookingEventConfig = {
   priceCents: number;
   currency: string;
   requiresPayment: boolean;
+  /** A one-off link: sellable exactly once, then spent. */
+  singleUse: boolean;
+  /**
+   * The one instant this link sells, as an ISO string. When set, the link
+   * offers only this time and the notice/window/weekly-hours rules do not
+   * apply -- the time was chosen by hand. Null for an ordinary event.
+   */
+  pinnedStartAt: string | null;
 };
 
 export const SINGLE_SESSION_EVENT: BookingEventConfig = {
@@ -43,6 +51,8 @@ export const SINGLE_SESSION_EVENT: BookingEventConfig = {
   priceCents: SINGLE_SESSION.amountCents,
   currency: SINGLE_SESSION.currency,
   requiresPayment: true,
+  singleUse: false,
+  pinnedStartAt: null,
 };
 
 /** Maps a booking_event_types row onto the shape the slot generator wants. */
@@ -59,6 +69,8 @@ export function toEventConfig(row: Record<string, unknown>): BookingEventConfig 
     priceCents: Number(row.price_cents ?? 0),
     currency: String(row.currency ?? "usd"),
     requiresPayment: row.requires_payment !== false,
+    singleUse: row.single_use === true,
+    pinnedStartAt: row.pinned_start_at ? new Date(String(row.pinned_start_at)).toISOString() : null,
   };
 }
 
@@ -132,6 +144,22 @@ export function generateSingleSessionSlots(opts: {
 }): SingleSessionSlot[] {
   const event = opts.event ?? SINGLE_SESSION_EVENT;
   const length = event.lengthMinutes;
+
+  // A pinned link offers the one time it was minted with and nothing else. The
+  // weekly hours, the rolling window and the notice all exist to decide whether
+  // a time is one Joshua would agree to; pinning IS that decision, already made.
+  // A clash with something already on the calendar still removes it -- that is
+  // not a policy, it is a fact about the hour.
+  if (event.pinnedStartAt) {
+    const start = Date.parse(event.pinnedStartAt);
+    if (!Number.isFinite(start) || start <= opts.nowMs) return [];
+    const end = start + length * 60_000;
+    const beforePinned = event.bufferBeforeMinutes * 60_000;
+    const afterPinned = event.bufferAfterMinutes * 60_000;
+    if (opts.busy.some((busy) => busy.start < end + afterPinned && busy.end > start - beforePinned)) return [];
+    return [{ start_at: new Date(start).toISOString(), end_at: new Date(end).toISOString() }];
+  }
+
   const pitch = event.slotIntervalMinutes ?? event.lengthMinutes;
   const beforeMs = event.bufferBeforeMinutes * 60_000;
   const afterMs = event.bufferAfterMinutes * 60_000;
