@@ -271,6 +271,20 @@ export function buildJudgePrompt(input: {
    * run that differs from it starts looking wrong.
    */
   modelRun?: string | null;
+  /**
+   * Her run cut into the lines she was rephrasing, and her whole-stimulus
+   * recall on its own.
+   *
+   * The drill is line by line -- read one line silently, look away, say that
+   * line back -- and until now the judge saw the whole thing as one block of
+   * text. It could say a fact was dropped; it could not say WHERE, which is the
+   * only form of that feedback she can act on. The cut comes from the silence
+   * before each spoken line (`rrcLines.ts`), so it is evidence about her run
+   * and not a boundary she is scored against.
+   */
+  lines?: { n: number; text: string; spoken: string }[];
+  /** What she said after the text disappeared. Part of `spoken` as well. */
+  recall?: string | null;
 }): string {
   const kinds = [...new Set(input.entries.map((e) => e.kind))]
     .map((k) => `- ${KIND_RULE[k]}`)
@@ -281,9 +295,11 @@ export function buildJudgePrompt(input: {
 
   return `You are grading one stimulus of a memory drill.
 
-A student read the stimulus below, then said it back out loud in her own words
-from memory. Your job is to decide, for each numbered Detail, whether she
-carried it.
+The student read the stimulus one line at a time. She reads a line silently,
+looks away from the screen, and says that line back out loud in her own words
+from memory; then the next line, and so on. When every line is done the text
+disappears and she restates the whole stimulus from memory. She never reads
+aloud. Your job is to decide, for each numbered Detail, whether she carried it.
 
 THE STIMULUS (context only — see the rule below):
 """
@@ -294,6 +310,23 @@ WHAT SHE SAID (this is your ONLY evidence):
 """
 ${input.spoken}
 """
+${
+    input.lines?.length
+      ? `
+HER RUN, LINE BY LINE (the same words, split by which line she had just read):
+${input.lines
+          .map((l) => `Line ${l.n}: ${l.text}\n  She said: ${l.spoken || "(nothing)"}`)
+          .join("\n")}
+${input.recall ? `\nHER FULL RECALL, text off screen:\n"""\n${input.recall}\n"""\n` : ""}
+Judge each line: how much of that line survived in what she said for it, and
+say in one short sentence what she dropped. A line she said nothing for is
+"skipped". Then judge the full recall the same way. The split is approximate --
+if she clearly covered a line's content while talking about a neighbouring
+line, do not mark it skipped.
+`
+      : ""
+  }
+
 
 HOW TO JUDGE EACH KIND:
 ${kinds}
