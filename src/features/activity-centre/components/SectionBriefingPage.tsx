@@ -61,7 +61,11 @@ export function SectionBriefingPage({
           <p className="sl-bp-meta">
             {[
               sourceSection,
-              typeof itemCount === "number" ? `${itemCount} pieces to read` : null,
+              // Not "pieces". A piece is one chunk, roughly a sentence, and the
+              // instructions on this very page use it that way ("Read each piece
+              // silently"). The count here is stimuli, so "22 pieces" read as 22
+              // sentences and made the line impossible to parse.
+              typeof itemCount === "number" ? `${itemCount} stimuli` : null,
               timeGoalMinutes ? `about ${timeGoalMinutes} min` : null,
             ]
               .filter(Boolean)
@@ -78,10 +82,12 @@ export function SectionBriefingPage({
         </div>
       </header>
 
+      {/* One fact, the one that lowers her shoulders before she reads. That the
+          section records in one take with no pause is said in Step 4 and again
+          in the full instructions; saying it a third time here made the notice
+          a paragraph she skipped. */}
       <p className="sl-notice" role="status">
-        Read this through first. Nothing is recording yet — the microphone only
-        opens when you press Start, and the whole section is then recorded in
-        one take that you cannot pause.
+        Nothing is recording yet. The microphone opens when you press Start.
       </p>
 
       {steps.length > 0 && (
@@ -99,9 +105,14 @@ export function SectionBriefingPage({
         </section>
       )}
 
+      {/* The four steps above ARE the instruction. This is the same method told
+          again at length, and rendering both open left her reading the method
+          twice with no way to tell which one she was meant to follow. Closed by
+          default, one click from anyone who wants the long version. */}
       {briefing && (
-        <section className="sl-essay sl-bp-essay" aria-label="Full instructions">
-          <h2 className="sl-bp-h2">Full instructions</h2>
+        <details className="sl-bp-more">
+          <summary className="sl-bp-h2">Read the long version</summary>
+          <section className="sl-essay sl-bp-essay" aria-label="Full instructions">
           {briefing.lede && <p className="rd-lede">{renderInlineMarks(briefing.lede, "sl-bp-lede")}</p>}
           {briefing.sections.map((section, i) => (
             <section key={i}>
@@ -130,7 +141,8 @@ export function SectionBriefingPage({
               )}
             </section>
           ))}
-        </section>
+          </section>
+        </details>
       )}
 
       <footer className="sl-bp-foot">

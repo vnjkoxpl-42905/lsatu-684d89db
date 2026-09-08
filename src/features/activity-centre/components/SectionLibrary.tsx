@@ -169,8 +169,8 @@ export function SectionLibrary({
   if (choices.length === 0) {
     return (
       <p className="sl-note">
-        No sections are ready for you yet. Joshua adds them here as they are built — check
-        back, or message him if you were expecting one tonight.
+        No sections are ready for you yet. Joshua adds them here as they are built.
+        Check back, or message him if you were expecting one tonight.
       </p>
     );
   }

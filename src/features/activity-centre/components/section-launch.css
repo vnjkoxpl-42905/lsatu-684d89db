@@ -1756,6 +1756,39 @@
   align-items: flex-start;
   justify-content: space-between;
 }
+/* .sl-tagline is white with a drop shadow, which is right on the door's dark
+   hero and unreadable here: this page sits on paper. The briefing page reuses
+   the class for the same line of copy, so it restates the colour rather than
+   forking the class. */
+.sl-briefing-page .sl-tagline {
+  margin: 12px 0 0;
+  color: var(--rd-ink-2);
+  text-shadow: none;
+}
+.sl-briefing-page .sl-tagline strong {
+  color: var(--rd-ink);
+}
+/* The long version, closed by default. */
+.sl-bp-more > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 14px 0;
+  border-top: 1px solid var(--rd-line);
+}
+.sl-bp-more > summary::-webkit-details-marker {
+  display: none;
+}
+.sl-bp-more > summary::after {
+  content: " +";
+  color: var(--rd-ink-2);
+}
+.sl-bp-more[open] > summary::after {
+  content: " –";
+}
+.sl-bp-more > summary:focus-visible {
+  outline: 2px solid var(--rd-ink-2);
+  outline-offset: 3px;
+}
 .sl-bp-meta {
   margin-top: 10px;
   font-size: 13px;
