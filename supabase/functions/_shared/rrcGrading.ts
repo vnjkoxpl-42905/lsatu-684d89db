@@ -511,6 +511,19 @@ export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply 
   const flag = (k: string) => obj[k] === true;
   const reason = (k: string) => (typeof obj[k] === "string" ? (obj[k] as string) : "");
 
+  const lineVerdicts: Record<number, { verdict: LineVerdict; note: string }> = {};
+  if (Array.isArray(obj.lines)) {
+    for (const row of obj.lines as Record<string, unknown>[]) {
+      const n = Number(row?.n);
+      if (!Number.isFinite(n)) continue;
+      lineVerdicts[n] = {
+        verdict: toLineVerdict(row.verdict),
+        note: typeof row.note === "string" ? row.note : "",
+      };
+    }
+  }
+  const recallRow = obj.recall as Record<string, unknown> | undefined;
+
   return {
     verdicts,
     reciting: flag("reciting"),
@@ -528,8 +541,18 @@ export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply 
     readMatches: flag("read_matches"),
     readReason: reason("read_reason"),
     missingIds,
+    bigMisses: Array.isArray(obj.big_misses)
+      ? (obj.big_misses as unknown[])
+          .filter((m): m is string => typeof m === "string" && m.trim() !== "")
+          .slice(0, 3)
+      : [],
+    lineVerdicts,
+    recallVerdict: recallRow
+      ? { verdict: toLineVerdict(recallRow.verdict), note: typeof recallRow.note === "string" ? recallRow.note : "" }
+      : undefined,
   };
 }
+
 
 // --- The score ---------------------------------------------------------------
 
