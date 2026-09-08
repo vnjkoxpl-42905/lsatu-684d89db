@@ -5,6 +5,7 @@ import { recoverPendingRecordings, recoverPendingRows } from "../recall/recoverR
 import { useStudentActivities } from "../hooks/useStudentActivities";
 import { SectionLibrary } from "./SectionLibrary";
 import { SectionLibraryLaunch } from "./SectionLibraryLaunch";
+import { SectionProgress } from "./SectionProgress";
 import sectionInstructions from "../content/read-recall-colour-section.instructions.json";
 import type { ActivityInstructions } from "../api/types";
 
@@ -81,6 +82,8 @@ export function SectionLibraryPanel({
         * the tab that produced it. A completed section routes itself to the
         * card rather than to the runner.
         */}
+      <SectionProgress onOpen={(id) => navigate(`/activities/${id}`)} />
+
       <SectionLibrary
         attempts={assignments}
         onStart={(id) => navigate(`/activities/${id}`, { state: { startSection: true } })}

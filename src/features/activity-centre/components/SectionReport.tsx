@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { getSectionGrade, requestSectionGrading } from "../api/activitiesClient";
+import {
+  getSectionGrade,
+  requestSectionGrading,
+  startSectionFocusAttempt,
+} from "../api/activitiesClient";
 import type { SectionGrade } from "../api/types";
 import { SectionReportCard } from "./SectionReportCard";
 
@@ -46,6 +51,7 @@ interface SectionReportProps {
 }
 
 export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
+  const navigate = useNavigate();
   const [grade, setGrade] = useState<SectionGrade | null>(null);
   const [stillWaiting, setStillWaiting] = useState(false);
   const startedAt = useRef(Date.now());
@@ -91,7 +97,19 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
     };
   }, [assignmentId]);
 
-  if (grade) return <SectionReportCard grade={grade} onDone={onDone} />;
+  if (grade)
+    return (
+      <SectionReportCard
+        grade={grade}
+        onDone={onDone}
+        onStartFocusSet={async (slugs) => {
+          // A fresh Attempt built server-side from this run's weakest stimuli,
+          // entered straight into the runner the way the library enters it.
+          const id = await startSectionFocusAttempt(assignmentId, slugs);
+          navigate(`/activities/${id}`, { state: { startSection: true } });
+        }}
+      />
+    );
 
   return (
     <div className="mx-auto max-w-2xl">

@@ -6766,6 +6766,10 @@ export type Database = {
         Args: { p_activity_id: string }
         Returns: string
       }
+      start_section_focus_attempt: {
+        Args: { p_assignment_id: string; p_slugs: string[] }
+        Returns: string
+      }
       take_abandoned_booking_uploads: {
         Args: { _limit?: number; _older_than?: string }
         Returns: {
