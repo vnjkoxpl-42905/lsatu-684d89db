@@ -384,7 +384,7 @@ serve(async (req) => {
       p_stale_seconds: CLAIM_STALE_SECONDS,
     });
     if (cErr) throw cErr;
-    if (!claimed) return json({ status: "grading", attempt }, 202);
+    if (!claimed) return json({ status: "grading", attempt, build: BUILD }, 202);
     release = async () => {
       const { error } = await admin.rpc("release_section_grading", {
         p_assignment_id: assignmentId,
