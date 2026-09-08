@@ -447,7 +447,7 @@ ${clamp(guidedSetsBlock, 4000)}`;
           // Fast + cheap, strong enough for TA reasoning over student analytics
           // and library context. Upgrade to gemini-3.1-pro-preview only if quality
           // regresses on draft generation.
-          model: "google/gemini-3-flash-preview",
+          model: "gemini-3.8-flash",
           messages: messagesForModel,
         }),
       }

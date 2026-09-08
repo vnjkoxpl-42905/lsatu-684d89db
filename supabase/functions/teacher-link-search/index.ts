@@ -201,7 +201,7 @@ Deno.serve(async (req) => {
         "Content-Type": "application/json",
         "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
       },
-      body: JSON.stringify({ model: "google/gemini-embedding-001", input: query }),
+      body: JSON.stringify({ model: "gemini-embedding-001", input: query }),
     });
     if (er.ok) {
       const ej = (await er.json()) as { data?: Array<{ embedding?: number[] }> };

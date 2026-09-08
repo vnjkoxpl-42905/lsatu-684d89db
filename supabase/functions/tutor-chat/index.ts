@@ -82,7 +82,7 @@ interface CachedKnowledge {
 const knowledgeCache = new Map<string, CachedKnowledge>();
 const KNOWLEDGE_TTL_MS = 10 * 60 * 1000;
 
-const GEN_MODEL = "google/gemini-3-flash-preview";
+const GEN_MODEL = "gemini-3.8-flash";
 
 // Run a promise in the background without blocking the response. Deno Deploy /
 // Supabase Edge keep the isolate alive via EdgeRuntime.waitUntil; fall back to a

@@ -37,7 +37,7 @@ const corsHeaders = {
 };
 
 // ── Model config indirection (build-spec decision 1) ──────────────────────────
-const SYNTHESIS_MODEL = Deno.env.get("SESSION_SYNTHESIS_MODEL") ?? "google/gemini-3-flash-preview";
+const SYNTHESIS_MODEL = Deno.env.get("SESSION_SYNTHESIS_MODEL") ?? "gemini-3.8-flash";
 const GATEWAY_URL = `${LSATU_GEMINI_PROXY_URL}/chat/completions`;
 
 // Cap how much transcript we feed the model so a giant Doc cannot blow the

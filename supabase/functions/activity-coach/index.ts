@@ -6,7 +6,7 @@ const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gem
 // Activity Centre Coach: judges a student's free-text response to an Activity
 // item against the credited answer(s) and returns a structured verdict plus a
 // short, supportive coaching message. Modeled on analyze-stem-response (Lovable
-// AI gateway, google/gemini-2.5-flash, auth-guarded, 429/402 handling) but
+// AI gateway, gemini-3.8-flash on GEMINI_API_KEY, auth-guarded, 429/402 handling) but
 // returns { verdict, feedback } rather than prose alone.
 
 const corsHeaders = {

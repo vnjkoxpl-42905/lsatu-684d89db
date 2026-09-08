@@ -27,7 +27,7 @@ const corsHeaders = {
 };
 
 const EXPECTED_SLUG = "lsat-lr-question-reasoning-guide";
-const EMBED_MODEL = "google/gemini-embedding-001";
+const EMBED_MODEL = "gemini-embedding-001";
 const EMBED_BATCH = 16;
 const EMBED_DIM = 3072;
 const EMBED_MAX_ATTEMPTS = 3;

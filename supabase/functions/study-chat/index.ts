@@ -93,7 +93,7 @@ serve(async (req) => {
         "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "gemini-3.8-flash",
         messages: [
           { role: "system", content: systemContent },
           ...messages,

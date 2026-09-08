@@ -279,14 +279,14 @@ interface DeskContext {
   model?: string;
 }
 
-const DEFAULT_MODEL = "google/gemini-2.5-flash";
-const CHEAP_MODEL = "google/gemini-2.5-flash-lite";
-const SMART_MODEL = "google/gemini-2.5-pro";
+const DEFAULT_MODEL = "gemini-3.8-flash";
+const CHEAP_MODEL = "gemini-3.8-flash";
+const SMART_MODEL = "gemini-3.8-flash";
 // Only real Gemini models — gemini-proxy calls Google directly with GEMINI_API_KEY.
 const ALLOWED_MODELS = new Set<string>([
-  "google/gemini-2.5-pro",
-  "google/gemini-2.5-flash",
-  "google/gemini-2.5-flash-lite",
+  "gemini-3.8-flash",
+  "gemini-3.8-flash",
+  "gemini-3.8-flash",
 ]);
 
 /**
@@ -303,7 +303,7 @@ function pickAutoModel(opts: {
   totalChars: number;
 }): string {
   const t = opts.text.toLowerCase();
-  if (opts.hasImages) return "google/gemini-2.5-flash";
+  if (opts.hasImages) return "gemini-3.8-flash";
   if (opts.totalChars > 12000) return SMART_MODEL;
   const reasoningCues = /\b(analy[sz]e|reason|prove|why|explain in depth|step[- ]by[- ]step|plan|strategi[sz]e|compare|critique|rubric|grade|debug|refactor|architect|derive)\b/;
   if (reasoningCues.test(t) || opts.text.length > 1500) return SMART_MODEL;
@@ -1123,7 +1123,7 @@ async function findLink(
         "Content-Type": "application/json",
         "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
       },
-      body: JSON.stringify({ model: "google/gemini-embedding-001", input: query }),
+      body: JSON.stringify({ model: "gemini-embedding-001", input: query }),
     });
     if (er.ok) {
       const ej = (await er.json()) as { data?: Array<{ embedding?: number[] }> };

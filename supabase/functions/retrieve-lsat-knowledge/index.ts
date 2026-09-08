@@ -22,7 +22,7 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const EMBED_MODEL = "google/gemini-embedding-001";
+const EMBED_MODEL = "gemini-embedding-001";
 const DEFAULT_KIND = "lsat_methodology";
 const ALLOWED_KINDS_ADMIN = new Set(["lsat_methodology"]);
 const MAX_QUERY_LEN = 500;
