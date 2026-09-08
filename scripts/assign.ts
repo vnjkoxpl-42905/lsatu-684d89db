@@ -243,6 +243,57 @@ async function findOrCreateThread(adminUserId: string, studentId: string): Promi
 
 // --------------------------------------------------------------------- main
 
+// ------------------------------------------------------------ access
+
+/**
+ * The flag that has to be on for a student to open what she was just assigned.
+ *
+ * Every route into this work sits behind a `ProtectedRoute`, and Classroom's
+ * own feed drops rows a student cannot open, so a missing flag does not read as
+ * a locked door: the work is simply invisible, and the link Joshua sends says
+ * "Not open yet".
+ *
+ * That happened. Ivory Johnson was assigned three Read, Recall, Colour sections
+ * on 2026-09-08 with `has_activity_access` off. He mailed Joshua on the Monday
+ * to say the portal was empty, tried the link on the Tuesday, was told it was
+ * not in his plan, and lost a day of study to a boolean. Nothing in the assign
+ * path had any opinion about whether he could reach what it was writing.
+ *
+ * Assigning work he cannot open is never what Joshua means, so this grants the
+ * one flag the assigned work needs. It never grants anything else and it never
+ * revokes: the rest of the feature set stays exactly where he set it.
+ */
+const ACCESS_FLAG = {
+  activity: "has_activity_access",
+  guided_drill: "has_drill_access",
+} as const;
+
+async function ensureCanOpen(classId: string, kind: keyof typeof ACCESS_FLAG, who: string) {
+  const flag = ACCESS_FLAG[kind];
+  const { data, error } = await supabase
+    .from("profiles")
+    .select(flag)
+    .eq("class_id", classId)
+    .single();
+  if (error) {
+    console.warn(`! Could not check ${flag} for ${who}: ${error.message}`);
+    console.warn("  The work is assigned. Confirm they can open it before telling them it is there.");
+    return;
+  }
+  if ((data as Record<string, boolean>)?.[flag]) return;
+
+  const { error: upErr } = await supabase
+    .from("profiles")
+    .update({ [flag]: true })
+    .eq("class_id", classId);
+  if (upErr) {
+    console.error(`! ${who} does not have ${flag} and it could not be turned on: ${upErr.message}`);
+    console.error("  They will see \"Not open yet\". Turn it on in Admin before telling them.");
+    return;
+  }
+  console.log(`  ${flag} was off for ${who}. Turned it on, or they could not have opened this.`);
+}
+
 async function main() {
   const teacherId = await signIn();
   const student = resolveStudent(await listStudents(), studentQuery!);
@@ -283,6 +334,9 @@ async function main() {
   }
   const r = ok[0];
   const n = r.notify;
+  // After the write, not before: a student who is never assigned anything has
+  // no business having a feature opened for them.
+  await ensureCanOpen(student.class_id, item.kind, who);
   console.log(
     `Assigned. id=${r.assignmentId}\n` +
       `  inbox ${n?.inbox_ok ? "ok" : "FAILED"} · bell ${n?.bell_ok ? "ok" : "FAILED"} · email ${n?.email_ok ? "ok" : "FAILED"}`,
