@@ -28,7 +28,17 @@ export interface Detail {
   n: number;
   text: string;
   kind: DetailKind;
+  /**
+   * Which authored line this Detail lives in, when the caller knows.
+   *
+   * Coverage is still per stimulus (ADR 0013) and this changes no score. It is
+   * how a marked Detail finds its way back to the line she was rephrasing when
+   * she should have carried it, so the Report Card can say "on line 2 you
+   * dropped the quantifier" instead of handing her a list of 21.
+   */
+  line?: number;
 }
+
 
 export type Band = "at-the-standard" | "nearly-there" | "thin" | "lost-it";
 
