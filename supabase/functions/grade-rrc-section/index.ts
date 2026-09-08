@@ -214,6 +214,67 @@ const CLAIM_STALE_SECONDS = 600;
  */
 const CLOCK_MIN_SHARE_IN_WINDOW = 0.5;
 
+/**
+ * The least share of words inside windows for a found shift to be trusted.
+ * Higher than the plain proof's floor on purpose: a shift is a claim about the
+ * whole file, and a weak fit is a wrong claim dressed as a repair.
+ */
+const CLOCK_ALIGN_MIN_SHARE = 0.8;
+
+/** How far the file's clock may lead the app's before alignment gives up. */
+const CLOCK_ALIGN_MAX_OFFSET_MS = 4 * 60 * 60 * 1000;
+
+/**
+ * Words with a start at or after `fromMs` and before `toMs`, from a list
+ * sorted by start. Two binary searches, so a scan over thousands of candidate
+ * shifts stays cheap.
+ */
+function countStartsBetween(starts: number[], fromMs: number, toMs: number): number {
+  let lo = 0, hi = starts.length;
+  while (lo < hi) { const mid = (lo + hi) >> 1; if (starts[mid] < fromMs) lo = mid + 1; else hi = mid; }
+  const first = lo;
+  hi = starts.length;
+  while (lo < hi) { const mid = (lo + hi) >> 1; if (starts[mid] < toMs) lo = mid + 1; else hi = mid; }
+  return lo - first;
+}
+
+function shareInside(starts: number[], segments: Segment[], offsetMs: number): number {
+  if (!starts.length) return 0;
+  let inside = 0;
+  for (const seg of segments) inside += countStartsBetween(starts, seg.startMs + offsetMs, seg.endMs + offsetMs);
+  return inside / starts.length;
+}
+
+/**
+ * Where the app's window clock sits inside the file, found from the words.
+ *
+ * On 2026-09-08 a 66-minute section arrived in a 116-minute file: the recorder
+ * had been running for 37 minutes before the run's clock started, the words
+ * sat 2,200 seconds later than every window said, and the proof refused the
+ * run. The windows partition the run, so the shift that puts the most words
+ * inside them is the shift the file actually has. This scans every half
+ * second from zero to the observed drift and hands back the best fit, and the
+ * caller decides whether the fit is good enough to trust.
+ */
+function alignClock(words: Word[], segments: Segment[]): { offsetMs: number; share: number } {
+  const starts = words.map((w) => w.start * 1000).sort((a, b) => a - b);
+  const spanEndMs = Math.max(0, ...segments.map((s) => s.endMs));
+  const lastWordMs = starts.length ? starts[starts.length - 1] : 0;
+  const maxOffset = Math.min(CLOCK_ALIGN_MAX_OFFSET_MS, Math.max(0, lastWordMs - spanEndMs) + 10 * 60 * 1000);
+  let best = { offsetMs: 0, share: shareInside(starts, segments, 0) };
+  for (let offset = 500; offset <= maxOffset; offset += 500) {
+    const share = shareInside(starts, segments, offset);
+    if (share > best.share) best = { offsetMs: offset, share };
+  }
+  // Refine to the tenth of a second around the best half second.
+  for (let offset = best.offsetMs - 450; offset <= best.offsetMs + 450; offset += 100) {
+    if (offset < 0) continue;
+    const share = shareInside(starts, segments, offset);
+    if (share > best.share) best = { offsetMs: offset, share };
+  }
+  return best;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -422,16 +483,52 @@ serve(async (req) => {
      * Card is quietly wrong rather than loudly broken. So it is recorded, and
      * a run whose windows hold no speech at all refuses to be graded.
      */
-    const allSegments = responses.flatMap((r) => ((r.rrc as Record<string, unknown>).audio_segments ?? []) as Segment[]);
+    let allSegments = responses.flatMap((r) => ((r.rrc as Record<string, unknown>).audio_segments ?? []) as Segment[]);
     const spanEndMs = Math.max(0, ...allSegments.map((s) => s.endMs));
     const lastWordMs = words.length ? words[words.length - 1].end * 1000 : 0;
-    const inAnyWindow = words.filter((w) => allSegments.some((s) => w.start * 1000 >= s.startMs && w.start * 1000 < s.endMs)).length;
+    const countInside = (segments: Segment[]) =>
+      words.filter((w) => segments.some((s) => w.start * 1000 >= s.startMs && w.start * 1000 < s.endMs)).length;
+    let inAnyWindow = countInside(allSegments);
+
+    /*
+     * If the windows and the words disagree, look for the shift before
+     * refusing. A found shift is applied to every window on every row, so
+     * everything downstream (the words per stimulus, dead air, the clip spans
+     * a Report Card seeks with) reads the file where the speech actually is.
+     * It is written onto the grade so a shifted run is never mistaken for a
+     * clean one.
+     */
+    let alignment: { offset_ms: number; share_before: number; share_after: number } | undefined;
+    if (words.length > 0 && inAnyWindow / words.length < CLOCK_ALIGN_MIN_SHARE) {
+      const found = alignClock(words, allSegments);
+      if (found.offsetMs > 0 && found.share >= CLOCK_ALIGN_MIN_SHARE) {
+        alignment = {
+          offset_ms: found.offsetMs,
+          share_before: Number((inAnyWindow / words.length).toFixed(3)),
+          share_after: Number(found.share.toFixed(3)),
+        };
+        for (const r of responses) {
+          const rrc = r.rrc as Record<string, unknown>;
+          const segs = (rrc.audio_segments ?? []) as Segment[];
+          rrc.audio_segments = segs.map((seg) => ({
+            ...seg,
+            startMs: seg.startMs + found.offsetMs,
+            endMs: seg.endMs + found.offsetMs,
+          }));
+        }
+        allSegments = responses.flatMap((r) => ((r.rrc as Record<string, unknown>).audio_segments ?? []) as Segment[]);
+        inAnyWindow = countInside(allSegments);
+        console.warn("[grade-rrc-section] window clock shifted to fit the file", { assignmentId, ...alignment });
+      }
+    }
+
     const clock = {
       words: words.length,
       words_inside_a_window: inAnyWindow,
       span_end_ms: spanEndMs,
       last_word_ms: Math.round(lastWordMs),
       drift_ms: Math.round(lastWordMs - spanEndMs),
+      ...(alignment ? { alignment } : {}),
     };
     if (words.length > 0 && inAnyWindow === 0) {
       return json({ error: "clock mismatch: no transcribed word falls inside any recorded window", clock }, 422);
