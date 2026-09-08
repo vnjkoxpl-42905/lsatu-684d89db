@@ -2013,6 +2013,71 @@
     transition: none;
   }
 }
+/* ---- the briefing page's type scale ----
+   Sizes on this page had drifted to 16, 16.5, 17, 18, 19 and 20px: six steps
+   where the eye can tell apart three. One scale, in rem so it follows her
+   browser setting, ratio about 1.2 between neighbours:
+     label 0.6875  body 1  lead 1.1875  step 1.375  title clamp(2, 3.4vw, 3)
+   Roles: mono for labels, Inter for anything she reads at length, Fraunces
+   for the lines that are spoken to her (title, step names, lede, closer). */
+.sl-briefing-page {
+  --bp-label: 0.6875rem;
+  --bp-body: 1rem;
+  --bp-lead: 1.1875rem;
+  --bp-step: 1.375rem;
+  font-size: var(--bp-body);
+}
+.sl-briefing-page .sl-title {
+  font-size: clamp(2rem, 3.4vw, 3rem);
+}
+.sl-briefing-page .sl-tagline {
+  font-size: var(--bp-lead);
+  line-height: 1.5;
+}
+.sl-briefing-page .sl-notice,
+.sl-briefing-page .sl-bp-fact {
+  font-size: var(--bp-lead);
+  line-height: 1.5;
+}
+.sl-briefing-page .sl-bp-h2,
+.sl-briefing-page .sl-bp-n {
+  font-size: var(--bp-label);
+}
+/* Step names in the display face: they are the four things said to her,
+   and the sans bold they were in made them read as form labels. */
+.sl-briefing-page .sl-bp-list li strong {
+  font-family: var(--rd-display);
+  font-weight: 500;
+  font-variation-settings: "opsz" 24, "SOFT" 30, "WONK" 0;
+  font-size: var(--bp-step);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.sl-briefing-page .sl-bp-list li p {
+  font-size: var(--bp-body);
+  line-height: 1.65;
+}
+.sl-briefing-page .sl-bp-foot p {
+  font-size: var(--bp-body);
+  line-height: 1.6;
+}
+.sl-briefing-page .sl-bp-closer {
+  font-size: var(--bp-step);
+  line-height: 1.3;
+}
+.sl-briefing-page .sl-bp-essay p {
+  font-size: var(--bp-body);
+  line-height: 1.7;
+}
+.sl-briefing-page .sl-bp-essay p.rd-lede {
+  font-size: var(--bp-step);
+  line-height: 1.4;
+}
+.sl-briefing-page .sl-bp-essay h3 {
+  font-size: var(--bp-step);
+  margin: 32px 0 10px;
+}
 @media (max-width: 640px) {
   .sl-bp-head {
     flex-direction: column;
