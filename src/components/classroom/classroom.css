@@ -1,5 +1,11 @@
 .classroom-root {
   --classroom-line: #f3e3d6;
+  /* The boundary of a control, not of a surface. --classroom-line is a hairline
+     for separating things that are already identifiable; where the border IS
+     what tells you a region is clickable, WCAG 1.4.11 asks for 3:1 and the
+     hairline measures 1.22:1 against the page. Same warm family, darkened only
+     in value: 3.14:1 on the panel and 3.06:1 on the page. */
+  --classroom-line-strong: #9c8f85;
   --classroom-ink: #43403c;
   --classroom-ink-body: #43403c;
   --classroom-meta: 166, 162, 158;
@@ -42,6 +48,8 @@
 
 html.dark .classroom-root {
   --classroom-line: #17161c;
+  /* 3.21:1 on the dark page, 3.31:1 on the dark panel. */
+  --classroom-line-strong: #646176;
   --classroom-ink: #fffffe;
   --classroom-ink-body: #e5e5e5;
   --classroom-meta: 167, 169, 190;

@@ -5,10 +5,19 @@
  * starts, so it reads as a lobby with two doors rather than a launcher with
  * options. Colour is carried by the classroom tokens, so it follows light and
  * dark with everything else.
+ *
+ * One rule about those tokens, learned the hard way. --classroom-meta is a bare
+ * channel triple for rgb(), and --classroom-meta-soft is a 0.4 alpha tuned for
+ * rules and fills. Both were used here as text colours: the first produced an
+ * invalid declaration that silently fell back to full ink, so the lede, the
+ * door copy and the score label rendered at the same weight as the headings;
+ * the second measured 2.10:1 on the light page and carried the clock, the
+ * question counts and the score-estimate caveat. Text on this surface uses
+ * --classroom-meta-text and nothing else.
  */
 
 .classroom-root .testing-lede {
-  color: var(--classroom-meta);
+  color: var(--classroom-meta-text);
   font-size: 15px;
   line-height: 1.6;
   margin: -12px 0 32px;
@@ -18,8 +27,9 @@
 .classroom-root .testing-doors {
   display: grid;
   gap: 16px;
+  /* Close enough to the panel below for the open door's notch to bridge them. */
+  margin-bottom: 20px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-bottom: 40px;
 }
 
 @media (max-width: 900px) {
@@ -30,13 +40,16 @@
 
 .classroom-root .testing-door {
   background: var(--classroom-panel);
-  border: 1px solid var(--classroom-line);
+  /* The whole card is the control, so its border is the only thing saying where
+     the click lands. That makes it 1.4.11 information, not decoration. */
+  border: 1px solid var(--classroom-line-strong);
   border-radius: var(--classroom-radius);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 24px;
+  position: relative;
   text-align: left;
   transition:
     background-color var(--classroom-transition) ease,
@@ -49,26 +62,42 @@
   transform: translateY(-1px);
 }
 
-.classroom-root .testing-door[aria-pressed='true'] {
+.classroom-root .testing-door[aria-expanded='true'] {
   border-color: var(--classroom-ink);
 }
 
-.classroom-root .testing-door h2 {
+/* Which door opened the panel. The panel spans both doors and sits below them,
+   so without this the click reads as having produced a box from nowhere — and
+   on a narrow window the doors stack and the distance doubles. A notch is the
+   cheapest honest tether: it points from the open door at the panel's top edge,
+   and it costs nothing when no door is open. */
+.classroom-root .testing-door[aria-expanded='true']::after {
+  background: var(--classroom-panel);
+  border-left: 1px solid var(--classroom-line);
+  border-top: 1px solid var(--classroom-line);
+  bottom: -20px;
+  content: '';
+  height: 12px;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 50%) rotate(45deg);
+  width: 12px;
+}
+
+.classroom-root .testing-door-title {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  margin: 0;
 }
 
-.classroom-root .testing-door p {
-  color: var(--classroom-meta);
+.classroom-root .testing-door-body {
+  color: var(--classroom-meta-text);
   font-size: 13.5px;
   line-height: 1.55;
-  margin: 0;
 }
 
 .classroom-root .testing-door-meta {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -83,10 +112,81 @@
   padding: 24px;
 }
 
+/* shadcn's --muted-foreground is #737373, which clears 4.5:1 on white but only
+   measures 4.24:1 on its own --muted fill — and that pairing is exactly the
+   segmented control in the section launcher, where the unpicked half is a
+   choice a student has to be able to read. Same hue, darkened to the
+   classroom's text-safe meta: 4.80:1 on the fill, 5.37:1 on the panel. */
+.classroom-root .testing-panel {
+  --muted-foreground: 30 2.8% 41.6%;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   shadcn controls, on the classroom's dark ground.
+
+   This app's shadcn token set is light-only on purpose: `.dark` in index.css
+   is an alias that mirrors `.light` and even sets `color-scheme: light`. The
+   classroom's dark theme is carried entirely by the --classroom-* tokens, so
+   any control written against `bg-background` / `border-input` keeps painting
+   near-white on it. Every dropdown and outline button in this room did: white
+   text on a white fill, 1.01:1, an unreadable block where a control should be.
+
+   classroom.css already solved this once for the drill hub by re-declaring the
+   token set for a subtree (.drill-observatory-launcher-panel). Same move here,
+   with values taken from the classroom's own dark palette rather than the
+   observatory's, so the controls match the room they are standing in.
+
+   .testing-menu is for the portalled ones — a popover or select menu renders
+   outside .classroom-root and inherits nothing from the panel that opened it.
+   ───────────────────────────────────────────────────────────────────────── */
+html.dark .classroom-root .testing-panel,
+html.dark .classroom-root .testing-resume,
+html.dark .testing-menu {
+  --background: 245.5 21.6% 10%;
+  --foreground: 60 100% 99.8%;
+  --card: 246 35.7% 5.5%;
+  --card-foreground: 60 100% 99.8%;
+  --popover: 246.7 24.3% 7.3%;
+  --popover-foreground: 60 100% 99.8%;
+  --primary: 60 100% 99.8%;
+  --primary-foreground: 246 35.7% 5.5%;
+  --secondary: 244.6 20.6% 12.4%;
+  --secondary-foreground: 60 100% 99.8%;
+  --muted: 244.6 20.6% 12.4%;
+  --muted-foreground: 234.8 15% 70%;
+  --accent: 243.8 19% 16.5%;
+  --accent-foreground: 60 100% 99.8%;
+  --border: 250.9 12.1% 17.8%;
+  /* Control boundaries, not surface separators: 3.31:1 on the panel and
+     3.05:1 on the control's own fill, which is what 1.4.11 asks for. */
+  --input: 248.6 9.8% 42.2%;
+  --ring: 248.6 9.8% 42.2%;
+}
+
+/* A note is the first thing in a panel often enough that it was carrying an
+   inline style at four call sites. */
+.classroom-root .testing-panel > .testing-note:first-child {
+  margin-top: 0;
+}
+
+/* One form measure, shared by both doors. A dropdown holding "PrepTest 103 · 79
+   questions" does not need 670px: the panel is wide because it spans the two
+   doors above it, and a column of fields is not. Held as a variable because the
+   two doors were disagreeing about it — the section launcher carried its own
+   max-w-2xl from the days when it was a page. */
+.classroom-root .testing-panel {
+  --testing-measure: 28rem;
+}
+
 .classroom-root .testing-field {
   display: grid;
   gap: 6px;
   margin-bottom: 18px;
+  max-width: var(--testing-measure);
+}
+
+.classroom-root .testing-section-launcher {
+  max-width: var(--testing-measure);
 }
 
 .classroom-root .testing-field > label {
@@ -130,10 +230,33 @@
 }
 
 .classroom-root .testing-shape-row em {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   font-size: 12.5px;
   font-style: normal;
   margin-left: auto;
+}
+
+/* Buttons on a row. Held apart from the em so the row's meta column stays a
+   meta column: this one carries controls, not a reading. */
+.classroom-root .testing-shape-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* On a phone the three columns stop being three columns. Left alone, "Section 2
+   of 3" broke across two lines to make room for two buttons squeezed against
+   the right edge. The reading stays on one line and the controls take their own
+   row underneath. */
+@media (max-width: 560px) {
+  .classroom-root .testing-shape-row {
+    flex-wrap: wrap;
+  }
+
+  .classroom-root .testing-shape-actions {
+    margin-left: 0;
+    width: 100%;
+  }
 }
 
 .classroom-root .testing-shape-row[data-state='done'] em {
@@ -141,25 +264,46 @@
   font-weight: 600;
 }
 
+/* The row a student is on. --classroom-active is the ink colour, so painting it
+   behind ink-coloured text rendered this row at 1.00:1 — a solid black bar over
+   the one line that says which section is next. --classroom-active-ink exists
+   for exactly this and had never been used. */
 .classroom-root .testing-shape-row[data-state='current'] {
   background: var(--classroom-active);
 }
 
+.classroom-root .testing-shape-row[data-state='current'] b,
+.classroom-root .testing-shape-row[data-state='current'] span,
+.classroom-root .testing-shape-row[data-state='current'] em {
+  color: var(--classroom-active-ink);
+}
+
 .classroom-root .testing-shape-row[data-state='break'] b,
 .classroom-root .testing-shape-row[data-state='break'] span {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
 }
 
 .classroom-root .testing-note {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   font-size: 12.5px;
   line-height: 1.55;
   margin: 16px 0 0;
+  max-width: 68ch;
+}
+
+/* A caveat that changes how the number above it should be read is not fine
+   print. The score report's curve disclaimer sat at 12.5px under a 56px figure,
+   which told the student the opposite of what it said. */
+.classroom-root .testing-note-lead {
+  color: var(--classroom-ink-body);
+  font-size: 14px;
+  margin-top: 12px;
 }
 
 .classroom-root .testing-score {
   align-items: baseline;
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 8px;
 }
@@ -172,7 +316,7 @@
 }
 
 .classroom-root .testing-score span {
-  color: var(--classroom-meta);
+  color: var(--classroom-meta-text);
   font-size: 14px;
 }
 
@@ -183,11 +327,23 @@
   margin-top: 20px;
 }
 
+/* A panel's own heading. Small and quiet — the page title has already named
+   the sitting — but a real h2, so the score report is not a region that opens
+   on a bare number with nothing to announce it. */
+.classroom-root .testing-heading {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 14px;
+  text-transform: uppercase;
+}
+
 .classroom-root .testing-resume {
   margin-bottom: 32px;
 }
 
-.classroom-root .testing-resume h3 {
+.classroom-root .testing-resume h2 {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;

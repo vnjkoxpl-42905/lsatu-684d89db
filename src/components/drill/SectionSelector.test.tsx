@@ -70,11 +70,9 @@ const renderSelector = () =>
   );
 
 /**
- * The panel's labels are not tied to their triggers, so a combobox here has no
- * accessible name to query by. Each trigger is found through the text it is
- * currently showing instead, and opened by keyboard: Radix's pointer path needs
- * layout and capture APIs jsdom does not provide, and the keyboard path is the
- * same open.
+ * Each trigger is found through the text it is currently showing, and opened by
+ * keyboard: Radix's pointer path needs layout and capture APIs jsdom does not
+ * provide, and the keyboard path is the same open.
  */
 const openSelectShowing = async (text: RegExp) => {
   const trigger = (await screen.findByText(text)).closest('[role="combobox"]') as HTMLElement;
@@ -90,6 +88,17 @@ const pickSection = async () => {
 };
 
 describe('SectionSelector', () => {
+  it('names every field for a screen reader', async () => {
+    renderSelector();
+    await screen.findByText(/Select a PrepTest/);
+
+    // <label for> does not name a <button>, and every trigger here is one, so
+    // all three comboboxes used to announce a value and never a field.
+    expect(screen.getByRole('combobox', { name: /Status/ })).toBeTruthy();
+    expect(screen.getByRole('combobox', { name: /PrepTest/ })).toBeTruthy();
+    expect(screen.getByRole('combobox', { name: /Section/ })).toBeTruthy();
+  });
+
   it('says what each Status filter actually filters to', async () => {
     renderSelector();
 

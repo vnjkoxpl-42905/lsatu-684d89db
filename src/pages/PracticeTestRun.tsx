@@ -35,6 +35,23 @@ function mmss(seconds: number) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
+/**
+ * What a ticking clock says out loud.
+ *
+ * The digits change twice a second, and a live region wired straight to them
+ * would talk over itself for ten minutes without pause. Coarse steps instead:
+ * whole minutes while minutes remain, then ten-second steps inside the last
+ * one. The string changes only when the step does, so the region speaks only
+ * when there is something new to say.
+ */
+function breakAnnouncement(remaining: number): string {
+  const seconds = Math.ceil(remaining);
+  if (seconds <= 0) return "The break is over. Continue when you are ready.";
+  if (seconds <= 60) return `${Math.ceil(seconds / 10) * 10} seconds of the break left.`;
+  const minutes = Math.ceil(seconds / 60);
+  return `${minutes} ${minutes === 1 ? "minute" : "minutes"} of the break left.`;
+}
+
 /** The break, on its own clock. Skippable — it is a break, not a gate. */
 function BreakScreen({ run, onDone }: { run: Run; onDone: () => void }) {
   const startedAt = run.breakStartedAt ? Date.parse(run.breakStartedAt) : Date.now();
@@ -43,17 +60,26 @@ function BreakScreen({ run, onDone }: { run: Run; onDone: () => void }) {
   );
 
   React.useEffect(() => {
+    // Nothing left to count. The interval used to keep firing at 2Hz for as
+    // long as the student sat on a finished break.
+    if (remaining <= 0) return;
     const id = window.setInterval(() => {
       setRemaining(Math.max(0, PRACTICE_TEST_BREAK_SECONDS - (Date.now() - startedAt) / 1000));
     }, 500);
     return () => window.clearInterval(id);
-  }, [startedAt]);
+  }, [startedAt, remaining]);
 
   return (
     <div className="testing-panel">
+      <h2 className="testing-heading">Break</h2>
       <div className="testing-score">
-        <strong>{mmss(remaining)}</strong>
-        <span>break remaining</span>
+        {/* The digits are for the eye. Assistive tech gets the coarse
+            announcement instead of a number that changes 1,200 times. */}
+        <strong aria-hidden>{mmss(remaining)}</strong>
+        <span aria-hidden>break remaining</span>
+        <span className="sr-only" role="timer" aria-live="polite">
+          {breakAnnouncement(remaining)}
+        </span>
       </div>
       <p className="testing-note">
         Stand up, get water, look at something further away than a screen. The
@@ -76,13 +102,17 @@ function ScoreReport({ run, onExit }: { run: Run; onExit: () => void }) {
 
   return (
     <div className="testing-panel">
+      <h2 className="testing-heading">Score report</h2>
       <div className="testing-score">
         <strong>{scaled}</strong>
         <span>
           estimated score · {correct} of {total} correct
         </span>
       </div>
-      <p className="testing-note" style={{ marginTop: 12 }}>
+      {/* Not fine print. This sentence is the difference between a number a
+          student can act on and one they will quote at themselves for a week,
+          and it sat at 12.5px and 2.10:1 under a 56px figure. */}
+      <p className="testing-note testing-note-lead">
         Estimated from a typical modern LSAT curve, not PrepTest {run.pt}'s own
         conversion table. Treat it as a band, not a number.
       </p>
@@ -216,7 +246,11 @@ export default function PracticeTestRunPage() {
 
   if (run === undefined) {
     return (
-      <div className="flex items-center gap-3 py-10 text-sm text-muted-foreground">
+      <div
+        className="flex items-center gap-3 py-10 text-sm"
+        role="status"
+        aria-live="polite"
+      >
         <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
         Loading your practice test…
       </div>
@@ -250,6 +284,7 @@ export default function PracticeTestRunPage() {
         {clock ? ` · ${clock} a section` : ""}
       </p>
 
+      {run.status !== "complete" && (
       <div className="testing-shape">
         {run.legs.map((l, i) => (
           <div
@@ -270,9 +305,14 @@ export default function PracticeTestRunPage() {
           </div>
         ))}
       </div>
+      )}
 
       {checking && (
-        <div className="flex items-center gap-3 py-4 text-sm text-muted-foreground">
+        <div
+          className="flex items-center gap-3 py-4 text-sm"
+          role="status"
+          aria-live="polite"
+        >
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
           Reading that section's result…
         </div>
@@ -280,7 +320,7 @@ export default function PracticeTestRunPage() {
 
       {!checking && noResult && (
         <div className="testing-panel">
-          <p className="testing-note" style={{ marginTop: 0 }}>
+          <p className="testing-note">
             That section has not been submitted yet, so there is no result to
             read. Go back and finish it, or mark it unfinished and move on. An
             unfinished section still counts its questions against the raw total.
@@ -318,7 +358,9 @@ export default function PracticeTestRunPage() {
 
       {!checking && !noResult && run.status === "in-progress" && !breakDue && leg && (
         <div className="testing-panel">
-          <p className="testing-note" style={{ marginTop: 0 }}>
+          {/* The only sentence on this page that says what the button below
+              it commits the student to. It is not a footnote. */}
+          <p className="testing-note testing-note-lead">
             Next: <strong>{legLabel(leg)}</strong>, {leg.questionCount} questions
             {clock ? `, ${clock} on the clock` : ", untimed"}.
           </p>

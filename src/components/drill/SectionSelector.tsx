@@ -288,274 +288,284 @@ export function SectionSelector({
     kind === 'rc' ? Boolean(chosenRcSection) : Boolean(selectedPT && selectedSection);
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center p-4">
-      {/* Floating Panel */}
-      <div className="relative max-w-2xl w-full">
-        {/* Subtle background glow */}
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/[0.02] to-transparent rounded-3xl blur-3xl" />
-        
-        {/* Main Panel */}
-        <div className="relative bg-background/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 sm:p-12">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-3xl font-semibold tracking-tight mb-3">
-              Full Section
-            </h1>
-            <p className="text-muted-foreground/70 text-base leading-relaxed">
-              Sit a real section, start to finish
-            </p>
-          </div>
-
-          {/* Which section. Named for what the student sits, not for a data
-              source: "Reading Comprehension" is four published passages in
-              their published order, and "Logical Reasoning" is a whole LR
-              section. */}
-          <div className="space-y-3 mb-8">
-            <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
-              Section type
-            </label>
-            <div className="grid grid-cols-1 gap-2 p-1.5 bg-muted/30 rounded-xl sm:grid-cols-2 sm:gap-3" role="tablist">
-              {([
-                { key: 'lr', label: 'Logical Reasoning' },
-                { key: 'rc', label: 'Reading Comprehension' },
-              ] as const).map(({ key, label }) => (
-                <button
-                  key={key}
-                  type="button"
-                  role="tab"
-                  aria-selected={kind === key}
-                  onClick={() => switchKind(key)}
-                  className={cn(
-                    "px-4 py-3.5 rounded-lg text-sm font-semibold transition-all duration-150 sm:px-6",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
-                    kind === key
-                      ? "bg-background shadow-sm text-foreground"
-                      : "text-muted-foreground hover:text-foreground hover:bg-background/50",
-                  )}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            {kind === 'rc' && rcError && (
-              <p className="text-sm text-muted-foreground/70">{rcError}</p>
-            )}
-            {kind === 'rc' && !rcError && rcSections === null && (
-              <p className="text-sm text-muted-foreground/70">Loading sections…</p>
-            )}
-          </div>
-
-          {/* PrepTest & Section Selectors */}
-          <div className="space-y-8 mb-12">
-            {/* Status — comes before the PrepTest because it decides which
-                PrepTests are even offered. There are 59 of them and no more
-                coming, so "have I already spent this one" is the first
-                question, not a filter bolted on afterwards. RC has no history
-                to read, so it does not get the control. */}
-            {kind === 'lr' && (
-              <div className="space-y-3">
-                <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
-                  Status
-                </label>
-                <Select
-                  value={freshnessFilter}
-                  onValueChange={(val) => setFreshnessFilter(val as FreshnessFilter)}
-                >
-                  <SelectTrigger
-                    className="h-14 text-base border-border/50 bg-background/50 hover:bg-background/80 transition-all duration-200 focus:ring-2 focus:ring-foreground/20"
-                    id="status-select"
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
-                    {/* "Fresh" on its own is our word, not the student's, so it
-                        says what it filters to. Single-line, because the
-                        trigger renders the chosen item's children and has to
-                        keep reading straight once the menu closes. "Any" needs
-                        no gloss: it is the absence of the filter, and spelling
-                        that out only makes the pair harder to scan. */}
-                    <SelectItem value="fresh" className="text-base py-3 focus:bg-foreground/5">
-                      Fresh · never attempted
-                    </SelectItem>
-                    <SelectItem value="any" className="text-base py-3 focus:bg-foreground/5">
-                      Any
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                {freshnessLoading && (
-                  <p className="text-sm text-muted-foreground/70">Checking what you have worked…</p>
-                )}
-                {freshnessError && (
-                  <p className="text-sm text-muted-foreground/70">
-                    {freshnessError} Every section is listed until it can.
-                  </p>
-                )}
-                {!freshnessLoading && !freshnessError && pickableSections.length === 0 && (
-                  <p className="text-sm text-muted-foreground/70">
-                    No untouched LR sections left. Switch to Any to sit one again.
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* PrepTest, then section. Two steps rather than one flat list of
-                `PT130.S3` rows: a student picks the test first and the section
-                number second, which is the order they already hold it in. The
-                Status filter above has decided which tests are offered at all,
-                so nothing here needs counts or percentages on the rows. */}
-            <div className="space-y-3">
-              <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
-                PrepTest
-              </label>
-              <Select
-                value={selectedPT ? String(selectedPT) : ''}
-                onValueChange={(val) => {
-                  setSelectedPT(Number(val));
-                  // The section number means a different section in a different
-                  // test, so carrying it across would start the wrong thing.
-                  setSelectedSection(null);
-                }}
-              >
-                <SelectTrigger
-                  className="h-14 text-base border-border/50 bg-background/50 hover:bg-background/80 transition-all duration-200 focus:ring-2 focus:ring-foreground/20"
-                  id="preptest-select"
-                >
-                  <SelectValue placeholder="Select a PrepTest" />
-                </SelectTrigger>
-                <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
-                  {pickablePTs.map((pt) => (
-                    <SelectItem
-                      key={pt}
-                      value={String(pt)}
-                      className="text-base py-3 focus:bg-foreground/5"
-                    >
-                      PrepTest {pt}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-3">
-              <label className="text-sm font-medium text-foreground/60 uppercase tracking-wider">
-                Section
-              </label>
-              <Select
-                value={selectedSection ? String(selectedSection) : ''}
-                onValueChange={(val) => setSelectedSection(Number(val))}
-                disabled={!selectedPT}
-              >
-                <SelectTrigger
-                  className="h-14 text-base border-border/50 bg-background/50 hover:bg-background/80 transition-all duration-200 focus:ring-2 focus:ring-foreground/20"
-                  id="section-select"
-                >
-                  <SelectValue
-                    placeholder={selectedPT ? 'Select a section' : 'Pick a PrepTest first'}
-                  />
-                </SelectTrigger>
-                <SelectContent className="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50">
-                  {sectionsForPT.map((section) => (
-                    <SelectItem
-                      key={section}
-                      value={String(section)}
-                      className="text-base py-3 focus:bg-foreground/5"
-                    >
-                      Section {section}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Timing Selector */}
-          {/* The picker carries its own TIMING eyebrow, the way the PrepTest and
-              Section fields carry theirs, so this block adds no second label. */}
-          <div className="space-y-3 mb-12">
-            <SectionTimingPicker
-              value={timing}
-              onChange={setTiming}
-              baseMinutes={kind === 'rc' ? 35 : baseMinutes}
-              questionCount={chosenQuestionCount}
-              // Three clocks and no more. 100% is the student's own standard,
-              // and the two above it are the accommodations the LSAT actually
-              // grants — +50% and +100%. The old speed-training presets (97%,
-              // 94%, 70%) and the custom stepper read as arbitrary numbers on
-              // a panel whose job is to start a real section.
-              allowedPercents={[100, 150, 200]}
-              // RC's clock is a per-passage budget with only three paces, and
-              // no stopwatch to fall back to.
-              allowUnlimited={kind === 'lr'}
-              labels={{ 100: 'Standard', 150: 'Time and a half', 200: 'Double time' }}
-              accommodationNote={kind === 'rc' ? undefined : <AccommodationNote baseMinutes={baseMinutes} />}
-              className="h-14 border-border/50 bg-background/50 hover:bg-background/80"
-              contentClassName="drill-observatory-launcher-panel bg-background/95 backdrop-blur-xl border-border/50"
-            />
-
-            {/* Nothing under the control. No counts, no caveats — the clock
-                is already on it and the panel is four fields and a button. */}
-          </div>
-
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-border/50 to-transparent mb-8" />
-
-          {/* What the button does. Every field above states a choice; none of
-              them says what happens once the choice is made, and a student
-              pressing Start should already know they are committing to the
-              whole section rather than a drill they can leave. Appears only
-              once a section is actually chosen, so the count is the real one
-              and this is never a promise about nothing. Deliberately not under
-              the timing control, which was cleared on purpose. */}
-          {isReadyToStart && chosenQuestionCount && (
-            <p className="mb-6 text-sm text-muted-foreground/70">
-              All {chosenQuestionCount} questions, in their published order.{' '}
-              {timing.mode === 'unlimited'
-                ? 'No clock, so take as long as you want.'
-                : 'The clock starts straight away.'}{' '}
-              It is scored when you submit, and blind review comes after.
-            </p>
-          )}
-
-          {/* Actions */}
-          <div className="flex items-center justify-between">
+    // No wrapper card and no header. The Testing Centre's panel is the card,
+    // and its door already said "Take a section / One real LR or RC section
+    // from an official PrepTest" — a heading here only said it again.
+    <div className="testing-section-launcher">
+      {/* Which section. Named for what the student sits, not for a data
+          source: "Reading Comprehension" is four published passages in
+          their published order, and "Logical Reasoning" is a whole LR
+          section. */}
+      <div className="space-y-3 mb-8">
+        <span
+          className="text-xs font-semibold uppercase tracking-wider"
+          id="section-kind-label"
+        >
+          Section type
+        </span>
+        {/* Two toggle buttons in a labelled group, not role="tab". A tab
+            must point at a tabpanel through aria-controls and there is
+            none; a radiogroup owes the user arrow-key navigation this
+            never implemented. Pressed buttons are the pattern that is
+            actually complete here. */}
+        <div
+          aria-labelledby="section-kind-label"
+          className="grid grid-cols-1 gap-2 rounded-lg bg-muted p-1.5 sm:grid-cols-2 sm:gap-3"
+          role="group"
+        >
+          {([
+            { key: 'lr', label: 'Logical Reasoning' },
+            { key: 'rc', label: 'Reading Comprehension' },
+          ] as const).map(({ key, label }) => (
             <button
+              key={key}
               type="button"
-              onClick={onCancel}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-150 focus-visible:outline-none focus-visible:underline"
-            >
-              Cancel
-            </button>
-            
-            <button
-              type="button"
-              onClick={handleStart}
-              disabled={!isReadyToStart}
+              aria-pressed={kind === key}
+              onClick={() => switchKind(key)}
               className={cn(
-                "px-8 py-3.5 rounded-xl text-base font-semibold",
-                "transition-all duration-200",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2",
-                isReadyToStart
-                  ? "bg-foreground text-background hover:bg-foreground/90 shadow-lg hover:shadow-xl hover:scale-[1.02]"
-                  : "bg-muted/50 text-muted-foreground cursor-not-allowed"
+                "px-4 py-3.5 rounded-lg text-sm font-semibold transition-all duration-150 sm:px-6",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
+                kind === key
+                  ? "bg-background text-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-background/50",
               )}
             >
-              Start Section
+              {label}
             </button>
-          </div>
+          ))}
         </div>
+        {kind === 'rc' && rcError && (
+          <p className="text-sm text-muted-foreground">{rcError}</p>
+        )}
+        {kind === 'rc' && !rcError && rcSections === null && (
+          <p className="text-sm text-muted-foreground">Loading sections…</p>
+        )}
+      </div>
+
+      {/* PrepTest & Section Selectors */}
+      <div className="space-y-8 mb-12">
+        {/* Status — comes before the PrepTest because it decides which
+            PrepTests are even offered. There are 59 of them and no more
+            coming, so "have I already spent this one" is the first
+            question, not a filter bolted on afterwards. RC has no history
+            to read, so it does not get the control. */}
+        {kind === 'lr' && (
+          <div className="space-y-3">
+            <label
+              className="text-xs font-semibold uppercase tracking-wider"
+              htmlFor="status-select"
+              id="status-select-label"
+            >
+              Status
+            </label>
+            <Select
+              value={freshnessFilter}
+              onValueChange={(val) => setFreshnessFilter(val as FreshnessFilter)}
+            >
+              <SelectTrigger
+                aria-labelledby="status-select-label status-select"
+                className="text-sm"
+                id="status-select"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="drill-observatory-launcher-panel">
+                {/* "Fresh" on its own is our word, not the student's, so it
+                    says what it filters to. Single-line, because the
+                    trigger renders the chosen item's children and has to
+                    keep reading straight once the menu closes. "Any" needs
+                    no gloss: it is the absence of the filter, and spelling
+                    that out only makes the pair harder to scan. */}
+                <SelectItem value="fresh" className="text-sm focus:bg-foreground/5">
+                  Fresh · never attempted
+                </SelectItem>
+                <SelectItem value="any" className="text-sm focus:bg-foreground/5">
+                  Any
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            {freshnessLoading && (
+              <p className="text-sm text-muted-foreground">Checking what you have worked…</p>
+            )}
+            {freshnessError && (
+              <p className="text-sm text-muted-foreground">
+                {freshnessError} Every section is listed until it can.
+              </p>
+            )}
+            {!freshnessLoading && !freshnessError && pickableSections.length === 0 && (
+              <p className="text-sm text-muted-foreground">
+                No untouched LR sections left. Switch to Any to sit one again.
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* PrepTest, then section. Two steps rather than one flat list of
+            `PT130.S3` rows: a student picks the test first and the section
+            number second, which is the order they already hold it in. The
+            Status filter above has decided which tests are offered at all,
+            so nothing here needs counts or percentages on the rows. */}
+        <div className="space-y-3">
+          <label
+            className="text-xs font-semibold uppercase tracking-wider"
+            htmlFor="preptest-select"
+            id="preptest-select-label"
+          >
+            PrepTest
+          </label>
+          <Select
+            value={selectedPT ? String(selectedPT) : ''}
+            onValueChange={(val) => {
+              setSelectedPT(Number(val));
+              // The section number means a different section in a different
+              // test, so carrying it across would start the wrong thing.
+              setSelectedSection(null);
+            }}
+          >
+            <SelectTrigger
+              aria-labelledby="preptest-select-label preptest-select"
+              className="text-sm"
+              id="preptest-select"
+            >
+              <SelectValue placeholder="Select a PrepTest" />
+            </SelectTrigger>
+            <SelectContent className="drill-observatory-launcher-panel">
+              {pickablePTs.map((pt) => (
+                <SelectItem
+                  key={pt}
+                  value={String(pt)}
+                  className="text-sm focus:bg-foreground/5"
+                >
+                  PrepTest {pt}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-3">
+          <label
+            className="text-xs font-semibold uppercase tracking-wider"
+            htmlFor="section-select"
+            id="section-select-label"
+          >
+            Section
+          </label>
+          <Select
+            value={selectedSection ? String(selectedSection) : ''}
+            onValueChange={(val) => setSelectedSection(Number(val))}
+            disabled={!selectedPT}
+          >
+            <SelectTrigger
+              aria-labelledby="section-select-label section-select"
+              className="text-sm"
+              id="section-select"
+            >
+              <SelectValue
+                placeholder={selectedPT ? 'Select a section' : 'Pick a PrepTest first'}
+              />
+            </SelectTrigger>
+            <SelectContent className="drill-observatory-launcher-panel">
+              {sectionsForPT.map((section) => (
+                <SelectItem
+                  key={section}
+                  value={String(section)}
+                  className="text-sm focus:bg-foreground/5"
+                >
+                  Section {section}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      {/* Timing Selector */}
+      {/* The picker carries its own TIMING eyebrow, the way the PrepTest and
+          Section fields carry theirs, so this block adds no second label. */}
+      <div className="space-y-3 mb-12">
+        <SectionTimingPicker
+          value={timing}
+          onChange={setTiming}
+          baseMinutes={kind === 'rc' ? 35 : baseMinutes}
+          questionCount={chosenQuestionCount}
+          // Three clocks and no more. 100% is the student's own standard,
+          // and the two above it are the accommodations the LSAT actually
+          // grants — +50% and +100%. The old speed-training presets (97%,
+          // 94%, 70%) and the custom stepper read as arbitrary numbers on
+          // a panel whose job is to start a real section.
+          allowedPercents={[100, 150, 200]}
+          // RC's clock is a per-passage budget with only three paces, and
+          // no stopwatch to fall back to.
+          allowUnlimited={kind === 'lr'}
+          labels={{ 100: 'Standard', 150: 'Time and a half', 200: 'Double time' }}
+          accommodationNote={kind === 'rc' ? undefined : <AccommodationNote baseMinutes={baseMinutes} />}
+          className="min-h-[44px] rounded-md"
+          contentClassName="drill-observatory-launcher-panel"
+        />
+
+        {/* Nothing under the control. No counts, no caveats — the clock
+            is already on it and the panel is four fields and a button. */}
+      </div>
+
+      {/* Divider */}
+      <div className="mb-8 h-px bg-border" />
+
+      {/* What the button does. Every field above states a choice; none of
+          them says what happens once the choice is made, and a student
+          pressing Start should already know they are committing to the
+          whole section rather than a drill they can leave. Appears only
+          once a section is actually chosen, so the count is the real one
+          and this is never a promise about nothing. Deliberately not under
+          the timing control, which was cleared on purpose. */}
+      {isReadyToStart && chosenQuestionCount && (
+        <p className="mb-6 text-sm text-muted-foreground">
+          All {chosenQuestionCount} questions, in their published order.{' '}
+          {timing.mode === 'unlimited'
+            ? 'No clock, so take as long as you want.'
+            : 'The clock starts straight away.'}{' '}
+          It is scored when you submit, and blind review comes after.
+        </p>
+      )}
+
+      {/* Actions */}
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="min-h-[44px] px-2 text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:underline focus-visible:outline-none"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          onClick={handleStart}
+          disabled={!isReadyToStart}
+          className={cn(
+            "min-h-[44px] rounded-md px-8 py-3 text-sm font-semibold",
+            "transition-colors duration-200",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2",
+            isReadyToStart
+              ? "bg-foreground text-background hover:bg-foreground/90"
+              : "bg-muted text-muted-foreground cursor-not-allowed"
+          )}
+        >
+          Start Section
+        </button>
       </div>
     </div>
   );
 }
 
-/* 
+/*
  * Alternative concept variants (not implemented):
- * 
+ *
  * 1. Split Hero Layout:
  *    - Large PrepTest selector (left 60%), timing controls (right 40%)
  *    - Vertical divider between sections
  *    - Dramatic typography scale difference
- * 
+ *
  * 2. Ultra-Clean Borderless:
  *    - No visible panel borders, just spacing
  *    - Floating controls with individual shadows

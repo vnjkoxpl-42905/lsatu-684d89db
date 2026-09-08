@@ -89,15 +89,19 @@ const renderPage = () =>
   );
 
 /**
- * Opened by keyboard rather than pointer. Radix Select's pointer path depends on
- * layout and capture APIs jsdom does not provide; its keyboard path is the same
- * open, and is the one a screen-reader user takes anyway.
+ * The PrepTest field is a searchable combobox: a popover over a command list,
+ * opened by clicking its trigger. Queried by accessible name, which is the
+ * point of the aria-labelledby on it — <label for> does not name a <button>,
+ * so before that this control announced its value and never its field.
  */
-const openSelect = (name: RegExp) => {
-  const trigger = screen.getByRole("combobox", { name });
-  trigger.focus();
-  fireEvent.keyDown(trigger, { key: "Enter", code: "Enter" });
-};
+const openPrepTests = () =>
+  fireEvent.click(screen.getByRole("combobox", { name: /PREPTEST/i }));
+
+/** Typing into the open picker's search box. */
+const searchPrepTests = (query: string) =>
+  fireEvent.change(screen.getByPlaceholderText(/Search by number/i), {
+    target: { value: query },
+  });
 
 describe("Testing Centre", () => {
   it("offers exactly two doors", () => {
@@ -117,11 +121,11 @@ describe("Testing Centre", () => {
     fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
 
     await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
-    openSelect(/PREPTEST/i);
+    openPrepTests();
 
     // Both PrepTests are offered. Under the old rule PT 130 was hidden.
-    const short = await screen.findByText(/PrepTest 130/);
-    expect(screen.getByText(/PrepTest 131/)).toBeTruthy();
+    const short = await screen.findByRole("option", { name: /PrepTest 130/ });
+    expect(screen.getByRole("option", { name: /PrepTest 131/ })).toBeTruthy();
 
     fireEvent.click(short);
 
@@ -132,14 +136,61 @@ describe("Testing Centre", () => {
     ).toBeTruthy();
   });
 
+  it("puts the newest PrepTest first", async () => {
+    renderPage();
+    fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+
+    await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
+    openPrepTests();
+
+    // 59 of these ship. Ascending order buried every test a student would
+    // actually reach for under fifty they would not.
+    const offered = (await screen.findAllByRole("option")).map((el) => el.textContent);
+    expect(offered[0]).toMatch(/PrepTest 131/);
+    expect(offered[1]).toMatch(/PrepTest 130/);
+  });
+
+  it("finds a PrepTest by number instead of by scrolling", async () => {
+    renderPage();
+    fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+
+    await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
+    openPrepTests();
+    await screen.findByRole("option", { name: /PrepTest 130/ });
+
+    searchPrepTests("131");
+
+    await waitFor(() => {
+      expect(screen.queryByRole("option", { name: /PrepTest 130/ })).toBeNull();
+    });
+    expect(screen.getByRole("option", { name: /PrepTest 131/ })).toBeTruthy();
+  });
+
+  it("tells a screen reader which door opened the panel", () => {
+    renderPage();
+    const door = screen.getByRole("button", { name: /Take a practice test/ });
+
+    // aria-pressed said "this button is on". It is a disclosure: the panel it
+    // opens is a separate region below both doors, and aria-controls is the
+    // only thing that says which door produced it.
+    expect(door.getAttribute("aria-pressed")).toBeNull();
+    expect(door.getAttribute("aria-expanded")).toBe("false");
+
+    fireEvent.click(door);
+    expect(door.getAttribute("aria-expanded")).toBe("true");
+    const panelId = door.getAttribute("aria-controls");
+    expect(panelId).toBeTruthy();
+    expect(document.getElementById(panelId as string)).toBeTruthy();
+  });
+
   it("stays quiet about length when the RC section is a real one", async () => {
     renderPage();
     fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
 
     await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
-    openSelect(/PREPTEST/i);
+    openPrepTests();
 
-    fireEvent.click(await screen.findByText(/PrepTest 131/));
+    fireEvent.click(await screen.findByRole("option", { name: /PrepTest 131/ }));
 
     // 25 + 26 LR + 27 RC, a real sitting: the shortfall note must not appear.
     await screen.findByText((_, el) => el?.tagName === "P" && /78 scored questions/.test(el.textContent ?? ""));
