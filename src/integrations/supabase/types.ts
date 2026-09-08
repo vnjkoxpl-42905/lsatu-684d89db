@@ -904,8 +904,11 @@ export type Database = {
           label: string
           length_minutes: number
           minimum_notice_minutes: number
+          note: string | null
+          pinned_start_at: string | null
           price_cents: number
           requires_payment: boolean
+          single_use: boolean
           slot_interval_minutes: number | null
           slug: string
           updated_at: string
@@ -920,8 +923,11 @@ export type Database = {
           label: string
           length_minutes: number
           minimum_notice_minutes?: number
+          note?: string | null
+          pinned_start_at?: string | null
           price_cents?: number
           requires_payment?: boolean
+          single_use?: boolean
           slot_interval_minutes?: number | null
           slug: string
           updated_at?: string
@@ -936,8 +942,11 @@ export type Database = {
           label?: string
           length_minutes?: number
           minimum_notice_minutes?: number
+          note?: string | null
+          pinned_start_at?: string | null
           price_cents?: number
           requires_payment?: boolean
+          single_use?: boolean
           slot_interval_minutes?: number | null
           slug?: string
           updated_at?: string
@@ -5829,6 +5838,10 @@ export type Database = {
       booking_buffered_range: {
         Args: { _e: string; _s: string }
         Returns: unknown
+      }
+      booking_event_is_spent: {
+        Args: { _event_slug: string }
+        Returns: boolean
       }
       booking_price_cents: {
         Args: { _email: string; _event_slug: string }
