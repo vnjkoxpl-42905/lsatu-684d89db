@@ -34,7 +34,16 @@ export interface SectionLaunchFrameProps {
   strip?: ReactNode;
   /** The slab below the method: her runs on a section, her sections in the library. */
   children?: ReactNode;
+  /**
+   * Put the slab directly under the hero instead of at the foot of the page.
+   *
+   * The library's slab IS the point of the page — the sections she can start.
+   * Burying it under the editorial meant "Choose a section" was a long scroll
+   * away, and a student who did not scroll never found a way in.
+   */
+  sectionsFirst?: boolean;
   onExit?: () => void;
+
 }
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -137,7 +146,9 @@ export function SectionLaunchFrame({
   notice,
   strip,
   children,
+  sectionsFirst = false,
   onExit,
+
 }: SectionLaunchFrameProps) {
   const reduced = useReducedMotion();
 
@@ -157,6 +168,7 @@ export function SectionLaunchFrame({
 
   const heroRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
+  const sectionsRef = useRef<HTMLElement>(null);
 
   /**
    * The hero's scroll, 0 while it is fully on screen and 1 once it has left.
@@ -205,10 +217,15 @@ export function SectionLaunchFrame({
   }, [reduced]);
 
   const goToSections = useCallback(() => {
-    document
-      .getElementById("sl-sections")
-      ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
-  }, [reduced]);
+    const slab = sectionsRef.current;
+    if (!slab) return;
+    // The app can run inside an editor frame whose scrolling container swallows
+    // smooth document scrolling. Jump first, then focus the destination without
+    // starting a second browser-controlled scroll back toward the hero.
+    slab.scrollIntoView({ behavior: "auto", block: "start" });
+    slab.focus({ preventScroll: true });
+  }, []);
+
 
   const briefing = instructions.briefing;
   const current = beats[beat];
@@ -301,6 +318,21 @@ export function SectionLaunchFrame({
           <div className="rd-hero-space" aria-hidden="true" />
         </div>
       </section>
+
+      {sectionsFirst && (
+        <motion.section
+          className="rd-slab"
+          id="sl-sections"
+          ref={sectionsRef}
+          tabIndex={-1}
+          aria-label="Choose a section"
+          {...reveal}
+        >
+          {children}
+        </motion.section>
+      )}
+
+
 
       {(notice || strip) && (
         <div className="rd-band">
@@ -500,9 +532,19 @@ export function SectionLaunchFrame({
       </motion.section>
 
       {/* --------------------------------------------------------------- slab */}
-      <motion.section className="rd-slab" id="sl-sections" {...reveal}>
-        {children}
-      </motion.section>
+      {!sectionsFirst && (
+        <motion.section
+          className="rd-slab"
+          id="sl-sections"
+          ref={sectionsRef}
+          tabIndex={-1}
+          aria-label="Choose a section"
+          {...reveal}
+        >
+          {children}
+        </motion.section>
+      )}
+
 
       {/* -------------------------------------------------------------- close */}
       <section className="rd-close" aria-label="Start">

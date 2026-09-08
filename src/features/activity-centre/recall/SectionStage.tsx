@@ -1,6 +1,28 @@
 import type { SectionPhase, SectionStimulus } from "./section";
+import type { CoachNote } from "./coach";
 import { VoiceLevel } from "./VoiceLevel";
 import { useNoKeyboard } from "./noKeyboard";
+
+/**
+ * Is this page running inside another page's frame?
+ *
+ * A preview frame is never handed the microphone: the embed carries no
+ * microphone permission, so `getUserMedia` is refused before the student is
+ * ever asked. That looks identical to a student saying no, and "allow the
+ * microphone for this site" is advice she cannot act on. So when the drill is
+ * framed, the refusal names the real cause and offers the one thing that
+ * works: the same address in a tab of its own.
+ *
+ * A cross-origin frame throws on the read, and a throw means framed.
+ */
+function isEmbedded(): boolean {
+  try {
+    return window.self !== window.top;
+  } catch {
+    return true;
+  }
+}
+
 
 /**
  * One screen of a Read, Recall, Colour SECTION run.
@@ -58,8 +80,6 @@ export interface SectionStageProps {
   onExit?: () => void;
   /** Seconds since the section started. Omit to draw no clock at all. */
   elapsedSeconds?: number;
-  /** Her goal for this section, so the elapsed time has something to sit against. */
-  goalMinutes?: number;
   /**
    * The live input, for the presence indicator. Omit and no indicator is drawn,
    * which is what a run against a handheld recorder looks like.
@@ -104,6 +124,15 @@ export interface SectionStageProps {
    * stimulus 1 and never reach stimulus 2.
    */
   onAdvance?: () => void;
+  /**
+   * The first-run walkthrough note, for the first few stimuli only.
+   *
+   * Text beside the paper, never a step in the loop: it takes no key, gates
+   * nothing and is gone after the third stimulus whether or not she dismissed
+   * it. Omit and no card is drawn at all, which is every run after the first.
+   */
+  coach?: CoachNote | null;
+  onDismissCoach?: () => void;
 }
 
 /*
@@ -140,7 +169,6 @@ export function SectionStage({
   error,
   onExit,
   elapsedSeconds,
-  goalMinutes,
   getStream,
   onDeadInput,
   micRefused,
@@ -150,6 +178,8 @@ export function SectionStage({
   onCancelExit,
   countdown = null,
   onAdvance,
+  coach = null,
+  onDismissCoach,
 }: SectionStageProps) {
   const noKeyboard = useNoKeyboard();
   // Position across the section, drawn as the rail's fill. Progress inside the
@@ -180,7 +210,6 @@ export function SectionStage({
         {elapsedSeconds !== undefined && (
           <span className="ac-section-clock" aria-live="off">
             {clock(elapsedSeconds)}
-            {goalMinutes ? <i> / {clock(goalMinutes * 60)}</i> : null}
           </span>
         )}
         {onExit ? (
@@ -257,10 +286,27 @@ export function SectionStage({
                     mark at the end. Allow the microphone for this site in your browser, then ask
                     again. Nothing has started, and your time has not begun.
                   </p>
+                  {isEmbedded() && (
+                    <p className="ac-section-ready-body">
+                      This page is inside a preview window, and a preview window is never given the
+                      microphone. Open the drill in its own tab and start it there.
+                    </p>
+                  )}
                   <div className="ac-section-ready-actions">
                     <button type="button" className="ac-section-ready-retry" onClick={onRetryMic}>
                       Ask again
                     </button>
+                    {isEmbedded() && (
+                      <button
+                        type="button"
+                        className="ac-section-ready-retry"
+                        onClick={() =>
+                          window.open(window.location.href, "_blank", "noopener,noreferrer")
+                        }
+                      >
+                        Open in its own tab
+                      </button>
+                    )}
                     {onExit && (
                       <button type="button" className="ac-section-ready-leave" onClick={onExit}>
                         Leave this section
@@ -268,6 +314,7 @@ export function SectionStage({
                     )}
                   </div>
                 </>
+
               ) : (
                 <>
                   <p className="ac-section-ready-title">Recording now</p>
@@ -358,6 +405,27 @@ export function SectionStage({
             </div>
           </div>
         </div>
+
+        {/* The first-run walkthrough. Beside the paper, never on it, and it
+            holds nothing up: no key of its own, nothing to acknowledge, gone
+            of its own accord after the third stimulus. */}
+        {coach && countdown === null ? (
+          <aside className="ac-section-coach" aria-label="Walkthrough">
+            <p className="ac-section-coach-step">
+              Walkthrough · {coach.step} of {coach.of}
+            </p>
+            <p className="ac-section-coach-title">{coach.title}</p>
+            <p className="ac-section-coach-body">{coach.body}</p>
+            <p className="ac-section-coach-next">
+              <span>Next</span> {coach.next}
+            </p>
+            {onDismissCoach ? (
+              <button type="button" className="ac-section-coach-hide" onClick={onDismissCoach}>
+                Hide this
+              </button>
+            ) : null}
+          </aside>
+        ) : null}
       </main>
     </div>
   );

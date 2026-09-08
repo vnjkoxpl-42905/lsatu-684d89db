@@ -2260,7 +2260,6 @@ function SectionPanel() {
         stimulusNumber={cursor.item + 1}
         totalStimuli={run.stimuli.length}
         elapsedSeconds={beat ? 0 : 754}
-        goalMinutes={run.timeGoalMinutes.standard}
         countdown={beat ? 3 : null}
         // No microphone in the lab, so the bar mounts and stays flat. That is
         // exactly what a student with a dead input sees, which is the reason

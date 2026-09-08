@@ -90,7 +90,7 @@ function makeSectionAssignment(status: ActivityStatus) {
     item_format: "spoken-recall" as const,
     mode: "section",
     source_section: "PT102.S3",
-    time_goal_minutes: { standard: 25 },
+    time_goal_minutes: { standard: 25, accommodation_53: 38, accommodation_70: 50 },
     instructions: { task: "Tell it back in your own words.", rules: ["Out loud."] },
     items: Array.from({ length: STIMULI }, (_, i) => ({
       order: i + 1,
@@ -141,9 +141,15 @@ async function startTheSection() {
   fireEvent.click(start);
 }
 
-function renderRouted() {
+function renderRouted(startSection = false) {
   return render(
-    <MemoryRouter initialEntries={["/activities/assign-1"]}>
+    <MemoryRouter
+      initialEntries={[
+        startSection
+          ? { pathname: "/activities/assign-1", state: { startSection: true } }
+          : "/activities/assign-1",
+      ]}
+    >
       <Routes>
         <Route path="/activities/:assignmentId" element={<ActivityRunner />} />
       </Routes>
@@ -227,6 +233,21 @@ describe("the goal an accommodated student is timed against", () => {
     await startTheSection();
     await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
     expect(sectionRunnerProps.mock.calls.at(-1)![0].accommodation).toBe("accommodation_70");
+  });
+
+  it("shows the full instructions page first, even when started from the library", async () => {
+    const { container } = renderRouted(true);
+    await waitFor(() =>
+      expect(container.querySelector('[data-runner="section-briefing"]')).toBeTruthy(),
+    );
+    expect(sectionRunnerProps).not.toHaveBeenCalled();
+    await startTheSection();
+    await waitFor(() => expect(sectionRunnerProps).toHaveBeenCalled());
+    expect(sectionRunnerProps.mock.calls.at(-1)?.[0].timeGoalMinutes).toEqual({
+      standard: 25,
+      accommodation_53: 38,
+      accommodation_70: 50,
+    });
   });
 
   it("asks for it under the student's own id", async () => {
