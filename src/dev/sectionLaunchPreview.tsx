@@ -135,6 +135,15 @@ async function bootLibrary() {
       created_at: "2026-08-31T09:00:00Z", completed_at: "2026-08-31T09:31:00Z" },
     { id: "r3", mode: "section", source_section: "PT102.S3", status: "in_progress",
       created_at: "2026-09-01T09:00:00Z", completed_at: null },
+    /*
+     * A section Joshua assigned that she has not opened.
+     *
+     * Yahunathan's case on 2026-09-08: eight of these, one per section, each
+     * with its own message. It must read "Not run yet." and "Start", never
+     * "Attempt 1 - not finished" and "Run it again".
+     */
+    { id: "r4", mode: "section", source_section: "PT1.S3", status: "assigned",
+      created_at: "2026-09-08T15:15:00Z", started_at: null, completed_at: null },
   ];
   const grades = [
     { assignment_id: "r1", attempt_no: 1, source_section: "PT105.S2",
