@@ -117,6 +117,9 @@ html.dark .qf {
   }
 
   .qf-trigger-label,
+  .qf-trigger-hint {
+    display: none;
+  }
 }
 
 /* ── portal, scrim, panel ─────────────────────────────────────────────── */
