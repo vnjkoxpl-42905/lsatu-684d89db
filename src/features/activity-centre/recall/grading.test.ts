@@ -403,3 +403,42 @@ describe("the model run as the standard", () => {
     expect(prompt).not.toContain("A CORRECT RUN");
   });
 });
+
+/*
+ * What to do next time, and the scale a line is judged on.
+ *
+ * Two fairness gaps closed together. The line verdicts had names and no
+ * definitions, so "partial" meant whatever the model felt that day; and the
+ * card described every run and advised on none of them, so a student at 86%
+ * with a lost quantifier learned the number and nothing about the word.
+ */
+describe("next time, and the line scale", () => {
+  const entries = buildJudgeEntries(toDetails(["All employees are reassigned."]), []);
+  const lines = [{ n: 1, text: "All employees are reassigned.", spoken: "the staff moved" }];
+
+  it("defines every line verdict before asking for one", () => {
+    const prompt = buildJudgePrompt({ stimulus: "A stimulus.", entries, spoken: "x", lines });
+    for (const v of ["strong:", "partial:", "thin:", "skipped:"]) expect(prompt).toContain(v);
+    expect(prompt).toMatch(/Only a change of MEANING counts against her/);
+  });
+
+  it("asks for one concrete thing to do differently, and for nothing when there is nothing", () => {
+    const prompt = buildJudgePrompt({ stimulus: "A stimulus.", entries, spoken: "x" });
+    expect(prompt).toContain("next_time");
+    expect(prompt).toMatch(/Leave it EMPTY when there is nothing to fix/);
+  });
+
+  it("carries next_time through to the grade, trimmed", () => {
+    const reply = parseJudgeReply(
+      '{"verdicts":[{"id":1,"carried":false}],"next_time":"  Say the quantifier out loud: all, not some.  "}',
+      [1],
+    );
+    expect(reply.nextTime).toBe("Say the quantifier out loud: all, not some.");
+    expect(gradeStimulus(entries, reply).nextTime).toBe("Say the quantifier out loud: all, not some.");
+  });
+
+  it("treats an absent next_time as nothing to say rather than as an error", () => {
+    const reply = parseJudgeReply('{"verdicts":[{"id":1,"carried":true}]}', [1]);
+    expect(reply.nextTime).toBe("");
+  });
+});

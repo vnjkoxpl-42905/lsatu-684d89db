@@ -50,7 +50,7 @@ const GRADER_VERSION = 1;
  * this is the only way to prove from outside that a fix is the one running.
  * Returned on the 202 body and on the admin diagnostic below.
  */
-const BUILD = "2026-09-08d";
+const BUILD = "2026-09-08e";
 const ASR_ENGINE = "deepgram/nova-3";
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
@@ -299,8 +299,8 @@ serve(async (req) => {
     const auth = req.headers.get("Authorization");
     if (!auth) return json({ error: "unauthorized" }, 401);
 
-    const { assignmentId, force, attempt: askedFor, diagnose } = await req.json();
-    if (!assignmentId && !diagnose) return json({ error: "assignmentId is required" }, 400);
+    const { assignmentId, force, attempt: askedFor, diagnose, census } = await req.json();
+    if (!assignmentId && !diagnose && !census) return json({ error: "assignmentId is required" }, 400);
 
     const admin = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -364,6 +364,89 @@ serve(async (req) => {
         judge_error: judgeError,
         transcriber: Deno.env.get("DEEPGRAM_API_KEY") ? "deepgram" : "missing DEEPGRAM_API_KEY",
       });
+    }
+
+    /*
+     * The census: the standard's own runs, judged by the judge that is live.
+     *
+     * ADR 0018's band floor is the 10th percentile of Joshua's 71 recordings
+     * scored Detail by Detail, and it was validated against `gemini-2.5-flash`
+     * on a laptop that held the shaped transcripts and a key. Neither exists
+     * on the machine that maintains this now, and the model has since moved.
+     * A band measured on one judge and applied by another is not a
+     * measurement, so the census has to be re-runnable against whatever judge
+     * THIS function is using, through THIS prompt, with THIS key -- which is
+     * only possible from inside the function.
+     *
+     * Admin only. The caller sends the authored items of one section (the
+     * same JSON the content lives in); the function fetches the model runs'
+     * transcripts for those slugs, cuts the verbatim reads exactly as it does
+     * for a student, judges each one with no walkthrough and no line split
+     * (the conditions the original census was scored under), and returns one
+     * row per stimulus. Nothing is written.
+     */
+    if (census) {
+      if (!trusted) {
+        const { data: isAdmin } = await admin.rpc("has_role", { _user_id: uid, _role: "admin" });
+        if (!isAdmin) return json({ error: "forbidden" }, 403);
+      }
+      const cItems = ((census as Record<string, unknown>).items ?? []) as Record<string, unknown>[];
+      const sourceSection = String((census as Record<string, unknown>).sourceSection ?? "");
+      if (!cItems.length || !sourceSection) return json({ error: "census needs items and sourceSection" }, 400);
+
+      const { data: runs, error: runErr } = await admin
+        .from("model_runs")
+        .select("slug, transcript_text")
+        .eq("source_section", sourceSection)
+        .eq("status", "active");
+      if (runErr) throw runErr;
+      const transcriptBySlug = new Map<string, string>();
+      for (const r of (runs ?? []) as { slug: string; transcript_text: string | null }[]) {
+        if (r.transcript_text?.trim()) transcriptBySlug.set(r.slug, r.transcript_text);
+      }
+
+      const rows = await mapWithConcurrency(cItems, JUDGE_CONCURRENCY, async (item, i) => {
+        const slug = String(item.slug ?? "");
+        const chunks = (item.chunks ?? []) as { text: string; details: { text: string }[] }[];
+        const transcript = transcriptBySlug.get(slug);
+        if (!transcript) return { slug, skipped: "no model run transcript" };
+        const read = stripVerbatimReads(transcript.split(/\s+/).filter(Boolean), chunks.map((c) => c.text));
+        const spoken = read.kept.join(" ").trim();
+        const other = cItems[(i + 1) % cItems.length];
+        const otherChunks = (other?.chunks ?? []) as { details: { text: string }[] }[];
+        const decoys = pickDecoys(otherChunks.flatMap((c) => c.details ?? []).map((d) => d.text));
+        const entries = buildJudgeEntries(toDetailsByLine(chunks), decoys);
+        try {
+          const raw = await judge(
+            buildJudgePrompt({
+              stimulus: chunks.map((c) => c.text).join(" "),
+              entries,
+              spoken,
+              theRead: (item.the_read as string | null) ?? null,
+            }),
+          );
+          const g = gradeStimulus(entries, parseJudgeReply(raw, entries.map((e) => e.id)));
+          return {
+            slug,
+            percent: g.percent,
+            carried: g.carried,
+            total: g.total,
+            band: g.band,
+            decoysCarried: g.decoysCarried.length,
+            unjudged: g.unjudged.length,
+            readGiven: g.readGiven,
+            readMatches: g.readMatches,
+            coloured: g.coloured,
+            listing: g.listing,
+            missed: g.missed,
+            readAloudWordsCut: read.cut,
+          };
+        } catch (e) {
+          return { slug, error: (e as Error).message };
+        }
+      });
+
+      return json({ build: BUILD, judge: Deno.env.get("GEMINI_API_KEY") ? "gemini-direct" : "lovable-gateway", sourceSection, rows });
     }
 
     const { data: assignment, error: aErr } = await admin
@@ -600,6 +683,13 @@ serve(async (req) => {
       /** Which of L, I, C or R this stimulus's Read is. Authored, not inferred. */
       the_read_type?: string;
       /**
+       * The passage as authored and the Read the key names, carried onto the
+       * grade so the Report Card can put her words beside the standard's
+       * without a second query it has no way to make.
+       */
+      stimulus_text?: string;
+      the_read?: string;
+      /**
        * What the machine heard for this stimulus, and where it sits in the file.
        *
        * Both were computed and thrown away. Seeing the words back is the
@@ -754,6 +844,7 @@ serve(async (req) => {
         readReason: "",
         missingIds: entries.map((e) => e.id),
         bigMisses: [],
+        nextTime: "",
         lineVerdicts: {},
       };
 
@@ -767,6 +858,8 @@ serve(async (req) => {
           item_order: Number(row.item_order),
           ...gradeStimulus(entries, nothingCarried, lineSpans),
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
+          stimulus_text: stimulusText,
+          the_read: (item.the_read as string | undefined) ?? undefined,
           spoken: "",
           window_ms: span(segments),
           recall_window_ms: span(segments.filter((s) => s.phase === "recalling")),
@@ -800,6 +893,8 @@ serve(async (req) => {
           item_order: Number(row.item_order),
           ...grade,
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
+          stimulus_text: stimulusText,
+          the_read: (item.the_read as string | undefined) ?? undefined,
           spoken,
           window_ms: span(segments),
           recall_window_ms: span(segments.filter((s) => s.phase === "recalling")),
@@ -817,6 +912,8 @@ serve(async (req) => {
           item_order: Number(row.item_order),
           ...gradeStimulus(entries, nothingCarried, lineSpans),
           the_read_type: (item.the_read_type as string | undefined) ?? undefined,
+          stimulus_text: stimulusText,
+          the_read: (item.the_read as string | undefined) ?? undefined,
           spoken,
           window_ms: span(segments),
           recall_window_ms: span(segments.filter((s) => s.phase === "recalling")),

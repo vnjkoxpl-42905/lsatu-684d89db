@@ -435,6 +435,9 @@ export interface SectionStimulusGrade {
   readReason?: string;
   /** L, I, C or R. Authored on the stimulus, not inferred from her run. */
   the_read_type?: string;
+  /** The passage as authored, and the Read the key names. Absent on grades written before 2026-09-08. */
+  stimulus_text?: string;
+  the_read?: string;
   /** Words cut as read-aloud before judging, and which chunks she read. */
   read_aloud_words?: number;
   chunks_read_aloud?: number[];
@@ -455,6 +458,12 @@ export interface SectionStimulusGrade {
   recall?: { verdict: SectionLineVerdict; note: string };
   /** At most three plain-words phrases naming what she dropped that mattered. */
   bigMisses?: string[];
+  /**
+   * What to do differently next time, in one or two sentences to her. Empty
+   * when the judge found nothing to fix; absent on grades written before it
+   * was asked for.
+   */
+  nextTime?: string;
   /** Why the judge returned nothing. Absent on every stimulus that was judged. */
   ungraded?: string;
 }

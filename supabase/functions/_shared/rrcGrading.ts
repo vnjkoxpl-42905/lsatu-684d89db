@@ -318,11 +318,19 @@ ${input.lines
           .map((l) => `Line ${l.n}: ${l.text}\n  She said: ${l.spoken || "(nothing)"}`)
           .join("\n")}
 ${input.recall ? `\nHER FULL RECALL, text off screen:\n"""\n${input.recall}\n"""\n` : ""}
-Judge each line: how much of that line survived in what she said for it, and
-say in one short sentence what she dropped. A line she said nothing for is
-"skipped". Then judge the full recall the same way. The split is approximate --
-if she clearly covered a line's content while talking about a neighbouring
-line, do not mark it skipped.
+Judge each line by the same scale every time:
+- strong: the line's claim and its specifics are all there, or at most one
+  small specific (an adjective, a place, a number) is missing.
+- partial: the main claim is there but more than one specific, a quantifier or
+  a qualifier is missing, or one of them came back changed in meaning.
+- thin: only a fragment of the line survives, or the claim came back with a
+  different meaning.
+- skipped: she said nothing for it, or nothing that belongs to it.
+For every line that is not strong, say in one short sentence exactly what was
+dropped or changed, quoting the missing words in plain language. For a strong
+line the note may be empty. Then judge the full recall on the same scale. The
+split is approximate -- if she clearly covered a line's content while talking
+about a neighbouring line, do not mark it skipped.
 `
       : ""
   }
@@ -339,6 +347,10 @@ RULES:
   carried them. Mark those not carried. Do not try to guess which.
 - When you are genuinely torn, mark it NOT carried.
 - Her transcript may contain mangled or clipped words. Judge the substance.
+- Be fair as well as strict. Her own words, her own order and a plainer
+  phrasing all count in full. Only a change of MEANING counts against her: a
+  dropped specific, a lost qualifier, a claim made stronger or weaker than the
+  source, a relationship that vanished. Never mark a Detail missed for style.
 
 THE DETAILS:
 ${list}
@@ -393,11 +405,17 @@ How to use it, and how not to:
 - big_misses: at most three short phrases naming the most important things she
   dropped, in plain words she can act on. Empty if she dropped nothing that
   matters.
+- next_time: one or two sentences, addressed to her, saying the single most
+  useful thing to do differently on a stimulus like this next time -- what to
+  say out loud on purpose, which kind of word she keeps losing, or what her
+  Read should have named. Concrete, about THIS run, no praise and no padding.
+  Leave it EMPTY when there is nothing to fix: every Detail carried, the Read
+  found, the run coloured and in her own words.
 
 Reply with JSON only, no prose and no code fence:
 {"verdicts":[{"id":1,"carried":true}],"reciting":false,"reciting_reason":"",
 "listing":false,"listing_reason":"","coloured":true,"colour_specific":true,
-"big_misses":[]${
+"big_misses":[],"next_time":""${
     input.theRead ? ',\n"read_given":true,"read_matches":true,"read_reason":""' : ""
   }${
     input.lines?.length
@@ -438,6 +456,14 @@ export interface JudgeReply {
   missingIds: number[];
   /** At most three plain-words phrases naming what she dropped that mattered. */
   bigMisses: string[];
+  /**
+   * What to do differently next time, in one or two sentences to her.
+   *
+   * Empty when the judge found nothing to fix, and the Report Card then says
+   * so instead of inventing advice. The one field on the card that asks for
+   * something rather than describing what happened.
+   */
+  nextTime: string;
   /** Per-line judgement, keyed by line number. Absent when lines were not sent. */
   lineVerdicts: Record<number, { verdict: LineVerdict; note: string }>;
   /** The same judgement for the whole-stimulus recall, when it was sent. */
@@ -546,6 +572,7 @@ export function parseJudgeReply(raw: string, expectedIds: number[]): JudgeReply 
           .filter((m): m is string => typeof m === "string" && m.trim() !== "")
           .slice(0, 3)
       : [],
+    nextTime: reason("next_time").trim(),
     lineVerdicts,
     recallVerdict: recallRow
       ? { verdict: toLineVerdict(recallRow.verdict), note: typeof recallRow.note === "string" ? recallRow.note : "" }
@@ -599,6 +626,8 @@ export interface StimulusGrade {
   recall?: { verdict: LineVerdict; note: string };
   /** At most three plain-words phrases naming what she dropped that mattered. */
   bigMisses: string[];
+  /** What to do differently next time. Empty when there is nothing to fix. */
+  nextTime: string;
 }
 
 export function gradeStimulus(
@@ -651,6 +680,7 @@ export function gradeStimulus(
     lines,
     recall: reply.recallVerdict,
     bigMisses: reply.bigMisses,
+    nextTime: reply.nextTime ?? "",
   };
 
 }
