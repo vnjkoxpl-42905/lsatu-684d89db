@@ -436,3 +436,39 @@
   border-radius: 10px;
   padding: 12px 16px;
 }
+
+/* ── The ground the card lands on ─────────────────────────────────────────
+   The runner's report phase is a `.activity-centre` page, which paints the
+   Centre's warm cream (`38 36% 93%`). A violet card floating on warm cream is
+   the exact clash the palette above was chosen to get away from, and the
+   student never sees the card on the neutral ground it was designed against.
+   So the report phase brings its own ground, tuned one step darker than the
+   card's page so the card still reads as a card. */
+/* Compounded rather than bare: `.activity-centre` paints its cream at the same
+   specificity, so a lone `.rc-ground` wins or loses on stylesheet order, which
+   is not a thing to leave to chance across a code-split build. */
+.activity-centre.rc-ground,
+.rc-ground {
+  background: oklch(0.925 0.014 312);
+}
+
+/* ── The focus ring ───────────────────────────────────────────────────────
+   `.activity-centre :focus-visible` forces an emerald ring on every focusable
+   thing inside the module. Emerald is precisely what this card must not have,
+   and it was reaching the ledger, the transport and every "Hear it" button.
+   Same shape as the module's ring, in the colour that means sound here. */
+.activity-centre .rc :focus-visible,
+.rc :focus-visible {
+  box-shadow:
+    0 0 0 2px var(--rc-page),
+    0 0 0 4px var(--rc-signal);
+  outline: none;
+}
+
+/* On the console the ring has to clear a dark plum instead of paper. */
+.activity-centre .rc__console :focus-visible,
+.rc__console :focus-visible {
+  box-shadow:
+    0 0 0 2px var(--rc-console),
+    0 0 0 4px var(--rc-signal-bright);
+}

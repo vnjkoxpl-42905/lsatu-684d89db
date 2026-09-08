@@ -17,4 +17,5 @@ await shot("rc-desktop", base, 1180, 1000);
 await shot("rc-playing", base + "?playing=1", 1180, 1000);
 await shot("rc-mobile", base, 390, 844);
 await shot("rc-clean", base + "?state=clean", 1180, 1000);
+await shot("rc-runner", base + "?frame=runner", 1180, 1000);
 await b.close();

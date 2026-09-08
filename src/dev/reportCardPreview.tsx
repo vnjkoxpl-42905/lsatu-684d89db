@@ -25,10 +25,18 @@ import { createRoot } from "react-dom/client";
 import { SectionReportCard } from "../features/activity-centre/components/SectionReportCard";
 import type { SectionGrade, SectionStimulusGrade } from "../features/activity-centre/api/types";
 import "../index.css";
+import "../features/activity-centre/activity-centre.css";
 
 const params = new URLSearchParams(location.search);
 const state = params.get("state") ?? "faults";
 const freezeLine = params.get("playing");
+/*
+ * `?frame=runner` wraps the card in the EXACT element the runner's report phase
+ * uses, cream ground, emerald focus ring and all. Without it the harness renders
+ * the card on a neutral field the student never sees, which is how a plum card
+ * on warm cream got as far as it did.
+ */
+const frame = params.get("frame");
 
 const WALKTHROUGH =
   "> Ace Manufacturing's consultant proposes that we reassign staff so that all employees are doing both what they like to do and what they do well.\n\n" +
@@ -188,7 +196,14 @@ const grade: SectionGrade = {
 };
 
 createRoot(document.getElementById("root")!).render(
-  <div style={{ minHeight: "100vh", background: "oklch(0.93 0.005 268)", padding: "40px 24px" }}>
+  <div
+    className={frame === "runner" ? "activity-centre rc-ground min-h-screen px-4 py-12" : undefined}
+    style={
+      frame === "runner"
+        ? undefined
+        : { minHeight: "100vh", background: "oklch(0.925 0.014 312)", padding: "40px 24px" }
+    }
+  >
     <SectionReportCard
       grade={grade}
       loadModelRuns={async () =>

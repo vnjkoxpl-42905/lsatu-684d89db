@@ -807,7 +807,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
       if (phase === "report") {
         return (
           <div
-            className="activity-centre ac-section-handover min-h-screen px-4 py-12"
+            className="activity-centre rc-ground ac-section-handover min-h-screen px-4 py-12"
             data-runner="recall-section-report"
           >
             <SectionReport assignmentId={assignment.id} onDone={handleLeave ?? handleBackToIntro} />

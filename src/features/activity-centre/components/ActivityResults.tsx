@@ -206,8 +206,10 @@ function SectionResultDetail({ assignment }: { assignment: ActivityAssignment })
           ))}
         </div>
       )}
-      {/* The card is written for the Activities surface, which is light. */}
-      <div className="activity-centre rounded-2xl bg-[hsl(var(--background))] p-3">
+      {/* The card brings its own ground now: `.activity-centre` paints the
+          Centre's warm cream, and the card is violet. Same class the runner's
+          report phase uses, so Joshua and the student see the same page. */}
+      <div className="activity-centre rc-ground rounded-2xl p-3">
         <SectionReportCard grade={shown} />
       </div>
     </div>
