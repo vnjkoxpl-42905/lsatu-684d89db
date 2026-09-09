@@ -15,6 +15,11 @@ import BookingOfferHub, { type BookingCommerceItem, type BookingOffer, type Exte
 // reachable but demoted (2026-08-13 decision: demote, do not hide).
 
 const invoke = async (action: string, extra: Record<string, unknown> = {}) => {
+  // Wait for the session so we never send the anon key as the bearer token —
+  // the function reads that as a token with no user and answers 401.
+  const { waitForAccessToken } = await import("@/lib/waitForSession");
+  const token = await waitForAccessToken();
+  if (!token) throw new Error("Please sign in again to load your booking.");
   const { data, error } = await supabase.functions.invoke("student-booking", { body: { action, ...extra } });
   // supabase-js discards the response body on a non-2xx, leaving only the
   // generic wrapper string. Read the real `{ error }` back off the Response so
