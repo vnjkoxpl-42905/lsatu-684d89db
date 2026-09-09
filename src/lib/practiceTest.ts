@@ -31,20 +31,74 @@ export const LR_FULL_SECTION_MIN_QUESTIONS = 24;
 
 export type PracticeTestPaceId = 'standard' | 'time-and-a-half' | 'double-time' | 'untimed';
 
-export const PRACTICE_TEST_PACES: {
+const PACE_LABELS: Record<PracticeTestPaceId, string> = {
+  standard: 'Standard',
+  'time-and-a-half': 'Time & a Half',
+  'double-time': 'Double Time',
+  untimed: 'Untimed',
+};
+
+/**
+ * Each pace as a percentage of the student's OWN standard clock, not of 35:00.
+ *
+ * These were absolute before: 'standard' was hard-wired to 35 minutes whatever
+ * the student's standing timing mode said. A student carrying extra time who
+ * picked "Standard" was handed a 35-minute section, which is less time than
+ * they are entitled to, across a whole two-hour sitting. The section door has
+ * always read the setting (SectionSelector's baseMinutes); the practice test
+ * door never did, so the same two words meant two different clocks in one room.
+ *
+ * 100% is whatever their standing default is, so "Standard" means "my normal
+ * section" for everyone.
+ */
+const PACE_PERCENT: Record<PracticeTestPaceId, number | null> = {
+  standard: 100,
+  'time-and-a-half': 150,
+  'double-time': 200,
+  untimed: null,
+};
+
+/** The pace's display name. The clock it implies depends on the student. */
+export function practiceTestPaceLabel(id: PracticeTestPaceId): string {
+  return PACE_LABELS[id] ?? PACE_LABELS.standard;
+}
+
+/** Seconds one section runs for at this pace, off the student's own base. */
+export function practiceTestSectionSeconds(
+  pace: PracticeTestPaceId,
+  baseSeconds: number = PRACTICE_TEST_SECTION_SECONDS,
+): number | null {
+  // Not `??`: untimed's percent IS null, and a nullish fallback would quietly
+  // turn "no clock" into the standard one. Only an unrecognised id falls back.
+  const percent = pace in PACE_PERCENT ? PACE_PERCENT[pace] : PACE_PERCENT.standard;
+  if (percent === null) return null;
+  return Math.round((baseSeconds * percent) / 100);
+}
+
+/** The pace options for a student whose own standard section is `baseSeconds`. */
+export function practiceTestPaces(baseSeconds: number = PRACTICE_TEST_SECTION_SECONDS): {
   id: PracticeTestPaceId;
   label: string;
   /** Seconds per section. Null when untimed. */
   sectionSeconds: number | null;
-}[] = [
-  { id: 'standard', label: 'Standard', sectionSeconds: PRACTICE_TEST_SECTION_SECONDS },
-  { id: 'time-and-a-half', label: 'Time & a Half', sectionSeconds: Math.round(PRACTICE_TEST_SECTION_SECONDS * 1.5) },
-  { id: 'double-time', label: 'Double Time', sectionSeconds: PRACTICE_TEST_SECTION_SECONDS * 2 },
-  { id: 'untimed', label: 'Untimed', sectionSeconds: null },
-];
+}[] {
+  return (Object.keys(PACE_LABELS) as PracticeTestPaceId[]).map((id) => ({
+    id,
+    label: PACE_LABELS[id],
+    sectionSeconds: practiceTestSectionSeconds(id, baseSeconds),
+  }));
+}
 
-export function practiceTestPace(id: PracticeTestPaceId) {
-  return PRACTICE_TEST_PACES.find((p) => p.id === id) ?? PRACTICE_TEST_PACES[0];
+/**
+ * What a run's sections actually run for. Reads the seconds resolved when the
+ * run was created rather than recomputing, so changing the timing setting
+ * halfway through a two-hour sitting cannot move the clock under it. Runs
+ * created before this was stored fall back to the old absolute reading.
+ */
+export function practiceTestRunSectionSeconds(run: PracticeTestRun): number | null {
+  return run.sectionSeconds !== undefined
+    ? run.sectionSeconds
+    : practiceTestSectionSeconds(run.pace);
 }
 
 export type PracticeTestLegKind = 'lr' | 'rc';
@@ -72,6 +126,13 @@ export interface PracticeTestRun {
   id: string;
   pt: number;
   pace: PracticeTestPaceId;
+  /**
+   * Seconds per section for this sitting, resolved against the student's own
+   * standard clock when the run was created. Optional because runs stored
+   * before it existed do not carry it; read it through
+   * `practiceTestRunSectionSeconds`, never directly.
+   */
+  sectionSeconds?: number | null;
   legs: PracticeTestLeg[];
   /** Index of the leg the student is on. Equals legs.length when finished. */
   currentLeg: number;
@@ -241,11 +302,18 @@ function newRunId(): string {
 export function createPracticeTestRun(
   blueprint: PracticeTestBlueprint,
   pace: PracticeTestPaceId,
+  /**
+   * Seconds per section, already resolved against the student's own clock.
+   * Stored on the run so the sitting keeps the clock it started with even if
+   * the timing setting changes while it is in progress.
+   */
+  sectionSeconds: number | null = practiceTestSectionSeconds(pace),
 ): PracticeTestRun {
   const run: PracticeTestRun = {
     id: newRunId(),
     pt: blueprint.pt,
     pace,
+    sectionSeconds,
     legs: blueprint.legs.map((l) => ({ ...l })),
     currentLeg: 0,
     // Two sections, then the break — the shape of the real sitting. A test that
@@ -326,9 +394,12 @@ export function legLabel(leg: PracticeTestLeg): string {
   return leg.kind === 'lr' ? 'Logical Reasoning' : 'Reading Comprehension';
 }
 
-/** "35:00" — one leg's clock at the run's pace, or null when untimed. */
-export function formatPracticeTestClock(pace: PracticeTestPaceId): string | null {
-  const seconds = practiceTestPace(pace).sectionSeconds;
+/**
+ * "35:00" — one leg's clock, or null when untimed. Takes seconds rather than a
+ * pace id, because a pace id alone no longer determines the clock: the same
+ * "Standard" is 35:00 for one student and 52:30 for another.
+ */
+export function formatPracticeTestClock(seconds: number | null): string | null {
   if (seconds === null) return null;
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 }

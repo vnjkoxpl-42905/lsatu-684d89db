@@ -11,12 +11,25 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import TestingCentre from "./TestingCentre";
+import { listPracticeTestRuns } from "@/lib/practiceTest";
 
 const navigate = vi.fn();
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
   return { ...actual, useNavigate: () => navigate };
 });
+
+/**
+ * The practice-test door reads the student's standing timing mode, because its
+ * paces are percentages of that rather than of a flat 35:00. Mutable so a test
+ * can sit an accommodated student down.
+ */
+const settingsMock: { defaultTimingMode: "35" | "52.5" | "70" | "unlimited" } = {
+  defaultTimingMode: "35",
+};
+vi.mock("@/contexts/UserSettingsContext", () => ({
+  useUserSettings: () => ({ settings: settingsMock }),
+}));
 
 vi.mock("@/contexts/QuestionBankContext", () => ({
   useQuestionBank: () => ({
@@ -310,5 +323,54 @@ describe("Testing Centre", () => {
 
     expect(localStorage.getItem(RUN_KEY)).toBeNull();
     expect(screen.queryByText(/Unfinished sittings/)).toBeNull();
+  });
+  /**
+   * The practice-test door's paces are percentages of the student's own clock.
+   * They were absolute before, so a student carrying extra time who chose
+   * "Standard" was handed a 35-minute section on every leg of a two-hour
+   * sitting: less time than they are entitled to, in the room that exists to
+   * rehearse test day.
+   */
+  describe("accommodated timing", () => {
+    afterEach(() => {
+      settingsMock.defaultTimingMode = "35";
+      // The test localStorage keeps its store in a closure, so Object.keys on
+      // it returns method names. clear() is the only reliable sweep.
+      localStorage.clear();
+    });
+
+    const beginPracticeTest = async () => {
+      renderPage();
+      fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
+      openPrepTests();
+      fireEvent.click(await screen.findByRole("option", { name: /PrepTest 131/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Begin practice test/ }));
+      // Read through the library's own reader: it walks localStorage.key(i),
+      // which the test store supports, unlike Object.keys.
+      return listPracticeTestRuns()[0];
+    };
+
+    it("starts an unaccommodated sitting on the ordinary 35 minute clock", async () => {
+      const run = await beginPracticeTest();
+      expect(run.pace).toBe("standard");
+      expect(run.sectionSeconds).toBe(35 * 60);
+    });
+
+    it("starts an accommodated sitting on the student's own clock, not on 35 minutes", async () => {
+      settingsMock.defaultTimingMode = "52.5";
+      const run = await beginPracticeTest();
+      expect(run.pace).toBe("standard");
+      expect(run.sectionSeconds).toBe(52.5 * 60);
+    });
+
+    it("states the clock the accommodated student will actually get", async () => {
+      settingsMock.defaultTimingMode = "70";
+      renderPage();
+      fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
+      // The note that tells them the standing setting is in play at all.
+      expect(screen.getByText(/You have double time\./)).toBeTruthy();
+    });
   });
 });

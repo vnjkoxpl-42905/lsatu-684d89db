@@ -24,7 +24,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
+import { useUserSettings } from "@/contexts/UserSettingsContext";
 import { SectionSelector } from "@/components/drill/SectionSelector";
+import { AccommodationNote } from "@/components/drill/SectionTimingPicker";
 import { PrepTestCombobox } from "@/components/testing/PrepTestCombobox";
 import { loadAllIndexPassages } from "@/features/rc/lib/rcBank";
 import { buildRcSections, type RcSection } from "@/features/rc/lib/rcSections";
@@ -35,7 +37,8 @@ import {
   formatPracticeTestClock,
   legLabel,
   listPracticeTestRuns,
-  PRACTICE_TEST_PACES,
+  practiceTestPaces,
+  practiceTestSectionSeconds,
   type PracticeTestBlueprint,
   type PracticeTestPaceId,
   type PracticeTestRun,
@@ -109,10 +112,27 @@ function PracticeTestSelector({
   onBegin,
 }: {
   tests: PracticeTestBlueprint[];
-  onBegin: (blueprint: PracticeTestBlueprint, pace: PracticeTestPaceId) => void;
+  onBegin: (
+    blueprint: PracticeTestBlueprint,
+    pace: PracticeTestPaceId,
+    sectionSeconds: number | null,
+  ) => void;
 }) {
   const [pt, setPt] = React.useState<number | null>(null);
   const [pace, setPace] = React.useState<PracticeTestPaceId>("standard");
+  const { settings } = useUserSettings();
+
+  /**
+   * The student's own standard clock, the same reading the section door takes
+   * (SectionSelector's baseMinutes). Every pace here is a percentage of this,
+   * so "Standard" is their normal section rather than a flat 35 minutes. This
+   * door ignored the setting entirely before, which meant the same two words
+   * named two different clocks in one room.
+   */
+  const baseMinutes =
+    settings.defaultTimingMode === "52.5" ? 52.5 : settings.defaultTimingMode === "70" ? 70 : 35;
+  const paces = React.useMemo(() => practiceTestPaces(baseMinutes * 60), [baseMinutes]);
+  const sectionSeconds = practiceTestSectionSeconds(pace, baseMinutes * 60);
 
   // The combobox orders its own rows newest-first. This page still needs the
   // blueprint behind the chosen number, for the shape table below.
@@ -121,7 +141,7 @@ function PracticeTestSelector({
     [tests],
   );
   const chosen = tests.find((t) => t.pt === pt) ?? null;
-  const clock = formatPracticeTestClock(pace);
+  const clock = formatPracticeTestClock(sectionSeconds);
 
   if (tests.length === 0) {
     return (
@@ -163,7 +183,7 @@ function PracticeTestSelector({
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="testing-menu">
-            {PRACTICE_TEST_PACES.map((p) => (
+            {paces.map((p) => (
               <SelectItem key={p.id} value={p.id}>
                 {p.label}
                 {p.sectionSeconds === null
@@ -173,6 +193,13 @@ function PracticeTestSelector({
             ))}
           </SelectContent>
         </Select>
+        {/* The section door has carried this since its timing control was
+            built. Without it this door offered accommodations while saying
+            nothing about the standing setting those percentages are taken
+            from, on the longer of the two commitments. */}
+        <p className="testing-note">
+          <AccommodationNote baseMinutes={baseMinutes} />
+        </p>
       </div>
 
       {chosen && (
@@ -207,7 +234,7 @@ function PracticeTestSelector({
       )}
 
       <div className="testing-actions">
-        <Button disabled={!chosen} onClick={() => chosen && onBegin(chosen, pace)}>
+        <Button disabled={!chosen} onClick={() => chosen && onBegin(chosen, pace, sectionSeconds)}>
           Begin practice test
         </Button>
       </div>
@@ -347,8 +374,12 @@ export default function TestingCentre() {
     [manifest, rcSections],
   );
 
-  const beginTest = (blueprint: PracticeTestBlueprint, pace: PracticeTestPaceId) => {
-    const run = createPracticeTestRun(blueprint, pace);
+  const beginTest = (
+    blueprint: PracticeTestBlueprint,
+    pace: PracticeTestPaceId,
+    sectionSeconds: number | null,
+  ) => {
+    const run = createPracticeTestRun(blueprint, pace, sectionSeconds);
     navigate(practiceTestPath(run.id));
   };
 

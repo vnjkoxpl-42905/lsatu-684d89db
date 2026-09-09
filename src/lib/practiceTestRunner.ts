@@ -15,9 +15,8 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { FullSectionConfig, TimerMode } from '@/types/drill';
 import {
-  practiceTestPace,
+  practiceTestRunSectionSeconds,
   type PracticeTestLeg,
-  type PracticeTestPaceId,
   type PracticeTestRun,
 } from '@/lib/practiceTest';
 import { RC_STANDARD_SECONDS_PER_PASSAGE } from '@/features/rc/lib/rcTypes';
@@ -43,17 +42,21 @@ export function isSittingReturn(path: string | null | undefined): boolean {
   return !!path?.startsWith(PRACTICE_TEST_PATH_PREFIX);
 }
 
-function timerModeForPace(pace: PracticeTestPaceId): TimerMode {
-  switch (pace) {
-    case 'time-and-a-half':
-      return '52.5';
-    case 'double-time':
-      return '70';
-    case 'untimed':
-      return 'unlimited';
-    default:
-      return '35';
-  }
+/**
+ * The clock a leg runs on.
+ *
+ * This used to map the pace id straight onto an absolute TimerMode: 'standard'
+ * became '35' no matter what the student's standing timing mode said, so a
+ * student carrying extra time who chose "Standard" was handed a 35-minute
+ * section for every leg of a two-hour sitting. The seconds are resolved against
+ * their own clock when the run is created, and read back here, so the pace is
+ * relative for everyone. 'custom' carries the exact figure, including the
+ * fractional 52.5 and 78.75 minute cases, which the named modes cannot express.
+ */
+function timerForRun(run: PracticeTestRun): { mode: TimerMode; customMinutes?: number } {
+  const seconds = practiceTestRunSectionSeconds(run);
+  if (seconds === null) return { mode: 'unlimited' };
+  return { mode: 'custom', customMinutes: seconds / 60 };
 }
 
 /**
@@ -94,7 +97,7 @@ export function lrLegLaunch(
         pt: run.pt,
         section: leg.section,
         timer: {
-          mode: timerModeForPace(run.pace),
+          ...timerForRun(run),
           isPaused: false,
           elapsedMs: 0,
           startedAt: Date.now(),
@@ -118,7 +121,10 @@ export function rcLegHref(
   legIndex: number,
 ): string {
   const secondsPerPassage = (() => {
-    const sectionSeconds = practiceTestPace(run.pace).sectionSeconds;
+    // Same reading as the LR leg: the run's own resolved clock, so an
+    // accommodated student's RC passages get their share of the longer section
+    // rather than a share of 35 minutes.
+    const sectionSeconds = practiceTestRunSectionSeconds(run);
     if (sectionSeconds === null) return null;
     const passages = leg.passageIds?.length || 4;
     return Math.round(sectionSeconds / passages);

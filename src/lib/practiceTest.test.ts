@@ -2,7 +2,11 @@ import { describe, it, expect } from 'vitest';
 import {
   buildPracticeTests,
   estimateScaledScore,
+  formatPracticeTestClock,
   LR_FULL_SECTION_MIN_QUESTIONS,
+  practiceTestPaces,
+  practiceTestRunSectionSeconds,
+  practiceTestSectionSeconds,
 } from './practiceTest';
 import type { RcSection } from '@/features/rc/lib/rcSections';
 
@@ -118,5 +122,54 @@ describe('estimateScaledScore', () => {
       expect(scaled).toBeGreaterThanOrEqual(120);
       expect(scaled).toBeLessThanOrEqual(180);
     }
+  });
+});
+
+/**
+ * The paces are a percentage of the student's OWN standard clock, not of 35:00.
+ *
+ * They were absolute before: 'standard' was hard-wired to 35 minutes whatever
+ * the student's standing timing mode said, so a student carrying extra time who
+ * chose "Standard" was handed a 35-minute section, less time than they are
+ * entitled to, on every leg of a two-hour sitting. The section door had always
+ * read the setting; this door never did.
+ */
+describe('practice test paces', () => {
+  const MIN = 60;
+
+  it('gives a student with no accommodation the ordinary clocks', () => {
+    expect(practiceTestSectionSeconds('standard', 35 * MIN)).toBe(35 * MIN);
+    expect(practiceTestSectionSeconds('time-and-a-half', 35 * MIN)).toBe(52.5 * MIN);
+    expect(practiceTestSectionSeconds('double-time', 35 * MIN)).toBe(70 * MIN);
+    expect(practiceTestSectionSeconds('untimed', 35 * MIN)).toBeNull();
+  });
+
+  it("treats an accommodated student's own clock as Standard", () => {
+    // The defect: this returned 35 minutes for a student entitled to 52.5.
+    expect(practiceTestSectionSeconds('standard', 52.5 * MIN)).toBe(52.5 * MIN);
+    expect(practiceTestSectionSeconds('standard', 70 * MIN)).toBe(70 * MIN);
+  });
+
+  it('scales the accommodations off that base rather than off 35 minutes', () => {
+    expect(practiceTestSectionSeconds('time-and-a-half', 52.5 * MIN)).toBe(78.75 * MIN);
+    expect(practiceTestSectionSeconds('double-time', 52.5 * MIN)).toBe(105 * MIN);
+  });
+
+  it('labels every pace, and states the clock the student will actually get', () => {
+    const paces = practiceTestPaces(52.5 * MIN);
+    expect(paces.map((p) => p.id)).toEqual(['standard', 'time-and-a-half', 'double-time', 'untimed']);
+    expect(paces.find((p) => p.id === 'standard')?.sectionSeconds).toBe(52.5 * MIN);
+    expect(formatPracticeTestClock(practiceTestSectionSeconds('standard', 52.5 * MIN))).toBe('52:30');
+    expect(formatPracticeTestClock(null)).toBeNull();
+  });
+
+  it('reads a run back at the clock it was created with, not the current setting', () => {
+    const run = { pace: 'standard', sectionSeconds: 52.5 * MIN } as never;
+    expect(practiceTestRunSectionSeconds(run)).toBe(52.5 * MIN);
+  });
+
+  it('falls back to the old absolute reading for runs stored before this existed', () => {
+    const legacy = { pace: 'time-and-a-half' } as never;
+    expect(practiceTestRunSectionSeconds(legacy)).toBe(52.5 * MIN);
   });
 });

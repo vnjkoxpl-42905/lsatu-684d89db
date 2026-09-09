@@ -20,7 +20,8 @@ import {
   formatPracticeTestClock,
   legLabel,
   loadPracticeTestRun,
-  practiceTestPace,
+  practiceTestPaceLabel,
+  practiceTestRunSectionSeconds,
   practiceTestRaw,
   practiceTestScaled,
   savePracticeTestRun,
@@ -270,8 +271,8 @@ export default function PracticeTestRunPage() {
     );
   }
 
-  const clock = formatPracticeTestClock(run.pace);
-  const paceLabel = practiceTestPace(run.pace).label;
+  const clock = formatPracticeTestClock(practiceTestRunSectionSeconds(run));
+  const paceLabel = practiceTestPaceLabel(run.pace);
   const leg = run.legs[run.currentLeg];
   const breakDue =
     !run.breakTaken && run.currentLeg === run.breakAfterLeg && run.status === "in-progress";
