@@ -357,8 +357,14 @@ describe("a stimulus she said back word for word", () => {
 
   it("still shows what it carried, because that reading is true", () => {
     render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
-    // Said in words now. A Detail is our unit and she never saw one.
+    // The figure and the sentence, in that order. A Detail is our unit and she
+    // never sees one enumerated; the percentage is the same statistic the
+    // console leads with, under the same word, so one number is not a figure in
+    // one place and a phrase in another.
     expect(screen.getByText("All of it came back.")).toBeInTheDocument();
+    // The same statistic the console leads with, under the same word, so one
+    // number is not a figure in one place and a phrase in another.
+    expect(screen.getByText("100% held.")).toBeInTheDocument();
   });
 
   it("does not congratulate it inside the row either", () => {
@@ -477,6 +483,31 @@ describe("the evidence behind the number", () => {
     // reported as making the goal.
     render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ within_time: true, within_goal: false })} />);
     expect(screen.getByText(/Inside the time, but the goal only counts/)).toBeInTheDocument();
+  });
+
+  it("still answers the clock for a run graded before the flag existed", () => {
+    // `within_time` is optional. A row written before it matched neither
+    // branch, so a student got a time, a goal, and no verdict between them.
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={withSection({ within_time: undefined, within_goal: false, total_seconds: 2772 })}
+      />,
+    );
+    expect(screen.getByText(/Over the goal/)).toBeInTheDocument();
+  });
+
+  it("does not let a stored flag outvote the time printed above it", () => {
+    // 2772 seconds is 46:12 against a twenty-five minute goal. This is the
+    // shape the audit caught in the harness: "28:32" over "Inside the time".
+    render(
+      <SectionReportCard
+        loadModelRuns={noModelRuns}
+        grade={withSection({ within_time: true, within_goal: false, total_seconds: 2772 })}
+      />,
+    );
+    expect(screen.getByText(/Over the goal/)).toBeInTheDocument();
+    expect(screen.queryByText(/Inside the time/)).toBeNull();
   });
 
   it("says plainly when we could not mark part of the run", () => {

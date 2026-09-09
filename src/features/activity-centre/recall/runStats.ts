@@ -1,4 +1,5 @@
 import type { RecentSectionRun } from "../api/activitiesClient";
+import { insideTime } from "./sectionClock";
 
 /**
  * What the launch surface says about a student's last few runs, derived and
@@ -50,10 +51,17 @@ export interface SectionStats {
   trendSeconds: number | null;
   /** How many runs the trend spans. */
   trendRuns: number;
-  /** Stimuli recorded across every run whose slot count is knowable. */
-  recalled: number | null;
+  /**
+   * Stimuli recorded across every run whose slot count is knowable.
+   *
+   * `recorded`, not `recalled`. It counts stimuli she spoke into, judged or
+   * not; it says nothing about how much came back. Under the old name the door
+   * read "Recalled 73/75" for a student who could have recorded seventy-five
+   * stimuli and recalled almost nothing on any of them.
+   */
+  recorded: number | null;
   /** Authored slots across those same runs. */
-  recalledOf: number | null;
+  recordedOf: number | null;
   /** The clock this section is run against, from the assignment. */
   targetMinutes: number | null;
   /** Runs finished inside the clock, of the ones measured against THIS target. */
@@ -152,8 +160,8 @@ export function statsFor(
     lastRunSeconds: null,
     trendSeconds: null,
     trendRuns: 0,
-    recalled: null,
-    recalledOf: null,
+    recorded: null,
+    recordedOf: null,
     targetMinutes,
     metTarget: 0,
     targetRuns: 0,
@@ -173,14 +181,14 @@ export function statsFor(
   // Only runs whose slot count is knowable contribute. A run with an unknowable
   // denominator is left out of both halves of the fraction rather than being
   // given a smaller one, which would inflate the percentage.
-  let recalled = 0;
-  let recalledOf = 0;
+  let recorded = 0;
+  let recordedOf = 0;
   let counted = 0;
   for (const run of runs) {
     const t = ticksFor(run);
     if (!t) continue;
-    recalled += t.recorded;
-    recalledOf += t.slots;
+    recorded += t.recorded;
+    recordedOf += t.slots;
     counted += 1;
   }
 
@@ -190,9 +198,9 @@ export function statsFor(
    * `within_goal` is stricter than it looks: it means inside the clock AND every
    * stimulus coloured and given a Read. Counting it under "25:00" would mark a
    * run that finished in twenty-two minutes as missing a twenty-five minute
-   * target because of something that is not time at all. `within_time` is the
-   * flag that means what the label says; older rows predate it, so the clock is
-   * recomputed for those.
+   * target because of something that is not time at all. The clock question is
+   * `insideTime`, derived from the two numbers rather than read off the stored
+   * flag, so this cell and the Report Card cannot answer it differently.
    *
    * Only runs measured against the SAME target are counted. A run from before an
    * accommodation changed was judged against a different number, and folding it
@@ -201,17 +209,14 @@ export function statsFor(
   const comparable = runs.filter(
     (r) => targetMinutes !== null && r.section?.goal_minutes === targetMinutes,
   );
-  const insideClock = (r: RecentSectionRun) =>
-    typeof r.section?.within_time === "boolean"
-      ? r.section.within_time
-      : r.section.total_seconds <= r.section.goal_minutes * 60;
+  const insideClock = (r: RecentSectionRun) => insideTime(r.section);
 
   return {
     lastRunSeconds: newest,
     trendSeconds,
     trendRuns: runs.length,
-    recalled: counted > 0 ? recalled : null,
-    recalledOf: counted > 0 ? recalledOf : null,
+    recorded: counted > 0 ? recorded : null,
+    recordedOf: counted > 0 ? recordedOf : null,
     targetMinutes,
     metTarget: comparable.filter(insideClock).length,
     targetRuns: comparable.length,

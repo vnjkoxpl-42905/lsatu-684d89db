@@ -635,11 +635,11 @@
 
 /* The one composed moment in the drill.
  *
- * The runner is a cold indigo mirror of the real section; the Report Card is
- * warm paper. The jump between them was abrupt because there was nothing
- * between them: the field cut to the card in one frame, at the end of
- * twenty-five unbroken minutes, which is the moment she is most likely to
- * remember and the moment that felt most like a page reload.
+ * The runner is a cold indigo mirror of the real section; the Report Card is a
+ * violet-cast white on a violet ground. The jump between them was abrupt
+ * because there was nothing between them: the field cut to the card in one
+ * frame, at the end of twenty-five unbroken minutes, which is the moment she is
+ * most likely to remember and the moment that felt most like a page reload.
  *
  * So the field lifts rather than cuts. The paper card holds its position and
  * fades with it, the indigo warms to the ground the Report Card sits on, and
@@ -648,12 +648,16 @@
  * the transition is over long before any of them are.
  */
 .ac-section.is-finishing {
-  /* The Activity Centre's own canvas, by value rather than by eye.
-     `--background` is scoped to `.activity-centre`, which this element is not
-     inside, and landing two shades off it turns a handover into a visible step
-     at the exact moment it is meant to be invisible. Kept beside the token it
-     copies so a change to one is a change to look for in the other. */
-  background: hsl(38 36% 93%);
+  /* The ground the card lands on, by value rather than by eye.
+     `.rc-ground` (report-card.css) is what the report phase paints, one step
+     darker than the card's own `--rc-page` so the card still reads as a card.
+     Neither is in scope here, so the value is copied and kept beside the name
+     it copies: a change to one is a change to look for in the other.
+     It used to warm to the Activity Centre's cream, rgb(244,239,231), which is
+     a colour nothing downstream of this moment paints. The field warmed to one
+     ground and the card arrived on another, which is the visible step this
+     transition exists to remove. */
+  background: oklch(0.925 0.014 312);
   transition: background 900ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -687,8 +691,8 @@
   display: block;
   margin-top: 0.75rem;
   /* #64748b is 4.76:1 on white and 4.17:1 on the warmed handover ground this
-     sentence actually lands on, which is under AA. The chrome ink clears it on
-     both. */
+     sentence actually lands on, which is under AA. The chrome ink clears it:
+     8.28:1 on the ground the handover warms to now, measured in the browser. */
   color: var(--sec-chrome);
   font-family: var(--sec-sans);
   font-size: 0.875rem;

@@ -1098,10 +1098,12 @@ function RunBody({
      *
      * The Report Card replaces this screen the moment the save finishes, and
      * the two surfaces could not be further apart: a cold indigo field against
-     * warm paper. `is-finishing` warms the field and lifts the chrome over
-     * nine hundred milliseconds so the card arrives on ground that is already
-     * the right colour. It is decoration and it is deliberately on the one
-     * frame she is most likely to remember.
+     * a violet-cast white on a violet ground. `is-finishing` warms the field
+     * and lifts the chrome over nine hundred milliseconds so the card arrives
+     * on ground that is already the right colour, which means the colour the
+     * report phase actually paints (`.rc-ground`) and not the Activity
+     * Centre's cream. It is decoration and it is deliberately on the one frame
+     * she is most likely to remember.
      */
     return (
       <div className="ac-section is-finishing">

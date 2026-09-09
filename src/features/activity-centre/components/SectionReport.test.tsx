@@ -85,6 +85,24 @@ describe("waiting for the Report Card", () => {
     await vi.waitFor(() => expect(screen.getByText("Marking your run")).toBeInTheDocument());
   });
 
+  it("waits on the card's own ground, not the Activity Centre's", async () => {
+    /*
+     * The ten seconds after twenty-five unbroken minutes used to cross three
+     * grounds: the runner's indigo, a warm cream Activity Centre panel, then
+     * the violet card. The wait is the card's first page, so it is drawn in
+     * `.rc` and the card replacing it is a change of content, not of place.
+     */
+    getSectionGrade.mockResolvedValue(null);
+    const { container } = inRouter(<SectionReport assignmentId="a1" />);
+    await vi.waitFor(() => expect(screen.getByText("Marking your run")).toBeInTheDocument());
+
+    const panel = container.querySelector(".rc");
+    expect(panel).not.toBeNull();
+    expect(panel).toContainElement(screen.getByText("Marking your run"));
+    // The Centre's surface token is what it used to paint itself with.
+    expect(container.innerHTML).not.toContain("--ac-surface");
+  });
+
   it("shows the card as soon as the grade lands", async () => {
     getSectionGrade.mockResolvedValue(grade);
     inRouter(<SectionReport assignmentId="a1" />);

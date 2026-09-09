@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { bandFor } from "../recall/grading";
 import { nextStep } from "../recall/nextStep";
 import { pickFocusSet } from "../recall/focusSet";
+import { insideTime } from "../recall/sectionClock";
 import { listModelRuns, signSectionRecording } from "../api/activitiesClient";
 import { raiseDispute } from "../recall/disputes";
 import type { ModelRun } from "../api/activitiesClient";
@@ -262,6 +263,11 @@ function everyCylinder(s: SectionStimulusGrade): boolean {
  * hands her our machinery and asks her to care about the one number on the page
  * she cannot check (Joshua, 2026-09-08). The band says how it went; this says
  * how much of it she kept, the way a person would say it.
+ *
+ * The ban is on Detail arithmetic, not on the percentage. Percentages are
+ * allowed per stimulus and at section level (Joshua, 2026-09-09), and the
+ * figure now sits beside these words under the same name the console gives it,
+ * so one statistic is not a number in the ledger and a phrase here.
  */
 function howMuch(percent: number): string {
   if (percent >= 100) return "All of it came back.";
@@ -612,8 +618,13 @@ export function SectionReportCard({
               * given a Read. Collapsing that into one boolean is what let a
               * student skip the colouring, finish early and be told she made the
               * goal, so the qualifier sits directly under the time.
+              *
+              * Inside-the-clock is DERIVED from the two numbers above rather
+              * than read off `within_time`, which is optional: a run graded
+              * before that flag existed matched neither branch and got a time
+              * with no verdict at all. See `recall/sectionClock.ts`.
               */}
-            {section.within_time && !section.within_goal && (
+            {insideTime(section) && !section.within_goal && (
               <p className="mt-1.5 text-xs leading-snug text-[var(--rc-console-ink-dim)]">
                 Inside the time, but the goal only counts with every stimulus coloured and given a
                 Read.
@@ -625,7 +636,7 @@ export function SectionReportCard({
               * slower while it is new, so this says what the time is for rather
               * than that she was late.
               */}
-            {section.within_time === false && (
+            {!insideTime(section) && (
               <p className="mt-1.5 text-xs leading-snug text-[var(--rc-console-ink-dim)]">
                 Over the goal, which early runs are meant to be. The goal is what the drill costs
                 once it is a habit, not a limit on today.
@@ -778,7 +789,10 @@ export function SectionReportCard({
                   </span>
                 </h2>
               </div>
-              <p className="text-sm text-[var(--rc-ink-muted)]">{howMuch(s.percent)}</p>
+              <p className="text-sm text-[var(--rc-ink-muted)]">
+                <span className="tabular-nums text-[var(--rc-ink)]">{s.percent}% held.</span>{" "}
+                {howMuch(s.percent)}
+              </p>
             </div>
 
             {/*
