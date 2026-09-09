@@ -31,11 +31,20 @@ export const RC_SECTION_PASSAGE_COUNT = 4;
  */
 export const RC_FULL_SECTION_MIN_QUESTIONS = 26;
 
-/** Standard section timing, and the accommodations multiples of it. */
+/**
+ * Standard section timing, and the accommodations multiples of it.
+ *
+ * The labels are spelled the way the rest of the app spells them: "Time and a
+ * half", not "Time & a Half". Nothing renders this list today, so the wording
+ * was free to drift, and it had: the Testing Centre and the section door were
+ * reconciled on the spelled-out sentence-case form and this was the last copy
+ * still carrying the old one, waiting to reintroduce the inconsistency the
+ * moment something wired it up.
+ */
 export const RC_SECTION_PACES = [
   { id: 'standard', label: 'Standard', secondsPerPassage: RC_STANDARD_SECONDS_PER_PASSAGE },
-  { id: 'time-and-a-half', label: 'Time & a Half', secondsPerPassage: Math.round(RC_STANDARD_SECONDS_PER_PASSAGE * 1.5) },
-  { id: 'double-time', label: 'Double Time', secondsPerPassage: RC_STANDARD_SECONDS_PER_PASSAGE * 2 },
+  { id: 'time-and-a-half', label: 'Time and a half', secondsPerPassage: Math.round(RC_STANDARD_SECONDS_PER_PASSAGE * 1.5) },
+  { id: 'double-time', label: 'Double time', secondsPerPassage: RC_STANDARD_SECONDS_PER_PASSAGE * 2 },
   { id: 'untimed', label: 'Untimed', secondsPerPassage: null },
 ] as const;
 
