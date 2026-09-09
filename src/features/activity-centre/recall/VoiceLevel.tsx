@@ -79,9 +79,18 @@ export interface VoiceLevelProps {
    * remaining twenty-five stimuli and four minutes of clearly heard speech.
    */
   onDeadInput?: (dead: boolean) => void;
+  /**
+   * The first time anything at all reaches the microphone. Called once.
+   *
+   * The ready beat holds on this. "Say something to check your microphone"
+   * was a three-second wish: the beat counted to zero whether or not the bar
+   * had ever moved, so the sentence was an instruction nothing waited for. The
+   * beat now waits for this, or for its own cap, whichever is first.
+   */
+  onHeard?: () => void;
 }
 
-export function VoiceLevel({ getStream, phase, onDeadInput }: VoiceLevelProps) {
+export function VoiceLevel({ getStream, phase, onDeadInput, onHeard }: VoiceLevelProps) {
   const bar = useRef<HTMLSpanElement>(null);
   const level = useRef(0);
   /** The loudest thing heard since the current phase began. */
@@ -93,6 +102,10 @@ export function VoiceLevel({ getStream, phase, onDeadInput }: VoiceLevelProps) {
   const dead = useRef(false);
   const onDead = useRef(onDeadInput);
   onDead.current = onDeadInput;
+  /** Whether the first sound has been reported, so it is reported once. */
+  const heard = useRef(false);
+  const onFirstSound = useRef(onHeard);
+  onFirstSound.current = onHeard;
 
   /*
    * One analyser for the life of the run.
@@ -142,6 +155,10 @@ export function VoiceLevel({ getStream, phase, onDeadInput }: VoiceLevelProps) {
          * condition it describes is the thing being fixed. Guarded on `dead` so
          * this is a transition rather than a call at 60Hz.
          */
+        if (rms >= NOISE_FLOOR && !heard.current) {
+          heard.current = true;
+          onFirstSound.current?.();
+        }
         if (rms >= NOISE_FLOOR && dead.current) {
           dead.current = false;
           silentWindows.current = 0;

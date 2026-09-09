@@ -264,7 +264,7 @@ describe("stepping away mid-section", () => {
     await renderRun({ readySeconds: 3 });
     // The ready beat: nothing has begun, her time has not started, and there is
     // nothing to step away from.
-    expect(screen.getByText(/Recording now/)).toBeInTheDocument();
+    expect(screen.getByText(/Microphone on/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Pause" })).toBeNull();
   });
 });

@@ -94,6 +94,12 @@ export interface SectionRunnerProps {
    * without waiting out three real seconds; every real run takes the default.
    */
   readySeconds?: number;
+  /**
+   * How long the beat waits to hear her before it counts anyway, in seconds.
+   * Injected in tests for the same reason as `readySeconds`. A beat of zero
+   * seconds has no check: there is no beat to hold.
+   */
+  micCheckSeconds?: number;
 }
 
 /**
@@ -127,6 +133,17 @@ const defaultNow = () => Date.now();
  */
 const READY_SECONDS = 3;
 
+/**
+ * How long the beat holds for the first sound before counting regardless.
+ *
+ * "Say something to check your microphone" is only an instruction if
+ * something waits for the answer. The beat holds until the level has moved
+ * once, or this long, whichever is first: a student who says nothing is not
+ * kept at the door, and a dead input is still caught by the per-stimulus
+ * windows in `VoiceLevel`.
+ */
+const MIC_CHECK_SECONDS = 6;
+
 /** A row gets a few quiet chances while she is still working, never an unbounded loop. */
 const ROW_RETRY_ATTEMPTS = 3;
 const ROW_RETRY_BASE_MS = 500;
@@ -143,6 +160,7 @@ export function SectionRunner({
   onExit,
   now = defaultNow,
   readySeconds = READY_SECONDS,
+  micCheckSeconds = MIC_CHECK_SECONDS,
 }: SectionRunnerProps) {
   const run = useMemo(
     () => buildSectionRun(items, sourceSection, timeGoalMinutes),
@@ -172,6 +190,7 @@ export function SectionRunner({
       onExit={onExit}
       now={now}
       readySeconds={readySeconds}
+      micCheckSeconds={micCheckSeconds}
     />
   );
 }
@@ -185,6 +204,7 @@ function RunBody({
   onExit,
   now,
   readySeconds,
+  micCheckSeconds,
 }: {
   run: NonNullable<ReturnType<typeof buildSectionRun>>;
   assignmentId: string;
@@ -194,6 +214,7 @@ function RunBody({
   onExit?: () => void;
   now: () => number;
   readySeconds: number;
+  micCheckSeconds: number;
 }) {
   const [cursor, setCursor] = useState<SectionCursor>(startCursor);
   const [done, setDone] = useState(false);
@@ -224,6 +245,18 @@ function RunBody({
    * ends.
    */
   const [countdown, setCountdown] = useState<number | null>(readySeconds);
+  /**
+   * Whether the microphone has heard anything at all yet.
+   *
+   * The beat used to say "Say something to check your microphone" and then
+   * count to zero whether or not anything had been heard, which made the
+   * sentence a wish. The count now waits for this, or for the check to time
+   * out, whichever is first. Once heard, stays heard: this is the beat's gate,
+   * not the run's dead-input fault, which `deadInput` below carries two-way.
+   */
+  const [heard, setHeard] = useState(false);
+  /** The check ran its full length without a sound. A zero-length beat has none. */
+  const [checkExpired, setCheckExpired] = useState(readySeconds <= 0 || micCheckSeconds <= 0);
   /** Confirming the way out. Leaving throws the whole run away. */
   const [confirmingExit, setConfirmingExit] = useState(false);
   /**
@@ -431,6 +464,11 @@ function RunBody({
      */
     if (!recording && !micRefused) return;
     if (micRefused) return;
+    /*
+     * The check. The recorder is open and the bar is on screen, and the count
+     * does not begin until the bar has moved once or the check has run out.
+     */
+    if (!heard && !checkExpired) return;
     if (countdown <= 0) {
       startedAt.current = runNow();
       phaseStartedAt.current = startedAt.current;
@@ -440,7 +478,18 @@ function RunBody({
     }
     const t = setTimeout(() => setCountdown((n) => (n === null ? null : n - 1)), 1000);
     return () => clearTimeout(t);
-  }, [countdown, runNow, recording, micRefused]);
+  }, [countdown, runNow, recording, micRefused, heard, checkExpired]);
+
+  /*
+   * The check's own clock. Starts when the microphone is open, not at mount:
+   * the permission prompt can take longer than the check, and a check that
+   * ran through the prompt would expire before she had a microphone to test.
+   */
+  useEffect(() => {
+    if (checkExpired || heard || !recording || micRefused || countdown === null) return;
+    const t = setTimeout(() => setCheckExpired(true), micCheckSeconds * 1000);
+    return () => clearTimeout(t);
+  }, [checkExpired, heard, recording, micRefused, countdown, micCheckSeconds]);
 
   /*
    * `countdown` is a dependency on purpose. This effect returns early during
@@ -1182,6 +1231,11 @@ function RunBody({
       pauseError={pauseError}
       getStream={getStream}
       onDeadInput={setDeadInput}
+      onHeard={() => setHeard(true)}
+      /* The beat says which of its two states it is in: still waiting to hear
+         her, or counting because it has. */
+      micHeard={heard}
+      micChecked={heard || checkExpired}
       micRefused={micRefused}
       onRetryMic={startRecording}
       confirmingExit={confirmingExit}

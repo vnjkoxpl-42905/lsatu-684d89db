@@ -33,6 +33,11 @@ describe("the section briefing page", () => {
     expect(foot).toMatch(/the clock stops/i);
     expect(foot).toMatch(/cannot go back/i);
     expect(foot).toMatch(/goal/i);
+    // The key, and the step it ends, live here now rather than in the ready
+    // beat, where they were thirty words to read in three seconds.
+    expect(foot).toMatch(/Space twice per stimulus/);
+    expect(foot).toMatch(/given The Recall/);
+    expect(foot).not.toMatch(/given your Read/);
     // The authored closer is the last beat before Start, and it renders here.
     expect(foot).toContain("One a day holds you steady.");
   });

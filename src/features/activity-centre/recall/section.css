@@ -562,6 +562,21 @@
   line-height: 1.65;
 }
 
+/* The bar, in the panel, at a size she can see from where she sits. The rail
+   version is 34x3 beside a status line; here it is the thing the beat is for,
+   and the count does not begin until it has moved. Same element, same ink,
+   same rule that it never reads as a score. */
+.ac-section-ready-level {
+  display: block;
+  line-height: 0;
+}
+
+.ac-section-ready-level .ac-section-level {
+  width: 160px;
+  height: 4px;
+  margin-left: 0;
+}
+
 .ac-section-ready-count {
   /* Was #94a3b8: 2.56:1 at 13px, which is a countdown she cannot read. */
   color: var(--sec-chrome);
