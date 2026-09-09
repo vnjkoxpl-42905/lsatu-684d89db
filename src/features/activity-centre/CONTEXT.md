@@ -70,8 +70,18 @@ Her spoken reaction to the chunk she just recalled — a thought, doubt, example
 _Avoid_: Quip, comment, annotation, reaction
 
 **The Recall** (step 4):
-The end of a stimulus, worked with the text gone: she says the whole argument back from memory.
-_Avoid_: The Read (its former name, which collided with step 1), Retelling (that is step 2), CLIR, recap, rebound, takeaway
+The end of a stimulus, worked with the text gone: she says the whole argument back from memory. Graded on Coverage.
+_Avoid_: Retelling (that is step 2), CLIR, recap, rebound, takeaway, The Read (see below: that is now the other number, not this step's former name)
+
+**The Read**:
+The analytical takeaway, and the second graded number: what the argument is DOING, as opposed to what it says. Authored per stimulus as `the_read`, judged as two flags, `read_given` and `read_matches` ([ADR 0025](../../../docs/adr/0025-the-read-is-the-second-number.md)). It is a dimension of the grading, never a fifth step she is asked to perform out loud.
+
+It was step 4's name until [ADR 0012](../../../docs/adr/0012-the-recall-is-a-recap-from-memory.md) renamed that step to The Recall, and this entry did not exist for the six days between 0012 and 0025, so "The Read" read as simply retired. It is not. On the Report Card, **Your Read** is correct and must not be collapsed into The Recall: they are the reasoning half and the memory half, and they fail differently.
+_Avoid_: Takeaway, the point, the gist, analysis
+
+**the move**:
+What a stimulus's Read turns on, in the judge's and the card's shorthand: the loophole, inference or conflict the argument runs on. Always defined on a surface before it is used, because "you found the move" means nothing to a student reading it for the first time.
+_Avoid_: The trick, the gotcha, the key (reserved for the authored answer)
 
 **Detail**:
 One of the small authored facts a stimulus contains. PT102.S3.Q1 holds 21.

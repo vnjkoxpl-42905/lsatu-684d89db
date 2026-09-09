@@ -1285,6 +1285,28 @@
   color: var(--rd-ink);
   font-weight: 600;
 }
+/* The four steps in the "Before you start" aside. A numbered list rather than
+   a paragraph, because the aside is the last thing she reads before pressing
+   Start and the order is the whole content. Numbers are the authored labels'
+   job, so the marker is the count and nothing else. */
+.sl-aside-steps {
+  margin: 12px 0 0;
+  /* Tailwind preflight strips list markers globally, and the order is the whole
+     content of this list, so it is asked for back explicitly. */
+  list-style: decimal;
+  padding: 0 0 0 1.35em;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--rd-ink-2);
+}
+.sl-aside-steps li {
+  margin-top: 8px;
+}
+.sl-aside-steps li::marker {
+  color: var(--rd-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
 .sl-key {
   display: inline-block;
   font-family: var(--rd-mono);

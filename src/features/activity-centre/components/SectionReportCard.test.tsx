@@ -85,6 +85,40 @@ const grade: SectionGrade = {
   },
 };
 
+describe("the move, which she has to be told the meaning of", () => {
+  /** A grade with The Read measured, which is what puts the word on screen. */
+  const withReads: SectionGrade = {
+    ...grade,
+    section: {
+      ...grade.section,
+      read_given_count: 3,
+      read_matched_count: 2,
+      no_read_count: 1,
+    },
+  };
+
+  it("says what a move is before it says whether she found one", () => {
+    const { container } = render(
+      <SectionReportCard grade={withReads} loadModelRuns={noModelRuns} />,
+    );
+    const text = container.textContent ?? "";
+    const defined = text.indexOf("The move is what an argument runs on");
+    const used = text.indexOf("found the move");
+    expect(defined, "the move is never defined for her").toBeGreaterThan(-1);
+    expect(used, "the word is not on the card at all").toBeGreaterThan(-1);
+    expect(defined, "she is told she found the move before being told what one is")
+      .toBeLessThan(used);
+  });
+
+  it("keeps The Recall and The Read apart, because they fail differently", () => {
+    render(<SectionReportCard grade={withReads} loadModelRuns={noModelRuns} />);
+    // ADR 0025. Coverage is the memory half, The Read is the reasoning half.
+    // Collapsing the card's "Your Read" into "The Recall" would erase the
+    // distinction the second number exists to make.
+    expect(screen.getByText(/Holding a stimulus is Coverage/)).toBeInTheDocument();
+  });
+});
+
 describe("what the student sees", () => {
   it("leads with a band, not a raw verdict", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);

@@ -521,6 +521,22 @@ export function SectionReportCard({
           * The clock is third because it is the one a student will read first
           * if you let her, and it is the least important of the three.
           */}
+        {/*
+          * What "the move" means, said once, before the word is used.
+          *
+          * It runs through the Understood figure and every Your Read movement
+          * below, and was defined nowhere a student reads: she was told she had
+          * found the move without being told what a move is. Said here it also
+          * does the introducing the two numbers needed anyway, which is why it
+          * reads as a lead-in rather than a footnote.
+          */}
+        {overall.readMeasured && (
+          <p className="mt-6 max-w-[58ch] text-xs leading-relaxed text-[var(--rc-console-ink-dim)]">
+            The move is what an argument runs on: the loophole it leaves, the inference it forces,
+            the conflict it sets up. Holding a stimulus is Coverage. Naming the move is The Read.
+          </p>
+        )}
+
         <div className="rc__console-divider mt-7 grid gap-6 border-t pt-6 sm:grid-cols-3">
           <Figure
             label="Held"
@@ -878,7 +894,7 @@ export function SectionReportCard({
                     <Movement label="Your Read" tone="read">
                       <p className="text-[15px] leading-relaxed text-[var(--rc-ink)]">
                         {!s.readGiven
-                          ? "You stopped at the retelling. Say what the argument is doing, not only what it says."
+                          ? "You stopped at telling it back. Say what the argument is doing, not only what it says."
                           : s.readMatches
                             ? "You found the move."
                             : "You gave a Read, but not the one this argument turns on."}

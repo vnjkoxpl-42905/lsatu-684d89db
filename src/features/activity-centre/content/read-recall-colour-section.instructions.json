@@ -9,7 +9,7 @@
       "A detail merely gestured at is not carried. Naming the topic is not the same as saying what was claimed about it.",
       "Numbers, names, dates, quantities and connecting words are each their own detail. Never treat one as carried because the sentence around it was.",
       "A reaction that could be pasted onto any other sentence does not count as a colour. Judge whether it engages this content, never whether it is correct or well put.",
-      "Score The Recall against the captured key for that stimulus, not against a retelling. A different name for the same move is fine; missing the move is not.",
+      "Score The Read against the captured key for that stimulus, not against a retelling. A different name for the same move is fine; missing the move is not.",
       "Silence during a silent read is correct and expected. Only silence inside a recall or a colour counts against her."
     ],
     "partial_rule": "Mark 'partial' when the retelling is real but at least one detail went missing, which is the drill's ordinary state. Mark 'incorrect' only when the response is a gist or a topic label rather than a retelling."
@@ -43,19 +43,23 @@
         "steps": [
           {
             "body": "Read about one sentence at a time, silently. Give each word enough attention to hear it naturally in your head. If that feels like too much to hold, take a shorter piece. When you take on too much, the part that slips is always the beginning.",
-            "label": "Read it."
+            "label": "Read it.",
+            "short": "Read about a sentence at a time, silently. Nothing is spoken yet."
           },
           {
             "body": "Look away from the screen and tell it back in your own words, out loud, like you are telling a friend what it said. Out of order is fine. Casual is fine. Laughing is fine.",
-            "label": "Tell it back."
+            "label": "Tell it back.",
+            "short": "Look away and tell it back in your own words, out loud."
           },
           {
             "body": "React. A doubt, a question, an example, a joke, a feeling. One or two seconds is plenty. It does not have to be clever, it has to be yours.",
-            "label": "Colour it."
+            "label": "Colour it.",
+            "short": "React to it out loud. A doubt, a question, an example, a joke."
           },
           {
             "body": "Press space. The stimulus disappears and does not come back. Now say the entire argument back from memory, out loud, with every detail you can still hold. This is the part that gets scored.",
-            "label": "The Recall."
+            "label": "The Recall.",
+            "short": "The text goes. Say the whole argument back from memory."
           }
         ],
         "heading": "What you actually do."

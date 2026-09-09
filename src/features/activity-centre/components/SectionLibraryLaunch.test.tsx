@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { SectionLibraryLaunch } from "./SectionLibraryLaunch";
 import type { ActivityInstructions } from "../api/types";
+import { METHOD_STEPS } from "../recall/method";
 import sectionInstructions from "../content/read-recall-colour-section.instructions.json";
 
 /**
@@ -144,8 +145,25 @@ describe("the library door", () => {
       "Read about one sentence at a time, silently. Give each word enough attention to hear it naturally in your head. If that feels like too much to hold, take a shorter piece. When you take on too much, the part that slips is always the beginning.",
     );
     expect(pageText).toContain("Your entire section is recorded in one take");
+    /*
+     * The aside summarises the method above the four step cards, and every line
+     * of that summary is the authored `short` for its step, rendered by
+     * MethodSummary. That is the point: the aside used to be hand-written prose
+     * that drifted, and it drifted into "say it back", which is step 2's
+     * retired student label.
+     *
+     * So the ban below no longer includes "Read about a sentence": that phrase
+     * is now authored, and the assertion beneath pins it to the authored text
+     * rather than forbidding it. The rest of the ban stands, because those are
+     * still phrasings nobody authored.
+     */
+    for (const step of METHOD_STEPS) {
+      expect(pageText, `the aside must state ${step.label} as authored`).toContain(step.short);
+    }
     expect(pageText).not.toMatch(
-      /One section keeps the method steady|Read about a sentence|Say each retelling|The whole section records/i,
+      /One section keeps the method steady|Say each retelling|The whole section records/i,
     );
+    // The retired step-2 label, which is what the hand-written aside had.
+    expect(pageText).not.toMatch(/say it back/i);
   });
 });

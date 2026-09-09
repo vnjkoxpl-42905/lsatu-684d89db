@@ -234,8 +234,15 @@ export interface ActivityBriefing {
   sections: {
     heading: string;
     body: string[];
-    /** A numbered procedure. Rendered as an ordered list, after the prose. */
-    steps?: { label: string; body: string }[];
+    /**
+     * A numbered procedure. Rendered as an ordered list, after the prose.
+     *
+     * `short` is the one-line definition of the step, for the surfaces that
+     * cannot carry `body`: the walkthrough card mid-run, and anywhere else the
+     * method has to be restated in a sentence. Authored here so a step can only
+     * be redefined in one place. See `recall/method.ts`.
+     */
+    steps?: { label: string; body: string; short?: string }[];
     /** A worked run, beat by beat, of one real stimulus. */
     demo?: { caption?: string; beats: BriefingBeat[] };
   }[];

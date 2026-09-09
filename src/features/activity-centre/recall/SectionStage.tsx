@@ -418,7 +418,7 @@ export function SectionStage({
                   <p className="ac-section-ready-title">Recording now</p>
                   <p className="ac-section-ready-body">
                     One take, all the way through, out loud. Space twice per stimulus: once when
-                    you have read it and said it back, once when you have given your Read.
+                    you have read it all, once when you have given The Recall.
                   </p>
                   <span className="ac-section-ready-count">
                     {countdown > 0 ? `Starting in ${countdown}` : "Starting"}
@@ -533,6 +533,15 @@ export function SectionStage({
             </p>
             <p className="ac-section-coach-title">{coach.title}</p>
             <p className="ac-section-coach-body">{coach.body}</p>
+            {coach.steps ? (
+              <ol className="ac-section-coach-steps">
+                {coach.steps.map((s) => (
+                  <li key={s.label}>
+                    <strong>{s.label}</strong> {s.short}
+                  </li>
+                ))}
+              </ol>
+            ) : null}
             <p className="ac-section-coach-next">
               <span>Next</span> {coach.next}
             </p>

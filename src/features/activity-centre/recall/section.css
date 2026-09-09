@@ -771,6 +771,25 @@
   color: rgb(255 255 255 / 0.82);
 }
 
+/* The method, on the one card that states it. A list rather than a paragraph:
+   four definitions run together is the thing she skips. The label carries the
+   weight, the definition sits at body weight beside it. */
+.ac-section-coach-steps {
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.82);
+}
+
+.ac-section-coach-steps strong {
+  font-weight: 600;
+  color: rgb(255 255 255 / 0.95);
+}
+
 .ac-section-coach-next {
   margin: 0.85rem 0 0;
   padding-top: 0.7rem;

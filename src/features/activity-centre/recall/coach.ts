@@ -17,6 +17,8 @@
  *   starts, so a second section is bare even if the first was abandoned.
  */
 
+import { METHOD_STEPS, type MethodStep } from "./method";
+
 /** How many stimuli the walkthrough covers before it retires itself. */
 export const COACHED_STIMULI = 3;
 
@@ -52,51 +54,64 @@ export interface CoachNote {
   of: number;
   title: string;
   body: string;
+  /**
+   * The method itself, on the one card that states it. Rendered as a list
+   * rather than folded into `body`, because four definitions run together in a
+   * paragraph is a wall she skips at the exact moment she needs to read it.
+   */
+  steps?: readonly MethodStep[];
   /** What happens the moment she presses Space. */
   next: string;
 }
 
-const WORKING: { title: string; body: string; next: string }[] = [
+/**
+ * The three working cards.
+ *
+ * The first one states the method, and it states it from `METHOD_STEPS` rather
+ * than in prose of its own. An earlier version of this card told her to read
+ * out loud, when step 1 is silent, and to say "what that piece is doing in the
+ * argument, evidence, conclusion", when a label that would fit any sentence is
+ * the one thing the judge refuses to count as a colour. She was coached into
+ * two faults and then marked down for them on the card. Prose here is allowed
+ * to encourage, never to define.
+ */
+const WORKING: { title: string; body: string; steps?: readonly MethodStep[]; next: string }[] = [
   {
-    title: "Read it, out loud in pieces",
-    body: "Take the stimulus a piece at a time. After each piece, say it back in your own words, then say what that piece is doing in the argument — the colour. Evidence, conclusion, someone else's view, a concession. Keep talking; nothing here is being marked as you go.",
-    next: "Space hides the text and asks you to recall the whole thing.",
+    title: "The four steps, on this one",
+    body: "Same four every stimulus. Nothing on screen tracks where you are in them.",
+    steps: METHOD_STEPS,
+    next: "Space hides the text and asks you for the whole argument.",
   },
   {
     title: "Same again, and do not vet yourself",
-    body: "Second one. Say the wrong word rather than pausing to find the right one — the drill is training you to keep reading and talking at once, so a rough colour said out loud beats a perfect one thought silently.",
-    next: "Space hides the text for the recall.",
+    body: "Second one. Say the wrong word rather than stopping to find the right one. The drill is training you to read and talk at once, so a rough colour said out loud beats a perfect one thought silently.",
+    next: "Space hides the text for The Recall.",
   },
   {
     title: "Last one with help",
-    body: "You have the rhythm now: read a piece, say it back, colour it. From the next stimulus on, this card is gone and it is just you, the paper and the clock.",
-    next: "Space hides the text for the recall.",
+    body: "You have the rhythm now: read it, tell it back, colour it. From the next stimulus on, this card is gone and it is just you, the paper and the clock.",
+    next: "Space hides the text for The Recall.",
   },
 ];
 
-const RECALLING: { title: string; body: string; next: string }[] = [
+const RECALLING: { title: string; body: string; steps?: readonly MethodStep[]; next: string }[] = [
   {
-    title: "Now say it back from memory",
-    body: "The text is gone on purpose. Recap the whole argument out loud — what was claimed, what it rested on, where it turned. It does not need to be word perfect; it needs to be the argument.",
+    title: "Now, The Recall",
+    body: "The text is gone on purpose. Say the whole argument back out loud: what was claimed, what it rested on, where it turned. It does not need to be word perfect; it needs to be the argument.",
     next: "Space brings up the next stimulus.",
   },
   {
-    title: "Recall it whole",
-    body: "Again from memory, whole argument. If you lose a piece, say so out loud and carry on — a gap you name is worth more than a silence.",
+    title: "The Recall, again",
+    body: "Again from memory, the whole argument. If you lose a detail, say so out loud and carry on. A gap you name is worth more than a silence.",
     next: "Space brings up the next stimulus.",
   },
   {
-    title: "Recall it, then you are on your own",
+    title: "The Recall, then you are on your own",
     body: "Say the argument back one more time. After this the card retires and you run the section on your own, one take to the end. You can pause if you have to, and you cannot go back.",
     next: "Space brings up the next stimulus.",
   },
 ];
 
-/**
- * The note for where she is, or null once the walkthrough is over.
- *
- * `item` is 0-based, matching the cursor.
- */
 export function coachNote(item: number, phase: "working" | "recalling"): CoachNote | null {
   if (item < 0 || item >= COACHED_STIMULI) return null;
   const source = phase === "working" ? WORKING : RECALLING;
