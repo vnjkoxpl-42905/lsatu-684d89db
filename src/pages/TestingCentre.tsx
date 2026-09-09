@@ -49,6 +49,13 @@ type Door = null | "section" | "test";
 const PANEL_ID = "testing-door-panel";
 
 /**
+ * How much of the panel has to be on screen before opening a door is allowed to
+ * move the page. Below this the panel is a sliver at the bottom edge and the
+ * click reads as a no-op; above it the student can already see what happened.
+ */
+const PANEL_VISIBLE_MARGIN = 120;
+
+/**
  * RC sections, loaded only once something needs them.
  *
  * This used to run on mount, which pulled the whole Reading Comprehension index
@@ -354,13 +361,30 @@ export default function TestingCentre() {
   // under the fold: the click looks like it did nothing, and the section type
   // picker (Logical Reasoning / Reading Comprehension) is never seen, so the door
   // reads as LR-only. Bring the panel to the student when it opens.
+  //
+  // Anchored on the doors rather than the panel. Scrolling the panel itself to
+  // the top of the viewport over-corrected into the opposite failure: the panel
+  // is taller than the viewport, so the page ran to its own scroll maximum and
+  // took the room's name and the door that was just pressed with it. Measured at
+  // 1280x900, .classroom-title landed at -234px and 78% of the door row was off
+  // screen, at the moment a student commits to a timed section. Putting the door
+  // row at the top keeps the choice that was just made on screen, and the panel
+  // begins directly beneath it.
   const panelRef = React.useRef<HTMLDivElement | null>(null);
+  const doorsRef = React.useRef<HTMLDivElement | null>(null);
   React.useEffect(() => {
     if (!door) return;
+    const panel = panelRef.current;
+    if (!panel) return;
+    // Leave the page alone when the panel already starts on screen. The click
+    // did not read as a no-op, and moving the page under a student who can
+    // already see the result is its own small betrayal.
+    const top = panel.getBoundingClientRect().top;
+    if (top >= 0 && top <= window.innerHeight - PANEL_VISIBLE_MARGIN) return;
     const prefersReducedMotion = window.matchMedia?.(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    panelRef.current?.scrollIntoView({
+    (doorsRef.current ?? panel).scrollIntoView({
       behavior: prefersReducedMotion ? "auto" : "smooth",
       block: "start",
     });
@@ -386,7 +410,7 @@ export default function TestingCentre() {
 
           aria-expanded, not aria-pressed: these are not toggle buttons, they
           disclose a panel, and aria-controls is what says which panel. */}
-      <div className="testing-doors">
+      <div className="testing-doors" ref={doorsRef}>
         <button
           type="button"
           className="testing-door"

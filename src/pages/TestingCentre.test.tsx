@@ -200,6 +200,64 @@ describe("Testing Centre", () => {
   });
 
   /**
+   * Opening a door used to scroll the panel itself to the top of the viewport.
+   * The panel is taller than the viewport, so the page ran to its own scroll
+   * maximum and took the room's name and the door that was just pressed with
+   * it: measured at 1280x900, the title landed at -234px and 78% of the door
+   * row was gone. The anchor is the door row now.
+   *
+   * jsdom has no layout, so every rect is zero and the effect's "already
+   * visible" guard would always win. The panel's rect is stubbed off screen so
+   * the branch that actually moves the page is the one under test.
+   */
+  /**
+   * Stubs go on the element instances, not on Element.prototype. An own
+   * property always shadows the prototype, which a prototype patch does not
+   * reliably do here, and there is nothing to restore afterwards.
+   */
+  const stubScrollTargets = () => {
+    const panel = document.getElementById("testing-door-panel") as HTMLElement;
+    const doors = document.querySelector(".testing-doors") as HTMLElement;
+    const onPanel = vi.fn();
+    const onDoors = vi.fn();
+    panel.scrollIntoView = onPanel;
+    doors.scrollIntoView = onDoors;
+    return { panel, doors, onPanel, onDoors };
+  };
+
+  it("scrolls the door row, not the panel, when it brings an opened panel into view", async () => {
+    renderPage();
+    const { panel, onPanel, onDoors } = stubScrollTargets();
+    // jsdom has no layout, so every rect is zero and the effect's "already
+    // visible" guard would always win. Put the panel off screen so the branch
+    // that actually moves the page is the one under test.
+    panel.getBoundingClientRect = () => ({ top: 5000, bottom: 6000, height: 1000 }) as DOMRect;
+
+    fireEvent.click(screen.getByRole("button", { name: /Take a section/ }));
+
+    // The effect lands after this tick, so the assertion has to wait for it.
+    await waitFor(() => expect(onDoors).toHaveBeenCalledTimes(1));
+    expect(onPanel).not.toHaveBeenCalled();
+    expect(onDoors.mock.calls[0][0]).toMatchObject({ block: "start" });
+  });
+
+  /** The other half: a panel already on screen must not move the page at all. */
+  it("leaves the page alone when the panel is already in view", async () => {
+    renderPage();
+    // jsdom's zero rects put the panel at top 0, which is "already visible", so
+    // the real rect is left in place here on purpose.
+    const { onPanel, onDoors } = stubScrollTargets();
+
+    fireEvent.click(screen.getByRole("button", { name: /Take a section/ }));
+
+    // Wait for the panel so the effect has certainly run, then assert it chose
+    // to do nothing.
+    await waitFor(() => expect(screen.getByTestId("section-selector")).toBeTruthy());
+    expect(onDoors).not.toHaveBeenCalled();
+    expect(onPanel).not.toHaveBeenCalled();
+  });
+
+  /**
    * Discard deletes a sitting that can be ninety minutes into a two-hour clock.
    * It used to do that on one click, and below 560px the control sits exactly
    * where a thumb lands. These two tests exist so the confirm cannot be
