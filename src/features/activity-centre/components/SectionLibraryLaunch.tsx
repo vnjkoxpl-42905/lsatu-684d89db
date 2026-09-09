@@ -55,8 +55,9 @@ export function SectionLibraryLaunch({
             Read each piece silently. Then look away and say it back in your own
             words. Give your reaction out loud too. After the final piece,
             recall the whole argument out loud from memory. Your entire section
-            is recorded in <strong>one take</strong>, and you cannot pause the
-            recording.
+            is recorded in <strong>one take</strong>. You can pause: the text
+            hides and the clock stops while you are away, and you cannot go back
+            to a stimulus.
           </p>
           <p>
             Every completed attempt stays here. If you run a section again, it

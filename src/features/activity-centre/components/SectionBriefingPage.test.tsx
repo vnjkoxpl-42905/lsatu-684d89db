@@ -23,11 +23,15 @@ function renderPage(props?: Partial<Parameters<typeof SectionBriefingPage>[0]>) 
 }
 
 describe("the section briefing page", () => {
-  it("says at the foot, beside Start, that it is one take with no pause and what the time is for", () => {
+  it("says at the foot, beside Start, what one take and a pause each cost her, and what the time is for", () => {
     renderPage();
     const foot = document.querySelector(".sl-bp-foot")?.textContent ?? "";
     expect(foot).toMatch(/one take/i);
-    expect(foot).toMatch(/does not pause/i);
+    // The runner ships a Pause button, so the foot says what pausing does
+    // rather than denying it. Joshua's call, 2026-09-09.
+    expect(foot).toMatch(/you can pause/i);
+    expect(foot).toMatch(/the clock stops/i);
+    expect(foot).toMatch(/cannot go back/i);
     expect(foot).toMatch(/goal/i);
     // The authored closer is the last beat before Start, and it renders here.
     expect(foot).toContain("One a day holds you steady.");

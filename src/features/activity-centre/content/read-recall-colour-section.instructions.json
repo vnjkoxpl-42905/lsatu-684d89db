@@ -15,12 +15,12 @@
     "partial_rule": "Mark 'partial' when the retelling is real but at least one detail went missing, which is the drill's ordinary state. Mark 'incorrect' only when the response is a gist or a topic label rather than a retelling."
   },
   "rules": [
-    "Everything here is out loud. The whole section records in one take, and it never pauses.",
+    "Everything here is out loud. The whole section records in one take. You can pause: the text hides and the clock stops while you are away, and you cannot go back to a stimulus.",
     "Read silently, about a sentence at a time. When you are not sure how much to take on, take less.",
     "Look away and tell it back in your own words. Then react to it. Both out loud.",
     "Keep going like that through the whole stimulus.",
     "Press space when you have got all of it. The stimulus vanishes and stays gone. Now say the whole argument back from memory, with every detail you can hold.",
-    "Press space again and the next one loads. No breaks, no going back, all the way to the end."
+    "Press space again and the next one loads. No going back, all the way to the end."
   ],
   "tagline": "Read it, tell it back, react to it. Then the stimulus disappears and you say the whole argument back from memory.",
   "briefing": {

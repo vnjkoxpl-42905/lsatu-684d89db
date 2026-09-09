@@ -550,7 +550,7 @@ export function SectionLaunchFrame({
       <section className="rd-close" aria-label="Start">
         <div className="rd-close-panel">
           <p className="rd-close-line">
-            Twenty-five minutes. No pause button. <em>Every detail you can still hold.</em>
+            Twenty-five minutes. No going back. <em>Every detail you can still hold.</em>
           </p>
           {closingAction ?? (
             <button type="button" className="sl-start" onClick={goToSections}>

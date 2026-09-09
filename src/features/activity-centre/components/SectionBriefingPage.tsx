@@ -62,7 +62,8 @@ export function SectionBriefingPage({
       </header>
 
       {/* One fact, the one that lowers her shoulders before she reads. That the
-          section records in one take with no pause is said at the foot, beside
+          section records in one take, and what pausing does and does not buy
+          her, is said at the foot, beside
           the Start she presses after reading; saying it here as well made the
           notice a paragraph she skipped. (An earlier version of this comment
           claimed Step 4 carried it. It did not: the sentence lived only in
@@ -136,12 +137,14 @@ export function SectionBriefingPage({
       )}
 
       {/* The two facts she needs at the moment she presses Start, said where
-          she presses it: it does not pause, and what the time is for. The
+          she presses it: what a pause costs her, and what the time is for. The
           closer is the authored last beat before Start and belongs here too. */}
       <footer className="sl-bp-foot">
         <p className="sl-bp-fact">
-          It runs in one take and does not pause. Twenty-five minutes for the whole section is
-          the goal you are working toward, not a limit.
+          It runs in one take. You can pause: the text hides and the clock stops
+          while you are away, and you cannot go back to a stimulus. Twenty-five
+          minutes for the whole section is the goal you are working toward, not a
+          limit.
         </p>
         {briefing?.closer && (
           <p className="sl-bp-closer">{renderInlineMarks(briefing.closer, "sl-bp-closer")}</p>

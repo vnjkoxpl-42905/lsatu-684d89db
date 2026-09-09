@@ -36,7 +36,7 @@ const RECORDING_BUCKET = "drill-recordings";
 
 /**
  * A Read, Recall, Colour SECTION run: 22 to 26 stimuli, end to end, one clock,
- * no stopping.
+ * no going back.
  *
  * Two rules shape everything here, both from
  * `docs/specs/2026-08-31-rrc-section-mode.md` section 4, and both negative:

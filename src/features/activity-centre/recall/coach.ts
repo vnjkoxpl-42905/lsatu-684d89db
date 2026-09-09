@@ -87,7 +87,7 @@ const RECALLING: { title: string; body: string; next: string }[] = [
   },
   {
     title: "Recall it, then you are on your own",
-    body: "Say the argument back one more time. After this the card retires and the section runs straight through to the end, one take, no stopping.",
+    body: "Say the argument back one more time. After this the card retires and you run the section on your own, one take to the end. You can pause if you have to, and you cannot go back.",
     next: "Space brings up the next stimulus.",
   },
 ];
