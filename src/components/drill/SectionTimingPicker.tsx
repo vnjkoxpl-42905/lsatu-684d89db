@@ -139,34 +139,14 @@ export default function SectionTimingPicker({
     setOpen(false);
   };
 
-  const Row = ({
-    selected,
-    title,
-    detail,
-    onSelect,
-  }: {
-    selected: boolean;
-    title: string;
-    detail: string;
-    onSelect: () => void;
-  }) => (
-    <button
-      type="button"
-      role="option"
-      aria-selected={selected}
-      onClick={onSelect}
-      className={cn(
-        'w-full flex items-start justify-between gap-3 rounded-lg px-3 py-2.5 text-left transition-colors',
-        selected ? 'bg-accent' : 'hover:bg-accent/50',
-      )}
-    >
-      <span className="min-w-0">
-        <span className="block text-sm font-semibold text-foreground">{title}</span>
-        <span className="block text-xs text-muted-foreground">{detail}</span>
-      </span>
-      {selected && <Check className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />}
-    </button>
-  );
+  /* Which row, if any, is the current value. Decides where focus lands when
+     the popover opens and which row is the list's one Tab stop. A custom
+     percentage matches no row, and then the first row takes the stop so the
+     list is still reachable. */
+  const rowPercents = restricted ? allowedPercents! : [100, ...SPEED_TRAINING_PERCENTS];
+  const hasSelectedRow =
+    (value.mode === 'unlimited' && allowUnlimited) ||
+    (isTimed && rowPercents.some((p) => Math.round(p) === Math.round(currentPercent)));
 
   /* ---------------------------------------------------------------- custom */
 
@@ -193,49 +173,63 @@ export default function SectionTimingPicker({
       return { mode: 'timed', percent: clampPercent((next / baseSeconds) * 100) };
     });
 
-  const Stepper = ({
-    onDecrement,
-    onIncrement,
-    display,
-    suffix,
-    label,
-  }: {
-    onDecrement: () => void;
-    onIncrement: () => void;
-    display: string;
-    suffix?: string;
-    label: string;
-  }) => (
-    <div className="flex items-center gap-1 rounded-lg border border-border px-1.5 py-1">
-      <button
-        type="button"
-        onClick={onDecrement}
-        aria-label={`Decrease ${label}`}
-        className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-      >
-        <Minus className="h-3.5 w-3.5" />
-      </button>
-      <span className="min-w-[3.5rem] text-center text-sm font-semibold tabular-nums text-foreground">
-        {display}
-        {suffix && <span className="ml-0.5 text-xs font-normal text-muted-foreground">{suffix}</span>}
-      </span>
-      <button
-        type="button"
-        onClick={onIncrement}
-        aria-label={`Increase ${label}`}
-        className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-      >
-        <Plus className="h-3.5 w-3.5" />
-      </button>
-    </div>
-  );
-
   /* ---------------------------------------------------------------- render */
 
   // Stable per instance, so two pickers on one page cannot collide.
   const reactId = React.useId();
   const fieldLabelId = `${reactId}-timing-label`;
   const valueLabelId = `${reactId}-timing-value`;
+  const contentId = `${reactId}-timing-popup`;
+  const speedLabelId = `${reactId}-timing-speed`;
+  const customLabelId = `${reactId}-timing-custom`;
+
+  const listRef = React.useRef<HTMLDivElement>(null);
+  const optionsIn = (list: HTMLElement) =>
+    Array.from(list.querySelectorAll<HTMLElement>('[role="option"]'));
+
+  /* Arrow keys walk the rows, Home and End jump to either end. Enter and
+     Space need nothing: each row is a real button. Tab leaves the list for
+     the custom steppers, which is why the rows share a single Tab stop. */
+  const handleListKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const list = listRef.current;
+    if (!list) return;
+    const options = optionsIn(list);
+    if (options.length === 0) return;
+    const current = options.indexOf(document.activeElement as HTMLElement);
+    let next: number | null = null;
+    switch (event.key) {
+      case 'ArrowDown':
+        next = Math.min(options.length - 1, current + 1);
+        break;
+      case 'ArrowUp':
+        next = Math.max(0, current < 0 ? 0 : current - 1);
+        break;
+      case 'Home':
+        next = 0;
+        break;
+      case 'End':
+        next = options.length - 1;
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+    options[next]?.focus();
+  };
+
+  /* Open on the row that is already chosen, the way a native select does,
+     rather than on whatever happens to be first. Radix would focus the first
+     tabbable element, which is the first row only until a custom value takes
+     the Tab stop away from it. */
+  const focusCurrentRow = (event: Event) => {
+    const list = listRef.current;
+    if (!list) return;
+    const options = optionsIn(list);
+    const target = options.find((o) => o.getAttribute('aria-selected') === 'true') ?? options[0];
+    if (!target) return;
+    event.preventDefault();
+    target.focus();
+  };
 
   const triggerTitle = isTimed ? labelFor(currentPercent) : 'Unlimited';
   const triggerDetail = isTimed ? describe(currentPercent) : 'No clock';
@@ -245,18 +239,21 @@ export default function SectionTimingPicker({
       <PopoverTrigger asChild>
         <button
           type="button"
-          /* Three corrections, all from one audit finding.
-             `aria-haspopup` said "dialog" while what opens is a listbox, so a
-             screen reader announced a dialog and then landed in a list of
-             options. Radix defaults that attribute for a Popover; the popup
-             here is a listbox, so it has to be said explicitly, and
-             `role="combobox"` matches the four sibling controls in this form.
-             The name is now built from the visible text instead of an
-             aria-label, so it carries the current value: every other control
-             in the panel announces its setting and this one announced only its
-             field name. */
+          /* `role="combobox"` matches the four sibling controls in this form,
+             and the name is built from the visible text rather than an
+             aria-label so it carries the current value: every other control
+             in the panel announces its setting and this one announced only
+             its field name.
+
+             `aria-haspopup` is "dialog", which is what Radix gives a Popover
+             and what this one actually is. It was set to "listbox" once, to
+             match the role painted on the whole popup. But the popup holds a
+             list of paces AND two steppers AND a link, and a listbox may
+             contain only options. So the list of rows is the listbox, and
+             the surface that holds it is a dialog, and this says so. */
           role="combobox"
-          aria-haspopup="listbox"
+          aria-haspopup="dialog"
+          aria-controls={open ? contentId : undefined}
           aria-expanded={open}
           aria-labelledby={`${fieldLabelId} ${valueLabelId}`}
           className={cn(
@@ -288,73 +285,101 @@ export default function SectionTimingPicker({
       <PopoverContent
         align="start"
         sideOffset={6}
-        role="listbox"
+        id={contentId}
         aria-label="Section timing"
+        onOpenAutoFocus={focusCurrentRow}
         className={cn(
           'w-[var(--radix-popover-trigger-width)] min-w-[18rem] max-h-[70vh] overflow-y-auto p-2',
           contentClassName,
         )}
       >
-        {restricted ? (
-          <>
-            {allowedPercents!.map((percent) => (
+        {/* The rows are the listbox; the steppers below it are not. Focus
+            moves between rows with the arrow keys and every row is a button,
+            so there is no aria-activedescendant to keep in step. */}
+        <div
+          ref={listRef}
+          role="listbox"
+          aria-label="Pace"
+          onKeyDown={handleListKeyDown}
+        >
+          {restricted ? (
+            <>
+              {allowedPercents!.map((percent, i) => (
+                <Row
+                  key={percent}
+                  selected={isTimed && Math.round(currentPercent) === Math.round(percent)}
+                  tabStop={i === 0 && !hasSelectedRow}
+                  title={labelFor(percent)}
+                  detail={describe(percent)}
+                  onSelect={() => selectPercent(percent)}
+                />
+              ))}
+              {/* Restricting the paces does not remove the no-clock escape —
+                  that is a different decision from which clock to run. */}
+              {allowUnlimited && (
+                <Row
+                  selected={value.mode === 'unlimited'}
+                  title="Unlimited"
+                  detail="∞"
+                  onSelect={() => {
+                    onChange({ mode: 'unlimited' });
+                    setOpen(false);
+                  }}
+                />
+              )}
+            </>
+          ) : (
+            <>
               <Row
-                key={percent}
-                selected={isTimed && Math.round(currentPercent) === Math.round(percent)}
-                title={labelFor(percent)}
-                detail={describe(percent)}
-                onSelect={() => selectPercent(percent)}
+                selected={isTimed && Math.round(currentPercent) === 100}
+                tabStop={!hasSelectedRow}
+                title="Standard"
+                detail={describe(100)}
+                onSelect={() => selectPercent(100)}
               />
-            ))}
-            {/* Restricting the paces does not remove the no-clock escape —
-                that is a different decision from which clock to run. */}
-            {allowUnlimited && (
-              <Row
-                selected={value.mode === 'unlimited'}
-                title="Unlimited"
-                detail="∞"
-                onSelect={() => {
-                  onChange({ mode: 'unlimited' });
-                  setOpen(false);
-                }}
-              />
-            )}
-          </>
-        ) : (
-          <>
-            <Row
-              selected={isTimed && Math.round(currentPercent) === 100}
-              title="Standard"
-              detail={describe(100)}
-              onSelect={() => selectPercent(100)}
-            />
 
-            {allowUnlimited && (
-              <Row
-                selected={value.mode === 'unlimited'}
-                title="Unlimited"
-                detail="∞"
-                onSelect={() => {
-                  onChange({ mode: 'unlimited' });
-                  setOpen(false);
-                }}
-              />
-            )}
+              {allowUnlimited && (
+                <Row
+                  selected={value.mode === 'unlimited'}
+                  title="Unlimited"
+                  detail="∞"
+                  onSelect={() => {
+                    onChange({ mode: 'unlimited' });
+                    setOpen(false);
+                  }}
+                />
+              )}
 
-            <div className="px-3 pb-1 pt-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              Speed training
-            </div>
-            {SPEED_TRAINING_PERCENTS.map((percent) => (
-              <Row
-                key={percent}
-                selected={isTimed && Math.round(currentPercent) === percent}
-                title={`${percent}%`}
-                detail={describe(percent)}
-                onSelect={() => selectPercent(percent)}
-              />
-            ))}
+              {/* A group inside the listbox, which is the one child a listbox
+                  may have besides an option. The heading is its name, not a
+                  row of its own. */}
+              <div role="group" aria-labelledby={speedLabelId}>
+                <div
+                  id={speedLabelId}
+                  className="px-3 pb-1 pt-3 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                >
+                  Speed training
+                </div>
+                {SPEED_TRAINING_PERCENTS.map((percent) => (
+                  <Row
+                    key={percent}
+                    selected={isTimed && Math.round(currentPercent) === percent}
+                    title={`${percent}%`}
+                    detail={describe(percent)}
+                    onSelect={() => selectPercent(percent)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
 
-            <div className="px-3 pb-1 pt-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        {!restricted && (
+          <div role="group" aria-labelledby={customLabelId}>
+            <div
+              id={customLabelId}
+              className="px-3 pb-1 pt-3 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+            >
               Custom
             </div>
             <div className="space-y-2 px-3 pb-1">
@@ -395,7 +420,7 @@ export default function SectionTimingPicker({
                 </span>
               </div>
             </div>
-          </>
+          </div>
         )}
 
         {accommodationNote && (
@@ -405,6 +430,86 @@ export default function SectionTimingPicker({
         )}
       </PopoverContent>
     </Popover>
+  );
+}
+
+/**
+ * One pace. A button, so Enter and Space work without a key handler, carrying
+ * `role="option"` so the list around it reads as a list. Only one row is a
+ * Tab stop: the chosen one, or the first if no row is chosen.
+ *
+ * Module-scoped on purpose. Row and Stepper were declared inside the picker,
+ * which made each a new component type on every render: React unmounted and
+ * remounted them on every state change, and a keyboard user pressing + on a
+ * stepper lost focus to the body after every press.
+ */
+function Row({
+  selected,
+  tabStop = false,
+  title,
+  detail,
+  onSelect,
+}: {
+  selected: boolean;
+  tabStop?: boolean;
+  title: string;
+  detail: string;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="option"
+      aria-selected={selected}
+      tabIndex={selected || tabStop ? 0 : -1}
+      onClick={onSelect}
+      className={cn(
+        'w-full flex items-start justify-between gap-3 rounded-lg px-3 py-2.5 text-left transition-colors',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20',
+        selected ? 'bg-accent' : 'hover:bg-accent/50',
+      )}
+    >
+      <span className="min-w-0">
+        <span className="block text-sm font-semibold text-foreground">{title}</span>
+        <span className="block text-xs text-muted-foreground">{detail}</span>
+      </span>
+      {selected && <Check className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />}
+    </button>
+  );
+}
+
+/** Plus and minus around a reading. The reading is live, so a nudge is heard as well as seen. */
+function Stepper({
+  onDecrement,
+  onIncrement,
+  display,
+  suffix,
+  label,
+}: {
+  onDecrement: () => void;
+  onIncrement: () => void;
+  display: string;
+  suffix?: string;
+  label: string;
+}) {
+  const buttonClass =
+    'flex h-6 w-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20';
+  return (
+    <div className="flex items-center gap-1 rounded-lg border border-border px-1.5 py-1">
+      <button type="button" onClick={onDecrement} aria-label={`Decrease ${label}`} className={buttonClass}>
+        <Minus className="h-3.5 w-3.5" />
+      </button>
+      <span
+        className="min-w-[3.5rem] text-center text-sm font-semibold tabular-nums text-foreground"
+        aria-live="polite"
+      >
+        {display}
+        {suffix && <span className="ml-0.5 text-xs font-normal text-muted-foreground">{suffix}</span>}
+      </span>
+      <button type="button" onClick={onIncrement} aria-label={`Increase ${label}`} className={buttonClass}>
+        <Plus className="h-3.5 w-3.5" />
+      </button>
+    </div>
   );
 }
 
