@@ -1013,7 +1013,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
 }
 
-.drill-observatory-canvas {
+.drill-observatory-root .drill-observatory-canvas {
   isolation: isolate;
 }
 
@@ -1029,24 +1029,24 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 /* One treatment for every uppercase micro-label in the observatory. Applied via
    an explicit class rather than a blanket `.uppercase` selector — the
    observatory hosts launcher stages whose labels are not part of this set. */
-.drill-observatory-label {
+.drill-observatory-root .drill-observatory-label {
   color: var(--observatory-ink-50);
-  font-family: var(--observatory-label-font) !important;
-  font-size: var(--observatory-text-label) !important;
-  font-weight: 500 !important;
-  letter-spacing: var(--observatory-track-label) !important;
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label);
+  font-weight: 500;
+  letter-spacing: var(--observatory-track-label);
   text-transform: uppercase;
 }
 
 /* The dateline prints twice and CSS picks one, so the first paint is already
    right. Between 900 and 1099 the greeting column is too narrow for the long
    month and the date wrapped to two lines. */
-.drill-observatory-date-short {
+.drill-observatory-root .drill-observatory-date-short {
   display: none;
 }
 
 @media (min-width: 900px) and (max-width: 1099px) {
-  .drill-observatory-date-long {
+  .drill-observatory-root .drill-observatory-date-long {
     display: none;
   }
 
@@ -1056,33 +1056,33 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
      size, and tightening it buys back 25px. Declared on the span itself: a
      value set on the element beats one inherited from the label, so this wins
      the cascade without any forcing of its own. */
-  .drill-observatory-date-short {
+  .drill-observatory-root .drill-observatory-date-short {
     display: inline;
     letter-spacing: 0.1em;
     white-space: nowrap;
   }
 }
 
-.drill-observatory-label-sm {
-  font-size: var(--observatory-text-label-sm) !important;
+.drill-observatory-root .drill-observatory-label-sm {
+  font-size: var(--observatory-text-label-sm);
 }
 
 /* The ink ladder, addressable from JSX. Tailwind arbitrary values would work but
    would scatter rgba(244,241,234,x) literals across three components and detach
    them from the token block above; these keep one source for the scale. */
-.drill-observatory-ink-full { color: var(--observatory-ink) !important; }
-.drill-observatory-ink-90 { color: var(--observatory-ink-90) !important; }
-.drill-observatory-ink-85 { color: var(--observatory-ink-85) !important; }
-.drill-observatory-ink-70 { color: var(--observatory-ink-70) !important; }
-.drill-observatory-ink-62 { color: var(--observatory-ink-62) !important; }
-.drill-observatory-ink-60 { color: var(--observatory-ink-60) !important; }
-.drill-observatory-ink-55 { color: var(--observatory-ink-55) !important; }
-.drill-observatory-ink-50 { color: var(--observatory-ink-50) !important; }
+.drill-observatory-root .drill-observatory-ink-full { color: var(--observatory-ink); }
+.drill-observatory-root .drill-observatory-ink-90 { color: var(--observatory-ink-90); }
+.drill-observatory-root .drill-observatory-ink-85 { color: var(--observatory-ink-85); }
+.drill-observatory-root .drill-observatory-ink-70 { color: var(--observatory-ink-70); }
+.drill-observatory-root .drill-observatory-ink-62 { color: var(--observatory-ink-62); }
+.drill-observatory-root .drill-observatory-ink-60 { color: var(--observatory-ink-60); }
+.drill-observatory-root .drill-observatory-ink-55 { color: var(--observatory-ink-55); }
+.drill-observatory-root .drill-observatory-ink-50 { color: var(--observatory-ink-50); }
 
 /* ── Hero ────────────────────────────────────────────────────────────────── */
 
-.drill-observatory-hero {
-  background-color: var(--observatory-surface-image) !important;
+.drill-observatory-root .drill-observatory-hero {
+  background-color: var(--observatory-surface-image);
   background-image: url("/mainhub/hub-horizon.png");
   /* WebP is 37KB against the PNG's 384KB; the PNG line above stays as the
      fallback for anything that cannot parse image-set. */
@@ -1093,20 +1093,20 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background-position: center 68%;
   background-repeat: no-repeat;
   background-size: cover;
-  border: 0 !important;
-  border-radius: var(--observatory-radius-shell) !important;
+  border: 0;
+  border-radius: var(--observatory-radius-shell);
   box-shadow:
     0 0 0 1px var(--observatory-ring),
-    var(--observatory-shadow-image) !important;
+    var(--observatory-shadow-image);
   color: var(--observatory-ink);
-  min-height: 0 !important;
+  min-height: 0;
   overflow: hidden;
   position: relative;
 }
 
 /* Scrim. Mandatory, not decorative: the greeting sits over the image's bright
    terminator at some crops and is unreadable without it. */
-.drill-observatory-hero::before {
+.drill-observatory-root .drill-observatory-hero::before {
   background:
     linear-gradient(
       90deg,
@@ -1137,7 +1137,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 /* The tools row carries two controls now: QuestionJump on the left, the
    LR/RC section switch hard right. It was `display: block` while it held only
    the one. */
-.drill-observatory-tools {
+.drill-observatory-root .drill-observatory-tools {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -1149,12 +1149,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 /* The address row takes the space that is left; the search trigger and the
    switch keep their intrinsic width and stay together on one line, wrapping as
    a pair rather than one above the other. */
-.drill-observatory-tools > .qj {
+.drill-observatory-root .drill-observatory-tools > .qj {
   flex: 1 1 320px;
   width: auto;
 }
 
-.drill-observatory-tools-aside {
+.drill-observatory-root .drill-observatory-tools-aside {
   align-items: center;
   display: flex;
   flex: 0 0 auto;
@@ -1162,7 +1162,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   margin-left: auto;
 }
 
-.drill-observatory-tools-aside .drill-observatory-section-toggle {
+.drill-observatory-root .drill-observatory-tools-aside .drill-observatory-section-toggle {
   margin-left: 0;
 }
 
@@ -1174,7 +1174,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    (questionJump.css light tone) — the two are one utility strip and must not
    read as two different systems. An ivory-on-ivory switch, which the first
    pass shipped, was invisible here. */
-.drill-observatory-section-toggle {
+.drill-observatory-root .drill-observatory-section-toggle {
   align-items: center;
   background: var(--observatory-stage-well);
   border-radius: 999px;
@@ -1186,7 +1186,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   padding: 0 2px;
 }
 
-.drill-observatory-section-toggle-option {
+.drill-observatory-root .drill-observatory-section-toggle-option {
   background: none;
   border: 0;
   border-radius: 999px;
@@ -1204,22 +1204,22 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   transition: color 200ms cubic-bezier(0.22, 0.68, 0.24, 1);
 }
 
-.drill-observatory-section-toggle-option:hover {
+.drill-observatory-root .drill-observatory-section-toggle-option:hover {
   color: var(--observatory-stage-ink);
 }
 
-.drill-observatory-section-toggle-option.is-active {
+.drill-observatory-root .drill-observatory-section-toggle-option.is-active {
   color: var(--observatory-stage-lit);
 }
 
-.drill-observatory-section-toggle-option:focus-visible {
+.drill-observatory-root .drill-observatory-section-toggle-option:focus-visible {
   outline: 2px solid var(--observatory-stage-ink);
   outline-offset: 2px;
 }
 
 /* The travelling lit slot. Sits behind the label — the label carries
    `position: relative` and a z-index of its own so it is never covered. */
-.drill-observatory-section-toggle-indicator {
+.drill-observatory-root .drill-observatory-section-toggle-indicator {
   background: var(--observatory-stage-ink);
   border-radius: 999px;
   inset: 4px 0;
@@ -1231,7 +1231,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   /* Narrow: the switch drops under QuestionJump at full width rather than
      shrinking into two unreadable slots. It is never hidden — unlike the route
      label's trailing span, which is decoration. */
-  .drill-observatory-section-toggle {
+  .drill-observatory-root .drill-observatory-section-toggle {
     justify-content: center;
     margin-left: 0;
     width: 100%;
@@ -1242,120 +1242,120 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
      past its own container and off the right edge of the screen. In the
      cluster it takes its natural width; the trigger has collapsed to its icon
      by here, so the pair fits on one line. */
-  .drill-observatory-tools-aside .drill-observatory-section-toggle {
+  .drill-observatory-root .drill-observatory-tools-aside .drill-observatory-section-toggle {
     width: auto;
   }
 
-  .drill-observatory-section-toggle-option {
+  .drill-observatory-root .drill-observatory-section-toggle-option {
     flex: 1 1 0;
   }
 }
 
-.drill-observatory-hero-grid {
-  align-items: stretch !important;
-  display: grid !important;
-  gap: 28px !important;
-  grid-template-columns: minmax(0, 1fr) 392px !important;
-  min-height: 400px !important;
-  padding: var(--observatory-space-2) var(--observatory-space-7) var(--observatory-space-7) !important;
+.drill-observatory-root .drill-observatory-hero-grid {
+  align-items: stretch;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) 392px;
+  min-height: 400px;
+  padding: var(--observatory-space-2) var(--observatory-space-7) var(--observatory-space-7);
   position: relative;
   z-index: 2;
 }
 
-.drill-observatory-greeting {
+.drill-observatory-root .drill-observatory-greeting {
   align-self: end;
-  gap: var(--observatory-space-5) !important;
+  gap: var(--observatory-space-5);
   max-width: 440px;
-  min-height: 0 !important;
-  padding: 0 0 6px !important;
+  min-height: 0;
+  padding: 0 0 6px;
 }
 
-.drill-observatory-greeting h1 {
+.drill-observatory-root .drill-observatory-greeting h1 {
   color: var(--observatory-ink);
   font-family: var(--observatory-display-font);
-  font-size: clamp(1.9rem, 3.4vw, var(--observatory-text-display)) !important;
+  font-size: clamp(1.9rem, 3.4vw, var(--observatory-text-display));
   font-variation-settings: "opsz" 60;
-  font-weight: 400 !important;
+  font-weight: 400;
   letter-spacing: var(--observatory-track-display);
-  line-height: 1.08 !important;
+  line-height: 1.08;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
 }
 
-.drill-observatory-greeting[data-next="true"] h1 {
-  font-size: clamp(1.5rem, 2.6vw, 2.1rem) !important;
+.drill-observatory-root .drill-observatory-greeting[data-next="true"] h1 {
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
 }
 
-.drill-observatory-greeting h1 em {
+.drill-observatory-root .drill-observatory-greeting h1 em {
   font-style: italic;
 }
 
-.drill-observatory-greeting p {
+.drill-observatory-root .drill-observatory-greeting p {
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
 }
 
-.drill-observatory-cta {
-  background: var(--observatory-ink) !important;
-  border: 0 !important;
-  border-radius: 999px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-  color: #0c0c0e !important;
+.drill-observatory-root .drill-observatory-cta {
+  background: var(--observatory-ink);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  color: #0c0c0e;
   font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
-  font-size: 14px !important;
-  font-weight: 600 !important;
+  font-size: 14px;
+  font-weight: 600;
   gap: 9px;
-  height: 46px !important;
-  padding: 0 26px !important;
+  height: 46px;
+  padding: 0 26px;
   transition: filter var(--observatory-motion), transform var(--observatory-motion);
 }
 
 /* No transform on the primary CTA — it is the one fixed point on the page. */
-.drill-observatory-cta:hover {
-  background: var(--observatory-ink) !important;
+.drill-observatory-root .drill-observatory-cta:hover {
+  background: var(--observatory-ink);
   filter: brightness(1.06);
 }
 
-.drill-observatory-cta:active {
+.drill-observatory-root .drill-observatory-cta:active {
   transform: translateY(0.5px);
 }
 
 /* The primary CTA had no focus indicator at all: border 0 plus a shadow, and
    the shared Button ring never reached it through the overrides. One rule for
    every pill-shaped control on the cards. */
-.drill-observatory-cta:focus-visible,
-.drill-observatory-console-start:focus-visible,
-.drill-observatory-secondary-link:focus-visible,
-.drill-observatory-insight-action:focus-visible,
-.drill-observatory-quiet-link:focus-visible,
-.drill-observatory-rc-chip:focus-visible,
-.drill-observatory-practice-tile:focus-visible {
-  box-shadow: none !important;
-  outline: 2px solid var(--observatory-focus) !important;
-  outline-offset: 3px !important;
+.drill-observatory-root .drill-observatory-cta:focus-visible,
+.drill-observatory-root .drill-observatory-console-start:focus-visible,
+.drill-observatory-root .drill-observatory-secondary-link:focus-visible,
+.drill-observatory-root .drill-observatory-insight-action:focus-visible,
+.drill-observatory-root .drill-observatory-quiet-link:focus-visible,
+.drill-observatory-root .drill-observatory-rc-chip:focus-visible,
+.drill-observatory-root .drill-observatory-practice-tile:focus-visible {
+  box-shadow: none;
+  outline: 2px solid var(--observatory-focus);
+  outline-offset: 3px;
 }
 
-.drill-observatory-focus-inset {
+.drill-observatory-root .drill-observatory-focus-inset {
   outline: none;
 }
 
-.drill-observatory-focus-inset:focus-visible {
-  box-shadow: inset 0 0 0 2px var(--observatory-focus) !important;
+.drill-observatory-root .drill-observatory-focus-inset:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--observatory-focus);
 }
 
-.drill-observatory-skeleton-bar {
+.drill-observatory-root .drill-observatory-skeleton-bar {
   background: var(--observatory-skeleton);
   border-radius: 999px;
 }
 
 /* ── Next up, in the hero ─────────────────────────────────────────────── */
 
-.drill-observatory-next {
+.drill-observatory-root .drill-observatory-next {
   display: flex;
   flex-direction: column;
   gap: 6px;
   margin-top: 6px;
 }
 
-.drill-observatory-next-title {
+.drill-observatory-root .drill-observatory-next-title {
   color: var(--observatory-ink);
   font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
   font-size: 19px;
@@ -1365,7 +1365,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
 }
 
-.drill-observatory-cta-row {
+.drill-observatory-root .drill-observatory-cta-row {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -1375,7 +1375,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 /* The second option, when the first is assigned work. A link, not a second
    button: two buttons of equal weight is the grid the page is trying not to be. */
-.drill-observatory-quiet-link {
+.drill-observatory-root .drill-observatory-quiet-link {
   background: none;
   border: 0;
   border-radius: 999px;
@@ -1393,12 +1393,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   transition: color var(--observatory-motion);
 }
 
-.drill-observatory-quiet-link:hover {
+.drill-observatory-root .drill-observatory-quiet-link:hover {
   color: var(--observatory-ink);
 }
 
 /* Secondary insight actions: a link, on the card, no text shadow. */
-.drill-observatory-insight-link {
+.drill-observatory-root .drill-observatory-insight-link {
   background: none;
   border: 0;
   border-radius: 999px;
@@ -1415,157 +1415,157 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   white-space: nowrap;
 }
 
-.drill-observatory-insight-link:hover {
+.drill-observatory-root .drill-observatory-insight-link:hover {
   color: var(--observatory-ink);
 }
 
-.drill-observatory-deck[data-queue="true"] {
+.drill-observatory-root .drill-observatory-deck[data-queue="true"] {
   align-items: start;
 }
 
-.drill-observatory-deck[data-queue="true"] .drill-observatory-today,
-.drill-observatory-deck[data-queue="true"] .drill-observatory-today-inner {
+.drill-observatory-root .drill-observatory-deck[data-queue="true"] .drill-observatory-today,
+.drill-observatory-root .drill-observatory-deck[data-queue="true"] .drill-observatory-today-inner {
   height: auto;
 }
 
 /* ── Finder console ──────────────────────────────────────────────────────── */
 
-.drill-observatory-console {
+.drill-observatory-root .drill-observatory-console {
   align-self: center;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  background: var(--observatory-glass) !important;
-  border: 0 !important;
-  border-radius: var(--observatory-radius-panel) !important;
+  background: var(--observatory-glass);
+  border: 0;
+  border-radius: var(--observatory-radius-panel);
   box-shadow:
     0 0 0 1px var(--observatory-ring-glass),
-    var(--observatory-shadow-glass) !important;
+    var(--observatory-shadow-glass);
   display: flex;
   flex-direction: column;
   gap: var(--observatory-space-3);
-  margin: 0 !important;
-  max-width: none !important;
-  padding: var(--observatory-space-5) !important;
+  margin: 0;
+  max-width: none;
+  padding: var(--observatory-space-5);
   position: relative;
   z-index: 3;
 }
 
-.drill-observatory-console input[type="search"] {
-  background: var(--observatory-well) !important;
-  border: 0 !important;
-  border-radius: 999px !important;
-  box-shadow: 0 0 0 1px var(--observatory-ring-strong) !important;
-  color: var(--observatory-ink) !important;
-  font-size: var(--observatory-text-body) !important;
-  font-weight: 400 !important;
-  height: 46px !important;
+.drill-observatory-root .drill-observatory-console input[type="search"] {
+  background: var(--observatory-well);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong);
+  color: var(--observatory-ink);
+  font-size: var(--observatory-text-body);
+  font-weight: 400;
+  height: 46px;
 }
 
-.drill-observatory-console button[role="combobox"] {
-  background: var(--observatory-well) !important;
-  border: 0 !important;
-  border-radius: var(--observatory-radius-control) !important;
-  box-shadow: 0 0 0 1px var(--observatory-ring-strong) !important;
-  color: var(--observatory-ink) !important;
-  font-size: var(--observatory-text-body) !important;
-  font-weight: 500 !important;
-  height: 46px !important;
-  padding: 0 var(--observatory-space-4) !important;
+.drill-observatory-root .drill-observatory-console button[role="combobox"] {
+  background: var(--observatory-well);
+  border: 0;
+  border-radius: var(--observatory-radius-control);
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong);
+  color: var(--observatory-ink);
+  font-size: var(--observatory-text-body);
+  font-weight: 500;
+  height: 46px;
+  padding: 0 var(--observatory-space-4);
 }
 
 /* Radix puts data-placeholder on the TRIGGER, not on the value span — the
    obvious selector (span[data-placeholder]) matches nothing and every select
    renders at full ivory whether or not it holds a value. */
-.drill-observatory-console button[role="combobox"][data-placeholder] {
-  color: var(--observatory-ink-70) !important;
+.drill-observatory-root .drill-observatory-console button[role="combobox"][data-placeholder] {
+  color: var(--observatory-ink-70);
 }
 
-.drill-observatory-console input[type="search"]::placeholder {
-  color: var(--observatory-ink-70) !important;
+.drill-observatory-root .drill-observatory-console input[type="search"]::placeholder {
+  color: var(--observatory-ink-70);
 }
 
-.drill-observatory-console input[type="search"]:focus-visible,
-.drill-observatory-console button[role="combobox"]:focus-visible {
+.drill-observatory-root .drill-observatory-console input[type="search"]:focus-visible,
+.drill-observatory-root .drill-observatory-console button[role="combobox"]:focus-visible {
   box-shadow:
     0 0 0 1px var(--observatory-ring-strong),
-    0 0 0 3px rgba(244, 241, 234, 0.14) !important;
-  outline: none !important;
+    0 0 0 3px rgba(244, 241, 234, 0.14);
+  outline: none;
 }
 
-.drill-observatory-console button[role="combobox"] svg {
-  color: var(--observatory-ink-70) !important;
-  opacity: 1 !important;
+.drill-observatory-root .drill-observatory-console button[role="combobox"] svg {
+  color: var(--observatory-ink-70);
+  opacity: 1;
   stroke-width: 1.8;
 }
 
-.drill-observatory-console button[role="combobox"]:disabled {
-  color: var(--observatory-ink-50) !important;
-  opacity: 1 !important;
+.drill-observatory-root .drill-observatory-console button[role="combobox"]:disabled {
+  color: var(--observatory-ink-50);
+  opacity: 1;
 }
 
 /* Start. Ghost until a question is actually selected — the design's one piece of
    state signalling, and the reason it is not a filled button. */
-.drill-observatory-console-start {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 999px !important;
-  box-shadow: 0 0 0 1px var(--observatory-ring-strong) !important;
-  color: var(--observatory-ink-60) !important;
-  font-size: var(--observatory-text-body) !important;
-  font-weight: 600 !important;
-  height: 46px !important;
+.drill-observatory-root .drill-observatory-console-start {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong);
+  color: var(--observatory-ink-60);
+  font-size: var(--observatory-text-body);
+  font-weight: 600;
+  height: 46px;
   transition: color var(--observatory-motion), box-shadow var(--observatory-motion),
     transform var(--observatory-motion);
   width: 100%;
 }
 
-.drill-observatory-console-start:not(:disabled) {
-  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.42) !important;
-  color: var(--observatory-ink) !important;
+.drill-observatory-root .drill-observatory-console-start:not(:disabled) {
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.42);
+  color: var(--observatory-ink);
 }
 
-.drill-observatory-console-start:not(:disabled):hover {
-  box-shadow: 0 0 0 1px var(--observatory-ink) !important;
+.drill-observatory-root .drill-observatory-console-start:not(:disabled):hover {
+  box-shadow: 0 0 0 1px var(--observatory-ink);
 }
 
-.drill-observatory-console-start:not(:disabled):active {
+.drill-observatory-root .drill-observatory-console-start:not(:disabled):active {
   transform: translateY(0.5px);
 }
 
-.drill-observatory-console-start:disabled {
-  opacity: 1 !important;
+.drill-observatory-root .drill-observatory-console-start:disabled {
+  opacity: 1;
 }
 
 /* Advanced filters and search results sit IN FLOW inside the console — the
    console grows rather than dropping an overlay. An overlay over a
    backdrop-filtered surface needs its own stacking and dismiss handling for no
    gain: this panel is only ever open because the student opened it. */
-.drill-observatory-advanced,
-.drill-observatory-search-results {
-  background: rgba(0, 0, 0, 0.28) !important;
-  border: 0 !important;
-  border-radius: var(--observatory-radius-control) !important;
-  box-shadow: 0 0 0 1px var(--observatory-ring-quiet) !important;
-  padding: var(--observatory-space-3) !important;
-  position: static !important;
+.drill-observatory-root .drill-observatory-advanced,
+.drill-observatory-root .drill-observatory-search-results {
+  background: rgba(0, 0, 0, 0.28);
+  border: 0;
+  border-radius: var(--observatory-radius-control);
+  box-shadow: 0 0 0 1px var(--observatory-ring-quiet);
+  padding: var(--observatory-space-3);
+  position: static;
 }
 
-.drill-observatory-advanced {
+.drill-observatory-root .drill-observatory-advanced {
   display: grid;
-  gap: var(--observatory-space-2) !important;
-  grid-template-columns: minmax(0, 1fr) !important;
+  gap: var(--observatory-space-2);
+  grid-template-columns: minmax(0, 1fr);
 }
 
-.drill-observatory-search-results {
-  max-height: 208px !important;
+.drill-observatory-root .drill-observatory-search-results {
+  max-height: 208px;
   overflow-y: auto;
 }
 
-.drill-observatory-advanced button[role="combobox"] {
-  height: 40px !important;
+.drill-observatory-root .drill-observatory-advanced button[role="combobox"] {
+  height: 40px;
 }
 
-.drill-observatory-disclosure {
+.drill-observatory-root .drill-observatory-disclosure {
   align-items: center;
   color: var(--observatory-ink-70);
   display: inline-flex;
@@ -1573,7 +1573,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   transition: color var(--observatory-motion);
 }
 
-.drill-observatory-disclosure:hover {
+.drill-observatory-root .drill-observatory-disclosure:hover {
   color: var(--observatory-ink-85);
 }
 
@@ -1581,81 +1581,81 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 /* Two separate cards with a real gap, not one shell split by a divider. The
    practice card is flat black; Today carries the eclipse. */
-.drill-observatory-deck {
+.drill-observatory-root .drill-observatory-deck {
   background: none;
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  gap: var(--observatory-space-5) !important;
+  gap: var(--observatory-space-5);
   overflow: visible;
 }
 
-.drill-observatory-practice-bay,
-.drill-observatory-today-bay {
+.drill-observatory-root .drill-observatory-practice-bay,
+.drill-observatory-root .drill-observatory-today-bay {
   min-width: 0;
 }
 
-.drill-observatory-practice,
-.drill-observatory-launcher {
-  background: var(--observatory-surface-card) !important;
-  border: 0 !important;
-  border-radius: var(--observatory-radius-shell) !important;
+.drill-observatory-root .drill-observatory-practice,
+.drill-observatory-root .drill-observatory-launcher {
+  background: var(--observatory-surface-card);
+  border: 0;
+  border-radius: var(--observatory-radius-shell);
   box-shadow:
     0 0 0 1px var(--observatory-hairline),
-    var(--observatory-shadow-card) !important;
+    var(--observatory-shadow-card);
   height: 100%;
-  padding: 26px 28px !important;
+  padding: 26px 28px;
 }
 
-.drill-observatory-practice {
-  gap: var(--observatory-space-6) !important;
+.drill-observatory-root .drill-observatory-practice {
+  gap: var(--observatory-space-6);
 }
 
 /* Tools are a hairline split, not two boxed cards. */
 /* One column per tool. This was 1fr 1fr and stayed that way when Reading
    Comprehension made it three, which wrapped the third tile onto its own row
    under a hole. auto-fit keeps it honest as tools are added or removed. */
-.drill-observatory-practice-tools {
+.drill-observatory-root .drill-observatory-practice-tools {
   border: 0;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
 }
 
-.drill-observatory-practice-tile {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: var(--observatory-radius-control) !important;
-  gap: 10px !important;
-  padding: 2px 24px 2px 2px !important;
+.drill-observatory-root .drill-observatory-practice-tile {
+  background: transparent;
+  border: 0;
+  border-radius: var(--observatory-radius-control);
+  gap: 10px;
+  padding: 2px 24px 2px 2px;
   transition: transform var(--observatory-motion), opacity var(--observatory-motion);
 }
 
-.drill-observatory-practice-tile + .drill-observatory-practice-tile {
-  border-left: 1px solid var(--observatory-hairline) !important;
-  padding: 2px 2px 2px 24px !important;
+.drill-observatory-root .drill-observatory-practice-tile + .drill-observatory-practice-tile {
+  border-left: 1px solid var(--observatory-hairline);
+  padding: 2px 2px 2px 24px;
 }
 
-.drill-observatory-practice-tile:hover {
-  background: transparent !important;
+.drill-observatory-root .drill-observatory-practice-tile:hover {
+  background: transparent;
   transform: translateY(-2px);
 }
 
-.drill-observatory-practice-tile:active {
+.drill-observatory-root .drill-observatory-practice-tile:active {
   transform: translateY(0.5px);
 }
 
 /* Reading Comprehension turns the tool row over instead of navigating away.
    The faces are absolutely stacked and the deck's height is set from JS, so
    the container has to be positioned and its height transitioned here. */
-.drill-observatory-flip {
+.drill-observatory-root .drill-observatory-flip {
   perspective: 1400px;
   position: relative;
   /* Height is set from JS and snaps. It was transitioned, which animates a
      layout property; the faces' rotation carries the motion on its own. */
 }
 
-.drill-observatory-flip-face {
+.drill-observatory-root .drill-observatory-flip-face {
   backface-visibility: hidden;
   left: 0;
   position: absolute;
@@ -1665,35 +1665,35 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   width: 100%;
 }
 
-.drill-observatory-flip-front {
+.drill-observatory-root .drill-observatory-flip-front {
   transform: rotateY(0deg);
 }
 
-.drill-observatory-flip-back {
+.drill-observatory-root .drill-observatory-flip-back {
   transform: rotateY(-180deg);
 }
 
 /* visibility (not opacity) so the hidden face leaves the tab order — a
    backface-hidden element is still focusable. */
-.drill-observatory-flip-face[aria-hidden="true"] {
+.drill-observatory-root .drill-observatory-flip-face[aria-hidden="true"] {
   visibility: hidden;
 }
 
-.drill-observatory-flip.is-flipped .drill-observatory-flip-front {
+.drill-observatory-root .drill-observatory-flip.is-flipped .drill-observatory-flip-front {
   transform: rotateY(180deg);
 }
 
-.drill-observatory-flip.is-flipped .drill-observatory-flip-back {
+.drill-observatory-root .drill-observatory-flip.is-flipped .drill-observatory-flip-back {
   transform: rotateY(0deg);
 }
 
-.drill-observatory-rc-build {
+.drill-observatory-root .drill-observatory-rc-build {
   display: grid;
   gap: 16px;
   padding: 2px;
 }
 
-.drill-observatory-rc-build-actions {
+.drill-observatory-root .drill-observatory-rc-build-actions {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -1703,70 +1703,70 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 /* The Start control is the console's, sized down to sit in a row rather than
    span a column. */
-.drill-observatory-rc-build-actions .drill-observatory-console-start {
-  height: 40px !important;
-  padding: 0 20px !important;
+.drill-observatory-root .drill-observatory-rc-build-actions .drill-observatory-console-start {
+  height: 40px;
+  padding: 0 20px;
   width: auto;
 }
 
-.drill-observatory-rc-chip {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 999px !important;
-  box-shadow: 0 0 0 1px var(--observatory-ring-glass) !important;
-  color: var(--observatory-ink-70) !important;
-  font-size: var(--observatory-text-meta) !important;
-  font-weight: 500 !important;
+.drill-observatory-root .drill-observatory-rc-chip {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--observatory-ring-glass);
+  color: var(--observatory-ink-70);
+  font-size: var(--observatory-text-meta);
+  font-weight: 500;
   min-height: 32px;
-  padding: 7px 14px !important;
+  padding: 7px 14px;
   transition: box-shadow var(--observatory-motion), color var(--observatory-motion),
     background-color var(--observatory-motion);
 }
 
-.drill-observatory-rc-chip:hover {
-  box-shadow: 0 0 0 1px var(--observatory-ring-strong) !important;
-  color: rgba(244, 241, 234, 0.95) !important;
+.drill-observatory-root .drill-observatory-rc-chip:hover {
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong);
+  color: rgba(244, 241, 234, 0.95);
 }
 
-.drill-observatory-rc-chip.is-active {
-  background: rgba(244, 241, 234, 0.1) !important;
-  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.45) !important;
-  color: var(--observatory-ink) !important;
+.drill-observatory-root .drill-observatory-rc-chip.is-active {
+  background: rgba(244, 241, 234, 0.1);
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.45);
+  color: var(--observatory-ink);
 }
 
-.drill-observatory-secondary-link {
-  background: transparent !important;
-  border: 1px solid var(--observatory-ring-glass) !important;
-  border-radius: 999px !important;
-  color: var(--observatory-ink-70) !important;
-  font-size: var(--observatory-text-meta) !important;
-  font-weight: 500 !important;
+.drill-observatory-root .drill-observatory-secondary-link {
+  background: transparent;
+  border: 1px solid var(--observatory-ring-glass);
+  border-radius: 999px;
+  color: var(--observatory-ink-70);
+  font-size: var(--observatory-text-meta);
+  font-weight: 500;
   gap: 7px;
   min-height: 44px;
-  padding: 0 16px !important;
+  padding: 0 16px;
   transition: border-color var(--observatory-motion), color var(--observatory-motion),
     transform var(--observatory-motion);
 }
 
-.drill-observatory-secondary-link:hover {
-  border-color: var(--observatory-ring-strong) !important;
-  color: rgba(244, 241, 234, 0.95) !important;
+.drill-observatory-root .drill-observatory-secondary-link:hover {
+  border-color: var(--observatory-ring-strong);
+  color: rgba(244, 241, 234, 0.95);
 }
 
-.drill-observatory-secondary-link:active {
+.drill-observatory-root .drill-observatory-secondary-link:active {
   transform: translateY(0.5px);
 }
 
 /* Insights are rows under hairlines, not a carousel and not nested cards.
    Every real signal is on the page at once; nothing rotates. */
-.drill-observatory-insights {
+.drill-observatory-root .drill-observatory-insights {
   display: grid;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.drill-observatory-insight {
+.drill-observatory-root .drill-observatory-insight {
   align-items: end;
   display: flex;
   flex-wrap: wrap;
@@ -1775,25 +1775,25 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   padding: 18px 0;
 }
 
-.drill-observatory-insight:first-child {
+.drill-observatory-root .drill-observatory-insight:first-child {
   padding-top: 0;
 }
 
-.drill-observatory-insight:last-child {
+.drill-observatory-root .drill-observatory-insight:last-child {
   padding-bottom: 0;
 }
 
-.drill-observatory-insight + .drill-observatory-insight {
+.drill-observatory-root .drill-observatory-insight + .drill-observatory-insight {
   border-top: 1px solid var(--observatory-ring-quiet);
 }
 
 /* Analytics and Journal are records, not tools; they sit under their own
    hairline at the foot of the card. */
-.drill-observatory-records {
+.drill-observatory-root .drill-observatory-records {
   border-top: 1px solid var(--observatory-ring-quiet);
 }
 
-.drill-observatory-insight-value {
+.drill-observatory-root .drill-observatory-insight-value {
   color: var(--observatory-ink-90);
   font-family: var(--observatory-display-font);
   font-size: 22px;
@@ -1801,49 +1801,49 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   line-height: 1.25;
 }
 
-.drill-observatory-insight-action {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 999px !important;
-  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.16) !important;
-  color: var(--observatory-ink-90) !important;
-  font-size: 12.5px !important;
-  font-weight: 500 !important;
+.drill-observatory-root .drill-observatory-insight-action {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.16);
+  color: var(--observatory-ink-90);
+  font-size: 12.5px;
+  font-weight: 500;
   min-height: 44px;
-  padding: 0 18px !important;
+  padding: 0 18px;
   transition: box-shadow var(--observatory-motion), transform var(--observatory-motion);
   white-space: nowrap;
 }
 
-.drill-observatory-insight-action:hover {
-  background: transparent !important;
-  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.3) !important;
+.drill-observatory-root .drill-observatory-insight-action:hover {
+  background: transparent;
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.3);
 }
 
-.drill-observatory-insight-action:active {
+.drill-observatory-root .drill-observatory-insight-action:active {
   transform: translateY(0.5px);
 }
 
 /* ── Today ───────────────────────────────────────────────────────────────── */
 
-.drill-observatory-today {
-  background: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
+.drill-observatory-root .drill-observatory-today {
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
   height: 100%;
-  padding: 0 !important;
+  padding: 0;
 }
 
-.drill-observatory-today-inner {
-  background: var(--observatory-surface-card) !important;
-  border-radius: var(--observatory-radius-shell) !important;
+.drill-observatory-root .drill-observatory-today-inner {
+  background: var(--observatory-surface-card);
+  border-radius: var(--observatory-radius-shell);
   box-shadow:
     0 0 0 1px var(--observatory-ring),
-    var(--observatory-shadow-card) !important;
+    var(--observatory-shadow-card);
   gap: var(--observatory-space-3);
   height: 100%;
   overflow: hidden;
-  padding: var(--observatory-space-6) !important;
+  padding: var(--observatory-space-6);
   position: relative;
 }
 
@@ -1851,18 +1851,18 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background: rgba(244, 241, 234, 0.04);
   border-radius: var(--observatory-radius-inner);
   box-shadow: 0 0 0 1px var(--observatory-ring);
-  min-height: 0 !important;
+  min-height: 0;
   overflow: hidden;
-  padding: 0 !important;
+  padding: 0;
 }
 
-.drill-observatory-today-primary > div {
-  background: none !important;
-  border-radius: var(--observatory-radius-inner) !important;
-  min-height: 0 !important;
+.drill-observatory-root .drill-observatory-today-primary > div {
+  background: none;
+  border-radius: var(--observatory-radius-inner);
+  min-height: 0;
 }
 
-.drill-observatory-today-title {
+.drill-observatory-root .drill-observatory-today-title {
   color: var(--observatory-ink);
   font-family: var(--observatory-display-font);
   font-size: var(--observatory-text-heading);
@@ -1870,7 +1870,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   line-height: 1.3;
 }
 
-.drill-observatory-today-chip {
+.drill-observatory-root .drill-observatory-today-chip {
   border: 1px solid var(--observatory-ring-chip);
   border-radius: 999px;
   color: var(--observatory-ink-85);
@@ -1882,12 +1882,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   text-transform: uppercase;
 }
 
-.drill-observatory-today-action {
+.drill-observatory-root .drill-observatory-today-action {
   border-top: 1px solid var(--observatory-ring);
   transition: background-color var(--observatory-motion);
 }
 
-.drill-observatory-today-action:hover:not(:disabled) {
+.drill-observatory-root .drill-observatory-today-action:hover:not(:disabled) {
   background-color: rgba(244, 241, 234, 0.05);
 }
 
@@ -1923,7 +1923,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 /* AnalyticsStage is written against the app's light-only shadcn tokens; dropped
    on this surface it renders grey-on-black. Re-map it rather than fork it. */
-.drill-observatory-analytics {
+.drill-observatory-root .drill-observatory-analytics {
   background: var(--observatory-surface-card);
   border: 0;
   border-radius: var(--observatory-radius-shell);
@@ -1935,54 +1935,54 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   padding: 26px 28px;
 }
 
-.drill-observatory-analytics .bg-white,
-.drill-observatory-analytics .bg-slate-100 {
-  background-color: rgba(244, 241, 234, 0.035) !important;
+.drill-observatory-root .drill-observatory-analytics .bg-white,
+.drill-observatory-root .drill-observatory-analytics .bg-slate-100 {
+  background-color: rgba(244, 241, 234, 0.035);
 }
 
-.drill-observatory-analytics .border-slate-200,
-.drill-observatory-analytics .border-slate-300,
-.drill-observatory-analytics .border-slate-100 {
-  border-color: var(--observatory-hairline) !important;
+.drill-observatory-root .drill-observatory-analytics .border-slate-200,
+.drill-observatory-root .drill-observatory-analytics .border-slate-300,
+.drill-observatory-root .drill-observatory-analytics .border-slate-100 {
+  border-color: var(--observatory-hairline);
 }
 
-.drill-observatory-analytics .text-slate-900,
-.drill-observatory-analytics .text-slate-800,
-.drill-observatory-analytics .text-slate-700,
-.drill-observatory-analytics .text-slate-600 {
-  color: var(--observatory-ink) !important;
+.drill-observatory-root .drill-observatory-analytics .text-slate-900,
+.drill-observatory-root .drill-observatory-analytics .text-slate-800,
+.drill-observatory-root .drill-observatory-analytics .text-slate-700,
+.drill-observatory-root .drill-observatory-analytics .text-slate-600 {
+  color: var(--observatory-ink);
 }
 
-.drill-observatory-analytics .text-slate-500,
-.drill-observatory-analytics .text-slate-400 {
-  color: var(--observatory-ink-55) !important;
+.drill-observatory-root .drill-observatory-analytics .text-slate-500,
+.drill-observatory-root .drill-observatory-analytics .text-slate-400 {
+  color: var(--observatory-ink-55);
 }
 
-.drill-observatory-analytics .shadow-sm,
-.drill-observatory-analytics .shadow {
-  box-shadow: none !important;
+.drill-observatory-root .drill-observatory-analytics .shadow-sm,
+.drill-observatory-root .drill-observatory-analytics .shadow {
+  box-shadow: none;
 }
 
-.drill-observatory-analytics .rounded-xl,
-.drill-observatory-analytics .rounded-2xl {
-  border-radius: var(--observatory-radius-control) !important;
+.drill-observatory-root .drill-observatory-analytics .rounded-xl,
+.drill-observatory-root .drill-observatory-analytics .rounded-2xl {
+  border-radius: var(--observatory-radius-control);
 }
 
-.drill-observatory-analytics table tr {
-  border-color: var(--observatory-hairline) !important;
+.drill-observatory-root .drill-observatory-analytics table tr {
+  border-color: var(--observatory-hairline);
 }
 
-.drill-observatory-analytics .bg-slate-900 {
-  background-color: var(--observatory-ink) !important;
-  color: #0c0c0e !important;
+.drill-observatory-root .drill-observatory-analytics .bg-slate-900 {
+  background-color: var(--observatory-ink);
+  color: #0c0c0e;
 }
 
-.drill-observatory-analytics .bg-rose-50 {
-  background-color: rgba(240, 106, 118, 0.12) !important;
+.drill-observatory-root .drill-observatory-analytics .bg-rose-50 {
+  background-color: rgba(240, 106, 118, 0.12);
 }
 
-.drill-observatory-analytics .text-rose-600 {
-  color: #ff97a1 !important;
+.drill-observatory-root .drill-observatory-analytics .text-rose-600 {
+  color: #ff97a1;
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
@@ -1991,10 +1991,10 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    left column starts losing the greeting, so the console narrows before the
    layout stacks. */
 @media (max-width: 1199px) {
-  .drill-observatory-hero-grid {
-    gap: var(--observatory-space-5) !important;
-    grid-template-columns: minmax(0, 1fr) 356px !important;
-    padding: var(--observatory-space-2) var(--observatory-space-6) var(--observatory-space-6) !important;
+  .drill-observatory-root .drill-observatory-hero-grid {
+    gap: var(--observatory-space-5);
+    grid-template-columns: minmax(0, 1fr) 356px;
+    padding: var(--observatory-space-2) var(--observatory-space-6) var(--observatory-space-6);
   }
 
 }
@@ -2011,25 +2011,25 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 @media (max-width: 899px) {
-  .drill-observatory-hero-grid {
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: auto auto !important;
-    min-height: 0 !important;
-    padding-top: var(--observatory-space-5) !important;
+  .drill-observatory-root .drill-observatory-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    min-height: 0;
+    padding-top: var(--observatory-space-5);
   }
 
-  .drill-observatory-hero {
+  .drill-observatory-root .drill-observatory-hero {
     background-position: center 78%;
   }
 
-  .drill-observatory-greeting {
+  .drill-observatory-root .drill-observatory-greeting {
     align-self: start;
     max-width: none;
   }
 
-  .drill-observatory-console {
+  .drill-observatory-root .drill-observatory-console {
     align-self: stretch;
-    max-width: 460px !important;
+    max-width: 460px;
   }
 }
 
@@ -2039,34 +2039,34 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
       var(--observatory-space-5);
   }
 
-  .drill-observatory-hero-grid {
-    gap: var(--observatory-space-5) !important;
-    padding: var(--observatory-space-4) !important;
+  .drill-observatory-root .drill-observatory-hero-grid {
+    gap: var(--observatory-space-5);
+    padding: var(--observatory-space-4);
   }
 
-  .drill-observatory-console {
-    max-width: none !important;
+  .drill-observatory-root .drill-observatory-console {
+    max-width: none;
   }
 
-  .drill-observatory-practice,
-  .drill-observatory-launcher,
-  .drill-observatory-today-inner,
-  .drill-observatory-analytics {
-    padding: var(--observatory-space-5) !important;
+  .drill-observatory-root .drill-observatory-practice,
+  .drill-observatory-root .drill-observatory-launcher,
+  .drill-observatory-root .drill-observatory-today-inner,
+  .drill-observatory-root .drill-observatory-analytics {
+    padding: var(--observatory-space-5);
   }
 
-  .drill-observatory-practice-tools {
+  .drill-observatory-root .drill-observatory-practice-tools {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .drill-observatory-practice-tile {
-    padding: 2px 2px 14px !important;
+  .drill-observatory-root .drill-observatory-practice-tile {
+    padding: 2px 2px 14px;
   }
 
-  .drill-observatory-practice-tile + .drill-observatory-practice-tile {
-    border-left: 0 !important;
-    border-top: 1px solid var(--observatory-hairline) !important;
-    padding: 14px 2px 2px !important;
+  .drill-observatory-root .drill-observatory-practice-tile + .drill-observatory-practice-tile {
+    border-left: 0;
+    border-top: 1px solid var(--observatory-hairline);
+    padding: 14px 2px 2px;
   }
 }
 
@@ -2080,27 +2080,14 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     transition-duration: 0.01ms !important;
   }
 
-  .drill-observatory-practice-tile:hover,
-  .drill-observatory-today-rail:hover {
+  .drill-observatory-root .drill-observatory-practice-tile:hover,
+  .drill-observatory-root .drill-observatory-today-rail:hover {
     transform: none;
   }
 
 }
 
-.classroom-root .classroom-section-trigger {
-  align-items: center;
-  background: var(--classroom-trigger);
-  border: 1px solid var(--classroom-line);
-  border-radius: var(--classroom-radius);
-  cursor: pointer;
-  display: none;
-  font-size: 14px;
-  height: 48px;
-  justify-content: space-between;
-  margin-bottom: 32px;
-  padding: 0 16px;
-  width: 100%;
-}
+/* end observatory */
 
 .classroom-root .classroom-dateline {
   align-items: center;
@@ -2189,7 +2176,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-button {
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: var(--classroom-radius);
   cursor: pointer;
   font-family: "Outfit", ui-sans-serif, sans-serif;
@@ -2485,7 +2472,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .classroom-root .classroom-mobile-menu-button {
   align-items: center;
   background: var(--classroom-trigger);
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: var(--classroom-radius);
   cursor: pointer;
   display: none;
@@ -2497,6 +2484,64 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 /* The shell's own label voice, not the hub's mono micro-label: this bar is
    part of the classroom chrome and appears on every section. */
+/* The bar's section name, promoted to the control that opens that section's
+   list. It replaces a 48px full-width trigger that sat inside the reading
+   column above the note's own dateline and h1, costing 23% of a 390px screen
+   before a word the coach wrote. Three things about the bar make it the better
+   home: it already prints the section's real name, so the control no longer has
+   to say "Open the list" and leave the object unnamed; it is sticky, so it
+   survives a long note instead of scrolling away; and it puts the room control
+   and the section control in one row where the difference between them reads.
+
+   It carries the rail’s own chevron glyph, which already means "this opens a list"
+   everywhere else in this shell, rather than an icon the student has to decode.
+   No border: the words carry the affordance, the same reasoning the sign-out
+   control is built on. */
+.classroom-root .classroom-mobile-bar-trigger {
+  align-items: center;
+  align-self: stretch;
+  background: transparent;
+  border: 0;
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink);
+  cursor: pointer;
+  display: flex;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  gap: 5px;
+  margin-left: -8px;
+  min-width: 0;
+  padding: 0 8px;
+}
+
+.classroom-root .classroom-mobile-bar-trigger > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-mobile-bar-trigger > em {
+  color: var(--classroom-meta-text);
+  flex: none;
+  font-size: 15px;
+  font-style: normal;
+  line-height: 1;
+}
+
+.classroom-root .classroom-mobile-bar-trigger:hover {
+  background: var(--classroom-hover);
+}
+
+/* --classroom-link is the decorative orange and measures 2.38:1 on the light
+   ground, under the 3:1 a focus indicator owes. --classroom-link-text is the
+   themed pair that carries meaning: 5.38:1 light, and the same #ff8906 in dark
+   where the ground is near-black. */
+.classroom-root .classroom-mobile-bar-trigger:focus-visible {
+  outline: 2px solid var(--classroom-link-text);
+  outline-offset: -2px;
+}
+
 .classroom-root .classroom-mobile-bar-label {
   color: var(--classroom-meta-text);
   font-size: 13px;
@@ -2569,7 +2614,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-panel-search {
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: var(--classroom-radius);
   color: var(--classroom-ink);
   font-family: inherit;
@@ -2588,10 +2633,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    also overriding the zero-specificity focus floor in index.css. Keyboard focus
    now draws the same ink outline every other control in the Workroom uses;
    :focus-visible so a mouse click on the field does not draw a ring. */
-.classroom-root .classroom-panel-search:focus {
-  border-color: var(--classroom-line-strong);
-}
-
 .classroom-root .classroom-panel-search:focus-visible {
   outline: 2px solid var(--classroom-ink);
   outline-offset: 2px;
@@ -2685,7 +2726,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-textarea {
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: var(--classroom-radius);
   color: var(--classroom-ink-body);
   font-family: inherit;
@@ -2700,9 +2741,9 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   color: var(--classroom-meta-text);
 }
 
-.classroom-root .classroom-textarea:focus {
-  border-color: var(--classroom-meta-soft);
-  outline: none;
+.classroom-root .classroom-textarea:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 2px;
 }
 
 /* ---- Wrong answers ---- */
@@ -2857,7 +2898,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .classroom-root .classroom-journal-choice {
   align-items: flex-start;
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: var(--classroom-radius);
   cursor: pointer;
   display: grid;
@@ -2987,7 +3028,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-review-rating {
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: var(--classroom-radius);
   cursor: pointer;
   font-size: 12px;
@@ -3012,7 +3053,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   color: var(--classroom-correct);
 }
 
-.classroom-root .classroom-review-control,
 .classroom-root .classroom-review-correct-answer {
   background: transparent;
   border: 1px solid var(--classroom-line);
@@ -3025,9 +3065,21 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   width: 100%;
 }
 
-.classroom-root .classroom-review-control:focus {
-  border-color: var(--classroom-meta-soft);
-  outline: none;
+.classroom-root .classroom-review-control {
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink-body);
+  font-family: inherit;
+  font-size: 13px;
+  min-height: 38px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.classroom-root .classroom-review-control:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 2px;
 }
 
 .classroom-root .classroom-review-correct-answer {
@@ -3052,7 +3104,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .classroom-root .classroom-announcement {
   align-items: flex-start;
   background: var(--classroom-hover);
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 14px;
   cursor: pointer;
   display: flex;
@@ -3117,18 +3169,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     display: none;
   }
 
-  .classroom-root.classroom-root-journal .classroom-section-trigger {
-    display: flex;
-  }
-
-  /* Wrong answers swaps 120px later than everything else, so it needs the same
-     never-show-both rule at its own breakpoint. */
-  .classroom-root.classroom-root-journal
-    .classroom-column:has(.classroom-stage-index)
-    .classroom-section-trigger {
-    display: none;
-  }
-
   .classroom-root.classroom-root-journal-detail {
     grid-template-columns: 336px minmax(0, 1fr) 320px;
   }
@@ -3147,26 +3187,6 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     display: none;
   }
 
-  .classroom-root .classroom-section-trigger {
-    display: flex;
-  }
-
-  /* Never offer a control that opens a copy of what is already on screen.
-     Two rules fire at this same breakpoint: the stage renders its own
-     StageIndexList inline, and the trigger appears above the <h1> to open a
-     drawer holding the identical rows. On an index route that made the only
-     prominent button on the page a no-op, and it took the tap that belonged to
-     a note. The trigger still earns its place on a detail route (a note, an
-     assignment), where nothing else reaches the list.
-
-     `:has()` keeps this in CSS rather than threading a flag through
-     ClassroomLayoutContext: the stage index is a sibling of the trigger inside
-     .classroom-column, so the column can simply ask whether one was rendered.
-     StageIndexList returns null when it has no items, so an empty surface keeps
-     the trigger and the student can still reach the rail. */
-  .classroom-root .classroom-column:has(.classroom-stage-index) .classroom-section-trigger {
-    display: none;
-  }
 }
 
 @media (max-width: 1099px) {
@@ -3521,7 +3541,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-account-name-edit input {
   background: var(--classroom-trigger);
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 7px;
   color: var(--classroom-ink);
   font-size: 14px;
@@ -3563,7 +3583,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-account-password-form input {
   background: var(--classroom-trigger);
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 7px;
   color: var(--classroom-ink);
   font-size: 13px;
@@ -3579,7 +3599,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .classroom-root .classroom-account-ghost-button {
   align-items: center;
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 7px;
   color: var(--classroom-ink);
   cursor: pointer;
@@ -3667,7 +3687,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 /* Toggle */
 .classroom-root .classroom-toggle {
   background: var(--classroom-hover);
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 999px;
   cursor: pointer;
   flex: 0 0 auto;
@@ -3707,7 +3727,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .classroom-root .classroom-account-select,
 .classroom-root .classroom-account-number {
   background: var(--classroom-trigger);
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 7px;
   color: var(--classroom-ink);
   flex: 0 0 auto;
@@ -4045,7 +4065,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 /* Inputs */
 .classroom-root .classroom-orientation-input {
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: var(--classroom-radius);
   color: inherit;
   font-family: inherit;
@@ -4054,9 +4074,9 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   width: 100%;
 }
 
-.classroom-root .classroom-orientation-input:focus {
-  border-color: var(--classroom-link);
-  outline: none;
+.classroom-root .classroom-orientation-input:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 2px;
 }
 
 .classroom-root .classroom-orientation-textarea {
@@ -4113,7 +4133,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-orientation-chip {
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 999px;
   color: inherit;
   cursor: pointer;
@@ -4253,7 +4273,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-orientation-choice {
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 12px;
   cursor: pointer;
   display: grid;
@@ -4854,7 +4874,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-orientation-continue-quiet {
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 999px;
   color: var(--classroom-meta-text);
   cursor: pointer;

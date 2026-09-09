@@ -55,6 +55,6 @@ No em-dashes anywhere a student can read, including placeholders. Buttons say wh
 
 ## Known debt (not fixed on 2026-09-08)
 
-- 206 `!important` declarations in the observatory block. They exist to override shadcn's Card and Button. The right fix is unstyled primitives for this surface.
+- Observatory rules are scoped under `.drill-observatory-root` and win by specificity, not `!important`. Run `node scripts/observatory-specificity.mjs` after adding a rule to the block; `--check` fails if anything is unscoped. The four `!important` that remain are in the `prefers-reduced-motion` block, where the override has to beat a later animation rule and specificity cannot promise that. Rules for portalled content (`.drill-observatory-launcher-panel`) live outside the `/* end observatory */` marker on purpose: they render outside the root and must not be scoped to it.
 - The hub ignores the app's dark toggle: the stage is cream either way. Acceptable while the stage is documented as cream here.
 - `.drill-observatory-practice-tile` and `PracticeTile` are still exported for the RC flip and are no longer used on the LR default stage.
