@@ -3,10 +3,10 @@ import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { BookOpen, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { format } from 'date-fns';
 import HubStudentList from '@/components/hub/HubStudentList';
 import { useStudentClassroomItems } from '@/hooks/useClassroomItems';
 import RecapComposer from '@/components/teacher/RecapComposer';
+import { PostedRecapRow } from '@/components/teacher/PostedRecapsList';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -71,20 +71,7 @@ export default function TeacherRecaps() {
         ) : (
           <ul className="space-y-1.5">
             {recaps.map((r) => (
-              <li
-                key={r.id}
-                className="px-4 py-3 rounded-lg border border-zinc-800 bg-zinc-900/40"
-              >
-                <div className="text-sm font-medium text-zinc-100">{r.title}</div>
-                <div className="text-[11px] text-zinc-500 mt-0.5">
-                  {format(new Date(r.created_at), 'MMM d, yyyy')}
-                </div>
-                {r.content_markdown && (
-                  <div className="mt-2 text-sm text-zinc-300 whitespace-pre-wrap line-clamp-4">
-                    {r.content_markdown}
-                  </div>
-                )}
-              </li>
+              <PostedRecapRow key={r.id} recap={r} />
             ))}
           </ul>
         )}
