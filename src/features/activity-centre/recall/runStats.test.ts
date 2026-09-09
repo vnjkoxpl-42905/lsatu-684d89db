@@ -128,7 +128,11 @@ describe("the tick row", () => {
 describe("the stat strip", () => {
   const faster = [
     run({ section: { ...run().section, total_seconds: 1450, within_time: true } }),
-    run({ section: { ...run().section, total_seconds: 1665, within_time: true } }),
+    // Inside the clock and NOT within_goal, which is the case that discriminates:
+    // count the goal flag and this run disappears from a cell labelled with a time.
+    run({
+      section: { ...run().section, total_seconds: 1465, within_time: true, within_goal: false },
+    }),
     run({
       section: { ...run().section, total_seconds: 1862, within_time: false, within_goal: false },
     }),
@@ -153,18 +157,18 @@ describe("the stat strip", () => {
     expect(statsFor([faster[0]], 25).trendSeconds).toBeNull();
   });
 
-  it("never counts silence towards Recalled", () => {
+  it("never counts silence towards Recorded", () => {
     const r = run({ stimuli: [stim(1), stim(2, { spoken: "" }), stim(3)] });
     const s = statsFor([r], 25);
-    expect(s.recalled).toBe(2);
-    expect(s.recalledOf).toBe(3);
+    expect(s.recorded).toBe(2);
+    expect(s.recordedOf).toBe(3);
   });
 
-  it("counts an ungraded stimulus as recalled", () => {
+  it("counts an ungraded stimulus as recorded", () => {
     const r = run({ stimuli: [stim(1), stim(2, { ungraded: "no verdict" }), stim(3)] });
     const s = statsFor([r], 25);
-    expect(s.recalled).toBe(3);
-    expect(s.recalledOf).toBe(3);
+    expect(s.recorded).toBe(3);
+    expect(s.recordedOf).toBe(3);
   });
 
   it("leaves a run with an unknowable denominator out of both halves", () => {
@@ -174,22 +178,39 @@ describe("the stat strip", () => {
       stimuli: [stim(1, { item_order: undefined })],
     });
     const s = statsFor([known, unknowable], 25);
-    expect(s.recalled).toBe(3);
-    expect(s.recalledOf).toBe(3);
+    expect(s.recorded).toBe(3);
+    expect(s.recordedOf).toBe(3);
   });
 
-  it("has no recalled figure at all when no run can be counted", () => {
+  it("has no recorded figure at all when no run can be counted", () => {
     const s = statsFor([run({ stimuli: undefined })], 25);
-    expect(s.recalled).toBeNull();
-    expect(s.recalledOf).toBeNull();
+    expect(s.recorded).toBeNull();
+    expect(s.recordedOf).toBeNull();
   });
 
   it("counts the clock, not the method conditions bundled into within_goal", () => {
-    // 1450 and 1665 are inside 25:00; 1862 is not. `within_goal` on the first
-    // two is irrelevant here: the cell is labelled with a time.
+    // 25:00 is 1500 seconds: 1450 and 1465 are inside it, 1862 is not. The
+    // middle run is the one that matters, because its `within_goal` is false
+    // and the cell is labelled with a time.
+    //
+    // This assertion used to read the same and pass for the wrong reason. The
+    // middle run was 1665 seconds, which is 27:45 and outside the clock, and
+    // the comment beside it claimed 1665 was inside 25:00. The fixture carried
+    // `within_time: true` to match the mistaken arithmetic and the code trusted
+    // the stored flag, so the error was invisible from both ends.
     const s = statsFor(faster, 25);
     expect(s.metTarget).toBe(2);
     expect(s.targetRuns).toBe(3);
+  });
+
+  it("does not let a stored flag outvote the clock it contradicts", () => {
+    // 1665 seconds is 27:45. A row claiming otherwise is wrong, and the cell
+    // has to say what its own number says: this is the shape of the Report Card
+    // reading "28:32" over "Inside the time".
+    const contradicted = run({
+      section: { ...run().section, total_seconds: 1665, within_time: true },
+    });
+    expect(statsFor([contradicted], 25).metTarget).toBe(0);
   });
 
   it("recomputes the clock for a run written before within_time existed", () => {
@@ -215,7 +236,7 @@ describe("the stat strip", () => {
   it("is entirely empty for a student who has never run it", () => {
     const s = statsFor([], 25);
     expect(s.lastRunSeconds).toBeNull();
-    expect(s.recalled).toBeNull();
+    expect(s.recorded).toBeNull();
     expect(s.totalRuns).toBe(0);
   });
 });

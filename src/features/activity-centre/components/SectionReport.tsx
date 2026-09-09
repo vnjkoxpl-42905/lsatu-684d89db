@@ -134,12 +134,26 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
   /** Whole minutes, for a sentence rather than a counter she watches. */
   const minutesWaited = Math.floor(waitedMs / 60000);
 
+  /*
+   * The wait is the card's first page, not the shell's last one.
+   *
+   * It used to be an Activity Centre panel: the Centre's cream surface, the
+   * Centre's border and its muted ink, sitting on the violet ground the report
+   * phase paints for the Report Card. So the ten seconds after twenty-five
+   * unbroken minutes crossed three grounds -- the runner's indigo, a warm
+   * cream panel, then the card -- and the last thing she saw before being told
+   * how it went was a colour that belonged to neither surface. Inside `.rc` it
+   * is the same violet-cast white the card is, on the same ground, and the
+   * card replacing it is a change of content rather than a change of place.
+   *
+   * `.rc` is what paints `--rc-page`, so the rounding and the border sit on
+   * that same element: a square page-coloured box behind a rounded border
+   * would show its corners over the violet ground.
+   */
   return (
-    <div className="mx-auto max-w-2xl">
-      <div className="rounded-[28px] border border-border bg-[hsl(var(--ac-surface))] p-8 text-center shadow-[0_2px_24px_rgba(30,24,16,0.06)] md:p-12">
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-          Section finished
-        </p>
+    <div className="rc mx-auto max-w-2xl overflow-hidden rounded-[28px] border border-[var(--rc-hairline)] shadow-[0_2px_24px_rgba(30,24,16,0.06)]">
+      <div className="p-8 text-center md:p-12">
+        <p className="rc__label">Section finished</p>
         {/*
           * One live region over both states.
           *
@@ -150,10 +164,10 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
           * pair is read as one update rather than two.
           */}
         <div role="status" aria-live="polite">
-          <p className="ac-display mt-3 text-4xl text-foreground">
+          <p className="rc__display mt-3 text-[34px] text-[var(--rc-ink)]">
             {stillWaiting ? "Still being marked" : "Marking your run"}
           </p>
-          <p className="mt-4 text-sm text-muted-foreground">
+          <p className="mt-4 text-sm leading-relaxed text-[var(--rc-ink-muted)]">
             {stillWaiting
               ? `This one has been marking for ${minutesWaited} minutes, which is longer than it should take. The marking carries on whether or not you stay on this page, and your Report Card will be on this section in the Activity Centre when it lands.`
               : "Your recording is being read back against every detail. That usually takes one to three minutes."}
@@ -197,7 +211,7 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
           * nothing to give her.
           */}
         {stillWaiting && (
-          <p className="mt-4 text-xs text-muted-foreground">
+          <p className="mt-4 text-xs text-[var(--rc-ink-faint)]">
             If it is still here tomorrow, tell Joshua and quote this run:{" "}
             <code>{assignmentId}</code>.
           </p>

@@ -213,14 +213,18 @@ function StatStrip({
           {stats.trendSeconds === null ? "nothing to compare yet" : `across ${stats.trendRuns} runs`}
         </span>
       </div>
+      {/* "Recorded", because that is what it counts: stimuli she spoke into.
+          It was "Recalled", which is a different question and the one the card
+          answers with Held. A student could record every stimulus in the
+          section and recall almost nothing on any of them. */}
       <div className="sl-stat">
-        <span className="sl-label">Recalled</span>
-        <span className="sl-sv" data-empty={stats.recalled === null || undefined}>
-          {stats.recalled === null ? "not recorded" : stats.recalled}
-          {stats.recalledOf !== null && <small>/{stats.recalledOf}</small>}
+        <span className="sl-label">Recorded</span>
+        <span className="sl-sv" data-empty={stats.recorded === null || undefined}>
+          {stats.recorded === null ? "not recorded" : stats.recorded}
+          {stats.recordedOf !== null && <small>/{stats.recordedOf}</small>}
         </span>
         <span className="sl-sd">
-          {stats.recalled === null ? "not recorded" : "stimulus by stimulus"}
+          {stats.recorded === null ? "not recorded" : "stimulus by stimulus"}
         </span>
       </div>
       <div className="sl-stat">
@@ -277,7 +281,12 @@ function RunHistory({ state }: { state: HistoryState }) {
                 <tr>
                   <th>Date</th>
                   <th>Time</th>
-                  <th>Recalled</th>
+                  {/* The card's own section figure, under the card's own name.
+                      The door used to talk about her runs in a vocabulary the
+                      Report Card never used, so the number she remembered from
+                      one surface did not appear on the other. */}
+                  <th>Held</th>
+                  <th>Recorded</th>
                   <th className="sl-r">Stimulus by stimulus</th>
                 </tr>
               </thead>
@@ -297,6 +306,7 @@ function RunHistory({ state }: { state: HistoryState }) {
                         })}
                       </td>
                       <td>{clock(run.section.total_seconds)}</td>
+                      <td>{run.section.mean_coverage}%</td>
                       <td>{t ? `${t.recorded} of ${t.slots}` : "not recorded"}</td>
                       <td className="sl-r">
                         {t ? (
