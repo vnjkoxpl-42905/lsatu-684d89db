@@ -1161,12 +1161,35 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 /* The ink ladder does not hold over a photograph. Its steps were measured
    against the flat card (#08080b), where ink-60 is comfortably legible; over
-   the horizon crop the same step composites to 2.76:1. Inside the hero, and
-   only inside it, text that carries meaning is full ivory and the scrim above
-   does the rest. The ladder is untouched everywhere else. */
-.drill-observatory-root .drill-observatory-hero .drill-observatory-date-long,
-.drill-observatory-root .drill-observatory-hero .drill-observatory-date-short,
-.drill-observatory-root .drill-observatory-hero .drill-observatory-next .drill-observatory-label,
+   the horizon crop the same step composites to 2.76:1. Inside the hero's
+   greeting column, and only there, text that carries meaning is full ivory and
+   the scrim above does the rest. The ladder is untouched everywhere else.
+
+   This names the column, not the lines in it. The first pass listed four
+   selectors, which covered the four lines that happened to be on screen while
+   it was written and left the rest of the column on the ladder: the assigned
+   hint, the two paragraphs the failed and empty heroes render, and the
+   explainer. Sampling hub-horizon.webp under the hint's own box with both
+   scrim stops composited, it reads 3.24:1 at 375, 2.86:1 at 390 and 3.98:1 at
+   768, each needing 4.5. It passes only from 1024 up, because `cover` at
+   50% 78% drags the bright horizon into the column as the hero narrows — one
+   crop never speaks for the others, which is why this is measured at all six
+   widths. Full ivory clears every one, worst case 4.90:1 at 390.
+
+   The whole ladder is listed, not just the two steps in use, so a later step
+   added to this column cannot reintroduce the same failure. The date spans and
+   the Next up label are covered by ink-60 on their own paragraphs and no longer
+   need naming. The console card beside this column keeps the ladder: it carries
+   its own 0.55 panel and its body text measures 8.81:1 over the same photo. */
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-90,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-85,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-70,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-62,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-60,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-55,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-50,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-explainer summary,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-explainer p,
 .drill-observatory-root .drill-observatory-hero .drill-observatory-quiet-link {
   color: var(--observatory-ink);
 }
@@ -1197,8 +1220,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   display: none;
 }
 
+/* The summary sits in the greeting column, where the rule above holds every
+   line at full ivory, so hover can no longer say anything in colour. It says it
+   in the underline instead: the rule is the affordance, and a dead hover rule
+   would just look like one that still worked. */
 .drill-observatory-root .drill-observatory-explainer summary:hover {
-  color: var(--observatory-ink);
+  text-decoration-color: var(--observatory-ink);
 }
 
 .drill-observatory-root .drill-observatory-explainer summary:focus-visible {
