@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import { Mic, Pause, Play } from "lucide-react";
 
 /**
@@ -122,8 +122,12 @@ export function RecallDemo() {
   const [playing, setPlaying] = useState(true);
   const [seconds, setSeconds] = useState(0);
   const timer = useRef<number | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  // Scrolled past, the demonstration is a timer, an interval and a per-frame
+  // typewriter running for nobody. It picks up from the beat it was on.
+  const inView = useInView(rootRef);
 
-  const running = playing && !reduced;
+  const running = playing && !reduced && inView;
 
   useEffect(() => {
     if (!running) return;
@@ -152,7 +156,7 @@ export function RecallDemo() {
   const carried = DETAILS.filter((d) => d.carried).length;
 
   return (
-    <div className="rd-demo" data-phase={phase}>
+    <div className="rd-demo" ref={rootRef} data-phase={phase} data-still={!running || undefined}>
       <div className="rd-demo-bar">
         <span className="rd-demo-dots" aria-hidden="true">
           <i />
@@ -160,9 +164,10 @@ export function RecallDemo() {
           <i />
         </span>
         <span className="rd-demo-title">Read, Recall, Colour</span>
-        <span className="rd-demo-step" aria-live="polite">
-          {STEP_LABEL[phase]}
-        </span>
+        {/* Named for anyone watching, never announced: the label turns over
+            every 1.5 to 4.2 seconds for as long as the door is open, and a
+            live region here narrated the demonstration on a loop. */}
+        <span className="rd-demo-step">{STEP_LABEL[phase]}</span>
         <span className="rd-demo-rec">
           <i className="rd-rec-dot" data-live={running || undefined} aria-hidden="true" />
           <span className="rd-demo-clock">{clock(seconds)}</span>
