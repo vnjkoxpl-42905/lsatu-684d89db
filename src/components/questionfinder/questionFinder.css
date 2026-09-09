@@ -716,11 +716,21 @@ html.dark .qf-panel,
   border-radius: 9px;
   box-shadow: 0 0 0 1px var(--qf-hair-08);
   color: var(--qf-ink);
+  cursor: pointer;
   font-family: var(--qf-ui);
   font-size: 13px;
   min-width: 0;
   padding: 9px 28px 9px 11px;
+  transition: box-shadow 160ms cubic-bezier(0.25, 1, 0.5, 1);
   width: 100%;
+}
+
+/* These three are the first controls on the drill hub and had no hover state
+   at all: :disabled and :focus-visible existed, nothing answered a pointer.
+   The ring is mixed from --qf-ink rather than a fixed hairline so it lands
+   right in both the light row and the dark tone, where the ink flips. */
+.qf-select:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--qf-ink) 26%, transparent);
 }
 
 .qf-select:disabled {
@@ -846,13 +856,21 @@ html.dark .qf-panel,
 }
 
 /* The finder must be complete and usable with every animation removed. */
+/* .qj is listed alongside .qf because the jump row uses .qf-select and now
+   transitions it. The row is covered today only because it happens to sit
+   inside .drill-observatory-root, whose own reduced-motion block catches it;
+   that is incidental, and would fall away the moment the row were used
+   anywhere else. The guarantee belongs next to the rule that needs it. */
 @media (prefers-reduced-motion: reduce) {
   .qf *,
   .qf *::before,
   .qf *::after,
   .qf-portal *,
   .qf-portal *::before,
-  .qf-portal *::after {
+  .qf-portal *::after,
+  .qj *,
+  .qj *::before,
+  .qj *::after {
     animation: none !important;
     transition: none !important;
   }

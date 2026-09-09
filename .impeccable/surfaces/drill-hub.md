@@ -42,6 +42,9 @@ Hairline rings (`0 0 0 1px`) separate surfaces. Shadows are quiet: `0 12px 32px`
 - Focus: a 2px solid ivory outline (`--observatory-focus`), offset 3px, on every pill control. Full-bleed rows inside a clipped container use the inset variant (`.drill-observatory-focus-inset`). On the stage, a 2px `--observatory-stage-ink` outline. No control removes an outline without one of these.
 - Hover: a brightness or colour change. Rails and tiles may lift 2px; the primary CTA never moves.
 - Motion: `--observatory-motion` (160ms) for state; the section switch's indicator is a spring. Transform and opacity only. The RC flip's height snaps. `prefers-reduced-motion` stops everything.
+- The curve is ease-out (`--observatory-ease`, quart), never ease-in-out. A control answering a pointer has to leave immediately: the standard curve covers 2.6% of the distance in the first 10% of a 160ms transition, the quart covers 34.7%. No bounce, no elastic, anywhere.
+- A transition list names every property its own `:hover` and `:active` change. Three of them named only `transform` and got their background animated by accident, through a Tailwind utility that outranked the rule; once the rules won on specificity those hovers would have snapped. Adding a hover means checking the list.
+- Every control answers the pointer. The three jump-row selects had `:disabled` and `:focus-visible` and nothing for hover; they now strengthen their ring, mixed from `--qf-ink` so it reads in both tones.
 
 ## Doors
 
