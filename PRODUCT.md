@@ -101,6 +101,6 @@ Absent, and never to be fabricated:
 - Text contrast is at least 4.5:1 against its actual rendered background, and at least 3:1 for large text and for the visual boundaries of interactive controls. Students read dense argument text on this platform for hours at a time.
 - Every interactive element has a visible focus indicator.
 - `prefers-reduced-motion` is respected. Motion is never load-bearing for understanding or for completing a task.
-- Interactive targets meet the 44x44px minimum, and meet it by being that size rather than by a side effect such as wrapped text.
+- Touch targets are 44x44px, and meet it by being that size rather than by a side effect such as wrapped text. This one is a house standard above the floor, not part of it: 44x44 is WCAG 2.5.5, which is Level AAA. The binding target-size rule is 2.5.8 at 24x24, so a control that clears 24x24 on a fine pointer clears the floor and is not a defect.
 - Screen readers are informed of state that changes without a page load: unread counts, send confirmations, and live updates.
 - Contrast is verified against what actually renders in the browser, not against the token values a theme is assumed to apply. The theme layer has shipped a light card on a near-black page while the token file read as correct.
