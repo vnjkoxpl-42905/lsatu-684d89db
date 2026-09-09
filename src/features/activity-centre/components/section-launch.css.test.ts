@@ -77,8 +77,10 @@ describe("section-launch.css", () => {
     // the demonstration cut at the fold; capping the room put it under Start.
     // The scene's box dissolves and the stage flows after the copy instead.
     expect(phone).toMatch(/\.rd-hero-space\s*\{[^}]*min-height:\s*0/);
-    expect(phone).toMatch(/\.mw\s*\{[^}]*display:\s*contents/);
-    expect(phone).toMatch(/\.mw-stage\s*\{[^}]*position:\s*static/);
+    // Scoped like the base rules. Unscoped, `.sl .mw` outranked them from
+    // outside the media query and the phone hero collapsed to 456px.
+    expect(phone).toMatch(/\.sl \.mw\s*\{[^}]*display:\s*contents/);
+    expect(phone).toMatch(/\.sl \.mw-stage\s*\{[^}]*position:\s*static/);
     // "25 min" was hidden on the device most likely to be short of it.
     expect(phone).not.toMatch(/\.rd-meta\s*\{[^}]*display:\s*none/);
     // One column: the card carries the whole step, not four clamped lines.

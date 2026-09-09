@@ -1756,10 +1756,12 @@
   .rd-hero-space {
     min-height: 0;
   }
-  .mw {
+  /* Scoped like the base rules, or the base rules win: `.sl .mw` outranks
+     `.mw` inside a media query just as it does outside one. */
+  .sl .mw {
     display: contents;
   }
-  .mw-stage {
+  .sl .mw-stage {
     position: static;
     padding: 28px 14px 32px;
     /* In flow, the stage's parallax would ride it up into the copy. The
