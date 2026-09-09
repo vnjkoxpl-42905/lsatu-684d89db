@@ -1027,6 +1027,25 @@ export default function ClassroomLayout() {
   // the rail rather than the 720px measure every other reading surface uses.
   const homeStage = location.pathname === "/classroom";
   const scheduleStage = location.pathname === "/schedule";
+  // The menu button used to be position: fixed, so on a phone it rode over the
+  // page once the student scrolled: at 375 it sat on top of "Build targeted
+  // set" on the drill hub. It now lives in a sticky bar that takes its own
+  // space in the flow, with the name of the room beside it so the button is
+  // not a lone glyph floating on the page.
+  const mobileBarLabel = activeSection
+    ? SECTION_TITLES[activeSection]
+    : drillHub
+      ? "Drill"
+      : messagesStage
+        ? "Messages"
+        : workspaceStage
+          ? "Teacher Workspace"
+          : scheduleStage
+            ? "Schedule"
+            : homeStage
+              ? "Home"
+              : "Classroom";
+
   const rootClass =
     activeSection === "journal"
       ? `classroom-root classroom-root-journal${
@@ -1047,14 +1066,17 @@ export default function ClassroomLayout() {
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>
       <div className={rootClass}>
-        <button
-          type="button"
-          className="classroom-mobile-menu-button"
-          onClick={() => setMobileMenuOpen(true)}
-          aria-label="Open classroom menu"
-        >
-          <Menu size={19} />
-        </button>
+        <div className="classroom-mobile-bar">
+          <button
+            type="button"
+            className="classroom-mobile-menu-button"
+            onClick={() => setMobileMenuOpen(true)}
+            aria-label="Open classroom menu"
+          >
+            <Menu size={19} />
+          </button>
+          <span className="classroom-mobile-bar-label">{mobileBarLabel}</span>
+        </div>
 
         <aside className="classroom-sidebar">
           <ClassroomSidebar

@@ -188,4 +188,35 @@ describe("AcademyMainhub", () => {
     // twice on one screen.
     expect(screen.queryByRole("heading", { name: "Build the drill you need." })).not.toBeInTheDocument();
   });
+
+  it("prints the dateline twice so CSS can pick the short month at 1024", async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter
+          initialEntries={["/classroom/drill"]}
+          future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
+        >
+          <AcademyMainhub />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    // Between 900 and 1099 the greeting column wrapped the long month onto a
+    // second line. Both spans render and the media query hides one, so the
+    // first paint is already correct without a resize listener.
+    const long = document.querySelector(".drill-observatory-date-long");
+    const short = document.querySelector(".drill-observatory-date-short");
+    expect(long).not.toBeNull();
+    expect(short).not.toBeNull();
+    const year = String(new Date().getFullYear());
+    expect(long?.textContent).toMatch(new RegExp(`${year}$`));
+    expect(short?.textContent).toMatch(new RegExp(`${year}$`));
+    expect(short?.textContent?.length ?? 0).toBeLessThanOrEqual(
+      long?.textContent?.length ?? 0,
+    );
+  });
 });

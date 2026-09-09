@@ -1038,6 +1038,23 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   text-transform: uppercase;
 }
 
+/* The dateline prints twice and CSS picks one, so the first paint is already
+   right. Between 900 and 1099 the greeting column is too narrow for the long
+   month and the date wrapped to two lines. */
+.drill-observatory-date-short {
+  display: none;
+}
+
+@media (min-width: 900px) and (max-width: 1099px) {
+  .drill-observatory-date-long {
+    display: none;
+  }
+
+  .drill-observatory-date-short {
+    display: inline;
+  }
+}
+
 .drill-observatory-label-sm {
   font-size: var(--observatory-text-label-sm) !important;
 }
@@ -1975,11 +1992,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 @media (max-width: 1023px) {
-  /* 72px top: clears the fixed "Open classroom menu" button (44px at 16px), the
-     same inset every other classroom column takes below this width. Without
-     it the button sat over the jump row and the launcher's title. */
+  /* The menu button lives in the sticky bar above this stage now, so the top
+     inset is the hub's own spacing rather than clearance for a floating
+     button. */
   .classroom-root.classroom-root-drill .classroom-stage {
-    padding: 72px var(--observatory-space-5) var(--observatory-space-5);
+    padding: var(--observatory-space-4) var(--observatory-space-5)
+      var(--observatory-space-5);
   }
 
 }
@@ -2009,7 +2027,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 @media (max-width: 759px) {
   .classroom-root.classroom-root-drill .classroom-stage {
-    padding: 72px var(--observatory-space-4) var(--observatory-space-5);
+    padding: var(--observatory-space-4) var(--observatory-space-4)
+      var(--observatory-space-5);
   }
 
   .drill-observatory-hero-grid {
@@ -2447,6 +2466,14 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   margin-top: 28px;
 }
 
+/* The menu button sits in this bar below 1024px. The bar is sticky, so it
+   holds the top of the viewport while the student scrolls, but it takes its
+   own 56px in the flow instead of floating over the page the way the fixed
+   button did. Above 1024px the sidebar is visible and the bar is not drawn. */
+.classroom-root .classroom-mobile-bar {
+  display: none;
+}
+
 .classroom-root .classroom-mobile-menu-button {
   align-items: center;
   background: var(--classroom-trigger);
@@ -2454,13 +2481,21 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   border-radius: var(--classroom-radius);
   cursor: pointer;
   display: none;
+  flex: none;
   height: 44px;
   justify-content: center;
-  left: 16px;
-  position: fixed;
-  top: 16px;
   width: 44px;
-  z-index: 70;
+}
+
+/* The shell's own label voice, not the hub's mono micro-label: this bar is
+   part of the classroom chrome and appears on every section. */
+.classroom-root .classroom-mobile-bar-label {
+  color: var(--classroom-meta-text);
+  font-size: 13px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .classroom-root .classroom-mobile-menu,
@@ -3165,16 +3200,35 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     display: none;
   }
 
+  .classroom-root .classroom-mobile-bar {
+    align-items: center;
+    background: var(--classroom-page);
+    border-bottom: 1px solid var(--classroom-line);
+    display: flex;
+    gap: 12px;
+    height: 56px;
+    padding: 0 12px;
+    position: sticky;
+    top: 0;
+    z-index: 70;
+  }
+
+  .classroom-root.classroom-root-drill .classroom-mobile-bar {
+    background: var(--classroom-drill-page);
+  }
+
   .classroom-root .classroom-mobile-menu-button {
     display: flex;
   }
 
+  /* Was 72px, the clearance the fixed button needed. The bar has its own
+     space now, so the column only needs its ordinary inset. */
   .classroom-root .classroom-column {
-    padding: 72px 0 90px;
+    padding: 16px 0 90px;
   }
 
   .classroom-root.classroom-root-schedule .classroom-column {
-    padding: 72px 0 72px;
+    padding: 16px 0 72px;
   }
 
   .classroom-root .classroom-leader-row {
@@ -3201,7 +3255,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   }
 
   .classroom-root .classroom-journal-stage-inner {
-    padding-top: 72px;
+    padding-top: 16px;
   }
 }
 

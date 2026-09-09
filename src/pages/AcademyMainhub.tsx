@@ -94,6 +94,17 @@ function MainhubHero({
     return `${weekday} · ${monthDay} · ${d.getFullYear()}`;
   }, []);
 
+  /* Between 900 and 1099 the greeting column is about 356px, which wraps the
+     long date onto a second line. The short month keeps it on one. Both are
+     rendered and CSS picks; swapping the string at a JS breakpoint would need
+     a resize listener and would not match on the first paint. */
+  const todayLabelShort = React.useMemo(() => {
+    const d = new Date();
+    const weekday = d.toLocaleDateString(undefined, { weekday: "long" });
+    const monthDay = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    return `${weekday} · ${monthDay} · ${d.getFullYear()}`;
+  }, []);
+
   const startSmartDrill = React.useCallback(() => {
     navigate("/drill", { state: { mode: "adaptive", returnTo: drillReturnTo } });
   }, [drillReturnTo, navigate]);
@@ -123,7 +134,8 @@ function MainhubHero({
         <div className="drill-observatory-greeting flex flex-col justify-end" data-next={primary ? "true" : undefined}>
           <div className="flex flex-col gap-[9px]">
             <p className="drill-observatory-label drill-observatory-ink-60">
-              {todayLabel}
+              <span className="drill-observatory-date-long">{todayLabel}</span>
+              <span className="drill-observatory-date-short">{todayLabelShort}</span>
             </p>
             {/* Size, face and the italic on the name come from
                 .drill-observatory-greeting h1 — the CSS rule outranks utilities
@@ -204,8 +216,8 @@ function MainhubHero({
               </h2>
               <p className="drill-observatory-ink-70 max-w-[48ch] text-sm leading-[1.6]">
                 {section === "rc"
-                  ? "Choose PrepTests, topics, formats, frameworks, and difficulty independently. Hand-pick the exact passages, or let the set fill itself."
-                  : "Choose PrepTests, question types, reasoning, features, and levels independently. Preview the exact set before you start."}
+                  ? "Pick PrepTests, topics, and difficulty. Choose the passages or let the set fill itself."
+                  : "Pick PrepTests, question types, and difficulty. See the exact set before you start."}
               </p>
             </div>
             <Button
