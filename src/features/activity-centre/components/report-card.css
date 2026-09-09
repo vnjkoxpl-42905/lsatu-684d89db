@@ -69,6 +69,16 @@
   margin-inline: auto;
   max-width: 72ch;
 }
+/* The measure held the card's column and not the prose inside the open
+   stimulus, whose paragraphs ran the full 625px at 14px: 83 to 104 characters
+   a line on the words she reads most closely. The cap belongs on the prose. */
+.rc__movement p,
+.rc__movement li,
+.rc__movement blockquote {
+  /* 60ch, not 72: Lexend's zero is wide (8.5px at 14px), so 72ch is 612px and
+     about 80 real characters. 60ch measures 510px, 66 characters. */
+  max-width: 60ch;
+}
 
 /* ── Micro-labels ─────────────────────────────────────────────────────────
    One label style for the whole card. Every section of a stimulus wears it,
@@ -234,6 +244,47 @@
 }
 
 /* ── The transport ────────────────────────────────────────────────────── */
+
+/* The card's own primary control. Done, Check again, and Run these again
+   used to be the corridor's shadcn Button, which took the shell's emerald into
+   a world whose brief vetoes it. Console ink on the console colour, 44px, the
+   same pill as every other control in here. */
+.rc__cta {
+  align-items: center;
+  background: var(--rc-console);
+  border: 1px solid var(--rc-console);
+  border-radius: 999px;
+  color: var(--rc-console-ink);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--rc-body);
+  font-size: 14px;
+  font-weight: 500;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 22px;
+  transition:
+    background-color 180ms var(--rc-ease),
+    border-color 180ms var(--rc-ease),
+    color 180ms var(--rc-ease);
+}
+.rc__cta:hover:not(:disabled) {
+  background: var(--rc-ink);
+  border-color: var(--rc-ink);
+}
+.rc__cta:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+.rc__cta--quiet {
+  background: transparent;
+  border-color: var(--rc-hairline);
+  color: var(--rc-ink);
+}
+.rc__cta--quiet:hover:not(:disabled) {
+  background: transparent;
+  border-color: var(--rc-ink);
+}
 
 .rc__transport {
   align-items: center;

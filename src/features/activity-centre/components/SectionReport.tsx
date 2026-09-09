@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import {
   getSectionGrade,
   requestSectionGrading,
@@ -184,19 +183,21 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
           */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           {stillWaiting && (
-            <Button
+            <button
+              type="button"
+              className="rc__cta"
               onClick={() => {
                 setStillWaiting(false);
                 setRound((n) => n + 1);
               }}
             >
               Check again
-            </Button>
+            </button>
           )}
           {onDone && (
-            <Button variant="outline" onClick={onDone}>
+            <button type="button" className="rc__cta rc__cta--quiet" onClick={onDone}>
               Back to the Activity Centre
-            </Button>
+            </button>
           )}
         </div>
         {/*

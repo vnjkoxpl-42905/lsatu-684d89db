@@ -335,6 +335,7 @@
   align-items: center;
   gap: 7px;
   min-height: 44px;
+  min-width: 44px;
   padding: 0 4px;
   font: inherit;
   font-size: 15px;
@@ -763,6 +764,7 @@
   max-width: 1240px;
   margin: 0 auto;
   padding: 104px 24px 0;
+  scroll-margin-top: 20px;
 }
 .rd-method-head,
 .rd-counts-head {
@@ -1104,11 +1106,6 @@
   color: var(--rd-ink);
   box-shadow: inset 0 -2px 0 var(--rd-ink);
 }
-.sl-dr-note {
-  margin-left: auto;
-  font-size: 13px;
-  color: var(--rd-ink-3);
-}
 .sl-dr-view {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 240px;
@@ -1279,9 +1276,6 @@
 
 /* =============================================================== slab */
 
-.rd-slab {
-  scroll-margin-top: 20px;
-}
 .sl-runs {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
@@ -1794,9 +1788,6 @@
   .sl-dr-tabs {
     padding: 12px 20px 0;
   }
-  .sl-dr-note {
-    display: none;
-  }
   .sl-dr-view {
     padding: 24px 20px 26px;
   }
@@ -1847,11 +1838,16 @@
    The instructions on their own page, before anything records. One column,
    everything open, Start at the top and again at the foot. */
 .sl-briefing-page {
+  --bp-label: 0.6875rem;
+  --bp-body: 1rem;
+  --bp-lead: 1.1875rem;
+  --bp-step: 1.375rem;
   max-width: 880px;
   margin: 0 auto;
   padding: 40px 20px 96px;
   display: grid;
   gap: 32px;
+  font-size: var(--bp-body);
 }
 /* Stacked on purpose. It was space-between, and at this page's width the
    title block and the CTA never fit on one line, so the CTA always wrapped
@@ -1906,9 +1902,6 @@
   outline-color: var(--rd-cream);
 }
 /* 43x44 was under the 44x44 floor, and this is the exit control. */
-.sl-brief {
-  min-width: 44px;
-}
 
 /* Two more hero classes drawn in white for the door's dark panel. On paper they
    were invisible: the drill's own name, and a Back button nobody could see. */
@@ -2117,13 +2110,6 @@
      label 0.6875  body 1  lead 1.1875  step 1.375  title clamp(2, 3.4vw, 3)
    Roles: mono for labels, Inter for anything she reads at length, Fraunces
    for the lines that are spoken to her (title, step names, lede, closer). */
-.sl-briefing-page {
-  --bp-label: 0.6875rem;
-  --bp-body: 1rem;
-  --bp-lead: 1.1875rem;
-  --bp-step: 1.375rem;
-  font-size: var(--bp-body);
-}
 .sl-briefing-page .sl-title {
   font-size: clamp(2rem, 3.4vw, 3rem);
 }

@@ -18,7 +18,7 @@ function stub(over: Partial<SectionGradeStub> & { coverage: number }): SectionGr
 describe("the record of every graded run", () => {
   it("says nothing has been graded yet rather than showing an empty chart", async () => {
     render(<SectionProgress loadGrades={async () => []} />);
-    expect(await screen.findByText(/No graded runs yet/i)).toBeInTheDocument();
+    expect(await screen.findByText(/No graded Attempts yet/i)).toBeInTheDocument();
   });
 
   it("lists every stored run with its score", async () => {
@@ -32,7 +32,7 @@ describe("the record of every graded run", () => {
     );
     expect(await screen.findByText("82%")).toBeInTheDocument();
     expect(screen.getByText("61%")).toBeInTheDocument();
-    expect(screen.getByText(/2 graded runs/)).toBeInTheDocument();
+    expect(screen.getByText(/2 graded Attempts/)).toBeInTheDocument();
     expect(screen.getByText(/up 21 points since your first/)).toBeInTheDocument();
   });
 
