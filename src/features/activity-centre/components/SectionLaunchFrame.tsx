@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowRight, Mic } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
 import { renderInlineMarks } from "../prompt-format";
@@ -169,6 +169,10 @@ export function SectionLaunchFrame({
   const heroRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
   const sectionsRef = useRef<HTMLElement>(null);
+  // The four step cards each carry a looping scene. They run while the method
+  // is on screen and stop when it is not; `reveal` fires once and cannot.
+  const methodRef = useRef<HTMLElement>(null);
+  const methodInView = useInView(methodRef);
 
   /**
    * The hero's scroll, 0 while it is fully on screen and 1 once it has left.
@@ -178,7 +182,10 @@ export function SectionLaunchFrame({
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const copyY = useTransform(scrollYProgress, [0, 1], [0, 160]);
   const copyOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const copyFilter = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(14px)"]);
+  // 4px, not 14: a large blur radius on a 96px headline layer is one of the
+  // most expensive things a scroll can drive, and past about 4px the headline
+  // is already unreadable, so the rest of the radius buys nothing.
+  const copyFilter = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(4px)"]);
   const copyScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.94]);
 
   const beatRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -235,10 +242,6 @@ export function SectionLaunchFrame({
       {/* ---------------------------------------------------------------- hero */}
       <section className="rd-hero" ref={heroRef} aria-labelledby="rd-title">
         <div className="rd-hero-panel">
-          <MeadowScene progress={scrollYProgress}>
-            <RecallDemo />
-          </MeadowScene>
-
           <div className="rd-hero-top">
             <span className="rd-crumbs">
               {showBreadcrumbs ? (
@@ -316,6 +319,16 @@ export function SectionLaunchFrame({
           </motion.div>
 
           <div className="rd-hero-space" aria-hidden="true" />
+
+          {/* Last in the DOM, first in the picture: the scene and its planes
+              are painted by z-index, so putting them here costs nothing
+              visually and stops the demonstration's Play button from being
+              the first thing the Tab key finds on the page. The crumb out and
+              the two calls to action come first now, which is the order she
+              would read them in. */}
+          <MeadowScene progress={scrollYProgress}>
+            <RecallDemo />
+          </MeadowScene>
         </div>
       </section>
 
@@ -325,9 +338,12 @@ export function SectionLaunchFrame({
           id="sl-sections"
           ref={sectionsRef}
           tabIndex={-1}
-          aria-label="Choose a section"
+          aria-labelledby="rd-slab-title"
           {...reveal}
         >
+          <h2 className="sr-only" id="rd-slab-title">
+            Choose a section
+          </h2>
           {children}
         </motion.section>
       )}
@@ -343,7 +359,20 @@ export function SectionLaunchFrame({
 
       {/* -------------------------------------------------------------- method */}
       {beats.length > 0 && (
-        <motion.section className="rd-method" aria-label="Read, Recall, Colour steps" {...reveal}>
+        <motion.section
+          className="rd-method"
+          ref={methodRef}
+          data-still={!methodInView || undefined}
+          aria-labelledby="rd-method-title"
+          {...reveal}
+        >
+          {/* The page's headings were H1, then this section's H3, then the H2
+              below it. Every section down the page owns a level-2 heading now,
+              named exactly as its label already named it, so the outline reads
+              in order whether or not the drawer is open. */}
+          <h2 className="sr-only" id="rd-method-title">
+            Read, Recall, Colour steps
+          </h2>
           <div
             className="sl-beats"
             role="tablist"
@@ -452,7 +481,7 @@ export function SectionLaunchFrame({
                     {briefing.lede && <p className="rd-lede">{renderInlineMarks(briefing.lede, "sl-lede")}</p>}
                     {briefing.sections.map((section, i) => (
                       <section key={i}>
-                        <h4>{renderInlineMarks(section.heading, `sl-h-${i}`)}</h4>
+                        <h3>{renderInlineMarks(section.heading, `sl-h-${i}`)}</h3>
                         {section.body.map((para, j) => (
                           <p key={j}>{renderInlineMarks(para, `sl-p-${i}-${j}`)}</p>
                         ))}
@@ -538,16 +567,22 @@ export function SectionLaunchFrame({
           id="sl-sections"
           ref={sectionsRef}
           tabIndex={-1}
-          aria-label="Choose a section"
+          aria-labelledby="rd-slab-title"
           {...reveal}
         >
+          <h2 className="sr-only" id="rd-slab-title">
+            Choose a section
+          </h2>
           {children}
         </motion.section>
       )}
 
 
       {/* -------------------------------------------------------------- close */}
-      <section className="rd-close" aria-label="Start">
+      <section className="rd-close" aria-labelledby="rd-close-title">
+        <h2 className="sr-only" id="rd-close-title">
+          Start
+        </h2>
         <div className="rd-close-panel">
           <p className="rd-close-line">
             Twenty-five minutes. No going back. <em>Every detail you can still hold.</em>

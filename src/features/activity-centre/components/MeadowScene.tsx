@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { motion, useReducedMotion, useTransform, type MotionValue } from "framer-motion";
+import { useMemo, useRef } from "react";
+import { motion, useInView, useReducedMotion, useTransform, type MotionValue } from "framer-motion";
 
 /**
  * The dusk meadow behind the Read, Recall, Colour door.
@@ -51,8 +51,8 @@ interface Blade {
   d: string;
   w: number;
   c: string;
+  /** Seeded 0..4. Buckets the blade into a sway group, so neighbours drift apart. */
   delay: number;
-  x: number;
 }
 interface Flower {
   x: number;
@@ -74,7 +74,6 @@ function grass(seed: number, count: number): { blades: Blade[]; flowers: Flower[
     const lean = (rng() - 0.5) * 60;
     const y0 = H + 10;
     blades.push({
-      x,
       d: `M ${x.toFixed(1)} ${y0} Q ${(x + lean * 0.35).toFixed(1)} ${(y0 - h * 0.62).toFixed(1)} ${(x + lean).toFixed(1)} ${(y0 - h).toFixed(1)}`,
       w: 2.5 + rng() * 4,
       c: GREENS[Math.floor(rng() * GREENS.length)],
@@ -92,6 +91,26 @@ function grass(seed: number, count: number): { blades: Blade[]; flowers: Flower[
   return { blades, flowers };
 }
 
+/**
+ * The grass sways in six groups, not in one animation per blade.
+ *
+ * A keyframe on every `<path>` put 170 animations on the compositor and left
+ * them running for as long as the tab was open, for a picture that is often
+ * scrolled past. Six groups skewed about the ground line read the same at a
+ * glance -- skew, not rotation, because it leans the tips and leaves every
+ * base planted -- and cost the browser six. The negative delays start each
+ * group part-way through its cycle so they are out of phase on the first
+ * frame rather than a beat later.
+ */
+const SWAY = [
+  { delay: -0.0, duration: 5.5 },
+  { delay: -1.4, duration: 6.3 },
+  { delay: -2.7, duration: 4.9 },
+  { delay: -0.7, duration: 7.1 },
+  { delay: -3.4, duration: 5.9 },
+  { delay: -2.1, duration: 6.7 },
+];
+
 export interface MeadowSceneProps {
   /** 0 at the top of the hero, 1 when the hero has scrolled fully past. */
   progress: MotionValue<number>;
@@ -108,12 +127,20 @@ const SVG_PROPS = {
 
 export function MeadowScene({ progress, children }: MeadowSceneProps) {
   const reduced = useReducedMotion();
+  const rootRef = useRef<HTMLDivElement>(null);
+  // Nothing here is worth animating while the hero is off screen.
+  const inView = useInView(rootRef);
 
   const far = useMemo(() => ridge(11, 545, 42), []);
   const mid = useMemo(() => ridge(23, 632, 58), []);
   const near = useMemo(() => ridge(37, 728, 46), []);
   const ground = useMemo(() => ridge(51, 862, 12), []);
   const { blades, flowers } = useMemo(() => grass(71, 170), []);
+  const bladeGroups = useMemo(() => {
+    const groups: Blade[][] = SWAY.map(() => []);
+    for (const b of blades) groups[Math.min(SWAY.length - 1, Math.floor((b.delay / 4) * SWAY.length))].push(b);
+    return groups;
+  }, [blades]);
 
   // Each plane rides the scroll at its own rate. Negative is "up and away":
   // the foreground rises fastest so it crosses in front of whatever sits
@@ -128,7 +155,7 @@ export function MeadowScene({ progress, children }: MeadowSceneProps) {
   const still = reduced ? { y: 0 } : undefined;
 
   return (
-    <div className="mw" aria-hidden={children ? undefined : true}>
+    <div className="mw" ref={rootRef} data-still={!inView || reduced || undefined} aria-hidden={children ? undefined : true}>
       <motion.svg {...SVG_PROPS} className="mw-layer mw-sky" style={still ?? { y: skyY }}>
         <defs>
           <linearGradient id="mw-sky-g" x1="0" y1="0" x2="0" y2="1">
@@ -201,17 +228,19 @@ export function MeadowScene({ progress, children }: MeadowSceneProps) {
         </defs>
         <path d={ground} fill="url(#mw-ground-g)" />
         <g className="mw-blades" fill="none" strokeLinecap="round">
-          {blades.map((b, i) => (
-            <path
-              key={i}
-              d={b.d}
-              stroke={b.c}
-              strokeWidth={b.w}
+          {bladeGroups.map((group, gi) => (
+            <g
+              key={gi}
               style={{
-                transformOrigin: `${b.x}px ${H + 10}px`,
-                animationDelay: `${b.delay.toFixed(2)}s`,
+                transformOrigin: `0 ${H + 10}px`,
+                animationDelay: `${SWAY[gi].delay}s`,
+                animationDuration: `${SWAY[gi].duration}s`,
               }}
-            />
+            >
+              {group.map((b, i) => (
+                <path key={i} d={b.d} stroke={b.c} strokeWidth={b.w} />
+              ))}
+            </g>
           ))}
         </g>
         <g className="mw-flowers">

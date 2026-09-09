@@ -128,6 +128,10 @@
   opacity: 0.13;
   mix-blend-mode: soft-light;
   pointer-events: none;
+  /* The grain never moves. `.mw-layer` promises the compositor a transform on
+     every plane, which held a full-size turbulence-filtered layer in memory
+     for nothing. */
+  will-change: auto;
 }
 .mw-stage {
   position: absolute;
@@ -144,21 +148,41 @@
   z-index: 7;
   pointer-events: none;
 }
-.mw-blades path {
+/* Six groups, not 170 blades. The duration and the phase come from the scene,
+   which knows how many groups there are; the origin sits on the ground line so
+   the skew leans the tips and leaves every base planted. */
+.mw-blades g {
   animation: mw-sway 5.5s ease-in-out infinite alternate;
 }
 @keyframes mw-sway {
   from {
-    transform: rotate(-1.8deg);
+    transform: skewX(-1.6deg);
   }
   to {
-    transform: rotate(1.8deg);
+    transform: skewX(1.6deg);
   }
+}
+
+/* Loops stop when their surface leaves the screen. The hero's scene and its
+   demonstration, and the four scenes on the step cards, are the whole of the
+   door's continuous motion; off screen they are work nobody can see. */
+.mw[data-still] .mw-blades g,
+.rd-demo[data-still] .rd-rec-dot,
+.rd-demo[data-still] .rd-wave i,
+.rd-demo[data-still] .rd-caret,
+.rd-method[data-still] .rd-scene *,
+.rd-method[data-still] .rd-scene *::before,
+.rd-method[data-still] .rd-scene *::after {
+  animation-play-state: paused;
 }
 
 .rd-hero-top {
   position: relative;
-  z-index: 8;
+  /* Above the hero copy, which shares the same layer and comes later in the
+     DOM. On a phone the copy block starts level with the crumb line and took
+     the bottom half of the way out with it: a 73x47 target on a laptop
+     measured 73x32 at 375px. Nothing decorative sits over the exit. */
+  z-index: 9;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -183,6 +207,7 @@
   font-variant-numeric: tabular-nums;
 }
 .sl-crumb-back {
+  position: relative;
   font: inherit;
   letter-spacing: inherit;
   text-transform: inherit;
@@ -194,6 +219,15 @@
   text-decoration: underline;
   text-decoration-style: dotted;
   text-underline-offset: 4px;
+}
+/* The way out of the drill, drawn at 11px because it is a breadcrumb and
+   pressable at 71x45 because it is the exit. The target is an overlay rather
+   than padding so the crumb line keeps its height, the same way the runner's
+   rail controls were done. */
+.sl-crumb-back::after {
+  content: "";
+  position: absolute;
+  inset: -14px -8px;
 }
 .sl-crumb-back:hover {
   color: var(--rd-on-dark);
@@ -423,6 +457,11 @@
 .rd-demo-play {
   appearance: none;
   cursor: pointer;
+  position: relative;
+  /* Above the card body. The transcript below is transformed on every beat,
+     which put it over the bottom of the button's target and clipped it to
+     44x42. */
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -434,6 +473,20 @@
   color: var(--rd-ink);
   padding: 0;
   transition: background 0.2s ease;
+}
+/* 44x44 to press, 28x28 to look at. The card's chrome is 13px type and a row
+   of 9px dots; a 44px disc in it would be the loudest thing on the hero. The
+   gap to the clock is 12px, so the overlay reaches into padding and never onto
+   a neighbour. */
+.rd-demo-play::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+/* The hero paints its focus ring white for the dark panel. The demonstration
+   is cream paper sitting on that panel, where white measured 1.05:1. */
+.rd-hero .rd-demo :focus-visible {
+  outline-color: var(--rd-ink);
 }
 .rd-demo-play:hover:not(:disabled) {
   background: var(--rd-paper-2);
@@ -1069,7 +1122,9 @@
   font-size: 14px;
   font-weight: 500;
   color: var(--rd-ink-3);
-  padding: 8px 0 14px;
+  /* 45px tall. It was 43, and the underline still has to land on the tab
+     strip's own border, so the height goes on the top. */
+  padding: 10px 0 14px;
   box-shadow: inset 0 -2px 0 transparent;
   transition:
     color 0.2s ease,
