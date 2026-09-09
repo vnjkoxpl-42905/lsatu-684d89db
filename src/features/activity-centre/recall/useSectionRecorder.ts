@@ -296,10 +296,17 @@ export function useSectionRecorder(
     } catch {
       return false;
     }
-    // Asked for, and then checked. A browser is allowed to implement `pause`
-    // as a no-op, and a no-op here is the misalignment this returns false to
-    // prevent.
-    if (rec.state !== "paused") return false;
+    /*
+     * Asked for, and then checked. A browser is allowed to implement `pause`
+     * as a no-op, and a no-op here is the misalignment this returns false to
+     * prevent.
+     *
+     * Read into a widened local because TypeScript narrowed `rec.state` to
+     * "recording" at the guard above and does not model `pause()` as changing
+     * it, so the comparison it needs to see is the one it calls impossible.
+     */
+    const afterPause: string = rec.state;
+    if (afterPause !== "paused") return false;
     try {
       if (backup.current?.state === "recording") backup.current.pause();
     } catch {
@@ -318,7 +325,9 @@ export function useSectionRecorder(
     } catch {
       return false;
     }
-    if (rec.state !== "recording") return false;
+    // Widened for the same reason as `afterPause` above.
+    const afterResume: string = rec.state;
+    if (afterResume !== "recording") return false;
     try {
       if (backup.current?.state === "paused") backup.current.resume();
     } catch {
