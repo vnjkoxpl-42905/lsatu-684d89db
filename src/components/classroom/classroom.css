@@ -6,6 +6,10 @@
      hairline measures 1.22:1 against the page. Same warm family, darkened only
      in value: 3.14:1 on the panel and 3.06:1 on the page. */
   --classroom-line-strong: #9c8f85;
+  /* --classroom-line-strong is measured against the page and the panel. A control
+     that sits on a tinted ground instead (the toggle knob, on --classroom-hover)
+     reads under 3:1 there, so it takes this one. Same role, darker ground. */
+  --classroom-line-on-tint: #8a7d72;
   --classroom-ink: #43403c;
   --classroom-ink-body: #43403c;
   --classroom-meta: 166, 162, 158;
@@ -63,6 +67,8 @@ html.dark .classroom-root {
   --classroom-line: #17161c;
   /* 3.21:1 on the dark page, 3.31:1 on the dark panel. */
   --classroom-line-strong: #646176;
+  /* Lighter, not darker: on the dark theme the tinted ground is the lighter one. */
+  --classroom-line-on-tint: #7a7789;
   --classroom-ink: #fffffe;
   --classroom-ink-body: #e5e5e5;
   --classroom-meta: 167, 169, 190;
@@ -3720,7 +3726,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    The on state overrides this with --classroom-active and is unaffected. */
 .classroom-root .classroom-toggle i {
   background: var(--classroom-panel);
-  border: 1px solid var(--classroom-line-strong);
+  border: 1px solid var(--classroom-line-on-tint);
   border-radius: 999px;
   display: block;
   height: 16px;

@@ -45,6 +45,7 @@ already documents and already loads.
 | `--classroom-meta-soft` | `rgba(67,64,60,.4)` | `#a7a9be` | **fills and borders only, never text** |
 | `--classroom-line` | `#f3e3d6` | `#17161c` | hairline separation |
 | `--classroom-line-strong` | `#9c8f85` | `#646176` | a border that is itself the affordance (WCAG 1.4.11) |
+| `--classroom-line-on-tint` | `#8a7d72` | `#7a7789` | the same job, for a control whose ground is a tint rather than the page |
 | `--classroom-accent` | `#a25704` | `#ff8906` | a fill that carries text: primary button, unread badge, unread dot |
 | `--classroom-accent-ink` | `#ffffff` | `#0f0e17` | the label on that fill |
 | `--classroom-link` | `#ff8906` | `#ff8906` | **decorative fills only** |
@@ -99,6 +100,19 @@ the textarea, the review control, and the five orientation controls. A rule is a
 if it carries `cursor: pointer`, `resize`, or an input/select/textarea selector; a scan on
 that test returns zero controls left on the hairline.
 
+**`--classroom-line-strong` is measured against the page and the panel, so a control on a
+tinted ground takes `--classroom-line-on-tint` instead.** The two figures above are the
+ratios against `--classroom-page` and `--classroom-surface`. They do not carry over to a
+control sitting on something else. The toggle knob is the one case: it sits on the track,
+which is `--classroom-hover` composited to `rgb(251,247,243)` light and `rgb(33,31,35)`
+dark, and `--classroom-line-strong` read 2.68:1 there while reading 3.14:1 six pixels
+away on the panel. Note the direction reverses between themes - the tinted ground is
+darker than the panel on light and lighter than it on dark, so the token is darker than
+`--classroom-line-strong` on light and lighter on dark. Measured 2026-09-09 on the
+production build: knob border 3.75:1 against the track in both themes, 3.99:1 light and
+4.55:1 dark against the knob fill. Before adding a third border token, check whether the
+control's ground is genuinely a new one; two is the whole set.
+
 `--classroom-line` stays what it always was: hairline separation between things, not the
 edge of a control. It still carries the cards, the panels, the callouts, the prose media,
 `.classroom-choice` (an `<li>` in an `<ol>`, not a button), `.classroom-review-correct-answer`
@@ -136,6 +150,16 @@ which is Level AAA, while the AA target-size rule is 2.2's 2.5.8 at 24x24. A 34p
 clears the binding floor. PRODUCT.md line 104 lists the AAA figure inside its AA section,
 which is a doc imprecision to fix there, not a defect here. Do not raise this as a
 violation, and do not attribute a waiver to Joshua - there is nothing to waive.
+
+**The toggle carries its state by knob position, and on dark that is the only thing
+carrying it.** Off-track versus on-track measures 9.68:1 on light but 1.51:1 on dark,
+because `--classroom-hover` over the dark panel lands at `rgb(33,31,35)` and
+`--classroom-active` is `#3d3c48`. 1.4.11 asks for 3:1 on visual information needed to
+identify a state, and the 16px knob translation is non-colour information, so this is not
+a failure. It is thin, though, and it is thin only in one theme. Raising it means either
+a lighter dark `--classroom-active`, which reaches 17 other rules, or an on-state fill
+scoped to this control, which breaks the token's meaning. Joshua's call, and nobody has
+made it. Do not raise this as a defect; do not silently change `--classroom-active`.
 
 **`smartboard_recap` is a dead label.** Boards are not attached to student accounts
 (confirmed 2026-09-09), so no student sees it. The mapping stays only so an unmapped
