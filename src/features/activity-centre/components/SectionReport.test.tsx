@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import type { SectionGrade } from "../api/types";
 import { SectionReport } from "./SectionReport";
@@ -119,11 +119,79 @@ describe("waiting for the Report Card", () => {
     expect(requestSectionGrading).toHaveBeenCalledTimes(1);
   });
 
-  it("eventually tells her the run is saved rather than spinning for ever", async () => {
+  it("eventually says it is still being marked rather than spinning for ever", async () => {
     getSectionGrade.mockResolvedValue(null);
     inRouter(<SectionReport assignmentId="a1" />);
     await vi.advanceTimersByTimeAsync(4 * 60 * 1000);
     await vi.waitFor(() => expect(screen.getByText("Still being marked")).toBeInTheDocument());
-    expect(screen.getByText(/Your run is saved/)).toBeInTheDocument();
+    // What she needs to know is that leaving does not cost her the run, and
+    // where the card turns up. "Your run is saved and your Report Card will be
+    // here when you come back to it" promised a screen she had no way back to.
+    expect(screen.getByText(/marking carries on whether or not you stay/i)).toBeInTheDocument();
+    expect(screen.getByText(/Activity Centre when it lands/i)).toBeInTheDocument();
+  });
+
+  it("says how long it has been, so a long wait is a fact rather than a feeling", async () => {
+    getSectionGrade.mockResolvedValue(null);
+    inRouter(<SectionReport assignmentId="a1" />);
+    // Before the give-up she is told what normal looks like.
+    expect(screen.getByText(/usually takes one to three minutes/i)).toBeInTheDocument();
+    await vi.advanceTimersByTimeAsync(4 * 60 * 1000);
+    await vi.waitFor(() => expect(screen.getByText("Still being marked")).toBeInTheDocument());
+    expect(screen.getByText(/been marking for 4 minutes/i)).toBeInTheDocument();
+  });
+
+  it("announces the change, which is otherwise silent to a screen reader", async () => {
+    getSectionGrade.mockResolvedValue(null);
+    const { container } = inRouter(<SectionReport assignmentId="a1" />);
+    const live = container.querySelector('[role="status"]');
+    expect(live).not.toBeNull();
+    expect(live?.textContent).toMatch(/Marking your run/);
+    await vi.advanceTimersByTimeAsync(4 * 60 * 1000);
+    await vi.waitFor(() => expect(live?.textContent).toMatch(/Still being marked/));
+  });
+
+  it("gives her a way to ask again instead of ending the screen", async () => {
+    getSectionGrade.mockResolvedValue(null);
+    inRouter(<SectionReport assignmentId="a1" />);
+    await vi.advanceTimersByTimeAsync(4 * 60 * 1000);
+    await vi.waitFor(() => expect(screen.getByText("Still being marked")).toBeInTheDocument());
+
+    const callsAtGiveUp = getSectionGrade.mock.calls.length;
+    fireEvent.click(screen.getByRole("button", { name: "Check again" }));
+
+    // Polling restarts, and the give-up window with it: one more tick is enough
+    // to prove the screen is asking again rather than sitting on its verdict.
+    // Wrapped, because the elapsed-time interval also lands inside this window.
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(11000);
+    });
+    expect(getSectionGrade.mock.calls.length).toBeGreaterThan(callsAtGiveUp);
+    expect(screen.getByText("Marking your run")).toBeInTheDocument();
+  });
+
+  it("hands her the one thing she could not produce herself", async () => {
+    getSectionGrade.mockResolvedValue(null);
+    inRouter(<SectionReport assignmentId="a1" />);
+    // Before the give-up this is noise: the ordinary wait is one to three
+    // minutes and nobody needs a run id for that.
+    expect(screen.queryByText(/quote this run/i)).toBeNull();
+    await vi.advanceTimersByTimeAsync(4 * 60 * 1000);
+    await vi.waitFor(() => expect(screen.getByText(/quote this run/i)).toBeInTheDocument());
+    expect(screen.getByText("a1")).toBeInTheDocument();
+    // Not a "Tell Joshua" button: gating one on has_chat_access means mounting
+    // a hook that redirects on a lost session into the screen that must not
+    // navigate away. See the comment in SectionReport.
+    expect(screen.queryByRole("button", { name: /tell joshua/i })).toBeNull();
+  });
+
+  it("names where its other button goes", async () => {
+    getSectionGrade.mockResolvedValue(null);
+    const onDone = vi.fn();
+    inRouter(<SectionReport assignmentId="a1" onDone={onDone} />);
+    // "Done" read as dismissing a Report Card she had not been shown.
+    expect(screen.queryByRole("button", { name: "Done" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Back to the Activity Centre" }));
+    expect(onDone).toHaveBeenCalled();
   });
 });

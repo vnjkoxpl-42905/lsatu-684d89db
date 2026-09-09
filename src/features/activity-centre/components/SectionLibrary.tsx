@@ -73,10 +73,44 @@ function isWaiting(a: ActivityAssignmentSummary): boolean {
  * The old list said "done" for all three and led nowhere, so an Attempt she had
  * spent twenty-five minutes on was a line of grey text.
  */
+/**
+ * How long a finished run has been waiting for its grade.
+ *
+ * "Still being marked" is true at four minutes and true at four hours, and she
+ * cannot tell those apart, so she either sits waiting on something that is
+ * already broken or writes off something that was about to land. A real
+ * grading takes one to three minutes; anything much past that is worth her
+ * knowing as a number.
+ */
+function markingMinutes(a: ActivityAssignmentSummary): number | null {
+  if (!a.completed_at) return null;
+  const ms = Date.now() - new Date(a.completed_at).getTime();
+  if (!Number.isFinite(ms) || ms < 0) return null;
+  return Math.floor(ms / 60000);
+}
+
+/** The clock time a run finished, for a wait long enough that minutes stop helping. */
+function finishedAtTime(a: ActivityAssignmentSummary): string | null {
+  if (!a.completed_at) return null;
+  return new Date(a.completed_at).toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 function attemptLabel(a: ActivityAssignmentSummary, grade: SectionGradeStub | undefined): string {
   const date = attemptDate(a);
   if (a.status !== "completed") return `${date} · not finished`;
-  if (!grade) return `${date} · still being marked`;
+  if (!grade) {
+    const waited = markingMinutes(a);
+    if (waited === null) return `${date} · still being marked`;
+    if (waited >= 60) {
+      const at = finishedAtTime(a);
+      return at ? `${date} · finished ${at}, still being marked` : `${date} · still being marked`;
+    }
+    if (waited < 1) return `${date} · marking now`;
+    return `${date} · marking for ${waited} ${waited === 1 ? "minute" : "minutes"}`;
+  }
   return `${date} · ${grade.section.mean_coverage}% carried`;
 }
 
@@ -98,7 +132,15 @@ function attemptAction(
   grade: SectionGradeStub | undefined,
 ): string | null {
   if (a.status !== "completed") return null;
-  if (!grade) return "Check back shortly";
+  if (!grade) {
+    /*
+     * Past the point where waiting is the right advice, say what to do instead.
+     * The row opens the marking screen, which now has a Check again on it, so
+     * this is a real instruction rather than a hope.
+     */
+    const waited = markingMinutes(a);
+    return waited !== null && waited >= 10 ? "Open it and check again" : "Check back shortly";
+  }
   return "See what you missed";
 }
 

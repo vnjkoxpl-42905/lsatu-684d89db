@@ -5,11 +5,18 @@
  *   npx vite-node scripts/rrc-ungraded.ts -- --grade # list, then re-ask the grader for each
  *
  * The sweeper (`sweep-rrc-grading`) is deliberately scheduled nowhere (ADR
- * 0021), the Report Card asks for a grade twice and then says "still being
- * marked" for good, and a run the grader REFUSES -- no recording, a clock it
- * cannot place, a transcription outage -- produces nothing anywhere that
- * Joshua would see. On 2026-09-08 a student sat on "still being marked" for
- * three and a half hours before she messaged. This is the list she was on.
+ * 0021), and a run the grader REFUSES -- no recording, a clock it cannot
+ * place, a transcription outage -- produces nothing anywhere that Joshua would
+ * see. On 2026-09-08 a student sat on "still being marked" for three and a
+ * half hours before she messaged. This is the list she was on.
+ *
+ * Since 2026-09-09 the student side is no longer a dead end: the marking screen
+ * says how long it has been, carries a Check again that restarts the polling
+ * and the ask, and offers Joshua when she can reach Messages; the section
+ * library says how many minutes a finished run has been marking and stops
+ * telling her to wait once waiting is the wrong advice. None of that grades
+ * anything. Until the sweeper is scheduled, this script is still the only
+ * thing that finds a refused run, so run it daily.
  *
  * Reads as the admin account. Run it from the repo root.
  */

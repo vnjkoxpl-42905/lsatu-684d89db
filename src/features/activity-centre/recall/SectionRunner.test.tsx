@@ -370,6 +370,50 @@ describe("writing it down", () => {
     expect(screen.getByText(/section finished/i)).toBeInTheDocument();
   });
 
+  it("keeps her on the recovery sentence when the recording never arrived", async () => {
+    /*
+     * The answers saved and the audio did not, which is the failure this
+     * screen's recovery sentence exists for: the recording is still on this
+     * computer and opening the section again from the same browser sends it.
+     *
+     * `onComplete` used to fire anyway, because the gate was only "did the rows
+     * save". The Report Card screen replaced that sentence within a frame with
+     * "Marking your run", and three minutes later with "Still being marked, it
+     * will be here when you come back", which was false: nothing had been
+     * uploaded and nothing was being marked. The one instruction that would
+     * have recovered her run was on screen for a few hundred milliseconds.
+     */
+    upload.mockResolvedValueOnce({ error: { message: "network" } });
+    upload.mockResolvedValueOnce({ error: { message: "network" } });
+    const onExit = vi.fn();
+    const { onComplete } = await renderRun({ onExit });
+    space();
+    space();
+
+    await vi.waitFor(() =>
+      expect(screen.getByText(/recording did not reach us/i)).toBeInTheDocument(),
+    );
+    expect(onComplete).not.toHaveBeenCalled();
+    // And a way out. The exit was conditional on unsaved ANSWERS, so the run
+    // whose only fault was the recording had an instruction and no button.
+    fireEvent.click(screen.getByRole("button", { name: /back to the activity centre/i }));
+    expect(onExit).toHaveBeenCalled();
+  });
+
+  it("does not ask for a grade there is no recording to make", async () => {
+    // The grader refuses a run with no recording, so asking produces a "Not
+    // scored" card rather than a Report Card.
+    upload.mockResolvedValueOnce({ error: { message: "network" } });
+    upload.mockResolvedValueOnce({ error: { message: "network" } });
+    await renderRun();
+    space();
+    space();
+    await vi.waitFor(() =>
+      expect(screen.getByText(/recording did not reach us/i)).toBeInTheDocument(),
+    );
+    expect(invoke).not.toHaveBeenCalled();
+  });
+
   it("scores a student with extra time against her own goal", async () => {
     await renderRun({ accommodation: "accommodation_70" });
     space();

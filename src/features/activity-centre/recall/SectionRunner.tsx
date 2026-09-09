@@ -1061,7 +1061,24 @@ function RunBody({
        * sweeper re-drives anything this call missed, so the ask being slow or
        * lost costs nothing that is not already recovered.
        */
-      if (missingRows === 0) {
+      /*
+       * Only when there is something to mark.
+       *
+       * `missingRows === 0` was the whole condition, so a run whose answers
+       * saved and whose AUDIO did not still handed her to the Report Card. The
+       * finished screen had just told her the recording was still on this
+       * computer and to open the section again; `onComplete` replaced that
+       * sentence within a frame with "Marking your run", and three minutes
+       * later with "Still being marked, it will be here when you come back".
+       * None of which was true, and the one instruction that would have
+       * recovered her run was on screen for a few hundred milliseconds.
+       *
+       * The grader refuses a run with no recording, so `storedRecording` is the
+       * honest test for "there is a gradable run": ask for a grade and move her
+       * on only when the audio is actually on the server. Otherwise she stays
+       * here, with the recovery sentence and a way out.
+       */
+      if (missingRows === 0 && storedRecording) {
         void requestSectionGrading(assignmentId);
         if (!cancelled) onComplete?.();
       }
@@ -1099,11 +1116,13 @@ function RunBody({
                       : unsavedCount > 0
                         ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us, and there was no recording of this run to mark instead. Open this section again from the same browser and the answers will be sent.`
                         : uploadFailed
-                    ? `${run.stimuli.length} stimuli, end to end. Your recording did not reach us, so it is still on this computer. Open this section again from the same browser and it will be sent, and then marked.`
-                    : `${run.stimuli.length} stimuli, end to end. Your Report Card comes next.`}
+                          ? `${run.stimuli.length} stimuli, end to end. Your recording did not reach us, so it is still on this computer. Open this section again from the same browser and it will be sent, and then marked.`
+                          : !recordingStored
+                            ? `${run.stimuli.length} stimuli, end to end. Nothing was recorded of this run, so there is no audio to mark and none of it is on this computer either. Tell Joshua what happened and he can see what was saved.`
+                            : `${run.stimuli.length} stimuli, end to end. Your Report Card comes next.`}
                 </span>
               </p>
-              {unsavedCount > 0 && onExit && (
+              {(unsavedCount > 0 || !recordingStored) && onExit && (
                 <button type="button" className="ac-section-exit" onClick={onExit}>
                   Back to the Activity Centre
                 </button>

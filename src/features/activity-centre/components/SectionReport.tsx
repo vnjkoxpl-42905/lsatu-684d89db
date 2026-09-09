@@ -54,12 +54,32 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
   const navigate = useNavigate();
   const [grade, setGrade] = useState<SectionGrade | null>(null);
   const [stillWaiting, setStillWaiting] = useState(false);
+  /**
+   * Bumped by "Check again", which restarts the effect and so starts a fresh
+   * give-up window. Before this, giving up was terminal: the screen stopped
+   * asking for ever and the only way to find out was to leave and come back,
+   * which is a thing she had to guess at.
+   */
+  const [round, setRound] = useState(0);
   const startedAt = useRef(Date.now());
+  /** Minutes since she finished, for a wait that says how long it has been. */
+  const [waitedMs, setWaitedMs] = useState(0);
+
+  useEffect(() => {
+    if (grade) return;
+    const tick = setInterval(() => setWaitedMs(Date.now() - startedAt.current), 10000);
+    return () => clearInterval(tick);
+  }, [grade]);
 
   useEffect(() => {
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout>;
     let askedAgain = false;
+    /*
+     * Measured per round, not from the first paint, so a "Check again" gets a
+     * full window rather than giving up on its first tick.
+     */
+    const roundStartedAt = Date.now();
 
     const poll = async () => {
       try {
@@ -75,7 +95,7 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
       }
       if (cancelled) return;
 
-      const waited = Date.now() - startedAt.current;
+      const waited = Date.now() - roundStartedAt;
       if (!askedAgain && waited > RETRY_ASK_MS) {
         // Ask once more. Losing the first ask is the likeliest way a finished
         // run ends up with no Report Card, and it is the one failure this
@@ -95,7 +115,7 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [assignmentId]);
+  }, [assignmentId, round]);
 
   if (grade)
     return (
@@ -111,26 +131,76 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
       />
     );
 
+  /** Whole minutes, for a sentence rather than a counter she watches. */
+  const minutesWaited = Math.floor(waitedMs / 60000);
+
   return (
     <div className="mx-auto max-w-2xl">
       <div className="rounded-[28px] border border-border bg-[hsl(var(--ac-surface))] p-8 text-center shadow-[0_2px_24px_rgba(30,24,16,0.06)] md:p-12">
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
           Section finished
         </p>
-        <p className="ac-display mt-3 text-4xl text-foreground">
-          {stillWaiting ? "Still being marked" : "Marking your run"}
-        </p>
-        <p className="mt-4 text-sm text-muted-foreground">
-          {stillWaiting
-            ? "This one is taking longer than usual. Your run is saved and your Report Card will be here when you come back to it."
-            : "Your recording is being read back against every detail. This takes a minute."}
-        </p>
-        {onDone && (
-          <div className="mt-8">
-            <Button variant={stillWaiting ? "default" : "outline"} onClick={onDone}>
-              Done
+        {/*
+          * One live region over both states.
+          *
+          * The heading and the sentence both change without a page load, and
+          * neither was announced: a screen reader user was left on "Marking
+          * your run" with no way to know it had become "Still being marked",
+          * or that the card had arrived. `aria-live` sits on the wrapper so the
+          * pair is read as one update rather than two.
+          */}
+        <div role="status" aria-live="polite">
+          <p className="ac-display mt-3 text-4xl text-foreground">
+            {stillWaiting ? "Still being marked" : "Marking your run"}
+          </p>
+          <p className="mt-4 text-sm text-muted-foreground">
+            {stillWaiting
+              ? `This one has been marking for ${minutesWaited} minutes, which is longer than it should take. The marking carries on whether or not you stay on this page, and your Report Card will be on this section in the Activity Centre when it lands.`
+              : "Your recording is being read back against every detail. That usually takes one to three minutes."}
+          </p>
+        </div>
+        {/*
+          * Past the give-up, two real actions.
+          *
+          * There used to be one button, "Done", and giving up was terminal:
+          * the screen stopped asking, said her card would be there "when you
+          * come back to it", and gave her nothing to come back with. "Check
+          * again" restarts the polling and the ask; the other button says
+          * where it goes.
+          */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          {stillWaiting && (
+            <Button
+              onClick={() => {
+                setStillWaiting(false);
+                setRound((n) => n + 1);
+              }}
+            >
+              Check again
             </Button>
-          </div>
+          )}
+          {onDone && (
+            <Button variant="outline" onClick={onDone}>
+              Back to the Activity Centre
+            </Button>
+          )}
+        </div>
+        {/*
+          * What to do if it never lands, and the one thing she cannot supply.
+          *
+          * Said as a sentence rather than a "Tell Joshua" button on purpose. A
+          * button has to be gated on `has_chat_access`, or it hands a student
+          * without Messages a second dead end; reading that flag means mounting
+          * `useUserPermissions`, which redirects on a lost session, into the
+          * one screen whose whole job is to stay put while a grade lands. The
+          * run id is the part she could not produce herself, and it costs
+          * nothing to give her.
+          */}
+        {stillWaiting && (
+          <p className="mt-4 text-xs text-muted-foreground">
+            If it is still here tomorrow, tell Joshua and quote this run:{" "}
+            <code>{assignmentId}</code>.
+          </p>
         )}
       </div>
     </div>

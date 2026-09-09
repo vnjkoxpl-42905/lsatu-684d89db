@@ -166,6 +166,39 @@ describe("getting back to a Report Card", () => {
     expect(await screen.findByText(/still being marked/)).toBeInTheDocument();
   });
 
+  it("says how long a fresh run has been marking, and tells her to wait", async () => {
+    // "Still being marked" is true at four minutes and true at four hours, and
+    // she cannot tell those apart from the row.
+    const fourMinutesAgo = new Date(Date.now() - 4 * 60 * 1000).toISOString();
+    render(
+      <SectionLibrary
+        attempts={[attempt({ id: "r1", completed_at: fourMinutesAgo })]}
+        onStart={vi.fn()}
+        onOpenAttempt={vi.fn()}
+        loadChoices={load}
+        loadGrades={noGrades}
+      />,
+    );
+    expect(await screen.findByText(/marking for 4 minutes/)).toBeInTheDocument();
+    expect(screen.getByText(/Check back shortly/)).toBeInTheDocument();
+  });
+
+  it("stops telling her to wait once waiting is the wrong advice", async () => {
+    const halfAnHourAgo = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+    render(
+      <SectionLibrary
+        attempts={[attempt({ id: "r1", completed_at: halfAnHourAgo })]}
+        onStart={vi.fn()}
+        onOpenAttempt={vi.fn()}
+        loadChoices={load}
+        loadGrades={noGrades}
+      />,
+    );
+    // The row opens the marking screen, which now carries a Check again.
+    expect(await screen.findByText(/Open it and check again/)).toBeInTheDocument();
+    expect(screen.queryByText(/Check back shortly/)).toBeNull();
+  });
+
   it("does not offer a way into a run that was never finished", async () => {
     render(
       <SectionLibrary
