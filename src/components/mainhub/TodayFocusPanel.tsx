@@ -1,5 +1,4 @@
 import * as React from "react";
-import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -50,16 +49,13 @@ export default function TodayFocusPanel({
     <section aria-label="Today" className="drill-observatory-today">
       <div className="drill-observatory-today-inner flex flex-col">
         <div className="relative flex flex-col gap-3">
+          {/* The date used to print here too. The hero already carries the full
+              dateline a few lines up, in the same mono treatment, so this was
+              the same fact twice on one screen. */}
           <div className="flex items-center justify-between px-0.5">
             <h2 className="drill-observatory-label drill-observatory-ink-60">
               {queueOnly ? "Also today" : "Today"}
             </h2>
-            <time
-              className="drill-observatory-label drill-observatory-ink-50"
-              dateTime={format(new Date(), "yyyy-MM-dd")}
-            >
-              {format(new Date(), "MMM d")}
-            </time>
           </div>
 
           {loading ? (
@@ -240,7 +236,10 @@ function TodayRailItem({
           {item.sourceLine}
         </span>
       </span>
-      <span className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55 shrink-0">
+      {/* Sentence case, not the mono micro-label: this sits inside a button,
+          and the label voice is for facts on a surface, not for chrome on a
+          control. The data is already "Ready" / "New"; only the CSS shouted. */}
+      <span className="drill-observatory-ink-55 shrink-0 text-[11.5px]">
         {item.status ?? item.actionLabel}
       </span>
     </motion.button>

@@ -1121,13 +1121,22 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 /* Scrim. Mandatory, not decorative: the greeting sits over the image's bright
-   terminator at some crops and is unreadable without it. */
+   terminator at some crops and is unreadable without it.
+
+   The middle stop was 0.35, and that was measured by eye. Sampling the actual
+   webp under each hero text box and compositing scrim, photo and the text's own
+   alpha, the horizon crop reaches rgb(250, 240, 228): the quiet link came out
+   at 1.89:1 and the Next up facts line at 2.76:1, both needing 4.5. The
+   contrast scan could not see it, because it reads the scrim's declared colour
+   rather than the photograph underneath. 0.58 is the measured floor that
+   clears every hero line once the text below is full ivory; the gradient still
+   opens the middle, so the horizon reads. */
 .drill-observatory-root .drill-observatory-hero::before {
   background:
     linear-gradient(
       90deg,
       rgba(4, 4, 6, 0.82) 0%,
-      rgba(4, 4, 6, 0.35) 45%,
+      rgba(4, 4, 6, 0.58) 45%,
       rgba(4, 4, 6, 0.7) 100%
     ),
     linear-gradient(
@@ -1142,6 +1151,18 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   pointer-events: none;
   position: absolute;
   z-index: 0;
+}
+
+/* The ink ladder does not hold over a photograph. Its steps were measured
+   against the flat card (#08080b), where ink-60 is comfortably legible; over
+   the horizon crop the same step composites to 2.76:1. Inside the hero, and
+   only inside it, text that carries meaning is full ivory and the scrim above
+   does the rest. The ladder is untouched everywhere else. */
+.drill-observatory-root .drill-observatory-hero .drill-observatory-date-long,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-date-short,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-next .drill-observatory-label,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-quiet-link {
+  color: var(--observatory-ink);
 }
 
 /* The Question jump's band on the Drill landing workspace. Full width, matching
@@ -1294,7 +1315,10 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   font-weight: 400;
   letter-spacing: var(--observatory-track-display);
   line-height: 1.08;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
+  /* The scrim under the hero is what makes this text readable. A 24px shadow
+     at 60% was doing the scrim's job a second time, and on a serif at this
+     size it reads as a smudge rather than as contrast. */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 .drill-observatory-root .drill-observatory-greeting[data-next="true"] h1 {
@@ -1306,14 +1330,14 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .drill-observatory-root .drill-observatory-greeting p {
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .drill-observatory-root .drill-observatory-cta {
   background: var(--observatory-ink);
   border: 0;
   border-radius: 999px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   color: #0c0c0e;
   font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
   font-size: 14px;
@@ -1383,7 +1407,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   font-weight: 600;
   letter-spacing: -0.015em;
   line-height: 1.3;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .drill-observatory-root .drill-observatory-cta-row {
@@ -1408,8 +1432,10 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   min-height: 44px;
   padding: 0 4px;
   text-decoration: underline;
-  text-decoration-color: rgba(244, 241, 234, 0.35);
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  /* The underline is the only thing marking this as a link, so it carries the
+     affordance and 0.35 was too faint against the photograph. */
+  text-decoration-color: rgba(244, 241, 234, 0.55);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   text-underline-offset: 4px;
   transition: color var(--observatory-motion);
 }

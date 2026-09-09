@@ -24,6 +24,8 @@ On the stage: `--observatory-stage-ink` 12.9:1, `--observatory-stage-muted` 5.3:
 
 Over the photographs, text sits on a scrim (`::before` on the hero and on Today's inner surface). The scrim is mandatory; the photographs have bright crops.
 
+**The ink ladder does not hold over a photograph, and the contrast scan cannot see it.** The ladder's alpha steps were measured against the flat card `#08080b`. The scan reads the scrim's declared colour, not the image underneath, so it reported zero fails while three hero lines were failing. Measured on 2026-09-09 by sampling `hub-horizon.webp` under each text box and compositing photo, scrim and the text's own alpha: the quiet link was **1.89:1**, the Next up facts line **2.76:1**, the dateline **4.50:1**, all needing 4.5. Two fixes, together: hero text that carries meaning is full ivory (`--observatory-ink`, no alpha step), and the horizontal scrim's middle stop went 0.35 to 0.58. That is the measured floor; it clears every hero line (worst is the quiet link at 4.99) and still opens the middle enough for the horizon to read. Any change to the hero photo, the scrim, or hero text colour has to be re-measured the same way, not scanned.
+
 ## Type
 
 Three families, on purpose, one job each:
