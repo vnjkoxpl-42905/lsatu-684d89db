@@ -5,7 +5,6 @@ import {
   LogOut,
   Menu,
   Moon,
-  PanelLeftClose,
   Settings,
   Sun,
   UserRound,
@@ -1072,10 +1071,36 @@ export default function ClassroomLayout() {
             className="classroom-mobile-menu-button"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open classroom menu"
+            aria-haspopup="dialog"
+            aria-expanded={mobileMenuOpen}
           >
             <Menu size={19} />
           </button>
-          <span className="classroom-mobile-bar-label">{mobileBarLabel}</span>
+          {/* On a detail route the bar's own label IS the way back to the
+              list. It already prints the section's real name, and the bar is
+              sticky, so the control stays reachable through a long note
+              instead of scrolling away like the old in-column trigger did.
+              Two controls that both read as "the notes thing" collapse into
+              one that says the room and one that says what is in it.
+
+              An index route keeps the plain label: the list is already on the
+              page, and a button that opens a copy of what is on screen is the
+              no-op this shell has removed once before. `activeId` is the
+              detail/index signal the router already carries. */}
+          {activeSection && activeId ? (
+            <button
+              type="button"
+              className="classroom-mobile-bar-trigger"
+              onClick={() => setSectionOverlayOpen(true)}
+              aria-haspopup="dialog"
+              aria-expanded={sectionOverlayOpen}
+            >
+              <span>{mobileBarLabel}</span>
+              <em aria-hidden="true">›</em>
+            </button>
+          ) : (
+            <span className="classroom-mobile-bar-label">{mobileBarLabel}</span>
+          )}
         </div>
 
         <aside className="classroom-sidebar">
@@ -1144,21 +1169,6 @@ export default function ClassroomLayout() {
         ) : (
           <main className="classroom-stage">
             <div className="classroom-column">
-              {activeSection ? (
-                // The stage already carries the surface's name as its h1, so
-                // printing it here too named the same thing twice. The button
-                // says what it does; the section name stays for screen
-                // readers, which have no h1 next to it for context.
-                <button
-                  type="button"
-                  className="classroom-section-trigger"
-                  aria-label={`Open the ${SECTION_TITLES[activeSection].toLowerCase()} list`}
-                  onClick={() => setSectionOverlayOpen(true)}
-                >
-                  Open the list
-                  <PanelLeftClose size={17} />
-                </button>
-              ) : null}
               <React.Suspense fallback={<StageFallback />}>
                 <Outlet context={contextValue} />
               </React.Suspense>

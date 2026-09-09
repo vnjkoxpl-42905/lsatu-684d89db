@@ -389,7 +389,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 .classroom-root .classroom-overlay-close {
   align-items: center;
   background: transparent;
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 7px;
   color: var(--classroom-meta-text);
   cursor: pointer;
@@ -413,7 +413,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 
 .classroom-root .classroom-icon-button:focus-visible,
 .classroom-root .classroom-overlay-close:focus-visible {
-  outline: 2px solid var(--classroom-link);
+  outline: 2px solid var(--classroom-link-text);
   outline-offset: 2px;
 }
 
@@ -424,7 +424,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 .classroom-root .classroom-signout {
   align-items: center;
   background: var(--classroom-trigger);
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 9px;
   color: var(--classroom-ink);
   cursor: pointer;
@@ -448,7 +448,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-signout:focus-visible {
-  outline: 2px solid var(--classroom-link);
+  outline: 2px solid var(--classroom-link-text);
   outline-offset: 2px;
 }
 
@@ -823,7 +823,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   .classroom-root .classroom-stage > .classroom-column > *,
   .classroom-root .classroom-messages-stage > *,
   .classroom-root .classroom-workspace-stage > * {
-    animation: classroom-stage-enter 160ms cubic-bezier(0.4, 0, 0.2, 1) both;
+    animation: classroom-stage-enter 160ms cubic-bezier(0.25, 1, 0.5, 1) both;
   }
 }
 
@@ -961,8 +961,18 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   --observatory-label-font: "JetBrains Mono", ui-monospace, monospace;
   --observatory-display-font: "Fraunces", ui-serif, Georgia, serif;
 
-  /* Motion: 150-180ms, standard easing, transform and opacity only. */
-  --observatory-motion: 160ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Motion: 150-180ms, ease-out, transform and opacity only.
+
+     Ease-out, not the standard ease-in-out. A curve that eases in spends its
+     opening barely moving, which is right for something leaving the screen and
+     wrong for a control answering a pointer. Measured on the two curves: at
+     10% of the duration the old cubic-bezier(0.4, 0, 0.2, 1) has covered 2.6%
+     of the distance and at 25% only 23.7%, so on a 160ms hover nothing visible
+     happens for the first 40ms and the control reads as slow. The quart curve
+     covers 34.7% and 68.9% at those points: it leaves immediately and settles.
+     No bounce or elastic anywhere on this surface. */
+  --observatory-ease: cubic-bezier(0.25, 1, 0.5, 1);
+  --observatory-motion: 160ms var(--observatory-ease);
 
   /* The stage the cards sit on is cream. The two controls that ride on it
      directly (the section switch, the jump row) are inked for the stage, not
@@ -1305,7 +1315,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   gap: 9px;
   height: 46px;
   padding: 0 26px;
-  transition: filter var(--observatory-motion), transform var(--observatory-motion);
+  /* background-color is in this list because :hover changes it. It used to be
+     animated only by accident, through the Button utility that outranked this
+     rule; now that the rule wins on specificity the list has to be honest or
+     the hover would snap. */
+  transition: background-color var(--observatory-motion), filter var(--observatory-motion),
+    transform var(--observatory-motion);
 }
 
 /* No transform on the primary CTA — it is the one fixed point on the page. */
@@ -1628,7 +1643,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   border-radius: var(--observatory-radius-control);
   gap: 10px;
   padding: 2px 24px 2px 2px;
-  transition: transform var(--observatory-motion), opacity var(--observatory-motion);
+  transition: background-color var(--observatory-motion), opacity var(--observatory-motion),
+    transform var(--observatory-motion);
 }
 
 .drill-observatory-root .drill-observatory-practice-tile + .drill-observatory-practice-tile {
@@ -1811,7 +1827,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   font-weight: 500;
   min-height: 44px;
   padding: 0 18px;
-  transition: box-shadow var(--observatory-motion), transform var(--observatory-motion);
+  transition: background-color var(--observatory-motion), box-shadow var(--observatory-motion),
+    transform var(--observatory-motion);
   white-space: nowrap;
 }
 
@@ -3697,9 +3714,13 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   width: 38px;
 }
 
+/* The knob is how the switch shows its state, which 1.4.11 covers as well as
+   the control edge. Off, it is a white knob on a near-white track, so the
+   border was the only thing locating it and the old hairline measured 1.25:1.
+   The on state overrides this with --classroom-active and is unaffected. */
 .classroom-root .classroom-toggle i {
   background: var(--classroom-panel);
-  border: 1px solid var(--classroom-line);
+  border: 1px solid var(--classroom-line-strong);
   border-radius: 999px;
   display: block;
   height: 16px;

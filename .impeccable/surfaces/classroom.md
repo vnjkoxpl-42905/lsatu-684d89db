@@ -66,10 +66,58 @@ still measured 2.92:1. Muted text carries its colour in the token, not in an alp
 works on the light ground is `#a25704`; on the dark ground it is `#ff8906` with near-black
 on top. Reusing one value across both themes trades a light failure for a dark one.
 
-**Never show a control that opens a copy of what is on screen.** Below 1280px the stage
-renders its own `StageIndexList`; the "Open the list" trigger is suppressed by
-`.classroom-column:has(.classroom-stage-index)`. The trigger belongs to detail routes,
-where nothing else reaches the list.
+**The section list is reached from the chrome, not from the reading column.** The
+"Open the list" trigger that used to sit inside `.classroom-column` was removed on
+2026-09-09. Its stated justification - that on a detail route "nothing else reaches the
+list" - was not true: between 1024px and 1279px the sidebar is fully on screen and its
+own section item runs the same `openSection`, which opens the same drawer; and every
+note already ends with "Back to notes and recaps". It cost 48px plus a 32px margin above
+the article’s own dateline and h1, which measured 23% of a 390px screen and 25% of an
+1100px one before a word the coach wrote.
+
+What carries the job now: the sidebar above 1023px, and below it
+`.classroom-mobile-bar-trigger`, the sticky bar’s section name promoted to a button. The
+bar is sticky where the trigger was not, it names the section where the trigger said only
+"Open the list", and it puts the room control and the section control in one row instead
+of stacking two identically styled boxes that a student could not tell apart. The
+index/detail split is `activeSection && activeId` in React rather than
+`:has(.classroom-stage-index)` in CSS: an index route keeps a plain label, because a
+control that opens a copy of what is on screen is still the no-op this shell removed once
+before.
+
+**A control whose border is its only edge uses `--classroom-line-strong`.** The warm
+hairline `--classroom-line` measures 1.25:1 against the page and `--classroom-trigger`
+measures 1.03:1, so a button built from that pair has nothing at 3:1 telling a student it
+is a button. PRODUCT.md makes 3:1 on the visual boundary of an interactive control a
+binding floor. `--classroom-line-strong` exists for this and measures 3.14:1 light and
+3.21:1 dark; before 2026-09-09 it appeared once in 5,101 lines. Every interactive control
+in this stylesheet now uses it: the mobile menu button, both `.classroom-button` variants,
+sign-out, the overlay close, the drawer search, the account panel’s inputs, select and
+ghost button, the announcement button, the toggle track and its knob, the journal and
+review choices,
+the textarea, the review control, and the five orientation controls. A rule is a control
+if it carries `cursor: pointer`, `resize`, or an input/select/textarea selector; a scan on
+that test returns zero controls left on the hairline.
+
+`--classroom-line` stays what it always was: hairline separation between things, not the
+edge of a control. It still carries the cards, the panels, the callouts, the prose media,
+`.classroom-choice` (an `<li>` in an `<ol>`, not a button), `.classroom-review-correct-answer`
+(a read-only display box, split out of the rule it used to share with the live control),
+`.classroom-orientation-list-row` and `.classroom-orientation-day` (both `<div>`s).
+
+**A border-colour change is not a focus indicator.** Three fields shipped
+`outline: none` with only a border tint underneath: `.classroom-textarea`,
+`.classroom-orientation-input` and `.classroom-review-control`. PRODUCT.md asks for a
+visible focus indicator on every interactive element, and a tint that is now the same
+colour as the rest border is no indicator at all. All three draw
+`outline: 2px solid var(--classroom-ink)` on `:focus-visible`, the pattern
+`.classroom-panel-search` already documented. No `outline: none` remains in this file.
+
+**A focus ring uses `--classroom-link-text`, not `--classroom-link`.** The decorative
+orange `#ff8906` measures 2.38:1 on the light ground, under the 3:1 a focus indicator
+owes. `--classroom-link-text` is the themed pair that passes: 5.38:1 on light, the same
+`#ff8906` on the near-black dark ground. `.classroom-icon-button` and
+`.classroom-overlay-close` still ring in `--classroom-link` and are the open case.
 
 **Overlays are dialogs.** The section drawer and the mobile menu go through
 `useDialogOverlay`: `role="dialog"`, `aria-modal`, an accessible name, focus moved in on
