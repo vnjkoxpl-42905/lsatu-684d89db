@@ -12,9 +12,9 @@ Order of the page, top to bottom: utilities (jump, search, LR/RC), the hero (gre
 
 ## The ground
 
-The stage is cream (`--classroom-drill-page`). The cards on it are near-black (`--observatory-surface-card` `#08080b`). One card, the hero, carries a photograph (the horizon), and it is the only decoration on the page. Today was flattened to the same near-black surface as the practice card on 2026-09-08; two photographs on one screen read as a template. No accent colour. No gradients. No grid textures.
+The stage follows the theme: cream (`--classroom-drill-page`, `#fdf8f3`) in light, near-black `#121019` in dark. `ClassroomLayout` sets `html.dark` from the theme, which is what the classroom's dark palette keys on. The cards on it are near-black (`--observatory-surface-card` `#08080b`). One card, the hero, carries a photograph (the horizon), and it is the only decoration on the page. Today was flattened to the same near-black surface as the practice card on 2026-09-08; two photographs on one screen read as a template. No accent colour. No gradients. No grid textures.
 
-Controls that sit on the stage itself (the jump row, the section switch) are inked for the stage: `--observatory-stage-*`. Controls on a card are inked ivory: the `--observatory-ink*` ladder. The 2026-09-08 audit found the jump row inked for the cards while sitting on the stage, at 1.07:1. Tone is decided by what a control sits on, never by what is near it.
+Controls that sit on the stage itself (the jump row, the section switch) are inked for the stage: `--observatory-stage-*`, which carry a dark set under `html.dark` (valued from the jump row's dark tone, so the strip stays one system). The jump row's `tone` prop follows `useTheme` for the same reason: it names what the row sits on, and the stage is what the theme changes. Fixed 2026-09-09; before that both controls stayed cream on the black stage. Controls on a card are inked ivory: the `--observatory-ink*` ladder. The 2026-09-08 audit found the jump row inked for the cards while sitting on the stage, at 1.07:1. Tone is decided by what a control sits on, never by what is near it.
 
 ## Ink and contrast
 
@@ -87,5 +87,4 @@ A button carries the outcome, never the feature name and never the screen name. 
 ## Known debt (not fixed on 2026-09-08)
 
 - Observatory rules are scoped under `.drill-observatory-root` and win by specificity, not `!important`. Run `node scripts/observatory-specificity.mjs` after adding a rule to the block; `--check` fails if anything is unscoped. The four `!important` that remain are in the `prefers-reduced-motion` block, where the override has to beat a later animation rule and specificity cannot promise that. Rules for portalled content (`.drill-observatory-launcher-panel`) live outside the `/* end observatory */` marker on purpose: they render outside the root and must not be scoped to it.
-- The hub ignores the app's dark toggle: the stage is cream either way. Acceptable while the stage is documented as cream here.
 - `.drill-observatory-practice-tile` and `PracticeTile` are still exported for the RC flip and are no longer used on the LR default stage.
