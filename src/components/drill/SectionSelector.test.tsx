@@ -183,21 +183,49 @@ describe('SectionSelector', () => {
 
     // Filtering is a status change with no other signal for a screen reader:
     // the list collapsing is a visual event only.
+    // Several live regions share this panel now (the freshness line is one),
+    // so the count is found by what it says rather than as the only status.
     await searchPrepTests('130');
-    const status = await screen.findByRole('status');
-    await waitFor(() => expect(status.textContent).toBe('1 PrepTest'));
+    await waitFor(() =>
+      expect(screen.getAllByRole('status').map((el) => el.textContent)).toContain('1 PrepTest'),
+    );
   });
 
-  it('says the timing trigger opens a listbox, because it does', async () => {
+  it('puts the freshness line in a live region that exists before it has anything to say', async () => {
+    renderSelector();
+
+    // The loading text is inside a region that was already in the tree, so
+    // the change from "checking" to nothing (or to an error) is announced.
+    // Added-with-its-text regions are skipped by most screen readers.
+    const live = screen
+      .getAllByRole('status')
+      .find((el) => /Checking what you have worked/.test(el.textContent ?? ''));
+    expect(live).toBeTruthy();
+    expect(live!.getAttribute('aria-live')).toBe('polite');
+
+    await waitFor(() => expect(live!.textContent).toBe(''));
+    // Still there, still a status, with nothing to say.
+    expect(live!.isConnected).toBe(true);
+    expect(live!.getAttribute('role')).toBe('status');
+  });
+
+  it('says the timing trigger opens a dialog holding a listbox, because it does', async () => {
     renderSelector();
     await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
 
-    // It claimed aria-haspopup="dialog" while opening a role="listbox", so a
-    // screen reader announced a dialog and then landed in a list of options.
+    // The popup holds the pace rows and, under them, two steppers and a
+    // link. A listbox may contain only options, so the whole popup cannot
+    // be one: the rows are the listbox, the surface around them is a dialog.
     const trigger = screen.getByRole('combobox', { name: /Timing/i });
-    expect(trigger.getAttribute('aria-haspopup')).toBe('listbox');
+    expect(trigger.getAttribute('aria-haspopup')).toBe('dialog');
     expect(trigger.getAttribute('aria-labelledby')).toBeTruthy();
     expect(trigger.textContent).toMatch(/Standard/);
+
+    fireEvent.click(trigger);
+    const list = await screen.findByRole('listbox', { name: /Pace/ });
+    expect(list.closest('[role="dialog"]')).toBeTruthy();
+    // This door restricts the picker to three paces, so there are no
+    // steppers here; the picker's own test checks they sit outside the list.
   });
 
   it('does not promise a clock that Unlimited never starts', async () => {

@@ -413,3 +413,13 @@ html.dark .testing-menu {
   margin: 0 0 10px;
   text-transform: uppercase;
 }
+
+/* The line beside "Begin practice test" that names what is still missing. It
+   sits in the button row, so it drops the note's top margin and centres on
+   the button. It stays in the tree when empty (it is a live region, and a
+   region that is removed and re-added is not announced); an empty <p> in a
+   flex row has no size, so nothing shows. */
+.classroom-root .testing-actions-hint {
+  align-self: center;
+  margin: 0;
+}

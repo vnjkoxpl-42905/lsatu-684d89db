@@ -142,6 +142,7 @@ function PracticeTestSelector({
   );
   const chosen = tests.find((t) => t.pt === pt) ?? null;
   const clock = formatPracticeTestClock(sectionSeconds);
+  const beginHintId = React.useId();
 
   if (tests.length === 0) {
     return (
@@ -240,10 +241,31 @@ function PracticeTestSelector({
         </>
       )}
 
+      {/* Not `disabled`. A disabled button is skipped by Tab, so a keyboard
+          user never meets it and never learns why the door will not open;
+          and this room paints it only half a shade lighter, so a sighted
+          student pressed it and got nothing. It stays focusable, says it is
+          unavailable, and a press on it goes to the field that is missing.
+          The line beside it names the missing field for everyone, and is a
+          live region so the change is heard when the PrepTest is chosen. */}
       <div className="testing-actions">
-        <Button disabled={!chosen} onClick={() => chosen && onBegin(chosen, pace, sectionSeconds)}>
+        <Button
+          aria-disabled={!chosen}
+          aria-describedby={chosen ? undefined : beginHintId}
+          className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
+          onClick={() => {
+            if (chosen) {
+              onBegin(chosen, pace, sectionSeconds);
+              return;
+            }
+            document.getElementById("testing-pt")?.focus();
+          }}
+        >
           Begin practice test
         </Button>
+        <p className="testing-note testing-actions-hint" id={beginHintId} role="status">
+          {chosen ? null : "Choose a PrepTest above to begin."}
+        </p>
       </div>
     </div>
   );
