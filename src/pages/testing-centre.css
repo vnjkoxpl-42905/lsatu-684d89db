@@ -284,9 +284,20 @@ html.dark .testing-menu {
 /* Buttons on a row. Held apart from the em so the row's meta column stays a
    meta column: this one carries controls, not a reading. */
 .classroom-root .testing-shape-actions {
+  align-items: center;
   display: flex;
   gap: 8px;
   margin-left: auto;
+}
+
+/* The question the inline discard confirm asks. It sits in the actions column
+   rather than replacing the row, so the sitting being asked about stays
+   readable while the question is on screen. --classroom-meta-text, not
+   --classroom-meta-soft: this is a word, and soft is a fill token that measures
+   1.85:1 as text. */
+.classroom-root .testing-confirm {
+  color: var(--classroom-meta-text);
+  font-size: 12.5px;
 }
 
 /* On a phone the three columns stop being three columns. Left alone, "Section 2
@@ -299,7 +310,14 @@ html.dark .testing-menu {
   }
 
   .classroom-root .testing-shape-actions {
+    flex-wrap: wrap;
     margin-left: 0;
+    width: 100%;
+  }
+
+  /* Full width so the two choices sit on their own line under the question
+     rather than being squeezed beside it on a phone. */
+  .classroom-root .testing-confirm {
     width: 100%;
   }
 }

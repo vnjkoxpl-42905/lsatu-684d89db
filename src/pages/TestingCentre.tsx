@@ -217,6 +217,32 @@ function ResumeList({
   onResume: (run: PracticeTestRun) => void;
   onDiscard: (run: PracticeTestRun) => void;
 }) {
+  // Discard deletes a sitting that can be ninety minutes into a two-hour clock,
+  // and it did that on one click with no confirm and no undo. Below 560px
+  // .testing-shape-actions goes full width, which puts it exactly where a thumb
+  // lands. The confirm is inline rather than a dialog: this room has no modal,
+  // and a two-option question that belongs to one row does not need one.
+  const [confirming, setConfirming] = React.useState<string | null>(null);
+  const keepRef = React.useRef<HTMLButtonElement | null>(null);
+
+  // Focus the safe option, never the destructive one. A keyboard user who
+  // pressed Enter on Discard would otherwise be a single Enter away from the
+  // deletion this confirm exists to prevent. Moving focus is also what
+  // announces the state change: the group carries the question as its name, so
+  // a screen reader reads what is being asked before it reads the choice.
+  React.useEffect(() => {
+    if (confirming) keepRef.current?.focus();
+  }, [confirming]);
+
+  // A sitting can leave from under an open confirm (resumed in another tab,
+  // cleared elsewhere). Without this the row is stuck asking about something
+  // that is no longer there.
+  React.useEffect(() => {
+    if (confirming && !runs.some((run) => run.id === confirming)) {
+      setConfirming(null);
+    }
+  }, [runs, confirming]);
+
   if (runs.length === 0) return null;
   return (
     <div className="testing-resume">
@@ -238,26 +264,58 @@ function ResumeList({
                   carry a name saying which sitting they act on: two rows of
                   "Resume / Discard" are indistinguishable to a screen reader
                   reading the controls on their own. */}
-              <div className="testing-shape-actions">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="min-h-[44px]"
-                  onClick={() => onResume(run)}
-                  aria-label={`Resume PrepTest ${run.pt}`}
+              {confirming === run.id ? (
+                <div
+                  className="testing-shape-actions"
+                  role="group"
+                  aria-label={`Discard the unfinished PrepTest ${run.pt} sitting?`}
                 >
-                  Resume
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="min-h-[44px]"
-                  onClick={() => onDiscard(run)}
-                  aria-label={`Discard the unfinished PrepTest ${run.pt} sitting`}
-                >
-                  Discard
-                </Button>
-              </div>
+                  <span className="testing-confirm">Discard this sitting?</span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="min-h-[44px]"
+                    onClick={() => {
+                      onDiscard(run);
+                      setConfirming(null);
+                    }}
+                    aria-label={`Yes, discard the unfinished PrepTest ${run.pt} sitting`}
+                  >
+                    Discard
+                  </Button>
+                  <Button
+                    ref={keepRef}
+                    size="sm"
+                    variant="outline"
+                    className="min-h-[44px]"
+                    onClick={() => setConfirming(null)}
+                    aria-label={`Keep the unfinished PrepTest ${run.pt} sitting`}
+                  >
+                    Keep
+                  </Button>
+                </div>
+              ) : (
+                <div className="testing-shape-actions">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="min-h-[44px]"
+                    onClick={() => onResume(run)}
+                    aria-label={`Resume PrepTest ${run.pt}`}
+                  >
+                    Resume
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="min-h-[44px]"
+                    onClick={() => setConfirming(run.id)}
+                    aria-label={`Discard the unfinished PrepTest ${run.pt} sitting`}
+                  >
+                    Discard
+                  </Button>
+                </div>
+              )}
             </div>
           );
         })}
