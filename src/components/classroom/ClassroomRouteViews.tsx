@@ -410,10 +410,11 @@ export function ClassroomRecapsView() {
           student is most likely to open first. It claims nothing that is not
           true: it says where recaps come from and stops.
 
-          This used to say the wording was shared with RecapsSection "so the two
-          places cannot drift". RecapsSection has no importers and neither does
-          ClassroomRecaps or pages/ClassroomItem — all three predate this shell
-          and nothing routes to them. The copy has one home, which is here. */}
+          This used to say the wording was shared with RecapsSection "so the
+          two places cannot drift". RecapsSection had no importers, and neither
+          did pages/ClassroomRecaps or pages/ClassroomItem: all three predated
+          this shell and nothing routed to them. Deleted 2026-09-09. The copy
+          has one home, which is here. */}
       {!query.isLoading && !query.error && total === 0 ? (
         <p className="classroom-empty-copy">
           Notes and recaps from your sessions with Joshua will show up here.

@@ -197,6 +197,20 @@ open in a new tab while in-app paths stay put. The excerpt on the landing surfac
 the same syntax rather than rendering it, since it is the one place a body is shown
 without going through the renderer.
 
+**The typography plugin is registered, and its palette is this app's tokens.**
+`@tailwindcss/typography` sat in `package.json` unregistered, so every `prose` class in
+the codebase emitted nothing: measured 2026-09-09, zero `.prose` rules in the served
+stylesheets and a rendered `<h2>` computing to the inherited body colour at 16px. Thirteen
+live surfaces were styling markdown with classes that did not exist. Registering it alone
+would have made several of them worse - the app is dark at `:root` and flips to light with
+a `.light` class, so `darkMode: ["class"]` means the `dark:` variant almost never fires,
+and the four call sites written as `dark:prose-invert` would have landed on Tailwind's own
+gray-700 body text against a near-black ground. Both the `DEFAULT` and `invert` keys
+therefore resolve from `--foreground`, `--muted-foreground`, `--border` and `--muted`, so
+prose is correct in either theme whether or not a call site asks for `prose-invert`. This
+does not touch `.classroom-prose`, which is this world's own stylesheet and stays hand-
+written.
+
 **Prose list markers have to be asked for.** Tailwind's preflight sets
 `ol, ul, menu { list-style: none }` app-wide, and `.classroom-prose ol, ul` restored only
 the indent. Every list in every note rendered as unmarked indented lines, and a numbered
@@ -217,15 +231,20 @@ reviewed and approved next to the recap was unreachable from the moment it was p
 `source_id` says what a row was made from, not that the thing it was made from is
 openable; only `homework_assignments` is.
 
-**Three files on this surface have no importers.** `src/pages/ClassroomRecaps.tsx`,
-`src/components/classroom/RecapsSection.tsx` and `src/pages/ClassroomItem.tsx` all predate
-this shell, and nothing routes to any of them - `/classroom/recaps` and
-`/classroom/item/:itemId` are `ClassroomRecapsView` and `ClassroomItemView` in
-`ClassroomRouteViews.tsx`. They are not merely unused: a live comment in
-`ClassroomRecapsView` cited `RecapsSection` as the shared source of the empty-state
-wording "so the two places cannot drift", which sent the next reader to a file that is not
-running. The comment is corrected; the files are still on disk as of 2026-09-09, pending
-Joshua's word on deleting them.
+**The shell's four orphans are gone.** `src/pages/ClassroomRecaps.tsx`,
+`src/components/classroom/RecapsSection.tsx`, `src/pages/ClassroomItem.tsx` and
+`src/pages/teacher/TeacherRecaps.tsx` all predated this shell and nothing routed to any of
+them: `/classroom/recaps` and `/classroom/item/:itemId` are `ClassroomRecapsView` and
+`ClassroomItemView` in `ClassroomRouteViews.tsx`, and the teacher path is the dossier.
+They were not merely unused. A live comment in `ClassroomRecapsView` cited `RecapsSection`
+as the shared source of the empty-state wording "so the two places cannot drift", sending
+the next reader to a file that was not running, and `pages/ClassroomItem.tsx` held a
+`whitespace-pre-wrap` on the markdown body that the live view did not - so the dead copy
+rendered a recap *better* than the one students used. Deleted 2026-09-09.
+
+`src/pages/ClassroomTAAssignmentDetail.tsx` is a fifth orphan of the same kind, left in
+place: it belongs to the assignment surface rather than to notes and recaps, and nobody
+has been asked about it.
 
 **`smartboard_recap` is a dead label.** Boards are not attached to student accounts
 (confirmed 2026-09-09), so no student sees it. The mapping stays only so an unmapped

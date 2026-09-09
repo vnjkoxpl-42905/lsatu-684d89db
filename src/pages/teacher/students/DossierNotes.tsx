@@ -38,7 +38,7 @@ export default function DossierNotes() {
 
       {/* Posting was a one-way door: this page could put a recap in a student's
           Classroom and had no way to show one back. The only screen that listed
-          them, TeacherRecaps, has no route. */}
+          them, TeacherRecaps, had no route and was deleted 2026-09-09. */}
       <section className="space-y-2">
         <h2 className="text-[13px] font-bold uppercase tracking-[0.04em] text-black/45">
           Posted to their Classroom

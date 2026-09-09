@@ -12,9 +12,10 @@ import {
  * What has already been posted to a student's Notes and recaps, read the way
  * the student reads it.
  *
- * The dossier could post a recap and could not show one. `TeacherRecaps` was
- * the only screen that listed them and nothing routes to it, so once a recap
- * went out the only way to check it was to be the student. That matters more
+ * The dossier could post a recap and could not show one. The only screen that
+ * listed them, `TeacherRecaps`, had no route and was deleted 2026-09-09, so
+ * once a recap went out the only way to check it was to be the student. That
+ * matters more
  * than it sounds: the body is markdown, the classroom renders it as markdown,
  * and until now neither side of the app showed it rendered.
  */
@@ -34,9 +35,37 @@ const TYPE_LABELS: Record<string, string> = {
   announcement: 'Announcement',
 };
 
+/**
+ * The words an authored HTML note renders, for a plain-text preview.
+ *
+ * Tags come off through a detached element rather than a regex because a note
+ * may carry its own <style>, and any style or script subtree is dropped first so
+ * CSS text never leaks into the preview. Same reasoning as noteExcerpt on the
+ * student side; kept separate because that one lives inside the classroom.
+ */
+function htmlExcerpt(html: string | null, description: string | null) {
+  const source = description || html || '';
+  if (!source) return '';
+  let text = source;
+  if (/[<>]/.test(source)) {
+    const holder = document.createElement('div');
+    holder.innerHTML = source;
+    holder.querySelectorAll('style, script').forEach((node) => node.remove());
+    text = holder.textContent ?? '';
+  }
+  const words = text.replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
+  if (words.length === 0) return '';
+  return words.length <= 60 ? words.join(' ') : `${words.slice(0, 60).join(' ')}\u2026`;
+}
+
 export function PostedRecapRow({ recap }: { recap: ClassroomItem }) {
   const [open, setOpen] = useState(false);
   const body = recap.content_markdown ?? '';
+  // Most of what is already posted is authored HTML, not markdown, so without
+  // this a row was a title and a date and nothing else — exactly the "which one
+  // is this" problem the section exists to solve. Verified against a real
+  // student on 2026-09-09: four posted notes, every one of them content_html.
+  const excerpt = body ? '' : htmlExcerpt(recap.content_html, recap.description);
   const kind = TYPE_LABELS[recap.type] ?? recap.type.replace(/_/g, ' ');
 
   return (
@@ -53,7 +82,12 @@ export function PostedRecapRow({ recap }: { recap: ClassroomItem }) {
           </ClassroomMarkdown>
         </div>
       )}
-      {body && (
+      {!body && excerpt && (
+        <p className={`mt-2 text-sm text-zinc-400 ${open ? '' : 'line-clamp-3'}`}>
+          {excerpt}
+        </p>
+      )}
+      {(body || excerpt) && (
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
