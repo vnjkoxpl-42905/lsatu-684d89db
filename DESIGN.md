@@ -171,7 +171,9 @@ Two grounds, one shared vocabulary of meaning.
 
 ### Tertiary
 
-Individual rooms carry their own palettes behind a wrapper class and are documented in their own surface briefs, not here. The wrappers in use are `.mc-bootcamp`, `.ff-bootcamp`, `.rc-bootcamp`, `.topic-abstract`, `.cs-punk`, and the eight Activity Centre worlds.
+Individual rooms carry their own palettes behind a wrapper class and are documented in their own surface briefs, not here. The wrappers in use are `.classroom-root`, `.mc-bootcamp`, `.ff-bootcamp`, `.rc-bootcamp`, `.topic-abstract`, `.cs-punk`, and the eight Activity Centre worlds.
+
+`.classroom-root` was added to this list on 2026-09-08, after an audit found the classroom running on Outfit and a warm palette while this record still described it as neutral Workroom chrome. It is a sanctioned world, not drift: the warmth and the typeface are deliberate and they are what makes the classroom feel like a study rather than a dashboard. The record was wrong, not the code. Its brief is `.impeccable/surfaces/classroom.md`. Note that this is the one sanctioned world that is also a corridor, so the rule below about corridors never being worlds now has exactly one documented exception.
 
 ### Neutral
 

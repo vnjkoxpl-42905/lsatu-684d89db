@@ -20,9 +20,15 @@ const QuestionBankContext = createContext<QuestionBankContextType | undefined>(u
  * before the passage could paint.
  *
  * This is a DENYLIST on purpose. The bank is ~5.5MB raw (1.4MB gzipped) and costs
- * ~111ms of blocked main thread plus 9-14 explanation fetches, and the provider sits
- * on the catch-all route (App.tsx), so every page paid for it — including /auth,
- * before the student had even signed in.
+ * ~111ms of blocked main thread plus one explanation fetch per PrepTest, and the
+ * provider sits on the catch-all route (App.tsx), so every page paid for it —
+ * including /auth, before the student had even signed in.
+ *
+ * The sidecar cost grows with the bank and the original note here said "9-14
+ * explanation fetches". Measured on a clean load of /classroom/recaps on
+ * 2026-09-08: 59 requests, 1.79MB transferred, 7.18MB decoded, 44% of the page's
+ * total bytes, with 33 of the 59 returning 404 because those PrepTests have no
+ * sidecar. Re-measure before quoting a number here.
  *
  * An allowlist would be the tidier shape and is the eventual fix (a provider per
  * consumer route group). It is not safe to write yet: 24 modules read the
@@ -35,7 +41,22 @@ const QuestionBankContext = createContext<QuestionBankContextType | undefined>(u
  *
  * Add to this list only after grepping the route's whole subtree for questionLoader.
  */
-const BANK_FREE_PREFIXES = ['/activities', '/activity-lab', '/auth', '/rc'] as const;
+/**
+ * '/classroom/recaps' is the full prefix on purpose, never '/classroom'. The
+ * classroom shell is shared with /flagged and /journal, which do read the bank.
+ * Verified 2026-09-08 by grepping everything this route mounts — the layout
+ * shell, ClassroomRecapsView, StageIndexList, classroomData, useClassroomItems,
+ * useAssignedTodoFeed and flaggedService: none import questionLoader. Leaving
+ * the route re-evaluates on navigation, so walking from here to /flagged still
+ * loads the bank before that page paints.
+ */
+const BANK_FREE_PREFIXES = [
+  '/activities',
+  '/activity-lab',
+  '/auth',
+  '/rc',
+  '/classroom/recaps',
+] as const;
 
 function routeNeedsQuestionBank(pathname: string): boolean {
   return !BANK_FREE_PREFIXES.some(

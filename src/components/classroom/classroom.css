@@ -20,6 +20,19 @@
      white, and >=4.5:1 on every 10% tint used in the classroom. */
   --classroom-link-text: #a25704;
   --classroom-meta-text: #6d6a67;
+  /* The unread badge carries a number, so it is text and owes 4.5:1. The
+     orange that works as a fill does not survive white on top of it: white on
+     --classroom-link measures 2.38:1. Each theme therefore picks the pairing
+     its own ground allows rather than sharing one. Light darkens the fill and
+     keeps white on it (5.39:1); dark keeps the bright fill and puts the page's
+     near-black on it (8.06:1). */
+  --classroom-accent: #a25704;
+  --classroom-accent-ink: #ffffff;
+  /* Kept as aliases so the badge rule reads in its own terms. */
+  --classroom-badge-fill: var(--classroom-accent);
+  --classroom-badge-ink: var(--classroom-accent-ink);
+  /* The panel/card ground, so a token that names a surface actually resolves. */
+  --classroom-surface: #ffffff;
   --classroom-active: #43403c;
   --classroom-active-ink: #ffffff;
   --classroom-meta-soft: rgba(67, 64, 60, 0.4);
@@ -62,6 +75,11 @@ html.dark .classroom-root {
      is the same colour here. Declared so the token means one thing everywhere. */
   --classroom-link-text: #ff8906;
   --classroom-meta-text: #a7a9be;
+  --classroom-accent: #ff8906;
+  --classroom-accent-ink: #0f0e17;
+  --classroom-badge-fill: var(--classroom-accent);
+  --classroom-badge-ink: var(--classroom-accent-ink);
+  --classroom-surface: #0a0913;
   --classroom-panel: #0a0913;
   --classroom-page: #0f0e17;
   --classroom-drill-page: #121019;
@@ -217,7 +235,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 .classroom-root .classroom-section-meta,
 .classroom-root .classroom-message time,
 .classroom-root .classroom-note-meta {
-  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
   font-size: 0.75rem;
   font-weight: 500;
 }
@@ -232,11 +250,10 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-nav-group > b {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   display: block;
   letter-spacing: 0.04em;
   margin-bottom: 6px;
-  opacity: 0.7;
   padding: 0 8px;
   text-transform: uppercase;
 }
@@ -254,6 +271,8 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   padding: 7px 8px;
   text-align: left;
   text-decoration: none;
+  /* 14px x 1.45 + 7px x 2 came to 34px. The rail is already flex-centred, so a
+     min-height gives a real target rather than one faked with padding. */
   transition:
     background-color var(--classroom-transition) ease,
     color var(--classroom-transition) ease;
@@ -267,7 +286,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 .classroom-root .classroom-nav-locked,
 .classroom-root .classroom-nav-locked:hover {
   background: transparent;
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   cursor: default;
   opacity: 0.7;
 }
@@ -287,7 +306,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 /* Whiteboard rail button: white pill instead of the rail's usual dark
    active fill, so it doesn't read as another dark nav item. */
 .classroom-root .classroom-nav-active-white {
-  background: #ffffff;
+  background: var(--classroom-surface);
   color: var(--classroom-ink);
 }
 
@@ -295,12 +314,12 @@ html.dark .classroom-root .classroom-panel-wash-dark {
    rows, so nav labels stay on one baseline whether an item is counted or not. */
 .classroom-root .classroom-nav-badge {
   align-items: center;
-  background: var(--classroom-link);
+  background: var(--classroom-badge-fill);
   border-radius: 999px;
-  color: #ffffff;
+  color: var(--classroom-badge-ink);
   display: inline-flex;
   flex: 0 0 auto;
-  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
   font-size: 0.6875rem;
   font-weight: 600;
   justify-content: center;
@@ -311,12 +330,11 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-nav em {
-  color: rgb(var(--classroom-meta));
-  font-family: "Roboto Mono", ui-monospace, monospace;
+  color: var(--classroom-meta-text);
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
   font-size: 0.75rem;
   font-style: normal;
   margin-left: auto;
-  opacity: 0.7;
 }
 
 .classroom-root .classroom-nav-active em {
@@ -363,9 +381,8 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-profile-copy small {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   display: block;
-  opacity: 0.7;
 }
 
 .classroom-root .classroom-icon-button,
@@ -374,7 +391,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   background: transparent;
   border: 1px solid var(--classroom-line);
   border-radius: 7px;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   cursor: pointer;
   display: flex;
   height: 28px;
@@ -461,7 +478,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-profile-chevron {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   flex: 0 0 auto;
 }
 
@@ -494,7 +511,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-profile-menu-header small {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   display: block;
   font-size: 11px;
   overflow: hidden;
@@ -522,7 +539,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-profile-menu-item svg {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
 }
 
 .classroom-root .classroom-profile-menu-signout {
@@ -553,7 +570,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-profile-menu-appearance > span {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
 }
 
 .classroom-root .classroom-profile-menu-segment {
@@ -570,7 +587,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   background: transparent;
   border: 0;
   border-radius: 6px;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   cursor: pointer;
   display: flex;
   font-size: 11.5px;
@@ -607,7 +624,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   background: transparent;
   border: 0;
   border-radius: 7px;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   cursor: pointer;
   font-size: 12.5px;
   font-weight: 500;
@@ -704,7 +721,7 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-panel-item time {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   font-size: 0.75rem;
 }
 
@@ -2060,7 +2077,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-dateline {
   align-items: center;
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   display: flex;
   font-size: 14px;
   font-weight: 500;
@@ -2102,7 +2119,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-message time {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   margin-left: auto;
   opacity: 0.7;
 }
@@ -2151,6 +2168,9 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   font-family: "Outfit", ui-sans-serif, sans-serif;
   font-size: 13px;
   font-weight: 500;
+  /* DESIGN.md: every button size clears 44px by being that height, never by a
+     padding accident. This computed to 38px. */
+  min-height: 44px;
   padding: 8px 14px;
   transition:
     background-color var(--classroom-transition) ease,
@@ -2161,14 +2181,17 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background: var(--classroom-hover);
 }
 
+/* The fill has to carry a label, so it uses the accent pair rather than
+   --classroom-link. White on --classroom-link measured 2.38:1; the accent pair
+   is 5.38:1 in light and 8.06:1 in the dark alternate. */
 .classroom-root .classroom-button-primary {
-  background: var(--classroom-link);
-  border-color: var(--classroom-link);
-  color: #ffffff;
+  background: var(--classroom-accent);
+  border-color: var(--classroom-accent);
+  color: var(--classroom-accent-ink);
 }
 
 .classroom-root .classroom-button-primary:hover {
-  background: var(--classroom-link);
+  background: var(--classroom-accent-hover, var(--classroom-accent));
 }
 
 .classroom-root .classroom-content-section {
@@ -2190,9 +2213,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-section-meta {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   margin-left: auto;
-  opacity: 0.7;
   text-transform: uppercase;
 }
 
@@ -2231,7 +2253,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-row-status {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   opacity: 0.7;
   text-transform: uppercase;
   white-space: nowrap;
@@ -2285,15 +2307,33 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .classroom-root .classroom-note-meta {
   border: 1px dashed var(--classroom-line);
   border-radius: var(--classroom-radius);
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   line-height: 1.7;
   margin-bottom: 32px;
-  opacity: 0.75;
   padding: 12px 14px;
 }
 
+/* DESIGN.md's Reading Measure Rule: a surface carrying a passage, stimulus or
+   explanation constrains its own line length; the container's maximum is a
+   ceiling for layout, never a licence for prose. This ran the full 720px column
+   at 16px, about 90 characters a line, against the 65-75ch the rule asks for.
+   Applied to the prose block rather than each child so an authored note's own
+   elements inherit it too. Figures and tables opt out below, because a wide
+   table is easier to read than a wrapped one.
+
+   56ch, not the 68ch you would reach for. The `ch` unit is the width of "0",
+   and in Outfit that is 9.71px against a 7.58px average character, so 68ch
+   renders about 87 characters a line. 56ch measures ~72, which is inside the
+   65-75 the rule actually asks for. Measured in the browser, not assumed. */
 .classroom-root .classroom-prose {
   color: var(--classroom-ink-body);
+  max-width: 56ch;
+}
+
+.classroom-root .classroom-prose figure,
+.classroom-root .classroom-prose table,
+.classroom-root .classroom-prose pre {
+  max-width: none;
 }
 
 .classroom-root .classroom-prose p {
@@ -2369,8 +2409,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-prose figure figcaption {
-  color: rgb(var(--classroom-meta));
-  font-family: "Roboto Mono", ui-monospace, monospace;
+  color: var(--classroom-meta-text);
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
   font-size: 0.75rem;
   margin-top: 8px;
   opacity: 0.7;
@@ -2477,7 +2517,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-empty-copy {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   font-size: 15px;
   line-height: 1.65;
 }
@@ -2497,16 +2537,25 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-panel-search::placeholder {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
 }
 
+/* A border-colour change is not a focus indicator. DESIGN.md names this exact
+   substitution as too quiet to be the only signal, and `outline: none` here was
+   also overriding the zero-specificity focus floor in index.css. Keyboard focus
+   now draws the same ink outline every other control in the Workroom uses;
+   :focus-visible so a mouse click on the field does not draw a ring. */
 .classroom-root .classroom-panel-search:focus {
-  border-color: var(--classroom-meta-soft);
-  outline: none;
+  border-color: var(--classroom-line-strong);
+}
+
+.classroom-root .classroom-panel-search:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 2px;
 }
 
 .classroom-root .classroom-panel-empty {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   font-size: 13px;
   line-height: 1.6;
   margin: 8px 0 0;
@@ -2551,7 +2600,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-choice i {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -2584,7 +2633,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-flag-note label,
 .classroom-root .classroom-ask label {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -2605,7 +2654,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-textarea::placeholder {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
 }
 
 .classroom-root .classroom-textarea:focus {
@@ -2708,9 +2757,9 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-journal-summary b,
 .classroom-root .classroom-journal-reasoning b {
-  color: var(--classroom-meta-soft);
+  color: var(--classroom-meta-text);
   display: block;
-  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -2803,7 +2852,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-journal-choice em {
-  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
   font-size: 10px;
   font-style: normal;
   letter-spacing: 0.08em;
@@ -2879,8 +2928,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-review-field > span {
-  color: var(--classroom-meta-soft);
-  font-family: "Roboto Mono", ui-monospace, monospace;
+  color: var(--classroom-meta-text);
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -2998,7 +3047,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-announcement-body {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 13px;
   line-height: 1.5;
   overflow: hidden;
@@ -3007,7 +3056,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-announcement-date {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   flex: 0 0 auto;
   font-size: 12px;
   opacity: 0.8;
@@ -3027,6 +3076,14 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
   .classroom-root.classroom-root-journal .classroom-section-trigger {
     display: flex;
+  }
+
+  /* Wrong answers swaps 120px later than everything else, so it needs the same
+     never-show-both rule at its own breakpoint. */
+  .classroom-root.classroom-root-journal
+    .classroom-column:has(.classroom-stage-index)
+    .classroom-section-trigger {
+    display: none;
   }
 
   .classroom-root.classroom-root-journal-detail {
@@ -3049,6 +3106,23 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
   .classroom-root .classroom-section-trigger {
     display: flex;
+  }
+
+  /* Never offer a control that opens a copy of what is already on screen.
+     Two rules fire at this same breakpoint: the stage renders its own
+     StageIndexList inline, and the trigger appears above the <h1> to open a
+     drawer holding the identical rows. On an index route that made the only
+     prominent button on the page a no-op, and it took the tap that belonged to
+     a note. The trigger still earns its place on a detail route (a note, an
+     assignment), where nothing else reaches the list.
+
+     `:has()` keeps this in CSS rather than threading a flag through
+     ClassroomLayoutContext: the stage index is a sibling of the trigger inside
+     .classroom-column, so the column can simply ask whether one was rendered.
+     StageIndexList returns null when it has no items, so an empty surface keeps
+     the trigger and the student can still reach the rail. */
+  .classroom-root .classroom-column:has(.classroom-stage-index) .classroom-section-trigger {
+    display: none;
   }
 }
 
@@ -3300,7 +3374,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-account-card-head h2 {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -3345,12 +3419,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-account-identity-copy > small {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 12.5px;
 }
 
 .classroom-root .classroom-account-identity-meta {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   display: flex;
   flex-wrap: wrap;
   font-size: 11.5px;
@@ -3380,7 +3454,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background: transparent;
   border: 0;
   border-radius: 6px;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -3505,7 +3579,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-account-pref-copy small {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 11.5px;
 }
 
@@ -3575,7 +3649,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-account-toolbar p {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 12.5px;
   margin: 0;
 }
@@ -3588,7 +3662,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-account-savestate {
   align-items: center;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   display: inline-flex;
   font-size: 11.5px;
   gap: 5px;
@@ -3626,7 +3700,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background: transparent;
   border: 0;
   border-radius: 4px;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   cursor: pointer;
   display: flex;
   padding: 0 2px;
@@ -3658,12 +3732,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-account-row-lock {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   flex: 0 0 auto;
 }
 
 .classroom-root .classroom-account-row-note {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 11px;
 }
 
@@ -3672,7 +3746,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background: transparent;
   border: 0;
   border-radius: 6px;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   cursor: pointer;
   display: inline-flex;
   padding: 5px;
@@ -3696,7 +3770,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-account-preview-note {
   border-top: 1px solid var(--classroom-line);
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 11px;
   line-height: 1.5;
   margin: 12px 0 0;
@@ -3733,7 +3807,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-account-dialog p {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 12.5px;
   line-height: 1.5;
   margin: 0 0 14px;
@@ -3818,7 +3892,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-orientation-intro-text p {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 13.5px;
   line-height: 1.55;
   margin: 0;
@@ -3833,7 +3907,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-orientation-tally {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 12.5px;
   opacity: 0.85;
   white-space: nowrap;
@@ -3874,7 +3948,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-orientation-sub {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 13px;
   line-height: 1.5;
   margin: 0 0 16px;
@@ -3882,7 +3956,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-orientation-hint {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 12px;
   margin: 8px 0 10px;
 }
@@ -3920,7 +3994,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-orientation-search svg {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   flex: 0 0 auto;
 }
 
@@ -4032,7 +4106,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-orientation-suggestion-region {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 11.5px;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;
@@ -4062,7 +4136,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-orientation-list-index {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 12px;
 }
 
@@ -4078,7 +4152,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 .classroom-root .classroom-orientation-list-row button {
   background: none;
   border: none;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   cursor: pointer;
   display: flex;
   padding: 2px;
@@ -4124,7 +4198,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-orientation-choice-desc {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 12px;
   line-height: 1.45;
 }
@@ -4161,7 +4235,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-availability-note span {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 12px;
   line-height: 1.45;
 }
@@ -4228,7 +4302,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-orientation-day-value {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 10.5px;
   min-height: 16px;
 }
@@ -4304,7 +4378,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-availability-summary-empty {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
 }
 
 /* Nav row */
@@ -4323,7 +4397,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   align-items: center;
   background: none;
   border: none;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   cursor: pointer;
   display: inline-flex;
   font-family: inherit;
@@ -4356,7 +4430,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-orientation-done p {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 13px;
   line-height: 1.5;
   margin: 0;
@@ -4417,7 +4491,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    the card's own input when they change it. */
 
 .classroom-root .classroom-account-card-note {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 12px;
   line-height: 1.5;
   margin: -4px 0 10px;
@@ -4571,7 +4645,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-admissions-head p {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 13.5px;
   line-height: 1.6;
   margin: 0;
@@ -4621,7 +4695,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .classroom-admissions-table thead th {
   border-bottom: 1px solid var(--classroom-line);
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 10.5px;
   font-weight: 650;
   letter-spacing: 0.08em;
@@ -4645,7 +4719,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-admissions-state {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 11.5px;
 }
 
@@ -4679,11 +4753,11 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 .classroom-root .admissions-band-low {
   background: var(--classroom-hover);
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
 }
 
 .classroom-root .classroom-admissions-empty {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 13.5px;
 }
 
@@ -4701,7 +4775,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   background: transparent;
   border: 1px solid var(--classroom-line);
   border-radius: 999px;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   cursor: pointer;
   font-family: inherit;
   font-size: 13px;
@@ -4731,7 +4805,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-account-prep-reset small {
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
   font-size: 11.5px;
   line-height: 1.5;
 }
@@ -4804,7 +4878,7 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgb(var(--classroom-meta));
+  color: var(--classroom-meta-text);
 }
 
 .section-briefing-cols ul {
@@ -4887,4 +4961,83 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 @media (prefers-reduced-motion: reduce) {
   .section-briefing { animation-duration: 1ms; }
   .section-briefing-start { transition: none; }
+}
+
+/* ── Touch targets ─────────────────────────────────────────────────────────
+   PRODUCT.md sets a 44x44 minimum met "by being that size rather than by a
+   side effect". `.classroom-nav` computed to 34px, and the same class draws the
+   mobile drawer, where it is a genuine touch target rather than a mouse one.
+
+   Scoped to coarse pointers and to the drawer instead of applied globally: on a
+   fine pointer the rail is a 17-row list, and forcing every row to 44px makes
+   it ~170px taller for no accessibility gain (WCAG 2.2's AA target rule, 2.5.8,
+   asks 24px; 44px is the touch/AAA figure). If Joshua wants the 44px floor to
+   be literal everywhere, drop the two guards below and keep the min-height. */
+@media (pointer: coarse) {
+  .classroom-root .classroom-nav,
+  .classroom-root .classroom-profile-menu-item {
+    min-height: 44px;
+  }
+}
+
+.classroom-root .classroom-mobile-menu .classroom-nav {
+  min-height: 44px;
+}
+
+/* ── The Notes and recaps landing ──────────────────────────────────────────
+   The stage carried a dateline, an <h1> and a one-line count into a 720px
+   column, so the widest region of the page held the least information. These
+   rules dress the lede and the featured note that now fill it.
+
+   No card. The stage has no container around it, and wrapping the only content
+   on the page in a border would be a box for its own sake. Hierarchy comes from
+   size, weight and space, and separation from a single hairline. */
+.classroom-root .classroom-surface-lede {
+  color: var(--classroom-meta-text);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: -8px 0 32px;
+  max-width: 52ch;
+}
+
+.classroom-root .classroom-featured-note {
+  border-top: 1px solid var(--classroom-line);
+  margin-bottom: 40px;
+  padding-top: 24px;
+}
+
+.classroom-root .classroom-featured-note-meta {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-featured-note-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  margin: 0 0 12px;
+  max-width: 34ch;
+}
+
+.classroom-root .classroom-featured-note-excerpt {
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0 0 20px;
+  max-width: 56ch;
+}
+
+/* A note's own standfirst is authored content. It used to inherit
+   .classroom-empty-copy, the class that means "there is nothing here". */
+.classroom-root .classroom-note-standfirst {
+  color: var(--classroom-ink-body);
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+  max-width: 56ch;
 }

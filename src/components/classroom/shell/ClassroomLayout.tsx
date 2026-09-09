@@ -44,6 +44,7 @@ import {
   useAssignedTodoFeed,
   routeWithReturnTo,
 } from "@/hooks/useAssignedTodoFeed";
+import { useDialogOverlay } from "@/components/classroom/shell/useDialogOverlay";
 import "@/components/classroom/classroom.css";
 
 type ClassroomSection = "notes" | "work" | "flagged" | "journal";
@@ -715,6 +716,21 @@ function StandardSectionList({
 
         </div>
 
+        {/* Every section owes an empty state. Flagged and the journal had one;
+            notes and work did not, so a student with nothing yet saw a heading
+            over blank space in the rail and the same in the stage beside it. */}
+        {section === "notes" && !loading && !error && noteRows.length === 0 ? (
+          <p className="classroom-panel-empty">
+            Notes and recaps from your sessions with Joshua will show up here.
+          </p>
+        ) : null}
+
+        {section === "work" && !loading && !error && workRows.length === 0 ? (
+          <p className="classroom-panel-empty">
+            Nothing assigned yet.
+          </p>
+        ) : null}
+
         {section === "flagged" &&
         !loading &&
         !error &&
@@ -935,6 +951,21 @@ export default function ClassroomLayout() {
   const activeSection =
     drillHub || messagesStage || workspaceStage ? null : pathSection ?? selectedSection;
 
+  // Modal semantics for the two overlays. Declared after `activeSection`
+  // because the section drawer takes its accessible name from it.
+  const closeMobileMenu = React.useCallback(() => setMobileMenuOpen(false), []);
+  const closeSectionOverlay = React.useCallback(() => setSectionOverlayOpen(false), []);
+  const mobileMenuDialog = useDialogOverlay({
+    open: mobileMenuOpen,
+    onClose: closeMobileMenu,
+    label: "Classroom menu",
+  });
+  const sectionOverlayDialog = useDialogOverlay({
+    open: Boolean(activeSection) && sectionOverlayOpen,
+    onClose: closeSectionOverlay,
+    label: activeSection ? SECTION_TITLES[activeSection] : "Section list",
+  });
+
   React.useEffect(() => {
     if (pathSection) setSelectedSection(pathSection);
     // The drill hub used to clear the remembered section here. `activeSection`
@@ -1041,8 +1072,9 @@ export default function ClassroomLayout() {
               className="classroom-overlay-backdrop"
               onClick={() => setMobileMenuOpen(false)}
               aria-label="Close classroom menu"
+              tabIndex={-1}
             />
-            <aside>
+            <aside {...mobileMenuDialog}>
               <button
                 type="button"
                 className="classroom-overlay-close"
@@ -1119,8 +1151,9 @@ export default function ClassroomLayout() {
               className="classroom-overlay-backdrop"
               onClick={() => setSectionOverlayOpen(false)}
               aria-label="Close section list"
+              tabIndex={-1}
             />
-            <aside>
+            <aside {...sectionOverlayDialog}>
               <SectionList
                 section={activeSection}
                 activeId={activeId}

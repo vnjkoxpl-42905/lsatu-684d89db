@@ -34,6 +34,74 @@ function formatClassroomDate(value: string | Date) {
   }).format(typeof value === "string" ? new Date(value) : value);
 }
 
+/** Student-facing name for a record type. The column values are internal. */
+const NOTE_KIND_LABELS: Record<string, string> = {
+  note: "Note",
+  session_recap: "Session recap",
+  smartboard_recap: "Board from your session",
+  announcement: "Announcement",
+};
+
+function noteKind(type: string) {
+  return NOTE_KIND_LABELS[type] ?? type.replace(/_/g, " ");
+}
+
+/**
+ * First ~55 words of a note, for the landing preview.
+ *
+ * Notes are authored HTML and may carry their own <style>, so the tags are
+ * stripped through a detached element rather than a regex, and any <style> or
+ * <script> subtree is dropped first so CSS text never leaks into the excerpt.
+ */
+function noteExcerpt(item: {
+  description: string | null;
+  content_markdown?: string | null;
+  content_html: string | null;
+}) {
+  const source = item.description || item.content_markdown || item.content_html || "";
+  if (!source) return "";
+  let text = source;
+  if (/[<>]/.test(source)) {
+    const holder = document.createElement("div");
+    holder.innerHTML = source;
+    holder.querySelectorAll("style, script").forEach((node) => node.remove());
+    text = holder.textContent ?? "";
+  }
+  const words = text.replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
+  if (words.length === 0) return "";
+  return words.length <= 55 ? words.join(" ") : `${words.slice(0, 55).join(" ")}…`;
+}
+
+/** Below this, a flat list is easier to scan than a grouped one. */
+const MONTH_GROUP_THRESHOLD = 12;
+
+/**
+ * Read notes bucketed by the month they were written, newest month first.
+ * Input is already sorted newest-first by groupNotes, so insertion order is
+ * the display order and no second sort is needed.
+ */
+function groupNotesByMonth<T extends { created_at: string }>(notes: T[]) {
+  const buckets = new Map<string, { key: string; label: string; notes: T[] }>();
+  for (const note of notes) {
+    const date = new Date(note.created_at);
+    const key = `${date.getFullYear()}-${date.getMonth()}`;
+    let bucket = buckets.get(key);
+    if (!bucket) {
+      bucket = {
+        key,
+        label: new Intl.DateTimeFormat("en-CA", {
+          month: "long",
+          year: "numeric",
+        }).format(date),
+        notes: [],
+      };
+      buckets.set(key, bucket);
+    }
+    bucket.notes.push(note);
+  }
+  return [...buckets.values()];
+}
+
 function DetailLoading() {
   return (
     <div className="classroom-skeleton-stack" aria-label="Loading">
@@ -162,13 +230,18 @@ export function ClassroomItemView() {
 
   return (
     <>
+      {/* `item.type.replace(/_/g," ")` printed the raw column value, so students
+          read "note" and "smartboard recap". NOTE_KIND_LABELS gives each type a
+          name a student would actually use. */}
       <DetailHeading
         date={item.created_at}
-        kind={item.type.replace(/_/g, " ")}
+        kind={noteKind(item.type)}
         title={item.title}
       />
+      {/* Authored content, not an empty state. It was inheriting
+          .classroom-empty-copy, which is the class for "there is nothing here". */}
       {item.description ? (
-        <p className="classroom-empty-copy">{item.description}</p>
+        <p className="classroom-note-standfirst">{item.description}</p>
       ) : null}
       {item.content_markdown ? (
         <article className="classroom-prose">
@@ -181,7 +254,80 @@ export function ClassroomItemView() {
           dangerouslySetInnerHTML={{ __html: safeHtml }}
         />
       ) : null}
+      {/* A note used to end in silence. This is the highest-intent moment on
+          the surface: the student has just read something their coach wrote
+          about them. "Ask" is the affordance CONTEXT.md already defines,
+          labelled that way and never with the coach's name. The back link
+          exists because the reading column was otherwise navigable only by
+          browser back. */}
+      {NOTE_TYPES.has(item.type) ? (
+        <div className="classroom-detail-actions">
+          <button
+            type="button"
+            className="classroom-button classroom-button-primary"
+            onClick={() =>
+              navigate(`/inbox?about=${encodeURIComponent(item.title)}`)
+            }
+          >
+            Ask
+          </button>
+          <button
+            type="button"
+            className="classroom-button"
+            onClick={() => navigate("/classroom/recaps")}
+          >
+            Back to notes and recaps
+          </button>
+        </div>
+      ) : null}
     </>
+  );
+}
+
+/**
+ * The newest note, opened far enough to be worth landing on.
+ *
+ * The stage used to render a dateline, an <h1> and a one-line count into a
+ * 720px column and stop, so the widest region of the page carried the least
+ * information and read as a page that had failed to load. Principle 2 asks the
+ * product to compute the next step rather than present a menu; the next step
+ * here is almost always the note that just arrived.
+ *
+ * Deliberately not a card. The stage has no card around it, and a bordered box
+ * holding the only content on the page would be a container for its own sake.
+ */
+function FeaturedNote({
+  note,
+  unread,
+}: {
+  note: ReturnType<typeof groupNotes>["unread"][number];
+  unread: boolean;
+}) {
+  const navigate = useNavigate();
+  const excerpt = React.useMemo(() => noteExcerpt(note), [note]);
+  const open = () => navigate(`/classroom/item/${encodeURIComponent(note.id)}`);
+
+  return (
+    <section className="classroom-featured-note" aria-labelledby="featured-note-title">
+      <p className="classroom-featured-note-meta">
+        {unread ? "Newest, unread" : "Most recent"}
+        <span aria-hidden="true"> · </span>
+        {noteKind(note.type)}
+        <span aria-hidden="true"> · </span>
+        <time dateTime={note.created_at}>{formatClassroomDate(note.created_at)}</time>
+      </p>
+      <h2 className="classroom-featured-note-title" id="featured-note-title">
+        {note.title}
+      </h2>
+      {excerpt ? <p className="classroom-featured-note-excerpt">{excerpt}</p> : null}
+      <button
+        type="button"
+        className="classroom-button classroom-button-primary"
+        onClick={open}
+      >
+        Read it
+      </button>
+    </section>
   );
 }
 
@@ -189,22 +335,29 @@ export function ClassroomRecapsView() {
   const query = useClassroomItems();
   const { unread, read } = groupNotes(query.data ?? []);
   const total = unread.length + read.length;
+  // Unread first, because the reason to open this page is almost always
+  // something that just arrived. Falls back to the newest read note so the
+  // stage still says something once the student is caught up.
+  const featured = unread[0] ?? read[0] ?? null;
 
+  // The page promises two categories and the feed carries four types, none of
+  // which the row showed. A session recap, an announcement and a board from a
+  // session were indistinguishable until opened.
   const row = (note: (typeof unread)[number], isUnread: boolean) => ({
     key: note.id,
     title: note.title,
-    meta: shortDate(note.created_at),
+    meta: `${noteKind(note.type)} · ${shortDate(note.created_at)}`,
     route: `/classroom/item/${encodeURIComponent(note.id)}`,
     unread: isUnread,
   });
 
   return (
     <>
-      <DetailHeading
-        date={new Date().toISOString()}
-        kind="Classroom"
-        title="Notes and recaps"
-      />
+      {/* No dateline on an index. It printed `new Date()`, so it stamped the
+          page with the day the student happened to visit while sitting in the
+          slot that, on a note, holds the day Joshua wrote it. It was the one
+          number on the page that did not trace to stored data. */}
+      <h1 className="classroom-title">Notes and recaps</h1>
       {query.isLoading && !query.data ? <DetailLoading /> : null}
       {query.error ? (
         <DetailError
@@ -212,8 +365,25 @@ export function ClassroomRecapsView() {
           retry={() => void query.refetch()}
         />
       ) : null}
+      {/* The zero case is a state, not an absence. Without a branch here the
+          page rendered a heading and stopped, which is the surface a brand new
+          student is most likely to open first. The wording is the line already
+          shipped by RecapsSection so the two places cannot drift, and it claims
+          nothing that is not true: it says where recaps come from and stops. */}
+      {!query.isLoading && !query.error && total === 0 ? (
+        <p className="classroom-empty-copy">
+          Notes and recaps from your sessions with Joshua will show up here.
+        </p>
+      ) : null}
       {!query.isLoading && !query.error && total > 0 ? (
         <>
+          <p className="classroom-surface-lede">
+            What Joshua writes for you after a session, plus anything he sends
+            between them.
+          </p>
+          {featured ? (
+            <FeaturedNote note={featured} unread={unread.length > 0} />
+          ) : null}
           <StageIndexHint>
             {unread.length > 0
               ? `${unread.length} unread of ${total}.`
@@ -226,13 +396,29 @@ export function ClassroomRecapsView() {
               items={unread.map((note) => row(note, true))}
             />
           ) : null}
-          {read.length > 0 ? (
-            <StageIndexList
-              label="Notes and recaps you have read"
-              heading={unread.length > 0 ? "Read" : undefined}
-              items={read.map((note) => row(note, false))}
-            />
-          ) : null}
+          {/* Read notes group by month once the list is long enough that a flat
+              run stops being scannable. At ~25 sessions a week this is measured
+              in hundreds within a year, and Flagged and Wrong answers both got a
+              filter while this list got nothing. Grouping beats a search box for
+              a chronological archive: a student looks for "the one after the
+              February session", not for a word. Below the threshold a flat list
+              is clearer, so the headings stay out of the way. */}
+          {read.length > MONTH_GROUP_THRESHOLD
+            ? groupNotesByMonth(read).map((group) => (
+                <StageIndexList
+                  key={group.key}
+                  label={`Notes and recaps from ${group.label}`}
+                  heading={group.label}
+                  items={group.notes.map((note) => row(note, false))}
+                />
+              ))
+            : read.length > 0 ? (
+              <StageIndexList
+                label="Notes and recaps you have read"
+                heading={unread.length > 0 ? "Read" : undefined}
+                items={read.map((note) => row(note, false))}
+              />
+            ) : null}
         </>
       ) : null}
     </>
@@ -245,11 +431,8 @@ export function ClassroomUploadsView() {
 
   return (
     <>
-      <DetailHeading
-        date={new Date().toISOString()}
-        kind="Classroom"
-        title="Your uploads"
-      />
+      {/* Index route: no dateline, same reason as Notes and recaps. */}
+      <h1 className="classroom-title">Your uploads</h1>
       {query.isLoading && !query.data ? <DetailLoading /> : null}
       {query.error ? (
         <DetailError
