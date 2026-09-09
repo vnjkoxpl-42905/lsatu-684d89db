@@ -149,7 +149,7 @@ describe("AcademyMainhub", () => {
     );
 
     expect(screen.queryByRole("heading", { name: "LR Smart Drill" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Start Smart Drill" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Practice your weakest types" })).toBeInTheDocument();
     // The Spline robot was cut in the 2026-08-01 reskin: the hero is two columns
     // (greeting + finder console) over the horizon image, with no third bay.
     expect(screen.queryByText("Robot scene")).not.toBeInTheDocument();

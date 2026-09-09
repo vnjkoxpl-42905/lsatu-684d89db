@@ -85,7 +85,9 @@ export function buildInsightSlides(
         trend != null
           ? `${trend >= 0 ? "▲" : "▼"} ${Math.abs(Math.round(trend))} pts vs last week`
           : "First-attempt accuracy across all your questions",
-      actionLabel: "Open analytics",
+      /* Name the outcome, not the screen. A student does not want analytics,
+         they want to know where the points are going. */
+      actionLabel: "See where you lose points",
       actionHref: `${ANALYTICS}&tab=overview`,
       tab: "overview",
       recommend: null,
@@ -114,7 +116,7 @@ export function buildInsightSlides(
       detail: topPriority && topPriority.recentMissRate > 0
         ? `Concentrated in ${topPriority.label}`
         : "Review missed questions in your Journal",
-      actionLabel: "Open journal",
+      actionLabel: "Review your missed questions",
       actionHref: "/journal",
       tab: "priorities",
       recommend: "type-drill",

@@ -63,13 +63,26 @@ export default function QuestionFinder({ returnTo, tone = "light", bank }: Quest
 
   /* Cmd/Ctrl+K is an accelerator on top of a visible, labelled control — never
      the only way in. It is ignored while the student is typing somewhere else,
-     so it cannot steal a keystroke from a real field. */
+     so it cannot steal a keystroke from a real field.
+
+     "/" opens it too, the convention everywhere else a search box lives behind
+     a key. It only opens, it does not toggle: "/" while the panel is open is a
+     character someone is trying to type. */
   React.useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() !== "k" || !(event.metaKey || event.ctrlKey)) return;
       const target = event.target as HTMLElement | null;
       const tag = target?.tagName;
-      if (!open && (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable)) return;
+      const typing = tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable === true;
+
+      if (event.key === "/" && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        if (open || typing) return;
+        event.preventDefault();
+        setOpen(true);
+        return;
+      }
+
+      if (event.key.toLowerCase() !== "k" || !(event.metaKey || event.ctrlKey)) return;
+      if (!open && typing) return;
       event.preventDefault();
       setOpen((value) => !value);
     };
@@ -92,6 +105,11 @@ export default function QuestionFinder({ returnTo, tone = "light", bank }: Quest
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-label="Find a question"
+        /* The shortcuts are declared, not drawn. Joshua removed the visible
+           badge on 2026-09-08; assistive tech and a hover tooltip can still
+           carry them. */
+        aria-keyshortcuts="Meta+K Control+K /"
+        title="Find a question (Ctrl K, or /)"
       >
         <Search className="qf-trigger-icon" size={15} strokeWidth={1.9} aria-hidden />
         <span className="qf-trigger-label" aria-hidden>

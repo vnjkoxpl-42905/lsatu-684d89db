@@ -110,7 +110,10 @@ function MainhubHero({
   }, [drillReturnTo, navigate]);
 
   const startFallback = section === "rc" ? onStartSmartRc : startSmartDrill;
-  const fallbackLabel = section === "rc" ? "Start One Passage" : "Start Smart Drill";
+  /* Say what the button does, not what the feature is called. "Smart Drill" is
+     the product's name for the adaptive set; a student meeting it on a button
+     has to guess. The sentence above the button still names it. */
+  const fallbackLabel = section === "rc" ? "Read one passage" : "Practice your weakest types";
 
   /* The hero leads with the computed next step when there is one. Assigned
      work is section-agnostic (Joshua assigns it, the student does not choose
@@ -171,8 +174,8 @@ function MainhubHero({
             ) : (
               <p className="drill-observatory-ink-70 text-sm leading-[1.55]">
                 {section === "rc"
-                  ? "Read one passage now, untimed, with the answers after it. Or build a set of passages around exactly what you want to read."
-                  : "Start an adaptive set that follows your weakest question types, or build a drill around exactly what you want to practice."}
+                  ? "Read one passage now, untimed, with the answers after it. Or build a set of passages around what you want to read."
+                  : "Start with the question types you miss most, or build a drill around exactly what you want to practice."}
               </p>
             )}
           </div>
@@ -193,7 +196,9 @@ function MainhubHero({
                   onClick={startFallback}
                   className="drill-observatory-quiet-link"
                 >
-                  {section === "rc" ? "Read one passage instead" : "Start a Smart Drill instead"}
+                  {/* Not "instead": the student has not rejected the assigned
+                      work by reading past it. "Or" offers, it does not correct. */}
+                  {section === "rc" ? "Or read one passage now" : "Or practice your weakest types"}
                 </button>
               </>
             ) : (
@@ -448,6 +453,34 @@ export default function AcademyMainhub({
       { replace: false },
     );
   }, [setSearchParams]);
+
+  /* Escape leaves a stage. The stage is a room the hub opened, and every other
+     room in this app closes on Escape; the Cancel button stays the visible way
+     out. Deliberately narrow about when it fires:
+
+     - only when a stage is actually open, so it never swallows Escape on the
+       plain hub,
+     - never when something modal is open (the search panel, a Radix popover or
+       select). Those close themselves on Escape, and closing the stage out
+       from under them would take two rooms away for one keypress,
+     - never out of a field the student has typed into, where Escape is the
+       browser's own revert. An empty field is fine to escape from. */
+  React.useEffect(() => {
+    if (stage === "default") return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      if (document.querySelector('[role="dialog"], [data-radix-popper-content-wrapper]')) return;
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable === true) {
+        const value = (target as HTMLInputElement).value;
+        if (value != null && value !== "") return;
+      }
+      closeStage();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [closeStage, stage]);
 
   // The analytics stage takes over the below-hero area; suppress mainhub
   // overlays (chat widget) the same way an expanded orbital node used to.

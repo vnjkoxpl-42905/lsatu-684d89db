@@ -48,6 +48,14 @@ Hairline rings (`0 0 0 1px`) separate surfaces. Shadows are quiet: `0 12px 32px`
 - A transition list names every property its own `:hover` and `:active` change. Three of them named only `transform` and got their background animated by accident, through a Tailwind utility that outranked the rule; once the rules won on specificity those hovers would have snapped. Adding a hover means checking the list.
 - Every control answers the pointer. The three jump-row selects had `:disabled` and `:focus-visible` and nothing for hover; they now strengthen their ring, mixed from `--qf-ink` so it reads in both tones.
 
+## Keys
+
+Escape leaves an open stage and does nothing on the plain hub. It stands down while anything modal is open (the search panel, a Radix popover or select) and while the student is inside a field they have typed into, because Escape is the browser's own revert there. Cancel stays the visible way out; the key is the accelerator.
+
+The search opens on Cmd/Ctrl+K and on `/`. `/` only opens, never toggles: `/` with the panel open is a character someone is trying to type. Neither is advertised on the trigger, which carries `aria-keyshortcuts` and a `title` instead. Joshua removed the visible badge on 2026-09-08.
+
+Section is URL state, remembered per browser in `lsatu.drill.section`, and a stated `?section=` always outranks the memory. Opening a stage pushes a history entry, so Back returns to the hub in the section the student came from.
+
 ## Doors
 
 One door to the builder: the hero console. The practice card does not repeat it. An insight may offer a contextual action (open analytics, open the journal, drill a weak type) because it is a response to real data, not a menu item.
@@ -56,7 +64,9 @@ While a stage (builder, analytics) is open, the hero is not rendered. The stage 
 
 ## Copy
 
-No em-dashes anywhere a student can read, including placeholders. Buttons say what they do ("Start", "Resume drill", "Set up an LR drill"). "Smart Drill" is the product's name for the adaptive drill and stays, with the sentence before it saying what it does. The date reads the same as Classroom Home: `Tuesday · September 8 · 2026`.
+No em-dashes anywhere a student can read, including placeholders. Buttons say what they do ("Start", "Resume drill", "Set up an LR drill"). The date reads the same as Classroom Home: `Tuesday · September 8 · 2026`.
+
+A button carries the outcome, never the feature name and never the screen name. "Smart Drill" is the product's word for the adaptive set and it stays in the sentence that explains it, not on the control: the button says "Practice your weakest types". Same rule retired "Open analytics" for "See where you lose points" and "Open journal" for "Review your missed questions". The second option is offered with "Or", never "instead", which tells a student she declined the assigned work simply by reading past it. Full list and reasons in `wiki/COPY-CORRECTIONS.md` under 2026-09-09.
 
 ## Known debt (not fixed on 2026-09-08)
 

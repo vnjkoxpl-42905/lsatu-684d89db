@@ -191,7 +191,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
   it("opens on LR when nothing says otherwise", () => {
     renderHub("/classroom/drill");
-    expect(screen.getByRole("button", { name: "Start Smart Drill" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Practice your weakest types" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
     expect(lrSwitch()).toHaveAttribute("aria-pressed", "true");
     expect(rcSwitch()).toHaveAttribute("aria-pressed", "false");
@@ -200,7 +200,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   it("opens on RC when the link says so", () => {
     renderHub("/classroom/drill?section=rc");
     expect(screen.queryByText("DRILL / READING COMPREHENSION")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Start One Passage" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Read one passage" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Build the reading set you need." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Set up an RC drill" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
@@ -223,7 +223,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   it("treats an unrecognised section as LR rather than as an error", () => {
     renderHub("/classroom/drill?section=sideways");
     expect(screen.queryByText("DRILL / LOGICAL REASONING")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Start Smart Drill" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Practice your weakest types" })).toBeInTheDocument();
   });
 
   it("writes the section to the URL when the switch is thrown", () => {
@@ -317,9 +317,9 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("section")).toBe("rc");
   });
 
-  it("Start One Passage asks the builder for one untimed passage and starts it", () => {
+  it("Read one passage asks the builder for one untimed passage and starts it", () => {
     renderHub("/classroom/drill?section=rc");
-    fireEvent.click(screen.getByRole("button", { name: "Start One Passage" }));
+    fireEvent.click(screen.getByRole("button", { name: "Read one passage" }));
     const q = url();
     expect(q.get("section")).toBe("rc");
     expect(q.get("stage")).toBe("type-drill");
@@ -348,5 +348,47 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     fireEvent.click(rcSwitch());
     expect(url().get("section")).toBe("rc");
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
+  });
+});
+
+describe("AcademyMainhub — Escape leaves a stage", () => {
+  beforeEach(() => {
+    window.HTMLElement.prototype.scrollIntoView = vi.fn();
+    window.localStorage.clear();
+  });
+
+  it("closes an open stage and returns the hub", () => {
+    renderHub("/classroom/drill?stage=type-drill");
+    expect(screen.getByRole("region", { name: "Unified LR drill builder" })).toBeInTheDocument();
+
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    expect(url().get("stage")).toBeNull();
+    expect(screen.queryByRole("region", { name: "Unified LR drill builder" })).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
+  });
+
+  it("does nothing on the plain hub, where there is no room to leave", () => {
+    renderHub("/classroom/drill?section=rc");
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    expect(url().get("stage")).toBeNull();
+    expect(url().get("section")).toBe("rc");
+    expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
+  });
+
+  it("leaves the stage alone while something modal is open", () => {
+    // A dialog closes itself on Escape. Closing the stage underneath it would
+    // take two rooms away for one keypress.
+    renderHub("/classroom/drill?stage=type-drill");
+    const dialog = document.createElement("div");
+    dialog.setAttribute("role", "dialog");
+    document.body.appendChild(dialog);
+
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    expect(url().get("stage")).toBe("type-drill");
+    expect(screen.getByRole("region", { name: "Unified LR drill builder" })).toBeInTheDocument();
+    dialog.remove();
   });
 });
