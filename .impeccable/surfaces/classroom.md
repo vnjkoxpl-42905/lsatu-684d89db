@@ -151,15 +151,17 @@ clears the binding floor. PRODUCT.md line 104 lists the AAA figure inside its AA
 which is a doc imprecision to fix there, not a defect here. Do not raise this as a
 violation, and do not attribute a waiver to Joshua - there is nothing to waive.
 
-**The toggle carries its state by knob position, and on dark that is the only thing
-carrying it.** Off-track versus on-track measures 9.68:1 on light but 1.51:1 on dark,
-because `--classroom-hover` over the dark panel lands at `rgb(33,31,35)` and
-`--classroom-active` is `#3d3c48`. 1.4.11 asks for 3:1 on visual information needed to
-identify a state, and the 16px knob translation is non-colour information, so this is not
-a failure. It is thin, though, and it is thin only in one theme. Raising it means either
-a lighter dark `--classroom-active`, which reaches 17 other rules, or an on-state fill
-scoped to this control, which breaks the token's meaning. Joshua's call, and nobody has
-made it. Do not raise this as a defect; do not silently change `--classroom-active`.
+**The switch's on-track is its own token, because `--classroom-active` was too close
+to the off-track on dark.** Off-track versus on-track measured 9.68:1 on light but
+1.51:1 on dark: `--classroom-hover` over the dark panel lands at `rgb(33,31,35)` and
+`--classroom-active` is `#3d3c48`, so the 16px knob translation was carrying the state
+by itself. Not a 1.4.11 failure, since position is non-colour information, but state
+should not rest on one channel in one theme only. `--classroom-toggle-on-track` is
+`#43403c` on light, which is `--classroom-active` unchanged, so light renders exactly as
+before; dark is `#6f6d80`, a lighter sibling in the same hue. Scoped to this control so
+the other 17 `--classroom-active` rules keep their colour. Measured 2026-09-09 on the
+production build: off-vs-on 3.25:1 dark and 9.68:1 light, with the on-state knob at
+3.93:1 against its track.
 
 **`smartboard_recap` is a dead label.** Boards are not attached to student accounts
 (confirmed 2026-09-09), so no student sees it. The mapping stays only so an unmapped

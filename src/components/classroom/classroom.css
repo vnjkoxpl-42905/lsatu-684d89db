@@ -10,6 +10,11 @@
      that sits on a tinted ground instead (the toggle knob, on --classroom-hover)
      reads under 3:1 there, so it takes this one. Same role, darker ground. */
   --classroom-line-on-tint: #8a7d72;
+  /* The switch's on-track. Light is --classroom-active unchanged; dark is a
+     lighter sibling of it, because --classroom-active over the dark panel left
+     off-vs-on at 1.51:1 and knob position was carrying the state alone. Scoped
+     to the switch so the other 17 --classroom-active rules keep their colour. */
+  --classroom-toggle-on-track: #43403c;
   --classroom-ink: #43403c;
   --classroom-ink-body: #43403c;
   --classroom-meta: 166, 162, 158;
@@ -69,6 +74,7 @@ html.dark .classroom-root {
   --classroom-line-strong: #646176;
   /* Lighter, not darker: on the dark theme the tinted ground is the lighter one. */
   --classroom-line-on-tint: #7a7789;
+  --classroom-toggle-on-track: #6f6d80;
   --classroom-ink: #fffffe;
   --classroom-ink-body: #e5e5e5;
   --classroom-meta: 167, 169, 190;
@@ -3762,12 +3768,12 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 .classroom-root .classroom-toggle-on {
-  background: var(--classroom-active);
-  border-color: var(--classroom-active);
+  background: var(--classroom-toggle-on-track);
+  border-color: var(--classroom-toggle-on-track);
 }
 
 .classroom-root .classroom-toggle-on i {
-  border-color: var(--classroom-active);
+  border-color: var(--classroom-toggle-on-track);
   transform: translateX(16px);
 }
 
