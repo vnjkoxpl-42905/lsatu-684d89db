@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 import containerQueries from "@tailwindcss/container-queries";
+import typography from "@tailwindcss/typography";
 
 export default {
   darkMode: ["class"],
@@ -320,7 +321,69 @@ export default {
         "mc-zoom-fade-in": "mc-zoom-fade-in 180ms cubic-bezier(0.4, 0, 0.2, 1)",
         "mc-tooltip-in": "mc-tooltip-in 150ms cubic-bezier(0.4, 0, 0.2, 1)",
       },
+      /**
+       * The prose palette is this app's tokens, in both keys.
+       *
+       * @tailwindcss/typography was a dependency that was never registered, so
+       * every `prose` class in this codebase emitted nothing: measured
+       * 2026-09-09, zero `.prose` rules existed in the served stylesheets and a
+       * rendered <h2> computed to the inherited body colour at 16px. Thirteen
+       * live surfaces were styling markdown with classes that did not exist.
+       *
+       * Registering it alone would have made several of them worse. The app is
+       * dark at :root and flips to light with a `.light` class, so `darkMode:
+       * ["class"]` means the `dark:` variant almost never fires — the four call
+       * sites written as `dark:prose-invert` would have landed on Tailwind's
+       * default gray-700 body text against a near-black ground.
+       *
+       * Both DEFAULT and invert therefore resolve from the same HSL tokens the
+       * rest of the app themes through. Prose is then correct in either theme
+       * whether or not a call site asks for `prose-invert`, and `dark:` never
+       * has to fire for text to be readable. Do not restore Tailwind's own
+       * palette to either key.
+       */
+      typography: {
+        DEFAULT: {
+          css: {
+            "--tw-prose-body": "hsl(var(--foreground))",
+            "--tw-prose-headings": "hsl(var(--foreground))",
+            "--tw-prose-lead": "hsl(var(--muted-foreground))",
+            "--tw-prose-links": "hsl(var(--foreground))",
+            "--tw-prose-bold": "hsl(var(--foreground))",
+            "--tw-prose-counters": "hsl(var(--muted-foreground))",
+            "--tw-prose-bullets": "hsl(var(--muted-foreground))",
+            "--tw-prose-hr": "hsl(var(--border))",
+            "--tw-prose-quotes": "hsl(var(--foreground))",
+            "--tw-prose-quote-borders": "hsl(var(--border))",
+            "--tw-prose-captions": "hsl(var(--muted-foreground))",
+            "--tw-prose-code": "hsl(var(--foreground))",
+            "--tw-prose-pre-code": "hsl(var(--foreground))",
+            "--tw-prose-pre-bg": "hsl(var(--muted))",
+            "--tw-prose-th-borders": "hsl(var(--border))",
+            "--tw-prose-td-borders": "hsl(var(--border))",
+            "--tw-prose-invert-body": "hsl(var(--foreground))",
+            "--tw-prose-invert-headings": "hsl(var(--foreground))",
+            "--tw-prose-invert-lead": "hsl(var(--muted-foreground))",
+            "--tw-prose-invert-links": "hsl(var(--foreground))",
+            "--tw-prose-invert-bold": "hsl(var(--foreground))",
+            "--tw-prose-invert-counters": "hsl(var(--muted-foreground))",
+            "--tw-prose-invert-bullets": "hsl(var(--muted-foreground))",
+            "--tw-prose-invert-hr": "hsl(var(--border))",
+            "--tw-prose-invert-quotes": "hsl(var(--foreground))",
+            "--tw-prose-invert-quote-borders": "hsl(var(--border))",
+            "--tw-prose-invert-captions": "hsl(var(--muted-foreground))",
+            "--tw-prose-invert-code": "hsl(var(--foreground))",
+            "--tw-prose-invert-pre-code": "hsl(var(--foreground))",
+            "--tw-prose-invert-pre-bg": "hsl(var(--muted))",
+            "--tw-prose-invert-th-borders": "hsl(var(--border))",
+            "--tw-prose-invert-td-borders": "hsl(var(--border))",
+            // A link the same colour as the body needs its underline to stay a
+            // link. The plugin underlines by default; the offset is ours.
+            "a": { "text-underline-offset": "2px" },
+          },
+        },
+      },
     },
   },
-  plugins: [tailwindcssAnimate, containerQueries],
+  plugins: [tailwindcssAnimate, containerQueries, typography],
 } satisfies Config;

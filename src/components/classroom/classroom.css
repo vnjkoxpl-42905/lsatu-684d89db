@@ -2503,14 +2503,28 @@ html.dark .classroom-root.classroom-root-drill {
   margin: 0 0 20px;
 }
 
+/* A link inside a note is orange that carries words, so it resolves from
+   --classroom-link-text. It was on --classroom-link, which this file already
+   records as measuring 2.38:1 on the page: the same text/fill split that put
+   every date below the floor, still live in the one place a student reads what
+   their coach wrote. --classroom-link-text measures 5.38:1 light; dark is
+   #ff8906 in both tokens, so dark is unchanged.
+
+   The underline is not decoration either. The rule set text-decoration: none
+   and then moved the colour to --classroom-ink on hover, so a link in a note
+   was identifiable by colour alone and stopped being identifiable at all under
+   the cursor (WCAG 1.4.1). Underlined in both states; hover moves the colour
+   toward the ink without giving up the underline. */
 .classroom-root .classroom-prose a {
-  color: var(--classroom-link);
-  text-decoration: none;
+  color: var(--classroom-link-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
   transition: color var(--classroom-transition) ease;
 }
 
 .classroom-root .classroom-prose a:hover {
   color: var(--classroom-ink);
+  text-decoration: underline;
 }
 
 .classroom-root .classroom-prose h2 {
@@ -2526,6 +2540,13 @@ html.dark .classroom-root.classroom-root-drill {
   margin: 28px 0 12px;
 }
 
+/* The markers have to be asked for. Tailwind's preflight sets
+   `ol, ul, menu { list-style: none }` globally and this rule only restored the
+   indent, so every list in every note rendered as unmarked indented lines —
+   and a numbered list lost its numbers, which is a change of meaning, not of
+   style: "1, 2, 3" became three lines that no longer say they are in order.
+   Measured in the browser against the live sheet: list-style-type computed
+   `none` on a note's <ul>. */
 .classroom-root .classroom-prose ol,
 .classroom-root .classroom-prose ul {
   color: var(--classroom-ink-body);
@@ -2535,8 +2556,56 @@ html.dark .classroom-root.classroom-root-drill {
   padding-left: 22px;
 }
 
+.classroom-root .classroom-prose ul {
+  list-style-type: disc;
+}
+
+.classroom-root .classroom-prose ol {
+  list-style-type: decimal;
+}
+
+.classroom-root .classroom-prose ul ul {
+  list-style-type: circle;
+}
+
+.classroom-root .classroom-prose li::marker {
+  color: var(--classroom-meta-text);
+}
+
 .classroom-root .classroom-prose li {
   margin-bottom: 10px;
+}
+
+/* A homework part from a session bundle arrives as `- [ ] item`. Rendering the
+   marker as a box says "this is a thing to do" without pretending to be
+   interactive: nothing here writes back, so a real checkbox would be a control
+   that does nothing. The box is aria-hidden and the state is carried in text
+   for a screen reader. */
+.classroom-root .classroom-prose li.classroom-prose-task {
+  align-items: flex-start;
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin-left: -22px;
+}
+
+.classroom-root .classroom-prose-task-box {
+  align-items: center;
+  border: 1.5px solid var(--classroom-line-strong);
+  border-radius: 3px;
+  color: var(--classroom-ink);
+  display: flex;
+  flex: 0 0 auto;
+  font-size: 12px;
+  height: 17px;
+  justify-content: center;
+  line-height: 1;
+  margin-top: 5px;
+  width: 17px;
+}
+
+.classroom-root .classroom-prose-task[data-done] .classroom-prose-task-text {
+  color: var(--classroom-meta-text);
 }
 
 .classroom-root .classroom-prose blockquote {
