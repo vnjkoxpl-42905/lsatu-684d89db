@@ -1002,6 +1002,24 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   --observatory-skeleton: rgba(244, 241, 234, 0.12);
 }
 
+/* Dark theme. ClassroomLayout sets html.dark from the theme, and the stage
+   goes near-black (--classroom-drill-page). The two controls inked for the
+   stage must flip with it: before this rule they stayed cream on the black
+   stage. Values are the jump row's dark tone (questionJump.css) so the
+   utility strip still reads as one system. Measured on the well, which is
+   3% white over #121019 (#191720): ink 15.8:1, muted 5.9:1; the active
+   label on the ivory pill 16.8:1. The cards stay #08080b in both themes.
+   Scoped to the classroom stage: .rc-page at /rc renders outside
+   ClassroomLayout, so html.dark is never set there and it keeps the ladder
+   above. */
+html.dark .classroom-root.classroom-root-drill {
+  --observatory-stage-well: rgba(255, 255, 255, 0.03);
+  --observatory-stage-ink: #f5f1ec;
+  --observatory-stage-muted: #9a938c;
+  --observatory-stage-hair: rgba(255, 255, 255, 0.1);
+  --observatory-stage-lit: #121019;
+}
+
 .classroom-root.classroom-root-drill .classroom-stage {
   padding: 24px 24px 32px 16px;
 }
@@ -1282,12 +1300,14 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 /* ── Section switch (LR | RC) ────────────────────────────────────────────── */
 
-/* Note the surface it sits on: the observatory is dark CARDS on a light cream
-   stage, and the tools row is on the stage, not on a card. So the switch is
-   inked dark-on-light and takes its values from the Question finder beside it
-   (questionJump.css light tone) — the two are one utility strip and must not
-   read as two different systems. An ivory-on-ivory switch, which the first
-   pass shipped, was invisible here. */
+/* Note the surface it sits on: the observatory is dark CARDS on the stage,
+   and the tools row is on the stage, not on a card. So the switch is inked
+   for the stage through the --observatory-stage-* tokens, which follow the
+   theme (cream stage, dark ink in light; near-black stage, ivory ink in dark)
+   and take their values from the Question finder beside it (questionJump.css,
+   the matching tone) — the two are one utility strip and must not read as two
+   different systems. An ivory-on-ivory switch, which the first pass shipped,
+   was invisible here. */
 .drill-observatory-root .drill-observatory-section-toggle {
   align-items: center;
   background: var(--observatory-stage-well);
