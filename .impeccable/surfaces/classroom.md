@@ -242,9 +242,10 @@ the next reader to a file that was not running, and `pages/ClassroomItem.tsx` he
 `whitespace-pre-wrap` on the markdown body that the live view did not - so the dead copy
 rendered a recap *better* than the one students used. Deleted 2026-09-09.
 
-`src/pages/ClassroomTAAssignmentDetail.tsx` is a fifth orphan of the same kind, left in
-place: it belongs to the assignment surface rather than to notes and recaps, and nobody
-has been asked about it.
+`src/pages/ClassroomTAAssignmentDetail.tsx` was a fifth orphan of the same kind - the
+assignment surface rather than notes and recaps, but the same story: no importers, and
+`/classroom/ta/:assignmentId` is `ClassroomTAAssignmentView`. Deleted on Joshua's word the
+same day. Nothing under `/classroom` now has a routed view and a dead twin.
 
 **`smartboard_recap` is a dead label.** Boards are not attached to student accounts
 (confirmed 2026-09-09), so no student sees it. The mapping stays only so an unmapped
