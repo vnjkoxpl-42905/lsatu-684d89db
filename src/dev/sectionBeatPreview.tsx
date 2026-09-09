@@ -15,6 +15,10 @@
 import { createRoot } from "react-dom/client";
 import { SectionStage } from "../features/activity-centre/recall/SectionStage";
 import type { SectionStimulus } from "../features/activity-centre/recall/section";
+// The app stylesheet too, for `sr-only`: without it the hidden heading is a
+// 321x59 block in the rail and the harness measures a layout the product
+// never ships.
+import "../index.css";
 import "../features/activity-centre/recall/section.css";
 
 const state = new URLSearchParams(location.search).get("state") ?? "holding";
