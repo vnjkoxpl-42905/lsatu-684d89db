@@ -955,11 +955,37 @@ export class QuestionBank {
     );
   }
 
+  /**
+   * Which PTs have an authored sidecar, from the generated manifest.
+   *
+   * Returns null when the manifest is absent or unreadable, which means "ask
+   * for all of them" — the pre-manifest behaviour. A missing manifest must not
+   * be able to hide explanations that are actually there.
+   */
+  private async fetchExplanationManifest(): Promise<Set<number> | null> {
+    try {
+      const res = await fetch('/data/explanations/index.json');
+      if (!res.ok) return null;
+      const json = await res.json();
+      if (!json || !Array.isArray(json.pts)) return null;
+      const pts = json.pts.filter((n: unknown): n is number => typeof n === 'number');
+      return pts.length > 0 ? new Set<number>(pts) : null;
+    } catch {
+      return null;
+    }
+  }
+
   private async mergeExplanationSidecars(): Promise<void> {
     const pts = new Set<number>();
     for (const q of this.questions.values()) pts.add(q.pt);
+
+    // Only 21 of the bank's 59 PTs have an authored sidecar. Without the
+    // manifest this asked for all 59 and ate 38 x 404 on every cold load.
+    const authored = await this.fetchExplanationManifest();
+    const wanted = authored ? Array.from(pts).filter((pt) => authored.has(pt)) : Array.from(pts);
+
     const results = await Promise.all(
-      Array.from(pts).map(async (pt) => {
+      wanted.map(async (pt) => {
         try {
           const res = await fetch(`/data/explanations/PT${pt}-explanations.json`);
           if (!res.ok) return null;
@@ -1067,7 +1093,8 @@ export class QuestionBank {
 
     // Merge per-question LSAT Lab explanations from
     // /data/explanations/PT<n>-explanations.json (one file per preptest).
-    // Missing files are non-fatal — most PTs are still unauthored.
+    // index.json says which ones exist, so unauthored PTs are not requested;
+    // a miss is still non-fatal if the manifest is stale.
     await this.mergeExplanationSidecars();
 
     // Build manifest
