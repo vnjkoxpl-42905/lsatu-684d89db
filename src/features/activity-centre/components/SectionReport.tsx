@@ -164,7 +164,7 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
           */}
         <div role="status" aria-live="polite">
           <p className="rc__display mt-3 text-[34px] text-[var(--rc-ink)]">
-            {stillWaiting ? "Still being marked" : "Marking your run"}
+            {stillWaiting ? "Still being marked" : "Marking your attempt"}
           </p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--rc-ink-muted)]">
             {stillWaiting

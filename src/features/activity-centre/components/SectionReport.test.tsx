@@ -82,7 +82,7 @@ describe("waiting for the Report Card", () => {
   it("says the run is being marked, not that anything failed", async () => {
     getSectionGrade.mockResolvedValue(null);
     inRouter(<SectionReport assignmentId="a1" />);
-    await vi.waitFor(() => expect(screen.getByText("Marking your run")).toBeInTheDocument());
+    await vi.waitFor(() => expect(screen.getByText("Marking your attempt")).toBeInTheDocument());
   });
 
   it("waits on the card's own ground, not the Activity Centre's", async () => {
@@ -94,11 +94,11 @@ describe("waiting for the Report Card", () => {
      */
     getSectionGrade.mockResolvedValue(null);
     const { container } = inRouter(<SectionReport assignmentId="a1" />);
-    await vi.waitFor(() => expect(screen.getByText("Marking your run")).toBeInTheDocument());
+    await vi.waitFor(() => expect(screen.getByText("Marking your attempt")).toBeInTheDocument());
 
     const panel = container.querySelector(".rc");
     expect(panel).not.toBeNull();
-    expect(panel).toContainElement(screen.getByText("Marking your run"));
+    expect(panel).toContainElement(screen.getByText("Marking your attempt"));
     // The Centre's surface token is what it used to paint itself with.
     expect(container.innerHTML).not.toContain("--ac-surface");
   });
@@ -113,7 +113,7 @@ describe("waiting for the Report Card", () => {
     // A failed read is not a failed run, and must not be shown as one.
     getSectionGrade.mockRejectedValue(new Error("offline"));
     inRouter(<SectionReport assignmentId="a1" />);
-    await vi.waitFor(() => expect(screen.getByText("Marking your run")).toBeInTheDocument());
+    await vi.waitFor(() => expect(screen.getByText("Marking your attempt")).toBeInTheDocument());
   });
 
   it("asks for the grade again if none has arrived, and only once", async () => {
@@ -164,7 +164,7 @@ describe("waiting for the Report Card", () => {
     const { container } = inRouter(<SectionReport assignmentId="a1" />);
     const live = container.querySelector('[role="status"]');
     expect(live).not.toBeNull();
-    expect(live?.textContent).toMatch(/Marking your run/);
+    expect(live?.textContent).toMatch(/Marking your attempt/);
     await vi.advanceTimersByTimeAsync(4 * 60 * 1000);
     await vi.waitFor(() => expect(live?.textContent).toMatch(/Still being marked/));
   });
@@ -185,7 +185,7 @@ describe("waiting for the Report Card", () => {
       await vi.advanceTimersByTimeAsync(11000);
     });
     expect(getSectionGrade.mock.calls.length).toBeGreaterThan(callsAtGiveUp);
-    expect(screen.getByText("Marking your run")).toBeInTheDocument();
+    expect(screen.getByText("Marking your attempt")).toBeInTheDocument();
   });
 
   it("hands her the one thing she could not produce herself", async () => {

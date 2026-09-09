@@ -1006,7 +1006,9 @@ export function SectionReportCard({
                         * answer. The reason is what she can dispute; the key is
                         * what she can learn from.
                         */}
-                      {s.readReason && (
+                      {/* The reason is why the Read did NOT match. Under "You found
+                          the move" it read as a correction of a right answer. */}
+                      {s.readReason && !s.readMatches && (
                         <p className="mt-1.5 text-sm leading-relaxed text-[var(--rc-ink-muted)]">
                           {s.readReason}
                         </p>
