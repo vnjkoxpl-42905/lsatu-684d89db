@@ -1676,7 +1676,7 @@ PHASED_LESSONS['1.13'] = {
             softened: 'The policy could increase ridership.',
             softWord: 'could',
             softReason:
-              '"Could" softens the claim by opening the door to possibility. The result is now contingent, not guaranteed.',
+              '"Could" softens the claim to a possibility. The result is now contingent, not guaranteed.',
           },
           {
             id: 'as-3',
