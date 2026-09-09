@@ -87,6 +87,24 @@
   color: var(--rc-console-ink-faint);
 }
 
+/* The card's two headings.
+ *
+ * Each wraps a small label and a display line so the heading reads as one
+ * string ("Report Card, Attempt 2, At the standard") while keeping the two type
+ * sizes it had when both were paragraphs. Tailwind's preflight already flattens
+ * heading size and weight; this keeps the margin off and lets the children own
+ * their own type.
+ */
+.rc__title {
+  margin: 0;
+  font: inherit;
+  letter-spacing: normal;
+}
+
+.rc__title > .rc__label {
+  display: block;
+}
+
 .rc__display {
   font-family: var(--rc-display);
   font-variation-settings: "opsz" 96;
@@ -235,7 +253,8 @@
   font-family: var(--rc-body);
   font-size: 12px;
   font-weight: 500;
-  min-height: 34px;
+  /* PRODUCT.md binds 44x44 by being that size. These were 34. */
+  min-height: 44px;
   padding: 0 14px;
   transition:
     background-color 180ms var(--rc-ease),
@@ -366,9 +385,26 @@
   font-size: 11px;
   height: 26px;
   padding: 0 10px;
+  position: relative;
   transition:
     border-color 160ms var(--rc-ease),
     color 160ms var(--rc-ease);
+}
+
+/* Forty-four pixels of target on a 26px control.
+ *
+ * Given as a centred overlay rather than a height, because this one sits inline
+ * beside a line of text: growing the box would push the line it belongs to
+ * apart. Same trick as the runner's rail controls, for the same reason. */
+.rc__hear::after,
+.rc__summary::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
 }
 
 .rc__hear:hover {
@@ -471,4 +507,13 @@
   box-shadow:
     0 0 0 2px var(--rc-console),
     0 0 0 4px var(--rc-signal-bright);
+}
+
+/* The disclosures ("The passage", the per-movement openers).
+ *
+ * A `summary` styled as a 10px label is a 16px target. It cannot grow its box
+ * without moving the prose it introduces, so it takes the same overlay as
+ * "Hear it". */
+.rc__summary {
+  position: relative;
 }

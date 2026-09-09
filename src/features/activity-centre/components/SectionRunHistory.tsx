@@ -45,11 +45,31 @@ interface SectionRunHistoryProps {
   emptyMessage?: string;
 }
 
+/**
+ * The band, in ink and in a word.
+ *
+ * The old inks measured 3.79:1 and 3.85:1 on the lab's ground and 4.24:1 and
+ * 4.31:1 on the Workroom page, all under AA for body text, and the band was
+ * carried by colour alone: a reader who cannot separate amber from red learned
+ * nothing from this column, and neither did anyone reading it in grayscale.
+ * Darkened and measured in the running app: nearly there 5.53:1 on the lab
+ * ground and 6.34:1 on white, thin 5.35 and 6.13, worth another read 6.26 and
+ * 7.17, at the standard 5.12 on the lab ground. Every row now says which band
+ * it is as well as showing it.
+ */
 const BAND_TEXT: Record<ReturnType<typeof bandFor>, string> = {
   "at-the-standard": "text-[hsl(var(--ac-emerald-strong))]",
-  "nearly-there": "text-[hsl(38_92%_34%)]",
-  thin: "text-[hsl(24_85%_42%)]",
-  "lost-it": "text-[hsl(350_80%_45%)]",
+  "nearly-there": "text-[hsl(38_92%_27%)]",
+  thin: "text-[hsl(24_85%_34%)]",
+  "lost-it": "text-[hsl(350_80%_38%)]",
+};
+
+/** The word beside the number, so the colour is never the only carrier. */
+const BAND_WORD: Record<ReturnType<typeof bandFor>, string> = {
+  "at-the-standard": "at the standard",
+  "nearly-there": "nearly there",
+  thin: "thin",
+  "lost-it": "worth another read",
 };
 
 function minutes(seconds: number): string {
@@ -143,6 +163,11 @@ export function SectionRunHistory({
                   </td>
                   <td className={cn("py-2 pr-4 tabular-nums", BAND_TEXT[band])}>
                     {g.section.mean_coverage}%
+                    {/* Said, not only coloured. Visually hidden because the
+                        column is a scan of numbers and a word per row would
+                        drown it; the colour stays as the fast read for anyone
+                        who can use it. */}
+                    <span className="sr-only">, {BAND_WORD[band]}</span>
                   </td>
                   <td className="py-2 pr-4 tabular-nums text-muted-foreground">
                     {/*

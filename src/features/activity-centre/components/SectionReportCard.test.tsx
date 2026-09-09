@@ -85,6 +85,140 @@ const grade: SectionGrade = {
   },
 };
 
+/**
+ * One tick in the ledger, by its position.
+ *
+ * The accessible name carries the band and the open state as well as the
+ * number, because a ledger of twenty-two identical "Stimulus N" buttons told a
+ * screen reader nothing about the shape of the run. Tests reach a tick by role
+ * and leading number so the rest of that name is free to improve.
+ */
+const tick = (n: number) =>
+  screen.getByRole("button", { name: new RegExp("^Stimulus " + n + ",") });
+
+describe("the card's structure", () => {
+  it("has a heading outline, where it used to have none", () => {
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
+    const levels = [...document.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) =>
+      Number(h.tagName[1]),
+    );
+    // Every section label was a `p`, so a screen reader's heading list was
+    // empty on a surface with eight sections and a ledger of twenty-two.
+    expect(levels.length).toBeGreaterThan(4);
+    expect(levels[0]).toBe(1);
+    for (let i = 1; i < levels.length; i += 1) {
+      expect(levels[i], `heading ${i} skips a level`).toBeLessThanOrEqual(levels[i - 1] + 1);
+    }
+  });
+
+  it("names itself and its band in one heading", () => {
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1.textContent).toContain("Report Card");
+    // The band is the display line inside the same heading, so the heading
+    // reads as "Report Card, Nearly there" rather than as a bare label.
+    const band = h1.querySelector(".rc__display")?.textContent ?? "";
+    expect(band).toBe("Nearly there");
+  });
+
+  it("carries no side stripe, which DESIGN.md bans", () => {
+    const { container } = render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
+    // It was `border-l-2` in `--rc-signal`, the colour the brief reserves for
+    // sound, on the one sentence that asks her to do something.
+    expect(container.querySelector('[class*="border-l-2"]')).toBeNull();
+  });
+});
+
+describe("the ledger as one control", () => {
+  it("is a single tab stop, not twenty-two", () => {
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
+    const ticks = [...document.querySelectorAll(".rc__tick")];
+    const reachable = ticks.filter((t) => t.getAttribute("tabindex") === "0");
+    expect(ticks.length).toBeGreaterThan(1);
+    // Tab lands on whichever stimulus is open; the arrows do the rest.
+    expect(reachable).toHaveLength(1);
+    expect(reachable[0].getAttribute("aria-current")).toBe("true");
+  });
+
+  it("moves with the arrows, and focus follows the selection", () => {
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
+    const ledger = document.querySelector(".rc__ledger") as HTMLElement;
+    fireEvent.keyDown(ledger, { key: "ArrowRight" });
+    expect(tick(2).getAttribute("aria-current")).toBe("true");
+    expect(document.activeElement).toBe(tick(2));
+
+    fireEvent.keyDown(ledger, { key: "End" });
+    expect(tick(grade.stimuli.length).getAttribute("aria-current")).toBe("true");
+    fireEvent.keyDown(ledger, { key: "Home" });
+    expect(tick(1).getAttribute("aria-current")).toBe("true");
+  });
+
+  it("does not run off either end", () => {
+    render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
+    const ledger = document.querySelector(".rc__ledger") as HTMLElement;
+    fireEvent.keyDown(ledger, { key: "ArrowLeft" });
+    expect(tick(1).getAttribute("aria-current")).toBe("true");
+  });
+});
+
+describe("the focus set", () => {
+  /*
+   * Authored positions that are NOT the array index, which is the only shape
+   * that tells the two readings apart. A section's weakest four can sit at
+   * positions 11 to 14 as easily as at 1 to 4.
+   */
+  const weak: SectionGrade = {
+    ...grade,
+    stimuli: [
+      stimulus({ slug: "PT105_S2_Q11", item_order: 11, percent: 95 }),
+      stimulus({ slug: "PT105_S2_Q12", item_order: 12, percent: 100 }),
+      stimulus({ slug: "PT105_S2_Q13", item_order: 13, percent: 41, band: "lost-it" }),
+      stimulus({ slug: "PT105_S2_Q14", item_order: 14, percent: 52, band: "thin" }),
+    ],
+  };
+
+  const chipText = () =>
+    [...document.querySelectorAll(".rc__chip--dropped")].map((c) => c.textContent ?? "");
+
+  it("names the stimulus it actually means", () => {
+    /*
+     * `item_order` is the authored position and 1-based, which is how the
+     * ledger, the open stimulus and its heading all read it. The chips read it
+     * as `(item_order ?? i) + 1`, so every one named the stimulus after the one
+     * it meant: she was sent to run stimulus 15 again over a fault in 14, and
+     * the ledger beside it disagreed.
+     */
+    render(
+      <SectionReportCard grade={weak} loadModelRuns={noModelRuns} onStartFocusSet={vi.fn()} />,
+    );
+    // The set pads to its minimum, so all four are offered; the numbering is
+    // what is under test.
+    expect(chipText().map((t) => t.split(" · ")[0])).toEqual([
+      "Stimulus 11",
+      "Stimulus 12",
+      "Stimulus 13",
+      "Stimulus 14",
+    ]);
+  });
+
+  it("falls back to array position on a grade written before positions were stored", () => {
+    const older: SectionGrade = {
+      ...weak,
+      stimuli: weak.stimuli.map((s) => ({ ...s, item_order: undefined })),
+    };
+    render(
+      <SectionReportCard grade={older} loadModelRuns={noModelRuns} onStartFocusSet={vi.fn()} />,
+    );
+    // `i` is an array index and 0-based, so the fallback keeps its + 1.
+    expect(chipText().map((t) => t.split(" · ")[0])).toEqual([
+      "Stimulus 1",
+      "Stimulus 2",
+      "Stimulus 3",
+      "Stimulus 4",
+    ]);
+  });
+});
+
 describe("the move, which she has to be told the meaning of", () => {
   /** A grade with The Read measured, which is what puts the word on screen. */
   const withReads: SectionGrade = {
@@ -126,7 +260,7 @@ describe("what the student sees", () => {
     // ledger draws a mark per stimulus rather than repeating four labels
     // twenty-two times, so the other bands are reached by opening them.
     expect(screen.getByText("At the standard")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Stimulus 3"));
+    fireEvent.click(tick(3));
     expect(screen.getByText("Thin")).toBeInTheDocument();
   });
 
@@ -138,23 +272,23 @@ describe("what the student sees", () => {
 
   it("names the stimuli by position, never by the capture's identifier", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
-    expect(screen.getByText("Stimulus 1")).toBeInTheDocument();
+    expect(tick(1)).toBeInTheDocument();
     // The slug is the source bank's own id and means nothing to her.
     expect(document.body.textContent).not.toMatch(/PT105_S2_Q/);
   });
 
   it("shows what slipped, and says so plainly when nothing did", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.getByText("This applies to all employees.")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText("Stimulus 2"));
+    fireEvent.click(tick(2));
     expect(screen.getByText("Nothing slipped on this one. You kept the whole thing.")).toBeInTheDocument();
   });
 
   it("tells her when she recited rather than retold", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
-    fireEvent.click(screen.getByText("Stimulus 4"));
+    fireEvent.click(tick(4));
     // Scoped to the tip, not the summary line, which also mentions it.
     expect(
       screen.getByText(/Say it in your own words instead/),
@@ -163,7 +297,7 @@ describe("what the student sees", () => {
 
   it("never shows the grader's own machinery", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
-    for (const s of grade.stimuli) fireEvent.click(screen.getByText(`Stimulus ${grade.stimuli.indexOf(s) + 1}`));
+    for (const s of grade.stimuli) fireEvent.click(tick(grade.stimuli.indexOf(s) + 1));
     const text = document.body.textContent ?? "";
     // Decoys, grader versions and engine names are ours. A student reading
     // "decoy" would reasonably wonder what else we are not telling her.
@@ -209,9 +343,16 @@ describe("a stimulus she said back word for word", () => {
   });
 
   it("names the recital on the collapsed row, not only inside it", () => {
-    render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
-    // Present before anything is expanded.
-    expect(screen.getByText(/said back word for word/i)).toBeInTheDocument();
+    const { container } = render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
+    // Present before anything is expanded. Scoped past the ledger, whose ticks
+    // now carry the same phrase in their accessible names: a recited stimulus
+    // was a mark and a number to a screen reader and nothing else.
+    const outsideLedger = [...container.querySelectorAll("*")].filter(
+      (el) => !el.closest(".rc__ledger") && el.children.length === 0,
+    );
+    expect(
+      outsideLedger.some((el) => /said back word for word/i.test(el.textContent ?? "")),
+    ).toBe(true);
   });
 
   it("still shows what it carried, because that reading is true", () => {
@@ -222,7 +363,7 @@ describe("a stimulus she said back word for word", () => {
 
   it("does not congratulate it inside the row either", () => {
     render(<SectionReportCard grade={recited} loadModelRuns={noModelRuns} />);
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.queryByText("You carried every detail in this one.")).toBeNull();
     expect(screen.getByText(/which is what saying it back word for word does/i)).toBeInTheDocument();
   });
@@ -254,7 +395,7 @@ describe("a grade with missing response rows", () => {
 
   it("keeps each saved row's true stimulus number after a gap", () => {
     render(<SectionReportCard grade={partial} loadModelRuns={noModelRuns} />);
-    expect(screen.getByText("Stimulus 9")).toBeInTheDocument();
+    expect(tick(9)).toBeInTheDocument();
     expect(screen.queryByText("Stimulus 8")).not.toBeInTheDocument();
   });
 
@@ -283,9 +424,9 @@ describe("a grade with missing response rows", () => {
 
   it("falls back to array order without inventing a missing-row notice for a legacy grade", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
-    expect(screen.getByText("Stimulus 1")).toBeInTheDocument();
-    expect(screen.getByText("Stimulus 2")).toBeInTheDocument();
-    expect(screen.getByText("Stimulus 3")).toBeInTheDocument();
+    expect(tick(1)).toBeInTheDocument();
+    expect(tick(2)).toBeInTheDocument();
+    expect(tick(3)).toBeInTheDocument();
     expect(screen.queryByText(/did not save/)).not.toBeInTheDocument();
   });
 });
@@ -357,13 +498,13 @@ describe("the evidence behind the number", () => {
         loadModelRuns={noModelRuns} grade={withSection({}, [stimulus({ coloured: true, colourSpecific: false })])}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.getByText(/would have fitted any stimulus/)).toBeInTheDocument();
   });
 
   it("shows where she froze inside a recall", () => {
     render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({}, [stimulus({ dead_air_seconds: 7 })])} />);
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.getByText(/quiet for 7s/)).toBeInTheDocument();
   });
 
@@ -373,7 +514,7 @@ describe("the evidence behind the number", () => {
         loadModelRuns={noModelRuns} grade={withSection({}, [stimulus({ spoken: "so the director thinks exploiting is bad" })])}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.getByText("What you said")).toBeInTheDocument();
     expect(screen.getByText(/so the director thinks exploiting is bad/)).toBeInTheDocument();
   });
@@ -385,12 +526,12 @@ describe("the evidence behind the number", () => {
         loadModelRuns={noModelRuns} grade={withSection({ audio_bucket: "drill-recordings", audio_path: "s1/a1.webm" }, one)}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.getByRole("button", { name: /hear it back/i })).toBeInTheDocument();
     unmount();
 
     render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({ audio_path: null }, one)} />);
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.queryByRole("button", { name: /hear it back/i })).not.toBeInTheDocument();
   });
 
@@ -404,7 +545,7 @@ describe("the evidence behind the number", () => {
 
   it("does not show a stimulus it could not mark as a score she earned", () => {
     render(<SectionReportCard loadModelRuns={noModelRuns} grade={withSection({}, [stimulus({ ungraded: "judge timed out", carried: 0, percent: 0, band: "lost-it" })])} />);
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.getByText(/could not be marked/)).toBeInTheDocument();
     // And not the reason, which is ours.
     expect(document.body.textContent).not.toMatch(/timed out/);
@@ -607,7 +748,7 @@ describe("hearing it done right", () => {
         loadModelRuns={model}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(await screen.findByRole("button", { name: /hear it done right/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /hear it back/i })).toBeInTheDocument();
   });
@@ -619,7 +760,7 @@ describe("hearing it done right", () => {
         loadModelRuns={noModelRuns}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     // Waited for, so the empty answer has landed before the absence is asserted.
     expect(await screen.findByText("What you said")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /hear it done right/i })).not.toBeInTheDocument();
@@ -638,7 +779,7 @@ describe("hearing it done right", () => {
         loadModelRuns={model}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(await screen.findByRole("button", { name: /hear it done right/i })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /hear it back/i })).not.toBeInTheDocument();
   });
@@ -658,7 +799,7 @@ describe("hearing it done right", () => {
         loadModelRuns={model}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(
       await screen.findByText(/So he wants the limit halved/),
     ).toBeInTheDocument();
@@ -678,7 +819,7 @@ describe("hearing it done right", () => {
         loadModelRuns={writtenOnly}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(await screen.findByText(/So he wants the limit halved/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /hear it done right/i })).not.toBeInTheDocument();
   });
@@ -699,7 +840,7 @@ describe("what to do next time", () => {
         loadModelRuns={noModelRuns}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.getByText("Next time")).toBeInTheDocument();
     expect(screen.getByText("Say the quantifier out loud: all, not some.")).toBeInTheDocument();
   });
@@ -724,7 +865,7 @@ describe("what to do next time", () => {
         loadModelRuns={noModelRuns}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.getByText(/Every cylinder on this one/)).toBeInTheDocument();
     expect(screen.queryByText("Next time")).toBeNull();
   });
@@ -741,13 +882,13 @@ describe("what to do next time", () => {
         loadModelRuns={noModelRuns}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.queryByText(/Every cylinder/)).toBeNull();
   });
 
   it("stays quiet on a grade written before advice existed", () => {
     render(<SectionReportCard grade={grade} loadModelRuns={noModelRuns} />);
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.queryByText("Next time")).toBeNull();
     expect(screen.queryByText(/Every cylinder/)).toBeNull();
   });
@@ -771,7 +912,7 @@ describe("the standard beside her words", () => {
         loadModelRuns={noModelRuns}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.getByText(/The Read this one turns on: What if sugar/)).toBeInTheDocument();
     expect(screen.getByText("She named the flaw as sampling rather than causation.")).toBeInTheDocument();
   });
@@ -783,7 +924,7 @@ describe("the standard beside her words", () => {
         loadModelRuns={noModelRuns}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(screen.getByText("The passage")).toBeInTheDocument();
     expect(screen.getByText("It is difficult to keep deep wounds free of bacteria.")).toBeInTheDocument();
   });
@@ -825,7 +966,7 @@ describe("the standard beside her words", () => {
         loadModelRuns={() => Promise.resolve({ PT105_S2_Q1: { walkthrough: md, audio: null } })}
       />,
     );
-    fireEvent.click(screen.getByText("Stimulus 1"));
+    fireEvent.click(tick(1));
     expect(await screen.findByText(/So deep wounds are hard to keep clean/)).toBeInTheDocument();
     expect(screen.getByText(/Even the strong drugs do not manage it/)).toBeInTheDocument();
     expect(screen.getByText("The wounds are deep.")).toBeInTheDocument();

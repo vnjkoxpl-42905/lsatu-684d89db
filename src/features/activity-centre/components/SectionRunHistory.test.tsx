@@ -52,8 +52,13 @@ describe("the shape of the week", () => {
         ]}
       />,
     );
-    const cells = screen.getAllByText(/^\d+%$/).map((n) => n.textContent);
-    expect(cells).toEqual(["91%", "71%"]);
+    // The cell carries the band as a word beside the number now, because the
+    // colour was the only thing saying which band a run was in.
+    const cells = [...document.querySelectorAll("tbody tr")].map(
+      (tr) => tr.children[2]?.textContent ?? "",
+    );
+    expect(cells.map((t) => t.split(",")[0])).toEqual(["91%", "71%"]);
+    expect(cells[0]).toMatch(/at the standard/);
   });
 
   it("marks a run graded before The Read was measured as not asked, never as zero", () => {

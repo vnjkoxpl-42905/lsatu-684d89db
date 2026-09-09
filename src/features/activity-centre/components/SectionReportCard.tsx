@@ -365,8 +365,14 @@ function Movement({
   className?: string;
 }) {
   return (
-    <section className={cn("rc__movement pt-5", tone && `rc__movement--${tone}`, className)}>
-      <p className="rc__label">{label}</p>
+    <section
+      className={cn("rc__movement pt-5", tone && `rc__movement--${tone}`, className)}
+      aria-label={label}
+    >
+      {/* A movement sits under the open stimulus, which is an h2, so these are
+          h3. They were `p`, which is why a card of eight sections offered a
+          screen reader nothing to move between. */}
+      <h3 className="rc__label">{label}</h3>
       <div className="mt-3">{children}</div>
     </section>
   );
@@ -387,6 +393,8 @@ export function SectionReportCard({
    * headings. Something is always open now, and the ledger says which.
    */
   const [openStimulus, setOpenStimulus] = useState<number>(0);
+  /** The ledger's buttons, so the arrow keys can move focus with the selection. */
+  const tickRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const clip = useClip();
   const modelRuns = useModelRuns(grade.source_section, loadModelRuns);
   /** Her own recording, when the upload survived. */
@@ -487,14 +495,23 @@ export function SectionReportCard({
     <div className="rc mx-auto max-w-[820px] overflow-hidden rounded-[20px] border border-[var(--rc-hairline)] shadow-[0_1px_2px_rgba(20,20,30,0.04),0_12px_32px_-12px_rgba(20,20,30,0.12)]">
       {/* ── The console ────────────────────────────────────────────────── */}
       <header className="rc__console px-6 py-7 md:px-9 md:py-9">
-        <p className="rc__label rc__label--onconsole">
-          {grade.attempt_no > 1 ? `Report Card · Attempt ${grade.attempt_no}` : "Report Card"}
-        </p>
-
-        {/* The band leads. The number is available and does not go first. */}
-        <p className="rc__display mt-3 text-[40px] text-[var(--rc-console-ink)] md:text-[52px]">
-          {overall.band.label}
-        </p>
+        {/*
+          * The card had no heading of any kind, so a screen reader's heading
+          * list was empty on a surface with eight sections and a ledger. The
+          * two lines that were already the title are wrapped into one `h1`
+          * rather than a third line being invented: it reads "Report Card,
+          * Attempt 2, At the standard", which is what the top of this card
+          * says to anyone looking at it. The spans keep the two type sizes.
+          */}
+        <h1 className="rc__title">
+          <span className="rc__label rc__label--onconsole">
+            {grade.attempt_no > 1 ? `Report Card · Attempt ${grade.attempt_no}` : "Report Card"}
+          </span>
+          {/* The band leads. The number is available and does not go first. */}
+          <span className="rc__display mt-3 block text-[40px] text-[var(--rc-console-ink)] md:text-[52px]">
+            {overall.band.label}
+          </span>
+        </h1>
         <p className="mt-2.5 text-sm text-[var(--rc-console-ink-dim)]">
           {overall.atStandard} of {stimuli.length} at the standard
           {overall.perfect > 0 ? `, ${overall.perfect} with nothing dropped` : ""}.
@@ -507,8 +524,12 @@ export function SectionReportCard({
           * only one that asks for something, which is why it is one line and
           * why a run with nothing clear to say gets none.
           */}
+        {/* No side stripe. DESIGN.md bans it, and `--rc-signal` is the colour
+            the brief reserves for sound, which this sentence is not. It is
+            already the only line on the card that asks for something; it does
+            not need a rule beside it to say so. */}
         {overall.next && (
-          <p className="mt-5 max-w-[58ch] border-l-2 border-[var(--rc-signal)] pl-4 text-[15px] leading-relaxed text-[var(--rc-console-ink)]">
+          <p className="mt-5 max-w-[58ch] text-[15px] leading-relaxed text-[var(--rc-console-ink)]">
             {overall.next}
           </p>
         )}
@@ -622,7 +643,7 @@ export function SectionReportCard({
           */}
         {overall.notes.length > 0 && (
           <div className="rc__console-divider mt-6 border-t pt-6">
-            <p className="rc__label rc__label--onconsole">Worth working on</p>
+            <h2 className="rc__label rc__label--onconsole">Worth working on</h2>
             <ul className="mt-3 space-y-1.5">
               {overall.notes.map((note) => (
                 <li key={note} className="max-w-[64ch] text-sm leading-relaxed text-[var(--rc-console-ink-dim)]">
@@ -667,8 +688,41 @@ export function SectionReportCard({
         {/* ── The ledger ──────────────────────────────────────────────────
             The shape of the run in one glance, and the only navigation. */}
         <div className="rc__console-divider mt-7 border-t pt-6">
-          <p className="rc__label rc__label--onconsole">The run</p>
-          <div className="rc__ledger mt-3.5">
+          <h2 className="rc__label rc__label--onconsole">The run</h2>
+          {/*
+            * One tab stop, and the arrows do the rest.
+            *
+            * Twenty-two ticks were twenty-two tab stops, so reaching anything
+            * below the ledger by keyboard meant pressing Tab twenty-two times
+            * through a row of marks. A toolbar with a roving tabindex is the
+            * pattern for a group like this: Tab lands on whichever stimulus is
+            * open, the arrows move between them, Home and End go to the ends.
+            */}
+          <div
+            className="rc__ledger mt-3.5"
+            role="toolbar"
+            aria-label="The run, stimulus by stimulus"
+            aria-orientation="horizontal"
+            onKeyDown={(e) => {
+              const last = stimuli.length - 1;
+              const to =
+                e.key === "ArrowRight" || e.key === "ArrowDown"
+                  ? Math.min(openStimulus + 1, last)
+                  : e.key === "ArrowLeft" || e.key === "ArrowUp"
+                    ? Math.max(openStimulus - 1, 0)
+                    : e.key === "Home"
+                      ? 0
+                      : e.key === "End"
+                        ? last
+                        : null;
+              if (to === null) return;
+              e.preventDefault();
+              setOpenStimulus(to);
+              // Focus follows selection, which is what makes the arrows read as
+              // moving through the ledger rather than scrubbing something else.
+              tickRefs.current[to]?.focus();
+            }}
+          >
             {stimuli.map((st, i) => {
               const m = st.ungraded ? "ungraded" : st.reciting ? "recited" : BAND[st.band].mark;
               return (
@@ -677,11 +731,27 @@ export function SectionReportCard({
                   type="button"
                   className="rc__tick"
                   aria-current={i === openStimulus}
+                  tabIndex={i === openStimulus ? 0 : -1}
+                  ref={(el) => {
+                    tickRefs.current[i] = el;
+                  }}
                   onClick={() => setOpenStimulus(i)}
                 >
                   {/* The accessible name. The digit below is decoration for a
-                      reader who can see the ledger. */}
-                  <span className="sr-only">Stimulus {st.item_order ?? i + 1}</span>
+                      reader who can see the ledger.
+                      It used to be the number alone, which made the ledger a
+                      row of twenty-two identical buttons to a screen reader:
+                      the band and the recital are the whole content of a tick,
+                      and both were carried by colour and shape only. */}
+                  <span className="sr-only">
+                    Stimulus {st.item_order ?? i + 1},{" "}
+                    {st.ungraded
+                      ? "not marked"
+                      : st.reciting
+                        ? "said back word for word"
+                        : BAND[st.band].label}
+                    {i === openStimulus ? ", open" : ""}
+                  </span>
                   <span className={cn("rc__mark", `rc__mark--${m}`)} aria-hidden />
                   <span className="rc__tick-n" aria-hidden>
                     {st.item_order ?? i + 1}
@@ -699,10 +769,14 @@ export function SectionReportCard({
           <div className="rc__measure">
             <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
               <div>
-                <p className="rc__label">
-                  Stimulus {s.item_order ?? openStimulus + 1} of {stimuli.length}
-                </p>
-                <p className="rc__display mt-1.5 text-[26px] text-[var(--rc-ink)]">{band.label}</p>
+                <h2 className="rc__title">
+                  <span className="rc__label">
+                    Stimulus {s.item_order ?? openStimulus + 1} of {stimuli.length}
+                  </span>
+                  <span className="rc__display mt-1.5 block text-[26px] text-[var(--rc-ink)]">
+                    {band.label}
+                  </span>
+                </h2>
               </div>
               <p className="text-sm text-[var(--rc-ink-muted)]">{howMuch(s.percent)}</p>
             </div>
@@ -756,7 +830,7 @@ export function SectionReportCard({
                 */}
               {s.stimulus_text && (
                 <details className="rounded-lg border border-[var(--rc-hairline)] bg-[var(--rc-card)] px-4 py-3">
-                  <summary className="rc__label cursor-pointer">The passage</summary>
+                  <summary className="rc__label rc__summary cursor-pointer">The passage</summary>
                   <p className="mt-3 text-[15px] leading-relaxed text-[var(--rc-ink)]">
                     {s.stimulus_text}
                   </p>
@@ -817,7 +891,7 @@ export function SectionReportCard({
                             because the three above are the ones to act on. */}
                         {s.missed.length > 0 && (
                           <details className="mt-3">
-                            <summary className="rc__label cursor-pointer">
+                            <summary className="rc__label rc__summary cursor-pointer">
                               Everything else that slipped ({s.missed.length})
                             </summary>
                             <ul className="mt-2 space-y-1.5">
@@ -1237,7 +1311,7 @@ function FocusSetPanel({
   if (!set) {
     return (
       <div className="border-t border-[var(--rc-hairline)] px-6 py-6 md:px-9">
-        <p className="rc__label">Nothing to run again</p>
+        <h2 className="rc__label">Nothing to run again</h2>
         <p className="mt-2 max-w-[58ch] text-sm leading-relaxed text-[var(--rc-ink-muted)]">
           Every stimulus in this run came back at the standard, said in your own words with a
           reaction of your own. There is no focus set for this one.
@@ -1259,7 +1333,7 @@ function FocusSetPanel({
 
   return (
     <div className="border-t border-[var(--rc-hairline)] px-6 py-7 md:px-9">
-      <p className="rc__label">Your focus set</p>
+      <h2 className="rc__label">Your focus set</h2>
       <p className="mt-2 max-w-[58ch] text-[15px] leading-relaxed text-[var(--rc-ink)]">
         {set.weakCount === 1
           ? "One stimulus fell short of the standard."
@@ -1268,9 +1342,15 @@ function FocusSetPanel({
       </p>
 
       <ul className="mt-4 flex flex-wrap gap-2">
+        {/* `item_order` is the AUTHORED position and is 1-based, which is how
+            the ledger, the open stimulus and its heading all read it. Here it
+            was `(item_order ?? i) + 1`, so every chip in the focus set named
+            the stimulus after the one it meant: she was sent to run stimulus 5
+            again over a fault in stimulus 4. The fallback keeps its `+ 1`,
+            because `i` is an array index and 0-based. */}
         {set.stimuli.map((s, i) => (
           <li key={s.slug} className="rc__chip rc__chip--dropped">
-            Stimulus {(s.item_order ?? i) + 1} · {s.reciting ? "said back word for word" : `${s.percent}%`}
+            Stimulus {s.item_order ?? i + 1} · {s.reciting ? "said back word for word" : `${s.percent}%`}
           </li>
         ))}
       </ul>
