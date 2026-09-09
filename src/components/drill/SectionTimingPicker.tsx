@@ -260,7 +260,11 @@ export default function SectionTimingPicker({
           aria-expanded={open}
           aria-labelledby={`${fieldLabelId} ${valueLabelId}`}
           className={cn(
-            'w-full flex items-center justify-between gap-3 rounded-xl border border-border bg-background px-4 py-3 text-left transition-colors hover:bg-accent/40',
+            // border-input, not border-border: --border is hairline separation
+            // between things, --input is the edge of a control and is the one
+            // the testing surface tunes to 1.4.11's 3:1 in both themes. This
+            // trigger drew --border and measured 1.32:1 light, 1.37:1 dark.
+            'w-full flex items-center justify-between gap-3 rounded-xl border border-input bg-background px-4 py-3 text-left transition-colors hover:bg-accent/40',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20',
             className,
           )}

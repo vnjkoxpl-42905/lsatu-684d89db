@@ -176,6 +176,27 @@ html.dark .testing-menu {
   --ring: 248.6 9.8% 42.2%;
 }
 
+/* The block above was only ever written for the dark ground. Light kept the
+   global --input (0 0% 90%), so every control in this room drew a 1.25:1 edge
+   around a fill sitting 1.02:1 off the panel: the border was the only thing
+   saying where the control was, and it was invisible. 1.4.11 asks for 3:1 on
+   the visual boundary of an interactive control, and PRODUCT.md makes AA a
+   defect gate rather than an aspiration.
+
+   --classroom-line-strong (#9c8f85) is the token classroom.md reserves for
+   exactly this, "a border that is itself the affordance", and it measures
+   3.14:1 on the panel. --classroom-line is left alone: it stays hairline
+   separation between things, not the edge of a control.
+
+   --ring is deliberately not set here, unlike the dark block. Light's global
+   --ring is 0 0% 20%, near-black. Overwriting it with this mid grey would buy
+   a border fix at the cost of a weaker focus indicator. */
+.classroom-root .testing-panel,
+.classroom-root .testing-resume,
+.testing-menu {
+  --input: 26.1 10.4% 56.7%;
+}
+
 /* The token block above repaints the menu but not the scrollbar inside it. A
    PrepTest list is 54 rows in one door and 59 in the other, so both comboboxes
    scroll, and index.css pins `color-scheme: light` even under .dark — which
