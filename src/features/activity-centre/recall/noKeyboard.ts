@@ -16,12 +16,18 @@ import { useEffect, useState } from "react";
  * a keyboard and must keep the pure one-key loop; a large tablet has no
  * keyboard and needs the control. Width answers neither.
  *
+ * `and (hover: none)` because a touch laptop matches `pointer: coarse` on its
+ * own: a Surface with its keyboard attached got the phone warning and the
+ * on-screen button beside a Space bar that worked. A device whose primary
+ * input cannot hover is a device with no mouse and, in practice, no keyboard;
+ * a touch screen that can also hover has the other input too.
+ *
  * This is a hint, never a gate. Joshua's call, 2026-09-04: a phone is warned
  * and let through, not refused. So nothing here disables anything -- it adds a
  * sentence at the door and an on-screen way to advance inside the run, and
  * Space stays authoritative everywhere.
  */
-export const NO_KEYBOARD_QUERY = "(pointer: coarse)";
+export const NO_KEYBOARD_QUERY = "(pointer: coarse) and (hover: none)";
 
 /** Read once, outside React, so a non-browser render has a defined answer. */
 export function hasNoKeyboard(): boolean {
