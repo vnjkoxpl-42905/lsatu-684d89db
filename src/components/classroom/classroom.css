@@ -1050,8 +1050,16 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     display: none;
   }
 
+  /* The short month alone was not enough: at 1024 the greeting column is 201px
+     and the short dateline measured 197px of glyphs plus 47px of tracking, so
+     "2026" still fell to a second line. The tracking is decoration at this
+     size, and tightening it buys back 25px. Declared on the span itself: a
+     value set on the element beats one inherited from the label, so this wins
+     the cascade without any forcing of its own. */
   .drill-observatory-date-short {
     display: inline;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
   }
 }
 
@@ -3196,8 +3204,24 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 @media (max-width: 1023px) {
+  /* The root is a flex ROW: sidebar beside stage. The bar is a third child, so
+     in a row it claimed a column of its own and squeezed the stage (271px of
+     375 on a phone). Below the sidebar breakpoint the room stacks instead, and
+     the bar is a full-width band above the stage. */
+  .classroom-root {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
   .classroom-root .classroom-sidebar {
     display: none;
+  }
+
+  /* The bar takes 56px of the flow, so a full-height stage would push every
+     short page 56px past the viewport. */
+  .classroom-root .classroom-stage,
+  .classroom-root .classroom-stage-pending {
+    min-height: calc(100dvh - 56px);
   }
 
   .classroom-root .classroom-mobile-bar {
@@ -3205,6 +3229,9 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
     background: var(--classroom-page);
     border-bottom: 1px solid var(--classroom-line);
     display: flex;
+    /* A column flex item shrinks when its siblings ask for the full height, and
+       Messages did exactly that: the bar came out 52px instead of 56. */
+    flex: none;
     gap: 12px;
     height: 56px;
     padding: 0 12px;
