@@ -50,7 +50,7 @@ const GRADER_VERSION = 1;
  * this is the only way to prove from outside that a fix is the one running.
  * Returned on the 202 body and on the admin diagnostic below.
  */
-const BUILD = "2026-09-08f";
+const BUILD = "2026-09-09a";
 const ASR_ENGINE = "deepgram/nova-3";
 
 /** Silence inside The Recall, in seconds, before it counts as dead air. */
