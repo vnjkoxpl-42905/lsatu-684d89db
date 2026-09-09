@@ -16,11 +16,7 @@ import {
    is already stated by the icon and the source line — and they fought the
    eclipse behind them. One glass surface now, for every type. */
 
-export default function TodayFocusPanel({
-  drillReturnTo = "/classroom",
-  focus: focusProp,
-  heroOwnsPrimary = false,
-}: {
+interface TodayFocusPanelProps {
   drillReturnTo?: string;
   /**
    * The hub computes Today once and hands it here so the hero and this panel
@@ -33,9 +29,33 @@ export default function TodayFocusPanel({
    * it a second time: it carries the queue behind it and nothing else.
    */
   heroOwnsPrimary?: boolean;
+}
+
+/* The hook that builds Today runs seven feeds. Until 2026-09-09 this panel ran
+   it unconditionally and then threw the result away whenever the hub passed
+   `focus` in, so every feed (assignments, notifications, Messages, last
+   activity) was fetched twice on the drill hub. Hooks cannot be conditional,
+   so the owning and the receiving cases are two components. */
+export default function TodayFocusPanel({ focus, ...rest }: TodayFocusPanelProps) {
+  if (focus) return <TodayFocusPanelView focus={focus} {...rest} />;
+  return <OwnedTodayFocusPanel {...rest} />;
+}
+
+function OwnedTodayFocusPanel({
+  drillReturnTo = "/classroom",
+  heroOwnsPrimary,
+}: Omit<TodayFocusPanelProps, "focus">) {
+  const focus = useTodayFocus(drillReturnTo);
+  return <TodayFocusPanelView focus={focus} heroOwnsPrimary={heroOwnsPrimary} />;
+}
+
+function TodayFocusPanelView({
+  focus,
+  heroOwnsPrimary = false,
+}: {
+  focus: TodayFocus;
+  heroOwnsPrimary?: boolean;
 }) {
-  const ownFocus = useTodayFocus(drillReturnTo);
-  const focus = focusProp ?? ownFocus;
   const [expanded, setExpanded] = React.useState(false);
   const { primary, rails, loading, hasError, promote, open } = focus;
 
