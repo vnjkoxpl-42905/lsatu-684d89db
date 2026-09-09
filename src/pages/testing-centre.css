@@ -176,6 +176,17 @@ html.dark .testing-menu {
   --ring: 248.6 9.8% 42.2%;
 }
 
+/* The token block above repaints the menu but not the scrollbar inside it. A
+   PrepTest list is 54 rows in one door and 59 in the other, so both comboboxes
+   scroll, and index.css pins `color-scheme: light` even under .dark — which
+   left a white UA scrollbar running down the right edge of a near-black menu.
+   Scoped here rather than fixed in index.css: that alias is deliberate and the
+   whole app rides on it. Menus only — the panel has no native scroller, and
+   the search field inside the menu already paints its own background. */
+html.dark .testing-menu {
+  color-scheme: dark;
+}
+
 /* A note is the first thing in a panel often enough that it was carrying an
    inline style at four call sites. */
 .classroom-root .testing-panel > .testing-note:first-child {
