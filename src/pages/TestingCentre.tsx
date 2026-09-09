@@ -220,14 +220,21 @@ function PracticeTestSelector({
             {chosen.questionCount} scored questions, with a ten-minute break
             after the second section.
           </p>
+          {/* The clock is read from the chosen pace rather than printed as
+              35:00. It was hard-coded, which stopped being true the moment this
+              door started honouring the student's own timing mode: an
+              accommodated student saw 52:30 on the control and "the real 35:00"
+              in the paragraph under it. The clause drops out entirely when
+              there is no clock, rather than asserting a number for a sitting
+              that is not being timed. */}
           {!chosen.rcFullLength && (
             <p className="testing-note">
               The Reading Comprehension section on this PrepTest runs a few
               questions short, because only questions with a published
-              explanation can be drilled. All four passages are there and the
-              clock is the real 35:00, so the reading load is unchanged. Your
-              score is simply out of {chosen.questionCount} rather than the high
-              seventies.
+              explanation can be drilled. All four passages are there
+              {clock ? ` and the clock is the real ${clock}` : ""}, so the
+              reading load is unchanged. Your score is simply out of{" "}
+              {chosen.questionCount} rather than the high seventies.
             </p>
           )}
         </>

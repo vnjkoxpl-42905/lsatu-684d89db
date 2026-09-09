@@ -364,6 +364,46 @@ describe("Testing Centre", () => {
       expect(run.sectionSeconds).toBe(52.5 * 60);
     });
 
+    /**
+     * The short-RC caveat printed "the clock is the real 35:00" as a literal.
+     * That stopped being true the moment this door started honouring the
+     * student's own timing mode: the control above it said 52:30 and the
+     * paragraph under it said 35:00.
+     */
+    it("states the real clock in the short-RC caveat, not a hard-coded 35:00", async () => {
+      settingsMock.defaultTimingMode = "52.5";
+      renderPage();
+      fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
+      openPrepTests();
+      // PT 130 is the mocked PrepTest whose RC section is short.
+      fireEvent.click(await screen.findByRole("option", { name: /PrepTest 130/ }));
+
+      const caveat = await screen.findByText(
+        (_, el) => el?.tagName === "P" && /runs a few questions short/.test(el.textContent ?? ""),
+      );
+      expect(caveat.textContent).toContain("the clock is the real 52:30");
+      expect(caveat.textContent).not.toContain("35:00");
+    });
+
+    it("drops the clock clause entirely when the sitting is untimed", async () => {
+      renderPage();
+      fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
+      openPrepTests();
+      fireEvent.click(await screen.findByRole("option", { name: /PrepTest 130/ }));
+
+      fireEvent.click(screen.getByRole("combobox", { name: /Timing/i }));
+      fireEvent.click(await screen.findByRole("option", { name: /Untimed/ }));
+
+      const caveat = await screen.findByText(
+        (_, el) => el?.tagName === "P" && /runs a few questions short/.test(el.textContent ?? ""),
+      );
+      // No clock, so no assertion about one. The sentence still reads.
+      expect(caveat.textContent).not.toContain("the clock is the real");
+      expect(caveat.textContent).toContain("All four passages are there, so the");
+    });
+
     it("states the clock the accommodated student will actually get", async () => {
       settingsMock.defaultTimingMode = "70";
       renderPage();

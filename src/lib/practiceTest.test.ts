@@ -155,6 +155,19 @@ describe('practice test paces', () => {
     expect(practiceTestSectionSeconds('double-time', 52.5 * MIN)).toBe(105 * MIN);
   });
 
+  it('spells each accommodation the way the section door spells it', () => {
+    // One spelling per accommodation for the whole room. This list used to read
+    // "Time & a Half" / "Double Time" while the section door read "Time and a
+    // half" / "Double time", so the same two accommodations were spelled and
+    // cased differently depending on which door a student opened.
+    expect(practiceTestPaces().map((p) => p.label)).toEqual([
+      'Standard',
+      'Time and a half',
+      'Double time',
+      'Untimed',
+    ]);
+  });
+
   it('labels every pace, and states the clock the student will actually get', () => {
     const paces = practiceTestPaces(52.5 * MIN);
     expect(paces.map((p) => p.id)).toEqual(['standard', 'time-and-a-half', 'double-time', 'untimed']);

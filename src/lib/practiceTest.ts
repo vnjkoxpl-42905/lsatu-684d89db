@@ -31,10 +31,20 @@ export const LR_FULL_SECTION_MIN_QUESTIONS = 24;
 
 export type PracticeTestPaceId = 'standard' | 'time-and-a-half' | 'double-time' | 'untimed';
 
+/**
+ * One spelling per accommodation, for the whole room.
+ *
+ * This door said "Time & a Half" and "Double Time" while the section door said
+ * "Time and a half" and "Double time", so the same two accommodations were
+ * spelled two ways and cased two ways depending on which door a student opened.
+ * Settled on the section door's form because AccommodationNote already says
+ * "You have time and a half" and "You have double time" in prose: spelled out,
+ * sentence case. The odd one out was this list.
+ */
 const PACE_LABELS: Record<PracticeTestPaceId, string> = {
   standard: 'Standard',
-  'time-and-a-half': 'Time & a Half',
-  'double-time': 'Double Time',
+  'time-and-a-half': 'Time and a half',
+  'double-time': 'Double time',
   untimed: 'Untimed',
 };
 
