@@ -1765,8 +1765,11 @@
   .rd-hero-top {
     padding: 18px 18px 0;
   }
+  /* The section, its length and the clock stay on a phone. They were hidden
+     under 640px, which took the one line saying "25 min" off the device most
+     likely to be short of it. They wrap to their own line instead. */
   .rd-meta {
-    display: none;
+    flex-basis: 100%;
   }
   .rd-hero-copy {
     padding: 28px 16px 0;
@@ -1781,8 +1784,32 @@
     width: 100%;
     justify-content: center;
   }
+  /* The demonstration joins the flow. On a laptop it floats on the meadow in
+     room the hero reserves for it; a phone stacks the demonstration to nearly
+     600px, and 760px of reserved room put the hero at a screen and a half
+     with the card cut at the fold. Capping the room instead (70svh) put the
+     card under Start. So on a phone the scene's box dissolves: its planes
+     still paint the whole panel, and its stage becomes an ordinary block
+     after the copy, so the hero is exactly as tall as what is in it. */
   .rd-hero-space {
-    min-height: 760px;
+    min-height: 0;
+  }
+  .mw {
+    display: contents;
+  }
+  .mw-stage {
+    position: static;
+    padding: 28px 14px 32px;
+    /* In flow, the stage's parallax would ride it up into the copy. The
+       inline transform is Framer's, so this has to win over it. */
+    transform: none !important;
+  }
+  /* One column, so the card is the reading surface and not a preview of a
+     panel 1,500px further down. The whole step body is shown in the card. */
+  .sl-beat .sl-d {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
   }
   .rd-demo-title {
     display: none;

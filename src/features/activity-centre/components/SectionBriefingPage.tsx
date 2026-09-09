@@ -2,6 +2,7 @@ import type React from "react";
 import { ArrowRight } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
 import { renderInlineMarks } from "../prompt-format";
+import { useNoKeyboard } from "../recall/noKeyboard";
 import "./section-launch.css";
 
 export interface SectionBriefingPageProps {
@@ -29,6 +30,7 @@ export function SectionBriefingPage({
   onExit,
 }: SectionBriefingPageProps) {
   const briefing = instructions.briefing;
+  const noKeyboard = useNoKeyboard();
   const steps = briefing?.sections.find((s) => (s.steps?.length ?? 0) > 0)?.steps ?? [];
 
   const startButton = (label: string) => (
@@ -153,6 +155,17 @@ export function SectionBriefingPage({
           Space twice per stimulus: once when you have read it all, once when you have
           given The Recall.
         </p>
+        {/* A phone has no Space bar. The run shows a button in its place, and
+            this is the one page that can say so before the recording is
+            running. The door already carries the laptop warning; this is the
+            instruction, not the warning. */}
+        {noKeyboard && (
+          <p className="sl-bp-fact">
+            On a touch screen there is no Space bar. The run shows a button at the foot of
+            the page instead, Next stimulus and then Recall full stimulus, and it does the
+            same thing.
+          </p>
+        )}
         {briefing?.closer && (
           <p className="sl-bp-closer">{renderInlineMarks(briefing.closer, "sl-bp-closer")}</p>
         )}
