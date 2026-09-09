@@ -49,6 +49,9 @@ function uploadIcon(type: StudentContextType) {
 
 export default function StudentNotes({ studentId, studentName }: Props) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  // Which row is deleting, not whether any row is. `remove.isPending` greyed out
+  // every trash icon in both lists whenever one delete was in flight.
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const { data: items = [], isLoading } = useStudentContext(studentId ?? "");
   const remove = useDeleteStudentContext();
 
@@ -67,7 +70,19 @@ export default function StudentNotes({ studentId, studentName }: Props) {
     return { notes, uploadsByType: buckets };
   }, [items]);
 
+  // A note or an uploaded transcript is the only copy of something said in a
+  // session. The trash icon deleted it on a single click with no confirm and no
+  // undo, sitting one row away from every other row's identical icon.
   const handleDelete = async (item: StudentContextItem) => {
+    const kind = item.context_type === "note" ? "note" : "upload";
+    if (
+      !window.confirm(
+        `Delete the ${kind} "${item.title}"? This cannot be undone.`,
+      )
+    ) {
+      return;
+    }
+    setDeletingId(item.id);
     try {
       await remove.mutateAsync({
         id: item.id,
@@ -77,6 +92,8 @@ export default function StudentNotes({ studentId, studentName }: Props) {
       toast.success("Removed from context");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Delete failed");
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -126,7 +143,7 @@ export default function StudentNotes({ studentId, studentName }: Props) {
                 key={n.id}
                 item={n}
                 onDelete={() => handleDelete(n)}
-                deleting={remove.isPending}
+                deleting={deletingId === n.id}
               />
             ))}
           </ul>
@@ -153,7 +170,7 @@ export default function StudentNotes({ studentId, studentName }: Props) {
               type={t}
               items={uploadsByType.get(t) ?? []}
               onDelete={handleDelete}
-              deleting={remove.isPending}
+              deletingId={deletingId}
             />
           ))
         )}
@@ -178,19 +195,39 @@ function NoteCard({
   onDelete: () => void;
   deleting: boolean;
 }) {
-  const preview =
-    item.content_text?.split("\n").slice(0, 2).join(" ").trim() ?? "";
+  // A note was two lines of preview and nothing else: the rest of what was
+  // written in the session had no reader anywhere in the app.
+  const [open, setOpen] = useState(false);
+  const full = item.content_text?.trim() ?? "";
+  const preview = full.split("\n").slice(0, 2).join(" ").trim();
+  const truncated = full.length > preview.length;
   return (
     <li className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-2.5 group">
       <div className="flex items-start gap-2">
         <div className="flex-1 min-w-0">
-          <div className="text-[13px] font-medium text-zinc-100 truncate">
+          <div className="text-[13px] font-medium text-zinc-100">
             {item.title}
           </div>
-          {preview && (
-            <div className="mt-1 text-[12px] text-zinc-400 line-clamp-2">
-              {preview}
+          {full && (
+            <div
+              className={
+                open
+                  ? "mt-1 text-[12px] text-zinc-300 whitespace-pre-wrap"
+                  : "mt-1 text-[12px] text-zinc-400 line-clamp-2"
+              }
+            >
+              {open ? full : preview}
             </div>
+          )}
+          {truncated && (
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className="mt-1 text-[11px] text-zinc-400 underline underline-offset-2 hover:text-zinc-100"
+              aria-expanded={open}
+            >
+              {open ? "Show less" : "Read the whole note"}
+            </button>
           )}
           <div className="mt-1 text-[10px] text-zinc-500">
             {new Date(item.created_at).toLocaleString()}
@@ -218,12 +255,12 @@ function UploadGroup({
   type,
   items,
   onDelete,
-  deleting,
+  deletingId,
 }: {
   type: StudentContextType;
   items: StudentContextItem[];
   onDelete: (item: StudentContextItem) => void;
-  deleting: boolean;
+  deletingId: string | null;
 }) {
   const Icon = uploadIcon(type);
   return (
@@ -249,7 +286,7 @@ function UploadGroup({
             <button
               type="button"
               onClick={() => onDelete(it)}
-              disabled={deleting}
+              disabled={deletingId === it.id}
               className="shrink-0 text-zinc-500 hover:text-red-300"
               aria-label={`Delete ${it.title}`}
             >
