@@ -34,7 +34,16 @@ function formatClassroomDate(value: string | Date) {
   }).format(typeof value === "string" ? new Date(value) : value);
 }
 
-/** Student-facing name for a record type. The column values are internal. */
+/**
+ * Row and heading labels for note types. The raw enum leaked into the UI, so a
+ * student read "note" and "smartboard recap".
+ *
+ * `smartboard_recap` is a dead type as far as students are concerned: Joshua
+ * confirmed 2026-09-09 that boards are not attached to accounts, so no student
+ * ever sees this label. It stays because the teacher side can still write the
+ * type and an unmapped value would fall through to the raw enum. Do not spend
+ * effort wording it.
+ */
 const NOTE_KIND_LABELS: Record<string, string> = {
   note: "Note",
   session_recap: "Session recap",

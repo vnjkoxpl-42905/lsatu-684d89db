@@ -4971,8 +4971,11 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    Scoped to coarse pointers and to the drawer instead of applied globally: on a
    fine pointer the rail is a 17-row list, and forcing every row to 44px makes
    it ~170px taller for no accessibility gain (WCAG 2.2's AA target rule, 2.5.8,
-   asks 24px; 44px is the touch/AAA figure). If Joshua wants the 44px floor to
-   be literal everywhere, drop the two guards below and keep the min-height. */
+   asks 24px; 44px is the touch/AAA figure).
+
+   Joshua ruled on this 2026-09-09: keep the deviation. The rail stays 34px on a
+   mouse. Do not "fix" it to match PRODUCT.md's flat 44 - the narrowing is
+   deliberate and the decision is his. Reopen it only if he says so. */
 @media (pointer: coarse) {
   .classroom-root .classroom-nav,
   .classroom-root .classroom-profile-menu-item {

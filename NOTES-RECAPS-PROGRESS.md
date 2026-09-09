@@ -5,7 +5,13 @@
 9-phase plan and the 22-item ledger). This file is only the state of the work.
 
 ## Decisions already locked by Joshua — do not re-ask
-
+- **Touch targets: keep the deviation** (2026-09-09). Rail rows stay 34px on a fine
+  pointer and grow to 44px only under `@media (pointer: coarse)` and in the mobile
+  drawer. PRODUCT.md says 44 flatly; he was shown the conflict and chose the scoped
+  version. Do not raise this as a violation and do not delete the two guards.
+- **`smartboard_recap` is unused** (2026-09-09). Boards are not attached to student
+  accounts, so no student sees that label. It stays mapped only as a fallback. Do not
+  reopen its wording.
 - **Decision A = A1, "real landing."** `/classroom/recaps` gets a stage worth landing on:
   the newest unread note opened inline (or its first ~150 words with a "Read it"
   control), above one line saying what this surface is. NOT a redirect.
@@ -177,7 +183,7 @@ Read notes group by month above 12 (`MONTH_GROUP_THRESHOLD`). Verified by inject
 
 ## Still open
 
-- **Copy Joshua owns.** The Assigned-work empty state is settled: he chose "Nothing assigned yet." on 2026-09-09. The `NOTE_KIND_LABELS` names, especially "Board from your session" for `smartboard_recap`, are still agent-written and still need his word.
+- **Copy is settled.** Assigned-work empty state: he chose "Nothing assigned yet." (2026-09-09). `NOTE_KIND_LABELS`: he confirmed `smartboard_recap` is unused because boards are not attached to accounts, so the label is dead and stays as-is. Nothing student-facing on this surface is still awaiting his word.
 - **"Door" is banned in student-facing copy** as of 2026-09-09. The featured note's own text in Postgres reads "The same content in five doors instead of eleven" - a content edit, not a code one. `src/bootcamps/main-conclusion/content/lessons-phased.source.ts:1679` has "opening the door to possibility". The many "the conclusion is right next door" lines mean adjacency, not entry, and are not covered.
 - **Phase 4 is verified.** Measured 2026-09-09, authenticated, on a production build at :4173: `/classroom/recaps` makes 0 `/data/explanations/` requests and does not load the bank at all; walking to `/flagged` from it loads the bank and makes 59. Build runs clean on Windows (exit 0, 41.26s). Never take this measurement on the dev server — its request buffers overflow and report a false 0. Detail in the Phase 4 section above.
 - **Typecheck is clean** as of 2026-09-09 (`tsc --noEmit`, exit 0). The two `useSectionRecorder.ts` errors noted earlier were another session's in-flight work and have since been fixed there.
