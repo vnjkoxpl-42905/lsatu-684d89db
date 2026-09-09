@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import PracticeInsightStage from "@/components/mainhub/PracticeInsightStage";
@@ -396,6 +397,7 @@ export default function AcademyMainhub({
 }) {
   const perms = useUserPermissions();
   const { setActive: setOrbitalActive } = useOrbitalActive();
+  const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const firstName = useGreetingName();
   const navigate = useNavigate();
@@ -570,14 +572,16 @@ export default function AcademyMainhub({
             both mounts. No access check here: the whole route is behind
             has_drill_access.
 
-            Light tone, not dark: the row sits on the cream STAGE, not on a
-            card. Dark tone inked its labels ivory-on-cream at 1.07:1, which is
-            invisible. The section switch beside it made the same correction
-            earlier; the finder's trigger is a dark pill either way. */}
+            Tone follows the theme because the row sits on the STAGE, not on a
+            card, and the stage is what the theme changes: cream in light,
+            near-black in dark. A hard-coded light tone inked its labels
+            dark-on-black in dark theme, the mirror of the 1.07:1 ivory-on-cream
+            fail it was written to fix. The section switch beside it follows the
+            same stage tokens; the finder's trigger is a dark pill either way. */}
         <div className="drill-observatory-tools">
           <QuestionJump
             returnTo={drillReturnTo}
-            tone="light"
+            tone={theme === "dark" ? "dark" : "light"}
             bank={section}
             withSearch={false}
           />
