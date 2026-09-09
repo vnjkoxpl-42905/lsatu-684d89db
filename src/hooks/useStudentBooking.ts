@@ -51,6 +51,11 @@ export type StudentBookingInfo = {
 };
 
 const callInfo = async (): Promise<StudentBookingInfo> => {
+  // Firing before auth hydration sends the anon key as the bearer, and the
+  // edge function rejects it ("missing sub claim") with a 401.
+  const { waitForAccessToken } = await import("@/lib/waitForSession");
+  const token = await waitForAccessToken();
+  if (!token) throw new Error("not_signed_in");
   const { data, error } = await supabase.functions.invoke("student-booking", {
     body: { action: "info" },
   });
