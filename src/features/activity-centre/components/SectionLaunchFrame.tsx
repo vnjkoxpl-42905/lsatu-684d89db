@@ -279,10 +279,9 @@ export function SectionLaunchFrame({
             className="rd-hero-copy"
             style={reduced ? undefined : { y: copyY, opacity: copyOpacity, filter: copyFilter, scale: copyScale }}
           >
-            <span className="sl-chip">
-              <Mic size={11} strokeWidth={2.6} aria-hidden="true" />
-              Read, Recall, Colour
-            </span>
+            {/* No chip. It restated the H1 verbatim, in a glass pill with a
+                backdrop blur, which is the second-order tell the audit named
+                first. The title says it once. */}
             <h1 className="sl-title" id="rd-title">
               {/* "Read, Recall, Colour · PT102 Section 3" is one title in the
                   record and two lines on the door: the drill, then the section

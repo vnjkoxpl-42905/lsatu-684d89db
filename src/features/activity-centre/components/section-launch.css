@@ -7,7 +7,7 @@
  * steps are the next thing she meets, and the sections she can run sit
  * directly beneath.
  *
- * Every value is scoped to `.sl`. Nothing here touches the runner
+ * Every rule is scoped to `.sl` (the meadow's `.mw` rules by ancestor, the rest by prefix). Nothing here touches the runner
  * (`recall/section.css`) or the shell outside this door. Class names beginning
  * `sl-` are the door's contract with its tests and its two wrappers; `rd-`
  * names are the design and may change freely.
@@ -35,6 +35,21 @@
   --rd-marigold-wash: rgba(242, 181, 68, 0.26);
   --rd-emerald: #0e6f4d;
   --rd-emerald-wash: rgba(14, 111, 77, 0.11);
+  /* A control's boundary. 3:1 against paper, cream and paper-2 (3.43, 3.14,
+     3.03): --rd-line is a rule, not an edge, and measured 1.32:1 on the close
+     button and the attempt rows, where it was the control's only boundary. */
+  --rd-edge: #8b879a;
+  /* The hard edge under a drawn keycap, and its softer sibling. Seven and
+     three unnamed uses of the same two hexes. */
+  --rd-key-edge: #cfc9bd;
+  --rd-key-edge-soft: #d9d3c6;
+  /* Channel triplets for the shadows and washes, so every rgba() in the file
+     is visibly one of the palette's colours at an alpha rather than its own. */
+  --rd-ink-rgb: 22, 19, 43;
+  --rd-on-dark-rgb: 255, 255, 255;
+  --rd-marigold-ink-rgb: 110, 70, 0;
+  --rd-apricot-rgb: 243, 201, 160;
+  --rd-shadow-rgb: 0, 0, 0;
   --rd-display: "Fraunces", "Iowan Old Style", "Times New Roman", serif;
   --rd-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --rd-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -89,18 +104,18 @@
   flex-direction: column;
   min-height: calc(100svh - 28px);
   border-radius: var(--rd-radius-panel);
-  background: #2a2450;
+  background: var(--rd-indigo-2);
   color: var(--rd-on-dark);
 }
 
 /* The scene: five planes and a stage, each its own layer. */
-.mw {
+.sl .mw {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
 }
-.mw-layer {
+.sl .mw-layer {
   position: absolute;
   inset: -6% 0 0 0;
   width: 100%;
@@ -109,19 +124,19 @@
   overflow: visible;
   will-change: transform;
 }
-.mw-sky {
+.sl .mw-sky {
   z-index: 1;
 }
-.mw-far {
+.sl .mw-far {
   z-index: 2;
 }
-.mw-mid {
+.sl .mw-mid {
   z-index: 3;
 }
-.mw-near {
+.sl .mw-near {
   z-index: 4;
 }
-.mw-grain {
+.sl .mw-grain {
   z-index: 5;
   inset: 0;
   height: 100%;
@@ -133,7 +148,7 @@
      for nothing. */
   will-change: auto;
 }
-.mw-stage {
+.sl .mw-stage {
   position: absolute;
   left: 0;
   right: 0;
@@ -144,14 +159,14 @@
   padding: 0 22px;
   will-change: transform;
 }
-.mw-grass {
+.sl .mw-grass {
   z-index: 7;
   pointer-events: none;
 }
 /* Six groups, not 170 blades. The duration and the phase come from the scene,
    which knows how many groups there are; the origin sits on the ground line so
    the skew leans the tips and leaves every base planted. */
-.mw-blades g {
+.sl .mw-blades g {
   animation: mw-sway 5.5s ease-in-out infinite alternate;
 }
 @keyframes mw-sway {
@@ -166,7 +181,7 @@
 /* Loops stop when their surface leaves the screen. The hero's scene and its
    demonstration, and the four scenes on the step cards, are the whole of the
    door's continuous motion; off screen they are work nobody can see. */
-.mw[data-still] .mw-blades g,
+.sl .mw[data-still] .mw-blades g,
 .rd-demo[data-still] .rd-rec-dot,
 .rd-demo[data-still] .rd-wave i,
 .rd-demo[data-still] .rd-caret,
@@ -193,7 +208,7 @@
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(var(--rd-on-dark-rgb), 0.78);
 }
 .rd-crumbs strong {
   font-weight: 500;
@@ -242,21 +257,6 @@
   padding: clamp(28px, 6vh, 64px) 24px 0;
   will-change: transform, opacity, filter;
 }
-.sl-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--rd-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--rd-on-dark);
-  background: rgba(22, 19, 43, 0.34);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 9999px;
-  padding: 7px 14px 7px 12px;
-  backdrop-filter: blur(8px);
-}
 .sl-title {
   margin: 22px 0 0;
   font-family: var(--rd-display);
@@ -278,7 +278,7 @@
   font-size: clamp(16px, 1.3vw, 18px);
   line-height: 1.55;
   color: var(--rd-on-dark);
-  text-shadow: 0 1px 2px rgba(22, 19, 43, 0.35);
+  text-shadow: 0 1px 2px rgba(var(--rd-ink-rgb), 0.35);
   text-wrap: pretty;
 }
 .sl-tagline strong {
@@ -310,22 +310,15 @@
   background: var(--rd-ink);
   border-radius: 9999px;
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.12),
-    0 18px 30px -18px rgba(22, 19, 43, 0.7);
-  transition:
-    transform 0.35s var(--rd-ease),
-    background 0.2s ease,
-    box-shadow 0.35s var(--rd-ease);
+    0 0 0 1px rgba(var(--rd-on-dark-rgb), 0.12),
+    0 18px 30px -18px rgba(var(--rd-ink-rgb), 0.7);
+  transition: background 0.2s ease;
 }
+/* Hover changes the colour and nothing else. The lift-and-deepen-the-shadow
+   on this and two other controls was the door's loudest tell; a button that
+   rises to meet the pointer is a button asking to be admired. */
 .sl-start:hover {
   background: var(--rd-indigo-2);
-  transform: translateY(-2px);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.16),
-    0 24px 36px -18px rgba(22, 19, 43, 0.75);
-}
-.sl-start:active {
-  transform: translateY(0);
 }
 .sl-start svg {
   transition: transform 0.35s var(--rd-ease);
@@ -346,9 +339,9 @@
   font: inherit;
   font-size: 15px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(var(--rd-on-dark-rgb), 0.92);
   text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.4);
+  text-decoration-color: rgba(var(--rd-on-dark-rgb), 0.4);
   text-underline-offset: 5px;
   transition: text-decoration-color 0.2s ease;
 }
@@ -381,9 +374,9 @@
   overflow: hidden;
   text-align: left;
   box-shadow:
-    0 0 0 1px rgba(22, 19, 43, 0.1),
-    0 40px 70px -34px rgba(22, 19, 43, 0.65),
-    0 12px 24px -16px rgba(22, 19, 43, 0.4);
+    0 0 0 1px rgba(var(--rd-ink-rgb), 0.1),
+    0 40px 70px -34px rgba(var(--rd-ink-rgb), 0.65),
+    0 12px 24px -16px rgba(var(--rd-ink-rgb), 0.4);
 }
 .rd-demo-bar {
   display: flex;
@@ -392,25 +385,6 @@
   padding: 10px 14px;
   background: #fbf9f3;
   border-bottom: 1px solid var(--rd-line);
-}
-.rd-demo-dots {
-  display: inline-flex;
-  gap: 6px;
-}
-.rd-demo-dots i {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #e0ddd3;
-}
-.rd-demo-dots i:first-child {
-  background: #f0876f;
-}
-.rd-demo-dots i:nth-child(2) {
-  background: #f2c65a;
-}
-.rd-demo-dots i:nth-child(3) {
-  background: #7fcb8e;
 }
 .rd-demo-title {
   font-size: 13px;
@@ -578,7 +552,7 @@
   background: var(--rd-on-dark);
   color: var(--rd-ink-2);
   box-shadow:
-    0 2px 0 #d9d3c6,
+    0 2px 0 var(--rd-key-edge-soft),
     0 0 0 1px var(--rd-line);
   transition:
     transform 0.12s ease,
@@ -589,8 +563,8 @@
   transform: translateY(2px);
   background: var(--rd-marigold-wash);
   box-shadow:
-    0 0 0 #d9d3c6,
-    0 0 0 1px #cfc9bd;
+    0 0 0 var(--rd-key-edge-soft),
+    0 0 0 1px var(--rd-key-edge);
 }
 .rd-keyhint {
   font-size: 12px;
@@ -617,7 +591,7 @@
   padding: 11px 14px 13px;
   font-size: 14px;
   line-height: 1.5;
-  box-shadow: 0 14px 24px -18px rgba(22, 19, 43, 0.7);
+  box-shadow: 0 14px 24px -18px rgba(var(--rd-ink-rgb), 0.7);
 }
 .rd-bubble p {
   margin: 6px 0 0;
@@ -687,7 +661,7 @@
   font-style: italic;
   font-size: 15.5px;
   line-height: 1.4;
-  box-shadow: 0 12px 22px -16px rgba(110, 70, 0, 0.6);
+  box-shadow: 0 12px 22px -16px rgba(var(--rd-marigold-ink-rgb), 0.6);
 }
 .rd-colour p {
   margin: 4px 0 0;
@@ -840,14 +814,10 @@
   border: 1px solid var(--rd-line);
   border-radius: var(--rd-radius);
   overflow: hidden;
-  transition:
-    transform 0.5s var(--rd-ease),
-    box-shadow 0.5s var(--rd-ease),
-    border-color 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 .sl-beat:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 30px 44px -30px rgba(22, 19, 43, 0.4);
+  border-color: var(--rd-edge);
 }
 .sl-beat[aria-selected="true"] {
   border-color: var(--rd-ink);
@@ -893,10 +863,10 @@
   background: linear-gradient(180deg, #d6cff0 0%, #ecd8d8 60%, #f5d9be 100%);
 }
 .rd-sc-tell {
-  background: linear-gradient(180deg, #2a2450 0%, #5b4f8f 70%, #a89fe0 100%);
+  background: linear-gradient(180deg, var(--rd-indigo-2) 0%, #5b4f8f 70%, #a89fe0 100%);
 }
 .rd-sc-colour {
-  background: linear-gradient(180deg, #f5d9be 0%, #f3c9a0 55%, #e8c9d3 100%);
+  background: linear-gradient(180deg, #f5d9be 0%, var(--rd-apricot) 55%, #e8c9d3 100%);
 }
 .rd-sc-recall {
   background: linear-gradient(180deg, #b9b0dd 0%, #d8cfe6 60%, #eadfd8 100%);
@@ -913,7 +883,7 @@
   padding: 22px 20px;
   background: var(--rd-paper);
   border-radius: 12px 12px 0 0;
-  box-shadow: 0 -10px 32px -16px rgba(22, 19, 43, 0.45);
+  box-shadow: 0 -10px 32px -16px rgba(var(--rd-ink-rgb), 0.45);
 }
 .rd-sc-line {
   display: block;
@@ -961,7 +931,7 @@
   background: var(--rd-indigo);
   color: var(--rd-apricot-light);
   border-radius: 14px 14px 14px 4px;
-  box-shadow: 0 16px 28px -16px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 16px 28px -16px rgba(var(--rd-shadow-rgb), 0.6);
 }
 .rd-sc-bubble-text {
   font-family: var(--rd-display);
@@ -1013,7 +983,7 @@
   font-style: italic;
   font-size: 15px;
   color: var(--rd-ink);
-  box-shadow: 0 16px 28px -18px rgba(110, 70, 0, 0.55);
+  box-shadow: 0 16px 28px -18px rgba(var(--rd-marigold-ink-rgb), 0.55);
 }
 .rd-sc-chip-head {
   display: block;
@@ -1065,9 +1035,9 @@
   background: var(--rd-on-dark);
   border-radius: 8px;
   box-shadow:
-    0 3px 0 #cfc9bd,
-    0 0 0 1px #e3ded2,
-    0 12px 20px -12px rgba(22, 19, 43, 0.5);
+    0 3px 0 var(--rd-key-edge),
+    0 0 0 1px var(--rd-line),
+    0 12px 20px -12px rgba(var(--rd-ink-rgb), 0.5);
   animation: rd-press 3.6s ease-in-out infinite;
 }
 @keyframes rd-press {
@@ -1075,25 +1045,25 @@
   22% {
     transform: translateY(0);
     box-shadow:
-      0 3px 0 #cfc9bd,
-      0 0 0 1px #e3ded2,
-      0 12px 20px -12px rgba(22, 19, 43, 0.5);
+      0 3px 0 var(--rd-key-edge),
+      0 0 0 1px var(--rd-line),
+      0 12px 20px -12px rgba(var(--rd-ink-rgb), 0.5);
   }
   28%,
   40% {
     transform: translateY(3px);
     box-shadow:
-      0 0 0 #cfc9bd,
-      0 0 0 1px #cfc9bd,
-      0 4px 10px -8px rgba(22, 19, 43, 0.5);
+      0 0 0 var(--rd-key-edge),
+      0 0 0 1px var(--rd-key-edge),
+      0 4px 10px -8px rgba(var(--rd-ink-rgb), 0.5);
   }
   46%,
   100% {
     transform: translateY(0);
     box-shadow:
-      0 3px 0 #cfc9bd,
-      0 0 0 1px #e3ded2,
-      0 12px 20px -12px rgba(22, 19, 43, 0.5);
+      0 3px 0 var(--rd-key-edge),
+      0 0 0 1px var(--rd-line),
+      0 12px 20px -12px rgba(var(--rd-ink-rgb), 0.5);
   }
 }
 
@@ -1184,7 +1154,7 @@
   font-weight: 500;
   color: var(--rd-ink);
   background: var(--rd-paper);
-  border: 1px solid var(--rd-line);
+  border: 1px solid var(--rd-edge);
   border-radius: 9999px;
   transition:
     background 0.2s ease,
@@ -1192,7 +1162,7 @@
 }
 .sl-close:hover {
   background: var(--rd-paper-2);
-  border-color: #cfc9bd;
+  border-color: var(--rd-ink);
 }
 .sl-dr-side {
   display: flex;
@@ -1276,7 +1246,7 @@
   background: var(--rd-indigo);
   border-color: var(--rd-indigo);
   color: var(--rd-on-dark);
-  box-shadow: 0 34px 60px -34px rgba(22, 19, 43, 0.7);
+  box-shadow: 0 34px 60px -34px rgba(var(--rd-ink-rgb), 0.7);
 }
 .rd-count-tag {
   font-family: var(--rd-mono);
@@ -1304,7 +1274,7 @@
   color: var(--rd-ink-2);
 }
 .rd-count[data-tone="good"] .rd-count-note {
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(var(--rd-on-dark-rgb), 0.82);
 }
 
 /* =============================================================== slab */
@@ -1371,7 +1341,7 @@
   background: var(--rd-on-dark);
   color: var(--rd-ink-2);
   box-shadow:
-    0 2px 0 #d9d3c6,
+    0 2px 0 var(--rd-key-edge-soft),
     0 0 0 1px var(--rd-line);
 }
 .sl-note {
@@ -1442,8 +1412,8 @@
    (Celia, 2026-09-08). Bordered, full width, and 44px of target. */
 .sl-sec-attempt {
   align-items: center;
-  background: var(--rd-paper, #fff);
-  border: 1px solid var(--rd-line, rgba(0, 0, 0, 0.12));
+  background: var(--rd-paper);
+  border: 1px solid var(--rd-edge);
   border-radius: 10px;
   color: var(--rd-ink-2);
   cursor: pointer;
@@ -1464,6 +1434,7 @@
 .sl-sec-attempt[data-flat="true"] {
   background: none;
   border-style: dashed;
+  border-color: var(--rd-line);
   color: var(--rd-ink-3);
   cursor: default;
 }
@@ -1496,13 +1467,10 @@
   border: 0;
   border-radius: 9999px;
   white-space: nowrap;
-  transition:
-    background 0.2s ease,
-    transform 0.35s var(--rd-ease);
+  transition: background 0.2s ease;
 }
 .sl-sec-go:hover:not(:disabled) {
   background: var(--rd-indigo-2);
-  transform: translateY(-1px);
 }
 .sl-sec-go:disabled {
   opacity: 0.5;
@@ -1649,7 +1617,7 @@
   text-align: center;
   color: var(--rd-on-dark);
   border-radius: var(--rd-radius-panel);
-  background: linear-gradient(180deg, #1a1635 0%, #2a2450 38%, #5b4f8f 78%, #a89fe0 100%);
+  background: linear-gradient(180deg, var(--rd-indigo) 0%, var(--rd-indigo-2) 38%, #5b4f8f 78%, #a89fe0 100%);
 }
 .rd-close-panel::after {
   content: "";
@@ -1657,7 +1625,7 @@
   inset: auto -10% -35% -10%;
   height: 60%;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(243, 201, 160, 0.55), rgba(243, 201, 160, 0) 65%);
+  background: radial-gradient(ellipse at center, rgba(var(--rd-apricot-rgb), 0.55), rgba(var(--rd-apricot-rgb), 0) 65%);
   pointer-events: none;
 }
 .rd-close-line {
@@ -1682,7 +1650,7 @@
   z-index: 1;
   color: var(--rd-ink);
   background: var(--rd-cream);
-  box-shadow: 0 18px 30px -18px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 18px 30px -18px rgba(var(--rd-shadow-rgb), 0.6);
 }
 .rd-close .sl-start:hover {
   background: var(--rd-on-dark);
