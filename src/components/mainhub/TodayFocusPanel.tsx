@@ -131,7 +131,7 @@ function TodayPrimarySurface({
         >
           <div className="flex w-full items-start justify-between gap-4">
             <span className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55 flex items-center gap-2">
-              <Icon className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden />
+              <Icon className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
               Next up
             </span>
             <span className="flex items-center gap-2">
@@ -186,8 +186,8 @@ function TodayPrimarySurface({
           <span className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55 flex items-center gap-2">
             {item.actionCue}
             <ArrowRight
-              className="drill-observatory-ink-85 h-[15px] w-[15px] transition-transform duration-200 group-hover:translate-x-0.5"
-              strokeWidth={1.8}
+              className="drill-observatory-ink-85 h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
+              strokeWidth={2}
               aria-hidden
             />
           </span>
@@ -225,7 +225,7 @@ function TodayRailItem({
     >
       <Icon
         className="drill-observatory-ink-55 h-3.5 w-3.5 shrink-0"
-        strokeWidth={1.8}
+        strokeWidth={2}
         aria-hidden
       />
       <span className="min-w-0 flex-1">
@@ -294,9 +294,21 @@ function TodayErrorState() {
         <h3 className="drill-observatory-today-title mt-[26px]">
           Couldn&apos;t load today.
         </h3>
+        {/* Was the sentence "Refresh the page to try again", which made the
+            student do the work. Today is assembled from seven sources and only
+            two are react-query backed, so an invalidate would silently retry
+            half of them; a reload retries all seven and is the honest action
+            behind this button. */}
         <p className="drill-observatory-ink-55 mt-[5px] text-[13px]">
-          Refresh the page to try again.
+          Nothing here is missing on purpose.
         </p>
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className="drill-observatory-insight-link mt-3"
+        >
+          Try again
+        </button>
       </div>
       <div className="mt-3 grid gap-3">
         <div className="drill-observatory-today-quiet">

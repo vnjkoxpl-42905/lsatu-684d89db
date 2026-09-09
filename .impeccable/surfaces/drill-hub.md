@@ -48,6 +48,18 @@ Hairline rings (`0 0 0 1px`) separate surfaces. Shadows are quiet: `0 12px 32px`
 - A transition list names every property its own `:hover` and `:active` change. Three of them named only `transform` and got their background animated by accident, through a Tailwind utility that outranked the rule; once the rules won on specificity those hovers would have snapped. Adding a hover means checking the list.
 - Every control answers the pointer. The three jump-row selects had `:disabled` and `:focus-visible` and nothing for hover; they now strengthen their ring, mixed from `--qf-ink` so it reads in both tones.
 
+## When it fails
+
+An empty hero and a failed hero are not the same thing, and the page used to draw them the same way: `primary` is null on error, so a student whose assignments failed to load was told, silently, that she had none. The hero now says what did not load before it offers her own practice, and the Today card says the same for its queue. Both carry a Try again.
+
+That button reloads the page. Today is assembled from seven sources and only two are react-query backed, so invalidating queries would retry two of seven and look like it had retried all of them. A reload is the honest action until those hooks are converted.
+
+## Help
+
+One explainer, on the hero, only for the student with nothing assigned: a `<details>` saying how the adaptive drill picks questions. It quotes no set size, because adaptive mode draws from the whole bank and serves one question at a time (`Drill.tsx`, `mode === 'adaptive'`); there is no fixed count to quote and inventing one would be worse than omitting it.
+
+`MainhubHelpControl` exists in the codebase and is rendered nowhere. Help reaches Joshua through **Messages** in the classroom rail. Do not add a floating help button to the hub to fix this; either mount the control deliberately or leave the rail to carry it.
+
 ## Keys
 
 Escape leaves an open stage and does nothing on the plain hub. It stands down while anything modal is open (the search panel, a Radix popover or select) and while the student is inside a field they have typed into, because Escape is the browser's own revert there. Cancel stays the visible way out; the key is the accelerator.

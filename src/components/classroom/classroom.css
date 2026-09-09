@@ -1171,6 +1171,50 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   color: var(--observatory-ink);
 }
 
+/* The one explainer on the hub. A disclosure, not a tooltip and not a help
+   page: the student who needs it is the one with nothing assigned, and she is
+   already reading this column. Closed it costs one quiet line. */
+.drill-observatory-root .drill-observatory-explainer {
+  margin-top: var(--observatory-space-3);
+}
+
+.drill-observatory-root .drill-observatory-explainer summary {
+  align-items: center;
+  color: var(--observatory-ink-70);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--observatory-text-body);
+  font-weight: 500;
+  list-style: none;
+  min-height: 44px;
+  text-decoration: underline;
+  text-decoration-color: rgba(244, 241, 234, 0.55);
+  text-underline-offset: 4px;
+  transition: color var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-explainer summary::-webkit-details-marker {
+  display: none;
+}
+
+.drill-observatory-root .drill-observatory-explainer summary:hover {
+  color: var(--observatory-ink);
+}
+
+.drill-observatory-root .drill-observatory-explainer summary:focus-visible {
+  border-radius: 999px;
+  outline: 2px solid var(--observatory-focus);
+  outline-offset: 3px;
+}
+
+.drill-observatory-root .drill-observatory-explainer p {
+  color: var(--observatory-ink-70);
+  font-size: var(--observatory-text-body);
+  line-height: 1.55;
+  margin-top: var(--observatory-space-1);
+  max-width: 46ch;
+}
+
 /* The Question jump's band on the Drill landing workspace. Full width, matching
    Classroom Home: three dropdowns right-aligned against the canvas edge left a
    ragged gutter beside the hero's left column, and the row is navigation for

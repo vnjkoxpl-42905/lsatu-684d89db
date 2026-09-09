@@ -109,7 +109,7 @@ export default function PracticeInsightStage({
                   )}
                 >
                   {slide.actionLabel}
-                  <ArrowRight className="h-[13px] w-[13px]" strokeWidth={2} aria-hidden />
+                  <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
                 </button>
               </li>
             ))}
@@ -181,7 +181,7 @@ export function SecondaryLink({
       onClick={onClick}
       className="drill-observatory-secondary-link inline-flex items-center"
     >
-      <Icon className="h-[13px] w-[13px]" strokeWidth={1.8} aria-hidden />
+      <Icon className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
       {label}
     </button>
   );

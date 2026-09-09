@@ -68,6 +68,33 @@ function useGreetingName() {
   }, [profileDisplayName, user]);
 }
 
+/* The hub puts assigned work above the student's own practice and never said
+   so. One line, the first three times an assignment leads; after that it has
+   done its job and a permanent caption would just be furniture. Storage is
+   wrapped for the same reason the section memory is: a remembered count is
+   never worth a thrown error. */
+const ASSIGNED_HINT_KEY = "lsatu.drillHub.assignedHintSeen";
+const ASSIGNED_HINT_LIMIT = 3;
+
+function useAssignedHint(assignmentLeads: boolean) {
+  const [show, setShow] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!assignmentLeads) return;
+    try {
+      const raw = Number.parseInt(window.localStorage.getItem(ASSIGNED_HINT_KEY) ?? "0", 10);
+      const seen = Number.isFinite(raw) ? raw : 0;
+      if (seen >= ASSIGNED_HINT_LIMIT) return;
+      setShow(true);
+      window.localStorage.setItem(ASSIGNED_HINT_KEY, String(seen + 1));
+    } catch {
+      /* no-op: see rememberSection in src/lib/drillSection.ts */
+    }
+  }, [assignmentLeads]);
+
+  return show;
+}
+
 function MainhubHero({
   section,
   firstName,
@@ -121,6 +148,7 @@ function MainhubHero({
      the quiet second option; with nothing assigned they are the first. */
   const primary = !focus.loading && !focus.hasError ? focus.primary : null;
   const NextIcon = primary?.Icon;
+  const showAssignedHint = useAssignedHint(primary != null);
 
   return (
     /* Surface, scrim and grid live in .drill-observatory-hero / -hero-grid: the
@@ -166,17 +194,55 @@ function MainhubHero({
                 {/* One line of facts, not a label above and an orphaned chip
                     word below. */}
                 <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-60 flex items-center gap-2">
-                  {NextIcon && <NextIcon className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden />}
+                  {NextIcon && <NextIcon className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />}
                   {["Next up", primary.sourceLine, primary.status, primary.actionCue].filter(Boolean).join(" · ")}
                 </p>
                 <p className="drill-observatory-next-title">{primary.title}</p>
+                {showAssignedHint && (
+                  <p className="drill-observatory-ink-60 mt-2 text-[13px] leading-[1.5]">
+                    Assigned work shows here first. Your own practice is below.
+                  </p>
+                )}
               </div>
             ) : (
-              <p className="drill-observatory-ink-70 text-sm leading-[1.55]">
-                {section === "rc"
-                  ? "Read one passage now, untimed, with the answers after it. Or build a set of passages around what you want to read."
-                  : "Start with the question types you miss most, or build a drill around exactly what you want to practice."}
-              </p>
+              /* An empty hero and a failed hero are not the same thing. When
+                 the load fails, primary is null, and without this branch the
+                 page would quietly tell a student with assigned work that she
+                 has none. Say what failed, then still offer the practice. */
+              <div className="drill-observatory-next">
+                {focus.hasError && (
+                  <p className="drill-observatory-ink-70 mb-2 text-sm leading-[1.55]">
+                    Your assigned work did not load, so this is your own
+                    practice rather than today's list.{" "}
+                    <button
+                      type="button"
+                      onClick={() => window.location.reload()}
+                      className="drill-observatory-quiet-link"
+                    >
+                      Try again
+                    </button>
+                  </p>
+                )}
+                <p className="drill-observatory-ink-70 text-sm leading-[1.55]">
+                  {section === "rc"
+                    ? "Read one passage now, untimed, with the answers after it. Or build a set of passages around what you want to read."
+                    : "Start with the question types you miss most, or build a drill around exactly what you want to practice."}
+                </p>
+                {section === "lr" && (
+                  /* Nothing on this page said what "adaptive" means. A student
+                     with nothing assigned is the one being asked to trust it,
+                     so the explanation sits here and nowhere else. No set size:
+                     adaptive mode draws from the whole bank and serves one at a
+                     time, so there is no fixed count to quote. */
+                  <details className="drill-observatory-explainer">
+                    <summary>How the adaptive drill picks questions</summary>
+                    <p>
+                      It looks at the question types you miss most often and pulls from
+                      those first. Your answers feed what it serves next.
+                    </p>
+                  </details>
+                )}
+              </div>
             )}
           </div>
 
@@ -231,7 +297,7 @@ function MainhubHero({
               className="drill-observatory-console-start"
             >
               {section === "rc" ? "Set up an RC drill" : "Set up an LR drill"}
-              <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
+              <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
             </Button>
           </div>
         </div>

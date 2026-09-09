@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AcademyMainhub from "./AcademyMainhub";
 
 vi.mock("@/contexts/AuthContext", () => ({
@@ -44,8 +44,14 @@ vi.mock("@/hooks/useLayoutPrefs", () => ({
   }),
 }));
 
+const todayState = vi.hoisted(() => ({ classroomIsError: false }));
+
 vi.mock("@/hooks/useClassroomItems", () => ({
-  useClassroomItems: () => ({ data: [], isLoading: false }),
+  useClassroomItems: () => ({
+    data: [],
+    isLoading: false,
+    isError: todayState.classroomIsError,
+  }),
 }));
 
 vi.mock("@/hooks/useLastActivity", () => ({
@@ -218,5 +224,87 @@ describe("AcademyMainhub", () => {
     expect(short?.textContent?.length ?? 0).toBeLessThanOrEqual(
       long?.textContent?.length ?? 0,
     );
+  });
+});
+
+describe("AcademyMainhub — when today fails to load", () => {
+  beforeEach(() => {
+    window.HTMLElement.prototype.scrollIntoView = vi.fn();
+    todayState.classroomIsError = true;
+  });
+
+  afterEach(() => {
+    todayState.classroomIsError = false;
+  });
+
+  function renderHub() {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter
+          initialEntries={["/classroom/drill"]}
+          future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
+        >
+          <AcademyMainhub />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+  }
+
+  it("says the assigned work did not load instead of implying there is none", async () => {
+    renderHub();
+    expect(
+      await screen.findByText(/Your assigned work did not load/i),
+    ).toBeInTheDocument();
+  });
+
+  it("offers a way to retry, not an instruction to refresh", async () => {
+    renderHub();
+    // The hero and the Today card each explain their own absence, so both
+    // offer a retry. A student who scrolls past the hero should not meet an
+    // empty Today with no reason attached to it.
+    const retries = await screen.findAllByRole("button", { name: "Try again" });
+    expect(retries.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("still offers the student's own practice", () => {
+    renderHub();
+    expect(
+      screen.getByRole("button", { name: "Practice your weakest types" }),
+    ).toBeInTheDocument();
+  });
+});
+
+describe("AcademyMainhub — the one explainer", () => {
+  beforeEach(() => {
+    window.HTMLElement.prototype.scrollIntoView = vi.fn();
+    window.localStorage.clear();
+  });
+
+  function renderHub() {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter
+          initialEntries={["/classroom/drill"]}
+          future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
+        >
+          <AcademyMainhub />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+  }
+
+  it("explains the adaptive drill to the student with nothing assigned", async () => {
+    renderHub();
+    expect(
+      await screen.findByText("How the adaptive drill picks questions"),
+    ).toBeInTheDocument();
+  });
+
+  it("quotes no set size, because adaptive mode has no fixed one", async () => {
+    renderHub();
+    const body = await screen.findByText(/looks at the question types you miss most often/i);
+    expect(body.textContent).not.toMatch(/\b(ten|10)\b/i);
   });
 });
