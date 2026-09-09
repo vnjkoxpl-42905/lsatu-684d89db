@@ -81,12 +81,13 @@ the document is not being rendered.
 the day of the visit while occupying the slot that, on a note, holds the day Joshua wrote
 it. Every number on a surface traces to stored data or it does not appear.
 
-**The 44px touch floor is scoped to touch, on purpose.** `.classroom-nav` computes to
-34px and stays there on a fine pointer; it grows to 44px under `@media (pointer: coarse)`
-and inside the mobile drawer. PRODUCT.md states 44x44 flatly, so this is a deviation and
-Joshua ruled on it directly on 2026-09-09: keep it. The rail is a 17-row list and a
-global 44px makes it ~170px taller for no gain a mouse user can feel - WCAG 2.2's AA
-target rule asks 24px, and 44px is the touch figure. Do not close this as a violation.
+**The 44px touch floor is scoped to touch, and this is not a deviation.** `.classroom-nav`
+computes to 34px on a fine pointer and grows to 44px under `@media (pointer: coarse)` and
+inside the mobile drawer. PRODUCT.md's binding floor is WCAG 2.1 AA; 44x44 is 2.5.5,
+which is Level AAA, while the AA target-size rule is 2.2's 2.5.8 at 24x24. A 34px row
+clears the binding floor. PRODUCT.md line 104 lists the AAA figure inside its AA section,
+which is a doc imprecision to fix there, not a defect here. Do not raise this as a
+violation, and do not attribute a waiver to Joshua - there is nothing to waive.
 
 **`smartboard_recap` is a dead label.** Boards are not attached to student accounts
 (confirmed 2026-09-09), so no student sees it. The mapping stays only so an unmapped

@@ -5,10 +5,14 @@
 9-phase plan and the 22-item ledger). This file is only the state of the work.
 
 ## Decisions already locked by Joshua — do not re-ask
-- **Touch targets: keep the deviation** (2026-09-09). Rail rows stay 34px on a fine
-  pointer and grow to 44px only under `@media (pointer: coarse)` and in the mobile
-  drawer. PRODUCT.md says 44 flatly; he was shown the conflict and chose the scoped
-  version. Do not raise this as a violation and do not delete the two guards.
+- **Touch targets are not a deviation.** Rail rows stay 34px on a fine pointer and grow
+  to 44px under `@media (pointer: coarse)` and in the mobile drawer. An earlier version
+  of this file called that a waiver of PRODUCT.md and credited Joshua with granting it.
+  That was wrong on both counts and he corrected it on 2026-09-09: he never held the
+  "44 everywhere" position. PRODUCT.md's binding floor is WCAG 2.1 AA; 44x44 is 2.5.5
+  (AAA), and the AA target rule is 2.2's 2.5.8 at 24x24, which 34px already clears.
+  PRODUCT.md line 104 lists the AAA number inside its AA section - fix the doc, not the
+  CSS. Do not raise this as a violation and do not delete the two guards.
 - **`smartboard_recap` is unused** (2026-09-09). Boards are not attached to student
   accounts, so no student sees that label. It stays mapped only as a fallback. Do not
   reopen its wording.

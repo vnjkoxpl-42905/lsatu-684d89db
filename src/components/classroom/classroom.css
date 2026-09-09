@@ -4964,18 +4964,19 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 }
 
 /* ── Touch targets ─────────────────────────────────────────────────────────
-   PRODUCT.md sets a 44x44 minimum met "by being that size rather than by a
-   side effect". `.classroom-nav` computed to 34px, and the same class draws the
-   mobile drawer, where it is a genuine touch target rather than a mouse one.
+   `.classroom-nav` computes to 34px, and the same class draws the mobile
+   drawer, where it is a genuine touch target rather than a mouse one. So the
+   44px floor is applied where a finger is doing the pointing.
 
-   Scoped to coarse pointers and to the drawer instead of applied globally: on a
-   fine pointer the rail is a 17-row list, and forcing every row to 44px makes
-   it ~170px taller for no accessibility gain (WCAG 2.2's AA target rule, 2.5.8,
-   asks 24px; 44px is the touch/AAA figure).
+   This is not a deviation, despite an earlier note here that said it was.
+   PRODUCT.md's binding floor is WCAG 2.1 AA. The 44x44 figure is 2.5.5, which
+   is Level AAA; the AA target-size rule is 2.2's 2.5.8, and it asks 24x24. A
+   34px row clears the binding floor by ten pixels. Applying 44px globally would
+   add ~170px of height to a 17-row rail to satisfy a criterion the product has
+   not adopted.
 
-   Joshua ruled on this 2026-09-09: keep the deviation. The rail stays 34px on a
-   mouse. Do not "fix" it to match PRODUCT.md's flat 44 - the narrowing is
-   deliberate and the decision is his. Reopen it only if he says so. */
+   PRODUCT.md line 104 lists the AAA number inside its AA section. That is worth
+   correcting in the doc; it is not a defect in this file. */
 @media (pointer: coarse) {
   .classroom-root .classroom-nav,
   .classroom-root .classroom-profile-menu-item {
