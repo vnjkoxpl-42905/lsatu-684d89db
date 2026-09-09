@@ -59,7 +59,7 @@ The two RRC doors (`SectionLibraryLaunch`, `SectionLaunch`, both drawn by `Secti
 
 - **Every value is a `--sec-*` token.** Six were; the thirteen raw slate literals beside them are now `--sec-rule-2`, `--sec-fill`, `--sec-paper-2`, `--sec-ink-2`, `--sec-ink-3` and `--sec-mark`. A mirror drifts one hex at a time, so the copy is named.
 - **The Outfit question lock does not apply here.** The stimulus is Fraunces because the test-day screen's stimulus is Fraunces. DESIGN.md's Typography section records this as the lock's one exception.
-- **Detector:** `.impeccable/config.json` already waives the mirror's sizes, radii and colours by value with the reason "LawHub surface mirror". Nothing in this file is a finding.
+- **Detector:** `.impeccable/config.json` waives the mirror's sizes, radii and colours for this file (`impeccable ignores add-value ... --file`, reason "LawHub surface mirror"). Verified 2026-09-09 with `impeccable detect` 4.1.0: 0 anti-patterns, 0 advisory notes.
 - **Handover:** `.ac-section.is-finishing` warms to what `.rc-ground` paints, and `section.css.test.ts` holds the copy to the original.
 
 ## The Report Card (locked 2026-09-08)
