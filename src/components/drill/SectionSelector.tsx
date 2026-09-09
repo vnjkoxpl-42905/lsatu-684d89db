@@ -337,11 +337,15 @@ export function SectionSelector({
             </button>
           ))}
         </div>
-        {kind === 'rc' && rcError && (
-          <p className="text-sm text-muted-foreground">{rcError}</p>
-        )}
-        {kind === 'rc' && !rcError && rcSections === null && (
-          <p className="text-sm text-muted-foreground">Loading sections…</p>
+        {/* A live region that is always in the tree while RC is chosen, so a
+            screen reader hears the sections arrive or fail. A region added
+            with its message is skipped by most readers: only a change inside
+            an existing region is announced. The empty element costs nothing
+            and is what makes the two states below audible at all. */}
+        {kind === 'rc' && (
+          <p className="text-sm text-muted-foreground empty:!mt-0" role="status" aria-live="polite">
+            {rcError ? rcError : rcSections === null ? 'Loading sections…' : null}
+          </p>
         )}
       </div>
 
@@ -387,19 +391,22 @@ export function SectionSelector({
                 </SelectItem>
               </SelectContent>
             </Select>
-            {freshnessLoading && (
-              <p className="text-sm text-muted-foreground">Checking what you have worked…</p>
-            )}
-            {freshnessError && (
-              <p className="text-sm text-muted-foreground">
-                {freshnessError} Every section is listed until it can.
-              </p>
-            )}
-            {!freshnessLoading && !freshnessError && pickableSections.length === 0 && (
-              <p className="text-sm text-muted-foreground">
-                No untouched LR sections left. Switch to Any to sit one again.
-              </p>
-            )}
+            {/* One live region, always present, for the three things the
+                filter can report: still checking, could not check, nothing
+                left. Sighted students watch this line change under the
+                control; a screen reader only hears it if the region was
+                already there when the text arrived. Polite, because none of
+                the three blocks the form — every section stays reachable
+                through Any. */}
+            <p className="text-sm text-muted-foreground empty:!mt-0" role="status" aria-live="polite">
+              {freshnessLoading
+                ? 'Checking what you have worked…'
+                : freshnessError
+                  ? `${freshnessError} Every section is listed until it can.`
+                  : pickableSections.length === 0
+                    ? 'No untouched LR sections left. Switch to Any to sit one again.'
+                    : null}
+            </p>
           </div>
         )}
 

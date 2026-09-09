@@ -117,6 +117,48 @@ const searchPrepTests = (query: string) =>
   });
 
 describe("Testing Centre", () => {
+  /**
+   * "Begin practice test" before a PrepTest is chosen. It was a bare
+   * `disabled`, which Tab skips, so a keyboard user never met the button and
+   * was never told why the door would not open; sighted students saw a
+   * button half a shade lighter and pressed it.
+   */
+  describe("the Begin button before a PrepTest is chosen", () => {
+    it("stays reachable, says it is unavailable, and names what is missing", async () => {
+      renderPage();
+      fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      const begin = await screen.findByRole("button", { name: /Begin practice test/ });
+
+      expect(begin.hasAttribute("disabled")).toBe(false);
+      expect(begin.getAttribute("aria-disabled")).toBe("true");
+      const hint = document.getElementById(begin.getAttribute("aria-describedby")!)!;
+      expect(hint.textContent).toBe("Choose a PrepTest above to begin.");
+      expect(hint.getAttribute("role")).toBe("status");
+    });
+
+    it("sends a press to the PrepTest field instead of starting nothing", async () => {
+      renderPage();
+      fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      fireEvent.click(await screen.findByRole("button", { name: /Begin practice test/ }));
+
+      expect(document.activeElement).toBe(screen.getByRole("combobox", { name: /PREPTEST/i }));
+      expect(listPracticeTestRuns()).toHaveLength(0);
+      expect(navigate).not.toHaveBeenCalled();
+    });
+
+    it("clears the hint once a PrepTest is chosen", async () => {
+      renderPage();
+      fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      const begin = await screen.findByRole("button", { name: /Begin practice test/ });
+      openPrepTests();
+      fireEvent.click(await screen.findByRole("option", { name: /PrepTest 131/ }));
+
+      expect(begin.getAttribute("aria-disabled")).toBe("false");
+      expect(begin.hasAttribute("aria-describedby")).toBe(false);
+      expect(screen.queryByText(/Choose a PrepTest above to begin/)).toBeNull();
+    });
+  });
+
   it("offers exactly two doors", () => {
     renderPage();
     expect(screen.getByRole("button", { name: /Take a section/ })).toBeTruthy();
