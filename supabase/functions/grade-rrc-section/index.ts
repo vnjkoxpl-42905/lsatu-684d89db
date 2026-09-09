@@ -964,6 +964,27 @@ serve(async (req) => {
     );
     const totalSeconds = carriedTotal ?? lastFinished;
     /*
+     * How long she was away, and how many times.
+     *
+     * A section can be paused now, and every time on this card already has the
+     * breaks taken out of it -- the runner stops its clock with the recorder,
+     * so the file, the index and her time all skip them together. That is the
+     * right number to score and the wrong number to report on its own: a
+     * twenty-two minute run with ten minutes of pauses in it is a different
+     * sitting from a twenty-two minute run, and only one of them is the drill.
+     *
+     * Both are cumulative on the row, like `finished_at_seconds`, so the run's
+     * totals are the largest values written.
+     */
+    const pausedSeconds = Math.max(
+      0,
+      ...responses.map((r) => Number((r.rrc as Record<string, unknown>).paused_seconds ?? 0)),
+    );
+    const pauseCount = Math.max(
+      0,
+      ...responses.map((r) => Number((r.rrc as Record<string, unknown>).pause_count ?? 0)),
+    );
+    /*
      * A stimulus the judge never answered for is not a stimulus she scored
      * zero on, and every count below has to know the difference. Counted as a
      * zero it would drag her Coverage down; counted as uncoloured or as a
@@ -1009,6 +1030,8 @@ serve(async (req) => {
       audio_path: audioPath,
       goal_minutes: goalMinutes,
       total_seconds: totalSeconds,
+      paused_seconds: pausedSeconds,
+      pause_count: pauseCount,
       within_time: withinTime,
       within_goal: withinTime && uncoloured === 0 && noRead === 0,
       mean_coverage: meanCoverage,

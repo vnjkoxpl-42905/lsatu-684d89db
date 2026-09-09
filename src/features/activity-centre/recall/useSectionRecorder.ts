@@ -12,8 +12,24 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * like they conflict. They are reconciled by an index rather than by cutting:
  * every phase boundary the runner passes is stamped as an offset from the start
  * of the file, so any portion -- a single chunk's recall, one stimulus's Read,
- * the whole of stimulus 14 -- is a seek, not a separate recording. Nothing is
- * ever paused, and nothing has to be found by ear afterwards.
+ * the whole of stimulus 14 -- is a seek, not a separate recording. Nothing has
+ * to be found by ear afterwards.
+ *
+ * There is exactly one break in that rule and it is the student's, not the
+ * drill's: `pause` and `resume`. The rule above forbids stopping BETWEEN STEPS
+ * -- pausing to think, to check a word, to compose herself before The Recall --
+ * because a drill practised in pieces is not the drill. It was never a rule that
+ * a twenty-five minute sitting may not be interrupted by a life, and enforced as
+ * one it produced the only outcome worse than a paused take: a student who has
+ * to leave, cannot, and throws away twenty-five minutes of work by walking away
+ * from it. The recorder is paused rather than stopped, so it is still one file
+ * and still one index. What the pause must never do is desynchronise the two,
+ * which is why it is the RUNNER's clock that stops with it: every offset in this
+ * file is measured with the `now` the runner injects, and a paused run's `now`
+ * does not advance (`SectionRunner.tsx`). The break is therefore absent from the
+ * audio and absent from the timeline by the same arithmetic, and how long she
+ * was away is recorded on the run as its own number rather than hidden inside
+ * her time.
  *
  * What this does NOT do is transcribe. Transcription happens off the machine
  * the drill is running on, against the finished file, so a slow or failed model
@@ -166,6 +182,7 @@ export function useSectionRecorder(
   const openAt = useRef<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   /**
    * Ask for the microphone and start. Resolves either way, and reports the
@@ -252,6 +269,65 @@ export function useSectionRecorder(
     [now],
   );
 
+  /**
+   * Hold the file open and stop writing to it.
+   *
+   * `pause` is not `stop`: the recorder keeps its parts, its mime type and its
+   * identity, so what resumes is the same take rather than a second one. That
+   * distinction is the whole reason this is allowed at all -- the drill forbids
+   * a second recording, not a gap in the first.
+   *
+   * It answers whether it actually paused, and the runner treats a false as a
+   * refusal to pause rather than as a pause that failed quietly. A recorder that
+   * kept running while the runner's clock stopped would put minutes of a break
+   * inside the file and nowhere in the index, and every segment boundary after
+   * it would name the wrong stretch of audio. Silence about that is worse than
+   * telling her this browser will not do it.
+   *
+   * The backup copy is paused too, and its failure is swallowed like every other
+   * failure of the backup copy: a recovered file with a break the index does not
+   * know about is still a file worth having.
+   */
+  const pause = useCallback((): boolean => {
+    const rec = recorder.current;
+    if (!rec || rec.state !== "recording") return false;
+    try {
+      rec.pause();
+    } catch {
+      return false;
+    }
+    // Asked for, and then checked. A browser is allowed to implement `pause`
+    // as a no-op, and a no-op here is the misalignment this returns false to
+    // prevent.
+    if (rec.state !== "paused") return false;
+    try {
+      if (backup.current?.state === "recording") backup.current.pause();
+    } catch {
+      // The backup is best effort and always has been.
+    }
+    setPaused(true);
+    return true;
+  }, []);
+
+  /** Start writing to the same file again. Answers whether it did. */
+  const resume = useCallback((): boolean => {
+    const rec = recorder.current;
+    if (!rec || rec.state !== "paused") return false;
+    try {
+      rec.resume();
+    } catch {
+      return false;
+    }
+    if (rec.state !== "recording") return false;
+    try {
+      if (backup.current?.state === "paused") backup.current.resume();
+    } catch {
+      // As above.
+    }
+    setPaused(false);
+    return true;
+  }, []);
+
   /** Stop once, at the end, and hand back the file with its index. */
   const stop = useCallback(async (): Promise<FinishedRecording | null> => {
     const rec = recorder.current;
@@ -274,6 +350,7 @@ export function useSectionRecorder(
     recorder.current = null;
     stream.current = null;
     setRecording(false);
+    setPaused(false);
     const blob = await finished;
     return { blob, mimeType, durationMs, segments: segments.current.slice() };
   }, [now]);
@@ -335,5 +412,18 @@ export function useSectionRecorder(
     [],
   );
 
-  return { start, mark, stop, error, recording, getStream, getMimeType };
+  /**
+   * The instant the file begins, or null before the microphone opens.
+   *
+   * Every segment in the index is an offset from this, and the transcript is
+   * cut against those segments -- so anything stamping the transcript has to
+   * measure from the same instant or the two channels disagree by however long
+   * the microphone took to answer. Recognition starts at mount and the recorder
+   * starts when `getUserMedia` resolves, which on a first run is a permission
+   * prompt: several seconds of skew, silently shifting every piece of her
+   * transcript into a later segment than the one she said it in.
+   */
+  const getStartedAt = useCallback(() => startedAt.current, []);
+
+  return { start, pause, resume, mark, stop, error, recording, paused, getStream, getMimeType, getStartedAt };
 }

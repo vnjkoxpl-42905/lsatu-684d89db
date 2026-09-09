@@ -59,7 +59,28 @@ function recognitionCtor(): RecognitionCtor | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
-export function useSectionTranscript(enabled: boolean, now: () => number = () => Date.now()) {
+export function useSectionTranscript(
+  enabled: boolean,
+  now: () => number = () => Date.now(),
+  /**
+   * The instant the RECORDING begins, which is the zero every piece is measured
+   * from. Null until the microphone answers.
+   *
+   * Without it this hook measured from its own mount instead, and the two zero
+   * points are not the same instant: recognition starts on mount and the
+   * recorder starts when `getUserMedia` resolves, which on a first run is a
+   * permission prompt she has to answer. Every piece was then stamped that much
+   * too late and filed one segment further on than the one she spoke it in --
+   * the exact failure the slicing below was rewritten to fix, arriving by the
+   * other door. Words heard before the file exists are dropped rather than
+   * guessed at: they are not in the recording, so there is no stretch of it they
+   * could belong to.
+   *
+   * Omit it and the hook falls back to its own mount, which is right for a
+   * caller that has no recording to line up against.
+   */
+  zeroAt?: () => number | null,
+) {
   const pieces = useRef<TranscriptPiece[]>([]);
   /**
    * When each result in the current session was FIRST heard.
@@ -86,6 +107,8 @@ export function useSectionTranscript(enabled: boolean, now: () => number = () =>
    */
   const nowRef = useRef(now);
   nowRef.current = now;
+  const zeroRef = useRef(zeroAt);
+  zeroRef.current = zeroAt;
 
   useEffect(() => {
     if (!enabled) return;
@@ -100,11 +123,26 @@ export function useSectionTranscript(enabled: boolean, now: () => number = () =>
     // only `isFinal` results are kept, because an interim is a guess that the
     // engine itself is about to revise.
     rec.interimResults = true;
-    startedAt.current = nowRef.current();
+    /*
+     * Set once, on the first session only. A session that ends on silence is
+     * restarted below, and re-zeroing here would restart the offsets with it --
+     * so every piece after the first silence would be timed from the middle of
+     * the run and filed against a segment near the start of it.
+     */
+    if (startedAt.current === null) startedAt.current = nowRef.current();
+    /*
+     * A new session numbers its results from zero again, so anything the last
+     * session left here would be read as this session's timings.
+     */
+    heardAt.current.clear();
     running.current = true;
 
     rec.onresult = (e) => {
-      const at = nowRef.current() - (startedAt.current ?? 0);
+      // The recording's zero when there is one, this hook's own otherwise.
+      // Null means the file has not started; those words are not in it.
+      const zero = zeroRef.current ? zeroRef.current() : (startedAt.current ?? 0);
+      if (zero === null) return;
+      const at = nowRef.current() - zero;
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const result = e.results[i];
         // First sighting of this result, interim or final: this is when she

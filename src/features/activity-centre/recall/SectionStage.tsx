@@ -140,6 +140,23 @@ export interface SectionStageProps {
    */
   coach?: CoachNote | null;
   onDismissCoach?: () => void;
+  /**
+   * She has stepped away. The clock is stopped and nothing is being recorded.
+   *
+   * The stimulus comes OFF the screen for the whole of it, and that is the
+   * feature rather than a side effect of it: a paused stimulus she can still
+   * read is not a break, it is untimed reading time on a timed drill, and it
+   * would hollow the section out without anybody deciding to.
+   */
+  paused?: boolean;
+  /** Step away. Omitted before the section starts, where there is nothing to pause. */
+  onPause?: () => void;
+  onResume?: () => void;
+  /**
+   * A pause the browser would not give her, or a recording that did not come
+   * back. Said on the paused card, because that is where she is standing.
+   */
+  pauseError?: string | null;
 }
 
 /*
@@ -188,6 +205,10 @@ export function SectionStage({
   onAdvance,
   coach = null,
   onDismissCoach,
+  paused = false,
+  onPause,
+  onResume,
+  pauseError = null,
 }: SectionStageProps) {
   const noKeyboard = useNoKeyboard();
   // Position across the section, drawn as the rail's fill. Progress inside the
@@ -228,8 +249,24 @@ export function SectionStage({
             <i aria-hidden="true" />
             Recording
           </span>
+        ) : paused ? (
+          <span className="ac-section-rec ac-section-rec--paused" role="status">
+            <i aria-hidden="true" />
+            Paused
+          </span>
         ) : (
           <span className="ac-section-rec ac-section-rec--off" aria-hidden="true" />
+        )}
+        {/* Beside the way out rather than near the paper: it is chrome, it is
+            not a step in the drill, and it must never sit where a hand aiming
+            for Space could find it. Gone once she is paused -- the card behind
+            it is the only thing that speaks then. */}
+        {onPause && !paused ? (
+          <button type="button" className="ac-section-pause" onClick={onPause}>
+            Pause
+          </button>
+        ) : (
+          <span />
         )}
         {onExit ? (
           <button type="button" className="ac-section-exit" onClick={onExit}>
@@ -277,7 +314,49 @@ export function SectionStage({
 
       <main className="ac-section-field">
         <div className="ac-section-paper">
-          {countdown !== null ? (
+          {paused ? (
+            /*
+             * The break, and the whole of what she can see during it.
+             *
+             * The stimulus is not behind this, blurred or dimmed or scrolled
+             * off -- it is not rendered, for the same reason it is not rendered
+             * during The Recall: a text left in the DOM is read aloud to a
+             * student on a screen reader, and a text she can reach at all turns
+             * a stopped clock into free reading time. The one thing on the card
+             * is the way back.
+             */
+            <div className="ac-section-ready ac-section-ready--paused">
+              <p className="ac-section-ready-title">Paused</p>
+              <p className="ac-section-ready-body">
+                The clock is stopped and nothing is being recorded. Your work so far is safe and
+                your time is not running. The stimulus comes back when you do.
+              </p>
+              {pauseError ? (
+                <p className="ac-section-error" role="status">
+                  {pauseError}
+                </p>
+              ) : null}
+              <div className="ac-section-ready-actions">
+                {/* The keyboard lands here, so the key already under her thumb
+                    is the one that starts the section again -- and because it
+                    is a button, the runner's own Space handler stands down and
+                    cannot advance the drill from behind this card. */}
+                <button
+                  type="button"
+                  className="ac-section-ready-retry"
+                  onClick={onResume}
+                  autoFocus
+                >
+                  Back to it
+                </button>
+                {onExit && (
+                  <button type="button" className="ac-section-ready-leave" onClick={onExit}>
+                    Leave this section
+                  </button>
+                )}
+              </div>
+            </div>
+          ) : countdown !== null ? (
             /*
              * The beat before the first stimulus.
              *
@@ -372,12 +451,19 @@ export function SectionStage({
               What she is doing sits left, the one key that does it sits right. */}
           <div className="ac-section-foot">
             <p className="ac-section-instruction" role="status">
-              {countdown !== null
-                ? micRefused
-                  ? "The section has not started."
-                  : "Say something to check your microphone."
-                : INSTRUCTION[phase]}
-              {getStream ? (
+              {paused
+                ? "Paused. Nothing is being recorded."
+                : countdown !== null
+                  ? micRefused
+                    ? "The section has not started."
+                    : "Say something to check your microphone."
+                  : INSTRUCTION[phase]}
+              {/* No presence bar while she is away. The microphone is still
+                  open -- pausing a recorder does not close the input -- so a
+                  bar left running would move to an empty room and say the one
+                  thing it exists to say when it moves: that this is being
+                  heard. */}
+              {getStream && !paused ? (
                 <VoiceLevel getStream={getStream} phase={phase} onDeadInput={onDeadInput} />
               ) : null}
             </p>
@@ -387,6 +473,16 @@ export function SectionStage({
                 on precisely the run where something has already gone wrong. The
                 warning leads, because it is the new information. */}
             <div className="ac-section-foot-right">
+              {/* A pause she asked for and did not get.
+                  It belongs in the footer rather than on the paused card
+                  precisely BECAUSE she is not paused: the card she would have
+                  read it on is the one that never appeared, and a refusal with
+                  nowhere to be said is a button that does nothing. */}
+              {!paused && pauseError ? (
+                <p className="ac-section-error" role="status">
+                  {pauseError}
+                </p>
+              ) : null}
               {error ? (
                 <p className="ac-section-error" role="status">
                   {error}
@@ -394,11 +490,13 @@ export function SectionStage({
               ) : null}
               <p className="ac-section-hint">
                 <kbd>space</kbd>{" "}
-                {countdown !== null
-                  ? micRefused
-                    ? "once the microphone is on"
-                    : "in a moment"
-                  : KEY_DOES[phase]}
+                {paused
+                  ? "back to it"
+                  : countdown !== null
+                    ? micRefused
+                      ? "once the microphone is on"
+                      : "in a moment"
+                    : KEY_DOES[phase]}
               </p>
               {/* The same act as Space, for a device that has no Space.
                   Rendered only where there is no keyboard, so the desktop loop
@@ -410,7 +508,7 @@ export function SectionStage({
                   type="button"
                   className="ac-section-advance"
                   onClick={onAdvance}
-                  disabled={countdown !== null}
+                  disabled={countdown !== null || paused}
                 >
                   {countdown !== null
                     ? micRefused
@@ -428,7 +526,7 @@ export function SectionStage({
         {/* The first-run walkthrough. Beside the paper, never on it, and it
             holds nothing up: no key of its own, nothing to acknowledge, gone
             of its own accord after the third stimulus. */}
-        {coach && countdown === null ? (
+        {coach && countdown === null && !paused ? (
           <aside className="ac-section-coach" aria-label="Walkthrough">
             <p className="ac-section-coach-step">
               Walkthrough · {coach.step} of {coach.of}

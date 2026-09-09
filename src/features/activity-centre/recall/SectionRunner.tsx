@@ -252,6 +252,49 @@ function RunBody({
    * filed under something. The run record that says where the pieces belong is
    * written as soon as the Attempt is known.
    */
+  /**
+   * She stepped away. The section is still open and its clock is not running.
+   *
+   * A section is twenty-five unbroken minutes and is scored whole, which used to
+   * mean the only way out of one was the way that throws it away. So a student
+   * who had to answer the door had two options and both were bad: sit through
+   * the interruption on the clock, or lose twenty-five minutes of work. She
+   * asked for the third one.
+   *
+   * A pause is deliberately not a small thing. The stimulus goes off the screen
+   * with it, because a paused stimulus she can still read is not a break, it is
+   * unlimited untimed reading time and it would quietly make the drill
+   * meaningless. The recorder pauses rather than stops, so it is still one file.
+   * And how long she was away is stored on the run rather than dissolved into
+   * it: a section with four minutes of pauses in it is a fact about the sitting
+   * that whoever reads the Report Card is entitled to.
+   */
+  const [paused, setPaused] = useState(false);
+  /**
+   * Every clock in this run, with her breaks taken out.
+   *
+   * One function, and everything that measures anything goes through it: the
+   * clock in the rail, the per-stimulus timings, the recording's index and the
+   * transcript's. That is not tidiness, it is the correctness argument. The
+   * recorder pauses, so the FILE has no break in it; if the timeline kept
+   * running through one, every offset after the first pause would name a
+   * stretch of audio minutes away from the words it claims. Freezing the one
+   * clock they all read is what keeps the file, the index, the transcript and
+   * her score describing the same run.
+   *
+   * `now` -- the real wall clock -- survives underneath for the one thing that
+   * genuinely happened in real time: measuring the break itself.
+   */
+  const pausedTotalMs = useRef(0);
+  const pausedSince = useRef<number | null>(null);
+  const pauseCount = useRef(0);
+  const runNow = useCallback(
+    () => (pausedSince.current ?? now()) - pausedTotalMs.current,
+    [now],
+  );
+  /** A pause this browser would not give her, said plainly rather than swallowed. */
+  const [pauseError, setPauseError] = useState<string | null>(null);
+
   const runId = useRef<string>(
     typeof crypto !== "undefined" && "randomUUID" in crypto
       ? crypto.randomUUID()
@@ -262,13 +305,16 @@ function RunBody({
   }, []);
   const {
     start: startRecording,
+    pause: pauseRecording,
+    resume: resumeRecording,
     mark,
     stop: stopRecording,
     error: micError,
     recording,
     getStream,
     getMimeType,
-  } = useSectionRecorder(now, keepChunk);
+    getStartedAt,
+  } = useSectionRecorder(runNow, keepChunk);
   /**
    * The microphone said no, and this drill is only spoken.
    *
@@ -281,7 +327,14 @@ function RunBody({
   const micRefused = micError !== null;
   // Runs for the whole section, alongside the recording rather than instead of
   // it. The audio file stays the primary record.
-  const { transcript } = useSectionTranscript(!done, now);
+  /*
+   * Off while she is away, and cut against the recording's own zero.
+   *
+   * Recognition left running through a break would file whatever is said in the
+   * room -- to the person at the door, to nobody -- inside the stimulus she is
+   * halfway through, at the one offset the paused clock is frozen at.
+   */
+  const { transcript } = useSectionTranscript(!done && !paused, runNow, getStartedAt);
   /**
    * Guards the one write, and a ref rather than state on purpose.
    *
@@ -292,10 +345,10 @@ function RunBody({
    */
   const saving = useRef(false);
 
-  const startedAt = useRef(now());
+  const startedAt = useRef(runNow());
   /** When the phase currently on screen began. Both phases are timed. */
-  const phaseStartedAt = useRef(now());
-  const stimulusStartedAt = useRef(now());
+  const phaseStartedAt = useRef(runNow());
+  const stimulusStartedAt = useRef(runNow());
   const records = useRef<StimulusRecord[]>([]);
   const workingSeconds = useRef(0);
   /**
@@ -341,8 +394,8 @@ function RunBody({
   }, []);
 
   const seconds = useCallback(
-    (from: number) => Math.max(0, Math.round((now() - from) / 1000)),
-    [now],
+    (from: number) => Math.max(0, Math.round((runNow() - from) / 1000)),
+    [runNow],
   );
 
   /*
@@ -379,7 +432,7 @@ function RunBody({
     if (!recording && !micRefused) return;
     if (micRefused) return;
     if (countdown <= 0) {
-      startedAt.current = now();
+      startedAt.current = runNow();
       phaseStartedAt.current = startedAt.current;
       stimulusStartedAt.current = startedAt.current;
       setCountdown(null);
@@ -387,7 +440,7 @@ function RunBody({
     }
     const t = setTimeout(() => setCountdown((n) => (n === null ? null : n - 1)), 1000);
     return () => clearTimeout(t);
-  }, [countdown, now, recording, micRefused]);
+  }, [countdown, runNow, recording, micRefused]);
 
   /*
    * `countdown` is a dependency on purpose. This effect returns early during
@@ -396,10 +449,10 @@ function RunBody({
    * mount, and the clock read 0:00 for the whole of every run.
    */
   useEffect(() => {
-    if (done || countdown !== null) return;
+    if (done || countdown !== null || paused) return;
     const tick = setInterval(() => setElapsed(seconds(startedAt.current)), 1000);
     return () => clearInterval(tick);
-  }, [countdown, done, seconds]);
+  }, [countdown, done, paused, seconds]);
 
   /*
    * Hold the app still for the length of the run.
@@ -481,11 +534,11 @@ function RunBody({
    * one write at the end.
    */
   const press = useCallback(() => {
-    if (done || saving.current || countdown !== null) return;
+    if (done || saving.current || countdown !== null || paused) return;
     setCursor((at) => {
       const stimulus = run.stimuli[at.item];
       const spent = seconds(phaseStartedAt.current);
-      phaseStartedAt.current = now();
+      phaseStartedAt.current = runNow();
 
       // Close this portion in the recording's index. Refs and arithmetic only:
       // nothing here reaches the network, so the loop cannot stall on it. The
@@ -516,7 +569,7 @@ function RunBody({
           recallSeconds: spent,
         });
         workingSeconds.current = 0;
-        stimulusStartedAt.current = now();
+        stimulusStartedAt.current = runNow();
       }
 
       const next = advanceCursor(run, at);
@@ -526,7 +579,7 @@ function RunBody({
       }
       return next;
     });
-  }, [done, countdown, run, seconds, now, mark]);
+  }, [done, countdown, paused, run, seconds, runNow, mark]);
 
   /**
    * Where this run's recording will live, decided before it exists.
@@ -591,6 +644,22 @@ function RunBody({
           working_seconds: r.workingSeconds,
           recall_seconds: r.recallSeconds,
           section_total_seconds: sectionTotalSeconds,
+          /*
+           * Her breaks, stated rather than hidden.
+           *
+           * Every other number on this row already has the pauses taken out of
+           * it -- that is what the paused clock is for -- so without these two
+           * a sitting broken by ten minutes at the door is indistinguishable
+           * from one run straight through. That is a fact about the sitting,
+           * and the person reading the card is the one it matters to.
+           *
+           * Cumulative at the moment the row was written, exactly like
+           * `finished_at_seconds`: a row saved at stimulus 5 cannot know about a
+           * break she takes at stimulus 12. The run's total is the largest of
+           * them, which is the last row's.
+           */
+          paused_seconds: Math.round(pausedTotalMs.current / 1000),
+          pause_count: pauseCount.current,
           accommodation,
           goal_minutes: run.timeGoalMinutes[accommodation],
           audio_bucket: path ? RECORDING_BUCKET : null,
@@ -721,14 +790,86 @@ function RunBody({
     if (done) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.code !== "Space") return;
+      /*
+       * Anything that takes typing keeps its own spaces.
+       *
+       * This is bound on the document and it calls `preventDefault`, so every
+       * element the list forgets is an element the space bar stops working in
+       * while a section is open. It listed BUTTON and INPUT and not TEXTAREA or
+       * a contenteditable, which are exactly what a message box is made of --
+       * and a student typing into one gets her words back with every space
+       * removed, with nothing on screen to explain it.
+       */
       const target = e.target as HTMLElement | null;
-      if (target && (target.tagName === "BUTTON" || target.tagName === "INPUT")) return;
+      if (
+        target &&
+        (target.tagName === "BUTTON" ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
+          target.isContentEditable)
+      )
+        return;
       e.preventDefault();
       press();
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [done, press]);
+
+  /**
+   * Step away, and come back to the same run.
+   *
+   * The recording is paused FIRST and the clock only stops if it actually did.
+   * A recorder that kept writing while the timeline stopped would put the whole
+   * break inside the file with nothing in the index to say it is there, and
+   * every segment after it would point minutes away from the words it names --
+   * a wrong grade that looks like a right one, which is the failure this whole
+   * feature has to not introduce. If the browser will not pause, she is told so
+   * and the section carries on running rather than half-pausing.
+   */
+  const pauseRun = useCallback(() => {
+    if (done || paused || countdown !== null || saving.current) return;
+    if (!pauseRecording()) {
+      setPauseError(
+        "This browser will not pause the recording, so the section cannot pause. Keep going, or leave and start again in Chrome.",
+      );
+      return;
+    }
+    pausedSince.current = now();
+    pauseCount.current += 1;
+    setPauseError(null);
+    setPaused(true);
+  }, [countdown, done, paused, now, pauseRecording]);
+
+  /**
+   * Back to it.
+   *
+   * The break is added to the total before the clock is let go, so the instant
+   * she resumes is the instant she left, and not one second of the break
+   * reaches her time or the file's index.
+   *
+   * A resume that fails leaves her paused on purpose. The alternative is
+   * twenty-five more minutes spoken into a recorder that stopped writing, and
+   * the grader refuses a run with no recording -- the same reasoning that makes
+   * the ready beat hold on a refused microphone rather than count down into a
+   * run nothing can mark.
+   */
+  const resumeRun = useCallback(() => {
+    if (!paused) return;
+    if (!resumeRecording()) {
+      setPauseError(
+        "The recording did not start again, so nothing more can be marked. Leave this section and run it again.",
+      );
+      return;
+    }
+    if (pausedSince.current !== null) {
+      pausedTotalMs.current += Math.max(0, now() - pausedSince.current);
+      pausedSince.current = null;
+    }
+    setPauseError(null);
+    setPaused(false);
+  }, [paused, now, resumeRecording]);
 
   /**
    * Leaving, in two steps.
@@ -742,6 +883,21 @@ function RunBody({
     if (countdown !== null) onExit?.();
     else setConfirmingExit(true);
   }, [countdown, onExit]);
+
+  /*
+   * A run that ENDS while paused still has to close its books.
+   *
+   * `done` is reachable from a pause -- she can be paused on the last stimulus
+   * when a resume fails, or the last press can be followed by one. The break
+   * that is still open at that moment has never been added to the total, so
+   * without this the final row would report a paused-time of everything except
+   * the pause she was actually in.
+   */
+  useEffect(() => {
+    if (!done || pausedSince.current === null) return;
+    pausedTotalMs.current += Math.max(0, now() - pausedSince.current);
+    pausedSince.current = null;
+  }, [done, now]);
 
   /**
    * The end of the run: stop the recorder, upload, and re-send everything.
@@ -976,14 +1132,26 @@ function RunBody({
         // in full. Repeating it in the footer is not emphasis, it is noise.
         countdown !== null && micRefused
           ? null
-          : (micError ??
+          : // A break is not a fault, and the dead-input line was measured
+            // against a window she was not in the room for.
+            paused
+            ? null
+            : (micError ??
             (deadInput
               ? "Nothing is reaching the microphone. Check it is not muted, then keep going."
               : null))
       }
       onExit={onExit ? askToExit : undefined}
       elapsedSeconds={countdown === null ? elapsed : 0}
-      recording={recording && !micRefused}
+      /* "Recording" must not be on the rail while nothing is being written to
+         the file. The paused mark takes its place. */
+      recording={recording && !micRefused && !paused}
+      paused={paused}
+      /* No pausing before the section has started -- there is nothing to pause
+         and nothing to lose -- and none once it is over. */
+      onPause={countdown === null ? pauseRun : undefined}
+      onResume={resumeRun}
+      pauseError={pauseError}
       getStream={getStream}
       onDeadInput={setDeadInput}
       micRefused={micRefused}

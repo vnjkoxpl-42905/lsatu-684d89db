@@ -34,12 +34,13 @@
 
 /* ---- the white rail ---------------------------------------------------- */
 
-/* Four children, so four columns: position, the rail, the clock, the way out.
-   Declared as three, the exit wrapped onto a second row and the rail grew the
-   header from 46px to 96px on the drill's only screen. */
+/* One column per child, and the count has to be kept: declared short once, the
+   exit wrapped onto a second row and the rail grew the header from 46px to 96px
+   on the drill's only screen. Six now -- position, rail, clock, the recording
+   mark, Pause, the way out. */
 .ac-section-head {
   display: grid;
-  grid-template-columns: auto 1fr auto auto auto;
+  grid-template-columns: auto 1fr auto auto auto auto;
   align-items: center;
   gap: 1.25rem;
   padding: 0.75rem 1.5rem;
@@ -89,6 +90,29 @@
 }
 
 .ac-section-exit:hover {
+  background: #f1f5f9;
+  color: var(--sec-ink);
+}
+
+/* Stepping away, which is the thing that was missing.
+ *
+ * Same weight as Leave and next to it, because they answer the same question
+ * and she should meet them together -- the whole failure this fixes is a
+ * student who wanted this one and could only find that one. Deliberately far
+ * from the paper: pausing is chrome, not a step in the drill, and nothing that
+ * stops the clock may sit where a hand aiming for Space could land on it. */
+.ac-section-pause {
+  border: 1px solid var(--sec-rule);
+  border-radius: 9999px;
+  background: none;
+  padding: 0.25rem 0.75rem;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ac-section-pause:hover {
   background: #f1f5f9;
   color: var(--sec-ink);
 }
@@ -246,6 +270,16 @@
 }
 
 @media (max-width: 640px) {
+  .ac-section-head {
+    gap: 0.75rem;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .ac-section-pause,
+  .ac-section-exit {
+    padding: 0.25rem 0.5rem;
+  }
+
   .ac-section-paper {
     min-height: 0;
   }
@@ -311,6 +345,18 @@
 }
 .ac-section-rec--off {
   width: 0;
+}
+
+/* Paused, in the slot the recording mark had, and in the colour the rest of
+   this screen uses for "something is not running". It does not pulse: the dot
+   pulses to say the file is being written to, and during a break it is not. */
+.ac-section-rec--paused {
+  color: var(--sec-warn);
+}
+
+.ac-section-rec--paused i {
+  background: var(--sec-warn);
+  animation: none;
 }
 .ac-section-rec i {
   width: 0.5rem;
@@ -477,6 +523,13 @@
   color: #94a3b8;
   font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
+}
+
+/* A break wears the ready beat's clothes on purpose. It is the same kind of
+   moment -- the section open, the clock not running, one thing to press -- and
+   a second full-card layout for it would be a second thing to keep true. */
+.ac-section-ready--paused .ac-section-ready-title {
+  color: var(--sec-warn);
 }
 
 /* The refused microphone reads as a fault rather than as a beat, so the heading

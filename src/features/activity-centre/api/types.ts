@@ -492,6 +492,15 @@ export interface SectionGradeSummary {
   audio_path?: string | null;
   goal_minutes: number;
   total_seconds: number;
+  /**
+   * Seconds she was paused, which `total_seconds` does NOT include.
+   *
+   * A section can be stepped away from, and when it is, the clock stops with
+   * the recorder. Absent on every run graded before pausing existed, which is
+   * why it is optional rather than zero.
+   */
+  paused_seconds?: number;
+  pause_count?: number;
   /** Inside the clock, ignoring the method's condition on it. */
   within_time?: boolean;
   /** Inside the clock AND with every stimulus coloured and given a Read. */

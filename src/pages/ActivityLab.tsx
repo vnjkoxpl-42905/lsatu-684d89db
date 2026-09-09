@@ -2226,8 +2226,17 @@ function SectionPanel() {
    * the lab rendered the stage without a clock or a way out and nobody ever saw
    * the version a student sees.
    */
-  const [moment, setMoment] = useState<"running" | "ready beat" | "finishing">("running");
+  const [moment, setMoment] = useState<"running" | "ready beat" | "paused" | "finishing">(
+    "running",
+  );
   const beat = moment === "ready beat";
+  /*
+   * The break, which is a whole screen a student can reach and nobody would
+   * otherwise look at. The lab exists because the version she sees went days
+   * without being seen; a moment left out of this list is a moment back in that
+   * position.
+   */
+  const paused = moment === "paused";
   const [confirming, setConfirming] = useState(false);
 
   useEffect(() => setCursor(startCursor()), [slug]);
@@ -2264,7 +2273,7 @@ function SectionPanel() {
           label="Stimulus"
         />
         <Tabs
-          options={["running", "ready beat", "finishing"] as const}
+          options={["running", "ready beat", "paused", "finishing"] as const}
           value={moment}
           onChange={(v) => setMoment(v)}
           label="Moment"
@@ -2300,6 +2309,9 @@ function SectionPanel() {
         totalStimuli={run.stimuli.length}
         elapsedSeconds={beat ? 0 : 754}
         countdown={beat ? 3 : null}
+        paused={paused}
+        onPause={beat ? undefined : () => setMoment("paused")}
+        onResume={() => setMoment("running")}
         // No microphone in the lab, so the bar mounts and stays flat. That is
         // exactly what a student with a dead input sees, which is the reason
         // the indicator exists and the one state worth being able to look at.

@@ -553,6 +553,24 @@ export function SectionReportCard({
               against a {section.goal_minutes} minute goal
             </p>
             {/*
+              * The breaks, said out loud.
+              *
+              * The figure above is her drill time and correctly has the pauses
+              * taken out of it -- the clock stops with the recorder. Left at
+              * that, a sitting broken by ten minutes at the door would read
+              * exactly like one run straight through, and a student comparing
+              * this week to last would be comparing two different things
+              * without being told. It is not a rebuke: stepping away is allowed
+              * and the alternative was throwing the section away.
+              */}
+            {(section.paused_seconds ?? 0) > 0 && (
+              <p className="mt-1.5 text-xs leading-snug text-[var(--rc-console-ink-dim)]">
+                {minutes(section.paused_seconds ?? 0)} paused across{" "}
+                {section.pause_count === 1 ? "one break" : `${section.pause_count} breaks`}, which
+                the time above does not include.
+              </p>
+            )}
+            {/*
               * The goal counts only if every stimulus was recalled, coloured and
               * given a Read. Collapsing that into one boolean is what let a
               * student skip the colouring, finish early and be told she made the
