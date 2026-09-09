@@ -790,6 +790,8 @@ function RunBody({
     if (done) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.code !== "Space") return;
+      // Not while she is being asked whether to throw the run away.
+      if (confirmingExit) return;
       /*
        * Anything that takes typing keeps its own spaces.
        *
@@ -815,7 +817,7 @@ function RunBody({
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [done, press]);
+  }, [confirmingExit, done, press]);
 
   /**
    * Step away, and come back to the same run.
@@ -1161,6 +1163,11 @@ function RunBody({
               : null))
       }
       onExit={onExit ? askToExit : undefined}
+      sectionName={run.sourceSection}
+      /* What the elapsed figure is elapsed against. Her goal, not the standard
+         one: an accommodation scales it, and pacing her against someone else's
+         is worse than showing no goal at all. */
+      goalSeconds={run.timeGoalMinutes[accommodation] * 60}
       elapsedSeconds={countdown === null ? elapsed : 0}
       /* "Recording" must not be on the rail while nothing is being written to
          the file. The paused mark takes its place. */

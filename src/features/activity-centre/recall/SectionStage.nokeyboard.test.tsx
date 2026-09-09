@@ -78,6 +78,18 @@ describe("advancing where there is no keyboard", () => {
     expect(screen.getByText("space")).toBeInTheDocument();
   });
 
+  it("does not name a key she has no way to press", () => {
+    setPointer(true);
+    const { container } = renderStage(vi.fn());
+    // "space" rendered beside the on-screen button on a phone: an instruction
+    // she cannot follow, sitting next to the one she can.
+    expect(screen.queryByText("space")).toBeNull();
+    // The sentence it prefixed is still there. Only the key went.
+    expect(container.querySelector(".ac-section-hint")?.textContent).toMatch(
+      /recall full stimulus/i,
+    );
+  });
+
   it("does not let her advance before the section has started", () => {
     setPointer(true);
     renderStage(vi.fn(), 3);

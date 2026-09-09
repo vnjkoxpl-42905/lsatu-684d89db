@@ -784,6 +784,23 @@ describe("the way out", () => {
     expect(onExit).toHaveBeenCalled();
   });
 
+  it("does not advance the drill underneath the question", async () => {
+    /*
+     * The confirm claimed `aria-modal` and trapped nothing, so focus could sit
+     * on Pause behind it and Space still ran the loop: she could be asked
+     * whether to throw the section away while the section carried on without
+     * her. The stage traps Tab now; this is the other half, on the key itself.
+     */
+    await renderRun({ onExit: vi.fn() });
+    expect(screen.getByText(CHUNKS[0].text)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /leave/i }));
+    space();
+    // Still working the same stimulus. A Space that got through would have
+    // hidden the text and asked her for The Recall, behind the dialog.
+    expect(screen.getByText(CHUNKS[0].text)).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
   it("does not ask during the beat, when there is nothing to lose", async () => {
     const onExit = vi.fn();
     await renderRun({ onExit, readySeconds: 3 });

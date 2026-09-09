@@ -2308,6 +2308,11 @@ function SectionPanel() {
         stimulusNumber={cursor.item + 1}
         totalStimuli={run.stimuli.length}
         elapsedSeconds={beat ? 0 : 754}
+        /* The real run passes both, and the lab exists to be looked at: without
+           them the heading and the goal beside the clock are the two things on
+           this surface nobody can see here. */
+        sectionName={run.sourceSection ?? undefined}
+        goalSeconds={run.timeGoalMinutes.standard * 60}
         countdown={beat ? 3 : null}
         paused={paused}
         onPause={beat ? undefined : () => setMoment("paused")}

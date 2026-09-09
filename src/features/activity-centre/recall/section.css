@@ -102,7 +102,7 @@
  * from the paper: pausing is chrome, not a step in the drill, and nothing that
  * stops the clock may sit where a hand aiming for Space could land on it. */
 .ac-section-pause {
-  border: 1px solid var(--sec-rule);
+  border: 1px solid var(--sec-chrome);
   border-radius: 9999px;
   background: none;
   padding: 0.25rem 0.75rem;
@@ -263,10 +263,53 @@
   font-weight: 500;
 }
 
-/* The focus ring is graphite everywhere in the drill room, never an accent. */
+/* Forty-four pixels of pointer target, without forty-four pixels of rail.
+ *
+ * Pause and Leave measure 62x30 and 59x29 on a desktop and 54x30 and 51x29 on
+ * a phone, where the header rule takes their padding down again. PRODUCT.md
+ * binds 44x44 by being that size, and both are wide enough already; only the
+ * height is short.
+ *
+ * Given as an overlay rather than a `min-height`, because the rail is a grid
+ * row and growing the controls grows the header: it went from 46px to 96px once
+ * before, on the drill's only screen, and every other rule in this file is
+ * fighting for the reading area on a 13-inch laptop. The overlay is centred on
+ * the control, so it costs no layout and no pixels of paper. */
+.ac-section-pause,
+.ac-section-exit {
+  position: relative;
+}
+
+.ac-section-pause::after,
+.ac-section-exit::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+
+/* The focus ring is graphite everywhere in the drill room, never an accent.
+ *
+ * It used to be graphite at 35 per cent, which computes to 2.17:1 on the paper
+ * and the rail and 1.00:1 on the indigo field, where the walkthrough's Hide
+ * button lives: an invisible ring on the one control a keyboard user has to
+ * find. WCAG 1.4.11 wants 3:1. Measured in the browser, solid ink is 17.74:1
+ * on the paper and paper is 17.35:1 on the field, so both ends clear it with
+ * room to spare. Two pixels rather than
+ * three because a solid ring reads heavier than a translucent one at the same
+ * width. */
 .ac-section :focus-visible {
-  outline: 3px solid rgb(29 29 31 / 0.35);
+  outline: 2px solid var(--sec-ink);
   outline-offset: 2px;
+}
+
+/* The children that sit on the indigo rather than on paper. */
+.ac-section-coach :focus-visible,
+.ac-section-ready :focus-visible {
+  outline-color: var(--sec-paper);
 }
 
 @media (max-width: 640px) {
@@ -520,7 +563,8 @@
 }
 
 .ac-section-ready-count {
-  color: #94a3b8;
+  /* Was #94a3b8: 2.56:1 at 13px, which is a countdown she cannot read. */
+  color: var(--sec-chrome);
   font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
 }
@@ -642,7 +686,10 @@
 .ac-section-finished span {
   display: block;
   margin-top: 0.75rem;
-  color: #64748b;
+  /* #64748b is 4.76:1 on white and 4.17:1 on the warmed handover ground this
+     sentence actually lands on, which is under AA. The chrome ink clears it on
+     both. */
+  color: var(--sec-chrome);
   font-family: var(--sec-sans);
   font-size: 0.875rem;
   line-height: 1.6;

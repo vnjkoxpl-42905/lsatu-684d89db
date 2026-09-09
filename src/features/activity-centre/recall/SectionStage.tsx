@@ -1,3 +1,4 @@
+import { useEffect, useRef, type HTMLAttributes } from "react";
 import type { SectionPhase, SectionStimulus } from "./section";
 import type { CoachNote } from "./coach";
 import { VoiceLevel } from "./VoiceLevel";
@@ -108,6 +109,15 @@ export interface SectionStageProps {
    * Leaving is confirmed rather than done, because a half-finished section
    * writes nothing by design and the button is on screen for the whole run.
    */
+  /**
+   * The section this run is of, for the heading. "PT105.S2".
+   *
+   * The runner had no headings at all: "Stimulus 1 of 23" is a span, and a
+   * screen reader's heading list was empty on the drill's only screen.
+   */
+  sectionName?: string;
+  /** The goal, in seconds, drawn after the clock in lighter type. */
+  goalSeconds?: number;
   confirmingExit?: boolean;
   onConfirmExit?: () => void;
   onCancelExit?: () => void;
@@ -198,6 +208,8 @@ export function SectionStage({
   onDeadInput,
   micRefused,
   onRetryMic,
+  sectionName,
+  goalSeconds,
   confirmingExit,
   onConfirmExit,
   onCancelExit,
@@ -211,6 +223,57 @@ export function SectionStage({
   pauseError = null,
 }: SectionStageProps) {
   const noKeyboard = useNoKeyboard();
+  const confirmRef = useRef<HTMLDivElement | null>(null);
+
+  /*
+   * Escape, and a Tab that cannot leave.
+   *
+   * The confirm carried `aria-modal` and none of what the attribute promises:
+   * Escape did nothing, and three Tabs put focus on the Pause button behind it,
+   * where Space still advanced the drill under a dialog asking whether to throw
+   * the run away. `aria-modal` is a claim; this is the behaviour.
+   */
+  useEffect(() => {
+    if (!confirmingExit) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        e.stopPropagation();
+        // Escape is "keep going". Leaving throws the section away, and that is
+        // never what a reflex keypress should do.
+        onCancelExit?.();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const node = confirmRef.current;
+      if (!node) return;
+      const stops = [...node.querySelectorAll<HTMLElement>("button:not([disabled])")];
+      if (stops.length === 0) return;
+      const first = stops[0];
+      const last = stops[stops.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      const inside = active !== null && node.contains(active);
+      if (e.shiftKey && (!inside || active === first)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (!inside || active === last)) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey, true);
+    return () => document.removeEventListener("keydown", onKey, true);
+  }, [confirmingExit, onCancelExit]);
+
+  /*
+   * The rest of the screen, taken out of the tree while the confirm is up.
+   *
+   * Defence behind the trap rather than instead of it: `inert` is not in every
+   * browser she might use, and the trap is what actually holds.
+   */
+  const inertWhileConfirming = (
+    confirmingExit ? { inert: "" } : {}
+  ) as HTMLAttributes<HTMLElement>;
   // Position across the section, drawn as the rail's fill. Progress inside the
   // current stimulus is deliberately not shown: the app does not know it.
   const through = Math.min(stimulusNumber - 1, totalStimuli) / Math.max(totalStimuli, 1);
@@ -219,7 +282,13 @@ export function SectionStage({
     <div className="ac-section">
       {/* The white rail, as on the real section: chrome above the paper, never
           on it. It carries where she is and the way out, and nothing else. */}
-      <header className="ac-section-head">
+      <header className="ac-section-head" {...inertWhileConfirming}>
+        {/* The drill's only screen had no heading at all, so a screen reader's
+            heading list was empty and there was nothing to jump to. Visually
+            hidden because the rail is chrome and has no room for a title. */}
+        <h1 className="sr-only">
+          Read, Recall, Colour{sectionName ? `, ${sectionName}` : ""}
+        </h1>
         <span className="ac-section-where">
           Stimulus <b>{stimulusNumber}</b> of {totalStimuli}
         </span>
@@ -239,6 +308,11 @@ export function SectionStage({
         {elapsedSeconds !== undefined && (
           <span className="ac-section-clock" aria-live="off">
             {clock(elapsedSeconds)}
+            {/* The goal she is pacing against. `.ac-section-clock i` was styled
+                for exactly this when the clock shipped and nothing ever
+                rendered it, so the screen showed her elapsed time and never the
+                target it was elapsed against. */}
+            {goalSeconds !== undefined && <i> of {clock(goalSeconds)}</i>}
           </span>
         )}
         {/* Said in words as well as drawn, so it survives grayscale and a
@@ -287,7 +361,13 @@ export function SectionStage({
         * staying is the default the keyboard lands on.
         */}
       {confirmingExit ? (
-        <div className="ac-section-confirm" role="dialog" aria-modal="true" aria-label="Leave this section">
+        <div
+          className="ac-section-confirm"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Leave this section"
+          ref={confirmRef}
+        >
           <div className="ac-section-confirm-card">
             <p className="ac-section-confirm-title">Leave this section?</p>
             <p className="ac-section-confirm-body">
@@ -312,7 +392,7 @@ export function SectionStage({
         </div>
       ) : null}
 
-      <main className="ac-section-field">
+      <main className="ac-section-field" {...inertWhileConfirming}>
         <div className="ac-section-paper">
           {paused ? (
             /*
@@ -488,8 +568,11 @@ export function SectionStage({
                   {error}
                 </p>
               ) : null}
+              {/* Not on a device with no Space key: the on-screen button below
+                  is the whole loop there, and "space" beside it is an
+                  instruction she cannot follow. */}
               <p className="ac-section-hint">
-                <kbd>space</kbd>{" "}
+                {noKeyboard ? null : <kbd>space</kbd>}{" "}
                 {paused
                   ? "back to it"
                   : countdown !== null
