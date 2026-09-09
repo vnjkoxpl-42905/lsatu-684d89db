@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ClassroomItem } from "@/hooks/useClassroomItems";
-import type { Conversation } from "@/hooks/useInbox";
+import type { InstructorMessage } from "@/hooks/useInstructorMessages";
 import type { Notification } from "@/hooks/useNotifications";
 import type { StudentAssignment, StudentTAAssignment } from "@/hooks/useStudentAssignments";
 import type { GuidedDrill, GuidedDrillAssignment } from "@/lib/guidedDrills";
@@ -27,7 +27,7 @@ const state = {
   notifications: [] as Notification[],
   notificationsLoading: false,
   notificationsError: null as string | null,
-  conversations: [] as Conversation[],
+  instructorMessages: [] as InstructorMessage[],
   inboxLoading: false,
   lastActivity: null as LastActivityRow | null,
   lastActivityLoading: false,
@@ -85,12 +85,11 @@ vi.mock("@/hooks/useNotifications", () => ({
   }),
 }));
 
-vi.mock("@/hooks/useInbox", () => ({
-  useInbox: () => ({
-    conversations: state.conversations,
-    loading: state.inboxLoading,
-    unreadCount: state.conversations.filter((c) => c.unread).length,
-    refresh: vi.fn(),
+vi.mock("@/hooks/useInstructorMessages", () => ({
+  useInstructorMessages: () => ({
+    data: state.instructorMessages,
+    isLoading: state.inboxLoading,
+    isError: false,
   }),
 }));
 
@@ -119,7 +118,7 @@ function resetState() {
   state.notifications = [];
   state.notificationsLoading = false;
   state.notificationsError = null;
-  state.conversations = [];
+  state.instructorMessages = [];
   state.inboxLoading = false;
   state.lastActivity = null;
   state.lastActivityLoading = false;
@@ -168,31 +167,12 @@ function classroomItem(overrides: Partial<ClassroomItem> = {}): ClassroomItem {
   };
 }
 
-function instructorConversation(overrides: Partial<Conversation> = {}): Conversation {
+function instructorMessage(overrides: Partial<InstructorMessage> = {}): InstructorMessage {
   return {
-    id: "conversation-1",
+    conversationId: "conversation-1",
     subject: "Question 14",
-    created_by: "admin-1",
-    created_at: "2026-06-29T12:00:00.000Z",
-    last_message_at: "2026-06-29T13:00:00.000Z",
-    home_cleared_at: null,
-    participants: [
-      {
-        id: "part-1",
-        conversation_id: "conversation-1",
-        user_id: "admin-1",
-        last_read_at: "2026-06-29T11:00:00.000Z",
-        display_name: "Joshua",
-        is_admin: true,
-      },
-    ],
-    last_message: {
-      body: "Review question 14 before our session.",
-      created_at: "2026-06-29T13:00:00.000Z",
-      sender_id: "admin-1",
-    },
-    unread: true,
-    hasAttachments: false,
+    body: "Review question 14 before our session.",
+    createdAt: "2026-06-29T13:00:00.000Z",
     ...overrides,
   };
 }
@@ -220,7 +200,7 @@ describe("TodayFocusPanel", () => {
 
   it("keeps assigned work ahead of an unread instructor message", async () => {
     state.classroomItems = [classroomItem()];
-    state.conversations = [instructorConversation()];
+    state.instructorMessages = [instructorMessage()];
 
     renderPanel();
 
@@ -228,32 +208,16 @@ describe("TodayFocusPanel", () => {
     expect(screen.getByRole("button", { name: /Message from Joshua/i })).toBeInTheDocument();
   });
 
-  it("does not promote a non-instructor unread conversation", async () => {
-    state.conversations = [
-      instructorConversation({
-        id: "conversation-2",
-        participants: [
-          {
-            id: "part-2",
-            conversation_id: "conversation-2",
-            user_id: "student-2",
-            last_read_at: "2026-06-29T11:00:00.000Z",
-            display_name: "Peer",
-            is_admin: false,
-          },
-        ],
-        last_message: {
-          body: "Can you send notes?",
-          created_at: "2026-06-29T13:00:00.000Z",
-          sender_id: "student-2",
-        },
-      }),
-    ];
+  it("shows nothing for Messages when the feed has no unread instructor message", async () => {
+    // Peer and already-read threads are filtered inside useInstructorMessages,
+    // so the panel only ever sees rows it should draw. An empty feed is the
+    // caught-up state.
+    state.instructorMessages = [];
 
     renderPanel();
 
     expect(await screen.findByRole("heading", { name: "All caught up" })).toBeInTheDocument();
-    expect(screen.queryByText("Can you send notes?")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Message from Joshua/i)).not.toBeInTheDocument();
   });
 
   it("promotes a secondary rail without navigating", async () => {
