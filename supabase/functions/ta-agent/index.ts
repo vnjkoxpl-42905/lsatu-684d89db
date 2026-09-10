@@ -828,21 +828,24 @@ async function callGeminiWithTools(input: {
   }
 
   const parts = data?.candidates?.[0]?.content?.parts ?? [];
+  const visibleText = parts
+    .filter((part) => !part.thought)
+    .map((part) => part.text ?? "")
+    .join("")
+    .trim();
   const functionCall = parts.find((part) => part.functionCall)?.functionCall;
   if (functionCall?.name) {
     return {
-      text: parts.map((part) => part.text ?? "").join("").trim(),
+      text: visibleText,
       functionCall: {
         name: functionCall.name,
         args: normalizeGeminiArgs(functionCall.args),
       },
+      modelParts: parts,
     };
   }
 
-  return {
-    text: parts.map((part) => part.text ?? "").join("").trim(),
-    functionCall: null,
-  };
+  return { text: visibleText, functionCall: null, modelParts: parts };
 }
 
 async function buildNoteProposal(
