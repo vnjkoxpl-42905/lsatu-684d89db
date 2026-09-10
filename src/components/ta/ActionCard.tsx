@@ -21,6 +21,8 @@ const KIND_ICON: Record<ActionProposal["kind"], typeof Zap> = {
   homework: BookOpen,
   bootcamp_module: GraduationCap,
   note: StickyNote,
+  activity: ClipboardList,
+  message: MessageSquare,
 };
 
 const KIND_LABEL: Record<ActionProposal["kind"], string> = {
@@ -28,6 +30,8 @@ const KIND_LABEL: Record<ActionProposal["kind"], string> = {
   homework: "Homework",
   bootcamp_module: "Bootcamp module",
   note: "Note",
+  activity: "Activity",
+  message: "Message",
 };
 
 function statusBadge(status: Props["actionStatus"]) {
