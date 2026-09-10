@@ -1,12 +1,10 @@
-import { useState } from 'react';
+
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   BarChart3,
   LayoutGrid,
   Library,
   MessageSquare,
-  PanelRightClose,
-  PanelRightOpen,
   PencilRuler,
   Sparkles,
   type LucideIcon,
