@@ -26,7 +26,7 @@ interface DraftPayload {
 interface AttemptRow {
   qtype: string | null;
   section: number | null;
-  is_correct: boolean | null;
+  correct: boolean | null;
   timestamp_iso: string | null;
 }
 
@@ -216,7 +216,7 @@ function summarizeAnalytics(attempts: AttemptRow[], waj: WAJRow[], asg: Assignme
     const k = a.qtype || "unknown";
     const agg = byType.get(k) ?? { total: 0, correct: 0 };
     agg.total += 1;
-    if (a.is_correct) agg.correct += 1;
+    if (a.correct) agg.correct += 1;
     byType.set(k, agg);
   }
   const perTypeLines = [...byType.entries()]
@@ -226,8 +226,8 @@ function summarizeAnalytics(attempts: AttemptRow[], waj: WAJRow[], asg: Assignme
     .join("\n");
 
   const overall = attempts.length
-    ? `${attempts.filter((a) => a.is_correct).length}/${attempts.length} (${Math.round(
-        (attempts.filter((a) => a.is_correct).length / attempts.length) * 100
+    ? `${attempts.filter((a) => a.correct).length}/${attempts.length} (${Math.round(
+        (attempts.filter((a) => a.correct).length / attempts.length) * 100
       )}%) over last ${attempts.length} attempts`
     : "no attempts";
 
@@ -298,7 +298,7 @@ Deno.serve(async (req) => {
         .maybeSingle(),
       admin
         .from("attempts")
-        .select("qtype, section, is_correct, timestamp_iso")
+        .select("qtype, section, correct, timestamp_iso")
         .eq("class_id", studentId)
         .order("timestamp_iso", { ascending: false })
         .limit(200),
