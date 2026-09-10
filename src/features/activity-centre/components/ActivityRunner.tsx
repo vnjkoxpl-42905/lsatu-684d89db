@@ -57,7 +57,23 @@ export interface ActivityRunnerProps {
   preview?: boolean;
 }
 
-export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false }: ActivityRunnerProps = {}) {
+/**
+ * A run is one mounted player.
+ *
+ * The Report Card's "Run these again" navigates to a NEW assignment id under
+ * the same `/activities/:assignmentId` route, so React keeps this component
+ * mounted and every piece of run state -- the phase, the hydrated flag, the
+ * attempt-log promise -- would carry over from the finished run and leave her
+ * staring at the grading screen of a run that has no recording. Keying on the
+ * id makes a new run a new mount, which is what it actually is.
+ */
+export function ActivityRunner(props: ActivityRunnerProps = {}) {
+  const params = useParams<{ assignmentId: string; activityId: string }>();
+  const key = props.assignmentId ?? params.assignmentId ?? params.activityId ?? "none";
+  return <ActivityRunnerInstance key={key} {...props} />;
+}
+
+function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = false }: ActivityRunnerProps = {}) {
   const params = useParams<{ assignmentId: string; activityId: string }>();
   // The routed preview names an ACTIVITY, not an assignment: it runs off the
   // definition and no row exists to name. Everything else names an assignment.
