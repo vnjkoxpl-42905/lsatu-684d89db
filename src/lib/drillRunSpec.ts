@@ -79,6 +79,36 @@ function typeDrillConfig(qids: string[]): TypeDrillConfig {
   };
 }
 
+const QID_PATTERN = /^PT(\d+)-S(\d+)-Q\d+$/;
+
+/**
+ * A homework set built from one real section — every qid comes from the same
+ * PT and section number, the shape `assign.ts` and the admin set builder both
+ * produce today. Such a set is a section wearing a homework row, not a mixed
+ * question list, so it runs under a real countdown instead of the untimed
+ * stopwatch every other homework set gets. A set that mixes sections (or PTs)
+ * returns null and keeps the untimed behaviour, because there is no one clock
+ * that honestly times a blend.
+ */
+function singleSectionOf(qids: string[]): { pt: number; section: number } | null {
+  if (qids.length === 0) return null;
+  let pt: number | null = null;
+  let section: number | null = null;
+  for (const qid of qids) {
+    const match = QID_PATTERN.exec(qid);
+    if (!match) return null;
+    const qPt = Number(match[1]);
+    const qSection = Number(match[2]);
+    if (pt === null) {
+      pt = qPt;
+      section = qSection;
+    } else if (qPt !== pt || qSection !== section) {
+      return null;
+    }
+  }
+  return pt !== null && section !== null ? { pt, section } : null;
+}
+
 /**
  * Build the run spec from a launch.
  *
@@ -168,6 +198,30 @@ export function drillRunSpecFromLaunch(
           `a ${launch.kind} launch must have its questions resolved before it can run`,
         );
       }
+
+      if (launch.kind === 'assignment') {
+        const section = singleSectionOf(resolvedQids);
+        if (section) {
+          return {
+            ...base,
+            mode: 'full-section',
+            config: {
+              pt: section.pt,
+              section: section.section,
+              timer: {
+                mode: '35',
+                isPaused: false,
+                elapsedMs: 0,
+                startedAt: now,
+              },
+            },
+            sealed: false,
+            assignmentId: launch.assignmentId,
+            guidedSetId: launch.guidedSetId,
+          };
+        }
+      }
+
       const spec: DrillRunSpec = {
         ...base,
         mode: 'type-drill',
