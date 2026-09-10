@@ -161,21 +161,6 @@ function WorkspaceLayout() {
           <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto">
             <Outlet />
           </main>
-
-          {aiPanelOpen ? (
-            <aside
-              id="teacher-ai-panel"
-              className="hidden w-[320px] shrink-0 border-l border-black/10 bg-white/40 md:flex md:flex-col"
-              aria-label="Assistant"
-            >
-              <div className="px-5 pb-3 pt-5 text-[10px] font-medium uppercase tracking-[0.2em] text-black/40">
-                Assistant
-              </div>
-              <p className="px-5 text-[13px] leading-relaxed text-black/55">
-                The assistant moves in here, with whatever room you are in as its context. Nothing to use yet.
-              </p>
-            </aside>
-          ) : null}
         </div>
 
         {/* Mobile: the sidebar becomes a bottom bar. Admin has to work on a phone. */}
