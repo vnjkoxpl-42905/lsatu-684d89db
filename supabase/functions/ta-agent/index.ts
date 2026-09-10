@@ -742,10 +742,7 @@ interface GeminiFunctionCall {
 interface GeminiGenerateContentResponse {
   candidates?: Array<{
     content?: {
-      parts?: Array<{
-        text?: string;
-        functionCall?: GeminiFunctionCall;
-      }>;
+      parts?: GeminiPart[];
     };
     finishReason?: string;
   }>;
