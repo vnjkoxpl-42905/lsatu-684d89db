@@ -1178,6 +1178,16 @@ async function runAiLane(
     });
     return { content: p ? p.summary : "I couldn't find that homework set.", proposal: p };
   }
+  if (name === "assign_activity") {
+    const p = await buildAssignProposal({
+      admin, kind: "activity", studentQuery, resourceQuery: args.activity ?? "", selectedStudent,
+    });
+    return { content: p ? p.summary : "I couldn't find that activity.", proposal: p };
+  }
+  if (name === "send_message") {
+    const p = await buildMessageProposal(admin, studentQuery, selectedStudent, args.text ?? "");
+    return { content: p.summary, proposal: p };
+  }
   if (name === "assign_bootcamp_module") {
     const p = await buildBootcampProposal(admin, studentQuery, selectedStudent, args.module ?? "");
     return { content: p.summary, proposal: p };
