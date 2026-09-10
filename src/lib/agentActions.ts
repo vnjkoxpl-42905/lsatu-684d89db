@@ -12,7 +12,13 @@ import { assignWork } from '@/lib/assignWork';
 import { createClassroomItem } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem } from '@/lib/classroomNotify';
 
-export type AgentActionKind = 'guided_drill' | 'homework' | 'bootcamp_module' | 'note';
+export type AgentActionKind =
+  | 'guided_drill'
+  | 'homework'
+  | 'bootcamp_module'
+  | 'note'
+  | 'activity'
+  | 'message';
 
 export interface ResolvedStudent {
   id: string;
