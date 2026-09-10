@@ -36,6 +36,7 @@ const ROOMS: Room[] = [
   { to: '/teacher/today', label: 'Today', Icon: LayoutGrid, end: true },
   { to: '/teacher/inbox', label: 'Inbox', Icon: MessageSquare },
   { to: '/teacher/library', label: 'Library', Icon: Library },
+  { to: '/teacher/assistant', label: 'Teaching Assistant', Icon: Sparkles },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },
 ];
 
