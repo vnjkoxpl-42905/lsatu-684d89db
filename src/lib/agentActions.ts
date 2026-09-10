@@ -125,6 +125,70 @@ async function executeNote(
   return { ok: true, summary: `Sent note "${title}" to ${proposal.student.name}`, route };
 }
 
+async function executeActivity(
+  proposal: ActionProposal,
+  adminUserId: string,
+): Promise<ExecuteResult> {
+  const activityId = proposal.resource?.id;
+  if (!activityId) throw new Error('Activity id missing from proposal');
+
+  const { ok, failed } = await assignWork({
+    teacherId: adminUserId,
+    studentIds: [proposal.student.id],
+    item: { kind: 'activity', activityId },
+  });
+
+  const failure = failed[0];
+  if (failure) {
+    if (/duplicate key|23505/i.test(failure.error ?? '')) {
+      return {
+        ok: true,
+        summary: `${proposal.resource?.title} is already assigned to ${proposal.student.name}`,
+      };
+    }
+    throw new Error(failure.error ?? 'Assign failed');
+  }
+
+  return {
+    ok: true,
+    summary: `Assigned "${proposal.resource?.title}" to ${proposal.student.name}`,
+    route: ok[0]?.route,
+  };
+}
+
+async function executeMessage(
+  proposal: ActionProposal,
+  adminUserId: string,
+): Promise<ExecuteResult> {
+  const body = (proposal.generated_html ?? '').trim();
+  if (!body) throw new Error('Message text is empty');
+
+  const conversationId = await getOrCreateAdminStudentConversation(
+    { id: adminUserId } as User,
+    proposal.student.id,
+  );
+  const { error: mErr } = await supabase.from('messages').insert({
+    conversation_id: conversationId,
+    sender_id: adminUserId,
+    body,
+  });
+  if (mErr) throw mErr;
+  await supabase
+    .from('conversations')
+    .update({ last_message_at: new Date().toISOString() })
+    .eq('id', conversationId);
+
+  await supabase.from('notifications').insert({
+    user_id: proposal.student.id,
+    type: 'message',
+    title: 'New message from Joshua',
+    body: body.length > 120 ? `${body.slice(0, 120)}…` : body,
+    link: '/messages',
+  });
+
+  return { ok: true, summary: `Message sent to ${proposal.student.name}` };
+}
+
 /**
  * Execute a confirmed ActionProposal. Throws on failure so callers can surface a
  * toast and avoid marking the interaction confirmed.
