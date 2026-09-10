@@ -721,6 +721,10 @@ interface GeminiFunctionDeclaration {
 
 interface GeminiPart {
   text?: string;
+  // Gemini 3.x returns an opaque reasoning signature on tool-call parts and
+  // requires it echoed back verbatim on the next turn, or the call 400s.
+  thoughtSignature?: string;
+  thought?: boolean;
   functionCall?: { name: string; args: Record<string, unknown> };
   functionResponse?: { name: string; response: Record<string, unknown> };
 }
