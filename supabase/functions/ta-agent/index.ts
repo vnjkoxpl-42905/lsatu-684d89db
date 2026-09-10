@@ -777,7 +777,11 @@ async function callGeminiWithTools(input: {
   history: InteractionRow[];
   message: string;
   toolTurns?: GeminiContent[];
-}): Promise<{ text: string; functionCall: { name: string; args: Record<string, string> } | null }> {
+}): Promise<{
+  text: string;
+  functionCall: { name: string; args: Record<string, string> } | null;
+  modelParts: GeminiPart[];
+}> {
   const systemText = input.contextHeader
     ? `${input.systemPrompt}\n\n${input.contextHeader}`
     : input.systemPrompt;
