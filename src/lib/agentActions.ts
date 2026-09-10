@@ -170,6 +170,10 @@ export async function executeActionProposal(
       return executeHomework(proposal, adminUserId);
     case 'note':
       return executeNote(proposal, adminUserId);
+    case 'activity':
+      return executeActivity(proposal, adminUserId);
+    case 'message':
+      return executeMessage(proposal, adminUserId);
     default:
       throw new Error(`Unsupported action: ${(proposal as ActionProposal).kind}`);
   }
