@@ -867,6 +867,32 @@ async function buildNoteProposal(
   };
 }
 
+async function buildMessageProposal(
+  admin: SupabaseClient,
+  studentQuery: string,
+  selectedStudent: ResolvedStudent | null,
+  text: string,
+): Promise<Proposal> {
+  let student: ResolvedStudent;
+  if (studentQuery.trim()) {
+    const matches = await resolveStudent(admin, studentQuery);
+    if (matches.length !== 1) return disambiguateStudent(studentQuery, matches);
+    student = matches[0];
+  } else if (selectedStudent) {
+    student = selectedStudent;
+  } else {
+    return disambiguateStudent("", []);
+  }
+  return {
+    type: "action",
+    kind: "message",
+    student,
+    resource: { title: "Inbox message", kind: "message" },
+    generated_html: text,
+    summary: `Message ${student.name}: "${text.length > 80 ? text.slice(0, 80) + "…" : text}"`,
+  };
+}
+
 async function buildBootcampProposal(
   admin: SupabaseClient,
   studentQuery: string,
