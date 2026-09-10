@@ -78,7 +78,6 @@ export default function TeacherWorkspaceShell() {
 function WorkspaceLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [aiPanelOpen, setAiPanelOpen] = useState(false);
 
   return (
     // Fills the classroom stage it is mounted into rather than claiming the
