@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DOMPurify from "dompurify";
-import { Check, X, Loader2, Zap, BookOpen, GraduationCap, StickyNote, Dumbbell } from "lucide-react";
+import { Check, X, Loader2, Zap, BookOpen, GraduationCap, StickyNote, Dumbbell, ClipboardList, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import type { ActionProposal, Disambiguation, Proposal } from "@/lib/agentActions";
