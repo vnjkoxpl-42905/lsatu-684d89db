@@ -721,6 +721,10 @@ interface GeminiFunctionDeclaration {
 
 interface GeminiPart {
   text?: string;
+  // Gemini 3.x returns an opaque reasoning signature on tool-call parts and
+  // requires it echoed back verbatim on the next turn, or the call 400s.
+  thoughtSignature?: string;
+  thought?: boolean;
   functionCall?: { name: string; args: Record<string, unknown> };
   functionResponse?: { name: string; response: Record<string, unknown> };
 }
@@ -738,10 +742,7 @@ interface GeminiFunctionCall {
 interface GeminiGenerateContentResponse {
   candidates?: Array<{
     content?: {
-      parts?: Array<{
-        text?: string;
-        functionCall?: GeminiFunctionCall;
-      }>;
+      parts?: GeminiPart[];
     };
     finishReason?: string;
   }>;
@@ -776,7 +777,11 @@ async function callGeminiWithTools(input: {
   history: InteractionRow[];
   message: string;
   toolTurns?: GeminiContent[];
-}): Promise<{ text: string; functionCall: { name: string; args: Record<string, string> } | null }> {
+}): Promise<{
+  text: string;
+  functionCall: { name: string; args: Record<string, string> } | null;
+  modelParts: GeminiPart[];
+}> {
   const systemText = input.contextHeader
     ? `${input.systemPrompt}\n\n${input.contextHeader}`
     : input.systemPrompt;
@@ -823,21 +828,24 @@ async function callGeminiWithTools(input: {
   }
 
   const parts = data?.candidates?.[0]?.content?.parts ?? [];
+  const visibleText = parts
+    .filter((part) => !part.thought)
+    .map((part) => part.text ?? "")
+    .join("")
+    .trim();
   const functionCall = parts.find((part) => part.functionCall)?.functionCall;
   if (functionCall?.name) {
     return {
-      text: parts.map((part) => part.text ?? "").join("").trim(),
+      text: visibleText,
       functionCall: {
         name: functionCall.name,
         args: normalizeGeminiArgs(functionCall.args),
       },
+      modelParts: parts,
     };
   }
 
-  return {
-    text: parts.map((part) => part.text ?? "").join("").trim(),
-    functionCall: null,
-  };
+  return { text: visibleText, functionCall: null, modelParts: parts };
 }
 
 async function buildNoteProposal(
@@ -1163,7 +1171,13 @@ async function runAiLane(
     } catch (e) {
       result = { error: e instanceof Error ? e.message : "lookup failed" };
     }
-    toolTurns.push({ role: "model", parts: [{ functionCall: { name: call.name, args: call.args } }] });
+    // Echo the model's own parts back verbatim: Gemini 3.x attaches a
+    // thoughtSignature to tool-call parts and rejects the follow-up turn
+    // (400) if it is rebuilt without it.
+    const modelParts = gemini.modelParts.length
+      ? gemini.modelParts
+      : [{ functionCall: { name: call.name, args: call.args } }];
+    toolTurns.push({ role: "model", parts: modelParts });
     toolTurns.push({
       role: "user",
       parts: [{ functionResponse: { name: call.name, response: result } }],
