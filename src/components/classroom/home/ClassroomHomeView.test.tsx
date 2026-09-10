@@ -505,6 +505,29 @@ describe("homeModel", () => {
     expect(week[5].isWeekend).toBe(true);
   });
 
+  it("dates work by due, then unlock, then the day it was assigned", async () => {
+    const { itemDayFor } = await import("./useClassroomHome");
+    const base = {
+      due_at: null as string | null,
+      unlock_at: null as string | null,
+      created_at: "2026-08-01T12:00:00.000Z",
+    };
+    // A deadline wins.
+    expect(
+      itemDayFor({ ...base, type: "activity", due_at: "2026-08-05T00:00:00.000Z",
+        unlock_at: "2026-08-03T00:00:00.000Z" } as never),
+    ).toBe("2026-08-05T00:00:00.000Z");
+    // Then the morning it opens — the case an assigned Activity always hits.
+    expect(
+      itemDayFor({ ...base, type: "activity", unlock_at: "2026-08-03T00:00:00.000Z" } as never),
+    ).toBe("2026-08-03T00:00:00.000Z");
+    // Undated but doable: the day it was handed over.
+    expect(itemDayFor({ ...base, type: "activity" } as never)).toBe("2026-08-01T12:00:00.000Z");
+    // Undated and not doable: it stays off the band entirely.
+    expect(itemDayFor({ ...base, type: "announcement" } as never)).toBeNull();
+    expect(itemDayFor({ ...base, type: "note" } as never)).toBeNull();
+  });
+
   it("carries the first entry's route onto the day, and only its own", () => {
     const dates = weekDates(new Date(2026, 7, 3));
     const week = buildWeek(
