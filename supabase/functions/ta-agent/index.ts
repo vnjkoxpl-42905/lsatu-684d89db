@@ -1171,7 +1171,13 @@ async function runAiLane(
     } catch (e) {
       result = { error: e instanceof Error ? e.message : "lookup failed" };
     }
-    toolTurns.push({ role: "model", parts: [{ functionCall: { name: call.name, args: call.args } }] });
+    // Echo the model's own parts back verbatim: Gemini 3.x attaches a
+    // thoughtSignature to tool-call parts and rejects the follow-up turn
+    // (400) if it is rebuilt without it.
+    const modelParts = gemini.modelParts.length
+      ? gemini.modelParts
+      : [{ functionCall: { name: call.name, args: call.args } }];
+    toolTurns.push({ role: "model", parts: modelParts });
     toolTurns.push({
       role: "user",
       parts: [{ functionResponse: { name: call.name, response: result } }],
