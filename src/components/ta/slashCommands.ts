@@ -11,6 +11,7 @@ import {
   Sparkles,
   Reply,
   MessageSquare,
+  Eraser,
 } from "lucide-react";
 
 export interface SlashCommand {
