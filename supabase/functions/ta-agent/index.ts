@@ -1338,7 +1338,7 @@ Deno.serve(async (req) => {
       // agent can reason and draft notes with awareness. Global mode has none.
       const contextHeader = selectedStudent
         ? await buildStudentContext(admin, selectedStudent.id, selectedStudent.name)
-        : null;
+        : await buildPlatformContext(admin);
       const ai = await runAiLane(
         admin, GEMINI_API_KEY, history, message, selectedStudent, contextHeader,
       );
