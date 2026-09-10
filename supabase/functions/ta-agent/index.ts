@@ -40,7 +40,13 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-type ActionKind = "guided_drill" | "homework" | "bootcamp_module" | "note";
+type ActionKind =
+  | "guided_drill"
+  | "homework"
+  | "bootcamp_module"
+  | "note"
+  | "activity"
+  | "message";
 
 interface ResolvedStudent {
   id: string;
@@ -236,11 +242,15 @@ async function resolveResource(
     const m = await searchTable(admin, "homework_sets", "homework", query);
     return m.length === 1 ? { unique: m[0], candidates: m } : { candidates: m };
   }
+  if (kind === "activity") {
+    const m = await searchTable(admin, "activities", "activity", query);
+    return m.length === 1 ? { unique: m[0], candidates: m } : { candidates: m };
+  }
   // auto: probe in priority order.
   for (const [table, k] of [
     ["guided_drills", "guided_drill"],
     ["homework_sets", "homework"],
-    ["activities", "guided_drill"], // activities also assign via the drill path
+    ["activities", "activity"],
   ] as Array<["guided_drills" | "homework_sets" | "activities", ActionKind]>) {
     const m = await searchTable(admin, table, k, query);
     if (m.length === 1) return { unique: m[0], candidates: m };
@@ -306,7 +316,11 @@ async function buildAssignProposal(input: {
 
   const resolvedKind = unique.kind;
   const verb =
-    resolvedKind === "homework" ? "Assign homework" : "Assign guided drill";
+    resolvedKind === "homework"
+      ? "Assign homework"
+      : resolvedKind === "activity"
+        ? "Assign activity"
+        : "Assign guided drill";
   return {
     type: "action",
     kind: resolvedKind,
@@ -479,21 +493,36 @@ async function tryDeterministic(
 
 // ---------- AI lane (tool calling) ----------
 
-const SYSTEM_PROMPT = `You are the action agent for LSAT U, an LSAT prep course run by Joshua. You are admin-only: you help Joshua take actions on students.
+const SYSTEM_PROMPT = `You are the teaching assistant for LSAT U, an LSAT prep course run by Joshua. You are admin-only: you work for Joshua, on his students, with full read access to his platform and the ability to propose any action on it.
 
-You can call exactly one tool per turn:
-- assign_guided_drill(student, drill, unlock_at?) — assign a guided drill.
-- assign_homework(student, set) — assign a homework set.
-- assign_bootcamp_module(student, module) — assign a bootcamp module. "module" is a path like "/bootcamp/intro-lr" when known, otherwise the module name.
-- draft_and_assign_note(student, title, body_html) — write a short note/guided instruction FOR THE STUDENT and propose assigning it. body_html is safe inline HTML (no scripts, no external resources).
-- answer(text) — no action needed; answer Joshua's question or ask a clarifying question.
+LOOK THINGS UP BEFORE YOU ANSWER. You have read tools. Use them freely and repeatedly in one turn — never guess a name, a title, a score, or a message, and never say you cannot see something before you have queried for it.
+
+READ TOOLS (run server-side, results come back to you, nothing is shown to Joshua):
+- find_students(query?) — roster, or students matching a name/email fragment. Returns ids and names.
+- student_snapshot(student) — one student's whole picture: accuracy overall and per question type, wrong-answer journal, recent assignments and their status, Read Recall Colour section grades, last activity, access flags.
+- list_library(kind, query?) — what exists to assign. kind is guided_drills | homework_sets | activities | bootcamps.
+- read_messages(student?, limit?) — recent platform inbox messages, newest first; omit student for everyone.
+- platform_overview() — roster size, library counts, unanswered messages, recent activity across the platform.
+
+ACTION TOOLS (each returns a card Joshua confirms with one click; nothing happens until he does):
+- assign_guided_drill(student, drill, unlock_at?)
+- assign_homework(student, set)
+- assign_activity(student, activity) — activities include the Read, Recall, Colour sections.
+- assign_bootcamp_module(student, module) — a path like "/bootcamps/causation-station" when known, otherwise the name.
+- draft_and_assign_note(student, title, body_html) — a note/instruction that lands in the student's Classroom. body_html is safe inline HTML, no scripts, no external resources.
+- send_message(student, text) — a message from Joshua in the student's 1:1 platform inbox thread.
+- answer(text) — no action; answer Joshua, report what you found, or ask one clarifying question.
+
+WHERE THINGS LIVE (student side): /classroom is their work list, /classroom/:assignmentId a homework set, /guided/:assignmentId a guided drill, /activities and /activities/:assignmentId activities, /activities/sections the Read Recall Colour sections, /drill practice, /rc reading comprehension, /bootcamps the bootcamps, /waj the wrong answer journal, /foyer the home page.
+WHERE THINGS LIVE (Joshua's side): /teacher/today, /teacher/inbox, /teacher/library, /teacher/insights, /teacher/students, /teacher/assistant (you).
 
 RULES:
-1. "student" is the student's name as Joshua wrote it. If Joshua already has a student in context and does not name one, pass an empty string for "student" and the system will use the selected student.
-2. Never invent a drill, set, or student that was not referenced. If unsure which action Joshua wants, call answer() and ask.
-3. For draft_and_assign_note, write in Joshua's voice to the student: direct, encouraging, no filler, no em-dashes. Keep it tight.
-4. Do not narrate tool calls. Pick the single best tool.
-5. Every proposed action is shown to Joshua for one-click confirmation; you never execute anything yourself.`;
+1. "student" is the name as Joshua wrote it. When a student is already selected and he does not name one, pass an empty string and the selected student is used.
+2. Chain read tools before acting: check the roster or the library when a name or title is fuzzy, and check the snapshot when the request depends on how the student is doing.
+3. Never invent a student, drill, set, activity, score, or message. If a lookup comes back empty, say so plainly.
+4. Write in Joshua's voice to students: direct, encouraging, no filler, no em-dashes, tight.
+5. One action tool per turn, after any number of read tools. You never execute anything yourself; Joshua confirms every card.
+6. You remember this thread. Prior turns are in your history, so follow-ups like "assign that to her too" resolve against what was just discussed.`;
 
 const TOOLS = [
   {
@@ -561,6 +590,110 @@ const TOOLS = [
   {
     type: "function",
     function: {
+      name: "assign_activity",
+      description:
+        "Propose assigning an activity (including Read, Recall, Colour sections) to a student.",
+      parameters: {
+        type: "object",
+        properties: {
+          student: { type: "string", description: "Student name, or empty to use the selected student." },
+          activity: { type: "string", description: "Name of the activity or section." },
+        },
+        required: ["student", "activity"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "send_message",
+      description:
+        "Propose sending a message from Joshua in the student's 1:1 platform inbox thread.",
+      parameters: {
+        type: "object",
+        properties: {
+          student: { type: "string", description: "Student name, or empty to use the selected student." },
+          text: { type: "string", description: "The message text, in Joshua's voice." },
+        },
+        required: ["student", "text"],
+      },
+    },
+  },
+  // ---- Read tools: executed server-side, results returned to the model. ----
+  {
+    type: "function",
+    function: {
+      name: "find_students",
+      description: "List the roster, or the students matching a name or email fragment.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: { type: "string", description: "Optional name fragment. Empty for the whole roster." },
+        },
+        required: [],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "student_snapshot",
+      description:
+        "Everything known about one student: accuracy, weak question types, wrong answer journal, assignments, section grades, access, last activity.",
+      parameters: {
+        type: "object",
+        properties: {
+          student: { type: "string", description: "Student name, or empty to use the selected student." },
+        },
+        required: [],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "list_library",
+      description: "List assignable material.",
+      parameters: {
+        type: "object",
+        properties: {
+          kind: {
+            type: "string",
+            description: "guided_drills | homework_sets | activities | bootcamps",
+          },
+          query: { type: "string", description: "Optional title fragment." },
+        },
+        required: ["kind"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "read_messages",
+      description: "Recent platform inbox messages, newest first. Omit student for everyone.",
+      parameters: {
+        type: "object",
+        properties: {
+          student: { type: "string", description: "Optional student name." },
+          limit: { type: "string", description: "Optional count, default 20, max 60." },
+        },
+        required: [],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "platform_overview",
+      description:
+        "Platform-wide picture: roster size, library counts, recent messages awaiting a reply, recent student activity.",
+      parameters: { type: "object", properties: {}, required: [] },
+    },
+  },
+  {
+    type: "function",
+    function: {
       name: "answer",
       description: "Answer Joshua or ask a clarifying question. No action proposed.",
       parameters: {
@@ -572,15 +705,29 @@ const TOOLS = [
   },
 ];
 
+const READ_TOOLS = new Set([
+  "find_students",
+  "student_snapshot",
+  "list_library",
+  "read_messages",
+  "platform_overview",
+]);
+
 interface GeminiFunctionDeclaration {
   name: string;
   description?: string;
   parameters: unknown;
 }
 
+interface GeminiPart {
+  text?: string;
+  functionCall?: { name: string; args: Record<string, unknown> };
+  functionResponse?: { name: string; response: Record<string, unknown> };
+}
+
 interface GeminiContent {
   role: "user" | "model";
-  parts: Array<{ text: string }>;
+  parts: GeminiPart[];
 }
 
 interface GeminiFunctionCall {
@@ -628,6 +775,7 @@ async function callGeminiWithTools(input: {
   contextHeader: string | null;
   history: InteractionRow[];
   message: string;
+  toolTurns?: GeminiContent[];
 }): Promise<{ text: string; functionCall: { name: string; args: Record<string, string> } | null }> {
   const systemText = input.contextHeader
     ? `${input.systemPrompt}\n\n${input.contextHeader}`
@@ -640,6 +788,7 @@ async function callGeminiWithTools(input: {
     });
   }
   contents.push({ role: "user", parts: [{ text: input.message }] });
+  for (const turn of input.toolTurns ?? []) contents.push(turn);
 
   const response = await fetch(
     `${GEMINI_API_BASE_URL}/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(input.apiKey)}`,
@@ -811,6 +960,149 @@ async function buildStudentContext(
   return `SELECTED STUDENT: ${studentName} (id: ${studentId})\n\nANALYTICS:\n${analytics}`;
 }
 
+// ---------- Read tools (server-side lookups fed back to the model) ----------
+
+async function resolveStudentForRead(
+  admin: SupabaseClient,
+  query: string,
+  selectedStudent: ResolvedStudent | null,
+): Promise<ResolvedStudent | null> {
+  const q = (query ?? "").trim();
+  if (!q) return selectedStudent;
+  const matches = await resolveStudent(admin, q);
+  if (matches.length === 1) return matches[0];
+  return null;
+}
+
+async function runReadTool(
+  admin: SupabaseClient,
+  name: string,
+  args: Record<string, string>,
+  selectedStudent: ResolvedStudent | null,
+): Promise<Record<string, unknown>> {
+  if (name === "find_students") {
+    const q = (args.query ?? "").trim();
+    let query = admin
+      .from("profiles")
+      .select("class_id, display_name, last_seen_at, has_classroom_access, has_activity_access, has_chat_access")
+      .order("last_seen_at", { ascending: false })
+      .limit(q ? 15 : 60);
+    if (q) query = query.ilike("display_name", `%${q}%`);
+    const { data, error } = await query;
+    if (error) return { error: error.message };
+    return { students: data ?? [] };
+  }
+
+  if (name === "student_snapshot") {
+    const student = await resolveStudentForRead(admin, args.student ?? "", selectedStudent);
+    if (!student) return { error: `No single student matches "${args.student ?? ""}". Call find_students first.` };
+    const [analytics, gradesRes, activityRes, profileRes] = await Promise.all([
+      buildStudentContext(admin, student.id, student.name),
+      admin
+        .from("activity_section_grades")
+        .select("assignment_id, attempt_no, score, status, graded_at")
+        .order("graded_at", { ascending: false })
+        .limit(10),
+      admin
+        .from("activity_assignments")
+        .select("id, title, status, assigned_at, completed_at")
+        .eq("student_id", student.id)
+        .order("assigned_at", { ascending: false })
+        .limit(10),
+      admin
+        .from("profiles")
+        .select("*")
+        .eq("class_id", student.id)
+        .maybeSingle(),
+    ]);
+    return {
+      student,
+      analytics,
+      recent_activity_assignments: activityRes.data ?? [],
+      recent_section_grades: gradesRes.data ?? [],
+      profile: profileRes.data ?? null,
+    };
+  }
+
+  if (name === "list_library") {
+    const kind = (args.kind ?? "").trim();
+    const q = (args.query ?? "").trim();
+    const table =
+      kind === "homework_sets"
+        ? "homework_sets"
+        : kind === "activities"
+          ? "activities"
+          : kind === "guided_drills"
+            ? "guided_drills"
+            : null;
+    if (!table) {
+      return {
+        note:
+          "Bootcamps are static routes, not a table. Known bootcamps live under /bootcamps (e.g. /bootcamps/intro-lr, /bootcamps/causation-station).",
+      };
+    }
+    let query = admin.from(table).select("id, title").limit(40);
+    if (q) query = query.ilike("title", `%${q}%`);
+    const { data, error } = await query;
+    if (error) return { error: error.message };
+    return { kind: table, items: data ?? [] };
+  }
+
+  if (name === "read_messages") {
+    const limit = Math.min(Math.max(parseInt(args.limit ?? "20", 10) || 20, 1), 60);
+    const student = (args.student ?? "").trim()
+      ? await resolveStudentForRead(admin, args.student ?? "", selectedStudent)
+      : null;
+    let convIds: string[] | null = null;
+    if (student) {
+      const { data: parts } = await admin
+        .from("conversation_participants")
+        .select("conversation_id")
+        .eq("user_id", student.id);
+      convIds = (parts ?? []).map((p: { conversation_id: string }) => p.conversation_id);
+      if (!convIds.length) return { messages: [], student };
+    }
+    let query = admin
+      .from("messages")
+      .select("id, conversation_id, sender_id, body, created_at")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    if (convIds) query = query.in("conversation_id", convIds);
+    const { data, error } = await query;
+    if (error) return { error: error.message };
+    return { student, messages: data ?? [] };
+  }
+
+  if (name === "platform_overview") {
+    const [students, drills, sets, activities, messages] = await Promise.all([
+      admin.from("profiles").select("class_id", { count: "exact", head: true }),
+      admin.from("guided_drills").select("id", { count: "exact", head: true }),
+      admin.from("homework_sets").select("id", { count: "exact", head: true }),
+      admin.from("activities").select("id", { count: "exact", head: true }),
+      admin
+        .from("messages")
+        .select("id, sender_id, body, created_at")
+        .order("created_at", { ascending: false })
+        .limit(15),
+    ]);
+    return {
+      students: students.count ?? 0,
+      guided_drills: drills.count ?? 0,
+      homework_sets: sets.count ?? 0,
+      activities: activities.count ?? 0,
+      recent_messages: messages.data ?? [],
+    };
+  }
+
+  return { error: `Unknown read tool ${name}` };
+}
+
+async function buildPlatformContext(admin: SupabaseClient): Promise<string> {
+  const overview = await runReadTool(admin, "platform_overview", {}, null);
+  const o = overview as { students?: number; guided_drills?: number; homework_sets?: number; activities?: number };
+  return `PLATFORM: ${o.students ?? 0} students, ${o.guided_drills ?? 0} guided drills, ${o.homework_sets ?? 0} homework sets, ${o.activities ?? 0} activities. No student is selected — resolve names with find_students before acting.`;
+}
+
 interface AiResult {
   content: string;
   proposal: Proposal | null;
@@ -824,16 +1116,45 @@ async function runAiLane(
   selectedStudent: ResolvedStudent | null,
   contextHeader: string | null,
 ): Promise<AiResult> {
-  const gemini = await callGeminiWithTools({
+  const toolTurns: GeminiContent[] = [];
+  let gemini = await callGeminiWithTools({
     apiKey,
     systemPrompt: SYSTEM_PROMPT,
     contextHeader,
     history,
     message,
+    toolTurns,
   });
+
+  // Read tools loop: the model may look things up several times before it
+  // answers or proposes an action. Reads never mutate anything.
+  for (let step = 0; step < 6; step += 1) {
+    const call = gemini.functionCall;
+    if (!call || !READ_TOOLS.has(call.name)) break;
+    let result: Record<string, unknown>;
+    try {
+      result = await runReadTool(admin, call.name, call.args, selectedStudent);
+    } catch (e) {
+      result = { error: e instanceof Error ? e.message : "lookup failed" };
+    }
+    toolTurns.push({ role: "model", parts: [{ functionCall: { name: call.name, args: call.args } }] });
+    toolTurns.push({
+      role: "user",
+      parts: [{ functionResponse: { name: call.name, response: result } }],
+    });
+    gemini = await callGeminiWithTools({
+      apiKey,
+      systemPrompt: SYSTEM_PROMPT,
+      contextHeader,
+      history,
+      message,
+      toolTurns,
+    });
+  }
+
   const toolCall = gemini.functionCall;
 
-  if (!toolCall) {
+  if (!toolCall || READ_TOOLS.has(toolCall.name)) {
     return { content: gemini.text || "I'm not sure what to do here.", proposal: null };
   }
 
