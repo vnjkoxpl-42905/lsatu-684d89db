@@ -64,7 +64,7 @@ function Bubble({ interaction }: { interaction: TAInteraction }) {
 }
 
 export default function TAChatView({ studentId, studentName, backend = "ta-chat" }: Props) {
-  const { interactions, isLoading, error, send, confirmAction, cancelAction } =
+  const { interactions, isLoading, error, send, confirmAction, cancelAction, clearThread } =
     useTAChat(studentId, backend);
   const inspect = useInspector();
   const [inspectOpen, setInspectOpen] = useState(false);
@@ -209,6 +209,25 @@ export default function TAChatView({ studentId, studentName, backend = "ta-chat"
     }
     const msg = (normalizedIntent?.sendText ?? source).trim();
     if (!msg || send.isPending || inspect.isPending) return;
+
+    // /clear wipes this conversation instead of sending anything to the model.
+    if (/^\/clear\b/i.test(msg)) {
+      if (!text) {
+        setInput("");
+        setMentions([]);
+      }
+      setPaletteOpen(false);
+      setMentionOpen(false);
+      setInspectOpen(false);
+      try {
+        await clearThread.mutateAsync();
+        toast.success("Conversation cleared");
+      } catch (e) {
+        toast.error(e instanceof Error ? e.message : "Could not clear the conversation");
+      }
+      return;
+    }
+
 
     // /inspect routes to the Platform Inspector instead of the TA chat. The
     // structured report renders in an overlay so the persisted ta_interactions
