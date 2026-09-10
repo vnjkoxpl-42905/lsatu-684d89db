@@ -751,7 +751,7 @@ async function buildBootcampProposal(
 
 interface AttemptRow {
   qtype: string | null;
-  is_correct: boolean | null;
+  correct: boolean | null;
 }
 
 function clamp(str: string, n: number): string {
@@ -772,7 +772,7 @@ function summarizeAnalytics(
     const k = a.qtype || "unknown";
     const agg = byType.get(k) ?? { total: 0, correct: 0 };
     agg.total += 1;
-    if (a.is_correct) agg.correct += 1;
+    if (a.correct) agg.correct += 1;
     byType.set(k, agg);
   }
   const perType = [...byType.entries()]
@@ -780,7 +780,7 @@ function summarizeAnalytics(
     .slice(0, 10)
     .map(([k, v]) => `  - ${k}: ${v.correct}/${v.total} (${Math.round((v.correct / v.total) * 100)}%)`)
     .join("\n");
-  const correct = attempts.filter((a) => a.is_correct).length;
+  const correct = attempts.filter((a) => a.correct).length;
   const overall = attempts.length
     ? `${correct}/${attempts.length} (${Math.round((correct / attempts.length) * 100)}%)`
     : "no attempts";
@@ -797,7 +797,7 @@ async function buildStudentContext(
   studentName: string,
 ): Promise<string> {
   const [attemptsRes, wajRes, asgRes] = await Promise.all([
-    admin.from("attempts").select("qtype, is_correct").eq("class_id", studentId)
+    admin.from("attempts").select("qtype, correct").eq("class_id", studentId)
       .order("timestamp_iso", { ascending: false }).limit(200),
     admin.from("wrong_answer_journal").select("qtype").eq("class_id", studentId).limit(50),
     admin.from("ta_assignments").select("title, status").eq("student_id", studentId)
