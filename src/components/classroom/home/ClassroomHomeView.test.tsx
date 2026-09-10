@@ -297,6 +297,35 @@ describe("ClassroomHomeView", () => {
     expect(container.querySelectorAll("button.classroom-home-day")).toHaveLength(0);
   });
 
+  it("opens the day's own work rather than the schedule", () => {
+    const onOpen = vi.fn();
+    const dates = weekDates(new Date(2026, 7, 3));
+    const model: ClassroomHomeModel = {
+      ...FULL,
+      week: buildWeek(
+        dates,
+        [{ iso: dates[1], label: "Read, Recall, Colour", route: "/activities/abc" }],
+        new Date(2026, 7, 3),
+      ),
+    };
+    render(
+      <ClassroomHomeView model={model} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /open Read, Recall, Colour/i }));
+    expect(onOpen).toHaveBeenCalledWith("/activities/abc");
+  });
+
+  it("still opens a routeless day onto the schedule", () => {
+    const onOpen = vi.fn();
+    const { container } = render(
+      <ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
+    );
+    const cells = container.querySelectorAll("button.classroom-home-day");
+    expect(cells).toHaveLength(7);
+    fireEvent.click(cells[0] as HTMLElement);
+    expect(onOpen).toHaveBeenCalledWith("/schedule");
+  });
+
   it("does not tell staff a message is from themselves", () => {
     const admin: ClassroomHomeModel = { ...FULL, isAdmin: true, message: null };
     render(
@@ -474,6 +503,25 @@ describe("homeModel", () => {
     expect(week[0].isToday).toBe(true);
     expect(week[1].label).toBeNull();
     expect(week[5].isWeekend).toBe(true);
+  });
+
+  it("carries the first entry's route onto the day, and only its own", () => {
+    const dates = weekDates(new Date(2026, 7, 3));
+    const week = buildWeek(
+      dates,
+      [
+        { iso: "2026-08-04", label: "Read, Recall, Colour", route: "/activities/abc" },
+        { iso: "2026-08-04", label: "Session, 4:00 p.m.", route: "/schedule" },
+        { iso: "2026-08-05", label: "Weekly plan task" },
+      ],
+      new Date(2026, 7, 3),
+    );
+    expect(week[1].route).toBe("/activities/abc");
+    // The cell reads the first thing, so it must not open the second.
+    expect(week[1].label).toBe("Read, Recall, Colour +1");
+    // A plan item has nothing to open; the day stays routeless.
+    expect(week[2].route).toBeNull();
+    expect(week[0].route).toBeNull();
   });
 });
 

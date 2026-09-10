@@ -19,6 +19,7 @@ import {
   type AssignedTodoRow,
 } from "@/hooks/useAssignedTodoFeed";
 import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
+import { resolveItemRoute } from "@/lib/classroomItems";
 import {
   isDayZeroWelcome,
   isNoteUnread,
@@ -533,7 +534,7 @@ export function useClassroomHome(): {
 
   const week = React.useMemo(() => {
     const span = new Set(dates);
-    const entries: { iso: string; label: string }[] = [];
+    const entries: { iso: string; label: string; route?: string | null }[] = [];
 
     for (const item of planQuery.data?.items ?? []) {
       const iso = item.day_date.slice(0, 10);
@@ -541,16 +542,27 @@ export function useClassroomHome(): {
     }
 
     for (const item of itemsQuery.data ?? []) {
-      if (!item.due_at) continue;
-      const iso = localDayISO(new Date(item.due_at));
-      if (span.has(iso)) entries.push({ iso, label: item.title });
+      // `due_at` is a deadline; `unlock_at` is the day the work opens. Assigned
+      // Activities carry a null due_at by design, so reading due_at alone made
+      // every scheduled Activity invisible here — the work existed, unlocked on
+      // the right morning, and never appeared on the day it belonged to.
+      const dated = item.due_at ?? item.unlock_at;
+      if (!dated) continue;
+      const iso = localDayISO(new Date(dated));
+      if (span.has(iso)) {
+        entries.push({ iso, label: item.title, route: resolveItemRoute(item) });
+      }
     }
 
     for (const booking of bookingQuery.data?.bookings ?? []) {
       if (["cancelled", "canceled"].includes(booking.status.toLowerCase())) continue;
       const iso = localDayISO(new Date(booking.start_at));
       if (span.has(iso)) {
-        entries.push({ iso, label: `Session, ${timeLabel(booking.start_at)}` });
+        entries.push({
+          iso,
+          label: `Session, ${timeLabel(booking.start_at)}`,
+          route: "/schedule",
+        });
       }
     }
 
