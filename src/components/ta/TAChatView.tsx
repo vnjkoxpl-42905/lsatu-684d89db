@@ -64,7 +64,7 @@ function Bubble({ interaction }: { interaction: TAInteraction }) {
 }
 
 export default function TAChatView({ studentId, studentName, backend = "ta-chat" }: Props) {
-  const { interactions, isLoading, error, send, confirmAction, cancelAction } =
+  const { interactions, isLoading, error, send, confirmAction, cancelAction, clearThread } =
     useTAChat(studentId, backend);
   const inspect = useInspector();
   const [inspectOpen, setInspectOpen] = useState(false);
