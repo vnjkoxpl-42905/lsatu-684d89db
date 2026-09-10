@@ -114,21 +114,15 @@ function WorkspaceLayout() {
 
             <button
               type="button"
-              onClick={() => setAiPanelOpen((open) => !open)}
-              aria-expanded={aiPanelOpen}
-              aria-controls="teacher-ai-panel"
+              onClick={() => navigate('/teacher/assistant')}
               className={cn(
                 'inline-flex h-8 items-center gap-1.5 border px-2.5 text-[12px] font-medium transition',
-                aiPanelOpen
+                location.pathname.startsWith('/teacher/assistant')
                   ? 'border-teacher-accent bg-teacher-accent text-teacher-accent-foreground hover:bg-teacher-accent-hover'
                   : 'border-teacher-accent/40 text-teacher-accent-strong hover:bg-teacher-accent/10',
               )}
             >
-              {aiPanelOpen ? (
-                <PanelRightClose className="h-3.5 w-3.5" strokeWidth={1.6} />
-              ) : (
-                <PanelRightOpen className="h-3.5 w-3.5" strokeWidth={1.6} />
-              )}
+              <Sparkles className="h-3.5 w-3.5" strokeWidth={1.6} />
               Assistant
             </button>
             </div>
