@@ -6,7 +6,9 @@
 // RLS already permits admin writes, so no service role is needed here.
 
 import DOMPurify from 'dompurify';
+import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { getOrCreateAdminStudentConversation } from '@/lib/adminConversation';
 import { assignResourceToStudent } from '@/lib/teacherAssignResource';
 import { assignWork } from '@/lib/assignWork';
 import { createClassroomItem } from '@/lib/classroomItems';
