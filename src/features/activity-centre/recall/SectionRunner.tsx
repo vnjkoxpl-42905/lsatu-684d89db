@@ -257,6 +257,15 @@ function RunBody({
   const [heard, setHeard] = useState(false);
   /** The check ran its full length without a sound. A zero-length beat has none. */
   const [checkExpired, setCheckExpired] = useState(readySeconds <= 0 || micCheckSeconds <= 0);
+  /**
+   * She chose to go on after the check heard nothing.
+   *
+   * The check expiring used to count her in anyway, which is the exact run the
+   * check exists to prevent: a muted input, twenty-five spoken minutes, and a
+   * Report Card of zeros. Now an unheard check holds, and only she can start
+   * it. Joshua's call, 2026-09-09. A zero-length beat has no check to hold on.
+   */
+  const [startAnyway, setStartAnyway] = useState(readySeconds <= 0 || micCheckSeconds <= 0);
   /** Confirming the way out. Leaving throws the whole run away. */
   const [confirmingExit, setConfirmingExit] = useState(false);
   /**
@@ -468,7 +477,7 @@ function RunBody({
      * The check. The recorder is open and the bar is on screen, and the count
      * does not begin until the bar has moved once or the check has run out.
      */
-    if (!heard && !checkExpired) return;
+    if (!heard && !startAnyway) return;
     if (countdown <= 0) {
       startedAt.current = runNow();
       phaseStartedAt.current = startedAt.current;
@@ -478,7 +487,7 @@ function RunBody({
     }
     const t = setTimeout(() => setCountdown((n) => (n === null ? null : n - 1)), 1000);
     return () => clearTimeout(t);
-  }, [countdown, runNow, recording, micRefused, heard, checkExpired]);
+  }, [countdown, runNow, recording, micRefused, heard, startAnyway]);
 
   /*
    * The check's own clock. Starts when the microphone is open, not at mount:
@@ -1235,7 +1244,10 @@ function RunBody({
       /* The beat says which of its two states it is in: still waiting to hear
          her, or counting because it has. */
       micHeard={heard}
-      micChecked={heard || checkExpired}
+      micChecked={heard || startAnyway}
+      /* The check heard nothing and the beat is holding for her decision. */
+      micUnheard={checkExpired && !heard && !startAnyway}
+      onStartAnyway={() => setStartAnyway(true)}
       micRefused={micRefused}
       onRetryMic={startRecording}
       confirmingExit={confirmingExit}

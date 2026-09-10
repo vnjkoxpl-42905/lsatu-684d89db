@@ -725,9 +725,25 @@ describe("the ready beat", () => {
     expect(screen.queryByText(CHUNKS[0].text)).toBeNull();
   }, 10000);
 
-  it("counts anyway once the check has run out, and says nothing was heard", async () => {
+  it("holds once the check has run out unheard, and does not count her in", async () => {
+    // Counting her in anyway was the run the check exists to prevent: a muted
+    // input and a Report Card of zeros. Joshua's call, 2026-09-09.
     await renderRun({ readySeconds: 1, micCheckSeconds: 0.3 });
     expect(await screen.findByText(/nothing heard yet/i, {}, { timeout: 2000 })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /start anyway/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /ask again/i })).toBeInTheDocument();
+    await new Promise((r) => setTimeout(r, 1500));
+    expect(screen.queryByText(/starting/i)).toBeNull();
+    expect(screen.queryByText(CHUNKS[0].text)).toBeNull();
+  }, 10000);
+
+  it("counts once she says to start anyway", async () => {
+    await renderRun({ readySeconds: 1, micCheckSeconds: 0.3 });
+    const go = await screen.findByRole("button", { name: /start anyway/i }, { timeout: 2000 });
+    await act(async () => {
+      fireEvent.click(go);
+    });
+    expect(screen.getByText(/starting in 1/i)).toBeInTheDocument();
     expect(await screen.findByText(CHUNKS[0].text, {}, { timeout: 3000 })).toBeInTheDocument();
   }, 10000);
 

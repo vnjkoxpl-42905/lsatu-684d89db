@@ -112,6 +112,14 @@ export interface SectionStageProps {
    */
   micChecked?: boolean;
   /**
+   * The check ran out without a sound and the beat is holding. Nothing counts
+   * until she says to; the two ways forward are asking for the microphone
+   * again and starting anyway.
+   */
+  micUnheard?: boolean;
+  /** Start the count although nothing was heard. Her decision, not the clock's. */
+  onStartAnyway?: () => void;
+  /**
    * The microphone was refused or is missing. The ready beat holds here rather
    * than counting down into a spoken run that has nothing to mark at the end.
    */
@@ -222,6 +230,8 @@ export function SectionStage({
   onHeard,
   micHeard = false,
   micChecked = false,
+  micUnheard = false,
+  onStartAnyway,
   micRefused,
   onRetryMic,
   sectionName,
@@ -532,10 +542,28 @@ export function SectionStage({
                   <p className="ac-section-ready-body">
                     {micHeard
                       ? "Heard you."
-                      : micChecked
-                        ? "Nothing heard yet. Check it is not muted."
+                      : micUnheard
+                        ? "Nothing heard yet. Check it is not muted, then say something. Or start anyway."
                         : "Say something to check your microphone."}
                   </p>
+                  {/* Held, not counted in. The run this check exists to prevent
+                      is the one that starts on a silent input, so the clock
+                      does not decide this; she does. */}
+                  {micUnheard ? (
+                    <div className="ac-section-ready-actions">
+                      <button type="button" className="ac-section-ready-retry" onClick={onStartAnyway}>
+                        Start anyway
+                      </button>
+                      <button type="button" className="ac-section-ready-leave" onClick={onRetryMic}>
+                        Ask again
+                      </button>
+                      {onExit && (
+                        <button type="button" className="ac-section-ready-leave" onClick={onExit}>
+                          Leave this section
+                        </button>
+                      )}
+                    </div>
+                  ) : null}
                   {/* No count while it is still listening for her: a number
                       ticking beside "say something" would say the opposite. */}
                   {micChecked ? (

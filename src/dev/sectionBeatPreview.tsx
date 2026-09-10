@@ -48,7 +48,9 @@ createRoot(document.getElementById("root")!).render(
     countdown={beat ? 3 : null}
     micRefused={state === "refused"}
     micHeard={state === "heard"}
-    micChecked={state === "heard" || state === "unheard"}
+    micChecked={state === "heard"}
+    micUnheard={state === "unheard"}
+    onStartAnyway={() => {}}
     onExit={() => {}}
     onRetryMic={() => {}}
   />,
