@@ -3,12 +3,12 @@
 // Kept in src/ so Vitest can exercise the DST/buffer/boundary logic directly.
 
 // Fallbacks only. The live numbers come from booking_availability_config:
-// Buffer 10 min, 24 h notice, 45-day window, mirroring Cal.com (2026-09-10).
+// Buffer 10 min, 24 h notice, 8-day window (2026-09-11).
 export const BOOKING_CFG = {
   sessionMinDefault: 70,
   bufferMinDefault: 10,
   leadMin: 1440,
-  lookaheadDaysDefault: 45,
+  lookaheadDaysDefault: 8,
   maxSlots: 400,
 };
 
@@ -128,9 +128,12 @@ export function generateSlots(opts: {
 // The pass link's policy: pitch is length + buffer so back-to-back slots are
 // all bookable (80 minutes for the 70-minute session).
 export function passSlotPolicy(opts: {
-  sessionMin: number; bufferMin: number; leadMin: number; windowDays: number; nowMs: number; expiresAtMs?: number | null;
+  sessionMin: number; bufferMin: number; leadMin: number; windowDays: number; nowMs: number; expiresAtMs?: number | null; hostTz?: string;
 }): SlotPolicy {
-  let windowEndMs = opts.nowMs + opts.windowDays * 86_400_000;
+  // Counted in host-local calendar dates: today plus N days, through the end of that day.
+  const tz = opts.hostTz ?? "America/Toronto";
+  const today = hostLocalParts(tz, new Date(opts.nowMs));
+  let windowEndMs = hostLocalToUtc(tz, today.y, today.m, today.d + opts.windowDays + 1, 0).getTime();
   if (opts.expiresAtMs && opts.expiresAtMs < windowEndMs) windowEndMs = opts.expiresAtMs;
   return {
     lengthMin: opts.sessionMin,

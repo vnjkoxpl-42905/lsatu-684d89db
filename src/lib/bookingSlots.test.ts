@@ -119,11 +119,12 @@ describe("generateSlots", () => {
     expect(maxEnd).toBeLessThanOrEqual(expiresAtMs);
   });
 
-  it("ends at the rolling window", () => {
-    const slots = generateSlots({ ...base, policy: passSlotPolicy({ ...POLICY, windowDays: 45 }) });
-    const maxEnd = Math.max(...slots.map((s) => new Date(s.end_at).getTime()));
-    expect(maxEnd).toBeLessThanOrEqual(NOW + 45 * 86_400_000);
-    expect(maxEnd).toBeGreaterThan(NOW + 40 * 86_400_000);
+  it("ends at the rolling window, counted in host dates through the end of the last day", () => {
+    // NOW is Wed Jul 1 08:00 ET; 8 days lands on Thu Jul 9 (not seeded), so Tue Jul 7 is the last day with slots.
+    const slots = generateSlots({ ...base, policy: passSlotPolicy({ ...POLICY, windowDays: 8 }) });
+    const lastStart = Math.max(...slots.map((s) => new Date(s.start_at).getTime()));
+    expect(lastStart).toBe(hostLocalToUtc(EASTERN, 2026, 6, 7, 18 * 60 + 20).getTime());
+    expect(slots.some((s) => onLocalDate(s.start_at, 2026, 6, 11))).toBe(false);
   });
 
   it("produces no slots on Sunday (no seeded window)", () => {

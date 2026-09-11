@@ -19,13 +19,13 @@ import { sendAppEmail } from "./sendAppEmail.ts";
 
 
 // Fallbacks only. The live numbers come from booking_availability_config via
-// get_booking_availability(): Buffer 10 min, 24 h notice, 45-day window
-// (mirroring the Cal.com session-link event, 2026-09-10).
+// get_booking_availability(): Buffer 10 min, 24 h notice, 8-day window
+// (Joshua's numbers, 2026-09-11; the pitch and the buffer mirror Cal.com).
 export const BOOKING_CFG = {
   sessionMinDefault: 70,
   bufferMinDefault: 10,
   leadMin: 1440,
-  lookaheadDaysDefault: 45,
+  lookaheadDaysDefault: 8,
   maxSlots: 400,
 };
 
@@ -248,7 +248,12 @@ export function generateSlots(opts: {
 // bookable (80 minutes for the 70-minute session).
 export function passSlotPolicy(pass: BookingPass, avail: BookingAvailability, nowMs: number, daysAhead?: number): SlotPolicy {
   const days = Math.min(Math.max(daysAhead ?? avail.windowDays, 1), avail.windowDays);
-  let windowEndMs = nowMs + days * 86_400_000;
+  // The window is counted in host-local calendar dates, the way the single
+  // session and Cal.com count it: today plus N days, through the end of that
+  // day. Counting 24-hour blocks from "now" instead made the pass link drop
+  // the last day's evening slots that the single-session page still offered.
+  const today = hostLocalParts(avail.hostTz, new Date(nowMs));
+  let windowEndMs = hostLocalToUtc(avail.hostTz, today.y, today.m, today.d + days + 1, 0).getTime();
   if (pass.expires_at) {
     const exp = new Date(pass.expires_at).getTime();
     if (Number.isFinite(exp) && exp < windowEndMs) windowEndMs = exp;

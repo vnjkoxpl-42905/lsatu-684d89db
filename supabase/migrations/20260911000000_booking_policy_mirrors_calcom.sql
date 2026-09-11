@@ -25,10 +25,10 @@
 --     rows for a date replace the weekly hours on that date; a row with null
 --     times closes the day. Seeded with the one override Cal.com carries today.
 --   * Slot pitch = session length + Buffer (80 min for the 70-min session),
---     window 45 calendar days rolling, both mirroring Cal.com's session-link
+--     window 8 calendar days rolling (Joshua's number; Cal.com runs 45)
 --     event. is_slot_bookable() enforces the same grid the list draws.
 --   * booking_event_types gains window_calendar_days; when set it wins over
---     window_business_days. The single session moves to 45 calendar days,
+--     window_business_days. The single session moves to 8 calendar days,
 --     10/10 buffers and an 80-minute pitch. The consultation keeps its own
 --     Cal.com-mirrored settings (30 min, 30/30, 5 business days).
 
@@ -40,7 +40,7 @@ ON CONFLICT (id) DO NOTHING;
 ALTER TABLE public.booking_availability_config
   ADD COLUMN IF NOT EXISTS buffer_minutes integer NOT NULL DEFAULT 10,
   ADD COLUMN IF NOT EXISTS minimum_notice_minutes integer NOT NULL DEFAULT 1440,
-  ADD COLUMN IF NOT EXISTS window_days integer NOT NULL DEFAULT 45;
+  ADD COLUMN IF NOT EXISTS window_days integer NOT NULL DEFAULT 8;
 
 ALTER TABLE public.booking_availability_config
   DROP CONSTRAINT IF EXISTS booking_availability_config_buffer_even;
@@ -49,7 +49,7 @@ ALTER TABLE public.booking_availability_config
   CHECK (buffer_minutes >= 0 AND buffer_minutes % 2 = 0 AND minimum_notice_minutes >= 0 AND window_days BETWEEN 1 AND 365);
 
 UPDATE public.booking_availability_config
-SET buffer_minutes = 10, minimum_notice_minutes = 1440, window_days = 45, updated_at = now()
+SET buffer_minutes = 10, minimum_notice_minutes = 1440, window_days = 8, updated_at = now()
 WHERE id = 1;
 
 CREATE OR REPLACE FUNCTION public.booking_buffer_minutes()
@@ -117,7 +117,7 @@ BEGIN
     'timezone', COALESCE(_cfg.timezone, 'America/Toronto'),
     'buffer_minutes', COALESCE(_cfg.buffer_minutes, 10),
     'minimum_notice_minutes', COALESCE(_cfg.minimum_notice_minutes, 1440),
-    'window_days', COALESCE(_cfg.window_days, 45),
+    'window_days', COALESCE(_cfg.window_days, 8),
     'ranges', COALESCE((
       SELECT jsonb_agg(to_jsonb(r) ORDER BY r.day_of_week, r.start_time)
       FROM (
@@ -373,8 +373,11 @@ ALTER TABLE public.booking_event_types
 
 UPDATE public.booking_event_types
 SET buffer_before_minutes = 10, buffer_after_minutes = 10,
-    slot_interval_minutes = 80, window_calendar_days = 45, updated_at = now()
+    slot_interval_minutes = 80, window_calendar_days = 8, updated_at = now()
 WHERE slug = 'single-session';
+UPDATE public.booking_event_types
+SET window_calendar_days = 8, updated_at = now()
+WHERE slug = 'consultation';
 
 -- Window end for an event: calendar days when set (Cal.com "calendarDays",
 -- rolling), else the business-day count it always had.
