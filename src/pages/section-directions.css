@@ -1,0 +1,87 @@
+/*
+ * The directions screen before an assigned section. Colours are LawHub's, not
+ * the app's tokens, on purpose: this screen is meant to look like the test.
+ */
+.section-directions {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #c5d5e3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 72px 24px 48px;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f1f1f;
+}
+
+.section-directions-card {
+  width: 100%;
+  max-width: 1310px;
+  min-height: 430px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px 84px 48px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.section-directions-title {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.section-directions-line {
+  font-size: 20px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.section-directions-body {
+  text-align: left;
+  font-size: 20px;
+  line-height: 1.35;
+  margin: 44px 0 0;
+}
+
+.section-directions-status {
+  font-size: 18px;
+}
+
+.section-directions-go {
+  margin-top: 32px;
+  background: #b8650b;
+  color: #ffffff;
+  border: 0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  font-size: 20px;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+.section-directions-go:hover,
+.section-directions-go:focus-visible {
+  background: #a3590a;
+  outline: 3px solid #1f1f1f;
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .section-directions {
+    padding: 32px 12px 32px;
+  }
+  .section-directions-card {
+    padding: 16px 20px 32px;
+    min-height: 0;
+  }
+  .section-directions-title,
+  .section-directions-line,
+  .section-directions-body,
+  .section-directions-go {
+    font-size: 17px;
+  }
+}

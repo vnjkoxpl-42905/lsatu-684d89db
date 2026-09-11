@@ -57,3 +57,17 @@ describe('an assignment launch whose qids do not name a real section', () => {
     expect(spec.mode).toBe('type-drill');
   });
 });
+
+describe('an assigned section for an accommodated student', () => {
+  it('runs on the clock the launch carries, not a flat 35', () => {
+    const qids = Array.from({ length: 25 }, (_, i) => `PT156-S2-Q${i + 1}`);
+    const spec = drillRunSpecFromLaunch(
+      { kind: 'assignment', assignmentId: 'assign_1', timerMode: '52.5' },
+      qids,
+    );
+
+    expect(spec.mode).toBe('full-section');
+    const config = spec.config as FullSectionConfig;
+    expect(config.timer.mode).toBe('52.5');
+  });
+});

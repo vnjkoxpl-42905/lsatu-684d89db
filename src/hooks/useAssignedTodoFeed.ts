@@ -5,6 +5,8 @@ import { useStudentAssignments, useStudentTAAssignments } from '@/hooks/useStude
 import { useClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
 import { readSectionBriefing, type SectionBriefing } from '@/lib/sectionBriefing';
+import { singleSectionOf } from '@/lib/drillRunSpec';
+import { sectionDirectionsRoute } from '@/lib/sectionDirections';
 import { listAssignmentsForStudent as listGuidedForStudent, type GuidedDrill, type GuidedDrillAssignment } from '@/lib/guidedDrills';
 import { listStudentAssignments as listActivityForStudent } from '@/features/activity-centre/api/activitiesClient';
 
@@ -110,6 +112,11 @@ export function buildAssignedRows({
     const put = (row: AssignedTodoRow) => byIdentity.set(`${row.sourceTable}:${row.refId}`, row);
 
     for (const a of hw) {
+      // A set that is exactly one PrepTest section is sat, not worked through:
+      // it opens on the section's directions page and the clock does the
+      // rest. Finishing the run completes the row, so it must never carry a
+      // "Mark done" the student could press without sitting it.
+      const section = singleSectionOf(a.question_qids ?? []);
       put({
         key: `hw-${a.id}`,
         kind: 'homework',
@@ -120,7 +127,8 @@ export function buildAssignedRows({
         status: normalizeStatus(a.status),
         createdAt: a.created_at,
         dueAt: null,
-        route: `/classroom/${encodeURIComponent(a.id)}`,
+        route: section ? sectionDirectionsRoute(a.id) : `/classroom/${encodeURIComponent(a.id)}`,
+        selfCompleting: !!section,
       });
     }
 
@@ -218,9 +226,12 @@ export function buildAssignedRows({
         status,
         createdAt: item.created_at,
         dueAt: item.due_at,
-        route,
+        // The mirror row was written before the section rule existed, so the
+        // source row's directions route wins over the item's classroom link.
+        route: existing?.selfCompleting ? existing.route : route,
         selfCompleting:
-          (item.metadata_json as { kind?: string } | null)?.kind === 'timed_section',
+          (item.metadata_json as { kind?: string } | null)?.kind === 'timed_section' ||
+          !!existing?.selfCompleting,
         briefing: readSectionBriefing(item.metadata_json) ?? undefined,
       });
     }

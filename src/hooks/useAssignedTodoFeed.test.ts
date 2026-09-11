@@ -154,3 +154,50 @@ describe('H10 · a guided drill returns where it was launched from', () => {
     expect(routeWithReturnTo('/bootcamp/intro-to-lr', '/classroom')).toBe('/bootcamp/intro-to-lr');
   });
 });
+
+describe('an assigned PrepTest section is sat, not marked', () => {
+  const sectionHw = {
+    id: 'hw-9',
+    set_title: 'PT156.S4 (LR)',
+    question_qids: Array.from({ length: 26 }, (_, i) => `PT156-S4-Q${i + 1}`),
+    status: 'assigned',
+    created_at: '2026-09-11T00:00:00Z',
+    score: null,
+  };
+  const mixedHw = { ...sectionHw, id: 'hw-10', question_qids: ['PT156-S4-Q1', 'PT101-S2-Q3'] };
+
+  it('opens on the directions page and completes itself', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [row] = buildAssignedRows({ ...EMPTY, hw: [sectionHw as any] });
+    expect(row.route).toBe('/section/hw-9');
+    expect(row.selfCompleting).toBe(true);
+  });
+
+  it('keeps the classroom page and Mark done for a mixed set', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [row] = buildAssignedRows({ ...EMPTY, hw: [mixedHw as any] });
+    expect(row.route).toBe('/classroom/hw-10');
+    expect(row.selfCompleting).toBeFalsy();
+  });
+
+  it('survives the classroom_items mirror written with the old route', () => {
+    const rows = buildAssignedRows({
+      ...EMPTY,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      hw: [sectionHw as any],
+      items: [
+        item({
+          id: 'ci-9',
+          type: 'homework',
+          title: 'PT156.S4 (LR)',
+          source_table: 'homework_assignments',
+          source_id: 'hw-9',
+          metadata_json: { assigned_route: '/classroom/hw-9' },
+        }),
+      ],
+    });
+    expect(rows).toHaveLength(1);
+    expect(rows[0].route).toBe('/section/hw-9');
+    expect(rows[0].selfCompleting).toBe(true);
+  });
+});

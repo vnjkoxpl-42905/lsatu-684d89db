@@ -389,6 +389,11 @@ function DrillContent() {
    * silently, with questions still blank and time still on the clock.
    */
   const [submitConfirmOpen, setSubmitConfirmOpen] = React.useState(false);
+  // An assigned section may be paused, but the first press in a sitting is
+  // met with the truth about the real test before it goes through. Once
+  // acknowledged it is not asked again in that sitting.
+  const [pauseCautionOpen, setPauseCautionOpen] = React.useState(false);
+  const pauseCautionSeenRef = React.useRef(false);
   /**
    * What happens when a section's clock runs out.
    *
@@ -3024,9 +3029,9 @@ function DrillContent() {
         total={session.questionQueue.length}
         onPredict={(score) => {
           setPredictedScore(score);
-          setPostSectionScreen('complete');
+          setPostSectionScreen(assignmentId ? 'review' : 'complete');
         }}
-        onSkip={() => setPostSectionScreen('complete')}
+        onSkip={() => setPostSectionScreen(assignmentId ? 'review' : 'complete')}
       />
     );
   }
@@ -3800,8 +3805,15 @@ function DrillContent() {
     };
     const handleTogglePauseClick = timer
       ? () => {
-          if (timer.isPaused) timer.resume();
-          else timer.pause();
+          if (timer.isPaused) {
+            timer.resume();
+            return;
+          }
+          if (isFullSection && assignmentId && !pauseCautionSeenRef.current) {
+            setPauseCautionOpen(true);
+            return;
+          }
+          timer.pause();
         }
       : undefined;
     const currentAttempted = attemptedQids.has(currentQuestion.qid);
@@ -3983,6 +3995,30 @@ function DrillContent() {
           </AlertDialogContent>
         </AlertDialog>
 
+        <AlertDialog open={pauseCautionOpen} onOpenChange={setPauseCautionOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Pause the section?</AlertDialogTitle>
+              <AlertDialogDescription>
+                You can pause here, as often as you need. On the real LSAT you cannot.
+                The clock runs from the first question to the last unless you have an
+                approved accommodation that allows breaks. Practise the way you will test.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Keep going</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  pauseCautionSeenRef.current = true;
+                  setPauseCautionOpen(false);
+                  timer?.pause();
+                }}
+              >
+                Pause anyway
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
         <AlertDialog open={submitConfirmOpen} onOpenChange={setSubmitConfirmOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>

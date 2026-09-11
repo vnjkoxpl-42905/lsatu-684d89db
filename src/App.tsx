@@ -37,6 +37,7 @@ const RcResults = safeLazy(() => import("./features/rc/pages/RcResults"));
 const RcSearch = safeLazy(() => import("./features/rc/pages/RcSearch"));
 const TestingCentre = safeLazy(() => import("./pages/TestingCentre"));
 const PracticeTestRunPage = safeLazy(() => import("./pages/PracticeTestRun"));
+const SectionDirectionsPage = safeLazy(() => import("./pages/SectionDirections"));
 const Auth = safeLazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
 import ClassroomAccountView from "./components/classroom/AccountView";
@@ -430,6 +431,12 @@ const App = () => {
                       query-preserving adapter — see RcRedirect. */}
                   <Route path="/rc" element={
                     <ProtectedRoute flag="has_drill_access"><RcRedirect /></ProtectedRoute>
+                  } />
+                  {/* The directions screen before an assigned section. Outside
+                      the Classroom shell on purpose: it takes the whole screen,
+                      like the section it leads into. */}
+                  <Route path="/section/:assignmentId" element={
+                    <ProtectedRoute flag="has_classroom_access"><SectionDirectionsPage /></ProtectedRoute>
                   } />
                   <Route path="/rc/drill" element={
                     <ProtectedRoute flag="has_drill_access"><RcPlayer /></ProtectedRoute>

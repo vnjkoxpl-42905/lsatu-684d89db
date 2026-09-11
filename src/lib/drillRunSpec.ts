@@ -90,7 +90,7 @@ const QID_PATTERN = /^PT(\d+)-S(\d+)-Q\d+$/;
  * returns null and keeps the untimed behaviour, because there is no one clock
  * that honestly times a blend.
  */
-function singleSectionOf(qids: string[]): { pt: number; section: number } | null {
+export function singleSectionOf(qids: string[]): { pt: number; section: number } | null {
   if (qids.length === 0) return null;
   let pt: number | null = null;
   let section: number | null = null;
@@ -209,7 +209,9 @@ export function drillRunSpecFromLaunch(
               pt: section.pt,
               section: section.section,
               timer: {
-                mode: '35',
+                // An accommodated student carries her clock on the launch,
+                // the same way a section sat from the section door does.
+                mode: launch.timerMode ?? '35',
                 isPaused: false,
                 elapsedMs: 0,
                 startedAt: now,
