@@ -41,7 +41,16 @@ function textNodes(root: HTMLElement): Text[] {
 
 /**
  * The current selection expressed as offsets into `container`'s rendered text.
- * Returns null when there is no selection, it is collapsed, or it falls outside.
+ * Returns null when there is no selection, it is collapsed, or it never
+ * touches the container.
+ *
+ * A selection that starts before the container or runs past it is cut at the
+ * container's edges rather than rejected: a drag that overshoots the end of a
+ * choice into the row's padding, or sweeps from the stem into a choice, still
+ * marks the part of this surface it covered. Lengths are measured with
+ * Range.toString, which concatenates text nodes exactly as painting walks
+ * them; Selection.toString adds a newline at every block edge and would push
+ * a multi-paragraph mark past where the drag ended.
  */
 export function captureRenderedSelection(
   container: HTMLElement,
@@ -49,10 +58,23 @@ export function captureRenderedSelection(
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0 || selection.isCollapsed) return null;
 
-  const range = selection.getRangeAt(0);
-  if (!container.contains(range.commonAncestorContainer)) return null;
+  const raw = selection.getRangeAt(0);
+  const startInside = container.contains(raw.startContainer);
+  const endInside = container.contains(raw.endContainer);
+  if (!startInside && !endInside) {
+    const touches =
+      typeof raw.intersectsNode === 'function'
+        ? raw.intersectsNode(container)
+        : raw.commonAncestorContainer.contains(container);
+    if (!touches) return null;
+  }
 
-  const text = selection.toString();
+  const range = raw.cloneRange();
+  if (!startInside) range.setStart(container, 0);
+  if (!endInside) range.setEnd(container, container.childNodes.length);
+  if (range.collapsed) return null;
+
+  const text = range.toString();
   if (!text.trim()) return null;
 
   const before = document.createRange();

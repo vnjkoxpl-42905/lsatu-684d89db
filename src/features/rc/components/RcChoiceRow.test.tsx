@@ -94,14 +94,80 @@ describe('RcChoiceRow text surface', () => {
     );
   });
 
-  it('a click with a tool active does not answer', () => {
-    for (const mode of ['yellow', 'pink', 'orange', 'underline', 'erase'] as const) {
-      const { onSelect, text } = renderRow({ highlightMode: mode });
-      fireEvent.mouseUp(text);
-      fireEvent.click(text);
-      expect(onSelect, mode).not.toHaveBeenCalled();
-      cleanup();
+  it('under a marker a plain click still answers, after a beat', () => {
+    vi.useFakeTimers();
+    try {
+      for (const mode of ['yellow', 'pink', 'orange', 'underline'] as const) {
+        const { onSelect, text } = renderRow({ highlightMode: mode });
+        fireEvent.mouseUp(text);
+        fireEvent.click(text);
+        expect(onSelect, mode).not.toHaveBeenCalled();
+        vi.advanceTimersByTime(350);
+        expect(onSelect, mode).toHaveBeenCalledWith('B');
+        cleanup();
+      }
+    } finally {
+      vi.useRealTimers();
     }
+  });
+
+  it('with the eraser a click beside a mark still answers', () => {
+    const { onSelect, text } = renderRow({ highlightMode: 'erase' });
+    fireEvent.mouseUp(text);
+    fireEvent.click(text);
+    expect(onSelect).toHaveBeenCalledWith('B');
+  });
+
+  it('under a marker a double-click on a word marks it and never answers', () => {
+    // Browser order: down, up, click (caret only), down (word selected), up,
+    // click, dblclick. The first click cannot yet tell it is not a pick.
+    vi.useFakeTimers();
+    try {
+      const { onSelect, text } = renderRow({ highlightMode: 'yellow' });
+      fireEvent.mouseDown(text);
+      fireEvent.mouseUp(text);
+      fireEvent.click(text, { detail: 1 });
+      fireEvent.mouseDown(text, { detail: 2 });
+      selectAll(text);
+      fireEvent.mouseUp(text, { detail: 2 });
+      fireEvent.click(text, { detail: 2 });
+      fireEvent.doubleClick(text);
+      vi.advanceTimersByTime(500);
+      expect(onSelect).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('a mark is taken even when the mouse is released outside the text', () => {
+    // The drag ran past the end of the choice into the row's padding.
+    const onAdd = vi.fn();
+    const paneRef = React.createRef<HTMLUListElement>();
+    render(
+      <ul ref={paneRef}>
+        <RcChoiceRow
+          choice={choice}
+          questionId={42}
+          selected={false}
+          eliminated={false}
+          revealed={false}
+          onSelect={vi.fn()}
+          onToggleElimination={vi.fn()}
+          highlights={[]}
+          color="yellow"
+          highlightMode="pink"
+          onAddHighlight={onAdd}
+          onRemoveHighlight={vi.fn()}
+          onRemoveRange={vi.fn()}
+          onAnchor={vi.fn()}
+          paneRef={paneRef}
+        />
+      </ul>,
+    );
+    const text = screen.getByText(/regards the theory/);
+    selectAll(text);
+    fireEvent.mouseUp(paneRef.current!);
+    expect(onAdd).toHaveBeenCalledWith(expect.stringMatching(/^q42:B$/), 0, choice.text.length, 'pink', 'highlight');
   });
 
   it('an eliminated row never answers from the text', () => {

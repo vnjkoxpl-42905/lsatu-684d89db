@@ -68,10 +68,23 @@ export function RcPassagePane({
   const textRef = React.useRef<HTMLDivElement>(null);
   const [anchor, setAnchor] = React.useState<RcSelectionAnchor | null>(null);
 
-  const passageHighlights = React.useMemo(
+  // The passage's own marks, kept as the same array while they are the same
+  // marks. The store hands over one array per passage, so a mark on a stem or
+  // a choice makes a new array too; without this the passage would be
+  // repainted (and the find marks with it) for every mark made anywhere.
+  const filtered = React.useMemo(
     () => highlights.filter((h) => h.target === 'passage'),
     [highlights],
   );
+  const stable = React.useRef(filtered);
+  if (
+    stable.current !== filtered &&
+    (stable.current.length !== filtered.length ||
+      stable.current.some((h, i) => h !== filtered[i]))
+  ) {
+    stable.current = filtered;
+  }
+  const passageHighlights = stable.current;
 
   // Repaint highlights whenever the passage or the stored ranges change. Find
   // marks are painted after, so a search sits on top of the student's colors.
@@ -123,7 +136,6 @@ export function RcPassagePane({
       ref={paneRef}
       style={textStyle}
       onScroll={(e) => onScroll((e.target as HTMLDivElement).scrollTop)}
-      onMouseUp={surface.onMouseUp}
     >
       {passage.title && <h1 className="rc-passage-title">{passage.title}</h1>}
       <div className="rc-passage-text" ref={textRef}>

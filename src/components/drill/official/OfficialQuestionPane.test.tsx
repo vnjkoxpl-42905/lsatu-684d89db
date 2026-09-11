@@ -254,12 +254,65 @@ describe("OfficialQuestionPane answer choices as highlight surfaces", () => {
     expect(onAnswerSelect).not.toHaveBeenCalled();
   });
 
-  it("does not pick a choice from a click in eraser mode", () => {
-    const { onAnswerSelect } = renderLive({ highlightMode: "erase" });
-    const text = screen.getByText(question.answerChoices.B);
-    fireEvent.mouseUp(text);
-    fireEvent.click(text);
+  it("in eraser mode a click on a highlight erases and does not pick; a click beside it still picks", () => {
+    const highlights: Highlight[] = [
+      { id: "h1", start: 0, end: 5, text: "There", color: "yellow", section: choiceSection("B") },
+    ];
+    const { onAnswerSelect } = renderLive({ highlightMode: "erase", highlights });
+    const mark = document.querySelector("[data-highlight-id='h1']") as HTMLElement;
+    fireEvent.mouseUp(mark);
+    fireEvent.click(mark);
     expect(onAnswerSelect).not.toHaveBeenCalled();
+
+    const rest = screen.getByText(/has been an increase in ratings/);
+    fireEvent.mouseUp(rest);
+    fireEvent.click(rest);
+    expect(onAnswerSelect).toHaveBeenCalledWith("B");
+  });
+
+  it("under a marker a plain click still picks, after a beat", () => {
+    vi.useFakeTimers();
+    try {
+      const { onAnswerSelect } = renderLive({ highlightMode: "yellow" });
+      const text = screen.getByText(question.answerChoices.B);
+      fireEvent.mouseUp(text);
+      fireEvent.click(text);
+      expect(onAnswerSelect).not.toHaveBeenCalled();
+      vi.advanceTimersByTime(350);
+      expect(onAnswerSelect).toHaveBeenCalledWith("B");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("under a marker a double-click on a word marks it and never picks", () => {
+    // Browser order: down, up, click (caret only), down (word selected), up,
+    // click, dblclick. The first click used to pick before the word existed.
+    vi.useFakeTimers();
+    try {
+      const { onAnswerSelect } = renderLive({
+        highlightMode: "yellow",
+        onTextSelection: () => {
+          const selection = window.getSelection();
+          if (!selection || selection.isCollapsed) return false;
+          selection.removeAllRanges();
+          return true;
+        },
+      });
+      const text = screen.getByText(question.answerChoices.B);
+      fireEvent.mouseDown(text);
+      fireEvent.mouseUp(text);
+      fireEvent.click(text, { detail: 1 });
+      fireEvent.mouseDown(text, { detail: 2 });
+      selectText(question.answerChoices.B);
+      fireEvent.mouseUp(text, { detail: 2 });
+      fireEvent.click(text, { detail: 2 });
+      fireEvent.doubleClick(text);
+      vi.advanceTimersByTime(500);
+      expect(onAnswerSelect).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("renders a choice's highlight inside that choice only", () => {

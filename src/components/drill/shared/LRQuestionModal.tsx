@@ -133,7 +133,15 @@ export default function LRQuestionModal(props: Props) {
   }, [qid]);
 
   React.useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") props.onClose(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      // The toolbar's Aa popover claims Escape first (Radix marks the event
+      // handled); Escape in the Find box clears the box, not the modal.
+      if (e.defaultPrevented) return;
+      const target = e.target as HTMLElement | null;
+      if (target && target.closest("input, textarea")) return;
+      props.onClose();
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [props.onClose]);
@@ -309,6 +317,9 @@ export default function LRQuestionModal(props: Props) {
               </div>
             ) : (
               <>
+                {/* No Directions here: the dialog would open beneath this
+                    modal's own layer, and a capstone item carries its own
+                    framing. */}
                 <OfficialDrillToolbar
                   highlightMode={highlightMode}
                   setHighlightMode={setHighlightMode}
@@ -317,6 +328,7 @@ export default function LRQuestionModal(props: Props) {
                   setSearchTerm={setSearchTerm}
                   fontScale={fontScale}
                   setFontScale={setFontScale}
+                  directions={null}
                 />
                 <OfficialQuestionPane
                   question={renderQuestion}

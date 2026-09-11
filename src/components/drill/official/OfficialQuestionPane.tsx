@@ -12,6 +12,7 @@ import {
   type HighlightRegion,
 } from "@/lib/highlightUtils";
 import { cn } from "@/lib/utils";
+import { useDeferredPick } from "@/hooks/useDeferredPick";
 
 interface Question {
   qid: string;
@@ -112,6 +113,10 @@ export default function OfficialQuestionPane({
   // Set on mouse-up when the drag was a marking gesture, read by the click
   // that follows it. A drag that ends on a choice must not also pick it.
   const markedRef = React.useRef(false);
+  // Under a marker tool a pick waits a beat, so the first press of a
+  // double-click on a word (which is marking, not answering) can be called
+  // off by the second. With no tool active a click picks at once.
+  const deferredPick = useDeferredPick();
 
   const handleMouseUp = () => {
     const selection = window.getSelection();
@@ -131,6 +136,7 @@ export default function OfficialQuestionPane({
     // With no tool active the selection is left alone; it still must not
     // read as a click on the choice it happened to end on.
     markedRef.current = dragged || !!marked;
+    if (markedRef.current) deferredPick.cancel();
   };
 
   // 7Sage sets both the stimulus and the answer choices at 19px and the
@@ -305,16 +311,30 @@ export default function OfficialQuestionPane({
                         if (el) choiceRefs.current.set(key, el);
                         else choiceRefs.current.delete(key);
                       }}
-                      onClick={() => {
+                      onClick={(event) => {
                         if (markedRef.current) {
                           markedRef.current = false;
                           return;
                         }
-                        // In eraser mode a click is aimed at a highlight,
-                        // not at the answer.
-                        if (highlightMode === "erase") return;
-                        if (!locked) onAnswerSelect(key);
+                        if (locked) return;
+                        // A click on a highlight is aimed at the highlight
+                        // (the eraser has just taken it), not at the answer.
+                        const onHighlight = !!(event.target as HTMLElement).closest?.(
+                          "[data-highlight-id]",
+                        );
+                        if (onHighlight && highlightMode === "erase") return;
+                        if (highlightMode === "none" || highlightMode === "erase") {
+                          onAnswerSelect(key);
+                          return;
+                        }
+                        deferredPick.schedule(() => {
+                          // The second press of a double-click marked a word
+                          // in the meantime; that was never a pick.
+                          if (markedRef.current) return;
+                          onAnswerSelect(key);
+                        });
                       }}
+                      onDoubleClick={() => deferredPick.cancel()}
                       className={cn(
                         "text-left leading-relaxed transition-colors",
                         !locked && "cursor-pointer",

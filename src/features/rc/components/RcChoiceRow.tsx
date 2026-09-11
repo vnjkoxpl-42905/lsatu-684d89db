@@ -5,6 +5,7 @@ import { RcMarkdown } from './RcMarkdown';
 import type { RcSelectionAnchor } from './RcSelectionPopover';
 import { useRcMarkSurface, type RcMarkSurfaceHandle } from '../hooks/useRcMarkSurface';
 import { paintRcAnnotations, RC_HIGHLIGHT_ATTR } from '../lib/rcHighlightPaint';
+import { useDeferredPick } from '@/hooks/useDeferredPick';
 import {
   questionTarget,
   type RcAnnotationKind,
@@ -142,17 +143,28 @@ export function RcChoiceRow({
 
   /**
    * A click on the text answers, a drag across it marks. The two are told
-   * apart by what the mouse left behind: a drag leaves a selection, and with a
-   * tool active the release has already been spent on the mark.
+   * apart by what the mouse-up just did: a marking release (a mark applied,
+   * erased or offered for removal) is never a pick, and a drag with no tool
+   * active leaves a selection behind. Under a marker tool the pick waits a
+   * beat, so a double-click on a word (marking, not answering) can call it
+   * off before it lands.
    */
+  const deferredPick = useDeferredPick();
   const clickText = (event: React.MouseEvent<HTMLElement>) => {
-    if (highlightMode !== 'none') return;
+    if (surface.consumedLastMouseUp()) return;
     const selection = window.getSelection();
     if (selection && !selection.isCollapsed) return;
     // A click on an existing mark is aimed at the mark (it opens the Remove
     // popover), not at the answer.
     if ((event.target as HTMLElement).closest?.(`[${RC_HIGHLIGHT_ATTR}]`)) return;
-    pick();
+    if (highlightMode === 'none' || highlightMode === 'erase') {
+      pick();
+      return;
+    }
+    deferredPick.schedule(() => {
+      if (surface.consumedLastMouseUp()) return;
+      pick();
+    });
   };
 
   return (
@@ -198,11 +210,11 @@ export function RcChoiceRow({
         id={textId}
         ref={textRef}
         data-rc-mark-surface
-        onMouseUp={surface.onMouseUp}
         onClick={clickText}
+        onDoubleClick={() => deferredPick.cancel()}
         className={cn(
           'rc-choice-text relative text-left leading-relaxed transition-colors',
-          pickable && highlightMode === 'none' ? 'cursor-pointer' : 'cursor-text',
+          pickable ? 'cursor-pointer' : 'cursor-text',
           eliminated && 'line-through',
         )}
         style={textStyle}

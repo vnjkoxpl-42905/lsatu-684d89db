@@ -53,8 +53,12 @@ interface Props {
 
 interface Popover {
   anchor: RcSelectionAnchor;
-  /** The stem or choice that opened it, so its buttons act on that text. */
-  surface: RcMarkSurfaceHandle;
+  /**
+   * The surfaces that opened it, so its buttons act on the right text. One
+   * drag from the stem into a choice is two surfaces, and Highlight paints
+   * both; Remove only ever concerns the one mark that was clicked.
+   */
+  surfaces: RcMarkSurfaceHandle[];
 }
 
 export function RcQuestionPane({
@@ -86,11 +90,26 @@ export function RcQuestionPane({
   // One popover for the pane. Its state is this pane's own: the passage pane
   // keeps its own, so a selection here never moves a popover there.
   const [popover, setPopover] = React.useState<Popover | null>(null);
+  // Every surface reports after each mouse-up: an anchor when the selection
+  // touched it, null when it did not. Surfaces with a slice join the popover;
+  // the rest drop out of it, so a release with no selection empties it.
   const onAnchor = React.useCallback(
     (anchor: RcSelectionAnchor | null, surface: RcMarkSurfaceHandle) =>
-      setPopover(anchor ? { anchor, surface } : null),
+      setPopover((prev) => {
+        const others = (prev?.surfaces ?? []).filter((s) => s !== surface);
+        if (!anchor) return prev && others.length > 0 ? { ...prev, surfaces: others } : null;
+        return {
+          anchor,
+          surfaces: anchor.mode === 'apply' ? [...others, surface] : [surface],
+        };
+      }),
     [],
   );
+  // A popover left open on the way out of a question would offer the old
+  // offsets to the new question's text.
+  React.useEffect(() => {
+    setPopover(null);
+  }, [question.questionId]);
 
   const stemTarget = questionTarget(question.questionId, 'stem');
   const stemHighlights = React.useMemo(
@@ -102,7 +121,7 @@ export function RcQuestionPane({
     if (el) paintRcAnnotations(el, stemHighlights);
   }, [question.questionId, question.prompt, stemHighlights]);
 
-  const stem = useRcMarkSurface({
+  useRcMarkSurface({
     textRef: stemRef,
     paneRef,
     highlightMode,
@@ -112,13 +131,6 @@ export function RcQuestionPane({
     onRemoveRange: (start, end) => onRemoveRange(stemTarget, start, end),
     onAnchor,
   });
-
-  /** A release anywhere else in the pane puts the popover away. */
-  const dismissOutsideSurfaces = (event: React.MouseEvent) => {
-    const el = event.target as HTMLElement;
-    if (el.closest('[data-rc-mark-surface], .rc-selection-popover')) return;
-    setPopover(null);
-  };
 
   React.useEffect(() => {
     if (!revealed) {
@@ -139,7 +151,6 @@ export function RcQuestionPane({
       className="rc-exam-col relative min-w-0 overflow-y-auto px-6 py-7 sm:pl-10 sm:pr-8"
       style={type.question}
       ref={paneRef}
-      onMouseUp={dismissOutsideSurfaces}
     >
       {reattemptMode && (
         <div className="rc-reattempt-banner">
@@ -166,7 +177,6 @@ export function RcQuestionPane({
             className="flex-1 [&_p]:m-0"
             ref={stemRef}
             data-rc-mark-surface
-            onMouseUp={question.prompt ? stem.onMouseUp : undefined}
           >
             {question.prompt ? <RcMarkdown>{question.prompt}</RcMarkdown> : <p>&nbsp;</p>}
           </div>
@@ -208,7 +218,9 @@ export function RcQuestionPane({
             : (reattemptPick ?? selected) === choice.letter;
           return (
             <RcChoiceRow
-              key={choice.letter}
+              // Keyed on the question too, so a new question gets fresh rows:
+              // nothing a row captured on the last question carries over.
+              key={`${question.questionId}:${choice.letter}`}
               choice={choice}
               questionId={question.questionId}
               selected={isPicked}
@@ -260,8 +272,8 @@ export function RcQuestionPane({
         anchor={popover?.anchor ?? null}
         color={color}
         onColorChange={onColorChange}
-        onApply={(chosen) => popover?.surface.applyPending(chosen)}
-        onRemove={() => popover?.surface.removePending()}
+        onApply={(chosen) => popover?.surfaces.forEach((s) => s.applyPending(chosen))}
+        onRemove={() => popover?.surfaces.forEach((s) => s.removePending())}
         onDismiss={() => setPopover(null)}
       />
     </div>
