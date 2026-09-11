@@ -11,6 +11,8 @@
  *   npx vite-node scripts/assign.ts -- --student "Celia" --activity "Read, Recall, Colour"
  *   npx vite-node scripts/assign.ts -- --student "Celia" --drill "main-conclusion-1"
  *   npx vite-node scripts/assign.ts -- --student "Celia" --message "Start with PT105.S2."
+ *   npx vite-node scripts/assign.ts -- --student "Celia" --section PT156.S2 --due 2026-09-13
+ *   npx vite-node scripts/assign.ts -- --student "Celia" --set "PT156.S2 (LR)"
  *   npx vite-node scripts/assign.ts -- --student "Celia" --activity "..." --dry-run
  *
  * Credentials are read from ~/ai-os/.env (git-ignored), never from this repo's
@@ -54,19 +56,30 @@ const studentQuery = arg("student");
 const activityQuery = arg("activity");
 const drillQuery = arg("drill");
 const messageText = arg("message");
+const sectionQuery = arg("section");
+const setQuery = arg("set");
 const scheduleFor = arg("schedule");
+const dueOn = arg("due");
 const dryRun = has("dry-run");
 
-if (!studentQuery || (!activityQuery && !drillQuery && !messageText)) {
+const kinds = [activityQuery, drillQuery, messageText, sectionQuery, setQuery].filter(Boolean).length;
+if (!studentQuery || kinds !== 1) {
   console.error(
     "usage: vite-node scripts/assign.ts -- --student <name|email> \\\n" +
-      "         (--activity <title> | --drill <slug|title> | --message <text>)\\\n" +
-      "         [--schedule YYYY-MM-DD] [--dry-run]",
+      "         (--activity <title> | --drill <slug|title> | --message <text>\\\n" +
+      "          | --section PT<n>.S<n> | --set <title|id>)\\\n" +
+      "         [--schedule YYYY-MM-DD] [--due YYYY-MM-DD] [--dry-run]",
   );
   process.exit(2);
 }
-if (scheduleFor && !/^\d{4}-\d{2}-\d{2}$/.test(scheduleFor)) {
-  console.error(`--schedule must be YYYY-MM-DD, got "${scheduleFor}"`);
+for (const [flag, v] of [["schedule", scheduleFor], ["due", dueOn]] as const) {
+  if (v && !/^\d{4}-\d{2}-\d{2}$/.test(v)) {
+    console.error(`--${flag} must be YYYY-MM-DD, got "${v}"`);
+    process.exit(2);
+  }
+}
+if (dueOn && scheduleFor && dueOn < scheduleFor) {
+  console.error(`--due ${dueOn} is before --schedule ${scheduleFor}; she could never do it in time.`);
   process.exit(2);
 }
 
@@ -209,6 +222,136 @@ async function resolveDrill(query: string) {
   return rows[0];
 }
 
+// ------------------------------------------------------- PT sections / sets
+
+/**
+ * A timed PT section is a homework set whose qids are exactly one section of
+ * one PrepTest. `drillRunSpec.singleSectionOf()` notices that shape and runs
+ * it as a real 35-minute `full-section` instead of an untimed drill, so the
+ * qids have to come from the section file itself, in order, with nothing
+ * else mixed in. The file under public/data is the same one the section
+ * runner loads, so the set can never name a question the runner lacks.
+ */
+const SECTION_PATTERN = /^PT\s*(\d+)[.\-\s]*S(?:ection)?\s*(\d+)$/i;
+
+function sectionTitle(pt: number, section: number) {
+  return `PT${pt}.S${section} (LR)`;
+}
+
+function readSectionQids(query: string): { pt: number; section: number; qids: string[] } {
+  const m = SECTION_PATTERN.exec(query.trim());
+  if (!m) {
+    console.error(`assign: --section wants PT<n>.S<n> (e.g. PT156.S2), got "${query}".`);
+    process.exit(2);
+  }
+  const pt = Number(m[1]);
+  const section = Number(m[2]);
+  const dataDir = path.join(REPO, "public", "data");
+  const file = path.join(dataDir, `PT${pt}-S${section}-LR.json`);
+  if (!fs.existsSync(file)) {
+    const have = fs
+      .readdirSync(dataDir)
+      .filter((f) => f.startsWith(`PT${pt}-`) && f.endsWith("-LR.json"))
+      .map((f) => f.replace(/-LR\.json$/, "").replace("-", "."));
+    console.error(
+      `assign: no LR section file for PT${pt}.S${section}.` +
+        (have.length ? ` PT${pt} has: ${have.join(", ")}.` : ` Nothing for PT${pt} is loaded.`),
+    );
+    process.exit(1);
+  }
+  const rows = JSON.parse(fs.readFileSync(file, "utf8")) as Array<{
+    practiceTest: string;
+    sectionNumber: number;
+    questionNumber: number;
+  }>;
+  const qids = rows
+    .filter((r) => r.practiceTest === `PT${pt}` && r.sectionNumber === section)
+    .sort((a, b) => a.questionNumber - b.questionNumber)
+    .map((r) => `PT${pt}-S${section}-Q${r.questionNumber}`);
+  if (qids.length < 20) {
+    console.error(`assign: ${file} holds ${qids.length} questions; a full LR section has 24-26.`);
+    process.exit(1);
+  }
+  return { pt, section, qids };
+}
+
+/**
+ * One set per section, reused. Two sets with the same title would make the
+ * teacher UI show duplicates and the unique index on (student, set) useless.
+ */
+async function findOrCreateSectionSet(teacherId: string, query: string, write: boolean) {
+  const { pt, section, qids } = readSectionQids(query);
+  const title = sectionTitle(pt, section);
+  const { data: existing, error } = await supabase
+    .from("homework_sets")
+    .select("id,title,question_qids,estimated_minutes")
+    .eq("title", title)
+    .order("created_at", { ascending: true });
+  if (error) throw error;
+  const match = (existing ?? []).find(
+    (s) => JSON.stringify(s.question_qids ?? []) === JSON.stringify(qids),
+  );
+  if (match) {
+    // The classroom card reads this; without it she is told "about 50
+    // minutes" for a 35-minute section.
+    if (match.estimated_minutes !== 35 && write) {
+      await supabase.from("homework_sets").update({ estimated_minutes: 35 }).eq("id", match.id);
+    }
+    return { id: match.id, title: match.title, created: false, count: qids.length };
+  }
+  if (existing?.length) {
+    console.error(
+      `assign: a set titled "${title}" exists but its questions differ from PT${pt}-S${section}-LR.json.` +
+        " Fix the set in Teacher > Homework before assigning.",
+    );
+    process.exit(1);
+  }
+  if (!write) return { id: "(new)", title, created: true, count: qids.length };
+  const { data, error: insErr } = await supabase
+    .from("homework_sets")
+    .insert({
+      title,
+      description: `PrepTest ${pt}, Section ${section} - Logical Reasoning. Standard time.`,
+      question_qids: qids,
+      created_by: teacherId,
+      class_id: teacherId,
+      estimated_minutes: 35,
+    })
+    .select("id,title")
+    .single();
+  if (insErr) throw insErr;
+  return { id: data.id, title: data.title, created: true, count: qids.length };
+}
+
+async function resolveSet(query: string) {
+  const q = query.trim();
+  if (/^[0-9a-f-]{36}$/i.test(q)) {
+    const { data } = await supabase.from("homework_sets").select("id,title").eq("id", q).maybeSingle();
+    if (data) return data;
+  }
+  const { data, error } = await supabase.from("homework_sets").select("id,title").ilike("title", `%${q}%`);
+  if (error) throw error;
+  const rows = data ?? [];
+  const exact = rows.filter((r) => r.title.toLowerCase() === q.toLowerCase());
+  const pool = exact.length ? exact : rows;
+  if (pool.length === 0) {
+    console.error(`assign: no homework set matches "${query}".`);
+    process.exit(1);
+  }
+  if (pool.length > 1) {
+    console.error(`assign: "${query}" matches ${pool.length} sets:`);
+    for (const r of pool) console.error(`  - ${r.title}  (${r.id})`);
+    process.exit(1);
+  }
+  return pool[0];
+}
+
+/** Due at the end of that calendar day, local time: "due Saturday" means all of Saturday. */
+function dueAtEndOfDay(day: string): string {
+  const [y, m, d] = day.split("-").map(Number);
+  return new Date(y, m - 1, d, 23, 59, 59).toISOString();
+}
+
 // ---------------------------------------------------------------- messaging
 
 /** Mirrors findOrCreateThread in src/lib/classroomNotify.ts, which is private. */
@@ -263,13 +406,18 @@ async function findOrCreateThread(adminUserId: string, studentId: string): Promi
  * one flag the assigned work needs. It never grants anything else and it never
  * revokes: the rest of the feature set stays exactly where he set it.
  */
-const ACCESS_FLAG = {
-  activity: "has_activity_access",
-  guided_drill: "has_drill_access",
+const ACCESS_FLAGS = {
+  activity: ["has_activity_access"],
+  guided_drill: ["has_drill_access"],
+  // A homework set is opened from /classroom/:id and run at /drill.
+  homework_set: ["has_classroom_access", "has_drill_access"],
 } as const;
 
-async function ensureCanOpen(classId: string, kind: keyof typeof ACCESS_FLAG, who: string) {
-  const flag = ACCESS_FLAG[kind];
+async function ensureCanOpen(classId: string, kind: keyof typeof ACCESS_FLAGS, who: string) {
+  for (const flag of ACCESS_FLAGS[kind]) await ensureFlag(classId, flag, who);
+}
+
+async function ensureFlag(classId: string, flag: string, who: string) {
   const { data, error } = await supabase
     .from("profiles")
     .select(flag)
@@ -310,15 +458,53 @@ async function main() {
     return console.log("Sent.");
   }
 
-  const item = activityQuery
-    ? { kind: "activity" as const, activityId: (await resolveActivity(activityQuery)).id }
-    : { kind: "guided_drill" as const, drillId: (await resolveDrill(drillQuery!)).id };
+  let item: Parameters<typeof assignWork>[0]["item"];
+  let label: string;
+  let note = "";
+  if (activityQuery) {
+    const a = await resolveActivity(activityQuery);
+    item = { kind: "activity", activityId: a.id };
+    label = a.title;
+  } else if (drillQuery) {
+    const d = await resolveDrill(drillQuery);
+    item = { kind: "guided_drill", drillId: d.id };
+    label = d.title;
+  } else if (sectionQuery) {
+    const s = await findOrCreateSectionSet(teacherId, sectionQuery, !dryRun);
+    item = { kind: "homework_set", setId: s.id };
+    label = s.title;
+    note = `  ${s.count} questions, timed 35:00 · set ${s.created ? "created" : "reused"} (${s.id})`;
+  } else {
+    const s = await resolveSet(setQuery!);
+    item = { kind: "homework_set", setId: s.id };
+    label = s.title;
+  }
 
-  const label = activityQuery
-    ? (await resolveActivity(activityQuery)).title
-    : (await resolveDrill(drillQuery!)).title;
+  if (item.kind === "homework_set") {
+    // The unique index refuses a second active copy; say so in plain words
+    // rather than surfacing a Postgres constraint name.
+    const { data: prior } = await supabase
+      .from("homework_assignments")
+      .select("id,status,created_at")
+      .eq("student_id", student.class_id)
+      .eq("set_id", item.setId)
+      .neq("status", "completed")
+      .maybeSingle();
+    if (prior) {
+      console.error(
+        `assign: ${who} already has "${label}" (${prior.status}, assigned ${new Date(prior.created_at).toLocaleDateString("en-CA")}).` +
+          `
+  /classroom/${prior.id}. A set can be re-issued only after that copy is completed.`,
+      );
+      process.exit(1);
+    }
+  }
 
-  console.log(`Assign "${label}" → ${who}${scheduleFor ? `  (unlocks ${scheduleFor})` : ""}`);
+  console.log(
+    `Assign "${label}" → ${who}` +
+      `${scheduleFor ? `  (unlocks ${scheduleFor})` : ""}${dueOn ? `  (due ${dueOn})` : ""}`,
+  );
+  if (note) console.log(note);
   if (dryRun) return console.log("\n(dry run — nothing written)");
 
   const { ok, failed } = await assignWork({
@@ -326,6 +512,7 @@ async function main() {
     studentIds: [student.class_id],
     item,
     scheduledForLocalDate: scheduleFor,
+    overrides: dueOn ? { dueAt: dueAtEndOfDay(dueOn) } : undefined,
   });
 
   if (failed.length) {
