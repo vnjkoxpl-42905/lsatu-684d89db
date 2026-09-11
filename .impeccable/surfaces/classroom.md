@@ -144,12 +144,14 @@ the live sheet on 2026-09-09: **5.38:1 light, 8.06:1 dark**. The rule also set
 was identifiable by colour alone and stopped being identifiable at all under the cursor
 (WCAG 1.4.1). Underlined in both states now, `text-underline-offset: 2px`.
 
-Three uses of `--classroom-link` still carry words and are the open case, all outside the
-reading column, all the same one-token fix: `.classroom-message-link` (a 16px link in
+The last three uses of `--classroom-link` that carried words were moved to
+`--classroom-link-text` on 2026-09-11: `.classroom-message-link` (a 16px link in
 Messages, which is where the note's own Ask button lands),
-`.classroom-annotate-button-active`, and `.classroom-orientation-eyebrow` (11px at
-weight 600, which is not large text). The remaining uses are icons, fills and
-`border-color`, and stay where they are.
+`.classroom-annotate-button-active` (its `border-color` is a fill and keeps the
+decorative token), and `.classroom-orientation-eyebrow` (11px at weight 600, which is
+not large text). No `color:` in this file resolves from `--classroom-link` on anything
+but an icon now; the remaining uses are icons, fills and `border-color`, and stay where
+they are.
 
 **Overlays are dialogs.** The section drawer and the mobile menu go through
 `useDialogOverlay`: `role="dialog"`, `aria-modal`, an accessible name, focus moved in on
