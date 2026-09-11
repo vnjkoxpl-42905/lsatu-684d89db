@@ -1256,6 +1256,36 @@ export type Database = {
           },
         ]
       }
+      booking_refusals: {
+        Row: {
+          booking_pass_id: string | null
+          created_at: string
+          details: string | null
+          id: string
+          reason: string
+          start_at: string | null
+          surface: string
+        }
+        Insert: {
+          booking_pass_id?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason: string
+          start_at?: string | null
+          surface: string
+        }
+        Update: {
+          booking_pass_id?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason?: string
+          start_at?: string | null
+          surface?: string
+        }
+        Relationships: []
+      }
       booking_worker_heartbeats: {
         Row: {
           last_error: string | null
