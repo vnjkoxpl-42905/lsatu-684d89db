@@ -97,13 +97,23 @@ export function useTimer(mode: TimerMode, durationMs?: number) {
     // remount cycle, which would otherwise leave the ref stuck at false from
     // the cleanup pass).
     mountedRef.current = true;
+    // Strict Mode mounts, unmounts, and mounts again. The unmount below clears
+    // the scheduled tick, and the child effect that called start() does not
+    // call it twice because the clock already says running. Without this the
+    // clock is running and nothing ever re-renders it: 34:59 for ever, which
+    // is exactly what the dev build showed. Re-arm the tick when the clock is
+    // running with nothing scheduled.
+    if (state.current.running && raf.current === null) {
+      raf.current = window.setTimeout(tick, 250) as unknown as number;
+    }
     return () => {
       mountedRef.current = false;
       if (raf.current !== null) {
         clearTimeout(raf.current);
+        raf.current = null;
       }
     };
-  }, []);
+  }, [tick]);
 
   const elapsed = () => {
     const base = state.current.running ? now() : (state.current.pausedAt || state.current.startedAt);

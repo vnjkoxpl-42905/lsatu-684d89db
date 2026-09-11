@@ -217,7 +217,9 @@ export function drillRunSpecFromLaunch(
                 startedAt: now,
               },
             },
-            sealed: false,
+            // A section assigned as a measurement stays sealed until it is
+            // scored. Blind review is where the thinking gets checked.
+            sealed: !launch.revealAllowed,
             assignmentId: launch.assignmentId,
             guidedSetId: launch.guidedSetId,
           };

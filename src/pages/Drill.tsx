@@ -389,11 +389,13 @@ function DrillContent() {
    * silently, with questions still blank and time still on the clock.
    */
   const [submitConfirmOpen, setSubmitConfirmOpen] = React.useState(false);
-  // An assigned section may be paused, but the first press in a sitting is
-  // met with the truth about the real test before it goes through. Once
-  // acknowledged it is not asked again in that sitting.
-  const [pauseCautionOpen, setPauseCautionOpen] = React.useState(false);
-  const pauseCautionSeenRef = React.useRef(false);
+  // Pausing a section or a practice test raises the notice LawHub raises:
+  // it will pause, and the real exam has no pause. It comes up on every press
+  // unless the student ticks "Don't show me this message again", which holds
+  // for the rest of that sitting and no longer.
+  const [pauseNoticeOpen, setPauseNoticeOpen] = React.useState(false);
+  const [pauseNoticeMuted, setPauseNoticeMuted] = React.useState(false);
+  const pauseNoticeMutedRef = React.useRef(false);
   /**
    * What happens when a section's clock runs out.
    *
@@ -3809,8 +3811,8 @@ function DrillContent() {
             timer.resume();
             return;
           }
-          if (isFullSection && assignmentId && !pauseCautionSeenRef.current) {
-            setPauseCautionOpen(true);
+          if ((isFullSection || inSitting) && !pauseNoticeMutedRef.current) {
+            setPauseNoticeOpen(true);
             return;
           }
           timer.pause();
@@ -3825,6 +3827,7 @@ function DrillContent() {
       isLoading: lrExplanationLoading,
       isError: lrExplanationError,
       revealed: currentRevealed,
+      sealed: revealSealed,
       activeStyle,
       onStyleChange: setActiveStyle,
       onAskTutor: () => openTutorForCurrent(),
@@ -3995,28 +3998,41 @@ function DrillContent() {
           </AlertDialogContent>
         </AlertDialog>
 
-        <AlertDialog open={pauseCautionOpen} onOpenChange={setPauseCautionOpen}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Pause the section?</AlertDialogTitle>
-              <AlertDialogDescription>
-                You can pause here, as often as you need. On the real LSAT you cannot.
-                The clock runs from the first question to the last unless you have an
-                approved accommodation that allows breaks. Practise the way you will test.
+        <AlertDialog open={pauseNoticeOpen} onOpenChange={setPauseNoticeOpen}>
+          {/* LawHub's own notice, in LawHub's own dress: white card, plain
+              sans, blue buttons. It sits over the official player, so it must
+              look like part of it rather than part of the app's chrome. */}
+          <AlertDialogContent className="max-w-2xl rounded-md border-0 bg-white p-6 text-center font-sans text-slate-900">
+            <AlertDialogHeader className="items-center space-y-3">
+              <AlertDialogTitle className="text-3xl font-semibold text-slate-800">Notice</AlertDialogTitle>
+              <AlertDialogDescription className="text-lg leading-snug text-slate-800">
+                Navigating to this page will pause the test. Note that pause
+                functionality will not be available during the real exam.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Keep going</AlertDialogCancel>
+            <AlertDialogFooter className="mt-2 flex-row justify-center gap-2 sm:justify-center">
+              <AlertDialogCancel className="m-0 rounded-md border-2 border-blue-300 bg-slate-500 px-6 text-base text-white hover:bg-slate-600 hover:text-white">
+                Cancel
+              </AlertDialogCancel>
               <AlertDialogAction
+                className="rounded-md bg-blue-600 px-6 text-base text-white hover:bg-blue-700"
                 onClick={() => {
-                  pauseCautionSeenRef.current = true;
-                  setPauseCautionOpen(false);
+                  pauseNoticeMutedRef.current = pauseNoticeMuted;
+                  setPauseNoticeOpen(false);
                   timer?.pause();
                 }}
               >
-                Pause anyway
+                Ok
               </AlertDialogAction>
             </AlertDialogFooter>
+            <label className="mt-1 flex items-center justify-center gap-2 text-base text-slate-800">
+              <input
+                type="checkbox"
+                checked={pauseNoticeMuted}
+                onChange={(e) => setPauseNoticeMuted(e.target.checked)}
+              />
+              Don't show me this message again
+            </label>
           </AlertDialogContent>
         </AlertDialog>
         <AlertDialog open={submitConfirmOpen} onOpenChange={setSubmitConfirmOpen}>
@@ -4062,12 +4078,19 @@ function DrillContent() {
         <AlertDialog open={overtimeState === 'prompt'}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Time.</AlertDialogTitle>
+              <AlertDialogTitle>{assignmentId ? "Time's up." : 'Time.'}</AlertDialogTitle>
               <AlertDialogDescription>
                 {(() => {
                   const total = session.questionQueue.length;
                   const answered = session.regulationMark?.answeredQids.length ?? 0;
                   const left = total - answered;
+                  // An assigned section ends at the buzzer, as the test does.
+                  // What was answered is what gets scored; blind review is next.
+                  if (assignmentId) {
+                    return left === 0
+                      ? 'You answered every question inside the clock. Next comes blind review.'
+                      : `You answered ${answered} of ${total}. The section is scored as you sat it. Next comes blind review.`;
+                  }
                   return left === 0
                     ? 'Your section clock is up, and you answered every question inside it.'
                     : `Your section clock is up. You answered ${answered} of ${total}, with ${left} left. You can finish now and be scored on the section as you sat it, or keep working with the clock counting up — either way, the results show which questions you answered before time and which after.`;
@@ -4075,22 +4098,35 @@ function DrillContent() {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel
-                onClick={() => {
-                  setOvertimeState('none');
-                  void handleFinishSection();
-                }}
-              >
-                Finish and score
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => {
-                  setOvertimeState('running');
-                  timer?.resume();
-                }}
-              >
-                Keep working
-              </AlertDialogAction>
+              {assignmentId ? (
+                <AlertDialogAction
+                  onClick={() => {
+                    setOvertimeState('none');
+                    void handleFinishSection();
+                  }}
+                >
+                  Go to blind review
+                </AlertDialogAction>
+              ) : (
+                <>
+                  <AlertDialogCancel
+                    onClick={() => {
+                      setOvertimeState('none');
+                      void handleFinishSection();
+                    }}
+                  >
+                    Finish and score
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => {
+                      setOvertimeState('running');
+                      timer?.resume();
+                    }}
+                  >
+                    Keep working
+                  </AlertDialogAction>
+                </>
+              )}
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

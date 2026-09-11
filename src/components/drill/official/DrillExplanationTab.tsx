@@ -22,6 +22,11 @@ export interface DrillExplanationContext {
   isError?: boolean;
   /** Nothing is shown until the answer is revealed. */
   revealed: boolean;
+  /**
+   * A sealed sitting never reveals mid-section. Say so, rather than promising
+   * an unlock that cannot happen until the section is scored.
+   */
+  sealed?: boolean;
   /** Shared with the inline layer, so switching style swaps both surfaces. */
   activeStyle: LrStyleKey | null;
   onStyleChange: (style: LrStyleKey) => void;
@@ -34,6 +39,7 @@ export default function DrillExplanationTab({
   isLoading,
   isError,
   revealed,
+  sealed,
   activeStyle,
   onStyleChange,
   onAskTutor,
@@ -53,7 +59,9 @@ export default function DrillExplanationTab({
     return (
       <Body>
         <p className="text-[13px] text-slate-400">
-          The explanation unlocks once you have answered or revealed this question.
+          {sealed
+            ? 'Explanations open after the section is scored.'
+            : 'The explanation unlocks once you have answered or revealed this question.'}
         </p>
       </Body>
     );

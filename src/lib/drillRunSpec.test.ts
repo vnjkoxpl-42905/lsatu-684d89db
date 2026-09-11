@@ -12,7 +12,7 @@ describe('an assignment launch whose qids are all one real section', () => {
     );
 
     expect(spec.mode).toBe('full-section');
-    expect(spec.sealed).toBe(false);
+    expect(spec.sealed).toBe(true);
     expect(spec.assignmentId).toBe('assign_1');
     const config = spec.config as FullSectionConfig;
     expect(config.pt).toBe(156);
@@ -69,5 +69,30 @@ describe('an assigned section for an accommodated student', () => {
     expect(spec.mode).toBe('full-section');
     const config = spec.config as FullSectionConfig;
     expect(config.timer.mode).toBe('52.5');
+  });
+});
+
+describe('an assigned section hides the answers until it is scored', () => {
+  const qids = Array.from({ length: 25 }, (_, i) => `PT156-S2-Q${i + 1}`);
+
+  it('is sealed by default', () => {
+    const spec = drillRunSpecFromLaunch({ kind: 'assignment', assignmentId: 'a1' }, qids);
+    expect(spec.sealed).toBe(true);
+  });
+
+  it('is unsealed only when the launch says so', () => {
+    const spec = drillRunSpecFromLaunch(
+      { kind: 'assignment', assignmentId: 'a1', revealAllowed: true },
+      qids,
+    );
+    expect(spec.sealed).toBe(false);
+  });
+
+  it('leaves a mixed set unsealed, as before', () => {
+    const spec = drillRunSpecFromLaunch(
+      { kind: 'assignment', assignmentId: 'a1' },
+      ['PT156-S2-Q1', 'PT101-S2-Q1'],
+    );
+    expect(spec.sealed).toBe(false);
   });
 });

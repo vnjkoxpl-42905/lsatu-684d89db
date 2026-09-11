@@ -1,4 +1,5 @@
 import * as React from "react";
+import { SECTION_DIRECTIONS } from "@/lib/sectionDirections";
 import { FileText } from "lucide-react";
 import type { HighlightColor } from "@/lib/highlightUtils";
 import { cn } from "@/lib/utils";
@@ -42,24 +43,12 @@ export interface ToolbarDirections {
  * player's call sites stay unchanged; RC passes its own set.
  */
 export const LR_DIRECTIONS: ToolbarDirections = {
-  title: "Logical Reasoning Directions",
+  title: "Directions",
   srDescription: "Directions for the LSAT Logical Reasoning section.",
-  body: (
-    <>
-      <p>
-        The questions in this section are based on the reasoning contained in brief
-        statements or passages. For some questions, more than one of the choices could
-        conceivably answer the question. However, you are to choose the <em>best</em>{" "}
-        answer; that is, the response that most accurately and completely answers the
-        question. You should not make assumptions that are by commonsense standards
-        implausible, superfluous, or incompatible with the passage.
-      </p>
-      <p>
-        After you have chosen the best answer, blacken the corresponding space on your
-        answer sheet.
-      </p>
-    </>
-  ),
+  // LSAC's current digital wording, the same text the section's directions
+  // page shows. The old paper-test version told students to blacken a space
+  // on an answer sheet they do not have.
+  body: <p>{SECTION_DIRECTIONS.lr}</p>,
 };
 
 interface FontScaleOption {
@@ -409,14 +398,19 @@ export default function OfficialDrillToolbar({
 
       {directions && (
         <Dialog open={directionsOpen} onOpenChange={setDirectionsOpen}>
-          <DialogContent className="max-w-2xl">
+          {/* Dressed like the player it sits over, not like the app's dark
+              chrome: white, plain sans, black text, the way LawHub shows its
+              directions. */}
+          <DialogContent className="max-w-3xl rounded-lg border-0 bg-white p-8 font-sans text-slate-900 [&>button]:text-slate-900">
             <DialogHeader>
-              <DialogTitle>{directions.title}</DialogTitle>
+              <DialogTitle className="text-center text-2xl font-semibold text-slate-900">
+                {directions.title}
+              </DialogTitle>
               <DialogDescription className="sr-only">
                 {directions.srDescription}
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 text-[14px] leading-relaxed text-slate-800">
+            <div className="space-y-4 text-[19px] leading-snug text-slate-900 [&_p]:m-0">
               {directions.body}
             </div>
           </DialogContent>
