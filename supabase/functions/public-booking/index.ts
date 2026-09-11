@@ -203,7 +203,17 @@ Deno.serve(async (req) => {
         serviceKey: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
         anonKey: Deno.env.get("SUPABASE_ANON_KEY") ?? "",
       });
-      if (!result.ok) return json({ error: result.error, details: result.details }, result.status);
+      if (!result.ok) {
+        // Keep the slot and the reason, so a "that time was taken" report can
+        // be answered from the log instead of guessed at.
+        const { error: logErr } = await supabase.from("booking_refusals").insert({
+          booking_pass_id: pass.id, surface: "public-booking",
+          start_at: body.start_at ? String(body.start_at) : null,
+          reason: result.error, details: result.details ?? null,
+        });
+        if (logErr) console.error("booking refusal log failed", logErr);
+        return json({ error: result.error, details: result.details }, result.status);
+      }
       return json({ ok: true, redemption: result.redemption, was_existing: result.was_existing });
     }
 
