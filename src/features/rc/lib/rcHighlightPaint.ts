@@ -14,6 +14,8 @@
  * without needing the range to be well-formed for surroundContents.
  */
 
+import { rcHighlightColor, type RcHighlight } from './rcTypes';
+
 export const RC_HIGHLIGHT_ATTR = 'data-rc-highlight';
 export const RC_FIND_ATTR = 'data-rc-find';
 
@@ -116,6 +118,39 @@ export function paintRanges(
       mark.appendChild(middle);
     }
   }
+}
+
+/**
+ * Paints a student's stored marks onto one surface: the passage, a stem, or a
+ * choice. One styling for all of them, so a mark looks the same wherever it
+ * sits. Callers pass only the marks that belong to this surface.
+ */
+export function paintRcAnnotations(container: HTMLElement, highlights: RcHighlight[]): void {
+  paintRanges(
+    container,
+    highlights.map((h) => ({
+      start: h.start,
+      end: h.end,
+      color: h.color,
+      kind: h.kind ?? 'highlight',
+    })),
+    RC_HIGHLIGHT_ATTR,
+    (r) =>
+      r.kind === 'underline'
+        ? {
+            backgroundColor: 'transparent',
+            textDecoration: 'underline',
+            textDecorationColor: 'currentColor',
+            textDecorationThickness: '2px',
+            textUnderlineOffset: '3px',
+          }
+        : {
+            backgroundColor: rcHighlightColor(r.color),
+            // Multiply keeps the text readable through the wash, and matches
+            // how the LR player renders its markers.
+            mixBlendMode: 'multiply',
+          },
+  );
 }
 
 /** Case-insensitive matches of `query` in the container's rendered text. */

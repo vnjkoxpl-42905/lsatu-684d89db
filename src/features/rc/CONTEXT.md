@@ -108,9 +108,12 @@ no model. Named to students exactly as "Adaptive: fresh passages near your level
 _Avoid_: smart, AI, personalized, intelligent
 
 **Annotation**:
-A student's highlights on a passage, stored per (user, passage) in
-`rc_annotations` as character offsets into the rendered text, so they restore on
-any future encounter with that passage.
+A student's highlights and underlines on a passage, a question stem, or an
+answer choice, stored per (user, passage) in `rc_annotations` as character
+offsets into the rendered text of their target, so they restore on any future
+encounter with that passage. Targets are `'passage'`, `q<id>:stem`, or
+`q<id>:<letter>` (`questionTarget()` in `lib/rcTypes.ts`); one passage row
+carries every question's marks.
 _Avoid_: note, markup, comment
 
 ## Routes
@@ -201,4 +204,9 @@ Three stylesheets are involved, and the split matters:
 Annotations carry a `kind` — `'highlight'` or `'underline'`. Absent means
 highlight, so anything stored before underlining existed still reads. Colors are
 LR's three markers at its alpha and blend mode; anything stored under a retired
-color still paints, as yellow.
+color still paints, as yellow. Every markable surface (passage, stem, each
+choice) runs the same mouse-up ladder from `hooks/useRcMarkSurface.ts` and
+paints through `paintRcAnnotations`, so the tools, the eraser and the popover
+cannot drift between them. A pane owns one popover; a surface reports its
+anchor plus a handle back to itself so the popover's buttons act on the right
+text.

@@ -187,10 +187,22 @@ export interface RcAttempt {
   createdAt?: string;
 }
 
-/** A stored highlight, expressed as offsets into the source markdown string. */
+/**
+ * Where a mark lives. Marks are stored per passage, so a question part has to
+ * name its question: a bare letter could not say which of the passage's five
+ * or so questions it belonged to.
+ */
+export type RcHighlightTarget = 'passage' | `q${number}:stem` | `q${number}:${RcLetter}`;
+
+/** The target for a question's stem or one of its choices. */
+export function questionTarget(questionId: number, part: 'stem' | RcLetter): RcHighlightTarget {
+  return `q${questionId}:${part}`;
+}
+
+/** A stored highlight, expressed as offsets into the rendered text of its target. */
 export interface RcHighlight {
-  /** 'passage', or a choice letter, so choice highlights survive re-render. */
-  target: 'passage' | RcLetter;
+  /** 'passage', or a question-scoped stem or choice. See RcHighlightTarget. */
+  target: RcHighlightTarget;
   start: number;
   end: number;
   color: RcHighlightColor;

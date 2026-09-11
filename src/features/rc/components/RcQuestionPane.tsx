@@ -5,9 +5,20 @@ import { RcMarkdown } from './RcMarkdown';
 import { RcChoiceRow } from './RcChoiceRow';
 import { RcChoiceDisclosure } from './RcChoiceDisclosure';
 import { RcReviewLayer } from './RcReviewLayer';
+import { RcSelectionPopover, type RcSelectionAnchor } from './RcSelectionPopover';
 import type { RcTypeStyles } from './RcExamPane';
+import { useRcMarkSurface, type RcMarkSurfaceHandle } from '../hooks/useRcMarkSurface';
+import { paintRcAnnotations } from '../lib/rcHighlightPaint';
 import type { RcSessionItem } from '../lib/rcSession';
-import type { RcLetter } from '../lib/rcTypes';
+import {
+  questionTarget,
+  type RcAnnotationKind,
+  type RcHighlight,
+  type RcHighlightColor,
+  type RcHighlightMode,
+  type RcHighlightTarget,
+  type RcLetter,
+} from '../lib/rcTypes';
 
 interface Props {
   item: RcSessionItem;
@@ -23,6 +34,27 @@ interface Props {
   onToggleElimination: (letter: RcLetter) => void;
   onSkipToAnswer: () => void;
   type: RcTypeStyles;
+  /** This passage's marks; the stem and each choice paint their own. */
+  highlights: RcHighlight[];
+  color: RcHighlightColor;
+  onColorChange: (c: RcHighlightColor) => void;
+  /** Active toolbar tool. 'none' hands the interaction to the popover. */
+  highlightMode: RcHighlightMode;
+  onAddHighlight: (
+    target: RcHighlightTarget,
+    start: number,
+    end: number,
+    color: RcHighlightColor,
+    kind: RcAnnotationKind,
+  ) => void;
+  onRemoveHighlight: (target: RcHighlightTarget, offset: number) => void;
+  onRemoveRange: (target: RcHighlightTarget, start: number, end: number) => void;
+}
+
+interface Popover {
+  anchor: RcSelectionAnchor;
+  /** The stem or choice that opened it, so its buttons act on that text. */
+  surface: RcMarkSurfaceHandle;
 }
 
 export function RcQuestionPane({
@@ -38,9 +70,55 @@ export function RcQuestionPane({
   onToggleElimination,
   onSkipToAnswer,
   type,
+  highlights,
+  color,
+  onColorChange,
+  highlightMode,
+  onAddHighlight,
+  onRemoveHighlight,
+  onRemoveRange,
 }: Props) {
   const { question } = item;
   const [openLetters, setOpenLetters] = React.useState<Set<string>>(() => new Set());
+
+  const paneRef = React.useRef<HTMLDivElement>(null);
+  const stemRef = React.useRef<HTMLDivElement>(null);
+  // One popover for the pane. Its state is this pane's own: the passage pane
+  // keeps its own, so a selection here never moves a popover there.
+  const [popover, setPopover] = React.useState<Popover | null>(null);
+  const onAnchor = React.useCallback(
+    (anchor: RcSelectionAnchor | null, surface: RcMarkSurfaceHandle) =>
+      setPopover(anchor ? { anchor, surface } : null),
+    [],
+  );
+
+  const stemTarget = questionTarget(question.questionId, 'stem');
+  const stemHighlights = React.useMemo(
+    () => highlights.filter((h) => h.target === stemTarget),
+    [highlights, stemTarget],
+  );
+  React.useLayoutEffect(() => {
+    const el = stemRef.current;
+    if (el) paintRcAnnotations(el, stemHighlights);
+  }, [question.questionId, question.prompt, stemHighlights]);
+
+  const stem = useRcMarkSurface({
+    textRef: stemRef,
+    paneRef,
+    highlightMode,
+    color,
+    onAdd: (start, end, chosen, kind) => onAddHighlight(stemTarget, start, end, chosen, kind),
+    onRemove: (offset) => onRemoveHighlight(stemTarget, offset),
+    onRemoveRange: (start, end) => onRemoveRange(stemTarget, start, end),
+    onAnchor,
+  });
+
+  /** A release anywhere else in the pane puts the popover away. */
+  const dismissOutsideSurfaces = (event: React.MouseEvent) => {
+    const el = event.target as HTMLElement;
+    if (el.closest('[data-rc-mark-surface], .rc-selection-popover')) return;
+    setPopover(null);
+  };
 
   React.useEffect(() => {
     if (!revealed) {
@@ -58,8 +136,10 @@ export function RcQuestionPane({
 
   return (
     <div
-      className="rc-exam-col min-w-0 overflow-y-auto px-6 py-7 sm:pl-10 sm:pr-8"
+      className="rc-exam-col relative min-w-0 overflow-y-auto px-6 py-7 sm:pl-10 sm:pr-8"
       style={type.question}
+      ref={paneRef}
+      onMouseUp={dismissOutsideSurfaces}
     >
       {reattemptMode && (
         <div className="rc-reattempt-banner">
@@ -76,8 +156,18 @@ export function RcQuestionPane({
         <div className="flex flex-1 items-start gap-2">
           <span className="min-w-[20px] shrink-0 font-bold tabular-nums">{item.number}.</span>
           {/* Unexplained questions carry no authored prompt. The number stands
-              in rather than inventing a stem. */}
-          <div className="flex-1 [&_p]:m-0">
+              in rather than inventing a stem. The mouse-up sits on this div,
+              not the row: the flag button beside it is not markable text.
+              Keyed on the question so a new stem mounts fresh text nodes;
+              painting splits the ones React rendered, and React would patch
+              the first fragment in place and leave the rest behind. */}
+          <div
+            key={question.questionId}
+            className="flex-1 [&_p]:m-0"
+            ref={stemRef}
+            data-rc-mark-surface
+            onMouseUp={question.prompt ? stem.onMouseUp : undefined}
+          >
             {question.prompt ? <RcMarkdown>{question.prompt}</RcMarkdown> : <p>&nbsp;</p>}
           </div>
         </div>
@@ -120,6 +210,7 @@ export function RcQuestionPane({
             <RcChoiceRow
               key={choice.letter}
               choice={choice}
+              questionId={question.questionId}
               selected={isPicked}
               eliminated={
                 // Hidden outright while they answer again, and never drawn on
@@ -136,6 +227,14 @@ export function RcQuestionPane({
               onToggleElimination={onToggleElimination}
               textStyle={type.choiceText}
               badgeStyle={type.choiceBadge}
+              highlights={highlights}
+              color={color}
+              highlightMode={highlightMode}
+              onAddHighlight={onAddHighlight}
+              onRemoveHighlight={onRemoveHighlight}
+              onRemoveRange={onRemoveRange}
+              onAnchor={onAnchor}
+              paneRef={paneRef}
             >
               {showFeedback && (
                 <RcChoiceDisclosure
@@ -156,6 +255,15 @@ export function RcQuestionPane({
           );
         })}
       </ul>
+
+      <RcSelectionPopover
+        anchor={popover?.anchor ?? null}
+        color={color}
+        onColorChange={onColorChange}
+        onApply={(chosen) => popover?.surface.applyPending(chosen)}
+        onRemove={() => popover?.surface.removePending()}
+        onDismiss={() => setPopover(null)}
+      />
     </div>
   );
 }

@@ -2,7 +2,19 @@ import * as React from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RcMarkdown } from './RcMarkdown';
-import type { RcChoice, RcLetter } from '../lib/rcTypes';
+import type { RcSelectionAnchor } from './RcSelectionPopover';
+import { useRcMarkSurface, type RcMarkSurfaceHandle } from '../hooks/useRcMarkSurface';
+import { paintRcAnnotations, RC_HIGHLIGHT_ATTR } from '../lib/rcHighlightPaint';
+import {
+  questionTarget,
+  type RcAnnotationKind,
+  type RcChoice,
+  type RcHighlight,
+  type RcHighlightColor,
+  type RcHighlightMode,
+  type RcHighlightTarget,
+  type RcLetter,
+} from '../lib/rcTypes';
 
 /**
  * One answer choice, using the LR player's row markup and state ladder so the
@@ -22,10 +34,19 @@ import type { RcChoice, RcLetter } from '../lib/rcTypes';
  * verdict banner directly above used the design system's drill-correct #2f9e64
  * on #eaf6ef — two greens for one verdict, on one screen. Both read the same
  * token now, and it is the documented one.
+ *
+ * The choice text is a markable surface, like the passage: the student can
+ * highlight and underline inside it with the same tools. That is why the text
+ * is not a button. Chromium will not start a drag-selection inside one, and a
+ * disabled button swallows the mouse entirely, which would make a revealed or
+ * crossed-out choice impossible to mark. A plain click on the text still
+ * answers; the letter badge stays the keyboard and screen-reader control.
  */
 
 interface Props {
   choice: RcChoice;
+  /** Scopes this choice's marks: highlights are stored per passage. */
+  questionId: number;
   selected: boolean;
   eliminated: boolean;
   /** Set once feedback is showing, so the row can carry the verdict colors. */
@@ -48,10 +69,27 @@ interface Props {
   badgeStyle?: React.CSSProperties;
   /** The per-choice disclosure, rendered under the text in review. */
   children?: React.ReactNode;
+  /** This passage's marks. The row paints only the ones on its own text. */
+  highlights: RcHighlight[];
+  color: RcHighlightColor;
+  highlightMode: RcHighlightMode;
+  onAddHighlight: (
+    target: RcHighlightTarget,
+    start: number,
+    end: number,
+    color: RcHighlightColor,
+    kind: RcAnnotationKind,
+  ) => void;
+  onRemoveHighlight: (target: RcHighlightTarget, offset: number) => void;
+  onRemoveRange: (target: RcHighlightTarget, start: number, end: number) => void;
+  /** The pane owns the one popover; the row reports where it should sit. */
+  onAnchor: (anchor: RcSelectionAnchor | null, surface: RcMarkSurfaceHandle) => void;
+  paneRef: React.RefObject<HTMLElement | null>;
 }
 
 export function RcChoiceRow({
   choice,
+  questionId,
   selected,
   eliminated,
   revealed,
@@ -62,11 +100,59 @@ export function RcChoiceRow({
   textStyle,
   badgeStyle,
   children,
+  highlights,
+  color,
+  highlightMode,
+  onAddHighlight,
+  onRemoveHighlight,
+  onRemoveRange,
+  onAnchor,
+  paneRef,
 }: Props) {
   const isCorrect = revealed && choice.correct;
   const noCrossOut = disabled || eliminationDisabled;
+  const pickable = !disabled && !eliminated;
   const pick = () => {
-    if (!disabled && !eliminated) onSelect(choice.letter);
+    if (pickable) onSelect(choice.letter);
+  };
+
+  const textRef = React.useRef<HTMLDivElement>(null);
+  const textId = React.useId();
+  const target = questionTarget(questionId, choice.letter);
+  const choiceHighlights = React.useMemo(
+    () => highlights.filter((h) => h.target === target),
+    [highlights, target],
+  );
+
+  React.useLayoutEffect(() => {
+    const el = textRef.current;
+    if (el) paintRcAnnotations(el, choiceHighlights);
+  }, [choice.letter, choice.text, choiceHighlights]);
+
+  const surface = useRcMarkSurface({
+    textRef,
+    paneRef,
+    highlightMode,
+    color,
+    onAdd: (start, end, chosen, kind) => onAddHighlight(target, start, end, chosen, kind),
+    onRemove: (offset) => onRemoveHighlight(target, offset),
+    onRemoveRange: (start, end) => onRemoveRange(target, start, end),
+    onAnchor,
+  });
+
+  /**
+   * A click on the text answers, a drag across it marks. The two are told
+   * apart by what the mouse left behind: a drag leaves a selection, and with a
+   * tool active the release has already been spent on the mark.
+   */
+  const clickText = (event: React.MouseEvent<HTMLElement>) => {
+    if (highlightMode !== 'none') return;
+    const selection = window.getSelection();
+    if (selection && !selection.isCollapsed) return;
+    // A click on an existing mark is aimed at the mark (it opens the Remove
+    // popover), not at the answer.
+    if ((event.target as HTMLElement).closest?.(`[${RC_HIGHLIGHT_ATTR}]`)) return;
+    pick();
   };
 
   return (
@@ -90,6 +176,7 @@ export function RcChoiceRow({
         onClick={pick}
         disabled={disabled || eliminated}
         aria-label={`Choice ${choice.letter}`}
+        aria-describedby={textId}
         className={cn(
           'rc-choice-badge mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border font-semibold transition-all',
           isCorrect
@@ -103,18 +190,25 @@ export function RcChoiceRow({
         {choice.letter}
       </button>
 
-      <button
-        type="button"
-        onClick={pick}
-        disabled={disabled || eliminated}
+      {/* Keyed on the question so a new question mounts fresh text nodes.
+          Painting splits the nodes React rendered, and React would patch the
+          first fragment in place and leave the rest behind. */}
+      <div
+        key={questionId}
+        id={textId}
+        ref={textRef}
+        data-rc-mark-surface
+        onMouseUp={surface.onMouseUp}
+        onClick={clickText}
         className={cn(
           'rc-choice-text relative text-left leading-relaxed transition-colors',
+          pickable && highlightMode === 'none' ? 'cursor-pointer' : 'cursor-text',
           eliminated && 'line-through',
         )}
         style={textStyle}
       >
         <RcMarkdown>{choice.text}</RcMarkdown>
-      </button>
+      </div>
 
       <button
         type="button"
