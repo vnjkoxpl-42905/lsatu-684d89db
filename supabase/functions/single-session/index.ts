@@ -20,10 +20,12 @@ import {
   deterministicSingleSessionEventId,
   generateSingleSessionSlots,
   hasConflictingCalendarEvent,
+  hostLocalToUtc,
   normalizeEmail,
   normalizeGuests,
   SINGLE_SESSION,
   SINGLE_SESSION_EVENT,
+  singleSessionWindowEndDate,
   toEventConfig,
   toPublicBooking,
   type BookingEventConfig,
@@ -320,14 +322,18 @@ Deno.serve(async (req) => {
       const cached = slotsCache.get(event.slug);
       if (cached && cached.expiresAt > Date.now()) return json(cached.payload);
       const nowMs = Date.now();
-      const rangeStart = new Date(nowMs + event.minimumNoticeMinutes * 60_000).toISOString();
-      const rangeEnd = new Date(nowMs + 16 * 86_400_000).toISOString();
-      const busy = await loadBusyIntervals({ supabase, gcal, rangeStartIso: rangeStart, rangeEndIso: rangeEnd });
       const { data: availability, error } = await supabase.rpc("get_booking_availability");
       if (error) throw error;
-      const { hostTz, rangesByDow } = parseAvailability(availability);
+      const { hostTz, rangesByDow, overridesByDate } = parseAvailability(availability);
+      // Load busy blocks for the whole window plus the buffers on both ends, so
+      // an event just outside the window still blocks the slot next to it.
+      const bufferMs = Math.max(event.bufferBeforeMinutes, event.bufferAfterMinutes) * 60_000;
+      const last = singleSessionWindowEndDate(nowMs, hostTz, event);
+      const rangeStart = new Date(nowMs + event.minimumNoticeMinutes * 60_000 - bufferMs).toISOString();
+      const rangeEnd = new Date(hostLocalToUtc(hostTz, last.year, last.month, last.day, 24 * 60).getTime() + bufferMs).toISOString();
+      const busy = await loadBusyIntervals({ supabase, gcal, rangeStartIso: rangeStart, rangeEndIso: rangeEnd });
       const payload = {
-        slots: generateSingleSessionSlots({ nowMs, hostTz, rangesByDow, busy, event }),
+        slots: generateSingleSessionSlots({ nowMs, hostTz, rangesByDow, overridesByDate, busy, event }),
         timezone: hostTz,
       };
       slotsCache.set(event.slug, { expiresAt: Date.now() + 15_000, payload });

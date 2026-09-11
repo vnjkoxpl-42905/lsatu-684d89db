@@ -1,3 +1,5 @@
+import { generateSlots, type BookingHours, type SlotPolicy } from "./bookingCore.ts";
+
 export const SINGLE_SESSION = {
   durationMinutes: 70,
   pitchMinutes: 70,
@@ -26,6 +28,8 @@ export type BookingEventConfig = {
   bufferBeforeMinutes: number;
   bufferAfterMinutes: number;
   windowBusinessDays: number;
+  /** Cal.com "calendarDays" window. When set it wins over windowBusinessDays. */
+  windowCalendarDays: number | null;
   priceCents: number;
   currency: string;
   requiresPayment: boolean;
@@ -48,6 +52,7 @@ export const SINGLE_SESSION_EVENT: BookingEventConfig = {
   bufferBeforeMinutes: 0,
   bufferAfterMinutes: 0,
   windowBusinessDays: SINGLE_SESSION.businessDays,
+  windowCalendarDays: null,
   priceCents: SINGLE_SESSION.amountCents,
   currency: SINGLE_SESSION.currency,
   requiresPayment: true,
@@ -66,6 +71,7 @@ export function toEventConfig(row: Record<string, unknown>): BookingEventConfig 
     bufferBeforeMinutes: Number(row.buffer_before_minutes ?? 0),
     bufferAfterMinutes: Number(row.buffer_after_minutes ?? 0),
     windowBusinessDays: Number(row.window_business_days),
+    windowCalendarDays: row.window_calendar_days == null ? null : Number(row.window_calendar_days),
     priceCents: Number(row.price_cents ?? 0),
     currency: String(row.currency ?? "usd"),
     requiresPayment: row.requires_payment !== false,
@@ -112,7 +118,7 @@ function tzOffsetMinutesAt(timeZone: string, at: Date): number {
   return Math.round((Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second) - at.getTime()) / 60_000);
 }
 
-function hostLocalToUtc(timeZone: string, year: number, month: number, day: number, minutes: number): Date {
+export function hostLocalToUtc(timeZone: string, year: number, month: number, day: number, minutes: number): Date {
   const wallClockAsUtc = Date.UTC(year, month, day, Math.floor(minutes / 60), minutes % 60);
   let guess = new Date(wallClockAsUtc - tzOffsetMinutesAt(timeZone, new Date(wallClockAsUtc)) * 60_000);
   guess = new Date(wallClockAsUtc - tzOffsetMinutesAt(timeZone, guess) * 60_000);
@@ -133,10 +139,32 @@ function hostDateParts(timeZone: string, at: Date) {
   return { year: Number(parts.year), month: Number(parts.month) - 1, day: Number(parts.day), dow: weekday[parts.weekday] };
 }
 
+// Mirror of single_session_booking_window_end(): the last host-local date the
+// window reaches. Calendar days when the event says so (Cal.com "calendarDays",
+// rolling), else the business-day count, counting today when it is a weekday.
+export function singleSessionWindowEndDate(nowMs: number, hostTz: string, event: BookingEventConfig, businessDays?: number) {
+  const today = hostDateParts(hostTz, new Date(nowMs));
+  if (event.windowCalendarDays != null) {
+    const d = new Date(Date.UTC(today.year, today.month, today.day + event.windowCalendarDays));
+    return { year: d.getUTCFullYear(), month: d.getUTCMonth(), day: d.getUTCDate() };
+  }
+  const target = businessDays ?? event.windowBusinessDays;
+  let seen = 0;
+  let offset = 0;
+  for (;;) {
+    const d = new Date(Date.UTC(today.year, today.month, today.day + offset));
+    const dow = d.getUTCDay();
+    if (dow >= 1 && dow <= 5) seen++;
+    if (seen >= target) return { year: d.getUTCFullYear(), month: d.getUTCMonth(), day: d.getUTCDate() };
+    offset++;
+  }
+}
+
 export function generateSingleSessionSlots(opts: {
   nowMs: number;
   hostTz: string;
   rangesByDow: Record<number, { startMin: number; endMin: number }[]>;
+  overridesByDate?: Record<string, { startMin: number; endMin: number }[]>;
   busy: { start: number; end: number }[];
   businessDays?: number;
   /** Defaults to the single session, so existing callers are unaffected. */
@@ -160,43 +188,22 @@ export function generateSingleSessionSlots(opts: {
     return [{ start_at: new Date(start).toISOString(), end_at: new Date(end).toISOString() }];
   }
 
-  const pitch = event.slotIntervalMinutes ?? event.lengthMinutes;
-  const beforeMs = event.bufferBeforeMinutes * 60_000;
-  const afterMs = event.bufferAfterMinutes * 60_000;
-  const leadAt = opts.nowMs + event.minimumNoticeMinutes * 60_000;
-  const businessDays = opts.businessDays ?? event.windowBusinessDays;
-  const slots: SingleSessionSlot[] = [];
-  let weekdaysSeen = 0;
-
-  for (let offset = 0; offset < 16 && weekdaysSeen < businessDays; offset++) {
-    const calendarDay = new Date(opts.nowMs + offset * 86_400_000);
-    const { year, month, day, dow } = hostDateParts(opts.hostTz, calendarDay);
-    // businessDays is the *span*, not a filter. Cal.com counts business days to
-    // decide how far ahead the window reaches, then offers every day inside it
-    // that the weekly hours cover -- Saturday included. Skipping weekend days
-    // outright dropped the Saturday 2-5pm window from this page entirely while
-    // Cal.com kept offering it.
-    const isWeekend = dow === 0 || dow === 6;
-    if (!isWeekend) weekdaysSeen++;
-
-    for (const range of opts.rangesByDow[dow] ?? []) {
-      for (
-        let startMinute = range.startMin;
-        startMinute + length <= range.endMin;
-        startMinute += pitch
-      ) {
-        const start = hostLocalToUtc(opts.hostTz, year, month, day, startMinute).getTime();
-        const end = start + length * 60_000;
-        if (start < leadAt) continue;
-        // Buffers widen what counts as a clash: a consultation carries 30
-        // minutes on each side, so a meeting that ends at 2:00 blocks a 2:15.
-        if (opts.busy.some((busy) => busy.start < end + afterMs && busy.end > start - beforeMs)) continue;
-        slots.push({ start_at: new Date(start).toISOString(), end_at: new Date(end).toISOString() });
-      }
-    }
-  }
-
-  return slots.sort((left, right) => left.start_at.localeCompare(right.start_at));
+  // The window reaches to the END of its last date, matching the SQL check
+  // `_local_date > window_end`.
+  const last = singleSessionWindowEndDate(opts.nowMs, opts.hostTz, event, opts.businessDays);
+  const windowEndMs = hostLocalToUtc(opts.hostTz, last.year, last.month, last.day, 24 * 60).getTime();
+  const policy: SlotPolicy = {
+    lengthMin: length,
+    // No explicit interval means slots start every length_minutes, which is
+    // what Cal.com does and what produces the consultation's 1:30 / 2:00 chain.
+    pitchMin: event.slotIntervalMinutes ?? length,
+    bufferBeforeMin: event.bufferBeforeMinutes,
+    bufferAfterMin: event.bufferAfterMinutes,
+    leadMin: event.minimumNoticeMinutes,
+    windowEndMs,
+  };
+  const hours: BookingHours = { hostTz: opts.hostTz, rangesByDow: opts.rangesByDow, overridesByDate: opts.overridesByDate ?? {} };
+  return generateSlots({ policy, hours, nowMs: opts.nowMs, busy: opts.busy });
 }
 
 function eventBounds(event: any): { start: number; end: number } | null {
