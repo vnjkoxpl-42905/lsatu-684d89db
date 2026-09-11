@@ -162,6 +162,7 @@ export function SectionLibrary({
   const [grades, setGrades] = useState<Map<string, SectionGradeStub>>(new Map());
   const [error, setError] = useState<string | null>(null);
   const [starting, setStarting] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -294,7 +295,7 @@ export function SectionLibrary({
           {error}
         </p>
       )}
-      {choices.map((choice) => {
+      {(showAll ? choices : choices.slice(0, VISIBLE_SECTIONS)).map((choice) => {
         const done = bySection.get(choice.source_section) ?? [];
         return (
           <div key={choice.id} className="sl-section" data-section={choice.source_section}>
@@ -369,6 +370,29 @@ export function SectionLibrary({
           </div>
         );
       })}
+      {choices.length > VISIBLE_SECTIONS && (
+        <button
+          type="button"
+          className="sl-more"
+          aria-expanded={showAll}
+          onClick={() => setShowAll((v) => !v)}
+        >
+          {showAll
+            ? "Show fewer"
+            : `Show ${choices.length - VISIBLE_SECTIONS} more ${
+                choices.length - VISIBLE_SECTIONS === 1 ? "section" : "sections"
+              }`}
+        </button>
+      )}
     </div>
   );
 }
+
+/**
+ * How many sections the door shows before asking.
+ *
+ * Twelve sections, each with its attempts and a button, were 1,600px of
+ * identical rows between the hero and the steps. Five is a choice; twelve is
+ * a catalogue.
+ */
+export const VISIBLE_SECTIONS = 5;

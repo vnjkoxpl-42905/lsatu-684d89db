@@ -146,20 +146,16 @@ describe("the library door", () => {
     );
     expect(pageText).toContain("Your entire section is recorded in one take");
     /*
-     * The aside summarises the method above the four step cards, and every line
-     * of that summary is the authored `short` for its step, rendered by
-     * MethodSummary. That is the point: the aside used to be hand-written prose
-     * that drifted, and it drifted into "say it back", which is step 2's
-     * retired student label.
-     *
-     * So the ban below no longer includes "Read about a sentence": that phrase
-     * is now authored, and the assertion beneath pins it to the authored text
-     * rather than forbidding it. The rest of the ban stands, because those are
-     * still phrasings nobody authored.
+     * The aside no longer repeats the four steps. Joshua cut them on
+     * 2026-09-11: the method is performed in the hero, drawn as the four step
+     * cards, and filmed under those, and a fourth telling in prose was the one
+     * she skipped. The steps still appear on the page, once each, as authored,
+     * in the cards. The aside keeps only the two facts the cards do not carry.
      */
     for (const step of METHOD_STEPS) {
-      expect(pageText, `the aside must state ${step.label} as authored`).toContain(step.short);
+      expect(pageText, `the step cards must state ${step.label}`).toContain(step.label);
     }
+    expect(document.querySelector(".sl-aside-steps")).toBeNull();
     expect(pageText).not.toMatch(
       /One section keeps the method steady|Say each retelling|The whole section records/i,
     );

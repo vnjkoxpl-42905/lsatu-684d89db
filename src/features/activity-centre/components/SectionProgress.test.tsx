@@ -36,6 +36,21 @@ describe("the record of every graded run", () => {
     expect(screen.getByText(/up 21 points since your first/)).toBeInTheDocument();
   });
 
+  it("lists the five most recent runs and the rest on request", async () => {
+    // The entry page. A list that grew by one row per run had pushed the
+    // sections and the steps a screen further down every week.
+    const runs = Array.from({ length: 7 }, (_, i) =>
+      stub({ coverage: 50 + i, assignment_id: `r${i}`, graded_at: `2026-09-0${i + 1}T10:00:00Z` }),
+    ).reverse();
+    render(<SectionProgress loadGrades={async () => runs} />);
+    expect(await screen.findByText("56%")).toBeInTheDocument();
+    expect(screen.getByText("52%")).toBeInTheDocument();
+    expect(screen.queryByText("51%")).not.toBeInTheDocument();
+    expect(screen.getByText(/7 graded runs/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "See all 7 runs" }));
+    expect(screen.getByText("50%")).toBeInTheDocument();
+  });
+
   it("opens the report card for the run that was pressed", async () => {
     const onOpen = vi.fn();
     render(<SectionProgress loadGrades={async () => [stub({ coverage: 70 })]} onOpen={onOpen} />);

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { ActivityInstructions } from "../api/types";
-import { MethodSummary } from "./MethodSummary";
+import { SectionDemos } from "./SectionDemos";
 import { SectionLaunchFrame } from "./SectionLaunchFrame";
 import "./section-launch.css";
 
@@ -43,6 +43,12 @@ export function SectionLibraryLaunch({
       onExit={onExit}
       showBreadcrumbs={false}
       sectionsFirst
+      afterSteps={
+        <div className="sl-door-demos">
+          <SectionDemos />
+        </div>
+      }
+      hideClose
     >
       <div className="sl-runs">
         <div>
@@ -51,8 +57,13 @@ export function SectionLibraryLaunch({
         </div>
 
         <aside className="sl-aside">
+          {/*
+            * The steps themselves are not repeated here. They are performed in
+            * the hero, drawn as the four cards, and filmed under those; a fourth
+            * telling in prose was the one she skipped. What is left is the two
+            * facts the cards do not carry.
+            */}
           <span className="sl-label">Before you start</span>
-          <MethodSummary />
           <p>
             Your entire section is recorded in <strong>one take</strong>. You
             can pause: the text hides and the clock stops while you are away,

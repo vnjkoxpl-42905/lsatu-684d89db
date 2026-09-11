@@ -24,6 +24,23 @@ const load = () => Promise.resolve(choices);
 const noGrades = () => Promise.resolve([]);
 
 describe("choosing a section", () => {
+  it("shows five sections and holds the rest behind one press", async () => {
+    // Twelve sections with a button each were 1,600px of identical rows
+    // between the hero and the steps. Five is a choice; twelve is a catalogue.
+    const many = Array.from({ length: 8 }, (_, i) => ({
+      id: `m${i}`, title: `PT${i} Section 1`, source_section: `PT${i}.S1`,
+      stimulus_count: 22, goal_minutes: { standard: 25 },
+    }));
+    render(<SectionLibrary attempts={[]} onStart={vi.fn()} loadChoices={() => Promise.resolve(many)} loadGrades={noGrades} />);
+    await screen.findByText("PT0.S1");
+    expect(screen.getByText("PT4.S1")).toBeInTheDocument();
+    expect(screen.queryByText("PT5.S1")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Show 3 more sections" }));
+    expect(screen.getByText("PT7.S1")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Show fewer" }));
+    expect(screen.queryByText("PT7.S1")).not.toBeInTheDocument();
+  });
+
   it("lists every section and never hides one she has done", async () => {
     // The regular picker drops a section she has sat. Right at 200 sections,
     // wrong at three: she would run out in three nights.

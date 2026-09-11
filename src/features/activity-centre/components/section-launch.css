@@ -2186,58 +2186,298 @@
   }
 }
 
-/* The demonstrations, on the briefing page. Three players in a row on the
-   page's own paper, the caption in the mono label face the steps use, the
-   frame in the dark indigo the drill runs in. Every token here is defined
-   at the top of this file. */
+/* The demonstrations: one theatre, three films.
+
+   The stage is the drill's indigo, the same ground the runner uses, set into
+   the page with the depth the hero's demo card has: a soft lavender lift
+   behind it and a shadow that reads as a pane standing on the paper rather
+   than a box painted on it. The browser's controls are off; the bar below is
+   ours, in the door's mono face. Every token is defined at the top of this
+   file. */
 .sl-bp-demos {
   margin: 36px 0 8px;
 }
+.sl-bp-demos-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 32px;
+  margin-bottom: 20px;
+}
+.sl-bp-demos-head .sl-bp-h2 {
+  margin: 0;
+}
 .sl-bp-demos-lede {
-  margin: -6px 0 18px;
+  margin: 0;
   max-width: 62ch;
   color: var(--rd-ink-2);
   font-size: var(--bp-body, 1rem);
   line-height: 1.6;
 }
-.sl-bp-demo-list {
+.sl-theatre {
+  position: relative;
+}
+.sl-theatre::before {
+  /* The lift. A wash of the hero's lavender and apricot behind the pane, so
+     the stage sits in the dusk world rather than on flat cream. */
+  content: "";
+  position: absolute;
+  inset: -6% -3% -2%;
+  border-radius: 40px;
+  background:
+    radial-gradient(60% 70% at 30% 20%, rgba(201, 195, 236, 0.55), transparent 70%),
+    radial-gradient(50% 60% at 80% 90%, rgba(243, 201, 160, 0.5), transparent 70%);
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: 0;
+}
+.sl-theatre-stage {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--rd-indigo);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 30px 60px -30px rgba(22, 19, 43, 0.55),
+    0 12px 28px -18px rgba(22, 19, 43, 0.45);
+  outline: none;
+}
+.sl-theatre-stage:focus-visible {
+  box-shadow:
+    0 0 0 3px var(--rd-cream),
+    0 0 0 5px var(--rd-ink),
+    0 30px 60px -30px rgba(22, 19, 43, 0.55);
+}
+.sl-theatre-stage video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+.sl-theatre[data-wide] .sl-theatre-stage {
+  border-radius: 0;
+}
+.sl-theatre[data-wide] .sl-theatre-stage video {
+  object-fit: contain;
+  background: #000;
+}
+/* The play mark. One, large, centred, in the door's paper on indigo, so the
+   poster reads as a still that is about to move rather than as a picture. */
+.sl-theatre-play {
+  appearance: none;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 88px;
+  height: 88px;
+  margin: -44px 0 0 -44px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--rd-paper);
+  color: var(--rd-indigo);
+  display: grid;
+  place-items: center;
+  padding-left: 5px;
+  box-shadow: 0 18px 40px -12px rgba(22, 19, 43, 0.7);
+  transition: transform 0.35s var(--rd-ease), background-color 0.2s;
+}
+.sl-theatre-play:hover {
+  transform: scale(1.06);
+  background: var(--rd-apricot-light);
+}
+.sl-theatre-play:focus-visible {
+  outline: 3px solid var(--rd-paper);
+  outline-offset: 4px;
+}
+/* The bar. Shown while paused and on hover or focus while playing; it fades
+   when she is simply watching. */
+.sl-theatre-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 14px 12px;
+  background: linear-gradient(to top, rgba(22, 19, 43, 0.85), rgba(22, 19, 43, 0));
+  color: var(--rd-on-dark);
+  opacity: 1;
+  transition: opacity 0.3s var(--rd-ease);
+}
+.sl-theatre[data-playing] .sl-theatre-bar {
+  opacity: 0;
+}
+.sl-theatre[data-playing] .sl-theatre-stage:hover .sl-theatre-bar,
+.sl-theatre[data-playing] .sl-theatre-stage:focus-within .sl-theatre-bar {
+  opacity: 1;
+}
+.sl-theatre-btn {
+  appearance: none;
+  cursor: pointer;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  display: grid;
+  place-items: center;
+  transition: background-color 0.2s;
+}
+.sl-theatre-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.sl-theatre-btn:focus-visible {
+  outline: 2px solid var(--rd-paper);
+  outline-offset: 2px;
+}
+.sl-theatre-time {
+  flex: none;
+  font-family: var(--rd-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.85);
+}
+.sl-theatre-scrub {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.sl-theatre-scrub::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    var(--rd-marigold) var(--sl-scrub, 0%),
+    rgba(255, 255, 255, 0.28) var(--sl-scrub, 0%)
+  );
+}
+.sl-theatre-scrub::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.28);
+}
+.sl-theatre-scrub::-moz-range-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--rd-marigold);
+}
+.sl-theatre-scrub::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--rd-paper);
+  box-shadow: 0 0 0 2px var(--rd-indigo);
+}
+.sl-theatre-scrub::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--rd-paper);
+  box-shadow: 0 0 0 2px var(--rd-indigo);
+}
+.sl-theatre-scrub:focus-visible {
+  outline: 2px solid var(--rd-paper);
+  outline-offset: -8px;
+  border-radius: 8px;
+}
+/* The chapters. Three, under the stage, each a still with its question and
+   its length. The one on the stage is marked with the marigold the Colour
+   step owns, in a hairline rather than a fill, so it is a pointer and not a
+   verdict. */
+.sl-theatre-chapters {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  gap: 14px;
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 18px 0 0;
 }
-.sl-bp-demo {
+.sl-theatre-chapter {
+  appearance: none;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 14px;
+  row-gap: 2px;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
   border: 1px solid var(--rd-line);
-  border-radius: 16px;
-  padding: 10px 10px 12px;
+  border-radius: 14px;
   background: var(--rd-paper);
+  color: var(--rd-ink);
+  text-align: left;
+  font: inherit;
+  transition: border-color 0.2s, background-color 0.2s, transform 0.35s var(--rd-ease);
 }
-.sl-bp-demo-frame {
+.sl-theatre-chapter:hover {
+  border-color: var(--rd-ink-3);
+  transform: translateY(-1px);
+}
+.sl-theatre-chapter[aria-current="true"] {
+  border-color: var(--rd-marigold);
+  box-shadow: 0 0 0 1px var(--rd-marigold);
+}
+.sl-theatre-chapter:focus-visible {
+  outline: 2px solid var(--rd-ink);
+  outline-offset: 2px;
+}
+.sl-theatre-thumb {
   position: relative;
+  grid-row: 1 / span 2;
   aspect-ratio: 16 / 9;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   background: var(--rd-indigo);
 }
-.sl-bp-demo-frame video {
+.sl-theatre-thumb img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.sl-bp-demo-frame video:focus-visible {
-  outline: 2px solid var(--rd-ink);
-  outline-offset: 2px;
+.sl-theatre-live {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--rd-marigold);
+  box-shadow: 0 0 0 2px rgba(22, 19, 43, 0.6);
+  animation: sl-theatre-pulse 1.4s ease-in-out infinite;
 }
-.sl-bp-demo-cap {
+@keyframes sl-theatre-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.sl-theatre-cap {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 10px;
-  padding: 0 4px;
 }
 .sl-bp-demo-label,
 .sl-bp-demo-time {
@@ -2250,17 +2490,65 @@
 .sl-bp-demo-label {
   color: var(--rd-ink);
 }
-@media (max-width: 900px) {
-  .sl-bp-demo-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.sl-theatre-sub {
+  font-size: 13px;
+  color: var(--rd-ink-3);
+}
+@media (max-width: 760px) {
+  .sl-theatre-chapters {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .sl-theatre-play {
+    width: 68px;
+    height: 68px;
+    margin: -34px 0 0 -34px;
+  }
+  .sl-theatre-time {
+    display: none;
   }
 }
-@media (max-width: 640px) {
-  .sl-bp-demo-list {
-    grid-template-columns: 1fr;
+@media (prefers-reduced-motion: reduce) {
+  .sl-theatre-play,
+  .sl-theatre-chapter,
+  .sl-theatre-bar {
+    transition: none;
   }
-  .sl-bp-demo-cap {
-    flex-direction: column;
-    gap: 2px;
+  .sl-theatre-live {
+    animation: none;
   }
+}
+
+/* ---------------------------------------------------------------- door extras
+   The demo films under the step cards on the library door, and the "more"
+   control under a capped section list. Same tokens as everything above. */
+.sl-door-demos {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 56px 24px 0;
+}
+.sl-door-demos .sl-bp-demos {
+  margin: 0;
+}
+.sl-more {
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--rd-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.sl-more:focus-visible {
+  outline: 2px solid var(--rd-ink);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
