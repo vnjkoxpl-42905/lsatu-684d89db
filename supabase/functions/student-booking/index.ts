@@ -9,7 +9,7 @@ import {
   deleteEvent, freeBusy, getEvent, insertEvent, meetUrlFromEvent, patchEvent,
 } from "../_shared/googleCalendar.ts";
 import {
-  bookSession, BOOKING_CFG, generateSlots, loadBusyIntervals, parseAvailability, type BookingPass, type GoogleCal,
+  bookSession, generateSlots, loadAvailability, loadBusyIntervals, passSlotPolicy, type BookingPass, type GoogleCal,
 } from "../_shared/bookingCore.ts";
 
 function json(body: unknown, status = 200) {
@@ -180,17 +180,15 @@ Deno.serve(async (req) => {
       if (pass.total_credits - pass.used_credits <= 0) {
         return json({ pass: { credits_remaining: 0, session_length_minutes: pass.session_length_minutes }, slots: [] });
       }
-      const daysAhead = Math.min(Math.max(Number(body.days_ahead) || BOOKING_CFG.lookaheadDaysDefault, 1), 60);
       const nowMs = Date.now();
-      const bufferMs = BOOKING_CFG.bufferMin * 60_000;
-      const rangeStart = new Date(nowMs + BOOKING_CFG.leadMin * 60_000 - bufferMs).toISOString();
-      const rangeEnd = new Date(nowMs + daysAhead * 86_400_000 + bufferMs).toISOString();
+      const avail = await loadAvailability(supabase);
+      const policy = passSlotPolicy(pass, avail, nowMs, Number(body.days_ahead) || undefined);
+      const bufferMs = avail.bufferMin * 60_000;
+      const rangeStart = new Date(nowMs + policy.leadMin * 60_000 - bufferMs).toISOString();
+      const rangeEnd = new Date(policy.windowEndMs + bufferMs).toISOString();
       const busy = await loadBusyIntervals({ supabase, gcal, rangeStartIso: rangeStart, rangeEndIso: rangeEnd });
 
-      const { data: avail } = await supabase.rpc("get_booking_availability");
-      const { hostTz, rangesByDow } = parseAvailability(avail);
-
-      const slots = generateSlots({ pass, nowMs, hostTz, rangesByDow, busy, daysAhead });
+      const slots = generateSlots({ policy, hours: avail, nowMs, busy });
       return json({
         pass: {
           credits_remaining: Math.max(0, pass.total_credits - pass.used_credits),

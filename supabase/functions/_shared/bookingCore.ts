@@ -18,13 +18,15 @@
 import { sendAppEmail } from "./sendAppEmail.ts";
 
 
+// Fallbacks only. The live numbers come from booking_availability_config via
+// get_booking_availability(): Buffer 10 min, 24 h notice, 45-day window
+// (mirroring the Cal.com session-link event, 2026-09-10).
 export const BOOKING_CFG = {
   sessionMinDefault: 70,
-  bufferMin: 15,
-  stepMin: 30,
+  bufferMinDefault: 10,
   leadMin: 1440,
-  lookaheadDaysDefault: 21,
-  maxSlots: 200,
+  lookaheadDaysDefault: 45,
+  maxSlots: 400,
 };
 
 export type BookingPass = {
@@ -88,6 +90,7 @@ function hostLocalParts(timeZone: string, at: Date) {
 
 export type Slot = { start_at: string; end_at: string };
 
+
 export async function loadBusyIntervals(opts: {
   supabase: any;
   gcal: GoogleCal;
@@ -115,10 +118,21 @@ export async function loadBusyIntervals(opts: {
     .lt("start_at", rangeEndIso)
     .gt("end_at", rangeStartIso);
   if (singleSessionErr && singleSessionErr.code !== "42P01") throw singleSessionErr;
+  // Booked pass redemptions are normally mirrored into schedule_events and
+  // visible to Google, but the RPC checks the redemption rows directly, so the
+  // list must see exactly what the RPC will see.
+  const { data: redemptions, error: redemptionErr } = await supabase
+    .from("booking_pass_redemptions")
+    .select("start_at,end_at")
+    .eq("status", "booked")
+    .lt("start_at", rangeEndIso)
+    .gt("end_at", rangeStartIso);
+  if (redemptionErr) throw redemptionErr;
   const live = await gcal.freeBusy(calendarIds, rangeStartIso, rangeEndIso);
   const intervals = [
     ...(mirrored ?? []).map((e: any) => ({ start: new Date(e.start_at).getTime(), end: new Date(e.end_at).getTime() })),
     ...(singleSessions ?? []).map((e: any) => ({ start: new Date(e.start_at).getTime(), end: new Date(e.end_at).getTime() })),
+    ...(redemptions ?? []).map((e: any) => ({ start: new Date(e.start_at).getTime(), end: new Date(e.end_at).getTime() })),
     ...Object.values(live).flat().map((e) => ({ start: new Date(e.start).getTime(), end: new Date(e.end).getTime() })),
   ].filter((e) => Number.isFinite(e.start) && Number.isFinite(e.end));
   return intervals;
@@ -128,43 +142,91 @@ export function deterministicGoogleEventId(redemptionId: string): string {
   return redemptionId.replace(/-/g, "").toLowerCase();
 }
 
-// Generate bookable slots: 30-min grid, inside seeded availability windows for
-// the host tz, >= 24h lead, session must fit fully, 15-min buffer around busy
-// blocks. `busy` = existing events (ms epoch). This mirrors the server-side
-// is_slot_bookable predicate so what students see is what the RPC will accept.
-export function generateSlots(opts: {
-  pass: BookingPass;
-  nowMs: number;
+// ---------------------------------------------------------------- slot policy
+// The numbers that decide whether a time may be offered. Every front door
+// (pass link, in-app schedule, single session, consultation) builds one of
+// these and runs the same generateSlots, and the SQL side (is_slot_bookable /
+// is_single_session_slot_bookable + booking_slot_is_clear) enforces the same
+// arithmetic, so nothing a student can click is later refused as a conflict.
+export type SlotPolicy = {
+  lengthMin: number;
+  /** Grid step from the start of each availability range. */
+  pitchMin: number;
+  /** Clearance required between the session and anything before / after it. */
+  bufferBeforeMin: number;
+  bufferAfterMin: number;
+  /** Minimum notice: no slot starts before now + leadMin. */
+  leadMin: number;
+  /** Last instant a session may end (rolling window, pass expiry). */
+  windowEndMs: number;
+  maxSlots?: number;
+};
+
+export type DowRanges = Record<number, { startMin: number; endMin: number }[]>;
+export type DateRanges = Record<string, { startMin: number; endMin: number }[]>;
+
+// Weekly hours plus Cal.com-style date overrides. A date present in
+// overridesByDate replaces that day's weekly hours entirely; an empty array
+// closes the day.
+export type BookingHours = {
   hostTz: string;
-  rangesByDow: Record<number, { startMin: number; endMin: number }[]>;
+  rangesByDow: DowRanges;
+  overridesByDate: DateRanges;
+};
+
+export type BookingAvailability = BookingHours & {
+  bufferMin: number;
+  leadMin: number;
+  windowDays: number;
+};
+
+function isoDate(y: number, m: number, d: number): string {
+  return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+}
+
+export function rangesForDate(hours: BookingHours, date: string, dow: number) {
+  const override = hours.overridesByDate[date];
+  if (override) return override;
+  return hours.rangesByDow[dow] ?? [];
+}
+
+// Generate bookable slots. Mirrors is_slot_bookable / is_single_session_slot_bookable
+// and booking_slot_is_clear exactly: slots step pitchMin from the start of each
+// range on the host's local date (overrides first), the whole session fits inside
+// the range, it starts no earlier than the notice and ends inside the window,
+// and nothing busy sits within the buffer on either side. Busy blocks are not
+// buffered themselves, so the gap between two events is one buffer, never two.
+export function generateSlots(opts: {
+  policy: SlotPolicy;
+  hours: BookingHours;
+  nowMs: number;
   busy: { start: number; end: number }[];
-  daysAhead: number;
 }): Slot[] {
-  const { pass, nowMs, hostTz, rangesByDow, busy, daysAhead } = opts;
-  const sessionMs = pass.session_length_minutes * 60_000;
-  const bufMs = BOOKING_CFG.bufferMin * 60_000;
-  const rangeStart = nowMs + BOOKING_CFG.leadMin * 60_000;
-  let rangeEnd = nowMs + daysAhead * 86_400_000;
-  if (pass.expires_at) {
-    const exp = new Date(pass.expires_at).getTime();
-    if (exp < rangeEnd) rangeEnd = exp;
-  }
+  const { policy, hours, nowMs, busy } = opts;
+  const sessionMs = policy.lengthMin * 60_000;
+  const beforeMs = policy.bufferBeforeMin * 60_000;
+  const afterMs = policy.bufferAfterMin * 60_000;
+  const maxSlots = policy.maxSlots ?? BOOKING_CFG.maxSlots;
+  const rangeStart = nowMs + policy.leadMin * 60_000;
+  const rangeEnd = policy.windowEndMs;
+  if (rangeEnd <= rangeStart) return [];
 
   const slots: Slot[] = [];
   const seen = new Set<string>();
-  for (let d = 0; d <= daysAhead && slots.length < BOOKING_CFG.maxSlots; d++) {
-    const dayAnchor = new Date(rangeStart + d * 86_400_000);
-    const { y, m, d: dd, dow } = hostLocalParts(hostTz, dayAnchor);
-    const dayRanges = rangesByDow[dow] ?? [];
+  const daysAhead = Math.ceil((rangeEnd - rangeStart) / 86_400_000) + 1;
+  // Walk host-local calendar dates, not 24-hour steps, so a DST change can
+  // neither skip nor double a date.
+  const first = hostLocalParts(hours.hostTz, new Date(rangeStart));
+  for (let d = 0; d <= daysAhead && slots.length < maxSlots; d++) {
+    const dt = new Date(Date.UTC(first.y, first.m, first.d + d));
+    const y = dt.getUTCFullYear(), m = dt.getUTCMonth(), dd = dt.getUTCDate(), dow = dt.getUTCDay();
+    const dayRanges = rangesForDate(hours, isoDate(y, m, dd), dow);
     for (const rng of dayRanges) {
-      // Step on the 30-min grid; require the whole session to fit in the range.
-      const firstGridMinute = Math.ceil(rng.startMin / BOOKING_CFG.stepMin) * BOOKING_CFG.stepMin;
-      for (let mins = firstGridMinute; mins + pass.session_length_minutes <= rng.endMin; mins += BOOKING_CFG.stepMin) {
-        const startUtc = hostLocalToUtc(hostTz, y, m, dd, mins).getTime();
+      for (let mins = rng.startMin; mins + policy.lengthMin <= rng.endMin; mins += policy.pitchMin) {
+        const startUtc = hostLocalToUtc(hours.hostTz, y, m, dd, mins).getTime();
         if (startUtc < rangeStart) continue;
         if (startUtc + sessionMs > rangeEnd) break;
-        // 15-min buffer around each busy block.
-        const conflict = busy.some((b) => b.start - bufMs < startUtc + sessionMs && b.end + bufMs > startUtc);
+        const conflict = busy.some((b) => b.start < startUtc + sessionMs + afterMs && b.end > startUtc - beforeMs);
         if (!conflict) {
           const startIso = new Date(startUtc).toISOString();
           if (!seen.has(startIso)) {
@@ -172,26 +234,67 @@ export function generateSlots(opts: {
             slots.push({ start_at: startIso, end_at: new Date(startUtc + sessionMs).toISOString() });
           }
         }
-        if (slots.length >= BOOKING_CFG.maxSlots) break;
+        if (slots.length >= maxSlots) break;
       }
-      if (slots.length >= BOOKING_CFG.maxSlots) break;
+      if (slots.length >= maxSlots) break;
     }
   }
   slots.sort((a, b) => a.start_at.localeCompare(b.start_at));
   return slots;
 }
 
-// Parse the get_booking_availability() RPC payload into rangesByDow + tz.
-export function parseAvailability(avail: any): { hostTz: string; rangesByDow: Record<number, { startMin: number; endMin: number }[]> } {
-  const rangesByDow: Record<number, { startMin: number; endMin: number }[]> = {};
-  let hostTz = "America/Toronto";
-  if (avail?.timezone) hostTz = avail.timezone;
-  for (const r of (avail?.ranges ?? []) as any[]) {
-    const [sh, sm] = String(r.start_time).split(":").map(Number);
-    const [eh, em] = String(r.end_time).split(":").map(Number);
-    (rangesByDow[r.day_of_week] ??= []).push({ startMin: sh * 60 + sm, endMin: eh * 60 + em });
+// The pass link's policy: the pass sets the length, the availability config
+// sets everything else. Pitch is length + buffer so back-to-back slots are all
+// bookable (80 minutes for the 70-minute session).
+export function passSlotPolicy(pass: BookingPass, avail: BookingAvailability, nowMs: number, daysAhead?: number): SlotPolicy {
+  const days = Math.min(Math.max(daysAhead ?? avail.windowDays, 1), avail.windowDays);
+  let windowEndMs = nowMs + days * 86_400_000;
+  if (pass.expires_at) {
+    const exp = new Date(pass.expires_at).getTime();
+    if (Number.isFinite(exp) && exp < windowEndMs) windowEndMs = exp;
   }
-  return { hostTz, rangesByDow };
+  return {
+    lengthMin: pass.session_length_minutes,
+    pitchMin: pass.session_length_minutes + avail.bufferMin,
+    bufferBeforeMin: avail.bufferMin,
+    bufferAfterMin: avail.bufferMin,
+    leadMin: avail.leadMin,
+    windowEndMs,
+  };
+}
+
+function toMinutes(hhmm: unknown): number {
+  const [h, m] = String(hhmm).split(":").map(Number);
+  return h * 60 + (m || 0);
+}
+
+// Parse the get_booking_availability() RPC payload.
+export function parseAvailability(avail: any): BookingAvailability {
+  const rangesByDow: DowRanges = {};
+  const overridesByDate: DateRanges = {};
+  const hostTz = avail?.timezone || "America/Toronto";
+  for (const r of (avail?.ranges ?? []) as any[]) {
+    (rangesByDow[r.day_of_week] ??= []).push({ startMin: toMinutes(r.start_time), endMin: toMinutes(r.end_time) });
+  }
+  for (const o of (avail?.overrides ?? []) as any[]) {
+    const date = String(o.date);
+    overridesByDate[date] ??= [];
+    if (o.start_time && o.end_time) overridesByDate[date].push({ startMin: toMinutes(o.start_time), endMin: toMinutes(o.end_time) });
+  }
+  return {
+    hostTz,
+    rangesByDow,
+    overridesByDate,
+    bufferMin: Number.isFinite(Number(avail?.buffer_minutes)) ? Number(avail.buffer_minutes) : BOOKING_CFG.bufferMinDefault,
+    leadMin: Number.isFinite(Number(avail?.minimum_notice_minutes)) ? Number(avail.minimum_notice_minutes) : BOOKING_CFG.leadMin,
+    windowDays: Number.isFinite(Number(avail?.window_days)) ? Number(avail.window_days) : BOOKING_CFG.lookaheadDaysDefault,
+  };
+}
+
+export async function loadAvailability(supabase: any): Promise<BookingAvailability> {
+  const { data, error } = await supabase.rpc("get_booking_availability");
+  if (error) throw error;
+  return parseAvailability(data);
 }
 
 export type BookResult =
@@ -222,17 +325,19 @@ export async function bookSession(opts: {
   const studentName = identity.name;
   const studentEmail = identity.email;
 
-  // Freshness guard immediately before the database reservation. The
-  // exclusion constraint remains the hard guard for LSAT U races.
+  // Freshness guard immediately before the database reservation, with the
+  // same Buffer the slot list and the RPC use. The exclusion constraint
+  // remains the hard guard for LSAT U races.
   try {
-    const bufferMs = BOOKING_CFG.bufferMin * 60_000;
+    const avail = await loadAvailability(supabase);
+    const bufferMs = avail.bufferMin * 60_000;
     const busy = await loadBusyIntervals({
       supabase,
       gcal,
       rangeStartIso: new Date(startAt.getTime() - bufferMs).toISOString(),
       rangeEndIso: new Date(endAt.getTime() + bufferMs).toISOString(),
     });
-    const conflict = busy.some((b) => b.start - bufferMs < endAt.getTime() && b.end + bufferMs > startAt.getTime());
+    const conflict = busy.some((b) => b.start < endAt.getTime() + bufferMs && b.end > startAt.getTime() - bufferMs);
     if (conflict) return { ok: false, error: "slot_conflict", status: 409 };
   } catch (busyError) {
     return {
