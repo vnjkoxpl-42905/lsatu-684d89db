@@ -35,7 +35,7 @@ const AVAIL_PAYLOAD = {
   timezone: TZ,
   buffer_minutes: 10,
   minimum_notice_minutes: 1440,
-  window_days: 45,
+  window_days: 8,
   ranges: [
     { day_of_week: 1, start_time: "14:00", end_time: "20:00" },
     { day_of_week: 2, start_time: "13:00", end_time: "19:30" },
@@ -52,7 +52,7 @@ Deno.test("deterministic Google event IDs use UUID hex", () => {
 
 Deno.test("parseAvailability reads the buffer, notice, window and overrides from the RPC payload", () => {
   const avail = parseAvailability(AVAIL_PAYLOAD);
-  assert(avail.bufferMin === 10 && avail.leadMin === 1440 && avail.windowDays === 45, "config numbers");
+  assert(avail.bufferMin === 10 && avail.leadMin === 1440 && avail.windowDays === 8, "config numbers");
   assert(avail.rangesByDow[1][0].startMin === 14 * 60, "weekly range");
   assert(avail.overridesByDate["2026-07-11"][0].endMin === 21 * 60 + 10, "override range");
   const closed = parseAvailability({ ...AVAIL_PAYLOAD, overrides: [{ date: "2026-07-11", start_time: null, end_time: null }] });
@@ -92,7 +92,7 @@ Deno.test("the slot right after a booking survives with exactly one buffer betwe
 
 Deno.test("a date override replaces the weekly hours for that date", () => {
   const nowMs = Date.UTC(2026, 6, 1, 12);
-  const avail = parseAvailability(AVAIL_PAYLOAD);
+  const avail = parseAvailability({ ...AVAIL_PAYLOAD, window_days: 21 }); // wide enough to reach Jul 11
   const slots = generateSlots({ policy: passSlotPolicy(pass, avail, nowMs, 14), hours: avail, nowMs, busy: [] });
   const jul11 = slots.filter((s) => localDate(s.start_at) === "2026-07-11").map((s) => localMinutes(s.start_at));
   assert(JSON.stringify(jul11) === JSON.stringify([20 * 60]), `override day ${jul11}`);
@@ -100,12 +100,15 @@ Deno.test("a date override replaces the weekly hours for that date", () => {
   assert(JSON.stringify(jul4) === JSON.stringify([14 * 60, 15 * 60 + 20]), `weekly saturday ${jul4}`);
 });
 
-Deno.test("the window clamps to the config and the pass expiry", () => {
-  const nowMs = Date.UTC(2026, 6, 1, 12);
+Deno.test("the window is today plus window_days in host dates, through the end of that day, and the pass expiry caps it", () => {
+  const nowMs = Date.UTC(2026, 6, 1, 12); // Wed Jul 1, 08:00 ET
   const avail = parseAvailability({ ...AVAIL_PAYLOAD, overrides: [] });
   const wide = generateSlots({ policy: passSlotPolicy(pass, avail, nowMs, 90), hours: avail, nowMs, busy: [] });
-  const maxEnd = Math.max(...wide.map((s) => Date.parse(s.end_at)));
-  assert(maxEnd <= nowMs + 45 * 86_400_000, "days_ahead cannot exceed window_days");
+  const dates = wide.map((s) => localDate(s.start_at)).sort();
+  // Jul 1 + 8 = Thu Jul 9, which has no seeded hours; Tue Jul 7 is the last seeded day inside the window, Sat Jul 11 is outside.
+  assert(dates.at(-1) === "2026-07-07", `last date should be Jul 7, got ${dates.at(-1)}`);
+  const lastDay = wide.filter((s) => localDate(s.start_at) === "2026-07-07").map((s) => localMinutes(s.start_at));
+  assert(lastDay.includes(18 * 60 + 20), `evening slot on the last day must survive, got ${lastDay}`);
   const expiring = { ...pass, expires_at: new Date(nowMs + 3 * 86_400_000).toISOString() };
   const short = generateSlots({ policy: passSlotPolicy(expiring, avail, nowMs), hours: avail, nowMs, busy: [] });
   assert(Math.max(...short.map((s) => Date.parse(s.end_at))) <= nowMs + 3 * 86_400_000, "expiry ceiling");
@@ -114,14 +117,14 @@ Deno.test("the window clamps to the config and the pass expiry", () => {
 Deno.test("single session slots use the event's pitch, buffers and calendar-day window", () => {
   const nowMs = Date.UTC(2026, 6, 1, 12); // Wed
   const avail = parseAvailability({ ...AVAIL_PAYLOAD, overrides: [] });
-  const event = { ...SINGLE_SESSION_EVENT, slotIntervalMinutes: 80, bufferBeforeMinutes: 10, bufferAfterMinutes: 10, windowCalendarDays: 45 };
+  const event = { ...SINGLE_SESSION_EVENT, slotIntervalMinutes: 80, bufferBeforeMinutes: 10, bufferAfterMinutes: 10, windowCalendarDays: 8 };
   const slots = generateSingleSessionSlots({ nowMs, hostTz: TZ, rangesByDow: avail.rangesByDow, overridesByDate: avail.overridesByDate, busy: [], event });
   const monday = [...new Set(slots.filter((s) => new Date(s.start_at).getUTCDay() === 1).map((s) => localMinutes(s.start_at)))];
   assert(JSON.stringify(monday) === JSON.stringify([14 * 60, 15 * 60 + 20, 16 * 60 + 40, 18 * 60]), `monday ${monday}`);
   const last = singleSessionWindowEndDate(nowMs, TZ, event);
-  assert(last.month === 7 && last.day === 15, `45 days from Jul 1 is Aug 15, got ${last.month + 1}/${last.day}`);
+  assert(last.month === 6 && last.day === 9, `8 days from Jul 1 is Jul 9, got ${last.month + 1}/${last.day}`);
   const maxDate = slots.map((s) => localDate(s.start_at)).sort().at(-1)!;
-  assert(maxDate <= "2026-08-15", `window end ${maxDate}`);
+  assert(maxDate <= "2026-07-09", `window end ${maxDate}`);
 });
 
 Deno.test("single session business-day window still counts today when it is a weekday", () => {
