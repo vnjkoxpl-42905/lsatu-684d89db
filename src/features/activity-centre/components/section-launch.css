@@ -2185,3 +2185,82 @@
     flex-direction: column;
   }
 }
+
+/* The demonstrations, on the briefing page. Three players in a row on the
+   page's own paper, the caption in the mono label face the steps use, the
+   frame in the dark indigo the drill runs in. Every token here is defined
+   at the top of this file. */
+.sl-bp-demos {
+  margin: 36px 0 8px;
+}
+.sl-bp-demos-lede {
+  margin: -6px 0 18px;
+  max-width: 62ch;
+  color: var(--rd-ink-2);
+  font-size: var(--bp-body, 1rem);
+  line-height: 1.6;
+}
+.sl-bp-demo-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sl-bp-demo {
+  border: 1px solid var(--rd-line);
+  border-radius: 16px;
+  padding: 10px 10px 12px;
+  background: var(--rd-paper);
+}
+.sl-bp-demo-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--rd-indigo);
+}
+.sl-bp-demo-frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sl-bp-demo-frame video:focus-visible {
+  outline: 2px solid var(--rd-ink);
+  outline-offset: 2px;
+}
+.sl-bp-demo-cap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 0 4px;
+}
+.sl-bp-demo-label,
+.sl-bp-demo-time {
+  font-family: var(--rd-mono);
+  font-size: var(--bp-label, 0.6875rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rd-ink-3);
+}
+.sl-bp-demo-label {
+  color: var(--rd-ink);
+}
+@media (max-width: 900px) {
+  .sl-bp-demo-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .sl-bp-demo-list {
+    grid-template-columns: 1fr;
+  }
+  .sl-bp-demo-cap {
+    flex-direction: column;
+    gap: 2px;
+  }
+}
