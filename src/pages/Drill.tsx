@@ -110,7 +110,11 @@ import { record } from '@rrweb/record';
 import type { eventWithTime } from '@rrweb/types';
 import { timerConfigForRunSpec } from '@/lib/drillRunSpec';
 import { useDrillRunSpec } from '@/components/drill/DrillRunSpecContext';
-import { closeOutAssignedSection } from '@/lib/closeOutAssignedSection';
+import {
+  closeOutAssignedSection,
+  closeOutHomeworkAssignment,
+  homeworkScore,
+} from '@/lib/closeOutAssignedSection';
 import { getDrillDisplayNumber } from '@/pages/drillDisplayNumber';
 import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import { recordPracticeDrillCompletion } from '@/bootcamps/main-conclusion/lib/recordPracticeCompletion';
@@ -2381,24 +2385,9 @@ function DrillContent() {
 
     // Homework assignment: write status=completed + score.
     if (assignmentId && user) {
-      const total = session.questionQueue.length;
-      const correct = Array.from(session.attempts.values()).filter(
-        (a) => a.selectedAnswer && a.correct,
-      ).length;
-      const score = total > 0 ? Math.round((correct / total) * 10000) / 100 : 0;
+      const score = homeworkScore(session.questionQueue.length, session.attempts);
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { error } = await supabase
-          .from('homework_assignments')
-          .update({
-            status: 'completed',
-            completed_at: new Date().toISOString(),
-            score,
-          })
-          .eq('id', assignmentId)
-          .eq('student_id', user.id);
-        if (error) throw error;
-        await completeLinkedTodo(assignmentId);
+        await closeOutHomeworkAssignment(assignmentId, user.id, score);
         toast.success(`Homework complete — ${score.toFixed(0)}%`, {
           action: { label: 'Classroom', onClick: () => navigate('/classroom') },
         });
@@ -2659,6 +2648,26 @@ function DrillContent() {
         session.fullSectionConfig.pt,
         session.fullSectionConfig.section,
       );
+    }
+
+    // A homework set that is one whole section runs through here, not through
+    // handleFinishPracticeSet, so its row has to be completed here too or the
+    // card never leaves Home. Attempts are already committed above; the score
+    // is written for Joshua and is not shown to her, because a sealed section
+    // reveals nothing until blind review is done.
+    if (assignmentId && user) {
+      const score = homeworkScore(session.questionQueue.length, updatedAttempts);
+      try {
+        await closeOutHomeworkAssignment(assignmentId, user.id, score);
+      } catch (err) {
+        console.error('[drill:assignment:complete] update failed', {
+          userId: user.id,
+          assignmentId,
+          score,
+          err,
+        });
+        toast.error("Couldn't mark your assignment complete. Your answers saved; let Joshua know.");
+      }
     }
 
 
