@@ -14,6 +14,7 @@ import { useStudentExternalUploads } from "@/hooks/useExternalWorkUploads";
 import { useHomeworkSet } from "@/hooks/useHomeworkSets";
 import { useQueryClient } from "@tanstack/react-query";
 import { isSelfContainedItem, resolveItemRoute } from "@/lib/classroomItems";
+import { launchDrill } from "@/lib/drillLaunch";
 import { markNoteRead } from "@/lib/markNoteRead";
 import {
   groupNotes,
@@ -511,15 +512,15 @@ export function ClassroomAssignmentView() {
 
   const start = () => {
     if (!assignment) return;
-    const params = new URLSearchParams({
-      mode: "type-drill",
-      qids: assignment.question_qids.join(","),
+    const guidedSetId =
+      setQuery.set?.id && setQuery.set.is_guided_set ? setQuery.set.id : undefined;
+    const query = launchDrill({
+      kind: "assignment",
       assignmentId: assignment.id,
+      guidedSetId,
+      options: { returnTo: "/classroom" },
     });
-    if (setQuery.set?.id && setQuery.set.is_guided_set) {
-      params.set("guidedSetId", setQuery.set.id);
-    }
-    navigate(`/drill?${params.toString()}`);
+    navigate(`/drill?${query}`);
   };
 
   if (assignmentQuery.loading && !assignment) return <DetailLoading />;

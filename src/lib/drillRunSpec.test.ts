@@ -1,0 +1,59 @@
+import { describe, it, expect } from 'vitest';
+
+import { drillRunSpecFromLaunch } from './drillRunSpec';
+import type { FullSectionConfig, TypeDrillConfig } from '@/types/drill';
+
+describe('an assignment launch whose qids are all one real section', () => {
+  it('runs as a timed full section, not an untimed type-drill', () => {
+    const qids = Array.from({ length: 25 }, (_, i) => `PT156-S2-Q${i + 1}`);
+    const spec = drillRunSpecFromLaunch(
+      { kind: 'assignment', assignmentId: 'assign_1' },
+      qids,
+    );
+
+    expect(spec.mode).toBe('full-section');
+    expect(spec.sealed).toBe(false);
+    expect(spec.assignmentId).toBe('assign_1');
+    const config = spec.config as FullSectionConfig;
+    expect(config.pt).toBe(156);
+    expect(config.section).toBe(2);
+    expect(config.timer.mode).toBe('35');
+  });
+
+  it('carries a guided set id through to the section spec', () => {
+    const qids = ['PT156-S2-Q1', 'PT156-S2-Q2'];
+    const spec = drillRunSpecFromLaunch(
+      { kind: 'assignment', assignmentId: 'assign_1', guidedSetId: 'set_1' },
+      qids,
+    );
+    expect(spec.mode).toBe('full-section');
+    expect(spec.guidedSetId).toBe('set_1');
+  });
+});
+
+describe('an assignment launch whose qids span more than one section', () => {
+  it('keeps the untimed type-drill behaviour', () => {
+    const qids = ['PT156-S2-Q1', 'PT156-S4-Q1'];
+    const spec = drillRunSpecFromLaunch(
+      { kind: 'assignment', assignmentId: 'assign_1' },
+      qids,
+    );
+
+    expect(spec.mode).toBe('type-drill');
+    expect(spec.assignmentId).toBe('assign_1');
+    const config = spec.config as TypeDrillConfig;
+    expect(config.selectedQids).toEqual(qids);
+  });
+});
+
+describe('an assignment launch whose qids do not name a real section', () => {
+  it('keeps the untimed type-drill behaviour rather than guessing', () => {
+    const qids = ['generated-qid-1', 'generated-qid-2'];
+    const spec = drillRunSpecFromLaunch(
+      { kind: 'assignment', assignmentId: 'assign_1' },
+      qids,
+    );
+
+    expect(spec.mode).toBe('type-drill');
+  });
+});
