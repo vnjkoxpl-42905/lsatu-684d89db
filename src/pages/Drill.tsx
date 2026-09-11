@@ -25,6 +25,8 @@ import SectionReviewWalk from '@/components/drill/SectionReviewWalk';
 import HelpSheet from '@/components/help/HelpSheet';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
+import { SectionDirectionsView } from '@/components/drill/official/SectionDirectionsCard';
+import { SECTION_DIRECTIONS } from '@/lib/sectionDirections';
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
 import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
@@ -396,6 +398,14 @@ function DrillContent() {
   const [pauseNoticeOpen, setPauseNoticeOpen] = React.useState(false);
   const [pauseNoticeMuted, setPauseNoticeMuted] = React.useState(false);
   const pauseNoticeMutedRef = React.useRef(false);
+  // Directions mid-section swap the whole player for LawHub's directions
+  // screen; the clock keeps running underneath, exactly as on test day.
+  const [directionsViewOpen, setDirectionsViewOpen] = React.useState(false);
+  // A new run in the same mount (blind review after the section, a retake)
+  // starts on its questions, not on the directions the last run left open.
+  React.useEffect(() => {
+    setDirectionsViewOpen(false);
+  }, [session?.mode, session?.fullSectionConfig?.pt, session?.fullSectionConfig?.section]);
   /**
    * What happens when a section's clock runs out.
    *
@@ -4220,6 +4230,21 @@ function DrillContent() {
             />
           }
         >
+          {isFullSection && directionsViewOpen ? (
+            // LawHub does not pop the directions over the question; it turns
+            // the page into the directions screen, clock still counting, with
+            // Questions top-left and GO TO QUESTIONS underneath to come back.
+            <SectionDirectionsView
+              sectionNumber={session.fullSectionConfig?.section ?? 1}
+              minutes={totalMs ? totalMs / 60000 : null}
+              questionCount={session.questionQueue.length}
+              directions={SECTION_DIRECTIONS.lr}
+              timerLabel={overtimeLabel ?? timer?.label ?? ""}
+              timerOverBudget={!!overtimeLabel}
+              onBackToQuestions={() => setDirectionsViewOpen(false)}
+            />
+          ) : (
+          <>
           <OfficialDrillToolbar
             highlightMode={highlightMode}
             setHighlightMode={setHighlightMode}
@@ -4233,6 +4258,7 @@ function DrillContent() {
             notesButtonVisible={usesSmartChrome}
             notesOpen={notesOpen}
             onToggleNotes={toggleNotesPanel}
+            onOpenDirections={isFullSection ? () => setDirectionsViewOpen(true) : undefined}
           />
           <OfficialQuestionPane
             question={{
@@ -4401,6 +4427,8 @@ function DrillContent() {
               onEnd={() => handleNavigation('/classroom/drill')}
               disabled={!!timer?.isPaused}
             />
+          )}
+          </>
           )}
         </OfficialDrillFrame>
         {helpOpen && <HelpSheet open={helpOpen} onOpenChange={setHelpOpen} />}

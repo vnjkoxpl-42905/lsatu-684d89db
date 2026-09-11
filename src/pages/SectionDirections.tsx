@@ -4,11 +4,8 @@ import { useStudentAssignment } from "@/hooks/useStudentAssignments";
 import { useUserSettings } from "@/contexts/UserSettingsContext";
 import { singleSectionOf } from "@/lib/drillRunSpec";
 import { launchDrill } from "@/lib/drillLaunch";
-import {
-  SECTION_DIRECTIONS,
-  formatSectionMinutes,
-  sectionMinutes,
-} from "@/lib/sectionDirections";
+import { SECTION_DIRECTIONS, sectionMinutes } from "@/lib/sectionDirections";
+import { SectionDirectionsCard } from "@/components/drill/official/SectionDirectionsCard";
 import "./section-directions.css";
 
 /**
@@ -103,20 +100,12 @@ export default function SectionDirectionsPage() {
       >
         ← Back to home
       </button>
-      <div className="section-directions-card">
-        <h1 className="section-directions-title">Section {section.section}</h1>
-        <p className="section-directions-line">
-          {minutes === null
-            ? "Untimed section"
-            : `Total Section Time - ${formatSectionMinutes(minutes)}`}
-        </p>
-        <p className="section-directions-line">
-          {questionCount} Question{questionCount === 1 ? "" : "s"}
-        </p>
-        <p className="section-directions-body">
-          <strong>Directions:</strong> {directions}
-        </p>
-      </div>
+      <SectionDirectionsCard
+        sectionNumber={section.section}
+        minutes={minutes}
+        questionCount={questionCount}
+        directions={directions}
+      />
       <button
         type="button"
         className="section-directions-go"

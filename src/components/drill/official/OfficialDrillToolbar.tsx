@@ -89,6 +89,12 @@ interface Props {
    */
   directions?: ToolbarDirections | null;
   /**
+   * When set, the Directions button calls this instead of opening the dialog.
+   * A full section uses it to swap the player for LawHub's directions screen,
+   * clock still running, rather than a pop-up over the question.
+   */
+  onOpenDirections?: () => void;
+  /**
    * Rendered in the left group between Directions and Find Text — the slot RC
    * uses for "Passage Only View", which sits there in the official interface.
    */
@@ -137,6 +143,7 @@ export default function OfficialDrillToolbar({
   notesOpen,
   onToggleNotes,
   directions = LR_DIRECTIONS,
+  onOpenDirections,
   leftTools,
   rightTools,
   highlightToolsVisible = true,
@@ -216,7 +223,7 @@ export default function OfficialDrillToolbar({
           {directions && (
             <button
               type="button"
-              onClick={() => setDirectionsOpen(true)}
+              onClick={onOpenDirections ?? (() => setDirectionsOpen(true))}
               className="rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-slate-900 hover:bg-slate-100 transition-colors text-[14px] font-semibold"
             >
               Directions
@@ -396,7 +403,7 @@ export default function OfficialDrillToolbar({
         </div>
       </div>
 
-      {directions && (
+      {directions && !onOpenDirections && (
         <Dialog open={directionsOpen} onOpenChange={setDirectionsOpen}>
           {/* Dressed like the player it sits over, not like the app's dark
               chrome: white, plain sans, black text, the way LawHub shows its
