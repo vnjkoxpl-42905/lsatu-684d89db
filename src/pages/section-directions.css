@@ -15,6 +15,28 @@
   color: #1f1f1f;
 }
 
+/* Leaving costs nothing: the clock has not started. Quiet, top-left, out of
+   the card so it never reads as part of the test. */
+.section-directions-back {
+  align-self: flex-start;
+  background: transparent;
+  border: 0;
+  color: #1f1f1f;
+  font-family: inherit;
+  font-size: 17px;
+  padding: 6px 4px;
+  margin: -44px 0 20px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.section-directions-back:hover,
+.section-directions-back:focus-visible {
+  color: #b8650b;
+  outline: none;
+}
+
 .section-directions-card {
   width: 100%;
   max-width: 1310px;

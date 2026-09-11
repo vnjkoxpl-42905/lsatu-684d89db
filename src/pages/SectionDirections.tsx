@@ -96,6 +96,13 @@ export default function SectionDirectionsPage() {
 
   return (
     <main className="section-directions">
+      <button
+        type="button"
+        className="section-directions-back"
+        onClick={() => navigate("/classroom")}
+      >
+        ← Back to home
+      </button>
       <div className="section-directions-card">
         <h1 className="section-directions-title">Section {section.section}</h1>
         <p className="section-directions-line">

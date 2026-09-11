@@ -59,6 +59,12 @@ describe('SectionDirectionsPage', () => {
     expect(screen.getByText(/based on the reasoning presented in a brief passage/)).toBeInTheDocument();
   });
 
+  it('offers a way back to home that starts nothing', () => {
+    mount();
+    fireEvent.click(screen.getByRole('button', { name: /Back to home/ }));
+    expect(navigate).toHaveBeenCalledWith('/classroom');
+  });
+
   it('starts the section, and only then, on GO TO QUESTIONS', () => {
     mount();
     expect(navigate).not.toHaveBeenCalled();
