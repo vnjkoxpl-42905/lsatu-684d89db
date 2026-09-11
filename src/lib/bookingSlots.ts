@@ -2,12 +2,14 @@
 // and mirrored by the Deno edge core (supabase/functions/_shared/bookingCore.ts).
 // Kept in src/ so Vitest can exercise the DST/buffer/boundary logic directly.
 
+// Fallbacks only. The live numbers come from booking_availability_config:
+// Buffer 10 min, 24 h notice, 45-day window, mirroring Cal.com (2026-09-10).
 export const BOOKING_CFG = {
   sessionMinDefault: 70,
-  bufferMin: 15,
-  stepMin: 30,
+  bufferMinDefault: 10,
   leadMin: 1440,
-  maxSlots: 200,
+  lookaheadDaysDefault: 45,
+  maxSlots: 400,
 };
 
 export function durationLabel(mins: number): string {
@@ -49,38 +51,64 @@ export function hostLocalParts(timeZone: string, at: Date) {
 
 export type Slot = { start_at: string; end_at: string };
 export type DowRanges = Record<number, { startMin: number; endMin: number }[]>;
+export type DateRanges = Record<string, { startMin: number; endMin: number }[]>;
 
-// Mirror of the edge core's generateSlots: 30-min grid inside seeded windows,
-// >= 24h lead, session fits fully, 15-min buffer around busy blocks.
+// Mirror of the edge core's SlotPolicy / BookingHours (bookingCore.ts).
+export type SlotPolicy = {
+  lengthMin: number;
+  pitchMin: number;
+  bufferBeforeMin: number;
+  bufferAfterMin: number;
+  leadMin: number;
+  windowEndMs: number;
+  maxSlots?: number;
+};
+export type BookingHours = { hostTz: string; rangesByDow: DowRanges; overridesByDate: DateRanges };
+
+function isoDate(y: number, m: number, d: number): string {
+  return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+}
+
+export function rangesForDate(hours: BookingHours, date: string, dow: number) {
+  const override = hours.overridesByDate[date];
+  if (override) return override;
+  return hours.rangesByDow[dow] ?? [];
+}
+
+// Mirror of the edge core's generateSlots: slots step pitchMin from the start
+// of each range on the host's local date (overrides first), the whole session
+// fits inside the range, it starts no earlier than the notice and ends inside
+// the window, and nothing busy sits within the buffer on either side. Busy
+// blocks are not buffered themselves, so two events are one buffer apart.
 export function generateSlots(opts: {
-  sessionMin: number;
+  policy: SlotPolicy;
+  hours: BookingHours;
   nowMs: number;
-  hostTz: string;
-  rangesByDow: DowRanges;
   busy: { start: number; end: number }[];
-  daysAhead: number;
-  expiresAtMs?: number | null;
 }): Slot[] {
-  const { sessionMin, nowMs, hostTz, rangesByDow, busy, daysAhead, expiresAtMs } = opts;
-  const sessionMs = sessionMin * 60_000;
-  const bufMs = BOOKING_CFG.bufferMin * 60_000;
-  const rangeStart = nowMs + BOOKING_CFG.leadMin * 60_000;
-  let rangeEnd = nowMs + daysAhead * 86_400_000;
-  if (expiresAtMs && expiresAtMs < rangeEnd) rangeEnd = expiresAtMs;
+  const { policy, hours, nowMs, busy } = opts;
+  const sessionMs = policy.lengthMin * 60_000;
+  const beforeMs = policy.bufferBeforeMin * 60_000;
+  const afterMs = policy.bufferAfterMin * 60_000;
+  const maxSlots = policy.maxSlots ?? BOOKING_CFG.maxSlots;
+  const rangeStart = nowMs + policy.leadMin * 60_000;
+  const rangeEnd = policy.windowEndMs;
+  if (rangeEnd <= rangeStart) return [];
 
   const slots: Slot[] = [];
   const seen = new Set<string>();
-  for (let d = 0; d <= daysAhead && slots.length < BOOKING_CFG.maxSlots; d++) {
-    const dayAnchor = new Date(rangeStart + d * 86_400_000);
-    const { y, m, d: dd, dow } = hostLocalParts(hostTz, dayAnchor);
-    const dayRanges = rangesByDow[dow] ?? [];
+  const daysAhead = Math.ceil((rangeEnd - rangeStart) / 86_400_000) + 1;
+  const first = hostLocalParts(hours.hostTz, new Date(rangeStart));
+  for (let d = 0; d <= daysAhead && slots.length < maxSlots; d++) {
+    const dt = new Date(Date.UTC(first.y, first.m, first.d + d));
+    const y = dt.getUTCFullYear(), m = dt.getUTCMonth(), dd = dt.getUTCDate(), dow = dt.getUTCDay();
+    const dayRanges = rangesForDate(hours, isoDate(y, m, dd), dow);
     for (const rng of dayRanges) {
-      const firstGridMinute = Math.ceil(rng.startMin / BOOKING_CFG.stepMin) * BOOKING_CFG.stepMin;
-      for (let mins = firstGridMinute; mins + sessionMin <= rng.endMin; mins += BOOKING_CFG.stepMin) {
-        const startUtc = hostLocalToUtc(hostTz, y, m, dd, mins).getTime();
+      for (let mins = rng.startMin; mins + policy.lengthMin <= rng.endMin; mins += policy.pitchMin) {
+        const startUtc = hostLocalToUtc(hours.hostTz, y, m, dd, mins).getTime();
         if (startUtc < rangeStart) continue;
         if (startUtc + sessionMs > rangeEnd) break;
-        const conflict = busy.some((b) => b.start - bufMs < startUtc + sessionMs && b.end + bufMs > startUtc);
+        const conflict = busy.some((b) => b.start < startUtc + sessionMs + afterMs && b.end > startUtc - beforeMs);
         if (!conflict) {
           const startIso = new Date(startUtc).toISOString();
           if (!seen.has(startIso)) {
@@ -88,13 +116,30 @@ export function generateSlots(opts: {
             slots.push({ start_at: startIso, end_at: new Date(startUtc + sessionMs).toISOString() });
           }
         }
-        if (slots.length >= BOOKING_CFG.maxSlots) break;
+        if (slots.length >= maxSlots) break;
       }
-      if (slots.length >= BOOKING_CFG.maxSlots) break;
+      if (slots.length >= maxSlots) break;
     }
   }
   slots.sort((a, b) => a.start_at.localeCompare(b.start_at));
   return slots;
+}
+
+// The pass link's policy: pitch is length + buffer so back-to-back slots are
+// all bookable (80 minutes for the 70-minute session).
+export function passSlotPolicy(opts: {
+  sessionMin: number; bufferMin: number; leadMin: number; windowDays: number; nowMs: number; expiresAtMs?: number | null;
+}): SlotPolicy {
+  let windowEndMs = opts.nowMs + opts.windowDays * 86_400_000;
+  if (opts.expiresAtMs && opts.expiresAtMs < windowEndMs) windowEndMs = opts.expiresAtMs;
+  return {
+    lengthMin: opts.sessionMin,
+    pitchMin: opts.sessionMin + opts.bufferMin,
+    bufferBeforeMin: opts.bufferMin,
+    bufferAfterMin: opts.bufferMin,
+    leadMin: opts.leadMin,
+    windowEndMs,
+  };
 }
 
 // Slug: <firstname>-<128-bit code>. The code's entropy is the bearer secret.

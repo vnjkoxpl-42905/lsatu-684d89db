@@ -178,5 +178,19 @@ export function useTAChat(studentId: string | null, backend: TABackend = "ta-cha
     },
   });
 
-  return { interactions, isLoading, error, send, confirmAction, cancelAction };
+  // Wipe this thread entirely (the /clear command).
+  const clearThread = useMutation<void, Error, void>({
+    mutationFn: async () => {
+      let q = supabase.from("ta_interactions").delete();
+      q = studentId ? q.eq("student_id", studentId) : q.is("student_id", null);
+      const { error } = await q;
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.setQueryData(queryKey, []);
+      qc.invalidateQueries({ queryKey });
+    },
+  });
+
+  return { interactions, isLoading, error, send, confirmAction, cancelAction, clearThread };
 }

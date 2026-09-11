@@ -69,6 +69,12 @@ Deno.serve(async (req) => {
     let processed = 0;
     let usedFallback = false;
     const errors: string[] = [];
+    // Every event id Google returned on a full-window pass. A mirrored Google
+    // event inside the window that is NOT in this set no longer exists on the
+    // calendar (deleted, or a recurring series that was cut short); Google
+    // does not send those as `cancelled` on a windowed list, so without this
+    // the mirror kept phantom rows that blocked slots for months.
+    const seenEventIds = new Set<string>();
 
     const { error: attemptErr } = await supabase.from("gcal_sync_state")
       .update({ last_attempt_at: new Date().toISOString() }).eq("id", 1);
@@ -100,6 +106,7 @@ Deno.serve(async (req) => {
 
       const items = body.items ?? [];
       for (const ev of items) {
+        if (ev.id) seenEventIds.add(String(ev.id));
         const stamp = ev.extendedProperties?.private?.lsatu_redemption_id as string | undefined;
         if (ev.status === "cancelled") {
           const { error: cancelErr } = await supabase.from("schedule_events")
@@ -163,6 +170,34 @@ Deno.serve(async (req) => {
       if (!pageToken) nextSyncToken = body.nextSyncToken;
     } while (pageToken);
 
+    // Tombstone mirrored Google events the full-window pass did not return.
+    // Only after a clean, complete pass without a sync token (a windowed list),
+    // and only rows that came from Google: rows LSAT U wrote itself are owned
+    // by their redemption / single-session reconcilers.
+    const fullWindowPass = !syncToken && errors.length === 0;
+    let tombstoned = 0;
+    if (fullWindowPass) {
+      const { data: candidates, error: candErr } = await supabase.from("schedule_events")
+        .select("id,google_event_id")
+        .eq("calendar_id", calendarId)
+        .eq("source", "google")
+        .is("deleted_at", null)
+        .gte("start_at", fullTimeMin)
+        .lt("start_at", fullTimeMax);
+      if (candErr) {
+        errors.push(`tombstone scan: ${candErr.message}`);
+      } else {
+        const stale = (candidates ?? []).filter((row: any) => !seenEventIds.has(String(row.google_event_id)));
+        if (stale.length > 0) {
+          const { error: tombErr } = await supabase.from("schedule_events")
+            .update({ deleted_at: new Date().toISOString(), status: "cancelled", last_synced_at: new Date().toISOString() })
+            .in("id", stale.map((row: any) => row.id));
+          if (tombErr) errors.push(`tombstone update: ${tombErr.message}`);
+          else tombstoned = stale.length;
+        }
+      }
+    }
+
     // Guard the sync token: only advance if every write succeeded, otherwise
     // keep the old token so the next run retries the same window.
     if (errors.length > 0) {
@@ -185,7 +220,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    return new Response(JSON.stringify({ ok: true, processed, calendarId }), {
+    return new Response(JSON.stringify({ ok: true, processed, tombstoned, calendarId }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {

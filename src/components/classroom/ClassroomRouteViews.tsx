@@ -13,13 +13,14 @@ import { hasStructuredWorkspace } from "@/components/classroom/structured-assign
 import { useStudentExternalUploads } from "@/hooks/useExternalWorkUploads";
 import { useHomeworkSet } from "@/hooks/useHomeworkSets";
 import { useQueryClient } from "@tanstack/react-query";
-import { resolveItemRoute } from "@/lib/classroomItems";
+import { isSelfContainedItem, resolveItemRoute } from "@/lib/classroomItems";
 import { markNoteRead } from "@/lib/markNoteRead";
 import {
   groupNotes,
   NOTE_TYPES,
   sanitizeClassroomHtml,
 } from "@/components/classroom/classroomData";
+import ClassroomMarkdown from "@/components/classroom/ClassroomMarkdown";
 import {
   StageIndexHint,
   StageIndexList,
@@ -56,6 +57,29 @@ function noteKind(type: string) {
 }
 
 /**
+ * Markdown reduced to the words it renders, for a plain-text excerpt.
+ *
+ * The excerpt is the only place a recap body is shown without going through
+ * ClassroomMarkdown, so the syntax has to come off here instead. Without this
+ * the featured note on the landing surface opened with `## What we worked on`
+ * or `- [ ] Redo PT 141 S2` — the exact leak the reading view was just fixed
+ * for. Structural markers are dropped; the words they wrapped are kept.
+ */
+function stripMarkdown(source: string) {
+  return source
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`([^`]*)`/g, "$1")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/^\s{0,3}>\s?/gm, "")
+    .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+    .replace(/^[ \t]*(?:[-*+]|\d+\.)[ \t]+(?:\[[ xX]\][ \t]+)?/gm, "")
+    .replace(/^[ \t]*(?:-{3,}|\*{3,}|_{3,})[ \t]*$/gm, " ")
+    .replace(/(\*\*|__)(.+?)\1/g, "$2")
+    .replace(/(?<![\w*])([*_])(?!\s)(.+?)(?<!\s)\1(?![\w*])/g, "$2");
+}
+
+/**
  * First ~55 words of a note, for the landing preview.
  *
  * Notes are authored HTML and may carry their own <style>, so the tags are
@@ -75,6 +99,8 @@ function noteExcerpt(item: {
     holder.innerHTML = source;
     holder.querySelectorAll("style, script").forEach((node) => node.remove());
     text = holder.textContent ?? "";
+  } else {
+    text = stripMarkdown(text);
   }
   const words = text.replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
   if (words.length === 0) return "";
@@ -192,6 +218,10 @@ export function ClassroomItemView() {
 
   React.useEffect(() => {
     if (!item) return;
+    // An item that IS its own page must not be redirected off itself. A
+    // homework part from a session bundle now resolves to this very route, so
+    // without this guard the effect would replace the page with the page.
+    if (isSelfContainedItem(item)) return;
     if (
       item.type === "drill" ||
       item.type === "homework" ||
@@ -252,11 +282,12 @@ export function ClassroomItemView() {
       {item.description ? (
         <p className="classroom-note-standfirst">{item.description}</p>
       ) : null}
-      {item.content_markdown ? (
-        <article className="classroom-prose">
-          <p>{item.content_markdown}</p>
-        </article>
-      ) : null}
+      {/* Rendered, not printed. This was `<p>{item.content_markdown}</p>`, and
+          the bodies arriving here are real markdown: the AI TA bundle writes
+          `- [ ] `, `**n. prompt**` and `_Answer:_` out of `body_markdown`. With
+          no `white-space` on `.classroom-prose p`, a recap reached the student
+          as one run-on line with its own syntax showing. */}
+      <ClassroomMarkdown>{item.content_markdown}</ClassroomMarkdown>
       {safeHtml ? (
         <article
           className="classroom-prose"
@@ -376,9 +407,14 @@ export function ClassroomRecapsView() {
       ) : null}
       {/* The zero case is a state, not an absence. Without a branch here the
           page rendered a heading and stopped, which is the surface a brand new
-          student is most likely to open first. The wording is the line already
-          shipped by RecapsSection so the two places cannot drift, and it claims
-          nothing that is not true: it says where recaps come from and stops. */}
+          student is most likely to open first. It claims nothing that is not
+          true: it says where recaps come from and stops.
+
+          This used to say the wording was shared with RecapsSection "so the
+          two places cannot drift". RecapsSection had no importers, and neither
+          did pages/ClassroomRecaps or pages/ClassroomItem: all three predated
+          this shell and nothing routed to them. Deleted 2026-09-09. The copy
+          has one home, which is here. */}
       {!query.isLoading && !query.error && total === 0 ? (
         <p className="classroom-empty-copy">
           Notes and recaps from your sessions with Joshua will show up here.

@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
 import { renderInlineMarks } from "../prompt-format";
 import { useNoKeyboard } from "../recall/noKeyboard";
+import { SectionDemos } from "./SectionDemos";
 import "./section-launch.css";
 
 export interface SectionBriefingPageProps {
@@ -92,6 +93,11 @@ export function SectionBriefingPage({
           </ol>
         </section>
       )}
+
+      {/* The steps, watched being done. Under the steps and before the long
+          version: she reads what to do, sees it done, then chooses whether to
+          read more. Joshua, 2026-09-10. */}
+      <SectionDemos />
 
       {/* The four steps above ARE the instruction. This is the same method told
           again at length, and rendering both open left her reading the method

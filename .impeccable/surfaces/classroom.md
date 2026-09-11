@@ -130,8 +130,26 @@ colour as the rest border is no indicator at all. All three draw
 **A focus ring uses `--classroom-link-text`, not `--classroom-link`.** The decorative
 orange `#ff8906` measures 2.38:1 on the light ground, under the 3:1 a focus indicator
 owes. `--classroom-link-text` is the themed pair that passes: 5.38:1 on light, the same
-`#ff8906` on the near-black dark ground. `.classroom-icon-button` and
-`.classroom-overlay-close` still ring in `--classroom-link` and are the open case.
+`#ff8906` on the near-black dark ground. The two focus rings this rule used to list as
+open - `.classroom-icon-button` and `.classroom-overlay-close` - now ring in
+`--classroom-link-text`; no `outline` in this file resolves from `--classroom-link` any
+more.
+
+**And so does a link inside a note.** `.classroom-prose a` was `--classroom-link`, which
+put the one place a student reads what their coach wrote at 2.38:1 - the same text/fill
+split that held every date below the floor for months, still live in the reading column
+after the dates were fixed. Now `--classroom-link-text`, measured in the browser against
+the live sheet on 2026-09-09: **5.38:1 light, 8.06:1 dark**. The rule also set
+`text-decoration: none` and moved the colour to `--classroom-ink` on hover, so the link
+was identifiable by colour alone and stopped being identifiable at all under the cursor
+(WCAG 1.4.1). Underlined in both states now, `text-underline-offset: 2px`.
+
+Three uses of `--classroom-link` still carry words and are the open case, all outside the
+reading column, all the same one-token fix: `.classroom-message-link` (a 16px link in
+Messages, which is where the note's own Ask button lands),
+`.classroom-annotate-button-active`, and `.classroom-orientation-eyebrow` (11px at
+weight 600, which is not large text). The remaining uses are icons, fills and
+`border-color`, and stay where they are.
 
 **Overlays are dialogs.** The section drawer and the mobile menu go through
 `useDialogOverlay`: `role="dialog"`, `aria-modal`, an accessible name, focus moved in on
@@ -162,6 +180,72 @@ before; dark is `#6f6d80`, a lighter sibling in the same hue. Scoped to this con
 the other 17 `--classroom-active` rules keep their colour. Measured 2026-09-09 on the
 production build: off-vs-on 3.25:1 dark and 9.68:1 light, with the on-state knob at
 3.93:1 against its track.
+
+**A note body stored as markdown is rendered as markdown.** `content_markdown` was
+printed as `<p>{item.content_markdown}</p>`. Markdown is newline-significant and
+`.classroom-prose p` sets no `white-space`, so a recap reached the student as one run-on
+paragraph carrying its own syntax: `- [ ] Redo PT 141 S2 - [ ] Blind review` on a single
+line, `**1. What is a sufficient assumption?**` with the asterisks showing. Not a hand-
+typed body that happened to contain punctuation - `partToMarkdown` in
+`src/lib/sessionBundle.ts` emits those markers by construction from a field named
+`body_markdown`, and every AI TA session bundle travels that path. `ClassroomMarkdown` is
+the one renderer: headings demote to the h2/h3 this stylesheet styles so an authored `#`
+cannot open a second document under the page's own `<h1 class="classroom-title">`, raw
+HTML is skipped because that path belongs to `sanitizeClassroomHtml` and its `<style>`
+allowance, task markers render as a box rather than the literal `[ ]`, and external links
+open in a new tab while in-app paths stay put. The excerpt on the landing surface strips
+the same syntax rather than rendering it, since it is the one place a body is shown
+without going through the renderer.
+
+**The typography plugin is registered, and its palette is this app's tokens.**
+`@tailwindcss/typography` sat in `package.json` unregistered, so every `prose` class in
+the codebase emitted nothing: measured 2026-09-09, zero `.prose` rules in the served
+stylesheets and a rendered `<h2>` computing to the inherited body colour at 16px. Thirteen
+live surfaces were styling markdown with classes that did not exist. Registering it alone
+would have made several of them worse - the app is dark at `:root` and flips to light with
+a `.light` class, so `darkMode: ["class"]` means the `dark:` variant almost never fires,
+and the four call sites written as `dark:prose-invert` would have landed on Tailwind's own
+gray-700 body text against a near-black ground. Both the `DEFAULT` and `invert` keys
+therefore resolve from `--foreground`, `--muted-foreground`, `--border` and `--muted`, so
+prose is correct in either theme whether or not a call site asks for `prose-invert`. This
+does not touch `.classroom-prose`, which is this world's own stylesheet and stays hand-
+written.
+
+**Prose list markers have to be asked for.** Tailwind's preflight sets
+`ol, ul, menu { list-style: none }` app-wide, and `.classroom-prose ol, ul` restored only
+the indent. Every list in every note rendered as unmarked indented lines, and a numbered
+list lost its numbers - a change of meaning, not of style, since "1, 2, 3" became three
+lines that no longer said they were in order. Measured in the browser against the live
+sheet: `list-style-type` computed `none` on a note's `<ul>`. `disc` / `decimal` / `circle`
+are declared explicitly now, with `::marker` on `--classroom-meta-text`. Anything this
+stylesheet inherits from preflight is worth checking the same way before assuming the
+browser default is what renders.
+
+**A row in this section opens what it says it opens.** `publishSessionBundle` stamps every
+part of a session bundle with `source_table: 'ai_ta_drafts'` and the draft id, including
+the homework part, which is a `homework` row carrying its own markdown and no assignment
+row anywhere. `resolveItemRoute` read the bare `source_id` and sent the student to
+`/classroom/<draft uuid>`, where the assignment view looked for a `homework_assignments`
+row that has never existed and rendered "Assignment not found". The homework Joshua
+reviewed and approved next to the recap was unreachable from the moment it was published.
+`source_id` says what a row was made from, not that the thing it was made from is
+openable; only `homework_assignments` is.
+
+**The shell's four orphans are gone.** `src/pages/ClassroomRecaps.tsx`,
+`src/components/classroom/RecapsSection.tsx`, `src/pages/ClassroomItem.tsx` and
+`src/pages/teacher/TeacherRecaps.tsx` all predated this shell and nothing routed to any of
+them: `/classroom/recaps` and `/classroom/item/:itemId` are `ClassroomRecapsView` and
+`ClassroomItemView` in `ClassroomRouteViews.tsx`, and the teacher path is the dossier.
+They were not merely unused. A live comment in `ClassroomRecapsView` cited `RecapsSection`
+as the shared source of the empty-state wording "so the two places cannot drift", sending
+the next reader to a file that was not running, and `pages/ClassroomItem.tsx` held a
+`whitespace-pre-wrap` on the markdown body that the live view did not - so the dead copy
+rendered a recap *better* than the one students used. Deleted 2026-09-09.
+
+`src/pages/ClassroomTAAssignmentDetail.tsx` was a fifth orphan of the same kind - the
+assignment surface rather than notes and recaps, but the same story: no importers, and
+`/classroom/ta/:assignmentId` is `ClassroomTAAssignmentView`. Deleted on Joshua's word the
+same day. Nothing under `/classroom` now has a routed view and a dead twin.
 
 **`smartboard_recap` is a dead label.** Boards are not attached to student accounts
 (confirmed 2026-09-09), so no student sees it. The mapping stays only so an unmapped

@@ -767,19 +767,55 @@ export type Database = {
       }
       booking_availability_config: {
         Row: {
+          buffer_minutes: number
           id: number
+          minimum_notice_minutes: number
           timezone: string
           updated_at: string
+          window_days: number
         }
         Insert: {
+          buffer_minutes?: number
           id?: number
+          minimum_notice_minutes?: number
           timezone?: string
           updated_at?: string
+          window_days?: number
         }
         Update: {
+          buffer_minutes?: number
           id?: number
+          minimum_notice_minutes?: number
           timezone?: string
           updated_at?: string
+          window_days?: number
+        }
+        Relationships: []
+      }
+      booking_availability_overrides: {
+        Row: {
+          created_at: string
+          date: string
+          end_time: string | null
+          id: string
+          note: string | null
+          start_time: string | null
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          end_time?: string | null
+          id?: string
+          note?: string | null
+          start_time?: string | null
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          end_time?: string | null
+          id?: string
+          note?: string | null
+          start_time?: string | null
         }
         Relationships: []
       }
@@ -913,6 +949,7 @@ export type Database = {
           slug: string
           updated_at: string
           window_business_days: number
+          window_calendar_days: number | null
         }
         Insert: {
           active?: boolean
@@ -932,6 +969,7 @@ export type Database = {
           slug: string
           updated_at?: string
           window_business_days?: number
+          window_calendar_days?: number | null
         }
         Update: {
           active?: boolean
@@ -951,6 +989,7 @@ export type Database = {
           slug?: string
           updated_at?: string
           window_business_days?: number
+          window_calendar_days?: number | null
         }
         Relationships: []
       }
@@ -1216,6 +1255,36 @@ export type Database = {
             referencedColumns: ["slug"]
           },
         ]
+      }
+      booking_refusals: {
+        Row: {
+          booking_pass_id: string | null
+          created_at: string
+          details: string | null
+          id: string
+          reason: string
+          start_at: string | null
+          surface: string
+        }
+        Insert: {
+          booking_pass_id?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason: string
+          start_at?: string | null
+          surface: string
+        }
+        Update: {
+          booking_pass_id?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason?: string
+          start_at?: string | null
+          surface?: string
+        }
+        Relationships: []
       }
       booking_worker_heartbeats: {
         Row: {
@@ -5017,6 +5086,7 @@ export type Database = {
       }
       ta_interactions: {
         Row: {
+          action_proposal: Json | null
           action_status: string | null
           asset_ids: string[]
           created_at: string
@@ -5026,9 +5096,10 @@ export type Database = {
           id: string
           message: string
           role: string
-          student_id: string
+          student_id: string | null
         }
         Insert: {
+          action_proposal?: Json | null
           action_status?: string | null
           asset_ids?: string[]
           created_at?: string
@@ -5038,9 +5109,10 @@ export type Database = {
           id?: string
           message: string
           role: string
-          student_id: string
+          student_id?: string | null
         }
         Update: {
+          action_proposal?: Json | null
           action_status?: string | null
           asset_ids?: string[]
           created_at?: string
@@ -5050,7 +5122,7 @@ export type Database = {
           id?: string
           message?: string
           role?: string
-          student_id?: string
+          student_id?: string | null
         }
         Relationships: []
       }
@@ -5835,6 +5907,7 @@ export type Database = {
           total: number
         }[]
       }
+      booking_buffer_minutes: { Args: never; Returns: number }
       booking_buffered_range: {
         Args: { _e: string; _s: string }
         Returns: unknown
@@ -5846,6 +5919,25 @@ export type Database = {
       booking_price_cents: {
         Args: { _email: string; _event_slug: string }
         Returns: number
+      }
+      booking_ranges_for_date: {
+        Args: { _date: string }
+        Returns: {
+          end_time: string
+          start_time: string
+        }[]
+      }
+      booking_slot_is_clear: {
+        Args: {
+          _buffer_after_minutes: number
+          _buffer_before_minutes: number
+          _end_at: string
+          _ignore_google_event_id?: string
+          _ignore_schedule_event_id?: string
+          _ignore_single_session_id?: string
+          _start_at: string
+        }
+        Returns: boolean
       }
       bump_booking_hit: {
         Args: { _action: string; _ip_hash: string; _slug: string }
@@ -6711,6 +6803,10 @@ export type Database = {
       }
       set_booking_availability: {
         Args: { _ranges: Json; _timezone: string }
+        Returns: Json
+      }
+      set_booking_availability_overrides: {
+        Args: { _overrides: Json }
         Returns: Json
       }
       set_single_session_tentative_event: {

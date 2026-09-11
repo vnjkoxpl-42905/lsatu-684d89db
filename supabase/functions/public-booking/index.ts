@@ -18,7 +18,7 @@ import {
   deleteEvent, freeBusy, getEvent, insertEvent, meetUrlFromEvent, patchEvent,
 } from "../_shared/googleCalendar.ts";
 import {
-  bookSession, BOOKING_CFG, generateSlots, loadBusyIntervals, parseAvailability, type BookingPass, type GoogleCal,
+  bookSession, generateSlots, loadAvailability, loadBusyIntervals, passSlotPolicy, type BookingPass, type GoogleCal,
 } from "../_shared/bookingCore.ts";
 import { linkPassToAccount } from "../_shared/linkPassToAccount.ts";
 import { userFromRequest } from "../_shared/authClaims.ts";
@@ -148,16 +148,17 @@ Deno.serve(async (req) => {
       if (pass.status !== "active" || creditsRemaining <= 0) {
         return json({ pass: { credits_remaining: creditsRemaining, session_length_minutes: pass.session_length_minutes, status: pass.status }, slots: [] });
       }
-      const daysAhead = Math.min(Math.max(Number(body.days_ahead) || BOOKING_CFG.lookaheadDaysDefault, 1), 60);
       const nowMs = Date.now();
-      const bufferMs = BOOKING_CFG.bufferMin * 60_000;
-      const rangeStart = new Date(nowMs + BOOKING_CFG.leadMin * 60_000 - bufferMs).toISOString();
-      const rangeEnd = new Date(nowMs + daysAhead * 86_400_000 + bufferMs).toISOString();
       // Calendar lookups fail for reasons the student cannot act on (expired
       // Google credentials, a transient query error). Let that surface as a
       // named, retryable condition instead of an opaque 500.
-      let busy;
+      let busy, policy, avail;
       try {
+        avail = await loadAvailability(supabase);
+        policy = passSlotPolicy(pass, avail, nowMs, Number(body.days_ahead) || undefined);
+        const bufferMs = avail.bufferMin * 60_000;
+        const rangeStart = new Date(nowMs + policy.leadMin * 60_000 - bufferMs).toISOString();
+        const rangeEnd = new Date(policy.windowEndMs + bufferMs).toISOString();
         busy = await loadBusyIntervals({ supabase, gcal, rangeStartIso: rangeStart, rangeEndIso: rangeEnd });
       } catch (e) {
         console.error("public-booking slots availability lookup failed", {
@@ -166,10 +167,7 @@ Deno.serve(async (req) => {
         return json({ error: "availability_check_failed" }, 503);
       }
 
-      const { data: avail } = await supabase.rpc("get_booking_availability");
-      const { hostTz, rangesByDow } = parseAvailability(avail);
-
-      const slots = generateSlots({ pass, nowMs, hostTz, rangesByDow, busy, daysAhead });
+      const slots = generateSlots({ policy, hours: avail, nowMs, busy });
       return json({
         pass: { credits_remaining: creditsRemaining, session_length_minutes: pass.session_length_minutes },
         slots,
@@ -205,7 +203,17 @@ Deno.serve(async (req) => {
         serviceKey: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
         anonKey: Deno.env.get("SUPABASE_ANON_KEY") ?? "",
       });
-      if (!result.ok) return json({ error: result.error, details: result.details }, result.status);
+      if (!result.ok) {
+        // Keep the slot and the reason, so a "that time was taken" report can
+        // be answered from the log instead of guessed at.
+        const { error: logErr } = await supabase.from("booking_refusals").insert({
+          booking_pass_id: pass.id, surface: "public-booking",
+          start_at: body.start_at ? String(body.start_at) : null,
+          reason: result.error, details: result.details ?? null,
+        });
+        if (logErr) console.error("booking refusal log failed", logErr);
+        return json({ error: result.error, details: result.details }, result.status);
+      }
       return json({ ok: true, redemption: result.redemption, was_existing: result.was_existing });
     }
 

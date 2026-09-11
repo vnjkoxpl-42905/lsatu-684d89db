@@ -12,7 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
-import { useInbox, type Conversation } from "@/hooks/useInbox";
+import { useInstructorMessages, type InstructorMessage } from "@/hooks/useInstructorMessages";
 import { useLastActivity } from "@/hooks/useLastActivity";
 import { useNotifications, type Notification } from "@/hooks/useNotifications";
 import {
@@ -213,22 +213,19 @@ function guidedToFocus(
   };
 }
 
-function instructorMessageToFocus(c: Conversation): TodayFocusItem | null {
-  if (!c.unread || !c.last_message) return null;
-  const fromInstructor = c.participants.some((p) => p.is_admin && p.user_id === c.last_message?.sender_id);
-  if (!fromInstructor) return null;
+function instructorMessageToFocus(m: InstructorMessage): TodayFocusItem {
   return {
-    id: `conversation-${c.id}`,
+    id: `conversation-${m.conversationId}`,
     type: "message",
-    title: c.subject || "Message from Joshua",
+    title: m.subject || "Message from Joshua",
     sourceLine: "Message from Joshua",
     status: "New",
     actionLabel: "Reply",
     actionCue: "New",
-    route: `/inbox/${encodeURIComponent(c.id)}`,
+    route: `/inbox/${encodeURIComponent(m.conversationId)}`,
     priority: 700,
-    preview: compactText(c.last_message.body, 92) ?? undefined,
-    updatedAt: c.last_message.created_at,
+    preview: compactText(m.body, 92) ?? undefined,
+    updatedAt: m.createdAt,
     Icon: MessageSquare,
   };
 }
@@ -328,7 +325,7 @@ export function useTodayFocus(drillReturnTo = "/classroom"): TodayFocus {
   const { assignments: homework, loading: homeworkLoading, error: homeworkError } = useStudentAssignments();
   const { assignments: taAssignments, loading: taLoading, error: taError } = useStudentTAAssignments();
   const { notifications, loading: notificationsLoading, error: notificationsError, markRead } = useNotifications();
-  const { conversations, loading: inboxLoading } = useInbox();
+  const { data: instructorMessages = [], isLoading: inboxLoading } = useInstructorMessages();
   const {
     data: lastActivity = null,
     isLoading: lastActivityLoading,
@@ -372,9 +369,7 @@ export function useTodayFocus(drillReturnTo = "/classroom"): TodayFocus {
     const fromNotifications = notifications
       .map((n) => notificationToFocus(n, markRead))
       .filter((item): item is TodayFocusItem => item !== null);
-    const fromMessages = conversations
-      .map(instructorMessageToFocus)
-      .filter((item): item is TodayFocusItem => item !== null);
+    const fromMessages = instructorMessages.map(instructorMessageToFocus);
     const fromLastActivity = lastActivityToFocus(lastActivity, drillReturnTo);
 
     const byId = new Map<string, TodayFocusItem>();
@@ -390,7 +385,7 @@ export function useTodayFocus(drillReturnTo = "/classroom"): TodayFocus {
       byId.set(item.id, item);
     }
     return Array.from(byId.values()).sort(itemSort);
-  }, [classroomItems, conversations, drillReturnTo, guided, homework, lastActivity, markRead, notifications, taAssignments]);
+  }, [classroomItems, drillReturnTo, guided, homework, instructorMessages, lastActivity, markRead, notifications, taAssignments]);
 
   React.useEffect(() => {
     if (selectedId && !items.some((item) => item.id === selectedId)) {

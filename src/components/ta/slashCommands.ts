@@ -11,6 +11,7 @@ import {
   Sparkles,
   Reply,
   MessageSquare,
+  Eraser,
 } from "lucide-react";
 
 export interface SlashCommand {
@@ -29,6 +30,13 @@ export interface SlashCommand {
 }
 
 export const SLASH_COMMANDS: SlashCommand[] = [
+  {
+    id: "clear",
+    icon: Eraser,
+    label: "/clear",
+    description: "Wipe this conversation and start fresh",
+    prefill: "/clear",
+  },
   {
     id: "diagnose",
     icon: Stethoscope,

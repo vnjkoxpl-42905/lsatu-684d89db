@@ -92,6 +92,10 @@ vi.mock("@/hooks/useInbox", () => ({
   useConversationMessages: () => ({ messages: [], loading: false, refresh: vi.fn() }),
 }));
 
+vi.mock("@/hooks/useInstructorMessages", () => ({
+  useInstructorMessages: () => ({ data: [], isLoading: false, isError: false }),
+}));
+
 vi.mock("@/hooks/useNotifications", () => ({
   useNotifications: () => ({
     notifications: [],

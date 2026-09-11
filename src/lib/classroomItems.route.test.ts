@@ -52,3 +52,29 @@ describe('a homework item that carries its own page', () => {
     expect(isSelfContainedItem(item({ content_markdown: '# cover' }))).toBe(true);
   });
 });
+
+describe('homework published as part of a session bundle', () => {
+  // publishSessionBundle stamps every part with the AI TA draft it came from.
+  // The homework part has no assignment row at all: it is markdown on the
+  // classroom_items row itself.
+  const bundled = item({
+    source_table: 'ai_ta_drafts',
+    source_id: 'draft-77',
+    content_markdown: '- [ ] Redo PT 141 S2',
+  });
+
+  it('opens its own page rather than a homework_assignments lookup', () => {
+    // Was '/classroom/draft-77', where the assignment view searched
+    // homework_assignments for a draft id and said "Assignment not found".
+    expect(resolveItemRoute(bundled)).toBe('/classroom/item/item-1');
+  });
+
+  it('counts as self-contained even though it carries a source id', () => {
+    expect(isSelfContainedItem(bundled)).toBe(true);
+  });
+
+  it('still opens the assignment when the source really is one', () => {
+    const real = item({ source_table: 'homework_assignments', source_id: 'hw-9' });
+    expect(resolveItemRoute(real)).toBe('/classroom/hw-9');
+  });
+});

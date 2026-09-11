@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DOMPurify from "dompurify";
-import { Check, X, Loader2, Zap, BookOpen, GraduationCap, StickyNote, Dumbbell } from "lucide-react";
+import { Check, X, Loader2, Zap, BookOpen, GraduationCap, StickyNote, Dumbbell, ClipboardList, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import type { ActionProposal, Disambiguation, Proposal } from "@/lib/agentActions";
@@ -21,6 +21,8 @@ const KIND_ICON: Record<ActionProposal["kind"], typeof Zap> = {
   homework: BookOpen,
   bootcamp_module: GraduationCap,
   note: StickyNote,
+  activity: ClipboardList,
+  message: MessageSquare,
 };
 
 const KIND_LABEL: Record<ActionProposal["kind"], string> = {
@@ -28,6 +30,8 @@ const KIND_LABEL: Record<ActionProposal["kind"], string> = {
   homework: "Homework",
   bootcamp_module: "Bootcamp module",
   note: "Note",
+  activity: "Activity",
+  message: "Message",
 };
 
 function statusBadge(status: Props["actionStatus"]) {

@@ -1,13 +1,12 @@
-import { useState } from 'react';
+
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   BarChart3,
   LayoutGrid,
   Library,
   MessageSquare,
-  PanelRightClose,
-  PanelRightOpen,
   PencilRuler,
+  Sparkles,
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -36,6 +35,7 @@ const ROOMS: Room[] = [
   { to: '/teacher/today', label: 'Today', Icon: LayoutGrid, end: true },
   { to: '/teacher/inbox', label: 'Inbox', Icon: MessageSquare },
   { to: '/teacher/library', label: 'Library', Icon: Library },
+  { to: '/teacher/assistant', label: 'Teaching Assistant', Icon: Sparkles },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },
 ];
 
@@ -78,7 +78,6 @@ export default function TeacherWorkspaceShell() {
 function WorkspaceLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [aiPanelOpen, setAiPanelOpen] = useState(false);
 
   return (
     // Fills the classroom stage it is mounted into rather than claiming the
@@ -112,21 +111,15 @@ function WorkspaceLayout() {
 
             <button
               type="button"
-              onClick={() => setAiPanelOpen((open) => !open)}
-              aria-expanded={aiPanelOpen}
-              aria-controls="teacher-ai-panel"
+              onClick={() => navigate('/teacher/assistant')}
               className={cn(
                 'inline-flex h-8 items-center gap-1.5 border px-2.5 text-[12px] font-medium transition',
-                aiPanelOpen
+                location.pathname.startsWith('/teacher/assistant')
                   ? 'border-teacher-accent bg-teacher-accent text-teacher-accent-foreground hover:bg-teacher-accent-hover'
                   : 'border-teacher-accent/40 text-teacher-accent-strong hover:bg-teacher-accent/10',
               )}
             >
-              {aiPanelOpen ? (
-                <PanelRightClose className="h-3.5 w-3.5" strokeWidth={1.6} />
-              ) : (
-                <PanelRightOpen className="h-3.5 w-3.5" strokeWidth={1.6} />
-              )}
+              <Sparkles className="h-3.5 w-3.5" strokeWidth={1.6} />
               Assistant
             </button>
             </div>
@@ -165,21 +158,6 @@ function WorkspaceLayout() {
           <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto">
             <Outlet />
           </main>
-
-          {aiPanelOpen ? (
-            <aside
-              id="teacher-ai-panel"
-              className="hidden w-[320px] shrink-0 border-l border-black/10 bg-white/40 md:flex md:flex-col"
-              aria-label="Assistant"
-            >
-              <div className="px-5 pb-3 pt-5 text-[10px] font-medium uppercase tracking-[0.2em] text-black/40">
-                Assistant
-              </div>
-              <p className="px-5 text-[13px] leading-relaxed text-black/55">
-                The assistant moves in here, with whatever room you are in as its context. Nothing to use yet.
-              </p>
-            </aside>
-          ) : null}
         </div>
 
         {/* Mobile: the sidebar becomes a bottom bar. Admin has to work on a phone. */}

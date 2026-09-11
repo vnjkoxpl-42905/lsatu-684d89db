@@ -3,6 +3,7 @@ import { BookOpen } from 'lucide-react';
 import StudentNotes from '@/components/hub/StudentNotes';
 import SessionBundleList from '@/components/teacher/students/SessionBundleList';
 import RecapComposer from '@/components/teacher/RecapComposer';
+import PostedRecapsList from '@/components/teacher/PostedRecapsList';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDossier } from './StudentDossier';
 
@@ -33,6 +34,16 @@ export default function DossierNotes() {
           Sessions and transcripts
         </h2>
         <SessionBundleList studentId={studentId} />
+      </section>
+
+      {/* Posting was a one-way door: this page could put a recap in a student's
+          Classroom and had no way to show one back. The only screen that listed
+          them, TeacherRecaps, had no route and was deleted 2026-09-09. */}
+      <section className="space-y-2">
+        <h2 className="text-[13px] font-bold uppercase tracking-[0.04em] text-black/45">
+          Posted to their Classroom
+        </h2>
+        <PostedRecapsList studentId={studentId} />
       </section>
 
       <section className="space-y-2">

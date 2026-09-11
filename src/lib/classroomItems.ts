@@ -138,7 +138,31 @@ export function nextActionFor(items: ClassroomItem[]): ClassroomItem | null {
  * direct link bounced back to Home.
  */
 export function isSelfContainedItem(item: ClassroomItem): boolean {
-  return !item.source_id && !!(item.content_html || item.content_markdown);
+  return !openableAssignmentId(item) && !!(item.content_html || item.content_markdown);
+}
+
+/**
+ * The tables whose row id `/classroom/:assignmentId` can actually open.
+ *
+ * `source_id` says what a row was made from, not that the thing it was made
+ * from is an assignment. `publishSessionBundle` stamps every part of a session
+ * bundle with `source_table: 'ai_ta_drafts'` and the draft's id — including the
+ * homework part, which is a `homework` row carrying its own markdown body and
+ * no assignment anywhere. The resolver read the bare `source_id` and sent the
+ * student to `/classroom/<draft uuid>`, where `useStudentAssignment` looked for
+ * a homework_assignments row that has never existed and rendered "Assignment
+ * not found". The homework Joshua reviewed and approved alongside the recap was
+ * unreachable from the moment it was published.
+ *
+ * A missing `source_table` still counts: rows predating the column were written
+ * by the assignment path, and nothing else has ever left it null with an id.
+ */
+const ASSIGNMENT_SOURCE_TABLES = new Set(['homework_assignments']);
+
+function openableAssignmentId(item: ClassroomItem): string | null {
+  if (!item.source_id) return null;
+  if (item.source_table && !ASSIGNMENT_SOURCE_TABLES.has(item.source_table)) return null;
+  return item.source_id;
 }
 
 /**
@@ -153,10 +177,12 @@ export function resolveItemRoute(item: ClassroomItem): string | null {
       }
       if (item.source_id) return `/drill?assignmentId=${encodeURIComponent(item.source_id)}`;
       return '/drill';
-    case 'homework':
-      if (item.source_id) return `/classroom/${encodeURIComponent(item.source_id)}`;
+    case 'homework': {
+      const assignmentId = openableAssignmentId(item);
+      if (assignmentId) return `/classroom/${encodeURIComponent(assignmentId)}`;
       if (isSelfContainedItem(item)) return `/classroom/item/${encodeURIComponent(item.id)}`;
       return '/classroom';
+    }
     case 'activity':
       // source_id is the activity_assignments row id; source_table='activity_assignments'.
       if (item.source_id) return `/activities/${encodeURIComponent(item.source_id)}`;

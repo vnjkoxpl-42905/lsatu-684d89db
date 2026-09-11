@@ -113,6 +113,7 @@ const DossierNotes = safeLazy(() => import("./pages/teacher/students/DossierNote
 const DossierMessages = safeLazy(() => import("./pages/teacher/students/DossierMessages"));
 const DossierSchedule = safeLazy(() => import("./pages/teacher/students/DossierSchedule"));
 const TeacherWeeklyPlans = safeLazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
+const TeacherAssistant = safeLazy(() => import("./pages/teacher/TeacherAssistant"));
 const TeacherSmartboard = safeLazy(() => import("./pages/teacher/TeacherSmartboard"));
 const TeacherBootcampsHub = safeLazy(() => import("./pages/teacher/TeacherBootcampsHub"));
 const TeacherBootcampDetail = safeLazy(() => import("./pages/teacher/TeacherBootcampDetail"));
@@ -711,6 +712,14 @@ const App = () => {
                       <Route path="insights/:topicId/students/:studentId" element={
                         <React.Suspense fallback={<div />}>
                           <TeacherStudentBootcampDetail />
+                        </React.Suspense>
+                      } />
+                      {/* Teaching Assistant: the full-page action agent room.
+                          Runs `ta-agent` (Gemini 3.8 Flash on GEMINI_API_KEY);
+                          every platform action is confirmed before it fires. */}
+                      <Route path="assistant" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherAssistant />
                         </React.Suspense>
                       } />
                       <Route path="dev" element={

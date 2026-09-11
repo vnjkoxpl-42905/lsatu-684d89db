@@ -35,7 +35,10 @@
 
 .qj[data-tone="dark"] {
   --qj-ink: #f5f1ec;
-  --qj-muted: #8b837b;
+  /* 5.9:1 on the sunk surface over the drill hub's dark stage (#191720). The
+     earlier #8b837b measured 4.75:1 there, passing by a quarter point. The
+     drill hub's section switch reads the same value, so keep the two equal. */
+  --qj-muted: #9a938c;
   --qj-sunk: rgba(255, 255, 255, 0.03);
   --qj-hair: rgba(255, 255, 255, 0.1);
   --qf-surface: #17161c;

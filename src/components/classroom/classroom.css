@@ -1002,6 +1002,24 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   --observatory-skeleton: rgba(244, 241, 234, 0.12);
 }
 
+/* Dark theme. ClassroomLayout sets html.dark from the theme, and the stage
+   goes near-black (--classroom-drill-page). The two controls inked for the
+   stage must flip with it: before this rule they stayed cream on the black
+   stage. Values are the jump row's dark tone (questionJump.css) so the
+   utility strip still reads as one system. Measured on the well, which is
+   3% white over #121019 (#191720): ink 15.8:1, muted 5.9:1; the active
+   label on the ivory pill 16.8:1. The cards stay #08080b in both themes.
+   Scoped to the classroom stage: .rc-page at /rc renders outside
+   ClassroomLayout, so html.dark is never set there and it keeps the ladder
+   above. */
+html.dark .classroom-root.classroom-root-drill {
+  --observatory-stage-well: rgba(255, 255, 255, 0.03);
+  --observatory-stage-ink: #f5f1ec;
+  --observatory-stage-muted: #9a938c;
+  --observatory-stage-hair: rgba(255, 255, 255, 0.1);
+  --observatory-stage-lit: #121019;
+}
+
 .classroom-root.classroom-root-drill .classroom-stage {
   padding: 24px 24px 32px 16px;
 }
@@ -1282,12 +1300,14 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
 
 /* ── Section switch (LR | RC) ────────────────────────────────────────────── */
 
-/* Note the surface it sits on: the observatory is dark CARDS on a light cream
-   stage, and the tools row is on the stage, not on a card. So the switch is
-   inked dark-on-light and takes its values from the Question finder beside it
-   (questionJump.css light tone) — the two are one utility strip and must not
-   read as two different systems. An ivory-on-ivory switch, which the first
-   pass shipped, was invisible here. */
+/* Note the surface it sits on: the observatory is dark CARDS on the stage,
+   and the tools row is on the stage, not on a card. So the switch is inked
+   for the stage through the --observatory-stage-* tokens, which follow the
+   theme (cream stage, dark ink in light; near-black stage, ivory ink in dark)
+   and take their values from the Question finder beside it (questionJump.css,
+   the matching tone) — the two are one utility strip and must not read as two
+   different systems. An ivory-on-ivory switch, which the first pass shipped,
+   was invisible here. */
 .drill-observatory-root .drill-observatory-section-toggle {
   align-items: center;
   background: var(--observatory-stage-well);
@@ -2483,14 +2503,28 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   margin: 0 0 20px;
 }
 
+/* A link inside a note is orange that carries words, so it resolves from
+   --classroom-link-text. It was on --classroom-link, which this file already
+   records as measuring 2.38:1 on the page: the same text/fill split that put
+   every date below the floor, still live in the one place a student reads what
+   their coach wrote. --classroom-link-text measures 5.38:1 light; dark is
+   #ff8906 in both tokens, so dark is unchanged.
+
+   The underline is not decoration either. The rule set text-decoration: none
+   and then moved the colour to --classroom-ink on hover, so a link in a note
+   was identifiable by colour alone and stopped being identifiable at all under
+   the cursor (WCAG 1.4.1). Underlined in both states; hover moves the colour
+   toward the ink without giving up the underline. */
 .classroom-root .classroom-prose a {
-  color: var(--classroom-link);
-  text-decoration: none;
+  color: var(--classroom-link-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
   transition: color var(--classroom-transition) ease;
 }
 
 .classroom-root .classroom-prose a:hover {
   color: var(--classroom-ink);
+  text-decoration: underline;
 }
 
 .classroom-root .classroom-prose h2 {
@@ -2506,6 +2540,13 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   margin: 28px 0 12px;
 }
 
+/* The markers have to be asked for. Tailwind's preflight sets
+   `ol, ul, menu { list-style: none }` globally and this rule only restored the
+   indent, so every list in every note rendered as unmarked indented lines —
+   and a numbered list lost its numbers, which is a change of meaning, not of
+   style: "1, 2, 3" became three lines that no longer say they are in order.
+   Measured in the browser against the live sheet: list-style-type computed
+   `none` on a note's <ul>. */
 .classroom-root .classroom-prose ol,
 .classroom-root .classroom-prose ul {
   color: var(--classroom-ink-body);
@@ -2515,8 +2556,56 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
   padding-left: 22px;
 }
 
+.classroom-root .classroom-prose ul {
+  list-style-type: disc;
+}
+
+.classroom-root .classroom-prose ol {
+  list-style-type: decimal;
+}
+
+.classroom-root .classroom-prose ul ul {
+  list-style-type: circle;
+}
+
+.classroom-root .classroom-prose li::marker {
+  color: var(--classroom-meta-text);
+}
+
 .classroom-root .classroom-prose li {
   margin-bottom: 10px;
+}
+
+/* A homework part from a session bundle arrives as `- [ ] item`. Rendering the
+   marker as a box says "this is a thing to do" without pretending to be
+   interactive: nothing here writes back, so a real checkbox would be a control
+   that does nothing. The box is aria-hidden and the state is carried in text
+   for a screen reader. */
+.classroom-root .classroom-prose li.classroom-prose-task {
+  align-items: flex-start;
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin-left: -22px;
+}
+
+.classroom-root .classroom-prose-task-box {
+  align-items: center;
+  border: 1.5px solid var(--classroom-line-strong);
+  border-radius: 3px;
+  color: var(--classroom-ink);
+  display: flex;
+  flex: 0 0 auto;
+  font-size: 12px;
+  height: 17px;
+  justify-content: center;
+  line-height: 1;
+  margin-top: 5px;
+  width: 17px;
+}
+
+.classroom-root .classroom-prose-task[data-done] .classroom-prose-task-text {
+  color: var(--classroom-meta-text);
 }
 
 .classroom-root .classroom-prose blockquote {

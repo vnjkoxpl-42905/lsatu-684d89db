@@ -17,7 +17,7 @@ The prepaid entitlement a student holds when sessions are **owed** to them, carr
 The person on the public page picking a slot. Not necessarily an authenticated user or an existing student; identified by the name and email they enter.
 
 ### Slot
-A concrete start time offered on the calendar. For the Single Session, slots run at a 70-minute pitch from the start of each day's availability window, within the booking window, respecting minimum notice and calendar conflicts.
+A concrete start time offered on the calendar. Slots step from the start of each day's hours at a fixed pitch: session length plus the Buffer (80 minutes for the 70-minute session, so 13:00, 14:20, 15:40), within the Booking Window, respecting Minimum Notice, Date Overrides and calendar conflicts. The consultation keeps Cal.com's 30-minute pitch. Every page that offers a Slot and every check that accepts one uses the same arithmetic; a Slot a student can see is a Slot they can book.
 
 ### Hold
 A short-lived claim on a Slot created when a Booker submits their details and is sent to payment. While live it blocks the Slot for everyone else; it converts to a booking when payment succeeds and evaporates if payment doesn't arrive in time.
