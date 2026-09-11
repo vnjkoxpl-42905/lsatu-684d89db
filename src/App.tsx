@@ -139,7 +139,7 @@ import { FloatingHelpButton } from "./components/help/FloatingHelpButton";
 // Surfaces that own the whole screen and must stay free of floating chrome.
 // The exam players are the strict case: nothing may sit over the passage, the
 // choices or the footer's primary action.
-const OVERLAY_FREE_PREFIXES = ["/book/", "/classroom", "/drill", "/rc"];
+const OVERLAY_FREE_PREFIXES = ["/book/", "/classroom", "/drill", "/rc", "/section/"];
 
 function GlobalOverlayMount() {
   const { pathname } = useLocation();
