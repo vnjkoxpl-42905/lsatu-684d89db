@@ -16,6 +16,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, CheckCircle2, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import OfficialQuestionPane from "@/components/drill/official/OfficialQuestionPane";
+import OfficialDrillToolbar from "@/components/drill/official/OfficialDrillToolbar";
+import type { HighlightMode } from "@/lib/highlightUtils";
+import { useQuestionHighlights } from "@/hooks/useQuestionHighlights";
 import {
   type InlineChoiceNotes,
 } from "@/components/drill/official/InlineChoiceExplanation";
@@ -115,6 +118,12 @@ export default function LRQuestionModal(props: Props) {
   const [eliminated, setEliminated] = React.useState<Set<string>>(new Set());
   const [submitted, setSubmitted] = React.useState(false);
   const startTsRef = React.useRef<number>(Date.now());
+  // The same marker tools the drill has. A capstone question is still a
+  // question the student works, and the choices are where the work is.
+  const [highlightMode, setHighlightMode] = React.useState<HighlightMode>("none");
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [fontScale, setFontScale] = React.useState(1);
+  const questionHighlights = useQuestionHighlights();
 
   React.useEffect(() => {
     setSelected("");
@@ -300,6 +309,15 @@ export default function LRQuestionModal(props: Props) {
               </div>
             ) : (
               <>
+                <OfficialDrillToolbar
+                  highlightMode={highlightMode}
+                  setHighlightMode={setHighlightMode}
+                  timerLabel=""
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                  fontScale={fontScale}
+                  setFontScale={setFontScale}
+                />
                 <OfficialQuestionPane
                   question={renderQuestion}
                   displayNumber={Number(renderQuestion.qnum) || idx + 1}
@@ -309,13 +327,21 @@ export default function LRQuestionModal(props: Props) {
                   answerRevealed={submitted}
                   correctAnswer={correctAnswer}
                   inlineNotes={inlineNotes}
-                  highlights={[]}
-                  highlightMode="none"
+                  highlights={questionHighlights.highlightsFor(renderQuestion.qid)}
+                  highlightMode={highlightMode}
+                  searchTerm={searchTerm}
+                  fontScale={fontScale}
                   onAnswerSelect={(k) => !submitted && setSelected(k)}
                   onEliminate={handleEliminate}
                   onToggleFlag={() => {}}
-                  onTextSelection={() => {}}
-                  onHighlightClick={() => {}}
+                  onTextSelection={(regions) =>
+                    questionHighlights.applySelection(renderQuestion.qid, highlightMode, regions)
+                  }
+                  onHighlightClick={(id) => {
+                    if (highlightMode === "erase") {
+                      questionHighlights.removeHighlight(renderQuestion.qid, id);
+                    }
+                  }}
                 />
 
                 {submitted && (

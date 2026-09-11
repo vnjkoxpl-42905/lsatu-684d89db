@@ -69,7 +69,8 @@ import {
 import { isSittingReturn } from '@/lib/practiceTestRunner';
 import { useAdaptiveEngine } from '@/contexts/AdaptiveEngineContext';
 import { normalizeText } from '@/lib/utils';
-import { captureTextSelection, replaceOverlappingHighlights, type Highlight, type HighlightColor } from '@/lib/highlightUtils';
+import type { HighlightMode, HighlightRegion } from '@/lib/highlightUtils';
+import { useQuestionHighlights } from '@/hooks/useQuestionHighlights';
 import { Switch } from '@/components/ui/switch';
 import { setActiveDrillQid } from '@/lib/drillNotepadBus';
 import { officialLeadCrumbLabel } from '@/lib/officialBreadcrumbs';
@@ -380,9 +381,8 @@ function DrillContent() {
     const qid = currentQuestion?.qid;
     return qid ? eliminatedByQid.get(qid) ?? new Set<string>() : new Set<string>();
   }, [eliminatedByQid, currentQuestion?.qid]);
-  const [highlightMode, setHighlightMode] = React.useState<'none' | 'yellow' | 'pink' | 'orange' | 'underline' | 'erase'>('none');
-  const [highlights, setHighlights] = React.useState<Map<string, Highlight[]>>(new Map());
-  const [highlightHistory, setHighlightHistory] = React.useState<Map<string, Highlight[]>[]>([]);
+  const [highlightMode, setHighlightMode] = React.useState<HighlightMode>('none');
+  const questionHighlights = useQuestionHighlights();
   const [isFlagged, setIsFlagged] = React.useState(false);
   const [showExitDialog, setShowExitDialog] = React.useState(false);
   /**
@@ -1306,7 +1306,7 @@ function DrillContent() {
     setVoiceCoachOpen(false);
     setAnswerLocked(false);
     setQuestionStartTime(performance.now());
-    setHighlightHistory([]);
+    questionHighlights.clearHistory();
     setIsRetryAfterWrong(false);
     setCorrectExplanation('');
     setShowReviewButton(false);
@@ -2709,112 +2709,18 @@ function DrillContent() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [session, handleNext, handlePrevious, currentQuestion]);
 
-  const handleTextSelection = (e: React.MouseEvent, section: 'stimulus' | 'stem') => {
-    if (highlightMode === 'none') return;
-    
-    const container = e.currentTarget as HTMLElement;
-    const selection = captureTextSelection(container);
-    
-    if (!selection || !currentQuestion) return;
-    
-    const currentHighlights = highlights.get(currentQuestion.qid) || [];
-    
-    // Save to history before making changes
-    const MAX_HISTORY = 20;
-    setHighlightHistory(prev => {
-      const newHistory = [...prev, new Map(highlights)];
-      return newHistory.slice(-MAX_HISTORY);
-    });
-    
-    if (highlightMode === 'erase') {
-      // Eraser mode: remove overlapping portions
-      const updatedHighlights = currentHighlights.filter(h => {
-        // Keep highlights from different sections
-        if (h.section !== section) return true;
-        
-        // Check for overlap
-        return h.end <= selection.start || h.start >= selection.end;
-      }).concat(
-        // Split and keep non-overlapping portions
-        currentHighlights
-          .filter(h => h.section === section && h.start < selection.end && h.end > selection.start)
-          .flatMap(h => {
-            const parts: Highlight[] = [];
-            
-            // Keep the part before the erased selection
-            if (h.start < selection.start) {
-              parts.push({
-                ...h,
-                id: `${h.id}-before`,
-                end: selection.start,
-                text: h.text.slice(0, selection.start - h.start)
-              });
-            }
-            
-            // Keep the part after the erased selection
-            if (h.end > selection.end) {
-              parts.push({
-                ...h,
-                id: `${h.id}-after`,
-                start: selection.end,
-                text: h.text.slice(selection.end - h.start)
-              });
-            }
-            
-            return parts;
-          })
-      );
-      
-      setHighlights(new Map(highlights.set(currentQuestion.qid, updatedHighlights)));
-    } else {
-      // Highlight mode: add new highlight
-      const newHighlight: Highlight = {
-        id: crypto.randomUUID(),
-        start: selection.start,
-        end: selection.end,
-        text: selection.text,
-        color: highlightMode as HighlightColor,
-        section
-      };
-      
-      // Use replaceOverlappingHighlights to implement "last action wins"
-      const updatedHighlights = replaceOverlappingHighlights(currentHighlights, newHighlight);
-      
-      console.log('✓ Highlight created:', {
-        color: highlightMode,
-        text: selection.text.substring(0, 30) + '...',
-        totalHighlights: updatedHighlights.length
-      });
-      
-      setHighlights(new Map(highlights.set(currentQuestion.qid, updatedHighlights)));
-    }
-    
-    // Clear selection
-    window.getSelection()?.removeAllRanges();
-  };
+  // Highlights are shared with every other question surface through the hook;
+  // the pane hands over every block on screen and the hook clips the
+  // selection to each, so one drag can mark the stem and a choice together.
+  const handleTextSelection = (regions: HighlightRegion[]) =>
+    questionHighlights.applySelection(currentQuestion?.qid, highlightMode, regions);
 
   const handleHighlightClick = (highlightId: string) => {
-    if (highlightMode !== 'erase' || !currentQuestion) return;
-    
-    // Save to history before erasing
-    setHighlightHistory(prev => {
-      const newHistory = [...prev, new Map(highlights)];
-      return newHistory.slice(-20);
-    });
-    
-    const currentHighlights = highlights.get(currentQuestion.qid) || [];
-    const updated = currentHighlights.filter(h => h.id !== highlightId);
-    
-    setHighlights(new Map(highlights.set(currentQuestion.qid, updated)));
+    if (highlightMode !== 'erase') return;
+    questionHighlights.removeHighlight(currentQuestion?.qid, highlightId);
   };
 
-  const handleUndo = () => {
-    if (highlightHistory.length === 0) return;
-    
-    const previousState = highlightHistory[highlightHistory.length - 1];
-    setHighlights(new Map(previousState));
-    setHighlightHistory(prev => prev.slice(0, -1));
-  };
+  const handleUndo = questionHighlights.undo;
 
   const handleToggleFlag = async () => {
     if (!currentQuestion || !user) return;
@@ -4280,7 +4186,7 @@ function DrillContent() {
             // whenever the answer was revealed collapsed the two, so pressing
             // Answer unfolded the whole breakdown nobody had asked for.
             inlineNotes={explanationOpen ? inlineNotes : null}
-            highlights={highlights.get(currentQuestion.qid) || []}
+            highlights={questionHighlights.highlightsFor(currentQuestion.qid)}
             highlightMode={highlightMode}
             searchTerm={officialSearchTerm}
             fontScale={officialFontScale}
@@ -4507,7 +4413,7 @@ function DrillContent() {
           isFlagged={isFlagged}
           onToggleFlag={handleToggleFlag}
           onUndo={handleUndo}
-          canUndo={highlightHistory.length > 0}
+          canUndo={questionHighlights.canUndo}
           hasTimer={hasTimer}
           timerLabel={timer?.label}
           timerPaused={timer?.isPaused}
@@ -4572,7 +4478,9 @@ function DrillContent() {
                 <div className="p-6 sm:p-8">
                   {currentQuestion.stimulus && (() => {
                     const fullText = normalizeText(currentQuestion.stimulus);
-                    const stimulusHighlights = highlights.get(currentQuestion.qid)?.filter(h => h.section === 'stimulus') || [];
+                    const stimulusHighlights = questionHighlights
+                      .highlightsFor(currentQuestion.qid)
+                      .filter(h => h.section === 'stimulus');
                     return (
                       <div
                         className={cn(
@@ -4580,7 +4488,11 @@ function DrillContent() {
                           "text-[19px] leading-[1.7] text-neutral-900",
                           highlightMode !== 'none' ? 'select-text cursor-text' : 'select-none cursor-default'
                         )}
-                        onMouseUp={(e) => handleTextSelection(e, 'stimulus')}
+                        onMouseUp={(e) =>
+                          handleTextSelection([
+                            { section: 'stimulus', container: e.currentTarget, source: fullText },
+                          ])
+                        }
                       >
                         <HighlightedText
                           text={fullText}
@@ -4610,11 +4522,17 @@ function DrillContent() {
                       "text-[19px] font-semibold text-neutral-900 leading-[1.6] tracking-tight",
                       highlightMode !== 'none' ? 'select-text cursor-text' : 'select-none cursor-default'
                     )}
-                    onMouseUp={(e) => handleTextSelection(e, 'stem')}
+                    onMouseUp={(e) =>
+                      handleTextSelection([
+                        { section: 'stem', container: e.currentTarget, source: currentQuestion.questionStem },
+                      ])
+                    }
                   >
                     <HighlightedText
                       text={currentQuestion.questionStem}
-                      highlights={highlights.get(currentQuestion.qid)?.filter(h => h.section === 'stem') || []}
+                      highlights={questionHighlights
+                        .highlightsFor(currentQuestion.qid)
+                        .filter(h => h.section === 'stem')}
                       onHighlightClick={handleHighlightClick}
                       eraserMode={highlightMode === 'erase'}
                     />

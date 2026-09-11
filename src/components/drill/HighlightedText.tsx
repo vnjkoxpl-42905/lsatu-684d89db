@@ -10,6 +10,12 @@ interface HighlightedTextProps {
   eraserMode?: boolean;
   /** Optional case-insensitive search term to overlay (does not mutate user highlights). */
   searchTerm?: string;
+  /**
+   * Overrides for the paragraph wrapper. An answer choice is one short block
+   * inside its own row, so it wants no bottom margin and the row's own line
+   * height rather than the stimulus's paragraph rhythm.
+   */
+  paragraphStyle?: React.CSSProperties;
 }
 
 // ─── Single source of truth for highlight/underline styles ───────────────────
@@ -145,6 +151,7 @@ export function HighlightedText({
   onHighlightClick,
   eraserMode,
   searchTerm,
+  paragraphStyle,
 }: HighlightedTextProps) {
   const speakerPattern = /^([A-Z][A-Za-z’' -]{1,80}):\s+/;
   const turnSplitPattern = /(?=^[A-Z][A-Za-z’' -]{1,80}:\s)/gm;
@@ -222,7 +229,7 @@ export function HighlightedText({
           }));
 
         return (
-          <p key={idx} data-para-start={pr.start} style={{ margin: '0 0 12px', lineHeight: 1.6 }}>
+          <p key={idx} data-para-start={pr.start} style={{ margin: '0 0 12px', lineHeight: 1.6, ...paragraphStyle }}>
             {renderSegments(pr.text, paraHighlights, `p${idx}`, eraserMode, onHighlightClick, searchTerm)}
           </p>
         );

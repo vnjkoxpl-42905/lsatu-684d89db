@@ -40,6 +40,8 @@ import { questionBank } from '@/lib/questionLoader';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
+import type { HighlightMode } from '@/lib/highlightUtils';
+import { useQuestionHighlights } from '@/hooks/useQuestionHighlights';
 
 export type ReviewTab = 'clean' | 'actual' | 'br';
 
@@ -67,9 +69,8 @@ export default function SectionReviewWalk({ session, brResults, onBack }: Props)
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [tab, setTab] = React.useState<ReviewTab>('clean');
   const [showAnswers, setShowAnswers] = React.useState(false);
-  const [highlightMode, setHighlightMode] = React.useState<
-    'none' | 'yellow' | 'pink' | 'orange' | 'underline' | 'erase'
-  >('none');
+  const [highlightMode, setHighlightMode] = React.useState<HighlightMode>('none');
+  const questionHighlights = useQuestionHighlights();
   const [searchTerm, setSearchTerm] = React.useState('');
   const [fontScale, setFontScale] = React.useState(1);
 
@@ -194,17 +195,24 @@ export default function SectionReviewWalk({ session, brResults, onBack }: Props)
         answerRevealed={showAnswers}
         correctAnswer={question.correctAnswer}
         inlineNotes={showAnswers ? inlineNotes : null}
-        highlights={[]}
+        highlights={questionHighlights.highlightsFor(question.qid)}
         highlightMode={highlightMode}
         searchTerm={searchTerm}
         fontScale={fontScale}
-        // Every input is inert. This screen reads a sitting that is already
-        // over; it must not be able to change what the record says happened.
+        // Every input that touches the record is inert. This screen reads a
+        // sitting that is already over; it must not be able to change what
+        // the record says happened. Highlights are the one exception: they
+        // are the student's own marks, live only on this screen, and are
+        // never written anywhere.
         onAnswerSelect={noop}
         onEliminate={noop}
         onToggleFlag={noop}
-        onTextSelection={noop}
-        onHighlightClick={noop}
+        onTextSelection={(regions) =>
+          questionHighlights.applySelection(question.qid, highlightMode, regions)
+        }
+        onHighlightClick={(id) => {
+          if (highlightMode === 'erase') questionHighlights.removeHighlight(question.qid, id);
+        }}
         aboveChoices={
           <div className="flex items-center gap-1 border-b border-slate-200">
             {tabs.map((t) => (

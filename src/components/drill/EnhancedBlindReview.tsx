@@ -10,7 +10,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
-import type { Highlight, HighlightColor } from '@/lib/highlightUtils';
+import type { HighlightMode } from '@/lib/highlightUtils';
+import { useQuestionHighlights } from '@/hooks/useQuestionHighlights';
 
 interface EnhancedBlindReviewProps {
   session: DrillSession;
@@ -36,9 +37,9 @@ export function EnhancedBlindReview({
   const [brAnswers, setBrAnswers] = React.useState<Map<string, string>>(new Map());
   const [brRationales, setBrRationales] = React.useState<Map<string, string>>(new Map());
   const [eliminatedAnswers, setEliminatedAnswers] = React.useState<Map<string, Set<string>>>(new Map());
-  const [highlightMode, setHighlightMode] = React.useState<'none' | 'yellow' | 'pink' | 'orange' | 'underline' | 'erase'>('none');
-  const [highlights, setHighlights] = React.useState<Map<string, Highlight[]>>(new Map());
-  const [highlightHistory, setHighlightHistory] = React.useState<Map<string, Highlight[]>[]>([]);
+  const [highlightMode, setHighlightMode] = React.useState<HighlightMode>('none');
+  // Same highlight behaviour as the section itself, including on the choices.
+  const questionHighlights = useQuestionHighlights();
   const [flaggedQuestions, setFlaggedQuestions] = React.useState<Set<string>>(new Set());
   const [jumpToInput, setJumpToInput] = React.useState('');
   /**
@@ -235,13 +236,7 @@ export function EnhancedBlindReview({
     setAnswerTab('br');
   }, [currentIndex]);
 
-  const handleUndo = () => {
-    if (highlightHistory.length === 0) return;
-    
-    const previous = highlightHistory[highlightHistory.length - 1];
-    setHighlights(new Map(previous));
-    setHighlightHistory(highlightHistory.slice(0, -1));
-  };
+  const handleUndo = questionHighlights.undo;
 
   const handleLongPressStart = (answer: string) => {
     const timer = setTimeout(() => {
@@ -261,7 +256,6 @@ export function EnhancedBlindReview({
     return <div>Loading...</div>;
   }
 
-  const questionHighlights = highlights.get(currentQid) || [];
   const currentEliminated = eliminatedAnswers.get(currentQid) || new Set<string>();
   const isFlagged = flaggedQuestions.has(currentQid);
   const readOnly = answerTab === 'actual';
@@ -324,15 +318,19 @@ export function EnhancedBlindReview({
         selectedAnswer={readOnly ? previousAttempt?.selectedAnswer || '' : currentAnswer}
         eliminatedAnswers={readOnly ? new Set<string>() : currentEliminated}
         isFlagged={isFlagged}
-        highlights={questionHighlights}
+        highlights={questionHighlights.highlightsFor(currentQid)}
         highlightMode={highlightMode}
         searchTerm={searchTerm}
         fontScale={fontScale}
         onAnswerSelect={(key) => !readOnly && handleAnswerSelect(key)}
         onEliminate={(key) => !readOnly && handleEliminateAnswer(key)}
         onToggleFlag={handleToggleFlag}
-        onTextSelection={() => {}}
-        onHighlightClick={() => {}}
+        onTextSelection={(regions) =>
+          questionHighlights.applySelection(currentQid, highlightMode, regions)
+        }
+        onHighlightClick={(id) => {
+          if (highlightMode === 'erase') questionHighlights.removeHighlight(currentQid, id);
+        }}
         aboveChoices={
           <div className="flex items-center gap-1 border-b border-slate-200">
             {(['actual', 'br'] as const).map((tab) => (

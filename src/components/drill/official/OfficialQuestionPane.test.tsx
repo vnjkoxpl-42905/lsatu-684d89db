@@ -1,6 +1,29 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import OfficialQuestionPane from "./OfficialQuestionPane";
+import { choiceSection, type Highlight } from "@/lib/highlightUtils";
+
+/** The element that carries a choice's colour classes: the text block itself. */
+function choiceText(name: RegExp): HTMLElement {
+  const el = screen.getByText(name).closest("[id^='choice-']");
+  if (!(el instanceof HTMLElement)) throw new Error(`no choice block for ${name}`);
+  return el;
+}
+
+/** Fake a live selection of `text` so the pane sees a drag, not a click. */
+function selectText(text: string) {
+  const node = screen.getByText(text).firstChild as Text;
+  const range = document.createRange();
+  range.setStart(node, 0);
+  range.setEnd(node, text.length);
+  const selection = window.getSelection()!;
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+afterEach(() => {
+  window.getSelection()?.removeAllRanges();
+});
 
 const question = {
   qid: "q-26",
@@ -44,9 +67,9 @@ describe("OfficialQuestionPane", () => {
     expect(root).toHaveClass("bg-white");
     expect(root).not.toHaveClass("bg-bg-shadow");
 
-    const correctAnswerText = screen.getByRole("button", {
-      name: /Almost all of the people who believe that Walker is guilty/i,
-    });
+    // The choice text is not a button any more (a button cannot be
+    // drag-selected, so it could not be highlighted); find it by its text.
+    const correctAnswerText = choiceText(/Almost all of the people who believe that Walker is guilty/i);
     expect(correctAnswerText).toHaveClass("text-green-900");
     expect(correctAnswerText).not.toHaveClass("text-green-50");
   });
@@ -109,11 +132,7 @@ describe("OfficialQuestionPane — revealing an answer", () => {
 
     // B was chosen and is wrong; saying "A is correct" without saying "and you
     // took B" is only half of what a reveal is for.
-    expect(
-      screen.getByRole("button", {
-        name: /There has been an increase in ratings/i,
-      }),
-    ).toHaveClass("text-red-900");
+    expect(choiceText(/There has been an increase in ratings/i)).toHaveClass("text-red-900");
   });
 
   it("does not leave the verdict to colour alone", () => {
@@ -153,11 +172,115 @@ describe("OfficialQuestionPane — revealing an answer", () => {
     // not accusations.
     renderRevealed({ selectedAnswer: "A" });
 
-    expect(
-      screen.getByRole("button", {
-        name: /There has been an increase in ratings/i,
-      }),
-    ).not.toHaveClass("text-red-900");
+    expect(choiceText(/There has been an increase in ratings/i)).not.toHaveClass("text-red-900");
     expect(screen.queryByLabelText("Your answer, incorrect")).not.toBeInTheDocument();
+  });
+});
+
+describe("OfficialQuestionPane answer choices as highlight surfaces", () => {
+  const stemRegionCount = 2; // stimulus + stem
+
+  function renderLive(props: Partial<React.ComponentProps<typeof OfficialQuestionPane>> = {}) {
+    const onAnswerSelect = vi.fn();
+    const onTextSelection = vi.fn();
+    render(
+      <OfficialQuestionPane
+        question={question}
+        displayNumber={26}
+        selectedAnswer=""
+        eliminatedAnswers={new Set()}
+        isFlagged={false}
+        highlights={[]}
+        highlightMode="none"
+        onAnswerSelect={onAnswerSelect}
+        onEliminate={vi.fn()}
+        onToggleFlag={vi.fn()}
+        onTextSelection={onTextSelection}
+        onHighlightClick={vi.fn()}
+        {...props}
+      />,
+    );
+    return { onAnswerSelect, onTextSelection };
+  }
+
+  it("hands every block to the selection handler, choices included", () => {
+    const { onTextSelection } = renderLive();
+    fireEvent.mouseUp(screen.getByText(question.answerChoices.B));
+    const regions = onTextSelection.mock.calls[0][0];
+    expect(regions.map((r: { section: string }) => r.section)).toEqual([
+      "stimulus",
+      "stem",
+      choiceSection("A"),
+      choiceSection("B"),
+    ]);
+    expect(regions).toHaveLength(stemRegionCount + 2);
+    // Each region's source is the text the offsets will be measured against.
+    expect(regions[3].source).toBe(question.answerChoices.B);
+    expect(regions[3].container).toBe(choiceText(/There has been an increase/));
+  });
+
+  it("still picks the choice on a plain click", () => {
+    const { onAnswerSelect } = renderLive();
+    const text = screen.getByText(question.answerChoices.B);
+    fireEvent.mouseUp(text);
+    fireEvent.click(text);
+    expect(onAnswerSelect).toHaveBeenCalledWith("B");
+  });
+
+  it("does not pick the choice when the mouse-up ends a drag", () => {
+    const { onAnswerSelect } = renderLive({ highlightMode: "yellow" });
+    const text = screen.getByText(question.answerChoices.B);
+    selectText(question.answerChoices.B);
+    fireEvent.mouseUp(text);
+    fireEvent.click(text);
+    expect(onAnswerSelect).not.toHaveBeenCalled();
+  });
+
+  it("does not pick the choice when the handler consumed the selection", () => {
+    // The handler clears the selection once it has made a highlight, so by
+    // click time the selection is collapsed; the handler's return value is
+    // what tells the click apart from a plain click.
+    const { onAnswerSelect } = renderLive({
+      highlightMode: "yellow",
+      onTextSelection: () => {
+        window.getSelection()?.removeAllRanges();
+        return true;
+      },
+    });
+    const text = screen.getByText(question.answerChoices.B);
+    selectText(question.answerChoices.B);
+    fireEvent.mouseUp(text);
+    fireEvent.click(text);
+    expect(onAnswerSelect).not.toHaveBeenCalled();
+  });
+
+  it("does not pick a choice from a click in eraser mode", () => {
+    const { onAnswerSelect } = renderLive({ highlightMode: "erase" });
+    const text = screen.getByText(question.answerChoices.B);
+    fireEvent.mouseUp(text);
+    fireEvent.click(text);
+    expect(onAnswerSelect).not.toHaveBeenCalled();
+  });
+
+  it("renders a choice's highlight inside that choice only", () => {
+    const highlights: Highlight[] = [
+      { id: "h1", start: 0, end: 5, text: "There", color: "yellow", section: choiceSection("B") },
+      { id: "h2", start: 0, end: 6, text: "Almost", color: "pink", section: choiceSection("A") },
+    ];
+    renderLive({ highlights });
+    // Highlight spans split the text, so find the blocks by id.
+    const b = document.getElementById(`choice-${question.qid}-B`)!;
+    const a = document.getElementById(`choice-${question.qid}-A`)!;
+    expect(b.querySelector("[data-highlight-id='h1']")).toHaveTextContent("There");
+    expect(b.querySelector("[data-highlight-id='h2']")).toBeNull();
+    expect(a.querySelector("[data-highlight-id='h2']")).toHaveTextContent("Almost");
+  });
+
+  it("keeps the letter badge as the keyboard control, described by its text", () => {
+    const { onAnswerSelect } = renderLive();
+    const badge = screen.getByRole("button", { name: "B" });
+    expect(badge).toHaveAttribute("aria-describedby", `choice-${question.qid}-B`);
+    fireEvent.click(badge);
+    expect(onAnswerSelect).toHaveBeenCalledWith("B");
   });
 });
