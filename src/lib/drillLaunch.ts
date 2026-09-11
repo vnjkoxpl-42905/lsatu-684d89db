@@ -116,7 +116,19 @@ export type DrillLaunchBody =
   /** A set the student saved. Named by its row, so editing the set is reflected. */
   | { kind: 'saved-set'; setId: string }
   /** A classroom assignment. Its row owns the question list. */
-  | { kind: 'assignment'; assignmentId: string; guidedSetId?: string }
+  | {
+      kind: 'assignment';
+      assignmentId: string;
+      guidedSetId?: string;
+      /** Only read when the assignment turns out to be one timed section. */
+      timerMode?: Exclude<TimerMode, '35'>;
+      /**
+       * An assigned section is sealed by default: no Show Answer, no
+       * Explanation, until it is scored. Only Joshua unseals one, at assign
+       * time, and only on purpose.
+       */
+      revealAllowed?: boolean;
+    }
   /** A guided drill, optionally the one handed over as an assignment. */
   | {
       kind: 'guided-drill';
@@ -231,6 +243,8 @@ export function launchDrill(launch: DrillLaunch): string {
     case 'assignment':
       p.set('assignment', launch.assignmentId);
       if (launch.guidedSetId) p.set('guidedSet', launch.guidedSetId);
+      if (launch.timerMode) p.set('timer', launch.timerMode);
+      if (launch.revealAllowed) p.set('reveal', '1');
       break;
     case 'guided-drill':
       if (launch.drillId) p.set('guidedDrill', launch.drillId);
@@ -499,6 +513,8 @@ function parseCanonical(p: URLSearchParams): DrillLaunch {
         kind,
         assignmentId,
         guidedSetId: p.get('guidedSet') || undefined,
+        timerMode: readTimerMode(p.get('timer')),
+        revealAllowed: p.get('reveal') === '1' || undefined,
         options,
       };
     }

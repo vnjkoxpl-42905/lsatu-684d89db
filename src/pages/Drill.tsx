@@ -25,6 +25,8 @@ import SectionReviewWalk from '@/components/drill/SectionReviewWalk';
 import HelpSheet from '@/components/help/HelpSheet';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
+import { SectionDirectionsView } from '@/components/drill/official/SectionDirectionsCard';
+import { SECTION_DIRECTIONS } from '@/lib/sectionDirections';
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
 import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
@@ -67,7 +69,8 @@ import {
 import { isSittingReturn } from '@/lib/practiceTestRunner';
 import { useAdaptiveEngine } from '@/contexts/AdaptiveEngineContext';
 import { normalizeText } from '@/lib/utils';
-import { captureTextSelection, replaceOverlappingHighlights, type Highlight, type HighlightColor } from '@/lib/highlightUtils';
+import type { HighlightMode, HighlightRegion } from '@/lib/highlightUtils';
+import { useQuestionHighlights } from '@/hooks/useQuestionHighlights';
 import { Switch } from '@/components/ui/switch';
 import { setActiveDrillQid } from '@/lib/drillNotepadBus';
 import { officialLeadCrumbLabel } from '@/lib/officialBreadcrumbs';
@@ -378,9 +381,8 @@ function DrillContent() {
     const qid = currentQuestion?.qid;
     return qid ? eliminatedByQid.get(qid) ?? new Set<string>() : new Set<string>();
   }, [eliminatedByQid, currentQuestion?.qid]);
-  const [highlightMode, setHighlightMode] = React.useState<'none' | 'yellow' | 'pink' | 'orange' | 'underline' | 'erase'>('none');
-  const [highlights, setHighlights] = React.useState<Map<string, Highlight[]>>(new Map());
-  const [highlightHistory, setHighlightHistory] = React.useState<Map<string, Highlight[]>[]>([]);
+  const [highlightMode, setHighlightMode] = React.useState<HighlightMode>('none');
+  const questionHighlights = useQuestionHighlights();
   const [isFlagged, setIsFlagged] = React.useState(false);
   const [showExitDialog, setShowExitDialog] = React.useState(false);
   /**
@@ -389,6 +391,21 @@ function DrillContent() {
    * silently, with questions still blank and time still on the clock.
    */
   const [submitConfirmOpen, setSubmitConfirmOpen] = React.useState(false);
+  // Pausing a section or a practice test raises the notice LawHub raises:
+  // it will pause, and the real exam has no pause. It comes up on every press
+  // unless the student ticks "Don't show me this message again", which holds
+  // for the rest of that sitting and no longer.
+  const [pauseNoticeOpen, setPauseNoticeOpen] = React.useState(false);
+  const [pauseNoticeMuted, setPauseNoticeMuted] = React.useState(false);
+  const pauseNoticeMutedRef = React.useRef(false);
+  // Directions mid-section swap the whole player for LawHub's directions
+  // screen; the clock keeps running underneath, exactly as on test day.
+  const [directionsViewOpen, setDirectionsViewOpen] = React.useState(false);
+  // A new run in the same mount (blind review after the section, a retake)
+  // starts on its questions, not on the directions the last run left open.
+  React.useEffect(() => {
+    setDirectionsViewOpen(false);
+  }, [session?.mode, session?.fullSectionConfig?.pt, session?.fullSectionConfig?.section]);
   /**
    * What happens when a section's clock runs out.
    *
@@ -1289,7 +1306,7 @@ function DrillContent() {
     setVoiceCoachOpen(false);
     setAnswerLocked(false);
     setQuestionStartTime(performance.now());
-    setHighlightHistory([]);
+    questionHighlights.clearHistory();
     setIsRetryAfterWrong(false);
     setCorrectExplanation('');
     setShowReviewButton(false);
@@ -2692,112 +2709,18 @@ function DrillContent() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [session, handleNext, handlePrevious, currentQuestion]);
 
-  const handleTextSelection = (e: React.MouseEvent, section: 'stimulus' | 'stem') => {
-    if (highlightMode === 'none') return;
-    
-    const container = e.currentTarget as HTMLElement;
-    const selection = captureTextSelection(container);
-    
-    if (!selection || !currentQuestion) return;
-    
-    const currentHighlights = highlights.get(currentQuestion.qid) || [];
-    
-    // Save to history before making changes
-    const MAX_HISTORY = 20;
-    setHighlightHistory(prev => {
-      const newHistory = [...prev, new Map(highlights)];
-      return newHistory.slice(-MAX_HISTORY);
-    });
-    
-    if (highlightMode === 'erase') {
-      // Eraser mode: remove overlapping portions
-      const updatedHighlights = currentHighlights.filter(h => {
-        // Keep highlights from different sections
-        if (h.section !== section) return true;
-        
-        // Check for overlap
-        return h.end <= selection.start || h.start >= selection.end;
-      }).concat(
-        // Split and keep non-overlapping portions
-        currentHighlights
-          .filter(h => h.section === section && h.start < selection.end && h.end > selection.start)
-          .flatMap(h => {
-            const parts: Highlight[] = [];
-            
-            // Keep the part before the erased selection
-            if (h.start < selection.start) {
-              parts.push({
-                ...h,
-                id: `${h.id}-before`,
-                end: selection.start,
-                text: h.text.slice(0, selection.start - h.start)
-              });
-            }
-            
-            // Keep the part after the erased selection
-            if (h.end > selection.end) {
-              parts.push({
-                ...h,
-                id: `${h.id}-after`,
-                start: selection.end,
-                text: h.text.slice(selection.end - h.start)
-              });
-            }
-            
-            return parts;
-          })
-      );
-      
-      setHighlights(new Map(highlights.set(currentQuestion.qid, updatedHighlights)));
-    } else {
-      // Highlight mode: add new highlight
-      const newHighlight: Highlight = {
-        id: crypto.randomUUID(),
-        start: selection.start,
-        end: selection.end,
-        text: selection.text,
-        color: highlightMode as HighlightColor,
-        section
-      };
-      
-      // Use replaceOverlappingHighlights to implement "last action wins"
-      const updatedHighlights = replaceOverlappingHighlights(currentHighlights, newHighlight);
-      
-      console.log('✓ Highlight created:', {
-        color: highlightMode,
-        text: selection.text.substring(0, 30) + '...',
-        totalHighlights: updatedHighlights.length
-      });
-      
-      setHighlights(new Map(highlights.set(currentQuestion.qid, updatedHighlights)));
-    }
-    
-    // Clear selection
-    window.getSelection()?.removeAllRanges();
-  };
+  // Highlights are shared with every other question surface through the hook;
+  // the pane hands over every block on screen and the hook clips the
+  // selection to each, so one drag can mark the stem and a choice together.
+  const handleTextSelection = (regions: HighlightRegion[]) =>
+    questionHighlights.applySelection(currentQuestion?.qid, highlightMode, regions);
 
   const handleHighlightClick = (highlightId: string) => {
-    if (highlightMode !== 'erase' || !currentQuestion) return;
-    
-    // Save to history before erasing
-    setHighlightHistory(prev => {
-      const newHistory = [...prev, new Map(highlights)];
-      return newHistory.slice(-20);
-    });
-    
-    const currentHighlights = highlights.get(currentQuestion.qid) || [];
-    const updated = currentHighlights.filter(h => h.id !== highlightId);
-    
-    setHighlights(new Map(highlights.set(currentQuestion.qid, updated)));
+    if (highlightMode !== 'erase') return;
+    questionHighlights.removeHighlight(currentQuestion?.qid, highlightId);
   };
 
-  const handleUndo = () => {
-    if (highlightHistory.length === 0) return;
-    
-    const previousState = highlightHistory[highlightHistory.length - 1];
-    setHighlights(new Map(previousState));
-    setHighlightHistory(prev => prev.slice(0, -1));
-  };
+  const handleUndo = questionHighlights.undo;
 
   const handleToggleFlag = async () => {
     if (!currentQuestion || !user) return;
@@ -3024,9 +2947,9 @@ function DrillContent() {
         total={session.questionQueue.length}
         onPredict={(score) => {
           setPredictedScore(score);
-          setPostSectionScreen('complete');
+          setPostSectionScreen(assignmentId ? 'review' : 'complete');
         }}
-        onSkip={() => setPostSectionScreen('complete')}
+        onSkip={() => setPostSectionScreen(assignmentId ? 'review' : 'complete')}
       />
     );
   }
@@ -3800,8 +3723,15 @@ function DrillContent() {
     };
     const handleTogglePauseClick = timer
       ? () => {
-          if (timer.isPaused) timer.resume();
-          else timer.pause();
+          if (timer.isPaused) {
+            timer.resume();
+            return;
+          }
+          if ((isFullSection || inSitting) && !pauseNoticeMutedRef.current) {
+            setPauseNoticeOpen(true);
+            return;
+          }
+          timer.pause();
         }
       : undefined;
     const currentAttempted = attemptedQids.has(currentQuestion.qid);
@@ -3813,6 +3743,7 @@ function DrillContent() {
       isLoading: lrExplanationLoading,
       isError: lrExplanationError,
       revealed: currentRevealed,
+      sealed: revealSealed,
       activeStyle,
       onStyleChange: setActiveStyle,
       onAskTutor: () => openTutorForCurrent(),
@@ -3983,6 +3914,43 @@ function DrillContent() {
           </AlertDialogContent>
         </AlertDialog>
 
+        <AlertDialog open={pauseNoticeOpen} onOpenChange={setPauseNoticeOpen}>
+          {/* LawHub's own notice, in LawHub's own dress: white card, plain
+              sans, blue buttons. It sits over the official player, so it must
+              look like part of it rather than part of the app's chrome. */}
+          <AlertDialogContent className="max-w-2xl rounded-md border-0 bg-white p-6 text-center font-sans text-slate-900">
+            <AlertDialogHeader className="items-center space-y-3">
+              <AlertDialogTitle className="text-3xl font-semibold text-slate-800">Notice</AlertDialogTitle>
+              <AlertDialogDescription className="text-lg leading-snug text-slate-800">
+                Navigating to this page will pause the test. Note that pause
+                functionality will not be available during the real exam.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="mt-2 flex-row justify-center gap-2 sm:justify-center">
+              <AlertDialogCancel className="m-0 rounded-md border-2 border-blue-300 bg-slate-500 px-6 text-base text-white hover:bg-slate-600 hover:text-white">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="rounded-md bg-blue-600 px-6 text-base text-white hover:bg-blue-700"
+                onClick={() => {
+                  pauseNoticeMutedRef.current = pauseNoticeMuted;
+                  setPauseNoticeOpen(false);
+                  timer?.pause();
+                }}
+              >
+                Ok
+              </AlertDialogAction>
+            </AlertDialogFooter>
+            <label className="mt-1 flex items-center justify-center gap-2 text-base text-slate-800">
+              <input
+                type="checkbox"
+                checked={pauseNoticeMuted}
+                onChange={(e) => setPauseNoticeMuted(e.target.checked)}
+              />
+              Don't show me this message again
+            </label>
+          </AlertDialogContent>
+        </AlertDialog>
         <AlertDialog open={submitConfirmOpen} onOpenChange={setSubmitConfirmOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -4026,12 +3994,19 @@ function DrillContent() {
         <AlertDialog open={overtimeState === 'prompt'}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Time.</AlertDialogTitle>
+              <AlertDialogTitle>{assignmentId ? "Time's up." : 'Time.'}</AlertDialogTitle>
               <AlertDialogDescription>
                 {(() => {
                   const total = session.questionQueue.length;
                   const answered = session.regulationMark?.answeredQids.length ?? 0;
                   const left = total - answered;
+                  // An assigned section ends at the buzzer, as the test does.
+                  // What was answered is what gets scored; blind review is next.
+                  if (assignmentId) {
+                    return left === 0
+                      ? 'You answered every question inside the clock. Next comes blind review.'
+                      : `You answered ${answered} of ${total}. The section is scored as you sat it. Next comes blind review.`;
+                  }
                   return left === 0
                     ? 'Your section clock is up, and you answered every question inside it.'
                     : `Your section clock is up. You answered ${answered} of ${total}, with ${left} left. You can finish now and be scored on the section as you sat it, or keep working with the clock counting up — either way, the results show which questions you answered before time and which after.`;
@@ -4039,22 +4014,35 @@ function DrillContent() {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel
-                onClick={() => {
-                  setOvertimeState('none');
-                  void handleFinishSection();
-                }}
-              >
-                Finish and score
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => {
-                  setOvertimeState('running');
-                  timer?.resume();
-                }}
-              >
-                Keep working
-              </AlertDialogAction>
+              {assignmentId ? (
+                <AlertDialogAction
+                  onClick={() => {
+                    setOvertimeState('none');
+                    void handleFinishSection();
+                  }}
+                >
+                  Go to blind review
+                </AlertDialogAction>
+              ) : (
+                <>
+                  <AlertDialogCancel
+                    onClick={() => {
+                      setOvertimeState('none');
+                      void handleFinishSection();
+                    }}
+                  >
+                    Finish and score
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => {
+                      setOvertimeState('running');
+                      timer?.resume();
+                    }}
+                  >
+                    Keep working
+                  </AlertDialogAction>
+                </>
+              )}
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -4148,6 +4136,21 @@ function DrillContent() {
             />
           }
         >
+          {isFullSection && directionsViewOpen ? (
+            // LawHub does not pop the directions over the question; it turns
+            // the page into the directions screen, clock still counting, with
+            // Questions top-left and GO TO QUESTIONS underneath to come back.
+            <SectionDirectionsView
+              sectionNumber={session.fullSectionConfig?.section ?? 1}
+              minutes={totalMs ? totalMs / 60000 : null}
+              questionCount={session.questionQueue.length}
+              directions={SECTION_DIRECTIONS.lr}
+              timerLabel={overtimeLabel ?? timer?.label ?? ""}
+              timerOverBudget={!!overtimeLabel}
+              onBackToQuestions={() => setDirectionsViewOpen(false)}
+            />
+          ) : (
+          <>
           <OfficialDrillToolbar
             highlightMode={highlightMode}
             setHighlightMode={setHighlightMode}
@@ -4161,6 +4164,7 @@ function DrillContent() {
             notesButtonVisible={usesSmartChrome}
             notesOpen={notesOpen}
             onToggleNotes={toggleNotesPanel}
+            onOpenDirections={isFullSection ? () => setDirectionsViewOpen(true) : undefined}
           />
           <OfficialQuestionPane
             question={{
@@ -4182,7 +4186,7 @@ function DrillContent() {
             // whenever the answer was revealed collapsed the two, so pressing
             // Answer unfolded the whole breakdown nobody had asked for.
             inlineNotes={explanationOpen ? inlineNotes : null}
-            highlights={highlights.get(currentQuestion.qid) || []}
+            highlights={questionHighlights.highlightsFor(currentQuestion.qid)}
             highlightMode={highlightMode}
             searchTerm={officialSearchTerm}
             fontScale={officialFontScale}
@@ -4330,6 +4334,8 @@ function DrillContent() {
               disabled={!!timer?.isPaused}
             />
           )}
+          </>
+          )}
         </OfficialDrillFrame>
         {helpOpen && <HelpSheet open={helpOpen} onOpenChange={setHelpOpen} />}
         {renderVoiceCoachModal()}
@@ -4407,7 +4413,7 @@ function DrillContent() {
           isFlagged={isFlagged}
           onToggleFlag={handleToggleFlag}
           onUndo={handleUndo}
-          canUndo={highlightHistory.length > 0}
+          canUndo={questionHighlights.canUndo}
           hasTimer={hasTimer}
           timerLabel={timer?.label}
           timerPaused={timer?.isPaused}
@@ -4472,7 +4478,9 @@ function DrillContent() {
                 <div className="p-6 sm:p-8">
                   {currentQuestion.stimulus && (() => {
                     const fullText = normalizeText(currentQuestion.stimulus);
-                    const stimulusHighlights = highlights.get(currentQuestion.qid)?.filter(h => h.section === 'stimulus') || [];
+                    const stimulusHighlights = questionHighlights
+                      .highlightsFor(currentQuestion.qid)
+                      .filter(h => h.section === 'stimulus');
                     return (
                       <div
                         className={cn(
@@ -4480,7 +4488,11 @@ function DrillContent() {
                           "text-[19px] leading-[1.7] text-neutral-900",
                           highlightMode !== 'none' ? 'select-text cursor-text' : 'select-none cursor-default'
                         )}
-                        onMouseUp={(e) => handleTextSelection(e, 'stimulus')}
+                        onMouseUp={(e) =>
+                          handleTextSelection([
+                            { section: 'stimulus', container: e.currentTarget, source: fullText },
+                          ])
+                        }
                       >
                         <HighlightedText
                           text={fullText}
@@ -4510,11 +4522,17 @@ function DrillContent() {
                       "text-[19px] font-semibold text-neutral-900 leading-[1.6] tracking-tight",
                       highlightMode !== 'none' ? 'select-text cursor-text' : 'select-none cursor-default'
                     )}
-                    onMouseUp={(e) => handleTextSelection(e, 'stem')}
+                    onMouseUp={(e) =>
+                      handleTextSelection([
+                        { section: 'stem', container: e.currentTarget, source: currentQuestion.questionStem },
+                      ])
+                    }
                   >
                     <HighlightedText
                       text={currentQuestion.questionStem}
-                      highlights={highlights.get(currentQuestion.qid)?.filter(h => h.section === 'stem') || []}
+                      highlights={questionHighlights
+                        .highlightsFor(currentQuestion.qid)
+                        .filter(h => h.section === 'stem')}
                       onHighlightClick={handleHighlightClick}
                       eraserMode={highlightMode === 'erase'}
                     />

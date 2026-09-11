@@ -139,7 +139,6 @@ export function ClassroomHomeView({
   model,
   loading,
   onOpen,
-  onSeeAllWork,
   onMarkDone,
   onClearMessage,
   completingKey,
@@ -151,7 +150,8 @@ export function ClassroomHomeView({
   onClearMessage?: (conversationId: string) => void;
   completingKey?: string | null;
 
-  onSeeAllWork: () => void;
+  /** Kept for callers; the hero no longer duplicates the sidebar's Assigned work link. */
+  onSeeAllWork?: () => void;
 }) {
   const { hero } = model;
   const [briefing, setBriefing] = React.useState<SectionBriefingData | null>(null);
@@ -287,13 +287,6 @@ export function ClassroomHomeView({
                   >
                     {hero.primaryLabel}
                     <ArrowRight size={15} strokeWidth={2.2} />
-                  </button>
-                  <button
-                    type="button"
-                    className="classroom-home-ghost"
-                    onClick={onSeeAllWork}
-                  >
-                    Open assigned work
                   </button>
                   {hero.row.canComplete && onMarkDone ? (
                     <button

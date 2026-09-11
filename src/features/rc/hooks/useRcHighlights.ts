@@ -4,7 +4,7 @@ import type {
   RcAnnotationKind,
   RcHighlight,
   RcHighlightColor,
-  RcLetter,
+  RcHighlightTarget,
 } from '../lib/rcTypes';
 
 /**
@@ -63,7 +63,7 @@ export function useRcHighlights(passageIds: number[]) {
   const add = React.useCallback(
     (
       passageId: number,
-      target: 'passage' | RcLetter,
+      target: RcHighlightTarget,
       start: number,
       end: number,
       /** Passed in by the popover so picking a swatch applies that color now. */
@@ -119,7 +119,7 @@ export function useRcHighlights(passageIds: number[]) {
   );
 
   const removeAt = React.useCallback(
-    (passageId: number, target: 'passage' | RcLetter, offset: number) => {
+    (passageId: number, target: RcHighlightTarget, offset: number) => {
       const existing = latest.current.get(passageId) ?? [];
       write(
         passageId,
@@ -131,7 +131,7 @@ export function useRcHighlights(passageIds: number[]) {
 
   /** Eraser drag: clear every annotation the swept range touches. */
   const removeRange = React.useCallback(
-    (passageId: number, target: 'passage' | RcLetter, start: number, end: number) => {
+    (passageId: number, target: RcHighlightTarget, start: number, end: number) => {
       const existing = latest.current.get(passageId) ?? [];
       write(
         passageId,

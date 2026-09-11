@@ -14,6 +14,8 @@
  * without needing the range to be well-formed for surroundContents.
  */
 
+import { rcHighlightColor, type RcHighlight } from './rcTypes';
+
 export const RC_HIGHLIGHT_ATTR = 'data-rc-highlight';
 export const RC_FIND_ATTR = 'data-rc-find';
 
@@ -39,7 +41,16 @@ function textNodes(root: HTMLElement): Text[] {
 
 /**
  * The current selection expressed as offsets into `container`'s rendered text.
- * Returns null when there is no selection, it is collapsed, or it falls outside.
+ * Returns null when there is no selection, it is collapsed, or it never
+ * touches the container.
+ *
+ * A selection that starts before the container or runs past it is cut at the
+ * container's edges rather than rejected: a drag that overshoots the end of a
+ * choice into the row's padding, or sweeps from the stem into a choice, still
+ * marks the part of this surface it covered. Lengths are measured with
+ * Range.toString, which concatenates text nodes exactly as painting walks
+ * them; Selection.toString adds a newline at every block edge and would push
+ * a multi-paragraph mark past where the drag ended.
  */
 export function captureRenderedSelection(
   container: HTMLElement,
@@ -47,10 +58,23 @@ export function captureRenderedSelection(
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0 || selection.isCollapsed) return null;
 
-  const range = selection.getRangeAt(0);
-  if (!container.contains(range.commonAncestorContainer)) return null;
+  const raw = selection.getRangeAt(0);
+  const startInside = container.contains(raw.startContainer);
+  const endInside = container.contains(raw.endContainer);
+  if (!startInside && !endInside) {
+    const touches =
+      typeof raw.intersectsNode === 'function'
+        ? raw.intersectsNode(container)
+        : raw.commonAncestorContainer.contains(container);
+    if (!touches) return null;
+  }
 
-  const text = selection.toString();
+  const range = raw.cloneRange();
+  if (!startInside) range.setStart(container, 0);
+  if (!endInside) range.setEnd(container, container.childNodes.length);
+  if (range.collapsed) return null;
+
+  const text = range.toString();
   if (!text.trim()) return null;
 
   const before = document.createRange();
@@ -116,6 +140,39 @@ export function paintRanges(
       mark.appendChild(middle);
     }
   }
+}
+
+/**
+ * Paints a student's stored marks onto one surface: the passage, a stem, or a
+ * choice. One styling for all of them, so a mark looks the same wherever it
+ * sits. Callers pass only the marks that belong to this surface.
+ */
+export function paintRcAnnotations(container: HTMLElement, highlights: RcHighlight[]): void {
+  paintRanges(
+    container,
+    highlights.map((h) => ({
+      start: h.start,
+      end: h.end,
+      color: h.color,
+      kind: h.kind ?? 'highlight',
+    })),
+    RC_HIGHLIGHT_ATTR,
+    (r) =>
+      r.kind === 'underline'
+        ? {
+            backgroundColor: 'transparent',
+            textDecoration: 'underline',
+            textDecorationColor: 'currentColor',
+            textDecorationThickness: '2px',
+            textUnderlineOffset: '3px',
+          }
+        : {
+            backgroundColor: rcHighlightColor(r.color),
+            // Multiply keeps the text readable through the wash, and matches
+            // how the LR player renders its markers.
+            mixBlendMode: 'multiply',
+          },
+  );
 }
 
 /** Case-insensitive matches of `query` in the container's rendered text. */

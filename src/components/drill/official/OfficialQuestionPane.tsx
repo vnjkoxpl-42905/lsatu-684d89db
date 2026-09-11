@@ -5,8 +5,14 @@ import { HighlightedText } from "@/components/drill/HighlightedText";
 import InlineChoiceExplanation, {
   type InlineChoiceNotes,
 } from "@/components/drill/official/InlineChoiceExplanation";
-import type { Highlight } from "@/lib/highlightUtils";
+import {
+  choiceSection,
+  type Highlight,
+  type HighlightMode,
+  type HighlightRegion,
+} from "@/lib/highlightUtils";
 import { cn } from "@/lib/utils";
+import { useDeferredPick } from "@/hooks/useDeferredPick";
 
 interface Question {
   qid: string;
@@ -31,13 +37,19 @@ interface Props {
    */
   inlineNotes?: InlineChoiceNotes | null;
   highlights: Highlight[];
-  highlightMode: "none" | "yellow" | "pink" | "orange" | "underline" | "erase";
+  highlightMode: HighlightMode;
   searchTerm?: string;
   fontScale?: number;
   onAnswerSelect: (key: string) => void;
   onEliminate: (key: string) => void;
   onToggleFlag: () => void;
-  onTextSelection: (e: React.MouseEvent<HTMLDivElement>, section: "stimulus" | "stem") => void;
+  /**
+   * Called on every mouse-up in the pane with every highlightable block on
+   * screen: the stimulus, the stem, and each answer choice. The handler
+   * clips the live selection to each block, so one drag can mark several.
+   * Returns true when it consumed the selection as a highlight.
+   */
+  onTextSelection: (regions: HighlightRegion[]) => boolean | void;
   onHighlightClick: (highlightId: string) => void;
   /**
    * Rendered between the stem and the choices. Blind review puts its Actual/BR
@@ -92,6 +104,40 @@ export default function OfficialQuestionPane({
     key,
     cleanAnswerChoice(key, text),
   ] as const);
+  const highlightsForChoice = (key: string) =>
+    highlights.filter((h) => h.section === choiceSection(key));
+
+  const stimulusRef = React.useRef<HTMLDivElement | null>(null);
+  const stemRef = React.useRef<HTMLDivElement | null>(null);
+  const choiceRefs = React.useRef(new Map<string, HTMLDivElement>());
+  // Set on mouse-up when the drag was a marking gesture, read by the click
+  // that follows it. A drag that ends on a choice must not also pick it.
+  const markedRef = React.useRef(false);
+  // Under a marker tool a pick waits a beat, so the first press of a
+  // double-click on a word (which is marking, not answering) can be called
+  // off by the second. With no tool active a click picks at once.
+  const deferredPick = useDeferredPick();
+
+  const handleMouseUp = () => {
+    const selection = window.getSelection();
+    const dragged = !!selection && !selection.isCollapsed;
+    const regions: HighlightRegion[] = [];
+    if (stimulusRef.current) {
+      regions.push({ section: "stimulus", container: stimulusRef.current, source: stimulusText });
+    }
+    if (stemRef.current) {
+      regions.push({ section: "stem", container: stemRef.current, source: stemText });
+    }
+    for (const [key, text] of answerEntries) {
+      const el = choiceRefs.current.get(key);
+      if (el) regions.push({ section: choiceSection(key), container: el, source: text });
+    }
+    const marked = onTextSelection(regions);
+    // With no tool active the selection is left alone; it still must not
+    // read as a click on the choice it happened to end on.
+    markedRef.current = dragged || !!marked;
+    if (markedRef.current) deferredPick.cancel();
+  };
 
   // 7Sage sets both the stimulus and the answer choices at 19px and the
   // student reads ours next to theirs, so the two match rather than land a
@@ -125,7 +171,10 @@ export default function OfficialQuestionPane({
   const choiceBadgeStyle: React.CSSProperties = { fontSize: `${baseSize * 0.78}px` };
 
   return (
-    <div className="relative flex flex-col flex-1 min-h-0 bg-white text-slate-950">
+    <div
+      className="relative flex flex-col flex-1 min-h-0 bg-white text-slate-950"
+      onMouseUp={handleMouseUp}
+    >
       <DrillSplit
         ratio="passage-weighted"
         maxWidthClassName={null}
@@ -146,7 +195,7 @@ export default function OfficialQuestionPane({
               "bg-white",
             )}
             style={stimStyle}
-            onMouseUp={(e) => onTextSelection(e, "stimulus")}
+            ref={stimulusRef}
           >
             <HighlightedText
               text={stimulusText}
@@ -161,14 +210,11 @@ export default function OfficialQuestionPane({
           // Question column
           <div className="min-w-0 px-6 py-7 sm:pl-10 sm:pr-8 bg-white overflow-y-auto" style={stemStyle}>
             <div className="flex items-start justify-between gap-3">
-              <div
-                className="flex-1 flex items-start gap-2"
-                onMouseUp={(e) => onTextSelection(e, "stem")}
-              >
+              <div className="flex-1 flex items-start gap-2">
                 <span className="font-bold tabular-nums shrink-0 min-w-[20px] text-slate-950">
                   {displayNumber}.
                 </span>
-                <div className="flex-1 text-slate-950">
+                <div className="flex-1 text-slate-950" ref={stemRef}>
                   <HighlightedText
                     text={stemText}
                     highlights={stemHighlights}
@@ -214,6 +260,8 @@ export default function OfficialQuestionPane({
                 // The inline layer only ever appears once the answer is revealed.
                 const inline =
                   answerRevealed && inlineNotes ? inlineNotes[key] ?? {} : undefined;
+                const locked = isEliminated || answerRevealed;
+                const choiceTextId = `choice-${question.qid}-${key}`;
 
                 return (
                   <li
@@ -234,8 +282,9 @@ export default function OfficialQuestionPane({
                   >
                     <button
                       type="button"
-                      onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
-                      disabled={isEliminated || answerRevealed}
+                      onClick={() => !locked && onAnswerSelect(key)}
+                      disabled={locked}
+                      aria-describedby={choiceTextId}
                       className={cn(
                         "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border font-semibold transition-all",
                         isCorrect
@@ -250,12 +299,45 @@ export default function OfficialQuestionPane({
                     >
                       {key}
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
-                      disabled={isEliminated || answerRevealed}
+                    {/* The text is not a button: a browser will not start a
+                        drag-selection inside one, which is what kept the
+                        highlighter off the answer choices. A plain click here
+                        still picks the choice; a drag that produced a
+                        selection never does. The letter badge stays the
+                        keyboard control and describes itself with this text. */}
+                    <div
+                      id={choiceTextId}
+                      ref={(el) => {
+                        if (el) choiceRefs.current.set(key, el);
+                        else choiceRefs.current.delete(key);
+                      }}
+                      onClick={(event) => {
+                        if (markedRef.current) {
+                          markedRef.current = false;
+                          return;
+                        }
+                        if (locked) return;
+                        // A click on a highlight is aimed at the highlight
+                        // (the eraser has just taken it), not at the answer.
+                        const onHighlight = !!(event.target as HTMLElement).closest?.(
+                          "[data-highlight-id]",
+                        );
+                        if (onHighlight && highlightMode === "erase") return;
+                        if (highlightMode === "none" || highlightMode === "erase") {
+                          onAnswerSelect(key);
+                          return;
+                        }
+                        deferredPick.schedule(() => {
+                          // The second press of a double-click marked a word
+                          // in the meantime; that was never a pick.
+                          if (markedRef.current) return;
+                          onAnswerSelect(key);
+                        });
+                      }}
+                      onDoubleClick={() => deferredPick.cancel()}
                       className={cn(
                         "text-left leading-relaxed transition-colors",
+                        !locked && "cursor-pointer",
                         isCorrect
                           ? "text-green-900"
                           : isWrongPick
@@ -266,8 +348,15 @@ export default function OfficialQuestionPane({
                       )}
                       style={choiceTextStyle}
                     >
-                      {text}
-                    </button>
+                      <HighlightedText
+                        text={text}
+                        highlights={highlightsForChoice(key)}
+                        onHighlightClick={onHighlightClick}
+                        eraserMode={highlightMode === "erase"}
+                        searchTerm={searchTerm}
+                        paragraphStyle={{ margin: 0, lineHeight: "inherit" }}
+                      />
+                    </div>
                     {answerRevealed && (isCorrect || isWrongPick) ? (
                       // Colour alone must never carry the verdict (ADR 0001), and
                       // once the answer is out the cross-out control is dead

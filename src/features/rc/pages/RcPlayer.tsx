@@ -788,6 +788,19 @@ export default function RcPlayer() {
                 dispatch({ type: 'toggleElimination', questionId, letter })
               }
               onSkipToAnswer={() => setSkippedReattempt((prev) => new Set(prev).add(questionId))}
+              highlights={highlights.forPassage(item.passage.passageId)}
+              color={highlights.color}
+              onColorChange={highlights.setColor}
+              highlightMode={highlightMode}
+              onAddHighlight={(target, start, end, chosen, kind) =>
+                highlights.add(item.passage.passageId, target, start, end, chosen, kind)
+              }
+              onRemoveHighlight={(target, offset) =>
+                highlights.removeAt(item.passage.passageId, target, offset)
+              }
+              onRemoveRange={(target, start, end) =>
+                highlights.removeRange(item.passage.passageId, target, start, end)
+              }
             />
           }
         />
