@@ -2264,3 +2264,37 @@
     gap: 2px;
   }
 }
+
+/* ---------------------------------------------------------------- door extras
+   The demo films under the step cards on the library door, and the "more"
+   control under a capped section list. Same tokens as everything above. */
+.sl-door-demos {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 56px 24px 0;
+}
+.sl-door-demos .sl-bp-demos {
+  margin: 0;
+}
+.sl-more {
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--rd-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.sl-more:focus-visible {
+  outline: 2px solid var(--rd-ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

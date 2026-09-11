@@ -28,6 +28,17 @@ export interface SectionLaunchFrameProps {
    * default carries her back up to the sections.
    */
   closingAction?: ReactNode;
+  /**
+   * Anything to draw directly under the four step cards, before the examples.
+   * The library door puts the demo films here: the steps, then the steps done.
+   */
+  afterSteps?: ReactNode;
+  /**
+   * Leave out the closing "Twenty-five minutes" panel and its third
+   * "Choose a section" button. The library door already carries the list, so
+   * a button pointing at it from the very bottom of the page said nothing.
+   */
+  hideClose?: boolean;
   /** A caution under the hero, where there is one. It never disables anything. */
   notice?: ReactNode;
   /** Between the hero and the method. The four numbers, where there are four. */
@@ -143,6 +154,8 @@ export function SectionLaunchFrame({
   meta,
   primaryAction,
   closingAction,
+  afterSteps,
+  hideClose = false,
   notice,
   strip,
   children,
@@ -525,6 +538,8 @@ export function SectionLaunchFrame({
         </motion.section>
       )}
 
+      {afterSteps}
+
       {/* ------------------------------------------------------- what counts */}
       <motion.section className="rd-counts" aria-labelledby="rd-counts-title" {...reveal}>
         <div className="rd-counts-head">
@@ -579,6 +594,7 @@ export function SectionLaunchFrame({
 
 
       {/* -------------------------------------------------------------- close */}
+      {!hideClose && (
       <section className="rd-close" aria-labelledby="rd-close-title">
         <h2 className="sr-only" id="rd-close-title">
           Start
@@ -595,6 +611,7 @@ export function SectionLaunchFrame({
           )}
         </div>
       </section>
+      )}
     </div>
   );
 }

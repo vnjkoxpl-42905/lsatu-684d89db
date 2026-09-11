@@ -24,6 +24,7 @@ export function SectionProgress({
 }) {
   const [runs, setRuns] = useState<SectionGradeStub[] | null>(null);
   const [failed, setFailed] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -78,6 +79,8 @@ export function SectionProgress({
   const latest = ordered[ordered.length - 1];
   const first = ordered[0];
   const change = Math.round(pct(latest) - pct(first));
+  const newest = [...ordered].reverse();
+  const hidden = newest.length - RECENT_RUNS;
 
   return (
     <section className="rounded-2xl border border-border/60 bg-card/40 p-6">
@@ -105,8 +108,11 @@ export function SectionProgress({
         ))}
       </div>
 
+      {/* The five most recent, and a way to the rest. This is the entry
+          page; a list that grows by one row per run had pushed the sections
+          and the steps a screen further down every week. */}
       <ul className="mt-5 divide-y divide-border/50">
-        {[...ordered].reverse().map((r) => (
+        {(showAll ? newest : newest.slice(0, RECENT_RUNS)).map((r) => (
           <li key={`${r.assignment_id}-${r.attempt_no}`}>
             <button
               type="button"
@@ -134,9 +140,22 @@ export function SectionProgress({
           </li>
         ))}
       </ul>
+      {hidden > 0 && (
+        <button
+          type="button"
+          className="mt-3 min-h-[44px] text-sm font-medium text-foreground underline underline-offset-4"
+          aria-expanded={showAll}
+          onClick={() => setShowAll((v) => !v)}
+        >
+          {showAll ? "Show the last 5" : `See all ${newest.length} runs`}
+        </button>
+      )}
     </section>
   );
 }
+
+/** How many runs the entry page lists before asking. */
+export const RECENT_RUNS = 5;
 
 /** Coverage is stored 0-1 in some runs and 0-100 in others; read both. */
 function pct(r: SectionGradeStub): number {

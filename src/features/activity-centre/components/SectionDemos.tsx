@@ -20,7 +20,7 @@ export function SectionDemos({ demos = RRC_DEMOS }: { demos?: RrcDemo[] }) {
         Watch it done
       </h2>
       <p className="sl-bp-demos-lede">
-        Three stimuli from one real section, each worked exactly as the steps above describe. Listen
+        Three questions from one real section, each worked exactly as the steps above describe. Listen
         for the look away, the retell in plain words, and the whole argument coming back with the text
         gone.
       </p>
