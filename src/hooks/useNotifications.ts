@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -28,6 +29,31 @@ export interface Notification {
 
 const PAGE_SIZE = 30;
 
+export const notificationsQueryKey = (userId: string | undefined) =>
+  ["notifications", userId] as const;
+
+export async function loadNotifications(userId: string): Promise<Notification[]> {
+  const { data, error: err } = await supabase
+    .from("notifications")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(PAGE_SIZE);
+  if (err) {
+    console.error("[notifications:list] failed", { userId, error: err });
+    throw new Error(err.message);
+  }
+  return (data ?? []) as Notification[];
+}
+
+const EMPTY: Notification[] = [];
+
+/**
+ * The bell in the Classroom rail and the Today focus both mount this on the
+ * drill hub. The feed is cached under one stable key so those mounts share a
+ * single read, and every optimistic flip below writes to that shared cache,
+ * so the bell's count and the Today item can never disagree.
+ */
 export function useNotifications(): {
   notifications: Notification[];
   unreadCount: number;
@@ -41,53 +67,51 @@ export function useNotifications(): {
   dismissSignup: (id: string) => Promise<void>;
 } {
   const { user } = useAuth();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const userId = user?.id;
+  const queryKey = notificationsQueryKey(userId);
+
+  const query = useQuery<Notification[], Error>({
+    queryKey,
+    enabled: !!userId,
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
+    queryFn: () => loadNotifications(userId!),
+  });
+
+  const notifications = query.isError ? EMPTY : query.data ?? EMPTY;
 
   const refresh = useCallback(async () => {
-    if (!user) {
-      setNotifications([]);
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await supabase
-      .from("notifications")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(PAGE_SIZE);
-    if (err) {
-      console.error("[notifications:list] failed", { userId: user.id, error: err });
-      setError(err.message);
-      setNotifications([]);
-    } else {
-      setNotifications((data ?? []) as Notification[]);
-      setError(null);
-    }
-    setLoading(false);
-  }, [user]);
+    if (!userId) return;
+    await queryClient.invalidateQueries({ queryKey: notificationsQueryKey(userId) });
+  }, [queryClient, userId]);
 
-  useEffect(() => {
-    void refresh();
-  }, [refresh]);
+  const patch = useCallback(
+    (fn: (prev: Notification[]) => Notification[]) => {
+      queryClient.setQueryData<Notification[]>(notificationsQueryKey(userId), (prev) =>
+        fn(prev ?? [])
+      );
+    },
+    [queryClient, userId]
+  );
 
   // Realtime: a new row or read-flag flip on this user's feed refreshes state.
   useEffect(() => {
-    if (!user) return;
+    if (!userId) return;
+    const invalidate = () => {
+      void queryClient.invalidateQueries({ queryKey: notificationsQueryKey(userId) });
+    };
     const channel = supabase
-      .channel(`notifications-${user.id}-${Math.random().toString(36).slice(2)}`)
+      .channel(`notifications-${userId}-${Math.random().toString(36).slice(2)}`)
       .on(
         "postgres_changes",
         {
           event: "INSERT",
           schema: "public",
           table: "notifications",
-          filter: `user_id=eq.${user.id}`,
+          filter: `user_id=eq.${userId}`,
         },
-        () => void refresh()
+        invalidate
       )
       .on(
         "postgres_changes",
@@ -95,23 +119,20 @@ export function useNotifications(): {
           event: "UPDATE",
           schema: "public",
           table: "notifications",
-          filter: `user_id=eq.${user.id}`,
+          filter: `user_id=eq.${userId}`,
         },
-        () => void refresh()
+        invalidate
       )
       .subscribe();
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, refresh]);
+  }, [queryClient, userId]);
 
   const markRead = useCallback(
     async (id: string) => {
       // Optimistic: flip locally first so the dropdown closes without flicker.
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-      );
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      patch((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
       const { error: err } = await supabase
         .from("notifications")
         .update({ read: true })
@@ -124,37 +145,33 @@ export function useNotifications(): {
         void refresh();
       }
     },
-    [refresh]
+    [patch, refresh]
   );
 
   const markAllRead = useCallback(async () => {
-    if (!user) return;
+    if (!userId) return;
     const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id);
     if (unreadIds.length === 0) return;
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    patch((prev) => prev.map((n) => ({ ...n, read: true })));
     const { error: err } = await supabase
       .from("notifications")
       .update({ read: true })
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .eq("read", false);
     if (err) {
-      console.error("[notifications:mark-all-read] failed", {
-        userId: user.id,
-        error: err,
-      });
+      console.error("[notifications:mark-all-read] failed", { userId, error: err });
       void refresh();
     }
-  }, [user, notifications, refresh]);
+  }, [userId, notifications, patch, refresh]);
 
   const markSignupNotificationsRead = useCallback(async () => {
-    if (!user) return;
+    if (!userId) return;
     const hasUnreadSignups = notifications.some(
       (notification) => notification.type === "signup" && !notification.read
     );
     if (!hasUnreadSignups) return;
 
-    setNotifications((prev) =>
+    patch((prev) =>
       prev.map((notification) =>
         notification.type === "signup"
           ? { ...notification, read: true }
@@ -165,18 +182,15 @@ export function useNotifications(): {
     const { error: err } = await supabase
       .from("notifications")
       .update({ read: true })
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .eq("type", "signup")
       .eq("read", false);
 
     if (err) {
-      console.error("[notifications:mark-signups-read] failed", {
-        userId: user.id,
-        error: err,
-      });
+      console.error("[notifications:mark-signups-read] failed", { userId, error: err });
       void refresh();
     }
-  }, [user, notifications, refresh]);
+  }, [userId, notifications, patch, refresh]);
 
   // Approve / dismiss both go through SECURITY DEFINER RPCs: granting access is
   // an admin-only privilege escalation, so it must never be a client-side table
@@ -188,7 +202,7 @@ export function useNotifications(): {
       nextStatus: NotificationStatus
     ) => {
       const previous = notifications;
-      setNotifications((prev) =>
+      patch((prev) =>
         prev.map((n) => (n.id === id ? { ...n, status: nextStatus, read: true } : n))
       );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -199,12 +213,12 @@ export function useNotifications(): {
         console.error(`[notifications:${fn}] failed`, { id, error: err });
         // The RPC is the authority on whether access actually changed; never
         // leave the bell claiming an approval that did not land.
-        setNotifications(previous);
+        patch(() => previous);
         void refresh();
         throw new Error(err.message);
       }
     },
-    [notifications, refresh]
+    [notifications, patch, refresh]
   );
 
   const approveSignup = useCallback(
@@ -225,8 +239,8 @@ export function useNotifications(): {
   return {
     notifications,
     unreadCount,
-    loading,
-    error,
+    loading: !!userId && query.isPending,
+    error: query.error?.message ?? null,
     refresh,
     markRead,
     markAllRead,

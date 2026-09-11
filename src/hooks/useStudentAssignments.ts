@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -38,45 +39,59 @@ export interface UseStudentAssignmentsResult {
   refresh: () => Promise<void>;
 }
 
+export const studentAssignmentsQueryKey = (userId: string | undefined) =>
+  ["student-assignments", userId] as const;
+
+export async function loadStudentAssignments(userId: string): Promise<StudentAssignment[]> {
+  const { data, error: err } = await supabase
+    .from("homework_assignments")
+    .select("*")
+    .eq("student_id", userId)
+    .order("created_at", { ascending: false });
+  if (err) {
+    console.error("[homework:assign:student:list] failed", { userId, error: err });
+    throw new Error(err.message);
+  }
+  const rows = ((data || []) as unknown) as StudentAssignment[];
+  rows.sort((a, b) => {
+    const s = STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
+    if (s !== 0) return s;
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+  });
+  return rows;
+}
+
+const EMPTY_HOMEWORK: StudentAssignment[] = [];
+
+/**
+ * Cached under a stable key so the Classroom rail and the Today focus, which
+ * both mount this on the drill hub, share one read instead of each firing
+ * their own. The return shape is unchanged from the useState version.
+ */
 export function useStudentAssignments(): UseStudentAssignmentsResult {
   const { user } = useAuth();
-  const [assignments, setAssignments] = useState<StudentAssignment[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const userId = user?.id;
+
+  const query = useQuery<StudentAssignment[], Error>({
+    queryKey: studentAssignmentsQueryKey(userId),
+    enabled: !!userId,
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
+    queryFn: () => loadStudentAssignments(userId!),
+  });
 
   const refresh = useCallback(async () => {
-    if (!user) return;
-    setLoading(true);
-    const { data, error: err } = await supabase
-      .from("homework_assignments")
-      .select("*")
-      .eq("student_id", user.id)
-      .order("created_at", { ascending: false });
-    if (err) {
-      console.error("[homework:assign:student:list] failed", {
-        userId: user.id,
-        error: err,
-      });
-      setError(err.message);
-      setAssignments([]);
-    } else {
-      const rows = ((data || []) as unknown) as StudentAssignment[];
-      rows.sort((a, b) => {
-        const s = STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
-        if (s !== 0) return s;
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-      });
-      setAssignments(rows);
-      setError(null);
-    }
-    setLoading(false);
-  }, [user]);
+    if (!userId) return;
+    await queryClient.invalidateQueries({ queryKey: studentAssignmentsQueryKey(userId) });
+  }, [queryClient, userId]);
 
-  useEffect(() => {
-    if (user) void refresh();
-  }, [user, refresh]);
-
-  return { assignments, loading, error, refresh };
+  return {
+    assignments: query.isError ? EMPTY_HOMEWORK : query.data ?? EMPTY_HOMEWORK,
+    loading: query.isPending,
+    error: query.error?.message ?? null,
+    refresh,
+  };
 }
 
 export function useStudentAssignment(assignmentId: string | undefined): {
@@ -175,6 +190,31 @@ const TA_STATUS_ORDER: Record<TAAssignmentStatus, number> = {
   completed: 2,
 };
 
+export const studentTAAssignmentsQueryKey = (userId: string | undefined) =>
+  ["student-ta-assignments", userId] as const;
+
+export async function loadStudentTAAssignments(userId: string): Promise<StudentTAAssignment[]> {
+  const { data, error: err } = await supabase
+    .from("ta_assignments")
+    .select("*")
+    .eq("student_id", userId)
+    .order("assigned_at", { ascending: false });
+  if (err) {
+    console.error("[ta:assign:student:list] failed", { userId, error: err });
+    throw new Error(err.message);
+  }
+  const rows = ((data || []) as unknown) as StudentTAAssignment[];
+  rows.sort((a, b) => {
+    const s = TA_STATUS_ORDER[a.status] - TA_STATUS_ORDER[b.status];
+    if (s !== 0) return s;
+    return new Date(b.assigned_at).getTime() - new Date(a.assigned_at).getTime();
+  });
+  return rows;
+}
+
+const EMPTY_TA: StudentTAAssignment[] = [];
+
+/** Same shape and sharing rule as useStudentAssignments; see there. */
 export function useStudentTAAssignments(): {
   assignments: StudentTAAssignment[];
   loading: boolean;
@@ -182,44 +222,28 @@ export function useStudentTAAssignments(): {
   refresh: () => Promise<void>;
 } {
   const { user } = useAuth();
-  const [assignments, setAssignments] = useState<StudentTAAssignment[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const userId = user?.id;
+
+  const query = useQuery<StudentTAAssignment[], Error>({
+    queryKey: studentTAAssignmentsQueryKey(userId),
+    enabled: !!userId,
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
+    queryFn: () => loadStudentTAAssignments(userId!),
+  });
 
   const refresh = useCallback(async () => {
-    if (!user) return;
-    setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await supabase
-      .from("ta_assignments")
-      .select("*")
-      .eq("student_id", user.id)
-      .order("assigned_at", { ascending: false });
-    if (err) {
-      console.error("[ta:assign:student:list] failed", {
-        userId: user.id,
-        error: err,
-      });
-      setError(err.message);
-      setAssignments([]);
-    } else {
-      const rows = ((data || []) as unknown) as StudentTAAssignment[];
-      rows.sort((a, b) => {
-        const s = TA_STATUS_ORDER[a.status] - TA_STATUS_ORDER[b.status];
-        if (s !== 0) return s;
-        return new Date(b.assigned_at).getTime() - new Date(a.assigned_at).getTime();
-      });
-      setAssignments(rows);
-      setError(null);
-    }
-    setLoading(false);
-  }, [user]);
+    if (!userId) return;
+    await queryClient.invalidateQueries({ queryKey: studentTAAssignmentsQueryKey(userId) });
+  }, [queryClient, userId]);
 
-  useEffect(() => {
-    if (user) void refresh();
-  }, [user, refresh]);
-
-  return { assignments, loading, error, refresh };
+  return {
+    assignments: query.isError ? EMPTY_TA : query.data ?? EMPTY_TA,
+    loading: query.isPending,
+    error: query.error?.message ?? null,
+    refresh,
+  };
 }
 
 /**
