@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import type { LrExplanationData, LrStyleKey } from "@/hooks/useLrExplanation";
+import { resolveBreakdownSteps, type LrExplanationData, type LrStyleKey } from "@/hooks/useLrExplanation";
 
 /**
  * The drawer's Explanation tab: everything about the question as a whole.
@@ -10,18 +10,26 @@ import type { LrExplanationData, LrStyleKey } from "@/hooks/useLrExplanation";
  * Two rules survive from the retired `ExplanationPanel`:
  *  - The style selector renders only when the source published more than one
  *    style for this question (~5% of the bank).
- *  - Where a non-standard style carries no steps, the source said "(same as
- *    Standard)" and did not repeat the text. Rendering nothing would
- *    misrepresent that, so Standard's breakdown is borrowed and labelled. The
- *    absence only ever means "identical to Standard", never "none exists".
+ *  - Where a non-standard style carries no steps, Standard's breakdown is
+ *    borrowed and labelled (`resolveBreakdownSteps`, shared with the
+ *    Argument Breakdown under the stimulus).
+ *
+ * In the review-controls modes this tab is read-only on the Explanation
+ * state: it shows the content while the Explanation pill is on and an honest
+ * placeholder otherwise. Selecting the tab never turns Explanation on.
  */
 
 export interface DrillExplanationContext {
   data?: LrExplanationData | null;
   isLoading?: boolean;
   isError?: boolean;
-  /** Nothing is shown until the answer is revealed. */
+  /** Nothing is shown until the answer is revealed (legacy) or Explanation is on (review controls). */
   revealed: boolean;
+  /**
+   * Review-controls modes: the placeholder tells the student to press the
+   * Explanation pill rather than promising an unlock on answering.
+   */
+  explanationPill?: boolean;
   /**
    * A sealed sitting never reveals mid-section. Say so, rather than promising
    * an unlock that cannot happen until the section is scored.
@@ -40,20 +48,13 @@ export default function DrillExplanationTab({
   isError,
   revealed,
   sealed,
+  explanationPill,
   activeStyle,
   onStyleChange,
   onAskTutor,
 }: DrillExplanationContext) {
   const styles = data?.styles ?? [];
-  const current = styles.find((s) => s.style === activeStyle) ?? styles[0];
-
-  const standardSteps = styles.find((s) => s.style === "standard")?.steps ?? [];
-  const borrowsStandard =
-    current != null &&
-    current.style !== "standard" &&
-    current.steps.length === 0 &&
-    standardSteps.length > 0;
-  const steps = borrowsStandard ? standardSteps : current?.steps ?? [];
+  const { current, steps, borrowsStandard } = resolveBreakdownSteps(data, activeStyle);
 
   if (!revealed) {
     return (
@@ -61,6 +62,8 @@ export default function DrillExplanationTab({
         <p className="text-[13px] text-slate-400">
           {sealed
             ? 'Explanations open after the section is scored.'
+            : explanationPill
+            ? 'Press Explanation to open the written explanation.'
             : 'The explanation unlocks once you have answered or revealed this question.'}
         </p>
       </Body>

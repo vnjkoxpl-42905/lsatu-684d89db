@@ -13,14 +13,12 @@ interface Props {
   onTogglePause?: () => void;
   onComplete?: () => void;
   /**
-   * Show the Answer pill. Reveals the correct letter plus the inline
-   * explanation layer; pressed before an attempt it is the escape hatch and
-   * the caller confirms the question will not be scored.
+   * Show the Answer pill. Colours the correct letter (and a wrong pick).
    *
-   * Both this and Explanation are toggles over the same reveal state: pressed
-   * again they put the question back exactly as it was, with nothing revealed.
-   * A reveal used to be a one-way door, which made the pills useless for
-   * teaching — showing a class the answer meant the question was spent.
+   * Answer and Explanation are independent on/off toggles, LSAT Lab's shape:
+   * pressed again each puts its own layer away and leaves the other alone.
+   * Nothing locks. In the legacy modes the caller still couples them and may
+   * confirm before a pre-attempt reveal; the strip does not know or care.
    */
   showAnswerVisible?: boolean;
   onShowAnswer?: () => void;
@@ -28,7 +26,7 @@ interface Props {
   showAnswerDisabled?: boolean;
   /** True while the answer is revealed — flips the pill to its "hide" state. */
   showAnswerActive?: boolean;
-  /** Opens the question drawer on the Explanation tab. Hidden if omitted. */
+  /** Toggles the Explanation layer (breakdown + Choice Note expanders). Hidden if omitted. */
   onExplanation?: () => void;
   /** Label for the explanation pill (context-aware). */
   explanationLabel?: string;
@@ -111,14 +109,18 @@ export default function OfficialSessionStrip({
       {/* Right: gray pill buttons. Answer and Explanation live here rather than
           in the bottom bar — four controls crowded that bar's left corner, and
           these two are review actions, the same register as Pause. */}
-      <div className="flex items-center gap-2 shrink-0">
+      <div
+        role="group"
+        aria-label="Session actions"
+        className="flex w-full flex-wrap items-center justify-end gap-2 shrink-0 sm:w-auto"
+      >
         {showAnswerVisible && onShowAnswer && (
           <button
             type="button"
             onClick={onShowAnswer}
             disabled={showAnswerDisabled}
             aria-pressed={!!showAnswerActive}
-            title={showAnswerActive ? "Hide the answer and reset the question" : undefined}
+            title={showAnswerActive ? "Hide correct answer" : "Show correct answer"}
             className={cn(PILL_CLASS, showAnswerActive && ACTIVE_PILL_CLASS)}
           >
             {showAnswerActive ? "Hide Answer" : "Answer"}
@@ -130,11 +132,7 @@ export default function OfficialSessionStrip({
             onClick={onExplanation}
             disabled={explanationDisabled}
             aria-pressed={!!explanationActive}
-            title={
-              explanationActive
-                ? "Collapse the explanations and reset the question"
-                : "Reveal the answer and every choice's explanation"
-            }
+            title={explanationActive ? "Hide explanations" : "Show explanations"}
             className={cn(PILL_CLASS, explanationActive && ACTIVE_PILL_CLASS)}
           >
             {explanationActive ? `Hide ${explanationLabel}` : explanationLabel}

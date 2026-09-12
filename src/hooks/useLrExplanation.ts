@@ -11,8 +11,9 @@ import { supabase } from '@/integrations/supabase/client';
  *
  * Coverage is deliberately partial. Roughly 350 of the ~3,770 ingested
  * questions have no authored prose at all — LSAT Lab published only a video
- * for them. `hasAuthored` is the flag callers should branch on; that is the
- * signal for falling back to the AI tutor.
+ * for them. `hasAuthored` is the flag callers should branch on. It is computed
+ * by `hasAuthoredProse`, the same predicate `scripts/missing-explanations-census.mjs`
+ * uses; `src/lib/explanationProse.fixtures.test.ts` holds both to one fixture set.
  */
 
 export type LrStyleKey = 'single' | 'standard' | 'brief' | 'another_way';
@@ -67,6 +68,54 @@ export interface LrExplanationData {
    * have every choice tagged and still have no authored explanation.
    */
   hasAuthored: boolean;
+}
+
+/** The shape both runtimes' predicate reads: a list of styles, each with step and note bodies. */
+export interface ProseStyle {
+  steps?: Array<{ body?: string | null }> | null;
+  notes?: Array<{ body?: string | null }> | null;
+}
+
+function isProse(body: unknown): boolean {
+  return typeof body === 'string' && body.trim().length > 0;
+}
+
+/**
+ * True when at least one style carries real prose: a breakdown step or a
+ * per-choice note whose body is non-empty after trim(). Tags and percentages
+ * never count. Mirrors `scripts/explanation-prose.mjs` exactly.
+ */
+export function hasAuthoredProse(styles: ProseStyle[] | null | undefined): boolean {
+  if (!Array.isArray(styles)) return false;
+  return styles.some(
+    (style) =>
+      (style?.steps ?? []).some((row) => isProse(row?.body)) ||
+      (style?.notes ?? []).some((row) => isProse(row?.body)),
+  );
+}
+
+/**
+ * Which steps to show for the active style. Where a non-Standard style carries
+ * no steps, the source said "(same as Standard)" and did not repeat the text.
+ * The ingest stored zero step rows for that style rather than the literal
+ * phrase (checked 2026-09-12: `fetchLrExplanation` only ever builds steps from
+ * `lr_explanation_steps` rows). Rendering nothing would misrepresent that, so
+ * Standard's breakdown is borrowed and labelled. The absence only ever means
+ * "identical to Standard", never "none exists".
+ */
+export function resolveBreakdownSteps(
+  data: LrExplanationData | null | undefined,
+  activeStyle: LrStyleKey | null,
+): { current: LrStyle | undefined; steps: LrStep[]; borrowsStandard: boolean } {
+  const styles = data?.styles ?? [];
+  const current = styles.find((s) => s.style === activeStyle) ?? styles[0];
+  const standardSteps = styles.find((s) => s.style === 'standard')?.steps ?? [];
+  const borrowsStandard =
+    current != null &&
+    current.style !== 'standard' &&
+    current.steps.length === 0 &&
+    standardSteps.length > 0;
+  return { current, steps: borrowsStandard ? standardSteps : current?.steps ?? [], borrowsStandard };
 }
 
 export interface LrExplanationQuery {
@@ -157,8 +206,11 @@ export async function fetchLrExplanation({
     isCorrect: c.is_correct,
   }));
 
-  const hasAuthored = styles.some(
-    (s) => s.steps.length > 0 || Object.keys(s.notesByLetter).length > 0,
+  const hasAuthored = hasAuthoredProse(
+    styles.map((s) => ({
+      steps: s.steps,
+      notes: Object.values(s.notesByLetter).map((body) => ({ body })),
+    })),
   );
 
   return {

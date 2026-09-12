@@ -20,10 +20,16 @@ import type {
   TimerConfig,
   TypeDrillConfig,
 } from '@/types/drill';
-import { DrillLaunchError, type DrillLaunch, type PtLegRef } from '@/lib/drillLaunch';
+import { DrillLaunchError, type DrillLaunch, type DrillLaunchBody, type PtLegRef } from '@/lib/drillLaunch';
 import type { DrillResumeIdentity } from '@/lib/drillResumeSession';
 
 export interface DrillRunSpec {
+  /**
+   * The Drill Launch kind this run came from. `mode` is not the run kind (ADR
+   * 0016: six kinds share `type-drill`), so anything that must tell a guided
+   * drill from a filter drill or a Smart Drill reads this, never `mode`.
+   */
+  launchKind?: DrillLaunchBody['kind'];
   mode?: DrillMode;
   config?: FullSectionConfig | TypeDrillConfig;
   /** Heading shown while the drill runs. */
@@ -122,6 +128,7 @@ export function drillRunSpecFromLaunch(
 ): DrillRunSpec {
   const options = launch.options ?? {};
   const base: DrillRunSpec = {
+    launchKind: launch.kind,
     returnTo: options.returnTo,
     practicingLabel: options.label,
     present: options.present,

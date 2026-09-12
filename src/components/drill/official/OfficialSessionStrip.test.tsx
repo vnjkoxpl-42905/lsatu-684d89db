@@ -63,4 +63,33 @@ describe("OfficialSessionStrip", () => {
     fireEvent.click(pill);
     expect(onExplanation).toHaveBeenCalledTimes(1);
   });
+
+  it('describes the independent Answer and Explanation toggles', () => {
+    const { rerender } = render(<OfficialSessionStrip breadcrumbs={[]} showAnswerVisible onShowAnswer={vi.fn()} onExplanation={vi.fn()} />);
+    expect(screen.getByRole('button', { name: 'Answer' })).toHaveAttribute('title', 'Show correct answer');
+    expect(screen.getByRole('button', { name: 'Explanation' })).toHaveAttribute('title', 'Show explanations');
+    rerender(<OfficialSessionStrip breadcrumbs={[]} showAnswerVisible onShowAnswer={vi.fn()} showAnswerActive onExplanation={vi.fn()} explanationActive />);
+    expect(screen.getByRole('button', { name: 'Hide Answer' })).toHaveAttribute('title', 'Hide correct answer');
+    expect(screen.getByRole('button', { name: 'Hide Explanation' })).toHaveAttribute('title', 'Hide explanations');
+  });
+
+  it('wraps the session actions onto their own mobile row', () => {
+    render(
+      <OfficialSessionStrip
+        breadcrumbs={[{ label: 'The Official LSAT PrepTest 159' }, { label: 'Section 1 · Question 1' }]}
+        showAnswerVisible
+        onShowAnswer={vi.fn()}
+        onExplanation={vi.fn()}
+        onOpenHelp={vi.fn()}
+        onTogglePause={vi.fn()}
+        pauseNoun="Question"
+      />,
+    );
+
+    expect(screen.getByRole('group', { name: 'Session actions' })).toHaveClass(
+      'w-full',
+      'flex-wrap',
+      'sm:w-auto',
+    );
+  });
 });

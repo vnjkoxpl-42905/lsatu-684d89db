@@ -16,16 +16,19 @@ export function resolveTutorMode({
 }
 
 export function resolveTutorLaunch({
+  flagEnabled,
   tutorModeEnabled,
   correct,
   answerRevealed,
 }: {
+  /** The product switch (`AI_TUTOR_ENABLED`). Off means never, whatever the student's Tutor mode says. */
+  flagEnabled: boolean;
   tutorModeEnabled: boolean;
   correct: boolean;
   answerRevealed: boolean;
 }): { shouldOpen: boolean; mode: TutorMode } {
   return {
-    shouldOpen: tutorModeEnabled && !correct,
+    shouldOpen: flagEnabled && tutorModeEnabled && !correct,
     mode: resolveTutorMode({ userAnswer: "submitted", answerRevealed }),
   };
 }

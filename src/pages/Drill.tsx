@@ -33,6 +33,9 @@ import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDril
 import AnswerOvals from '@/components/drill/official/AnswerOvals';
 import { TutorChatModal } from '@/components/drill/TutorChatModal';
 import { resolveTutorLaunch, resolveTutorMode, type TutorMode } from '@/components/drill/tutorBehavior';
+import { AI_TUTOR_ENABLED } from '@/components/drill/aiTutorFlag';
+import { reviewPolicyForRun } from '@/lib/drillReviewPolicy';
+import ArgumentBreakdown from '@/components/drill/official/ArgumentBreakdown';
 import { ReviewModal } from '@/components/drill/ReviewModal';
 import { VoiceCoachChip } from '@/components/drill/VoiceCoachChip';
 import { VoiceCoachModal } from '@/components/drill/VoiceCoachModal';
@@ -501,6 +504,44 @@ function DrillContent() {
   const questionTimer = React.useRef(new QuestionTimer());
   const [hideTimer, setHideTimer] = React.useState(false);
   const [showAnswerRevealed, setShowAnswerRevealed] = React.useState<Map<string, boolean>>(new Map());
+
+  // ── Review policy ────────────────────────────────────────────────────────
+  // Official testing-format layout is the default for every drill mode; pass
+  // ?layout=classic to opt out. Read here, above the handlers, because the
+  // review policy depends on it.
+  const layoutParam = searchParams.get('layout');
+  const isOfficialLayout = layoutParam !== 'classic';
+  // Which review controls this run gets, classified by Drill Launch kind (a
+  // pure function of the spec, so no frame can misclassify it). The pick model
+  // (`pickModelForRun`: `list` writes attempts in memory, `commit` persists per
+  // question) is the same classification the existing `isPracticeSetMode`
+  // paths already encode; nothing here needs to read it directly.
+  // `revealSealed` folds in a practice-test sitting, which the spec alone does
+  // not know about.
+  const reviewPolicy = revealSealed ? 'none' : reviewPolicyForRun(state);
+  // Answer and Explanation as independent toggles, no Submit pill on a fixed
+  // queue, choices that never lock: LSAT Lab's review shape. Every change
+  // below is branched on this, with today's code as the else branch.
+  const reviewControlsAvailable = reviewPolicy !== 'none' && isOfficialLayout;
+  // Explanation pill state per question, independent of the drawer and of the
+  // Answer pill. Only read in the review-controls modes.
+  const [explanationOpenByQid, setExplanationOpenByQid] = React.useState<Map<string, boolean>>(new Map());
+  // The Argument Breakdown expander under the stimulus. Closed whenever
+  // Explanation turns on or the question changes.
+  const [breakdownOpen, setBreakdownOpen] = React.useState(false);
+  // Questions whose answer the student has seen (either pill turned on at
+  // least once). The attempt record carries `answerRevealed` from this, so a
+  // pick made after seeing the answer is recorded as exactly that.
+  const answerSeenQidsRef = React.useRef<Set<string>>(new Set());
+  // One synchronous lock around commit-then-navigate. Tested and set before
+  // the first await, so a second arrow, oval or End press while a save is in
+  // flight returns at once; the mirrored state only rerenders the disabled
+  // controls.
+  const actionLockRef = React.useRef(false);
+  const [actionInFlight, setActionInFlight] = React.useState(false);
+  // Single-flight per question inside `handleSubmitNonAdaptive`: a second
+  // caller for the same qid receives the promise already in flight.
+  const pendingCommitsRef = React.useRef<Map<string, Promise<DrillSession['attempts'] | null>>>(new Map());
   // Official-layout-only local UI state (Find Text + Aa font scale).
   const [officialSearchTerm, setOfficialSearchTerm] = React.useState('');
   const [officialFontScale, setOfficialFontScale] = React.useState(1);
@@ -759,6 +800,7 @@ function DrillContent() {
               // back flattened: no changes of mind, no marks for review.
               switchCount: attempt.switch_count,
               brMarked: attempt.flagged,
+              answerRevealed: attempt.answer_revealed ?? false,
               answerTrail: attempt.answer_trail?.map((e) => ({
                 answer: e.answer,
                 atMs: e.at_ms,
@@ -802,6 +844,7 @@ function DrillContent() {
               // back flattened: no changes of mind, no marks for review.
               switchCount: attempt.switch_count,
               brMarked: attempt.flagged,
+              answerRevealed: attempt.answer_revealed ?? false,
               answerTrail: attempt.answer_trail?.map((e) => ({
                 answer: e.answer,
                 atMs: e.at_ms,
@@ -872,6 +915,7 @@ function DrillContent() {
               // back flattened: no changes of mind, no marks for review.
               switchCount: attempt.switch_count,
               brMarked: attempt.flagged,
+              answerRevealed: attempt.answer_revealed ?? false,
               answerTrail: attempt.answer_trail?.map((e) => ({
                 answer: e.answer,
                 atMs: e.at_ms,
@@ -940,6 +984,7 @@ function DrillContent() {
             time_ms: Number.isFinite(attempt.timeMs) ? Math.max(0, Math.round(attempt.timeMs)) : 0,
             switch_count: attempt.switchCount ?? 0,
             flagged: !!attempt.brMarked,
+            answer_revealed: !!attempt.answerRevealed,
             answer_trail: attempt.answerTrail?.map((e) => ({
               answer: e.answer,
               at_ms: Math.max(0, Math.round(e.atMs)),
@@ -1389,8 +1434,10 @@ function DrillContent() {
   };
 
   const handleAnswerSelect = (answer: string) => {
-    if (!isPracticeSetMode && !isRetryAfterWrong && answerLocked) return;
-    if (!tutorMode && showSolution) return;
+    if (!reviewControlsAvailable && !isPracticeSetMode && !isRetryAfterWrong && answerLocked) return;
+    // Review controls never lock a choice: a pick after a reveal is a recorded
+    // change of mind, not a blocked click.
+    if (!reviewControlsAvailable && !tutorMode && showSolution) return;
     
     if (selectedAnswer === answer) {
       setSelectedAnswer('');
@@ -1424,7 +1471,11 @@ function DrillContent() {
           timestamp: Date.now(),
           confidence: existingAttempt?.confidence || null,
           reviewDone: false,
-          answerRevealed: existingAttempt?.answerRevealed || false,
+          // The record says whether the answer was on screen before this pick.
+          answerRevealed:
+            existingAttempt?.answerRevealed ||
+            answerSeenQidsRef.current.has(currentQuestion.qid) ||
+            false,
           answerTrail,
           // Every entry after the first is a change of mind. Derived here so
           // the count and the trail can never disagree.
@@ -1567,22 +1618,53 @@ function DrillContent() {
   };
 
   // UI-level helper for the per-question submit handlers. Wraps the throwing
-  // service so existing `if (!saved)` toast logic keeps working — the error is
-  // logged at the service AND visible to the user via the caller's toast. This
-  // does NOT silently swallow: failures are logged + surfaced through the
-  // boolean return that callers already act on.
+  // service so the callers' `if (!saved.ok)` toast logic keeps working — the
+  // error is logged at the service AND visible to the user via the caller's
+  // toast. This does NOT silently swallow: failures are logged, classified
+  // where the error still exists, and surfaced through the typed result.
+  type PersistResult =
+    | { ok: true }
+    | { ok: false; errorKind: 'auth' | 'network' | 'db' | 'unknown' };
+  const classifyPersistError = (e: unknown): 'auth' | 'network' | 'db' | 'unknown' => {
+    const message = e instanceof Error ? e.message : String(e ?? '');
+    if (/no class_id and no user\.id|jwt|auth|401|403/i.test(message)) return 'auth';
+    if (/fetch|network|timeout|Failed to fetch/i.test(message)) return 'network';
+    if (/insert failed|supabase|postgres|duplicate|violates/i.test(message)) return 'db';
+    return 'unknown';
+  };
+  // Structured failure event. No PII: no user id, no answer text. There is no
+  // error-reporting sink in this repo as of 2026-09-12, so `console.error` is
+  // the sink; swap it here when one lands.
+  const reportCommitFailure = (event: {
+    qid: string;
+    launchKind: string | undefined;
+    transition: string;
+    errorKind: 'auth' | 'network' | 'db' | 'unknown';
+    deduped: boolean;
+  }) => {
+    console.error('[drill:commit-failed]', event);
+  };
   const persistAttempt = async (
     attemptData: Parameters<typeof saveAttemptToDatabase>[0],
-  ): Promise<boolean> => {
+  ): Promise<PersistResult> => {
     try {
-      return await saveAttemptToDatabase(attemptData);
+      const saved = await saveAttemptToDatabase(attemptData);
+      return saved ? { ok: true } : { ok: false, errorKind: 'unknown' };
     } catch (e) {
+      const errorKind = classifyPersistError(e);
       console.error('[drill:persistAttempt] threw, surfacing as save-failed', {
         qid: attemptData.qid,
         mode: attemptData.mode,
         error: e,
       });
-      return false;
+      reportCommitFailure({
+        qid: attemptData.qid,
+        launchKind: state.launchKind,
+        transition: 'persistAttempt',
+        errorKind,
+        deduped: false,
+      });
+      return { ok: false, errorKind };
     }
   };
 
@@ -1705,7 +1787,7 @@ function DrillContent() {
       mode: session.mode,
       selected_answer: selectedAnswer,
     });
-    if (!saved) {
+    if (!saved.ok) {
       if (!classId && !user?.id) {
         toast.error("Your session is out of sync. Please refresh the page or sign back in.");
       } else {
@@ -1782,12 +1864,35 @@ function DrillContent() {
     // (Removed auto-advance)
   };
 
+  // Persists one pick. Honest: a failed save writes no state and returns null,
+  // so every caller stops where it is (no move, no completion, the question
+  // stays with its pick). Single-flight per qid: a second caller while a save
+  // is in flight gets the same promise, so a double arrow persists once.
   const handleSubmitNonAdaptive = async (
     answerOverride?: string,
     options?: { advanceAfterSubmit?: boolean },
-  ) => {
+  ): Promise<DrillSession['attempts'] | null> => {
     const ans = answerOverride ?? selectedAnswer;
     if (!currentQuestion || !ans || !session) return null;
+    const qid = currentQuestion.qid;
+    const pending = pendingCommitsRef.current.get(qid);
+    if (pending) return pending;
+    const run = (async () => {
+      try {
+        return await submitNonAdaptiveOnce(ans, options);
+      } finally {
+        pendingCommitsRef.current.delete(qid);
+      }
+    })();
+    pendingCommitsRef.current.set(qid, run);
+    return run;
+  };
+
+  const submitNonAdaptiveOnce = async (
+    ans: string,
+    options?: { advanceAfterSubmit?: boolean },
+  ): Promise<DrillSession['attempts'] | null> => {
+    if (!currentQuestion || !session) return null;
 
     const correct = ans === currentQuestion.correctAnswer;
     const timeMs = Math.floor(performance.now() - questionStartTime);
@@ -1803,12 +1908,15 @@ function DrillContent() {
       mode: session.mode,
       selected_answer: ans,
     });
-    if (!saved) {
+    if (!saved.ok) {
       if (!classId && !user?.id) {
         toast.error("Your session is out of sync. Please refresh the page or sign back in.");
       } else {
         toast.error("Couldn't save your answer. Check your connection and try the next question.");
       }
+      // Nothing below runs: the session must not say an attempt exists that
+      // the database never received.
+      return null;
     }
     await flushReplay(currentQuestion.qid, session.mode);
     if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
@@ -1821,6 +1929,7 @@ function DrillContent() {
       timestamp: Date.now(),
       confidence: null,
       reviewDone: false,
+      answerRevealed: answerSeenQidsRef.current.has(currentQuestion.qid),
     });
 
     adaptiveEngine.recordAttempt({
@@ -1865,7 +1974,7 @@ function DrillContent() {
         mode: session.mode,
         selected_answer: selectedAnswer,
       });
-      if (!saved) {
+      if (!saved.ok) {
         if (!classId && !user?.id) {
           toast.error("Your session is out of sync. Please refresh the page or sign back in.");
         } else {
@@ -1908,9 +2017,9 @@ function DrillContent() {
 
       if (options?.advanceAfterSubmit) return;
 
-      if (tutorMode) {
+      if (AI_TUTOR_ENABLED && tutorMode) {
         // Lock answer so the selected row shows red feedback while tutor is open
-        setAnswerLocked(true);
+        if (!reviewControlsAvailable) setAnswerLocked(true);
         // Show red "Wrong" for 150ms, then open tutor (do not reveal solution yet)
         setIsRetryAfterWrong(true);
         setTimeout(() => {
@@ -1942,7 +2051,7 @@ function DrillContent() {
         mode: session.mode,
         selected_answer: selectedAnswer,
       });
-      if (!saved) {
+      if (!saved.ok) {
         if (!classId && !user?.id) {
           toast.error("Your session is out of sync. Please refresh the page or sign back in.");
         } else {
@@ -2016,8 +2125,8 @@ function DrillContent() {
       }
       
       // Auto-open tutor card in bottom-left for ANY wrong answer when Tutor Mode is on
-      if (!correct && tutorMode && currentQuestion) {
-        setAnswerLocked(true);
+      if (!correct && AI_TUTOR_ENABLED && tutorMode && currentQuestion) {
+        if (!reviewControlsAvailable) setAnswerLocked(true);
         setIsRetryAfterWrong(true);
         setTimeout(() => {
           setTutorQuestionSnapshot(currentQuestion);
@@ -2048,7 +2157,7 @@ function DrillContent() {
       if (revealAfterSave) {
         if (existingAttempt.selectedAnswer) setSelectedAnswer(existingAttempt.selectedAnswer);
         setShowAnswerRevealed(prev => new Map(prev).set(qid, true));
-        setAnswerLocked(true);
+        if (!reviewControlsAvailable) setAnswerLocked(true);
         setSession(prev => {
           if (!prev) return prev;
           const existing = prev.attempts.get(qid);
@@ -2090,7 +2199,7 @@ function DrillContent() {
         selected_answer: committedAnswer,
       });
 
-      if (!saved) {
+      if (!saved.ok) {
         if (!classId && !user?.id) {
           toast.error("Your session is out of sync. Please refresh the page or sign back in.");
         } else {
@@ -2164,6 +2273,7 @@ function DrillContent() {
       setSession({ ...session, attempts: newAttempts });
 
       const tutorLaunch = resolveTutorLaunch({
+        flagEnabled: AI_TUTOR_ENABLED,
         tutorModeEnabled: tutorMode,
         correct,
         answerRevealed: revealAfterSave,
@@ -2171,7 +2281,7 @@ function DrillContent() {
 
       if (revealAfterSave) {
         setShowAnswerRevealed(prev => new Map(prev).set(qid, true));
-        setAnswerLocked(true);
+        if (!reviewControlsAvailable) setAnswerLocked(true);
       }
 
       if (tutorLaunch.shouldOpen) {
@@ -2957,6 +3067,12 @@ function DrillContent() {
         sectionRevealEnabled &&
         !!session?.attempts?.get(currentQuestion.qid)?.selectedAnswer));
 
+  // Explanation is its own switch in the review-controls modes; elsewhere it
+  // is the drawer's Explanation tab riding on the reveal, as before.
+  const explanationOpen = reviewControlsAvailable
+    ? !!currentQuestion && !!explanationOpenByQid.get(currentQuestion.qid)
+    : notesOpen && drawerTab === 'explanation';
+
   const {
     data: lrExplanation,
     isLoading: lrExplanationLoading,
@@ -2967,8 +3083,13 @@ function DrillContent() {
       section: currentQuestion?.section,
       questionNumber: currentQuestion?.qnum,
     },
-    currentRevealed,
+    reviewControlsAvailable ? explanationOpen : currentRevealed,
   );
+
+  // The breakdown expander closes with every new question.
+  React.useEffect(() => {
+    setBreakdownOpen(false);
+  }, [currentQuestion?.qid]);
 
   // A style chosen on the previous question must not leak onto one that does
   // not publish it.
@@ -3489,7 +3610,7 @@ function DrillContent() {
   // preview (structural breakdown) before a pick, socratic after a pick,
   // post-answer once revealed. Wired to the "Explanation" button beside End.
   const openTutorForCurrent = (tab?: 'coach' | 'breakdown' | 'notes') => {
-    if (!currentQuestion) return;
+    if (!AI_TUTOR_ENABLED || !currentQuestion) return;
     setTutorQuestionSnapshot(currentQuestion);
     setTutorUserAnswerSnapshot(selectedAnswer || '');
     setTutorChatMode(resolveTutorMode({
@@ -3623,13 +3744,68 @@ function DrillContent() {
     handleRevealRequest(attempted, 'explanation');
   };
 
+  // ── Review controls (LSAT Lab shape) ─────────────────────────────────────
+  // Answer and Explanation are independent on/off toggles. Neither asks,
+  // neither commits a pick, neither touches the drawer, neither locks a
+  // choice. The one thing a reveal changes about the record is
+  // `answerRevealed`: the answer was on screen, so any pick after this is
+  // recorded as made after seeing it. Smart Drill additionally marks the
+  // question unscored, silently, so a Submit can never score a revealed
+  // question.
+  const markAnswerSeen = (qid: string) => {
+    answerSeenQidsRef.current.add(qid);
+    setSession(prev => {
+      if (!prev) return prev;
+      const existing = prev.attempts.get(qid);
+      if (!existing || existing.answerRevealed) return prev;
+      const attempts = new Map(prev.attempts);
+      attempts.set(qid, { ...existing, answerRevealed: true });
+      return { ...prev, attempts };
+    });
+    if (reviewPolicy === 'adaptive' && !session?.attempts.get(qid)?.selectedAnswer) {
+      setUnscoredQids(prev => (prev.has(qid) ? prev : new Set(prev).add(qid)));
+    }
+  };
+
+  const toggleAnswerPill = () => {
+    if (!currentQuestion) return;
+    const qid = currentQuestion.qid;
+    if (showAnswerRevealed.get(qid)) {
+      setShowAnswerRevealed(prev => {
+        const next = new Map(prev);
+        next.delete(qid);
+        return next;
+      });
+      return;
+    }
+    setShowAnswerRevealed(prev => new Map(prev).set(qid, true));
+    markAnswerSeen(qid);
+  };
+
+  const toggleExplanationPill = () => {
+    if (!currentQuestion) return;
+    const qid = currentQuestion.qid;
+    const wasOpen = !!explanationOpenByQid.get(qid);
+    setExplanationOpenByQid(prev => new Map(prev).set(qid, !wasOpen));
+    if (wasOpen) return;
+    setBreakdownOpen(false);
+    markAnswerSeen(qid);
+  };
+
+  // Reset Response: the existing un-pick path. Clears the pick and, in the
+  // list model, the attempt entry; touches nothing else.
+  const handleResetResponse = () => {
+    if (!selectedAnswer) return;
+    handleAnswerSelect(selectedAnswer);
+  };
+
 
 
 
   const renderTutorOverlay = () => (
     <>
       {/* Floating Tutor Card — fixed bottom-left, rendered at page root so fixed positioning isn't clipped */}
-      {tutorChatOpen && tutorQuestionSnapshot && (
+      {AI_TUTOR_ENABLED && tutorChatOpen && tutorQuestionSnapshot && (
         <ErrorBoundary
           onReset={() => {
             setTutorChatOpen(false);
@@ -3683,7 +3859,7 @@ function DrillContent() {
     !!currentQuestion && (showSolution || !!showAnswerRevealed.get(currentQuestion.qid));
 
   const renderVoiceCoachChip = () =>
-    voiceCoachRevealed && !voiceCoachOpen && !tutorChatOpen ? (
+    AI_TUTOR_ENABLED && voiceCoachRevealed && !voiceCoachOpen && !tutorChatOpen ? (
       <div className="mt-6 flex justify-center">
         <VoiceCoachChip onActivate={() => setVoiceCoachOpen(true)} />
       </div>
@@ -3724,14 +3900,9 @@ function DrillContent() {
   );
 
   // ── Official testing-format layout ─────────────────────────────────────
-  // Opt-in via /drill?layout=official. Reuses every existing handler so the
-  // attempt save / WAJ / blind review / section-complete flow is identical
-  // to the default layout. Pure visual swap.
-  const layoutParam = searchParams.get('layout');
-  // Official testing-format layout is now the default for every drill mode
-  // (smart-drill, type-drill, full-section, practice-set, review, etc.).
-  // Pass ?layout=classic to opt out.
-  const isOfficialLayout = layoutParam !== 'classic';
+  // The default for every drill mode (`isOfficialLayout`, read with the review
+  // policy above). Reuses every existing handler so the attempt save / WAJ /
+  // blind review / section-complete flow is identical to the classic layout.
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
     const isAdaptiveMode = session.mode === 'adaptive';
@@ -3802,11 +3973,15 @@ function DrillContent() {
       data: lrExplanation,
       isLoading: lrExplanationLoading,
       isError: lrExplanationError,
-      revealed: currentRevealed,
+      // Read-only on the Explanation state: the tab shows the content while
+      // the pill is on and a placeholder otherwise. Selecting it never turns
+      // Explanation on.
+      revealed: reviewControlsAvailable ? explanationOpen : currentRevealed,
+      explanationPill: reviewControlsAvailable,
       sealed: revealSealed,
       activeStyle,
       onStyleChange: setActiveStyle,
-      onAskTutor: () => openTutorForCurrent(),
+      onAskTutor: AI_TUTOR_ENABLED ? () => openTutorForCurrent() : undefined,
     };
     // Find similar walks the student out of the queue they are sitting. That is
     // fine in a drill and wrong in a section or a practice test: the timer is
@@ -3827,22 +4002,61 @@ function DrillContent() {
         !selectedAnswer &&
         !currentAttempted &&
         !currentUnscored);
-    const explanationOpen = notesOpen && drawerTab === 'explanation';
     const officialPrev = isPracticeSetMode ? handlePracticeSetPrevious : handlePrevious;
     // Walking a built set is free movement in both directions, so an answer
     // sitting on screen uncommitted is saved on the way out rather than
-    // silently dropped when the question changes.
-    const commitPendingSelection = async () => {
-      if (isAdaptiveMode || !selectedAnswer || currentAttempted || currentUnscored) return;
-      await handleSubmitNonAdaptive(selectedAnswer);
+    // silently dropped when the question changes. Returns a discriminated
+    // result on every path: `ok` with the attempts to carry forward (persisted,
+    // or nothing to persist), or `ok: false` when the save failed.
+    const commitPendingSelection = async (): Promise<
+      { ok: true; attempts: DrillSession['attempts'] | null } | { ok: false }
+    > => {
+      if (isAdaptiveMode || !selectedAnswer || currentAttempted || currentUnscored) {
+        return { ok: true, attempts: null };
+      }
+      const attempts = await handleSubmitNonAdaptive(selectedAnswer);
+      if (!attempts) {
+        reportCommitFailure({
+          qid: currentQuestion.qid,
+          launchKind: state.launchKind,
+          transition: 'commitPendingSelection',
+          errorKind: 'unknown',
+          deduped: false,
+        });
+        return { ok: false };
+      }
+      return { ok: true, attempts };
     };
-    const advanceInQueue = () => {
+    const advanceInQueue = (committed: DrillSession['attempts'] | null) => {
       if (isPracticeSetMode) {
         handlePracticeSetNext();
       } else if (session.currentIndex >= session.questionQueue.length - 1) {
-        void handleFinishSection();
+        void handleFinishSection(committed ?? session.attempts);
       } else {
         handleNext();
+      }
+    };
+    // One wrapper for leaving a question on a fixed queue: arrows, ovals and
+    // the last-question advance all commit first and move only on `ok`. The
+    // lock is synchronous, so a second press while the first is saving is a
+    // no-op rather than a second insert or a second move.
+    const commitThenNavigate = async (
+      destination: 'prev' | 'advance' | 'end' | { jumpTo: number },
+    ) => {
+      if (actionLockRef.current) return;
+      actionLockRef.current = true;
+      setActionInFlight(true);
+      try {
+        const result = await commitPendingSelection();
+        if (!result.ok) return;
+        if (destination === 'prev') officialPrev();
+        else if (destination === 'advance') advanceInQueue(result.attempts);
+        else if (destination === 'end') {
+          await handleFinishSection(result.attempts ?? session.attempts);
+        } else handleJumpTo(destination.jumpTo);
+      } finally {
+        actionLockRef.current = false;
+        setActionInFlight(false);
       }
     };
     const officialNext = async () => {
@@ -3863,6 +4077,8 @@ function DrillContent() {
           return;
         } else {
           committedAttempts = await handleSubmitNonAdaptive(selectedAnswer, { advanceAfterSubmit: true });
+          // A failed save leaves the question in place with its pick.
+          if (!committedAttempts) return;
         }
       }
       if (isPracticeSetMode) {
@@ -3969,7 +4185,12 @@ function DrillContent() {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={confirmExit}>Yes, leave</AlertDialogAction>
+              <AlertDialogAction
+                disabled={actionInFlight}
+                onClick={() => { void commitThenNavigate('end'); }}
+              >
+                Yes, leave
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -4172,10 +4393,14 @@ function DrillContent() {
               onShowAnswer={
                 revealSealed
                   ? undefined
+                  : reviewControlsAvailable
+                  ? toggleAnswerPill
                   : () => toggleAnswerReveal(currentAttempted, currentRevealed)
               }
               showAnswerActive={currentRevealed}
-              showAnswerDisabled={!!timer?.isPaused || (isFullSection && !currentAttempted)}
+              showAnswerDisabled={
+                !!timer?.isPaused || actionInFlight || (isFullSection && !currentAttempted)
+              }
               // Explanation no longer waits on a separate reveal press: it is
               // the one control that opens the whole breakdown — correct letter,
               // every choice's explanation inline, drawer up — and pressing it
@@ -4185,12 +4410,14 @@ function DrillContent() {
               onExplanation={
                 revealSealed
                   ? undefined
+                  : reviewControlsAvailable
+                  ? toggleExplanationPill
                   : () =>
                       toggleExplanation(currentAttempted, currentRevealed, explanationOpen)
               }
               explanationActive={explanationOpen}
               explanationDisabled={
-                !!timer?.isPaused || (isFullSection && !currentRevealed)
+                !!timer?.isPaused || actionInFlight || (isFullSection && !currentRevealed)
               }
               onOpenHelp={() => setHelpOpen(true)}
             />
@@ -4255,6 +4482,28 @@ function DrillContent() {
             onToggleFlag={handleToggleFlag}
             onTextSelection={handleTextSelection}
             onHighlightClick={handleHighlightClick}
+            // Review controls: Choice Notes as closed expanders, choices that
+            // stay live after a reveal, Reset Response, and the Argument
+            // Breakdown under the stimulus. All opt-in; the legacy modes get
+            // the pane exactly as before.
+            choiceNoteExpanders={reviewControlsAvailable}
+            choicesStayLive={reviewControlsAvailable}
+            interactionLocked={actionInFlight}
+            onResetResponse={reviewControlsAvailable ? handleResetResponse : undefined}
+            belowStimulus={
+              reviewControlsAvailable && explanationOpen ? (
+                <ArgumentBreakdown
+                  data={lrExplanation}
+                  isLoading={lrExplanationLoading}
+                  isError={lrExplanationError}
+                  activeStyle={activeStyle}
+                  onStyleChange={setActiveStyle}
+                  fontScale={officialFontScale}
+                  open={breakdownOpen}
+                  onToggle={() => setBreakdownOpen((open) => !open)}
+                />
+              ) : null
+            }
           />
           {renderVoiceCoachChip()}
           {isAdaptiveMode ? (
@@ -4319,9 +4568,12 @@ function DrillContent() {
             // answer gate; End finishes the section.
             <OfficialSmartDrillBar
               autoReveal={autoReveal}
-              onAutoRevealChange={handleAutoRevealChange}
+              // A fixed drill has no auto-reveal switch: Answer and Explanation
+              // in the strip are the review controls. The preference is left
+              // alone for Smart Drill.
+              onAutoRevealChange={reviewPolicy === 'fixed' ? undefined : handleAutoRevealChange}
               primaryAction={currentAttempted || currentUnscored ? 'next' : 'submit'}
-              primaryDisabled={!selectedAnswer || !!timer?.isPaused}
+              primaryDisabled={!selectedAnswer || !!timer?.isPaused || actionInFlight}
               onSubmit={() => {
                 void (async () => {
                   const submitted = selectedAnswer;
@@ -4333,6 +4585,7 @@ function DrillContent() {
                   // so the student gets a specific, back-and-forth explanation
                   // instead of the old dead "ANALYSIS VALID" placeholder.
                   const tutorLaunch = resolveTutorLaunch({
+                    flagEnabled: AI_TUTOR_ENABLED,
                     tutorModeEnabled: tutorMode,
                     correct: submitted === currentQuestion.correctAnswer,
                     answerRevealed: autoReveal,
@@ -4351,25 +4604,16 @@ function DrillContent() {
               // ever went forward, and only before the question was answered,
               // which left no way back to a question already worked — the one
               // thing reviewing a set is for.
-              onPrev={() => {
-                void (async () => {
-                  await commitPendingSelection();
-                  officialPrev();
-                })();
-              }}
-              prevDisabled={session.currentIndex <= 0 || !!timer?.isPaused}
-              onAdvance={() => {
-                void (async () => {
-                  await commitPendingSelection();
-                  advanceInQueue();
-                })();
-              }}
-              advanceDisabled={!!timer?.isPaused}
-              // Submit is only ever the commit action now. Once the question is
-              // answered (or deliberately revealed unscored) the Next pill is
-              // what carries the student on, so a second "Next" in the primary
-              // slot would just be the same control twice.
-              primaryVisible={!currentAttempted && !currentUnscored}
+              onPrev={() => { void commitThenNavigate('prev'); }}
+              prevDisabled={session.currentIndex <= 0 || !!timer?.isPaused || actionInFlight}
+              onAdvance={() => { void commitThenNavigate('advance'); }}
+              advanceDisabled={!!timer?.isPaused || actionInFlight}
+              // A fixed drill never shows the Submit pill: the arrows and ovals
+              // already commit on the way out, and the review controls live in
+              // the strip. Elsewhere Submit is only ever the commit action, and
+              // once the question is answered (or deliberately revealed
+              // unscored) the Next pill carries the student on.
+              primaryVisible={reviewPolicy === 'fixed' ? false : !currentAttempted && !currentUnscored}
               // A built set is a fixed, known list, so it navigates like a
               // section: every question gets an oval, and any of them can be
               // clicked. Jumping commits whatever is selected first, for the
@@ -4380,18 +4624,13 @@ function DrillContent() {
                   questionQueue={session.questionQueue}
                   currentIndex={session.currentIndex}
                   attemptedQids={attemptedQids}
-                  jumpEnabled={!timer?.isPaused}
+                  jumpEnabled={!timer?.isPaused && !actionInFlight}
                   jumpDisabledReason={timer?.isPaused ? 'Paused — resume to navigate' : undefined}
-                  onJumpTo={(index) => {
-                    void (async () => {
-                      await commitPendingSelection();
-                      handleJumpTo(index);
-                    })();
-                  }}
+                  onJumpTo={(index) => { void commitThenNavigate({ jumpTo: index }); }}
                 />
               }
               onEnd={() => handleNavigation('/classroom/drill')}
-              disabled={!!timer?.isPaused}
+              disabled={!!timer?.isPaused || actionInFlight}
             />
           )}
           </>
@@ -4478,7 +4717,7 @@ function DrillContent() {
           timerLabel={timer?.label}
           timerPaused={timer?.isPaused}
           onTimerToggle={timer ? (timer.isPaused ? timer.resume : timer.pause) : undefined}
-          showTutorToggle={session?.mode === 'adaptive'}
+          showTutorToggle={AI_TUTOR_ENABLED && session?.mode === 'adaptive'}
           tutorMode={tutorMode}
           onTutorModeChange={(next) => {
             setTutorMode(next);
@@ -4486,7 +4725,7 @@ function DrillContent() {
               setTutorChatOpen(false);
             }
           }}
-          onOpenTutor={() => {
+          onOpenTutor={AI_TUTOR_ENABLED ? () => {
             if (!currentQuestion) return;
             setTutorQuestionSnapshot(currentQuestion);
             setTutorUserAnswerSnapshot(selectedAnswer);
@@ -4495,7 +4734,7 @@ function DrillContent() {
               answerRevealed: !!showAnswerRevealed.get(currentQuestion.qid),
             }));
             setTutorChatOpen(true);
-          }}
+          } : undefined}
           onOpenInfo={guidedSet?.is_guided_set ? () => setGuidedInfoOpen(true) : undefined}
         />
         <GuidedDrillIntroModal

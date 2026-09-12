@@ -3,6 +3,8 @@ import { DrillSplit } from '@/components/drill/DrillSplit';
 import { Check, Eye, EyeOff, Flag, X } from "lucide-react";
 import { HighlightedText } from "@/components/drill/HighlightedText";
 import InlineChoiceExplanation, {
+  ChoiceNoteToggle,
+  hasChoiceNoteProse,
   type InlineChoiceNotes,
 } from "@/components/drill/official/InlineChoiceExplanation";
 import {
@@ -31,11 +33,41 @@ interface Props {
   answerRevealed?: boolean;
   correctAnswer?: string;
   /**
-   * Per-choice explanation content, rendered inline beneath each choice once
-   * the answer is revealed. Omit it entirely (section mode, or before reveal)
-   * and no inline layer renders at all.
+   * Per-choice explanation content (the Choice Notes), rendered inline beneath
+   * each choice whenever it is present. Omit it entirely (section mode, or
+   * while Explanation is off) and no inline layer renders at all. Independent
+   * of `answerRevealed`: colour is the Answer pill's job, notes are
+   * Explanation's.
    */
   inlineNotes?: InlineChoiceNotes | null;
+  /**
+   * Choice Notes as expanders (LSAT Lab's shape): every note starts closed
+   * behind a chevron at the right edge of its card, and the student opens
+   * them one at a time. Off (default), the prose shows outright, which is
+   * what the review walk and the classroom modal still expect.
+   */
+  choiceNoteExpanders?: boolean;
+  /**
+   * Choices stay clickable after the answer is revealed. Off (default), a
+   * reveal locks the choices, which is the legacy one-way behaviour.
+   */
+  choicesStayLive?: boolean;
+  /**
+   * Everything is disabled while the runner persists a pick and moves on, so
+   * the committed pick can never differ from the one on screen.
+   */
+  interactionLocked?: boolean;
+  /**
+   * Reset Response: clears the pick. Rendered only when present, as a ghost
+   * button under the choices, disabled with nothing picked.
+   */
+  onResetResponse?: () => void;
+  /**
+   * Rendered under the stimulus, in the same column. The Argument Breakdown
+   * goes here while Explanation is on. The stimulus block itself keeps every
+   * class and style it has; this slot is a sibling below it.
+   */
+  belowStimulus?: React.ReactNode;
   highlights: Highlight[];
   highlightMode: HighlightMode;
   searchTerm?: string;
@@ -95,7 +127,26 @@ export default function OfficialQuestionPane({
   onTextSelection,
   onHighlightClick,
   aboveChoices,
+  choiceNoteExpanders = false,
+  choicesStayLive = false,
+  interactionLocked = false,
+  onResetResponse,
+  belowStimulus,
 }: Props) {
+  // Which Choice Notes are open. Empty whenever the notes arrive or the
+  // question changes: pressing Explanation shows the chevrons, not the prose.
+  const [openLetters, setOpenLetters] = React.useState<Set<string>>(() => new Set());
+  const notesPresent = inlineNotes != null;
+  React.useEffect(() => {
+    setOpenLetters(new Set());
+  }, [notesPresent, question.qid]);
+  const toggleLetter = (key: string) =>
+    setOpenLetters((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
   const stimulusHighlights = highlights.filter((h) => h.section === "stimulus");
   const stemHighlights = highlights.filter((h) => h.section === "stem");
   const stimulusText = stripDataArtifacts(question.stimulus);
@@ -179,10 +230,13 @@ export default function OfficialQuestionPane({
         ratio="passage-weighted"
         maxWidthClassName={null}
         left={
-          // Stimulus column
+          // Stimulus column. The wrapper scrolls; the stimulus block keeps its
+          // own padding, face and measure, and the Argument Breakdown sits
+          // under it as a sibling rather than inside its serif/pre-wrap box.
+          <div className="flex min-h-0 flex-col overflow-y-auto lg:border-r border-slate-200">
           <div
             className={cn(
-              "min-w-0 px-6 pt-6 pb-7 sm:pl-9 sm:pr-8 lg:border-r border-slate-200 whitespace-pre-wrap overflow-y-auto",
+              "min-w-0 px-6 pt-6 pb-7 sm:pl-9 sm:pr-8 whitespace-pre-wrap",
               // Cap the reading measure. The frame is max-w-[1400px] and this column
               // takes 53fr of it, which ran ~100 characters per line — well past the
               // 45-75 readable band. `ch` is the width of "0", which is narrow in
@@ -204,6 +258,12 @@ export default function OfficialQuestionPane({
               eraserMode={highlightMode === "erase"}
               searchTerm={searchTerm}
             />
+          </div>
+          {belowStimulus && (
+            <div className="mt-6 max-w-[60ch] whitespace-normal px-6 pb-7 font-sans sm:pl-9 sm:pr-8">
+              {belowStimulus}
+            </div>
+          )}
           </div>
         }
         right={
@@ -251,16 +311,26 @@ export default function OfficialQuestionPane({
               {answerEntries.map(([key, text]) => {
                 const isSelected = selectedAnswer === key;
                 const isEliminated = eliminatedAnswers.has(key);
-                const isCorrect = answerRevealed && correctAnswer === key;
+                // Correctness is a fact; colouring is a state. The Choice Note
+                // needs the fact (its tag chip goes green for the right letter
+                // whether or not Answer is on); the card needs the state.
+                const isCorrectFact = correctAnswer === key;
+                const showCorrectColour = answerRevealed && isCorrectFact;
                 // The choice they committed to, once it is known to be wrong.
                 // Without this a wrong answer stayed the same neutral grey as an
                 // unrevealed selection, so revealing said what was right without
                 // ever saying what they did.
-                const isWrongPick = answerRevealed && isSelected && correctAnswer !== key;
-                // The inline layer only ever appears once the answer is revealed.
-                const inline =
-                  answerRevealed && inlineNotes ? inlineNotes[key] ?? {} : undefined;
-                const locked = isEliminated || answerRevealed;
+                const isWrongPick = answerRevealed && isSelected && !isCorrectFact;
+                // The inline layer follows Explanation, not Answer.
+                const inline = inlineNotes ? inlineNotes[key] ?? {} : undefined;
+                const noteOpen = !choiceNoteExpanders || openLetters.has(key);
+                const showNoteToggle = choiceNoteExpanders && !!inline && hasChoiceNoteProse(inline);
+                const revealLocks = answerRevealed && !choicesStayLive;
+                const locked = isEliminated || revealLocks || interactionLocked;
+                const showVerdict = answerRevealed && (showCorrectColour || isWrongPick);
+                // A verdict choice that is also crossed out still needs a way
+                // back: Restore moves to the extra column as a real button.
+                const showRestoreBeside = showVerdict && isEliminated && choicesStayLive;
                 const choiceTextId = `choice-${question.qid}-${key}`;
 
                 return (
@@ -268,8 +338,8 @@ export default function OfficialQuestionPane({
                     key={key}
                     className={cn(
                       "group relative rounded-lg border transition-all duration-200",
-                      "grid grid-cols-[auto_1fr_auto] items-start gap-3 p-3",
-                      isCorrect
+                      "grid grid-cols-[auto_1fr_auto_auto] items-start gap-3 p-3",
+                      showCorrectColour
                         ? "border-green-500 bg-green-50"
                         : isWrongPick
                         ? "border-red-500 bg-red-50"
@@ -287,7 +357,7 @@ export default function OfficialQuestionPane({
                       aria-describedby={choiceTextId}
                       className={cn(
                         "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border font-semibold transition-all",
-                        isCorrect
+                        showCorrectColour
                           ? "border-green-600 bg-green-500 text-white"
                           : isWrongPick
                           ? "border-red-600 bg-red-500 text-white"
@@ -338,7 +408,7 @@ export default function OfficialQuestionPane({
                       className={cn(
                         "text-left leading-relaxed transition-colors",
                         !locked && "cursor-pointer",
-                        isCorrect
+                        showCorrectColour
                           ? "text-green-900"
                           : isWrongPick
                           ? "text-red-900"
@@ -357,29 +427,28 @@ export default function OfficialQuestionPane({
                         paragraphStyle={{ margin: 0, lineHeight: "inherit" }}
                       />
                     </div>
-                    {answerRevealed && (isCorrect || isWrongPick) ? (
-                      // Colour alone must never carry the verdict (ADR 0001), and
-                      // once the answer is out the cross-out control is dead
-                      // anyway, so its corner becomes the icon and the label.
+                    {showVerdict ? (
+                      // Colour alone must never carry the verdict (ADR 0001), so
+                      // the cross-out corner becomes the icon and the label.
                       <span
                         role="img"
-                        aria-label={isCorrect ? "Correct answer" : "Your answer, incorrect"}
-                        title={isCorrect ? "Correct answer" : "Your answer, incorrect"}
+                        aria-label={showCorrectColour ? "Correct answer" : "Your answer, incorrect"}
+                        title={showCorrectColour ? "Correct answer" : "Your answer, incorrect"}
                         className={cn(
                           "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center",
-                          isCorrect ? "text-green-700" : "text-red-700",
+                          showCorrectColour ? "text-green-700" : "text-red-700",
                         )}
                       >
-                        {isCorrect ? <Check size={18} /> : <X size={18} />}
+                        {showCorrectColour ? <Check size={18} /> : <X size={18} />}
                       </span>
                     ) : (
                     <button
                       type="button"
                       onClick={(event) => {
                         event.stopPropagation();
-                        if (!answerRevealed) onEliminate(key);
+                        if (!revealLocks && !interactionLocked) onEliminate(key);
                       }}
-                      disabled={answerRevealed}
+                      disabled={revealLocks || interactionLocked}
                       // A screen reader announced this as an unlabelled button.
                       // RC's equivalent has carried both of these since it was
                       // written; this is LR catching up to it.
@@ -395,13 +464,45 @@ export default function OfficialQuestionPane({
                       {isEliminated ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                     )}
+                    {/* Fourth column: the Choice Note expander and, when a
+                        verdict choice is also crossed out, a real Restore. */}
+                    {(showRestoreBeside || showNoteToggle) ? (
+                      <div className="flex items-start gap-1">
+                        {showRestoreBeside && (
+                          <button
+                            type="button"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              onEliminate(key);
+                            }}
+                            disabled={interactionLocked}
+                            aria-label={`Restore choice ${key}`}
+                            title="Restore"
+                            className="mt-0.5 p-1 text-slate-700 transition-opacity hover:text-slate-900 disabled:opacity-40"
+                          >
+                            <EyeOff size={16} />
+                          </button>
+                        )}
+                        {showNoteToggle && (
+                          <ChoiceNoteToggle
+                            letter={key}
+                            open={openLetters.has(key)}
+                            onToggle={() => toggleLetter(key)}
+                            disabled={interactionLocked}
+                          />
+                        )}
+                      </div>
+                    ) : (
+                      <span aria-hidden className="w-0" />
+                    )}
                     {inline && (
-                      <div className="col-start-2 col-end-4">
+                      <div className="col-start-2 col-end-5">
                         <InlineChoiceExplanation
                           letter={key}
-                          isCorrect={isCorrect}
+                          isCorrect={isCorrectFact}
                           isSelected={isSelected}
                           content={inline}
+                          open={noteOpen}
                         />
                       </div>
                     )}
@@ -409,6 +510,18 @@ export default function OfficialQuestionPane({
                 );
               })}
             </ul>
+            {onResetResponse && (
+              <div className="mt-4 flex justify-end">
+                <button
+                  type="button"
+                  onClick={onResetResponse}
+                  disabled={!selectedAnswer || interactionLocked}
+                  className="rounded border border-slate-300 bg-white px-3 py-1.5 text-[13px] font-medium text-slate-600 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Reset Response
+                </button>
+              </div>
+            )}
           </div>
         }
       />

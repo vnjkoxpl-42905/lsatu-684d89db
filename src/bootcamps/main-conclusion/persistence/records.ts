@@ -198,6 +198,12 @@ export const PracticeSessionAttempt = z.object({
   answer_trail: z
     .array(z.object({ answer: z.string(), at_ms: z.number().min(0) }))
     .optional(),
+  /**
+   * The answer was on screen (Answer or Explanation pressed) before or after
+   * this pick. Without it a resumed run could not tell a pick made after
+   * seeing the answer from a clean one. Optional: older rows read as false.
+   */
+  answer_revealed: z.boolean().optional(),
 });
 export type PracticeSessionAttempt = z.infer<typeof PracticeSessionAttempt>;
 

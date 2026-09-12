@@ -86,3 +86,59 @@ record behind a different question list.
 _Avoid_: resume state (that is what it is for, not what it is), snapshot (that is
 one write to it), session (overloaded: `DrillSession` is the in-memory object for
 the current screen, and an auth session is a third thing).
+
+**Answer** (the pill):
+The on/off control in the session strip that shows which choice is correct.
+On: the correct choice's badge goes green, and if the student already submitted
+a different choice, that one goes red. Off: both colours leave and the choices
+read as untouched. It says nothing about *why*; that is the Explanation pill.
+Neither direction locks anything and neither direction touches the logged
+attempt. Mirrors LSAT Lab's Answer button ("Show correct answer" / hide).
+_Avoid_: reveal (the code's word; fine in code, but "reveal" sounds one-way and
+this is a toggle), solution, show answer.
+
+**Explanation** (the pill):
+The on/off control beside Answer that opens the whole Question Explanation:
+the Argument Breakdown expander under the stimulus and a Choice Note expander
+on every noted choice, all closed until the student opens them. Off folds all of it away and leaves the question exactly as it
+was, including any Answer colouring already on. Never opens on its own: a wrong
+submit does not press it, only the student does. Mirrors LSAT Lab's
+Explanation button ("Hide explanations").
+_Avoid_: breakdown (that is one half of what it opens), tutor, coach.
+
+**Argument Breakdown**:
+The question-level half of a Question Explanation: the ordered labelled steps
+(Background, Evidence, Conclusion, Evaluate, Goal, and so on) plus the style
+pills (Standard / Brief / Another Way) when the source published more than one
+style. Lives under the stimulus while Explanation is on, behind a chevron on a
+rule that the student opens, and is repeated in the drawer's Explanation tab.
+_Avoid_: explanation (the pill), breakdown steps, analysis.
+
+**Choice Note**:
+The per-choice half of a Question Explanation: one choice's tag ("Out of
+Scope", "Premise"), its "% of students", and its prose. Rendered as a dropdown
+under that choice, closed by default while Explanation is on, behind a chevron
+button at the right edge of the choice card that the student opens and closes
+per choice. A choice with nothing published gets
+no dropdown at all, never an empty one.
+_Avoid_: inline explanation (the component's old name), answer explanation,
+rationale.
+
+**Reset Response**:
+The control under the choices that clears the student's pick and nothing else.
+The timer keeps running, the Answer and Explanation pills keep their state, and
+an attempt already logged stays logged. Greyed out until a choice is picked.
+A pick made after a Reset on an already-attempted question is practice, not a
+second attempt. Mirrors LSAT Lab's Reset Response button.
+_Avoid_: undo, clear, retry (retry implies a new scored attempt).
+
+**AI Tutor**:
+The generated coaching surfaces on the drill screen: the Coach chat that used to
+open after a wrong answer, the "Ask Joshua about this question" hand-off on a
+question with no authored prose, and the "Explain your reasoning" voice chip.
+Distinct from the Question Explanation, which is transcribed LSAT Lab content
+and never generated. Off for every student as of 2026-09-12 behind one switch;
+the code stays so it can be turned back on.
+_Avoid_: tutor mode (the code's flag name), Joshua (the chat's persona; a
+student reading "Joshua is having trouble" thinks the person is), coach (one of
+its tabs).

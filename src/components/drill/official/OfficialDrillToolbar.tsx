@@ -252,7 +252,7 @@ export default function OfficialDrillToolbar({
           )}
 
           {/* Right cluster: tools | Aa + line-spacing | timer */}
-          <div className="ml-auto flex items-center gap-1.5">
+          <div className="ml-0 flex w-full max-w-full items-center gap-1.5 overflow-x-auto sm:ml-auto sm:w-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {highlightToolsVisible && (
               <>
                 <div className="flex items-center gap-0.5">
