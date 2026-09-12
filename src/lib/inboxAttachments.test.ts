@@ -15,9 +15,14 @@ describe('validateInboxAttachment', () => {
     expect(validateInboxAttachment({ type: 'image/webp', size: 1024 })).toBeNull();
   });
 
+  it('accepts video attachments', () => {
+    expect(validateInboxAttachment({ type: 'video/mp4', size: 1024 })).toBeNull();
+    expect(validateInboxAttachment({ type: 'video/webm', size: 1024 })).toBeNull();
+  });
+
   it('rejects unsupported attachment types', () => {
     expect(validateInboxAttachment({ type: 'text/plain', size: 1024 })).toBe(
-      'Only PDF files and screenshots are allowed',
+      'Only PDF files, screenshots, and videos are allowed',
     );
   });
 
@@ -26,12 +31,19 @@ describe('validateInboxAttachment', () => {
       'File must be under 20MB',
     );
   });
+
+  it('rejects videos over the video size limit', () => {
+    expect(validateInboxAttachment({ type: 'video/mp4', size: 100 * 1024 * 1024 + 1 })).toBe(
+      'Video must be under 100MB',
+    );
+  });
 });
 
 describe('classifyInboxAttachmentMime', () => {
   it('classifies previewable attachment kinds', () => {
     expect(classifyInboxAttachmentMime('application/pdf')).toBe('pdf');
     expect(classifyInboxAttachmentMime('image/png')).toBe('image');
+    expect(classifyInboxAttachmentMime('video/mp4')).toBe('video');
   });
 
   it('falls back to generic files for unknown mime types', () => {
