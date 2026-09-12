@@ -79,7 +79,7 @@
       "B": "James bought the camera to avoid having to hire a professional videographer for his sister’s graduation party, and he returned the camera immediately after the party.",
       "C": "James used the camera several times but returned it after he had dropped it and then discovered that some of the features did not work.",
       "D": "James returned the camera after he discovered that the same model was on sale at another store at a considerably lower price.",
-      "E": "James used the camera in the manner for which he bought it, and, though he generally enjoyed it, he thought a different one might work better with his new computer. 3 3 -21-3"
+      "E": "James used the camera in the manner for which he bought it, and, though he generally enjoyed it, he thought a different one might work better with his new computer."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -265,7 +265,7 @@
       "B": "mistakenly infers, from the claim that vagrancy laws are associated with an increase in many innocuous everyday occurrences, that vagrancy laws cause that increase",
       "C": "fails to specify what is meant by “innocuous everyday occurrences”",
       "D": "fails to consider the possibility that crime will increase even in the absence of vagrancy laws",
-      "E": "does not adequately distinguish between an increase in criminal activity and the reclassification of certain occurrences as crimes 3 3 -23-3"
+      "E": "does not adequately distinguish between an increase in criminal activity and the reclassification of certain occurrences as crimes."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -428,7 +428,7 @@
       "B": "If a film features several stars, it will be successful at the box office. A box office success has a long run at theaters. This film features only one star, so it will not have a long run at theaters.",
       "C": "If a film is directed by a talented artist, it will be praised by critics. If a film is praised by critics, it will do well on video. This film did well on video, so it was directed by a talented artist.",
       "D": "If a film is a box office success, then one of its stars is nominated for an award. If a star receives an award, the film is assured of doing well on video. This star was not nominated for an award, so the film will not do well on video.",
-      "E": "If a film has a big budget, it will be heavily promoted. A heavily promoted film will be released all over the country at once. This film has a big budget, so it will be released all over the country at once. 3 3 -25-3"
+      "E": "If a film has a big budget, it will be heavily promoted. A heavily promoted film will be released all over the country at once. This film has a big budget, so it will be released all over the country at once."
     },
     "correctAnswer": "B",
     "questionFeatures": [
