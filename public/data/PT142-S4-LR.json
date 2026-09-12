@@ -61,7 +61,7 @@
       "B": "Three Rivers Nursery sells cottonwood trees.",
       "C": "Many of the native species that Three Rivers Nursery sells are shrubs, not trees.",
       "D": "Tree species that are not native to this area and that are consistent with the master plan are rare and hard to find.",
-      "E": "Three Rivers Nursery does not sell any tree species that grow to be very large. 4 4 4 4"
+      "E": "Three Rivers Nursery does not sell any tree species that grow to be very large."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -160,7 +160,7 @@
       "B": "the pain experienced by heart patients is to some extent beneficial",
       "C": "the severity of a heart patient’s condition is usually worsened by withholding information from the patient about the treatment that that patient will receive",
       "D": "stress is probably an effect rather than a cause of reduced blood flow to the heart",
-      "E": "heart patients suffering from reduced blood flow to the heart who are experiencing pain from the condition are more likely to require surgery than are such patients who are not experiencing pain 4 4 4 4"
+      "E": "heart patients suffering from reduced blood flow to the heart who are experiencing pain from the condition are more likely to require surgery than are such patients who are not experiencing pain"
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -243,7 +243,7 @@
       "B": "No one can assess the overall effects of sleep deprivation on a particular person as well as that sleep-deprived person can.",
       "C": "Sleep deprivation has less effect on professors’ job performance than it does on the job performance of others.",
       "D": "Occasional sleep deprivation is not as debilitating as extended sleep deprivation.",
-      "E": "University students in a lecture audience tend to be astute observers of human behavior. 4 4 4 4"
+      "E": "University students in a lecture audience tend to be astute observers of human behavior."
     },
     "correctAnswer": "A"
   },
@@ -304,7 +304,7 @@
       "B": "defending what the journalist considers a controversial distinction by offering an example of a clear instance of it",
       "C": "defining a concept and then showing that under this definition the concept applies to all of the cases under discussion",
       "D": "appealing to a counterexample to undermine an ethical principle that supports an argument the journalist is trying to refute",
-      "E": "clarifying and defending a moral principle by comparing a case in which it applies to one in which it does not apply 4 4 4 4"
+      "E": "clarifying and defending a moral principle by comparing a case in which it applies to one in which it does not apply"
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -394,7 +394,7 @@
       "B": "relies on the opinions of individuals who are likely to be biased",
       "C": "depends on using two different meanings for the same term to draw its conclusion",
       "D": "confuses an effect of a phenomenon with its cause",
-      "E": "relies on a sample that is unrepresentative 4 4 4 4"
+      "E": "relies on a sample that is unrepresentative"
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -481,7 +481,7 @@
       "B": "infers that just because the evidence for a particular claim has not yet been confirmed, that claim is false",
       "C": "takes a sufficient condition as a necessary one",
       "D": "infers merely because something was likely to occur that it did occur",
-      "E": "appeals to the authority of biologists who may not be representative of all biologists with expertise in the relevant area 4 4 4 4"
+      "E": "appeals to the authority of biologists who may not be representative of all biologists with expertise in the relevant area"
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -525,7 +525,7 @@
       "B": "There are less expensive dietary supplements on the market that are just as effective as Activite.",
       "C": "A month is not a sufficient length of time for most dietary supplements to be fully effective.",
       "D": "The makers of Activite charge a handling fee that is considerably more than what it costs them to pack and ship their product.",
-      "E": "The mere fact that a dietary supplement contains only natural ingredients does not insure that it has no harmful side effects. 4 4 4 4"
+      "E": "The mere fact that a dietary supplement contains only natural ingredients does not insure that it has no harmful side effects."
     },
     "correctAnswer": "D"
   },
