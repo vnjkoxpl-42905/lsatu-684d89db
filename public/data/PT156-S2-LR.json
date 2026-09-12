@@ -107,7 +107,7 @@
       "B": "The claim has not been established because Zobel provides evidence that could show only that Peterson’s students are biased in the evaluation of Peterson’s analytic concepts.",
       "C": "The claim cannot be evaluated because it is not possible for any psychoanalyst to provide an objective assessment of another psychoanalyst’s analytic concepts.",
       "D": "The claim is questionable because it is obvious that Zobel has a professional rivalry with Peterson and cannot judge Peterson’s concepts fairly.",
-      "E": "The claim is acceptable because Zobel has effectively shown that Peterson’s analytic concepts are biased and based on emotion rather than rational thinking. -13- 22 2"
+      "E": "The claim is acceptable because Zobel has effectively shown that Peterson’s analytic concepts are biased and based on emotion rather than rational thinking."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -262,7 +262,7 @@
       "B": "presupposes the point it is attempting to establish",
       "C": "mistakes Professor Thomas’s characterization of a view for an endorsement of that view",
       "D": "attacks Professor Thomas personally rather than addressing Professor Thomas’s argument",
-      "E": "rejects the possibility that Professor York is in fact too confrontational -15- 22 2"
+      "E": "rejects the possibility that Professor York is in fact too confrontational."
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -464,7 +464,7 @@
       "B": "During the past decade, other geological events have counteracted the movements of the tectonic plates that occur immediately after earthquakes.",
       "C": "Only skillful figure skaters succeed in twirling faster by bringing their arms closer to their sides.",
       "D": "Since the time of the ancient Egyptians, Earth’s rate of rotation has been known to fluctuate.",
-      "E": "Increased volcanic activity over the last ten years suggests that the overall movement of the tectonic plates has increased. -17- 22 2"
+      "E": "Increased volcanic activity over the last ten years suggests that the overall movement of the tectonic plates has increased."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -593,7 +593,7 @@
     "answerChoices": {
       "A": "The soybean derivatives used in most studies are the products of specialized processing techniques and are not yet widely available to consumers.",
       "B": "While phytosterols, which occur in high concentrations in soybeans, have been shown to decrease cholesterol absorption in the body, new evidence suggests that this decrease is not large enough to reduce susceptibility to cancer.",
-      "C": "A study of people with high levels of blood cholesterol showed no significant reduction in cholesterol levels after switching to a soybean- rich diet.",
+      "C": "A study of people with high levels of blood cholesterol showed no significant reduction in cholesterol levels after switching to a soybean-rich diet.",
       "D": "Consumption of soybean products might lower blood cholesterol in animals, but a study of people whose major source of protein is soybeans rather than animal products showed blood cholesterol levels no lower than normal.",
       "E": "Preliminary studies have not shown isoflavones to have a significant effect on estrogen levels in humans."
     },

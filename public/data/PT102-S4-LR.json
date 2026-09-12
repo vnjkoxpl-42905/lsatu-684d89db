@@ -8,7 +8,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Taxpayer: For the last ten years, Metro City’s bridge- maintenance budget of $1 million annually has been a prime example of fiscal irresponsibility. In a well-run bridge program, the city would spend $15 million a year on maintenance, which would prevent severe deterioration, thus limiting capital expenses for needed bridge reconstruction to $10 million. However, as a result of its attempt to economize, the city is now faced with spending $400 million over two years on emergency reconstruction of its bridges.",
+    "stimulus": "Taxpayer: For the last ten years, Metro City’s bridge-maintenance budget of $1 million annually has been a prime example of fiscal irresponsibility. In a well-run bridge program, the city would spend $15 million a year on maintenance, which would prevent severe deterioration, thus limiting capital expenses for needed bridge reconstruction to $10 million. However, as a result of its attempt to economize, the city is now faced with spending $400 million over two years on emergency reconstruction of its bridges.",
     "questionStem": "The main point of the taxpayer’s argument is that Metro City",
     "answerChoices": {
       "A": "should have budgeted substantially more money for maintenance of its bridges",
@@ -40,7 +40,7 @@
       "B": "The fact that a tax return has been prepared by a professional income-tax advisor provides no guarantee that the tax return has been correctly prepared.",
       "C": "In order to ensure that tax returns are correct, it is necessary to hire professional income-tax advisors to prepare them.",
       "D": "All professional income-tax advisors make mistakes on at least some of the tax returns they prepare.",
-      "E": "People are more likely to have an incorrectly prepared tax return if they prepare their own tax returns than if they hire a professional income- tax advisor."
+      "E": "People are more likely to have an incorrectly prepared tax return if they prepare their own tax returns than if they hire a professional income-tax advisor."
     },
     "correctAnswer": "B"
   },
@@ -194,7 +194,7 @@
       "B": "All of the paintings that the board of trustees sells will be among those that the curator recommends selling.",
       "C": "All of the paintings by Renoir and Cézanne that are owned by the Federici Art Museum were purchased by Ms. Federici herself.",
       "D": "Only an avid collector of paintings by Cézanne would be willing to pay a high price for early works by this artist.",
-      "E": "A great work of art can be truly appreciated only if it is displayed in a carefully designed and well- maintained gallery."
+      "E": "A great work of art can be truly appreciated only if it is displayed in a carefully designed and well-maintained gallery."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -277,11 +277,11 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Unlike other primroses, self-pollinating primroses do not need to rely on insects for pollination. In many years insect pollinators are scarce, and in those years a typical non-self-pollinating primrose produces fewer seeds than does a typical self-pollinating primrose. In other years, seed production is approximately equal. Thus, self-pollinating primroses have the advantage of higher average seed production. Aside from seed production, these self-pollinating primroses are indistinguishable from non-self-pollinating primroses. Nevertheless, self- pollinating primrose plants remain rare among primroses.",
+    "stimulus": "Unlike other primroses, self-pollinating primroses do not need to rely on insects for pollination. In many years insect pollinators are scarce, and in those years a typical non-self-pollinating primrose produces fewer seeds than does a typical self-pollinating primrose. In other years, seed production is approximately equal. Thus, self-pollinating primroses have the advantage of higher average seed production. Aside from seed production, these self-pollinating primroses are indistinguishable from non-self-pollinating primroses. Nevertheless, self-pollinating primrose plants remain rare among primroses.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
     "answerChoices": {
       "A": "Insects that collect pollen from primroses do not discriminate between self-pollinating primroses and non-self-pollinating primroses.",
-      "B": "When insect pollinators are scarce, non-self- pollinating primroses produce larger seeds that are more likely to germinate than are seeds from self-pollinating primroses.",
+      "B": "When insect pollinators are scarce, non-self-pollinating primroses produce larger seeds that are more likely to germinate than are seeds from self-pollinating primroses.",
       "C": "Self-pollinating primroses that are located in areas with few insects produce no fewer seeds than do self-pollinating primroses that are located in areas with many insects.",
       "D": "Many primroses are located in areas in which the soil conditions that are optimal for seed germination are not present.",
       "E": "Self-pollinating primroses can be assisted by insects during pollination but do not require the assistance of insects to be pollinated."

@@ -114,7 +114,7 @@
       "B": "Gardner, a noted paleontologist who has no vested interest in the case, assures us that the alleged dinosaur bones are not old enough to be from dinosaurs. So we should be skeptical of Penwick’s claim to have found dinosaur bones, for Gardner inspected the bones carefully.",
       "C": "The engineer hired by the company that maintains the bridge has examined the bridge and declared it safe. This engineer is the only one who has given the bridge a close examination recently. Thus, we should consider the bridge safe.",
       "D": "The reporter who recently interviewed the prime minister said the prime minister appeared to be in poor health. But despite the fact that the reporter works for a paper with opposition leanings, we should accept that the prime minister is in poor health. After all, reporters won’t let their bias affect them when the truth of their claims will eventually be discovered.",
-      "E": "The snowblower salesperson claims that there will be above-average snowfall this winter, but because the salesperson is biased, we can discount that claim. -30- 4 44"
+      "E": "The snowblower salesperson claims that there will be above-average snowfall this winter, but because the salesperson is biased, we can discount that claim."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -137,7 +137,7 @@
       "B": "presumes, without providing evidence, that ozone-related health costs in the city vary roughly in proportion to ozone levels",
       "C": "provides no explicit reason for believing that the proposed air pollution measures will in fact be adopted",
       "D": "attempts to support its conclusion by making an appeal to emotions",
-      "E": "discusses air pollution in order to draw attention away from more significant sources of health- related costs"
+      "E": "discusses air pollution in order to draw attention away from more significant sources of health-related costs"
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -182,7 +182,7 @@
     "questionStem": "Which one of the following most accurately expresses\n the main conclusion drawn in the climatologist’s\n argument?",
     "answerChoices": {
       "A": "Some scientists have found evidence that the waters off the Pacific coast of North America have grown significantly warmer over the past 15 years.",
-      "B": "The warming of the waters off the Pacific coast of North America is not a symptom of a more general, global warming caused by human- generated air pollution.",
+      "B": "The warming of the waters off the Pacific coast of North America is not a symptom of a more general, global warming caused by human-generated air pollution.",
       "C": "The conclusion that the warming of the waters off the Pacific coast of North America is a symptom of a more general, global warming caused by human-generated air pollution is far from justified.",
       "D": "The warming of the waters off the Pacific coast of North America may be the result of a natural cycle of ocean temperature changes.",
       "E": "If the warming of the waters off the Pacific coast of North America is due to a natural cycle of ocean temperature changes, then it is not a symptom of a more general, global warming caused by human-generated air pollution."
@@ -308,7 +308,7 @@
       "B": "Surgical removal of nonmalignant polyps detected by the new screening test is not always medically necessary.",
       "C": "If the new screening test encourages medically unnecessary operations, then probably it either should not be used or its use should be modified.",
       "D": "A polyp detected by the new screening test should be surgically removed if it is malignant.",
-      "E": "The screening test is medically useful only when it detects a polyp that requires treatment. -32- 4 44"
+      "E": "The screening test is medically useful only when it detects a polyp that requires treatment."
     },
     "correctAnswer": "B",
     "questionFeatures": [

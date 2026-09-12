@@ -405,7 +405,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Critic: An art historian argues that because fifteenth- century European paintings were generally more planimetric (that is, two-dimensional with no attempt at suggesting depth) than were sixteenth- century paintings, fifteenth-century painters had a greater mastery of painting than did sixteenth- century painters. However, this conclusion is wrong. Fifteenth-century European painters did not have a greater mastery of painting, for the degree to which a painting is planimetric is irrelevant to the painter’s mastery.",
+    "stimulus": "Critic: An art historian argues that because fifteenth-century European paintings were generally more planimetric (that is, two-dimensional with no attempt at suggesting depth) than were sixteenth-century paintings, fifteenth-century painters had a greater mastery of painting than did sixteenth-century painters. However, this conclusion is wrong. Fifteenth-century European painters did not have a greater mastery of painting, for the degree to which a painting is planimetric is irrelevant to the painter’s mastery.",
     "questionStem": "The argument is flawed in that it",
     "answerChoices": {
       "A": "rejects a position merely because the proponent of the position has other objectionable views",

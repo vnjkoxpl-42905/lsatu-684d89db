@@ -132,7 +132,7 @@
     "questionStem": "Which one of the following is most strongly supported by the information above?",
     "answerChoices": {
       "A": "Beginning chess players are better at thinking through the consequences of chess moves than experts are.",
-      "B": "A beginning chess player should use pattern- recognition techniques when deciding what move to make.",
+      "B": "A beginning chess player should use pattern-recognition techniques when deciding what move to make.",
       "C": "One’s chess skills will improve only if one learns to use pattern-recognition techniques.",
       "D": "In playing chess, an expert player relies crucially on his or her memory.",
       "E": "Any chess player who played other games that require pattern-recognition skills would thereby improve his or her chess skills."
@@ -421,7 +421,7 @@
     "stimulus": "Despite the efforts of a small minority of graduate students at one university to unionize, the majority of graduate students there remain unaware of the attempt. Most of those who are aware believe that a union would not represent their interests or that, if it did, it would not effectively pursue them. Thus, the graduate students at the university should not unionize, since the majority of them obviously disapprove of the attempt.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
-      "A": "tries to establish a conclusion simply on the premise that the conclusion agrees with a long- standing practice",
+      "A": "tries to establish a conclusion simply on the premise that the conclusion agrees with a long-standing practice",
       "B": "fails to exclude alternative explanations for why some graduate students disapprove of unionizing",
       "C": "presumes that simply because a majority of a population is unaware of something, it must not be a good idea",
       "D": "ignores the possibility that although a union might not effectively pursue graduate student interests, there are other reasons for unionizing",

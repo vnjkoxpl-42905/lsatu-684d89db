@@ -365,7 +365,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "If Agnes’s research proposal is approved, the fourth-floor lab must be cleaned out for her use. Immanuel’s proposal, on the other hand, requires less space. So if his proposal is approved, he will continue to work in the second- floor lab. Only those proposals the director supports will be approved. So since the director will support both proposals, the fourth-floor lab must be cleaned out.",
+    "stimulus": "If Agnes’s research proposal is approved, the fourth-floor lab must be cleaned out for her use. Immanuel’s proposal, on the other hand, requires less space. So if his proposal is approved, he will continue to work in the second-floor lab. Only those proposals the director supports will be approved. So since the director will support both proposals, the fourth-floor lab must be cleaned out.",
     "questionStem": "The argument’s reasoning is flawed because the argument",
     "answerChoices": {
       "A": "presumes, without providing justification, that the fourth-floor lab is bigger than the second-floor lab",

@@ -58,7 +58,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Opponents of allowing triple-trailer trucks to use the national highway system are wrong in claiming that these trucks are more dangerous than other commercial vehicles. In the western part of the country, in areas where triple-trailers are now permitted on some highways, for these vehicles the rate of road accident fatalities per mile of travel is lower than the national rate for other types of commercial vehicles. Clearly, triple- trailers are safer than other commercial vehicles.",
+    "stimulus": "Opponents of allowing triple-trailer trucks to use the national highway system are wrong in claiming that these trucks are more dangerous than other commercial vehicles. In the western part of the country, in areas where triple-trailers are now permitted on some highways, for these vehicles the rate of road accident fatalities per mile of travel is lower than the national rate for other types of commercial vehicles. Clearly, triple-trailers are safer than other commercial vehicles.",
     "questionStem": "Which one of the following, if true, most substantially weakens the argument?",
     "answerChoices": {
       "A": "It takes two smaller semitrailers to haul as much weight as a single triple-trailer can.",
@@ -361,7 +361,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Private industry is trying to attract skilled research scientists by offering them high salaries. As a result, most research scientists employed in private industry now earn 50 percent more than do comparably skilled research scientists employed by the government. So, unless government-employed research scientists are motivated more by a sense of public duty than by their own interests, the government is likely to lose its most skilled research scientists to private industry, since none of these scientists would have problems finding private- sector jobs.",
+    "stimulus": "Private industry is trying to attract skilled research scientists by offering them high salaries. As a result, most research scientists employed in private industry now earn 50 percent more than do comparably skilled research scientists employed by the government. So, unless government-employed research scientists are motivated more by a sense of public duty than by their own interests, the government is likely to lose its most skilled research scientists to private industry, since none of these scientists would have problems finding private-sector jobs.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
     "answerChoices": {
       "A": "Government research scientists are less likely to receive acknowledgment for their research contributions than are research scientists in the private sector.",
@@ -477,7 +477,7 @@
     "stimulus": "Wirth: All efforts to identify a gene responsible for predisposing people to manic-depression have failed. In fact, nearly all researchers now agree that there is no “manic-depression gene.” Therefore, if these researchers are right, any claim that some people are genetically predisposed to manic-depression is simply false.\n\nChang: I do not dispute your evidence, but I take issue with your conclusion. Many of the researchers you refer to have found evidence that a set of several genes is involved and that complex interactions among these genes produce a predisposition to manic-depression.",
     "questionStem": "The point at issue between Wirth and Chang is whether",
     "answerChoices": {
-      "A": "efforts to identify a gene or set of several genes responsible for predisposing people to manic- depression have all failed",
+      "A": "efforts to identify a gene or set of several genes responsible for predisposing people to manic-depression have all failed",
       "B": "it is likely that researchers will ever be able to find a single gene that predisposes people to manic-depression",
       "C": "nearly all researchers now agree that there is no manic-depression gene",
       "D": "current research supports the claim that no one is genetically predisposed to manic-depression",

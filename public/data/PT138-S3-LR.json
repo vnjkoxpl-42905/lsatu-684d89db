@@ -480,7 +480,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Professor Riley characterized the university president’s speech as inflammatory and argued that it was therefore inappropriate. However, Riley has had a long- standing feud with the president, and so we should not conclude that her speech was inflammatory solely on the basis of Riley’s testimony. Therefore, unless there are independent reasons to deem the president’s speech inflammatory, it is not true that her speech was inappropriate.",
+    "stimulus": "Professor Riley characterized the university president’s speech as inflammatory and argued that it was therefore inappropriate. However, Riley has had a long-standing feud with the president, and so we should not conclude that her speech was inflammatory solely on the basis of Riley’s testimony. Therefore, unless there are independent reasons to deem the president’s speech inflammatory, it is not true that her speech was inappropriate.",
     "questionStem": "The argument is flawed in that it",
     "answerChoices": {
       "A": "takes for granted that the speech could not be inappropriate if it was not inflammatory",

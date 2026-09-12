@@ -34,7 +34,7 @@
     "answerChoices": {
       "A": "In the near future, bank customers will be able to transact all their financial business by means of computers or telephones from their own homes.",
       "B": "Enabling bank customers to transact all their financial business by means of computers or telephones from their own homes may be more beneficial to banks than to their customers.",
-      "C": "As banks eliminate branch offices and customer- service employees, bank customers will have to serve as their own tellers and pay more fees.",
+      "C": "As banks eliminate branch offices and customer-service employees, bank customers will have to serve as their own tellers and pay more fees.",
       "D": "Eliminating branch offices and customer-service employees would benefit the banking industry.",
       "E": "Enabling customers to transact all their financial business by means of computers or telephones from their own homes would allow banks to eliminate branch offices and customer-service employees."
     },
@@ -125,7 +125,7 @@
       "B": "Most Winchester residents have complained about the selection of books at the branch libraries.",
       "C": "The only possible site for a new library is not readily accessible to most Winchester residents.",
       "D": "It would cost Winchester a significant amount of money to build a larger library.",
-      "E": "Each of Winchester’s branch libraries attempts to cater to the tastes of the residents of the entire township. -22- 3 33"
+      "E": "Each of Winchester’s branch libraries attempts to cater to the tastes of the residents of the entire township."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -313,7 +313,7 @@
       "B": "illicitly presumes that a dish must lack a certain quality if one of its ingredients lacks that quality",
       "C": "confuses a necessary condition for the best seafood gumbo with a sufficient condition for good seafood gumbo",
       "D": "takes for granted that a necessary ingredient of the best seafood gumbo is also a necessary ingredient of good seafood gumbo",
-      "E": "fails to consider the possibility that on some days Chris’s might be serving seafood gumbo made with fresh okra -24- 3 33"
+      "E": "fails to consider the possibility that on some days Chris’s might be serving seafood gumbo made with fresh okra."
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -455,7 +455,7 @@
       "B": "Drinking less coffee than usual would not impede a manager’s overall management ability as much as would drinking more coffee than usual.",
       "C": "There is no other factor that is more important to successful business management than either speed of processing information or ability to integrate it.",
       "D": "In the experiment, drinking more coffee than usual did not have beneficial effects on overall management ability that outweighed the reduction in ability to integrate past information.",
-      "E": "The amount of coffee one drinks is the most important factor influencing the speed at which one processes new information. -26- 3 33"
+      "E": "The amount of coffee one drinks is the most important factor influencing the speed at which one processes new information."
     },
     "correctAnswer": "D",
     "questionFeatures": [

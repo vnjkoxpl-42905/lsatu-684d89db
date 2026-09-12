@@ -278,7 +278,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "A study found that most of the strokes diagnosed by doctors occurred in the left side of patients’ brains. This suggests that right-side strokes are more likely than left- side strokes to go undiagnosed since _______.",
+    "stimulus": "A study found that most of the strokes diagnosed by doctors occurred in the left side of patients’ brains. This suggests that right-side strokes are more likely than left-side strokes to go undiagnosed since _______.",
     "questionStem": "The conclusion of the argument is strongly supported if which one of the following completes the passage?",
     "answerChoices": {
       "A": "patients who have strokes typically also have other health problems",
