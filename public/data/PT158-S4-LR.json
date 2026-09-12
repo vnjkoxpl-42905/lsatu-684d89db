@@ -89,7 +89,7 @@
       "B": "making a generalization on the basis of a sample that is likely to be unrepresentative",
       "C": "treating a generalization that applies to most cases as if it applied without exception",
       "D": "drawing a conclusion on the basis of premises that contradict one another",
-      "E": "inferring, solely from the claim that a change is not sufficient to solve a problem, that it is not necessary either 4 4 -29-4"
+      "E": "inferring, solely from the claim that a change is not sufficient to solve a problem, that it is not necessary either."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -259,7 +259,7 @@
       "B": "Infants who consume cow’s milk that has not been boiled frequently contract potentially fatal gastrointestinal infections.",
       "C": "Mother’s milk can cause gastrointestinal infections in infants.",
       "D": "When doctors advised that cow’s milk fed to infants should be boiled, they did not know that scurvy was caused by vitamin C deficiency.",
-      "E": "When doctors advised that cow’s milk fed to infants should be boiled, most mothers did not breast-feed their infants. 4 4 -31-4"
+      "E": "When doctors advised that cow’s milk fed to infants should be boiled, most mothers did not breast-feed their infants."
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -460,7 +460,7 @@
       "B": "The recording of deaths and injuries tends to be more accurate in mountain regions served by rescue squads.",
       "C": "People who commonly take risks with their lives and health do not expect other people to take those risks to rescue them.",
       "D": "Most of the people injured or killed while mountain climbing were not adequately prepared for the dangers they would face.",
-      "E": "The lower the risk of climbing a particular mountain is perceived to be, the greater the number of less competent climbers who attempt to climb it. 4 4 -33-4"
+      "E": "The lower the risk of climbing a particular mountain is perceived to be, the greater the number of less competent climbers who attempt to climb it."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -588,7 +588,7 @@
       "B": "If pollen from a genetically engineered crop is prevented from drifting into fields in which ordinary crops of the same species are being grown, then there is no risk of the pollen fertilizing the latter crops.",
       "C": "The genetically engineered crops that produce pharmaceuticals are not among the crop species that comprise the largest portions of the general food supply.",
       "D": "In crops genetically engineered to produce pharmaceuticals, the drugs are not present in any part of the plant used for food in ordinary crops of the same species.",
-      "E": "If pollen from a drug-producing crop turned an ordinary crop of the same species into a drug-producing crop, it would be possible for scientists to identify the latter crop. S T 4 4 -35-4"
+      "E": "If pollen from a drug-producing crop turned an ordinary crop of the same species into a drug-producing crop, it would be possible for scientists to identify the latter crop."
     },
     "correctAnswer": "D",
     "questionFeatures": [

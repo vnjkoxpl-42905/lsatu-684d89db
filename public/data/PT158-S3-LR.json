@@ -115,7 +115,7 @@
       "B": "In some animal species, wild members mate more frequently than tame members.",
       "C": "In some animal species, no members ever display tameness.",
       "D": "In some animal species, tame members are less fertile than wild members.",
-      "E": "In some domesticated animal species, some members are much more tame than other members. 3 3 -21-3"
+      "E": "In some domesticated animal species, some members are much more tame than other members."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -264,7 +264,7 @@
       "B": "Hunter-gatherer societies used fire for cooking and for heat during cold weather.",
       "C": "Many plants and trees have inedible seeds that are contained in hard shells and are released only when subjected to the heat of a great fire.",
       "D": "Hunter-gatherer societies are known to have used fire to move animal populations from one area to another.",
-      "E": "Few early societies were aware that burning organic material can help create nutrients for soil. 3 3 -23-3"
+      "E": "Few early societies were aware that burning organic material can help create nutrients for soil."
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -439,7 +439,7 @@
       "B": "It points up by example a contrast from which the conclusion is drawn.",
       "C": "It is a mere rhetorical flourish having no logical relation to the argument’s conclusion.",
       "D": "It is a premise that guarantees the truth of the argument’s conclusion.",
-      "E": "It is an ancillary conclusion drawn in the argument. 3 3 -25-3"
+      "E": "It is an ancillary conclusion drawn in the argument."
     },
     "correctAnswer": "B",
     "questionFeatures": [

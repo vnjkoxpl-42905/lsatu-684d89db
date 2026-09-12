@@ -118,7 +118,7 @@
       "B": "Most of those who make regular wholesale purchases from Gahagan’s have never purchased gardening implements from Gahagan’s.",
       "C": "There are more commercial buyers than home gardeners among Gahagan’s regular customers.",
       "D": "Gahagan’s sells a few gardening implements wholesale to landscape contractors.",
-      "E": "A plant purchased from Gahagan’s is more likely to have been purchased by a landscape contractor than by a home gardener. 4 4 -29-4"
+      "E": "A plant purchased from Gahagan’s is more likely to have been purchased by a landscape contractor than by a home gardener."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -317,7 +317,7 @@
       "B": "This year’s budget is less than next year’s budget.",
       "C": "The museum will not renovate next year.",
       "D": "The museum will exceed this year’s budget if it renovates this year.",
-      "E": "The museum will stay within this year’s budget if it does not renovate this year. 4 4 -31-4"
+      "E": "The museum will stay within this year’s budget if it does not renovate this year."
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -466,7 +466,7 @@
       "B": "No person can be held accountable for another person’s decisions.",
       "C": "The person responsible for a decision is the one who should explain the decision.",
       "D": "One need not fulfill a promise in order to do the best that could be done to fulfill it.",
-      "E": "Making a promise always obliges a person to keep it. 4 4 -33-4"
+      "E": "Making a promise always obliges a person to keep it."
     },
     "correctAnswer": "A",
     "questionFeatures": [
