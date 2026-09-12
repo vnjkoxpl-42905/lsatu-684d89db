@@ -48,6 +48,29 @@ export function practiceSessionIdFor(userId: string, poolSlug: string): string {
   return `00000000-0000-4000-8000-${hex}${hex2.slice(0, 4)}`;
 }
 
+/**
+ * One writer per row at a time.
+ *
+ * Both writers below read the row and then write it, with an await in between.
+ * The drill runner fires a snapshot on every answer and a completion at the
+ * end, and nothing stopped a snapshot that had already read the row from
+ * writing it AFTER the completion had — which put a finished section back to
+ * in_progress. Chaining each row's writes behind the previous one keeps them
+ * in the order they were asked for. Writes to different rows still overlap.
+ */
+const rowChains = new Map<string, Promise<unknown>>();
+
+async function withRow<T>(id: string, fn: () => Promise<T>): Promise<T> {
+  const previous = rowChains.get(id) ?? Promise.resolve();
+  const run = previous.then(fn, fn);
+  rowChains.set(id, run.catch(() => undefined));
+  try {
+    return await run;
+  } finally {
+    if (rowChains.get(id) === run) rowChains.delete(id);
+  }
+}
+
 export interface PracticeSessionSnapshot {
   questionQueue: string[];
   currentIndex: number;
@@ -108,8 +131,11 @@ export async function loadAllPracticeSessions(
  * answer and every question move, so it must stay cheap — the persistence layer
  * writes to the local cache synchronously and debounces the Supabase upsert.
  *
- * A completed row is never downgraded back to in_progress by a snapshot write;
- * re-running a finished set starts a fresh row via resetPracticeSession.
+ * The row is always written as in_progress: this is the live run, and a
+ * completed row under the same key means a previous run of the same pool that
+ * this one is replacing. A caller that must not write over a finished run —
+ * a homework assignment, whose row is that one sitting — stops calling before
+ * it gets here (see genericFinalizedRef in Drill.tsx).
  */
 export async function savePracticeSessionSnapshot(
   userId: string,
@@ -120,31 +146,33 @@ export async function savePracticeSessionSnapshot(
   if (snapshot.questionQueue.length === 0) return;
 
   const id = practiceSessionIdFor(userId, pool.slug);
-  const persist = getPersistence(userId);
-  const existing = await loadPracticeSession(userId, pool.slug);
+  await withRow(id, async () => {
+    const persist = getPersistence(userId);
+    const existing = await loadPracticeSession(userId, pool.slug);
 
-  const record = PracticeSession.parse({
-    id,
-    user_id: userId,
-    pool_slug: pool.slug,
-    completion_id: pool.completionId,
-    question_queue: snapshot.questionQueue,
-    current_index: Math.min(
-      Math.max(snapshot.currentIndex, 0),
-      Math.max(snapshot.questionQueue.length - 1, 0),
-    ),
-    attempts: snapshot.attempts,
-    status: 'in_progress',
-    // Never hand back time already spent: a snapshot with no clock keeps
-    // whatever the row already knew rather than clearing it.
-    elapsed_ms: snapshot.elapsedMs ?? existing?.elapsed_ms,
-    regulation_answered_qids:
-      snapshot.regulationAnsweredQids ?? existing?.regulation_answered_qids,
-    started_at: existing?.started_at ?? now(),
-    updated_at: now(),
+    const record = PracticeSession.parse({
+      id,
+      user_id: userId,
+      pool_slug: pool.slug,
+      completion_id: pool.completionId,
+      question_queue: snapshot.questionQueue,
+      current_index: Math.min(
+        Math.max(snapshot.currentIndex, 0),
+        Math.max(snapshot.questionQueue.length - 1, 0),
+      ),
+      attempts: snapshot.attempts,
+      status: 'in_progress',
+      // Never hand back time already spent: a snapshot with no clock keeps
+      // whatever the row already knew rather than clearing it.
+      elapsed_ms: snapshot.elapsedMs ?? existing?.elapsed_ms,
+      regulation_answered_qids:
+        snapshot.regulationAnsweredQids ?? existing?.regulation_answered_qids,
+      started_at: existing?.started_at ?? now(),
+      updated_at: now(),
+    });
+
+    await persist.set(TABLES.practice_sessions, id, record);
   });
-
-  await persist.set(TABLES.practice_sessions, id, record);
 }
 
 /**
@@ -159,28 +187,30 @@ export async function completePracticeSession(
   if (!userId || !pool?.slug) return;
 
   const id = practiceSessionIdFor(userId, pool.slug);
-  const persist = getPersistence(userId);
-  const existing = await loadPracticeSession(userId, pool.slug);
+  await withRow(id, async () => {
+    const persist = getPersistence(userId);
+    const existing = await loadPracticeSession(userId, pool.slug);
 
-  const record = PracticeSession.parse({
-    id,
-    user_id: userId,
-    pool_slug: pool.slug,
-    completion_id: pool.completionId,
-    question_queue: snapshot.questionQueue.length
-      ? snapshot.questionQueue
-      : existing?.question_queue ?? [],
-    current_index: Math.max(snapshot.questionQueue.length - 1, 0),
-    attempts: snapshot.attempts.length ? snapshot.attempts : existing?.attempts ?? [],
-    status: 'completed',
-    elapsed_ms: snapshot.elapsedMs ?? existing?.elapsed_ms,
-    regulation_answered_qids:
-      snapshot.regulationAnsweredQids ?? existing?.regulation_answered_qids,
-    started_at: existing?.started_at ?? now(),
-    updated_at: now(),
+    const record = PracticeSession.parse({
+      id,
+      user_id: userId,
+      pool_slug: pool.slug,
+      completion_id: pool.completionId,
+      question_queue: snapshot.questionQueue.length
+        ? snapshot.questionQueue
+        : existing?.question_queue ?? [],
+      current_index: Math.max(snapshot.questionQueue.length - 1, 0),
+      attempts: snapshot.attempts.length ? snapshot.attempts : existing?.attempts ?? [],
+      status: 'completed',
+      elapsed_ms: snapshot.elapsedMs ?? existing?.elapsed_ms,
+      regulation_answered_qids:
+        snapshot.regulationAnsweredQids ?? existing?.regulation_answered_qids,
+      started_at: existing?.started_at ?? now(),
+      updated_at: now(),
+    });
+
+    await persist.set(TABLES.practice_sessions, id, record);
   });
-
-  await persist.set(TABLES.practice_sessions, id, record);
 }
 
 /** Clear the row so a re-run of a finished set starts from question 1. */

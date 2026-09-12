@@ -141,6 +141,7 @@ import {
   saveDrillResumeSnapshot,
   completeDrillResumeSession,
   isResumableDrillSession,
+  isSpentDrillSession,
 } from '@/lib/drillResumeSession';
 
 
@@ -264,8 +265,15 @@ function DrillContent() {
     if (isMcPractice || guidedSessionKey) return null;
     if (!state?.mode) return null;
     const mode = state.mode === 'practice-set' ? 'type-drill' : state.mode;
-    return drillResumeKey({ mode, config: state.config, identity: genericResumeIdentity });
-  }, [isMcPractice, guidedSessionKey, state, genericResumeIdentity]);
+    return drillResumeKey({
+      mode,
+      config: state.config,
+      identity: genericResumeIdentity,
+      // A homework assignment is its own sitting. Keyed by the section alone,
+      // a second assignment of PT156.S2 opened on the first assignment's row.
+      assignmentId,
+    });
+  }, [isMcPractice, guidedSessionKey, state, genericResumeIdentity, assignmentId]);
   // Rows written before a bootcamp day had its own identity were named by the
   // picked question list. Read that key only when the day-keyed row is absent;
   // every new snapshot and completion still writes the day-keyed row.
@@ -509,6 +517,8 @@ function DrillContent() {
    * about a resume that had not been read yet.
    */
   const pendingResumeElapsedMs = React.useRef<number | null>(null);
+  /** The resumed row's clock was already spent: open on the buzzer, not on 00:00. */
+  const pendingResumeAtBuzzer = React.useRef(false);
 
   // BR only for Full Section and Type Drill modes
   const sessionMode = session?.mode;
@@ -816,6 +826,13 @@ function DrillContent() {
           genericResumeKey,
           genericLegacyResumeKey,
         );
+        // A finished assignment's row is that sitting's record. This mount
+        // must never write over it: a reload during blind review re-mounts
+        // the runner with a fresh clock and no answers, and the first answer
+        // given on it used to flip the finished row back to in_progress.
+        if (assignmentId && stored?.status === 'completed') {
+          genericFinalizedRef.current = true;
+        }
         if (isResumableDrillSession(stored)) {
           // Come back on the clock they left. A timed section that resumed
           // with a fresh 35:00 was handing back time already spent, which
@@ -823,6 +840,19 @@ function DrillContent() {
           if (stored?.elapsed_ms) pendingResumeElapsedMs.current = stored.elapsed_ms;
           if (stored?.regulation_answered_qids) {
             restoredRegulationMark = { answeredQids: stored.regulation_answered_qids };
+          }
+          // A row stored at or after the buzzer has no clock left to resume
+          // on. It opens on the buzzer instead: answers kept, no time handed
+          // back, and the student is asked to finish and score the section.
+          const budget =
+            mode === 'full-section'
+              ? sectionBudgetMs((state.config as FullSectionConfig | undefined)?.timer)
+              : undefined;
+          if (isSpentDrillSession(stored, budget)) {
+            pendingResumeAtBuzzer.current = true;
+            if (!restoredRegulationMark) {
+              restoredRegulationMark = { answeredQids: stored!.attempts.map((a) => a.qid) };
+            }
           }
           questionQueue = stored.question_queue;
           initialIndex = guidedResumeIndex(
@@ -878,13 +908,22 @@ function DrillContent() {
    * stopwatch already reports the spend. Null when there is no clock at all,
    * which is the difference between "no time used" and "no time to use".
    */
+  //
+  // Read through a ref: the timer context is a new object on every 250ms
+  // tick, and a snapshot function that depended on it made the snapshot
+  // effect below fire on every tick: an in_progress write four times a
+  // second, and a cloud debounce that never settled while the clock ran.
+  const timerRef = React.useRef(timer);
+  timerRef.current = timer;
+  const sectionTimerConfig = session?.fullSectionConfig?.timer;
   const sectionElapsedMs = React.useCallback((): number | undefined => {
-    if (!timer) return undefined;
-    if (timer.mode === 'stopwatch') return Math.max(0, Math.round(timer.ms));
-    const total = sectionBudgetMs(session?.fullSectionConfig?.timer);
+    const clock = timerRef.current;
+    if (!clock) return undefined;
+    if (clock.mode === 'stopwatch') return Math.max(0, Math.round(clock.ms));
+    const total = sectionBudgetMs(sectionTimerConfig);
     if (!total) return undefined;
-    return Math.max(0, Math.round(total - timer.ms));
-  }, [timer, session?.fullSectionConfig?.timer]);
+    return Math.max(0, Math.round(total - clock.ms));
+  }, [sectionTimerConfig]);
 
   const drillResumeSnapshot = React.useCallback(
     (source: DrillSession | null): PracticeSessionSnapshot | null => {
@@ -925,10 +964,12 @@ function DrillContent() {
   const snapshotRef = React.useRef(drillResumeSnapshot);
   snapshotRef.current = drillResumeSnapshot;
   React.useEffect(() => {
-    if (!genericResumeKey || !user || !session || !timer) return;
+    if (!genericResumeKey || !user || !session || !hasTimer) return;
     if (genericFinalizedRef.current) return;
     if (session.mode !== 'full-section') return;
     const id = window.setInterval(() => {
+      // Re-checked on every beat: the section can finish between two of them.
+      if (genericFinalizedRef.current) return;
       const snapshot = snapshotRef.current(session);
       if (!snapshot || snapshot.attempts.length === 0) return;
       void saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot).catch((err) => {
@@ -936,7 +977,7 @@ function DrillContent() {
       });
     }, 20_000);
     return () => window.clearInterval(id);
-  }, [genericResumeKey, user, session, timer]);
+  }, [genericResumeKey, user, session, hasTimer]);
 
   React.useEffect(() => {
     if (!isMcPractice || !mcPracticePool || !user || !session) return;
@@ -2322,6 +2363,9 @@ function DrillContent() {
    */
   const finalizeDrillResumeSession = async (attempts: DrillSession['attempts']): Promise<void> => {
     if (!genericResumeKey || !user) return;
+    // Already closed, or sealed at mount because the assignment's row was
+    // finished before this page opened. Either way the record stands.
+    if (genericFinalizedRef.current) return;
     genericFinalizedRef.current = true;
 
     const snapshot = drillResumeSnapshot(session ? { ...session, attempts } : null);
@@ -2854,13 +2898,20 @@ function DrillContent() {
     }
   }, [timer]);
 
-  // Fold a resumed section's spent time into the running clock, once.
+  // Fold a resumed section's spent time into the running clock, once. A clock
+  // that comes back with nothing left stops here and asks, the way it would
+  // have had the student still been on the page when it ran out.
   React.useEffect(() => {
     if (!timer?.running) return;
     const spent = pendingResumeElapsedMs.current;
     if (!spent) return;
     pendingResumeElapsedMs.current = null;
     timer.adoptElapsed(spent);
+    if (pendingResumeAtBuzzer.current) {
+      pendingResumeAtBuzzer.current = false;
+      timer.pause();
+      setOvertimeState('prompt');
+    }
   }, [timer]);
 
   // The buzzer. Stops the clock, records where the student had got to, and
