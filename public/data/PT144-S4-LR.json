@@ -211,7 +211,7 @@
       "B": "It is often the case that the desire for prestige is more powerful than the desire for job security.",
       "C": "In some cases one’s effectiveness in a particular role can be enhanced by a partial relinquishing of control.",
       "D": "People who carry out decisions are in the best position to determine what those decisions should be.",
-      "E": "Business works best by harnessing the self- interest of individuals to benefit the company as a whole."
+      "E": "Business works best by harnessing the self-interest of individuals to benefit the company as a whole."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -373,13 +373,13 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Economist: If the economy grows stronger, employment will increase, and hence more parents will need to find day care for their young children. Unfortunately, in a stronger economy many day- care workers will quit to take better-paying jobs in other fields. Therefore, a stronger economy is likely to make it much more difficult to find day care.",
+    "stimulus": "Economist: If the economy grows stronger, employment will increase, and hence more parents will need to find day care for their young children. Unfortunately, in a stronger economy many day-care workers will quit to take better-paying jobs in other fields. Therefore, a stronger economy is likely to make it much more difficult to find day care.",
     "questionStem": "Which one of the following is an assumption the economist’s argument requires?",
     "answerChoices": {
       "A": "If the economy grows stronger, most of the new jobs that are created will be in fields that pay well.",
       "B": "If the economy grows stronger, the number of new day-care workers will not be significantly greater than the number of day-care workers who move to better-paying jobs in other fields.",
       "C": "If the economy grows stronger, the number of workers employed by day-care centers is likely to decrease.",
-      "D": "The shortage of day care for children is unlikely to worsen unless employment increases and many day-care center employees quit to take better- paying jobs in other fields.",
+      "D": "The shortage of day care for children is unlikely to worsen unless employment increases and many day-care center employees quit to take better-paying jobs in other fields.",
       "E": "The total number of young children in day-care centers will decrease if the cost of day care increases significantly."
     },
     "correctAnswer": "B",
@@ -507,7 +507,7 @@
       "A": "Some students who did not participate in the chess program had learned to play chess at home.",
       "B": "Those children who began the program but who did not successfully complete it had lower preprogram levels of achievement than did those who eventually did successfully complete the program.",
       "C": "Many of the children who completed the program subsequently sought membership on a school chess team that required a high grade average for membership.",
-      "D": "Some students who did not participate in the chess program participated instead in after- school study sessions that helped them reach much higher levels of achievement in the year after they attended the sessions.",
+      "D": "Some students who did not participate in the chess program participated instead in after-school study sessions that helped them reach much higher levels of achievement in the year after they attended the sessions.",
       "E": "At least some of the students who did not successfully complete the program were nevertheless more talented chess players than some of the students who did complete the program."
     },
     "correctAnswer": "C",

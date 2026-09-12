@@ -256,7 +256,7 @@
     "questionStem": "The flaw in the lobbyist’s reasoning can most effectively\nbe demonstrated by noting that, by parallel reasoning,\nwe could conclude that",
     "answerChoices": {
       "A": "inspecting commercial airplanes for safety is unnecessary because the number of commercial airplane crashes has decreased over the last decade",
-      "B": "smoking cigarettes is not bad for one’s health because not all cigarette smokers get smoking- related illnesses",
+      "B": "smoking cigarettes is not bad for one’s health because not all cigarette smokers get smoking-related illnesses",
       "C": "using a cell phone while driving is not dangerous because the number of traffic accidents has decreased since the invention of the cell phone",
       "D": "skydiving is not dangerous because the number of injuries to skydivers has decreased in recent years",
       "E": "people with insurance do not need to lock their doors because if anything is stolen the insurance company will pay to replace it"
@@ -334,7 +334,7 @@
       "B": "Rock music must borrow from styles more conducive to songs of extended length if it is to become artistic.",
       "C": "Rock music requires more discipline than some other forms of music.",
       "D": "Rock music can sometimes benefit from the existence of commercial barriers rather than being harmed by them.",
-      "E": "Rock music is best when it is made by musicians who do not think of themselves as being self- conscious artists."
+      "E": "Rock music is best when it is made by musicians who do not think of themselves as being self-conscious artists."
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -499,7 +499,7 @@
       "B": "The volunteers who were assigned to the aerobics classes did not also lift weights outside the classes.",
       "C": "On average, the volunteers who were assigned to the aerobics classes got more exercise in the months in which they took those classes than they had been getting before beginning the experiment.",
       "D": "On average, the volunteers assigned to the aerobics classes found it less difficult to perform the mathematical calculation than did the volunteers assigned to the weight-training classes.",
-      "E": "On average, the volunteers assigned to the aerobics classes got a greater amount of aerobic exercise overall during the experiment, including any exercise outside the classes, than did the volunteers assigned to the weight- training classes."
+      "E": "On average, the volunteers assigned to the aerobics classes got a greater amount of aerobic exercise overall during the experiment, including any exercise outside the classes, than did the volunteers assigned to the weight-training classes."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -526,7 +526,7 @@
       "B": "Insurance companies tend to dislike selling policies to companies whose workers often claim to have back pain.",
       "C": "People who regularly do physical work of a type known to place heavy stress on the lower back are encouraged to use techniques that reduce the degree of stress involved.",
       "D": "Most of the lower-back injuries that office workers suffer occur while they are on the job.",
-      "E": "Consistent physical exercise is one of the most effective ways to prevent or recover from lower- back injuries."
+      "E": "Consistent physical exercise is one of the most effective ways to prevent or recover from lower-back injuries."
     },
     "correctAnswer": "E",
     "questionFeatures": [

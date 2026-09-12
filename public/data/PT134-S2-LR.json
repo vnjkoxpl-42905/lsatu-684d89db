@@ -210,7 +210,7 @@
     "answerChoices": {
       "A": "Teachers would be willing to accept elimination of the traditional three-month summer vacation as long as the total vacation time they are entitled to each year is not reduced.",
       "B": "Most parents who work outside the home find it difficult to arrange adequate supervision for their school-age children over the traditional three-month summer vacation.",
-      "C": "In school districts that have adopted a year- round schedule that increases the number of school days per year, students show a deeper understanding and better retention of new material.",
+      "C": "In school districts that have adopted a year-round schedule that increases the number of school days per year, students show a deeper understanding and better retention of new material.",
       "D": "Teachers spend no more than a day of class time reviewing old material when students have been away from school for only a few weeks, but have to spend up to a month of class time reviewing after a three-month summer vacation.",
       "E": "Students prefer taking a long vacation from school during the summer to taking more frequent but shorter vacations spread throughout the year."
     },
@@ -287,13 +287,13 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Perry: Worker-owned businesses require workers to spend time on management decision-making and investment strategy, tasks that are not directly productive. Also, such businesses have less extensive divisions of labor than do investor- owned businesses. Such inefficiencies can lead to low profitability, and thus increase the risk for lenders. Therefore, lenders seeking to reduce their risk should not make loans to worker-owned businesses.",
+    "stimulus": "Perry: Worker-owned businesses require workers to spend time on management decision-making and investment strategy, tasks that are not directly productive. Also, such businesses have less extensive divisions of labor than do investor-owned businesses. Such inefficiencies can lead to low profitability, and thus increase the risk for lenders. Therefore, lenders seeking to reduce their risk should not make loans to worker-owned businesses.",
     "questionStem": "Which one of the following, if true, most seriously weakens Perry’s argument?",
     "answerChoices": {
       "A": "Businesses with the most extensive divisions of labor sometimes fail to make the fullest use of their most versatile employees’ potential.",
       "B": "Lenders who specialize in high-risk loans are the largest source of loans for worker-owned businesses.",
       "C": "Investor-owned businesses are more likely than worker-owned businesses are to receive start-up loans.",
-      "D": "Worker-owned businesses have traditionally obtained loans from cooperative lending institutions established by coalitions of worker- owned businesses.",
+      "D": "Worker-owned businesses have traditionally obtained loans from cooperative lending institutions established by coalitions of worker-owned businesses.",
       "E": "In most worker-owned businesses, workers compensate for inefficiencies by working longer hours than do workers in investor-owned businesses."
     },
     "correctAnswer": "E",
@@ -438,7 +438,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Journalist: Recent studies have demonstrated that a regular smoker who has just smoked a cigarette will typically display significantly better short- term memory skills than a nonsmoker, whether or not the nonsmoker has also just smoked a cigarette for the purposes of the study. Moreover, the majority of those smokers who exhibit this superiority in short-term memory skills will do so for at least eight hours after having last smoked.",
+    "stimulus": "Journalist: Recent studies have demonstrated that a regular smoker who has just smoked a cigarette will typically display significantly better short-term memory skills than a nonsmoker, whether or not the nonsmoker has also just smoked a cigarette for the purposes of the study. Moreover, the majority of those smokers who exhibit this superiority in short-term memory skills will do so for at least eight hours after having last smoked.",
     "questionStem": "If the journalist’s statements are true, then each of the following could be true except:",
     "answerChoices": {
       "A": "The short-term memory skills exhibited by a nonsmoker who has just smoked a cigarette are usually substantially worse than the short-term memory skills exhibited by a nonsmoker who has not recently smoked a cigarette.",

@@ -324,12 +324,12 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "The common ancestors of Australian land- and treedwelling kangaroos had prehensile (grasping) tails and long opposable thumbs, attributes that are well-adapted to tree-dwelling but offer kangaroos few advantages on land. It is hardly surprising, therefore, that landdwelling kangaroos eventually lost these attributes; what is puzzling is the fact that all modern tree-dwelling kangaroos now lack them as well.",
+    "stimulus": "The common ancestors of Australian land- and tree-dwelling kangaroos had prehensile (grasping) tails and long opposable thumbs, attributes that are well-adapted to tree-dwelling but offer kangaroos few advantages on land. It is hardly surprising, therefore, that land-dwelling kangaroos eventually lost these attributes; what is puzzling is the fact that all modern tree-dwelling kangaroos now lack them as well.",
     "questionStem": "Which one of the following, if true, most helps explain\nthe puzzling fact cited above?",
     "answerChoices": {
-      "A": "Modern tree-dwelling kangaroos must back down tree trunks slowly and carefully, but the common ancestors of modern tree- and landdwelling kangaroos used their opposable thumbs to descend trees quickly headfirst.",
+      "A": "Modern tree-dwelling kangaroos must back down tree trunks slowly and carefully, but the common ancestors of modern tree- and land-dwelling kangaroos used their opposable thumbs to descend trees quickly headfirst.",
       "B": "Modern tree-dwelling kangaroos are smaller than most modern land-dwelling kangaroos but larger than their common ancestors.",
-      "C": "Modern tree-dwelling kangaroos' tails cannot grasp branches, but they are somewhat longer and more flexible than those of modern landdwelling kangaroos.",
+      "C": "Modern tree-dwelling kangaroos' tails cannot grasp branches, but they are somewhat longer and more flexible than those of modern land-dwelling kangaroos.",
       "D": "Modern tree-dwelling kangaroos are descended from species of land-dwelling kangaroos that had been land-dwellers for many generations before modern tree-dwelling kangaroos started to develop.",
       "E": "Modern tree-dwelling kangaroos have smaller and weaker hind legs than modern land-dwelling kangaroos, and they move more slowly on land than do modern land-dwelling kangaroos."
     },

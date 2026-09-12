@@ -204,9 +204,9 @@
     "questionStem": "Which one of the following is an assumption that is required by the argument?",
     "answerChoices": {
       "A": "There are no parallel lines in the non-Euclidean system of geometry that has the most empirical verification.",
-      "B": "Most physicists have not doubted the view that the universe is correctly described by the non- Euclidean system of geometry that has the most empirical verification.",
-      "C": "There are no parallel lines in every non- Euclidean system of geometry that has any empirical verification.",
-      "D": "The universe is correctly described by the non- Euclidean system of geometry that has the most empirical verification if prominent physicists maintain that it is.",
+      "B": "Most physicists have not doubted the view that the universe is correctly described by the non-Euclidean system of geometry that has the most empirical verification.",
+      "C": "There are no parallel lines in every non-Euclidean system of geometry that has any empirical verification.",
+      "D": "The universe is correctly described by the non-Euclidean system of geometry that has the most empirical verification if prominent physicists maintain that it is.",
       "E": "Only physicists who are not prominent doubt the view that the universe is correctly described by the non-Euclidean system of geometry that has the most empirical verification."
     },
     "correctAnswer": "A",
@@ -463,7 +463,7 @@
     "stimulus": "Critic: Political utility determines the popularity of a metaphor. In authoritarian societies, the metaphor of society as a human body governed by a head is pervasive. Therefore, the society-as-body metaphor, with its connection between society’s proper functioning and governance by a head, promotes greater acceptance of authoritarian repression than do other metaphors, such as likening society to a family.",
     "questionStem": "Which one of the following statements, if true, most weakens the critic’s argument?",
     "answerChoices": {
-      "A": "In authoritarian societies, the metaphor of society as a family is just as pervasive as the society-as- body metaphor.",
+      "A": "In authoritarian societies, the metaphor of society as a family is just as pervasive as the society-as-body metaphor.",
       "B": "Every society tries to justify the legitimacy of its government through the use of metaphor.",
       "C": "The metaphor of society as a human body is sometimes used in nonauthoritarian societies.",
       "D": "Authoritarian leaders are always searching for new metaphors for society in their effort to maintain their power.",
@@ -576,7 +576,7 @@
     "stimulus": "Jordan: If a business invests the money necessary to implement ecologically sound practices, its market share will decrease. But if it doesn’t implement these practices, it pollutes the environment and wastes resources. Terry: But if consumers demand environmental responsibility of all businesses, no particular business will be especially hurt.",
     "questionStem": "In which one of the following exchanges is the logical relationship between Jordan’s and Terry’s statements most similar to the logical relationship between their statements above?",
     "answerChoices": {
-      "A": "Jordan: Either it will rain and our plans for a picnic will be thwarted or it won’t rain and the garden will go yet another day without much- needed watering. Terry: But if it doesn’t rain, we can buy a hose and water the garden with the hose.",
+      "A": "Jordan: Either it will rain and our plans for a picnic will be thwarted or it won’t rain and the garden will go yet another day without much-needed watering. Terry: But if it doesn’t rain, we can buy a hose and water the garden with the hose.",
       "B": "Jordan: Each person can have either an enjoyable life or a long life, for one must eat vegetables and exercise continuously to stay healthy. Terry: That’s not true: there are many happy health-conscious people.",
       "C": "Jordan: If taxes are raised, many social problems could be solved, but if they’re lowered, the economy will grow again. So we can’t have both social reform and a growing economy. Terry: But if taxes remain at their current level, neither social problems nor the economy will get worse.",
       "D": "Jordan: If we remodel the kitchen, the house will be more valuable, but even if we do, there’s no guarantee that we’ll actually get more for the house when we sell it. Terry: But if we don’t remodel the kitchen, we might get even less for the house than we paid for it.",

@@ -205,7 +205,7 @@
       "B": "If a plant is carelessly treated, it is likely to develop blight. If a plant develops blight, it is likely to die. Therefore, if a plant is carelessly treated, it is likely to die.",
       "C": "In the past 1,000 experiments, whenever an experimental fungicide was applied to coffee plants infected with coffee rust, the infection disappeared. The coffee rust never disappeared before the fungicide was applied. Therefore, in these experiments, application of the fungicide caused the disappearance of coffee rust.",
       "D": "Three thousand registered voters—1,500 members of the Liberal party and 1,500 members of the Conservative party—were asked which mayoral candidate they favored. Four hundred of the Liberals and 300 of the Conservatives favored Pollack. Therefore, Pollack has more support among Liberals than among Conservatives.",
-      "E": "All of my livestock are registered with the regional authority. None of the livestock registered with the regional authority are free- range livestock. Therefore, none of my livestock are free-range livestock."
+      "E": "All of my livestock are registered with the regional authority. None of the livestock registered with the regional authority are free-range livestock. Therefore, none of my livestock are free-range livestock."
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -277,8 +277,8 @@
       "A": "After the decrease in the rush-hour speed limit, the average speed on the M25 was significantly lower during rush hours than at other times of the day.",
       "B": "Travel times during periods other than rush hours were essentially unchanged after the rush-hour speed limit was lowered.",
       "C": "Before the rush-hour speed limit was lowered, rush-hour accidents that caused lengthy delays were common, and most of these accidents were caused by high-speed driving.",
-      "D": "Enforcement of speed limits on the M25 was quite rigorous both before and after the rush- hour speed limit was lowered.",
-      "E": "The number of people who drive on the M25 during rush hours did not increase after the rush- hour speed limit was lowered."
+      "D": "Enforcement of speed limits on the M25 was quite rigorous both before and after the rush-hour speed limit was lowered.",
+      "E": "The number of people who drive on the M25 during rush hours did not increase after the rush-hour speed limit was lowered."
     },
     "correctAnswer": "C",
     "questionFeatures": [

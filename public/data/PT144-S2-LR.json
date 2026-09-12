@@ -8,12 +8,12 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "In the bodies of reptiles, some industrial by-products cause elevated hormonal activity. Hormones govern the development of certain body parts, and in reptiles abnormal development of these parts occurs only with elevated hormonal activity. Recently, several alligators with the telltale developmental abnormalities were discovered in a swamp. So, apparently, industrial by- products have entered the swamp’s ecosystem.",
+    "stimulus": "In the bodies of reptiles, some industrial by-products cause elevated hormonal activity. Hormones govern the development of certain body parts, and in reptiles abnormal development of these parts occurs only with elevated hormonal activity. Recently, several alligators with the telltale developmental abnormalities were discovered in a swamp. So, apparently, industrial by-products have entered the swamp’s ecosystem.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
       "A": "provides no explanation for developmental abnormalities that do not result from elevated hormonal activity",
       "B": "fails to consider whether elevated hormonal activity can result from factors other than the presence of industrial by-products",
-      "C": "fails to address the possibility that industrial by- products were contained in food the alligators ate",
+      "C": "fails to address the possibility that industrial by-products were contained in food the alligators ate",
       "D": "fails to say whether reptiles other than alligators were examined for the same developmental abnormalities that were discovered in the alligators",
       "E": "uses evidence drawn from a sample of alligators that is unlikely to be representative of alligators in general"
     },
@@ -315,7 +315,7 @@
     "stimulus": "Principle: Any person or business knowingly aiding someone’s infringement on a copyright is also guilty of copyright infringement. Application: Grandview Department Store, which features a self-service photo-printing kiosk, is guilty of copyright infringement since a customer using the kiosk infringed on a wedding photographer’s copyright by printing photographs whose copyright is held by the photographer.",
     "questionStem": "Which one of the following, if assumed, most helps to justify the application of the principle?",
     "answerChoices": {
-      "A": "The operator of a business has the same legal obligations to customers who use self-service facilities as it has to customers who use full- service facilities.",
+      "A": "The operator of a business has the same legal obligations to customers who use self-service facilities as it has to customers who use full-service facilities.",
       "B": "The management of a business that is open to the public is obligated to report to the authorities any illegal activity that it witnesses on its property.",
       "C": "The owner of a self-service printing kiosk should post a notice advising customers that copyrighted material should not be printed at the kiosk without the permission of the copyright holder.",
       "D": "Owners of self-service facilities should monitor those facilities in order to ensure that they are not used for illegal or unethical purposes.",

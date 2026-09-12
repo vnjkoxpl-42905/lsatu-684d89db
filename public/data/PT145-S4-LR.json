@@ -62,7 +62,7 @@
     "answerChoices": {
       "A": "In both high- and low-income countries, well over half of new businesses expect to provide jobs for no more than one or two people.",
       "B": "Many governments of high-income countries provide assistance to individuals who want to start businesses, but very few governments of low-income countries do so.",
-      "C": "The percentage of new businesses that fail within a few years of being founded is generally no higher in low-income countries than in high- income countries.",
+      "C": "The percentage of new businesses that fail within a few years of being founded is generally no higher in low-income countries than in high-income countries.",
       "D": "In high-income countries, many entrepreneurs who start businesses to take advantage of perceived business opportunities soon discover that the opportunities were illusory.",
       "E": "In low-income countries, most entrepreneurs start businesses because all other employment options are either absent or unsatisfactory."
     },
@@ -225,7 +225,7 @@
       "B": "Politicians do an adequate job of appointing the top military officials entrusted with defending the country.",
       "C": "Politicians are not capable of managing a bank’s day-to-day operations.",
       "D": "Banks that are owned by the government cannot be well managed.",
-      "E": "The government should not take over private- sector banks that are financially sound."
+      "E": "The government should not take over private-sector banks that are financially sound."
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -341,7 +341,7 @@
       "A": "The more experience a person has in a field, the more creatively that person can solve problems in the field.",
       "B": "Those people who are experienced in a field rarely overlook creative solutions.",
       "C": "Creative solutions in a field always come from people with experience in that field.",
-      "D": "The experience required for effective problem- solving in a field does not vary depending on the field’s complexity.",
+      "D": "The experience required for effective problem-solving in a field does not vary depending on the field’s complexity.",
       "E": "Outsiders should be properly trained in a field before being given responsibility in that field."
     },
     "correctAnswer": "C",
@@ -412,7 +412,7 @@
       "A": "The whole-language method invariably succeeds in teaching awareness of how spoken language can be broken into component sounds.",
       "B": "When the whole-language method succeeds in teaching someone how to represent sounds by means of letters, that person acquires the ability to read an alphabetic language.",
       "C": "Those unable to read an alphabetic language lack both phonemic awareness and the knowledge of how sounds are symbolically represented.",
-      "D": "Some children who are taught by the whole- language method are not prevented from learning how sounds are represented by means of letters.",
+      "D": "Some children who are taught by the whole-language method are not prevented from learning how sounds are represented by means of letters.",
       "E": "The whole-language method succeeds in teaching many children how to represent sounds symbolically by means of letters."
     },
     "correctAnswer": "D",
@@ -529,11 +529,11 @@
     "stimulus": "For a computer to be intelligent, it must possess at least one of three qualities: creativity, self-awareness, or the ability to learn from its mistakes. Because the QR3000 is not creative or self-aware, it must have the ability to learn from its mistakes if it is intelligent.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
     "answerChoices": {
-      "A": "Every vaccine is either an attenuated-virus vaccine, a dead-virus vaccine, or a pure DNA vaccine. Vaccine X cannot fall into the last two categories, because it contains living viral cells. Therefore, vaccine X must be an attenuated- virus vaccine.",
-      "B": "Every commonly used vaccine is either a dead- virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Vaccine X is not a dead- or attenuated-virus vaccine. Therefore, if it is a commonly used vaccine, it must be a pure DNA vaccine.",
+      "A": "Every vaccine is either an attenuated-virus vaccine, a dead-virus vaccine, or a pure DNA vaccine. Vaccine X cannot fall into the last two categories, because it contains living viral cells. Therefore, vaccine X must be an attenuated-virus vaccine.",
+      "B": "Every commonly used vaccine is either a dead-virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Vaccine X is not a dead- or attenuated-virus vaccine. Therefore, if it is a commonly used vaccine, it must be a pure DNA vaccine.",
       "C": "Every vaccine is either a dead-virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Thus, if vaccine X is not a dead- or attenuated-virus vaccine, it must be a pure DNA vaccine.",
-      "D": "Every commonly used vaccine is either a dead- virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Vaccine X stimulates the production of killer T cells in the immune system, unlike any pure DNA vaccine. Therefore, if it is not a dead-virus vaccine, then it must be an attenuated-virus vaccine.",
-      "E": "Every commonly used vaccine is either a dead- virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Because vaccine X is not an attenuated-virus vaccine, it must be a pure DNA vaccine if it is not a dead-virus vaccine."
+      "D": "Every commonly used vaccine is either a dead-virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Vaccine X stimulates the production of killer T cells in the immune system, unlike any pure DNA vaccine. Therefore, if it is not a dead-virus vaccine, then it must be an attenuated-virus vaccine.",
+      "E": "Every commonly used vaccine is either a dead-virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Because vaccine X is not an attenuated-virus vaccine, it must be a pure DNA vaccine if it is not a dead-virus vaccine."
     },
     "correctAnswer": "B",
     "questionFeatures": [

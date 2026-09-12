@@ -8,7 +8,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Anna: Did you know that rainbows always occur opposite the sun, appearing high in the sky when the sun is low, and low in the sky when the sun is high? The Roman scholar Pliny the Elder claimed that this was so, in the first century A.D. William: His claim cannot be correct. After all, Pliny the Elder wrote that there are tribes of dog- headed people and beings with no heads or necks but with eyes on their shoulders, and said that smearing snails on your forehead cures headaches!",
+    "stimulus": "Anna: Did you know that rainbows always occur opposite the sun, appearing high in the sky when the sun is low, and low in the sky when the sun is high? The Roman scholar Pliny the Elder claimed that this was so, in the first century A.D. William: His claim cannot be correct. After all, Pliny the Elder wrote that there are tribes of dog-headed people and beings with no heads or necks but with eyes on their shoulders, and said that smearing snails on your forehead cures headaches!",
     "questionStem": "William’s argument against Anna’s claims about rainbows is most vulnerable to criticism because it",
     "answerChoices": {
       "A": "inappropriately distorts Anna’s conclusion, making it appear more extreme than it really is",
@@ -547,14 +547,14 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "On the basis of relatively minor morphological differences, some scientists suggest that Neanderthals should be considered a species distinct from Cro- Magnons, the forerunners of modern humans. Yet the fact that the tools used by these two groups of hominids living in different environments were of exactly the same type indicates uncanny behavioral similarities, for only if they faced the same daily challenges and met them in the same way would they have used such similar tools. This suggests that they were members of the same species, and that the morphological differences are due merely to their having lived in different environments.",
+    "stimulus": "On the basis of relatively minor morphological differences, some scientists suggest that Neanderthals should be considered a species distinct from Cro-Magnons, the forerunners of modern humans. Yet the fact that the tools used by these two groups of hominids living in different environments were of exactly the same type indicates uncanny behavioral similarities, for only if they faced the same daily challenges and met them in the same way would they have used such similar tools. This suggests that they were members of the same species, and that the morphological differences are due merely to their having lived in different environments.",
     "questionStem": "If the statements above are true, then each of the following could be true except:",
     "answerChoices": {
       "A": "Morphological differences between the members of two populations do not guarantee that the two populations do not belong to the same species.",
       "B": "The daily challenges with which an environment confronts its inhabitants are unique to that environment.",
       "C": "There are greater morphological differences between Cro-Magnons and modern humans than there are between Cro-Magnons and Neanderthals.",
       "D": "Use of similar tools is required if members of two distinct groups of tool-making hominids are to be considered members of the same species.",
-      "E": "Through much of their coexistence, Cro- Magnons and Neanderthals were geographically isolated from one another."
+      "E": "Through much of their coexistence, Cro-Magnons and Neanderthals were geographically isolated from one another."
     },
     "correctAnswer": "B",
     "questionFeatures": [

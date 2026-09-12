@@ -113,7 +113,7 @@
       "B": "The longing for emotional connection to a global human community frequently leads people to use the Internet in order to acquire information about other cultures.",
       "C": "People who have access to the Internet tend to use it primarily for acquiring information and only secondarily for developing feelings of interconnectedness.",
       "D": "For people desiring connection to a global human community, learning about other cultures through the Internet probably will not provide emotional connection to those cultures.",
-      "E": "When people long for connection to a global human community, they tend to engage in behavior that results in the acquisition of knowledge about other cultures but rarely produces genuine emotional connection to those cultures. -13- 22 2"
+      "E": "When people long for connection to a global human community, they tend to engage in behavior that results in the acquisition of knowledge about other cultures but rarely produces genuine emotional connection to those cultures."
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -289,7 +289,7 @@
       "B": "The argument treats a condition that is necessary for having a certain quality as if it must also be sufficient for having that quality.",
       "C": "The argument misapplies a general claim about the members of a class to an atypical instance of that class.",
       "D": "The argument contains a generalization derived from an insufficient number of instances.",
-      "E": "The argument draws a conclusion expressing a value judgment from premises that do not involve statements about values. -15- 22 2"
+      "E": "The argument draws a conclusion expressing a value judgment from premises that do not involve statements about values."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -461,7 +461,7 @@
       "B": "If all of the new courses next year are upper-level courses, then all of the new course proposals submitted to the committee will have been approved.",
       "C": "If there is more than one new course next year, at least one of them will be a course that has a prerequisite.",
       "D": "If the new course proposal that Dean Wilson received is for an upper-level course, then all courses offered next year will have prerequisites.",
-      "E": "If there are no new upper-level courses next year, then the new course proposal that was submitted to Dean Wilson will have been approved. -17- 22 2"
+      "E": "If there are no new upper-level courses next year, then the new course proposal that was submitted to Dean Wilson will have been approved."
     },
     "correctAnswer": "C"
   },
