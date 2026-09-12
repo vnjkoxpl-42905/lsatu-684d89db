@@ -42,7 +42,7 @@
       "B": "how the average seniority of programmers compares with the average seniority of technical writers",
       "C": "whether the sorts of benefits an employee of Mytheco receives are tied to the salary of that employee",
       "D": "whether the Mytheco executive was at one time a technical writer employed by Mytheco",
-      "E": "how the Mytheco executive’s salary compares with that of the programmers 4 4 4 4"
+      "E": "how the Mytheco executive’s salary compares with that of the programmers"
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -135,7 +135,7 @@
       "B": "Handel’s da capo arias are superior to most in their accessibility to diverse audiences.",
       "C": "At least one frequent criticism of Handel’s da capo arias is undeserved.",
       "D": "At least some of Handel’s da capo arias contain unnecessary repetitions.",
-      "E": "Most criticism of Handel’s da capo arias is unwarranted. 4 4 4 4"
+      "E": "Most criticism of Handel’s da capo arias is unwarranted."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -181,7 +181,7 @@
       "B": "The size of a crater caused by an asteroid striking Earth generally depends on both the size of that asteroid and the force of its impact.",
       "C": "Fossils have been discovered of a number of dinosaurs that clearly died as a result of the asteroid impact that produced the Chicxulub crater.",
       "D": "There is no evidence that any other asteroid of equal size struck Earth at the same time as the asteroid that produced the Chicxulub crater.",
-      "E": "During the period immediately before the asteroid that produced the Chicxulub crater struck, most of the world’s dinosaurs lived in or near the region of the asteroid’s impending impact. 4 4 4 4"
+      "E": "During the period immediately before the asteroid that produced the Chicxulub crater struck, most of the world’s dinosaurs lived in or near the region of the asteroid’s impending impact."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -254,7 +254,7 @@
       "B": "concludes that something must be true, because most people believe it to be true",
       "C": "concludes, on the basis that a certain event is unlikely to occur, that the event will not occur",
       "D": "fails to consider whether people living near Dalton would favor building the airport",
-      "E": "overlooks the possibility that a new airport could benefit the local economy 4 4 4 4"
+      "E": "overlooks the possibility that a new airport could benefit the local economy"
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -348,7 +348,7 @@
       "B": "fails to consider whether the legislator’s constituents consider the current corporate income tax a high tax",
       "C": "confuses an absence of evidence that the legislator’s constituents oppose a bill with the existence of evidence that the legislator’s constituents support that bill",
       "D": "draws a conclusion that merely restates a claim presented in support of that conclusion",
-      "E": "treats a result that proves that the public supports a bill as a result that is merely consistent with public support for that bill 4 4 4 4"
+      "E": "treats a result that proves that the public supports a bill as a result that is merely consistent with public support for that bill"
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -443,7 +443,7 @@
       "B": "Of all the candidates who do not already work for Arvue, Delacruz would be the most productive in the new position.",
       "C": "Krall works for Arvue, but Delacruz is the candidate who would be most productive in the new position.",
       "D": "Several candidates currently work for Arvue, but Krall and Delacruz do not.",
-      "E": "None of the candidates already works for Arvue, and Delacruz is the candidate who would be most productive in the new position. 4 4 4 4"
+      "E": "None of the candidates already works for Arvue, and Delacruz is the candidate who would be most productive in the new position."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -537,7 +537,7 @@
       "B": "We should not take any action until all relevant scientific facts have been established and taken into account.",
       "C": "We should not allow the number of species to diminish any further than is necessary for the flourishing of present and future human populations.",
       "D": "We should not allow a change to occur unless we are assured that that change will not jeopardize anything that is important to us.",
-      "E": "We should always undertake the course of action that is likely to have the best consequences in the immediate future. 4 4 4 4"
+      "E": "We should always undertake the course of action that is likely to have the best consequences in the immediate future."
     },
     "correctAnswer": "D",
     "questionFeatures": [

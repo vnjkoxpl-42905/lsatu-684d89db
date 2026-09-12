@@ -38,7 +38,7 @@
       "B": "The body of an animal with a deficient organ is often able to compensate for that deficiency when other organs perform the task the deficient one normally performs.",
       "C": "One car model produced by an automobile manufacturer has a life expectancy that is so much longer than its other models that its great popularity requires the manufacturer to stop producing some of the other models.",
       "D": "Athletes occasionally overdevelop some parts of their bodies to such a great extent that other parts of their bodies are more prone to injury as a result.",
-      "E": "Automotive engineers find that it is not cost-effective to manufacture a given automobile part of such high quality that it outlasts all other parts of the automobile, as doing so would not raise the overall quality of the automobile. 2 2 2 2"
+      "E": "Automotive engineers find that it is not cost-effective to manufacture a given automobile part of such high quality that it outlasts all other parts of the automobile, as doing so would not raise the overall quality of the automobile."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -105,7 +105,7 @@
       "B": "An art museum should not collect any works that violate the purpose defined by the museum’s founders.",
       "C": "An art museum’s purpose need not be to collect every style of every period.",
       "D": "An ethnographic museum’s purpose should be defined according to its curators’ beliefs.",
-      "E": "The intentions of an art museum’s curators should not determine what is collected by that museum. 2 2 2 2 2"
+      "E": "The intentions of an art museum’s curators should not determine what is collected by that museum."
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -199,7 +199,7 @@
       "B": "Musical instruments should not be classified based on the way musicians interact with them.",
       "C": "Some people classify the piano as a stringed instrument because of the way the piano produces sound.",
       "D": "The piano should be classified as a stringed instrument rather than as a percussion instrument.",
-      "E": "It is correct to classify the piano as a percussion instrument rather than as a stringed instrument. 2 2 2 2"
+      "E": "It is correct to classify the piano as a percussion instrument rather than as a stringed instrument."
     },
     "correctAnswer": "E"
   },
@@ -267,7 +267,7 @@
       "B": "The rare fossilized skeletons of sharks that are found are often found in areas other than those in which fossils of shark teeth are plentiful.",
       "C": "Fossils of sharks’ teeth are quite difficult to distinguish from fossils of other kinds of teeth.",
       "D": "Some species of sharks alive today grow and lose many sets of teeth during their lifetimes.",
-      "E": "The physical and chemical processes involved in the fossilization of sharks’ teeth are as common as those involved in the fossilization of shark skeletons. 2 2 2 2 2"
+      "E": "The physical and chemical processes involved in the fossilization of sharks’ teeth are as common as those involved in the fossilization of shark skeletons."
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -363,7 +363,7 @@
       "B": "Using current technology, it would be possible for steel-manufacturing plants to feed the heat they produce into thermophotovoltaic generators in such a way that those generators could convert at least some of that heat into electricity.",
       "C": "The amount steel-manufacturing plants would save on their electric bills by feeding heat into thermophotovoltaic generators would be sufficient to cover the cost of purchasing and installing those generators.",
       "D": "At least some steel-manufacturing plants rely on electricity as their primary source of energy in the steel-manufacturing process.",
-      "E": "There are at least some steel-manufacturing plants that could greatly reduce their electricity bills only if they used some method of converting wasted heat or other energy from the steel-manufacturing process into electricity. 2 2 2 2"
+      "E": "There are at least some steel-manufacturing plants that could greatly reduce their electricity bills only if they used some method of converting wasted heat or other energy from the steel-manufacturing process into electricity."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -461,7 +461,7 @@
       "B": "The practice of medicine is as much an art as a science, and computer programs are not easily adapted to making subjective judgments.",
       "C": "The cardiologist correctly diagnosed a significantly higher proportion of the cases in which no heart attack occurred than did the computer program.",
       "D": "In a considerable percentage of cases, EKG data alone are insufficient to enable either computer programs or cardiologists to make accurate diagnoses.",
-      "E": "The cardiologist in the study was unrepresentative of cardiologists in general with respect to skill and experience. 2 2 2 2 2"
+      "E": "The cardiologist in the study was unrepresentative of cardiologists in general with respect to skill and experience."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -532,7 +532,7 @@
       "B": "By that line of reasoning, we could conclude that most public servants are legislators, since most legislators have run for office and most politicians who have run for office are public servants.",
       "C": "By that line of reasoning, we could conclude that not every public servant has run for office, since every legislator is a public servant but some public servants are not legislators.",
       "D": "By that line of reasoning, we could conclude that most legislators have never run for office, since most public servants have never run for office and all legislators are public servants.",
-      "E": "By that line of reasoning, we could conclude that most legislators are not public servants, since most public servants have not run for office and most legislators have run for office. 2 2 2 2"
+      "E": "By that line of reasoning, we could conclude that most legislators are not public servants, since most public servants have not run for office and most legislators have run for office."
     },
     "correctAnswer": "D",
     "questionFeatures": [

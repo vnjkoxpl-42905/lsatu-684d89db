@@ -397,7 +397,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Environmental scientist: It is true that over the past ten years, there has been a sixfold increase in government funding for the preservation of wetlands, while the total area of wetlands needing such preservation has increased only twofold (although this area was already large ten years ago). Even when inflation is taken into account, the amount of funding now is at least three times what it was ten years ago. Nevertheless, the current amount of government funding for the preservation  of wetlands is inadequate and should be augmented.",
+    "stimulus": "Environmental scientist: It is true that over the past ten years, there has been a sixfold increase in government funding for the preservation of wetlands, while the total area of wetlands needing such preservation has increased only twofold (although this area was already large ten years ago). Even when inflation is taken into account, the amount of funding now is at least three times what it was ten years ago. Nevertheless, the current amount of government funding for the preservation of wetlands is inadequate and should be augmented.",
     "questionStem": "Which one of the following, if true, most helps to reconcile the environmental scientist’s conclusion with the evidence cited above?",
     "answerChoices": {
       "A": "The governmental agency responsible for administering wetland-preservation funds has been consistently mismanaged and run inefficiently over the past ten years.",
