@@ -14,7 +14,7 @@
         "Two errors have names worth using in the feedback, and both apply to one-way conditionals, not to biconditionals. Reversing the arrow is treating the necessary condition as if meeting it guaranteed the trigger. Negating the trigger is concluding that because the trigger did not fire, the outcome cannot happen. Say which one the student made.",
         "Unless, until and without translate as if not on the trigger side. When the idea being negated there is itself a compound, the and or or inside it flips too.",
         "With no and none the negation attaches to the necessary side, never to the trigger. The subject of the sentence still goes on the if side, intact.",
-        "If and only if, then and only then, and the otherwise construction are biconditionals, where the arrow genuinely runs both ways and the converse is therefore credited. Only on these items. A student may write both conditionals, or a single two-way statement, or say that the two sides stand or fall together. Do not credit an exclusive either-or, which says something different.",
+        "If and only if and then and only then are biconditionals, where the arrow genuinely runs both ways and the converse is therefore credited. Only on these items. A student may write both conditionals, or a single two-way statement, or say that the two sides stand or fall together. Do not credit an exclusive either-or, which says something different. Otherwise is not a biconditional; it means if the first alternative does not happen, the stated consequence follows.",
         "Wording is free. Judge the logical structure, not the phrasing."
       ],
       "partial_rule": "Mark 'partial' when the student produces a well-formed conditional but reverses sufficiency and necessity, drops a negation, or trims a compound or contrasting condition down to one part. Mark 'incorrect' when the response is not a conditional at all, or states a relationship the statement does not support."
@@ -31,7 +31,7 @@
       "Contrapositive: negate both sides and swap them.",
       "When you contrapose a compound, and becomes or, and or becomes and. If a thing needs both X and Y, then losing either one alone is enough to sink it.",
       "Two moves are always wrong. Running the arrow backwards, and deciding that because the trigger did not fire the outcome cannot happen.",
-      "If and only if, then and only then, and otherwise all make the arrow run both ways. There the reverse direction is fair game."
+      "If and only if and then and only then make the arrow run both ways. Otherwise means if not; it does not make the converse valid."
     ],
     "worked_example": {
       "statement": "You can't master the LSAT without mastering conditional reasoning.",

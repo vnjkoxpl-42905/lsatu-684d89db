@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import bank from "../../content/conditional-rephrase.json";
-import { matchesAnyCredited, parseRouting, PARSER_VERSION } from "./routing";
+import { judgeConditionalResponse, matchesAnyCredited, parseRouting, PARSER_VERSION } from "./routing";
 
 // The fast path decides `correct` locally, with no model call. That authority
 // is only safe if it recognises exactly what the author wrote and nothing more,
@@ -110,6 +110,65 @@ describe("matchesAnyCredited", () => {
   });
 
   it("names a parser version so shadow telemetry is attributable", () => {
-    expect(PARSER_VERSION).toBe("routing-1");
+    expect(PARSER_VERSION).toBe("routing-2-local-judge");
+  });
+});
+
+describe("judgeConditionalResponse", () => {
+  it("credits a faithful paraphrase locally instead of requiring the Coach", () => {
+    const item = itemAt(1);
+    expect(
+      judgeConditionalResponse(
+        item.credited_answers,
+        "If the greenhouse fans run overnight, then the orchids bloom by morning.",
+      ),
+    ).toEqual(expect.objectContaining({ verdict: "correct" }));
+  });
+
+  it("credits a natural wording variation without an exact token match", () => {
+    const item = itemAt(1);
+    expect(
+      judgeConditionalResponse(
+        item.credited_answers,
+        "If the fans are running all night, then the orchids bloom in the morning.",
+      ),
+    ).toEqual(expect.objectContaining({ verdict: "correct" }));
+  });
+
+  it("identifies a reversal as partial rather than asking the Coach", () => {
+    const item = itemAt(1);
+    expect(
+      judgeConditionalResponse(
+        item.credited_answers,
+        "If the orchids bloom by morning, then the fans run overnight.",
+      ),
+    ).toEqual(expect.objectContaining({ verdict: "partial" }));
+  });
+
+  it("identifies a dropped negation as partial", () => {
+    const item = itemAt(18);
+    expect(
+      judgeConditionalResponse(
+        item.credited_answers,
+        "If the generator is refueled by dusk, then the beacon goes dark.",
+      ),
+    ).toEqual(expect.objectContaining({ verdict: "partial" }));
+  });
+
+  it("rejects a structurally unrelated result", () => {
+    const item = itemAt(18);
+    expect(
+      judgeConditionalResponse(
+        item.credited_answers,
+        "If the generator is not refueled by dusk, then bananas dance.",
+      ),
+    ).toEqual(expect.objectContaining({ verdict: "incorrect" }));
+  });
+
+  it("can judge the bank's two-rule final item without AI", () => {
+    const item = itemAt(62);
+    expect(judgeConditionalResponse(item.credited_answers, item.credited_answers[0])).toEqual(
+      expect.objectContaining({ verdict: "correct" }),
+    );
   });
 });

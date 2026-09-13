@@ -1,4 +1,4 @@
-import type { ActivityCoach, ActivityItem, ItemFormat, JudgeSource, Verdict } from "../api/types";
+import type { ActivityCoach, ActivityItem, CoachVerdict, ItemFormat, JudgeSource, Verdict } from "../api/types";
 import { ActivityItemView } from "./ActivityItemView";
 
 interface ActivityQuestionStackProps {
@@ -15,6 +15,8 @@ interface ActivityQuestionStackProps {
   promptInWorld?: boolean;
   /** The world's local check for an answer the author already wrote down. */
   fastPath?: (item: ActivityItem, response: string) => boolean;
+  /** A world's authoritative deterministic judge. */
+  localJudge?: (item: ActivityItem, response: string) => CoachVerdict;
   /** The world's structural read of the answer, recorded as telemetry only. */
   shadowFault?: (item: ActivityItem, response: string) => string | null;
   activeIndex: number;
@@ -47,6 +49,7 @@ export function ActivityQuestionStack({
   creditedSecondaryLabel,
   promptInWorld = false,
   fastPath,
+  localJudge,
   shadowFault,
   activeIndex,
   resumeAttempts = 0,
@@ -86,6 +89,7 @@ export function ActivityQuestionStack({
             creditedSecondaryLabel={creditedSecondaryLabel}
             promptInWorld={promptInWorld}
             fastPath={fastPath}
+            localJudge={localJudge}
             shadowFault={shadowFault}
             initialAttempts={resumeAttempts}
             initialValue={resumeValue}
