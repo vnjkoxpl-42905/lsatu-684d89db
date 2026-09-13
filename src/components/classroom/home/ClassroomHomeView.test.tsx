@@ -297,6 +297,35 @@ describe("ClassroomHomeView", () => {
     expect(container.querySelectorAll("button.classroom-home-day")).toHaveLength(0);
   });
 
+  it("opens the day's own work rather than the schedule", () => {
+    const onOpen = vi.fn();
+    const dates = weekDates(new Date(2026, 7, 3));
+    const model: ClassroomHomeModel = {
+      ...FULL,
+      week: buildWeek(
+        dates,
+        [{ iso: dates[1], label: "Read, Recall, Colour", route: "/activities/abc" }],
+        new Date(2026, 7, 3),
+      ),
+    };
+    render(
+      <ClassroomHomeView model={model} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /open Read, Recall, Colour/i }));
+    expect(onOpen).toHaveBeenCalledWith("/activities/abc");
+  });
+
+  it("still opens a routeless day onto the schedule", () => {
+    const onOpen = vi.fn();
+    const { container } = render(
+      <ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
+    );
+    const cells = container.querySelectorAll("button.classroom-home-day");
+    expect(cells).toHaveLength(7);
+    fireEvent.click(cells[0] as HTMLElement);
+    expect(onOpen).toHaveBeenCalledWith("/schedule");
+  });
+
   it("does not tell staff a message is from themselves", () => {
     const admin: ClassroomHomeModel = { ...FULL, isAdmin: true, message: null };
     render(
@@ -474,6 +503,48 @@ describe("homeModel", () => {
     expect(week[0].isToday).toBe(true);
     expect(week[1].label).toBeNull();
     expect(week[5].isWeekend).toBe(true);
+  });
+
+  it("dates work by due, then unlock, then the day it was assigned", async () => {
+    const { itemDayFor } = await import("./useClassroomHome");
+    const base = {
+      due_at: null as string | null,
+      unlock_at: null as string | null,
+      created_at: "2026-08-01T12:00:00.000Z",
+    };
+    // A deadline wins.
+    expect(
+      itemDayFor({ ...base, type: "activity", due_at: "2026-08-05T00:00:00.000Z",
+        unlock_at: "2026-08-03T00:00:00.000Z" } as never),
+    ).toBe("2026-08-05T00:00:00.000Z");
+    // Then the morning it opens — the case an assigned Activity always hits.
+    expect(
+      itemDayFor({ ...base, type: "activity", unlock_at: "2026-08-03T00:00:00.000Z" } as never),
+    ).toBe("2026-08-03T00:00:00.000Z");
+    // Undated but doable: the day it was handed over.
+    expect(itemDayFor({ ...base, type: "activity" } as never)).toBe("2026-08-01T12:00:00.000Z");
+    // Undated and not doable: it stays off the band entirely.
+    expect(itemDayFor({ ...base, type: "announcement" } as never)).toBeNull();
+    expect(itemDayFor({ ...base, type: "note" } as never)).toBeNull();
+  });
+
+  it("carries the first entry's route onto the day, and only its own", () => {
+    const dates = weekDates(new Date(2026, 7, 3));
+    const week = buildWeek(
+      dates,
+      [
+        { iso: "2026-08-04", label: "Read, Recall, Colour", route: "/activities/abc" },
+        { iso: "2026-08-04", label: "Session, 4:00 p.m.", route: "/schedule" },
+        { iso: "2026-08-05", label: "Weekly plan task" },
+      ],
+      new Date(2026, 7, 3),
+    );
+    expect(week[1].route).toBe("/activities/abc");
+    // The cell reads the first thing, so it must not open the second.
+    expect(week[1].label).toBe("Read, Recall, Colour +1");
+    // A plan item has nothing to open; the day stays routeless.
+    expect(week[2].route).toBeNull();
+    expect(week[0].route).toBeNull();
   });
 });
 

@@ -537,14 +537,19 @@ export function ClassroomHomeView({
               </>
             );
 
-            // The band still reads without schedule access; it just stops being
-            // a control, rather than becoming a button onto a locked route.
-            return model.access.schedule ? (
+            // A day that names a piece of work opens that work. Only an empty
+            // day falls back to the schedule, and only for someone who can
+            // reach it — the band still reads without schedule access, it just
+            // stops being a control rather than becoming a button onto a
+            // locked route.
+            const target = day.route ?? (model.access.schedule ? "/schedule" : null);
+            return target ? (
               <button
                 key={day.iso}
                 type="button"
                 className={`classroom-home-day${tone}`}
-                onClick={() => handleOpen("/schedule")}
+                aria-label={day.label ? `${day.abbr} ${day.dayNum}, open ${day.label}` : undefined}
+                onClick={() => handleOpen(target)}
               >
                 {body}
               </button>

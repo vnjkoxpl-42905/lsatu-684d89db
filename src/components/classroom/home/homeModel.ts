@@ -106,6 +106,14 @@ export interface HomeWeekDay {
   isWeekend: boolean;
   /** The single line under the date, or null for an empty day. */
   label: string | null;
+  /**
+   * Where pressing this day goes, or null when the day has nothing to open.
+   *
+   * The route belongs to the FIRST thing on the day, which is the same thing
+   * `label` names. A cell reading "Read, Recall, Colour" that opened the
+   * schedule instead would be a link that lies about its own text.
+   */
+  route: string | null;
 }
 
 /**
@@ -362,20 +370,21 @@ export function weekLabelFor(dates: string[]): string {
  */
 export function buildWeek(
   dates: string[],
-  entries: { iso: string; label: string }[],
+  entries: { iso: string; label: string; route?: string | null }[],
   now: Date = new Date(),
 ): HomeWeekDay[] {
   const today = localDayISO(now);
-  const byDay = new Map<string, string[]>();
+  const byDay = new Map<string, { label: string; route?: string | null }[]>();
   for (const entry of entries) {
     const bucket = byDay.get(entry.iso);
-    if (bucket) bucket.push(entry.label);
-    else byDay.set(entry.iso, [entry.label]);
+    if (bucket) bucket.push(entry);
+    else byDay.set(entry.iso, [entry]);
   }
 
   return dates.map((iso) => {
     const date = parseLocalDay(iso);
-    const labels = byDay.get(iso) ?? [];
+    const onDay = byDay.get(iso) ?? [];
+    const labels = onDay.map((entry) => entry.label);
     const weekday = date ? date.getDay() : 1;
     return {
       iso,
@@ -390,6 +399,10 @@ export function buildWeek(
           : labels.length === 1
             ? labels[0]
             : `${labels[0]} +${labels.length - 1}`,
+      // The first entry's own route, and only its own. Falling back to a later
+      // entry's route would send her to the second thing on the day while the
+      // cell still read the name of the first.
+      route: onDay[0]?.route ?? null,
     };
   });
 }

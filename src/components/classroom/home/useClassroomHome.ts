@@ -19,6 +19,35 @@ import {
   type AssignedTodoRow,
 } from "@/hooks/useAssignedTodoFeed";
 import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
+import { resolveItemRoute } from "@/lib/classroomItems";
+
+/**
+ * Work that belongs on the calendar, and the day it belongs on.
+ *
+ * Three dates can stand for "when": `due_at` is a deadline, `unlock_at` is the
+ * morning the work opens, and `created_at` is the day it was handed over.
+ * Reading `due_at` alone hid almost everything — an assigned Activity carries a
+ * null due_at by design, so scheduled work unlocked on the right morning and
+ * never appeared on the day it belonged to, and unscheduled work had no date at
+ * all.
+ *
+ * The `created_at` fallback is deliberately limited to the four types a student
+ * can actually DO. Letting announcements, notes, and recaps fall through to
+ * their creation date would fill the band with things that cannot be worked on,
+ * which is worse than the empty cells it replaced.
+ */
+const DATEABLE_ON_BAND = new Set<ClassroomItem["type"]>([
+  "activity",
+  "drill",
+  "homework",
+  "bootcamp_module",
+]);
+
+export function itemDayFor(item: ClassroomItem): string | null {
+  if (item.due_at) return item.due_at;
+  if (item.unlock_at) return item.unlock_at;
+  return DATEABLE_ON_BAND.has(item.type) ? item.created_at : null;
+}
 import {
   isDayZeroWelcome,
   isNoteUnread,
@@ -533,7 +562,7 @@ export function useClassroomHome(): {
 
   const week = React.useMemo(() => {
     const span = new Set(dates);
-    const entries: { iso: string; label: string }[] = [];
+    const entries: { iso: string; label: string; route?: string | null }[] = [];
 
     for (const item of planQuery.data?.items ?? []) {
       const iso = item.day_date.slice(0, 10);
@@ -541,16 +570,23 @@ export function useClassroomHome(): {
     }
 
     for (const item of itemsQuery.data ?? []) {
-      if (!item.due_at) continue;
-      const iso = localDayISO(new Date(item.due_at));
-      if (span.has(iso)) entries.push({ iso, label: item.title });
+      const dated = itemDayFor(item);
+      if (!dated) continue;
+      const iso = localDayISO(new Date(dated));
+      if (span.has(iso)) {
+        entries.push({ iso, label: item.title, route: resolveItemRoute(item) });
+      }
     }
 
     for (const booking of bookingQuery.data?.bookings ?? []) {
       if (["cancelled", "canceled"].includes(booking.status.toLowerCase())) continue;
       const iso = localDayISO(new Date(booking.start_at));
       if (span.has(iso)) {
-        entries.push({ iso, label: `Session, ${timeLabel(booking.start_at)}` });
+        entries.push({
+          iso,
+          label: `Session, ${timeLabel(booking.start_at)}`,
+          route: "/schedule",
+        });
       }
     }
 
