@@ -15,6 +15,7 @@ import type { DrillRunSpec } from '@/lib/drillRunSpec';
 import type { LRQuestion } from '@/lib/questionLoader';
 
 const insertCalls = vi.hoisted(() => ({ attempts: [] as Array<Record<string, unknown>>, failNext: 0, delayMs: 0 }));
+const journalCalls = vi.hoisted(() => ({ wrong: vi.fn(), correct: vi.fn() }));
 
 vi.mock('@rrweb/record', () => ({ record: () => () => {} }));
 vi.mock('@/contexts/AuthContext', () => ({
@@ -48,6 +49,10 @@ vi.mock('@/hooks/useHomeworkSets', () => ({ useHomeworkSet: () => ({ set: null }
 vi.mock('@/lib/questionExposure', () => ({
   getRecentExposureSet: async () => new Set<string>(),
   recordExposures: vi.fn(async () => {}),
+}));
+vi.mock('@/lib/wajService', () => ({
+  logWrongAnswer: journalCalls.wrong,
+  logCorrectAnswer: journalCalls.correct,
 }));
 vi.mock('@/lib/lastActivity', () => ({ upsertLastActivity: vi.fn(async () => {}) }));
 vi.mock('@/lib/questionPoolService', async (importOriginal) => {
@@ -273,6 +278,10 @@ beforeEach(() => {
   insertCalls.attempts = [];
   insertCalls.failNext = 0;
   insertCalls.delayMs = 0;
+  journalCalls.wrong.mockReset();
+  journalCalls.correct.mockReset();
+  journalCalls.wrong.mockResolvedValue(undefined);
+  journalCalls.correct.mockResolvedValue(undefined);
   window.localStorage.clear();
   store = memoryPersistence();
   __setPersistenceForTests(store);
@@ -445,6 +454,24 @@ describe('Drill review controls — filter drill (fixed + commit)', () => {
 });
 
 describe('Drill review controls — Smart Drill (adaptive)', () => {
+  it('logs a wrong adaptive answer in the Wrong Answer Journal', async () => {
+    renderDrill(adaptiveSpec);
+    await waitForQuestion(18);
+
+    fireEvent.click(choiceButton('A'));
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+
+    await waitFor(() => expect(journalCalls.wrong).toHaveBeenCalledTimes(1));
+    expect(journalCalls.wrong).toHaveBeenCalledWith(
+      expect.objectContaining({
+        class_id: 'class-1',
+        qid: Q1.qid,
+        chosen_answer: 'A',
+        correct_answer: 'B',
+      }),
+    );
+  });
+
   it('keeps choices live after auto-reveal without writing a second attempt', async () => {
     renderDrill(adaptiveSpec);
     await waitForQuestion(18);

@@ -71,6 +71,8 @@ export interface SmartDrillSelectionContext {
   attempts: AttemptRecord[];
   currentSessionUsedQids: Set<string>;
   recentExposureQids: Set<string>;
+  /** Injectable so equal-score sampling stays deterministic in tests. */
+  random?: () => number;
 }
 
 export interface SmartDrillSelectionReason {
@@ -473,6 +475,8 @@ export class AdaptiveEngine {
     };
 
     let best: SmartDrillSelection | null = null;
+    let equalBestCount = 0;
+    const random = context.random ?? Math.random;
 
     for (const q of candidates) {
       const matchedWeaknesses: string[] = [];
@@ -524,17 +528,26 @@ export class AdaptiveEngine {
         SMART_DRILL_SELECTOR_WEIGHTS.variety * variety +
         SMART_DRILL_SELECTOR_WEIGHTS.metadataQuality * metadataQuality;
 
+      const selection: SmartDrillSelection = {
+        question: q,
+        selectionReason: {
+          score,
+          matchedWeaknesses,
+          excludedRecentExposure: context.recentExposureQids.has(q.qid),
+          targetDifficulty: target,
+          dataMode: profile.dataMode,
+        },
+      };
+
       if (!best || score > best.selectionReason.score) {
-        best = {
-          question: q,
-          selectionReason: {
-            score,
-            matchedWeaknesses,
-            excludedRecentExposure: context.recentExposureQids.has(q.qid),
-            targetDifficulty: target,
-            dataMode: profile.dataMode,
-          },
-        };
+        best = selection;
+        equalBestCount = 1;
+      } else if (Math.abs(score - best.selectionReason.score) < 1e-12) {
+        // Reservoir sampling gives every equally useful candidate the same
+        // chance without shuffling the full bank. Cold-start students now get
+        // a varied diagnostic mix instead of the bank's first questions.
+        equalBestCount += 1;
+        if (random() < 1 / equalBestCount) best = selection;
       }
     }
 

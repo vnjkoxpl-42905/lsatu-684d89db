@@ -2,12 +2,12 @@ import { openDB, type IDBPDatabase } from 'idb';
 import type { Persistence, PersistenceTx } from './Persistence';
 
 const DB_NAME = 'mc-bootcamp';
-// v2 adds practice_sessions (practice-set resume state). Bumping the version is
-// required for existing users: the upgrade callback only runs on a version
-// change, so a new store added without a bump never gets created and every
-// read/write against it throws NotFoundError. The upgrade is additive and
-// guarded by `contains`, so no existing store or record is touched.
-const DB_VERSION = 2;
+// v3 repairs databases that had already reached v2 before practice_sessions
+// was added. IndexedDB only runs the upgrade callback when the version changes,
+// so reopening those databases at v2 left the store missing and every resume
+// read/write threw NotFoundError. The upgrade is additive and guarded by
+// `contains`, so no existing store or record is touched.
+const DB_VERSION = 3;
 const BLOB_STORE = 'rr_audio';
 const RECORD_STORES = [
   'simulator_attempts',

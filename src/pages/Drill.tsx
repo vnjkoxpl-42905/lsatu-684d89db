@@ -2252,14 +2252,17 @@ function DrillContent() {
         QuestionPoolService.markQuestionSeen(qid, classId, session.mode);
       }
 
+      // The attempt is already durable at this point. Update the UI before the
+      // secondary journal write so a slow WAJ request cannot stall Submit.
+      setSession({ ...session, attempts: newAttempts });
+
       // Flip an existing WAJ wrong entry to right when a previously-missed
       // question is re-served and answered correctly. The session-end batch
       // (commitSessionAttempts) only logs wrong answers, so without this the
       // adaptive wrong->right flip never fires append_waj_correct.
-      if (correct) {
-        const { logCorrectAnswer } = await import('@/lib/wajService');
+      void (async () => {
         try {
-          await logCorrectAnswer({
+          const journalAttempt = {
             class_id: classId,
             qid,
             pt: currentQuestion.pt,
@@ -2271,9 +2274,21 @@ function DrillContent() {
             correct_answer: currentQuestion.correctAnswer,
             time_ms: timeMs,
             confidence_1_5: null,
+          };
+
+          if (correct) {
+            const { logCorrectAnswer } = await import('@/lib/wajService');
+          await logCorrectAnswer({
+              ...journalAttempt,
           });
+          } else {
+            const { logWrongAnswer } = await import('@/lib/wajService');
+          await logWrongAnswer({
+              ...journalAttempt,
+          });
+          }
         } catch (error) {
-          console.error('[drill:waj:log] logCorrectAnswer failed (adaptive)', {
+          console.error('[drill:waj:log] adaptive journal write failed', {
             userId: user?.id,
             qid,
             mode: session.mode,
@@ -2281,9 +2296,7 @@ function DrillContent() {
           });
           toast.error("Your answer was saved, but the journal entry didn't log. Let Joshua know if this keeps happening.");
         }
-      }
-
-      setSession({ ...session, attempts: newAttempts });
+      })();
 
       const tutorLaunch = resolveTutorLaunch({
         flagEnabled: AI_TUTOR_ENABLED,

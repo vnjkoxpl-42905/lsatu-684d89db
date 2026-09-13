@@ -306,6 +306,24 @@ describe('AdaptiveEngine.selectSmartDrillQuestion', () => {
     });
   });
 
+  it('samples equally useful cold-start questions instead of always taking bank order', () => {
+    const engine = new AdaptiveEngine();
+    const profile = engine.buildStudentProfile([]);
+    const pool = [
+      makeQuestion({ qid: 'bank-first' }),
+      makeQuestion({ qid: 'bank-second' }),
+    ];
+
+    const selected = engine.selectSmartDrillQuestion(pool, profile, {
+      attempts: [],
+      currentSessionUsedQids: new Set(),
+      recentExposureQids: new Set(),
+      random: () => 0,
+    });
+
+    expect(selected?.question.qid).toBe('bank-second');
+  });
+
   it('prioritizes weak qtype, difficulty, reasoning type, and feature matches', () => {
     const engine = new AdaptiveEngine();
     const profile = engine.buildStudentProfile([
@@ -379,6 +397,7 @@ describe('AdaptiveEngine.selectSmartDrillQuestion', () => {
       attempts,
       currentSessionUsedQids: new Set(),
       recentExposureQids: new Set(),
+      random: () => 1,
     });
 
     expect(selected?.question.qid).toBe('missed-now');
