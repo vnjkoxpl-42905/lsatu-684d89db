@@ -3,10 +3,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ActivityItemView } from "./ActivityItemView";
 import type { ActivityItem } from "../api/types";
 
-// The fast path is the only place in the run where a verdict is decided without
-// the Coach. What matters here is not that it is fast: it is that it fires ONLY
-// on an answer the author wrote down, and that everything else still reaches the
-// model untouched.
+// A world can decide a verdict without the Coach either by matching an authored
+// answer or by supplying an authoritative formal parser. Activities without a
+// local judge continue to reach the Coach exactly as before.
 
 const invoke = vi.fn();
 
@@ -28,6 +27,11 @@ const item: ActivityItem = {
 
 const fastPath = (i: ActivityItem, response: string) =>
   i.credited_answers.some((c) => c.trim().toLowerCase() === response.trim().toLowerCase());
+
+const localJudge = (_i: ActivityItem, response: string) => ({
+  verdict: response.includes("greenhouse") ? ("correct" as const) : ("incorrect" as const),
+  feedback: "Checked locally.",
+});
 
 function renderItem(props: Partial<React.ComponentProps<typeof ActivityItemView>> = {}) {
   const onRecord = vi.fn().mockResolvedValue(undefined);
@@ -102,6 +106,16 @@ describe("the local fast path", () => {
     type("If the orchids bloom by morning, then the fans run overnight.");
     await waitFor(() => expect(invoke).toHaveBeenCalled());
     expect(onResolved).not.toHaveBeenCalled(); // first-attempt partial keeps the retry
+  });
+
+  it("uses an authoritative local judge for a paraphrase without calling the Coach", async () => {
+    const { onResolved, onRecord } = renderItem({ localJudge });
+    type("If the greenhouse fans run overnight, then the orchids bloom by morning.");
+    await waitFor(() => expect(onResolved).toHaveBeenCalledWith(3, "correct"));
+    expect(onRecord).toHaveBeenCalledWith(
+      expect.objectContaining({ verdict: "correct", judgeSource: "fast-path" }),
+    );
+    expect(invoke).not.toHaveBeenCalled();
   });
 
   it("continues the attempt numbering it inherited from an earlier sitting", async () => {

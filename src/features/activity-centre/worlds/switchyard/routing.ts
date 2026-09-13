@@ -156,7 +156,26 @@ const POLARITY_TOKENS = new Set([
 ]);
 
 // Function words carry no discriminating content for alignment.
-const STOP_TOKENS = new Set(["a", "an", "the", "is", "are", "was", "were", "be", "been", "to", "of"]);
+const STOP_TOKENS = new Set([
+  "a", "an", "the", "is", "are", "was", "were", "be", "been", "to", "of",
+  "by", "in", "on", "at", "for", "that", "it", "they", "them", "their",
+]);
+
+const TOKEN_ALIASES: Record<string, string> = {
+  overnight: "night",
+};
+
+function stem(token: string): string {
+  const aliased = TOKEN_ALIASES[token] ?? token;
+  if (aliased.length > 5 && aliased.endsWith("ing")) {
+    const root = aliased.slice(0, -3);
+    return root.length > 2 && root.at(-1) === root.at(-2) ? root.slice(0, -1) : root;
+  }
+  if (aliased.length > 4 && aliased.endsWith("ies")) return `${aliased.slice(0, -3)}y`;
+  if (aliased.length > 4 && aliased.endsWith("ed")) return aliased.slice(0, -2);
+  if (aliased.length > 3 && aliased.endsWith("s") && !aliased.endsWith("ss")) return aliased.slice(0, -1);
+  return aliased;
+}
 
 function contentTokens(clause: string): string[] {
   return clause
@@ -164,7 +183,8 @@ function contentTokens(clause: string): string[] {
     .replace(/n't\b/g, " not")
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
-    .filter((t) => t && !POLARITY_TOKENS.has(t) && !STOP_TOKENS.has(t));
+    .filter((t) => t && !POLARITY_TOKENS.has(t) && !STOP_TOKENS.has(t))
+    .map(stem);
 }
 
 /** Share of the longer clause's content words the two clauses have in common. */
@@ -188,7 +208,7 @@ function isTrimmed(short: string, full: string): boolean {
 /**
  * Name the student's error, or return null when their routing is credited-clean
  * or too far from it to classify. Null is a real answer: the yard then makes no
- * claim about which mistake was made and the Coach takes the item.
+ * claim about which named mistake was made.
  */
 export function diagnose(credited: Routing, student: Routing | null): Fault | null {
   if (!student) return null;
@@ -230,7 +250,7 @@ export function differs(credited: Routing, student: Routing | null): boolean {
 }
 
 /* ------------------------------------------------------------------ *
- * The fast path
+ * Exact structural matching
  *
  * A student who writes an answer the author already wrote down needs no model
  * to confirm it. This recognises exactly that case and nothing else.
@@ -240,19 +260,17 @@ export function differs(credited: Routing, student: Routing | null): boolean {
  * it is a genuinely different logical direction. Checking only slot 0 would
  * grade the answer the task explicitly asks for as wrong.
  *
- * It makes no inference: a correct paraphrase the author did not write ("fans
- * are running all night" for "fans run overnight") falls through, because
- * `differs` compares token sequences with no stemming or synonyms. Falling
- * through means asking the Coach, which is the safe direction to fail in.
+ * This narrow helper remains useful for exact authored structures. The
+ * authoritative local judge below handles ordinary paraphrases and named
+ * conditional-logic errors without calling the Coach.
  * ------------------------------------------------------------------ */
 
 /** Bumped whenever the rules above change, so shadow telemetry is attributable. */
-export const PARSER_VERSION = "routing-1";
+export const PARSER_VERSION = "routing-2-local-judge";
 
 /**
  * True when the student's routing is structurally identical to one of the
- * item's credited answers. False is not a claim that the answer is wrong; it
- * only means this cannot be settled without the Coach.
+ * item's credited answers. False is not a claim that the answer is wrong.
  */
 export function matchesAnyCredited(creditedAnswers: string[] | undefined, response: string): boolean {
   const student = parseRouting(response);
@@ -261,6 +279,109 @@ export function matchesAnyCredited(creditedAnswers: string[] | undefined, respon
     const routing = parseRouting(credited);
     return routing ? !differs(routing, student) : false;
   });
+}
+
+export interface LocalConditionalVerdict {
+  verdict: "correct" | "partial" | "incorrect";
+  feedback: string;
+}
+
+const MIN_CLAUSE_ALIGNMENT = 0.67;
+
+function normalizedSentence(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function aligned(a: Clause, b: Clause): boolean {
+  return alignment(a.text, b.text) >= MIN_CLAUSE_ALIGNMENT;
+}
+
+function samePolarity(a: Clause, b: Clause): boolean {
+  return a.negated === b.negated;
+}
+
+/**
+ * Judge a Conditional Rephrase answer entirely on-device.
+ *
+ * The prompt requires an If X, then Y form, which gives this parser a closed
+ * grammar. Content words are compared by overlap after light normalization,
+ * while direction and negation are checked separately. This accepts harmless
+ * additions and ordinary inflection without turning a shared noun into proof
+ * that a different claim is correct.
+ */
+export function judgeConditionalResponse(
+  creditedAnswers: string[] | undefined,
+  response: string,
+): LocalConditionalVerdict {
+  const answers = creditedAnswers ?? [];
+  const normalized = normalizedSentence(response);
+  if (!normalized) {
+    return { verdict: "incorrect", feedback: "Write the statement as If [sufficient], then [necessary]." };
+  }
+
+  // The final bank item contains two conditionals. Exact authored wording is
+  // still deterministically knowable even though the one-routing visual parser
+  // correctly refuses to squeeze two rules onto one pair of tracks.
+  if (answers.some((answer) => normalizedSentence(answer) === normalized)) {
+    return { verdict: "correct", feedback: "" };
+  }
+
+  const student = parseRouting(response);
+  if (!student) {
+    return {
+      verdict: "incorrect",
+      feedback: "Use one complete structure: If [sufficient], then [necessary].",
+    };
+  }
+
+  const candidates = answers.map(parseRouting).filter((routing): routing is Routing => Boolean(routing));
+
+  for (const credited of candidates) {
+    const sameContent = aligned(student.ifClause, credited.ifClause) && aligned(student.thenClause, credited.thenClause);
+    if (
+      sameContent &&
+      samePolarity(student.ifClause, credited.ifClause) &&
+      samePolarity(student.thenClause, credited.thenClause) &&
+      !isTrimmed(student.ifClause.text, credited.ifClause.text) &&
+      !isTrimmed(student.thenClause.text, credited.thenClause.text)
+    ) {
+      return { verdict: "correct", feedback: "" };
+    }
+  }
+
+  for (const credited of candidates) {
+    const straight = aligned(student.ifClause, credited.ifClause) && aligned(student.thenClause, credited.thenClause);
+    if (straight && (!samePolarity(student.ifClause, credited.ifClause) || !samePolarity(student.thenClause, credited.thenClause))) {
+      return {
+        verdict: "partial",
+        feedback: "Your clauses are on the right tracks, but a negation changed. Check every not, no, never, and cannot.",
+      };
+    }
+  }
+
+  for (const credited of candidates) {
+    const reversed = aligned(student.ifClause, credited.thenClause) && aligned(student.thenClause, credited.ifClause);
+    if (reversed) {
+      return {
+        verdict: "partial",
+        feedback: "You reversed the arrow. The necessary condition does not guarantee the sufficient condition.",
+      };
+    }
+  }
+
+  for (const credited of candidates) {
+    if (isTrimmed(student.ifClause.text, credited.ifClause.text) || isTrimmed(student.thenClause.text, credited.thenClause.text)) {
+      return {
+        verdict: "partial",
+        feedback: "One side of the conditional lost part of the original condition. Carry the whole condition across.",
+      };
+    }
+  }
+
+  return {
+    verdict: "incorrect",
+    feedback: "The direction or content does not match the statement. Find the trigger, then identify what it requires.",
+  };
 }
 
 /* ------------------------------------------------------------------ *

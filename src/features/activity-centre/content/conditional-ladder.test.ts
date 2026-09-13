@@ -226,6 +226,12 @@ describe("what a Conditional Rephrase student is shown", () => {
     expect(joined(instructions.coach.rubric)).toMatch(/biconditional/i);
   });
 
+  it("does not teach otherwise as a biconditional", () => {
+    expect(joined(instructions.rules)).toMatch(/otherwise means if not/i);
+    expect(joined(instructions.rules)).toMatch(/does not make the converse valid/i);
+    expect(joined(instructions.coach.rubric)).toMatch(/otherwise is not a biconditional/i);
+  });
+
   it("keeps the rules readable rather than exhaustive", () => {
     expect(instructions.rules.length).toBeLessThanOrEqual(10);
     for (const r of instructions.rules) expect(r.length).toBeLessThan(200);
