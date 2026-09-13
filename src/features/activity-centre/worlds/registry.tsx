@@ -32,7 +32,7 @@ import { parseSpecimen, readExamination } from "./specimen-lab/specimen";
 
 import { SwitchyardEntrance } from "./switchyard/SwitchyardEntrance";
 import { SwitchyardStage } from "./switchyard/SwitchyardStage";
-import { derivedFlip, diagnose, flipIsDerivable, indicatorOf, matchesAnyCredited, parseRouting, PARSER_VERSION } from "./switchyard/routing";
+import { derivedFlip, diagnose, flipIsDerivable, indicatorOf, judgeConditionalResponse, matchesAnyCredited, parseRouting, PARSER_VERSION } from "./switchyard/routing";
 
 /**
  * Which world belongs to which Activity, and how to drive it from a live run.
@@ -121,6 +121,8 @@ export interface WorldBinding {
    * structure omits this and always asks the Coach.
    */
   fastPath?: (item: ActivityItem, response: string) => boolean;
+  /** An authoritative deterministic judge. Its presence disables AI judging. */
+  localJudge?: (item: ActivityItem, response: string) => { verdict: Verdict; feedback: string };
   /**
    * What the world's structural classifier WOULD have called this answer.
    * Recorded next to the verdict the Coach actually gave, and never shown or
@@ -258,6 +260,7 @@ const WORLDS: WorldBinding[] = [
       );
     },
     fastPath: (item, response) => matchesAnyCredited(item.credited_answers, response),
+    localJudge: (item, response) => judgeConditionalResponse(item.credited_answers, response),
     shadowFault: (item, response) => {
       const credited = item.credited_answers?.[0];
       const routing = credited ? parseRouting(credited) : null;

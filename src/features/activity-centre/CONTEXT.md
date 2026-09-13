@@ -37,6 +37,7 @@ _Avoid_: Solution, key answer, right answer
 
 **Coach**:
 The conversational AI tutor that presents Items one at a time, reads the student's free-text response, and gives immediate supportive feedback against the credited answer. Built on the existing AI-gateway tutor pattern (`analyze-stem-response`).
+Conditional Rephrase is the exception: its constrained `If ..., then ...` responses are judged by an authoritative local parser, so the Activity works without AI credits or a network request.
 _Avoid_: Tutor (reserved for the standalone Tutor surface), bot, grader
 
 **Verdict**:

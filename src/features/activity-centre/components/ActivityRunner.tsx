@@ -948,6 +948,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             creditedSecondaryLabel={assignment.instructions?.credited_secondary_label}
             promptInWorld={Boolean(worldStage && world?.carriesPrompt)}
             fastPath={world?.fastPath}
+            localJudge={world?.localJudge}
             shadowFault={world?.shadowFault}
             activeIndex={index}
             resumeAttempts={resumeAt?.index === index ? resumeAt.attempts : 0}

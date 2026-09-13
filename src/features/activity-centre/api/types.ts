@@ -9,8 +9,9 @@ export type Verdict = "correct" | "partial" | "incorrect";
 /**
  * Who decided an attempt's verdict.
  *
- * `fast-path` is the world's local match against an authored credited answer,
- * settled with no model call. `coach` is the edge function. `fallback` is a
+ * `fast-path` is a world's deterministic local verdict, settled with no model
+ * call. It covers exact authored matches and formal parsers such as the
+ * Switchyard. `coach` is the edge function. `fallback` is a
  * Coach outage, where the credited answer is revealed and no verdict is earned.
  * Recorded so the share of attempts that never reach the model is a measured
  * number rather than a claim.

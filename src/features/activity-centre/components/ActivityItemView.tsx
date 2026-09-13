@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useActivityCoach } from "../hooks/useActivityCoach";
-import type { ActivityCoach, ActivityItem, FeedbackState, ItemFormat, JudgeSource, Verdict } from "../api/types";
+import type { ActivityCoach, ActivityItem, CoachVerdict, FeedbackState, ItemFormat, JudgeSource, Verdict } from "../api/types";
 import { MAX_ATTEMPTS } from "../api/types";
 import { clearDraft, saveDraft } from "../drafts";
 import { StatementPanel } from "./StatementPanel";
@@ -27,6 +27,8 @@ interface ActivityItemViewProps {
    * which then judge exactly as they did before.
    */
   fastPath?: (item: ActivityItem, response: string) => boolean;
+  /** A world's authoritative local judge. When present, the Coach is never called. */
+  localJudge?: (item: ActivityItem, response: string) => CoachVerdict;
   /** The world's structural read of the answer, recorded as telemetry only. */
   shadowFault?: (item: ActivityItem, response: string) => string | null;
   /**
@@ -74,6 +76,7 @@ export function ActivityItemView({
   creditedSecondaryLabel,
   promptInWorld = false,
   fastPath,
+  localJudge,
   shadowFault,
   initialAttempts = 0,
   initialValue = "",
@@ -114,6 +117,32 @@ export function ActivityItemView({
     const attemptNo = attempts + 1;
     const startedAt = performance.now();
     const since = () => Math.round(performance.now() - startedAt);
+
+    // Some Activities describe a closed formal system that can be judged
+    // locally. Conditional Rephrase is one: direction, polarity, clause
+    // coverage and the contrapositive are all checkable against the authored
+    // routing. A local judge is authoritative, including when it says partial
+    // or incorrect, so this branch never spends an AI call.
+    if (localJudge) {
+      const verdict = localJudge(item, value);
+      setAttempts(attemptNo);
+      setResult(verdict);
+      record({
+        itemOrder: item.order,
+        responseText: value,
+        verdict: verdict.verdict,
+        attemptNo,
+        judgeSource: "fast-path",
+        shadowFault: shadowFault?.(item, value) ?? null,
+        latencyMs: since(),
+      });
+      if (verdict.verdict === "correct") {
+        resolve("correct", false);
+      } else if (attemptNo >= MAX_ATTEMPTS) {
+        resolve(verdict.verdict, true);
+      }
+      return;
+    }
 
     // The author already wrote this answer down, so recognising it needs no
     // model. Only an exact structural match against a credited answer takes
