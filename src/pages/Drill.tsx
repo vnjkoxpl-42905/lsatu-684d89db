@@ -1234,7 +1234,12 @@ function DrillContent() {
       }
       if (cancelled) return;
 
-      const allQuestions = questionBank.getAllQuestions();
+      // Session initialization has already applied the student's repeat,
+      // unseen-first, and recycle settings. Rank that exact pool instead of
+      // silently jumping back to the entire bank.
+      const eligibleQuestions = session.questionQueue
+        .map((qid) => questionBank.getQuestion(qid))
+        .filter((question): question is LRQuestion => !!question);
       const sessionAttemptRecords = Array.from(session.attempts.entries()).flatMap(([qid, attempt]) => {
         const q = questionBank.getQuestion(qid);
         if (!q) return [];
@@ -1251,9 +1256,17 @@ function DrillContent() {
       });
 
       const historicalAttempts = adaptiveEngine.getRecentAttempts();
-      const combinedAttempts = [...historicalAttempts, ...sessionAttemptRecords];
+      // A newly saved adaptive answer is already in the engine through
+      // recordAttempt. Session rows are only a fallback for restored runs or a
+      // failed hydration. Do not count the same answer twice when selecting
+      // the next question.
+      const historicalQids = new Set(historicalAttempts.map((attempt) => attempt.qid));
+      const sessionOnlyAttempts = sessionAttemptRecords.filter(
+        (attempt) => !historicalQids.has(attempt.qid),
+      );
+      const combinedAttempts = [...historicalAttempts, ...sessionOnlyAttempts];
       const profile = adaptiveEngine.buildStudentProfile(combinedAttempts);
-      const selection = adaptiveEngine.selectSmartDrillQuestion(allQuestions, profile, {
+      const selection = adaptiveEngine.selectSmartDrillQuestion(eligibleQuestions, profile, {
         attempts: combinedAttempts,
         currentSessionUsedQids: new Set([...session.attempts.keys(), ...skippedQids]),
         recentExposureQids: excludedQids,

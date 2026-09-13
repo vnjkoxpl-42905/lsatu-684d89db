@@ -29,6 +29,7 @@ import {
   resolveDrillSection,
   type DrillSection,
 } from "@/lib/drillSection";
+import { launchDrill } from "@/lib/drillLaunch";
 import { cn } from "@/lib/utils";
 import type { TypeDrillConfig } from "@/types/drill";
 
@@ -134,7 +135,10 @@ function MainhubHero({
   }, []);
 
   const startSmartDrill = React.useCallback(() => {
-    navigate("/drill", { state: { mode: "adaptive", returnTo: drillReturnTo } });
+    navigate(`/drill?${launchDrill({
+      kind: "smart-drill",
+      options: { returnTo: drillReturnTo },
+    })}`);
   }, [drillReturnTo, navigate]);
 
   const startFallback = section === "rc" ? onStartSmartRc : startSmartDrill;

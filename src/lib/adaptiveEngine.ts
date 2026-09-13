@@ -137,7 +137,7 @@ export class AdaptiveEngine {
   }
 
   async ensureHydratedFromDB(classId: string): Promise<void> {
-    if (this.hydrated || this.hydrationStatus === 'failed') return;
+    if (this.hydrated) return;
     if (this.hydrationPromise) return this.hydrationPromise;
 
     this.hydrationStatus = 'loading';
@@ -162,7 +162,10 @@ export class AdaptiveEngine {
 
       if (error || !data) {
         console.warn('Failed to hydrate adaptive engine:', error);
-        this.hydrated = true;
+        // Keep the engine retryable. A brief outage on the first Smart Drill
+        // should not force cold-start selection for the rest of this app
+        // session.
+        this.hydrated = false;
         this.hydrationStatus = 'failed';
         return;
       }
@@ -195,7 +198,7 @@ export class AdaptiveEngine {
       console.log(`Adaptive engine hydrated with ${data.length} attempts`);
     } catch (err) {
       console.error('Error hydrating adaptive engine:', err);
-      this.hydrated = true;
+      this.hydrated = false;
       this.hydrationStatus = 'failed';
     }
   }
@@ -435,16 +438,13 @@ export class AdaptiveEngine {
   ): SmartDrillSelection | null {
     if (pool.length === 0) return null;
 
-    const latestOutcomeByQid = new Map<string, boolean>();
-    for (const attempt of [...context.attempts].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())) {
-      if (!latestOutcomeByQid.has(attempt.qid)) {
-        latestOutcomeByQid.set(attempt.qid, attempt.correct);
-      }
-    }
-
+    // The caller owns the eligible pool. That is where the student's
+    // allow-repeats, prefer-unseen, and recycle settings are applied. The
+    // selector only enforces the two rules that are intrinsic to one Smart
+    // Drill run: do not repeat this session, and avoid recent exposures while
+    // another eligible question exists.
     const hardEligible = pool.filter((q) => {
       if (context.currentSessionUsedQids.has(q.qid)) return false;
-      if (latestOutcomeByQid.has(q.qid)) return false;
       return true;
     });
 
@@ -465,7 +465,11 @@ export class AdaptiveEngine {
 
     const weaknessFor = (stat?: SmartDrillStat): number | null => {
       if (!stat || stat.attempts === 0) return null;
-      return Math.max(0, 1 - stat.weightedAccuracy);
+      // A single miss is evidence, not a verdict. The one-success/one-miss
+      // prior keeps sparse analytics from swinging a type from "mastered" to
+      // "weak" after one question, then fades as real attempts accumulate.
+      const weightedMisses = (1 - stat.weightedAccuracy) * stat.attempts;
+      return (weightedMisses + 1) / (stat.attempts + 2);
     };
 
     let best: SmartDrillSelection | null = null;

@@ -1,5 +1,6 @@
 import type { StudentAnalytics } from "@/lib/mainhubAnalytics";
 import type { StudentStreak } from "@/hooks/useStudentAnalytics";
+import { launchDrill } from "@/lib/drillLaunch";
 
 /** Which stable practice action a slide nudges the user toward. */
 export type RecommendedAction = "full-section" | "type-drill" | null;
@@ -28,6 +29,10 @@ function fmtPct(v: number | null): string {
 
 const ANALYTICS = "/classroom/drill?stage=analytics";
 const TYPE_DRILL = "/classroom/drill?stage=type-drill";
+const SMART_DRILL = `/drill?${launchDrill({
+  kind: "smart-drill",
+  options: { returnTo: "/classroom" },
+})}`;
 // Sitting a section lives in the Testing Centre, not the drill hub.
 const FULL_SECTION = "/testing";
 
@@ -57,7 +62,7 @@ export function buildInsightSlides(
             : `${Math.max(0, streak.goal - streak.questionsToday)} more today to keep it`
           : "Answer a few questions today to start one",
       actionLabel: "Practice today",
-      actionHref: "/drill",
+      actionHref: SMART_DRILL,
       tab: "overview",
       recommend: "full-section",
       empty: !streak || streak.current === 0,

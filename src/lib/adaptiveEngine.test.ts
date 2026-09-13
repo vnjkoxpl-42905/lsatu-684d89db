@@ -215,7 +215,7 @@ describe('AdaptiveEngine.hydration', () => {
     expect(engine.getHydrationStatus()).toBe('ready');
   });
 
-  it('marks hydration failed without blocking future selection forever', async () => {
+  it('marks hydration failed and retries on the next Smart Drill launch', async () => {
     mockAttemptsRows = null;
     mockAttemptsError = { message: 'network down' };
     const engine = new AdaptiveEngine();
@@ -224,6 +224,13 @@ describe('AdaptiveEngine.hydration', () => {
 
     expect(engine.getHydrationStatus()).toBe('failed');
     expect(engine.getRecentAttempts()).toEqual([]);
+
+    mockAttemptsRows = [];
+    mockAttemptsError = null;
+    await engine.ensureHydratedFromDB('class-1');
+
+    expect(mockQueryCount).toBe(2);
+    expect(engine.getHydrationStatus()).toBe('ready');
   });
 });
 
@@ -357,7 +364,7 @@ describe('AdaptiveEngine.selectSmartDrillQuestion', () => {
     );
   });
 
-  it('excludes missed qids for now; redemption is deferred to future spaced review', () => {
+  it('lets the caller-provided pool decide whether an older missed question may return', () => {
     const engine = new AdaptiveEngine();
     const attempts = [
       makeAttempt({ qid: 'missed-now', correct: false, timestamp: new Date('2024-01-04') }),
@@ -374,10 +381,10 @@ describe('AdaptiveEngine.selectSmartDrillQuestion', () => {
       recentExposureQids: new Set(),
     });
 
-    expect(selected?.question.qid).toBe('fresh');
+    expect(selected?.question.qid).toBe('missed-now');
   });
 
-  it('never selects current-session qids or immediately repeats latest correct qids', () => {
+  it('never selects current-session qids or recently exposed questions', () => {
     const engine = new AdaptiveEngine();
     const attempts = [
       makeAttempt({ qid: 'correct-now', correct: true, timestamp: new Date('2024-01-03') }),
@@ -392,7 +399,7 @@ describe('AdaptiveEngine.selectSmartDrillQuestion', () => {
     const selected = engine.selectSmartDrillQuestion(pool, profile, {
       attempts,
       currentSessionUsedQids: new Set(['used-this-session']),
-      recentExposureQids: new Set(),
+      recentExposureQids: new Set(['correct-now']),
     });
 
     expect(selected?.question.qid).toBe('fresh');

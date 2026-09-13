@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AcademyMainhub from "./AcademyMainhub";
 
@@ -140,6 +140,11 @@ vi.mock("@/components/ui/splite", () => ({
   SplineScene: () => <div aria-hidden="true">Robot scene</div>,
 }));
 
+function LocationProbe() {
+  const location = useLocation();
+  return <output aria-label="Current route">{`${location.pathname}${location.search}`}</output>;
+}
+
 describe("AcademyMainhub", () => {
   beforeEach(() => {
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
@@ -227,6 +232,48 @@ describe("AcademyMainhub", () => {
     expect(short?.textContent).toMatch(new RegExp(`${year}$`));
     expect(short?.textContent?.length ?? 0).toBeLessThanOrEqual(
       long?.textContent?.length ?? 0,
+    );
+  });
+
+  it("opens Smart Drill from the practice insight action", async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={["/classroom/drill?section=lr"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+          <AcademyMainhub />
+          <LocationProbe />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "Practice today" }));
+
+    expect(screen.getByRole("status", { name: "Current route" })).toHaveTextContent(
+      "/drill?drill=smart-drill&returnTo=%2Fclassroom",
+    );
+  });
+
+  it("opens the canonical Smart Drill URL from the hero action", async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={["/classroom/drill?section=lr"]} future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+          <AcademyMainhub />
+          <LocationProbe />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Practice your weakest types" }));
+
+    expect(screen.getByRole("status", { name: "Current route" })).toHaveTextContent(
+      "/drill?drill=smart-drill&returnTo=%2Fclassroom",
     );
   });
 });
