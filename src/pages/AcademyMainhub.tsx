@@ -7,17 +7,14 @@ import {
   Loader2,
 } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
-import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { supabase } from "@/integrations/supabase/client";
 import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import PracticeInsightStage from "@/components/mainhub/PracticeInsightStage";
 import AnalyticsStage from "@/components/mainhub/AnalyticsStage";
+import AssignedWorkPanel from "@/components/mainhub/AssignedWorkPanel";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
-import TodayFocusPanel from "@/components/mainhub/TodayFocusPanel";
-import { actionText, useTodayFocus, type TodayFocus } from "@/components/mainhub/useTodayFocus";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import QuestionJump from "@/components/questionfinder/QuestionJump";
 import QuestionFinder from "@/components/questionfinder/QuestionFinder";
@@ -33,106 +30,18 @@ import { launchDrill } from "@/lib/drillLaunch";
 import { cn } from "@/lib/utils";
 import type { TypeDrillConfig } from "@/types/drill";
 
-/**
- * The greeting name, resolved once per mount: profiles.display_name, falling
- * back to metadata then email. Lifted out of the hero because the hero
- * remounts on every section flip, and re-querying profiles to redraw the same
- * name would be a database round trip per toggle.
- */
-function useGreetingName() {
-  const { user } = useAuth();
-  const [profileDisplayName, setProfileDisplayName] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    if (!user) return;
-    let cancelled = false;
-    (async () => {
-      const { data } = await supabase
-        .from("profiles")
-        .select("display_name")
-        .eq("class_id", user.id)
-        .maybeSingle();
-      if (!cancelled) setProfileDisplayName(data?.display_name ?? null);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [user]);
-
-  return React.useMemo(() => {
-    const raw =
-      profileDisplayName ||
-      (user?.user_metadata?.display_name as string | undefined) ||
-      user?.email?.split("@")[0] ||
-      "";
-    const name = raw.split(/[\s._-]/)[0].replace(/[^a-zA-Z]/g, "");
-    return name ? name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() : "";
-  }, [profileDisplayName, user]);
-}
-
-/* The hub puts assigned work above the student's own practice and never said
-   so. One line, the first three times an assignment leads; after that it has
-   done its job and a permanent caption would just be furniture. Storage is
-   wrapped for the same reason the section memory is: a remembered count is
-   never worth a thrown error. */
-const ASSIGNED_HINT_KEY = "lsatu.drillHub.assignedHintSeen";
-const ASSIGNED_HINT_LIMIT = 3;
-
-function useAssignedHint(assignmentLeads: boolean) {
-  const [show, setShow] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!assignmentLeads) return;
-    try {
-      const raw = Number.parseInt(window.localStorage.getItem(ASSIGNED_HINT_KEY) ?? "0", 10);
-      const seen = Number.isFinite(raw) ? raw : 0;
-      if (seen >= ASSIGNED_HINT_LIMIT) return;
-      setShow(true);
-      window.localStorage.setItem(ASSIGNED_HINT_KEY, String(seen + 1));
-    } catch {
-      /* no-op: see rememberSection in src/lib/drillSection.ts */
-    }
-  }, [assignmentLeads]);
-
-  return show;
-}
-
 function MainhubHero({
   section,
-  firstName,
   drillReturnTo,
-  focus,
   onOpenBuilder,
   onStartSmartRc,
 }: {
   section: DrillSection;
-  firstName: string;
   drillReturnTo: string;
-  focus: TodayFocus;
   onOpenBuilder: () => void;
   onStartSmartRc: () => void;
 }) {
   const navigate = useNavigate();
-
-  /* Same shape as Classroom Home's dateline ("TUESDAY · SEPTEMBER 8 · 2026"),
-     so the two mounts one click apart do not print the date two ways. */
-  const todayLabel = React.useMemo(() => {
-    const d = new Date();
-    const weekday = d.toLocaleDateString(undefined, { weekday: "long" });
-    const monthDay = d.toLocaleDateString(undefined, { month: "long", day: "numeric" });
-    return `${weekday} · ${monthDay} · ${d.getFullYear()}`;
-  }, []);
-
-  /* Between 900 and 1099 the greeting column is about 356px, which wraps the
-     long date onto a second line. The short month keeps it on one. Both are
-     rendered and CSS picks; swapping the string at a JS breakpoint would need
-     a resize listener and would not match on the first paint. */
-  const todayLabelShort = React.useMemo(() => {
-    const d = new Date();
-    const weekday = d.toLocaleDateString(undefined, { weekday: "long" });
-    const monthDay = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
-    return `${weekday} · ${monthDay} · ${d.getFullYear()}`;
-  }, []);
 
   const startSmartDrill = React.useCallback(() => {
     navigate(`/drill?${launchDrill({
@@ -141,147 +50,25 @@ function MainhubHero({
     })}`);
   }, [drillReturnTo, navigate]);
 
-  const startFallback = section === "rc" ? onStartSmartRc : startSmartDrill;
-  /* Say what the button does, not what the feature is called. "Smart Drill" is
-     the product's name for the adaptive set; a student meeting it on a button
-     has to guess. The sentence above the button still names it. */
-  const fallbackLabel = section === "rc" ? "Read one passage" : "Practice your weakest types";
-
-  /* The hero leads with the computed next step when there is one. Assigned
-     work is section-agnostic (Joshua assigns it, the student does not choose
-     a bank first), so it leads on RC too. Smart Drill / One Passage become
-     the quiet second option; with nothing assigned they are the first. */
-  const primary = !focus.loading && !focus.hasError ? focus.primary : null;
-  const NextIcon = primary?.Icon;
-  const showAssignedHint = useAssignedHint(primary != null);
+  const startSmart = section === "rc" ? onStartSmartRc : startSmartDrill;
 
   return (
-    /* Surface, scrim and grid live in .drill-observatory-hero / -hero-grid: the
-       horizon image needs image-set() and a two-layer scrim pseudo-element,
-       neither of which belongs in a className. */
     <Card
       data-section={section}
       className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none"
     >
       <div className="drill-observatory-hero-grid">
-        {/* data-next: with an assignment leading, the greeting steps down one
-            size. The assignment is the headline and the greeting its caption;
-            at full size the two wrapped into four lines in a narrow window. */}
-        <div className="drill-observatory-greeting flex flex-col justify-end" data-next={primary ? "true" : undefined}>
-          <div className="flex flex-col gap-[9px]">
-            <p className="drill-observatory-label drill-observatory-ink-60">
-              <span className="drill-observatory-date-long">{todayLabel}</span>
-              <span className="drill-observatory-date-short">{todayLabelShort}</span>
+        <div className="drill-observatory-smart flex flex-col justify-end">
+          <div className="flex flex-col gap-3">
+            <h1>Smart Drill</h1>
+            <p className="drill-observatory-ink-70 max-w-[42ch] text-sm leading-[1.6]">
+              Let Smart Drill choose what would be most useful to practice next.
             </p>
-            {/* Size, face and the italic on the name come from
-                .drill-observatory-greeting h1 — the CSS rule outranks utilities
-                here, so putting them in className would be dead code. */}
-            <h1>
-              {firstName ? (
-                <>
-                  Welcome back, <em>{firstName}</em>
-                </>
-              ) : (
-                "Welcome back"
-              )}
-            </h1>
-
-            {focus.loading ? (
-              /* Same height as the next-up block so the CTA does not jump when
-                 Today resolves. */
-              <div className="drill-observatory-next animate-pulse" aria-label="Loading today">
-                <div className="drill-observatory-skeleton-bar h-2.5 w-28" />
-                <div className="drill-observatory-skeleton-bar mt-2 h-5 w-64 max-w-full" />
-                <div className="drill-observatory-skeleton-bar mt-1 h-3 w-20" />
-              </div>
-            ) : primary ? (
-              <div className="drill-observatory-next">
-                {/* One line of facts, not a label above and an orphaned chip
-                    word below. */}
-                <p className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-60 flex items-center gap-2">
-                  {NextIcon && <NextIcon className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />}
-                  {["Next up", primary.sourceLine, primary.status, primary.actionCue].filter(Boolean).join(" · ")}
-                </p>
-                <p className="drill-observatory-next-title">{primary.title}</p>
-                {showAssignedHint && (
-                  <p className="drill-observatory-ink-60 mt-2 text-[13px] leading-[1.5]">
-                    Assigned work shows here first. Your own practice is below.
-                  </p>
-                )}
-              </div>
-            ) : (
-              /* An empty hero and a failed hero are not the same thing. When
-                 the load fails, primary is null, and without this branch the
-                 page would quietly tell a student with assigned work that she
-                 has none. Say what failed, then still offer the practice. */
-              <div className="drill-observatory-next">
-                {focus.hasError && (
-                  <p className="drill-observatory-ink-70 mb-2 text-sm leading-[1.55]">
-                    Your assigned work did not load, so this is your own
-                    practice rather than today's list.{" "}
-                    <button
-                      type="button"
-                      onClick={() => window.location.reload()}
-                      className="drill-observatory-quiet-link"
-                    >
-                      Try again
-                    </button>
-                  </p>
-                )}
-                <p className="drill-observatory-ink-70 text-sm leading-[1.55]">
-                  {section === "rc"
-                    ? "Read one passage now, untimed, with the answers after it. Or build a set of passages around what you want to read."
-                    : "Start with the question types you miss most, or build a drill around exactly what you want to practice."}
-                </p>
-                {section === "lr" && (
-                  /* Nothing on this page said what "adaptive" means. A student
-                     with nothing assigned is the one being asked to trust it,
-                     so the explanation sits here and nowhere else. No set size:
-                     adaptive mode draws from the whole bank and serves one at a
-                     time, so there is no fixed count to quote. */
-                  <details className="drill-observatory-explainer">
-                    <summary>How the adaptive drill picks questions</summary>
-                    <p>
-                      It looks at the question types you miss most often and pulls from
-                      those first. Your answers feed what it serves next.
-                    </p>
-                  </details>
-                )}
-              </div>
-            )}
           </div>
-
-          <div className="drill-observatory-cta-row">
-            {primary ? (
-              <>
-                <Button
-                  onClick={() => void focus.open(primary)}
-                  disabled={!primary.route && !primary.onOpen}
-                  className="drill-observatory-cta w-fit"
-                >
-                  {actionText(primary)}
-                  <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-                </Button>
-                <button
-                  type="button"
-                  onClick={startFallback}
-                  className="drill-observatory-quiet-link"
-                >
-                  {/* Not "instead": the student has not rejected the assigned
-                      work by reading past it. "Or" offers, it does not correct. */}
-                  {section === "rc" ? "Or read one passage now" : "Or practice your weakest types"}
-                </button>
-              </>
-            ) : (
-              <Button onClick={startFallback} className="drill-observatory-cta w-fit">
-                {/* RC's "smart" is one untimed passage, not the adaptive engine
-                    LR's button opens. Same word, two promises — so it says what
-                    it starts. */}
-                {fallbackLabel}
-                <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-              </Button>
-            )}
-          </div>
+          <Button onClick={startSmart} className="drill-observatory-cta mt-8 w-fit">
+            Smart Drill
+            <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
+          </Button>
         </div>
 
         <div className="drill-observatory-console w-full">
@@ -317,12 +104,10 @@ function MainhubHero({
  * hub the second place to do the same thing.
  */
 function LauncherStage({
-  kind,
   section,
   drillReturnTo,
   onCancel,
 }: {
-  kind: "type-drill";
   section: DrillSection;
   drillReturnTo: string;
   onCancel: () => void;
@@ -403,10 +188,7 @@ export default function AcademyMainhub({
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
-  const firstName = useGreetingName();
   const navigate = useNavigate();
-  /* Computed once, read by the hero and by Today. See useTodayFocus. */
-  const focus = useTodayFocus(drillReturnTo);
 
   /* Which section the hub is showing. URL first, then what this browser
      remembers, then LR — see `src/lib/drillSection.ts`. Reading it from the
@@ -609,9 +391,7 @@ export default function AcademyMainhub({
         {stage === "default" && (
           <MainhubHero
             section={section}
-            firstName={firstName}
             drillReturnTo={drillReturnTo}
-            focus={focus}
             onOpenBuilder={() => openLauncher("type-drill")}
             onStartSmartRc={startSmartRc}
           />
@@ -656,9 +436,6 @@ export default function AcademyMainhub({
                 "@[760px]:grid-cols-[minmax(0,1.2fr)_minmax(340px,1fr)]",
             )}
             data-stacked={isWideLauncherStage ? "true" : undefined}
-            /* With the hero carrying the next step, Today is a short queue and
-               no longer needs to match the practice card's height. */
-            data-queue={stage === "default" && focus.primary ? "true" : undefined}
           >
             {/* The bay itself stays mounted and only its contents change. This
                 makes LR/RC a true in-place toggle, while Today remains the
@@ -673,7 +450,6 @@ export default function AcademyMainhub({
             >
               {isLauncherStage ? (
                 <LauncherStage
-                  kind={stage}
                   section={section}
                   drillReturnTo={drillReturnTo}
                   onCancel={closeStage}
@@ -681,6 +457,7 @@ export default function AcademyMainhub({
               ) : (
                 <PracticeInsightStage
                   section={section}
+                  drillReturnTo={drillReturnTo}
                   onOpenAnalytics={openAnalytics}
                   onOpenLauncher={openLauncher}
                   canOpenAnalytics={canOpenAnalytics}
@@ -689,15 +466,8 @@ export default function AcademyMainhub({
               )}
             </section>
 
-            {/* The hero owns the primary item only while it is on the page.
-                With a stage open the hero is gone, so Today says the next step
-                itself again. */}
             <section className="drill-observatory-today-bay">
-              <TodayFocusPanel
-                drillReturnTo={drillReturnTo}
-                focus={focus}
-                heroOwnsPrimary={stage === "default"}
-              />
+              <AssignedWorkPanel drillReturnTo={drillReturnTo} />
             </section>
           </section>
         )}

@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { BarChart3, BookOpen, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStudentAnalytics } from "@/hooks/useStudentAnalytics";
+import { useLastActivity } from "@/hooks/useLastActivity";
 import { buildInsightSlides, type InsightSlide } from "@/components/mainhub/insightSlides";
 import type { DrillSection } from "@/lib/drillSection";
+import { labelFor, resolveResumeTarget } from "@/lib/lastActivity";
 import { RcSessionHistory } from "@/features/rc/components/RcSessionHistory";
 import "@/features/rc/rc.css";
 
@@ -17,6 +19,7 @@ interface PracticeInsightStageProps {
   onOpenLauncher: (kind: "type-drill") => void;
   canOpenAnalytics: boolean;
   canOpenJournal: boolean;
+  drillReturnTo?: string;
 }
 
 /**
@@ -36,8 +39,10 @@ export default function PracticeInsightStage({
   onOpenLauncher,
   canOpenAnalytics,
   canOpenJournal,
+  drillReturnTo = "/classroom",
 }: PracticeInsightStageProps) {
   const navigate = useNavigate();
+  const { data: lastActivity } = useLastActivity();
   const { analytics, streak, loading } = useStudentAnalytics();
   const slides = React.useMemo(
     () => buildInsightSlides(analytics, streak),
@@ -51,6 +56,21 @@ export default function PracticeInsightStage({
     const real = slides.filter((s) => !s.empty).slice(0, 3);
     return real.length > 0 ? real : slides.slice(0, 1);
   }, [slides]);
+
+  const resumable = React.useMemo(() => {
+    if (section !== "lr" || !lastActivity) return null;
+    const snapshot = lastActivity.state_snapshot;
+    if (snapshot.kind === "bootcamp_step") return null;
+    const target = resolveResumeTarget(snapshot);
+    return {
+      label: labelFor(snapshot),
+      route: target.path,
+      state:
+        target.path === "/drill"
+          ? { ...(target.state as object), returnTo: drillReturnTo }
+          : target.state,
+    };
+  }, [drillReturnTo, lastActivity, section]);
 
   const handleSlideAction = React.useCallback(
     (slide: InsightSlide) => {
@@ -75,6 +95,24 @@ export default function PracticeInsightStage({
         <h2 className="drill-observatory-label drill-observatory-ink-60">
           {section === "rc" ? "Your reading drills" : "Your practice"}
         </h2>
+
+        {resumable && (
+          <button
+            type="button"
+            className="drill-observatory-resume-row drill-observatory-focus-inset flex w-full min-w-0 items-center gap-3 text-left"
+            onClick={() => navigate(resumable.route, { state: resumable.state })}
+          >
+            <span className="min-w-0 flex-1">
+              <span className="drill-observatory-label drill-observatory-label-sm drill-observatory-ink-55 block">
+                Resume your drill
+              </span>
+              <span className="drill-observatory-ink-full mt-1 block truncate text-[13px] font-medium">
+                {resumable.label}
+              </span>
+            </span>
+            <ArrowRight className="drill-observatory-ink-85 h-3.5 w-3.5 shrink-0" strokeWidth={2} aria-hidden />
+          </button>
+        )}
 
         {section === "rc" ? (
           <RcSessionHistory tone="dark" />

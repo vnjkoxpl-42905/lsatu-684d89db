@@ -75,6 +75,13 @@ export function useClassroomLayout() {
   return value;
 }
 
+// Optional for leaf surfaces that can also render in isolated test and preview
+// harnesses. Inside the classroom shell it exposes the real section drawer.
+// eslint-disable-next-line react-refresh/only-export-components
+export function useOptionalClassroomLayout() {
+  return React.useContext(ClassroomLayoutContext);
+}
+
 function useRetainedValue<T>(value: T, canReplace: boolean) {
   const ref = React.useRef(value);
   if (canReplace) ref.current = value;
