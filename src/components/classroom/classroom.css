@@ -1206,6 +1206,7 @@ html.dark .classroom-root.classroom-root-drill {
 .drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-60,
 .drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-55,
 .drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-50,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-smart .drill-observatory-ink-70,
 .drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-explainer summary,
 .drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-explainer p,
 .drill-observatory-root .drill-observatory-hero .drill-observatory-quiet-link {
@@ -1402,6 +1403,27 @@ html.dark .classroom-root.classroom-root-drill {
   max-width: 440px;
   min-height: 0;
   padding: 0 0 6px;
+}
+
+.drill-observatory-root .drill-observatory-smart {
+  align-self: center;
+  max-width: 440px;
+  min-height: 0;
+  padding: 0 0 6px;
+}
+
+.drill-observatory-root .drill-observatory-smart h1 {
+  color: var(--observatory-ink);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.35rem, 3cqi, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.drill-observatory-root .drill-observatory-smart p {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .drill-observatory-root .drill-observatory-greeting h1 {
@@ -2056,6 +2078,21 @@ html.dark .classroom-root.classroom-root-drill {
   transform: translateY(0.5px);
 }
 
+.drill-observatory-root .drill-observatory-resume-row {
+  background: rgba(244, 241, 234, 0.035);
+  border: 1px solid var(--observatory-ring-glass);
+  border-radius: var(--observatory-radius-control);
+  color: inherit;
+  cursor: pointer;
+  min-height: 58px;
+  padding: 12px 14px;
+  transition: background-color var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-resume-row:hover {
+  background: rgba(244, 241, 234, 0.06);
+}
+
 .drill-observatory-root .drill-observatory-today-quiet {
   background: rgba(244, 241, 234, 0.035);
   border-radius: var(--observatory-radius-control);
@@ -2168,7 +2205,8 @@ html.dark .classroom-root.classroom-root-drill {
     background-position: center 78%;
   }
 
-  .drill-observatory-root .drill-observatory-greeting {
+  .drill-observatory-root .drill-observatory-greeting,
+  .drill-observatory-root .drill-observatory-smart {
     align-self: start;
     max-width: none;
   }

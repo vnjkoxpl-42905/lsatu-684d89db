@@ -1,8 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation } from "react-router-dom";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import AcademyMainhub from "./AcademyMainhub";
+
+vi.mock("@/contexts/ThemeContext", () => ({
+  useTheme: () => ({ theme: "light" }),
+}));
 
 vi.mock("@/contexts/AuthContext", () => ({
   useAuth: () => ({
@@ -92,10 +96,6 @@ vi.mock("@/hooks/useInbox", () => ({
   useConversationMessages: () => ({ messages: [], loading: false, refresh: vi.fn() }),
 }));
 
-vi.mock("@/hooks/useInstructorMessages", () => ({
-  useInstructorMessages: () => ({ data: [], isLoading: false, isError: false }),
-}));
-
 vi.mock("@/hooks/useNotifications", () => ({
   useNotifications: () => ({
     notifications: [],
@@ -150,7 +150,7 @@ describe("AcademyMainhub", () => {
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
   });
 
-  it("renders the hero, practice + insight stage, and today's focus panel", async () => {
+  it("renders Smart Drill, the manual builder, practice, and assigned work", async () => {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     });
@@ -163,8 +163,12 @@ describe("AcademyMainhub", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.queryByRole("heading", { name: "LR Smart Drill" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Practice your weakest types" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Smart Drill" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Smart Drill" })).toBeInTheDocument();
+    expect(
+      screen.getByText("Let Smart Drill choose what would be most useful to practice next."),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/Welcome back/i)).not.toBeInTheDocument();
     // The Spline robot was cut in the 2026-08-01 reskin: the hero is two columns
     // (greeting + finder console) over the horizon image, with no third bay.
     expect(screen.queryByText("Robot scene")).not.toBeInTheDocument();
@@ -188,9 +192,8 @@ describe("AcademyMainhub", () => {
     // The Question finder's second mount. Without it, a student standing on the
     // page that exists for picking questions has to go back to Home to search.
     expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "Today" })).toBeInTheDocument();
-    expect(await screen.findByRole("heading", { name: "All caught up" })).toBeInTheDocument();
-    expect(screen.getByText("Nothing assigned for today.")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Assigned work" })).toBeInTheDocument();
+    expect(await screen.findByText("Nothing assigned right now.")).toBeInTheDocument();
     expect(screen.queryByText("Orbital workspace")).not.toBeInTheDocument();
     expect(
       screen.queryByRole("region", { name: "Mainhub orbital workspace" }),
@@ -204,7 +207,7 @@ describe("AcademyMainhub", () => {
     expect(screen.queryByRole("heading", { name: "Build the drill you need." })).not.toBeInTheDocument();
   });
 
-  it("prints the dateline twice so CSS can pick the short month at 1024", async () => {
+  it("does not render the old personalized dateline", async () => {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     });
@@ -220,19 +223,8 @@ describe("AcademyMainhub", () => {
       </QueryClientProvider>,
     );
 
-    // Between 900 and 1099 the greeting column wrapped the long month onto a
-    // second line. Both spans render and the media query hides one, so the
-    // first paint is already correct without a resize listener.
-    const long = document.querySelector(".drill-observatory-date-long");
-    const short = document.querySelector(".drill-observatory-date-short");
-    expect(long).not.toBeNull();
-    expect(short).not.toBeNull();
-    const year = String(new Date().getFullYear());
-    expect(long?.textContent).toMatch(new RegExp(`${year}$`));
-    expect(short?.textContent).toMatch(new RegExp(`${year}$`));
-    expect(short?.textContent?.length ?? 0).toBeLessThanOrEqual(
-      long?.textContent?.length ?? 0,
-    );
+    expect(document.querySelector(".drill-observatory-date-long")).toBeNull();
+    expect(document.querySelector(".drill-observatory-date-short")).toBeNull();
   });
 
   it("opens Smart Drill from the practice insight action", async () => {
@@ -270,7 +262,7 @@ describe("AcademyMainhub", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Practice your weakest types" }));
+    fireEvent.click(screen.getByRole("button", { name: "Smart Drill" }));
 
     expect(screen.getByRole("status", { name: "Current route" })).toHaveTextContent(
       "/drill?drill=smart-drill&returnTo=%2Fclassroom",
@@ -278,55 +270,7 @@ describe("AcademyMainhub", () => {
   });
 });
 
-describe("AcademyMainhub — when today fails to load", () => {
-  beforeEach(() => {
-    window.HTMLElement.prototype.scrollIntoView = vi.fn();
-    todayState.classroomIsError = true;
-  });
-
-  afterEach(() => {
-    todayState.classroomIsError = false;
-  });
-
-  function renderHub() {
-    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-    return render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter
-          initialEntries={["/classroom/drill"]}
-          future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
-        >
-          <AcademyMainhub />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
-  }
-
-  it("says the assigned work did not load instead of implying there is none", async () => {
-    renderHub();
-    expect(
-      await screen.findByText(/Your assigned work did not load/i),
-    ).toBeInTheDocument();
-  });
-
-  it("offers a way to retry, not an instruction to refresh", async () => {
-    renderHub();
-    // The hero and the Today card each explain their own absence, so both
-    // offer a retry. A student who scrolls past the hero should not meet an
-    // empty Today with no reason attached to it.
-    const retries = await screen.findAllByRole("button", { name: "Try again" });
-    expect(retries.length).toBeGreaterThanOrEqual(1);
-  });
-
-  it("still offers the student's own practice", () => {
-    renderHub();
-    expect(
-      screen.getByRole("button", { name: "Practice your weakest types" }),
-    ).toBeInTheDocument();
-  });
-});
-
-describe("AcademyMainhub — the one explainer", () => {
+describe("AcademyMainhub — Smart Drill explanation", () => {
   beforeEach(() => {
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
     window.localStorage.clear();
@@ -346,16 +290,16 @@ describe("AcademyMainhub — the one explainer", () => {
     );
   }
 
-  it("explains the adaptive drill to the student with nothing assigned", async () => {
+  it("explains Smart Drill in plain language", async () => {
     renderHub();
     expect(
-      await screen.findByText("How the adaptive drill picks questions"),
+      await screen.findByText("Let Smart Drill choose what would be most useful to practice next."),
     ).toBeInTheDocument();
   });
 
-  it("quotes no set size, because adaptive mode has no fixed one", async () => {
+  it("does not expose mechanical selection language", async () => {
     renderHub();
-    const body = await screen.findByText(/looks at the question types you miss most often/i);
-    expect(body.textContent).not.toMatch(/\b(ten|10)\b/i);
+    expect(screen.queryByText(/question types you miss most often/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/fresh/i)).not.toBeInTheDocument();
   });
 });

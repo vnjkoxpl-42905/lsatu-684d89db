@@ -195,7 +195,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
   it("opens on LR when nothing says otherwise", () => {
     renderHub("/classroom/drill");
-    expect(screen.getByRole("button", { name: "Practice your weakest types" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Smart Drill" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
     expect(lrSwitch()).toHaveAttribute("aria-pressed", "true");
     expect(rcSwitch()).toHaveAttribute("aria-pressed", "false");
@@ -204,7 +204,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   it("opens on RC when the link says so", () => {
     renderHub("/classroom/drill?section=rc");
     expect(screen.queryByText("DRILL / READING COMPREHENSION")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Read one passage" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Smart Drill" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Build the reading set you need." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Set up an RC drill" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
@@ -227,7 +227,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   it("treats an unrecognised section as LR rather than as an error", () => {
     renderHub("/classroom/drill?section=sideways");
     expect(screen.queryByText("DRILL / LOGICAL REASONING")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Practice your weakest types" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Smart Drill" })).toBeInTheDocument();
   });
 
   it("writes the section to the URL when the switch is thrown", () => {
@@ -289,11 +289,11 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
-  it("keeps Today mounted across the toggle — it is status, not a section", () => {
+  it("keeps Assigned work mounted across the toggle because assignments span sections", () => {
     renderHub("/classroom/drill");
-    const before = screen.getByRole("region", { name: "Today" });
+    const before = screen.getByRole("region", { name: "Assigned work" });
     fireEvent.click(rcSwitch());
-    expect(screen.getByRole("region", { name: "Today" })).toBe(before);
+    expect(screen.getByRole("region", { name: "Assigned work" })).toBe(before);
   });
 
   it("switches LR and RC in place without remounting or animating the surfaces", () => {
@@ -321,9 +321,9 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("section")).toBe("rc");
   });
 
-  it("Read one passage asks the builder for one untimed passage and starts it", () => {
+  it("RC Smart Drill asks the builder for one untimed passage and starts it", () => {
     renderHub("/classroom/drill?section=rc");
-    fireEvent.click(screen.getByRole("button", { name: "Read one passage" }));
+    fireEvent.click(screen.getByRole("button", { name: "Smart Drill" }));
     const q = url();
     expect(q.get("section")).toBe("rc");
     expect(q.get("stage")).toBe("type-drill");
