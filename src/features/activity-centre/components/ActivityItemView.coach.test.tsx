@@ -61,12 +61,12 @@ describe("ActivityItemView sends the Activity's own Coach brief", () => {
    * `item_format` (ADR 0009), and it has no textbox to type into. Its Coach
    * brief is exercised by the recall module's own tests instead.
    *
-   * Filtered on the format rather than the slug so a second spoken Activity is
-   * excluded automatically rather than remembered.
+   * Filtered on the format rather than the slug so spoken sections and the
+   * paper-first Conditional Rephrase activity never enter this prose path.
    */
   it.each(
     SEED_ACTIVITIES.map((a, i) => [a.slug, i, a.item_format] as const)
-      .filter(([, , format]) => format !== "spoken-recall")
+      .filter(([, , format]) => format === "free-text")
       .map(([slug, i]) => [slug, i] as const),
   )(
     "%s sends its own rubric, not the negation default",

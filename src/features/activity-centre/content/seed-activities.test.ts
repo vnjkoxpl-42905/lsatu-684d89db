@@ -33,12 +33,11 @@ describe("seed Activities", () => {
     (_slug, activity) => {
       expect(activity.title.trim()).not.toBe("");
       expect(activity.subtitle.trim()).not.toBe("");
-      // Every authored Activity is typed. The spoken ones are the captured
-      // sections, which are filtered out above and asserted in their own file.
-      // That string is not cosmetic: `spoken-recall` is what ActivityRunner
-      // switches on to hand the whole screen to a different player
-      // (docs/adr/0009), so a typo here shows a student the wrong runner.
-      expect(activity.item_format).toBe("free-text");
+      // Every authored Activity is typed. Conditional Rephrase is the one
+      // closed-form drill: students work on paper and record one of five
+      // diagrams, so classifying it as free text would wrongly imply AI
+      // grading. The other authored Activities still accept prose.
+      expect(activity.item_format).toBe(activity.slug === "conditional-rephrase" ? "mcq" : "free-text");
       expect(activity.items.length).toBeGreaterThan(0);
     },
   );

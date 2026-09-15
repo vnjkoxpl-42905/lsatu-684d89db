@@ -1,4 +1,5 @@
 import type { ActivityCoach, ActivityItem, CoachVerdict, ItemFormat, JudgeSource, Verdict } from "../api/types";
+import type { PaperDiagramChoice } from "../worlds/switchyard/diagramChoices";
 import { ActivityItemView } from "./ActivityItemView";
 
 interface ActivityQuestionStackProps {
@@ -17,6 +18,8 @@ interface ActivityQuestionStackProps {
   fastPath?: (item: ActivityItem, response: string) => boolean;
   /** A world's authoritative deterministic judge. */
   localJudge?: (item: ActivityItem, response: string) => CoachVerdict;
+  /** Builds the five paper-diagram choices for the active item. */
+  paperChoices?: (item: ActivityItem) => PaperDiagramChoice[];
   /** The world's structural read of the answer, recorded as telemetry only. */
   shadowFault?: (item: ActivityItem, response: string) => string | null;
   activeIndex: number;
@@ -50,6 +53,7 @@ export function ActivityQuestionStack({
   promptInWorld = false,
   fastPath,
   localJudge,
+  paperChoices,
   shadowFault,
   activeIndex,
   resumeAttempts = 0,
@@ -90,6 +94,7 @@ export function ActivityQuestionStack({
             promptInWorld={promptInWorld}
             fastPath={fastPath}
             localJudge={localJudge}
+            paperChoices={paperChoices?.(activeItem)}
             shadowFault={shadowFault}
             initialAttempts={resumeAttempts}
             initialValue={resumeValue}

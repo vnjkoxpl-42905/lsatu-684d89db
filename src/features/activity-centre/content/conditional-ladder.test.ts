@@ -147,29 +147,18 @@ describe("what a Conditional Rephrase student is shown", () => {
     expect(instructions.credited_secondary_label).toBe("Contrapositive");
   });
 
-  // Finding C. The task demanded the contrapositive while the rubric credited
-  // either direction on its own, so a student following the instruction to the
-  // letter and a student ignoring half of it were graded identically. The
-  // rubric is what has actually been grading, and it is the only reading under
-  // which items 46, 47 and 48 cohere, so the task is the field that was wrong.
-  it("asks for something the rubric will actually credit", () => {
-    // Was pinned to the literal phrase "either direction is credited". That
-    // wording was removed precisely because "either direction" could be read as
-    // licensing the converse; the intent it stood for is asserted instead.
+  it("asks for paper work and a deterministic record of it", () => {
     expect(instructions.coach.rubric[0]).toMatch(/contrapositive/i);
     expect(instructions.coach.rubric[0]).toMatch(/credited/i);
-    expect(instructions.task).not.toMatch(/then give me the contrapositive/i);
-    expect(instructions.task).toMatch(/if \[sufficient\], then \[necessary\]/i);
-    expect(instructions.task).toMatch(/contrapositive counts too/i);
+    expect(instructions.task).toMatch(/diagram.*on paper/i);
+    expect(instructions.task).toMatch(/choose the route/i);
+    expect(instructions.task).toMatch(/conditional and its contrapositive both count/i);
   });
 
-  // Asserted by content rather than by index: the rubric grew when the
-  // conditional-logic rule set landed, and pinning this line to the last slot
-  // of a four-line rubric made an unrelated rubric addition look like a
-  // regression in what the student is told about wording.
-  it("tells the student their own wording is fine, which the rubric already assumed", () => {
+  it("does not ask a grader to interpret the student's wording", () => {
     expect(instructions.coach.rubric.some((r) => /wording is free/i.test(r))).toBe(true);
-    expect(instructions.task).toMatch(/in your own words/i);
+    expect(instructions.task).not.toMatch(/in your own words/i);
+    expect(instructions.answer_placeholder).toMatch(/choose the route/i);
   });
 
   it("does not re-demand the contrapositive in the answer box", () => {

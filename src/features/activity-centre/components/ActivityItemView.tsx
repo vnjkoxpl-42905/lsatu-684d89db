@@ -4,6 +4,7 @@ import { useActivityCoach } from "../hooks/useActivityCoach";
 import type { ActivityCoach, ActivityItem, CoachVerdict, FeedbackState, ItemFormat, JudgeSource, Verdict } from "../api/types";
 import { MAX_ATTEMPTS } from "../api/types";
 import { clearDraft, saveDraft } from "../drafts";
+import type { PaperDiagramChoice } from "../worlds/switchyard/diagramChoices";
 import { StatementPanel } from "./StatementPanel";
 import { ItemPrompt } from "./ItemPrompt";
 
@@ -29,6 +30,8 @@ interface ActivityItemViewProps {
   fastPath?: (item: ActivityItem, response: string) => boolean;
   /** A world's authoritative local judge. When present, the Coach is never called. */
   localJudge?: (item: ActivityItem, response: string) => CoachVerdict;
+  /** Paper-first, deterministic choices supplied by the Conditional Rephrase world. */
+  paperChoices?: PaperDiagramChoice[];
   /** The world's structural read of the answer, recorded as telemetry only. */
   shadowFault?: (item: ActivityItem, response: string) => string | null;
   /**
@@ -77,6 +80,7 @@ export function ActivityItemView({
   promptInWorld = false,
   fastPath,
   localJudge,
+  paperChoices,
   shadowFault,
   initialAttempts = 0,
   initialValue = "",
@@ -86,16 +90,22 @@ export function ActivityItemView({
   onNext,
 }: ActivityItemViewProps) {
   const { judge, judging } = useActivityCoach();
-  const [value, setValue] = useState(initialValue);
+  // A saved free-text draft from the former version is not one of the five
+  // diagrams. Ignore it instead of enabling Check with no option selected.
+  const [value, setValue] = useState(() =>
+    paperChoices?.length && !paperChoices.some((choice) => choice.id === initialValue)
+      ? ""
+      : initialValue,
+  );
   const answerRef = useRef<HTMLTextAreaElement | null>(null);
 
   // Debounced rather than per-keystroke: a draft is not durable state and does
   // not deserve a write on every character.
   useEffect(() => {
-    if (!draftKey) return;
+    if (!draftKey || paperChoices?.length) return;
     const t = setTimeout(() => saveDraft(draftKey, value), 400);
     return () => clearTimeout(t);
-  }, [draftKey, value]);
+  }, [draftKey, paperChoices, value]);
   const [attempts, setAttempts] = useState(initialAttempts);
   const [result, setResult] = useState<{ verdict: FeedbackState; feedback: string; covered?: number[] } | null>(null);
   const [revealed, setRevealed] = useState(false);
@@ -117,6 +127,32 @@ export function ActivityItemView({
     const attemptNo = attempts + 1;
     const startedAt = performance.now();
     const since = () => Math.round(performance.now() - startedAt);
+
+    // Conditional Rephrase records the diagram the student says is on their
+    // paper. The option already carries its formal verdict, so there is no
+    // prose interpretation and no possible Coach call.
+    if (paperChoices?.length) {
+      const choice = paperChoices.find((candidate) => candidate.id === value);
+      if (!choice) return;
+      const verdict = { verdict: choice.verdict, feedback: choice.feedback };
+      setAttempts(attemptNo);
+      setResult(verdict);
+      record({
+        itemOrder: item.order,
+        responseText: choice.responseText,
+        verdict: choice.verdict,
+        attemptNo,
+        judgeSource: "fast-path",
+        shadowFault: shadowFault?.(item, choice.responseText) ?? null,
+        latencyMs: since(),
+      });
+      if (choice.verdict === "correct") {
+        resolve("correct", false);
+      } else if (attemptNo >= MAX_ATTEMPTS) {
+        resolve(choice.verdict, true);
+      }
+      return;
+    }
 
     // Some Activities describe a closed formal system that can be judged
     // locally. Conditional Rephrase is one: direction, polarity, clause
@@ -242,7 +278,7 @@ export function ActivityItemView({
     const verdict = shown && shown !== "unchecked" ? shown : null;
     record({
       itemOrder: item.order,
-      responseText: value,
+      responseText: paperChoices?.find((choice) => choice.id === value)?.responseText ?? value,
       verdict,
       attemptNo: Math.max(attempts + 1, MAX_ATTEMPTS),
     });
@@ -275,6 +311,7 @@ export function ActivityItemView({
         answerLabel={answerLabel}
         answerPlaceholder={answerPlaceholder}
         creditedSecondaryLabel={creditedSecondaryLabel}
+        paperChoices={paperChoices}
       />
     </div>
   );

@@ -1,6 +1,8 @@
 import type { ComponentProps } from "react";
 import type { ItemFormat } from "../api/types";
+import type { PaperDiagramChoice } from "../worlds/switchyard/diagramChoices";
 import { AnswerPanel } from "./AnswerPanel";
+import { PaperDiagramPanel } from "./PaperDiagramPanel";
 
 /**
  * Format-polymorphic right-column renderer. Negation Station uses the
@@ -9,9 +11,14 @@ import { AnswerPanel } from "./AnswerPanel";
  */
 interface ItemPromptProps extends ComponentProps<typeof AnswerPanel> {
   format: ItemFormat;
+  paperChoices?: PaperDiagramChoice[];
 }
 
-export function ItemPrompt({ format, ...answerProps }: ItemPromptProps) {
+export function ItemPrompt({ format, paperChoices, ...answerProps }: ItemPromptProps) {
+  if (paperChoices?.length) {
+    return <PaperDiagramPanel {...answerProps} choices={paperChoices} />;
+  }
+
   switch (format) {
     case "free-text":
       return <AnswerPanel {...answerProps} />;
