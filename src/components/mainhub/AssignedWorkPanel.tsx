@@ -18,7 +18,7 @@ export default function AssignedWorkPanel({
 }) {
   const navigate = useNavigate();
   const classroom = useOptionalClassroomLayout();
-  const { rows, loading } = useAssignedTodoFeed();
+  const { rows, loading, failed, retry } = useAssignedTodoFeed();
   const openRows = rows.filter((row) => row.status !== "completed");
   const shownRows = openRows.slice(0, 3);
 
@@ -78,6 +78,17 @@ export default function AssignedWorkPanel({
               </li>
             ))}
           </ol>
+        ) : failed ? (
+          <div className="drill-observatory-today-quiet mt-3" role="alert">
+            Your assigned work did not load.{" "}
+            <button
+              type="button"
+              className="drill-observatory-insight-link"
+              onClick={retry}
+            >
+              Try again
+            </button>
+          </div>
         ) : (
           <div className="drill-observatory-today-quiet mt-3" aria-live="polite">
             Nothing assigned right now.

@@ -580,7 +580,19 @@ ${knowledge.concepts.map((c: any) => `- ${c.concept_name}: ${c.explanation}
     const knowledgeContextShort = clamp(knowledgeContext, 12000);
 
     // Keep roughly the last 10 turns so the tutor remembers the student's line of argument.
-    const messagesForModel = (messages || []).slice(-20);
+    // The model rejects the whole request (400) when a turn carries an empty
+    // or non-string content, or an unknown role. Drop those instead of
+    // forwarding them, so one stray turn cannot kill the conversation.
+    const messagesForModel = (messages || [])
+      .filter(
+        (m: any) =>
+          m &&
+          (m.role === 'user' || m.role === 'assistant') &&
+          typeof m.content === 'string' &&
+          m.content.trim().length > 0,
+      )
+      .map((m: any) => ({ role: m.role, content: m.content }))
+      .slice(-20);
 
     const isFirstMessage = messages.length === 0;
 

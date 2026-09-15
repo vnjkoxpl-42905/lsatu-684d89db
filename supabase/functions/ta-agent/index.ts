@@ -1034,7 +1034,9 @@ async function runReadTool(
       buildStudentContext(admin, student.id, student.name),
       admin
         .from("activity_section_grades")
-        .select("assignment_id, attempt_no, score, status, graded_at")
+        // Only columns this table actually has, and only this student's runs.
+        .select("assignment_id, attempt_no, section, source_section, grader_version, stimuli, graded_at")
+        .eq("student_id", student.id)
         .order("graded_at", { ascending: false })
         .limit(10),
       admin
