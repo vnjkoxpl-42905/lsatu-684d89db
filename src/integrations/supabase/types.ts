@@ -6922,6 +6922,7 @@ export type Database = {
         Args: { _expected_count: number; _slug: string; _version: string }
         Returns: Json
       }
+      purge_single_session_pii: { Args: { _now?: string }; Returns: Json }
       reconcile_booking_calendar_event: {
         Args: {
           _deleted?: boolean
