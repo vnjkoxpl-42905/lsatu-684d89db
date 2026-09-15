@@ -249,20 +249,23 @@ export function buildAssignedRows({
 export function useAssignedTodoFeed(): {
   rows: AssignedTodoRow[];
   loading: boolean;
+  /** A read failed. Never report "nothing assigned" on a failed read. */
+  failed: boolean;
+  retry: () => void;
 } {
   const { user } = useAuth();
-  const { assignments: hw, loading: hwLoading } = useStudentAssignments();
-  const { assignments: ta, loading: taLoading } = useStudentTAAssignments();
+  const { assignments: hw, loading: hwLoading, error: hwError, refresh: hwRefresh } = useStudentAssignments();
+  const { assignments: ta, loading: taLoading, error: taError, refresh: taRefresh } = useStudentTAAssignments();
   const itemsQuery = useClassroomItems();
 
-  const { data: guided = [], isLoading: guidedLoading } = useQuery<GuidedRow[]>({
+  const { data: guided = [], isLoading: guidedLoading, isError: guidedError, refetch: guidedRefetch } = useQuery<GuidedRow[]>({
     queryKey: ['todo-feed:guided', user?.id],
     enabled: !!user,
     staleTime: 30_000,
     queryFn: async () => (await listGuidedForStudent(user!.id)) as GuidedRow[],
   });
 
-  const { data: activities = [], isLoading: actLoading } = useQuery({
+  const { data: activities = [], isLoading: actLoading, isError: actError, refetch: actRefetch } = useQuery({
     queryKey: ['todo-feed:activity', user?.id],
     enabled: !!user,
     staleTime: 30_000,
@@ -275,8 +278,21 @@ export function useAssignedTodoFeed(): {
     [hw, ta, guided, activities, items],
   );
 
+  const retry = useMemo(
+    () => () => {
+      void hwRefresh();
+      void taRefresh();
+      void guidedRefetch();
+      void actRefetch();
+      void itemsQuery.refetch();
+    },
+    [hwRefresh, taRefresh, guidedRefetch, actRefetch, itemsQuery],
+  );
+
   return {
     rows,
     loading: hwLoading || taLoading || guidedLoading || actLoading || itemsQuery.isLoading,
+    failed: !!hwError || !!taError || guidedError || actError || itemsQuery.isError,
+    retry,
   };
 }

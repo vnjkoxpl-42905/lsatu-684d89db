@@ -616,6 +616,20 @@ function DrillContent() {
       } else if (mode === 'full-section' && state.config) {
         const config = state.config as FullSectionConfig;
         rawQuestions = questionBank.getSection(config.pt, config.section);
+        // An assigned set drawn from one section runs as that set, in the
+        // order it was assigned — not as every question in the section.
+        if (state.restrictQids?.length) {
+          const allowed = new Set(state.restrictQids);
+          const bySection = new Map(rawQuestions.map(q => [q.qid, q]));
+          const picked = state.restrictQids
+            .map(qid => bySection.get(qid))
+            .filter((q): q is LRQuestion => !!q);
+          if (picked.length > 0 && picked.length < rawQuestions.length) {
+            rawQuestions = picked;
+          } else if (picked.length > 0) {
+            rawQuestions = rawQuestions.filter(q => allowed.has(q.qid));
+          }
+        }
         setHasTimer(config.timer.mode !== 'unlimited');
       } else if (mode === 'natural-drill' && state.config) {
         const config = state.config as TypeDrillConfig;
@@ -1744,7 +1758,10 @@ function DrillContent() {
         attemptErrors.push(e);
       }
 
-      if (!attempt.correct) {
+      // Smart Drill journals each miss at answer time (see the adaptive commit
+      // path), so repeating it here would double the history and inflate the
+      // revisit count on the same journal row.
+      if (!attempt.correct && mode !== 'adaptive') {
         try {
           const { logWrongAnswer } = await import('@/lib/wajService');
           await logWrongAnswer({

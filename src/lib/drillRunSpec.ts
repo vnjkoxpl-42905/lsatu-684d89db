@@ -52,6 +52,11 @@ export interface DrillRunSpec {
   sealed?: boolean;
   /** Open on this question rather than the first. */
   initialIndex?: number;
+  /**
+   * A full-section run that must show only these questions: an assigned set
+   * that happens to come from one section is not the whole section.
+   */
+  restrictQids?: string[];
 
   // ── Which stored row this run belongs to ────────────────────────────────
   // Previously read straight off the query string by the runner, in a second
@@ -227,6 +232,9 @@ export function drillRunSpecFromLaunch(
             // A section assigned as a measurement stays sealed until it is
             // scored. Blind review is where the thinking gets checked.
             sealed: !launch.revealAllowed,
+            // A set drawn from one section is still only the questions that
+            // were assigned. The runner shows these, never the whole section.
+            restrictQids: resolvedQids,
             assignmentId: launch.assignmentId,
             guidedSetId: launch.guidedSetId,
           };
