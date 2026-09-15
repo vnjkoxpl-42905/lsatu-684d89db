@@ -177,7 +177,7 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
   const stripeSecret = requiredEnv("STRIPE_SECRET_KEY");
   if (!signature) return json({ error: "invalid_signature" }, 400);
   const stripe = new Stripe(stripeSecret, {
-    apiVersion: "2025-06-30.basil",
+    apiVersion: "2025-08-27.basil",
     httpClient: Stripe.createFetchHttpClient(),
   });
   let event: Stripe.Event;
@@ -193,7 +193,7 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
   }
 
   if (event.type.startsWith("refund.")) {
-    const refund = event.data.object;
+    const refund = event.data.object as Stripe.Refund;
     if (event.livemode !== expectedLivemode()) return json({ error: "livemode_mismatch" }, 400);
     const bookingId = String(refund.metadata?.booking_id || "");
     if (!bookingId || !refund.id || !refund.status) return json({ error: "invalid_refund" }, 400);
@@ -246,7 +246,7 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
     if (!bookingId) return json({ error: "invalid_product" }, 400);
     if (!session.id || typeof session.payment_intent !== "string") return json({ error: "missing_payment_facts" }, 400);
     const { data: booking, error: bookingError } = await supabase.from("single_session_bookings")
-      .select("id,status,start_at,end_at,gcal_event_id,event_slug")
+      .select("id,status,start_at,end_at,gcal_event_id,event_slug,email,quoted_amount_cents,quoted_currency")
       .eq("id", bookingId).maybeSingle();
     if (bookingError) throw bookingError;
     if (!booking) return json({ error: "unknown_booking" }, 400);
@@ -255,11 +255,23 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
       .eq("slug", booking.event_slug).maybeSingle();
     if (eventError) throw eventError;
     if (!bookingEvent) return json({ error: "unknown_event" }, 400);
+    // New holds carry the exact quote used to create Checkout. Rows created
+    // before quote persistence use the same override-aware resolver as checkout.
+    let expectedAmount = Number(booking.quoted_amount_cents);
+    if (!Number.isInteger(booking.quoted_amount_cents)) {
+      const { data: legacyAmount, error: legacyPriceError } = await supabase.rpc("booking_price_cents", {
+        _event_slug: booking.event_slug,
+        _email: booking.email,
+      });
+      if (legacyPriceError) throw legacyPriceError;
+      expectedAmount = Number(legacyAmount ?? bookingEvent.price_cents);
+    }
+    const expectedCurrency = String(booking.quoted_currency || bookingEvent.currency).toLowerCase();
     const validation = validateSingleSessionCheckout(
       session,
       expectedLivemode(),
-      Number(bookingEvent.price_cents),
-      String(bookingEvent.currency),
+      expectedAmount,
+      expectedCurrency,
     );
     if (!validation.ok) return json({ error: validation.error }, 400);
 

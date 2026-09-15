@@ -2,7 +2,7 @@ import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "re
 import { Link, useSearchParams } from "react-router-dom";
 import {
   CalendarDays, Check, ChevronLeft, ChevronRight, Clock, ExternalLink,
-  Loader2, Plus, ShieldCheck, Trash2, Video,
+  Globe2, Loader2, Plus, ShieldCheck, Trash2, UserRound, Video,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,11 +15,24 @@ import { buildMonthCells, dayKey, groupSlotsByDay, slotDays, startOfDay } from "
 
 export type SingleSessionSlot = { start_at: string; end_at: string };
 export type SingleSessionStatus = {
+  id?: string;
+  booking_id?: string;
   status: "draft" | "checkout_open" | "booked" | "cancelled" | "expired" | "abandoned" | "refund_pending" | "refunded" | "refund_failed";
   start_at: string;
   end_at: string;
   meet_url?: string | null;
   checkout_url?: string | null;
+  attendee_name?: string | null;
+  event_label?: string | null;
+  duration_minutes?: number | null;
+  timezone?: string | null;
+  calendar_ready?: boolean;
+  calendar_pending?: boolean;
+  calendar_url?: string | null;
+};
+export type SingleSessionStatusLookup = {
+  checkout_session_id?: string;
+  booking_id?: string;
 };
 type HoldInput = {
   start_at: string;
@@ -38,6 +51,7 @@ type HoldResult = {
   checkout_url: string | null;
   booking_token: string;
   checkout_session_id: string | null;
+  booking_id?: string | null;
   booking?: SingleSessionStatus;
 };
 
@@ -81,7 +95,7 @@ export type SingleSessionApi = {
   info: () => Promise<EventInfo>;
   slots: () => Promise<{ slots: SingleSessionSlot[] }>;
   hold: (input: HoldInput) => Promise<HoldResult>;
-  status: (checkoutSessionId: string, bookingToken: string) => Promise<SingleSessionStatus>;
+  status: (lookup: SingleSessionStatusLookup, bookingToken: string) => Promise<SingleSessionStatus>;
   abandon: (checkoutSessionId: string, bookingToken: string) => Promise<{ status: string }>;
   cancel: (cancelToken: string, confirm: boolean) => Promise<SingleSessionStatus>;
   getTurnstileToken: () => Promise<string>;
@@ -171,7 +185,7 @@ export function makeApi(eventSlug: string): SingleSessionApi {
     info: () => invoke("info", { event: eventSlug }),
     slots: () => invoke("slots", { event: eventSlug }),
     hold: (input) => invoke("hold", { ...input, event: eventSlug }),
-    status: (checkoutSessionId, bookingToken) => invoke("status", { event: eventSlug, checkout_session_id: checkoutSessionId, booking_token: bookingToken }),
+    status: (lookup, bookingToken) => invoke("status", { event: eventSlug, ...lookup, booking_token: bookingToken }),
     abandon: (checkoutSessionId, bookingToken) => invoke("abandon", { event: eventSlug, checkout_session_id: checkoutSessionId, booking_token: bookingToken }),
     cancel: (cancelToken, confirm) => invoke("cancel", { event: eventSlug, cancel_token: cancelToken, confirm }),
     getTurnstileToken: turnstileToken,
@@ -201,6 +215,51 @@ function formatSlot(iso: string) {
   return new Date(iso).toLocaleString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
 }
 
+function bookingDuration(state: SingleSessionStatus) {
+  if (state.duration_minutes && state.duration_minutes > 0) return state.duration_minutes;
+  return Math.max(0, Math.round((new Date(state.end_at).getTime() - new Date(state.start_at).getTime()) / 60_000));
+}
+
+function formatBookingTime(state: SingleSessionStatus) {
+  const timeZone = state.timezone || viewerTimezone();
+  const date = new Date(state.start_at).toLocaleDateString(undefined, {
+    weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone,
+  });
+  const start = formatTime(state.start_at, true, timeZone);
+  const end = formatTime(state.end_at, true, timeZone);
+  return `${start} – ${end}, ${date}`;
+}
+
+function statusLookupFromParams(
+  checkoutSessionId: string | null,
+  bookingId: string | null,
+  pending?: PendingCheckout | null,
+): SingleSessionStatusLookup | null {
+  if (checkoutSessionId) return { checkout_session_id: checkoutSessionId };
+  if (bookingId) return { booking_id: bookingId };
+  if (pending?.checkout_session_id) {
+    return { checkout_session_id: pending.checkout_session_id };
+  }
+  return null;
+}
+
+function isCalendarReady(state: SingleSessionStatus): boolean {
+  return state.calendar_ready === true && Boolean(state.calendar_url);
+}
+
+function invitationStatusCopy(
+  calendarReady: boolean,
+  pollingExhausted = false,
+): string {
+  if (calendarReady) {
+    return "A calendar invitation has been sent to your email address.";
+  }
+  if (pollingExhausted) {
+    return "Your session is confirmed. Your calendar invitation is taking a little longer to prepare, and we'll email it to you as soon as it's ready.";
+  }
+  return "Your session is confirmed. We're preparing your calendar invitation now.";
+}
+
 function statusCopy(status: SingleSessionStatus["status"]) {
   if (status === "cancelled") return { title: "Your session is cancelled", body: "The calendar invitation is being removed. Cancelling does not automatically issue a refund." };
   if (status === "refund_pending") return { title: "We're returning your payment", body: "That time was no longer available when payment finished. Your refund is being processed, and we'll email you when Stripe confirms it." };
@@ -210,15 +269,41 @@ function statusCopy(status: SingleSessionStatus["status"]) {
   return { title: "This hold expired", body: "No booking was made. Choose another available time to start again." };
 }
 
-function ResultView({ state, checkoutSessionId }: { state: SingleSessionStatus; checkoutSessionId?: string | null }) {
+function ResultView({
+  state,
+  calendarPollingExhausted,
+  checkoutSessionId,
+}: {
+  state: SingleSessionStatus;
+  calendarPollingExhausted?: boolean;
+  checkoutSessionId?: string | null;
+}) {
   if (state.status === "booked") {
-    return <main className="booking-holo min-h-screen px-4 py-12 sm:py-20">
-      <section className="booking-shadow mx-auto max-w-xl rounded-2xl border border-border bg-card p-6 text-center sm:p-10" aria-live="polite">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary"><Check className="h-6 w-6" /></div>
-        <h1 className="mt-5 text-2xl font-semibold tracking-tight">You're booked</h1>
-        <p className="mt-2 text-sm text-muted-foreground">{formatSlot(state.start_at)}</p>
-        {state.meet_url ? <Button asChild className="mt-6"><a href={state.meet_url} target="_blank" rel="noreferrer"><Video className="mr-2 h-4 w-4" />Join Google Meet</a></Button>
-          : <p className="mt-6 rounded-xl bg-muted px-4 py-3 text-sm">Your calendar invite is on its way. It will include the Google Meet link.</p>}
+    const calendarReady = isCalendarReady(state);
+    const timezone = (state.timezone || viewerTimezone()).replace(/_/g, " ");
+    const invitationCopy = invitationStatusCopy(
+      calendarReady,
+      calendarPollingExhausted,
+    );
+    return <main className="booking-holo flex min-h-screen items-center px-3 py-8 sm:px-6 sm:py-14">
+      <section className="booking-shadow relative mx-auto w-full max-w-4xl overflow-hidden rounded-xl border border-[#75152A]/20 bg-white px-5 py-10 text-center text-slate-900 sm:px-12 sm:py-14 lg:px-20" aria-live="polite">
+        <div aria-hidden="true" className="absolute -right-14 top-8 w-52 rotate-45 bg-gradient-to-r from-[#4F0D1C] via-[#6E1423] to-[#8E1D3A] py-2 text-[9px] font-bold uppercase tracking-[0.18em] text-white shadow-sm sm:-right-12 sm:top-9 sm:text-[10px]">Powered by LSAT U</div>
+        <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#75152A] text-[#75152A]"><Check className="h-5 w-5 stroke-[2.5]" /></div>
+        <h1 className="mt-5 text-2xl font-semibold tracking-tight text-[#75152A] sm:text-3xl">You are scheduled!</h1>
+        <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">{invitationCopy}</p>
+        {calendarReady
+          ? <Button asChild variant="outline" className="mt-6 min-h-11 border-[#75152A] px-6 text-[#75152A] hover:bg-[#75152A] hover:text-white"><a href={state.calendar_url!} target="_blank" rel="noreferrer">Open Invitation <ExternalLink className="ml-2 h-4 w-4" /></a></Button>
+          : <Button variant="outline" className="mt-6 min-h-11 border-[#75152A]/35 px-6 text-[#75152A]/60" disabled>{calendarPollingExhausted ? "Invitation pending" : <><Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" />Preparing invitation</>}</Button>}
+
+        <div className="mt-10 border-t border-slate-200 pt-8 text-left sm:mt-12 sm:pt-10">
+          <h2 className="text-xl font-semibold text-[#75152A] sm:text-2xl">{state.event_label || "LSAT U Session"}</h2>
+          <dl className="mt-6 space-y-5 text-sm text-slate-700 sm:text-base">
+            <div className="flex items-start gap-4"><UserRound className="mt-0.5 h-5 w-5 shrink-0 text-[#75152A]" aria-hidden="true" /><dt className="sr-only">Attendee</dt><dd>{state.attendee_name || "Your session"}</dd></div>
+            <div className="flex items-start gap-4"><CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-[#75152A]" aria-hidden="true" /><dt className="sr-only">Date and time</dt><dd>{formatBookingTime(state)} <span className="whitespace-nowrap text-slate-500">({bookingDuration(state)} minutes)</span></dd></div>
+            <div className="flex items-start gap-4"><Globe2 className="mt-0.5 h-5 w-5 shrink-0 text-[#75152A]" aria-hidden="true" /><dt className="sr-only">Timezone</dt><dd>{timezone}</dd></div>
+            <div className="flex items-start gap-4"><Video className="mt-0.5 h-5 w-5 shrink-0 text-[#75152A]" aria-hidden="true" /><dt className="sr-only">Location</dt><dd>Google Meet details are included in your calendar invitation.</dd></div>
+          </dl>
+        </div>
       </section>
     </main>;
   }
@@ -249,6 +334,7 @@ export default function SingleSession({
   const [params] = useSearchParams();
   const bookingToken = params.get("booking_token");
   const checkoutSessionId = params.get("checkout_session_id");
+  const bookingId = params.get("booking_id");
   const cancelToken = params.get("cancel_token");
   const [info, setInfo] = useState<EventInfo | null>(null);
   const [slots, setSlots] = useState<SingleSessionSlot[]>([]);
@@ -264,6 +350,12 @@ export default function SingleSession({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<SingleSessionStatus | null>(null);
+  const [statusLookup, setStatusLookup] =
+    useState<SingleSessionStatusLookup | null>(() =>
+      statusLookupFromParams(checkoutSessionId, bookingId)
+    );
+  const [confirmationToken, setConfirmationToken] = useState(bookingToken);
+  const [calendarPollingExhausted, setCalendarPollingExhausted] = useState(false);
   const [resume, setResume] = useState<PendingCheckout | null>(null);
   const [cancelPreview, setCancelPreview] = useState<SingleSessionStatus | null>(null);
   const submitPromise = useRef<Promise<void> | null>(null);
@@ -300,12 +392,20 @@ export default function SingleSession({
         }
         const pending = readPending(event);
         const token = bookingToken ?? pending?.booking_token;
-        const session = checkoutSessionId ?? pending?.checkout_session_id;
-        if (token && session) {
-          const state = await resolvedApi.status(session, token);
+        const lookup = statusLookupFromParams(
+          checkoutSessionId,
+          bookingId,
+          pending,
+        );
+        if (token && lookup) {
+          const state = await resolvedApi.status(lookup, token);
           if (cancelled) return;
           if (!checkoutSessionId && state.status === "checkout_open" && pending) setResume(pending);
-          else setResult(state);
+          else {
+            setStatusLookup(lookup);
+            setConfirmationToken(token);
+            setResult(state);
+          }
           return;
         }
         await loadAvailability();
@@ -315,34 +415,40 @@ export default function SingleSession({
     }
     void start();
     return () => { cancelled = true; };
-  }, [api, bookingToken, cancelToken, checkoutSessionId, loadAvailability]);
+  }, [bookingId, bookingToken, cancelToken, checkoutSessionId, event, loadAvailability, resolvedApi]);
 
   const resultStatus = result?.status;
+  const calendarReady = result !== null && isCalendarReady(result);
   useEffect(() => {
-    if (!resultStatus || !checkoutSessionId || !bookingToken || resultStatus !== "checkout_open") return;
+    const waitingForBooking = resultStatus === "checkout_open" || resultStatus === "draft";
+    const waitingForCalendar = resultStatus === "booked" && !calendarReady;
+    if (!resultStatus || !statusLookup || !confirmationToken || (!waitingForBooking && !waitingForCalendar)) return;
     let stopped = false;
     let attempts = 0;
     const poll = async () => {
-      while (!stopped && attempts < 8) {
+      setCalendarPollingExhausted(false);
+      while (!stopped && attempts < 20) {
         await new Promise((resolve) => window.setTimeout(resolve, 1500));
         if (stopped) return;
         attempts += 1;
         try {
-          const next = await resolvedApi.status(checkoutSessionId, bookingToken);
+          const next = await resolvedApi.status(statusLookup, confirmationToken);
           if (!stopped) setResult(next);
-          if (next.status !== "checkout_open" && next.status !== "draft") return;
+          if (next.status === "booked" && isCalendarReady(next)) return;
+          if (next.status !== "checkout_open" && next.status !== "draft" && next.status !== "booked") return;
         } catch { /* the bounded confirmation fallback remains truthful */ }
       }
+      if (!stopped) setCalendarPollingExhausted(true);
     };
     void poll();
     return () => { stopped = true; };
-  }, [api, bookingToken, checkoutSessionId, resultStatus]);
+  }, [calendarReady, confirmationToken, resolvedApi, resultStatus, statusLookup]);
 
   useEffect(() => {
     if (!result || result.status === "checkout_open" || result.status === "draft") return;
     sessionStorage.removeItem(pendingKey(event));
     sessionStorage.removeItem(idempotencyKeyFor(event));
-  }, [result]);
+  }, [event, result]);
 
   const slotsByDay = useMemo(() => groupSlotsByDay(slots), [slots]);
   const daySlots = pickedDay ? slotsByDay.get(dayKey(pickedDay)) ?? [] : [];
@@ -384,6 +490,16 @@ export default function SingleSession({
         if (!hold.checkout_url) {
           sessionStorage.removeItem(pendingKey(event));
           sessionStorage.removeItem(idempotencyKeyFor(event));
+          const freeBookingId = hold.booking_id || hold.booking?.booking_id || hold.booking?.id;
+          if (freeBookingId) {
+            const lookup = { booking_id: freeBookingId };
+            setStatusLookup(lookup);
+            setConfirmationToken(hold.booking_token);
+            const url = new URL(window.location.href);
+            url.searchParams.set("booking_id", freeBookingId);
+            url.searchParams.set("booking_token", hold.booking_token);
+            window.history.replaceState(window.history.state, "", url);
+          }
           setResult(hold.booking ?? null);
           return;
         }
@@ -412,7 +528,15 @@ export default function SingleSession({
   };
 
   if (loading) return <main className="booking-holo flex min-h-screen items-center justify-center" role="status" aria-live="polite"><Loader2 className="mr-2 h-5 w-5 animate-spin motion-reduce:animate-none" />Loading available times</main>;
-  if (result) return <ResultView state={result} checkoutSessionId={checkoutSessionId} />;
+  if (result) {
+    return (
+      <ResultView
+        state={result}
+        calendarPollingExhausted={calendarPollingExhausted}
+        checkoutSessionId={checkoutSessionId}
+      />
+    );
+  }
   if (resume) return <main className="booking-holo min-h-screen px-4 py-12 sm:py-20"><section className="booking-shadow mx-auto max-w-xl rounded-2xl border border-border bg-card p-6 text-center sm:p-10">
     <h1 className="text-2xl font-semibold">Finish your payment</h1><p className="mt-2 text-sm text-muted-foreground">Your time is still held. Return to Stripe to finish booking it.</p>
     <Button className="mt-6" onClick={() => resolvedApi.redirectToCheckout(resume.checkout_url)}>Return to secure checkout <ExternalLink className="ml-2 h-4 w-4" /></Button>

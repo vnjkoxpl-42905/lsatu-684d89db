@@ -52,9 +52,12 @@ async function heartbeat(supabase: any, phase: "start" | "success" | "error", er
   if (heartbeatError) throw heartbeatError;
 }
 
-function whenText(startAt: string): string {
+function whenText(startAt: string, timezone: string): string {
+  let safeTimezone = timezone || "America/Toronto";
+  try { new Intl.DateTimeFormat("en-US", { timeZone: safeTimezone }).format(); }
+  catch (_) { safeTimezone = "America/Toronto"; }
   return new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Toronto",
+    timeZone: safeTimezone,
     weekday: "long",
     month: "long",
     day: "numeric",
@@ -73,13 +76,19 @@ async function sendEmail(job: any, booking: any, payload: any) {
     recipientRole: admin ? "admin" : "student",
     studentName: booking.name,
     studentEmail: booking.email,
-    whenText: whenText(booking.start_at),
-    durationMinutes: 70,
+    eventLabel: booking.event_label || "LSAT Session",
+    startAt: booking.start_at,
+    endAt: booking.end_at,
+    whenText: whenText(booking.start_at, booking.booker_timezone),
+    durationMinutes: Math.round((new Date(booking.end_at).getTime() - new Date(booking.start_at).getTime()) / 60_000),
+    timezone: booking.booker_timezone || "America/Toronto",
     meetUrl: booking.meet_url,
+    calendarUrl: booking.calendar_url,
+    bookingId: booking.id,
     studentNote: admin ? booking.notes : "",
     fileNames: [],
     cancelUrl: admin ? undefined : payload?.cancel_url,
-    calendarPending: !booking.meet_url,
+    calendarPending: !booking.meet_url || !booking.calendar_url,
   };
   if (["email_cancellation", "email_refund_apology"].includes(job.action)) {
     templateName = "single-session-update";
@@ -87,7 +96,7 @@ async function sendEmail(job: any, booking: any, payload: any) {
       kind: job.action === "email_refund_apology" ? "refund" : "cancellation",
       recipientRole: admin ? "admin" : "booker",
       studentName: booking.name,
-      whenText: whenText(booking.start_at),
+      whenText: whenText(booking.start_at, booking.booker_timezone),
     };
   }
   await sendAppEmail(templateName, recipientEmail, {
@@ -135,16 +144,20 @@ Deno.serve(async (req) => {
     }
     await heartbeat(supabase, "start");
     const workerId = `${WORKER_NAME}:${crypto.randomUUID()}`;
-    const { data: jobs, error: claimError } = await supabase.rpc("claim_single_session_outbox", {
-      _worker_id: workerId,
-      _actions: null,
-      _limit: 20,
-      _lease_seconds: 180,
-    });
-    if (claimError) throw claimError;
-
     const results: { id: string; action: string; outcome: string }[] = [];
-    for (const job of jobs ?? []) {
+    // A calendar promotion unblocks its email jobs. Claim twice, and only
+    // twice, so those emails can send in this invocation without turning one
+    // request into an unbounded queue drain.
+    for (let pass = 0; pass < 2; pass++) {
+      const { data: jobs, error: claimError } = await supabase.rpc("claim_single_session_outbox", {
+        _worker_id: workerId,
+        _actions: null,
+        _limit: 20,
+        _lease_seconds: 180,
+      });
+      if (claimError) throw claimError;
+      if (!jobs?.length) break;
+      for (const job of jobs) {
       const { data: booking, error: bookingError } = await supabase.from("single_session_bookings")
         .select("*").eq("id", job.booking_id).maybeSingle();
       if (bookingError || !booking) {
@@ -174,11 +187,12 @@ Deno.serve(async (req) => {
             extendedProperties: { private: { lsatu_single_session_booking_id: booking.id, lsatu_hold: "false" } },
           }, { conferenceDataVersion: 1, sendUpdates: "all" });
           let meetUrl = meetUrlFromEvent(event);
-          if (!meetUrl) {
+          if (!meetUrl || !event.htmlLink) {
             event = await getEvent(targetCalendar, booking.gcal_event_id);
             meetUrl = meetUrlFromEvent(event);
           }
           if (!meetUrl) throw new Error("meet_url_pending");
+          if (!event.htmlLink) throw new Error("calendar_url_pending");
           const { error: mirrorError } = await supabase.from("schedule_events").upsert({
             google_event_id: event.id,
             calendar_id: targetCalendar,
@@ -196,7 +210,10 @@ Deno.serve(async (req) => {
             deleted_at: null,
           }, { onConflict: "google_event_id" });
           if (mirrorError) throw mirrorError;
-          const completion = await complete(supabase, job, { meetUrl, result: { google_event_id: event.id } });
+          const completion = await complete(supabase, job, {
+            meetUrl,
+            result: { google_event_id: event.id, calendar_url: event.htmlLink },
+          });
           if (completion?.compensate) {
             await deleteEvent(targetCalendar, event.id, { sendUpdates: "all" });
             await supabase.from("schedule_events").update({ status: "cancelled", deleted_at: new Date().toISOString() }).eq("google_event_id", event.id);
@@ -217,12 +234,15 @@ Deno.serve(async (req) => {
           await complete(supabase, job, { result: { google_event_id: eventId ?? null } });
         } else if (job.action === "stripe_refund") {
           if (!booking.stripe_payment_intent_id) throw new Error("payment_intent_missing");
+          if (!Number.isInteger(Number(booking.amount_cents)) || Number(booking.amount_cents) <= 0) {
+            throw new Error("refund_amount_missing");
+          }
           const stripeSecret = requiredEnv("STRIPE_SECRET_KEY");
           const refund = booking.stripe_refund_id
             ? await retrieveRefund(stripeSecret, booking.stripe_refund_id)
             : await createRefund(stripeSecret, {
               payment_intent: booking.stripe_payment_intent_id,
-              amount: 4500,
+              amount: Number(booking.amount_cents),
               metadata: { booking_id: booking.id, product: "single_session" },
             }, job.idempotency_key);
           if (refund.status === "succeeded") {
@@ -236,7 +256,19 @@ Deno.serve(async (req) => {
           const payload = job.payload_ciphertext
             ? await decryptEnvelope(job.payload_ciphertext, requiredEnv("SINGLE_SESSION_ENCRYPTION_KEY"))
             : {};
-          await sendEmail(job, booking, payload);
+          const [{ data: eventType, error: eventTypeError }, { data: calendarEvent, error: calendarEventError }] = await Promise.all([
+            supabase.from("booking_event_types").select("label").eq("slug", booking.event_slug).maybeSingle(),
+            booking.gcal_event_id
+              ? supabase.from("schedule_events").select("html_link").eq("google_event_id", booking.gcal_event_id).maybeSingle()
+              : Promise.resolve({ data: null, error: null }),
+          ]);
+          if (eventTypeError) throw eventTypeError;
+          if (calendarEventError) throw calendarEventError;
+          await sendEmail(job, {
+            ...booking,
+            event_label: eventType?.label || "LSAT Session",
+            calendar_url: calendarEvent?.html_link || null,
+          }, payload);
           await complete(supabase, job, { providerStatus: "accepted" });
         } else {
           throw new Error("unknown_outbox_action");
@@ -246,6 +278,7 @@ Deno.serve(async (req) => {
         await fail(supabase, job, error);
         console.error("single-session outbox job failed", { bookingId: booking.id, jobId: job.id, action: job.action, error: error instanceof Error ? error.message : String(error) });
         results.push({ id: job.id, action: job.action, outcome: "retry" });
+      }
       }
     }
     await heartbeat(supabase, "success", undefined, { processed: results.length });

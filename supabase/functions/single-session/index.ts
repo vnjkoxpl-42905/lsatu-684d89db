@@ -277,6 +277,27 @@ async function linkSpent(supabase: any, event: BookingEventConfig): Promise<bool
   return data === true;
 }
 
+// Best-effort immediate processing for free bookings. The scheduled worker is
+// still the durable retry path, so a missed nudge must never undo a booking.
+async function kickOutboxWorker(): Promise<void> {
+  const secret = Deno.env.get("BOOKING_WORKER_SECRET");
+  if (!secret) {
+    console.error("outbox nudge skipped: worker secret not configured");
+    return;
+  }
+  try {
+    const response = await fetch(`${requiredEnv("SUPABASE_URL")}/functions/v1/single-session-outbox`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-worker-secret": secret },
+      body: "{}",
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!response.ok) console.error("outbox nudge non-2xx", { status: response.status });
+  } catch (error) {
+    console.error("outbox nudge failed", { error: error instanceof Error ? error.message : String(error) });
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
@@ -347,10 +368,12 @@ Deno.serve(async (req) => {
 
     if (action === "status") {
       const checkoutSessionId = String(body.checkout_session_id || "");
+      const bookingId = String(body.booking_id || "");
       const token = String(body.booking_token || "");
-      if (!checkoutSessionId || !token) return json({ error: "invalid_token" }, 403);
+      if ((!checkoutSessionId && !bookingId) || !token) return json({ error: "invalid_token" }, 403);
       const { data, error } = await supabase.rpc("get_single_session_status", {
-        _stripe_checkout_session_id: checkoutSessionId,
+        _stripe_checkout_session_id: checkoutSessionId || null,
+        _booking_id: bookingId || null,
         _booking_token_hash: await sha256Hex(token),
       });
       if (error || !data) return json({ error: "invalid_token" }, error?.code === "P0403" ? 403 : 404);
@@ -367,6 +390,13 @@ Deno.serve(async (req) => {
       if (!name || clientIdempotencyKey.length < 8 || !Number.isFinite(startAt.getTime())) return json({ error: "invalid_request" }, 400);
       if (!await verifyTurnstile(String(body.turnstile_token || ""), ip)) return json({ error: "verification_failed" }, 403);
       const event = await loadEvent(supabase, body.event);
+      const { data: resolvedPrice, error: priceError } = await supabase.rpc("booking_price_cents", {
+        _event_slug: event.slug,
+        _email: email,
+      });
+      if (priceError) throw priceError;
+      const amountCents = Number(resolvedPrice ?? event.priceCents);
+      if (!Number.isInteger(amountCents) || amountCents < 0) throw new Error("invalid_event_price");
       const endAt = new Date(startAt.getTime() + event.lengthMinutes * 60_000);
 
       // A replay must not conflict with its own DB hold or tentative Google
@@ -404,6 +434,7 @@ Deno.serve(async (req) => {
         _ip_hash: ipHash,
         _user_id: await optionalUserId(supabase, req),
         _event_slug: event.slug,
+        _booker_timezone: String(body.timezone || SINGLE_SESSION.hostTimezone),
       });
       if (claimError) {
         // P0410 is a one-off link that was already used. It is a 409 like a
@@ -492,6 +523,10 @@ Deno.serve(async (req) => {
         }
         const { data: confirmed } = await supabase
           .from("single_session_bookings").select("*").eq("id", booking.id).maybeSingle();
+        const nudge = kickOutboxWorker();
+        const waitUntil = (globalThis as any)?.EdgeRuntime?.waitUntil;
+        if (typeof waitUntil === "function") waitUntil.call((globalThis as any).EdgeRuntime, nudge);
+        else void nudge;
         return json({
           booking: toPublicBooking(confirmed ?? booking),
           booking_token: responseBookingTokenForFree(booking, bookingTokenHash, bookingToken),
@@ -514,7 +549,7 @@ Deno.serve(async (req) => {
           bookingId: booking.id,
           description: checkoutDescription(booking.start_at, String(body.timezone || SINGLE_SESSION.hostTimezone)),
           email,
-          amountCents: event.priceCents,
+          amountCents,
           currency: event.currency,
           successUrl,
           cancelUrl,
@@ -559,6 +594,7 @@ Deno.serve(async (req) => {
       const bookingTokenHash = await sha256Hex(bookingToken);
       const { data: current, error: statusError } = await supabase.rpc("get_single_session_status", {
         _stripe_checkout_session_id: checkoutSessionId,
+        _booking_id: null,
         _booking_token_hash: bookingTokenHash,
       });
       if (statusError || !current) return json({ error: "invalid_token" }, 403);

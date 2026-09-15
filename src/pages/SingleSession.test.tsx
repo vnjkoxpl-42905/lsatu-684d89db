@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import SingleSession, { type SingleSessionApi } from "./SingleSession";
@@ -67,7 +67,17 @@ describe("SingleSession", () => {
         checkout_url: null,
         checkout_session_id: null,
         booking_token: "book-token",
-        booking: { status: "booked", start_at: slot.start_at, end_at: slot.end_at },
+        booking: {
+          id: "booking-free",
+          status: "booked",
+          start_at: slot.start_at,
+          end_at: slot.end_at,
+          attendee_name: "Booker Name",
+          event_label: "Free Consultation",
+          duration_minutes: 30,
+          timezone: "America/Toronto",
+          calendar_pending: true,
+        },
       }),
     });
     renderPage(client, "/book/consultation", "consultation");
@@ -76,7 +86,9 @@ describe("SingleSession", () => {
     await chooseSlotAndFillForm();
     fireEvent.click(screen.getByRole("button", { name: /Confirm booking/i }));
 
-    await screen.findByRole("heading", { name: /You're booked/i });
+    await screen.findByRole("heading", { name: /You are scheduled/i });
+    expect(screen.getByText("Free Consultation")).toBeInTheDocument();
+    expect(screen.getByText("Booker Name")).toBeInTheDocument();
     expect(client.redirectToCheckout).not.toHaveBeenCalled();
     expect(sessionStorage.getItem("lsatu.single-session.pending.consultation")).toBeNull();
   });
@@ -134,12 +146,125 @@ describe("SingleSession", () => {
     expect(client.redirectToCheckout).toHaveBeenCalledWith("https://checkout.stripe.test/session");
   });
 
-  it("shows the truthful booked interim while the Meet link is still being promoted", async () => {
-    const client = api({ status: vi.fn().mockResolvedValue({ status: "booked", start_at: slot.start_at, end_at: slot.end_at, meet_url: null }) });
+  it("shows a complete burgundy confirmation while the calendar invitation is being prepared", async () => {
+    const client = api({ status: vi.fn().mockResolvedValue({
+      status: "booked",
+      start_at: slot.start_at,
+      end_at: slot.end_at,
+      attendee_name: "Booker Name",
+      event_label: "LSAT U Session",
+      duration_minutes: 70,
+      timezone: "America/Toronto",
+      calendar_pending: true,
+      calendar_ready: false,
+      calendar_url: null,
+    }) });
     renderPage(client, "/book/session?checkout_session_id=cs_test&booking_token=book-token");
 
-    expect(await screen.findByRole("heading", { name: /You're booked/i })).toBeInTheDocument();
-    expect(screen.getByText(/calendar invite is on its way/i)).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /You are scheduled/i })).toBeInTheDocument();
+    expect(screen.getByText(/preparing your calendar invitation now/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Preparing invitation/i })).toBeDisabled();
+    expect(screen.getByText("Booker Name")).toBeInTheDocument();
+    expect(screen.getByText("LSAT U Session")).toBeInTheDocument();
+    expect(screen.getByText("America/Toronto")).toBeInTheDocument();
+    expect(screen.getByText(/70 minutes/i)).toBeInTheDocument();
+    expect(screen.getByText(/Powered by LSAT U/i)).toHaveClass("text-white");
+    expect(client.status).toHaveBeenCalledWith({ checkout_session_id: "cs_test" }, "book-token");
+  });
+
+  it("opens only the calendar invitation once calendar promotion is ready", async () => {
+    const client = api({ status: vi.fn().mockResolvedValue({
+      status: "booked",
+      start_at: slot.start_at,
+      end_at: slot.end_at,
+      attendee_name: "Booker Name",
+      event_label: "LSAT U Session",
+      duration_minutes: 70,
+      timezone: "America/Toronto",
+      calendar_ready: true,
+      calendar_pending: false,
+      calendar_url: "https://calendar.google.test/event",
+      meet_url: "https://meet.google.test/secret",
+    }) });
+    renderPage(client, "/book/session?checkout_session_id=cs_test&booking_token=book-token");
+
+    const invitation = await screen.findByRole("link", { name: /Open Invitation/i });
+    expect(invitation).toHaveAttribute("href", "https://calendar.google.test/event");
+    expect(screen.getByText(/calendar invitation has been sent/i)).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Google Meet/i })).not.toBeInTheDocument();
+  });
+
+  it("keeps polling when a calendar URL exists but readiness is not confirmed", async () => {
+    vi.useFakeTimers();
+    try {
+      const pending = {
+        status: "booked" as const,
+        start_at: slot.start_at,
+        end_at: slot.end_at,
+        calendar_ready: false,
+        calendar_pending: true,
+        calendar_url: "https://calendar.google.test/event",
+      };
+      const status = vi.fn()
+        .mockResolvedValueOnce(pending)
+        .mockResolvedValueOnce({ ...pending, calendar_ready: true, calendar_pending: false });
+
+      renderPage(api({ status }), "/book/session?checkout_session_id=cs_test&booking_token=book-token");
+      await act(async () => { await Promise.resolve(); });
+
+      expect(screen.queryByRole("link", { name: /Open Invitation/i })).not.toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Preparing invitation/i })).toBeDisabled();
+
+      await act(async () => { await vi.advanceTimersByTimeAsync(1_500); });
+
+      expect(screen.getByRole("link", { name: /Open Invitation/i })).toHaveAttribute(
+        "href",
+        pending.calendar_url,
+      );
+      expect(status).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("loads and polls a free booking by booking id and capability token", async () => {
+    const status = vi.fn().mockResolvedValue({
+      status: "booked",
+      start_at: slot.start_at,
+      end_at: slot.end_at,
+      event_label: "Free Consultation",
+      calendar_ready: true,
+      calendar_url: "https://calendar.google.test/free-event",
+    });
+    renderPage(api({ status }), "/book/consultation?booking_id=booking-free&booking_token=book-token", "consultation");
+
+    expect(await screen.findByRole("link", { name: /Open Invitation/i })).toBeInTheDocument();
+    expect(status).toHaveBeenCalledWith({ booking_id: "booking-free" }, "book-token");
+  });
+
+  it("stops calendar polling at the bound and shows a truthful delayed state", async () => {
+    vi.useFakeTimers();
+    try {
+      const status = vi.fn().mockResolvedValue({
+        status: "booked",
+        start_at: slot.start_at,
+        end_at: slot.end_at,
+        calendar_ready: false,
+        calendar_pending: true,
+        calendar_url: null,
+      });
+      renderPage(api({ status }), "/book/session?checkout_session_id=cs_test&booking_token=book-token");
+
+      await act(async () => { await Promise.resolve(); });
+      expect(screen.getByRole("heading", { name: /You are scheduled/i })).toBeInTheDocument();
+      await act(async () => { await vi.advanceTimersByTimeAsync(30_000); });
+
+      expect(screen.getByText(/taking a little longer to prepare/i)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Invitation pending/i })).toBeDisabled();
+      expect(status).toHaveBeenCalledTimes(21);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("previews cancellation before committing it and then confirms the cancelled state", async () => {
