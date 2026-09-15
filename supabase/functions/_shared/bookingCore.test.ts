@@ -1,4 +1,5 @@
 import {
+  activeSingleSessionBusyIntervals,
   deterministicGoogleEventId,
   generateSlots,
   parseAvailability,
@@ -57,6 +58,21 @@ Deno.test("parseAvailability reads the buffer, notice, window and overrides from
   assert(avail.overridesByDate["2026-07-11"][0].endMin === 21 * 60 + 10, "override range");
   const closed = parseAvailability({ ...AVAIL_PAYLOAD, overrides: [{ date: "2026-07-11", start_time: null, end_time: null }] });
   assert(Array.isArray(closed.overridesByDate["2026-07-11"]) && closed.overridesByDate["2026-07-11"].length === 0, "closed day");
+});
+
+Deno.test("expired single-session drafts and checkouts do not block availability", () => {
+  const nowMs = Date.parse("2026-09-15T23:30:00.000Z");
+  const rows = [
+    { status: "draft", start_at: "2026-09-16T18:10:00Z", end_at: "2026-09-16T19:20:00Z", draft_expires_at: "2026-09-15T18:05:00Z", stripe_expires_at: null },
+    { status: "checkout_open", start_at: "2026-09-16T19:20:00Z", end_at: "2026-09-16T20:30:00Z", draft_expires_at: "2026-09-15T18:05:00Z", stripe_expires_at: "2026-09-15T19:00:00Z" },
+    { status: "draft", start_at: "2026-09-16T20:40:00Z", end_at: "2026-09-16T21:50:00Z", draft_expires_at: "2026-09-16T00:00:00Z", stripe_expires_at: null },
+    { status: "booked", start_at: "2026-09-16T21:30:00Z", end_at: "2026-09-16T22:40:00Z", draft_expires_at: "2026-09-15T18:05:00Z", stripe_expires_at: null },
+  ];
+
+  const intervals = activeSingleSessionBusyIntervals(rows, nowMs);
+  assert(intervals.length === 2, `expected active draft + booked, got ${JSON.stringify(intervals)}`);
+  assert(intervals.some((row) => row.start === Date.parse("2026-09-16T20:40:00Z")), "active draft missing");
+  assert(intervals.some((row) => row.start === Date.parse("2026-09-16T21:30:00Z")), "booked session missing");
 });
 
 Deno.test("pass slots step length + buffer from each range start and dedupe overlapping ranges", () => {

@@ -90,6 +90,37 @@ function hostLocalParts(timeZone: string, at: Date) {
 
 export type Slot = { start_at: string; end_at: string };
 
+type SingleSessionBusyRow = {
+  start_at?: string | null;
+  end_at?: string | null;
+  status?: string | null;
+  draft_expires_at?: string | null;
+  stripe_expires_at?: string | null;
+};
+
+// Only live holds may remove a time from availability. Expired or malformed
+// drafts/checkouts are deliberately ignored so a missed sweeper run cannot
+// suppress slots indefinitely. Confirmed bookings remain busy until cancelled.
+export function activeSingleSessionBusyIntervals(
+  rows: SingleSessionBusyRow[],
+  nowMs = Date.now(),
+): { start: number; end: number }[] {
+  return rows.flatMap((row) => {
+    const start = Date.parse(row.start_at ?? "");
+    const end = Date.parse(row.end_at ?? "");
+    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return [];
+
+    let blocksAvailability = row.status === "booked";
+    if (row.status === "draft") {
+      blocksAvailability = Date.parse(row.draft_expires_at ?? "") > nowMs;
+    } else if (row.status === "checkout_open") {
+      blocksAvailability = Date.parse(row.stripe_expires_at ?? "") > nowMs;
+    }
+
+    return blocksAvailability ? [{ start, end }] : [];
+  });
+}
+
 
 export async function loadBusyIntervals(opts: {
   supabase: any;
@@ -113,7 +144,7 @@ export async function loadBusyIntervals(opts: {
   // propagation window and keeps package slot browsing symmetric.
   const { data: singleSessions, error: singleSessionErr } = await supabase
     .from("single_session_bookings")
-    .select("start_at,end_at")
+    .select("start_at,end_at,status,draft_expires_at,stripe_expires_at")
     .in("status", ["draft", "checkout_open", "booked"])
     .lt("start_at", rangeEndIso)
     .gt("end_at", rangeStartIso);
@@ -131,7 +162,7 @@ export async function loadBusyIntervals(opts: {
   const live = await gcal.freeBusy(calendarIds, rangeStartIso, rangeEndIso);
   const intervals = [
     ...(mirrored ?? []).map((e: any) => ({ start: new Date(e.start_at).getTime(), end: new Date(e.end_at).getTime() })),
-    ...(singleSessions ?? []).map((e: any) => ({ start: new Date(e.start_at).getTime(), end: new Date(e.end_at).getTime() })),
+    ...activeSingleSessionBusyIntervals(singleSessions ?? []),
     ...(redemptions ?? []).map((e: any) => ({ start: new Date(e.start_at).getTime(), end: new Date(e.end_at).getTime() })),
     ...Object.values(live).flat().map((e) => ({ start: new Date(e.start).getTime(), end: new Date(e.end).getTime() })),
   ].filter((e) => Number.isFinite(e.start) && Number.isFinite(e.end));
