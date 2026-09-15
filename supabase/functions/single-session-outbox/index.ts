@@ -18,8 +18,23 @@ function requiredEnv(name: string): string {
   return value;
 }
 
+async function authorizeTicket(supabase: any, req: Request): Promise<boolean> {
+  const ticket = req.headers.get("x-worker-ticket") || "";
+  if (!/^[0-9a-f-]{36}$/i.test(ticket)) return false;
+  const { data, error } = await supabase.rpc("consume_booking_worker_ticket", {
+    _token: ticket,
+    _worker: WORKER_NAME,
+  });
+  if (error) {
+    console.error("worker ticket check failed", { code: error.code });
+    return false;
+  }
+  return data === true;
+}
+
 function authorize(req: Request): boolean {
-  const expected = requiredEnv("BOOKING_WORKER_SECRET");
+  const expected = Deno.env.get("BOOKING_WORKER_SECRET") ?? "";
+  if (!expected) return false;
   const supplied = req.headers.get("x-worker-secret") || "";
   if (expected.length !== supplied.length) return false;
   let difference = 0;
@@ -111,8 +126,13 @@ Deno.serve(async (req) => {
   try {
     const declared = Number(req.headers.get("content-length") || "0");
     if (declared > MAX_BODY_BYTES) return json({ error: "payload_too_large" }, 413);
-    if (!authorize(req)) return json({ error: "unauthorized" }, 401);
     const supabase = createClient(requiredEnv("SUPABASE_URL"), requiredEnv("SUPABASE_SERVICE_ROLE_KEY"));
+    // Two accepted callers: a worker holding BOOKING_WORKER_SECRET, and the
+    // scheduled job, which presents a single-use ticket only a service-role
+    // reader could have minted. No shared secret lives in SQL or cron metadata.
+    if (!authorize(req) && !(await authorizeTicket(supabase, req))) {
+      return json({ error: "unauthorized" }, 401);
+    }
     await heartbeat(supabase, "start");
     const workerId = `${WORKER_NAME}:${crypto.randomUUID()}`;
     const { data: jobs, error: claimError } = await supabase.rpc("claim_single_session_outbox", {

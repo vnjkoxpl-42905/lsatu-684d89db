@@ -149,6 +149,30 @@ async function expectedPaymentLinkFacts(stripeSecret: string, paymentLinkId: str
   return { amount, currency };
 }
 
+// Server-to-server nudge so a paid booking's calendar promotion and emails run
+// immediately instead of waiting for the scheduled worker. The worker secret is
+// read from the function environment and never logged or returned. Failures are
+// swallowed: the every-minute scheduled worker is the retry safety net, and a
+// paid booking must never be undone by a missed nudge.
+async function kickOutboxWorker(): Promise<void> {
+  const secret = Deno.env.get("BOOKING_WORKER_SECRET");
+  if (!secret) {
+    console.error("outbox nudge skipped: worker secret not configured");
+    return;
+  }
+  try {
+    const res = await fetch(`${requiredEnv("SUPABASE_URL")}/functions/v1/single-session-outbox`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-worker-secret": secret },
+      body: "{}",
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok) console.error("outbox nudge non-2xx", { status: res.status });
+  } catch (error) {
+    console.error("outbox nudge failed", { error: error instanceof Error ? error.message : String(error) });
+  }
+}
+
 async function handleStripe(supabase: any, raw: string, signature: string | null) {
   const stripeSecret = requiredEnv("STRIPE_SECRET_KEY");
   if (!signature) return json({ error: "invalid_signature" }, 400);
@@ -257,6 +281,12 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
       _cancel_payload_ciphertext: encryptedCancelPayload,
     });
     if (error) throw error;
+    // Keep the Stripe response fast: the nudge runs after the response is sent
+    // when the runtime supports it, and is otherwise best-effort.
+    const nudge = kickOutboxWorker();
+    const waitUntil = (globalThis as any)?.EdgeRuntime?.waitUntil;
+    if (typeof waitUntil === "function") waitUntil.call((globalThis as any).EdgeRuntime, nudge);
+    else void nudge;
     return json({ received: true, booking_id: result?.booking_id, status: result?.status });
   }
 

@@ -71,6 +71,20 @@
       "when": 1789501067877,
       "tag": "0009_finalize_single_session_payment_validates_event_price",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789502017298,
+      "tag": "0010_single_session_outbox_scheduler",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1789502315901,
+      "tag": "0011_restore_single_session_worker_rpcs",
+      "breakpoints": true
     }
   ]
 }
