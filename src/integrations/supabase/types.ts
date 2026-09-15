@@ -4383,6 +4383,7 @@ export type Database = {
       single_session_bookings: {
         Row: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -4405,6 +4406,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -4424,6 +4427,7 @@ export type Database = {
         }
         Insert: {
           amount_cents?: number | null
+          booker_timezone?: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at?: string | null
@@ -4446,6 +4450,8 @@ export type Database = {
           meet_url?: string | null
           name?: string | null
           notes?: string | null
+          quoted_amount_cents?: number | null
+          quoted_currency?: string | null
           start_at: string
           status?: string
           status_changed_at?: string
@@ -4465,6 +4471,7 @@ export type Database = {
         }
         Update: {
           amount_cents?: number | null
+          booker_timezone?: string | null
           booking_token_expires_at?: string
           booking_token_hash?: string
           cancel_token_expires_at?: string | null
@@ -4487,6 +4494,8 @@ export type Database = {
           meet_url?: string | null
           name?: string | null
           notes?: string | null
+          quoted_amount_cents?: number | null
+          quoted_currency?: string | null
           start_at?: string
           status?: string
           status_changed_at?: string
@@ -5760,6 +5769,7 @@ export type Database = {
         Args: { _booking_id: string; _booking_token_hash: string }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -5782,6 +5792,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -5868,6 +5880,7 @@ export type Database = {
         }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -5890,6 +5903,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -5975,6 +5990,7 @@ export type Database = {
         Args: { _cancel_token_hash: string }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -5997,6 +6013,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -6111,6 +6129,7 @@ export type Database = {
       }
       claim_single_session_slot: {
         Args: {
+          _booker_timezone?: string
           _booking_token_hash: string
           _client_idempotency_key: string
           _email: string
@@ -6124,6 +6143,7 @@ export type Database = {
         }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -6146,6 +6166,72 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
+          start_at: string
+          status: string
+          status_changed_at: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_url: string | null
+          stripe_expires_at: string | null
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_refund_status: string | null
+          sweep_attempts: number
+          sweep_lease_token: string | null
+          sweep_lease_until: string | null
+          sweep_worker_id: string | null
+          terminal_reason: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "single_session_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      claim_single_session_slot_without_confirmation_details: {
+        Args: {
+          _booking_token_hash: string
+          _client_idempotency_key: string
+          _email: string
+          _event_slug?: string
+          _guests: Json
+          _ip_hash: string
+          _name: string
+          _notes: string
+          _start_at: string
+          _user_id?: string
+        }
+        Returns: {
+          amount_cents: number | null
+          booker_timezone: string | null
+          booking_token_expires_at: string
+          booking_token_hash: string
+          cancel_token_expires_at: string | null
+          cancel_token_hash: string | null
+          checkout_fingerprint_disposition: string
+          checkout_request_fingerprint: string | null
+          client_idempotency_key: string
+          created_at: string
+          currency: string | null
+          draft_expires_at: string
+          email: string | null
+          end_at: string
+          event_slug: string
+          gcal_event_id: string | null
+          guests: Json
+          id: string
+          ip_hash: string | null
+          lifecycle_version: number
+          livemode: boolean | null
+          meet_url: string | null
+          name: string | null
+          notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -6174,6 +6260,7 @@ export type Database = {
         Args: { _lease_seconds?: number; _limit?: number; _worker_id: string }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -6196,6 +6283,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -6319,6 +6408,7 @@ export type Database = {
         }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -6341,6 +6431,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -6373,6 +6465,7 @@ export type Database = {
         }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -6395,6 +6488,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -6569,8 +6664,9 @@ export type Database = {
       get_or_create_joshua_conversation: { Args: never; Returns: string }
       get_single_session_status: {
         Args: {
-          _booking_token_hash: string
-          _stripe_checkout_session_id: string
+          _booking_id?: string
+          _booking_token_hash?: string
+          _stripe_checkout_session_id?: string
         }
         Returns: Json
       }
@@ -6773,6 +6869,7 @@ export type Database = {
         }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -6795,6 +6892,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -6865,6 +6964,7 @@ export type Database = {
         }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -6887,6 +6987,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -7001,6 +7103,7 @@ export type Database = {
         }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -7023,6 +7126,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
@@ -7116,6 +7221,7 @@ export type Database = {
         }
         Returns: {
           amount_cents: number | null
+          booker_timezone: string | null
           booking_token_expires_at: string
           booking_token_hash: string
           cancel_token_expires_at: string | null
@@ -7138,6 +7244,8 @@ export type Database = {
           meet_url: string | null
           name: string | null
           notes: string | null
+          quoted_amount_cents: number | null
+          quoted_currency: string | null
           start_at: string
           status: string
           status_changed_at: string
