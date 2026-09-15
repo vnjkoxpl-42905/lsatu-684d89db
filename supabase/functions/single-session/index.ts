@@ -44,6 +44,11 @@ const WRITE_LIMIT = 5;
 const APP_ORIGIN = Deno.env.get("APP_ORIGIN") || "https://lsatprep.study";
 const slotsCache = new Map<string, { expiresAt: number; payload: { slots: unknown[]; timezone: string } }>();
 
+function slotUnavailable(eventSlug: string) {
+  slotsCache.delete(eventSlug);
+  return json({ error: "slot_unavailable" }, 409);
+}
+
 const gcal: GoogleCal = { insertEvent, patchEvent, getEvent, deleteEvent, freeBusy, meetUrlFromEvent };
 
 /**
@@ -375,7 +380,7 @@ Deno.serve(async (req) => {
           rangeEndIso: endAt.toISOString(),
         });
         if (liveBusy.some((interval) => interval.start < endAt.getTime() && interval.end > startAt.getTime())) {
-          return json({ error: "slot_unavailable" }, 409);
+          return slotUnavailable(event.slug);
         }
       }
 
@@ -402,7 +407,8 @@ Deno.serve(async (req) => {
           : ["P0409", "P0425"].includes(claimError.code) ? 409
           : claimError.code === "P0400" ? 400
           : 500;
-        return json({ error: status === 429 ? "rate_limited" : status === 409 ? "slot_unavailable" : status === 400 ? "invalid_request" : "server_error" }, status);
+        if (status === 409) return slotUnavailable(event.slug);
+        return json({ error: status === 429 ? "rate_limited" : status === 400 ? "invalid_request" : "server_error" }, status);
       }
       let booking = Array.isArray(claimed) ? claimed[0] : claimed;
       if (!booking) throw new Error("claim_returned_no_booking");
@@ -444,7 +450,7 @@ Deno.serve(async (req) => {
         });
         await cleanupTentative(targetCalendar, booking.id, tentative?.id);
         console.error("single-session tentative event failed", { bookingId: booking.id, error: calendarError instanceof Error ? calendarError.message : String(calendarError) });
-        return json({ error: "slot_unavailable" }, 409);
+        return slotUnavailable(event.slug);
       }
 
       // A free event has no middle step. The slot is held and the tentative
@@ -471,11 +477,12 @@ Deno.serve(async (req) => {
         if (freeError) {
           await cleanupTentative(targetCalendar, booking.id, booking.gcal_event_id);
           const status = freeError.code === "P0409" ? 409 : freeError.code === "P0400" ? 400 : 500;
-          return json({ error: status === 409 ? "slot_unavailable" : status === 400 ? "invalid_request" : "server_error" }, status);
+          if (status === 409) return slotUnavailable(event.slug);
+          return json({ error: status === 400 ? "invalid_request" : "server_error" }, status);
         }
         if (freeResult?.status !== "booked") {
           await cleanupTentative(targetCalendar, booking.id, booking.gcal_event_id);
-          return json({ error: "slot_unavailable" }, 409);
+          return slotUnavailable(event.slug);
         }
         const { data: confirmed } = await supabase
           .from("single_session_bookings").select("*").eq("id", booking.id).maybeSingle();
