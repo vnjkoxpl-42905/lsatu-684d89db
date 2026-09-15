@@ -64,6 +64,13 @@
       "when": 1789034466098,
       "tag": "0008_ta_interactions_agent_columns",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789501067877,
+      "tag": "0009_finalize_single_session_payment_validates_event_price",
+      "breakpoints": true
     }
   ]
 }
