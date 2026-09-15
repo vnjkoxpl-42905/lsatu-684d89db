@@ -85,6 +85,13 @@
       "when": 1789502315901,
       "tag": "0011_restore_single_session_worker_rpcs",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1789510898204,
+      "tag": "0012_booking_confirmation_details",
+      "breakpoints": true
     }
   ]
 }
