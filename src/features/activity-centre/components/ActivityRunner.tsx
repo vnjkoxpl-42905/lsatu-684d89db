@@ -933,6 +933,7 @@ export function ActivityRunner({ assignmentId: assignmentIdProp, preview = false
             promptInWorld={Boolean(worldStage && world?.carriesPrompt)}
             fastPath={world?.fastPath}
             localJudge={world?.localJudge}
+            paperChoices={world?.paperChoices}
             shadowFault={world?.shadowFault}
             activeIndex={index}
             resumeAttempts={resumeAt?.index === index ? resumeAt.attempts : 0}

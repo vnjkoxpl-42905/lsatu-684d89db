@@ -32,6 +32,7 @@ import { parseSpecimen, readExamination } from "./specimen-lab/specimen";
 
 import { SwitchyardEntrance } from "./switchyard/SwitchyardEntrance";
 import { SwitchyardStage } from "./switchyard/SwitchyardStage";
+import { buildPaperDiagramChoices, type PaperDiagramChoice } from "./switchyard/diagramChoices";
 import { derivedFlip, diagnose, flipIsDerivable, indicatorOf, judgeConditionalResponse, matchesAnyCredited, parseRouting, PARSER_VERSION } from "./switchyard/routing";
 
 /**
@@ -123,6 +124,8 @@ export interface WorldBinding {
   fastPath?: (item: ActivityItem, response: string) => boolean;
   /** An authoritative deterministic judge. Its presence disables AI judging. */
   localJudge?: (item: ActivityItem, response: string) => { verdict: Verdict; feedback: string };
+  /** A paper-first structured answer set. Its presence replaces free text. */
+  paperChoices?: (item: ActivityItem) => PaperDiagramChoice[];
   /**
    * What the world's structural classifier WOULD have called this answer.
    * Recorded next to the verdict the Coach actually gave, and never shown or
@@ -261,6 +264,7 @@ const WORLDS: WorldBinding[] = [
     },
     fastPath: (item, response) => matchesAnyCredited(item.credited_answers, response),
     localJudge: (item, response) => judgeConditionalResponse(item.credited_answers, response),
+    paperChoices: (item) => buildPaperDiagramChoices(item.credited_answers, item.order),
     shadowFault: (item, response) => {
       const credited = item.credited_answers?.[0];
       const routing = credited ? parseRouting(credited) : null;
