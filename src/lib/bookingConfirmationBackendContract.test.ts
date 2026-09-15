@@ -37,6 +37,13 @@ describe("booking confirmation backend contracts", () => {
     expect(webhook).toMatch(/validateSingleSessionCheckout\([\s\S]*expectedAmount,[\s\S]*expectedCurrency/);
   });
 
+  it("keeps single-session payments out of the unrelated package-offer foreign key", () => {
+    const sql = read("supabase/migrations/20260915191000_fix_single_session_commerce_offer_reference.sql");
+    expect(sql.match(/'single_session_paid', NULL/g)).toHaveLength(2);
+    expect(sql).not.toMatch(/'single_session_paid', _booking\.event_slug/);
+    expect(sql).toContain("single_session_booking_id");
+  });
+
   it("requires both Google destinations and immediately drains unblocked email work", () => {
     const worker = read("supabase/functions/single-session-outbox/index.ts");
     expect(worker).toMatch(/if\s*\(\s*!meetUrl\s*\|\|\s*!event\.htmlLink\s*\)/);
