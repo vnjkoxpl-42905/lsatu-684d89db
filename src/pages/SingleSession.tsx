@@ -69,6 +69,8 @@ const ERROR_TEXT: Record<string, string> = {
   rate_limited: "Too many attempts. Please wait a moment and try again.",
   security_check_failed: "The security check did not pass. Please reload and try again.",
   security_check_unavailable: "The security check could not load. Please reload and try again.",
+  security_check_expired: "The security check expired. Please try again.",
+  verification_failed: "The security check did not pass. Please reload and try again.",
 };
 
 function readableError(message: string): string {
@@ -389,15 +391,15 @@ export default function SingleSession({
         resolvedApi.redirectToCheckout(hold.checkout_url);
       } catch (e) {
         const message = e instanceof Error ? e.message : "booking_failed";
-        if (message.includes("slot") || message.includes("unavailable") || message.includes("conflict")) {
+        if (message.includes("security_check") || message === "verification_failed") {
+          setError(readableError(message));
+        } else if (message.includes("slot") || message.includes("unavailable") || message.includes("conflict")) {
           const rejectedStartAt = selected.start_at;
           sessionStorage.removeItem(idempotencyKeyFor(event));
           setError("That time was just taken. We refreshed the available times so you can choose another.");
           setSelected(null);
           await loadAvailability(rejectedStartAt);
           window.setTimeout(() => availabilityHeading.current?.focus(), 0);
-        } else if (message.includes("security_check")) {
-          setError("We couldn't complete the security check. Please try again.");
         } else setError(info?.requires_payment === false
           ? "We couldn't confirm that time. Please try again."
           : "We couldn't open checkout. Your card was not charged. Please try again.");

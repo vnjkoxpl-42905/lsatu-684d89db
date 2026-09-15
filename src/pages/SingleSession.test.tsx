@@ -93,6 +93,36 @@ describe("SingleSession", () => {
     expect(screen.getByRole("heading", { name: /Select a time/i })).toHaveFocus();
   });
 
+  it("reports an unavailable security check without removing an available slot", async () => {
+    const client = api({
+      getTurnstileToken: vi.fn().mockRejectedValue(new Error("security_check_unavailable")),
+    });
+    renderPage(client);
+    await chooseSlotAndFillForm();
+    fireEvent.click(screen.getByRole("button", { name: /Pay to book/i }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(/security check could not load/i);
+    expect(client.hold).not.toHaveBeenCalled();
+    expect(client.slots).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole("button", { name: /Back to times/i }));
+    expect(screen.getAllByRole("button", { name: /1:00/i })).not.toHaveLength(0);
+  });
+
+  it.each([
+    ["security_check_expired", /security check expired/i],
+    ["verification_failed", /security check did not pass/i],
+  ])("renders %s as a truthful security error", async (reason, expected) => {
+    const client = reason === "verification_failed"
+      ? api({ hold: vi.fn().mockRejectedValue(new Error(reason)) })
+      : api({ getTurnstileToken: vi.fn().mockRejectedValue(new Error(reason)) });
+    renderPage(client);
+    await chooseSlotAndFillForm();
+    fireEvent.click(screen.getByRole("button", { name: /Pay to book/i }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(expected);
+    expect(client.slots).toHaveBeenCalledTimes(1);
+  });
+
   it("resumes an open checkout after returning from Stripe", async () => {
     sessionStorage.setItem("lsatu.single-session.pending", JSON.stringify({
       booking_token: "book-token", checkout_session_id: "cs_test", checkout_url: "https://checkout.stripe.test/session",

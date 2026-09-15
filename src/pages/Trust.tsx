@@ -58,6 +58,19 @@ export default function Trust() {
           </p>
           <ul className="list-disc space-y-2 pl-5">
             <li><strong>Lovable Cloud / Supabase</strong> — database, authentication, storage, and serverless functions.</li>
+            <li>
+              <strong>Cloudflare Turnstile</strong> — bot and abuse protection for public booking
+              forms. Cloudflare processes the data needed to perform the security check under its{" "}
+              <a
+                className="underline"
+                href="https://www.cloudflare.com/turnstile-privacy-policy/"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Turnstile Privacy Addendum
+              </a>
+              .
+            </li>
             <li><strong>Google</strong> — optional Google sign-in, and Google Drive / Calendar features when you explicitly connect them.</li>
             <li><strong>Email delivery provider</strong> — sending transactional and account emails.</li>
           </ul>
