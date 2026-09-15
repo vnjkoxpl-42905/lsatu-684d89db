@@ -246,6 +246,8 @@ export type CheckoutFingerprintInput = {
   bookingId: string;
   description: string;
   email: string;
+  amountCents: number;
+  currency: string;
   successUrl: string;
   cancelUrl: string;
   expiresAt: number;
@@ -258,8 +260,8 @@ export function buildCheckoutFingerprint(input: CheckoutFingerprintInput) {
     line_items: [{
       quantity: 1,
       price_data: {
-        currency: SINGLE_SESSION.currency,
-        unit_amount: SINGLE_SESSION.amountCents,
+        currency: input.currency,
+        unit_amount: input.amountCents,
         product_data: { name: input.description },
       },
     }],
@@ -287,14 +289,19 @@ export type CheckoutValidation =
   | { ok: true; bookingId: string }
   | { ok: false; error: string };
 
-export function validateSingleSessionCheckout(session: any, expectedLivemode: boolean): CheckoutValidation {
+export function validateSingleSessionCheckout(
+  session: any,
+  expectedLivemode: boolean,
+  expectedAmountCents: number = SINGLE_SESSION.amountCents,
+  expectedCurrency: string = SINGLE_SESSION.currency,
+): CheckoutValidation {
   if (session?.metadata?.product !== "single_session" || !session?.metadata?.booking_id) {
     return { ok: false, error: "invalid_product" };
   }
   if (session.mode !== "payment") return { ok: false, error: "invalid_mode" };
   if (session.payment_status !== "paid") return { ok: false, error: "payment_not_complete" };
-  if (session.amount_total !== SINGLE_SESSION.amountCents) return { ok: false, error: "amount_mismatch" };
-  if (String(session.currency || "").toLowerCase() !== SINGLE_SESSION.currency) return { ok: false, error: "currency_mismatch" };
+  if (session.amount_total !== expectedAmountCents) return { ok: false, error: "amount_mismatch" };
+  if (String(session.currency || "").toLowerCase() !== expectedCurrency.toLowerCase()) return { ok: false, error: "currency_mismatch" };
   if (Boolean(session.livemode) !== expectedLivemode) return { ok: false, error: "livemode_mismatch" };
   return { ok: true, bookingId: String(session.metadata.booking_id) };
 }

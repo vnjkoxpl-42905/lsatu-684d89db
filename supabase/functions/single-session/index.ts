@@ -514,6 +514,8 @@ Deno.serve(async (req) => {
           bookingId: booking.id,
           description: checkoutDescription(booking.start_at, String(body.timezone || SINGLE_SESSION.hostTimezone)),
           email,
+          amountCents: event.priceCents,
+          currency: event.currency,
           successUrl,
           cancelUrl,
           expiresAt: Math.floor(Date.now() / 1000) + SINGLE_SESSION.checkoutMinutes * 60,
