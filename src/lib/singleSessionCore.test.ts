@@ -130,6 +130,8 @@ describe("single-session booking core", () => {
       bookingId: "booking-id",
       description: "LSAT Session with Joshua — Thursday, August 20, 1:00 PM (America/Toronto)",
       email: "student@example.com",
+      amountCents: 4500,
+      currency: "usd",
       successUrl: "https://lsatprep.study/book/session?checkout=ok&token=secret",
       cancelUrl: "https://lsatprep.study/book/session?cancelled=1&token=secret",
       expiresAt: 1_775_000_000,
@@ -140,6 +142,9 @@ describe("single-session booking core", () => {
       expires_at: 1_775_000_000,
       customer_email: "student@example.com",
       metadata: { booking_id: "booking-id", product: "single_session" },
+    });
+    expect(buildCheckoutFingerprint({ ...input, amountCents: 100 })).toMatchObject({
+      line_items: [{ price_data: { currency: "usd", unit_amount: 100 } }],
     });
   });
 
@@ -166,5 +171,6 @@ describe("single-session booking core", () => {
     expect(validateSingleSessionCheckout({ ...paid, amount_total: 4499 }, false)).toEqual({ ok: false, error: "amount_mismatch" });
     expect(validateSingleSessionCheckout({ ...paid, payment_status: "unpaid" }, false)).toEqual({ ok: false, error: "payment_not_complete" });
     expect(validateSingleSessionCheckout({ ...paid, livemode: true }, false)).toEqual({ ok: false, error: "livemode_mismatch" });
+    expect(validateSingleSessionCheckout({ ...paid, amount_total: 100 }, false, 100, "usd")).toEqual({ ok: true, bookingId: "booking-id" });
   });
 });

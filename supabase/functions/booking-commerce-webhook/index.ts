@@ -218,14 +218,26 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
   }
 
   if (session.metadata?.product === "single_session") {
-    const validation = validateSingleSessionCheckout(session, expectedLivemode());
-    if (!validation.ok) return json({ error: validation.error }, 400);
+    const bookingId = String(session.metadata?.booking_id || "");
+    if (!bookingId) return json({ error: "invalid_product" }, 400);
     if (!session.id || typeof session.payment_intent !== "string") return json({ error: "missing_payment_facts" }, 400);
     const { data: booking, error: bookingError } = await supabase.from("single_session_bookings")
-      .select("id,status,start_at,end_at,gcal_event_id")
-      .eq("id", validation.bookingId).maybeSingle();
+      .select("id,status,start_at,end_at,gcal_event_id,event_slug")
+      .eq("id", bookingId).maybeSingle();
     if (bookingError) throw bookingError;
     if (!booking) return json({ error: "unknown_booking" }, 400);
+    const { data: bookingEvent, error: eventError } = await supabase.from("booking_event_types")
+      .select("price_cents,currency")
+      .eq("slug", booking.event_slug).maybeSingle();
+    if (eventError) throw eventError;
+    if (!bookingEvent) return json({ error: "unknown_event" }, 400);
+    const validation = validateSingleSessionCheckout(
+      session,
+      expectedLivemode(),
+      Number(bookingEvent.price_cents),
+      String(bookingEvent.currency),
+    );
+    if (!validation.ok) return json({ error: validation.error }, 400);
 
     const cancelToken = generateCapabilityToken();
     const encryptedCancelPayload = await encryptEnvelope({
@@ -233,7 +245,7 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
       cancel_url: `${APP_ORIGIN}/book/session?cancel_token=${encodeURIComponent(cancelToken)}`,
     }, requiredEnv("SINGLE_SESSION_ENCRYPTION_KEY"));
     const { data: result, error } = await supabase.rpc("finalize_single_session_payment", {
-      _booking_id: validation.bookingId,
+      _booking_id: bookingId,
       _provider_event_id: event.id,
       _stripe_checkout_session_id: session.id,
       _stripe_payment_intent_id: session.payment_intent,
