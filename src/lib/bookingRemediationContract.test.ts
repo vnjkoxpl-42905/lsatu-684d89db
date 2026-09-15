@@ -79,4 +79,11 @@ describe("booking remediation contracts", () => {
     expect(endpoint).toContain("bookingTokenFromUrl(replayFingerprint.success_url)");
     expect(endpoint.indexOf("if (!existingReplay)")).toBeLessThan(endpoint.indexOf('supabase.rpc("claim_single_session_slot"'));
   });
+
+  it("evicts cached availability whenever a live Single Session hold finds a conflict", () => {
+    const endpoint = read("supabase/functions/single-session/index.ts");
+    expect(endpoint).toContain("function slotUnavailable(eventSlug: string)");
+    expect(endpoint).toContain("slotsCache.delete(eventSlug)");
+    expect(endpoint).toContain("return slotUnavailable(event.slug)");
+  });
 });

@@ -274,17 +274,18 @@ export default function SingleSession({
     } catch { return [timezone]; }
   }, [timezone]);
 
-  const loadAvailability = useCallback(async () => {
+  const loadAvailability = useCallback(async (rejectedStartAt?: string) => {
     const [nextInfo, nextSlots] = await Promise.all([resolvedApi.info(), resolvedApi.slots()]);
+    const availableSlots = (nextSlots.slots ?? []).filter((slot) => slot.start_at !== rejectedStartAt);
     setInfo(nextInfo);
-    setSlots(nextSlots.slots ?? []);
-    const first = nextSlots.slots?.[0];
+    setSlots(availableSlots);
+    const first = availableSlots[0];
     if (first) {
       const date = startOfDay(new Date(first.start_at));
       setPickedDay((current) => current ?? date);
       setMonthAnchor(new Date(date.getFullYear(), date.getMonth(), 1));
     }
-  }, [api]);
+  }, [resolvedApi]);
 
   useEffect(() => {
     let cancelled = false;
@@ -389,10 +390,11 @@ export default function SingleSession({
       } catch (e) {
         const message = e instanceof Error ? e.message : "booking_failed";
         if (message.includes("slot") || message.includes("unavailable") || message.includes("conflict")) {
+          const rejectedStartAt = selected.start_at;
           sessionStorage.removeItem(idempotencyKeyFor(event));
           setError("That time was just taken. We refreshed the available times so you can choose another.");
           setSelected(null);
-          await loadAvailability();
+          await loadAvailability(rejectedStartAt);
           window.setTimeout(() => availabilityHeading.current?.focus(), 0);
         } else if (message.includes("security_check")) {
           setError("We couldn't complete the security check. Please try again.");

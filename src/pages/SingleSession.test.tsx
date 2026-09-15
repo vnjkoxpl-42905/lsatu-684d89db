@@ -29,7 +29,7 @@ function renderPage(client = api(), entry = "/book/session", event = "single-ses
 
 async function chooseSlotAndFillForm() {
   await screen.findByRole("button", { name: /Tuesday, August 18/i });
-  fireEvent.click(screen.getAllByRole("button", { name: /1:00 PM/i })[0]);
+  fireEvent.click(screen.getAllByRole("button", { name: /1:00/i })[0]);
   fireEvent.change(screen.getByLabelText(/Your name/i), { target: { value: "Booker Name" } });
   fireEvent.change(screen.getByLabelText(/Email address/i), { target: { value: "BOOKER@example.com" } });
 }
@@ -89,6 +89,7 @@ describe("SingleSession", () => {
 
     expect(await screen.findByRole("alert")).toHaveTextContent(/time was just taken/i);
     await waitFor(() => expect(client.slots).toHaveBeenCalledTimes(2));
+    expect(screen.queryAllByRole("button", { name: /1:00/i })).toHaveLength(0);
     expect(screen.getByRole("heading", { name: /Select a time/i })).toHaveFocus();
   });
 
@@ -139,7 +140,7 @@ describe("SingleSession", () => {
     const day = await screen.findByRole("button", { name: /Tuesday, August 18/i });
     day.focus();
     fireEvent.keyDown(day, { key: "Enter" });
-    fireEvent.click(screen.getAllByRole("button", { name: /1:00 PM/i })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /1:00/i })[0]);
     await waitFor(() => expect(screen.getByLabelText(/Your name/i)).toHaveFocus());
     fireEvent.change(screen.getByLabelText(/Your name/i), { target: { value: "Booker" } });
     fireEvent.change(screen.getByLabelText(/Email address/i), { target: { value: "booker@example.com" } });
