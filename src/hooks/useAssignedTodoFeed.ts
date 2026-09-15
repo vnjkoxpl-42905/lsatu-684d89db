@@ -249,13 +249,16 @@ export function buildAssignedRows({
 export function useAssignedTodoFeed(): {
   rows: AssignedTodoRow[];
   loading: boolean;
+  /** A read failed. Never report "nothing assigned" on a failed read. */
+  failed: boolean;
+  retry: () => void;
 } {
   const { user } = useAuth();
-  const { assignments: hw, loading: hwLoading } = useStudentAssignments();
-  const { assignments: ta, loading: taLoading } = useStudentTAAssignments();
+  const { assignments: hw, loading: hwLoading, error: hwError, refresh: hwRefresh } = useStudentAssignments();
+  const { assignments: ta, loading: taLoading, error: taError, refresh: taRefresh } = useStudentTAAssignments();
   const itemsQuery = useClassroomItems();
 
-  const { data: guided = [], isLoading: guidedLoading } = useQuery<GuidedRow[]>({
+  const { data: guided = [], isLoading: guidedLoading, isError: guidedError, refetch: guidedRefetch } = useQuery<GuidedRow[]>({
     queryKey: ['todo-feed:guided', user?.id],
     enabled: !!user,
     staleTime: 30_000,
