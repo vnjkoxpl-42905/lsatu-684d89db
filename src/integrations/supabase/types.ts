@@ -1316,6 +1316,30 @@ export type Database = {
         }
         Relationships: []
       }
+      booking_worker_tickets: {
+        Row: {
+          consumed_at: string | null
+          expires_at: string
+          issued_at: string
+          token: string
+          worker: string
+        }
+        Insert: {
+          consumed_at?: string | null
+          expires_at?: string
+          issued_at?: string
+          token?: string
+          worker: string
+        }
+        Update: {
+          consumed_at?: string | null
+          expires_at?: string
+          issued_at?: string
+          token?: string
+          worker?: string
+        }
+        Relationships: []
+      }
       bootcamp_kv: {
         Row: {
           data: Json
@@ -6108,6 +6132,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      consume_booking_worker_ticket: {
+        Args: { _token: string; _worker: string }
+        Returns: boolean
+      }
       create_manual_booking_pass: {
         Args: {
           _booking_slug: string
@@ -6476,6 +6504,7 @@ export type Database = {
         Args: { p_class_id: string; p_xp: number }
         Returns: undefined
       }
+      invoke_single_session_outbox: { Args: never; Returns: string }
       is_conversation_participant: {
         Args: { _conv_id: string; _user_id: string }
         Returns: boolean
