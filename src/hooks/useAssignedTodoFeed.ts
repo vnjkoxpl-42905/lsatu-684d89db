@@ -265,7 +265,7 @@ export function useAssignedTodoFeed(): {
     queryFn: async () => (await listGuidedForStudent(user!.id)) as GuidedRow[],
   });
 
-  const { data: activities = [], isLoading: actLoading } = useQuery({
+  const { data: activities = [], isLoading: actLoading, isError: actError, refetch: actRefetch } = useQuery({
     queryKey: ['todo-feed:activity', user?.id],
     enabled: !!user,
     staleTime: 30_000,
@@ -278,8 +278,21 @@ export function useAssignedTodoFeed(): {
     [hw, ta, guided, activities, items],
   );
 
+  const retry = useMemo(
+    () => () => {
+      void hwRefresh();
+      void taRefresh();
+      void guidedRefetch();
+      void actRefetch();
+      void itemsQuery.refetch();
+    },
+    [hwRefresh, taRefresh, guidedRefetch, actRefetch, itemsQuery],
+  );
+
   return {
     rows,
     loading: hwLoading || taLoading || guidedLoading || actLoading || itemsQuery.isLoading,
+    failed: !!hwError || !!taError || guidedError || actError || itemsQuery.isError,
+    retry,
   };
 }
