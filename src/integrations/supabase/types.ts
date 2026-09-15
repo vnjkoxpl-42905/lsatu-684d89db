@@ -1316,6 +1316,24 @@ export type Database = {
         }
         Relationships: []
       }
+      booking_worker_secrets: {
+        Row: {
+          secret: string
+          updated_at: string
+          worker: string
+        }
+        Insert: {
+          secret: string
+          updated_at?: string
+          worker: string
+        }
+        Update: {
+          secret?: string
+          updated_at?: string
+          worker?: string
+        }
+        Relationships: []
+      }
       booking_worker_tickets: {
         Row: {
           consumed_at: string | null
@@ -6738,6 +6756,7 @@ export type Database = {
         Returns: undefined
       }
       invoke_single_session_outbox: { Args: never; Returns: string }
+      invoke_single_session_sweeper: { Args: never; Returns: string }
       is_conversation_participant: {
         Args: { _conv_id: string; _user_id: string }
         Returns: boolean
@@ -6922,6 +6941,7 @@ export type Database = {
         Args: { _expected_count: number; _slug: string; _version: string }
         Returns: Json
       }
+      purge_single_session_pii: { Args: { _now?: string }; Returns: Json }
       reconcile_booking_calendar_event: {
         Args: {
           _deleted?: boolean
