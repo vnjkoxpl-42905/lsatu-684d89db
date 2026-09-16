@@ -546,6 +546,16 @@
   padding-left: clamp(2rem, 5vw, 5rem);
 }
 
+.act-home .act-conditional-rule-label {
+  margin-bottom: 0.55rem;
+  color: hsl(var(--act-ink-soft));
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .act-home .act-conditional-side h3,
 .act-home .act-conditional-special h3 {
   margin: 0;

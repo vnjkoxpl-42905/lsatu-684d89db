@@ -44,11 +44,12 @@ function ConditionalRuleMap() {
     <section className="act-conditional-map" aria-labelledby="conditional-map-title">
       <div className="act-conditional-map-heading">
         <h2 id="conditional-map-title">The conditional map</h2>
-        <p>Five rules. Find the indicator, then place the ideas.</p>
+        <p>Five rules: Left, Right, If not, No A&apos;s are B, and Required things.</p>
       </div>
 
       <div className="act-conditional-sides">
         <section className="act-conditional-side is-left">
+          <div className="act-conditional-rule-label">Rule 1</div>
           <h3>
             <span>Left</span>
             <small>Sufficient triggers</small>
@@ -57,6 +58,7 @@ function ConditionalRuleMap() {
         </section>
 
         <section className="act-conditional-side is-right">
+          <div className="act-conditional-rule-label">Rule 2</div>
           <h3>
             <span>Right</span>
             <small>Necessary triggers</small>
@@ -67,16 +69,19 @@ function ConditionalRuleMap() {
 
       <div className="act-conditional-specials">
         <section className="act-conditional-special is-negative">
+          <div className="act-conditional-rule-label">Rule 3</div>
           <h3>If not</h3>
           <p>
             Put the negation of either idea on the left: <strong>unless, without, until, except</strong>.
           </p>
         </section>
         <section className="act-conditional-special">
+          <div className="act-conditional-rule-label">Rule 4</div>
           <h3>No A&apos;s are B</h3>
           <p>All A&apos;s are not B.</p>
         </section>
         <section className="act-conditional-special">
+          <div className="act-conditional-rule-label">Rule 5</div>
           <h3>Required things</h3>
           <p>Put them on the right side of the arrow.</p>
         </section>
@@ -332,7 +337,7 @@ export function ActivityEditorialIntro({
           <motion.div variants={item} className="act-brief">
             <p className="act-brief-label">What to do</p>
             <p className="act-task">{instructions.task}</p>
-            <p className="act-how">{howLine}</p>
+            {!showsConditionalMap && <p className="act-how">{howLine}</p>}
           </motion.div>
         )}
       </section>
