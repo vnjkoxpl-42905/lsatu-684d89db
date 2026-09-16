@@ -6755,6 +6755,7 @@ export type Database = {
         Args: { p_class_id: string; p_xp: number }
         Returns: undefined
       }
+      invoke_gcal_sync_pull: { Args: never; Returns: string }
       invoke_single_session_outbox: { Args: never; Returns: string }
       invoke_single_session_sweeper: { Args: never; Returns: string }
       is_conversation_participant: {
@@ -6951,6 +6952,10 @@ export type Database = {
           _redemption_id: string
           _start_at: string
         }
+        Returns: Json
+      }
+      reconcile_single_session_calendar_deletion: {
+        Args: { _booking_id: string; _google_event_id: string }
         Returns: Json
       }
       record_booking_worker_heartbeat: {
