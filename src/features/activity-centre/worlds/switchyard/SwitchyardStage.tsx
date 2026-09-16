@@ -104,6 +104,7 @@ function Capsule({
    */
   readable?: boolean;
 }) {
+  if (!live) return <div className="sy-capsule rounded-[10px] px-4 py-3" data-testid="sy-capsule">Diagram on paper first</div>;
   return (
     <div
       className="sy-capsule flex items-center gap-3 rounded-[10px] px-4 py-3"
@@ -580,7 +581,7 @@ function Plate({
       aria-hidden={active ? undefined : true}
     >
       <p className="switchyard-mono mb-1.5 text-xs text-[hsl(var(--sy-ink-dim))]">{label}</p>
-      <p className="text-sm leading-snug text-[hsl(var(--sy-ink))]">{children}</p>
+      <p className="text-sm leading-snug text-[hsl(var(--sy-ink))]">{active ? children : "Shown after your answer"}</p>
     </div>
   );
 }

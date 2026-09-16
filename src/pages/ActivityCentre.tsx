@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Send } from "lucide-react";
+import { ArrowRight, GitBranch, Send } from "lucide-react";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { AssignWorkSheet, type AssignWorkSheetItem } from "@/components/teacher/library/AssignWorkSheet";
 import { useAdminActivities, useStudentActivities } from "@/features/activity-centre";
@@ -9,6 +9,8 @@ import { ActivityCard } from "@/features/activity-centre/components/ActivityCard
 import { librarySortIndex } from "@/features/activity-centre/content";
 import { slugFromTitle } from "@/features/activity-centre/worlds/registry";
 import "@/features/activity-centre/activity-centre.css";
+
+const GENERAL_CONDITIONALS_ID = "7946f46b-e7f8-4c60-b405-4ece9c409deb";
 
 /**
  * The Activity Centre.
@@ -84,6 +86,26 @@ export default function ActivityCentre() {
           </p>
         </header>
 
+        <section className="mt-8" aria-labelledby="conditional-reasoning-title">
+          <button
+            type="button"
+            onClick={() => navigate("/activities/conditionals")}
+            className="group w-full rounded-[24px] border border-border bg-card p-6 text-left transition-colors hover:border-foreground/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              <GitBranch className="h-4 w-4" aria-hidden="true" /> Four practice worlds
+            </span>
+            <h2 id="conditional-reasoning-title" className="ac-display mt-2 text-2xl text-foreground">Conditional Reasoning</h2>
+            <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              General Conditionals, Linking, Missing Link, and Must Be True. Start with the original
+              drill or practice connecting rules and finding what follows.
+            </p>
+            <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+              Choose a world <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </span>
+          </button>
+        </section>
+
         <div className="mt-8">
           {loading && (
             <div className="flex justify-center py-12">
@@ -114,7 +136,9 @@ export default function ActivityCentre() {
                   key={a.id}
                   assignment={a}
                   position={i + 1}
-                  onOpen={() => navigate(`/activities/${a.id}`)}
+                  onOpen={() => navigate(a.activity_id === GENERAL_CONDITIONALS_ID
+                    ? `/activities/conditionals?assignment=${encodeURIComponent(a.id)}`
+                    : `/activities/${a.id}`)}
                 />
               ))}
             </div>
@@ -217,7 +241,9 @@ function AdminLibrary({ assignedCount }: { assignedCount: number }) {
             <ActivityCard
               assignment={asCard(activity)}
               position={i + 1}
-              onOpen={() => navigate(`/activities/preview/${activity.id}`)}
+              onOpen={() => navigate(activity.id === GENERAL_CONDITIONALS_ID
+                ? "/activities/conditionals?preview=general"
+                : `/activities/preview/${activity.id}`)}
             />
             <button
               type="button"

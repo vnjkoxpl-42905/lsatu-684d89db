@@ -18,6 +18,10 @@ import { syncClassroomItemStatusBySource } from "@/lib/classroomItems";
 import { useAuth } from "@/contexts/AuthContext";
 import { MAX_ATTEMPTS } from "../api/types";
 import type { JudgeSource, Verdict } from "../api/types";
+import { cachePracticeRun, createPracticeRun, loadPracticeRuns, readCachedRuns, syncPracticeRun, practiceSaveMessage, type PracticeRun } from "../conditionals/practiceStore";
+import { repairConditionalItem } from "../content/repairConditionalItems";
+import { buildPaperDiagramChoices } from "../worlds/switchyard/diagramChoices";
+import { PaperDiagramPanel } from "./PaperDiagramPanel";
 import { ActivityIntro } from "./ActivityIntro";
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityExitButton } from "./ActivityExitButton";
@@ -43,16 +47,15 @@ type Phase = "intro" | "running" | "done" | "report";
  *
  * On open it replays the saved attempt log so the student resumes exactly where
  * they left off (or reviews a completed run). A completed activity can be re-run
- * as ungraded practice via "Practice again": that run writes nothing and never
- * touches the graded score.
+ * as practice via "Practice again". Conditional practice has its own saved
+ * session and never touches the original graded score.
  */
 export interface ActivityRunnerProps {
   /** When embedded (not routed), the assignment id to run. Falls back to the URL param. */
   assignmentId?: string;
   /**
-   * Teacher preview: always start at the intro regardless of saved status, and
-   * write nothing. Reuses the no-write `practice` path so previews never touch
-   * real assignment data or scores.
+   * Teacher preview starts at the intro and never changes assignment scores.
+   * Own General Conditional previews save a separate practice session.
    */
   preview?: boolean;
 }
@@ -69,7 +72,8 @@ export interface ActivityRunnerProps {
  */
 export function ActivityRunner(props: ActivityRunnerProps = {}) {
   const params = useParams<{ assignmentId: string; activityId: string }>();
-  const key = props.assignmentId ?? params.assignmentId ?? params.activityId ?? "none";
+  const location = useLocation();
+  const key = `${props.assignmentId ?? params.assignmentId ?? params.activityId ?? "none"}:${new URLSearchParams(location.search).get("practiceRun") ?? ""}`;
   return <ActivityRunnerInstance key={key} {...props} />;
 }
 
@@ -81,6 +85,11 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   const assignmentId = assignmentIdProp ?? params.assignmentId;
   const navigate = useNavigate();
   const location = useLocation();
+  const requestedPracticeId = new URLSearchParams(location.search).get("practiceRun");
+  const [savedPractice, setSavedPractice] = useState<PracticeRun | null>(null);
+  const savedPracticeRef = useRef<PracticeRun | null>(null);
+  const [practiceError, setPracticeError] = useState<string | null>(null);
+  const [saveStatus, setSaveStatus] = useState("");
   const startSectionOnOpen =
     !preview &&
     typeof location.state === "object" &&
@@ -100,7 +109,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   // Centre. Returning to the intro keeps `index`, so the Start action resumes on
   // the same question rather than restarting the Activity.
   const handleBackToIntro = routed ? () => setPhase("intro") : undefined;
-  const handleLeave = routed ? () => navigate("/activities") : undefined;
+  const handleLeave = routed ? () => navigate(isGeneral ? "/activities/conditionals" : "/activities") : undefined;
   const { user } = useAuth();
 
   // "Activity not found." was shown for two very different situations: an id
@@ -125,6 +134,26 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
    * is their answers rather than an empty run.
    */
   const viewingSomeoneElse = Boolean(assignment && user && assignment.student_id !== user.id);
+  const isGeneral = assignment?.title === "Conditional Rephrase";
+  const persistPractice = useCallback((next: PracticeRun): boolean => {
+    if (!user || next.userId !== user.id || viewingSomeoneElse) return false;
+    try { cachePracticeRun(next); }
+    catch (error) { setPracticeError(error instanceof Error ? error.message : "This browser could not save your practice. Retry before continuing."); return false; }
+    savedPracticeRef.current = next;
+    setSavedPractice(next);
+    setPracticeError(null);
+    setSaveStatus("Saved on this device; syncing...");
+    void syncPracticeRun(user.id, next.id).then(() => setSaveStatus("Saved to your account")).catch(error => {
+      const message = practiceSaveMessage(error);
+      setSaveStatus(message);
+      toast({ title: "Practice account sync unavailable", description: message });
+    });
+    return true;
+  }, [user, viewingSomeoneElse]);
+  const updatePractice = useCallback((change: Partial<PracticeRun>) => {
+    const run = savedPracticeRef.current;
+    return run ? persistPractice({ ...run, ...change, updatedAt: new Date().toISOString() }) : false;
+  }, [persistPractice]);
   const logStudentId = assignment?.student_id ?? user?.id;
 
   // Only asked when the load has genuinely come back empty, so the ordinary
@@ -170,7 +199,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
    * flight the whole time.
    */
   const logRef = useRef<Promise<Awaited<ReturnType<typeof listItemResponses>>> | null>(null);
-  if (!logRef.current && assignmentId && logStudentId && !preview) {
+  if (!logRef.current && assignmentId && logStudentId && !preview && !requestedPracticeId) {
     logRef.current = listItemResponses(assignmentId, logStudentId);
     // Nothing awaits this until the effect does, and an unhandled rejection in
     // between would surface as a page-level error. The effect still sees it.
@@ -200,8 +229,8 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   const [entered, setEntered] = useState(false);
   // Ungraded run with no DB writes / score overwrite. True for teacher previews
   // and for a "Practice again" re-run of a completed activity.
-  const [practice, setPractice] = useState(preview);
-  /** No row is written under this run: a practice re-run, a preview, or an admin looking. */
+  const [practice, setPractice] = useState(preview || Boolean(requestedPracticeId));
+  /** No row is written under this run: a practice re-run, a preview, or an admin looking. Saved practice owns a separate row. */
   const readOnly = practice || viewingSomeoneElse;
   /**
    * The item the student stopped ON, mid-attempt, in an earlier sitting: which
@@ -235,14 +264,16 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
 
   const items = useMemo(() => {
     if (!assignment) return [];
-    const all = [...assignment.items].sort((a, b) => a.order - b.order);
+    if (savedPractice?.general) return savedPractice.general.items;
+    const all = [...assignment.items].sort((a, b) => a.order - b.order).map(item =>
+      isGeneral && assignment.status !== "completed" && !viewingSomeoneElse ? repairConditionalItem(item) : item);
     if (!redrillOrders) return all;
     const wanted = new Set(redrillOrders);
     const subset = all.filter((i) => wanted.has(i.order));
     // An override that matches nothing is a stale list, not an empty activity.
     // Running the whole set is the wrong answer; running zero items is worse.
     return subset.length > 0 ? subset : all;
-  }, [assignment, redrillOrders]);
+  }, [assignment, redrillOrders, savedPractice?.general, isGeneral, viewingSomeoneElse]);
 
   /**
    * The Activity's world, when it has one. Eight were built, one per Activity,
@@ -304,6 +335,28 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
     hydratingRef.current = true;
 
     (async () => {
+      if (requestedPracticeId) {
+        try {
+          if (!isGeneral || viewingSomeoneElse) throw new Error("This saved session is not available for this activity and account.");
+          let run = readCachedRuns(user.id).find(r => r.id === requestedPracticeId);
+          if (!run) run = (await loadPracticeRuns(user.id)).find(r => r.id === requestedPracticeId);
+          if (!run?.general || run.mode !== "general" || run.general.sourceUrl !== location.pathname || !run.general.items.length) throw new Error("Saved session not found. Check your account and connection, then reload.");
+          savedPracticeRef.current = run;
+          setSavedPractice(run);
+          const outcomes: Record<number, Verdict | null> = {};
+          const texts: Record<number, string> = {};
+          for (const answer of run.answers) {
+            const order = Number(answer.questionId);
+            texts[order] = answer.text;
+            if (answer.verdict === "correct" || answer.revealed || answer.attempt >= MAX_ATTEMPTS) outcomes[order] = answer.verdict;
+          }
+          setVerdicts(outcomes); setResponses(texts);
+          setIndex(Math.min(Math.max(0, run.position), run.general.items.length - 1)); setEntered(true);
+          setPhase(run.stage === "done" ? "done" : "running");
+        } catch (error) { setPracticeError(error instanceof Error ? error.message : "Could not load saved practice."); }
+        setHydrated(true);
+        return;
+      }
       // Teacher preview: always enter at the intro, never load saved progress.
       if (preview) {
         setPhase("intro");
@@ -472,9 +525,20 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       }
       setHydrated(true);
     })();
-  }, [assignment, user, items, hydrated, preview, readOnly, startSectionOnOpen, syncClassroom]);
+  }, [assignment, user, items, hydrated, preview, readOnly, startSectionOnOpen, syncClassroom, isGeneral, location.pathname, requestedPracticeId, viewingSomeoneElse]);
+
+  const beginGeneralPractice = useCallback((selected: typeof items) => {
+    if (!user || viewingSomeoneElse || !isGeneral) return false;
+    try {
+      const next = createPracticeRun(user.id, "general", [], { sourceUrl: location.pathname, items: selected.map(repairConditionalItem) });
+      if (!persistPractice(next)) return false;
+      navigate(`${location.pathname}?practiceRun=${encodeURIComponent(next.id)}`, { replace: true });
+      return true;
+    } catch { setPracticeError("This browser cannot save a new session. Check device storage and retry."); return false; }
+  }, [user, viewingSomeoneElse, isGeneral, location.pathname, navigate, persistPractice]);
 
   const handleStart = useCallback(async () => {
+    if (isGeneral && preview && !viewingSomeoneElse && !savedPracticeRef.current) { beginGeneralPractice(items); return; }
     setEntered(false);
     setPhase("running");
     if (!readOnly && assignment && assignment.status === "assigned") {
@@ -485,7 +549,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       }
       void syncClassroom("in_progress");
     }
-  }, [assignment, readOnly, syncClassroom]);
+  }, [assignment, readOnly, syncClassroom, isGeneral, preview, viewingSomeoneElse, beginGeneralPractice, items]);
 
   const handleRecord = useCallback(
     async (args: {
@@ -496,7 +560,13 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       judgeSource?: JudgeSource;
       shadowFault?: string | null;
       latencyMs?: number;
+      revealed?: boolean;
     }) => {
+      const run = savedPracticeRef.current;
+      if (run && !viewingSomeoneElse) {
+        const answer = { id: crypto.randomUUID(), questionId: String(args.itemOrder), choiceId: run.selection || undefined, text: args.responseText, verdict: args.verdict, attempt: args.attemptNo, revealed: args.revealed === true, at: new Date().toISOString() };
+        if (!updatePractice({ answers: [...run.answers, answer], stage: "feedback" })) return;
+      }
       setResponses((prev) => ({ ...prev, [args.itemOrder]: args.responseText }));
       // The seed has served its purpose the moment this item is written to
       // again; leaving it set would re-apply an old attempt count on a remount.
@@ -531,7 +601,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
         });
       }
     },
-    [user, assignment, readOnly, items, world],
+    [user, assignment, readOnly, items, world, viewingSomeoneElse, updatePractice],
   );
 
   // Anything stranded by an earlier session goes up as soon as there is a
@@ -551,6 +621,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   }, []);
 
   const handleNext = useCallback(async () => {
+    if (savedPracticeRef.current && !updatePractice({ position: Math.min(index + 1, items.length - 1), stage: index < items.length - 1 ? "paper" : "done", selection: "" })) return;
     if (index < items.length - 1) {
       setIndex((i) => i + 1);
       setBandExpanded(false); // a new question starts with the answer box in reach
@@ -566,10 +637,14 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       void syncClassroom("completed");
     }
     setPhase("done");
-  }, [index, items.length, verdicts, assignment, readOnly, syncClassroom]);
+  }, [index, items.length, verdicts, assignment, readOnly, syncClassroom, updatePractice]);
 
   // Re-run a completed activity for practice. Clears local state, writes nothing.
   const startPractice = useCallback((orders: number[] | null) => {
+    if (isGeneral && !viewingSomeoneElse) {
+      beginGeneralPractice(orders ? items.filter(item => orders.includes(item.order)) : items);
+      return;
+    }
     setPractice(true);
     setRedrillOrders(orders);
     setVerdicts({});
@@ -578,7 +653,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
     setIndex(0);
     setEntered(true);
     setPhase("running");
-  }, []);
+  }, [isGeneral, viewingSomeoneElse, beginGeneralPractice, items]);
 
   /**
    * "Practice again" repeats whatever set was just run, rather than always
@@ -606,6 +681,8 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       </div>
     );
   }
+
+  if (requestedPracticeId && practiceError && !savedPractice) return <div className="activity-centre min-h-screen p-8"><p role="alert">{practiceError}</p><button onClick={() => window.location.reload()}>Retry loading</button><button onClick={() => navigate("/activities/conditionals")}>Conditional worlds</button></div>;
 
   if (error || !assignment) {
     return (
@@ -720,6 +797,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
     return (
       <div className="activity-centre act-home" data-world={world?.slug}>
         {adminBanner}
+        {practiceError && <p role="alert" className="p-4">{practiceError}</p>}
         <ActivityIntro
           title={assignment.title}
           subtitle={assignment.subtitle}
@@ -939,6 +1017,37 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
         {/* The answer column stands on the world's own ground; the work cards
             inside keep their light reading surface. */}
         <main className="min-h-screen bg-[hsl(var(--aw-page,var(--background)))]">
+          {saveStatus && savedPractice && <p role="status" className="px-6 pt-4 text-sm">{saveStatus}</p>}
+          {practiceError && <p role="alert" className="px-6 pt-4 text-sm">{practiceError}</p>}
+          {savedPractice ? (() => {
+            const choices = buildPaperDiagramChoices(currentItem.credited_answers, currentItem.order);
+            const attempts = savedPractice.answers.filter(answer => answer.questionId === String(currentItem.order));
+            const last = attempts.at(-1);
+            const resolved = !!last && (last.verdict === "correct" || last.revealed || last.attempt >= MAX_ATTEMPTS);
+            const submitted = choices.find(choice => choice.responseText === last?.text);
+            const submit = async (reveal = false) => {
+              if (resolved || (!reveal && savedPracticeRef.current?.stage !== "choices")) return;
+              const choice = choices.find(candidate => candidate.id === savedPractice.selection);
+              if (!reveal && !choice) return;
+              const count = savedPractice.answers.length;
+              const verdict = reveal ? last?.verdict ?? null : choice!.verdict;
+              await handleRecord({ itemOrder: currentItem.order, responseText: reveal ? last?.text ?? "Answer revealed" : choice!.responseText, verdict, attemptNo: attempts.length + 1, judgeSource: "fast-path", revealed: reveal });
+              if (savedPracticeRef.current?.answers.length === count) return;
+              if (reveal || verdict === "correct" || attempts.length + 1 >= MAX_ATTEMPTS) handleResolved(currentItem.order, verdict);
+            };
+            return <div className="px-5 py-6 md:px-12 md:py-12">
+              <p className="mb-4 text-sm">Question {index + 1} of {items.length}</p>
+              {!worldStage && <p className="mb-5 text-lg">{currentItem.prompt}</p>}
+              <PaperDiagramPanel key={`${savedPractice.id}:${currentItem.order}`} item={currentItem} choices={choices}
+                value={savedPractice.selection} onChange={selection => { updatePractice({ selection }); }}
+                paperReady={savedPractice.stage !== "paper"} onPaperReady={() => { updatePractice({ stage: "choices" }); }}
+                onSubmit={() => { void submit(); }} onRetry={() => { updatePractice({ stage: "choices", selection: "" }); }}
+                onShowAnswer={() => { void submit(true); }} onNext={() => { void handleNext(); }} judging={false}
+                attempts={attempts.length} result={savedPractice.stage === "feedback" && last ? { verdict: last.verdict ?? "unchecked", feedback: last.revealed ? "Compare your diagram with the complete statement below." : submitted?.feedback ?? "Your saved answer is shown below." } : null}
+                revealed={Boolean(last?.revealed)} resolved={resolved} isLast={index === items.length - 1}
+                creditedSecondaryLabel={assignment.instructions?.credited_secondary_label} />
+            </div>;
+          })() : (
           <ActivityQuestionStack
             items={items}
             format={assignment.item_format}
@@ -954,11 +1063,12 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             activeIndex={index}
             resumeAttempts={resumeAt?.index === index ? resumeAt.attempts : 0}
             resumeValue={resumeAt?.index === index ? resumeAt.text : ""}
-            draftKeyFor={(itemOrder) => draftKey(assignment.id, itemOrder)}
+            draftKeyFor={(itemOrder) => draftKey(savedPractice?.id ?? assignment.id, itemOrder)}
             onResolved={handleResolved}
             onRecord={handleRecord}
             onNext={handleNext}
           />
+          )}
         </main>
       </div>
     </div>

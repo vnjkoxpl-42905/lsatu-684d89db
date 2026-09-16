@@ -33,5 +33,6 @@ else
   git merge origin/main --no-edit
 fi
 
-git push origin main
+# Push the checkout that passed the gate, including an isolated detached worktree.
+git push origin HEAD:main
 echo "[safe-push] Pushed $(git log -1 --format='%h %s')"

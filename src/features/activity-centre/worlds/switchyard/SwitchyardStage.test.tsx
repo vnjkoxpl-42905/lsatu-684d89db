@@ -61,6 +61,11 @@ const WHENEVER = itemStarting("Whenever the greenhouse fans");
 const UNLESS = itemStarting("Unless the generator is refueled");
 
 describe("the yard at arrival", () => {
+  it("does not mount credited clause or plate text before commitment", () => {
+    const { container } = render(<SwitchyardStage statement="Translate this statement" routing={{ ifClause: { text: "SECRET TRIGGER", negated: false }, thenClause: { text: "SECRET RESULT", negated: false } }} contrapositive="SECRET FLIP" phase="arrival" />);
+    expect(container.textContent).not.toContain("SECRET");
+    expect(container.querySelectorAll('[data-testid="sy-lamp"]')).toHaveLength(0);
+  });
   it("does not light the indicator, so nothing hints before the student commits", () => {
     const { container } = stageFor(WHENEVER, "arrival");
     expect(container.querySelector(".sy-indicator")).toBeNull();
@@ -172,16 +177,15 @@ describe("the flip", () => {
 });
 
 describe("every item the yard accepts can run through it", () => {
-  // Item 62 is the exception, and it is deliberate. Its credited answer carries
-  // TWO conditionals, so parseRouting refuses it rather than drawing a whole
-  // second rule inside one capsule. The world falls back to the plain prompt.
+  // Complete biconditionals and the two-rule item cannot fit one capsule pair.
+  // The world falls back to the plain prompt, preserving both authored rules.
   const routable = conditional.items.filter((i) => parseRouting(i.credited_answers[0]));
 
-  it("accepts 61 of the 62, and refuses only the malformed one", () => {
-    expect(routable).toHaveLength(61);
+  it("uses the plain prompt for the two complete multi-rule diagrams", () => {
+    expect(routable).toHaveLength(60);
     expect(
       conditional.items.filter((i) => !parseRouting(i.credited_answers[0])).map((i) => i.order),
-    ).toEqual([62]);
+    ).toEqual([48, 62]);
   });
 
   it("renders all three phases with both capsules present", () => {

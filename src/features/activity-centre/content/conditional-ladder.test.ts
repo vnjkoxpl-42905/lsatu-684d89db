@@ -151,8 +151,8 @@ describe("what a Conditional Rephrase student is shown", () => {
     expect(instructions.coach.rubric[0]).toMatch(/contrapositive/i);
     expect(instructions.coach.rubric[0]).toMatch(/credited/i);
     expect(instructions.task).toMatch(/diagram.*on paper/i);
-    expect(instructions.task).toMatch(/choose the diagram/i);
-    expect(instructions.task).toMatch(/conditional and its contrapositive are both correct/i);
+    expect(instructions.task).toMatch(/choose the one diagram/i);
+    expect(instructions.task).toMatch(/contrapositive is equivalent/i);
     expect(conditionalRephrase.subtitle).not.toMatch(/route/i);
     expect(instructions.task).not.toMatch(/route/i);
   });

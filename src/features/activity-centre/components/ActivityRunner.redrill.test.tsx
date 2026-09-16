@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ActivityRunner } from "./ActivityRunner";
+import { readCachedRuns } from "../conditionals/practiceStore";
 import type { ActivityItemResponse, Verdict } from "../api/types";
 
 // The re-drill. The practice path has existed since the beginning and has always
@@ -11,6 +12,10 @@ import type { ActivityItemResponse, Verdict } from "../api/types";
 // reaches the database.
 
 const navigate = vi.fn();
+vi.mock("../conditionals/practiceStore", async () => {
+  const actual = await vi.importActual<typeof import("../conditionals/practiceStore")>("../conditionals/practiceStore");
+  return { ...actual, syncPracticeRun: vi.fn().mockResolvedValue(undefined) };
+});
 
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
@@ -130,6 +135,7 @@ function renderRouted() {
 describe("re-drilling the misses", () => {
   beforeEach(() => {
     navigate.mockClear();
+    localStorage.clear();
     completeAssignment.mockClear();
     markAssignmentStarted.mockClear();
     recordItemResponse.mockClear();
@@ -156,27 +162,22 @@ describe("re-drilling the misses", () => {
     renderRouted();
     fireEvent.click(await screen.findByTestId("ledger-redrill"));
 
-    // Straight onto the first miss, not through the intro and not onto item one.
-    expect(await screen.findByText("Statement number 1.")).toBeInTheDocument();
-    // Three items, not six: the counter is the proof the run was narrowed.
-    expect(screen.getByText("1 / 3")).toBeInTheDocument();
+    await waitFor(() => expect(navigate).toHaveBeenCalled());
+    const [run] = readCachedRuns("user-1");
+    expect(run.general?.items.map(item => item.order)).toEqual([1, 2, 3]);
+    expect(run.position).toBe(0);
+    expect(run.stage).toBe("paper");
+    expect(navigate).toHaveBeenCalledWith(`/activities/assign-1?practiceRun=${run.id}`, { replace: true });
   });
 
-  it("never sends a narrowed run to the database", async () => {
+  it("saves a separate narrowed session without rewriting the assignment", async () => {
     renderRouted();
     fireEvent.click(await screen.findByTestId("ledger-redrill"));
-    await screen.findByText("1 / 3");
+    await waitFor(() => expect(readCachedRuns("user-1")).toHaveLength(1));
     expect(completeAssignment).not.toHaveBeenCalled();
     expect(recordItemResponse).not.toHaveBeenCalled();
     expect(markAssignmentStarted).not.toHaveBeenCalled();
-  });
-
-  it("leaves the graded score alone: the re-drill is scored live over its own items", async () => {
-    renderRouted();
-    fireEvent.click(await screen.findByTestId("ledger-redrill"));
-    await screen.findByText("1 / 3");
-    // The stored 58% belonged to the graded run over six. Nothing here rewrites it.
-    expect(completeAssignment).not.toHaveBeenCalled();
+    expect((activityState.assignment as ReturnType<typeof makeAssignment>).score).toBe(58);
   });
 
   it("offers no re-drill on a clean run", async () => {

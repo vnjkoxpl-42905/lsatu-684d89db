@@ -42,11 +42,13 @@ describe("the paper-first conditional response", () => {
     fireEvent.click(screen.getByRole("button", { name: "I’ve diagrammed it" }));
     expect(screen.getAllByRole("radio")).toHaveLength(5);
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+    expect(screen.getAllByRole("img", { name: /^Not:/ }).length).toBeGreaterThan(0);
+    expect(screen.queryByText("NOT")).not.toBeInTheDocument();
   });
 
   it("records the selected diagram and never calls the Coach", async () => {
     const choices = buildPaperDiagramChoices(item.credited_answers, item.order);
-    const correctIndex = choices.findIndex((choice) => choice.id === "contrapositive");
+    const correctIndex = choices.findIndex((choice) => choice.verdict === "correct");
     const onResolved = vi.fn();
     const onRecord = vi.fn().mockResolvedValue(undefined);
     render(

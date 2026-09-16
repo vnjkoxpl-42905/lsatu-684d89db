@@ -31,7 +31,7 @@ function parseRoutes(answer: string): DiagramRoute[] | null {
   }));
 }
 
-function flip(routes: DiagramRoute[]): DiagramRoute[] {
+export function flip(routes: DiagramRoute[]): DiagramRoute[] {
   return routes.map((route) => ({
     ifSide: { ...route.thenSide, inverted: !route.thenSide.inverted },
     thenSide: { ...route.ifSide, inverted: !route.ifSide.inverted },
@@ -63,7 +63,7 @@ function changeOneSide(routes: DiagramRoute[]): DiagramRoute[] {
 }
 
 function sideText(side: DiagramSide): string {
-  return side.inverted ? `NOT (${side.text})` : side.text;
+  return side.inverted ? `not ${side.text}` : side.text;
 }
 
 export function diagramResponseText(routes: DiagramRoute[]): string {
@@ -84,11 +84,17 @@ function shuffled<T>(values: T[], seed: number): T[] {
 }
 
 /**
- * Five paper-diagram reads of one authored conditional. Two preserve the rule:
- * the direct form and its contrapositive. The other three are the mistakes this
- * drill teaches students to catch. The order is stable per item but not
- * predictable from one question to the next.
+ * Compare truth tables over the complete authored clauses. A compound remains
+ * one complete idea here; negating it never drops one of its parts. This also
+ * catches the less obvious duplicate: a converse and an inverse are equivalent.
  */
+export function diagramSignature(routes: DiagramRoute[], atoms: string[]): string {
+  return Array.from({ length: 2 ** atoms.length }, (_, mask) => {
+    const value = (side: DiagramSide) => Boolean(mask & (1 << atoms.indexOf(side.text))) !== side.inverted;
+    return routes.every((route) => !value(route.ifSide) || value(route.thenSide)) ? "1" : "0";
+  }).join("");
+}
+
 export function buildPaperDiagramChoices(
   creditedAnswers: string[],
   itemOrder: number,
@@ -102,12 +108,6 @@ export function buildPaperDiagramChoices(
       routes: direct,
       verdict: "correct",
       feedback: "That matches the statement's direction and polarity.",
-    },
-    {
-      id: "contrapositive",
-      routes: flip(direct),
-      verdict: "correct",
-      feedback: "That is the contrapositive. It states the same rule.",
     },
     {
       id: "reversal",
@@ -127,10 +127,44 @@ export function buildPaperDiagramChoices(
       verdict: "partial",
       feedback: "One side changed polarity. Keep the original polarity unless you negate both sides and swap them.",
     },
+    {
+      id: "trigger-polarity",
+      routes: direct.map((route) => ({ ...route, ifSide: { ...route.ifSide, inverted: !route.ifSide.inverted } })),
+      verdict: "partial",
+      feedback: "The trigger has changed. Check which condition actually starts this rule.",
+    },
+    {
+      id: "both-directions",
+      routes: [...direct, ...reverse(direct)],
+      verdict: "partial",
+      feedback: "This adds a reverse direction that the statement does not guarantee.",
+    },
   ];
 
+  // Two-way rules need missing-direction choices, not a falsely rejected
+  // converse. Other multi-rule items can likewise lose one entire premise.
+  if (direct.length > 1) {
+    direct.forEach((route, index) => candidates.push({
+      id: `one-rule-${index}`,
+      routes: [route],
+      verdict: "partial",
+      feedback: "This keeps only part of the statement. Your diagram must express every stated rule.",
+    }));
+  }
+  const atoms = [...new Set(direct.flatMap((route) => [route.ifSide.text, route.thenSide.text]))];
+  const seen = new Set<string>();
+  const distinct = candidates.filter((choice) => {
+    const signature = diagramSignature(choice.routes, atoms);
+    if (seen.has(signature)) return false;
+    seen.add(signature);
+    return true;
+  }).slice(0, 5);
+  // Custom authored tautologies may not support five different diagrams.
+  // Preserve the caller's existing fallback rather than crash the activity.
+  if (distinct.length !== 5) return [];
+
   return shuffled(
-    candidates.map((choice) => ({
+    distinct.map((choice) => ({
       ...choice,
       responseText: diagramResponseText(choice.routes),
     })),

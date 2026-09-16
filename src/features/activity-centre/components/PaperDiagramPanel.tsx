@@ -22,6 +22,9 @@ interface PaperDiagramPanelProps {
   resolved: boolean;
   isLast: boolean;
   creditedSecondaryLabel?: string;
+  /** Optional persisted paper/choice state for a saved practice run. */
+  paperReady?: boolean;
+  onPaperReady?: () => void;
 }
 
 const actionButton =
@@ -34,12 +37,10 @@ function DiagramSideView({ prefix, side }: { prefix: "IF" | "THEN"; side: Diagra
         {prefix}
       </span>
       <div className="mt-1 flex items-start gap-1.5 text-sm font-medium leading-snug text-foreground">
-        {side.inverted && (
-          <span className="mt-0.5 shrink-0 rounded bg-foreground px-1.5 py-0.5 text-[9px] font-black tracking-wide text-background">
-            NOT
-          </span>
-        )}
-        <span>{side.text}</span>
+        <span className="relative inline-block" role={side.inverted ? "img" : undefined} aria-label={side.inverted ? `Not: ${side.text}` : undefined}>
+          <span aria-hidden={side.inverted || undefined}>{side.text}</span>
+          {side.inverted && <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100"><line x1="2" y1="94" x2="98" y2="6" stroke="currentColor" strokeWidth="1.5" vectorEffect="non-scaling-stroke" /></svg>}
+        </span>
       </div>
     </div>
   );
@@ -62,8 +63,11 @@ export function PaperDiagramPanel({
   resolved,
   isLast,
   creditedSecondaryLabel,
+  paperReady: savedPaperReady,
+  onPaperReady,
 }: PaperDiagramPanelProps) {
-  const [paperReady, setPaperReady] = useState(false);
+  const [localPaperReady, setPaperReady] = useState(false);
+  const paperReady = savedPaperReady ?? localPaperReady;
   const feedbackRef = useRef<HTMLDivElement | null>(null);
   const canSubmit = value.length > 0 && !judging && !resolved && !result;
   const showRetry = !!result && result.verdict !== "correct" && !revealed && attempts < MAX_ATTEMPTS;
@@ -91,7 +95,7 @@ export function PaperDiagramPanel({
             Put the sufficient condition on the left and the necessary condition on the right. Write the
             contrapositive too if that helps you check the route.
           </p>
-          <Button className={`${actionButton} mt-7`} onClick={() => setPaperReady(true)} autoFocus>
+          <Button className={`${actionButton} mt-7`} onClick={() => { setPaperReady(true); onPaperReady?.(); }} autoFocus>
             I’ve diagrammed it
           </Button>
         </div>
@@ -100,7 +104,7 @@ export function PaperDiagramPanel({
           <div>
             <h2 className="font-serif text-xl font-semibold text-foreground">Which diagram matches your paper?</h2>
             <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-              Record what you wrote, even if you are unsure. More than one route can express the same rule.
+              Choose the one diagram that expresses the complete statement. A contrapositive expresses the same rule, even when your paper looks different.
             </p>
           </div>
 

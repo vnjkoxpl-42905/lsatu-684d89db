@@ -1,7 +1,7 @@
 {
   "slug": "conditional-rephrase",
   "title": "Conditional Rephrase",
-  "subtitle": "Diagram it on paper, then choose the matching answer",
+  "subtitle": "Diagram it on paper, then choose the matching diagram",
   "item_format": "mcq",
   "instructions": {
     "coach": {
@@ -20,7 +20,7 @@
       "partial_rule": "Mark 'partial' when the student produces a well-formed conditional but reverses sufficiency and necessity, drops a negation, or trims a compound or contrasting condition down to one part. Mark 'incorrect' when the response is not a conditional at all, or states a relationship the statement does not support."
     },
     "tagline": "Find the trigger word, and it tells you which side is which.",
-    "task": "Diagram the statement on paper first. Then choose the diagram that matches what you wrote. The original conditional and its contrapositive are both correct because they mean the same thing.",
+    "task": "Diagram the statement on paper first. Then choose the one diagram that expresses the complete statement. Your contrapositive is equivalent even when it looks different from the credited diagram.",
     "rules": [
       "Some words introduce the sufficient condition and some introduce the necessary one. That is the whole game.",
       "If, when, whenever, every, all, the only: these mark the sufficient side, the trigger.",
@@ -42,7 +42,7 @@
       "explanation": "Without marks the necessary condition, so mastering conditional reasoning goes on the then side. Both forms above are credited: the second is just the contrapositive of the first."
     },
     "answer_label": "Your paper diagram",
-    "answer_placeholder": "Choose the diagram that matches what you wrote",
+    "answer_placeholder": "Choose the diagram that matches your paper",
     "credited_secondary_label": "Contrapositive"
   },
   "items": [
@@ -513,17 +513,17 @@
         "If a juror reviews the exhibit log overnight, then the juror does not review the testimony transcripts.",
         "If a juror reviews the testimony transcripts, then the juror does not review the exhibit log."
       ],
-      "explanation": "\"But not both,\" sentence-final. The or-with-a-cap construction. Here the contrapositive and the converse coincide, which is what \"not both\" means: each one rules out the other. \"Or\" still permits either alone, and permits neither.",
+      "explanation": "\"Not both\" means each option rules out the other: if the exhibit log is reviewed, the testimony transcripts are not; contraposing gives the opposite exclusion. That is not the converse. Permission to choose either option does not require the juror to choose one.",
       "category": "Not both"
     },
     {
       "order": 48,
       "prompt": "The observatory grants dark-sky certification if and only if every fixture in the district is fully shielded.",
       "credited_answers": [
-        "If a district is granted dark-sky certification, then every fixture in it is fully shielded.",
-        "If any fixture in the district is not fully shielded, then the district is not granted certification."
+        "If a district is granted dark-sky certification, then every fixture in it is fully shielded; and if every fixture in it is fully shielded, then a district is granted dark-sky certification.",
+        "If not every fixture in it is fully shielded, then a district is not granted dark-sky certification; and if a district is not granted dark-sky certification, then not every fixture in it is fully shielded."
       ],
-      "explanation": "\"If and only if\" (biconditional). The one construction where both sides are both sufficient and necessary, so the converse is credited too: if every fixture is fully shielded, then the district is granted certification.",
+      "explanation": "\"If and only if\" gives two directions. Certification requires every fixture to be shielded, and shielding every fixture guarantees certification. A complete diagram must preserve both directions.",
       "category": "Both ways: if and only if"
     },
     {
@@ -610,8 +610,8 @@
       "order": 57,
       "prompt": "The only expeditions cleared for the ice shelf carry redundant beacons and a certified glacier medic.",
       "credited_answers": [
-        "If an expedition is cleared, then it carries both.",
-        "Missing either, not cleared."
+        "If an expedition is cleared for the ice shelf, then it carries redundant beacons and a certified glacier medic.",
+        "If an expedition lacks redundant beacons or lacks a certified glacier medic, then it is not cleared for the ice shelf."
       ],
       "explanation": "\"The only\" + compound. The side-flipping look-alike, now carrying two conditions at once.",
       "category": "Compound condition: the only"
@@ -658,12 +658,12 @@
     },
     {
       "order": 62,
-      "prompt": "A confirmed match in the pollen record guarantees a spring dating for the flood layer, but only a sealed stratum makes the match itself trustworthy.",
+      "prompt": "A confirmed match in the pollen record guarantees a spring dating for the flood layer. The flood layer is dated to spring only if the stratum is sealed.",
       "credited_answers": [
-        "If the pollen match is confirmed (and trustworthy), then the flood layer dates to spring; and if the match is trustworthy, then the stratum was sealed.",
-        "Chained the other way: if the stratum was not sealed, the match is not trustworthy; and with no trustworthy match, no confirmed spring dating."
+        "If a match in the pollen record is confirmed, then the flood layer is dated to spring; and if the flood layer is dated to spring, then the stratum is sealed.",
+        "If the stratum is not sealed, then the flood layer is not dated to spring; and if the flood layer is not dated to spring, then a match in the pollen record is not confirmed."
       ],
-      "explanation": "\"Guarantees\" + \"only.\" Two conditionals in one sentence, and the hardest item here. Chain them rather than picking one.",
+      "explanation": "\"Guarantees\" supplies the first rule; only if supplies the second. Confirmed pollen match leads to spring dating, which requires a sealed stratum. Contrapose the chain to work from an unsealed stratum back to no confirmed match. Do not infer no spring dating merely from no confirmed match.",
       "category": "Two conditionals in one sentence"
     }
   ]

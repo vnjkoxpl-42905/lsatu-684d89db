@@ -92,6 +92,8 @@ const AdminInspector = safeLazy(() => import("./pages/admin/Inspector"));
 const LsatKnowledgeImport = safeLazy(() => import("./pages/LsatKnowledgeImport"));
 const GuidedDrillStart = safeLazy(() => import("./pages/GuidedDrillStart"));
 const ActivityCentre = safeLazy(() => import("./pages/ActivityCentre"));
+const ConditionalPractice = safeLazy(() => import("./features/activity-centre/conditionals/ConditionalPractice"));
+const ConditionalPracticeLab = safeLazy(() => import("./features/activity-centre/conditionals/ConditionalPractice").then(module => ({ default: module.ConditionalPracticeLab })));
 const ActivitySections = safeLazy(() => import("./pages/ActivitySections"));
 const ActivityRunner = safeLazy(() => import("./features/activity-centre/components/ActivityRunner"));
 
@@ -461,6 +463,13 @@ const App = () => {
                       </React.Suspense>
                     } />
                   )}
+                  {import.meta.env.DEV && (
+                    <Route path="/conditional-lab" element={
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ConditionalPracticeLab />
+                      </React.Suspense>
+                    } />
+                  )}
                   {/* Teacher preview. Runs off the activity DEFINITION and
                       writes nothing, so looking at an activity never puts it on
                       the teacher's own "Assigned to you" list. Admin only. */}
@@ -485,6 +494,13 @@ const App = () => {
                     <ProtectedRoute flag="has_activity_access">
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                         <ActivityRunner />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/activities/conditionals" element={
+                    <ProtectedRoute flag="has_activity_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ConditionalPractice />
                       </React.Suspense>
                     </ProtectedRoute>
                   } />
