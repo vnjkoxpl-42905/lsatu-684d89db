@@ -1,5 +1,6 @@
 import { ActivityEditorialIntro, type ActivityIntroProps } from "./ActivityEditorialIntro";
 import { SectionLaunch } from "./SectionLaunch";
+import { DrillInstructions } from "../conditionals/DrillInstructions";
 
 export type { ActivityIntroProps } from "./ActivityEditorialIntro";
 
@@ -40,6 +41,20 @@ export interface SectionLaunchExtras {
  * hooks and React remounts cleanly when the choice changes.
  */
 export function ActivityIntro(props: ActivityIntroProps & SectionLaunchExtras) {
+  if (props.title === "Conditional Rephrase") {
+    return <div className="mx-auto max-w-3xl px-6 py-10">
+      {props.onExit && <button className="mb-6 text-sm underline" onClick={props.onExit}>Conditional drills</button>}
+      <h1 className="text-3xl font-semibold">General Conditionals</h1>
+      <DrillInstructions mode="general" />
+      <button className="rounded-lg bg-foreground px-5 py-3 text-background" onClick={props.onStart}>
+        {props.resumeAt && props.resumeAt > 1 ? "Continue practice" : "Start practice"}
+      </button>
+      <details className="mt-8">
+        <summary className="cursor-pointer text-sm underline">Review conditional rules and examples</summary>
+        <ActivityEditorialIntro {...props} />
+      </details>
+    </div>;
+  }
   if (props.mode === "section") {
     return (
       <SectionLaunch

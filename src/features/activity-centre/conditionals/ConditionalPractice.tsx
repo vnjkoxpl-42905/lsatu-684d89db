@@ -6,6 +6,7 @@ import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useStudentActivities } from "../hooks/useStudentActivities";
 import { CONDITIONAL_QUESTIONS, type ConditionalMode, type ConditionalQuestion } from "./content";
 import { ConditionalNotation } from "./ConditionalNotation";
+import { DrillInstructions } from "./DrillInstructions";
 import { cachePracticeRun, createPracticeRun, loadPracticeRuns, practiceSaveMessage, readCachedRuns, syncPendingPractice, syncPracticeRun, type PracticeMode, type PracticeRun } from "./practiceStore";
 import "../activity-centre.css";
 import "./conditionals.css";
@@ -177,8 +178,10 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
         </div>
       </> : mode ? <section className="conditional-panel conditional-briefing">
         <span className="conditional-eyebrow">Conditional Reasoning</span><h1>{selectedWorld?.title}</h1>{selectedWorld?.description && <p>{selectedWorld.description}</p>}
-        <div className="conditional-worked"><span className="conditional-eyebrow">Worked example</span>
-          <p>A → B<br />B → C</p><p>{mode === "must-be-true" ? "If A occurs, C must occur. If C occurs, the rules do not establish A." : "To reach A → D, add C → D. The result is A → B → C → D."}</p></div>
+        <DrillInstructions mode={mode} />
+        <details className="my-5"><summary className="cursor-pointer text-sm underline">See an example</summary>
+          <div className="conditional-worked"><p>A → B<br />B → C</p><p>{mode === "must-be-true" ? "If A occurs, C must occur. If C occurs, the rules do not establish A." : "To reach A → D, add C → D. The result is A → B → C → D."}</p></div>
+        </details>
         <label className="conditional-select">Practice with <select value={level} onChange={e => setLevel(e.target.value as typeof level)}><option value="all">All questions</option><option value="variables">Variables</option><option value="words">Words and phrases</option></select></label>
         <p>{CONDITIONAL_QUESTIONS.filter(q => q.mode === mode && (level === "all" || q.level === level)).length} questions. Your progress saves automatically.</p>
         <button className="conditional-primary" onClick={() => start(mode)}>Start practice <ArrowRight size={16} /></button>
