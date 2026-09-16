@@ -28,6 +28,7 @@ import {
   singleSessionWindowEndDate,
   toEventConfig,
   toPublicBooking,
+  unwrapRpcRow,
   type BookingEventConfig,
 } from "../_shared/singleSessionCore.ts";
 import {
@@ -72,6 +73,9 @@ function responseBookingTokenForFree(
  * before it promotes a paid hold.
  */
 async function calendarClearFor(supabase: any, booking: any): Promise<boolean> {
+  if (!booking?.id || !booking?.start_at || !booking?.end_at || !booking?.gcal_event_id) {
+    throw new Error("booking_calendar_check_missing_fields");
+  }
   const { data: state, error } = await supabase.from("gcal_sync_state")
     .select("calendar_id,busy_calendar_ids").eq("id", 1).maybeSingle();
   if (error) throw error;
@@ -84,7 +88,13 @@ async function calendarClearFor(supabase: any, booking: any): Promise<boolean> {
       showDeleted: "false",
       maxResults: "50",
     });
-    if (hasConflictingCalendarEvent(page?.items ?? [], booking.start_at, booking.end_at, booking.gcal_event_id)) {
+    if (hasConflictingCalendarEvent(
+      page?.items ?? [],
+      booking.start_at,
+      booking.end_at,
+      booking.gcal_event_id,
+      booking.id,
+    )) {
       return false;
     }
   }
@@ -478,7 +488,9 @@ Deno.serve(async (req) => {
           _gcal_event_id: tentative.id,
         });
         if (error) throw error;
-        booking = data ?? booking;
+        const updatedBooking = unwrapRpcRow(data);
+        if (!updatedBooking) throw new Error("set_tentative_event_returned_no_booking");
+        booking = updatedBooking;
       } catch (calendarError) {
         await supabase.rpc("expire_single_session_draft", {
           _booking_id: booking.id,
