@@ -6953,6 +6953,10 @@ export type Database = {
         }
         Returns: Json
       }
+      reconcile_single_session_calendar_deletion: {
+        Args: { _booking_id: string; _google_event_id: string }
+        Returns: Json
+      }
       record_booking_worker_heartbeat: {
         Args: {
           _error?: string
