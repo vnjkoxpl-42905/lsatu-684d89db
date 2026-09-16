@@ -6755,6 +6755,7 @@ export type Database = {
         Args: { p_class_id: string; p_xp: number }
         Returns: undefined
       }
+      invoke_gcal_reconcile: { Args: never; Returns: string }
       invoke_gcal_sync_pull: { Args: never; Returns: string }
       invoke_single_session_outbox: { Args: never; Returns: string }
       invoke_single_session_sweeper: { Args: never; Returns: string }
