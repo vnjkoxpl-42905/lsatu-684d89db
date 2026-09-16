@@ -14,7 +14,7 @@ function mount(path = '/conditional-lab') {
 }
 function beginMissingLink() {
   const card = screen.getByRole('heading', { name: 'Missing Link' }).closest('section')!;
-  fireEvent.click(within(card).getByRole('button', { name: /Choose practice/ }));
+  fireEvent.click(within(card).getByRole('button', { name: /Open drill/ }));
   fireEvent.click(screen.getByRole('button', { name: /Start practice/ }));
 }
 
@@ -56,7 +56,7 @@ describe('conditional practice workflow', () => {
     fireEvent.click(screen.getAllByRole('radio')[q.choices.findIndex(c => c.id === q.correctChoiceId)]);
     fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
     expect(readCachedRuns('test-user')[0].answers.map(a => a.verdict)).toEqual(['incorrect', 'correct']);
-    fireEvent.click(screen.getByRole('button', { name: 'Conditional worlds' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Conditional drills' }));
     beginMissingLink();
     const saved = readCachedRuns('test-user');
     expect(saved).toHaveLength(2);

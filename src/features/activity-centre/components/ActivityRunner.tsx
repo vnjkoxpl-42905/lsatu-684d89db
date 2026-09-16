@@ -682,7 +682,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
     );
   }
 
-  if (requestedPracticeId && practiceError && !savedPractice) return <div className="activity-centre min-h-screen p-8"><p role="alert">{practiceError}</p><button onClick={() => window.location.reload()}>Retry loading</button><button onClick={() => navigate("/activities/conditionals")}>Conditional worlds</button></div>;
+  if (requestedPracticeId && practiceError && !savedPractice) return <div className="activity-centre min-h-screen p-8"><p role="alert">{practiceError}</p><button onClick={() => window.location.reload()}>Retry loading</button><button onClick={() => navigate("/activities/conditionals")}>Conditional drills</button></div>;
 
   if (error || !assignment) {
     return (

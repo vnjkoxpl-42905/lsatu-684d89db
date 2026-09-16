@@ -12,10 +12,10 @@ import "./conditionals.css";
 
 const GENERAL_ID = "7946f46b-e7f8-4c60-b405-4ece9c409deb";
 const WORLDS = [
-  { id: "general", title: "General Conditionals", icon: BookOpen, description: "Your original drill. Translate a statement and check its direction, conditions, and contrapositive." },
-  { id: "linking", title: "Linking", icon: GitBranch, description: "Start with short relationships. Find the conditional that connects the premises to the conclusion." },
-  { id: "missing-link", title: "Missing Link", icon: Link2, description: "Supply a sufficient assumption. Work through every supplied exercise, then try more complex connections." },
-  { id: "must-be-true", title: "Must Be True", icon: Check, description: "Use the rules and facts to identify what must follow, including and/or conditions." },
+  { id: "general", title: "General Conditionals", icon: BookOpen, description: "Translate conditional statements." },
+  { id: "linking", title: "Linking", icon: GitBranch, description: "" },
+  { id: "missing-link", title: "Missing Link", icon: Link2, description: "Find the missing conditional." },
+  { id: "must-be-true", title: "Must Be True", icon: Check, description: "Identify what must follow." },
 ] as const;
 const titleFor = (mode: PracticeMode) => WORLDS.find(w => w.id === mode)?.title ?? mode;
 
@@ -29,12 +29,12 @@ export default function ConditionalPractice() {
   const preview = is_admin && params.get("preview") === "general";
   return user ? <ConditionalPracticeRoom key={user.id} userId={user.id}
     generalUrl={preview ? `/activities/preview/${GENERAL_ID}` : general ? `/activities/${general.id}` : is_admin ? `/activities/preview/${GENERAL_ID}` : undefined}
-    generalStatus={loading ? "Loading your original activity…" : error ? "Could not load your assignments. Reload to open the original drill." : "Your instructor can assign General Conditionals."} /> : null;
+    generalStatus={loading ? "Loading…" : error ? "Could not load this drill. Please reload." : "Not assigned yet."} /> : null;
 }
 
 /** Dev-only lab also uses the real UI and local persistence, never student rows. */
 export function ConditionalPracticeLab() {
-  return <ConditionalPracticeRoom userId="conditional-development-preview" localOnly generalStatus="The existing assigned drill opens from the live activity hub." />;
+  return <ConditionalPracticeRoom userId="conditional-development-preview" localOnly />;
 }
 
 export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, localOnly = false }: {
@@ -133,7 +133,7 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
   return <main className="conditional-room activity-centre">
     <div className="conditional-shell">
       <header className="conditional-topbar">
-        {run || mode || review ? <button onClick={returnToHub} className="conditional-back"><ArrowLeft size={16} /> Conditional worlds</button>
+        {run || mode || review ? <button onClick={returnToHub} className="conditional-back"><ArrowLeft size={16} /> Conditional drills</button>
           : <Link to="/activities" className="conditional-back"><ArrowLeft size={16} /> Activities</Link>}
         <div className="conditional-save" role="status">{saveStatus}
           {!localOnly && saveStatus !== "Saved to your account" && !saveStatus.includes("syncing") && <button onClick={() => void refresh()}>Retry sync</button>}</div>
@@ -143,9 +143,9 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
       : review ? <PracticeReview run={review} onBack={() => setReviewId(null)} />
       : run && run.stage === "done" ? <section className="conditional-panel conditional-summary">
           <span className="conditional-eyebrow">{titleFor(run.mode)}</span><h1>Practice complete</h1>
-          <p>{firstTryCorrect(run)} of {run.questions.length} correct on the first answer. Corrections and reveals are kept separately.</p>
+          <p>{firstTryCorrect(run)} of {run.questions.length} correct on the first attempt.</p>
           <div className="conditional-actions"><button className="conditional-primary" onClick={() => setReviewId(run.id)}>Review answers</button>
-          <button onClick={() => start(run.mode as ConditionalMode, run.questions)}>Practice again</button><button onClick={returnToHub}>Choose a world</button></div>
+          <button onClick={() => start(run.mode as ConditionalMode, run.questions)}>Practice again</button><button onClick={returnToHub}>Choose a drill</button></div>
         </section>
       : run && current ? <>
         <div className="conditional-heading"><span className="conditional-eyebrow">{titleFor(run.mode)}</span><span>Question {run.position + 1} of {run.questions.length}</span></div>
@@ -176,24 +176,24 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
           </section>
         </div>
       </> : mode ? <section className="conditional-panel conditional-briefing">
-        <span className="conditional-eyebrow">Conditional Reasoning</span><h1>{selectedWorld?.title}</h1><p>{selectedWorld?.description}</p>
+        <span className="conditional-eyebrow">Conditional Reasoning</span><h1>{selectedWorld?.title}</h1>{selectedWorld?.description && <p>{selectedWorld.description}</p>}
         <div className="conditional-worked"><span className="conditional-eyebrow">Worked example</span>
           <p>A → B<br />B → C</p><p>{mode === "must-be-true" ? "If A occurs, C must occur. If C occurs, the rules do not establish A." : "To reach A → D, add C → D. The result is A → B → C → D."}</p></div>
-        <label className="conditional-select">Practice with <select value={level} onChange={e => setLevel(e.target.value as typeof level)}><option value="all">All questions, in progression</option><option value="variables">Variables</option><option value="words">Words and phrases</option></select></label>
-        <p>{CONDITIONAL_QUESTIONS.filter(q => q.mode === mode && (level === "all" || q.level === level)).length} questions. You can leave and continue later. Every session is kept.</p>
+        <label className="conditional-select">Practice with <select value={level} onChange={e => setLevel(e.target.value as typeof level)}><option value="all">All questions</option><option value="variables">Variables</option><option value="words">Words and phrases</option></select></label>
+        <p>{CONDITIONAL_QUESTIONS.filter(q => q.mode === mode && (level === "all" || q.level === level)).length} questions. Your progress saves automatically.</p>
         <button className="conditional-primary" onClick={() => start(mode)}>Start practice <ArrowRight size={16} /></button>
       </section> : <>
-        <header className="conditional-title"><span className="conditional-eyebrow">Four worlds. One framework.</span><h1>Conditional Reasoning</h1><p>Diagram it. Connect it. Know what follows.</p></header>
+        <header className="conditional-title"><h1>Conditional Reasoning</h1></header>
         <div className="conditional-world-grid">{WORLDS.map((world, index) => {
           const unfinished = runs.find(r => r.mode === world.id && r.stage !== "done");
-          return <section className="conditional-world" key={world.id}><div className="conditional-world-top"><world.icon size={23} /><span>0{index + 1}</span></div><h2>{world.title}</h2><p>{world.description}</p>
-            {world.id === "general" ? <>{generalUrl ? <button className="conditional-primary" onClick={() => navigate(generalUrl)}>Open original drill <ArrowRight size={16} /></button> : <p className="conditional-unavailable">{generalStatus}</p>}
+          return <section className="conditional-world" key={world.id}><div className="conditional-world-top"><world.icon size={23} /><span>0{index + 1}</span></div><h2>{world.title}</h2>{world.description && <p>{world.description}</p>}
+            {world.id === "general" ? <>{generalUrl ? <button className="conditional-primary" onClick={() => navigate(generalUrl)}>Open drill <ArrowRight size={16} /></button> : generalStatus && <p className="conditional-unavailable">{generalStatus}</p>}
               {unfinished?.general && <button onClick={() => navigate(`${unfinished.general.sourceUrl}?practiceRun=${unfinished.id}`)}>Continue saved practice</button>}</>
-              : <><button className="conditional-primary" onClick={() => { setMode(world.id); setLevel("all"); }}>Choose practice <ArrowRight size={16} /></button>
+              : <><button className="conditional-primary" onClick={() => { setMode(world.id); setLevel("all"); }}>Open drill <ArrowRight size={16} /></button>
                 {unfinished && <button onClick={() => setParams({ run: unfinished.id })}>Continue question {unfinished.position + 1}</button>}</>}
           </section>;
         })}</div>
-        <section className="conditional-history"><h2><History size={20} /> Your practice history</h2><p>First answers, corrections, and revealed answers stay with their session.</p>
+        <section className="conditional-history"><h2><History size={20} /> Practice history</h2>
           {runs.length === 0 ? <p>No practice sessions yet.</p> : runs.map(saved => <div className="conditional-history-row" key={saved.id}><div><strong>{titleFor(saved.mode)}</strong><span>{saved.createdAt.slice(0, 10)} · {saved.stage === "done" ? "Completed" : "In progress"} · {saved.answers.length} recorded responses</span></div>
             <button onClick={() => saved.general ? navigate(`${saved.general.sourceUrl}?practiceRun=${saved.id}`) : saved.stage === "done" ? setReviewId(saved.id) : setParams({ run: saved.id })}>{saved.stage === "done" ? "Review" : "Continue"}<ArrowRight size={16} /></button></div>)}
         </section>

@@ -93,15 +93,14 @@ export default function ActivityCentre() {
             className="group w-full rounded-[24px] border border-border bg-card p-6 text-left transition-colors hover:border-foreground/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              <GitBranch className="h-4 w-4" aria-hidden="true" /> Four practice worlds
+              <GitBranch className="h-4 w-4" aria-hidden="true" /> Practice
             </span>
             <h2 id="conditional-reasoning-title" className="ac-display mt-2 text-2xl text-foreground">Conditional Reasoning</h2>
             <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              General Conditionals, Linking, Missing Link, and Must Be True. Start with the original
-              drill or practice connecting rules and finding what follows.
+              General Conditionals, Linking, Missing Link, and Must Be True.
             </p>
             <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
-              Choose a world <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              Choose a drill <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </span>
           </button>
         </section>
