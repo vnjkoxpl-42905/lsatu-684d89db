@@ -1,6 +1,6 @@
 import { ActivityEditorialIntro, type ActivityIntroProps } from "./ActivityEditorialIntro";
 import { SectionLaunch } from "./SectionLaunch";
-import { DrillInstructions } from "../conditionals/DrillInstructions";
+import { DrillEntrance } from "../conditionals/DrillEntrance";
 
 export type { ActivityIntroProps } from "./ActivityEditorialIntro";
 
@@ -42,17 +42,8 @@ export interface SectionLaunchExtras {
  */
 export function ActivityIntro(props: ActivityIntroProps & SectionLaunchExtras) {
   if (props.title === "Conditional Rephrase") {
-    return <div className="mx-auto max-w-3xl px-6 py-10">
-      {props.onExit && <button className="mb-6 text-sm underline" onClick={props.onExit}>Conditional drills</button>}
-      <h1 className="text-3xl font-semibold">General Conditionals</h1>
-      <DrillInstructions mode="general" />
-      <button className="rounded-lg bg-foreground px-5 py-3 text-background" onClick={props.onStart}>
-        {props.resumeAt && props.resumeAt > 1 ? "Continue practice" : "Start practice"}
-      </button>
-      <details className="mt-8">
-        <summary className="cursor-pointer text-sm underline">Review conditional rules and examples</summary>
-        <ActivityEditorialIntro {...props} />
-      </details>
+    return <div className="conditional-general-entrance"><DrillEntrance mode="general" title="General Conditionals" onBack={props.onExit} onStart={props.onStart} questionCount={props.itemCount} startLabel={props.resumeAt && props.resumeAt > 1 ? "Continue practice" : "Start practice"} />
+      <details className="conditional-rules-review"><summary>Review conditional rules and examples</summary><div className="conditional-rules-paper"><ActivityEditorialIntro {...props} /></div></details>
     </div>;
   }
   if (props.mode === "section") {

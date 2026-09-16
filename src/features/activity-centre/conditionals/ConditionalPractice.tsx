@@ -6,7 +6,9 @@ import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useStudentActivities } from "../hooks/useStudentActivities";
 import { CONDITIONAL_QUESTIONS, type ConditionalMode, type ConditionalQuestion } from "./content";
 import { ConditionalNotation } from "./ConditionalNotation";
-import { DrillInstructions } from "./DrillInstructions";
+import { DrillEntrance } from "./DrillEntrance";
+import { ConditionalScene } from "./ConditionalScene";
+import "./drill-entrance.css";
 import { cachePracticeRun, createPracticeRun, loadPracticeRuns, practiceSaveMessage, readCachedRuns, syncPendingPractice, syncPracticeRun, type PracticeMode, type PracticeRun } from "./practiceStore";
 import "../activity-centre.css";
 import "./conditionals.css";
@@ -55,6 +57,7 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
   const syncFailure = useRef<string | null>(null);
   const run = runs.find(r => r.id === params.get("run"));
   const selectedWorld = WORLDS.find(w => w.id === mode);
+  useEffect(() => { window.scrollTo(0, 0); }, [mode]);
 
   const refresh = useCallback(async () => {
     try {
@@ -131,7 +134,7 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
     update({ answers: [...run.answers, answer], stage: "feedback" });
   };
 
-  return <main className="conditional-room activity-centre">
+  return <main className={`conditional-room activity-centre ${!run && !review ? "conditional-lobby" : ""}`}>
     <div className="conditional-shell">
       <header className="conditional-topbar">
         {run || mode || review ? <button onClick={returnToHub} className="conditional-back"><ArrowLeft size={16} /> Conditional drills</button>
@@ -176,20 +179,13 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
             </>}
           </section>
         </div>
-      </> : mode ? <section className="conditional-panel conditional-briefing">
-        <span className="conditional-eyebrow">Conditional Reasoning</span><h1>{selectedWorld?.title}</h1>{selectedWorld?.description && <p>{selectedWorld.description}</p>}
-        <DrillInstructions mode={mode} />
-        <details className="my-5"><summary className="cursor-pointer text-sm underline">See an example</summary>
-          <div className="conditional-worked"><p>A → B<br />B → C</p><p>{mode === "must-be-true" ? "If A occurs, C must occur. If C occurs, the rules do not establish A." : "To reach A → D, add C → D. The result is A → B → C → D."}</p></div>
-        </details>
+      </> : mode ? <DrillEntrance mode={mode} title={selectedWorld?.title ?? ""} onStart={() => start(mode)} questionCount={CONDITIONAL_QUESTIONS.filter(q => q.mode === mode && (level === "all" || q.level === level)).length}>
         <label className="conditional-select">Practice with <select value={level} onChange={e => setLevel(e.target.value as typeof level)}><option value="all">All questions</option><option value="variables">Variables</option><option value="words">Words and phrases</option></select></label>
-        <p>{CONDITIONAL_QUESTIONS.filter(q => q.mode === mode && (level === "all" || q.level === level)).length} questions. Your progress saves automatically.</p>
-        <button className="conditional-primary" onClick={() => start(mode)}>Start practice <ArrowRight size={16} /></button>
-      </section> : <>
-        <header className="conditional-title"><h1>Conditional Reasoning</h1></header>
-        <div className="conditional-world-grid">{WORLDS.map((world, index) => {
+      </DrillEntrance> : <>
+        <header className="conditional-title"><h1>Conditional<br /><span>Reasoning</span></h1><div className="conditional-hero-diagram" aria-hidden="true"><span>A</span><i>&rarr;</i><span>B</span><i>&rarr;</i><span>C</span><div className="conditional-hero-proof">A <i>&rarr;</i> C</div></div></header>
+        <div className="conditional-world-grid">{WORLDS.map((world) => {
           const unfinished = runs.find(r => r.mode === world.id && r.stage !== "done");
-          return <section className="conditional-world" key={world.id}><div className="conditional-world-top"><world.icon size={23} /><span>0{index + 1}</span></div><h2>{world.title}</h2>{world.description && <p>{world.description}</p>}
+          return <section className="conditional-world" data-mode={world.id} key={world.id}><div className="conditional-card-art"><ConditionalScene mode={world.id} step={2} compact /></div><div className="conditional-world-top"><world.icon size={18} /><h2>{world.title}</h2></div>{world.description && <p>{world.description}</p>}
             {world.id === "general" ? <>{generalUrl ? <button className="conditional-primary" onClick={() => localOnly ? window.location.assign(generalUrl) : navigate(generalUrl)}>Open drill <ArrowRight size={16} /></button> : generalStatus && <p className="conditional-unavailable">{generalStatus}</p>}
               {unfinished?.general && <button onClick={() => navigate(`${unfinished.general.sourceUrl}?practiceRun=${unfinished.id}`)}>Continue saved practice</button>}</>
               : <><button className="conditional-primary" onClick={() => { setMode(world.id); setLevel("all"); }}>Open drill <ArrowRight size={16} /></button>

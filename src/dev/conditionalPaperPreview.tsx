@@ -8,19 +8,20 @@ import type { ActivityItem } from "../features/activity-centre/api/types";
 import { ActivityItemView } from "../features/activity-centre/components/ActivityItemView";
 import { buildPaperDiagramChoices } from "../features/activity-centre/worlds/switchyard/diagramChoices";
 import conditional from "../features/activity-centre/content/conditional-rephrase.json";
-import { DrillInstructions } from "../features/activity-centre/conditionals/DrillInstructions";
+import { DrillEntrance } from "../features/activity-centre/conditionals/DrillEntrance";
 
 function Preview() {
   const [index, setIndex] = React.useState(0);
   const [finished, setFinished] = React.useState(false);
   const [started, setStarted] = React.useState(false);
   const item: ActivityItem = conditional.items[index];
+  if (!started) return <main className="activity-centre conditional-general-entrance"><DrillEntrance mode="general" title="General Conditionals" onBack={() => window.location.assign("/conditional-lab")} onStart={() => setStarted(true)} questionCount={conditional.items.length} /></main>;
   return (
     <main className="activity-centre min-h-screen bg-[hsl(var(--background))] p-4 md:p-10">
       <div className="mx-auto max-w-3xl">
         <a href="/conditional-lab" className="mb-6 inline-block text-sm underline">Conditional drills</a>
         <h1 className="mb-4 text-2xl font-semibold">General Conditionals</h1>
-        {!started ? <><DrillInstructions mode="general" /><button className="rounded-lg bg-foreground px-5 py-3 text-background" onClick={() => setStarted(true)}>Start practice</button></> : finished ? <><p>Preview complete.</p><button className="mt-4 underline" onClick={() => { setIndex(0); setFinished(false); setStarted(false); }}>Practice again</button></> : <>
+        {finished ? <><p>Preview complete.</p><button className="mt-4 underline" onClick={() => { setIndex(0); setFinished(false); setStarted(false); }}>Practice again</button></> : <>
         <p className="mb-4 text-sm">Question {index + 1} of {conditional.items.length}</p>
         <ActivityItemView key={item.order}
           item={item}
