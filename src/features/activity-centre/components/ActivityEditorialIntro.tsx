@@ -7,6 +7,84 @@ import { worldForTitle } from "../worlds/registry";
 import { renderInlineMarks } from "../prompt-format";
 import "../activities-home.css";
 
+const CONDITIONAL_LEFT_TRIGGERS = [
+  "if",
+  "when",
+  "the only",
+  "all",
+  "each",
+  "any",
+  "every",
+  "no",
+  "whenever",
+  "whoever",
+  "wherever",
+  "ensures",
+  "guarantees",
+  "implies",
+  "any universal group",
+];
+
+const CONDITIONAL_RIGHT_TRIGGERS = [
+  "only",
+  "only if",
+  "requires",
+  "depends on",
+  "must",
+  "necessitates",
+  "presupposes",
+  "unless",
+  "without",
+  "until",
+  "except",
+];
+
+function ConditionalRuleMap() {
+  return (
+    <section className="act-conditional-map" aria-labelledby="conditional-map-title">
+      <div className="act-conditional-map-heading">
+        <h2 id="conditional-map-title">The conditional map</h2>
+        <p>Five rules. Find the indicator, then place the ideas.</p>
+      </div>
+
+      <div className="act-conditional-sides">
+        <section className="act-conditional-side is-left">
+          <h3>
+            <span>Left</span>
+            <small>Sufficient triggers</small>
+          </h3>
+          <p>{CONDITIONAL_LEFT_TRIGGERS.join(", ")}</p>
+        </section>
+
+        <section className="act-conditional-side is-right">
+          <h3>
+            <span>Right</span>
+            <small>Necessary triggers</small>
+          </h3>
+          <p>{CONDITIONAL_RIGHT_TRIGGERS.join(", ")}</p>
+        </section>
+      </div>
+
+      <div className="act-conditional-specials">
+        <section className="act-conditional-special is-negative">
+          <h3>If not</h3>
+          <p>
+            Put the negation of either idea on the left: <strong>unless, without, until, except</strong>.
+          </p>
+        </section>
+        <section className="act-conditional-special">
+          <h3>No A&apos;s are B</h3>
+          <p>All A&apos;s are not B.</p>
+        </section>
+        <section className="act-conditional-special">
+          <h3>Required things</h3>
+          <p>Put them on the right side of the arrow.</p>
+        </section>
+      </div>
+    </section>
+  );
+}
+
 export interface ActivityIntroProps {
   title: string;
   subtitle: string | null;
@@ -182,6 +260,7 @@ export function ActivityEditorialIntro({
   // token (canvas, cards, ink, accent, display face) onto the world's shell,
   // so each Activity's front door already stands inside its own place.
   const world = worldForTitle(title);
+  const showsConditionalMap = world?.slug === "conditional-rephrase";
 
   return (
     <motion.div
@@ -260,11 +339,18 @@ export function ActivityEditorialIntro({
 
       {/* ---- DETAIL (compact): the rules, the credited answers, Start ---- */}
       <section className="act-detail">
-        <motion.div variants={item} className="act-detail-grid" data-credited={ex ? "true" : "false"}>
+        <motion.div
+          variants={item}
+          className="act-detail-grid"
+          data-credited={ex && !showsConditionalMap ? "true" : "false"}
+          data-conditional-map={showsConditionalMap ? "true" : "false"}
+        >
           {/* No worked example means no credited-answers block, so the second
               column has nothing to hold and the rules sit against an empty
               half. Same failure as the hero, one section further down. */}
-          {instructions.rules?.length ? (
+          {showsConditionalMap ? (
+            <ConditionalRuleMap />
+          ) : instructions.rules?.length ? (
             <ol className="act-steps">
               {instructions.rules.map((rule, i) => (
                 <li key={i} className="act-step">
@@ -275,7 +361,7 @@ export function ActivityEditorialIntro({
             </ol>
           ) : null}
 
-          {ex && (
+          {ex && !showsConditionalMap && (
             <div className="act-credited">
               <p className="act-credited-label">After, any of these</p>
               <ul className="act-orb-list">
