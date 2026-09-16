@@ -40,25 +40,36 @@ function json(body: unknown, status = 200) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    // Two accepted callers: a worker holding BOOKING_WORKER_SECRET, or the
-    // pg_cron job, which authenticates with the service-role key. Requiring
-    // the worker secret unconditionally left the cron run dead on arrival
-    // (`booking_worker_secret_not_configured`), so the header is optional
-    // whenever the bearer token is the service-role key itself.
+    // Accepted callers: a worker holding BOOKING_WORKER_SECRET, the
+    // service-role key, or a single-use scheduler ticket minted server-side
+    // (so no key ever appears in cron text or logs).
     const serviceRoleKey = requiredEnv("SUPABASE_SERVICE_ROLE_KEY");
     const bearer = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
     const workerKey = Deno.env.get("BOOKING_WORKER_SECRET") ?? "";
-    const authorized =
-      bearer === serviceRoleKey ||
-      (workerKey.length > 0 && req.headers.get("X-Worker-Secret") === workerKey);
-    if (!authorized) {
-      return json({ error: "unauthorized" }, 401);
-    }
 
     const supabase = createClient(
       requiredEnv("SUPABASE_URL"),
       requiredEnv("SUPABASE_SERVICE_ROLE_KEY"),
     );
+
+    let authorized =
+      bearer === serviceRoleKey ||
+      (workerKey.length > 0 && req.headers.get("X-Worker-Secret") === workerKey);
+    if (!authorized) {
+      const ticket = req.headers.get("x-worker-ticket") || "";
+      if (/^[0-9a-f-]{36}$/i.test(ticket)) {
+        const { data: ticketOk, error: ticketErr } = await supabase.rpc(
+          "consume_booking_worker_ticket",
+          { _token: ticket, _worker: "gcal-reconcile" },
+        );
+        if (ticketErr) console.error("worker ticket check failed", { code: ticketErr.code });
+        if (ticketOk === true) authorized = true;
+      }
+    }
+    if (!authorized) {
+      return json({ error: "unauthorized" }, 401);
+    }
+
     const stripeSecret = requiredEnv("STRIPE_SECRET_KEY");
 
     const { error: heartbeatStartError } = await supabase.rpc("record_booking_worker_heartbeat", {
