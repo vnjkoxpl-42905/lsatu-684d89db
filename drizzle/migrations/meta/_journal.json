@@ -141,6 +141,13 @@
       "when": 1789518854878,
       "tag": "0019_reconcile_single_session_calendar_deletions",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1789519035488,
+      "tag": "0020_invoke_gcal_sync_pull_scheduler",
+      "breakpoints": true
     }
   ]
 }
