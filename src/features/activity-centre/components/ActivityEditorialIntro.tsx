@@ -39,6 +39,10 @@ const CONDITIONAL_RIGHT_TRIGGERS = [
   "except",
 ];
 
+const CONDITIONAL_INTRO_SUBTITLE = "Diagram it on paper, then choose the matching answer";
+const CONDITIONAL_INTRO_TASK =
+  "Diagram the statement on paper first. Then choose the diagram that matches what you wrote. The original conditional and its contrapositive are both correct because they mean the same thing.";
+
 function ConditionalRuleMap() {
   return (
     <section className="act-conditional-map" aria-labelledby="conditional-map-title">
@@ -266,6 +270,11 @@ export function ActivityEditorialIntro({
   // so each Activity's front door already stands inside its own place.
   const world = worldForTitle(title);
   const showsConditionalMap = world?.slug === "conditional-rephrase";
+  // Existing activity rows snapshot their intro copy. Keep this closed-form
+  // drill's visible instruction tied to the frontend so stale stored wording
+  // cannot reintroduce internal language such as "route."
+  const visibleSubtitle = showsConditionalMap ? CONDITIONAL_INTRO_SUBTITLE : subtitle;
+  const visibleTask = showsConditionalMap ? CONDITIONAL_INTRO_TASK : instructions.task;
 
   return (
     <motion.div
@@ -296,7 +305,7 @@ export function ActivityEditorialIntro({
           <div className="act-hero-heading">
             <h1 className="act-edit-title">
               <span className="act-edit-title-bold">{title}.</span>{" "}
-              {subtitle && <span className="act-edit-title-light">{subtitle}.</span>}
+              {visibleSubtitle && <span className="act-edit-title-light">{visibleSubtitle}.</span>}
             </h1>
             {instructions.tagline && <p className="act-hero-tagline">{instructions.tagline}</p>}
           </div>
@@ -333,10 +342,10 @@ export function ActivityEditorialIntro({
             page, so the instruction costs the layout no height at all. Putting
             it under the rules pushed a Start action that is already past the
             fold a further hundred and forty pixels down. */}
-        {instructions.task && (
+        {visibleTask && (
           <motion.div variants={item} className="act-brief">
             <p className="act-brief-label">What to do</p>
-            <p className="act-task">{instructions.task}</p>
+            <p className="act-task">{visibleTask}</p>
             {!showsConditionalMap && <p className="act-how">{howLine}</p>}
           </motion.div>
         )}
