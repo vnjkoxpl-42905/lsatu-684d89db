@@ -34,7 +34,7 @@ export default function ConditionalPractice() {
 
 /** Dev-only lab also uses the real UI and local persistence, never student rows. */
 export function ConditionalPracticeLab() {
-  return <ConditionalPracticeRoom userId="conditional-development-preview" localOnly />;
+  return <ConditionalPracticeRoom userId="conditional-development-preview" localOnly generalUrl="/src/dev/conditional-paper-preview.html" />;
 }
 
 export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, localOnly = false }: {
@@ -187,7 +187,7 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
         <div className="conditional-world-grid">{WORLDS.map((world, index) => {
           const unfinished = runs.find(r => r.mode === world.id && r.stage !== "done");
           return <section className="conditional-world" key={world.id}><div className="conditional-world-top"><world.icon size={23} /><span>0{index + 1}</span></div><h2>{world.title}</h2>{world.description && <p>{world.description}</p>}
-            {world.id === "general" ? <>{generalUrl ? <button className="conditional-primary" onClick={() => navigate(generalUrl)}>Open drill <ArrowRight size={16} /></button> : generalStatus && <p className="conditional-unavailable">{generalStatus}</p>}
+            {world.id === "general" ? <>{generalUrl ? <button className="conditional-primary" onClick={() => localOnly ? window.location.assign(generalUrl) : navigate(generalUrl)}>Open drill <ArrowRight size={16} /></button> : generalStatus && <p className="conditional-unavailable">{generalStatus}</p>}
               {unfinished?.general && <button onClick={() => navigate(`${unfinished.general.sourceUrl}?practiceRun=${unfinished.id}`)}>Continue saved practice</button>}</>
               : <><button className="conditional-primary" onClick={() => { setMode(world.id); setLevel("all"); }}>Open drill <ArrowRight size={16} /></button>
                 {unfinished && <button onClick={() => setParams({ run: unfinished.id })}>Continue question {unfinished.position + 1}</button>}</>}
