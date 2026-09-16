@@ -303,11 +303,13 @@ describe("SingleSession", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(/time was just taken/i);
   });
 
-  it("ships distinct narrow and wide layouts plus a reduced-motion contract", async () => {
+  it("uses one selected-day calendar layout at every width plus a reduced-motion contract", async () => {
     renderPage();
     await screen.findByRole("heading", { name: /Select a time/i });
-    expect(screen.getByTestId("single-session-mobile-slots")).toHaveClass("xl:hidden");
-    expect(screen.getByTestId("single-session-desktop-week")).toHaveClass("xl:block");
+    expect(screen.getByTestId("single-session-selected-day-slots")).toBeVisible();
+    expect(screen.queryByTestId("single-session-desktop-week")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Tuesday, August 18/i })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: /1:00/i })).toBeVisible();
     expect(bookingTheme).toContain("@media (prefers-reduced-motion: reduce)");
     expect(bookingTheme).toContain(".single-session-page *");
   });
