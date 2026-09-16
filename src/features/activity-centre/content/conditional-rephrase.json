@@ -1,7 +1,7 @@
 {
   "slug": "conditional-rephrase",
   "title": "Conditional Rephrase",
-  "subtitle": "Diagram it on paper, then record the route",
+  "subtitle": "Diagram it on paper, then choose the matching answer",
   "item_format": "mcq",
   "instructions": {
     "coach": {
@@ -20,7 +20,7 @@
       "partial_rule": "Mark 'partial' when the student produces a well-formed conditional but reverses sufficiency and necessity, drops a negation, or trims a compound or contrasting condition down to one part. Mark 'incorrect' when the response is not a conditional at all, or states a relationship the statement does not support."
     },
     "tagline": "Find the trigger word, and it tells you which side is which.",
-    "task": "Diagram the statement on paper first. Then choose the route that matches what you wrote. The conditional and its contrapositive both count because they state the same rule.",
+    "task": "Diagram the statement on paper first. Then choose the diagram that matches what you wrote. The original conditional and its contrapositive are both correct because they mean the same thing.",
     "rules": [
       "Some words introduce the sufficient condition and some introduce the necessary one. That is the whole game.",
       "If, when, whenever, every, all, the only: these mark the sufficient side, the trigger.",
@@ -42,7 +42,7 @@
       "explanation": "Without marks the necessary condition, so mastering conditional reasoning goes on the then side. Both forms above are credited: the second is just the contrapositive of the first."
     },
     "answer_label": "Your paper diagram",
-    "answer_placeholder": "Choose the route that matches your paper diagram",
+    "answer_placeholder": "Choose the diagram that matches what you wrote",
     "credited_secondary_label": "Contrapositive"
   },
   "items": [

@@ -44,12 +44,12 @@ function ConditionalRuleMap() {
     <section className="act-conditional-map" aria-labelledby="conditional-map-title">
       <div className="act-conditional-map-heading">
         <h2 id="conditional-map-title">The conditional map</h2>
-        <p>Five rules: Left, Right, If not, No A&apos;s are B, and Required things.</p>
+        <p>Find the indicator. Then use the group it belongs to.</p>
       </div>
 
       <div className="act-conditional-sides">
         <section className="act-conditional-side is-left">
-          <div className="act-conditional-rule-label">Rule 1</div>
+          <div className="act-conditional-group-label">Group 1</div>
           <h3>
             <span>Left</span>
             <small>Sufficient triggers</small>
@@ -58,7 +58,7 @@ function ConditionalRuleMap() {
         </section>
 
         <section className="act-conditional-side is-right">
-          <div className="act-conditional-rule-label">Rule 2</div>
+          <div className="act-conditional-group-label">Group 2</div>
           <h3>
             <span>Right</span>
             <small>Necessary triggers</small>
@@ -69,23 +69,23 @@ function ConditionalRuleMap() {
 
       <div className="act-conditional-specials">
         <section className="act-conditional-special is-negative">
-          <div className="act-conditional-rule-label">Rule 3</div>
+          <div className="act-conditional-group-label">Group 3</div>
           <h3>If not</h3>
           <p>
             Put the negation of either idea on the left: <strong>unless, without, until, except</strong>.
           </p>
         </section>
         <section className="act-conditional-special">
-          <div className="act-conditional-rule-label">Rule 4</div>
+          <div className="act-conditional-group-label">Group 4</div>
           <h3>No A&apos;s are B</h3>
           <p>All A&apos;s are not B.</p>
         </section>
-        <section className="act-conditional-special">
-          <div className="act-conditional-rule-label">Rule 5</div>
-          <h3>Required things</h3>
-          <p>Put them on the right side of the arrow.</p>
-        </section>
       </div>
+
+      <aside className="act-conditional-takeaway" aria-label="Required conditions">
+        <h3>Required means right</h3>
+        <p>Whatever the statement requires goes on the right side of the arrow.</p>
+      </aside>
     </section>
   );
 }

@@ -151,14 +151,17 @@ describe("what a Conditional Rephrase student is shown", () => {
     expect(instructions.coach.rubric[0]).toMatch(/contrapositive/i);
     expect(instructions.coach.rubric[0]).toMatch(/credited/i);
     expect(instructions.task).toMatch(/diagram.*on paper/i);
-    expect(instructions.task).toMatch(/choose the route/i);
-    expect(instructions.task).toMatch(/conditional and its contrapositive both count/i);
+    expect(instructions.task).toMatch(/choose the diagram/i);
+    expect(instructions.task).toMatch(/conditional and its contrapositive are both correct/i);
+    expect(conditionalRephrase.subtitle).not.toMatch(/route/i);
+    expect(instructions.task).not.toMatch(/route/i);
   });
 
   it("does not ask a grader to interpret the student's wording", () => {
     expect(instructions.coach.rubric.some((r) => /wording is free/i.test(r))).toBe(true);
     expect(instructions.task).not.toMatch(/in your own words/i);
-    expect(instructions.answer_placeholder).toMatch(/choose the route/i);
+    expect(instructions.answer_placeholder).toMatch(/choose the diagram/i);
+    expect(instructions.answer_placeholder).not.toMatch(/route/i);
   });
 
   it("does not re-demand the contrapositive in the answer box", () => {

@@ -509,10 +509,6 @@
 }
 
 .act-home .act-conditional-map-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
   margin-bottom: clamp(1.25rem, 2.4vw, 2rem);
 }
 
@@ -525,11 +521,10 @@
 }
 
 .act-home .act-conditional-map-heading p {
-  margin: 0;
-  max-width: 27rem;
+  margin: 0.4rem 0 0;
+  max-width: 36rem;
   font-size: 0.92rem;
   line-height: 1.45;
-  text-align: right;
   color: hsl(var(--act-ink-soft));
 }
 
@@ -546,14 +541,12 @@
   padding-left: clamp(2rem, 5vw, 5rem);
 }
 
-.act-home .act-conditional-rule-label {
+.act-home .act-conditional-group-label {
   margin-bottom: 0.55rem;
   color: hsl(var(--act-ink-soft));
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 650;
   line-height: 1;
-  text-transform: uppercase;
 }
 
 .act-home .act-conditional-side h3,
@@ -607,7 +600,7 @@
 
 .act-home .act-conditional-specials {
   display: grid;
-  grid-template-columns: 1.35fr 1fr 1.15fr;
+  grid-template-columns: 1.35fr 1fr;
   gap: 0;
   padding-top: clamp(1.25rem, 2.5vw, 2rem);
 }
@@ -648,6 +641,34 @@
   font-weight: 600;
 }
 
+.act-home .act-conditional-takeaway {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  padding: 1rem 1.1rem;
+  border-left: 3px solid hsl(131 68% 68%);
+  background: hsl(var(--act-surface) / 0.6);
+}
+
+.act-home .act-conditional-takeaway h3,
+.act-home .act-conditional-takeaway p {
+  margin: 0;
+}
+
+.act-home .act-conditional-takeaway h3 {
+  flex: 0 0 auto;
+  font-family: var(--act-display);
+  font-size: 1rem;
+  color: hsl(131 68% 74%);
+}
+
+.act-home .act-conditional-takeaway p {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: hsl(var(--act-ink) / 0.82);
+}
+
 @media (min-width: 820px) {
   .act-home .act-detail-grid {
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
@@ -656,15 +677,6 @@
 }
 
 @media (max-width: 819px) {
-  .act-home .act-conditional-map-heading {
-    display: block;
-  }
-
-  .act-home .act-conditional-map-heading p {
-    margin-top: 0.45rem;
-    text-align: left;
-  }
-
   .act-home .act-conditional-sides,
   .act-home .act-conditional-specials {
     grid-template-columns: 1fr;
@@ -681,6 +693,14 @@
 
   .act-home .act-conditional-special {
     padding-right: 0;
+  }
+
+  .act-home .act-conditional-takeaway {
+    display: block;
+  }
+
+  .act-home .act-conditional-takeaway p {
+    margin-top: 0.35rem;
   }
 }
 
