@@ -9,6 +9,16 @@
  * runtime behaviour and are never bundled.
  */
 
+// React is a real dependency here, so point its Deno specifier at the installed
+// types rather than `any`; the email templates use React.ReactNode etc.
+declare module "npm:react@18.3.1" {
+  import type React from "react";
+  export * from "react";
+  export default React;
+}
+
+// Everything else pulled in over the Deno registries is untyped for the browser
+// program's purposes.
 declare module "npm:*";
 declare module "jsr:*";
 
