@@ -5,6 +5,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { listEvents, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
 import { userFromRequest } from "../_shared/authClaims.ts";
+import { singleSessionCalendarCancellation } from "../_shared/calendarCancellation.ts";
 
 function zonedMidnightIso(dateOnly: string, timeZone: string): string {
   const [year, month, day] = dateOnly.split("-").map(Number);
@@ -123,6 +124,19 @@ Deno.serve(async (req) => {
               _deleted: true, _meet_url: null,
             });
             if (reconcileErr) errors.push(`reconcile delete ${ev.id}: ${reconcileErr.message}`);
+          }
+          const singleSession = singleSessionCalendarCancellation(ev);
+          if (singleSession) {
+            const { error: singleSessionErr } = await supabase.rpc(
+              "reconcile_single_session_calendar_deletion",
+              {
+                _booking_id: singleSession.bookingId,
+                _google_event_id: singleSession.googleEventId,
+              },
+            );
+            if (singleSessionErr) {
+              errors.push(`reconcile single-session delete ${ev.id}: ${singleSessionErr.message}`);
+            }
           }
           processed++;
           continue;
