@@ -220,7 +220,7 @@
     "practiceTest": "PT139",
     "sectionNumber": 1,
     "questionNumber": 10,
-    "questionType": "Must Be True",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning"
     ],
