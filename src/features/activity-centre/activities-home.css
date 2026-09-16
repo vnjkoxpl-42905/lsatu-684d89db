@@ -44,6 +44,25 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* Keep the Switchyard lobby self-contained. Lovable's preview can load this
+   stylesheet after the shared world-token bridge, which leaves the dark
+   Switchyard ink on the default ivory canvas. Pinning this world's resolved
+   values here keeps the canvas and text in the same theme in preview and in
+   the published build. */
+.activity-centre.act-home[data-world="conditional-rephrase"] {
+  --act-canvas: 214 26% 6%;
+  --act-canvas-2: 213 22% 10%;
+  --act-surface: 213 18% 12%;
+  --act-ink: 38 32% 92%;
+  --act-ink-soft: 214 14% 70%;
+  --act-hairline: 213 16% 26%;
+  --act-accent: 36 90% 56%;
+  --act-accent-strong: 36 95% 62%;
+  --act-on-accent: 214 30% 8%;
+  background-color: hsl(214 26% 6%);
+  color: hsl(38 32% 92%);
+}
+
 /* Reading prose (tagline, the "why" line) is Georgia, like the workbook. */
 .act-home .act-prose {
   font-family: Georgia, "Times New Roman", serif;
