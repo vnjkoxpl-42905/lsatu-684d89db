@@ -33,14 +33,24 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    // Auth: allow admin users OR service-role callers (e.g. cron).
+    // Auth: allow admin users, service-role callers, or a single-use
+    // scheduler ticket minted server-side (never exposes a key in cron text).
     const authHeader = req.headers.get("Authorization") ?? "";
     const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
     let authorized = false;
-    if (token && token === serviceRoleKey) {
+    const ticket = req.headers.get("x-worker-ticket") || "";
+    if (/^[0-9a-f-]{36}$/i.test(ticket)) {
+      const { data: ticketOk, error: ticketErr } = await supabase.rpc(
+        "consume_booking_worker_ticket",
+        { _token: ticket, _worker: "gcal-sync-pull" },
+      );
+      if (ticketErr) console.error("worker ticket check failed", { code: ticketErr.code });
+      if (ticketOk === true) authorized = true;
+    }
+    if (!authorized && token && token === serviceRoleKey) {
       authorized = true;
-    } else if (token) {
+    } else if (!authorized && token) {
       const user = await userFromRequest(req);
       if (user) {
         const { data: roleRow } = await supabase.from("user_roles")
@@ -48,6 +58,7 @@ Deno.serve(async (req) => {
         if (roleRow) authorized = true;
       }
     }
+
     if (!authorized) {
       return new Response(JSON.stringify({ ok: false, error: "unauthorized" }), {
         status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
