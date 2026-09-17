@@ -69,3 +69,11 @@
 .conditional-lobby .conditional-title h1,.drill-entrance .drill-entrance-heading h1 { color:#edf3fa; }
 .drill-entrance .drill-launch .conditional-select select { color:#edf3fa; background:#142133; border-color:#ffffff25; } .drill-entrance .conditional-scene { --cs-accent:var(--drill-accent); }
 @media(min-width:761px) and (max-width:900px) { .drill-entrance-grid { grid-template-columns:1fr; } .drill-entrance-visual { border-right:0; border-bottom:1px solid #ffffff14; padding:20px; } .drill-entrance-visual .conditional-scene { width:100%; max-width:500px; margin:auto; } }
+.drill-phase-plan { margin-bottom:22px; }
+.drill-phase-plan h2 { color:#edf3fa; font-size:14px; font-weight:600; margin:0 0 12px; }
+.drill-entrance-guide .drill-phase-plan ol { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.drill-phase-plan li { padding:10px 8px; border:1px solid #ffffff20; border-radius:8px; }
+.drill-phase-plan li span,.drill-phase-plan li strong { display:block; font-size:12px; }
+.drill-phase-plan li span { color:#a1aec2; margin-bottom:4px; }
+.drill-phase-plan li strong { color:var(--drill-accent); font-weight:500; }
+.drill-phase-plan p { color:#a1aec2; line-height:1.7; font-size:13px; margin-top:12px; }

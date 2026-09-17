@@ -12,6 +12,11 @@ import { PaperDiagramPanel } from "./PaperDiagramPanel";
 interface ItemPromptProps extends ComponentProps<typeof AnswerPanel> {
   format: ItemFormat;
   paperChoices?: PaperDiagramChoice[];
+  diagramSeconds?: number;
+  paperDeadline?: string;
+  phaseLabel?: string;
+  paperReady?: boolean;
+  onPaperReady?: () => void;
 }
 
 export function ItemPrompt({ format, paperChoices, ...answerProps }: ItemPromptProps) {

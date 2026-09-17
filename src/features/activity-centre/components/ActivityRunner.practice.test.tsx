@@ -1,8 +1,9 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ActivityRunner } from "./ActivityRunner";
-import { readCachedRuns, createPracticeRun } from "../conditionals/practiceStore";
+import { readCachedRuns, createPracticeRun, cachePracticeRun } from "../conditionals/practiceStore";
+import { getGeneralPhase } from "../conditionals/generalPhases";
 import { buildPaperDiagramChoices } from "../worlds/switchyard/diagramChoices";
 
 // The re-drill. The practice path has existed since the beginning and has always
@@ -55,7 +56,7 @@ function mount(id: string) {
 }
 function run() { return createPracticeRun("user-1", "general", [], { sourceUrl: "/activities/assign-1", items: [item] }); }
 describe("saved General sessions", () => {
-  beforeEach(() => { localStorage.clear(); vi.clearAllMocks(); cacheFails = false; activityState.assignment = assignment; sync.mockResolvedValue(undefined); });
+  beforeEach(() => { localStorage.clear(); vi.clearAllMocks(); cacheFails = false; listItemResponses.mockResolvedValue([]); activityState.assignment = assignment; sync.mockResolvedValue(undefined); });
   it("restores paper stage, selected choices, feedback and completed state without touching assignment scores", async () => {
     const saved = run();
     let page = mount(saved.id);
@@ -96,6 +97,58 @@ describe("saved General sessions", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(/could not save/i);
     expect(screen.queryByRole("radiogroup")).not.toBeInTheDocument();
     cacheFails = false;
+  });
+  it("restores the first assigned run's deadline without creating a practice session", async () => {
+    activityState.assignment = { ...assignment, status: "in_progress", items: Array.from({ length: 62 }, (_, i) => ({ ...item, order: i + 1 })) };
+    listItemResponses.mockResolvedValue(Array.from({ length: 12 }, (_, i) => ({ id: `r${i}`, assignment_id: "assign-1", student_id: "user-1", item_order: i + 1, attempt_no: 1, response_text: "answer", verdict: "correct", created_at: new Date().toISOString() })));
+    const open = () => render(<MemoryRouter initialEntries={["/activities/assign-1"]}><Routes><Route path="/activities/:assignmentId" element={<ActivityRunner />} /></Routes></MemoryRouter>);
+    let page = open();
+    await screen.findByText(item.prompt);
+    const key = "lsatu:general-paper:v1:user-1:assign-1:12";
+    await waitFor(() => expect(localStorage.getItem(key)).toBeTruthy());
+    const deadline = JSON.parse(localStorage.getItem(key)!).deadline;
+    page.unmount(); page = open();
+    await screen.findByText(item.prompt);
+    expect(JSON.parse(localStorage.getItem(key)!).deadline).toBe(deadline);
+    expect(readCachedRuns("user-1")).toEqual([]);
+    expect(completeAssignment).not.toHaveBeenCalled();
+    page.unmount();
+  });
+  it("uses the session ordinal for the three phase boundaries", () => {
+    expect([0, 11, 12, 36, 37, 61].map(position => getGeneralPhase(position).seconds)).toEqual([null, null, 45, 45, 30, 30]);
+  });
+  it("persists the timed question deadline and hides the statement when it expires", async () => {
+    const saved = createPracticeRun("user-1", "general", [], { sourceUrl: "/activities/assign-1", items: Array.from({ length: 62 }, (_, i) => ({ ...item, order: i + 1 })) });
+    cachePracticeRun({ ...saved, position: 12 });
+    let page = mount(saved.id);
+    await screen.findByText(item.prompt);
+    await waitFor(() => expect(readCachedRuns("user-1")[0].paperDeadline).toBeTruthy());
+    const deadline = readCachedRuns("user-1")[0].paperDeadline!;
+    page.unmount(); page = mount(saved.id);
+    await screen.findByText(item.prompt);
+    expect(readCachedRuns("user-1")[0].paperDeadline).toBe(deadline);
+    page.unmount();
+    vi.useFakeTimers();
+    vi.setSystemTime(Date.parse(deadline) - 1000);
+    await act(async () => { page = mount(saved.id); });
+    await act(async () => { await vi.advanceTimersByTimeAsync(1100); });
+    vi.useRealTimers();
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(Date.parse(deadline) + 2000);
+    await screen.findByRole("radiogroup");
+    expect(screen.queryByText(item.prompt)).not.toBeInTheDocument();
+    expect(readCachedRuns("user-1")[0].stage).toBe("choices");
+    page.unmount(); mount(saved.id);
+    await screen.findByRole("radiogroup");
+    expect(screen.queryByText(item.prompt)).not.toBeInTheDocument();
+    const correct = buildPaperDiagramChoices(item.credited_answers, 13).findIndex(choice => choice.verdict === "correct");
+    fireEvent.click(screen.getAllByRole("radio")[correct]);
+    fireEvent.click(screen.getByRole("button", { name: "Check my diagram" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Next" }));
+    await waitFor(() => expect(readCachedRuns("user-1")[0].position).toBe(13));
+    await waitFor(() => expect(readCachedRuns("user-1")[0].paperDeadline).not.toBe(deadline));
+    expect(readCachedRuns("user-1")[0].stage).toBe("paper");
+    vi.useRealTimers();
   });
   it("does not replace a missing saved run", async () => {
     mount("missing");

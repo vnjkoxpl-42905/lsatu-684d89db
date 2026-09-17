@@ -8,14 +8,22 @@ import type { ActivityItem } from "../features/activity-centre/api/types";
 import { ActivityItemView } from "../features/activity-centre/components/ActivityItemView";
 import { buildPaperDiagramChoices } from "../features/activity-centre/worlds/switchyard/diagramChoices";
 import conditional from "../features/activity-centre/content/conditional-rephrase.json";
+import { getGeneralPhase } from "../features/activity-centre/conditionals/generalPhases";
 import { DrillEntrance } from "../features/activity-centre/conditionals/DrillEntrance";
 
 function Preview() {
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(() => Math.max(0, Math.min(61, Math.floor(Number(new URLSearchParams(window.location.search).get("question")) || 1) - 1)));
+  const [paperReady, setPaperReady] = React.useState(false);
+  const [paperDeadline, setPaperDeadline] = React.useState<string>();
+  const beginQuestion = (position: number) => {
+    setIndex(position); setPaperReady(false);
+    const seconds = getGeneralPhase(position).seconds;
+    setPaperDeadline(seconds ? new Date(Date.now() + seconds * 1000).toISOString() : undefined);
+  };
   const [finished, setFinished] = React.useState(false);
   const [started, setStarted] = React.useState(false);
   const item: ActivityItem = conditional.items[index];
-  if (!started) return <main className="activity-centre conditional-general-entrance"><DrillEntrance mode="general" title="General Conditionals" onBack={() => window.location.assign("/conditional-lab")} onStart={() => setStarted(true)} questionCount={conditional.items.length} /></main>;
+  if (!started) return <main className="activity-centre conditional-general-entrance"><DrillEntrance mode="general" title="General Conditionals" onBack={() => window.location.assign("/conditional-lab")} onStart={() => { beginQuestion(index); setStarted(true); }} questionCount={conditional.items.length} /></main>;
   return (
     <main className="activity-centre min-h-screen bg-[hsl(var(--background))] p-4 md:p-10">
       <div className="mx-auto max-w-3xl">
@@ -26,11 +34,16 @@ function Preview() {
         <ActivityItemView key={item.order}
           item={item}
           format="mcq"
+          diagramSeconds={getGeneralPhase(index).seconds ?? undefined}
+          phaseLabel={getGeneralPhase(index).label}
+          paperDeadline={paperDeadline}
+          paperReady={paperReady}
+          onPaperReady={() => setPaperReady(true)}
           isLast={index === conditional.items.length - 1}
           paperChoices={buildPaperDiagramChoices(item.credited_answers, item.order)}
           onResolved={() => undefined}
           onRecord={async () => undefined}
-          onNext={() => index < conditional.items.length - 1 ? setIndex(index + 1) : setFinished(true)}
+          onNext={() => index < conditional.items.length - 1 ? beginQuestion(index + 1) : setFinished(true)}
         />
         </>}
       </div>
