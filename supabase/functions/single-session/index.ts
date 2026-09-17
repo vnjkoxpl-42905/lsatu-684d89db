@@ -645,6 +645,14 @@ Deno.serve(async (req) => {
         const status = error.code === "P0403" ? 403 : error.code === "P0409" ? 409 : 500;
         return json({ error: status === 409 ? "cancellation_closed" : status === 403 ? "invalid_token" : "server_error" }, status);
       }
+      // Cancellation side effects must start now, not whenever the fallback
+      // scheduler next happens to run. Awaiting this best-effort nudge lets the
+      // worker remove the Calendar event, send both emails, and release the
+      // mirrored busy interval before the cancellation page settles. The
+      // worker call swallows failures, so the durable scheduled retry remains
+      // authoritative during an outage.
+      await kickOutboxWorker();
+      slotsCache.delete(String(data?.event_slug || body.event || "single-session"));
       return json(toPublicBooking(data));
     }
 
