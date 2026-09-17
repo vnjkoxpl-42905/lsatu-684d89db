@@ -66,7 +66,14 @@ describe("ReviewTabs", () => {
 
 describe("reviewDefaultPath", () => {
   it("opens Wrong answers when authorized and otherwise falls back to Flagged", () => {
-    expect(reviewDefaultPath(permissionState)).toBe("/journal");
+    expect(
+      reviewDefaultPath({
+        is_admin: false,
+        has_journal_access: true,
+        has_waj_access: false,
+        has_flagged_access: true,
+      }),
+    ).toBe("/journal");
     expect(
       reviewDefaultPath({
         ...permissionState,
