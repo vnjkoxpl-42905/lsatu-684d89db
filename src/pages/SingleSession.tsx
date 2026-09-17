@@ -591,7 +591,9 @@ export default function SingleSession({
                 {guests.length < 10 ? <Button type="button" variant="ghost" className="mt-2 -ml-3" onClick={() => setGuests((current) => [...current, ""])}><Plus className="mr-1 h-4 w-4" />Add guests</Button> : null}</fieldset>
             </div>
             <Button type="submit" className="mt-7 min-h-12 w-full" disabled={submitting}>{submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" /> : null}{info?.requires_payment === false ? "Confirm booking" : "Pay to book"}</Button>
-            <p className="mt-3 text-center text-xs text-muted-foreground">You'll finish payment securely on Stripe.</p>
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              {info?.requires_payment === false ? "No payment is required." : "You'll finish payment securely on Stripe."}
+            </p>
           </form> : <>
             <div className="flex flex-wrap items-center justify-between gap-3"><h2 ref={availabilityHeading} tabIndex={-1} className="text-xl font-semibold outline-none">Select a time</h2><div className="inline-flex rounded-lg border border-border p-1" aria-label="Time format"><button type="button" aria-pressed={hour12} onClick={() => setHour12(true)} className={cn("min-h-9 rounded-md px-3 text-xs font-medium", hour12 && "bg-primary text-primary-foreground")}>12h</button><button type="button" aria-pressed={!hour12} onClick={() => setHour12(false)} className={cn("min-h-9 rounded-md px-3 text-xs font-medium", !hour12 && "bg-primary text-primary-foreground")}>24h</button></div></div>
             <div className="mt-5 grid gap-8">

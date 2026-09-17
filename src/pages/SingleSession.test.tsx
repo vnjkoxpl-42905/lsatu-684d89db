@@ -84,6 +84,8 @@ describe("SingleSession", () => {
 
     await screen.findAllByText("Free");
     await chooseSlotAndFillForm();
+    expect(screen.getByText("No payment is required.")).toBeInTheDocument();
+    expect(screen.queryByText(/finish payment securely on Stripe/i)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Confirm booking/i }));
 
     await screen.findByRole("heading", { name: /You are scheduled/i });
