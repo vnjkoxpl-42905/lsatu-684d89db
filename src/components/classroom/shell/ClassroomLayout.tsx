@@ -47,12 +47,13 @@ import { useDialogOverlay } from "@/components/classroom/shell/useDialogOverlay"
 import "@/components/classroom/classroom.css";
 
 type ClassroomSection = "notes" | "work" | "flagged" | "journal";
+type ReviewSection = Extract<ClassroomSection, "flagged" | "journal">;
 
 const SECTION_TITLES: Record<ClassroomSection, string> = {
   notes: "Notes and recaps",
   work: "Assigned work",
-  flagged: "Flagged",
-  journal: "Wrong answers",
+  flagged: "Review",
+  journal: "Review",
 };
 
 type ClassroomLayoutContextValue = {
@@ -120,6 +121,59 @@ function PanelWash() {
     <div className="classroom-panel-wash" aria-hidden="true">
       <i className="classroom-panel-wash-light" />
       <i className="classroom-panel-wash-dark" />
+    </div>
+  );
+}
+
+function ReviewTabs({ active }: { active: ReviewSection }) {
+  const navigate = useNavigate();
+  const permissions = useUserPermissions();
+  const journalAllowed =
+    permissions.loading ||
+    permissions.is_admin ||
+    permissions.has_journal_access ||
+    permissions.has_waj_access;
+  const flaggedAllowed =
+    permissions.loading || permissions.is_admin || permissions.has_flagged_access;
+
+  const tabs = [
+    journalAllowed
+      ? { id: "journal" as const, label: "Wrong answers", path: "/journal" }
+      : null,
+    flaggedAllowed
+      ? { id: "flagged" as const, label: "Flagged", path: "/flagged" }
+      : null,
+  ].filter(
+    (
+      tab,
+    ): tab is { id: ReviewSection; label: string; path: string } => Boolean(tab),
+  );
+
+  if (tabs.length === 0) return null;
+
+  return (
+    <div
+      className="classroom-account-tabs"
+      style={{ marginBottom: 16, width: "100%" }}
+      role="tablist"
+      aria-label="Review sections"
+    >
+      {tabs.map((tab) => {
+        const selected = active === tab.id;
+        return (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={selected}
+            className={selected ? "classroom-account-tab-active" : ""}
+            style={{ flex: 1 }}
+            onClick={() => navigate(tab.path)}
+          >
+            {tab.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -240,6 +294,11 @@ function ClassroomSidebar({
   });
 
   const railGroups = resolveRailGroups(railPrefs);
+  const canOpenJournal =
+    permissions.is_admin ||
+    permissions.has_journal_access ||
+    permissions.has_waj_access;
+  const canOpenFlagged = permissions.is_admin || permissions.has_flagged_access;
 
   // Behavior stays here (it needs closures over routing + section state); the
   // catalog owns what the rail contains and in what order.
@@ -274,10 +333,25 @@ function ClassroomSidebar({
         return { active: false, onClick: () => go("/bootcamps") };
       case "activities":
         return { active: false, onClick: () => go("/activities") };
-      case "journal":
-        return { active: activeSection === "journal", onClick: () => go("/journal") };
-      case "flagged":
-        return { active: activeSection === "flagged", onClick: () => go("/flagged") };
+      case "review":
+        return {
+          active: activeSection === "journal" || activeSection === "flagged",
+          onClick: () => {
+            if (activeSection === "flagged") {
+              go("/flagged");
+              return;
+            }
+            if (activeSection === "journal") {
+              go("/journal");
+              return;
+            }
+            if (canOpenJournal || !canOpenFlagged) {
+              go("/journal");
+              return;
+            }
+            go("/flagged");
+          },
+        };
       case "analytics":
         return {
           active: location.pathname.startsWith("/analytics"),
@@ -638,6 +712,8 @@ function StandardSectionList({
           ) : null}
         </div>
 
+        {section === "flagged" ? <ReviewTabs active="flagged" /> : null}
+
         {section === "flagged" && !error ? (
           <input
             type="search"
@@ -791,6 +867,8 @@ function JournalSectionList({
             </button>
           ) : null}
         </div>
+
+        <ReviewTabs active="journal" />
 
         {!query.error ? (
           <input
@@ -1009,7 +1087,9 @@ export default function ClassroomLayout() {
   const openSection = React.useCallback((section: ClassroomSection) => {
     setSelectedSection(section);
     const breakpoint =
-      section === "journal" ? "(max-width: 1399px)" : "(max-width: 1279px)";
+      section === "journal" || section === "flagged"
+        ? "(max-width: 1399px)"
+        : "(max-width: 1279px)";
     if (window.matchMedia(breakpoint).matches) {
       setSectionOverlayOpen(true);
     }
