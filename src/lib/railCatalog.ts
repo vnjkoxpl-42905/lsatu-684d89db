@@ -14,8 +14,7 @@ export type RailItemId =
   | "testing"
   | "bootcamps"
   | "activities"
-  | "journal"
-  | "flagged"
+  | "review"
   | "analytics"
   | "history"
   | "admissions"
@@ -63,8 +62,10 @@ export const RAIL_CATALOG: RailItem[] = [
   { id: "notes", label: "Notes and recaps", group: "study", flags: ["has_classroom_access"], section: true },
   { id: "bootcamps", label: "Bootcamps", group: "study", flags: ["has_bootcamp_access"] },
   { id: "activities", label: "Activities", group: "study", flags: ["has_activity_access"] },
-  { id: "journal", label: "Wrong answers", group: "review", flags: ["has_journal_access", "has_waj_access"], section: true },
-  { id: "flagged", label: "Flagged", group: "review", flags: ["has_flagged_access"], section: true },
+  // Wrong answers and Flagged are two tabs inside one Review destination. The
+  // union of their flags keeps the rail entry available when either feature is
+  // available; each underlying route still enforces its own permission.
+  { id: "review", label: "Review", group: "review", flags: ["has_journal_access", "has_waj_access", "has_flagged_access"], section: true },
   { id: "analytics", label: "Analytics", group: "review", flags: ["has_analytics_access"] },
   // Reference, not a paid feature: what the schools a student is aiming at
   // actually admitted. Open to anyone signed in, like Home.
@@ -92,24 +93,45 @@ export function normalizeRailPrefs(raw: unknown): RailPrefs {
   if (!raw || typeof raw !== "object") return defaultRailPrefs();
   const r = raw as Partial<RailPrefs>;
   const validIds = new Set(RAIL_CATALOG.map((i) => i.id));
+  const legacyReviewIds = new Set(["journal", "flagged"]);
   const order: RailPrefs["order"] = {};
+
   if (r.order && typeof r.order === "object") {
     for (const group of RAIL_GROUPS) {
       const list = (r.order as Record<string, unknown>)[group.id];
-      if (Array.isArray(list)) {
-        order[group.id] = list.filter(
-          (id): id is string => typeof id === "string" && validIds.has(id as RailItemId),
-        );
+      if (!Array.isArray(list)) continue;
+
+      const normalized: string[] = [];
+      for (const id of list) {
+        if (typeof id !== "string") continue;
+        const nextId = group.id === "review" && legacyReviewIds.has(id) ? "review" : id;
+        if (!validIds.has(nextId as RailItemId) || normalized.includes(nextId)) continue;
+        normalized.push(nextId);
       }
+      order[group.id] = normalized;
     }
   }
-  const hidden = Array.isArray(r.hidden)
-    ? r.hidden.filter((id): id is string => {
-        if (typeof id !== "string" || !validIds.has(id as RailItemId)) return false;
-        const item = RAIL_CATALOG.find((i) => i.id === id);
-        return !item?.required;
-      })
+
+  const rawHidden = Array.isArray(r.hidden)
+    ? r.hidden.filter((id): id is string => typeof id === "string")
     : [];
+  const hidden: string[] = [];
+
+  // A student who hid only one of the old Review children should not suddenly
+  // lose the combined Review destination. Preserve a hidden Review only when
+  // they explicitly hide the new item, or when both legacy children were hidden.
+  const hideCombinedReview =
+    rawHidden.includes("review") ||
+    (rawHidden.includes("journal") && rawHidden.includes("flagged"));
+
+  for (const id of rawHidden) {
+    if (legacyReviewIds.has(id)) continue;
+    if (!validIds.has(id as RailItemId)) continue;
+    const item = RAIL_CATALOG.find((i) => i.id === id);
+    if (!item?.required && !hidden.includes(id)) hidden.push(id);
+  }
+  if (hideCombinedReview && !hidden.includes("review")) hidden.push("review");
+
   return { order, hidden };
 }
 
