@@ -5,7 +5,26 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { listEvents, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
 import { userFromRequest } from "../_shared/authClaims.ts";
-import { singleSessionCalendarCancellation } from "../_shared/calendarCancellation.ts";
+import {
+  missingSingleSessionCalendarCancellations,
+  singleSessionCalendarCancellation,
+} from "../_shared/calendarCancellation.ts";
+
+async function wakeSingleSessionOutbox(): Promise<void> {
+  const workerSecret = Deno.env.get("BOOKING_WORKER_SECRET");
+  if (!workerSecret) throw new Error("booking_worker_secret_not_configured");
+
+  const response = await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/single-session-outbox`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-worker-secret": workerSecret,
+    },
+    body: "{}",
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!response.ok) throw new Error(`single_session_outbox_${response.status}`);
+}
 
 function zonedMidnightIso(dateOnly: string, timeZone: string): string {
   const [year, month, day] = dateOnly.split("-").map(Number);
@@ -81,6 +100,7 @@ Deno.serve(async (req) => {
     let processed = 0;
     let usedFallback = false;
     const errors: string[] = [];
+    let reconciledSingleSessions = 0;
     // Every event id Google returned on a full-window pass. A mirrored Google
     // event inside the window that is NOT in this set no longer exists on the
     // calendar (deleted, or a recurring series that was cut short); Google
@@ -147,7 +167,7 @@ Deno.serve(async (req) => {
             );
             if (singleSessionErr) {
               errors.push(`reconcile single-session delete ${ev.id}: ${singleSessionErr.message}`);
-            }
+            } else reconciledSingleSessions++;
           }
           processed++;
           continue;
@@ -221,6 +241,36 @@ Deno.serve(async (req) => {
           else tombstoned = stale.length;
         }
       }
+
+      const { data: activeSingleSessions, error: bookingScanErr } = await supabase
+        .from("single_session_bookings")
+        .select("id,gcal_event_id")
+        .eq("status", "booked")
+        .not("gcal_event_id", "is", null)
+        .gte("start_at", fullTimeMin)
+        .lt("start_at", fullTimeMax);
+      if (bookingScanErr) {
+        errors.push(`single-session tombstone scan: ${bookingScanErr.message}`);
+      } else {
+        const missingBookings = missingSingleSessionCalendarCancellations(
+          activeSingleSessions ?? [],
+          seenEventIds,
+        );
+        for (const missing of missingBookings) {
+          const { error: reconcileErr } = await supabase.rpc(
+            "reconcile_single_session_calendar_deletion",
+            {
+              _booking_id: missing.bookingId,
+              _google_event_id: missing.googleEventId,
+            },
+          );
+          if (reconcileErr) {
+            errors.push(`reconcile missing single-session ${missing.googleEventId}: ${reconcileErr.message}`);
+          } else {
+            reconciledSingleSessions++;
+          }
+        }
+      }
     }
 
     // Guard the sync token: only advance if every write succeeded, otherwise
@@ -245,7 +295,17 @@ Deno.serve(async (req) => {
       });
     }
 
-    return new Response(JSON.stringify({ ok: true, processed, tombstoned, calendarId }), {
+    if (reconciledSingleSessions > 0) {
+      try {
+        await wakeSingleSessionOutbox();
+      } catch (workerError) {
+        console.warn("single-session outbox wake failed; scheduled worker will retry", {
+          error: workerError instanceof Error ? workerError.message : String(workerError),
+        });
+      }
+    }
+
+    return new Response(JSON.stringify({ ok: true, processed, tombstoned, reconciledSingleSessions, calendarId }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {

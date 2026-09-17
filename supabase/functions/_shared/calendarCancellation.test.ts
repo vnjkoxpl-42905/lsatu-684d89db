@@ -1,4 +1,7 @@
-import { singleSessionCalendarCancellation } from "./calendarCancellation.ts";
+import {
+  missingSingleSessionCalendarCancellations,
+  singleSessionCalendarCancellation,
+} from "./calendarCancellation.ts";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -24,4 +27,16 @@ Deno.test("ignores active, unstamped, and malformed calendar events", () => {
     status: "cancelled",
     extendedProperties: { private: { lsatu_single_session_booking_id: "not-a-uuid" } },
   }) === null, "malformed stamp matched");
+});
+
+Deno.test("finds booked single sessions omitted from a full-window calendar response", () => {
+  const missing = missingSingleSessionCalendarCancellations([
+    { id: "aa64c0ec-203a-4a29-abf1-10a5713657b1", gcal_event_id: "missing-event" },
+    { id: "f886257c-0a03-4f55-99ce-2fa316eba4ae", gcal_event_id: "present-event" },
+    { id: "not-a-uuid", gcal_event_id: "malformed" },
+  ], new Set(["present-event"]));
+
+  assert(missing.length === 1, "expected exactly one omitted booking event");
+  assert(missing[0].bookingId === "aa64c0ec-203a-4a29-abf1-10a5713657b1", "wrong booking reconciled");
+  assert(missing[0].googleEventId === "missing-event", "wrong calendar event reconciled");
 });
