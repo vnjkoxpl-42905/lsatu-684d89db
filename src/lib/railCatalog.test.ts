@@ -1,7 +1,12 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, it, expect } from 'vitest';
-import { RAIL_CATALOG, type RailItemId } from './railCatalog';
+import {
+  RAIL_CATALOG,
+  normalizeRailPrefs,
+  resolveRailGroups,
+  type RailItemId,
+} from './railCatalog';
 
 /**
  * The rail draws a padlock from an item's flags. The route enforces its own.
@@ -99,4 +104,31 @@ describe('rail catalog agrees with the route table', () => {
       ).toBe(routeAllowsSignedIn);
     },
   );
+});
+
+describe('legacy review rail preferences', () => {
+  it('collapses old journal and flagged ordering into one Review entry', () => {
+    const prefs = normalizeRailPrefs({
+      order: { review: ['analytics', 'journal', 'flagged', 'history'] },
+      hidden: [],
+    });
+
+    expect(prefs.order.review).toEqual(['analytics', 'review', 'history']);
+    expect(
+      resolveRailGroups(prefs)
+        .find((group) => group.id === 'review')
+        ?.items.map((item) => item.id),
+    ).toEqual(['analytics', 'review', 'history', 'admissions']);
+  });
+
+  it('keeps Review visible when only one former entry was hidden', () => {
+    expect(normalizeRailPrefs({ hidden: ['journal'] }).hidden).toEqual([]);
+    expect(normalizeRailPrefs({ hidden: ['flagged'] }).hidden).toEqual([]);
+  });
+
+  it('hides Review only when both former entries were hidden', () => {
+    expect(normalizeRailPrefs({ hidden: ['journal', 'flagged'] }).hidden).toEqual([
+      'review',
+    ]);
+  });
 });
