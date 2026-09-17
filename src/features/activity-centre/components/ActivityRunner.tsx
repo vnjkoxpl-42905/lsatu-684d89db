@@ -1022,7 +1022,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             className="ac-yard-band relative flex min-h-[200px] flex-col md:min-h-[560px] md:sticky md:top-0 md:h-screen"
             data-expanded={bandExpanded ? "true" : "false"}
           >
-            <div className="flex items-center justify-between gap-3 px-5 pt-5 md:px-6">
+            <div className="flex items-center justify-between gap-3 bg-[hsl(var(--aw-page,var(--background)))] px-5 py-4 md:px-6">
               {handleBackToIntro && <ActivityExitButton onExit={handleBackToIntro} tone="light" />}
               {!isGeneral && <span className="text-[11px] font-semibold tabular-nums tracking-wide text-[hsl(var(--aw-soft,var(--muted-foreground)))]">
                 {index + 1} / {items.length}
