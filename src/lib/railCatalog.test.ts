@@ -1,7 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, it, expect } from 'vitest';
-import { RAIL_CATALOG, type RailItemId } from './railCatalog';
+import {
+  RAIL_CATALOG,
+  normalizeRailPrefs,
+  type RailItemId,
+} from './railCatalog';
 
 /**
  * The rail draws a padlock from an item's flags. The route enforces its own.
@@ -28,8 +32,9 @@ const ROUTE_FOR: Record<RailItemId, string> = {
   testing: '/testing',
   bootcamps: '/bootcamps',
   activities: '/activities',
-  journal: '/journal',
-  flagged: '/flagged',
+  // Review is one rail destination with two protected tabs. The journal route
+  // is the default door; Flagged keeps its own route and its own guard.
+  review: '/journal',
   analytics: '/analytics',
   history: '/history',
   admissions: 'admissions',
@@ -92,4 +97,37 @@ describe('rail catalog agrees with the route table', () => {
       ).toBe(routeAllowsSignedIn);
     },
   );
+
+  it('Review is unlocked by either review feature family', () => {
+    const review = RAIL_CATALOG.find((item) => item.id === 'review');
+    expect(review?.flags).toEqual(
+      expect.arrayContaining([
+        'has_journal_access',
+        'has_waj_access',
+        'has_flagged_access',
+      ]),
+    );
+  });
+});
+
+describe('legacy review layout preferences', () => {
+  it('collapses journal and flagged ordering into one Review item', () => {
+    const prefs = normalizeRailPrefs({
+      order: { review: ['analytics', 'flagged', 'journal', 'history'] },
+      hidden: [],
+    });
+
+    expect(prefs.order.review).toEqual(['analytics', 'review', 'history']);
+  });
+
+  it('does not hide Review when only one legacy child was hidden', () => {
+    expect(normalizeRailPrefs({ hidden: ['journal'] }).hidden).not.toContain('review');
+    expect(normalizeRailPrefs({ hidden: ['flagged'] }).hidden).not.toContain('review');
+  });
+
+  it('keeps Review hidden when both legacy children were hidden', () => {
+    expect(
+      normalizeRailPrefs({ hidden: ['journal', 'flagged'] }).hidden,
+    ).toContain('review');
+  });
 });
