@@ -8,6 +8,7 @@ import {
   normalizeGuests,
   parseStripeSignature,
   toPublicBooking,
+  unwrapRpcRow,
   validateSingleSessionCheckout,
 } from "../../supabase/functions/_shared/singleSessionCore.ts";
 import { verifyStripeWebhookSignature } from "../../supabase/functions/_shared/stripe.ts";
@@ -104,6 +105,39 @@ describe("single-session booking core", () => {
     expect(hasConflictingCalendarEvent([...events, {
       id: "calcom", status: "confirmed", start: { dateTime: "2026-08-20T17:30:00Z" }, end: { dateTime: "2026-08-20T18:00:00Z" },
     }], "2026-08-20T17:00:00Z", "2026-08-20T18:10:00Z", "own")).toBe(true);
+  });
+
+  it("excludes the tentative event by booking stamp when Google returns a different event id", () => {
+    const events = [{
+      id: "google-normalized-id",
+      status: "tentative",
+      start: { dateTime: "2026-09-24T21:40:00Z" },
+      end: { dateTime: "2026-09-24T22:10:00Z" },
+      extendedProperties: { private: { lsatu_single_session_booking_id: "booking-123" } },
+    }];
+
+    expect(hasConflictingCalendarEvent(
+      events,
+      "2026-09-24T21:40:00Z",
+      "2026-09-24T22:10:00Z",
+      "stored-id",
+      "booking-123",
+    )).toBe(false);
+    expect(hasConflictingCalendarEvent(
+      events,
+      "2026-09-24T21:40:00Z",
+      "2026-09-24T22:10:00Z",
+      "stored-id",
+      "different-booking",
+    )).toBe(true);
+  });
+
+  it("unwraps one-row PostgREST RPC responses", () => {
+    const booking = { id: "booking-123", gcal_event_id: "event-123" };
+    expect(unwrapRpcRow([booking])).toEqual(booking);
+    expect(unwrapRpcRow(booking)).toEqual(booking);
+    expect(unwrapRpcRow([])).toBeNull();
+    expect(unwrapRpcRow(null)).toBeNull();
   });
 
   it("keeps every Stripe v1 signature for official verification", () => {

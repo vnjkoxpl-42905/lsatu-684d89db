@@ -51,4 +51,15 @@ describe("booking confirmation backend contracts", () => {
     expect(worker).toMatch(/for\s*\(\s*let pass = 0;\s*pass < 2;\s*pass\+\+\s*\)/);
     expect(worker).toMatch(/amount:\s*Number\(booking\.amount_cents\)/);
   });
+
+  it("immediately drains cancellation side effects instead of waiting for the scheduler", () => {
+    const endpoint = read("supabase/functions/single-session/index.ts");
+    const cancelBranch = endpoint.match(
+      /if \(action === "cancel"\) \{([\s\S]*?)return json\(toPublicBooking\(data\)\);\s*\}/,
+    )?.[1];
+
+    expect(cancelBranch).toBeDefined();
+    expect(cancelBranch).toContain("await kickOutboxWorker();");
+    expect(cancelBranch).toMatch(/slotsCache\.delete\([\s\S]*event_slug/);
+  });
 });

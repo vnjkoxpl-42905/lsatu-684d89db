@@ -6,7 +6,13 @@ import {
   passSlotPolicy,
   type BookingPass,
 } from "./bookingCore.ts";
-import { generateSingleSessionSlots, SINGLE_SESSION_EVENT, singleSessionWindowEndDate } from "./singleSessionCore.ts";
+import {
+  generateSingleSessionSlots,
+  hasConflictingCalendarEvent,
+  SINGLE_SESSION_EVENT,
+  singleSessionWindowEndDate,
+  unwrapRpcRow,
+} from "./singleSessionCore.ts";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -159,4 +165,36 @@ Deno.test("consultation keeps its own shape: 30-minute pitch with 30-minute buff
   const mon = slots.filter((s) => localDate(s.start_at) === "2026-07-06").map((s) => localMinutes(s.start_at));
   // 14:00 ends 14:30, needs clear until 15:00: allowed. 14:30 ends 15:00 + 30 buffer: blocked. 16:00 needs 30 before: blocked. 16:30 ok.
   assert(mon.includes(14 * 60) && !mon.includes(14 * 60 + 30) && !mon.includes(16 * 60) && mon.includes(16 * 60 + 30), `consultation ${mon}`);
+});
+
+Deno.test("one-row PostgREST responses unwrap to the booking record", () => {
+  const booking = { id: "booking-123", gcal_event_id: "event-123" };
+  assert(unwrapRpcRow([booking]) === booking, "array response must unwrap");
+  assert(unwrapRpcRow(booking) === booking, "object response must pass through");
+  assert(unwrapRpcRow([]) === null, "empty response must be null");
+});
+
+Deno.test("a consultation does not conflict with its own stamped tentative event", () => {
+  const events = [{
+    id: "google-normalized-id",
+    status: "tentative",
+    start: { dateTime: "2026-09-24T21:40:00Z" },
+    end: { dateTime: "2026-09-24T22:10:00Z" },
+    extendedProperties: { private: { lsatu_single_session_booking_id: "booking-123" } },
+  }];
+
+  assert(!hasConflictingCalendarEvent(
+    events,
+    "2026-09-24T21:40:00Z",
+    "2026-09-24T22:10:00Z",
+    "stored-id",
+    "booking-123",
+  ), "own stamped hold must be ignored");
+  assert(hasConflictingCalendarEvent(
+    events,
+    "2026-09-24T21:40:00Z",
+    "2026-09-24T22:10:00Z",
+    "stored-id",
+    "different-booking",
+  ), "another booking's hold must still conflict");
 });

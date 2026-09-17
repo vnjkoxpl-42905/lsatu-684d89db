@@ -249,7 +249,7 @@ Deno.serve(async (req) => {
         maxResults: "50",
       });
       const conflicts = (page?.items ?? []).filter((event: any) =>
-        hasConflictingCalendarEvent([event], booking.start_at, booking.end_at, booking.gcal_event_id)
+        hasConflictingCalendarEvent([event], booking.start_at, booking.end_at, booking.gcal_event_id, booking.id)
       );
       if (conflicts.length) {
         const { error: alertError } = await supabase.from("booking_calendar_alerts").insert({

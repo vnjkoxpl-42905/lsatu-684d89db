@@ -127,7 +127,13 @@ async function liveCalendarClear(supabase: any, booking: any): Promise<boolean> 
       showDeleted: "false",
       maxResults: "50",
     });
-    if (hasConflictingCalendarEvent(page?.items ?? [], booking.start_at, booking.end_at, booking.gcal_event_id)) return false;
+    if (hasConflictingCalendarEvent(
+      page?.items ?? [],
+      booking.start_at,
+      booking.end_at,
+      booking.gcal_event_id,
+      booking.id,
+    )) return false;
   }
   return true;
 }

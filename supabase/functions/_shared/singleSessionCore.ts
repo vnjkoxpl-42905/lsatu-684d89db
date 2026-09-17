@@ -217,14 +217,31 @@ export function hasConflictingCalendarEvent(
   startAt: string,
   endAt: string,
   ownEventId?: string | null,
+  ownBookingId?: string | null,
 ): boolean {
   const start = Date.parse(startAt);
   const end = Date.parse(endAt);
   return events.some((event) => {
-    if (!event || event.status === "cancelled" || event.transparency === "transparent" || event.id === ownEventId) return false;
+    const eventBookingId = event?.extendedProperties?.private?.lsatu_single_session_booking_id;
+    if (
+      !event ||
+      event.status === "cancelled" ||
+      event.transparency === "transparent" ||
+      event.id === ownEventId ||
+      (ownBookingId && eventBookingId === ownBookingId)
+    ) return false;
     const bounds = eventBounds(event);
     return !!bounds && bounds.start < end && bounds.end > start;
   });
+}
+
+/**
+ * PostgREST serializes functions returning a named row type as a one-row array.
+ * Keep callers from accidentally treating that array as the returned record.
+ */
+export function unwrapRpcRow<T>(value: T | T[] | null | undefined): T | null {
+  if (Array.isArray(value)) return value[0] ?? null;
+  return value ?? null;
 }
 
 export function parseStripeSignature(header: string | null): { timestamp: number; signatures: string[] } | null {
