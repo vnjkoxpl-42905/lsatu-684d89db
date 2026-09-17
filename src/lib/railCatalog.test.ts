@@ -1,7 +1,12 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, it, expect } from 'vitest';
-import { RAIL_CATALOG, type RailItemId } from './railCatalog';
+import {
+  RAIL_CATALOG,
+  normalizeRailPrefs,
+  resolveRailGroups,
+  type RailItemId,
+} from './railCatalog';
 
 /**
  * The rail draws a padlock from an item's flags. The route enforces its own.
@@ -28,8 +33,7 @@ const ROUTE_FOR: Record<RailItemId, string> = {
   testing: '/testing',
   bootcamps: '/bootcamps',
   activities: '/activities',
-  journal: '/journal',
-  flagged: '/flagged',
+  review: '/journal',
   analytics: '/analytics',
   history: '/history',
   admissions: 'admissions',
@@ -78,6 +82,14 @@ describe('rail catalog agrees with the route table', () => {
     },
   );
 
+  it('the consolidated Review item covers both separately protected routes', () => {
+    const review = RAIL_CATALOG.find((item) => item.id === 'review');
+    expect(review?.label).toBe('Review');
+    expect(routeElement('/journal')).toContain('has_journal_access');
+    expect(routeElement('/journal')).toContain('has_waj_access');
+    expect(routeElement('/flagged')).toContain('has_flagged_access');
+  });
+
   it.each(RAIL_CATALOG)(
     'allowSignedIn matches the route: $id',
     (item) => {
@@ -92,4 +104,31 @@ describe('rail catalog agrees with the route table', () => {
       ).toBe(routeAllowsSignedIn);
     },
   );
+});
+
+describe('legacy review rail preferences', () => {
+  it('collapses old journal and flagged ordering into one Review entry', () => {
+    const prefs = normalizeRailPrefs({
+      order: { review: ['analytics', 'journal', 'flagged', 'history'] },
+      hidden: [],
+    });
+
+    expect(prefs.order.review).toEqual(['analytics', 'review', 'history']);
+    expect(
+      resolveRailGroups(prefs)
+        .find((group) => group.id === 'review')
+        ?.items.map((item) => item.id),
+    ).toEqual(['analytics', 'review', 'history', 'admissions']);
+  });
+
+  it('keeps Review visible when only one former entry was hidden', () => {
+    expect(normalizeRailPrefs({ hidden: ['journal'] }).hidden).toEqual([]);
+    expect(normalizeRailPrefs({ hidden: ['flagged'] }).hidden).toEqual([]);
+  });
+
+  it('hides Review only when both former entries were hidden', () => {
+    expect(normalizeRailPrefs({ hidden: ['journal', 'flagged'] }).hidden).toEqual([
+      'review',
+    ]);
+  });
 });

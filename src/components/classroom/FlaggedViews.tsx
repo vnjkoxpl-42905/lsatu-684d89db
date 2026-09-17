@@ -28,6 +28,7 @@ import {
   StageIndexList,
   shortDate,
 } from "@/components/classroom/StageIndexList";
+import { ReviewTabs } from "@/components/classroom/ReviewTabs";
 
 function formatClassroomDate(value: string | Date) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -53,7 +54,7 @@ function DetailHeading({
         <span>|</span>
         <span>{kind}</span>
       </div>
-      <h1 className="classroom-title">{title}</h1>
+      <h2 className="classroom-title">{title}</h2>
     </>
   );
 }
@@ -200,6 +201,7 @@ export function FlaggedIndexView() {
 
   return (
     <>
+      <ReviewTabs />
       <DetailHeading
         date={new Date().toISOString()}
         kind="Review"
@@ -323,32 +325,39 @@ export function FlaggedQuestionView() {
 
   if (query.isLoading && !query.data) {
     return (
-      <div className="classroom-skeleton-stack" aria-label="Loading">
-        <span className="classroom-skeleton" />
-        <span className="classroom-skeleton" />
-        <span className="classroom-skeleton" />
-      </div>
+      <>
+        <ReviewTabs />
+        <div className="classroom-skeleton-stack" aria-label="Loading">
+          <span className="classroom-skeleton" />
+          <span className="classroom-skeleton" />
+          <span className="classroom-skeleton" />
+        </div>
+      </>
     );
   }
 
   if (query.error) {
     return (
-      <div className="classroom-inline-error">
-        <p>Could not load your flagged questions.</p>
-        <button
-          type="button"
-          className="classroom-button"
-          onClick={() => void query.refetch()}
-        >
-          Try again
-        </button>
-      </div>
+      <>
+        <ReviewTabs />
+        <div className="classroom-inline-error">
+          <p>Could not load your flagged questions.</p>
+          <button
+            type="button"
+            className="classroom-button"
+            onClick={() => void query.refetch()}
+          >
+            Try again
+          </button>
+        </div>
+      </>
     );
   }
 
   if (!row) {
     return (
       <>
+        <ReviewTabs />
         <DetailHeading
           date={new Date().toISOString()}
           kind="Review"
@@ -362,6 +371,7 @@ export function FlaggedQuestionView() {
 
   return (
     <>
+      <ReviewTabs />
       <DetailHeading
         date={row.flagged_at ?? new Date().toISOString()}
         kind="Flagged"
