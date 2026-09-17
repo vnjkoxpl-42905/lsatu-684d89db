@@ -32,6 +32,11 @@ interface ActivityItemViewProps {
   localJudge?: (item: ActivityItem, response: string) => CoachVerdict;
   /** Paper-first, deterministic choices supplied by the Conditional Rephrase world. */
   paperChoices?: PaperDiagramChoice[];
+  diagramSeconds?: number;
+  paperDeadline?: string;
+  phaseLabel?: string;
+  paperReady?: boolean;
+  onPaperReady?: () => void;
   /** The world's structural read of the answer, recorded as telemetry only. */
   shadowFault?: (item: ActivityItem, response: string) => string | null;
   /**
@@ -81,6 +86,11 @@ export function ActivityItemView({
   fastPath,
   localJudge,
   paperChoices,
+  diagramSeconds,
+  paperDeadline,
+  phaseLabel,
+  paperReady,
+  onPaperReady,
   shadowFault,
   initialAttempts = 0,
   initialValue = "",
@@ -290,7 +300,7 @@ export function ActivityItemView({
       <StatementPanel
         item={item}
         showQuestionType={attempts > 0}
-        showPrompt={!promptInWorld}
+        showPrompt={!promptInWorld && !(paperChoices?.length && diagramSeconds && diagramSeconds > 0)}
       />
       <ItemPrompt
         format={format}
@@ -312,6 +322,11 @@ export function ActivityItemView({
         answerPlaceholder={answerPlaceholder}
         creditedSecondaryLabel={creditedSecondaryLabel}
         paperChoices={paperChoices}
+        diagramSeconds={diagramSeconds}
+        paperDeadline={paperDeadline}
+        phaseLabel={phaseLabel}
+        paperReady={paperReady}
+        onPaperReady={onPaperReady}
       />
     </div>
   );

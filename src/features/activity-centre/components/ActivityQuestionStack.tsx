@@ -20,6 +20,11 @@ interface ActivityQuestionStackProps {
   localJudge?: (item: ActivityItem, response: string) => CoachVerdict;
   /** Builds the five paper-diagram choices for the active item. */
   paperChoices?: (item: ActivityItem) => PaperDiagramChoice[];
+  diagramSeconds?: number;
+  paperDeadline?: string;
+  phaseLabel?: string;
+  paperReady?: boolean;
+  onPaperReady?: () => void;
   /** The world's structural read of the answer, recorded as telemetry only. */
   shadowFault?: (item: ActivityItem, response: string) => string | null;
   activeIndex: number;
@@ -54,6 +59,11 @@ export function ActivityQuestionStack({
   fastPath,
   localJudge,
   paperChoices,
+  diagramSeconds,
+  paperDeadline,
+  phaseLabel,
+  paperReady,
+  onPaperReady,
   shadowFault,
   activeIndex,
   resumeAttempts = 0,
@@ -95,6 +105,11 @@ export function ActivityQuestionStack({
             fastPath={fastPath}
             localJudge={localJudge}
             paperChoices={paperChoices?.(activeItem)}
+            diagramSeconds={diagramSeconds}
+            paperDeadline={paperDeadline}
+            phaseLabel={phaseLabel}
+            paperReady={paperReady}
+            onPaperReady={onPaperReady}
             shadowFault={shadowFault}
             initialAttempts={resumeAttempts}
             initialValue={resumeValue}

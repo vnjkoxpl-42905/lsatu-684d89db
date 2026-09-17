@@ -136,6 +136,15 @@ export function DrillEntrance({ mode, title, onStart, startLabel = "Start practi
             ))}
           </ol>
           <div className="drill-launch">
+            {mode === "general" && <div className="drill-phase-plan" aria-label="Practice phases">
+              <h2>Three phases</h2>
+              <ol>
+                <li><span>1–12</span><strong>Untimed</strong></li>
+                <li><span>13–37</span><strong>45 seconds</strong></li>
+                <li><span>38–62</span><strong>30 seconds</strong></li>
+              </ol>
+              <p>Diagram while the statement is visible. In timed phases, it disappears when time runs out or you press “I’m ready.” Then compare the choices with your diagram. Choosing an answer is untimed.</p>
+            </div>}
             {children}
             {questionCount !== undefined && <p className="drill-launch-count">{questionCount} {questionCount === 1 ? "question" : "questions"}</p>}
             <button type="button" className="drill-start" onClick={onStart}>

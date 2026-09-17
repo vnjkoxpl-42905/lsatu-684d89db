@@ -21,6 +21,7 @@ import type { JudgeSource, Verdict } from "../api/types";
 import { cachePracticeRun, createPracticeRun, loadPracticeRuns, readCachedRuns, syncPracticeRun, practiceSaveMessage, type PracticeRun } from "../conditionals/practiceStore";
 import { repairConditionalItem } from "../content/repairConditionalItems";
 import { buildPaperDiagramChoices } from "../worlds/switchyard/diagramChoices";
+import { getGeneralPhase } from "../conditionals/generalPhases";
 import { PaperDiagramPanel } from "./PaperDiagramPanel";
 import { ActivityIntro } from "./ActivityIntro";
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
@@ -282,6 +283,39 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
    */
   const world = useMemo(() => worldForTitle(assignment?.title), [assignment?.title]);
   const currentItem = items[index];
+  const generalPhase = getGeneralPhase(index);
+  const timedGeneral = isGeneral && generalPhase.seconds !== null && !viewingSomeoneElse;
+  const [assignedPaper, setAssignedPaper] = useState<{ key: string; deadline?: string; ready: boolean } | null>(null);
+  const assignedPaperKey = user && assignment ? `lsatu:general-paper:v1:${user.id}:${assignment.id}:${index}` : "";
+
+  // Start the clock only when this question is on screen. Preserve an absolute
+  // deadline so leaving or reloading cannot buy another interval.
+  useEffect(() => {
+    if (!timedGeneral || phase !== "running" || !entered || !hydrated || viewingSomeoneElse) return;
+    const seconds = generalPhase.seconds!;
+    if (savedPractice) {
+      if (savedPractice.stage === "paper" && !savedPractice.paperDeadline) {
+        updatePractice({ paperDeadline: new Date(Date.now() + seconds * 1000).toISOString() });
+      }
+      return;
+    }
+    if (!assignedPaperKey || assignedPaper?.key === assignedPaperKey) return;
+    try {
+      const raw = localStorage.getItem(assignedPaperKey);
+      const state = raw ? JSON.parse(raw) as { deadline: string; ready: boolean } : { deadline: new Date(Date.now() + seconds * 1000).toISOString(), ready: false };
+      if (!Number.isFinite(Date.parse(state.deadline))) throw new Error("The saved diagram timer could not be read. Keep this page open and retry.");
+      if (!raw) localStorage.setItem(assignedPaperKey, JSON.stringify(state));
+      setAssignedPaper({ key: assignedPaperKey, ...state });
+    } catch (error) { setPracticeError(error instanceof Error ? error.message : "The diagram timer could not be saved."); }
+  }, [timedGeneral, generalPhase.seconds, phase, entered, hydrated, viewingSomeoneElse, savedPractice, updatePractice, assignedPaperKey, assignedPaper?.key]);
+  const finishAssignedPaper = () => {
+    if (!assignedPaper || assignedPaper.key !== assignedPaperKey) return;
+    try {
+      const next = { ...assignedPaper, ready: true };
+      localStorage.setItem(assignedPaperKey, JSON.stringify(next));
+      setAssignedPaper(next);
+    } catch { setPracticeError("This browser could not save the diagram stage. Retry before continuing."); }
+  };
 
   /**
    * One marker per item, carrying the verdict the student actually earned.
@@ -296,7 +330,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   );
 
   const worldStage = useMemo(() => {
-    if (!world || !currentItem) return null;
+    if (!world || !currentItem || timedGeneral) return null;
     return world.render({
       item: currentItem,
       response: responses[currentItem.order],
@@ -304,7 +338,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       mileposts,
       currentOrder: currentItem.order,
     });
-  }, [world, currentItem, responses, verdicts, mileposts]);
+  }, [world, currentItem, responses, verdicts, mileposts, timedGeneral]);
 
   // Mirror progress into the Classroom feed row so a completed activity stops
   // showing "Start". Best-effort: the assignment is the source of truth.
@@ -621,7 +655,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   }, []);
 
   const handleNext = useCallback(async () => {
-    if (savedPracticeRef.current && !updatePractice({ position: Math.min(index + 1, items.length - 1), stage: index < items.length - 1 ? "paper" : "done", selection: "" })) return;
+    if (savedPracticeRef.current && !updatePractice({ position: Math.min(index + 1, items.length - 1), stage: index < items.length - 1 ? "paper" : "done", selection: "", paperDeadline: undefined })) return;
     if (index < items.length - 1) {
       setIndex((i) => i + 1);
       setBandExpanded(false); // a new question starts with the answer box in reach
@@ -1037,9 +1071,10 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             };
             return <div className="px-5 py-6 md:px-12 md:py-12">
               <p className="mb-4 text-sm">Question {index + 1} of {items.length}</p>
-              {!worldStage && <p className="mb-5 text-lg">{currentItem.prompt}</p>}
+              {!worldStage && !timedGeneral && <p className="mb-5 text-lg">{currentItem.prompt}</p>}
               <PaperDiagramPanel key={`${savedPractice.id}:${currentItem.order}`} item={currentItem} choices={choices}
-                value={savedPractice.selection} onChange={selection => { updatePractice({ selection }); }}
+                diagramSeconds={generalPhase.seconds ?? undefined} paperDeadline={savedPractice.paperDeadline} phaseLabel={generalPhase.label}
+                value={savedPractice.selection} onChange={selection => { updatePractice({ selection, ...(timedGeneral && savedPractice.stage === "paper" ? { stage: "choices" as const } : {}) }); }}
                 paperReady={savedPractice.stage !== "paper"} onPaperReady={() => { updatePractice({ stage: "choices" }); }}
                 onSubmit={() => { void submit(); }} onRetry={() => { updatePractice({ stage: "choices", selection: "" }); }}
                 onShowAnswer={() => { void submit(true); }} onNext={() => { void handleNext(); }} judging={false}
@@ -1049,6 +1084,11 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             </div>;
           })() : (
           <ActivityQuestionStack
+            diagramSeconds={timedGeneral ? generalPhase.seconds ?? undefined : undefined}
+            paperDeadline={assignedPaper?.key === assignedPaperKey ? assignedPaper.deadline : undefined}
+            paperReady={timedGeneral ? assignedPaper?.key === assignedPaperKey && assignedPaper.ready : undefined}
+            onPaperReady={timedGeneral ? finishAssignedPaper : undefined}
+            phaseLabel={isGeneral ? generalPhase.label : undefined}
             items={items}
             format={assignment.item_format}
             coach={assignment.instructions?.coach}

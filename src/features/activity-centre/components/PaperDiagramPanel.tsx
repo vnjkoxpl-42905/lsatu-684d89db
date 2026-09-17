@@ -5,6 +5,7 @@ import type { ActivityItem, FeedbackState } from "../api/types";
 import { MAX_ATTEMPTS } from "../api/types";
 import type { DiagramSide, PaperDiagramChoice } from "../worlds/switchyard/diagramChoices";
 import { CoachFeedback } from "./CoachFeedback";
+import "./paper-diagram-timing.css";
 
 interface PaperDiagramPanelProps {
   item: ActivityItem;
@@ -25,6 +26,10 @@ interface PaperDiagramPanelProps {
   /** Optional persisted paper/choice state for a saved practice run. */
   paperReady?: boolean;
   onPaperReady?: () => void;
+  diagramSeconds?: number;
+  /** Absolute deadline owned and persisted by the runner. Never restarted here. */
+  paperDeadline?: string;
+  phaseLabel?: string;
 }
 
 const actionButton =
@@ -65,13 +70,40 @@ export function PaperDiagramPanel({
   creditedSecondaryLabel,
   paperReady: savedPaperReady,
   onPaperReady,
+  diagramSeconds,
+  paperDeadline,
+  phaseLabel,
 }: PaperDiagramPanelProps) {
   const [localPaperReady, setPaperReady] = useState(false);
-  const paperReady = savedPaperReady ?? localPaperReady;
   const feedbackRef = useRef<HTMLDivElement | null>(null);
   const canSubmit = value.length > 0 && !judging && !resolved && !result;
   const showRetry = !!result && result.verdict !== "correct" && !revealed && attempts < MAX_ATTEMPTS;
   const choicesLocked = judging || resolved || revealed || !!result;
+  const timed = !!diagramSeconds && diagramSeconds > 0;
+  const deadline = paperDeadline ? Date.parse(paperDeadline) : NaN;
+  const [now, setNow] = useState(() => Date.now());
+  const paperReady = savedPaperReady ?? localPaperReady;
+  const promptHidden = timed && (paperReady || localPaperReady || (Number.isFinite(deadline) && now >= deadline));
+  const expiryNotified = useRef(false);
+  const remaining = timed && Number.isFinite(deadline)
+    ? Math.max(0, Math.min(diagramSeconds!, Math.ceil((deadline - now) / 1000))) : null;
+  const ready = () => { setPaperReady(true); onPaperReady?.(); };
+
+  useEffect(() => {
+    if (!timed || savedPaperReady || localPaperReady || !Number.isFinite(deadline)) return;
+    const tick = () => {
+      const currentTime = Date.now();
+      setNow(currentTime);
+      if (currentTime >= deadline && !expiryNotified.current) {
+        expiryNotified.current = true;
+        setPaperReady(true);
+        onPaperReady?.();
+      }
+    };
+    tick();
+    const interval = window.setInterval(tick, 250);
+    return () => window.clearInterval(interval);
+  }, [timed, savedPaperReady, localPaperReady, deadline, onPaperReady]);
 
   useEffect(() => {
     if (resolved) feedbackRef.current?.focus();
@@ -87,7 +119,26 @@ export function PaperDiagramPanel({
         onNext();
       }}
     >
-      {!paperReady ? (
+      {phaseLabel && <p className="paper-phase-label">{phaseLabel}</p>}
+      {timed && !paperReady && !promptHidden && <>
+        <div className="paper-timing-header">
+          <span>Diagramming time</span>
+          <span role="timer" aria-live="off" aria-label={remaining === null ? "Preparing diagram timer" : `${remaining} seconds remaining`} className="paper-timing-clock">
+            {remaining === null ? "Preparing…" : `0:${String(remaining).padStart(2, "0")}`}
+          </span>
+        </div>
+        <div className="paper-timing-track" aria-hidden="true"><span style={{ width: `${remaining === null ? 100 : remaining / diagramSeconds! * 100}%` }} /></div>
+      </>}
+      {timed && (!promptHidden || resolved) && <div className="paper-timed-statement">
+        <span>{resolved ? "Original statement" : "Statement"}</span>
+        <p>{item.prompt}</p>
+      </div>}
+      {!paperReady && promptHidden ? (
+        <div className="py-8">
+          <p className="paper-hidden-note" role="status">Statement hidden. Save your diagramming step to open the untimed choices.</p>
+          <Button className={actionButton} onClick={ready}>Continue to choices</Button>
+        </div>
+      ) : !paperReady ? (
         <div className="flex min-h-[360px] flex-1 flex-col justify-center">
           <PencilLine className="h-7 w-7 text-[hsl(var(--aw-accent,var(--ac-emerald)))]" aria-hidden="true" />
           <h2 className="mt-5 font-serif text-2xl font-semibold text-foreground">Diagram it on paper</h2>
@@ -95,13 +146,15 @@ export function PaperDiagramPanel({
             Put the sufficient condition on the left and the necessary condition on the right. Write the
             contrapositive too if that helps you check the route.
           </p>
-          <Button className={`${actionButton} mt-7`} onClick={() => { setPaperReady(true); onPaperReady?.(); }} autoFocus>
-            I’ve diagrammed it
+          {timed && <p className="paper-timing-instruction">The statement disappears when time ends or you’re ready. Then use your paper to choose an answer. Answer choices are untimed.</p>}
+          <Button className={`${actionButton} mt-7`} onClick={ready} autoFocus>
+            {timed ? "I’m ready" : "I’ve diagrammed it"}
           </Button>
         </div>
       ) : (
         <>
           <div>
+            {timed && !resolved && <p className="paper-hidden-note" role="status">Statement hidden. Use your paper. Take the time you need to choose.</p>}
             <h2 className="font-serif text-xl font-semibold text-foreground">Which diagram matches your paper?</h2>
             <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               Choose the one diagram that expresses the complete statement. A contrapositive expresses the same rule, even when your paper looks different.

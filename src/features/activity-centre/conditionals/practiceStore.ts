@@ -24,6 +24,8 @@ export interface PracticeRun {
   general?: { sourceUrl: string; items: ActivityItem[] };
   position: number;
   stage: "intro" | "paper" | "choices" | "feedback" | "done";
+  /** Absolute deadline for the current General question; omitted for untimed questions. */
+  paperDeadline?: string;
   selection: string;
   answers: PracticeAnswer[];
 }
