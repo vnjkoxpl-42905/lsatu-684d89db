@@ -28,6 +28,7 @@ interface ActivityQuestionStackProps {
   /** The world's structural read of the answer, recorded as telemetry only. */
   shadowFault?: (item: ActivityItem, response: string) => string | null;
   activeIndex: number;
+  showQuestionNumber?: boolean;
   /** Attempts already spent on the ACTIVE item in an earlier sitting. */
   resumeAttempts?: number;
   /** What the student had written on the active item when they left. */
@@ -66,6 +67,7 @@ export function ActivityQuestionStack({
   onPaperReady,
   shadowFault,
   activeIndex,
+  showQuestionNumber = true,
   resumeAttempts = 0,
   resumeValue = "",
   draftKeyFor,
@@ -88,9 +90,9 @@ export function ActivityQuestionStack({
         aria-current="step"
         className="ac-question-card w-full"
       >
-        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[hsl(var(--aw-eyebrow,var(--ac-emerald-strong)))]">
+        {showQuestionNumber && <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[hsl(var(--aw-eyebrow,var(--ac-emerald-strong)))]">
           Question {activeIndex + 1}
-        </div>
+        </div>}
 
         <div className="mt-4">
           <ActivityItemView

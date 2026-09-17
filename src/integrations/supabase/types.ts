@@ -1517,6 +1517,36 @@ export type Database = {
         }
         Relationships: []
       }
+      conditional_practice_runs: {
+        Row: {
+          created_at: string
+          id: string
+          revision: number
+          snapshot: Json
+          state: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          revision?: number
+          snapshot: Json
+          state: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          revision?: number
+          snapshot?: Json
+          state?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       conversation_participants: {
         Row: {
           conversation_id: string

@@ -16,12 +16,12 @@ const instructions: Record<DrillMode, readonly [EntranceStep, EntranceStep, Entr
   general: [
     {
       title: "Diagram the statement",
-      detail: "Read it once. Put the sufficient condition on the left and the necessary condition on the right.",
+      detail: "Diagram the statement on paper, then write its contrapositive.",
       caption: "If P, then Q. P is enough to guarantee Q.",
     },
     {
       title: "Choose the matching diagram",
-      detail: "Open the choices and look for the diagram that expresses the complete statement.",
+      detail: "Choose the pair with both the correct diagram and the correct contrapositive.",
       caption: "If Q is absent, P must be absent too. Reverse the arrow and slash both conditions.",
     },
     {
@@ -143,10 +143,10 @@ export function DrillEntrance({ mode, title, onStart, startLabel = "Start practi
                 <li><span>13–37</span><strong>45 seconds</strong></li>
                 <li><span>38–62</span><strong>30 seconds</strong></li>
               </ol>
-              <p>Diagram while the statement is visible. In timed phases, it disappears when time runs out or you press “I’m ready.” Then compare the choices with your diagram. Choosing an answer is untimed.</p>
+              <p>Diagram while the statement is visible. In timed phases, it disappears when time runs out or you press “I’m ready.” Then check both parts of each choice against your work. Choosing an answer is untimed.</p>
             </div>}
             {children}
-            {questionCount !== undefined && <p className="drill-launch-count">{questionCount} {questionCount === 1 ? "question" : "questions"}</p>}
+            {mode !== "general" && questionCount !== undefined && <p className="drill-launch-count">{questionCount} {questionCount === 1 ? "question" : "questions"}</p>}
             <button type="button" className="drill-start" onClick={onStart}>
               {startLabel}
               <ArrowRight aria-hidden="true" size={18} />

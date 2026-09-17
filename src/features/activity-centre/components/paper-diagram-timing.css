@@ -9,3 +9,7 @@
 .paper-timing-instruction,.paper-hidden-note { margin-top: 14px; max-width: 36rem; font-size: 13px; line-height: 1.65; color: hsl(var(--muted-foreground)); }
 .paper-hidden-note { margin: 0 0 16px; padding-bottom: 16px; border-bottom: 1px solid hsl(var(--border)); }
 @media (prefers-reduced-motion: reduce) { .paper-timing-track > span { transition: none; } }
+.paper-paired-option { display: grid; gap: 13px; }
+.paper-paired-row { display: grid; gap: 7px; }
+.paper-paired-row + .paper-paired-row { border-top: 1px solid hsl(var(--border)); padding-top: 12px; }
+.paper-paired-label { font-size: 10px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }

@@ -20,11 +20,12 @@ import { MAX_ATTEMPTS } from "../api/types";
 import type { JudgeSource, Verdict } from "../api/types";
 import { cachePracticeRun, createPracticeRun, loadPracticeRuns, readCachedRuns, syncPracticeRun, practiceSaveMessage, type PracticeRun } from "../conditionals/practiceStore";
 import { repairConditionalItem } from "../content/repairConditionalItems";
-import { buildPaperDiagramChoices } from "../worlds/switchyard/diagramChoices";
+import { buildPaperDiagramChoices, buildLegacyPaperDiagramChoices } from "../worlds/switchyard/diagramChoices";
 import { getGeneralPhase } from "../conditionals/generalPhases";
 import { PaperDiagramPanel } from "./PaperDiagramPanel";
 import { ActivityIntro } from "./ActivityIntro";
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
+import { ActivityProgress } from "./ActivityProgress";
 import { ActivityExitButton } from "./ActivityExitButton";
 import { worldForTitle } from "../worlds/registry";
 import { SectionRunner } from "../recall/SectionRunner";
@@ -335,10 +336,10 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       item: currentItem,
       response: responses[currentItem.order],
       answered: verdicts[currentItem.order] !== undefined,
-      mileposts,
+      mileposts: isGeneral ? undefined : mileposts,
       currentOrder: currentItem.order,
     });
-  }, [world, currentItem, responses, verdicts, mileposts, timedGeneral]);
+  }, [world, currentItem, responses, verdicts, mileposts, timedGeneral, isGeneral]);
 
   // Mirror progress into the Classroom feed row so a completed activity stops
   // showing "Start". Best-effort: the assignment is the source of truth.
@@ -1021,11 +1022,11 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             className="ac-yard-band relative flex min-h-[200px] flex-col md:min-h-[560px] md:sticky md:top-0 md:h-screen"
             data-expanded={bandExpanded ? "true" : "false"}
           >
-            <div className="flex items-center justify-between gap-3 px-5 pt-5 md:px-6">
+            <div className="flex items-center justify-between gap-3 bg-[hsl(var(--aw-page,var(--background)))] px-5 py-4 md:px-6">
               {handleBackToIntro && <ActivityExitButton onExit={handleBackToIntro} tone="light" />}
-              <span className="text-[11px] font-semibold tabular-nums tracking-wide text-[hsl(var(--aw-soft,var(--muted-foreground)))]">
+              {!isGeneral && <span className="text-[11px] font-semibold tabular-nums tracking-wide text-[hsl(var(--aw-soft,var(--muted-foreground)))]">
                 {index + 1} / {items.length}
-              </span>
+              </span>}
             </div>
             <div className="min-h-0 flex-1">{worldStage}</div>
             {/* Phone only. The world is the reward, not the route to the answer
@@ -1043,6 +1044,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
         ) : (
         <ActivityHeroPanel
           assignment={assignment}
+          showProgress={!isGeneral}
           current={index + 1}
           total={items.length}
           onExit={handleBackToIntro}
@@ -1051,6 +1053,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
         {/* The answer column stands on the world's own ground; the work cards
             inside keep their light reading surface. */}
         <main className="min-h-screen bg-[hsl(var(--aw-page,var(--background)))]">
+          {isGeneral && <ActivityProgress completed={items.filter(item => Object.prototype.hasOwnProperty.call(verdicts, item.order)).length} total={items.length} />}
           {saveStatus && savedPractice && <p role="status" className="px-6 pt-4 text-sm">{saveStatus}</p>}
           {practiceError && <p role="alert" className="px-6 pt-4 text-sm">{practiceError}</p>}
           {savedPractice ? (() => {
@@ -1059,6 +1062,10 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             const last = attempts.at(-1);
             const resolved = !!last && (last.verdict === "correct" || last.revealed || last.attempt >= MAX_ATTEMPTS);
             const submitted = choices.find(choice => choice.responseText === last?.text);
+            const historical = last && !submitted
+              ? buildLegacyPaperDiagramChoices(currentItem.credited_answers, currentItem.order).find(choice => choice.responseText === last.text)
+              : undefined;
+            const selection = choices.some(choice => choice.id === savedPractice.selection) ? savedPractice.selection : "";
             const submit = async (reveal = false) => {
               if (resolved || (!reveal && savedPracticeRef.current?.stage !== "choices")) return;
               const choice = choices.find(candidate => candidate.id === savedPractice.selection);
@@ -1070,20 +1077,26 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
               if (reveal || verdict === "correct" || attempts.length + 1 >= MAX_ATTEMPTS) handleResolved(currentItem.order, verdict);
             };
             return <div className="px-5 py-6 md:px-12 md:py-12">
-              <p className="mb-4 text-sm">Question {index + 1} of {items.length}</p>
+
               {!worldStage && !timedGeneral && <p className="mb-5 text-lg">{currentItem.prompt}</p>}
+              {savedPractice.stage === "feedback" && historical && <section aria-label="Previously saved answer" className="mb-5 rounded-xl border border-border bg-card p-4">
+                <p className="text-sm font-semibold">Your saved answer</p>
+                <p className="mt-2 text-sm leading-relaxed">{last.text}</p>
+                <p className="mt-2 text-xs text-muted-foreground">Answered before the paired choices were introduced. Your result is unchanged.</p>
+              </section>}
               <PaperDiagramPanel key={`${savedPractice.id}:${currentItem.order}`} item={currentItem} choices={choices}
                 diagramSeconds={generalPhase.seconds ?? undefined} paperDeadline={savedPractice.paperDeadline} phaseLabel={generalPhase.label}
-                value={savedPractice.selection} onChange={selection => { updatePractice({ selection, ...(timedGeneral && savedPractice.stage === "paper" ? { stage: "choices" as const } : {}) }); }}
+                value={selection} onChange={selection => { updatePractice({ selection, ...(timedGeneral && savedPractice.stage === "paper" ? { stage: "choices" as const } : {}) }); }}
                 paperReady={savedPractice.stage !== "paper"} onPaperReady={() => { updatePractice({ stage: "choices" }); }}
                 onSubmit={() => { void submit(); }} onRetry={() => { updatePractice({ stage: "choices", selection: "" }); }}
                 onShowAnswer={() => { void submit(true); }} onNext={() => { void handleNext(); }} judging={false}
-                attempts={attempts.length} result={savedPractice.stage === "feedback" && last ? { verdict: last.verdict ?? "unchecked", feedback: last.revealed ? "Compare your diagram with the complete statement below." : submitted?.feedback ?? "Your saved answer is shown below." } : null}
+                attempts={attempts.length} result={savedPractice.stage === "feedback" && last ? { verdict: last.verdict ?? "unchecked", feedback: last.revealed ? "Compare your diagram with the complete statement below." : submitted?.feedback ?? historical?.feedback ?? "Your saved result is unchanged." } : null}
                 revealed={Boolean(last?.revealed)} resolved={resolved} isLast={index === items.length - 1}
                 creditedSecondaryLabel={assignment.instructions?.credited_secondary_label} />
             </div>;
           })() : (
           <ActivityQuestionStack
+            showQuestionNumber={!isGeneral}
             diagramSeconds={timedGeneral ? generalPhase.seconds ?? undefined : undefined}
             paperDeadline={assignedPaper?.key === assignedPaperKey ? assignedPaper.deadline : undefined}
             paperReady={timedGeneral ? assignedPaper?.key === assignedPaperKey && assignedPaper.ready : undefined}

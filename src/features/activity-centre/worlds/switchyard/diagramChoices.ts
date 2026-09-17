@@ -15,6 +15,10 @@ export interface DiagramRoute {
 export interface PaperDiagramChoice {
   id: string;
   routes: DiagramRoute[];
+  /** Explicit second half of a paired answer; absent on historical single diagrams. */
+  contrapositiveRoutes?: DiagramRoute[];
+  translationCorrect?: boolean;
+  contrapositiveCorrect?: boolean;
   responseText: string;
   verdict: Verdict;
   feedback: string;
@@ -95,7 +99,7 @@ export function diagramSignature(routes: DiagramRoute[], atoms: string[]): strin
   }).join("");
 }
 
-export function buildPaperDiagramChoices(
+export function buildLegacyPaperDiagramChoices(
   creditedAnswers: string[],
   itemOrder: number,
 ): PaperDiagramChoice[] {
@@ -170,4 +174,42 @@ export function buildPaperDiagramChoices(
     })),
     itemOrder,
   );
+}
+
+/**
+ * Grade translation against the statement and contraposition against that translation.
+ * Combining them into one truth table would let a bad half be hidden by a
+ * stronger other half, especially on a biconditional.
+ */
+export function buildPaperDiagramChoices(creditedAnswers: string[], itemOrder: number): PaperDiagramChoice[] {
+  const direct = parseRoutes(creditedAnswers[0] ?? "");
+  if (!direct) return [];
+  const atoms = [...new Set(direct.flatMap(route => [route.ifSide.text, route.thenSide.text]))];
+  const creditedSignature = diagramSignature(direct, atoms);
+  // The converse of a biconditional is correct. Choose a real semantic error,
+  // retaining every clause rather than making shorter options into a clue.
+  const wrong = [reverse(direct), changeOneSide(direct), invert(direct)].find(routes =>
+    diagramSignature(routes, atoms) !== creditedSignature);
+  if (!wrong) return [];
+  const validContrapositive = flip(direct);
+  const wrongContrapositive = flip(wrong);
+  const pairs = [
+    { id: "paired-correct", routes: direct, contrapositiveRoutes: validContrapositive,
+      feedback: "Both parts match the statement. The contrapositive swaps the conditions and negates each complete condition." },
+    { id: "paired-translation-only", routes: direct, contrapositiveRoutes: wrongContrapositive,
+      feedback: "The diagram matches the statement, but the contrapositive does not. Swap the conditions and negate each complete condition." },
+    { id: "paired-contrapositive-only", routes: wrong, contrapositiveRoutes: wrongContrapositive,
+      feedback: "The contrapositive correctly follows the diagram above it, but that diagram changes the original statement. Check the translation before taking its contrapositive." },
+    { id: "paired-neither", routes: wrong, contrapositiveRoutes: validContrapositive,
+      feedback: "The first diagram changes the statement, and the second is not the contrapositive of that diagram. Translate the statement first, then swap and negate both conditions." },
+  ];
+  return shuffled(pairs.map(pair => {
+    const translationCorrect = diagramSignature(pair.routes, atoms) === creditedSignature;
+    const contrapositiveCorrect = diagramSignature(pair.contrapositiveRoutes, atoms) === diagramSignature(flip(pair.routes), atoms);
+    return {
+      ...pair, translationCorrect, contrapositiveCorrect,
+      verdict: translationCorrect && contrapositiveCorrect ? "correct" as const : "partial" as const,
+      responseText: `Diagram: ${diagramResponseText(pair.routes)} Contrapositive: ${diagramResponseText(pair.contrapositiveRoutes)}`,
+    };
+  }), itemOrder);
 }
