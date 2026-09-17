@@ -116,6 +116,7 @@ const users = [
 describe('DeskPeopleSurface', () => {
   beforeEach(() => {
     vi.setSystemTime(new Date('2026-06-18T13:00:00.000Z'));
+    invokeMock.mockClear();
     getSessionMock.mockResolvedValue({ data: { session: { user: { id: 'admin-1' } } } });
     invokeMock.mockImplementation((_name, options) => {
       if (options?.headers?.['x-mode'] === 'analytics') {
