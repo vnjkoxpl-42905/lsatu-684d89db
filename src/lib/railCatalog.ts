@@ -14,8 +14,7 @@ export type RailItemId =
   | "testing"
   | "bootcamps"
   | "activities"
-  | "journal"
-  | "flagged"
+  | "review"
   | "analytics"
   | "history"
   | "admissions"
@@ -63,8 +62,7 @@ export const RAIL_CATALOG: RailItem[] = [
   { id: "notes", label: "Notes and recaps", group: "study", flags: ["has_classroom_access"], section: true },
   { id: "bootcamps", label: "Bootcamps", group: "study", flags: ["has_bootcamp_access"] },
   { id: "activities", label: "Activities", group: "study", flags: ["has_activity_access"] },
-  { id: "journal", label: "Wrong answers", group: "review", flags: ["has_journal_access", "has_waj_access"], section: true },
-  { id: "flagged", label: "Flagged", group: "review", flags: ["has_flagged_access"], section: true },
+  { id: "review", label: "Review", group: "review", flags: ["has_journal_access", "has_waj_access", "has_flagged_access"], section: true },
   { id: "analytics", label: "Analytics", group: "review", flags: ["has_analytics_access"] },
   // Reference, not a paid feature: what the schools a student is aiming at
   // actually admitted. Open to anyone signed in, like Home.
@@ -97,17 +95,30 @@ export function normalizeRailPrefs(raw: unknown): RailPrefs {
     for (const group of RAIL_GROUPS) {
       const list = (r.order as Record<string, unknown>)[group.id];
       if (Array.isArray(list)) {
-        order[group.id] = list.filter(
-          (id): id is string => typeof id === "string" && validIds.has(id as RailItemId),
+        const migrated = list.map((id) =>
+          id === "journal" || id === "flagged" ? "review" : id,
+        );
+        order[group.id] = migrated.filter(
+          (id, index): id is string =>
+            typeof id === "string" &&
+            validIds.has(id as RailItemId) &&
+            migrated.indexOf(id) === index,
         );
       }
     }
   }
+  const rawHidden = Array.isArray(r.hidden) ? r.hidden : [];
+  const legacyReviewHidden =
+    rawHidden.includes("journal") && rawHidden.includes("flagged");
+  const migratedHidden = [
+    ...rawHidden.filter((id) => id !== "journal" && id !== "flagged"),
+    ...(legacyReviewHidden ? ["review"] : []),
+  ];
   const hidden = Array.isArray(r.hidden)
-    ? r.hidden.filter((id): id is string => {
+    ? migratedHidden.filter((id, index): id is string => {
         if (typeof id !== "string" || !validIds.has(id as RailItemId)) return false;
         const item = RAIL_CATALOG.find((i) => i.id === id);
-        return !item?.required;
+        return !item?.required && migratedHidden.indexOf(id) === index;
       })
     : [];
   return { order, hidden };

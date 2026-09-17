@@ -565,8 +565,9 @@ const App = () => {
                       <ProtectedRoute flag="has_drill_access"><PracticeTestRunPage /></ProtectedRoute>
                     } />
 
-                    {/* Flagged keeps its own URL and its own place in the rail;
-                        only the frame that draws it has changed. */}
+                    {/* Review keeps both historic URL families. The shared tabs
+                        switch between them while each route retains its own
+                        permission gate and data surface. */}
                     <Route path="/flagged" element={
                       <ProtectedRoute flag="has_flagged_access"><FlaggedIndexView /></ProtectedRoute>
                     } />

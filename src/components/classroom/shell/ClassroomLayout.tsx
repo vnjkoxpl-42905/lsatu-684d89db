@@ -30,6 +30,7 @@ import { useRailPrefs } from "@/hooks/useRailPrefs";
 import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
 import { preloadDrillHub } from "@/lib/routePreload";
 import { flagLabel } from "@/lib/flaggedService";
+import { reviewDefaultPath } from "@/components/classroom/ReviewTabs";
 import {
   useStudentAssignments,
   useStudentTAAssignments,
@@ -274,10 +275,11 @@ function ClassroomSidebar({
         return { active: false, onClick: () => go("/bootcamps") };
       case "activities":
         return { active: false, onClick: () => go("/activities") };
-      case "journal":
-        return { active: activeSection === "journal", onClick: () => go("/journal") };
-      case "flagged":
-        return { active: activeSection === "flagged", onClick: () => go("/flagged") };
+      case "review":
+        return {
+          active: activeSection === "journal" || activeSection === "flagged",
+          onClick: () => go(reviewDefaultPath(permissions)),
+        };
       case "analytics":
         return {
           active: location.pathname.startsWith("/analytics"),
@@ -1039,7 +1041,9 @@ export default function ClassroomLayout() {
   // space in the flow, with the name of the room beside it so the button is
   // not a lone glyph floating on the page.
   const mobileBarLabel = activeSection
-    ? SECTION_TITLES[activeSection]
+    ? activeSection === "journal" || activeSection === "flagged"
+      ? "Review"
+      : SECTION_TITLES[activeSection]
     : drillHub
       ? "Drill"
       : messagesStage

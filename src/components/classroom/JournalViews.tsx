@@ -34,6 +34,7 @@ import {
 } from "@/components/classroom/journalAutosave";
 import { JournalQuestionView } from "@/components/classroom/JournalQuestionView";
 import { JournalReviewPanel } from "@/components/classroom/JournalReviewPanel";
+import { ReviewTabs } from "@/components/classroom/ReviewTabs";
 
 const EMPTY_DRAFT: JournalDraft = {
   self_rating: null,
@@ -96,7 +97,7 @@ function DetailHeading({
         <span>|</span>
         <span>{kind}</span>
       </div>
-      <h1 className="classroom-title">{title}</h1>
+      <h2 className="classroom-title">{title}</h2>
     </>
   );
 }
@@ -190,6 +191,7 @@ export function JournalIndexView() {
 
   return (
     <>
+      <ReviewTabs />
       <DetailHeading
         date={new Date().toISOString()}
         kind="Review"
@@ -334,6 +336,7 @@ export function JournalEntryView() {
     return (
       <main className="classroom-stage classroom-journal-stage">
         <div className="classroom-journal-stage-inner">
+          <ReviewTabs />
           <LoadingState />
         </div>
       </main>
@@ -344,6 +347,7 @@ export function JournalEntryView() {
     return (
       <main className="classroom-stage classroom-journal-stage">
         <div className="classroom-journal-stage-inner">
+          <ReviewTabs />
           <div className="classroom-inline-error">
             <p>Could not load your wrong answers.</p>
             <button
@@ -363,6 +367,7 @@ export function JournalEntryView() {
     return (
       <main className="classroom-stage classroom-journal-stage">
         <div className="classroom-journal-stage-inner">
+          <ReviewTabs />
           <DetailHeading
             date={new Date().toISOString()}
             title="This entry is not in your wrong answers"
@@ -385,6 +390,7 @@ export function JournalEntryView() {
     <>
       <main className="classroom-stage classroom-journal-stage">
         <div className="classroom-journal-stage-inner">
+          <ReviewTabs />
           <div className="classroom-journal-entry-heading">
             <div>
               <DetailHeading date={row.first_missed} title={row.label} />

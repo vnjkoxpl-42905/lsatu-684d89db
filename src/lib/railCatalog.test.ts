@@ -28,8 +28,7 @@ const ROUTE_FOR: Record<RailItemId, string> = {
   testing: '/testing',
   bootcamps: '/bootcamps',
   activities: '/activities',
-  journal: '/journal',
-  flagged: '/flagged',
+  review: '/journal',
   analytics: '/analytics',
   history: '/history',
   admissions: 'admissions',
@@ -77,6 +76,14 @@ describe('rail catalog agrees with the route table', () => {
       ).toBe(true);
     },
   );
+
+  it('the consolidated Review item covers both separately protected routes', () => {
+    const review = RAIL_CATALOG.find((item) => item.id === 'review');
+    expect(review?.label).toBe('Review');
+    expect(routeElement('/journal')).toContain('has_journal_access');
+    expect(routeElement('/journal')).toContain('has_waj_access');
+    expect(routeElement('/flagged')).toContain('has_flagged_access');
+  });
 
   it.each(RAIL_CATALOG)(
     'allowSignedIn matches the route: $id',
