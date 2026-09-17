@@ -27,7 +27,7 @@ function Preview() {
   const item: ActivityItem = conditional.items[index];
   if (!started) return <main className="activity-centre conditional-general-entrance"><DrillEntrance mode="general" title="General Conditionals" onBack={() => window.location.assign("/conditional-lab")} onStart={() => { beginQuestion(index); setStarted(true); }} questionCount={conditional.items.length} /></main>;
   return (
-    <main className="activity-centre min-h-screen bg-[hsl(var(--background))] p-4 md:p-10">
+    <main data-world="conditional-rephrase" style={{ backgroundColor: "hsl(var(--aw-page))", color: "hsl(var(--aw-ink))" }} className="activity-centre min-h-screen p-4 md:p-10">
       <div className="mx-auto max-w-3xl">
         <a href="/conditional-lab" className="mb-6 inline-block text-sm underline">Conditional drills</a>
         <h1 className="mb-4 text-2xl font-semibold">General Conditionals</h1>
