@@ -338,6 +338,7 @@ export function DeskPeopleSurface() {
           expandedUser={expandedUser}
           setExpandedUser={setExpandedUser}
           toggleAccess={toggleAccess}
+          setAllAccess={setAllAccess}
           setRole={setRole}
           resetOnboarding={resetOnboarding}
           refresh={fetchData}
@@ -353,6 +354,7 @@ function PeopleList({
   expandedUser,
   setExpandedUser,
   toggleAccess,
+  setAllAccess,
   setRole,
   resetOnboarding,
   refresh,
@@ -362,6 +364,7 @@ function PeopleList({
   expandedUser: string | null;
   setExpandedUser: (id: string | null) => void;
   toggleAccess: (classId: string, field: string, value: boolean) => void;
+  setAllAccess: (person: PeopleRow, grant: boolean) => void;
   setRole: (userId: string, role: 'admin' | 'user') => void;
   resetOnboarding: (person: PeopleRow) => void;
   refresh: () => void;
@@ -403,7 +406,7 @@ function PeopleList({
           const isExpanded = expandedUser === person.class_id;
           return (
             <div key={person.class_id} data-testid={`people-row-${person.class_id}`} className="bg-white/10">
-              <PersonRow person={person} isExpanded={isExpanded} setExpandedUser={setExpandedUser} toggleAccess={toggleAccess} />
+              <PersonRow person={person} isExpanded={isExpanded} setExpandedUser={setExpandedUser} setAllAccess={setAllAccess} />
               {isExpanded && (
                 <PersonAccessPanel
                   person={person}
@@ -423,15 +426,19 @@ function PersonRow({
   person,
   isExpanded,
   setExpandedUser,
-  toggleAccess,
+  setAllAccess,
 }: {
   person: PeopleRow;
   isExpanded: boolean;
   setExpandedUser: (id: string | null) => void;
-  toggleAccess: (classId: string, field: string, value: boolean) => void;
+  setAllAccess: (person: PeopleRow, grant: boolean) => void;
 }) {
   const student = person.student;
   const hasDrill = Boolean(person.has_drill_access);
+  // "Any access" ignores the classroom home page, which revoking always leaves on.
+  const hasAnyAccess = ALL_FLAG_KEYS.some(
+    (key) => key !== 'has_classroom_access' && Boolean((person as Record<string, unknown>)[key]),
+  );
   const isAdmin = person.role === 'admin';
   const isOnline = isUserOnline(person.last_seen_at);
   const lastActiveLabel = formatLastActiveLabel(person.last_seen_at);
@@ -501,23 +508,23 @@ function PersonRow({
             <Shield className="h-3 w-3" strokeWidth={1.5} />
             Full access
           </span>
-        ) : hasDrill ? (
+        ) : hasAnyAccess ? (
           <button
             type="button"
-            onClick={() => toggleAccess(person.class_id, 'has_drill_access', false)}
+            onClick={() => setAllAccess(person, false)}
             className="inline-flex items-center gap-1 border border-red-700/20 px-2 py-1 text-xs font-semibold text-red-800 transition hover:bg-red-500/10"
           >
             <UserX className="h-3 w-3" strokeWidth={1.5} />
-            Revoke Drill Access
+            Revoke All Access
           </button>
         ) : (
           <button
             type="button"
-            onClick={() => toggleAccess(person.class_id, 'has_drill_access', true)}
+            onClick={() => setAllAccess(person, true)}
             className="inline-flex items-center gap-1 border border-emerald-700/20 px-2 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/10"
           >
             <UserCheck className="h-3 w-3" strokeWidth={1.5} />
-            Grant Drill Access
+            Grant Full Access
           </button>
         )}
       </div>
