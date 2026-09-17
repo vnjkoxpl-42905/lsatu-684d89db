@@ -4,12 +4,14 @@ import { useUserPermissions } from "@/hooks/useUserPermissions";
 export type ReviewSection = "journal" | "flagged";
 
 export function reviewDefaultPath(permissions: {
+  loading?: boolean;
   is_admin: boolean;
   has_journal_access: boolean;
   has_waj_access: boolean;
   has_flagged_access: boolean;
 }) {
   const canOpenJournal =
+    permissions.loading ||
     permissions.is_admin ||
     permissions.has_journal_access ||
     permissions.has_waj_access;
@@ -24,10 +26,12 @@ export function ReviewTabs() {
     ? "flagged"
     : "journal";
   const canOpenJournal =
+    permissions.loading ||
     permissions.is_admin ||
     permissions.has_journal_access ||
     permissions.has_waj_access;
-  const canOpenFlagged = permissions.is_admin || permissions.has_flagged_access;
+  const canOpenFlagged =
+    permissions.loading || permissions.is_admin || permissions.has_flagged_access;
 
   return (
     <div className="classroom-account-heading classroom-review-heading">
