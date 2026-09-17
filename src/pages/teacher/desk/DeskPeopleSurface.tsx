@@ -24,6 +24,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
 import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
 import {
+  ALL_FLAG_KEYS,
   CONFIGURABLE_FLAG_KEYS,
   computeAdminAnalytics,
   isPrimaryAdmin,
@@ -148,6 +149,38 @@ export function DeskPeopleSurface() {
       setUsers((prev) => prev.map((user) => (user.class_id === classId ? { ...user, [field]: !value } : user)));
       console.error('toggleAccess failed', { classId, field, value, error });
       toast.error('Failed to update permission');
+    }
+  };
+
+  // One button, whole account: revoking shuts every door except the classroom
+  // home page, so the student can still sign in and land somewhere truthful.
+  // Granting opens everything back up.
+  const setAllAccess = async (person: PeopleRow, grant: boolean) => {
+    const who = person.display_name || person.email;
+    if (!grant && !window.confirm(
+      `Revoke all access for ${who}?\n\n` +
+      'They keep their login and their home page. Everything else — drill, ' +
+      'practice, bootcamps, review, messages, schedule — is locked.',
+    )) return;
+
+    const flags: Record<string, boolean> = {};
+    for (const key of ALL_FLAG_KEYS) flags[key] = grant;
+    flags.has_classroom_access = true;
+
+    const previous = users;
+    setUsers((prev) => prev.map((user) => (user.class_id === person.class_id ? { ...user, ...flags } : user)));
+    try {
+      const res = await supabase.functions.invoke('admin-manage-users', {
+        method: 'POST',
+        body: { action: 'apply_template', class_id: person.class_id, flags },
+      });
+      if (res.error) throw res.error;
+      toast.success(grant ? `${who} has full access` : `${who} is locked to their home page`);
+      await fetchData();
+    } catch (error) {
+      setUsers(previous);
+      console.error('setAllAccess failed', { class_id: person.class_id, grant, error });
+      toast.error('Failed to update access');
     }
   };
 
@@ -305,6 +338,7 @@ export function DeskPeopleSurface() {
           expandedUser={expandedUser}
           setExpandedUser={setExpandedUser}
           toggleAccess={toggleAccess}
+          setAllAccess={setAllAccess}
           setRole={setRole}
           resetOnboarding={resetOnboarding}
           refresh={fetchData}
@@ -320,6 +354,7 @@ function PeopleList({
   expandedUser,
   setExpandedUser,
   toggleAccess,
+  setAllAccess,
   setRole,
   resetOnboarding,
   refresh,
@@ -329,6 +364,7 @@ function PeopleList({
   expandedUser: string | null;
   setExpandedUser: (id: string | null) => void;
   toggleAccess: (classId: string, field: string, value: boolean) => void;
+  setAllAccess: (person: PeopleRow, grant: boolean) => void;
   setRole: (userId: string, role: 'admin' | 'user') => void;
   resetOnboarding: (person: PeopleRow) => void;
   refresh: () => void;
@@ -370,7 +406,7 @@ function PeopleList({
           const isExpanded = expandedUser === person.class_id;
           return (
             <div key={person.class_id} data-testid={`people-row-${person.class_id}`} className="bg-white/10">
-              <PersonRow person={person} isExpanded={isExpanded} setExpandedUser={setExpandedUser} toggleAccess={toggleAccess} />
+              <PersonRow person={person} isExpanded={isExpanded} setExpandedUser={setExpandedUser} setAllAccess={setAllAccess} />
               {isExpanded && (
                 <PersonAccessPanel
                   person={person}
@@ -390,15 +426,19 @@ function PersonRow({
   person,
   isExpanded,
   setExpandedUser,
-  toggleAccess,
+  setAllAccess,
 }: {
   person: PeopleRow;
   isExpanded: boolean;
   setExpandedUser: (id: string | null) => void;
-  toggleAccess: (classId: string, field: string, value: boolean) => void;
+  setAllAccess: (person: PeopleRow, grant: boolean) => void;
 }) {
   const student = person.student;
   const hasDrill = Boolean(person.has_drill_access);
+  // "Any access" ignores the classroom home page, which revoking always leaves on.
+  const hasAnyAccess = ALL_FLAG_KEYS.some(
+    (key) => key !== 'has_classroom_access' && Boolean((person as unknown as Record<string, unknown>)[key]),
+  );
   const isAdmin = person.role === 'admin';
   const isOnline = isUserOnline(person.last_seen_at);
   const lastActiveLabel = formatLastActiveLabel(person.last_seen_at);
@@ -468,23 +508,23 @@ function PersonRow({
             <Shield className="h-3 w-3" strokeWidth={1.5} />
             Full access
           </span>
-        ) : hasDrill ? (
+        ) : hasAnyAccess ? (
           <button
             type="button"
-            onClick={() => toggleAccess(person.class_id, 'has_drill_access', false)}
+            onClick={() => setAllAccess(person, false)}
             className="inline-flex items-center gap-1 border border-red-700/20 px-2 py-1 text-xs font-semibold text-red-800 transition hover:bg-red-500/10"
           >
             <UserX className="h-3 w-3" strokeWidth={1.5} />
-            Revoke Drill Access
+            Revoke All Access
           </button>
         ) : (
           <button
             type="button"
-            onClick={() => toggleAccess(person.class_id, 'has_drill_access', true)}
+            onClick={() => setAllAccess(person, true)}
             className="inline-flex items-center gap-1 border border-emerald-700/20 px-2 py-1 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/10"
           >
             <UserCheck className="h-3 w-3" strokeWidth={1.5} />
-            Grant Drill Access
+            Grant Full Access
           </button>
         )}
       </div>

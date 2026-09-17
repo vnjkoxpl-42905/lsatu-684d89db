@@ -116,6 +116,7 @@ const users = [
 describe('DeskPeopleSurface', () => {
   beforeEach(() => {
     vi.setSystemTime(new Date('2026-06-18T13:00:00.000Z'));
+    invokeMock.mockClear();
     getSessionMock.mockResolvedValue({ data: { session: { user: { id: 'admin-1' } } } });
     invokeMock.mockImplementation((_name, options) => {
       if (options?.headers?.['x-mode'] === 'analytics') {
@@ -173,56 +174,43 @@ describe('DeskPeopleSurface', () => {
     expect(screen.getByText('Protected primary admin')).toBeInTheDocument();
   });
 
-  it('shows a single Drill access control per student and no broad bulk actions', async () => {
+  it('shows one whole-account access control per student', async () => {
     renderPeople();
 
     const row = await screen.findByTestId('people-row-student-1');
 
-    // Drill access status surfaced on the row, with a single revoke action
-    // (the seeded student already has drill access).
     expect(within(row).getByText(/Drill on/i)).toBeInTheDocument();
-    expect(within(row).getByRole('button', { name: /Revoke Drill Access/i })).toBeInTheDocument();
+    expect(within(row).getByRole('button', { name: /Revoke All Access/i })).toBeInTheDocument();
 
-    // No bootcamp/classroom/practice toggles, no Grant All / Revoke All.
     expect(screen.queryByRole('switch', { name: 'Bootcamps' })).not.toBeInTheDocument();
     expect(screen.queryByRole('switch', { name: 'Classroom' })).not.toBeInTheDocument();
     expect(screen.queryByRole('switch', { name: 'Practice' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Grant All/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Revoke All/i })).not.toBeInTheDocument();
   });
 
-  it('toggles Drill access through the row action', async () => {
+  it('revokes every feature except the classroom home page', async () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
     renderPeople();
 
     const row = await screen.findByTestId('people-row-student-1');
-    fireEvent.click(within(row).getByRole('button', { name: /Revoke Drill Access/i }));
+    fireEvent.click(within(row).getByRole('button', { name: /Revoke All Access/i }));
 
-    expect(invokeMock).toHaveBeenCalledWith('admin-manage-users', {
-      method: 'POST',
-      body: { class_id: 'student-1', field: 'has_drill_access', value: false },
-    });
-
-    expect(await within(row).findByText(/Drill off/i)).toBeInTheDocument();
+    const call = invokeMock.mock.calls.find(([, options]) => options?.body?.action === 'apply_template');
+    expect(call).toBeTruthy();
+    const flags = call![1].body.flags as Record<string, boolean>;
+    expect(call![1].body.class_id).toBe('student-1');
+    expect(flags.has_classroom_access).toBe(true);
+    expect(flags.has_drill_access).toBe(false);
+    expect(flags.has_chat_access).toBe(false);
+    expect(flags.has_practice_access).toBe(false);
   });
 
-  it('reverts the row when the server reports that nothing was written', async () => {
-    const listImplementation = invokeMock.getMockImplementation()!;
-    invokeMock.mockImplementation((name, options) => {
-      if (options?.method === 'POST') {
-        // PostgREST treats a filter that matches no row as a success, so the
-        // function returns no profile. The row must snap back immediately
-        // rather than showing a revoke that never landed.
-        return Promise.resolve({ data: { success: true }, error: null });
-      }
-      return listImplementation(name, options);
-    });
-
+  it('does nothing when the confirmation is dismissed', async () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(false);
     renderPeople();
 
     const row = await screen.findByTestId('people-row-student-1');
-    fireEvent.click(within(row).getByRole('button', { name: /Revoke Drill Access/i }));
+    fireEvent.click(within(row).getByRole('button', { name: /Revoke All Access/i }));
 
-    expect(await within(row).findByText(/Drill on/i)).toBeInTheDocument();
-    expect(toastErrorMock).toHaveBeenCalledWith('Failed to update permission');
+    expect(invokeMock.mock.calls.some(([, options]) => options?.body?.action === 'apply_template')).toBe(false);
   });
 });
