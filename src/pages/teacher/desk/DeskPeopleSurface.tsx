@@ -151,6 +151,38 @@ export function DeskPeopleSurface() {
     }
   };
 
+  // One button, whole account: revoking shuts every door except the classroom
+  // home page, so the student can still sign in and land somewhere truthful.
+  // Granting opens everything back up.
+  const setAllAccess = async (person: PeopleRow, grant: boolean) => {
+    const who = person.display_name || person.email;
+    if (!grant && !window.confirm(
+      `Revoke all access for ${who}?\n\n` +
+      'They keep their login and their home page. Everything else — drill, ' +
+      'practice, bootcamps, review, messages, schedule — is locked.',
+    )) return;
+
+    const flags: Record<string, boolean> = {};
+    for (const key of ALL_FLAG_KEYS) flags[key] = grant;
+    flags.has_classroom_access = true;
+
+    const previous = users;
+    setUsers((prev) => prev.map((user) => (user.class_id === person.class_id ? { ...user, ...flags } : user)));
+    try {
+      const res = await supabase.functions.invoke('admin-manage-users', {
+        method: 'POST',
+        body: { action: 'apply_template', class_id: person.class_id, flags },
+      });
+      if (res.error) throw res.error;
+      toast.success(grant ? `${who} has full access` : `${who} is locked to their home page`);
+      await fetchData();
+    } catch (error) {
+      setUsers(previous);
+      console.error('setAllAccess failed', { class_id: person.class_id, grant, error });
+      toast.error('Failed to update access');
+    }
+  };
+
   // Puts an account back to the state a new signup is in: no intake answers, no
   // name, the intake email re-armed, every paid door shut. Used to test the
   // signup path for real, and when a student needs to answer the intake again.
