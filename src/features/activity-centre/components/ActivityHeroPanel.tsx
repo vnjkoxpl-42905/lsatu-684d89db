@@ -5,6 +5,8 @@ interface ActivityHeroPanelProps {
   assignment: ActivityAssignment;
   current: number; // 1-based
   total: number;
+  /** Hide duplicate progress when the runner provides a shared progress header. */
+  showProgress?: boolean;
   /** Omitted when the runner is embedded (teacher preview), which has its own chrome. */
   onExit?: () => void;
 }
@@ -18,6 +20,7 @@ export function ActivityHeroPanel({
   current,
   total,
   onExit,
+  showProgress = true,
 }: ActivityHeroPanelProps) {
   const pct = total > 0 ? Math.round((current / total) * 100) : 0;
   const tagline = assignment.instructions?.tagline;
@@ -37,16 +40,16 @@ export function ActivityHeroPanel({
               Activity
             </span>
           )}
-          <span className="text-[11px] font-medium tabular-nums tracking-wide">
+          {showProgress && <span className="text-[11px] font-medium tabular-nums tracking-wide">
             {current} / {total}
-          </span>
+          </span>}
         </div>
-        <div className="mt-3 h-[3px] w-full overflow-hidden rounded-full bg-white/15">
+        {showProgress && <div className="mt-3 h-[3px] w-full overflow-hidden rounded-full bg-white/15">
           <div
             className="h-full bg-[hsl(var(--ac-emerald))] transition-[width] duration-500 ease-out"
             style={{ width: `${pct}%` }}
           />
-        </div>
+        </div>}
       </div>
 
       {/* Editorial content */}

@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ActivityRunner } from "./ActivityRunner";
 import { readCachedRuns, createPracticeRun, cachePracticeRun } from "../conditionals/practiceStore";
 import { getGeneralPhase } from "../conditionals/generalPhases";
-import { buildPaperDiagramChoices } from "../worlds/switchyard/diagramChoices";
+import { buildPaperDiagramChoices, buildLegacyPaperDiagramChoices } from "../worlds/switchyard/diagramChoices";
 
 // The re-drill. The practice path has existed since the beginning and has always
 // written nothing, but it could only ever re-run the WHOLE activity, because
@@ -78,6 +78,29 @@ describe("saved General sessions", () => {
     expect(readCachedRuns("user-1")[0].answers).toHaveLength(2);
     expect(readCachedRuns("user-1")[0].answers.every(answer => !answer.revealed)).toBe(true);
     expect(completeAssignment).not.toHaveBeenCalled();
+    expect(recordItemResponse).not.toHaveBeenCalled();
+  });
+  it("replaces an obsolete unsubmitted selection with four unselected paired choices", async () => {
+    const saved = run();
+    cachePracticeRun({ ...saved, stage: "choices", selection: "both-directions" });
+    mount(saved.id);
+    const options = await screen.findAllByRole("radio");
+    expect(options).toHaveLength(4);
+    expect(options.every(option => option.getAttribute("aria-checked") === "false")).toBe(true);
+    expect(screen.getByRole("button", { name: "Check my diagram" })).toBeDisabled();
+    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "0");
+    expect(screen.queryByText(/Question 1 of 1/)).not.toBeInTheDocument();
+  });
+  it("keeps a historical answer and its score unchanged while showing the new paired choices", async () => {
+    const saved = run();
+    const old = buildLegacyPaperDiagramChoices(item.credited_answers, item.order).find(choice => choice.id === "both-directions")!;
+    const answer = { id: "old-answer", questionId: "1", choiceId: old.id, text: old.responseText, verdict: old.verdict, attempt: 2, revealed: false, at: saved.createdAt };
+    cachePracticeRun({ ...saved, stage: "feedback", selection: old.id, answers: [answer] });
+    mount(saved.id);
+    expect(await screen.findByRole("region", { name: "Previously saved answer" })).toHaveTextContent(old.responseText);
+    expect(screen.getAllByRole("radio")).toHaveLength(4);
+    expect(readCachedRuns("user-1")[0].answers).toEqual([answer]);
+    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "100");
     expect(recordItemResponse).not.toHaveBeenCalled();
   });
   it("keeps the local answer when account sync fails and says so", async () => {

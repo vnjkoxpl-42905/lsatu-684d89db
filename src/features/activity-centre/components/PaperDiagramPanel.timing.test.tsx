@@ -20,6 +20,19 @@ describe('timed paper diagram phase', () => {
   beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(new Date('2026-09-17T12:00:00Z')); });
   afterEach(() => { cleanup(); vi.useRealTimers(); });
 
+  it('presents four labeled diagram and contrapositive pairs with accessible negations', () => {
+    const base = props();
+    const paired = Array.from({ length: 4 }, (_, index) => ({ ...base.choices[0], id: String(index),
+      contrapositiveRoutes: [{ ifSide: { text: 'reference', inverted: true }, thenSide: { text: 'approved', inverted: true } }],
+    }));
+    render(<PaperDiagramPanel {...base} paperReady choices={paired} />);
+    expect(screen.getAllByRole('radio')).toHaveLength(4);
+    expect(screen.getAllByText('Diagram', { exact: true })).toHaveLength(4);
+    expect(screen.getAllByText('Contrapositive', { exact: true })).toHaveLength(4);
+    expect(screen.getAllByRole('img', { name: 'not approved' })).toHaveLength(4);
+    expect(screen.getByRole('heading', { name: 'Which option matches the diagram you made?' })).toBeInTheDocument();
+  });
+
   it('shows the statement while diagramming and hides it when the deadline expires', () => {
     const onPaperReady = vi.fn();
     render(<PaperDiagramPanel {...props({ diagramSeconds: 45, paperDeadline: '2026-09-17T12:00:45Z', onPaperReady })} />);

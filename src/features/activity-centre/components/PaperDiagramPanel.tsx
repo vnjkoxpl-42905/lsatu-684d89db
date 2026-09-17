@@ -5,6 +5,7 @@ import type { ActivityItem, FeedbackState } from "../api/types";
 import { MAX_ATTEMPTS } from "../api/types";
 import type { DiagramSide, PaperDiagramChoice } from "../worlds/switchyard/diagramChoices";
 import { CoachFeedback } from "./CoachFeedback";
+import { NegatedCondition } from "../conditionals/NegatedCondition";
 import "./paper-diagram-timing.css";
 
 interface PaperDiagramPanelProps {
@@ -42,10 +43,7 @@ function DiagramSideView({ prefix, side }: { prefix: "IF" | "THEN"; side: Diagra
         {prefix}
       </span>
       <div className="mt-1 flex items-start gap-1.5 text-sm font-medium leading-snug text-foreground">
-        <span className="relative inline-block" role={side.inverted ? "img" : undefined} aria-label={side.inverted ? `Not: ${side.text}` : undefined}>
-          <span aria-hidden={side.inverted || undefined}>{side.text}</span>
-          {side.inverted && <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100"><line x1="2" y1="94" x2="98" y2="6" stroke="currentColor" strokeWidth="1.5" vectorEffect="non-scaling-stroke" /></svg>}
-        </span>
+        {side.inverted ? <NegatedCondition text={side.text} /> : <span>{side.text}</span>}
       </div>
     </div>
   );
@@ -76,9 +74,10 @@ export function PaperDiagramPanel({
 }: PaperDiagramPanelProps) {
   const [localPaperReady, setPaperReady] = useState(false);
   const feedbackRef = useRef<HTMLDivElement | null>(null);
-  const canSubmit = value.length > 0 && !judging && !resolved && !result;
+  const canSubmit = choices.some(choice => choice.id === value) && !judging && !resolved && !result;
   const showRetry = !!result && result.verdict !== "correct" && !revealed && attempts < MAX_ATTEMPTS;
   const choicesLocked = judging || resolved || revealed || !!result;
+  const pairedChoices = choices.every(choice => !!choice.contrapositiveRoutes?.length);
   const timed = !!diagramSeconds && diagramSeconds > 0;
   const deadline = paperDeadline ? Date.parse(paperDeadline) : NaN;
   const [now, setNow] = useState(() => Date.now());
@@ -143,8 +142,7 @@ export function PaperDiagramPanel({
           <PencilLine className="h-7 w-7 text-[hsl(var(--aw-accent,var(--ac-emerald)))]" aria-hidden="true" />
           <h2 className="mt-5 font-serif text-2xl font-semibold text-foreground">Diagram it on paper</h2>
           <p className="mt-3 max-w-md text-[15px] leading-relaxed text-muted-foreground">
-            Put the sufficient condition on the left and the necessary condition on the right. Write the
-            contrapositive too if that helps you check the route.
+            Write the diagram and its contrapositive. Keep every condition and negation.
           </p>
           {timed && <p className="paper-timing-instruction">The statement disappears when time ends or you’re ready. Then use your paper to choose an answer. Answer choices are untimed.</p>}
           <Button className={`${actionButton} mt-7`} onClick={ready} autoFocus>
@@ -155,13 +153,13 @@ export function PaperDiagramPanel({
         <>
           <div>
             {timed && !resolved && <p className="paper-hidden-note" role="status">Statement hidden. Use your paper. Take the time you need to choose.</p>}
-            <h2 className="font-serif text-xl font-semibold text-foreground">Which diagram matches your paper?</h2>
+            <h2 className="font-serif text-xl font-semibold text-foreground">Which option matches the diagram you made?</h2>
             <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-              Choose the one diagram that expresses the complete statement. A contrapositive expresses the same rule, even when your paper looks different.
+              {pairedChoices ? "Check both rows. The diagram and contrapositive must both express the original statement." : "Choose the diagram that expresses the complete statement."}
             </p>
           </div>
 
-          <div className="mt-5 grid gap-2.5" role="radiogroup" aria-label="Five possible conditional diagrams">
+          <div className="mt-5 grid gap-2.5" role="radiogroup" aria-label={`${choices.length} conditional diagram options`}>
             {choices.map((choice, choiceIndex) => {
               const selected = value === choice.id;
               return (
@@ -189,8 +187,10 @@ export function PaperDiagramPanel({
                     {String.fromCharCode(65 + choiceIndex)}
                   </span>
 
-                  <div className="space-y-2 pr-9">
-                    {choice.routes.map((route, routeIndex) => (
+                  <div className="paper-paired-option pr-9">
+                    {[{ label: "Diagram", routes: choice.routes }, ...(choice.contrapositiveRoutes ? [{ label: "Contrapositive", routes: choice.contrapositiveRoutes }] : [])].map(group => <div className="paper-paired-row" key={group.label}>
+                    <span className="paper-paired-label">{group.label}</span>
+                    {group.routes.map((route, routeIndex) => (
                       <div
                         key={`${choice.id}-${routeIndex}`}
                         className="flex items-center gap-2 rounded-xl bg-[hsl(var(--muted)/0.55)] px-3 py-2.5"
@@ -200,6 +200,7 @@ export function PaperDiagramPanel({
                         <DiagramSideView prefix="THEN" side={route.thenSide} />
                       </div>
                     ))}
+                    </div>)}
                   </div>
                 </button>
               );
