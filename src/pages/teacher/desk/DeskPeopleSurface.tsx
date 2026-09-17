@@ -437,7 +437,7 @@ function PersonRow({
   const hasDrill = Boolean(person.has_drill_access);
   // "Any access" ignores the classroom home page, which revoking always leaves on.
   const hasAnyAccess = ALL_FLAG_KEYS.some(
-    (key) => key !== 'has_classroom_access' && Boolean((person as Record<string, unknown>)[key]),
+    (key) => key !== 'has_classroom_access' && Boolean((person as unknown as Record<string, unknown>)[key]),
   );
   const isAdmin = person.role === 'admin';
   const isOnline = isUserOnline(person.last_seen_at);
