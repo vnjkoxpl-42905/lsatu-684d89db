@@ -24,6 +24,7 @@ import { BOOTCAMP_INLINE } from '@/lib/bootcampInline';
 import { useHubStudents } from '@/hooks/useHubStudents';
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
+  'conditional-indicators-refresher': 1,
   'principle-flaw': 14,
   'intro-to-lr': 14,
   'causation-station': 7,
