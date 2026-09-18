@@ -94,6 +94,7 @@ const GuidedDrillStart = safeLazy(() => import("./pages/GuidedDrillStart"));
 const ActivityCentre = safeLazy(() => import("./pages/ActivityCentre"));
 const ConditionalPractice = safeLazy(() => import("./features/activity-centre/conditionals/ConditionalPractice"));
 const ConditionalPracticeLab = safeLazy(() => import("./features/activity-centre/conditionals/ConditionalPractice").then(module => ({ default: module.ConditionalPracticeLab })));
+const ConditionalIndicatorsRefresher = safeLazy(() => import("./features/conditional-refresher/ConditionalIndicatorsRefresher"));
 const ActivitySections = safeLazy(() => import("./pages/ActivitySections"));
 const ActivityRunner = safeLazy(() => import("./features/activity-centre/components/ActivityRunner"));
 
@@ -611,6 +612,11 @@ const App = () => {
                         <React.Suspense fallback={null}>
                           <ActivityCentre />
                         </React.Suspense>
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/conditional-indicators-refresher" element={
+                      <ProtectedRoute allowSignedIn>
+                        <ConditionalIndicatorsRefresher />
                       </ProtectedRoute>
                     } />
                     <Route path="/analytics" element={
