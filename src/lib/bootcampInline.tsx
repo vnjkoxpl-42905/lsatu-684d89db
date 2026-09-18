@@ -13,6 +13,7 @@ const CausationStation = safeLazy(() => import('@/pages/CausationStation'));
 const FallacyFlawBootcamp = safeLazy(() => import('@/pages/FallacyFlawBootcamp'));
 const AbstractBootcamp = safeLazy(() => import('@/topics/abstract'));
 const RcEngagingPassageBootcamp = safeLazy(() => import('@/pages/RcEngagingPassageBootcamp'));
+const ConditionalIndicatorsRefresher = safeLazy(() => import('@/features/conditional-refresher/ConditionalIndicatorsRefresher'));
 
 export interface BootcampInlineCfg {
   Comp: ComponentType;
@@ -22,6 +23,7 @@ export interface BootcampInlineCfg {
 }
 
 export const BOOTCAMP_INLINE: Record<string, BootcampInlineCfg> = {
+  'conditional-indicators-refresher': { Comp: ConditionalIndicatorsRefresher, routePath: '/conditional-indicators-refresher', title: 'Conditional Indicators Refresher', bootcampIdOverride: 'conditional-indicators-refresher' },
   'principle-flaw': { Comp: PrincipleFlawBootcamp, routePath: '/bootcamp/principle-flaw', title: 'Principle and Flaw' },
   'intro-to-lr': { Comp: IntroToLrBootcamp, routePath: '/bootcamp/intro-to-lr', title: 'Intro to LR' },
   'causation-station': { Comp: CausationStation, routePath: '/bootcamp/causation-station', title: 'Causation Station' },
