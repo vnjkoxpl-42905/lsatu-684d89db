@@ -45,6 +45,22 @@ export interface BootcampDef {
 
 export const BOOTCAMPS: BootcampDef[] = [
   {
+    id: 'conditional-indicators-refresher',
+    title: 'Conditional Indicators Refresher',
+    description:
+      'Four-group conditional indicator review with sorting, flashcards, diagram drills, and a timed Unless drill.',
+    route: '/conditional-indicators-refresher',
+    stats: ['Cheat sheet', 'Sort + flashcards', 'Diagram + Unless drills'],
+    theme: {
+      style: 'editorial',
+      bg: '#F5F2ED',
+      ink: '#143937',
+      inkSoft: '#65706A',
+      accent: '#244E49',
+      accentInk: '#FBF8F1',
+    },
+  },
+  {
     id: 'principle-flaw',
     title: 'Principle & Flaw',
     description: 'Principle questions, flaw patterns, and parallel-flaw transfer.',
