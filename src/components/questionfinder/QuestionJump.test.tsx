@@ -53,8 +53,9 @@ function mount(bank?: "lr" | "rc") {
   );
 }
 
-const testSelect = () => screen.getByRole("combobox", { name: /^test$/i });
+const testSelect = () => screen.getByRole("combobox", { name: /^preptest$/i });
 const sectionSelect = () => screen.getByRole("combobox", { name: /^section$/i });
+const questionSelect = () => screen.getByRole("combobox", { name: /^question number$/i });
 
 describe("QuestionJump", () => {
   beforeEach(() => navigate.mockReset());
@@ -63,14 +64,14 @@ describe("QuestionJump", () => {
     mount();
     expect(testSelect()).toBeInTheDocument();
     expect(sectionSelect()).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: /^question$/i })).toBeInTheDocument();
+    expect(questionSelect()).toBeInTheDocument();
   });
 
   it("opens one LR question in the drill runner, and returns where it started", async () => {
     mount();
     fireEvent.change(testSelect(), { target: { value: "90" } });
     fireEvent.change(sectionSelect(), { target: { value: "1" } });
-    fireEvent.change(screen.getByRole("combobox", { name: /^question$/i }), {
+    fireEvent.change(questionSelect(), {
       target: { value: "12" },
     });
 
@@ -86,7 +87,7 @@ describe("QuestionJump", () => {
     fireEvent.change(testSelect(), { target: { value: "90" } });
     fireEvent.change(sectionSelect(), { target: { value: "2" } });
 
-    const third = screen.getByRole("combobox", { name: /^question$/i });
+    const third = questionSelect();
     expect(screen.getByRole("option", { name: "Question 8 · Passage 2" })).toBeInTheDocument();
 
     fireEvent.change(third, { target: { value: "1190:708" } });

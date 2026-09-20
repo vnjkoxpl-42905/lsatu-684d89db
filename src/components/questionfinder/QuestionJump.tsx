@@ -90,7 +90,7 @@ export default function QuestionJump({
     [activeSection],
   );
 
-  const thirdLabel = "Question";
+  const thirdLabel = "Question number";
 
   const openLr = (qnum: string) => {
     const params = new URLSearchParams({
@@ -114,15 +114,13 @@ export default function QuestionJump({
     ? "Pick a test"
     : !section
       ? "Pick a section"
-      : isRc
-        ? "Question"
-        : "Question";
+      : "Question number";
 
   return (
     <div className="qj" data-tone={tone}>
       <div className="qj-row" data-search={withSearch ? "true" : "false"} role="group" aria-label="Jump to a question by PrepTest, section, and number">
         <label className="qf-field qj-field">
-          <span className="qf-field-label">Test</span>
+          <span className="qf-field-label">PrepTest</span>
           <select
             className="qf-select"
             value={pt}
