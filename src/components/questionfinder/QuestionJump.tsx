@@ -110,11 +110,7 @@ export default function QuestionJump({
   };
 
   const thirdDisabled = loading || !activeSection;
-  const thirdPlaceholder = !pt
-    ? "Pick a test"
-    : !section
-      ? "Pick a section"
-      : "Question number";
+  const thirdPlaceholder = "Question number";
 
   return (
     <div className="qj" data-tone={tone}>
@@ -149,7 +145,7 @@ export default function QuestionJump({
             disabled={loading || !pt}
             onChange={(event) => setSection(event.target.value)}
           >
-            <option value="">{pt ? "Section" : "Pick a test"}</option>
+            <option value="">Section</option>
             {sections.map((entry) => (
               <option key={entry.section} value={entry.section}>
                 Section {entry.section}
