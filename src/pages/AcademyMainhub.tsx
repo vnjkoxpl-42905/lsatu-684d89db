@@ -58,21 +58,21 @@ function MainhubHero({
       className="drill-observatory-hero w-full border-0 bg-transparent p-0 shadow-none"
     >
       <div className="drill-observatory-hero-grid">
-        <div className="drill-observatory-smart flex flex-col justify-end">
+        <div className="drill-observatory-smart flex flex-col justify-center">
           <div className="flex flex-col gap-3">
             <h1>Smart Drill</h1>
             <p className="drill-observatory-ink-70 max-w-[42ch] text-sm leading-[1.6]">
               Let Smart Drill choose what would be most useful to practice next.
             </p>
           </div>
-          <Button onClick={startSmart} className="drill-observatory-cta mt-8 w-fit">
+          <Button onClick={startSmart} className="drill-observatory-cta mt-5 w-fit">
             Smart Drill
             <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
           </Button>
         </div>
 
         <div className="drill-observatory-console w-full">
-          <div className="flex h-full flex-col justify-between gap-6">
+          <div className="flex flex-col justify-center gap-5">
             <div className="space-y-3">
               <h2 className="drill-observatory-ink-full text-[clamp(1.35rem,3cqi,2rem)] font-semibold leading-tight tracking-[-0.025em]">
                 {section === "rc" ? "Build the reading set you need." : "Build the drill you need."}
@@ -431,7 +431,7 @@ export default function AcademyMainhub({
              needed it least. */
           <section
             className={cn(
-              "drill-observatory-deck grid grid-cols-1 items-stretch",
+              "drill-observatory-deck grid grid-cols-1 items-start",
               !isWideLauncherStage &&
                 "@[760px]:grid-cols-[minmax(0,1.2fr)_minmax(340px,1fr)]",
             )}

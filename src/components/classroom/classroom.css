@@ -1387,12 +1387,12 @@ html.dark .classroom-root.classroom-root-drill {
 }
 
 .drill-observatory-root .drill-observatory-hero-grid {
-  align-items: stretch;
+  align-items: center;
   display: grid;
   gap: 28px;
   grid-template-columns: minmax(0, 1fr) 392px;
-  min-height: 400px;
-  padding: var(--observatory-space-2) var(--observatory-space-7) var(--observatory-space-7);
+  min-height: 280px;
+  padding: var(--observatory-space-4) var(--observatory-space-6) var(--observatory-space-5);
   position: relative;
   z-index: 2;
 }
@@ -1769,8 +1769,8 @@ html.dark .classroom-root.classroom-root-drill {
   box-shadow:
     0 0 0 1px var(--observatory-hairline),
     var(--observatory-shadow-card);
-  height: 100%;
-  padding: 26px 28px;
+  height: auto;
+  padding: var(--observatory-space-5) 22px;
 }
 
 .drill-observatory-root .drill-observatory-practice {
@@ -1998,7 +1998,7 @@ html.dark .classroom-root.classroom-root-drill {
   background: none;
   border-radius: 0;
   box-shadow: none;
-  height: 100%;
+  height: auto;
   padding: 0;
 }
 
@@ -2009,9 +2009,9 @@ html.dark .classroom-root.classroom-root-drill {
     0 0 0 1px var(--observatory-ring),
     var(--observatory-shadow-card);
   gap: var(--observatory-space-3);
-  height: 100%;
+  height: auto;
   overflow: hidden;
-  padding: var(--observatory-space-6);
+  padding: var(--observatory-space-5);
   position: relative;
 }
 
@@ -2177,7 +2177,7 @@ html.dark .classroom-root.classroom-root-drill {
   .drill-observatory-root .drill-observatory-hero-grid {
     gap: var(--observatory-space-5);
     grid-template-columns: minmax(0, 1fr) 356px;
-    padding: var(--observatory-space-2) var(--observatory-space-6) var(--observatory-space-6);
+    padding: var(--observatory-space-4) var(--observatory-space-5) var(--observatory-space-5);
   }
 
 }
