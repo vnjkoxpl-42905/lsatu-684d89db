@@ -15,6 +15,9 @@ import {
   UserCheck,
   Users,
   UserX,
+  Archive,
+  ArchiveRestore,
+  Trash2,
   CalendarDays,
   Video,
 } from 'lucide-react';
@@ -34,7 +37,7 @@ import {
 import { formatLastActiveLabel, isUserOnline } from '@/lib/presence';
 import { cn } from '@/lib/utils';
 
-type RoleFilter = 'all' | 'students' | 'admins' | 'no-drill';
+type RoleFilter = 'all' | 'students' | 'admins' | 'no-drill' | 'archived';
 
 type PeopleRow = ManagedUser & {
   student?: HubStudentRow;
@@ -124,6 +127,13 @@ export function DeskPeopleSurface() {
     const q = search.trim().toLowerCase();
     return people.filter((person) => {
       const matchesSearch = !q || person.email?.toLowerCase().includes(q) || person.display_name?.toLowerCase().includes(q);
+      // Archived people are out of the way everywhere except their own
+      // filter. That is the point of archiving: the list should show who you
+      // are actually teaching.
+      const isArchived = !!person.archived_at;
+      if (roleFilter === 'archived') return matchesSearch && isArchived;
+      if (isArchived) return false;
+
       const matchesRole =
         roleFilter === 'all' ||
         (roleFilter === 'students' && person.role !== 'admin') ||
@@ -213,6 +223,71 @@ export function DeskPeopleSurface() {
     }
   };
 
+  // Archive: the everyday way to take someone off the list. Shuts every door,
+  // takes effect on their open tab immediately, keeps every record, undoable.
+  const setArchived = async (person: PeopleRow, archived: boolean) => {
+    const who = person.display_name || person.email;
+    if (archived && !window.confirm(
+      `Archive ${who}?\n\n` +
+      'Their access is turned off and they come off your list. Nothing is ' +
+      'deleted: their work, sessions and history all stay, and you can bring ' +
+      'them back at any time.',
+    )) return;
+
+    try {
+      const res = await supabase.functions.invoke('admin-manage-users', {
+        method: 'POST',
+        body: {
+          action: archived ? 'archive_student' : 'unarchive_student',
+          class_id: person.class_id,
+        },
+      });
+      if (res.error) throw res.error;
+      toast.success(archived ? `${who} is archived` : `${who} is back on your list`);
+      await fetchData();
+    } catch (error) {
+      console.error('setArchived failed', { class_id: person.class_id, archived, error });
+      toast.error(archived ? 'Failed to archive' : 'Failed to restore');
+    }
+  };
+
+  // Hard delete. The one action here that cannot be undone, so it asks for the
+  // email to be typed rather than accepting a single click. Session records and
+  // payment history are detached and survive; everything else goes.
+  const deleteStudent = async (person: PeopleRow) => {
+    const who = person.display_name || person.email;
+    if (isPrimaryAdmin(person.email)) {
+      toast.error('The primary admin account cannot be deleted.');
+      return;
+    }
+
+    const typed = window.prompt(
+      `Permanently delete ${who}?\n\n` +
+      'This cannot be undone. Their account, practice history, journals, ' +
+      'flagged questions and assigned work are all destroyed. Your session ' +
+      'records and their payment history are kept and detached.\n\n' +
+      `To confirm, type their email exactly:\n${person.email}`,
+    );
+    if (typed === null) return;
+    if (typed.trim().toLowerCase() !== person.email.toLowerCase()) {
+      toast.error('That email did not match. Nothing was deleted.');
+      return;
+    }
+
+    try {
+      const res = await supabase.functions.invoke('admin-manage-users', {
+        method: 'POST',
+        body: { action: 'delete_student', class_id: person.class_id, confirm_email: typed.trim() },
+      });
+      if (res.error) throw res.error;
+      toast.success(`${who} has been deleted`);
+      await fetchData();
+    } catch (error) {
+      console.error('deleteStudent failed', { class_id: person.class_id, error });
+      toast.error('Failed to delete the account');
+    }
+  };
+
   const setRole = async (userId: string, role: 'admin' | 'user') => {
     const prev = users.find((user) => user.class_id === userId);
     if (!prev) return;
@@ -248,7 +323,9 @@ export function DeskPeopleSurface() {
     <section className="flex h-full w-full flex-col" aria-label="Students">
       <div className="flex items-center gap-2 border-b border-black/10 px-5 py-3 text-xs font-semibold text-black/45">
         <Users className="h-4 w-4" strokeWidth={1.5} />
-        {users.length} people
+        {/* Archived people are off the list, so they are off the count too.
+            Counting them here would say 41 while showing 27. */}
+        {users.filter((user) => !user.archived_at).length} people
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-5">
@@ -320,6 +397,7 @@ export function DeskPeopleSurface() {
               ['students', 'Students'],
               ['admins', 'Admins'],
               ['no-drill', 'No Drill'],
+              ['archived', 'Archived'],
             ] as const).map(([filter, label]) => (
               <button
                 key={filter}
@@ -345,6 +423,8 @@ export function DeskPeopleSurface() {
           setAllAccess={setAllAccess}
           setRole={setRole}
           resetOnboarding={resetOnboarding}
+          setArchived={setArchived}
+          deleteStudent={deleteStudent}
           refresh={fetchData}
         />
       </div>
@@ -361,6 +441,8 @@ function PeopleList({
   setAllAccess,
   setRole,
   resetOnboarding,
+  setArchived,
+  deleteStudent,
   refresh,
 }: {
   filtered: PeopleRow[];
@@ -371,6 +453,8 @@ function PeopleList({
   setAllAccess: (person: PeopleRow, grant: boolean) => void;
   setRole: (userId: string, role: 'admin' | 'user') => void;
   resetOnboarding: (person: PeopleRow) => void;
+  setArchived: (person: PeopleRow, archived: boolean) => void;
+  deleteStudent: (person: PeopleRow) => void;
   refresh: () => void;
 }) {
   if (studentsLoading && filtered.length === 0) {
@@ -416,6 +500,8 @@ function PeopleList({
                   person={person}
                   setRole={setRole}
                   resetOnboarding={resetOnboarding}
+                  setArchived={setArchived}
+                  deleteStudent={deleteStudent}
                 />
               )}
             </div>
@@ -541,10 +627,14 @@ function PersonAccessPanel({
   person,
   setRole,
   resetOnboarding,
+  setArchived,
+  deleteStudent,
 }: {
   person: PeopleRow;
   setRole: (userId: string, role: 'admin' | 'user') => void;
   resetOnboarding: (person: PeopleRow) => void;
+  setArchived: (person: PeopleRow, archived: boolean) => void;
+  deleteStudent: (person: PeopleRow) => void;
 }) {
   return (
     <div className="space-y-4 border-t border-black/10 px-8 py-4">
@@ -594,6 +684,65 @@ function PersonAccessPanel({
           Clears their setup answers and name, re-locks access, and lets the intake
           run again. The login and their practice history survive.
         </p>
+      </div>
+
+      {/* Two ways off the list, deliberately far apart in weight. Archive is
+          the one to reach for; delete is framed as the exception it is. */}
+      <div className="border-t border-black/10 pt-3">
+        <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-black/35">
+          Remove from your list
+        </div>
+        {person.archived_at ? (
+          <>
+            <button
+              type="button"
+              onClick={() => setArchived(person, false)}
+              className="inline-flex items-center gap-1.5 border border-emerald-700/25 px-2.5 py-1.5 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-500/10"
+            >
+              <ArchiveRestore className="h-3.5 w-3.5" strokeWidth={1.5} />
+              Bring back to the list
+            </button>
+            <p className="mt-2 text-xs leading-relaxed text-black/45">
+              Archived {new Date(person.archived_at).toLocaleDateString()}. Their
+              records were kept. Restoring puts them back on your list with access
+              still off, so you choose what to reopen.
+            </p>
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={() => setArchived(person, true)}
+              disabled={isPrimaryAdmin(person.email)}
+              className="inline-flex items-center gap-1.5 border border-black/15 px-2.5 py-1.5 text-xs font-semibold text-black/55 transition hover:bg-white/25 hover:text-black disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <Archive className="h-3.5 w-3.5" strokeWidth={1.5} />
+              Archive
+            </button>
+            <p className="mt-2 text-xs leading-relaxed text-black/45">
+              Turns off their access and takes them off your list. It lands on an
+              open tab straight away.
+              Nothing is deleted and you can bring them back at any time.
+            </p>
+          </>
+        )}
+
+        <div className="mt-4 border-t border-red-700/15 pt-3">
+          <button
+            type="button"
+            onClick={() => deleteStudent(person)}
+            disabled={isPrimaryAdmin(person.email)}
+            className="inline-flex items-center gap-1.5 border border-red-700/25 px-2.5 py-1.5 text-xs font-semibold text-red-800 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <Trash2 className="h-3.5 w-3.5" strokeWidth={1.5} />
+            Delete permanently
+          </button>
+          <p className="mt-2 text-xs leading-relaxed text-black/45">
+            {isPrimaryAdmin(person.email)
+              ? 'The primary admin account cannot be deleted.'
+              : 'Cannot be undone. Destroys their account and all their work. Your session records and their payment history are kept.'}
+          </p>
+        </div>
       </div>
     </div>
   );

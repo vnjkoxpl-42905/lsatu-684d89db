@@ -111,6 +111,26 @@ const users = [
     has_export_access: true,
     has_ta_access: true,
   },
+  {
+    class_id: 'student-2',
+    email: 'former@example.com',
+    display_name: 'Former Student',
+    role: 'user',
+    last_seen_at: '2026-05-01T12:00:00.000Z',
+    archived_at: '2026-06-01T12:00:00.000Z',
+    archived_reason: null,
+    has_bootcamp_access: false,
+    has_classroom_access: false,
+    has_analytics_access: false,
+    has_schedule_access: false,
+    has_practice_access: false,
+    has_drill_access: false,
+    has_waj_access: false,
+    has_flagged_access: false,
+    has_chat_access: false,
+    has_export_access: false,
+    has_ta_access: false,
+  },
 ];
 
 describe('DeskPeopleSurface', () => {
@@ -202,6 +222,52 @@ describe('DeskPeopleSurface', () => {
     expect(flags.has_drill_access).toBe(false);
     expect(flags.has_chat_access).toBe(false);
     expect(flags.has_practice_access).toBe(false);
+  });
+
+  it('keeps archived students off the list until you ask for them', async () => {
+    renderPeople();
+
+    await screen.findByTestId('people-row-student-1');
+    // The point of archiving: the list shows who you are actually teaching.
+    expect(screen.queryByTestId('people-row-student-2')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Archived' }));
+
+    expect(await screen.findByTestId('people-row-student-2')).toBeInTheDocument();
+    expect(screen.queryByTestId('people-row-student-1')).not.toBeInTheDocument();
+  });
+
+  it('archives a student through the edge function', async () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    renderPeople();
+
+    const row = await screen.findByTestId('people-row-student-1');
+    fireEvent.click(within(row).getByRole('button', { name: /Meghan Mullins/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /^Archive$/i }));
+
+    const call = invokeMock.mock.calls.find(([, options]) => options?.body?.action === 'archive_student');
+    expect(call).toBeTruthy();
+    expect(call![1].body.class_id).toBe('student-1');
+  });
+
+  it('refuses to delete unless the email is typed exactly', async () => {
+    const promptSpy = vi.spyOn(window, 'prompt').mockReturnValue('wrong@example.com');
+    renderPeople();
+
+    const row = await screen.findByTestId('people-row-student-1');
+    fireEvent.click(within(row).getByRole('button', { name: /Meghan Mullins/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /Delete permanently/i }));
+
+    expect(invokeMock.mock.calls.some(([, options]) => options?.body?.action === 'delete_student')).toBe(false);
+    expect(toastErrorMock).toHaveBeenCalled();
+
+    // The same click with the email typed correctly does go through.
+    promptSpy.mockReturnValue('meghan@example.com');
+    fireEvent.click(screen.getByRole('button', { name: /Delete permanently/i }));
+
+    const call = invokeMock.mock.calls.find(([, options]) => options?.body?.action === 'delete_student');
+    expect(call).toBeTruthy();
+    expect(call![1].body.confirm_email).toBe('meghan@example.com');
   });
 
   it('does nothing when the confirmation is dismissed', async () => {
