@@ -198,7 +198,7 @@ describe('DeskPeopleSurface', () => {
     expect(call).toBeTruthy();
     const flags = call![1].body.flags as Record<string, boolean>;
     expect(call![1].body.class_id).toBe('student-1');
-    expect(flags.has_classroom_access).toBe(true);
+    expect(flags.has_classroom_access).toBe(false);
     expect(flags.has_drill_access).toBe(false);
     expect(flags.has_chat_access).toBe(false);
     expect(flags.has_practice_access).toBe(false);

@@ -1,6 +1,8 @@
 import { useOrientation, OrientationCardView } from "@/components/classroom/OrientationCard";
 import AnnouncementBanner from "@/components/classroom/AnnouncementBanner";
 import ClassroomHome from "@/components/classroom/home/ClassroomHome";
+import LockedModule from "@/components/LockedModule";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
 
 /**
  * The classroom home: the student dashboard.
@@ -13,9 +15,16 @@ import ClassroomHome from "@/components/classroom/home/ClassroomHome";
  * they have not built yet, and the old split showed both at once. They begin
  * from the invitation, walk the questions one at a time, and the classroom
  * appears behind them when they are done.
+ *
+ * And except when access has been revoked. The /classroom route admits any
+ * signed-in student so a locked account still has somewhere to land, but the
+ * dashboard itself lists assigned work, notes and recaps, which is exactly
+ * what has_classroom_access buys. Without the flag the stage shows the same
+ * locked notice every other door shows.
  */
 export default function Classroom() {
   const { loaded, completed, setCompleted, name, answers, save } = useOrientation();
+  const permissions = useUserPermissions();
 
   // Nothing until the profile read lands: drawing the home first and swapping
   // it for the intake a beat later is worse than a moment of quiet.
@@ -31,6 +40,10 @@ export default function Classroom() {
         startCollapsed
       />
     );
+  }
+
+  if (!permissions.loading && !permissions.is_admin && !permissions.has_classroom_access) {
+    return <LockedModule />;
   }
 
   return (

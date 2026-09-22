@@ -399,19 +399,28 @@ const App = () => {
                 </AdminErrorBoundary>
               </ProtectedRoute>
             } />
+            {/* Guided drills reach here from an assignment, a bootcamp's
+                practice drills, or an emailed link. None of those is a reason
+                to skip the flag check: unguarded, "Revoke All Access" left
+                every guided-drill URL a student had ever been sent wide open.
+                A drill, classroom or bootcamp door is enough to run one. */}
             <Route path="/guided/:assignmentId" element={
-              <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                <QuestionBankProvider>
-                  <GuidedDrillStart />
-                </QuestionBankProvider>
-              </React.Suspense>
+              <ProtectedRoute flag={["has_drill_access", "has_classroom_access", "has_bootcamp_access"]}>
+                <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                  <QuestionBankProvider>
+                    <GuidedDrillStart />
+                  </QuestionBankProvider>
+                </React.Suspense>
+              </ProtectedRoute>
             } />
             <Route path="/guided-drills/:slug" element={
-              <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                <QuestionBankProvider>
-                  <GuidedDrillStart />
-                </QuestionBankProvider>
-              </React.Suspense>
+              <ProtectedRoute flag={["has_drill_access", "has_classroom_access", "has_bootcamp_access"]}>
+                <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                  <QuestionBankProvider>
+                    <GuidedDrillStart />
+                  </QuestionBankProvider>
+                </React.Suspense>
+              </ProtectedRoute>
             } />
 
             {/* Inbox renders inside the ClassroomLayout block below. */}
@@ -526,7 +535,11 @@ const App = () => {
                           <AcademyMainhub />
                         </ProtectedRoute>
                       } />
-                      <Route path="uploads" element={<ClassroomUploadsView />} />
+                      {/* Uploads are coursework too: what the student hands in
+                          and what Joshua hands back. Same door as the rest. */}
+                      <Route path="uploads" element={
+                        <ProtectedRoute flag="has_classroom_access"><ClassroomUploadsView /></ProtectedRoute>
+                      } />
                       <Route path="account" element={<ClassroomAccountView />} />
                       {/* The outlet above lets any signed-in user through so a
                           fresh signup can reach the intake and their account.
@@ -614,8 +627,12 @@ const App = () => {
                         </React.Suspense>
                       </ProtectedRoute>
                     } />
+                    {/* Teaching content, so it closes with the doors that
+                        teach: the Activities and Drill flags. Any signed-in
+                        user used to pass, which meant a revoked account could
+                        still study here. */}
                     <Route path="/conditional-indicators-refresher" element={
-                      <ProtectedRoute allowSignedIn>
+                      <ProtectedRoute flag={["has_activity_access", "has_drill_access"]}>
                         <ConditionalIndicatorsRefresher />
                       </ProtectedRoute>
                     } />

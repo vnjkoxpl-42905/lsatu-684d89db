@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -83,19 +83,75 @@ const DEFAULT_PERMISSIONS: PermissionFlags = {
 // queryFn, which may run detached from a render.
 class SessionExpiredError extends Error {}
 
+// One realtime channel per signed-in user, shared by every mounted consumer.
+// An UPDATE to the student's own profiles row (an admin flipping a flag)
+// invalidates the cached permissions, so a revoke takes effect on the next
+// render rather than when the stale window runs out. RLS scopes the stream to
+// the student's own row; profiles is in the supabase_realtime publication
+// (migration 20260922120000).
+type ProfileWatch = { channel: ReturnType<typeof supabase.channel>; listeners: Set<() => void> };
+const profileWatches = new Map<string, ProfileWatch>();
+
+function acquireProfileWatch(userId: string, onChange: () => void): () => void {
+  let watch = profileWatches.get(userId);
+  if (!watch) {
+    const listeners = new Set<() => void>();
+    const channel = supabase
+      .channel(`profile-access-${userId}`)
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "profiles", filter: `class_id=eq.${userId}` },
+        () => listeners.forEach((fn) => fn()),
+      )
+      .subscribe();
+    watch = { channel, listeners };
+    profileWatches.set(userId, watch);
+  }
+  watch.listeners.add(onChange);
+  return onChange;
+}
+
+function releaseProfileWatch(userId: string, listener: () => void) {
+  const watch = profileWatches.get(userId);
+  if (!watch) return;
+  watch.listeners.delete(listener);
+  if (watch.listeners.size === 0) {
+    profileWatches.delete(userId);
+    void supabase.removeChannel(watch.channel);
+  }
+}
+
 export function useUserPermissions(): UserPermissions {
   const { user, authReady, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
+  const userId = user?.id;
+
+  // The hook mounts once per ProtectedRoute, so the subscription is guarded by
+  // a single shared channel per user: the first mount opens it, the last unmount
+  // closes it. Without this, every gated page would hold its own socket.
+  useEffect(() => {
+    if (!authReady || !userId) return;
+    const entry = acquireProfileWatch(userId, () => {
+      void queryClient.invalidateQueries({ queryKey: ["user-permissions", userId] });
+    });
+    return () => releaseProfileWatch(userId, entry);
+  }, [authReady, userId, queryClient]);
 
   const query = useQuery<PermissionFlags>({
     // Cached per user, shared across all ProtectedRoute / consumer mounts, so
     // navigating between gated pages reads cached permissions synchronously
     // instead of re-fetching (and re-showing the full-screen loading gate).
-    queryKey: ["user-permissions", user?.id],
+    queryKey: ["user-permissions", userId],
     enabled: authReady && !!user,
-    staleTime: 5 * 60_000,
+    // Realtime (below) is the primary path for a revoke to land; the short
+    // stale window and the focus refetch are the fallback when the socket is
+    // down, so "Revoke All Access" is never more than a tab switch away from
+    // taking effect. Cached data keeps `loading` false, so neither flashes.
+    staleTime: 60_000,
     gcTime: 30 * 60_000,
+    refetchOnWindowFocus: true,
     // Retry transient failures a couple times, but never retry a dead session
     // (that path signs the user out).
     retry: (count, err) => !(err instanceof SessionExpiredError) && count < 2,

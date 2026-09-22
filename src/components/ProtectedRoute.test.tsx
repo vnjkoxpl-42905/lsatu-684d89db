@@ -160,11 +160,13 @@ describe("ProtectedRoute", () => {
 
   it("shows locked access for signed-in non-admin users", () => {
     mockUseAuth.mockReturnValue({ user: { id: "user-1" }, authReady: true });
+    // One locked door on an otherwise live account: the student still has a
+    // classroom to be sent back to, so this is the "Not open yet" state.
     mockUseUserPermissions.mockReturnValue({
       loading: false,
       is_admin: false,
       has_bootcamp_access: false,
-      has_classroom_access: false,
+      has_classroom_access: true,
       has_analytics_access: false,
       has_schedule_access: false,
       has_practice_access: false,
@@ -321,11 +323,23 @@ describe("ProtectedRoute", () => {
 
   it("shows the locked state, not a redirect, for a signed-in user without the flag", () => {
     mockUseAuth.mockReturnValue({ user: { id: "student-1" }, authReady: true });
-    mockUseUserPermissions.mockReturnValue(NO_FLAGS);
+    mockUseUserPermissions.mockReturnValue({ ...NO_FLAGS, has_classroom_access: true });
 
     renderGatedRoute();
 
     expect(screen.getByText("Not open yet")).toBeInTheDocument();
     expect(screen.queryByTestId("auth-location")).not.toBeInTheDocument();
+  });
+
+  it("tells a fully revoked student their access is paused, with no loop back to the classroom", () => {
+    mockUseAuth.mockReturnValue({ user: { id: "student-1" }, authReady: true });
+    mockUseUserPermissions.mockReturnValue(NO_FLAGS);
+
+    renderGatedRoute();
+
+    expect(screen.getByText("Your access is paused")).toBeInTheDocument();
+    // "Back to your classroom" would land them on this same screen, because
+    // Revoke All Access turns the classroom flag off too.
+    expect(screen.queryByText("Back to your classroom")).not.toBeInTheDocument();
   });
 });
