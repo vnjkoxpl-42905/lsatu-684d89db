@@ -1,6 +1,6 @@
 // ta-agent — admin-only action agent for the corner chat.
 //
-// Extends the ta-chat pattern (admin verification, direct Gemini, persistence
+// Extends the ta-chat pattern (admin verification, persistence
 // to ta_interactions) with the ability to PROPOSE real platform actions that
 // the admin confirms with one click on the client:
 //   - assign a guided drill
@@ -12,7 +12,7 @@
 //   1. Deterministic (no LLM): an explicit "assign <resource> to <name>"
 //      command is resolved directly against the DB. Free + instant.
 //   2. AI (tool calling): anything ambiguous or generative (note copy, fuzzy
-//      intent) goes to Gemini with a tool schema; the model picks a tool,
+//      intent) goes to the Lovable AI gateway with a tool schema; the model picks a tool,
 //      the function resolves targets server-side.
 //
 // Assignment/note actions never mutate student data here. They only resolve
@@ -27,8 +27,8 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
-const GEMINI_API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
-const GEMINI_MODEL = Deno.env.get("TA_AGENT_GEMINI_MODEL") ?? "gemini-3.8-flash";
+const GATEWAY_CHAT_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const TA_AGENT_MODEL = Deno.env.get("TA_AGENT_GEMINI_MODEL") ?? "google/gemini-3.1-flash-lite";
 const GMAIL_API = "https://gmail.googleapis.com/gmail/v1";
 const GMAIL_OAUTH_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const DIRECT_GMAIL_NOT_CONFIGURED =
@@ -713,139 +713,132 @@ const READ_TOOLS = new Set([
   "platform_overview",
 ]);
 
-interface GeminiFunctionDeclaration {
-  name: string;
-  description?: string;
-  parameters: unknown;
+interface ToolCallMsg {
+  id: string;
+  type: "function";
+  function: { name: string; arguments: string };
 }
 
-interface GeminiPart {
-  text?: string;
-  // Gemini 3.x returns an opaque reasoning signature on tool-call parts and
-  // requires it echoed back verbatim on the next turn, or the call 400s.
-  thoughtSignature?: string;
-  thought?: boolean;
-  functionCall?: { name: string; args: Record<string, unknown> };
-  functionResponse?: { name: string; response: Record<string, unknown> };
+// One chat turn in OpenAI format. The gateway returns OpenRouter-style
+// reasoning details on Gemini tool-call turns; the assistant message is
+// echoed back verbatim (this field included) so the follow-up turn stays
+// valid.
+interface ChatMessage {
+  role: "system" | "user" | "assistant" | "tool";
+  content?: string | null;
+  tool_calls?: ToolCallMsg[];
+  tool_call_id?: string;
+  reasoning_details?: unknown;
 }
 
-interface GeminiContent {
-  role: "user" | "model";
-  parts: GeminiPart[];
-}
-
-interface GeminiFunctionCall {
-  name?: string;
-  args?: Record<string, unknown>;
-}
-
-interface GeminiGenerateContentResponse {
-  candidates?: Array<{
-    content?: {
-      parts?: GeminiPart[];
+interface GatewayChatResponse {
+  choices?: Array<{
+    message?: {
+      content?: string | null;
+      tool_calls?: ToolCallMsg[];
+      reasoning_details?: unknown;
     };
-    finishReason?: string;
   }>;
-  error?: {
-    code?: number;
-    message?: string;
-    status?: string;
-  };
+  error?: { message?: string };
 }
 
-function toGeminiFunctionDeclarations(): GeminiFunctionDeclaration[] {
-  return TOOLS.map((tool) => ({
-    name: tool.function.name,
-    description: tool.function.description,
-    parameters: tool.function.parameters,
-  }));
-}
-
-function normalizeGeminiArgs(args: Record<string, unknown> | undefined): Record<string, string> {
+function parseToolArgs(raw: string | undefined): Record<string, string> {
+  let parsed: Record<string, unknown> = {};
+  try {
+    parsed = JSON.parse(raw || "{}") as Record<string, unknown>;
+  } catch {
+    parsed = {};
+  }
   const normalized: Record<string, string> = {};
-  for (const [key, value] of Object.entries(args ?? {})) {
+  for (const [key, value] of Object.entries(parsed)) {
     if (value == null) continue;
     normalized[key] = typeof value === "string" ? value : String(value);
   }
   return normalized;
 }
 
-async function callGeminiWithTools(input: {
+async function callModelWithTools(input: {
   apiKey: string;
   systemPrompt: string;
   contextHeader: string | null;
   history: InteractionRow[];
   message: string;
-  toolTurns?: GeminiContent[];
+  toolTurns?: ChatMessage[];
 }): Promise<{
   text: string;
   functionCall: { name: string; args: Record<string, string> } | null;
-  modelParts: GeminiPart[];
+  assistantMessage: ChatMessage;
 }> {
   const systemText = input.contextHeader
     ? `${input.systemPrompt}\n\n${input.contextHeader}`
     : input.systemPrompt;
-  const contents: GeminiContent[] = [];
+  const messages: ChatMessage[] = [{ role: "system", content: systemText }];
   for (const h of input.history) {
-    contents.push({
-      role: h.role === "admin" ? "user" : "model",
-      parts: [{ text: h.message }],
+    messages.push({
+      role: h.role === "admin" ? "user" : "assistant",
+      content: h.message,
     });
   }
-  contents.push({ role: "user", parts: [{ text: input.message }] });
-  for (const turn of input.toolTurns ?? []) contents.push(turn);
+  messages.push({ role: "user", content: input.message });
+  for (const turn of input.toolTurns ?? []) messages.push(turn);
 
-  const response = await fetch(
-    `${GEMINI_API_BASE_URL}/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(input.apiKey)}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: systemText }] },
-        contents,
-        tools: [{ functionDeclarations: toGeminiFunctionDeclarations() }],
-        toolConfig: { functionCallingConfig: { mode: "AUTO" } },
-      }),
+  const response = await fetch(GATEWAY_CHAT_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${input.apiKey}`,
+      "Content-Type": "application/json",
+      "X-Lovable-AIG-SDK": "ta-agent",
     },
-  );
+    body: JSON.stringify({
+      model: TA_AGENT_MODEL,
+      messages,
+      tools: TOOLS,
+      tool_choice: "auto",
+    }),
+  });
 
   const rawText = await response.text();
-  let data: GeminiGenerateContentResponse | null = null;
+  let data: GatewayChatResponse | null = null;
   try {
-    data = rawText ? JSON.parse(rawText) as GeminiGenerateContentResponse : null;
+    data = rawText ? JSON.parse(rawText) as GatewayChatResponse : null;
   } catch {
     data = null;
   }
 
   if (!response.ok) {
     const detail = data?.error?.message || rawText.slice(0, 300) || `HTTP ${response.status}`;
-    console.error("Gemini API error:", response.status, detail);
+    console.error("Model API error:", response.status, detail);
     if (response.status === 401 || response.status === 403) {
-      throw new Error(`Gemini rejected the request: ${detail}`);
+      throw new Error(`The model rejected the request: ${detail}`);
     }
-    if (response.status === 429) throw new Error("Gemini rate limited the request. Try again in a moment.");
-    throw new Error(`Gemini request failed (${response.status}): ${detail}`);
+    if (response.status === 429) throw new Error("The model rate limited the request. Try again in a moment.");
+    throw new Error(`Model request failed (${response.status}): ${detail}`);
   }
 
-  const parts = data?.candidates?.[0]?.content?.parts ?? [];
-  const visibleText = parts
-    .filter((part) => !part.thought)
-    .map((part) => part.text ?? "")
-    .join("")
-    .trim();
-  const functionCall = parts.find((part) => part.functionCall)?.functionCall;
-  if (functionCall?.name) {
+  const choice = data?.choices?.[0]?.message;
+  const text = (choice?.content ?? "").trim();
+  const toolCallMsg = choice?.tool_calls?.[0];
+  const assistantMessage: ChatMessage = {
+    role: "assistant",
+    content: choice?.content ?? null,
+  };
+  if (choice?.tool_calls?.length) assistantMessage.tool_calls = choice.tool_calls;
+  if (choice?.reasoning_details !== undefined) {
+    assistantMessage.reasoning_details = choice.reasoning_details;
+  }
+
+  if (toolCallMsg?.function?.name) {
     return {
-      text: visibleText,
+      text,
       functionCall: {
-        name: functionCall.name,
-        args: normalizeGeminiArgs(functionCall.args),
+        name: toolCallMsg.function.name,
+        args: parseToolArgs(toolCallMsg.function.arguments),
       },
-      modelParts: parts,
+      assistantMessage,
     };
   }
 
-  return { text: visibleText, functionCall: null, modelParts: parts };
+  return { text, functionCall: null, assistantMessage };
 }
 
 async function buildNoteProposal(
@@ -1152,8 +1145,8 @@ async function runAiLane(
   selectedStudent: ResolvedStudent | null,
   contextHeader: string | null,
 ): Promise<AiResult> {
-  const toolTurns: GeminiContent[] = [];
-  let gemini = await callGeminiWithTools({
+  const toolTurns: ChatMessage[] = [];
+  let gemini = await callModelWithTools({
     apiKey,
     systemPrompt: SYSTEM_PROMPT,
     contextHeader,
@@ -1173,18 +1166,26 @@ async function runAiLane(
     } catch (e) {
       result = { error: e instanceof Error ? e.message : "lookup failed" };
     }
-    // Echo the model's own parts back verbatim: Gemini 3.x attaches a
-    // thoughtSignature to tool-call parts and rejects the follow-up turn
-    // (400) if it is rebuilt without it.
-    const modelParts = gemini.modelParts.length
-      ? gemini.modelParts
-      : [{ functionCall: { name: call.name, args: call.args } }];
-    toolTurns.push({ role: "model", parts: modelParts });
+    // Echo the model's own assistant turn back verbatim (tool_calls and
+    // reasoning details included), then hand the tool result over as a
+    // separate message — the pairing the gateway expects.
+    const assistantMsg = gemini.assistantMessage;
+    let toolCallId = assistantMsg.tool_calls?.[0]?.id;
+    if (!toolCallId) {
+      toolCallId = `call_read_${step}`;
+      assistantMsg.tool_calls = [{
+        id: toolCallId,
+        type: "function",
+        function: { name: call.name, arguments: JSON.stringify(call.args) },
+      }];
+    }
+    toolTurns.push(assistantMsg);
     toolTurns.push({
-      role: "user",
-      parts: [{ functionResponse: { name: call.name, response: result } }],
+      role: "tool",
+      tool_call_id: toolCallId,
+      content: JSON.stringify(result),
     });
-    gemini = await callGeminiWithTools({
+    gemini = await callModelWithTools({
       apiKey,
       systemPrompt: SYSTEM_PROMPT,
       contextHeader,
@@ -1347,8 +1348,8 @@ Deno.serve(async (req) => {
       proposal = deterministic;
       content = deterministic.summary;
     } else {
-      const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
-      if (!GEMINI_API_KEY) return json({ error: "GEMINI_API_KEY not configured" }, 500);
+      const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+      if (!LOVABLE_API_KEY) return json({ error: "LOVABLE_API_KEY not configured" }, 500);
 
       // Per-student mode keeps the analytics context ta-chat surfaced, so the
       // agent can reason and draft notes with awareness. Global mode has none.
@@ -1356,7 +1357,7 @@ Deno.serve(async (req) => {
         ? await buildStudentContext(admin, selectedStudent.id, selectedStudent.name)
         : await buildPlatformContext(admin);
       const ai = await runAiLane(
-        admin, GEMINI_API_KEY, history, message, selectedStudent, contextHeader,
+        admin, LOVABLE_API_KEY, history, message, selectedStudent, contextHeader,
       );
       content = ai.content;
       proposal = ai.proposal;

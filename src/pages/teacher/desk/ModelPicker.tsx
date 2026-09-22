@@ -19,12 +19,13 @@ export interface ModelOption {
 
 export const AUTO_MODEL_ID = 'auto';
 
-// Every AI feature on the platform runs on Joshua's own GEMINI_API_KEY, on
-// Gemini 3.8 Flash. The gemini-proxy edge function normalises any legacy id to
-// it, so this list stays a single truthful choice rather than a fake menu.
+// Every AI feature on the platform runs through Lovable Cloud, on the
+// cost-efficient gateway model. The gemini-proxy edge function normalises any
+// legacy id to it, so this list stays a single truthful choice rather than a
+// fake menu.
 export const AVAILABLE_MODELS: ModelOption[] = [
-  { id: AUTO_MODEL_ID, short: 'Auto', label: 'Auto', provider: 'Auto', hint: 'Gemini 3.8 Flash' },
-  { id: 'gemini-3.8-flash', short: 'Gemini 3.8 Flash', label: 'Gemini 3.8 Flash', provider: 'Google — Gemini', hint: 'latest Gemini · runs every AI feature here' },
+  { id: AUTO_MODEL_ID, short: 'Auto', label: 'Auto', provider: 'Auto', hint: 'Flash Lite — billed to Lovable Cloud' },
+  { id: 'gemini-3.1-flash-lite', short: 'Flash Lite', label: 'Flash Lite (Lovable Cloud)', provider: 'Google — Gemini', hint: 'cost-efficient Gemini · runs every AI feature here' },
 ];
 
 export const DEFAULT_MODEL_ID = AUTO_MODEL_ID;
