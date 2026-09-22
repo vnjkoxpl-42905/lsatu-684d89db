@@ -72,7 +72,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { admin } = await verifyAdmin(req);
+    const { admin, callerId } = await verifyAdmin(req);
 
     // ── GET: list users + analytics ──
     if (req.method === "GET") {
@@ -132,7 +132,7 @@ Deno.serve(async (req) => {
       // Default: list users
       const { data: profiles, error: pErr } = await admin
         .from("profiles")
-        .select("class_id, display_name, last_seen_at, " + ALL_FLAGS.join(", "));
+        .select("class_id, display_name, last_seen_at, archived_at, archived_reason, " + ALL_FLAGS.join(", "));
       if (pErr) throw pErr;
 
       const { data: { users: authUsers }, error: aErr } = await admin.auth.admin.listUsers({ perPage: 1000 });
@@ -296,6 +296,108 @@ Deno.serve(async (req) => {
           }
         }
         return jsonRes({ success: true });
+      }
+
+      // Archive: the everyday way to remove someone from the People page.
+      // Every door shut, stamped archived, nothing destroyed. Reversible.
+      if (action === "archive_student") {
+        const { class_id, reason = null } = body;
+        if (!class_id) return jsonRes({ error: "Invalid params" }, 400);
+
+        const { data: target } = await admin.auth.admin.getUserById(class_id);
+        if ((target?.user?.email || "").toLowerCase() === PRIMARY_ADMIN_EMAIL) {
+          return jsonRes({ error: "The primary admin account cannot be archived." }, 403);
+        }
+
+        const updates: Record<string, unknown> = {
+          archived_at: new Date().toISOString(),
+          archived_reason: reason,
+        };
+        for (const flag of ALL_FLAGS) updates[flag] = false;
+
+        const { data: archived, error } = await admin
+          .from("profiles")
+          .update(updates)
+          .eq("class_id", class_id)
+          .select("class_id, display_name, archived_at");
+        if (error) throw error;
+        if (!archived || archived.length === 0) {
+          console.error("archive_student: no profile matched", { class_id });
+          return jsonRes({ error: "No profile matched that class_id" }, 404);
+        }
+
+        // An open tab does not need to be signed out for this to bite: the
+        // profiles row is in the realtime publication, so useUserPermissions
+        // invalidates on this UPDATE and every door closes on the next render.
+        // (auth.admin.signOut takes a JWT, not a user id, so there is no
+        // server-side way to end their session from here.)
+        return jsonRes({ success: true, profile: archived[0] });
+      }
+
+      // Unarchive puts them back in the list. Access stays off on purpose:
+      // coming back is a decision about which doors to reopen, and silently
+      // restoring all thirteen would be a bigger act than the button implies.
+      if (action === "unarchive_student") {
+        const { class_id } = body;
+        if (!class_id) return jsonRes({ error: "Invalid params" }, 400);
+
+        const { data: restored, error } = await admin
+          .from("profiles")
+          .update({ archived_at: null, archived_reason: null })
+          .eq("class_id", class_id)
+          .select("class_id, display_name, archived_at");
+        if (error) throw error;
+        if (!restored || restored.length === 0) {
+          return jsonRes({ error: "No profile matched that class_id" }, 404);
+        }
+        return jsonRes({ success: true, profile: restored[0] });
+      }
+
+      // Hard delete. Removes the auth user, which cascades to roughly sixty
+      // tables. Session records and booking/payment rows are detached rather
+      // than destroyed by the snapshot_deleted_student trigger.
+      //
+      // Guarded three ways, because this cannot be undone: the caller must
+      // name the account by email exactly, the primary admin is untouchable,
+      // and an admin cannot delete themselves.
+      if (action === "delete_student") {
+        const { class_id, confirm_email } = body;
+        if (!class_id || typeof confirm_email !== "string") {
+          return jsonRes({ error: "Invalid params" }, 400);
+        }
+
+        const { data: target, error: lookupError } = await admin.auth.admin.getUserById(class_id);
+        if (lookupError || !target?.user) {
+          return jsonRes({ error: "No account matched that id" }, 404);
+        }
+        const email = (target.user.email || "").toLowerCase();
+
+        if (email === PRIMARY_ADMIN_EMAIL) {
+          return jsonRes({ error: "The primary admin account cannot be deleted." }, 403);
+        }
+        if (class_id === callerId) {
+          return jsonRes({ error: "You cannot delete your own account." }, 403);
+        }
+        if (email !== confirm_email.trim().toLowerCase()) {
+          return jsonRes({ error: "The typed email does not match that account." }, 400);
+        }
+
+        // Stamp who did it before the row goes; the trigger fills in the rest.
+        const { error: deleteError } = await admin.auth.admin.deleteUser(class_id);
+        if (deleteError) {
+          console.error("delete_student: delete failed", { class_id, error: deleteError });
+          throw deleteError;
+        }
+
+        const { error: stampError } = await admin
+          .from("deleted_students")
+          .update({ deleted_by: callerId })
+          .eq("user_id", class_id);
+        if (stampError) {
+          console.warn("delete_student: could not stamp deleted_by", { class_id, error: stampError.message });
+        }
+
+        return jsonRes({ success: true, deleted_email: email });
       }
 
       return jsonRes({ error: "Unknown action" }, 400);

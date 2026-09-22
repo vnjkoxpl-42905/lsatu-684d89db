@@ -9,6 +9,9 @@ export interface ManagedUser {
   display_name: string | null;
   role: string;
   last_seen_at: string | null;
+  /** Set when the student has been archived: access off, hidden from the list, records kept. */
+  archived_at: string | null;
+  archived_reason: string | null;
   has_bootcamp_access: boolean;
   has_classroom_access: boolean;
   has_analytics_access: boolean;
