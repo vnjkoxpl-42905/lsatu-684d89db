@@ -14,10 +14,17 @@ import { useUserPermissions } from "@/hooks/useUserPermissions";
  *
  * The old copy ("Premium Content Locked ... contact administration") named no
  * one and led nowhere. A locked door has to say who opens it.
+ *
+ * Two states, because "Revoke All Access" now turns off the classroom flag too.
+ * One locked feature on an otherwise open account sends the student back to
+ * their classroom. A revoked account has no classroom to go back to, so
+ * offering the button would loop them straight onto this same screen.
  */
 export default function LockedModule() {
   const navigate = useNavigate();
   const permissions = useUserPermissions();
+  const canReachClassroom = permissions.has_classroom_access || permissions.is_admin;
+  const canMessage = permissions.has_chat_access || permissions.is_admin;
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-6 py-16">
@@ -27,21 +34,24 @@ export default function LockedModule() {
         </div>
 
         <h1 className="mb-2 text-xl font-semibold tracking-tight text-foreground">
-          Not open yet
+          {canReachClassroom ? "Not open yet" : "Your access is paused"}
         </h1>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          This part of the classroom isn't in your plan right now. If that looks
-          wrong, send Joshua a message and he'll sort it out.
+          {canReachClassroom
+            ? "This part of the classroom isn't in your plan right now. If that looks wrong, send Joshua a message and he'll sort it out."
+            : "Your account is still here and so is your work. Joshua has paused access for now. Reach out to him and he'll turn it back on."}
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Button onClick={() => navigate("/classroom")}>
-            Back to your classroom
-          </Button>
+          {canReachClassroom ? (
+            <Button onClick={() => navigate("/classroom")}>
+              Back to your classroom
+            </Button>
+          ) : null}
           {/* Only offered when the student can actually reach Messages.
               Otherwise the one next step we hand them is another locked door. */}
-          {permissions.has_chat_access || permissions.is_admin ? (
-            <Button variant="outline" onClick={() => navigate("/inbox")}>
+          {canMessage ? (
+            <Button variant={canReachClassroom ? "outline" : "default"} onClick={() => navigate("/inbox")}>
               Message Joshua
             </Button>
           ) : null}

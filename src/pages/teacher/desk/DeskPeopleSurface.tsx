@@ -152,20 +152,24 @@ export function DeskPeopleSurface() {
     }
   };
 
-  // One button, whole account: revoking shuts every door except the classroom
-  // home page, so the student can still sign in and land somewhere truthful.
+  // One button, whole account. Revoking turns every flag off, classroom
+  // included: the /classroom route lets any signed-in user land, so the
+  // student still has somewhere to stand, but the home page shows them an
+  // "access paused" notice instead of their coursework. Leaving classroom on
+  // used to keep assigned work, notes and recaps open after a revoke.
   // Granting opens everything back up.
   const setAllAccess = async (person: PeopleRow, grant: boolean) => {
     const who = person.display_name || person.email;
     if (!grant && !window.confirm(
-      `Revoke all access for ${who}?\n\n` +
-      'They keep their login and their home page. Everything else — drill, ' +
-      'practice, bootcamps, review, messages, schedule — is locked.',
+      `Revoke all access for ${who}?
+
+` +
+      'They keep their login. Everything else, including assigned work, ' +
+      'notes, drill, bootcamps, review and messages, is locked until you grant it back.',
     )) return;
 
     const flags: Record<string, boolean> = {};
     for (const key of ALL_FLAG_KEYS) flags[key] = grant;
-    flags.has_classroom_access = true;
 
     const previous = users;
     setUsers((prev) => prev.map((user) => (user.class_id === person.class_id ? { ...user, ...flags } : user)));
@@ -175,7 +179,7 @@ export function DeskPeopleSurface() {
         body: { action: 'apply_template', class_id: person.class_id, flags },
       });
       if (res.error) throw res.error;
-      toast.success(grant ? `${who} has full access` : `${who} is locked to their home page`);
+      toast.success(grant ? `${who} has full access` : `${who} has no access`);
       await fetchData();
     } catch (error) {
       setUsers(previous);
