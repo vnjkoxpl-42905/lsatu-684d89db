@@ -286,18 +286,21 @@ Process:
 Be specific and grounded in what you actually read. No filler, no em-dashes.`;
 
 async function callGateway(messages: GatewayMessage[], apiKey: string) {
-  const geminiKey = Deno.env.get("GEMINI_API_KEY");
-  const base = geminiKey
+  // Lovable Cloud's gateway is primary; the direct Gemini key is only a
+  // fallback for when the gateway key is unset.
+  const directKey = Deno.env.get("GEMINI_API_KEY");
+  const useDirect = !apiKey && !!directKey;
+  const base = useDirect
     ? "https://generativelanguage.googleapis.com/v1beta/openai"
     : "https://ai.gateway.lovable.dev/v1";
   const res = await fetch(`${base}/chat/completions`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${geminiKey ?? apiKey}`,
+      Authorization: `Bearer ${useDirect ? directKey : apiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "gemini-3.8-flash",
+      model: useDirect ? "gemini-3.1-flash-lite" : "google/gemini-3.1-flash-lite",
       messages,
       tools: TOOLS,
       tool_choice: "auto",

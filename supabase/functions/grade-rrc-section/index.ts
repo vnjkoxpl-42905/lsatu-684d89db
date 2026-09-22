@@ -163,42 +163,42 @@ function deadAir(words: Word[], recalling: Segment[]): number {
 }
 
 async function judge(prompt: string): Promise<string> {
-  // Prefer a direct Gemini key when one is configured. The gateway is the app's
-  // single LLM chokepoint and stays the default, but it is metered by Lovable
-  // credits, and a grader that stops working when those run out is a grader
-  // that stops working in the middle of a student's section.
+  // Lovable Cloud's gateway is the primary judge backend; the direct Gemini
+  // key is the fallback so a grader never stops mid-section if one path is
+  // unavailable.
+  const gatewayKey = Deno.env.get("LOVABLE_API_KEY");
   const direct = Deno.env.get("GEMINI_API_KEY");
-  if (direct) {
-    const res = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
-      {
-        method: "POST",
-        headers: { "x-goog-api-key": direct, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0, responseMimeType: "application/json" },
-        }),
-      },
-    );
+  if (gatewayKey) {
+    const res = await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy/chat/completions`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${gatewayKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "google/gemini-3.1-flash-lite",
+        temperature: 0,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
     const body = await res.json();
-    if (!res.ok) throw new Error(`Gemini ${res.status}: ${JSON.stringify(body).slice(0, 200)}`);
-    return body?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    if (res.ok) return body?.choices?.[0]?.message?.content ?? "";
+    if (!direct) throw new Error(`gateway ${res.status}: ${JSON.stringify(body).slice(0, 200)}`);
+    console.error(`judge: gateway ${res.status}; falling back to direct Gemini`);
   }
 
-  const gatewayKey = Deno.env.get("LOVABLE_API_KEY");
-  if (!gatewayKey) throw new Error("no judge backend: set GEMINI_API_KEY or LOVABLE_API_KEY");
-  const res = await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy/chat/completions`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${gatewayKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "gemini-3.8-flash",
-      temperature: 0,
-      messages: [{ role: "user", content: prompt }],
-    }),
-  });
+  if (!direct) throw new Error("no judge backend: set LOVABLE_API_KEY or GEMINI_API_KEY");
+  const res = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent",
+    {
+      method: "POST",
+      headers: { "x-goog-api-key": direct, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0, responseMimeType: "application/json" },
+      }),
+    },
+  );
   const body = await res.json();
-  if (!res.ok) throw new Error(`gateway ${res.status}: ${JSON.stringify(body).slice(0, 200)}`);
-  return body?.choices?.[0]?.message?.content ?? "";
+  if (!res.ok) throw new Error(`Gemini ${res.status}: ${JSON.stringify(body).slice(0, 200)}`);
+  return body?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 }
 
 /**
@@ -346,7 +346,7 @@ serve(async (req) => {
         const { data: isAdmin } = await admin.rpc("has_role", { _user_id: uid, _role: "admin" });
         if (!isAdmin) return json({ error: "forbidden" }, 403);
       }
-      const backend = Deno.env.get("GEMINI_API_KEY") ? "gemini-direct" : "lovable-gateway";
+      const backend = Deno.env.get("LOVABLE_API_KEY") ? "lovable-gateway" : "gemini-direct";
       let judgeOk = false;
       let judgeError: string | null = null;
       try {
@@ -446,7 +446,7 @@ serve(async (req) => {
         }
       });
 
-      return json({ build: BUILD, judge: Deno.env.get("GEMINI_API_KEY") ? "gemini-direct" : "lovable-gateway", sourceSection, rows });
+      return json({ build: BUILD, judge: Deno.env.get("LOVABLE_API_KEY") ? "lovable-gateway" : "gemini-direct", sourceSection, rows });
     }
 
     const { data: assignment, error: aErr } = await admin

@@ -32,11 +32,12 @@ function timingSafeEqual(a: string, b: string): boolean {
 const GOOGLE_BASE = "https://generativelanguage.googleapis.com/v1beta/openai";
 const GATEWAY_BASE = "https://ai.gateway.lovable.dev/v1";
 
-// One model for every AI feature on the platform, run on Joshua's own
-// GEMINI_API_KEY. Anything a caller asks for is normalised to it, so a legacy
-// id left in an old function cannot quietly route somewhere else.
-const CHAT_MODEL = "gemini-3.8-flash";
-const EMBED_MODEL = "gemini-embedding-001";
+// One model for every AI feature on the platform, served through the Lovable
+// AI Gateway and billed to Lovable Cloud. Anything a caller asks for is
+// normalised to it, so a legacy id left in an old function cannot quietly
+// route somewhere else.
+const CHAT_MODEL = "google/gemini-3.1-flash-lite";
+const EMBED_MODEL = "google/gemini-embedding-001";
 
 function mapChatModel(_model: string | undefined): string {
   return CHAT_MODEL;
@@ -52,11 +53,18 @@ async function forward(
   body: unknown,
   stream: boolean,
 ): Promise<Response> {
-  // Joshua's own Gemini key first: it is the platform's AI account. The Lovable
-  // gateway stays as a fallback so nothing goes dark if the key is ever unset.
-  const googleKey = Deno.env.get("GEMINI_API_KEY");
-  const base = googleKey ? GOOGLE_BASE : GATEWAY_BASE;
-  const key = googleKey ?? Deno.env.get("LOVABLE_API_KEY") ?? "";
+  // Lovable Cloud is the platform's AI account: the gateway is primary, and
+  // the direct Gemini key survives only as a fallback so nothing goes dark if
+  // the gateway key is ever unset.
+  const gatewayKey = Deno.env.get("LOVABLE_API_KEY");
+  const useGateway = !!gatewayKey;
+  const base = useGateway ? GATEWAY_BASE : GOOGLE_BASE;
+  const key = gatewayKey ?? Deno.env.get("GEMINI_API_KEY") ?? "";
+  // The gateway takes vendor-prefixed ids; Google's own OpenAI-compatible
+  // endpoint takes unprefixed ones.
+  if (!useGateway && typeof (body as any)?.model === "string") {
+    (body as any).model = (body as any).model.replace(/^google\//, "");
+  }
   const upstream = await fetch(`${base}${path}`, {
     method: "POST",
     headers: {
@@ -147,11 +155,11 @@ serve(async (req) => {
     );
   }
 
-  const key = Deno.env.get("GEMINI_API_KEY") ?? Deno.env.get("LOVABLE_API_KEY");
+  const key = Deno.env.get("LOVABLE_API_KEY") ?? Deno.env.get("GEMINI_API_KEY");
 
   if (!key) {
     return new Response(
-      JSON.stringify({ error: { message: "GEMINI_API_KEY is not configured" } }),
+      JSON.stringify({ error: { message: "No AI backend configured (LOVABLE_API_KEY or GEMINI_API_KEY)" } }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
