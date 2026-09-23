@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 
-// Bumps profiles.last_seen_at every 60s while the tab is visible so
+// Bumps profiles.last_seen_at every 3 minutes while the tab is visible so
 // teachers see fresh "Online / Last seen X ago" state in the hub and
 // inbox instead of a value that only refreshes on cold page loads.
-const HEARTBEAT_MS = 60_000;
+// (Was 60s; each write rewrites the profile row and generates WAL, so the
+// interval is kept as low as presence accuracy actually needs.)
+const HEARTBEAT_MS = 3 * 60_000;
 
 export function usePresenceHeartbeat() {
   const { user, authReady } = useAuth();
