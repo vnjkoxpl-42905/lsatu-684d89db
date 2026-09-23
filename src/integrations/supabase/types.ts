@@ -877,6 +877,7 @@ export type Database = {
           currency: string | null
           email: string | null
           event_type: string
+          former_student_id: string | null
           id: string
           offer_id: string | null
           payload: Json
@@ -891,6 +892,7 @@ export type Database = {
           currency?: string | null
           email?: string | null
           event_type: string
+          former_student_id?: string | null
           id?: string
           offer_id?: string | null
           payload?: Json
@@ -905,6 +907,7 @@ export type Database = {
           currency?: string | null
           email?: string | null
           event_type?: string
+          former_student_id?: string | null
           id?: string
           offer_id?: string | null
           payload?: Json
@@ -1173,6 +1176,7 @@ export type Database = {
           created_at: string
           created_by: string
           expires_at: string | null
+          former_student_id: string | null
           id: string
           notes: string | null
           session_length_minutes: number
@@ -1190,6 +1194,7 @@ export type Database = {
           created_at?: string
           created_by: string
           expires_at?: string | null
+          former_student_id?: string | null
           id?: string
           notes?: string | null
           session_length_minutes?: number
@@ -1207,6 +1212,7 @@ export type Database = {
           created_at?: string
           created_by?: string
           expires_at?: string | null
+          former_student_id?: string | null
           id?: string
           notes?: string | null
           session_length_minutes?: number
@@ -1756,6 +1762,33 @@ export type Database = {
         }
         Relationships: []
       }
+      deleted_students: {
+        Row: {
+          deleted_at: string
+          deleted_by: string | null
+          display_name: string | null
+          email: string | null
+          note: string | null
+          user_id: string
+        }
+        Insert: {
+          deleted_at?: string
+          deleted_by?: string | null
+          display_name?: string | null
+          email?: string | null
+          note?: string | null
+          user_id: string
+        }
+        Update: {
+          deleted_at?: string
+          deleted_by?: string | null
+          display_name?: string | null
+          email?: string | null
+          note?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       drill_templates: {
         Row: {
           class_id: string
@@ -1936,6 +1969,7 @@ export type Database = {
           created_at: string
           email: string | null
           end_at: string | null
+          former_student_id: string | null
           google_event_id: string | null
           id: string
           offer_id: string | null
@@ -1954,6 +1988,7 @@ export type Database = {
           created_at?: string
           email?: string | null
           end_at?: string | null
+          former_student_id?: string | null
           google_event_id?: string | null
           id?: string
           offer_id?: string | null
@@ -1972,6 +2007,7 @@ export type Database = {
           created_at?: string
           email?: string | null
           end_at?: string | null
+          former_student_id?: string | null
           google_event_id?: string | null
           id?: string
           offer_id?: string | null
@@ -3329,6 +3365,8 @@ export type Database = {
       }
       profiles: {
         Row: {
+          archived_at: string | null
+          archived_reason: string | null
           by_level_json: Json | null
           by_qtype_json: Json | null
           class_id: string
@@ -3368,6 +3406,8 @@ export type Database = {
           xp_total: number | null
         }
         Insert: {
+          archived_at?: string | null
+          archived_reason?: string | null
           by_level_json?: Json | null
           by_qtype_json?: Json | null
           class_id: string
@@ -3407,6 +3447,8 @@ export type Database = {
           xp_total?: number | null
         }
         Update: {
+          archived_at?: string | null
+          archived_reason?: string | null
           by_level_json?: Json | null
           by_qtype_json?: Json | null
           class_id?: string
@@ -4445,6 +4487,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -4489,6 +4532,7 @@ export type Database = {
           email?: string | null
           end_at: string
           event_slug?: string
+          former_student_id?: string | null
           gcal_event_id?: string | null
           guests?: Json
           id?: string
@@ -4533,6 +4577,7 @@ export type Database = {
           email?: string | null
           end_at?: string
           event_slug?: string
+          former_student_id?: string | null
           gcal_event_id?: string | null
           guests?: Json
           id?: string
@@ -4992,12 +5037,13 @@ export type Database = {
           created_at: string
           created_by: string
           duration_minutes: number | null
+          former_student_id: string | null
           id: string
           notes: string | null
           scheduled_at: string
           source: string | null
           status: string
-          student_id: string
+          student_id: string | null
           transcript_id: string | null
           updated_at: string
         }
@@ -5005,12 +5051,13 @@ export type Database = {
           created_at?: string
           created_by: string
           duration_minutes?: number | null
+          former_student_id?: string | null
           id?: string
           notes?: string | null
           scheduled_at: string
           source?: string | null
           status?: string
-          student_id: string
+          student_id?: string | null
           transcript_id?: string | null
           updated_at?: string
         }
@@ -5018,12 +5065,13 @@ export type Database = {
           created_at?: string
           created_by?: string
           duration_minutes?: number | null
+          former_student_id?: string | null
           id?: string
           notes?: string | null
           scheduled_at?: string
           source?: string | null
           status?: string
-          student_id?: string
+          student_id?: string | null
           transcript_id?: string | null
           updated_at?: string
         }
@@ -5831,6 +5879,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -5899,6 +5948,7 @@ export type Database = {
           created_at: string
           created_by: string
           expires_at: string | null
+          former_student_id: string | null
           id: string
           notes: string | null
           session_length_minutes: number
@@ -5942,6 +5992,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -6052,6 +6103,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -6205,6 +6257,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -6269,6 +6322,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -6322,6 +6376,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -6388,6 +6443,7 @@ export type Database = {
           created_at: string
           created_by: string
           expires_at: string | null
+          former_student_id: string | null
           id: string
           notes: string | null
           session_length_minutes: number
@@ -6470,6 +6526,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -6527,6 +6584,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -6737,6 +6795,7 @@ export type Database = {
           created_at: string
           created_by: string
           expires_at: string | null
+          former_student_id: string | null
           id: string
           notes: string | null
           session_length_minutes: number
@@ -6826,6 +6885,7 @@ export type Database = {
           created_at: string
           created_by: string
           expires_at: string | null
+          former_student_id: string | null
           id: string
           notes: string | null
           session_length_minutes: number
@@ -6934,6 +6994,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -7034,6 +7095,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -7130,6 +7192,7 @@ export type Database = {
           created_at: string
           created_by: string
           expires_at: string | null
+          former_student_id: string | null
           id: string
           notes: string | null
           session_length_minutes: number
@@ -7173,6 +7236,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
@@ -7291,6 +7355,7 @@ export type Database = {
           email: string | null
           end_at: string
           event_slug: string
+          former_student_id: string | null
           gcal_event_id: string | null
           guests: Json
           id: string
