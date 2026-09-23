@@ -59,6 +59,28 @@ async function verifyAdmin(req: Request) {
   return { admin, callerId: user.id };
 }
 
+// Admin accounts are out of scope for archive, restore and deletion: the
+// People page manages students, and an administrator removed by one of these
+// actions could lock the whole platform out of its own role management.
+async function assertNotAdminAccount(
+  admin: ReturnType<typeof createClient>,
+  class_id: string,
+  email: string,
+) {
+  if (email && email.toLowerCase() === PRIMARY_ADMIN_EMAIL) {
+    return "The primary admin account cannot be modified here.";
+  }
+  const { data, error } = await admin
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", class_id)
+    .eq("role", "admin")
+    .maybeSingle();
+  if (error) throw error;
+  if (data) return "Administrator accounts cannot be archived, restored or deleted.";
+  return null;
+}
+
 function jsonRes(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -305,9 +327,12 @@ Deno.serve(async (req) => {
         if (!class_id) return jsonRes({ error: "Invalid params" }, 400);
 
         const { data: target } = await admin.auth.admin.getUserById(class_id);
-        if ((target?.user?.email || "").toLowerCase() === PRIMARY_ADMIN_EMAIL) {
-          return jsonRes({ error: "The primary admin account cannot be archived." }, 403);
+        const blocked = await assertNotAdminAccount(admin, class_id, target?.user?.email || "");
+        if (blocked) return jsonRes({ error: blocked }, 403);
+        if (class_id === callerId) {
+          return jsonRes({ error: "You cannot archive your own account." }, 403);
         }
+
 
         const updates: Record<string, unknown> = {
           archived_at: new Date().toISOString(),
@@ -326,11 +351,20 @@ Deno.serve(async (req) => {
           return jsonRes({ error: "No profile matched that class_id" }, 404);
         }
 
-        // An open tab does not need to be signed out for this to bite: the
-        // profiles row is in the realtime publication, so useUserPermissions
-        // invalidates on this UPDATE and every door closes on the next render.
-        // (auth.admin.signOut takes a JWT, not a user id, so there is no
-        // server-side way to end their session from here.)
+        // Ban sign-in too, so the account cannot come back through the front
+        // door. A ban is a property of the auth user, not a deletion: lifting
+        // it in unarchive_student restores the account exactly as it was.
+        const { error: banError } = await admin.auth.admin.updateUserById(class_id, {
+          ban_duration: "876000h",
+        });
+        if (banError) {
+          console.error("archive_student: ban failed", { class_id, error: banError });
+          return jsonRes({ error: "Archived, but sign-in could not be blocked." }, 500);
+        }
+
+        // An open tab closes on its own as well: the profiles row is in the
+        // realtime publication, so useUserPermissions sees archived_at and
+        // signs the student out on the next event.
         return jsonRes({ success: true, profile: archived[0] });
       }
 
@@ -340,6 +374,23 @@ Deno.serve(async (req) => {
       if (action === "unarchive_student") {
         const { class_id } = body;
         if (!class_id) return jsonRes({ error: "Invalid params" }, 400);
+
+        const { data: unarchiveTarget } = await admin.auth.admin.getUserById(class_id);
+        const restoreBlocked = await assertNotAdminAccount(
+          admin,
+          class_id,
+          unarchiveTarget?.user?.email || "",
+        );
+        if (restoreBlocked) return jsonRes({ error: restoreBlocked }, 403);
+
+        // Lift the sign-in ban; feature flags stay off until regranted.
+        const { error: unbanError } = await admin.auth.admin.updateUserById(class_id, {
+          ban_duration: "none",
+        });
+        if (unbanError) {
+          console.error("unarchive_student: unban failed", { class_id, error: unbanError });
+          return jsonRes({ error: "Could not restore sign-in for that account." }, 500);
+        }
 
         const { data: restored, error } = await admin
           .from("profiles")
@@ -372,9 +423,8 @@ Deno.serve(async (req) => {
         }
         const email = (target.user.email || "").toLowerCase();
 
-        if (email === PRIMARY_ADMIN_EMAIL) {
-          return jsonRes({ error: "The primary admin account cannot be deleted." }, 403);
-        }
+        const deleteBlocked = await assertNotAdminAccount(admin, class_id, email);
+        if (deleteBlocked) return jsonRes({ error: deleteBlocked }, 403);
         if (class_id === callerId) {
           return jsonRes({ error: "You cannot delete your own account." }, 403);
         }
@@ -387,6 +437,15 @@ Deno.serve(async (req) => {
         if (deleteError) {
           console.error("delete_student: delete failed", { class_id, error: deleteError });
           throw deleteError;
+        }
+
+        // Legacy student-work tables key off class_id with no foreign key, so
+        // nothing cascades them. Sweep them only now that the account is gone.
+        const { error: purgeError } = await admin.rpc("purge_student_account_data", {
+          p_class_id: class_id,
+        });
+        if (purgeError) {
+          console.error("delete_student: purge failed", { class_id, error: purgeError });
         }
 
         const { error: stampError } = await admin

@@ -83,6 +83,11 @@ const DEFAULT_PERMISSIONS: PermissionFlags = {
 // queryFn, which may run detached from a render.
 class SessionExpiredError extends Error {}
 
+// Thrown when the signed-in student's profile is stamped archived. An archived
+// account keeps every record, but it may not be inside the app: the session is
+// ended immediately rather than left running with all doors shut.
+class AccountArchivedError extends Error {}
+
 // One realtime channel per signed-in user, shared by every mounted consumer.
 // An UPDATE to the student's own profiles row (an admin flipping a flag)
 // invalidates the cached permissions, so a revoke takes effect on the next
@@ -145,10 +150,11 @@ export function useUserPermissions(): UserPermissions {
       if (row) {
         const cached = queryClient.getQueryData<PermissionFlags>(["user-permissions", userId]);
         if (cached) {
+          const archivedNow = "archived_at" in row && !!row.archived_at;
           const changed = ACCESS_FLAGS.some(
             (flag) => flag in row && !!row[flag] !== !!cached[flag],
           );
-          if (!changed) return;
+          if (!changed && !archivedNow) return;
         }
       }
       void queryClient.invalidateQueries({ queryKey: ["user-permissions", userId] });
@@ -171,7 +177,8 @@ export function useUserPermissions(): UserPermissions {
     refetchOnWindowFocus: true,
     // Retry transient failures a couple times, but never retry a dead session
     // (that path signs the user out).
-    retry: (count, err) => !(err instanceof SessionExpiredError) && count < 2,
+    retry: (count, err) =>
+      !(err instanceof SessionExpiredError) && !(err instanceof AccountArchivedError) && count < 2,
     queryFn: async () => {
       const userId = user!.id;
 
@@ -182,7 +189,7 @@ export function useUserPermissions(): UserPermissions {
       // Fetch access flags from profile
       const { data: profile, error: profileErr } = await supabase
         .from("profiles")
-        .select(ACCESS_FLAGS.join(", "))
+        .select([...ACCESS_FLAGS, "archived_at"].join(", "))
         .eq("class_id", userId)
         .maybeSingle();
       if (isSessionDeadError(profileErr)) throw new SessionExpiredError();
@@ -201,10 +208,13 @@ export function useUserPermissions(): UserPermissions {
       if (isSessionDeadError(roleErr)) throw new SessionExpiredError();
       if (roleErr) throw roleErr;
 
-      const profileRow = (profile ?? null) as unknown as Record<string, boolean> | null;
+      const profileRow = (profile ?? null) as unknown as Record<string, unknown> | null;
+      // Archived: no flags, no app. Sign them out on the spot.
+      if (profileRow?.archived_at) throw new AccountArchivedError();
+
       const flagValues = { ...DEFAULT_PERMISSIONS };
       for (const flag of ACCESS_FLAGS) {
-        flagValues[flag] = profileRow?.[flag] ?? false;
+        flagValues[flag] = Boolean(profileRow?.[flag]);
       }
       flagValues.is_admin = !!roleData;
 
@@ -224,7 +234,12 @@ export function useUserPermissions(): UserPermissions {
   // bare "/auth" discarded the pathname, query, and hash, so a student whose
   // token expired on an assignment link lost the link as well as the session.
   useEffect(() => {
-    if (query.error instanceof SessionExpiredError) {
+    if (query.error instanceof AccountArchivedError) {
+      (async () => {
+        await signOut({ keepSavedEmail: true });
+        navigate("/auth", { replace: true, state: { reason: "account_archived" } });
+      })();
+    } else if (query.error instanceof SessionExpiredError) {
       const returnTo = `${location.pathname}${location.search}${location.hash}`;
       (async () => {
         await signOut({ keepSavedEmail: true });
