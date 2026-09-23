@@ -375,6 +375,23 @@ Deno.serve(async (req) => {
         const { class_id } = body;
         if (!class_id) return jsonRes({ error: "Invalid params" }, 400);
 
+        const { data: unarchiveTarget } = await admin.auth.admin.getUserById(class_id);
+        const restoreBlocked = await assertNotAdminAccount(
+          admin,
+          class_id,
+          unarchiveTarget?.user?.email || "",
+        );
+        if (restoreBlocked) return jsonRes({ error: restoreBlocked }, 403);
+
+        // Lift the sign-in ban; feature flags stay off until regranted.
+        const { error: unbanError } = await admin.auth.admin.updateUserById(class_id, {
+          ban_duration: "none",
+        });
+        if (unbanError) {
+          console.error("unarchive_student: unban failed", { class_id, error: unbanError });
+          return jsonRes({ error: "Could not restore sign-in for that account." }, 500);
+        }
+
         const { data: restored, error } = await admin
           .from("profiles")
           .update({ archived_at: null, archived_reason: null })
