@@ -351,11 +351,20 @@ Deno.serve(async (req) => {
           return jsonRes({ error: "No profile matched that class_id" }, 404);
         }
 
-        // An open tab does not need to be signed out for this to bite: the
-        // profiles row is in the realtime publication, so useUserPermissions
-        // invalidates on this UPDATE and every door closes on the next render.
-        // (auth.admin.signOut takes a JWT, not a user id, so there is no
-        // server-side way to end their session from here.)
+        // Ban sign-in too, so the account cannot come back through the front
+        // door. A ban is a property of the auth user, not a deletion: lifting
+        // it in unarchive_student restores the account exactly as it was.
+        const { error: banError } = await admin.auth.admin.updateUserById(class_id, {
+          ban_duration: "876000h",
+        });
+        if (banError) {
+          console.error("archive_student: ban failed", { class_id, error: banError });
+          return jsonRes({ error: "Archived, but sign-in could not be blocked." }, 500);
+        }
+
+        // An open tab closes on its own as well: the profiles row is in the
+        // realtime publication, so useUserPermissions sees archived_at and
+        // signs the student out on the next event.
         return jsonRes({ success: true, profile: archived[0] });
       }
 
