@@ -89,19 +89,23 @@ class SessionExpiredError extends Error {}
 // render rather than when the stale window runs out. RLS scopes the stream to
 // the student's own row; profiles is in the supabase_realtime publication
 // (migration 20260922120000).
-type ProfileWatch = { channel: ReturnType<typeof supabase.channel>; listeners: Set<() => void> };
+type WatchListener = (row: Record<string, unknown> | null) => void;
+type ProfileWatch = { channel: ReturnType<typeof supabase.channel>; listeners: Set<WatchListener> };
 const profileWatches = new Map<string, ProfileWatch>();
 
-function acquireProfileWatch(userId: string, onChange: () => void): () => void {
+function acquireProfileWatch(userId: string, onChange: WatchListener): WatchListener {
   let watch = profileWatches.get(userId);
   if (!watch) {
-    const listeners = new Set<() => void>();
+    const listeners = new Set<WatchListener>();
     const channel = supabase
       .channel(`profile-access-${userId}`)
       .on(
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "profiles", filter: `class_id=eq.${userId}` },
-        () => listeners.forEach((fn) => fn()),
+        (payload) => {
+          const row = (payload?.new ?? null) as Record<string, unknown> | null;
+          listeners.forEach((fn) => fn(row));
+        },
       )
       .subscribe();
     watch = { channel, listeners };
@@ -111,7 +115,7 @@ function acquireProfileWatch(userId: string, onChange: () => void): () => void {
   return onChange;
 }
 
-function releaseProfileWatch(userId: string, listener: () => void) {
+function releaseProfileWatch(userId: string, listener: WatchListener) {
   const watch = profileWatches.get(userId);
   if (!watch) return;
   watch.listeners.delete(listener);
@@ -133,7 +137,20 @@ export function useUserPermissions(): UserPermissions {
   // closes it. Without this, every gated page would hold its own socket.
   useEffect(() => {
     if (!authReady || !userId) return;
-    const entry = acquireProfileWatch(userId, () => {
+    const entry = acquireProfileWatch(userId, (row) => {
+      // Ignore self-caused / unrelated row updates (e.g. presence heartbeats
+      // writing last_seen_at). Only an actual access-flag change needs a
+      // refetch; otherwise every heartbeat would re-trigger the permissions
+      // query, which used to feed a fetch -> write -> event -> fetch loop.
+      if (row) {
+        const cached = queryClient.getQueryData<PermissionFlags>(["user-permissions", userId]);
+        if (cached) {
+          const changed = ACCESS_FLAGS.some(
+            (flag) => flag in row && !!row[flag] !== !!cached[flag],
+          );
+          if (!changed) return;
+        }
+      }
       void queryClient.invalidateQueries({ queryKey: ["user-permissions", userId] });
     });
     return () => releaseProfileWatch(userId, entry);
