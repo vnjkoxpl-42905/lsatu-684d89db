@@ -492,7 +492,7 @@ export function ConversationView({
                     <div className={cn('flex max-w-[520px] flex-col gap-1', ownSideIsInstructor ? 'items-end' : 'items-start')}>
                       <div
                         className={cn(
-                          'break-words px-[18px] py-[13px] text-[15px] leading-[1.6]',
+                          'break-words whitespace-pre-wrap px-[18px] py-[13px] text-[15px] leading-[1.6]',
                           ownSideIsInstructor
                             ? 'rounded-[18px] rounded-br-[5px] bg-[var(--msg-bubble-ink)] text-[var(--msg-bubble-ink-text)]'
                             : 'rounded-[18px] rounded-bl-[5px] border border-[var(--msg-line)] bg-[var(--msg-bubble-paper)] text-[var(--msg-bubble-paper-text)]',
