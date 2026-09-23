@@ -439,6 +439,15 @@ Deno.serve(async (req) => {
           throw deleteError;
         }
 
+        // Legacy student-work tables key off class_id with no foreign key, so
+        // nothing cascades them. Sweep them only now that the account is gone.
+        const { error: purgeError } = await admin.rpc("purge_student_account_data", {
+          p_class_id: class_id,
+        });
+        if (purgeError) {
+          console.error("delete_student: purge failed", { class_id, error: purgeError });
+        }
+
         const { error: stampError } = await admin
           .from("deleted_students")
           .update({ deleted_by: callerId })
