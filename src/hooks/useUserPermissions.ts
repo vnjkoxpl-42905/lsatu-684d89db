@@ -166,7 +166,7 @@ export function useUserPermissions(): UserPermissions {
     // stale window and the focus refetch are the fallback when the socket is
     // down, so "Revoke All Access" is never more than a tab switch away from
     // taking effect. Cached data keeps `loading` false, so neither flashes.
-    staleTime: 60_000,
+    staleTime: 5 * 60_000,
     gcTime: 30 * 60_000,
     refetchOnWindowFocus: true,
     // Retry transient failures a couple times, but never retry a dead session
