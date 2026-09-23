@@ -208,15 +208,12 @@ export function useUserPermissions(): UserPermissions {
       }
       flagValues.is_admin = !!roleData;
 
-      // Touch last_seen_at (fire-and-forget). Non-blocking, but check the
-      // returned error and warn rather than discarding it entirely.
-      supabase
-        .from("profiles")
-        .update({ last_seen_at: new Date().toISOString() })
-        .eq("class_id", userId)
-        .then(({ error }) => {
-          if (error) console.warn("[permissions] last_seen_at touch failed:", error.message);
-        });
+      // Presence is owned by usePresenceHeartbeat; this read stays read-only.
+      // Writing last_seen_at here produced a write per permissions fetch and
+      // (with profiles in the realtime publication) a self-sustaining
+      // fetch -> write -> event -> fetch loop.
+
+
 
       return flagValues;
     },
