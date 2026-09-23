@@ -52,6 +52,10 @@
   flex-direction: column;
   font-family: var(--home-ui);
   gap: 24px;
+  /* The page glows sit past the right edge on purpose; clip them so they
+     never widen the page into a sideways scrollbar. clip, not hidden: it
+     makes no scroll container, so nothing sticky inside breaks. */
+  overflow-x: clip;
   position: relative;
   width: 100%;
 }
