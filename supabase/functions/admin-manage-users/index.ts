@@ -423,9 +423,8 @@ Deno.serve(async (req) => {
         }
         const email = (target.user.email || "").toLowerCase();
 
-        if (email === PRIMARY_ADMIN_EMAIL) {
-          return jsonRes({ error: "The primary admin account cannot be deleted." }, 403);
-        }
+        const deleteBlocked = await assertNotAdminAccount(admin, class_id, email);
+        if (deleteBlocked) return jsonRes({ error: deleteBlocked }, 403);
         if (class_id === callerId) {
           return jsonRes({ error: "You cannot delete your own account." }, 403);
         }
