@@ -59,6 +59,28 @@ async function verifyAdmin(req: Request) {
   return { admin, callerId: user.id };
 }
 
+// Admin accounts are out of scope for archive, restore and deletion: the
+// People page manages students, and an administrator removed by one of these
+// actions could lock the whole platform out of its own role management.
+async function assertNotAdminAccount(
+  admin: ReturnType<typeof createClient>,
+  class_id: string,
+  email: string,
+) {
+  if (email && email.toLowerCase() === PRIMARY_ADMIN_EMAIL) {
+    return "The primary admin account cannot be modified here.";
+  }
+  const { data, error } = await admin
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", class_id)
+    .eq("role", "admin")
+    .maybeSingle();
+  if (error) throw error;
+  if (data) return "Administrator accounts cannot be archived, restored or deleted.";
+  return null;
+}
+
 function jsonRes(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
