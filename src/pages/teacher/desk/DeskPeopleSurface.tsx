@@ -27,13 +27,22 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
 import { useHubStudents, type HubStudentRow } from '@/hooks/useHubStudents';
 import {
+  ACCESS_TIERS,
   ALL_FLAG_KEYS,
+  ALL_FLAG_LABELS,
   CONFIGURABLE_FLAG_KEYS,
+  FLAG_GROUPS,
+  TIER_LABELS,
   computeAdminAnalytics,
   isPrimaryAdmin,
+  tierFlags,
+  type AccessTier,
   type AdminAnalytics,
   type ManagedUser,
 } from '@/lib/adminUsers';
+import { useQueryClient } from '@tanstack/react-query';
+import { SIGNUP_QUEUE_KEY, SignupQueue, setStudentTier } from '@/components/teacher/SignupQueue';
+import { AssignPracticeTest } from '@/components/teacher/AssignPracticeTest';
 import { formatLastActiveLabel, isUserOnline } from '@/lib/presence';
 import { cn } from '@/lib/utils';
 
@@ -155,10 +164,36 @@ export function DeskPeopleSurface() {
       // so a toggle that never landed can't look like it worked.
       const written = (res.data as { profile?: Record<string, unknown> } | null)?.profile;
       if (!written || written[field] !== value) throw new Error('Permission was not saved');
+      // One switch off a Tier 1 or Tier 3 template relabels the student Tier 2
+      // in the database. Re-read so the label on screen matches.
+      void fetchData();
     } catch (error) {
       setUsers((prev) => prev.map((user) => (user.class_id === classId ? { ...user, [field]: !value } : user)));
       console.error('toggleAccess failed', { classId, field, value, error });
       toast.error('Failed to update permission');
+    }
+  };
+
+  // Apply a tier. Tier 1 and Tier 3 rewrite the switches; Tier 2 keeps them
+  // and only changes the label. The server returns the row it wrote, so the
+  // list shows what landed rather than what was hoped for.
+  const queryClient = useQueryClient();
+  const setTier = async (person: PeopleRow, tier: AccessTier) => {
+    const who = person.display_name || person.email;
+    const flags = tierFlags(tier);
+    const previous = users;
+    setUsers((prev) =>
+      prev.map((user) => (user.class_id === person.class_id ? { ...user, ...(flags ?? {}), access_tier: tier } : user)),
+    );
+    try {
+      await setStudentTier(person.class_id, tier);
+      toast.success(`${who} is on ${TIER_LABELS[tier]}`);
+      void queryClient.invalidateQueries({ queryKey: SIGNUP_QUEUE_KEY });
+      await fetchData();
+    } catch (error) {
+      setUsers(previous);
+      console.error('setTier failed', { class_id: person.class_id, tier, error });
+      toast.error(`Could not set a tier for ${who}`);
     }
   };
 
@@ -329,6 +364,9 @@ export function DeskPeopleSurface() {
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-5">
+        <div className="mb-4">
+          <SignupQueue onChanged={fetchData} />
+        </div>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <StatCard icon={<Users className="h-4 w-4" strokeWidth={1.5} />} label="Total Users" value={computedAnalytics.total_users} />
           <StatCard icon={<Activity className="h-4 w-4" strokeWidth={1.5} />} label="Active Today" value={computedAnalytics.active_today} />
@@ -420,6 +458,7 @@ export function DeskPeopleSurface() {
           expandedUser={expandedUser}
           setExpandedUser={setExpandedUser}
           toggleAccess={toggleAccess}
+          setTier={setTier}
           setAllAccess={setAllAccess}
           setRole={setRole}
           resetOnboarding={resetOnboarding}
@@ -438,6 +477,7 @@ function PeopleList({
   expandedUser,
   setExpandedUser,
   toggleAccess,
+  setTier,
   setAllAccess,
   setRole,
   resetOnboarding,
@@ -450,6 +490,7 @@ function PeopleList({
   expandedUser: string | null;
   setExpandedUser: (id: string | null) => void;
   toggleAccess: (classId: string, field: string, value: boolean) => void;
+  setTier: (person: PeopleRow, tier: AccessTier) => void;
   setAllAccess: (person: PeopleRow, grant: boolean) => void;
   setRole: (userId: string, role: 'admin' | 'user') => void;
   resetOnboarding: (person: PeopleRow) => void;
@@ -498,6 +539,8 @@ function PeopleList({
               {isExpanded && (
                 <PersonAccessPanel
                   person={person}
+                  toggleAccess={toggleAccess}
+                  setTier={setTier}
                   setRole={setRole}
                   resetOnboarding={resetOnboarding}
                   setArchived={setArchived}
@@ -565,6 +608,7 @@ function PersonRow({
               {person.display_name || 'No name'}
             </Link>
             <RoleBadge user={person} />
+            {person.role !== 'admin' && !person.archived_at && <TierBadge tier={person.access_tier} />}
             {isOnline && (
               <span className="inline-flex items-center gap-1 border border-emerald-700/20 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-800">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
@@ -625,12 +669,16 @@ function PersonRow({
 
 function PersonAccessPanel({
   person,
+  toggleAccess,
+  setTier,
   setRole,
   resetOnboarding,
   setArchived,
   deleteStudent,
 }: {
   person: PeopleRow;
+  toggleAccess: (classId: string, field: string, value: boolean) => void;
+  setTier: (person: PeopleRow, tier: AccessTier) => void;
   setRole: (userId: string, role: 'admin' | 'user') => void;
   resetOnboarding: (person: PeopleRow) => void;
   setArchived: (person: PeopleRow, archived: boolean) => void;
@@ -638,9 +686,19 @@ function PersonAccessPanel({
 }) {
   return (
     <div className="space-y-4 border-t border-black/10 px-8 py-4">
+      {person.role !== 'admin' && !person.archived_at && (
+        <AccessTierControl person={person} toggleAccess={toggleAccess} setTier={setTier} />
+      )}
+
+      {person.role !== 'admin' && !person.archived_at && (
+        <div className="border-t border-black/10 pt-3">
+          <AssignPracticeTest classId={person.class_id} who={person.display_name || person.email} />
+        </div>
+      )}
+
       <p className="text-xs leading-relaxed text-black/45">
-        Bootcamp access is controlled by assignment, not here. Assign or archive a bootcamp from the
-        Library to add or remove it from this student's path.
+        The Bootcamps switch opens the bootcamp list. A single bootcamp is opened by assigning it
+        from the Library, whatever the tier.
       </p>
 
       <div className="border-t border-black/10 pt-3">
@@ -743,6 +801,109 @@ function PersonAccessPanel({
               : 'Cannot be undone. Destroys their account and all their work. Your session records and their payment history are kept.'}
           </p>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function TierBadge({ tier }: { tier: AccessTier | null | undefined }) {
+  return (
+    <span
+      className={cn(
+        'border px-1.5 py-0.5 text-[10px] font-semibold',
+        tier ? 'border-black/15 text-black/55' : 'border-amber-700/30 bg-amber-500/10 text-amber-800',
+      )}
+    >
+      {tier ? TIER_LABELS[tier] : 'No tier'}
+    </span>
+  );
+}
+
+/**
+ * The tier picker and, under it, the twelve switches. Picking Tier 1 or Tier 3
+ * rewrites the switches to that template; Tier 2 keeps them. Any switch can be
+ * flipped at any tier, and flipping one away from a Tier 1 or Tier 3 template
+ * makes the student Tier 2: the database relabels, never the reverse.
+ */
+function AccessTierControl({
+  person,
+  toggleAccess,
+  setTier,
+}: {
+  person: PeopleRow;
+  toggleAccess: (classId: string, field: string, value: boolean) => void;
+  setTier: (person: PeopleRow, tier: AccessTier) => void;
+}) {
+  const who = person.display_name || person.email;
+  const current = person.access_tier ?? null;
+  const pick = (tier: AccessTier) => {
+    if (tier === current) return;
+    if (tier === 'tier_3' && !window.confirm(
+      `Put ${who} on Tier 3?\n\n` +
+      'They keep Classroom, Messages and Schedule, plus anything you assign. ' +
+      'Every other feature is turned off.',
+    )) return;
+    setTier(person, tier);
+  };
+
+  return (
+    <div>
+      <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-black/35">Access</div>
+      <div className="flex flex-wrap gap-1.5" role="radiogroup" aria-label={`Tier for ${who}`}>
+        {ACCESS_TIERS.map((tier) => {
+          const active = current === tier.id;
+          return (
+            <button
+              key={tier.id}
+              type="button"
+              role="radio"
+              aria-checked={active}
+              onClick={() => pick(tier.id)}
+              title={tier.description}
+              className={cn(
+                'border px-2.5 py-1.5 text-xs font-semibold transition',
+                active
+                  ? 'border-black/60 bg-black text-white'
+                  : 'border-black/15 text-black/55 hover:bg-white/25 hover:text-black',
+              )}
+            >
+              {tier.label}
+            </button>
+          );
+        })}
+      </div>
+      <p className="mt-2 text-xs leading-relaxed text-black/45">
+        {current
+          ? ACCESS_TIERS.find((t) => t.id === current)?.description
+          : 'No tier yet. They have Classroom, Messages and Schedule until you choose.'}{' '}
+        Changes reach an open tab straight away.
+      </p>
+
+      <div className="mt-3 grid gap-3 sm:grid-cols-3">
+        {FLAG_GROUPS.map((group) => (
+          <fieldset key={group.label} className="min-w-0">
+            <legend className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-black/35">
+              {group.label}
+            </legend>
+            <div className="space-y-1">
+              {group.flags.map((flag) => {
+                const on = Boolean((person as unknown as Record<string, unknown>)[flag.key]);
+                return (
+                  <label key={flag.key} className="flex cursor-pointer items-center gap-2 text-xs text-black/70">
+                    <input
+                      type="checkbox"
+                      checked={on}
+                      onChange={() => toggleAccess(person.class_id, flag.key, !on)}
+                      className="h-3.5 w-3.5 accent-black"
+                      aria-label={`${ALL_FLAG_LABELS[flag.key]} for ${who}`}
+                    />
+                    {flag.label}
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+        ))}
       </div>
     </div>
   );

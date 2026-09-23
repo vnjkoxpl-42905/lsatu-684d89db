@@ -55,6 +55,25 @@ function routeElement(path: string): string {
   return next === -1 ? rest : rest.slice(0, next);
 }
 
+// Routes that an assignment can also open are wrapped in a named gate from
+// src/components/AssignmentGate.tsx instead of a bare ProtectedRoute. Each gate
+// falls back to ProtectedRoute on this flag, so for this test it counts as one.
+const ASSIGNMENT_GATE_FLAGS: Record<string, string> = {
+  DrillAssignmentGate: 'has_drill_access',
+  TestingCentreGate: 'has_practice_access',
+  PracticeTestRunGate: 'has_practice_access',
+  ActivityAssignmentGate: 'has_activity_access',
+  TAAssignmentGate: 'has_ta_access',
+};
+
+function guardText(element: string): string {
+  let text = element;
+  for (const [gate, flag] of Object.entries(ASSIGNMENT_GATE_FLAGS)) {
+    if (element.includes(`<${gate}>`)) text += ` ProtectedRoute ${flag}`;
+  }
+  return text;
+}
+
 describe('rail catalog agrees with the route table', () => {
   it('every rail item maps to a route this test knows about', () => {
     for (const item of RAIL_CATALOG) {
@@ -65,7 +84,7 @@ describe('rail catalog agrees with the route table', () => {
   it.each(RAIL_CATALOG.filter((i) => i.flags.length > 0))(
     'a padlocked item is enforced by its route: $id',
     (item) => {
-      const element = routeElement(ROUTE_FOR[item.id]);
+      const element = guardText(routeElement(ROUTE_FOR[item.id]));
 
       // A padlock over an unguarded route is the /bootcamps bug.
       expect(
@@ -86,7 +105,8 @@ describe('rail catalog agrees with the route table', () => {
     const review = RAIL_CATALOG.find((item) => item.id === 'review');
     expect(review?.label).toBe('Review');
     expect(routeElement('/journal')).toContain('has_journal_access');
-    expect(routeElement('/journal')).toContain('has_waj_access');
+    // The Wrong answer journal switch is retired: one switch, one page.
+    expect(routeElement('/journal')).not.toContain('has_waj_access');
     expect(routeElement('/flagged')).toContain('has_flagged_access');
   });
 

@@ -5,6 +5,7 @@ import { DeskChatPanel, type DeskChatInsert } from '../desk/DeskChatPanel';
 import { DeskTodoRail } from '../desk/DeskTodoRail';
 import { useDeskTaskQueue } from '../desk/useDeskTaskQueue';
 import type { CalendarTodoItem } from '../desk/teacherTodoTypes';
+import { SignupQueue } from '@/components/teacher/SignupQueue';
 
 /**
  * A to-do `openPath` may still be written in the old inbox form
@@ -62,6 +63,8 @@ export default function DeskTodaySurface() {
   // list and painted its cards over the section below it.
   return (
     <div className="flex flex-col gap-6 px-5 py-6 sm:px-6">
+      <SignupQueue />
+
       <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
         <div className="border border-black/12 bg-white/25 px-4 py-3.5">
           <div className="mb-2.5 text-[10px] font-medium uppercase tracking-[0.2em] text-black/40">
