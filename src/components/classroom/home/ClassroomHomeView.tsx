@@ -5,13 +5,13 @@
  * page can be driven with fixtures in a test, and so the only thing that can
  * put a number on this screen is the model.
  *
- * Layout follows the design handoff: masthead, hero, a two-column bento of
- * assigned work against the coach, then the week band. Class names are all
+ * Layout follows the design handoff: finder, greeting, practice actions,
+ * assigned work beside the inbox and session, then the week band. Class names are all
  * `classroom-home-*`; the values live in `home.css`.
  */
 
 import * as React from "react";
-import { ArrowRight, CalendarClock } from "lucide-react";
+import { ArrowRight, Bell, CalendarClock, Timer, Zap } from "lucide-react";
 import { SwipeableDeleteRow } from "@/components/inbox/SwipeableDeleteRow";
 import type {
   ClassroomHomeModel,
@@ -21,7 +21,9 @@ import type {
 import type { SectionBriefing as SectionBriefingData } from "@/lib/sectionBriefing";
 import { SectionBriefing } from "./SectionBriefing";
 import { markReportCardSeen } from "./reportCardSeen";
-import QuestionFinder from "@/components/questionfinder/QuestionFinder";
+import { launchDrill } from "@/lib/drillLaunch";
+import { pickContinueWork } from "./homeModel";
+import QuestionFinder, { type QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 
 function Pill({
   children,
@@ -154,6 +156,12 @@ export function ClassroomHomeView({
   onSeeAllWork?: () => void;
 }) {
   const { hero } = model;
+  const finderRef = React.useRef<QuestionFinderHandle>(null);
+  const continueRow = pickContinueWork(
+    model.continueRow !== undefined ? (model.continueRow ? [model.continueRow] : []) : model.rows,
+    model.access,
+    model.isAdmin,
+  );
   const [briefing, setBriefing] = React.useState<SectionBriefingData | null>(null);
 
   /**
@@ -171,9 +179,10 @@ export function ClassroomHomeView({
       if (row?.briefing) map.set(row.route, row.briefing);
     };
     add(model.hero?.row);
+    add(continueRow);
     model.rows.forEach(add);
     return map;
-  }, [model.hero, model.rows]);
+  }, [model.hero, model.rows, continueRow]);
 
   const handleOpen = React.useCallback(
     (route: string) => {
@@ -214,14 +223,16 @@ export function ClassroomHomeView({
         />
       ) : null}
 
-      {/* ── finder bar ───────────────────────────────────────────────
-          The first thing above the fold, the way LSAT Lab puts Find A Question
-          at the top of its home. A student who arrives holding one question
-          should not have to read a dashboard to get to it. Its own band rather
-          than a masthead utility, because the masthead's right edge is status
-          and this is the page's fastest route out. */}
       <div className="classroom-home-finderbar">
-        <QuestionFinder returnTo="/classroom" />
+        <QuestionFinder ref={finderRef} returnTo="/classroom" />
+        {model.access.messages ? (
+          <button type="button" className="classroom-home-bell"
+            aria-label={`Inbox, ${model.unreadMessages} unread`}
+            onClick={() => handleOpen("/inbox")}>
+            <Bell size={20} aria-hidden="true" />
+            {model.unreadMessages > 0 ? <span>{model.unreadMessages}</span> : null}
+          </button>
+        ) : null}
       </div>
 
       {/* ── masthead ─────────────────────────────────────────────────── */}
@@ -256,137 +267,164 @@ export function ClassroomHomeView({
         </div>
       </header>
 
-      {/* ── hero ─────────────────────────────────────────────────────── */}
-      {hero ? (
-        <section className="classroom-home-hero" aria-label="Pick up where you left off">
-          <i className="classroom-home-sheet classroom-home-sheet-back" aria-hidden="true" />
-          <i className="classroom-home-sheet classroom-home-sheet-front" aria-hidden="true" />
-          <div className="classroom-home-hero-panel">
-            <i className="classroom-home-hero-glow" aria-hidden="true" />
-            <div className="classroom-home-hero-body">
-              <div className="classroom-home-hero-main">
-                <span className="classroom-home-hero-eyebrow">
-                  <i aria-hidden="true" />
-                  {hero.eyebrow}
-                </span>
-                <div className="classroom-home-hero-heading">
-                  <h2>{hero.row.title}</h2>
-                  <span className="classroom-home-hero-meta">
-                    <span className="classroom-home-tag">{hero.kindLabel}</span>
-                    {hero.meta}
-                  </span>
-                </div>
-                {hero.prose ? (
-                  <p className="classroom-home-hero-prose">{hero.prose}</p>
-                ) : null}
-                <div className="classroom-home-hero-actions">
-                  <button
-                    type="button"
-                    className="classroom-home-cta"
-                    onClick={() => handleOpen(hero.row.route)}
-                  >
-                    {hero.primaryLabel}
-                    <ArrowRight size={15} strokeWidth={2.2} />
-                  </button>
-                  {hero.row.canComplete && onMarkDone ? (
-                    <button
-                      type="button"
-                      className="classroom-home-ghost"
-                      disabled={completingKey === hero.row.key}
-                      onClick={() => onMarkDone(hero.row.key)}
-                    >
-                      {completingKey === hero.row.key ? "Saving…" : "Mark done"}
-                    </button>
-                  ) : null}
+      <nav className="classroom-home-actions" aria-label="Practice actions">
+        {continueRow ? (
+          <button type="button" className="classroom-home-action classroom-home-action-continue"
+            aria-label="Continue assigned work" onClick={() => handleOpenRow(continueRow)}>
+            <span className="classroom-home-action-top"><span>{continueRow.overdue ? "OVERDUE" : continueRow.dueToday ? "DUE TODAY" : "ASSIGNED TO YOU"}</span><ArrowRight size={20} aria-hidden="true" /></span>
+            <span className="classroom-home-action-title">Continue assigned work</span>
+            <span>{continueRow.title}</span>
+          </button>
+        ) : null}
+        {model.access.drill ? <>
+          <button type="button" className="classroom-home-action" aria-label="Smart Drill"
+            onClick={() => handleOpen(`/drill?${launchDrill({ kind: "smart-drill", options: { returnTo: "/classroom" } })}`)}>
+            <span className="classroom-home-action-top"><span>ADAPTIVE</span><Zap size={20} aria-hidden="true" /></span>
+            <span className="classroom-home-action-title">Smart Drill</span>
+            <span>One question at a time, picked for you.</span>
+          </button>
+          <button type="button" className="classroom-home-action" aria-label="Start a timed section"
+            onClick={() => finderRef.current?.open()}>
+            <span className="classroom-home-action-top"><span>SECTION PRACTICE</span><Timer size={20} aria-hidden="true" /></span>
+            <span className="classroom-home-action-title">Start a timed section</span>
+            <span>Open the Question finder.</span>
+          </button>
+        </> : null}
+      </nav>
 
+      <div className="classroom-home-bento">
+        <div className="classroom-home-performance">
+          {/* ── hero ─────────────────────────────────────────────────────── */}
+          {hero ? (
+            <section className="classroom-home-hero" aria-label="Pick up where you left off">
+              <i className="classroom-home-sheet classroom-home-sheet-back" aria-hidden="true" />
+              <i className="classroom-home-sheet classroom-home-sheet-front" aria-hidden="true" />
+              <div className="classroom-home-hero-panel">
+                <i className="classroom-home-hero-glow" aria-hidden="true" />
+                <div className="classroom-home-hero-body">
+                  <div className="classroom-home-hero-main">
+                    <span className="classroom-home-hero-eyebrow">
+                      <i aria-hidden="true" />
+                      {hero.eyebrow}
+                    </span>
+                    <div className="classroom-home-hero-heading">
+                      <h2>{hero.row.title}</h2>
+                      <span className="classroom-home-hero-meta">
+                        <span className="classroom-home-tag">{hero.kindLabel}</span>
+                        {hero.meta}
+                      </span>
+                    </div>
+                    {hero.prose ? (
+                      <p className="classroom-home-hero-prose">{hero.prose}</p>
+                    ) : null}
+                    <div className="classroom-home-hero-actions">
+                      <button
+                        type="button"
+                        className="classroom-home-cta"
+                        onClick={() => handleOpenRow(hero.row)}
+                      >
+                        {hero.primaryLabel}
+                        <ArrowRight size={15} strokeWidth={2.2} />
+                      </button>
+                      {hero.row.canComplete && onMarkDone ? (
+                        <button
+                          type="button"
+                          className="classroom-home-ghost"
+                          disabled={completingKey === hero.row.key}
+                          onClick={() => onMarkDone(hero.row.key)}
+                        >
+                          {completingKey === hero.row.key ? "Saving…" : "Mark done"}
+                        </button>
+                      ) : null}
+
+                    </div>
+                  </div>
+
+                  {hero.progress ? (
+                    <aside className="classroom-home-progress" aria-label="Progress">
+                      <span className="classroom-home-progress-label">PROGRESS</span>
+                      <span className="classroom-home-progress-count">
+                        <b>{hero.progress.completed ?? hero.progress.total}</b>
+                        <span>
+                          {hero.progress.completed === null
+                            ? hero.progress.unit
+                            : `of ${hero.progress.total} ${hero.progress.unit}`}
+                        </span>
+                      </span>
+                      {hero.progress.completed !== null ? (
+                        <div
+                          className="classroom-home-ticks"
+                          role="progressbar"
+                          aria-valuemin={0}
+                          aria-valuemax={hero.progress.total}
+                          aria-valuenow={hero.progress.completed}
+                        >
+                          {Array.from({ length: hero.progress.total }, (_, index) => (
+                            <span
+                              key={index}
+                              className={
+                                index < (hero.progress!.completed ?? 0)
+                                  ? "classroom-home-tick classroom-home-tick-done"
+                                  : "classroom-home-tick"
+                              }
+                            />
+                          ))}
+                        </div>
+                      ) : null}
+                      {hero.progress.estimateMinutes ? (
+                        <span className="classroom-home-progress-note">
+                          About {hero.progress.estimateMinutes} minutes.
+                        </span>
+                      ) : null}
+                    </aside>
+                  ) : null}
                 </div>
               </div>
+            </section>
+          ) : null}
 
-              {hero.progress ? (
-                <aside className="classroom-home-progress" aria-label="Progress">
-                  <span className="classroom-home-progress-label">PROGRESS</span>
-                  <span className="classroom-home-progress-count">
-                    <b>{hero.progress.completed ?? hero.progress.total}</b>
-                    <span>
-                      {hero.progress.completed === null
-                        ? hero.progress.unit
-                        : `of ${hero.progress.total} ${hero.progress.unit}`}
-                    </span>
+            {/*
+              A teacher has no assigned work by definition, so the card is dropped
+              rather than shown empty — an "assigned to you" panel on the admin
+              account only ever held verification leftovers.
+            */}
+            {model.isAdmin && !model.rows.length ? null : (
+            <section className="classroom-home-card" aria-label="Assigned to you">
+              <header className="classroom-home-card-head">
+                <span className="classroom-home-card-label">ASSIGNED TO YOU</span>
+                {model.newCount > 0 ? (
+                  <span className="classroom-home-badge">
+                    {model.newCount} NEW
                   </span>
-                  {hero.progress.completed !== null ? (
-                    <div
-                      className="classroom-home-ticks"
-                      role="progressbar"
-                      aria-valuemin={0}
-                      aria-valuemax={hero.progress.total}
-                      aria-valuenow={hero.progress.completed}
-                    >
-                      {Array.from({ length: hero.progress.total }, (_, index) => (
-                        <span
-                          key={index}
-                          className={
-                            index < (hero.progress!.completed ?? 0)
-                              ? "classroom-home-tick classroom-home-tick-done"
-                              : "classroom-home-tick"
-                          }
-                        />
-                      ))}
-                    </div>
-                  ) : null}
-                  {hero.progress.estimateMinutes ? (
-                    <span className="classroom-home-progress-note">
-                      About {hero.progress.estimateMinutes} minutes.
-                    </span>
-                  ) : null}
-                </aside>
-              ) : null}
-            </div>
-          </div>
-        </section>
-      ) : null}
+                ) : null}
+              </header>
+              {model.rows.length ? (
+                <div className="classroom-home-rows">
+                  {model.rows.map((row) => (
+                    <WorkRow
+                      key={row.key}
+                      row={row}
+                      onOpen={() => handleOpenRow(row)}
+                      onMarkDone={onMarkDone}
+                      completing={completingKey === row.key}
+                    />
 
-      {/* ── bento ────────────────────────────────────────────────────── */}
-      <div className="classroom-home-bento">
-        {/*
-          A teacher has no assigned work by definition, so the card is dropped
-          rather than shown empty — an "assigned to you" panel on the admin
-          account only ever held verification leftovers.
-        */}
-        {model.isAdmin && !model.rows.length ? null : (
-        <section className="classroom-home-card" aria-label="Assigned to you">
-          <header className="classroom-home-card-head">
-            <span className="classroom-home-card-label">ASSIGNED TO YOU</span>
-            {model.newCount > 0 ? (
-              <span className="classroom-home-badge">
-                {model.newCount} NEW
-              </span>
-            ) : null}
-          </header>
-          {model.rows.length ? (
-            <div className="classroom-home-rows">
-              {model.rows.map((row) => (
-                <WorkRow
-                  key={row.key}
-                  row={row}
-                  onOpen={() => handleOpenRow(row)}
-                  onMarkDone={onMarkDone}
-                  completing={completingKey === row.key}
-                />
-
-              ))}
-            </div>
-          ) : (
-            <p className="classroom-home-empty">
-              {loading ? "Loading your work…" : "Nothing assigned right now."}
-            </p>
-          )}
-        </section>
-        )}
+                  ))}
+                </div>
+              ) : (
+                <p className="classroom-home-empty">
+                  {loading ? "Loading your work…" : "Nothing assigned right now."}
+                </p>
+              )}
+            </section>
+            )}
 
 
+        </div>
         <div className="classroom-home-side">
           {model.access.messages ? (
           <section className="classroom-home-thread" aria-label="From your coach">
+            <h2 className="classroom-home-inbox-title">Inbox</h2>
             <header className="classroom-home-rule">
               <span className="classroom-home-card-label classroom-home-card-label-muted">
                 {model.message
@@ -436,33 +474,7 @@ export function ClassroomHomeView({
           </section>
           ) : null}
 
-          {model.access.activities ? (
-            <section
-              className="classroom-home-card classroom-home-session"
-              aria-label="Read, Recall, Colour"
-            >
-              <span className="classroom-home-session-icon" aria-hidden="true">
-                <ArrowRight size={17} strokeWidth={1.8} />
-              </span>
-              <span className="classroom-home-session-text">
-                <span className="classroom-home-card-label classroom-home-card-label-muted">
-                  READ, RECALL, COLOUR
-                </span>
-                <span className="classroom-home-session-value">Start a section</span>
-                <span className="classroom-home-session-meta">
-                  Read a full section aloud, then get it graded.
-                </span>
-              </span>
-              <span className="classroom-home-session-actions">
-                <Pill emphasis onClick={() => handleOpen("/activities/sections")}>
-                  Choose a section
-                </Pill>
-              </span>
-            </section>
-          ) : null}
-
-
-          <section className="classroom-home-card classroom-home-session" aria-label="Next session">
+          <section className="classroom-home-card classroom-home-session classroom-home-next-session" aria-label="Next session">
             <span className="classroom-home-session-icon" aria-hidden="true">
               <CalendarClock size={17} strokeWidth={1.8} />
             </span>
@@ -497,6 +509,33 @@ export function ClassroomHomeView({
               </Pill>
             </span>
           </section>
+          {model.access.activities ? (
+            <section
+              className="classroom-home-card classroom-home-session"
+              aria-label="Read, Recall, Colour"
+            >
+              <span className="classroom-home-session-icon" aria-hidden="true">
+                <ArrowRight size={17} strokeWidth={1.8} />
+              </span>
+              <span className="classroom-home-session-text">
+                <span className="classroom-home-card-label classroom-home-card-label-muted">
+                  READ, RECALL, COLOUR
+                </span>
+                <span className="classroom-home-session-value">Start a section</span>
+                <span className="classroom-home-session-meta">
+                  Read a full section aloud, then get it graded.
+                </span>
+              </span>
+              <span className="classroom-home-session-actions">
+                <Pill emphasis onClick={() => handleOpen("/activities/sections")}>
+                  Choose a section
+                </Pill>
+              </span>
+            </section>
+          ) : null}
+
+
+
         </div>
       </div>
 

@@ -40,6 +40,7 @@ import { shouldPromptReportCard } from "./reportCardSeen";
 import type { ActivityAssignmentSummary } from "@/features/activity-centre/api/types";
 import { localDayISO } from "@/lib/localDate";
 import {
+  pickContinueWork,
   KIND_LABEL,
   KIND_TONE,
   assignedLabel,
@@ -212,6 +213,7 @@ export function useClassroomHome(): {
           isNew: row.status === "assigned",
           dueToday: due === "due today",
           overdue: !!due?.includes("overdue"),
+          dueAt,
           // Suppressed for work that closes its own card. See selfCompleting.
           canComplete: !row.selfCompleting,
           briefing: row.briefing,
@@ -575,6 +577,7 @@ export function useClassroomHome(): {
     dueTodayCount,
     hero,
     rows: listRows,
+    continueRow: pickContinueWork(workRows, access, permissions.is_admin),
     newCount: rows.filter((row) => row.isNew).length,
     message,
     messages,

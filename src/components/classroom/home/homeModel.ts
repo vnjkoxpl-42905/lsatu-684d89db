@@ -41,6 +41,8 @@ export interface HomeRow {
   isNew: boolean;
   dueToday: boolean;
   overdue: boolean;
+  /** Existing feed deadline, retained for the Continue action. */
+  dueAt?: string | null;
   /** Work the student can close out by hand; reading matter cannot. */
   canComplete?: boolean;
   /**
@@ -138,6 +140,8 @@ export interface ClassroomHomeModel {
   dueTodayCount: number;
   hero: HomeHero | null;
   rows: HomeRow[];
+  /** Chosen before the display list is capped at four rows. */
+  continueRow?: HomeRow | null;
   newCount: number;
   message: HomeMessage | null;
   /** Every preview-worthy thread, newest first. `message` is its head. */
@@ -392,4 +396,20 @@ export function buildWeek(
             : `${labels[0]} +${labels.length - 1}`,
     };
   });
+}
+
+/** Reading matter and completed Report Cards are not work to continue. */
+export function pickContinueWork(rows: HomeRow[], access: HomeAccess, isAdmin: boolean): HomeRow | null {
+  if (isAdmin) return null;
+  const deadline = (row: HomeRow) => {
+    if (!row.dueAt) return Infinity;
+    const time = (parseLocalDay(row.dueAt) ?? new Date(row.dueAt)).getTime();
+    return Number.isFinite(time) ? time : Infinity;
+  };
+  return rows.filter((row) =>
+    !["recap", "note"].includes(row.kind) &&
+    !row.key.startsWith("report:") &&
+    (row.kind !== "activity" || access.activities) &&
+    (row.tone !== "drill" || access.drill)
+  ).sort((a, b) => deadline(a) - deadline(b))[0] ?? null;
 }

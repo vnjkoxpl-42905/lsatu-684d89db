@@ -1352,3 +1352,189 @@ html.dark .classroom-root .classroom-home-shine {
     opacity: 1;
   }
 }
+
+/* Phase 1: the existing Home data in the reviewed Classroom layout.
+   These rules deliberately leave the Next seven days strip untouched. */
+.classroom-root .classroom-home {
+  container: classroom-home / inline-size;
+  gap: 22px;
+}
+
+.classroom-root .classroom-home-finderbar {
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+.classroom-root .classroom-home-finderbar::after { content: none; }
+.classroom-root .classroom-home-finderbar .qf { flex: 1; min-width: 0; }
+.classroom-root .classroom-home-finderbar .qf-trigger {
+  background: var(--home-white);
+  border-radius: 26px;
+  box-shadow: var(--home-card-shadow);
+  color: var(--home-body);
+  font-family: var(--home-ui);
+  font-size: 15px;
+  height: 52px;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: 0 18px;
+  width: 100%;
+}
+.classroom-root .classroom-home-finderbar .qf-trigger-label { display: block; }
+.classroom-root .classroom-home-bell {
+  align-items: center;
+  background: var(--home-white);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--home-hair-08);
+  color: var(--home-ink);
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 52px;
+  height: 52px;
+  justify-content: center;
+  margin-left: auto;
+  position: relative;
+}
+.classroom-root .classroom-home-bell > span {
+  background: var(--home-accent);
+  border-radius: 9px;
+  color: var(--home-ink);
+  font-family: var(--home-mono);
+  font-size: 10px;
+  min-width: 18px;
+  padding: 1px 4px;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}
+.classroom-root .classroom-home-title { font-size: clamp(32px, 5cqi, 50px); font-weight: 400; }
+.classroom-root .classroom-home-eyebrow { color: var(--home-gold); }
+.classroom-root .classroom-home-subtitle { font-size: 18px; }
+.classroom-root .classroom-home-actions {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr);
+}
+.classroom-root .classroom-home-action {
+  background: var(--home-white);
+  border: 0;
+  border-radius: 22px;
+  box-shadow: var(--home-card-shadow);
+  color: var(--home-body);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 22px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 400;
+  transition: transform 180ms var(--home-ease), box-shadow 180ms var(--home-ease);
+}
+.classroom-root .classroom-home-action:hover { transform: translateY(-2px); }
+.classroom-root .classroom-home-action-top {
+  align-items: center;
+  color: var(--home-soft);
+  display: flex;
+  font-family: var(--home-mono);
+  font-size: 10px;
+  justify-content: space-between;
+  gap: 12px;
+  letter-spacing: .14em;
+}
+.classroom-root .classroom-home-action-top svg { color: var(--home-accent); flex: none; }
+.classroom-root .classroom-home-action-title {
+  color: var(--home-ink);
+  font-family: var(--home-display);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.classroom-root .classroom-home-bento {
+  align-items: start;
+  gap: 22px;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+}
+.classroom-root .classroom-home-performance,
+.classroom-root .classroom-home-side { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.classroom-root .classroom-home-card { border-radius: 24px; }
+.classroom-root .classroom-home-hero-body { align-items: stretch; flex-direction: column; gap: 22px; padding: 28px; }
+.classroom-root .classroom-home-hero-heading h2 { font-size: 34px; font-weight: 400; }
+.classroom-root .classroom-home-progress { width: 100%; }
+.classroom-root .classroom-home-hero-panel { border-radius: 24px; }
+.classroom-root .classroom-home-sheet,
+.classroom-root .classroom-home-note,
+.classroom-root .classroom-home-shine,
+.classroom-root .classroom-home-glow { display: none; }
+.classroom-root .classroom-home-thread {
+  background: var(--home-white);
+  border-radius: 24px;
+  box-shadow: var(--home-card-shadow);
+  padding: 20px;
+}
+.classroom-root .classroom-home-inbox-title { color: var(--home-ink); font-family: var(--home-display); font-size: 22px; font-weight: 400; margin: 0 0 4px; }
+.classroom-root .classroom-home-stack { animation: none; padding: 0; }
+.classroom-root .classroom-home-message { border-radius: 16px; box-shadow: inset 0 0 0 1px var(--home-hair-08); }
+.classroom-root .classroom-home-session { align-items: flex-start; flex-direction: column; padding: 22px; }
+.classroom-root .classroom-home-next-session .classroom-home-session-value { font-size: 26px; font-weight: 400; }
+.classroom-root .classroom-home-session-actions { flex-wrap: wrap; }
+
+/* Dark emphasis cards keep their role in either app theme. Local token
+   overrides do not change the week strip or other light cards. */
+.classroom-root .classroom-home .classroom-home-action-continue,
+.classroom-root .classroom-home .classroom-home-hero-panel,
+.classroom-root .classroom-home .classroom-home-next-session {
+  --home-ink: #fffdfb;
+  --home-body: #d6d1cb;
+  --home-soft: #d6d1cb;
+  --home-muted: #c2bebb;
+  --home-ink-mid: #e9e1d7;
+  --home-white: #44403d;
+  --home-hair-06: rgba(255,255,255,.06);
+  --home-hair-08: rgba(255,255,255,.12);
+  --home-hair-12: rgba(255,255,255,.25);
+  background: #332f2c;
+  color: var(--home-body);
+  box-shadow: var(--home-card-shadow);
+}
+.classroom-root .classroom-home .classroom-home-next-session { background: #17161c; }
+.classroom-root .classroom-home-action-continue .classroom-home-action-top,
+.classroom-root .classroom-home-next-session .classroom-home-card-label,
+.classroom-root .classroom-home-hero-eyebrow { color: var(--home-accent); }
+.classroom-root .classroom-home-next-session .classroom-home-pill { color: var(--home-ink); }
+.classroom-root .classroom-home-hero-panel .classroom-home-ghost { box-shadow: inset 0 0 0 1px var(--home-hair-12); }
+
+@container classroom-home (min-width: 700px) {
+  /* However many actions the student's access allows, they share the row. */
+  .classroom-root .classroom-home-actions {
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+  }
+}
+@container classroom-home (min-width: 900px) {
+  .classroom-root .classroom-home-bento { grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); }
+  /* No hero and no assigned work: drop the empty column and lay the side
+     cards across the page instead of beside a blank space. */
+  .classroom-root .classroom-home-bento:has(> .classroom-home-performance:empty) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .classroom-root .classroom-home-bento:has(> .classroom-home-performance:empty) > .classroom-home-performance {
+    display: none;
+  }
+  .classroom-root .classroom-home-bento:has(> .classroom-home-performance:empty) > .classroom-home-side {
+    align-items: start;
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .classroom-root .classroom-home-action:hover { transform: none; }
+}
+
+.classroom-root .classroom-home-hero-panel .classroom-home-tick:not(.classroom-home-tick-done) { background: rgba(255, 255, 255, .18); }

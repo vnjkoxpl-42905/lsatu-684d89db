@@ -58,8 +58,13 @@ export interface QuestionFinderProps {
  * It never builds a set. That is the Drill console's job, and the last row of
  * the panel is the door to it.
  */
-export default function QuestionFinder({ returnTo, tone = "light", bank }: QuestionFinderProps) {
+export interface QuestionFinderHandle {
+  open: () => void;
+}
+
+const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProps>(function QuestionFinder({ returnTo, tone = "light", bank }, ref) {
   const [open, setOpen] = React.useState(false);
+  React.useImperativeHandle(ref, () => ({ open: () => setOpen(true) }), []);
 
   /* Cmd/Ctrl+K is an accelerator on top of a visible, labelled control — never
      the only way in. It is ignored while the student is typing somewhere else,
@@ -120,7 +125,9 @@ export default function QuestionFinder({ returnTo, tone = "light", bank }: Quest
       {open && <FinderPanel returnTo={returnTo} tone={tone} bank={bank} onClose={() => setOpen(false)} />}
     </div>
   );
-}
+});
+
+export default QuestionFinder;
 
 /* ------------------------------------------------------------------ panel */
 

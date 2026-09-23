@@ -4,6 +4,7 @@ import { fireEvent, render as rtlRender, screen, waitFor } from "@testing-librar
 import { MemoryRouter } from "react-router-dom";
 import { ClassroomHomeView } from "./ClassroomHomeView";
 import {
+  pickContinueWork,
   buildWeek,
   datelineFor,
   dueLabel,
@@ -12,6 +13,10 @@ import {
   weekDates,
   type ClassroomHomeModel,
 } from "./homeModel";
+
+vi.mock("@/components/questionfinder/useQuestionFinderBanks", () => ({
+  useQuestionFinderBanks: () => ({ lr: [], rcPassages: [], rcQuestions: [], loading: false, error: null, lrFailed: false, rcFailed: false }),
+}));
 
 /* Home never mounts outside a router, and since the address row navigates on
    pick it now says so: `useNavigate` throws without one. Every render here goes
@@ -109,6 +114,82 @@ const FULL: ClassroomHomeModel = {
 };
 
 describe("ClassroomHomeView", () => {
+  it("opens the assigned work and adaptive Smart Drill from the action cards", () => {
+    const onOpen = vi.fn();
+    render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
+    fireEvent.click(screen.getByRole("button", { name: "Continue assigned work" }));
+    expect(onOpen).toHaveBeenLastCalledWith("/activities/a");
+    fireEvent.click(screen.getByRole("button", { name: "Smart Drill" }));
+    expect(onOpen).toHaveBeenLastCalledWith("/drill?drill=smart-drill&returnTo=%2Fclassroom");
+    expect(screen.getByLabelText("Next seven days")).toBeInTheDocument();
+  });
+
+  it("opens the single finder from the timed-section card and keeps its shortcut", () => {
+    render(<ClassroomHomeView model={FULL} loading={false} onOpen={vi.fn()} />);
+    expect(screen.getAllByRole("button", { name: "Find a question" })).toHaveLength(1);
+    const trigger = screen.getByRole("button", { name: "Start a timed section" });
+    trigger.focus();
+    fireEvent.click(trigger);
+    expect(screen.getAllByRole("dialog")).toHaveLength(1);
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(trigger).toHaveFocus();
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    expect(screen.getAllByRole("dialog")).toHaveLength(1);
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("hides Continue when no eligible assigned work remains", () => {
+    render(<ClassroomHomeView model={{ ...EMPTY, rows: [{ ...FULL.rows[0], key: "report:a:1" }] }} loading={false} onOpen={vi.fn()} />);
+    expect(screen.queryByRole("button", { name: "Continue assigned work" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Smart Drill" })).toBeInTheDocument();
+  });
+
+  it("keeps hidden practice and messages features hidden", () => {
+    render(<ClassroomHomeView model={{ ...FULL, access: { ...FULL.access, drill: false, activities: false, messages: false } }} loading={false} onOpen={vi.fn()} />);
+    for (const name of ["Continue assigned work", "Smart Drill", "Start a timed section"]) {
+      expect(screen.queryByRole("button", { name })).toBeNull();
+    }
+    // The finder was never gated on Home; the redesign keeps it that way.
+    expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Inbox,/ })).toBeNull();
+    expect(screen.getByLabelText("Next seven days")).toBeInTheDocument();
+  });
+
+  it("never offers the coach assigned work to continue", () => {
+    render(<ClassroomHomeView model={{ ...FULL, isAdmin: true }} loading={false} onOpen={vi.fn()} />);
+    expect(screen.queryByRole("button", { name: "Continue assigned work" })).toBeNull();
+  });
+
+  it("uses the existing unread count and inbox route", () => {
+    const onOpen = vi.fn();
+    render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
+    fireEvent.click(screen.getByRole("button", { name: "Inbox, 1 unread" }));
+    expect(onOpen).toHaveBeenCalledWith("/inbox");
+  });
+
+  it("continues a section outside the four visible rows through its briefing", () => {
+    const onOpen = vi.fn();
+    const continueRow = { ...FULL.rows[0], key: "earliest", route: "/classroom/item/earliest", briefing: { minutes: 35, sectionName: "Logical Reasoning", href: "/drill?section=1", sealed: true } };
+    render(<ClassroomHomeView model={{ ...FULL, continueRow }} loading={false} onOpen={onOpen} />);
+    fireEvent.click(screen.getByRole("button", { name: "Continue assigned work" }));
+    expect(screen.getByRole("dialog", { name: "Logical Reasoning" })).toBeInTheDocument();
+    expect(onOpen).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Enter" }));
+    expect(onOpen).toHaveBeenCalledWith(continueRow.briefing.href);
+  });
+
+  it("selects the earliest actual deadline and leaves undated work last", () => {
+    const later = { ...FULL.rows[0], key: "later", dueAt: "2026-09-25T17:00:00Z" };
+    const earlier = { ...later, key: "earlier", dueAt: "2026-09-24T18:00:00Z" };
+    const earliest = { ...later, key: "earliest", dueAt: "2026-09-24T12:00:00Z" };
+    expect(pickContinueWork([FULL.rows[0], later, earlier, earliest], FULL.access, false)?.key).toBe("earliest");
+    expect(pickContinueWork([{ ...earliest, kind: "recap" }, later], FULL.access, false)?.key).toBe("later");
+    expect(pickContinueWork([{ ...earliest, kind: "plan" }], FULL.access, false)?.key).toBe("earliest");
+    expect(pickContinueWork([], FULL.access, false)).toBeNull();
+  });
+
   describe("a timed section", () => {
     const BRIEFING = {
       minutes: 53,
