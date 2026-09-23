@@ -327,9 +327,12 @@ Deno.serve(async (req) => {
         if (!class_id) return jsonRes({ error: "Invalid params" }, 400);
 
         const { data: target } = await admin.auth.admin.getUserById(class_id);
-        if ((target?.user?.email || "").toLowerCase() === PRIMARY_ADMIN_EMAIL) {
-          return jsonRes({ error: "The primary admin account cannot be archived." }, 403);
+        const blocked = await assertNotAdminAccount(admin, class_id, target?.user?.email || "");
+        if (blocked) return jsonRes({ error: blocked }, 403);
+        if (class_id === callerId) {
+          return jsonRes({ error: "You cannot archive your own account." }, 403);
         }
+
 
         const updates: Record<string, unknown> = {
           archived_at: new Date().toISOString(),
