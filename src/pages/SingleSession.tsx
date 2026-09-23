@@ -293,7 +293,9 @@ function ResultView({
         <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">{invitationCopy}</p>
         {calendarReady
           ? <Button asChild variant="outline" className="mt-6 min-h-11 border-[#75152A] px-6 text-[#75152A] hover:bg-[#75152A] hover:text-white"><a href={state.calendar_url!} target="_blank" rel="noreferrer">Open Invitation <ExternalLink className="ml-2 h-4 w-4" /></a></Button>
-          : <Button variant="outline" className="mt-6 min-h-11 border-[#75152A]/35 px-6 text-[#75152A]/60" disabled>{calendarPollingExhausted ? "Invitation pending" : <><Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" />Preparing invitation</>}</Button>}
+          : state.meet_url
+            ? <Button asChild variant="outline" className="mt-6 min-h-11 border-[#75152A] px-6 text-[#75152A] hover:bg-[#75152A] hover:text-white"><a href={state.meet_url} target="_blank" rel="noreferrer">Join Google Meet <ExternalLink className="ml-2 h-4 w-4" /></a></Button>
+            : <Button variant="outline" className="mt-6 min-h-11 border-[#75152A]/35 px-6 text-[#75152A]/60" disabled>{calendarPollingExhausted ? "Invitation pending" : <><Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" />Preparing invitation</>}</Button>}
 
         <div className="mt-10 border-t border-slate-200 pt-8 text-left sm:mt-12 sm:pt-10">
           <h2 className="text-xl font-semibold text-[#75152A] sm:text-2xl">{state.event_label || "LSAT U Session"}</h2>
@@ -301,7 +303,7 @@ function ResultView({
             <div className="flex items-start gap-4"><UserRound className="mt-0.5 h-5 w-5 shrink-0 text-[#75152A]" aria-hidden="true" /><dt className="sr-only">Attendee</dt><dd>{state.attendee_name || "Your session"}</dd></div>
             <div className="flex items-start gap-4"><CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-[#75152A]" aria-hidden="true" /><dt className="sr-only">Date and time</dt><dd>{formatBookingTime(state)} <span className="whitespace-nowrap text-slate-500">({bookingDuration(state)} minutes)</span></dd></div>
             <div className="flex items-start gap-4"><Globe2 className="mt-0.5 h-5 w-5 shrink-0 text-[#75152A]" aria-hidden="true" /><dt className="sr-only">Timezone</dt><dd>{timezone}</dd></div>
-            <div className="flex items-start gap-4"><Video className="mt-0.5 h-5 w-5 shrink-0 text-[#75152A]" aria-hidden="true" /><dt className="sr-only">Location</dt><dd>Google Meet details are included in your calendar invitation.</dd></div>
+            <div className="flex items-start gap-4"><Video className="mt-0.5 h-5 w-5 shrink-0 text-[#75152A]" aria-hidden="true" /><dt className="sr-only">Location</dt><dd>{state.meet_url ? <a href={state.meet_url} target="_blank" rel="noreferrer" className="underline">{state.meet_url}</a> : "Google Meet details will be included in your calendar invitation."}</dd></div>
           </dl>
         </div>
       </section>

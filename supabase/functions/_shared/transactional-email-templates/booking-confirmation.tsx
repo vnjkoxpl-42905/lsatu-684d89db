@@ -98,6 +98,7 @@ export function BookingConfirmationEmail({
   studentNote = "",
   fileNames = [],
   cancelUrl,
+  calendarPending,
 }: BookingConfirmationProps): React.ReactElement {
   const isAdmin = recipientRole === "admin";
   const hasSubmission = isAdmin &&
@@ -155,7 +156,9 @@ export function BookingConfirmationEmail({
 
           {!isAdmin && (
             <Text style={calendarCopy}>
-              Your Google Calendar invitation has been sent.
+              {calendarPending || !calendarUrl
+                ? "Your booking is confirmed. The calendar invite and Meet link will follow shortly."
+                : "Your Google Calendar invitation has been sent."}
             </Text>
           )}
 
