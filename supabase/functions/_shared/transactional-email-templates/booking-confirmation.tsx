@@ -98,6 +98,7 @@ export function BookingConfirmationEmail({
   studentNote = "",
   fileNames = [],
   cancelUrl,
+  calendarPending,
 }: BookingConfirmationProps): React.ReactElement {
   const isAdmin = recipientRole === "admin";
   const hasSubmission = isAdmin &&
