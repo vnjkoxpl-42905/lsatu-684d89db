@@ -155,6 +155,13 @@
       "when": 1790132408453,
       "tag": "0021_student_archive_and_delete",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1790144845089,
+      "tag": "0022_student_archive",
+      "breakpoints": true
     }
   ]
 }
