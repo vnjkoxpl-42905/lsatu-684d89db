@@ -23,7 +23,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useQuery } from "@tanstack/react-query";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { supabase } from "@/integrations/supabase/client";
 import { useUserSettings } from "@/contexts/UserSettingsContext";
 import { SectionSelector } from "@/components/drill/SectionSelector";
 import { AccommodationNote } from "@/components/drill/SectionTimingPicker";
@@ -110,8 +114,10 @@ function Working({ children }: { children: React.ReactNode }) {
 function PracticeTestSelector({
   tests,
   onBegin,
+  assignedOnly = false,
 }: {
   tests: PracticeTestBlueprint[];
+  assignedOnly?: boolean;
   onBegin: (
     blueprint: PracticeTestBlueprint,
     pace: PracticeTestPaceId,
@@ -143,6 +149,17 @@ function PracticeTestSelector({
   const chosen = tests.find((t) => t.pt === pt) ?? null;
   const clock = formatPracticeTestClock(sectionSeconds);
   const beginHintId = React.useId();
+
+  if (tests.length === 0 && assignedOnly) {
+    return (
+      <div className="testing-panel">
+        <p className="testing-note">
+          No practice test has been assigned to you yet. When Joshua assigns
+          one, it will be here.
+        </p>
+      </div>
+    );
+  }
 
   if (tests.length === 0) {
     return (
@@ -387,10 +404,40 @@ function ResumeList({
   );
 }
 
+/**
+ * The PrepTests this student was assigned. Only read for a student without the
+ * Practice tests switch: with it, the whole bank is theirs. Without it, the
+ * room holds exactly what Joshua assigned, one sitting per assignment.
+ */
+function useAssignedPrepTests(enabled: boolean, userId: string | undefined) {
+  return useQuery<number[]>({
+    queryKey: ["assigned-preptests", userId],
+    enabled: enabled && !!userId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("practice_test_assignments" as never)
+        .select("pt")
+        .eq("student_id", userId!)
+        .neq("status", "archived");
+      if (error) throw error;
+      return ((data ?? []) as Array<{ pt: number }>).map((row) => row.pt);
+    },
+  });
+}
+
 export default function TestingCentre() {
   const navigate = useNavigate();
   const { manifest, isLoading, error } = useQuestionBank();
+  const { user } = useAuth();
+  const permissions = useUserPermissions();
+  const assignedOnly = !permissions.loading && !permissions.is_admin && !permissions.has_practice_access;
+  const { data: assignedPts } = useAssignedPrepTests(assignedOnly, user?.id);
+  // An assigned-only student has one door: the sittings they were given. The
+  // section door runs through Drill, which is a switch they do not have.
   const [door, setDoor] = React.useState<Door>(null);
+  React.useEffect(() => {
+    if (assignedOnly) setDoor("test");
+  }, [assignedOnly]);
   const { sections: rcSections, error: rcError } = useRcSections(door === "test");
   const [runs, setRuns] = React.useState<PracticeTestRun[]>([]);
 
@@ -398,10 +445,12 @@ export default function TestingCentre() {
     setRuns(listPracticeTestRuns().filter((r) => r.status === "in-progress"));
   }, []);
 
-  const tests = React.useMemo(
-    () => (manifest && rcSections ? buildPracticeTests(manifest, rcSections) : []),
-    [manifest, rcSections],
-  );
+  const tests = React.useMemo(() => {
+    const all = manifest && rcSections ? buildPracticeTests(manifest, rcSections) : [];
+    if (!assignedOnly) return all;
+    const allowed = new Set(assignedPts ?? []);
+    return all.filter((t) => allowed.has(t.pt));
+  }, [manifest, rcSections, assignedOnly, assignedPts]);
 
   const beginTest = (
     blueprint: PracticeTestBlueprint,
@@ -471,6 +520,7 @@ export default function TestingCentre() {
           aria-expanded, not aria-pressed: these are not toggle buttons, they
           disclose a panel, and aria-controls is what says which panel. */}
       <div className="testing-doors" ref={doorsRef}>
+        {!assignedOnly && (
         <button
           type="button"
           className="testing-door"
@@ -485,6 +535,7 @@ export default function TestingCentre() {
           </span>
           <span className="testing-door-meta">One section · 35 minutes</span>
         </button>
+        )}
 
         <button
           type="button"
@@ -534,7 +585,7 @@ export default function TestingCentre() {
               </div>
             )}
             {!isLoading && !error && !rcError && manifest && rcSections && (
-              <PracticeTestSelector tests={tests} onBegin={beginTest} />
+              <PracticeTestSelector tests={tests} onBegin={beginTest} assignedOnly={assignedOnly} />
             )}
           </>
         )}

@@ -2,7 +2,6 @@
 // durable database commit; raw provider payloads and Booker PII never enter logs.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@18.5.0";
-import { grantStudentAccess } from "../_shared/grantStudentAccess.ts";
 
 import { insertEvent, listEvents, meetUrlFromEvent } from "../_shared/googleCalendar.ts";
 import { hasConflictingCalendarEvent, SINGLE_SESSION, validateSingleSessionCheckout } from "../_shared/singleSessionCore.ts";
@@ -230,20 +229,21 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
   if (event.type !== "checkout.session.completed") return json({ received: true });
   const session = event.data.object;
 
-  // Any completed payment opens the product for that email, whatever it was
-  // for. A single session, a package, a bootcamp: someone who has paid Joshua
-  // money is a student, and the branches below still do their own work.
+  // A payment never changes access. Access is Joshua's decision, made by tier
+  // on the People page, and it never changes by itself. What a payment does is
+  // tell him, so a paying student is not left waiting unnoticed in the queue.
   if (session.payment_status === "paid") {
     try {
-      const grant = await grantStudentAccess(
-        supabase,
-        session.customer_details?.email ?? session.customer_email ?? null,
-      );
-      console.log("access grant", { event: event.id, ...grant });
+      await notifyAdminsOfPayment(supabase, {
+        email: session.customer_details?.email ?? session.customer_email ?? null,
+        name: session.customer_details?.name ?? null,
+        amountCents: typeof session.amount_total === "number" ? session.amount_total : null,
+        currency: session.currency ?? null,
+      });
     } catch (err) {
-      // Access is a convenience on top of the payment record. Failing to open
-      // it must never make Stripe retry a payment that was already recorded.
-      console.error("access grant failed", { event: event.id, err });
+      // A notice is a convenience on top of the payment record. Failing to
+      // write it must never make Stripe retry a payment that was recorded.
+      console.error("payment notice failed", { event: event.id, err });
     }
   }
 
@@ -407,3 +407,28 @@ Deno.serve(async (req) => {
     return json({ error: "provider_processing_failed" }, 500);
   }
 });
+
+
+/** One notification per admin: someone paid, decide their tier. */
+async function notifyAdminsOfPayment(
+  supabase: { from: (t: string) => any },
+  payment: { email: string | null; name: string | null; amountCents: number | null; currency: string | null },
+) {
+  const { data: admins, error } = await supabase.from("user_roles").select("user_id").eq("role", "admin");
+  if (error) throw error;
+  const who = payment.name || payment.email || "Someone";
+  const amount =
+    payment.amountCents !== null
+      ? ` ${(payment.amountCents / 100).toFixed(2)} ${(payment.currency ?? "").toUpperCase()}`.trimEnd()
+      : "";
+  const rows = (admins ?? []).map((a: { user_id: string }) => ({
+    user_id: a.user_id,
+    type: "payment_needs_tier",
+    title: "Payment received",
+    body: `${who}${payment.email && payment.name ? ` (${payment.email})` : ""} paid${amount}. Their access has not changed. Set their tier if they need more.`,
+    link: "/teacher/students",
+  }));
+  if (rows.length === 0) return;
+  const { error: insertError } = await supabase.from("notifications").insert(rows);
+  if (insertError) throw insertError;
+}

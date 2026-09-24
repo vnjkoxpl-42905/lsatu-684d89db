@@ -45,6 +45,8 @@ export interface HubStudentRow {
   has_chat_access: boolean;
   has_export_access: boolean;
   has_ta_access: boolean;
+  has_journal_access?: boolean;
+  has_activity_access?: boolean;
   // Derived fields:
   assignments_total: number;
   assignments_assigned: number;
@@ -70,6 +72,8 @@ interface ManagedUserRow {
   has_chat_access: boolean;
   has_export_access: boolean;
   has_ta_access: boolean;
+  has_journal_access?: boolean;
+  has_activity_access?: boolean;
 }
 
 interface AssignmentCountsRow {

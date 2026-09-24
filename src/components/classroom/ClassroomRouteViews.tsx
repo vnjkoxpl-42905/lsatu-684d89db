@@ -230,7 +230,8 @@ export function ClassroomItemView() {
       item.type === "homework" ||
       item.type === "activity" ||
       item.type === "bootcamp_module" ||
-      item.type === "weekly_plan_task"
+      item.type === "weekly_plan_task" ||
+      item.type === "practice_test"
     ) {
       const route = resolveItemRoute(item);
       if (route) navigate(route, { replace: true });

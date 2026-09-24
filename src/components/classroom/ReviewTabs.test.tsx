@@ -70,7 +70,6 @@ describe("reviewDefaultPath", () => {
       reviewDefaultPath({
         is_admin: false,
         has_journal_access: true,
-        has_waj_access: false,
         has_flagged_access: true,
       }),
     ).toBe("/journal");
@@ -78,7 +77,6 @@ describe("reviewDefaultPath", () => {
       reviewDefaultPath({
         ...permissionState,
         has_journal_access: false,
-        has_waj_access: false,
         has_flagged_access: true,
       }),
     ).toBe("/flagged");

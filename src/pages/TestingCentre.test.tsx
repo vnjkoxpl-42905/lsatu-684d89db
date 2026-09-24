@@ -8,6 +8,7 @@
  * appears exactly when it is true and not when it is not.
  */
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import TestingCentre from "./TestingCentre";
@@ -27,6 +28,34 @@ vi.mock("react-router-dom", async () => {
 const settingsMock: { defaultTimingMode: "35" | "52.5" | "70" | "unlimited" } = {
   defaultTimingMode: "35",
 };
+// Who is looking. Most tests are a student with the Practice tests switch, who
+// sees the whole bank; the assigned-only tests flip it off.
+const access = vi.hoisted(() => ({
+  permissions: { loading: false, is_admin: false, has_practice_access: true },
+  assignedPts: [] as number[],
+}));
+
+vi.mock("@/contexts/AuthContext", () => ({
+  useAuth: () => ({ user: { id: "student-1" }, authReady: true }),
+}));
+
+vi.mock("@/hooks/useUserPermissions", () => ({
+  useUserPermissions: () => access.permissions,
+}));
+
+vi.mock("@/integrations/supabase/client", () => ({
+  supabase: {
+    from: () => {
+      const chain = {
+        select: () => chain,
+        eq: () => chain,
+        neq: () => Promise.resolve({ data: access.assignedPts.map((pt) => ({ pt })), error: null }),
+      };
+      return chain;
+    },
+  },
+}));
+
 vi.mock("@/contexts/UserSettingsContext", () => ({
   useUserSettings: () => ({ settings: settingsMock }),
 }));
@@ -96,9 +125,11 @@ beforeAll(() => {
 
 const renderPage = () =>
   render(
-    <MemoryRouter>
-      <TestingCentre />
-    </MemoryRouter>,
+    <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+      <MemoryRouter>
+        <TestingCentre />
+      </MemoryRouter>
+    </QueryClientProvider>,
   );
 
 /**
@@ -454,5 +485,33 @@ describe("Testing Centre", () => {
       // The note that tells them the standing setting is in play at all.
       expect(screen.getByText(/You have double time\./)).toBeTruthy();
     });
+  });
+});
+
+describe("Testing Centre for a student with assigned practice tests only", () => {
+  afterEach(() => {
+    access.permissions = { loading: false, is_admin: false, has_practice_access: true };
+    access.assignedPts = [];
+  });
+
+  it("offers only the assigned PrepTest, and no section door", async () => {
+    access.permissions = { loading: false, is_admin: false, has_practice_access: false };
+    access.assignedPts = [131];
+    renderPage();
+
+    expect(screen.queryByRole("button", { name: /Take a section/ })).toBeNull();
+    await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
+    openPrepTests();
+
+    expect(await screen.findByRole("option", { name: /PrepTest 131/ })).toBeTruthy();
+    expect(screen.queryByRole("option", { name: /PrepTest 130/ })).toBeNull();
+  });
+
+  it("says plainly when nothing has been assigned yet", async () => {
+    access.permissions = { loading: false, is_admin: false, has_practice_access: false };
+    access.assignedPts = [];
+    renderPage();
+
+    expect(await screen.findByText(/No practice test has been assigned to you yet/)).toBeTruthy();
   });
 });

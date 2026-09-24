@@ -9,6 +9,26 @@ const corsHeaders = {
 // at least one admin and can never be locked out of role management.
 const PRIMARY_ADMIN_EMAIL = "contact@aspiringattorneys.com";
 
+// The twelve switches a tier sets. has_waj_access is retired (the journal reads
+// has_journal_access alone) and stays in ALL_FLAGS only so that revoking and
+// archiving still clear it.
+const TIER_FLAGS = [
+  "has_drill_access",
+  "has_practice_access",
+  "has_activity_access",
+  "has_bootcamp_access",
+  "has_journal_access",
+  "has_flagged_access",
+  "has_analytics_access",
+  "has_export_access",
+  "has_classroom_access",
+  "has_chat_access",
+  "has_schedule_access",
+  "has_ta_access",
+];
+const FLOOR_FLAGS = ["has_classroom_access", "has_chat_access", "has_schedule_access"];
+const TIERS = ["tier_1", "tier_2", "tier_3"];
+
 const ALL_FLAGS = [
   "has_bootcamp_access",
   "has_classroom_access",
@@ -154,13 +174,14 @@ Deno.serve(async (req) => {
       // Default: list users
       const { data: profiles, error: pErr } = await admin
         .from("profiles")
-        .select("class_id, display_name, last_seen_at, archived_at, archived_reason, " + ALL_FLAGS.join(", "));
+        .select("class_id, display_name, last_seen_at, archived_at, archived_reason, access_tier, " + ALL_FLAGS.join(", "));
       if (pErr) throw pErr;
 
       const { data: { users: authUsers }, error: aErr } = await admin.auth.admin.listUsers({ perPage: 1000 });
       if (aErr) throw aErr;
 
       const emailMap = new Map(authUsers.map((u: any) => [u.id, u.email]));
+      const createdMap = new Map(authUsers.map((u: any) => [u.id, u.created_at]));
 
       const { data: roles } = await admin.from("user_roles").select("user_id, role");
       const roleMap = new Map<string, string>();
@@ -171,6 +192,7 @@ Deno.serve(async (req) => {
       const result = (profiles || []).map((p: any) => ({
         ...p,
         email: emailMap.get(p.class_id) || "unknown",
+        created_at: createdMap.get(p.class_id) || null,
         role: roleMap.get(p.class_id) || "user",
       }));
 
@@ -268,6 +290,7 @@ Deno.serve(async (req) => {
           updates.has_classroom_access = true;
           updates.has_chat_access = true;
           updates.has_schedule_access = true;
+          updates.access_tier = null;
         }
 
         const { data: reset, error } = await admin
@@ -281,6 +304,111 @@ Deno.serve(async (req) => {
           return jsonRes({ error: "No profile matched that class_id" }, 404);
         }
         return jsonRes({ success: true, profile: reset[0] });
+      }
+
+      // Apply a tier. A tier is a template: Tier 1 turns all twelve switches
+      // on, Tier 3 leaves the floor (Classroom, Messages, Schedule) and turns
+      // the other nine off, Tier 2 keeps whatever switches are there and only
+      // changes the label. One update, so the student never sits half-applied.
+      if (action === "set_tier") {
+        const { class_id, tier } = body;
+        if (!class_id || !TIERS.includes(tier)) {
+          return jsonRes({ error: "Invalid params" }, 400);
+        }
+        const updates: Record<string, unknown> = { access_tier: tier };
+        if (tier !== "tier_2") {
+          for (const flag of TIER_FLAGS) {
+            updates[flag] = tier === "tier_1" || FLOOR_FLAGS.includes(flag);
+          }
+          updates.has_waj_access = false;
+        }
+        const { data: updated, error } = await admin
+          .from("profiles")
+          .update(updates)
+          .eq("class_id", class_id)
+          .select("class_id, access_tier, " + ALL_FLAGS.join(", "));
+        if (error) throw error;
+        if (!updated || updated.length === 0) {
+          console.error("set_tier: no profile matched", { class_id, tier });
+          return jsonRes({ error: "No profile matched that class_id" }, 404);
+        }
+        return jsonRes({ success: true, profile: updated[0] });
+      }
+
+      // Assign one PrepTest sitting. Opens that sitting and nothing else, and
+      // puts it on the student's Assigned work like any other assignment.
+      if (action === "assign_practice_test") {
+        const { class_id, pt, unlock_at = null } = body;
+        const ptNum = Number(pt);
+        if (!class_id || !Number.isInteger(ptNum) || ptNum <= 0) {
+          return jsonRes({ error: "Invalid params" }, 400);
+        }
+        const { data: assignment, error } = await admin
+          .from("practice_test_assignments")
+          .upsert(
+            {
+              student_id: class_id,
+              pt: ptNum,
+              assigned_by: callerId,
+              assigned_at: new Date().toISOString(),
+              unlock_at,
+              status: "assigned",
+            },
+            { onConflict: "student_id,pt" },
+          )
+          .select("id, student_id, pt, status, unlock_at")
+          .single();
+        if (error) throw error;
+
+        const sourceId = `practice_test:${ptNum}`;
+        const { data: existing } = await admin
+          .from("classroom_items")
+          .select("id")
+          .eq("student_id", class_id)
+          .eq("type", "practice_test")
+          .eq("source_id", sourceId)
+          .maybeSingle();
+        if (existing) {
+          await admin
+            .from("classroom_items")
+            .update({ status: "assigned", unlock_at, visible_to_student: true })
+            .eq("id", existing.id);
+        } else {
+          const { error: itemError } = await admin.from("classroom_items").insert({
+            student_id: class_id,
+            created_by: callerId,
+            type: "practice_test",
+            title: `PrepTest ${ptNum}`,
+            description: "A full practice test: three scored sections, in order, with a break.",
+            source_table: "practice_test_assignments",
+            source_id: sourceId,
+            status: "assigned",
+            unlock_at,
+            visible_to_student: true,
+            metadata_json: { pt: ptNum, href: "/testing" },
+          });
+          if (itemError) throw itemError;
+        }
+        return jsonRes({ success: true, assignment });
+      }
+
+      if (action === "unassign_practice_test") {
+        const { class_id, pt } = body;
+        const ptNum = Number(pt);
+        if (!class_id || !Number.isInteger(ptNum)) return jsonRes({ error: "Invalid params" }, 400);
+        const { error } = await admin
+          .from("practice_test_assignments")
+          .update({ status: "archived" })
+          .eq("student_id", class_id)
+          .eq("pt", ptNum);
+        if (error) throw error;
+        await admin
+          .from("classroom_items")
+          .update({ status: "archived" })
+          .eq("student_id", class_id)
+          .eq("type", "practice_test")
+          .eq("source_id", `practice_test:${ptNum}`);
+        return jsonRes({ success: true });
       }
 
       // Set role
@@ -333,10 +461,12 @@ Deno.serve(async (req) => {
           return jsonRes({ error: "You cannot archive your own account." }, 403);
         }
 
-
+        // Undecided again: bringing them back is a fresh decision, made from
+        // the signup queue, not a silent return to the old tier.
         const updates: Record<string, unknown> = {
           archived_at: new Date().toISOString(),
           archived_reason: reason,
+          access_tier: null,
         };
         for (const flag of ALL_FLAGS) updates[flag] = false;
 

@@ -136,6 +136,13 @@ const OneOffBooking = safeLazy(() => import("./pages/OneOffBooking"));
 const ActivityLab = safeLazy(() => import("./pages/ActivityLab"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
+import {
+  ActivityAssignmentGate,
+  DrillAssignmentGate,
+  PracticeTestRunGate,
+  TAAssignmentGate,
+  TestingCentreGate,
+} from "@/components/AssignmentGate";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingHelpButton } from "./components/help/FloatingHelpButton";
 
@@ -434,7 +441,7 @@ const App = () => {
                   {/* Full-screen takeovers: actual LSAT question-doing + activity
                       runner stay OUTSIDE the persistent student shell. */}
                   <Route path="/drill" element={
-                    <ProtectedRoute flag="has_drill_access"><DrillLaunchGate><Drill /></DrillLaunchGate></ProtectedRoute>
+                    <DrillAssignmentGate><DrillLaunchGate><Drill /></DrillLaunchGate></DrillAssignmentGate>
                   } />
                   {/* Reading Comprehension drilling. Content is static JSON; only
                       progress touches the database. See src/features/rc/CONTEXT.md. */}
@@ -442,7 +449,7 @@ const App = () => {
                       the LR/RC switch. This route survives as a
                       query-preserving adapter — see RcRedirect. */}
                   <Route path="/rc" element={
-                    <ProtectedRoute flag="has_drill_access"><RcRedirect /></ProtectedRoute>
+                    <DrillAssignmentGate><RcRedirect /></DrillAssignmentGate>
                   } />
                   {/* The directions screen before an assigned section. Outside
                       the Classroom shell on purpose: it takes the whole screen,
@@ -451,7 +458,7 @@ const App = () => {
                     <ProtectedRoute flag="has_classroom_access"><SectionDirectionsPage /></ProtectedRoute>
                   } />
                   <Route path="/rc/drill" element={
-                    <ProtectedRoute flag="has_drill_access"><RcPlayer /></ProtectedRoute>
+                    <DrillAssignmentGate><RcPlayer /></DrillAssignmentGate>
                   } />
                   <Route path="/rc/results/:sessionId" element={
                     <ProtectedRoute flag="has_drill_access"><RcResults /></ProtectedRoute>
@@ -501,11 +508,11 @@ const App = () => {
                     </ProtectedRoute>
                   } />
                   <Route path="/activities/:assignmentId" element={
-                    <ProtectedRoute flag="has_activity_access">
+                    <ActivityAssignmentGate>
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                         <ActivityRunner />
                       </React.Suspense>
-                    </ProtectedRoute>
+                    </ActivityAssignmentGate>
                   } />
                   <Route path="/activities/conditionals" element={
                     <ProtectedRoute flag="has_activity_access">
@@ -560,7 +567,7 @@ const App = () => {
                         <ProtectedRoute flag="has_classroom_access"><ClassroomItemView /></ProtectedRoute>
                       } />
                       <Route path="ta/:assignmentId" element={
-                        <ProtectedRoute flag="has_classroom_access"><ClassroomTAAssignmentView /></ProtectedRoute>
+                        <TAAssignmentGate><ClassroomTAAssignmentView /></TAAssignmentGate>
                       } />
                       <Route path=":assignmentId" element={
                         <ProtectedRoute flag="has_classroom_access"><ClassroomAssignmentView /></ProtectedRoute>
@@ -573,10 +580,10 @@ const App = () => {
                         clock starts. The runners themselves are full-screen
                         takeovers registered above, outside this shell. */}
                     <Route path="/testing" element={
-                      <ProtectedRoute flag="has_drill_access"><TestingCentre /></ProtectedRoute>
+                      <TestingCentreGate><TestingCentre /></TestingCentreGate>
                     } />
                     <Route path="/testing/test/:runId" element={
-                      <ProtectedRoute flag="has_drill_access"><PracticeTestRunPage /></ProtectedRoute>
+                      <PracticeTestRunGate><PracticeTestRunPage /></PracticeTestRunGate>
                     } />
 
                     {/* Review keeps both historic URL families. The shared tabs
@@ -589,12 +596,12 @@ const App = () => {
                       <ProtectedRoute flag="has_flagged_access"><FlaggedQuestionView /></ProtectedRoute>
                     } />
                     <Route path="/journal" element={
-                      <ProtectedRoute flag={["has_journal_access", "has_waj_access"]}>
+                      <ProtectedRoute flag="has_journal_access">
                         <JournalIndexView />
                       </ProtectedRoute>
                     } />
                     <Route path="/journal/:qid" element={
-                      <ProtectedRoute flag={["has_journal_access", "has_waj_access"]}>
+                      <ProtectedRoute flag="has_journal_access">
                         <JournalEntryView />
                       </ProtectedRoute>
                     } />
@@ -618,7 +625,7 @@ const App = () => {
                         each page's own header on top. They are ordinary stage
                         content like everything else here now. */}
                     <Route path="/sets" element={
-                      <ProtectedRoute flag="has_practice_access"><SavedSets /></ProtectedRoute>
+                      <ProtectedRoute flag="has_drill_access"><SavedSets /></ProtectedRoute>
                     } />
                     <Route path="/activities" element={
                       <ProtectedRoute flag="has_activity_access">

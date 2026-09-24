@@ -3365,6 +3365,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          access_tier: string | null
           archived_at: string | null
           archived_reason: string | null
           by_level_json: Json | null
@@ -3406,6 +3407,7 @@ export type Database = {
           xp_total: number | null
         }
         Insert: {
+          access_tier?: string | null
           archived_at?: string | null
           archived_reason?: string | null
           by_level_json?: Json | null
@@ -3447,6 +3449,7 @@ export type Database = {
           xp_total?: number | null
         }
         Update: {
+          access_tier?: string | null
           archived_at?: string | null
           archived_reason?: string | null
           by_level_json?: Json | null
