@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Check, X } from 'lucide-react';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
 import { ACCESS_TIERS, type AccessTier, type ManagedUser } from '@/lib/adminUsers';
+import { listManagedUsers, setStudentTier } from '@/lib/accessTierClient';
+
+export { setStudentTier };
 
 export const SIGNUP_QUEUE_KEY = ['signup-queue'] as const;
 
@@ -12,16 +14,6 @@ export function signupQueueRows(users: ManagedUser[]): ManagedUser[] {
   return users
     .filter((u) => u.role !== 'admin' && !u.archived_at && !u.access_tier)
     .sort((a, b) => (b.created_at ?? '').localeCompare(a.created_at ?? ''));
-}
-
-export async function setStudentTier(classId: string, tier: AccessTier) {
-  const res = await supabase.functions.invoke('admin-manage-users', {
-    method: 'POST',
-    body: { action: 'set_tier', class_id: classId, tier },
-  });
-  if (res.error) throw res.error;
-  const written = (res.data as { profile?: { access_tier?: string } } | null)?.profile;
-  if (!written || written.access_tier !== tier) throw new Error('Tier was not saved');
 }
 
 /**
@@ -40,11 +32,7 @@ export function SignupQueue({ onChanged }: { onChanged?: () => void }) {
 
   const { data: rows = [], isLoading, isError } = useQuery<ManagedUser[]>({
     queryKey: SIGNUP_QUEUE_KEY,
-    queryFn: async () => {
-      const res = await supabase.functions.invoke('admin-manage-users', { method: 'GET' });
-      if (res.error) throw res.error;
-      return signupQueueRows((res.data as ManagedUser[]) ?? []);
-    },
+    queryFn: async () => signupQueueRows(await listManagedUsers()),
     staleTime: 30_000,
   });
 
