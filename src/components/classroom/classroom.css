@@ -1391,8 +1391,10 @@ html.dark .classroom-root.classroom-root-drill {
   display: grid;
   gap: 28px;
   grid-template-columns: minmax(0, 1fr) 392px;
-  min-height: 280px;
-  padding: var(--observatory-space-4) var(--observatory-space-6) var(--observatory-space-5);
+  /* Was 280px. The hero ate a third of a laptop screen and pushed Your
+     practice and Assigned work below the fold. */
+  min-height: 200px;
+  padding: var(--observatory-space-3) var(--observatory-space-6) var(--observatory-space-4);
   position: relative;
   z-index: 2;
 }

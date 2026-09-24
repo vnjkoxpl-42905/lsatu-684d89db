@@ -194,19 +194,23 @@ export default function OfficialQuestionPane({
   // student reads ours next to theirs, so the two match rather than land a
   // couple of pixels apart. The stimulus carries the extra weight of the serif
   // face; stem and choices stay on the sans stack at the same size.
-  const baseSize = 19 * fontScale;
+  //
+  // On a short screen 19px pushed choice D and E below the fold, so the size
+  // steps down with viewport height (17px floor) and a full question fits
+  // without scrolling or zooming. Tall screens still get the 7Sage 19px.
+  const baseSize = `calc(${fontScale} * clamp(17px, 2.2vh, 19px))`;
   const officialContentTextStyle: React.CSSProperties = {
     color: "#111827",
     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-    fontSize: `${baseSize}px`,
+    fontSize: baseSize,
     fontWeight: 400,
-    lineHeight: 1.6,
+    lineHeight: 1.5,
   };
   const stimStyle: React.CSSProperties = {
     ...officialContentTextStyle,
     fontFamily: "Fraunces, ui-serif, Georgia, serif",
-    fontSize: `${19 * fontScale}px`,
-    lineHeight: 1.7,
+    fontSize: baseSize,
+    lineHeight: 1.6,
     // Fraunces is a variable font with an optical-size axis. Left on `auto` the
     // browser picks the cut from the rendered px size, which drifts as the
     // student changes fontScale. Pin it to the text-optimised end so hairlines
@@ -218,8 +222,8 @@ export default function OfficialQuestionPane({
   // The answer-choice text and letter badges used Tailwind's `text-sm`/`text-xs`,
   // which are hard px values and silently overrode the inherited scaled size —
   // so fontScale grew the stimulus and stem while the answers stayed at 14px.
-  const choiceTextStyle: React.CSSProperties = { fontSize: `${baseSize}px` };
-  const choiceBadgeStyle: React.CSSProperties = { fontSize: `${baseSize * 0.78}px` };
+  const choiceTextStyle: React.CSSProperties = { fontSize: baseSize };
+  const choiceBadgeStyle: React.CSSProperties = { fontSize: `calc(${baseSize} * 0.78)` };
 
   return (
     <div
@@ -236,7 +240,7 @@ export default function OfficialQuestionPane({
           <div className="flex min-h-0 flex-col overflow-y-auto lg:border-r border-slate-200">
           <div
             className={cn(
-              "min-w-0 px-6 pt-6 pb-7 sm:pl-9 sm:pr-8 whitespace-pre-wrap",
+              "min-w-0 px-6 pt-5 pb-6 sm:pl-9 sm:pr-8 whitespace-pre-wrap",
               // Cap the reading measure. The frame is max-w-[1400px] and this column
               // takes 53fr of it, which ran ~100 characters per line — well past the
               // 45-75 readable band. `ch` is the width of "0", which is narrow in
@@ -268,7 +272,7 @@ export default function OfficialQuestionPane({
         }
         right={
           // Question column
-          <div className="min-w-0 px-6 py-7 sm:pl-10 sm:pr-8 bg-white overflow-y-auto" style={stemStyle}>
+          <div className="min-w-0 px-6 py-5 sm:pl-10 sm:pr-8 bg-white overflow-y-auto" style={stemStyle}>
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 flex items-start gap-2">
                 <span className="font-bold tabular-nums shrink-0 min-w-[20px] text-slate-950">
@@ -307,7 +311,7 @@ export default function OfficialQuestionPane({
 
             {aboveChoices && <div className="mt-4">{aboveChoices}</div>}
 
-            <ul className="mt-4 space-y-3.5">
+            <ul className="mt-3 space-y-1.5">
               {answerEntries.map(([key, text]) => {
                 const isSelected = selectedAnswer === key;
                 const isEliminated = eliminatedAnswers.has(key);
@@ -338,7 +342,7 @@ export default function OfficialQuestionPane({
                     key={key}
                     className={cn(
                       "group relative rounded-lg border transition-all duration-200",
-                      "grid grid-cols-[auto_1fr_auto_auto] items-start gap-3 p-3",
+                      "grid grid-cols-[auto_1fr_auto_auto] items-start gap-3 px-3 py-2",
                       showCorrectColour
                         ? "border-green-500 bg-green-50"
                         : isWrongPick
@@ -406,7 +410,7 @@ export default function OfficialQuestionPane({
                       }}
                       onDoubleClick={() => deferredPick.cancel()}
                       className={cn(
-                        "text-left leading-relaxed transition-colors",
+                        "text-left leading-normal transition-colors",
                         !locked && "cursor-pointer",
                         showCorrectColour
                           ? "text-green-900"
