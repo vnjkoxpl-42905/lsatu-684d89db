@@ -176,6 +176,13 @@
       "when": 1790280507857,
       "tag": "0024_access_tiers_stage2_tier_column",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1790280538363,
+      "tag": "0025_access_tiers_stage3_assign_tiers",
+      "breakpoints": true
     }
   ]
 }
