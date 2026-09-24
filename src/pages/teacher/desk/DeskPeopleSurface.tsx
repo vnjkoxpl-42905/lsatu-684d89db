@@ -43,6 +43,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { SIGNUP_QUEUE_KEY, SignupQueue, setStudentTier } from '@/components/teacher/SignupQueue';
 import { AssignPracticeTest } from '@/components/teacher/AssignPracticeTest';
+import { withAccessTiers } from '@/lib/accessTierClient';
 import { formatLastActiveLabel, isUserOnline } from '@/lib/presence';
 import { cn } from '@/lib/utils';
 
@@ -95,7 +96,7 @@ export function DeskPeopleSurface() {
       ]);
 
       if (usersRes.error) throw usersRes.error;
-      setUsers((usersRes.data || []) as ManagedUser[]);
+      setUsers(await withAccessTiers((usersRes.data || []) as ManagedUser[]));
       setAnalytics(!analyticsRes.error && analyticsRes.data ? (analyticsRes.data as AdminAnalytics) : null);
       if (singleSessionsRes.error) {
         console.warn('Single Sessions list unavailable', singleSessionsRes.error);

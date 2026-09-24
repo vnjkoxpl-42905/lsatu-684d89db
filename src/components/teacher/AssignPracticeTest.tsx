@@ -3,6 +3,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { setPracticeTestAssignment } from '@/lib/accessTierClient';
 
 type Assigned = { pt: number; status: string };
 
@@ -13,6 +15,7 @@ type Assigned = { pt: number; status: string };
  */
 export function AssignPracticeTest({ classId, who }: { classId: string; who: string }) {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
   const [pt, setPt] = useState('');
   const [busy, setBusy] = useState(false);
   const key = ['practice-test-assignments', classId];
@@ -34,11 +37,7 @@ export function AssignPracticeTest({ classId, who }: { classId: string; who: str
   const call = async (action: 'assign_practice_test' | 'unassign_practice_test', value: number) => {
     setBusy(true);
     try {
-      const res = await supabase.functions.invoke('admin-manage-users', {
-        method: 'POST',
-        body: { action, class_id: classId, pt: value },
-      });
-      if (res.error) throw res.error;
+      await setPracticeTestAssignment(classId, value, action === 'assign_practice_test', user?.id);
       toast.success(
         action === 'assign_practice_test'
           ? `PrepTest ${value} assigned to ${who}`
