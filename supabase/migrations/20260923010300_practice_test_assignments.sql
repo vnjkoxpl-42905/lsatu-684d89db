@@ -70,3 +70,8 @@ ALTER TABLE public.classroom_items ADD CONSTRAINT classroom_items_type_check
   CHECK (type = ANY (ARRAY['drill', 'homework', 'bootcamp_module', 'note', 'session_recap',
     'announcement', 'upload_summary', 'weekly_plan_task', 'smartboard_recap', 'activity',
     'practice_test']));
+
+-- Explicit, though the schema's default privileges already grant these. RLS
+-- above decides which rows each role actually sees.
+GRANT SELECT ON public.practice_test_assignments TO authenticated;
+GRANT ALL ON public.practice_test_assignments TO service_role;
