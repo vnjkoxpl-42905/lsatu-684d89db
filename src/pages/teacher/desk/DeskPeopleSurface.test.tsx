@@ -81,6 +81,7 @@ const users = [
     display_name: 'Meghan Mullins',
     role: 'user',
     last_seen_at: '2026-06-18T12:58:00.000Z',
+    access_tier: 'tier_2',
     has_bootcamp_access: true,
     has_classroom_access: true,
     has_analytics_access: true,
@@ -153,6 +154,13 @@ describe('DeskPeopleSurface', () => {
           error: null,
         });
       }
+      if (options?.method === 'POST' && (options.body as Record<string, unknown>)?.action === 'set_tier') {
+        const { class_id, tier } = options.body as Record<string, unknown>;
+        return Promise.resolve({
+          data: { success: true, profile: { class_id, access_tier: tier } },
+          error: null,
+        });
+      }
       if (options?.method === 'POST') {
         const { class_id, field, value } = options.body as Record<string, unknown>;
         return Promise.resolve({
@@ -192,6 +200,58 @@ describe('DeskPeopleSurface', () => {
     expect(screen.queryByText('Templates')).not.toBeInTheDocument();
     expect(screen.getByText('Role Management')).toBeInTheDocument();
     expect(screen.getByText('Protected primary admin')).toBeInTheDocument();
+  });
+
+  it('puts an undecided signup on Tier 3 from the queue with one X', async () => {
+    const newcomer = {
+      ...users[0],
+      class_id: 'student-new',
+      email: 'new@example.com',
+      display_name: 'New Signup',
+      access_tier: null,
+      created_at: '2026-06-18T09:00:00.000Z',
+    };
+    const base = invokeMock.getMockImplementation()!;
+    invokeMock.mockImplementation((name, options) =>
+      !options?.method || options.method === 'GET'
+        ? options?.headers?.['x-mode'] === 'analytics'
+          ? base(name, options)
+          : Promise.resolve({ data: [...users, newcomer], error: null })
+        : base(name, options),
+    );
+    renderPeople();
+
+    const queue = await screen.findByRole('region', { name: 'Signup queue' });
+    expect(within(queue).getByText('New Signup')).toBeInTheDocument();
+    // A tiered student is not waiting on anything.
+    expect(within(queue).queryByText('Meghan Mullins')).not.toBeInTheDocument();
+
+    fireEvent.click(within(queue).getByRole('button', { name: 'Put New Signup on Tier 3' }));
+
+    await vi.waitFor(() => {
+      const call = invokeMock.mock.calls.find(([, options]) => options?.body?.action === 'set_tier');
+      expect(call).toBeTruthy();
+      expect(call![1].body).toMatchObject({ class_id: 'student-new', tier: 'tier_3' });
+    });
+  });
+
+  it('applies a tier from the student panel', async () => {
+    renderPeople();
+
+    const row = await screen.findByTestId('people-row-student-1');
+    expect(within(row).getByText('Tier 2')).toBeInTheDocument();
+    fireEvent.click(within(row).getByRole('button', { name: /Expand Meghan Mullins/i }));
+
+    const tiers = await screen.findByRole('radiogroup', { name: 'Tier for Meghan Mullins' });
+    fireEvent.click(within(tiers).getByRole('radio', { name: 'Tier 1' }));
+
+    await vi.waitFor(() => {
+      const call = invokeMock.mock.calls.find(([, options]) => options?.body?.action === 'set_tier');
+      expect(call![1].body).toMatchObject({ class_id: 'student-1', tier: 'tier_1' });
+    });
+    // The twelve switches are there, labelled by what they open.
+    expect(screen.getByLabelText('TA worksheets for Meghan Mullins')).toBeInTheDocument();
+    expect(screen.getByLabelText('Progress and history for Meghan Mullins')).toBeInTheDocument();
   });
 
   it('shows one whole-account access control per student', async () => {

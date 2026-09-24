@@ -29,33 +29,23 @@ interface Props {
   studentId: string | null;
 }
 
+// Same words as the switches on the People page (src/lib/adminUsers.ts).
 const FLAG_LABELS: Record<string, string> = {
-  has_bootcamp_access: "Bootcamps",
-  has_classroom_access: "Classroom",
-  has_analytics_access: "Analytics",
-  has_schedule_access: "Schedule",
-  has_practice_access: "Practice",
   has_drill_access: "Drill",
-  has_waj_access: "WAJ",
-  has_flagged_access: "Flagged",
-  has_chat_access: "Chat",
+  has_practice_access: "Practice tests",
+  has_activity_access: "Activities",
+  has_bootcamp_access: "Bootcamps",
+  has_journal_access: "Wrong answers",
+  has_flagged_access: "Flagged questions",
+  has_analytics_access: "Progress and history",
   has_export_access: "Export",
-  has_ta_access: "TA",
+  has_classroom_access: "Classroom",
+  has_chat_access: "Messages",
+  has_schedule_access: "Schedule and booking",
+  has_ta_access: "TA worksheets",
 };
 
-const FLAG_KEYS: (keyof HubStudentRow)[] = [
-  "has_practice_access",
-  "has_drill_access",
-  "has_bootcamp_access",
-  "has_classroom_access",
-  "has_analytics_access",
-  "has_schedule_access",
-  "has_waj_access",
-  "has_flagged_access",
-  "has_chat_access",
-  "has_export_access",
-  "has_ta_access",
-];
+const FLAG_KEYS = Object.keys(FLAG_LABELS) as (keyof HubStudentRow)[];
 
 /**
  * Overview tab. Pulls the student's row out of the shared useHubStudents

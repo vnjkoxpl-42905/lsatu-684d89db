@@ -187,6 +187,10 @@ export function resolveItemRoute(item: ClassroomItem): string | null {
       // source_id is the activity_assignments row id; source_table='activity_assignments'.
       if (item.source_id) return `/activities/${encodeURIComponent(item.source_id)}`;
       return '/activities';
+    case 'practice_test':
+      // An assigned PrepTest sitting. The Testing Centre lists exactly the
+      // assigned PrepTests for a student without the Practice tests switch.
+      return '/testing';
     case 'bootcamp_module':
       if (item.source_id) return item.source_id; // expected to be a /bootcamp/* path
       return '/bootcamps';

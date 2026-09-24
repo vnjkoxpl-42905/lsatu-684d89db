@@ -12,7 +12,8 @@ export type ClassroomItemType =
   | 'announcement'
   | 'upload_summary'
   | 'weekly_plan_task'
-  | 'smartboard_recap';
+  | 'smartboard_recap'
+  | 'practice_test';
 
 export type ClassroomItemStatus =
   | 'draft'

@@ -147,7 +147,7 @@ export function buildWorkRows(
   const rows = new Map<string, ClassroomWorkRow>();
 
   for (const item of items) {
-    if (!["drill", "homework", "activity", "bootcamp_module", "weekly_plan_task"].includes(item.type)) {
+    if (!["drill", "homework", "activity", "bootcamp_module", "weekly_plan_task", "practice_test"].includes(item.type)) {
       continue;
     }
     const sourceTable = item.source_table ?? "classroom_items";

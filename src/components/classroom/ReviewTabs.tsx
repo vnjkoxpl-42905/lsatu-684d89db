@@ -7,14 +7,12 @@ export function reviewDefaultPath(permissions: {
   loading?: boolean;
   is_admin: boolean;
   has_journal_access: boolean;
-  has_waj_access: boolean;
   has_flagged_access: boolean;
 }) {
   const canOpenJournal =
     permissions.loading ||
     permissions.is_admin ||
-    permissions.has_journal_access ||
-    permissions.has_waj_access;
+    permissions.has_journal_access;
   return canOpenJournal ? "/journal" : "/flagged";
 }
 
@@ -28,8 +26,7 @@ export function ReviewTabs() {
   const canOpenJournal =
     permissions.loading ||
     permissions.is_admin ||
-    permissions.has_journal_access ||
-    permissions.has_waj_access;
+    permissions.has_journal_access;
   const canOpenFlagged =
     permissions.loading || permissions.is_admin || permissions.has_flagged_access;
 

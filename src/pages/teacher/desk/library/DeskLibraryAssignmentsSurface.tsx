@@ -33,6 +33,7 @@ const TYPE_ICONS: Record<ClassroomItem['type'], React.ComponentType<{ className?
   weekly_plan_task: FileText,
   drill: Sparkles,
   activity: GraduationCap,
+  practice_test: FileText,
 };
 
 const TYPE_LABELS: Record<ClassroomItem['type'], string> = {
@@ -46,6 +47,7 @@ const TYPE_LABELS: Record<ClassroomItem['type'], string> = {
   weekly_plan_task: 'Weekly plan',
   drill: 'Drill',
   activity: 'Activity',
+  practice_test: 'Practice test',
 };
 
 const STATE_TONE: Record<AssignmentState, { bg: string; text: string; label: string }> = {

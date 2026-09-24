@@ -9,9 +9,13 @@ export interface ManagedUser {
   display_name: string | null;
   role: string;
   last_seen_at: string | null;
+  /** When the account was made. From auth, not profiles. */
+  created_at?: string | null;
   /** Set when the student has been archived: access off, hidden from the list, records kept. */
   archived_at: string | null;
   archived_reason: string | null;
+  /** Which access template the switches match. null = undecided, in the signup queue. */
+  access_tier: 'tier_1' | 'tier_2' | 'tier_3' | null;
   has_bootcamp_access: boolean;
   has_classroom_access: boolean;
   has_analytics_access: boolean;
@@ -60,9 +64,8 @@ export const FLAG_GROUPS = [
     label: 'Review',
     flags: [
       { key: 'has_journal_access', label: 'Wrong answers' },
-      { key: 'has_waj_access', label: 'Wrong answer journal' },
-      { key: 'has_flagged_access', label: 'Flagged' },
-      { key: 'has_analytics_access', label: 'Analytics and History' },
+      { key: 'has_flagged_access', label: 'Flagged questions' },
+      { key: 'has_analytics_access', label: 'Progress and history' },
       { key: 'has_export_access', label: 'Export' },
     ],
   },
@@ -71,8 +74,8 @@ export const FLAG_GROUPS = [
     flags: [
       { key: 'has_classroom_access', label: 'Classroom' },
       { key: 'has_chat_access', label: 'Messages' },
-      { key: 'has_schedule_access', label: 'Schedule' },
-      { key: 'has_ta_access', label: 'TA assignments' },
+      { key: 'has_schedule_access', label: 'Schedule and booking' },
+      { key: 'has_ta_access', label: 'TA worksheets' },
     ],
   },
 ] as const;
@@ -161,4 +164,37 @@ export function computeAdminAnalytics(users: ManagedUser[], analytics: AdminAnal
     total_attempts: 0,
     week_attempts: 0,
   };
+}
+
+// ── Access tiers ────────────────────────────────────────────────────────────
+// A tier is a template: it sets the twelve switches above, and the switches
+// stay what the app checks. The tier column only names the template the
+// switches currently match; the database relabels Tier 1 or Tier 3 as Tier 2
+// the moment a switch moves away from its template.
+
+export type AccessTier = 'tier_1' | 'tier_2' | 'tier_3';
+
+/** Classroom home, Messages, Schedule: what every account keeps. */
+export const FLOOR_FLAG_KEYS = ['has_classroom_access', 'has_chat_access', 'has_schedule_access'] as const;
+
+export const ACCESS_TIERS: { id: AccessTier; label: string; description: string }[] = [
+  { id: 'tier_1', label: 'Tier 1', description: 'Everything on.' },
+  { id: 'tier_2', label: 'Tier 2', description: 'You choose each feature.' },
+  { id: 'tier_3', label: 'Tier 3', description: 'Classroom, Messages and Schedule, plus what you assign.' },
+];
+
+export const TIER_LABELS: Record<AccessTier, string> = {
+  tier_1: 'Tier 1',
+  tier_2: 'Tier 2',
+  tier_3: 'Tier 3',
+};
+
+/** The switches a tier writes. Tier 2 writes nothing: it keeps what is there. */
+export function tierFlags(tier: AccessTier): Record<string, boolean> | null {
+  if (tier === 'tier_2') return null;
+  const out: Record<string, boolean> = {};
+  for (const key of CONFIGURABLE_FLAG_KEYS) {
+    out[key] = tier === 'tier_1' || (FLOOR_FLAG_KEYS as readonly string[]).includes(key);
+  }
+  return out;
 }
