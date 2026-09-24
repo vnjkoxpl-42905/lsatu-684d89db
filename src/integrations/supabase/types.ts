@@ -7035,6 +7035,10 @@ export type Database = {
         Returns: Json
       }
       purge_single_session_pii: { Args: { _now?: string }; Returns: Json }
+      purge_student_account_data: {
+        Args: { p_class_id: string }
+        Returns: undefined
+      }
       reconcile_booking_calendar_event: {
         Args: {
           _deleted?: boolean

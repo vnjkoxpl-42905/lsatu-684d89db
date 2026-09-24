@@ -83,25 +83,34 @@ const DEFAULT_PERMISSIONS: PermissionFlags = {
 // queryFn, which may run detached from a render.
 class SessionExpiredError extends Error {}
 
+// Thrown when the signed-in student's profile is stamped archived. An archived
+// account keeps every record, but it may not be inside the app: the session is
+// ended immediately rather than left running with all doors shut.
+class AccountArchivedError extends Error {}
+
 // One realtime channel per signed-in user, shared by every mounted consumer.
 // An UPDATE to the student's own profiles row (an admin flipping a flag)
 // invalidates the cached permissions, so a revoke takes effect on the next
 // render rather than when the stale window runs out. RLS scopes the stream to
 // the student's own row; profiles is in the supabase_realtime publication
 // (migration 20260922120000).
-type ProfileWatch = { channel: ReturnType<typeof supabase.channel>; listeners: Set<() => void> };
+type WatchListener = (row: Record<string, unknown> | null) => void;
+type ProfileWatch = { channel: ReturnType<typeof supabase.channel>; listeners: Set<WatchListener> };
 const profileWatches = new Map<string, ProfileWatch>();
 
-function acquireProfileWatch(userId: string, onChange: () => void): () => void {
+function acquireProfileWatch(userId: string, onChange: WatchListener): WatchListener {
   let watch = profileWatches.get(userId);
   if (!watch) {
-    const listeners = new Set<() => void>();
+    const listeners = new Set<WatchListener>();
     const channel = supabase
       .channel(`profile-access-${userId}`)
       .on(
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "profiles", filter: `class_id=eq.${userId}` },
-        () => listeners.forEach((fn) => fn()),
+        (payload) => {
+          const row = (payload?.new ?? null) as Record<string, unknown> | null;
+          listeners.forEach((fn) => fn(row));
+        },
       )
       .subscribe();
     watch = { channel, listeners };
@@ -111,7 +120,7 @@ function acquireProfileWatch(userId: string, onChange: () => void): () => void {
   return onChange;
 }
 
-function releaseProfileWatch(userId: string, listener: () => void) {
+function releaseProfileWatch(userId: string, listener: WatchListener) {
   const watch = profileWatches.get(userId);
   if (!watch) return;
   watch.listeners.delete(listener);
@@ -133,7 +142,21 @@ export function useUserPermissions(): UserPermissions {
   // closes it. Without this, every gated page would hold its own socket.
   useEffect(() => {
     if (!authReady || !userId) return;
-    const entry = acquireProfileWatch(userId, () => {
+    const entry = acquireProfileWatch(userId, (row) => {
+      // Ignore self-caused / unrelated row updates (e.g. presence heartbeats
+      // writing last_seen_at). Only an actual access-flag change needs a
+      // refetch; otherwise every heartbeat would re-trigger the permissions
+      // query, which used to feed a fetch -> write -> event -> fetch loop.
+      if (row) {
+        const cached = queryClient.getQueryData<PermissionFlags>(["user-permissions", userId]);
+        if (cached) {
+          const archivedNow = "archived_at" in row && !!row.archived_at;
+          const changed = ACCESS_FLAGS.some(
+            (flag) => flag in row && !!row[flag] !== !!cached[flag],
+          );
+          if (!changed && !archivedNow) return;
+        }
+      }
       void queryClient.invalidateQueries({ queryKey: ["user-permissions", userId] });
     });
     return () => releaseProfileWatch(userId, entry);
@@ -149,12 +172,13 @@ export function useUserPermissions(): UserPermissions {
     // stale window and the focus refetch are the fallback when the socket is
     // down, so "Revoke All Access" is never more than a tab switch away from
     // taking effect. Cached data keeps `loading` false, so neither flashes.
-    staleTime: 60_000,
+    staleTime: 5 * 60_000,
     gcTime: 30 * 60_000,
     refetchOnWindowFocus: true,
     // Retry transient failures a couple times, but never retry a dead session
     // (that path signs the user out).
-    retry: (count, err) => !(err instanceof SessionExpiredError) && count < 2,
+    retry: (count, err) =>
+      !(err instanceof SessionExpiredError) && !(err instanceof AccountArchivedError) && count < 2,
     queryFn: async () => {
       const userId = user!.id;
 
@@ -165,7 +189,7 @@ export function useUserPermissions(): UserPermissions {
       // Fetch access flags from profile
       const { data: profile, error: profileErr } = await supabase
         .from("profiles")
-        .select(ACCESS_FLAGS.join(", "))
+        .select([...ACCESS_FLAGS, "archived_at"].join(", "))
         .eq("class_id", userId)
         .maybeSingle();
       if (isSessionDeadError(profileErr)) throw new SessionExpiredError();
@@ -184,22 +208,22 @@ export function useUserPermissions(): UserPermissions {
       if (isSessionDeadError(roleErr)) throw new SessionExpiredError();
       if (roleErr) throw roleErr;
 
-      const profileRow = (profile ?? null) as unknown as Record<string, boolean> | null;
+      const profileRow = (profile ?? null) as unknown as Record<string, unknown> | null;
+      // Archived: no flags, no app. Sign them out on the spot.
+      if (profileRow?.archived_at) throw new AccountArchivedError();
+
       const flagValues = { ...DEFAULT_PERMISSIONS };
       for (const flag of ACCESS_FLAGS) {
-        flagValues[flag] = profileRow?.[flag] ?? false;
+        flagValues[flag] = Boolean(profileRow?.[flag]);
       }
       flagValues.is_admin = !!roleData;
 
-      // Touch last_seen_at (fire-and-forget). Non-blocking, but check the
-      // returned error and warn rather than discarding it entirely.
-      supabase
-        .from("profiles")
-        .update({ last_seen_at: new Date().toISOString() })
-        .eq("class_id", userId)
-        .then(({ error }) => {
-          if (error) console.warn("[permissions] last_seen_at touch failed:", error.message);
-        });
+      // Presence is owned by usePresenceHeartbeat; this read stays read-only.
+      // Writing last_seen_at here produced a write per permissions fetch and
+      // (with profiles in the realtime publication) a self-sustaining
+      // fetch -> write -> event -> fetch loop.
+
+
 
       return flagValues;
     },
@@ -210,7 +234,12 @@ export function useUserPermissions(): UserPermissions {
   // bare "/auth" discarded the pathname, query, and hash, so a student whose
   // token expired on an assignment link lost the link as well as the session.
   useEffect(() => {
-    if (query.error instanceof SessionExpiredError) {
+    if (query.error instanceof AccountArchivedError) {
+      (async () => {
+        await signOut({ keepSavedEmail: true });
+        navigate("/auth", { replace: true, state: { reason: "account_archived" } });
+      })();
+    } else if (query.error instanceof SessionExpiredError) {
       const returnTo = `${location.pathname}${location.search}${location.hash}`;
       (async () => {
         await signOut({ keepSavedEmail: true });

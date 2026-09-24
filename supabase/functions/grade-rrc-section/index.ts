@@ -171,7 +171,11 @@ async function judge(prompt: string): Promise<string> {
   if (gatewayKey) {
     const res = await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy/chat/completions`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${gatewayKey}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${gatewayKey}`,
+        "Content-Type": "application/json",
+        "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
+      },
       body: JSON.stringify({
         model: "google/gemini-3.1-flash-lite",
         temperature: 0,

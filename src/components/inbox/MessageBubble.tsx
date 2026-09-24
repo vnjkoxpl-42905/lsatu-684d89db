@@ -49,9 +49,8 @@ function extractRouteAction(body: string) {
 
   const displayBody = body
     .replace(route, '')
-    .replace(/\s{2,}/g, ' ')
     .trim()
-    .replace(/\s+([.,!?;:])/g, '$1');
+    .replace(/[ \t]+([.,!?;:])/g, '$1');
 
   return { displayBody, route };
 }
@@ -263,7 +262,7 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                       <div
                         onClick={() => setRevealedTimeId(timeRevealed ? null : message.id)}
                         className={cn(
-                          'relative break-words px-[18px] py-[13px] text-[15px] leading-[1.6] transition-shadow',
+                          'relative break-words whitespace-pre-wrap px-[18px] py-[13px] text-[15px] leading-[1.6] transition-shadow',
                           bubbleCorners(isInstructor, messageIndex, cluster.messages.length),
                           isInstructor
                             ? 'max-w-[520px] bg-[var(--msg-bubble-ink)] text-[var(--msg-bubble-ink-text)] shadow-[var(--msg-shadow)]'
