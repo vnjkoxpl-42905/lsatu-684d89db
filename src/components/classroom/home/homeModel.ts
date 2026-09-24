@@ -84,20 +84,48 @@ export interface HomeMessage {
   route: string;
 }
 
-export interface HomeSession {
-  /** ISO start. Null renders the honest "Nothing booked" variant. */
-  startsAt: string;
-  durationMin: number | null;
-  label: string;
-  meta: string | null;
-}
+export type HomeBooking =
+  | { state: "loading" | "error" | "none" }
+  | { state: "booked"; startsAt: string }
+  | { state: "credits"; creditsRemaining: number }
+  | { state: "payPerSession"; href: string; external: boolean };
 
-/** The plan-aware booking link shown next to the session card. */
-export interface HomeBookingCta {
-  label: string;
-  href: string;
-  external: boolean;
-  detail: string | null;
+export function homeBookingFor({
+  isAdmin,
+  isLoading,
+  isError,
+  nextBookingStartAt,
+  pass,
+  offers,
+}: {
+  isAdmin: boolean;
+  isLoading: boolean;
+  isError: boolean;
+  nextBookingStartAt: string | null;
+  pass: { status: string; credits_remaining: number } | null;
+  offers: { id: string; url: string }[];
+}): HomeBooking {
+  if (isAdmin) return { state: "none" };
+  if (isLoading) return { state: "loading" };
+  if (isError) return { state: "error" };
+  if (nextBookingStartAt) {
+    return { state: "booked", startsAt: nextBookingStartAt };
+  }
+  if (pass?.status.toLowerCase() === "active" && pass.credits_remaining > 0) {
+    return { state: "credits", creditsRemaining: pass.credits_remaining };
+  }
+
+  const singleOffer = offers.find(
+    (offer) => offer.id === "single-session" || offer.id === "single-session-native",
+  );
+  if (singleOffer) {
+    return {
+      state: "payPerSession",
+      href: singleOffer.url,
+      external: !singleOffer.url.startsWith("/"),
+    };
+  }
+  return { state: "none" };
 }
 
 export interface HomeWeekDay {
@@ -137,6 +165,8 @@ export interface ClassroomHomeModel {
 
   dateline: string;
   subtitle: string;
+  /** Calendar days until the student's test date; absent for null or past dates. */
+  daysToTest: number | null;
   dueTodayCount: number;
   hero: HomeHero | null;
   rows: HomeRow[];
@@ -147,9 +177,7 @@ export interface ClassroomHomeModel {
   /** Every preview-worthy thread, newest first. `message` is its head. */
   messages: HomeMessage[];
   unreadMessages: number;
-  session: HomeSession | null;
-  /** The one booking link that matches this student's plan. */
-  booking: HomeBookingCta | null;
+  homeBooking: HomeBooking;
   week: HomeWeekDay[];
   weekLabel: string;
 }

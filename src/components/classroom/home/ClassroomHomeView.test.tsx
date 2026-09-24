@@ -8,6 +8,7 @@ import {
   buildWeek,
   datelineFor,
   dueLabel,
+  homeBookingFor,
   stripKind,
   subtitleFor,
   weekDates,
@@ -30,6 +31,7 @@ const EMPTY: ClassroomHomeModel = {
   access: { messages: true, schedule: true, activities: true, drill: true },
   dateline: "Monday · August 3 · 2026",
   subtitle: "Nothing is due today. Drill whatever you feel like.",
+  daysToTest: null,
   dueTodayCount: 0,
   hero: null,
   rows: [],
@@ -37,8 +39,7 @@ const EMPTY: ClassroomHomeModel = {
   message: null,
   messages: [],
   unreadMessages: 0,
-  session: null,
-  booking: { label: "Book one", href: "/booking", external: false, detail: null },
+  homeBooking: { state: "none" },
   week: buildWeek(weekDates(new Date(2026, 7, 3)), [], new Date(2026, 7, 3)),
   weekLabel: "August 3 to 9",
 };
@@ -105,13 +106,12 @@ const FULL: ClassroomHomeModel = {
     },
   ],
   unreadMessages: 1,
-  session: {
-    startsAt: "2026-08-07T16:00:00",
-    durationMin: 60,
-    label: "Friday, August 7 · 4:00 p.m.",
-    meta: "60 minutes with Joshua · in four days",
-  },
+  homeBooking: { state: "booked", startsAt: "2026-08-07T16:00:00" },
 };
+
+// Continue is pinned off so the hero is not folded into it (the view drops a
+// hero that repeats the Continue card's work).
+const HERO_ONLY: ClassroomHomeModel = { ...FULL, continueRow: null };
 
 describe("ClassroomHomeView", () => {
   it("opens the assigned work and adaptive Smart Drill from the action cards", () => {
@@ -124,10 +124,13 @@ describe("ClassroomHomeView", () => {
     expect(screen.getByLabelText("Next seven days")).toBeInTheDocument();
   });
 
-  it("opens the single finder from the timed-section card and keeps its shortcut", () => {
-    render(<ClassroomHomeView model={FULL} loading={false} onOpen={vi.fn()} />);
+  it("keeps one finder and sends Timed section to Testing", () => {
+    const onOpen = vi.fn();
+    render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
     expect(screen.getAllByRole("button", { name: "Find a question" })).toHaveLength(1);
-    const trigger = screen.getByRole("button", { name: "Start a timed section" });
+    fireEvent.click(screen.getByRole("button", { name: "Timed section" }));
+    expect(onOpen).toHaveBeenCalledWith("/testing");
+    const trigger = screen.getByRole("button", { name: "Find a question" });
     trigger.focus();
     fireEvent.click(trigger);
     expect(screen.getAllByRole("dialog")).toHaveLength(1);
@@ -140,15 +143,193 @@ describe("ClassroomHomeView", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
+  it("shows a slim booked-session line in the top panel and opens booking management", () => {
+    const onOpen = vi.fn();
+    render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
+    const nextSession = screen.getByRole("button", { name: /Next session: Friday/ });
+    expect(nextSession).toBeInTheDocument();
+    expect(nextSession.closest(".classroom-home-top")).toBeInTheDocument();
+    fireEvent.click(nextSession);
+    expect(onOpen).toHaveBeenCalledWith("/booking");
+    expect(screen.queryByLabelText("Next session card")).not.toBeInTheDocument();
+  });
+
+  it("shows the remaining credits as a booking pill", () => {
+    const onOpen = vi.fn();
+    const model = {
+      ...EMPTY,
+      homeBooking: { state: "credits", creditsRemaining: 3 } as const,
+    };
+    render(<ClassroomHomeView model={model} loading={false} onOpen={onOpen} />);
+    fireEvent.click(screen.getByRole("button", { name: "Book · 3 left" }));
+    expect(onOpen).toHaveBeenCalledWith("/booking");
+  });
+
+  it("uses the single-session offer route for the pay-per-session pill", () => {
+    const onOpen = vi.fn();
+    const homeBooking = homeBookingFor({
+      isAdmin: false,
+      isLoading: false,
+      isError: false,
+      nextBookingStartAt: null,
+      pass: { status: "expired", credits_remaining: 0 },
+      offers: [
+        { id: "package-renewal", url: "/renew" },
+        { id: "single-session-native", url: "/single-session" },
+      ],
+    });
+    expect(homeBooking).toEqual({
+      state: "payPerSession",
+      href: "/single-session",
+      external: false,
+    });
+    const model = { ...EMPTY, homeBooking };
+    render(<ClassroomHomeView model={model} loading={false} onOpen={onOpen} />);
+    fireEvent.click(screen.getByRole("button", { name: "Book a session" }));
+    expect(onOpen).toHaveBeenCalledWith("/single-session");
+    expect(onOpen).not.toHaveBeenCalledWith("/renew");
+  });
+
+  it("opens an external single-session offer in a safe new tab", () => {
+    const open = vi.spyOn(window, "open").mockImplementation(() => null);
+    const homeBooking = homeBookingFor({
+      isAdmin: false,
+      isLoading: false,
+      isError: false,
+      nextBookingStartAt: null,
+      pass: null,
+      offers: [{ id: "single-session", url: "https://booking.example/session" }],
+    });
+    render(
+      <ClassroomHomeView
+        model={{ ...EMPTY, homeBooking }}
+        loading={false}
+        onOpen={vi.fn()}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Book a session" }));
+    expect(open).toHaveBeenCalledWith(
+      "https://booking.example/session",
+      "_blank",
+      "noopener,noreferrer",
+    );
+    open.mockRestore();
+  });
+
+  it("renders no booking action for none, loading, error, or admin", () => {
+    const payPerSession = {
+      state: "payPerSession" as const,
+      href: "/single-session",
+      external: false,
+    };
+    const { rerender } = render(
+      <ClassroomHomeView model={EMPTY} loading={false} onOpen={vi.fn()} />,
+    );
+    for (const state of ["none", "loading", "error"] as const) {
+      const model = { ...EMPTY, homeBooking: { state } };
+      rerender(<ClassroomHomeView model={model} loading={false} onOpen={vi.fn()} />);
+      expect(screen.queryByRole("button", { name: "Book a session" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /Book ·/ })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /Next session:/ })).not.toBeInTheDocument();
+    }
+    rerender(
+      <ClassroomHomeView
+        model={{ ...EMPTY, isAdmin: true, homeBooking: payPerSession }}
+        loading={false}
+        onOpen={vi.fn()}
+      />,
+    );
+    expect(screen.queryByRole("button", { name: "Book a session" })).not.toBeInTheDocument();
+  });
+
+  it("does not show a default RRC tile, while assigned RRC work keeps its action", () => {
+    const onOpen = vi.fn();
+    const assignedRrc = {
+      key: "rrc:section-1",
+      title: "Read, Recall, Colour: Section 1",
+      kind: "activity" as const,
+      tone: "activity" as const,
+      meta: "Read, Recall, Colour · assigned today",
+      route: "/activities/sections/section-1",
+      actionLabel: "Open",
+      emphasis: true,
+      isNew: true,
+      dueToday: false,
+      overdue: false,
+    };
+    const model = { ...EMPTY, rows: [assignedRrc], newCount: 1 };
+    render(<ClassroomHomeView model={model} loading={false} onOpen={onOpen} />);
+    expect(screen.queryByLabelText("Read, Recall, Colour")).not.toBeInTheDocument();
+    expect(screen.getByText(assignedRrc.title, { selector: ".classroom-home-row-title" })).toBeInTheDocument();
+    const assignedRow = screen
+      .getAllByRole("button", { name: /Read, Recall, Colour: Section 1/ })
+      .find((button) => button.classList.contains("classroom-home-row"));
+    expect(assignedRow).toBeDefined();
+    fireEvent.click(assignedRow!);
+    expect(onOpen).toHaveBeenCalledWith(assignedRrc.route);
+  });
+
+  it("keeps the From Joshua card out of Home when there is no message", () => {
+    render(<ClassroomHomeView model={EMPTY} loading={false} onOpen={vi.fn()} />);
+    expect(screen.queryByLabelText("From Joshua")).not.toBeInTheDocument();
+  });
+
+  it("shows days to test day only for a future date", () => {
+    const { rerender } = render(
+      <ClassroomHomeView
+        model={{ ...FULL, daysToTest: 38 }}
+        loading={false}
+        onOpen={vi.fn()}
+      />,
+    );
+    expect(screen.getByLabelText("38 days to test day")).toBeInTheDocument();
+    rerender(
+      <MemoryRouter>
+        <ClassroomHomeView
+          model={{ ...FULL, daysToTest: null }}
+          loading={false}
+          onOpen={vi.fn()}
+        />
+      </MemoryRouter>,
+    );
+    expect(screen.queryByText("days to test day")).not.toBeInTheDocument();
+  });
+
+  it("hides Timed section without drill access", () => {
+    render(
+      <ClassroomHomeView
+        model={{ ...FULL, access: { ...FULL.access, drill: false } }}
+        loading={false}
+        onOpen={vi.fn()}
+      />,
+    );
+    expect(screen.queryByRole("button", { name: "Timed section" })).not.toBeInTheDocument();
+  });
+
   it("hides Continue when no eligible assigned work remains", () => {
-    render(<ClassroomHomeView model={{ ...EMPTY, rows: [{ ...FULL.rows[0], key: "report:a:1" }] }} loading={false} onOpen={vi.fn()} />);
+    render(
+      <ClassroomHomeView
+        model={{ ...EMPTY, rows: [{ ...FULL.rows[0], key: "report:a:1" }] }}
+        loading={false}
+        onOpen={vi.fn()}
+      />,
+    );
     expect(screen.queryByRole("button", { name: "Continue assigned work" })).toBeNull();
     expect(screen.getByRole("button", { name: "Smart Drill" })).toBeInTheDocument();
   });
 
   it("keeps hidden practice and messages features hidden", () => {
-    render(<ClassroomHomeView model={{ ...FULL, access: { ...FULL.access, drill: false, activities: false, messages: false } }} loading={false} onOpen={vi.fn()} />);
-    for (const name of ["Continue assigned work", "Smart Drill", "Start a timed section"]) {
+    render(
+      <ClassroomHomeView
+        model={{
+          ...FULL,
+          access: { ...FULL.access, drill: false, activities: false, messages: false },
+        }}
+        loading={false}
+        onOpen={vi.fn()}
+      />,
+    );
+    for (const name of ["Continue assigned work", "Smart Drill", "Timed section"]) {
       expect(screen.queryByRole("button", { name })).toBeNull();
     }
     // The finder was never gated on Home; the redesign keeps it that way.
@@ -171,7 +352,17 @@ describe("ClassroomHomeView", () => {
 
   it("continues a section outside the four visible rows through its briefing", () => {
     const onOpen = vi.fn();
-    const continueRow = { ...FULL.rows[0], key: "earliest", route: "/classroom/item/earliest", briefing: { minutes: 35, sectionName: "Logical Reasoning", href: "/drill?section=1", sealed: true } };
+    const continueRow = {
+      ...FULL.rows[0],
+      key: "earliest",
+      route: "/classroom/item/earliest",
+      briefing: {
+        minutes: 35,
+        sectionName: "Logical Reasoning",
+        href: "/drill?section=1",
+        sealed: true,
+      },
+    };
     render(<ClassroomHomeView model={{ ...FULL, continueRow }} loading={false} onOpen={onOpen} />);
     fireEvent.click(screen.getByRole("button", { name: "Continue assigned work" }));
     expect(screen.getByRole("dialog", { name: "Logical Reasoning" })).toBeInTheDocument();
@@ -209,6 +400,7 @@ describe("ClassroomHomeView", () => {
     const model = {
       ...FULL,
       rows: [sectionRow],
+      continueRow: null,
       hero: { ...FULL.hero!, primaryLabel: "Open the set", row: sectionRow },
     };
 
@@ -253,7 +445,7 @@ describe("ClassroomHomeView", () => {
     it("still navigates for work that is not a timed section", () => {
       const onOpen = vi.fn();
       render(
-        <ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
+        <ClassroomHomeView model={HERO_ONLY} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
       );
 
       fireEvent.click(screen.getByRole("button", { name: "Start the activity" }));
@@ -301,7 +493,7 @@ describe("ClassroomHomeView", () => {
   it("leads with the hero and opens the assignment it names", () => {
     const onOpen = vi.fn();
     render(
-      <ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
+      <ClassroomHomeView model={HERO_ONLY} loading={false} onOpen={onOpen} onSeeAllWork={vi.fn()} />,
     );
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
@@ -315,7 +507,7 @@ describe("ClassroomHomeView", () => {
 
   it("draws one tick per prompt and fills only what was answered", () => {
     const { container } = render(
-      <ClassroomHomeView model={FULL} loading={false} onOpen={vi.fn()} onSeeAllWork={vi.fn()} />,
+      <ClassroomHomeView model={HERO_ONLY} loading={false} onOpen={vi.fn()} onSeeAllWork={vi.fn()} />,
     );
     expect(container.querySelectorAll(".classroom-home-tick")).toHaveLength(12);
     expect(container.querySelectorAll(".classroom-home-tick-done")).toHaveLength(1);
@@ -327,10 +519,9 @@ describe("ClassroomHomeView", () => {
     );
 
     expect(screen.getByText("Nothing assigned right now.")).toBeInTheDocument();
-    expect(screen.getByText("No messages yet.")).toBeInTheDocument();
-    expect(screen.getByText("Nothing booked")).toBeInTheDocument();
-    // The booking door stays open in the empty variant.
-    expect(screen.getByRole("button", { name: "Book one" })).toBeInTheDocument();
+    expect(screen.queryByText("No messages yet.")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Next session")).not.toBeInTheDocument();
+    expect(screen.queryByText("Nothing booked")).not.toBeInTheDocument();
     // No hero, and therefore no progress card to fill with a guess.
     expect(screen.queryByLabelText("Progress")).not.toBeInTheDocument();
     expect(screen.queryByText(/DUE TODAY/)).not.toBeInTheDocument();
@@ -344,6 +535,13 @@ describe("ClassroomHomeView", () => {
     expect(container.querySelectorAll(".classroom-home-day-today")).toHaveLength(1);
   });
 
+  it("routes the Inbox pill to the inbox and uses the existing unread count", () => {
+    const onOpen = vi.fn();
+    render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
+    fireEvent.click(screen.getByRole("button", { name: "Inbox, 1 unread" }));
+    expect(onOpen).toHaveBeenCalledWith("/inbox");
+  });
+
   it("drops the message block for a student without chat access", () => {
     const noChat: ClassroomHomeModel = {
       ...FULL,
@@ -355,7 +553,7 @@ describe("ClassroomHomeView", () => {
       <ClassroomHomeView model={noChat} loading={false} onOpen={vi.fn()} onSeeAllWork={vi.fn()} />,
     );
     // Neither the thread nor the empty shell: the inbox route is locked for them.
-    expect(screen.queryByLabelText("From your coach")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("From Joshua")).not.toBeInTheDocument();
     expect(screen.queryByText("No messages yet.")).not.toBeInTheDocument();
     // The rest of the page is untouched.
     expect(screen.getByLabelText("Assigned to you")).toBeInTheDocument();
@@ -383,7 +581,7 @@ describe("ClassroomHomeView", () => {
     render(
       <ClassroomHomeView model={admin} loading={false} onOpen={vi.fn()} onSeeAllWork={vi.fn()} />,
     );
-    expect(screen.getByText("MESSAGES")).toBeInTheDocument();
+    expect(screen.queryByText("MESSAGES")).not.toBeInTheDocument();
     expect(screen.queryByText("FROM JOSHUA")).not.toBeInTheDocument();
   });
 
@@ -464,10 +662,17 @@ describe("ClassroomHomeView", () => {
 
   // The masthead runs straight into the hero, the way it did before the
   // picker was inserted between them.
+  it("drops the hero when the Continue card already offers the same work", () => {
+    render(<ClassroomHomeView model={FULL} loading={false} onOpen={vi.fn()} />);
+
+    expect(screen.getByRole("button", { name: "Continue assigned work" })).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Pick up where you left off" })).toBeNull();
+  });
+
   it("puts the hero directly under the greeting", () => {
     render(
       <ClassroomHomeView
-        model={FULL}
+        model={HERO_ONLY}
         loading={false}
         onOpen={vi.fn()}
         onSeeAllWork={vi.fn()}
@@ -482,6 +687,47 @@ describe("ClassroomHomeView", () => {
 });
 
 describe("homeModel", () => {
+  it("derives all Home booking states from the existing booking data", () => {
+    const base = {
+      isAdmin: false,
+      isLoading: false,
+      isError: false,
+      nextBookingStartAt: null,
+      pass: null,
+      offers: [],
+    };
+    expect(homeBookingFor({ ...base, isLoading: true })).toEqual({ state: "loading" });
+    expect(homeBookingFor({ ...base, isError: true })).toEqual({ state: "error" });
+    expect(homeBookingFor({ ...base, isAdmin: true })).toEqual({ state: "none" });
+    expect(homeBookingFor(base)).toEqual({ state: "none" });
+    expect(
+      homeBookingFor({
+        ...base,
+        nextBookingStartAt: "2026-08-07T16:00:00",
+        pass: { status: "active", credits_remaining: 3 },
+      }),
+    ).toEqual({ state: "booked", startsAt: "2026-08-07T16:00:00" });
+    expect(
+      homeBookingFor({
+        ...base,
+        pass: { status: "active", credits_remaining: 3 },
+      }),
+    ).toEqual({ state: "credits", creditsRemaining: 3 });
+  });
+
+  it("returns none when the only offer is a renewal", () => {
+    expect(
+      homeBookingFor({
+        isAdmin: false,
+        isLoading: false,
+        isError: false,
+        nextBookingStartAt: null,
+        pass: { status: "expired", credits_remaining: 0 },
+        offers: [{ id: "package-renewal", url: "/renew" }],
+      }),
+    ).toEqual({ state: "none" });
+  });
+
   it("keeps the date whole in the dateline", () => {
     expect(datelineFor(new Date(2026, 7, 3))).toBe("Monday · August 3 · 2026");
   });

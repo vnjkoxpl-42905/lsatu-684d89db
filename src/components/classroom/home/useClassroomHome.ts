@@ -28,7 +28,6 @@ import { useCompleteAssignedWork } from "@/lib/completeAssignedWork";
 import { supabase } from "@/integrations/supabase/client";
 
 import { useStudentBooking } from "@/hooks/useStudentBooking";
-import { resolveStudentBookingCta } from "@/lib/studentBookingCta";
 import { useInbox } from "@/hooks/useInbox";
 import { useCurrentWeeklyPlan } from "@/hooks/useWeeklyPlan";
 import {
@@ -41,6 +40,7 @@ import type { ActivityAssignmentSummary } from "@/features/activity-centre/api/t
 import { localDayISO } from "@/lib/localDate";
 import {
   pickContinueWork,
+  homeBookingFor,
   KIND_LABEL,
   KIND_TONE,
   assignedLabel,
@@ -55,6 +55,7 @@ import {
   weekDates,
   weekLabelFor,
   type ClassroomHomeModel,
+  type HomeBooking,
   type HomeKind,
   type HomeMessage,
   type HomeRow,
@@ -80,31 +81,6 @@ function timeLabel(iso: string) {
     hour: "numeric",
     minute: "2-digit",
   }).format(new Date(iso));
-}
-
-function sessionLabel(iso: string) {
-  return new Intl.DateTimeFormat("en-CA", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  })
-    .format(new Date(iso))
-    .concat(" · ", timeLabel(iso));
-}
-
-function daysUntil(iso: string) {
-  const start = new Date(iso);
-  start.setHours(0, 0, 0, 0);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return Math.round((start.getTime() - today.getTime()) / 86_400_000);
-}
-
-function untilLabel(iso: string) {
-  const days = daysUntil(iso);
-  if (days <= 0) return "today";
-  if (days === 1) return "tomorrow";
-  return `in ${spell(days)} days`;
 }
 
 export function useClassroomHome(): {
@@ -148,6 +124,23 @@ export function useClassroomHome(): {
   const bookingQuery = useStudentBooking();
   const planQuery = useCurrentWeeklyPlan();
   const { conversations, clearConversationFromHome } = useInbox();
+
+  // The one new Home read in v3. This is the student's own profile row and
+  // deliberately selects only the test date needed for the top panel.
+  const testDateQuery = useQuery({
+    queryKey: ["classroom-home:test-date", user?.id],
+    enabled: !!user && !permissions.is_admin,
+    staleTime: 5 * 60_000,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("test_date")
+        .eq("class_id", user!.id)
+        .maybeSingle();
+      if (error) throw error;
+      return data?.test_date ?? null;
+    },
+  });
 
   // Same key and same fetcher as the todo feed, so this is a cache read rather
   // than a second round trip. The feed flattens activities to a title and a
@@ -489,45 +482,22 @@ export function useClassroomHome(): {
       )[0] ?? null;
   }, [bookingQuery.data?.bookings]);
 
-  const session = React.useMemo(() => {
-    if (!nextBooking) return null;
-    const minutes = Math.round(
-      (new Date(nextBooking.end_at).getTime() -
-        new Date(nextBooking.start_at).getTime()) /
-        60_000,
-    );
-    return {
-      startsAt: nextBooking.start_at,
-      durationMin: Number.isFinite(minutes) && minutes > 0 ? minutes : null,
-      label: sessionLabel(nextBooking.start_at),
-      meta: [
-        // The instructor is named for a student, whose session it is with him.
-        // Staff looking at their own classroom get the plain duration: "with
-        // Joshua" reads as nonsense when you are Joshua.
-        Number.isFinite(minutes) && minutes > 0
-          ? permissions.is_admin
-            ? `${minutes} minutes`
-            : `${minutes} minutes with Joshua`
-          : null,
-        untilLabel(nextBooking.start_at),
-      ]
-        .filter(Boolean)
-        .join(" · "),
-    };
-  }, [nextBooking, permissions.is_admin]);
-
-  // The booking link follows the plan the student is actually on: credits in
-  // hand go straight to the picker, a pay-per-session student gets the single
-  // link, a spent package gets offered back as a renewal.
-  const booking = React.useMemo(
-    () =>
-      resolveStudentBookingCta({
-        pass: bookingQuery.data?.pass ?? null,
-        offers: bookingQuery.data?.offers ?? [],
-        hasUpcomingSession: !!nextBooking,
-      }),
-    [bookingQuery.data?.offers, bookingQuery.data?.pass, nextBooking],
-  );
+  const homeBooking = React.useMemo<HomeBooking>(() => {
+    return homeBookingFor({
+      isAdmin: permissions.is_admin,
+      isLoading: bookingQuery.isPending,
+      isError: bookingQuery.isError,
+      nextBookingStartAt: nextBooking?.start_at ?? null,
+      pass: bookingQuery.data?.pass ?? null,
+      offers: bookingQuery.data?.offers ?? [],
+    });
+  }, [
+    bookingQuery.data,
+    bookingQuery.isError,
+    bookingQuery.isPending,
+    nextBooking,
+    permissions.is_admin,
+  ]);
 
   /* ── the week ──────────────────────────────────────────────────────── */
 
@@ -574,6 +544,13 @@ export function useClassroomHome(): {
     access,
     dateline: datelineFor(now),
     subtitle: subtitleFor(dueTodayCount, workRows.length, unread),
+    daysToTest: (() => {
+      const testDate = testDateQuery.data;
+      if (!testDate) return null;
+      const parsed = new Date(`${testDate.slice(0, 10)}T00:00:00`);
+      const delta = Math.round((parsed.getTime() - new Date(`${today}T00:00:00`).getTime()) / 86_400_000);
+      return Number.isFinite(delta) && delta >= 0 ? delta : null;
+    })(),
     dueTodayCount,
     hero,
     rows: listRows,
@@ -582,8 +559,7 @@ export function useClassroomHome(): {
     message,
     messages,
     unreadMessages: unread,
-    session,
-    booking,
+    homeBooking,
     week,
     weekLabel: weekLabelFor(dates),
   };
