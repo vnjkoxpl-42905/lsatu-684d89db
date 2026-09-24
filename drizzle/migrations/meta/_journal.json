@@ -162,6 +162,27 @@
       "when": 1790144845089,
       "tag": "0022_student_archive",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1790280476667,
+      "tag": "0023_access_tiers_stage1_rewire",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1790280507857,
+      "tag": "0024_access_tiers_stage2_tier_column",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1790280538363,
+      "tag": "0025_access_tiers_stage3_assign_tiers",
+      "breakpoints": true
     }
   ]
 }
