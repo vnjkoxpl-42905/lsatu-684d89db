@@ -1474,6 +1474,15 @@ html.dark .classroom-root.classroom-root-drill {
     transform var(--observatory-motion);
 }
 
+@keyframes drill-observatory-smart-drill-pulse {
+  0%, 100% { outline: 0 solid rgba(244, 241, 234, 0); }
+  50% { outline: 5px solid rgba(244, 241, 234, 0.16); }
+}
+
+.drill-observatory-root .drill-observatory-smart-drill-pulse {
+  animation: drill-observatory-smart-drill-pulse 2.4s ease-in-out infinite;
+}
+
 /* No transform on the primary CTA — it is the one fixed point on the page. */
 .drill-observatory-root .drill-observatory-cta:hover {
   background: var(--observatory-ink);
@@ -2314,9 +2323,9 @@ html.dark .classroom-root.classroom-root-drill {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .drill-observatory-root *,
-  .drill-observatory-root *::before,
-  .drill-observatory-root *::after {
+  .drill-observatory-root *:not(.drill-observatory-smart-drill-pulse),
+  .drill-observatory-root *:not(.drill-observatory-smart-drill-pulse)::before,
+  .drill-observatory-root *:not(.drill-observatory-smart-drill-pulse)::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;

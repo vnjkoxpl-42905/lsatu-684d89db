@@ -35,11 +35,15 @@ function MainhubHero({
   drillReturnTo,
   onOpenBuilder,
   onStartSmartRc,
+  smartDrillPulseActive,
+  onSmartDrillClick,
 }: {
   section: DrillSection;
   drillReturnTo: string;
   onOpenBuilder: () => void;
   onStartSmartRc: () => void;
+  smartDrillPulseActive: boolean;
+  onSmartDrillClick: () => void;
 }) {
   const navigate = useNavigate();
 
@@ -65,9 +69,16 @@ function MainhubHero({
               Let Smart Drill choose what would be most useful to practice next.
             </p>
           </div>
-          <Button onClick={startSmart} className="drill-observatory-cta mt-5 w-fit">
+          <Button
+            onClick={() => {
+              onSmartDrillClick();
+              startSmart();
+            }}
+            className={`drill-observatory-cta mt-5 w-fit${
+              smartDrillPulseActive ? " drill-observatory-smart-drill-pulse" : ""
+            }`}
+          >
             Smart Drill
-            <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
           </Button>
         </div>
 
@@ -188,6 +199,7 @@ export default function AcademyMainhub({
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [smartDrillPulseActive, setSmartDrillPulseActive] = React.useState(true);
   const navigate = useNavigate();
 
   /* Which section the hub is showing. URL first, then what this browser
@@ -394,6 +406,8 @@ export default function AcademyMainhub({
             drillReturnTo={drillReturnTo}
             onOpenBuilder={() => openLauncher("type-drill")}
             onStartSmartRc={startSmartRc}
+            smartDrillPulseActive={smartDrillPulseActive}
+            onSmartDrillClick={() => setSmartDrillPulseActive(false)}
           />
         )}
 
