@@ -50,7 +50,7 @@ export default function AssignedWorkPanel({
             <div className="drill-observatory-today-rail h-[62px]" />
           </div>
         ) : shownRows.length > 0 ? (
-          <ol className="mt-3 grid gap-3">
+          <ol className="mt-3 grid grid-cols-[minmax(0,1fr)] gap-3">
             {shownRows.map((row, index) => (
               <li key={row.key}>
                 <button

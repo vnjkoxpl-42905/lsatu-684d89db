@@ -12,9 +12,9 @@ _Avoid_: Activities Centre, Skills Centre, Drill Centre
 One bespoke skill exercise — a titled, self-contained set of authored items with an answer key, worked through with a coach (e.g. "Negation Station"). The unit a teacher assigns.
 _Avoid_: Skill drill, drill (reserved for the MCQ engine), station, module, game
 
-**Homepage**:
-Joshua-facing shorthand for an individual Activity's intro/start page: the page that shows the Activity title, item count, overview copy, example, and Start action before the student begins the first Question Set.
-_Avoid_: LSAT U landing page, Foyer, Activity Centre list
+**Activity start page**:
+An individual Activity's intro page: the page that shows the Activity title, item count, overview copy, example, and Start action before the student begins the first Question Set.
+_Avoid_: Homepage (that word now means the Classroom's Home), LSAT U landing page, Foyer, Activity Centre list
 
 **Question Set**:
 Codex-facing term for one complete per-question unit inside an Activity: the Question Type, the prompt, the response area, the coach feedback, the credited answer, and the answer key material used to judge the response. In the UI, this should still be labeled "Question N"; when Joshua says "question set," he means this full unit, not the collection of all questions.
@@ -128,7 +128,7 @@ page.
 
 **Section Launch**:
 The page a student lands on before running an RRC section: the method as four Beats, her last few Attempts, and the one control that starts the run. `SectionLaunch` in code, `.sl-` in CSS. It replaces the editorial intro for section mode only; the eight typed Activities keep theirs.
-_Avoid_: The Chamber (the approved mockup's name for it, and already a world under `worlds/chamber/`), Homepage (that is an Activity's own intro page), intro, splash, lobby, dashboard
+_Avoid_: The Chamber (the approved mockup's name for it, and already a world under `worlds/chamber/`), Activity start page (that is an Activity's own intro page), Homepage (that is the Classroom's Home), intro, splash, lobby, dashboard
 
 **Beat**:
 Internal code term for one of the four method steps shown on Section Launch. It may remain in implementation names, but it is never student-facing. Students see **step**: Read it, Tell it back, Colour it, Recall it.

@@ -74,7 +74,7 @@ function MainhubHero({
         <div className="drill-observatory-console w-full">
           <div className="flex flex-col justify-center gap-5">
             <div className="space-y-3">
-              <h2 className="drill-observatory-ink-full text-[clamp(1.35rem,3cqi,2rem)] font-semibold leading-tight tracking-[-0.025em]">
+              <h2 className="drill-observatory-ink-full font-semibold leading-tight tracking-[-0.025em]">
                 {section === "rc" ? "Build the reading set you need." : "Build the drill you need."}
               </h2>
               <p className="drill-observatory-ink-70 max-w-[48ch] text-sm leading-[1.6]">
