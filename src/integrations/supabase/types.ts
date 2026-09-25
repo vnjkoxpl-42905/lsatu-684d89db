@@ -3300,6 +3300,36 @@ export type Database = {
           },
         ]
       }
+      practice_test_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          id: string
+          pt: number
+          status: string
+          student_id: string
+          unlock_at: string | null
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          pt: number
+          status?: string
+          student_id: string
+          unlock_at?: string | null
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          pt?: number
+          status?: string
+          student_id?: string
+          unlock_at?: string | null
+        }
+        Relationships: []
+      }
       practice_test_runs: {
         Row: {
           break_after_leg: number
@@ -6083,6 +6113,10 @@ export type Database = {
       bump_booking_hit: {
         Args: { _action: string; _ip_hash: string; _slug: string }
         Returns: number
+      }
+      can_sit_practice_test: {
+        Args: { _pt: number; _user: string }
+        Returns: boolean
       }
       cancel_booking_redemption: {
         Args: { _actor_id?: string; _redemption_id: string; _refund?: boolean }
