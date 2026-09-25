@@ -1946,3 +1946,60 @@ html.dark .classroom-root .classroom-home-main-card .classroom-home-row-wrap:hov
     width: 100%;
   }
 }
+
+/* Assigned work and the latest message share one row, approved 2026-09-25.
+   Stacked, a student with an overdue item, a second assignment and a message
+   ran to 872px at 1536x695 even after the spacing above; side by side it
+   ends at 672. Either card alone takes the full row. Below a 760px column
+   everything stacks again. */
+.classroom-root .classroom-home {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.classroom-root .classroom-home > * {
+  grid-column: 1 / -1;
+}
+
+.classroom-root .classroom-home > .classroom-home-main-card:has(~ .classroom-home-message-card) {
+  grid-column: 1;
+}
+
+.classroom-root .classroom-home > .classroom-home-main-card ~ .classroom-home-message-card {
+  grid-column: 2;
+}
+
+/* The assigned rows sat in a narrow island in the middle of the card. */
+.classroom-root .classroom-home .classroom-home-main-card .classroom-home-main-content {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+/* The greeting's tools column gets the wider share so the four quick starts
+   (Smart Drill, Timed section, Inbox, Book a session) sit on one row instead
+   of leaving Book a session alone on a second one. */
+.classroom-root .classroom-home .classroom-home-masthead {
+  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+}
+
+.classroom-root .classroom-home .classroom-home-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 8px;
+}
+
+.classroom-root .classroom-home .classroom-home-actions .classroom-home-action {
+  justify-content: center;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+@container classroom-home (max-width: 759.98px) {
+  /* .classroom-home is the container, so it cannot query itself; its
+     children span both columns instead, which stacks them. */
+  .classroom-root .classroom-home > .classroom-home-main-card:has(~ .classroom-home-message-card),
+  .classroom-root .classroom-home > .classroom-home-main-card ~ .classroom-home-message-card {
+    grid-column: 1 / -1;
+  }
+}
