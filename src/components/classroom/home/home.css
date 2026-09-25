@@ -1856,3 +1856,150 @@ html.dark .classroom-root .classroom-home-main-card .classroom-home-row-wrap {
 html.dark .classroom-root .classroom-home-main-card .classroom-home-row-wrap:hover {
   background: rgba(255, 255, 255, 0.14);
 }
+
+/* ── Fit to the screen ─────────────────────────────────────────────────── */
+
+/* Home sizes itself from the window so a student with homework sees the
+   greeting, what's due, Continue, the quick starts, Assigned work, the latest
+   message and the next seven days on one screen at 1536x695 (Windows' default
+   125% on a 1080p laptop). Every value is a clamp: a floor for small laptops,
+   a cap for big monitors, the window's height in between. No step changes.
+   On a shorter window the page scrolls from the bottom up, so Next seven days
+   is the first thing to leave the screen and the greeting is the last. */
+.classroom-root.classroom-root-home .classroom-column {
+  max-width: clamp(1260px, 74vw, 1560px);
+  padding: clamp(12px, 2.4vh, 30px) clamp(24px, 3vw, 44px) clamp(24px, 5vh, 56px);
+}
+
+.classroom-root .classroom-home {
+  gap: clamp(10px, 1.6vh, 22px);
+}
+
+.classroom-root .classroom-home .classroom-home-top {
+  padding: clamp(14px, 2.4vh, 36px) clamp(22px, 2.6vw, 40px);
+}
+
+.classroom-root .classroom-home .classroom-home-title {
+  font-size: clamp(32px, min(5cqi, 6.2vh), 60px);
+  margin-top: clamp(6px, 1.4vh, 14px);
+  margin-bottom: clamp(6px, 1.2vh, 12px);
+}
+
+.classroom-root .classroom-home .classroom-home-top-tools {
+  gap: clamp(8px, 1.4vh, 12px);
+}
+
+.classroom-root .classroom-home .classroom-home-action-continue {
+  min-height: clamp(64px, 11vh, 112px);
+  padding: clamp(10px, 1.8vh, 18px) 20px;
+}
+
+.classroom-root .classroom-home .classroom-home-main-card {
+  padding: clamp(14px, 2.6vh, 26px) clamp(18px, 1.8vw, 26px);
+}
+
+.classroom-root .classroom-home .classroom-home-message-card {
+  gap: clamp(8px, 1.4vh, 12px);
+  padding: clamp(10px, 1.8vh, 18px) 22px;
+}
+
+.classroom-root .classroom-home .classroom-home-message {
+  padding: clamp(8px, 1.4vh, 14px) 14px;
+}
+
+.classroom-root .classroom-home .classroom-home-week {
+  margin-top: 0;
+  padding-bottom: 0;
+  gap: clamp(8px, 1.4vh, 12px);
+}
+
+.classroom-root .classroom-home .classroom-home-day {
+  padding: clamp(8px, 1.4vh, 13px) 13px clamp(9px, 1.6vh, 15px);
+}
+
+/* The name never breaks across lines ("Joshua / Fisseha"); if the greeting is
+   too long, the whole name moves to the next line together. */
+.classroom-root .classroom-home .classroom-home-title em {
+  white-space: nowrap;
+}
+
+/* The greeting and its tools stayed side by side only above 900px of column,
+   which a 1280px laptop with the rail open (about 880px) never reached, so the
+   card stacked and doubled in height. Side by side holds down to 760px now. */
+@container classroom-home (max-width: 899.98px) {
+  .classroom-root .classroom-home .classroom-home-masthead {
+    grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+    gap: 24px;
+  }
+
+  .classroom-root .classroom-home .classroom-home-top-tools {
+    width: auto;
+  }
+}
+
+@container classroom-home (max-width: 759.98px) {
+  .classroom-root .classroom-home .classroom-home-masthead {
+    grid-template-columns: 1fr;
+  }
+
+  .classroom-root .classroom-home .classroom-home-top-tools {
+    width: 100%;
+  }
+}
+
+/* Assigned work and the latest message share one row, approved 2026-09-25.
+   Stacked, a student with an overdue item, a second assignment and a message
+   ran to 872px at 1536x695 even after the spacing above; side by side it
+   ends at 672. Either card alone takes the full row. Below a 760px column
+   everything stacks again. */
+.classroom-root .classroom-home {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.classroom-root .classroom-home > * {
+  grid-column: 1 / -1;
+}
+
+.classroom-root .classroom-home > .classroom-home-main-card:has(~ .classroom-home-message-card) {
+  grid-column: 1;
+}
+
+.classroom-root .classroom-home > .classroom-home-main-card ~ .classroom-home-message-card {
+  grid-column: 2;
+}
+
+/* The assigned rows sat in a narrow island in the middle of the card. */
+.classroom-root .classroom-home .classroom-home-main-card .classroom-home-main-content {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+/* The greeting's tools column gets the wider share so the four quick starts
+   (Smart Drill, Timed section, Inbox, Book a session) sit on one row instead
+   of leaving Book a session alone on a second one. */
+.classroom-root .classroom-home .classroom-home-masthead {
+  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+}
+
+.classroom-root .classroom-home .classroom-home-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 8px;
+}
+
+.classroom-root .classroom-home .classroom-home-actions .classroom-home-action {
+  justify-content: center;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+@container classroom-home (max-width: 759.98px) {
+  /* .classroom-home is the container, so it cannot query itself; its
+     children span both columns instead, which stacks them. */
+  .classroom-root .classroom-home > .classroom-home-main-card:has(~ .classroom-home-message-card),
+  .classroom-root .classroom-home > .classroom-home-main-card ~ .classroom-home-message-card {
+    grid-column: 1 / -1;
+  }
+}

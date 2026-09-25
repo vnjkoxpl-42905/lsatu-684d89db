@@ -6,17 +6,23 @@ The student's own room: the first surface a 1:1 student lands on. It is a readin
 
 **Classroom frame** — the persistent layout every Classroom route is drawn in: the cream left rail, an optional middle list, and the white reading surface. Implemented by `ClassroomLayout`. Navigating between surfaces it draws swaps the content only and never remounts the rail. A page "sits in the Classroom frame" regardless of its URL; `/flagged` and `/journal` both do.
 
-**StudentShell** — the older, separate frame with its own 240px rail, still drawing `/mainhub`, `/practice` and the rest. A student moving between a Classroom-frame page and a StudentShell page sees the whole page rebuild. Reducing that boundary is ongoing work, one surface at a time.
+**StudentShell** — the older, separate frame with its own 240px rail. Retired: every student route now sits in the Classroom frame, and `/mainhub` and `/practice` only redirect to Home and the Drill page.
 
 **Reading column** — the white content column. Most routes use one reading column on the right. A Wrong answers detail uses a four-column Classroom frame: cream rail, entries list, vertical question, and review panel. Below its journal-only breakpoints the entries list becomes an overlay and the review panel moves under the question.
 
-**Drill landing workspace** — the pre-question surface at `/classroom/drill`, drawn inside the Classroom frame. It includes drill selection, launch controls, practice insights, and today's work; it excludes the official question-answering experience.
-_Avoid_: Drill page (when the question experience could be confused with the landing surface), Mainhub
+**Home** — the student's dashboard at `/classroom`, the first item in the Classroom rail. It greets the student, shows what is due, their latest message and the next seven days, and offers the Question finder and quick starts. When Joshua says "home", "homepage" or "dashboard", he means this page.
+_Avoid_: Mainhub, Classroom home page (say Home)
 
-**Question finder** — the one control that turns something a student can say about a question into that question opened. It takes free text, matched against question text, and it takes a question address (PT 90, Section 1, Question 12) typed or picked from PrepTest / Section / Question selectors. It searches both banks and groups its results by bank, Logical Reasoning first, because a hit lands differently in each: an LR hit opens that one question, an RC hit opens its whole passage with every question on it. The finder is a finding aid, not the scope of the work it opens. It appears on Classroom Home and in the Drill landing workspace; it never builds a set, it hands that to the Drill console.
+**Drill page** — the page at `/classroom/drill`, the Drill item directly under Home in the Classroom rail. It is where a student chooses what to practise: the Question finder, the Drill hero, the Drill console, their practice insights and their assigned work. It is not where questions are answered. Always said with "page": "Drill page". A plain "drill" is a set of questions a student works through, never this page.
+_Avoid_: Drill landing workspace, Mainhub, and using "drill page" for the screen where a question is answered
+
+**Question screen** — the split view where a student answers one question: the stimulus on the left, the stem and answer choices on the right. The same screen serves Smart Drill, custom drills, blind review, section review and Testing Centre sections. It sits outside the Classroom frame. The Reading Comprehension version, with the passage on the left, is the **RC question screen**.
+_Avoid_: Drill page, drill screen, question page
+
+**Question finder** — the one control that turns something a student can say about a question into that question opened. It takes free text, matched against question text, and it takes a question address (PT 90, Section 1, Question 12) typed or picked from PrepTest / Section / Question selectors. It searches both banks and groups its results by bank, Logical Reasoning first, because a hit lands differently in each: an LR hit opens that one question, an RC hit opens its whole passage with every question on it. The finder is a finding aid, not the scope of the work it opens. It appears on Home and on the Drill page; it never builds a set, it hands that to the Drill console.
 _Avoid_: search bar, command palette, spotlight, quick access, find bar
 
-**Drill console** — the control surface inside the Drill landing workspace where a student assembles a set: the filters, the preview of the exact set, and the start action. Finding one named question is not its job; that is the Question finder.
+**Drill console** — the control surface on the Drill page where a student assembles a set: the filters, the preview of the exact set, and the start action. Finding one named question is not its job; that is the Question finder.
 _Avoid_: Control pane, picker card
 
 **Drill canvas** — the route-specific visual composition to the right of the persistent Classroom rail, containing the Drill hero, Drill console, practice/insight workspace, and Today focus. The Classroom rail is not part of the canvas.

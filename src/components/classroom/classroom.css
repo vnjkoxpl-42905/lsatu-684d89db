@@ -1391,8 +1391,10 @@ html.dark .classroom-root.classroom-root-drill {
   display: grid;
   gap: 28px;
   grid-template-columns: minmax(0, 1fr) 392px;
-  min-height: 280px;
-  padding: var(--observatory-space-4) var(--observatory-space-6) var(--observatory-space-5);
+  /* Was 280px. The hero ate a third of a laptop screen and pushed Your
+     practice and Assigned work below the fold. */
+  min-height: 200px;
+  padding: var(--observatory-space-3) var(--observatory-space-6) var(--observatory-space-4);
   position: relative;
   z-index: 2;
 }
@@ -2168,6 +2170,65 @@ html.dark .classroom-root.classroom-root-drill {
   color: #ff97a1;
 }
 
+/* ── Fit to the screen ─────────────────────────────────────────────────── */
+
+/* The Drill page sizes itself from the window, continuously, so a laptop at
+   Windows' default 125% scaling (1536x695 of page) shows the finder, both hero
+   actions, Resume, Top priority and two assigned items without scrolling, and
+   a large monitor gets a wider, roomier page instead of a small island.
+   Every value is a clamp: a floor for small laptops, a cap for big monitors,
+   and the window's height or width in between. No step changes. */
+.drill-observatory-root {
+  --fit-gap: clamp(12px, 2.4vh, 24px);
+  --fit-pad: clamp(14px, 2.6vh, 28px);
+  --fit-hero-min: clamp(160px, 25vh, 300px);
+  --fit-title: clamp(1.35rem, min(3cqi, 4.4vh), 2.5rem);
+  --fit-console: clamp(340px, 30cqi, 460px);
+}
+
+.drill-observatory-root .drill-observatory-canvas {
+  gap: var(--fit-gap);
+  max-width: clamp(71.25rem, 82cqi, 96rem);
+}
+
+.drill-observatory-root .drill-observatory-deck {
+  gap: var(--fit-gap);
+}
+
+.drill-observatory-root .drill-observatory-hero-grid {
+  grid-template-columns: minmax(0, 1fr) var(--fit-console);
+  min-height: var(--fit-hero-min);
+  padding: calc(var(--fit-pad) * 0.8) var(--fit-pad);
+}
+
+.drill-observatory-root .drill-observatory-smart h1,
+.drill-observatory-root .drill-observatory-console h2 {
+  font-size: var(--fit-title);
+}
+
+.drill-observatory-root .drill-observatory-console {
+  gap: calc(var(--fit-gap) * 0.6);
+  padding: var(--fit-pad);
+}
+
+.drill-observatory-root .drill-observatory-practice,
+.drill-observatory-root .drill-observatory-today-inner {
+  padding: var(--fit-pad) clamp(18px, 1.6cqi, 28px);
+}
+
+.drill-observatory-root .drill-observatory-practice {
+  gap: var(--fit-gap);
+}
+
+.drill-observatory-root .drill-observatory-insight {
+  padding: clamp(10px, 2vh, 18px) 0;
+}
+
+.drill-observatory-root .drill-observatory-resume-row {
+  min-height: clamp(50px, 7.5vh, 62px);
+  padding: clamp(8px, 1.4vh, 12px) 14px;
+}
+
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 
 /* The console is a fixed 392px by design. Below ~1080px of canvas the hero's
@@ -2176,8 +2237,6 @@ html.dark .classroom-root.classroom-root-drill {
 @media (max-width: 1199px) {
   .drill-observatory-root .drill-observatory-hero-grid {
     gap: var(--observatory-space-5);
-    grid-template-columns: minmax(0, 1fr) 356px;
-    padding: var(--observatory-space-4) var(--observatory-space-5) var(--observatory-space-5);
   }
 
 }
