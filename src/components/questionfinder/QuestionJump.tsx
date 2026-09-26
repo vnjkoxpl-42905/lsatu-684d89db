@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import QuestionFinder from "./QuestionFinder";
 import type { QuestionFinderBank } from "./questionFinderSearch";
 import {
@@ -110,81 +111,90 @@ export default function QuestionJump({
   };
 
   const thirdDisabled = loading || !activeSection;
-  const thirdPlaceholder = "Question number";
+  const thirdPlaceholder = !pt
+    ? "Pick a test"
+    : !section
+      ? "Pick a section"
+      : isRc
+        ? "Question"
+        : "Question";
 
   return (
     <div className="qj" data-tone={tone}>
       <div className="qj-row" data-search={withSearch ? "true" : "false"} role="group" aria-label="Jump to a question by PrepTest, section, and number">
-        <label className="qf-field qj-field">
-          <span className="qf-field-label">PrepTest</span>
-          <select
-            className="qf-select"
+        <div className="qf-field qj-field">
+          <span className="qf-field-label" id="qj-test-label">PrepTest</span>
+          <Select
             value={pt}
             disabled={loading || failed}
-            onChange={(event) => {
-              setPt(event.target.value);
+            onValueChange={(value) => {
+              setPt(value);
               setSection("");
             }}
           >
-            <option value="">
-              {failed ? "Unavailable" : loading ? "Loading…" : "PrepTest"}
-            </option>
-            {availableTests.map((test) => (
-              <option key={test.pt} value={test.pt}>
-                PT {test.pt}
-              </option>
-            ))}
-          </select>
-        </label>
+            <SelectTrigger className="qj-trigger" aria-labelledby="qj-test-label">
+              <SelectValue placeholder={failed ? "Unavailable" : loading ? "Loading…" : "PrepTest"} />
+            </SelectTrigger>
+            <SelectContent className={tone === "dark" ? "qj-menu qj-menu-dark" : "qj-menu"} position="popper">
+              {availableTests.map((test) => (
+                <SelectItem key={test.pt} value={String(test.pt)}>PT {test.pt}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-        <label className="qf-field qj-field">
-          <span className="qf-field-label">Section</span>
-          <select
-            className="qf-select"
+        <div className="qf-field qj-field">
+          <span className="qf-field-label" id="qj-section-label">Section</span>
+          <Select
             value={section}
             disabled={loading || !pt}
-            onChange={(event) => setSection(event.target.value)}
+            onValueChange={setSection}
           >
-            <option value="">Section</option>
-            {sections.map((entry) => (
-              <option key={entry.section} value={entry.section}>
-                Section {entry.section}
-                {entry.lr.length === 0 && entry.rc.length > 0 ? " · RC" : " · LR"}
-              </option>
-            ))}
-          </select>
-        </label>
+            <SelectTrigger className="qj-trigger" aria-labelledby="qj-section-label">
+              <SelectValue placeholder={pt ? "Section" : "Pick a test"} />
+            </SelectTrigger>
+            <SelectContent className={tone === "dark" ? "qj-menu qj-menu-dark" : "qj-menu"} position="popper">
+              {sections.map((entry) => (
+                <SelectItem key={entry.section} value={String(entry.section)}>
+                  Section {entry.section}{entry.lr.length === 0 && entry.rc.length > 0 ? " · RC" : " · LR"}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* Value stays "" on purpose: this select is an action, not a stored
             choice. Picking navigates away, and if the student comes back the
             row should read as untouched rather than claim they are still
             sitting on question 12. */}
-        <label className="qf-field qj-field">
-          <span className="qf-field-label">{thirdLabel}</span>
-          <select
-            className="qf-select"
+        <div className="qf-field qj-field">
+          <span className="qf-field-label" id="qj-question-label">{thirdLabel}</span>
+          <Select
             value=""
             disabled={thirdDisabled}
-            onChange={(event) => {
-              if (!event.target.value) return;
-              if (isRc) openRc(event.target.value);
-              else openLr(event.target.value);
+            onValueChange={(value) => {
+              if (isRc) openRc(value);
+              else openLr(value);
             }}
           >
-            <option value="">{thirdPlaceholder}</option>
+            <SelectTrigger className="qj-trigger" aria-labelledby="qj-question-label">
+              <SelectValue placeholder={thirdPlaceholder} />
+            </SelectTrigger>
+            <SelectContent className={tone === "dark" ? "qj-menu qj-menu-dark" : "qj-menu"} position="popper">
             {isRc
               ? rcQuestions.map((question) => (
-                  <option key={question.id} value={`${question.passage.id}:${question.id}`}>
+                  <SelectItem key={question.id} value={`${question.passage.id}:${question.id}`}>
                     Question {question.number} · Passage {question.passage.position}
-                  </option>
+                  </SelectItem>
                 ))
               : (activeSection?.lr ?? []).map((qnum) => (
-                  <option key={qnum} value={qnum}>
+                  <SelectItem key={qnum} value={String(qnum)}>
                     Question {qnum}
-                  </option>
+                  </SelectItem>
                 ))}
-          </select>
-        </label>
+            </SelectContent>
+          </Select>
+        </div>
 
         {withSearch ? (
           <div className="qj-search">

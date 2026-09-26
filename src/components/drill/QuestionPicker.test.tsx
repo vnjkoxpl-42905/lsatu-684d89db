@@ -188,10 +188,10 @@ describe('QuestionPicker unified LR drill builder', () => {
     // "Spec" was the internal name for the grammar and read as jargon beside
     // SOURCE and FOCUS, which name what you are choosing.
     expect(screen.queryByText('Spec')).toBeNull();
-    for (const label of ['Type it', 'Source', 'Focus']) {
+    for (const label of ['Choose questions', 'Choose PrepTests', 'Refine your set']) {
       expect(screen.getByText(label)).toBeInTheDocument();
     }
-    for (const hint of ['Faster than clicking', 'Where they come from', 'What they test']) {
+    for (const hint of ['PT · Section · Number']) {
       expect(screen.getByText(hint)).toBeInTheDocument();
     }
   });

@@ -753,13 +753,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   return (
     <div className="@container flex flex-col h-full">
       {/* Header */}
-      <div className="mb-6 flex items-start justify-between gap-4">
-        <div className="min-w-0 space-y-1.5">
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <div className="min-w-0">
           <h1 className="text-3xl font-bold tracking-[-0.025em]">Set up an LR drill</h1>
-          <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
-            Combine any PrepTests, question types, reasoning, features, and levels. Preview the
-            exact questions before you begin.
-          </p>
         </div>
         <Button variant="ghost" onClick={onCancel}>Cancel</Button>
       </div>
@@ -802,11 +798,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </Button>
             )}
           </div>
-          {/* Filter Controls
-              Item D order: PrepTest → Section → Q# → Type → Reasoning →
-              Features → Levels → Search. Reordered from the legacy layout
-              (PT → Type → Reasoning → Features → Section → Levels → Search). */}
-          <div className="space-y-5 border-t border-border/60 px-5 py-5">
+          {/* Choose a PT, section, or question number first, then refine the
+              pool by what each question tests. Text search sits with results. */}
+          <div className="space-y-4 border-t border-border/60 px-5 py-4">
             {/* Spec line. Replaces a single `Q#` number input that could hold
                 exactly one value — so "Q1, 6, 8, 23", the thing you actually
                 want when rebuilding a set, was not expressible at all.
@@ -815,20 +809,14 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 features and levels stay in their popovers, because a bar that
                 round-tripped through a grammar unable to express them would
                 drop them silently on every commit. */}
-            <div className="grid gap-3 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
-              {/* "Spec" was the internal name for the grammar and it read as
-                  jargon on screen: it sat above SOURCE and FOCUS, which name
-                  what you are choosing, while this one named the machinery.
-                  The row is the typed alternative to the popovers below, so it
-                  says that. Each label carries a hint for the same reason —
-                  three bare nouns in a column give no order to follow. */}
+            <div className="grid gap-3 sm:grid-cols-[132px_minmax(0,1fr)] sm:gap-4">
+              {/* The typed field supports multiple question numbers, while the
+                  popovers below offer the same PT and section selection. */}
               <div className="sm:pt-3">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground/75">
-                  Type it
+                <div className="text-sm font-semibold text-foreground">
+                  Choose questions
                 </div>
-                <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
-                  Faster than clicking
-                </p>
+                <p className="mt-1 text-xs leading-snug text-muted-foreground">PT · Section · Number</p>
               </div>
               <div className="min-w-0 space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
@@ -878,7 +866,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 {/* Naming exact questions is a different job from narrowing a
                     pool, so it gets its own field. These append to the
                     selection and never touch the facets above. */}
-                <div className="flex flex-wrap items-center gap-2">
+                <details className="group rounded-md border border-border/60 px-3 py-2">
+                  <summary className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-foreground">
+                    Add specific questions
+                  </summary>
+                <div className="mt-2 flex flex-wrap items-center gap-2">
                   <div className="relative min-w-0 flex-1">
                     <Input
                       value={exactText}
@@ -922,17 +914,15 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     ))}
                   </div>
                 )}
+                </details>
               </div>
             </div>
 
-            <div className="grid gap-3 border-t border-border/50 pt-5 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
+            <div className="grid gap-3 border-t border-border/50 pt-4 sm:grid-cols-[132px_minmax(0,1fr)] sm:gap-4">
               <div className="sm:pt-3">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground/75">
-                  Source
+                <div className="text-sm font-semibold text-foreground">
+                  Choose PrepTests
                 </div>
-                <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
-                  Where they come from
-                </p>
               </div>
               <div className="flex min-w-0 flex-wrap items-center gap-2.5">
             {/* PrepTest Filter */}
@@ -1034,14 +1024,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             </div>
 
 
-            <div className="grid gap-3 border-t border-border/50 pt-5 sm:grid-cols-[104px_minmax(0,1fr)] sm:gap-4">
+            <div className="grid gap-3 border-t border-border/50 pt-4 sm:grid-cols-[132px_minmax(0,1fr)] sm:gap-4">
               <div className="sm:pt-3">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground/75">
-                  Focus
+                <div className="text-sm font-semibold text-foreground">
+                  Refine your set
                 </div>
-                <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
-                  What they test
-                </p>
               </div>
               <div className="flex min-w-0 flex-wrap items-center gap-2.5">
             {/* Question Type Filter */}
@@ -1308,34 +1295,6 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </PopoverContent>
             </Popover>
             
-            {/* Search */}
-            <div className="relative w-full flex-none">
-              <Search className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search questions..."
-                value={filters.searchQuery}
-                onChange={(e) => {
-                  setFilters(prev => ({ ...prev, searchQuery: e.target.value }));
-                  setCurrentPage(1);
-                }}
-                className="h-11 pl-10 pr-10 text-[15px]"
-                aria-label="Search question text"
-              />
-              {filters.searchQuery.trim() !== '' && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setFilters((prev) => ({ ...prev, searchQuery: '' }));
-                    setCurrentPage(1);
-                  }}
-                  className="absolute right-1 top-1 inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  aria-label="Clear question search"
-                >
-                  <X className="h-4 w-4" aria-hidden />
-                </button>
-              )}
-            </div>
               </div>
             </div>
           </div>
@@ -1418,62 +1377,44 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         </div>
       </Card>
       
-      {/* Shortcuts, shown while nothing is narrowed yet. This used to replace
-          the results table entirely, which contradicted the rail: the summary
-          offered a set from the full bank while this told you no set existed
-          yet. The table now always renders and these sit above it. */}
-      {!hasAnyFilter && selectedQids.size === 0 && (
-        <Card className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 border-dashed px-4 py-3">
-          <span className="text-sm text-muted-foreground">
-            Drawing from all {totalCount.toLocaleString()} questions. Narrow it down:
-          </span>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                if (allPTs.length === 0) return;
-                const latest = Math.max(...allPTs);
-                setFilters((prev) => ({ ...prev, prepTests: [latest] }));
-                setCurrentPage(1);
-              }}
-            >
-              Latest PT
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setFilters((prev) => ({ ...prev, questionTypes: ['Flaw'] }));
-                setCurrentPage(1);
-              }}
-            >
-              Flaw questions
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setFilters((prev) => ({ ...prev, difficulties: [4, 5] }));
-                setCurrentPage(1);
-              }}
-            >
-              Hard only
-            </Button>
-          </div>
-        </Card>
-      )}
-
       <>
       {/* Results header — Item J: groups page-size with the table not the filters. */}
-      <div className="mb-3 flex items-center justify-between gap-3 text-sm">
-        <div className="text-muted-foreground">
+      <div className="mb-3 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-sm sm:grid-cols-[auto_minmax(0,1fr)_auto]">
+        <div className="col-start-1 row-start-2 text-muted-foreground sm:row-start-1">
           Showing <span className="font-medium text-foreground">{paginatedQuestions.length}</span>{' '}
           of <span className="font-medium text-foreground">{totalCount}</span> questions
           {selectedQids.size > 0 && (
             <span className="text-foreground"> · {selectedQids.size} selected</span>
           )}
         </div>
+          <div className="relative col-span-2 row-start-1 min-w-0 sm:col-span-1 sm:col-start-2 sm:mx-auto sm:w-full sm:max-w-sm">
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search question text"
+              value={filters.searchQuery}
+              onChange={(e) => {
+                setFilters(prev => ({ ...prev, searchQuery: e.target.value }));
+                setCurrentPage(1);
+              }}
+              className="h-9 pl-9 pr-9 text-sm"
+              aria-label="Search question text"
+            />
+            {filters.searchQuery.trim() !== '' && (
+              <button
+                type="button"
+                onClick={() => {
+                  setFilters((prev) => ({ ...prev, searchQuery: '' }));
+                  setCurrentPage(1);
+                }}
+                className="absolute right-1 top-0.5 inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label="Clear question search"
+              >
+                <X className="h-4 w-4" aria-hidden />
+              </button>
+            )}
+          </div>
+        <div className="col-start-2 row-start-2 sm:col-start-3 sm:row-start-1">
         <Select
           value={pageSize.toString()}
           onValueChange={(value) => {
@@ -1490,6 +1431,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             <SelectItem value="50">Show 50</SelectItem>
           </SelectContent>
         </Select>
+        </div>
       </div>
 
       {/* Results Table */}
@@ -1682,21 +1624,19 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   full bank, which is exactly what Generate would draw from. */}
               {(
                 <>
-                  {/* Tier 1: composition headline */}
+                  {/* Set size is the first thing to confirm before launching. */}
                   <div className="rounded-md bg-primary/[0.06] border border-primary/15 px-3 py-3">
                     <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">
-                      Composition
+                      {summary.isFromPreview ? 'Ready to start' : summary.isFromSelection ? 'Selected' : 'Your set'}
                     </div>
                     <div className="mt-1 text-2xl font-bold text-primary tabular-nums">
-                      {summary.isFromSelection
-                        ? `${summary.total} selected`
-                        : summary.isFromPreview
-                        ? `${summary.total} ready`
-                        : `${Math.min(setSize, summary.total)} / ${setSize}`}
+                      {summary.isFromSelection || summary.isFromPreview
+                        ? summary.total
+                        : Math.min(setSize, summary.total)} questions
                     </div>
                     {!summary.isFromSelection && !summary.isFromPreview && (
                       <div className="text-[11px] text-muted-foreground mt-0.5">
-                        from pool of {summary.total.toLocaleString()}
+                        from {summary.total.toLocaleString()} available
                       </div>
                     )}
                   </div>
@@ -1814,7 +1754,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                       onClick={handleGeneratePreview}
                       className="w-full"
                     >
-                      Generate another
+                      Create a different set
                     </Button>
                     <button
                       type="button"

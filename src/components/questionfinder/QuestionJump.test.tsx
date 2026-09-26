@@ -41,6 +41,7 @@ vi.mock("./useFinderAddressIndex", () => ({
           },
         ],
       },
+      { pt: 91, sections: [{ section: 3, lr: [4], rc: [] }] },
     ],
   }),
 }));
@@ -56,6 +57,10 @@ function mount(bank?: "lr" | "rc") {
 const testSelect = () => screen.getByRole("combobox", { name: /^preptest$/i });
 const sectionSelect = () => screen.getByRole("combobox", { name: /^section$/i });
 const questionSelect = () => screen.getByRole("combobox", { name: /^question number$/i });
+const choose = (select: HTMLElement, option: string) => {
+  fireEvent.click(select);
+  fireEvent.click(screen.getByRole("option", { name: option }));
+};
 
 describe("QuestionJump", () => {
   beforeEach(() => navigate.mockReset());
@@ -69,11 +74,9 @@ describe("QuestionJump", () => {
 
   it("opens one LR question in the drill runner, and returns where it started", async () => {
     mount();
-    fireEvent.change(testSelect(), { target: { value: "90" } });
-    fireEvent.change(sectionSelect(), { target: { value: "1" } });
-    fireEvent.change(questionSelect(), {
-      target: { value: "12" },
-    });
+    choose(testSelect(), "PT 90");
+    choose(sectionSelect(), "Section 1 · LR");
+    choose(questionSelect(), "Question 12");
 
     await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1));
     const href = navigate.mock.calls[0][0] as string;
@@ -84,31 +87,36 @@ describe("QuestionJump", () => {
 
   it("opens the RC passage at the official question selected", async () => {
     mount("rc");
-    fireEvent.change(testSelect(), { target: { value: "90" } });
-    fireEvent.change(sectionSelect(), { target: { value: "2" } });
+    choose(testSelect(), "PT 90");
+    choose(sectionSelect(), "Section 2 · RC");
 
     const third = questionSelect();
+    fireEvent.click(third);
     expect(screen.getByRole("option", { name: "Question 8 · Passage 2" })).toBeInTheDocument();
 
-    fireEvent.change(third, { target: { value: "1190:708" } });
+    fireEvent.click(screen.getByRole("option", { name: "Question 8 · Passage 2" }));
     await waitFor(() => expect(navigate).toHaveBeenCalledWith("/rc/drill?passage=1190&q=708"));
   });
 
   it("shows only sections belonging to the active bank", () => {
     mount("lr");
-    fireEvent.change(testSelect(), { target: { value: "90" } });
+    choose(testSelect(), "PT 90");
+    fireEvent.click(sectionSelect());
     expect(screen.getByRole("option", { name: "Section 1 · LR" })).toBeInTheDocument();
     expect(screen.queryByRole("option", { name: "Section 2 · RC" })).toBeNull();
   });
 
   it("clears the section when the test changes, so a stale address cannot be opened", () => {
     mount();
-    fireEvent.change(testSelect(), { target: { value: "90" } });
-    fireEvent.change(sectionSelect(), { target: { value: "1" } });
-    expect((sectionSelect() as HTMLSelectElement).value).toBe("1");
+    choose(testSelect(), "PT 90");
+    choose(sectionSelect(), "Section 1 · LR");
+    expect(sectionSelect()).toHaveTextContent("Section 1 · LR");
 
-    fireEvent.change(testSelect(), { target: { value: "" } });
-    expect((sectionSelect() as HTMLSelectElement).value).toBe("");
+    // A new PrepTest clears the dependent section; the user cannot open a
+    // question under a stale section from another test.
+    choose(testSelect(), "PT 91");
+    expect(sectionSelect()).toHaveTextContent("Section");
+    expect(questionSelect()).toBeDisabled();
     expect(navigate).not.toHaveBeenCalled();
   });
 });

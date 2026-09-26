@@ -1475,8 +1475,13 @@ html.dark .classroom-root.classroom-root-drill {
 }
 
 @keyframes drill-observatory-smart-drill-pulse {
-  0%, 100% { outline: 0 solid rgba(244, 241, 234, 0); }
-  50% { outline: 5px solid rgba(244, 241, 234, 0.16); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(244, 241, 234, 0.42);
+  }
+  50% {
+    box-shadow: 0 0 0 9px rgba(244, 241, 234, 0);
+  }
 }
 
 .drill-observatory-root .drill-observatory-smart-drill-pulse {
@@ -2323,6 +2328,9 @@ html.dark .classroom-root.classroom-root-drill {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .drill-observatory-root .drill-observatory-smart-drill-pulse {
+    animation: none;
+  }
   .drill-observatory-root *:not(.drill-observatory-smart-drill-pulse),
   .drill-observatory-root *:not(.drill-observatory-smart-drill-pulse)::before,
   .drill-observatory-root *:not(.drill-observatory-smart-drill-pulse)::after {

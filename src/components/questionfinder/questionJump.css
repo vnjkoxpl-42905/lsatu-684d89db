@@ -95,8 +95,52 @@
   }
 }
 
-/* Touch floor. The selects sat at 39px; 44px is the product's binding minimum
-   and it is met by height, not by wrapped text. */
-.qj .qf-select {
+/* The portal menu uses the same quiet surface as the address row. Its height
+   stays inside the viewport even when the bank contains dozens of PrepTests. */
+.qj .qj-trigger {
   min-height: 44px;
+  min-width: 0;
+  border: 0;
+  border-radius: 9px;
+  background: var(--qf-surface);
+  box-shadow: 0 0 0 1px var(--qf-hair-08);
+  color: var(--qf-ink);
+  font-family: var(--qf-ui);
+  font-size: 13px;
+}
+
+.qj .qj-trigger:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--qf-ink) 26%, transparent);
+}
+
+.qj .qj-trigger:focus-visible {
+  outline: 2px solid var(--qf-accent);
+  outline-offset: 1px;
+}
+
+.qj-menu.qj-menu {
+  max-height: min(360px, var(--radix-select-content-available-height, 360px));
+  min-width: var(--radix-select-trigger-width);
+  border: 1px solid rgba(68, 64, 61, 0.14);
+  border-radius: 10px;
+  background: #fbf8f3;
+  color: #332f2c;
+  box-shadow: 0 14px 35px rgba(32, 28, 24, 0.16);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+.qj-menu [role="option"][data-highlighted] {
+  background: rgba(51, 47, 44, 0.09);
+  color: #332f2c;
+}
+
+.qj-menu.qj-menu-dark {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: #17161c;
+  color: #f5f1ec;
+}
+
+.qj-menu-dark [role="option"][data-highlighted] {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f5f1ec;
 }
