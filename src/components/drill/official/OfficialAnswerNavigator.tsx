@@ -70,7 +70,7 @@ export default function OfficialAnswerNavigator({
 
   return (
     <div className="border-t-2 border-slate-300 bg-white shadow-[0_-2px_6px_rgba(0,0,0,0.06)] mt-auto">
-      <div className="px-6 py-4 flex items-end gap-3">
+      <div className="px-6 py-1.5 flex items-end gap-3">
         {showQuestionList ? (
           <AnswerOvals
             questionQueue={questionQueue}

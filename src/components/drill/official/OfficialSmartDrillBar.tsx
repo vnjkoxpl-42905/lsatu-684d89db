@@ -92,8 +92,10 @@ export default function OfficialSmartDrillBar({
 
   return (
     <div className="border-t-2 border-slate-300 bg-white shadow-[0_-2px_6px_rgba(0,0,0,0.06)] mt-auto">
-      {pager && <div className="px-6 pt-3 border-b border-slate-200">{pager}</div>}
-      <div className="px-6 py-4 flex items-center gap-3">
+      {/* One row. The question ovals used to sit on their own strip above
+          the buttons, which made the bar 123px tall and pushed Next below the
+          fold on a 695px laptop screen; they now take the middle of the row. */}
+      <div className="px-6 py-1.5 flex items-center gap-3">
         {/* Left: End */}
         <button
           type="button"
@@ -116,8 +118,12 @@ export default function OfficialSmartDrillBar({
           </button>
         )}
 
+        {pager ? (
+          <div className="flex min-w-0 flex-1 items-end self-stretch">{pager}</div>
+        ) : null}
+
         {/* Right cluster */}
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex shrink-0 items-center gap-3">
           {onAutoRevealChange && (
           <TooltipProvider delayDuration={150}>
             <Tooltip>

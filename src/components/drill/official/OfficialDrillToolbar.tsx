@@ -190,7 +190,7 @@ export default function OfficialDrillToolbar({
   return (
     <>
       <div className="border-b border-slate-300 bg-slate-50">
-        <div className="px-3 sm:px-4 py-2 flex flex-wrap items-center gap-1.5 text-[14px] text-slate-800">
+        <div className="px-3 sm:px-4 py-1 flex flex-wrap items-center gap-1.5 text-[14px] text-slate-800">
           {sectionToggle && (
             <div
               role="group"
@@ -224,7 +224,7 @@ export default function OfficialDrillToolbar({
             <button
               type="button"
               onClick={onOpenDirections ?? (() => setDirectionsOpen(true))}
-              className="rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-slate-900 hover:bg-slate-100 transition-colors text-[14px] font-semibold"
+              className="rounded-sm border border-slate-500 bg-white px-3 h-8 text-slate-900 hover:bg-slate-100 transition-colors text-[14px] font-semibold"
             >
               Directions
             </button>

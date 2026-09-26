@@ -46,10 +46,11 @@ interface Props {
   /** Show the floating notepad when the docked panel is off. Default true. */
   notepadEnabled?: boolean;
   /**
-   * Pin the shell to the viewport height instead of letting it grow. Required
-   * by any surface whose panes scroll internally — RC's passage runs far longer
-   * than an LR stimulus, so without this the card grows and the page scrolls
-   * instead of the passage.
+   * Pin the shell to the viewport height instead of letting it grow, so the
+   * panes scroll internally and the bottom bar (Previous / Next) is always on
+   * screen. Default true: an LR card that grew let Next fall below the fold on
+   * a 1536x695 laptop, so every question needed a page scroll just to move on.
+   * Pass false only for a surface whose content cannot scroll inside the card.
    */
   fillViewport?: boolean;
 }
@@ -77,7 +78,7 @@ export default function OfficialDrillFrame({
   notesPanelExplanation,
   notesPanelSimilar,
   notepadEnabled = true,
-  fillViewport,
+  fillViewport = true,
 }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
@@ -91,8 +92,12 @@ export default function OfficialDrillFrame({
       )}
       style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
     >
-      <header className="bg-white border-b border-slate-200">
-        <div className="px-4 sm:px-6 pt-2 pb-1.5 flex flex-wrap items-center justify-end gap-2 text-[13px] text-slate-700">
+      {/* One row: the page's own header (breadcrumb and its pills) on the left,
+          Tutor and the welcome on the right. They used to be two rows, and the
+          welcome row alone cost 35px of a 695px laptop screen. */}
+      <header className="bg-white border-b border-slate-200 px-4 sm:px-6 py-1 flex items-center gap-x-4 gap-y-1">
+        {header && <div className="min-w-0 flex-1">{header}</div>}
+        <div className="ml-auto flex shrink-0 items-center justify-end gap-2 text-[13px] text-slate-700">
           {tutorToggleVisible && onTutorModeChange && (
             <>
               {/* Desktop: switch + label */}
@@ -126,15 +131,10 @@ export default function OfficialDrillFrame({
               <span aria-hidden className="w-px h-5 bg-slate-300" />
             </>
           )}
-          <span className="font-medium">Welcome, {welcomeName}</span>
+          <span className="font-medium whitespace-nowrap">Welcome, {welcomeName}</span>
         </div>
-        {header && (
-          <div className="px-4 sm:px-6 pb-2 pt-0.5">
-            {header}
-          </div>
-        )}
       </header>
-      <main className="flex-1 px-2 sm:px-4 pt-3 sm:pt-4 pb-3 sm:pb-5 flex relative overflow-hidden">
+      <main className="flex-1 min-h-0 px-2 sm:px-3 py-1.5 flex relative overflow-hidden">
         <div className="flex-1 flex min-w-0">
           <div
             className={cn(
