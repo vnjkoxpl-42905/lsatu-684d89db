@@ -101,6 +101,31 @@ describe("QuestionBank shared-passage loading", () => {
   });
 });
 
+describe("QuestionBank removed official positions", () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  it("retains a removed position without making it answerable or shifting later qids", async () => {
+    const section = JSON.parse(await fs.readFile(
+      path.resolve(process.cwd(), "public/data/PT118-S1-LR.json"),
+      "utf8",
+    ));
+    vi.stubGlobal("fetch", vi.fn(async (input: string | URL) => ({
+      ok: String(input) === "/data/PT118-S1-LR.json",
+      json: async () => section,
+    })));
+
+    const bank = new QuestionBank();
+    await bank.load();
+
+    expect(bank.getQuestion("PT118-S1-Q5")).toBeUndefined();
+    expect(bank.getSection(118, 1)).toHaveLength(25);
+    expect(bank.getQuestion("PT118-S1-Q6")?.stimulus).toMatch(/^Maria:/);
+    expect(bank.getQuestion("PT118-S1-Q22")?.correctAnswer).toBe("E");
+    expect(bank.getManifest().sections.find((s) => s.pt === 118 && s.section === 1))
+      .toMatchObject({ count: 25, removedPositions: [5] });
+  });
+});
+
 describe("QuestionBank text formatting normalization", () => {
   afterEach(() => {
     vi.restoreAllMocks();

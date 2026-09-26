@@ -12,6 +12,8 @@ interface Props {
   jumpEnabled: boolean;
   /** Reason shown as a tooltip when jumping is off (e.g. "Paused"). */
   jumpDisabledReason?: string;
+  /** A full official section uses the printed number, which can have gaps. */
+  useOfficialQuestionNumbers?: boolean;
   onJumpTo: (index: number) => void;
 }
 
@@ -37,6 +39,7 @@ export default function AnswerOvals({
   attemptedQids,
   jumpEnabled,
   jumpDisabledReason,
+  useOfficialQuestionNumbers = false,
   onJumpTo,
 }: Props) {
   if (questionQueue.length === 0) return null;
@@ -44,6 +47,10 @@ export default function AnswerOvals({
   return (
     <ol className="flex items-end gap-2 flex-nowrap overflow-x-auto min-w-0 flex-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       {questionQueue.map((qid, i) => {
+        const officialNumber = Number(/-Q(\d+)$/.exec(qid)?.[1]);
+        const displayNumber = useOfficialQuestionNumbers && Number.isFinite(officialNumber)
+          ? officialNumber
+          : i + 1;
         const isCurrent = i === currentIndex;
         const isAnswered = attemptedQids.has(qid);
         const isClickable = jumpEnabled && i !== currentIndex;
@@ -60,7 +67,7 @@ export default function AnswerOvals({
               onClick={() => isClickable && onJumpTo(i)}
               disabled={!isClickable}
               aria-current={isCurrent ? "true" : undefined}
-              aria-label={`Question ${i + 1}${isAnswered ? ", answered" : ""}${isCurrent ? ", current" : ""}${
+              aria-label={`Question ${displayNumber}${isAnswered ? ", answered" : ""}${isCurrent ? ", current" : ""}${
                 !isClickable && !isCurrent && jumpDisabledReason ? `, ${jumpDisabledReason}` : ""
               }`}
               title={
@@ -80,7 +87,7 @@ export default function AnswerOvals({
                 isCurrent ? "font-bold text-slate-900" : "text-slate-700",
               )}
             >
-              {i + 1}
+              {displayNumber}
             </span>
           </li>
         );

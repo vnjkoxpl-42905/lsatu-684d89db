@@ -13,8 +13,12 @@ import type { Persistence } from '@/bootcamps/main-conclusion/persistence/Persis
 import {
   completePracticeSession,
   loadPracticeSession,
+  migratePracticeSession,
+  PRACTICE_SESSION_DATA_VERSION,
+  practiceSessionIdFor,
   savePracticeSessionSnapshot,
 } from './practiceSessionStore';
+import { PracticeSession, TABLES } from '@/bootcamps/main-conclusion/persistence/records';
 
 /**
  * In-memory stand-in for the shared bootcamp_kv layer. `readDelays` holds
@@ -48,6 +52,79 @@ const makeStore = (readDelays: number[] = []): Persistence => {
 
 const USER = '11111111-1111-4111-8111-111111111111';
 const POOL = { slug: 'drill::section::pt130-s1', completionId: 'drill::section::pt130-s1' };
+
+describe('PT118 legacy resume migration', () => {
+  const legacy = PracticeSession.parse({
+    id: USER,
+    user_id: USER,
+    pool_slug: 'drill::section::pt118-s1',
+    completion_id: 'drill::section::pt118-s1',
+    question_queue: ['PT118-S1-Q4', 'PT118-S1-Q5', 'PT118-S1-Q21', 'PT118-S1-Q25', 'PT118-S1-Q26'],
+    current_index: 2,
+    attempts: [
+      { qid: 'PT118-S1-Q21', selected_answer: 'E', correct: false, time_ms: 1234 },
+      { qid: 'PT118-S1-Q25', selected_answer: 'E', correct: false, time_ms: 2345 },
+      { qid: 'PT118-S1-Q26', selected_answer: 'A', correct: false, time_ms: 3456 },
+    ],
+    regulation_answered_qids: ['PT118-S1-Q21', 'PT118-S1-Q25', 'PT118-S1-Q26'],
+    status: 'in_progress',
+    started_at: '2026-09-01T00:00:00.000Z',
+    updated_at: '2026-09-01T00:00:00.000Z',
+  });
+
+  it('preserves question content, current place and first duplicate answer', () => {
+    const migrated = migratePracticeSession(legacy);
+    expect(migrated.question_queue).toEqual([
+      'PT118-S1-Q4', 'PT118-S1-Q6', 'PT118-S1-Q22', 'PT118-S1-Q26',
+    ]);
+    expect(migrated.current_index).toBe(2);
+    expect(migrated.attempts.map(({ qid, correct }) => [qid, correct])).toEqual([
+      ['PT118-S1-Q22', true], ['PT118-S1-Q26', true],
+    ]);
+    expect(migrated.regulation_answered_qids).toEqual(['PT118-S1-Q22', 'PT118-S1-Q26']);
+    expect(migrated.data_version).toBe(PRACTICE_SESSION_DATA_VERSION);
+    expect(migratePracticeSession(migrated)).toEqual(migrated);
+  });
+
+  it('removes unscored S3 Q22 and regrades the corrected RC keys', () => {
+    const row = PracticeSession.parse({
+      ...legacy,
+      question_queue: ['PT118-S2-Q1', 'PT118-S3-Q22', 'PT118-S2-Q5', 'PT118-S3-Q23'],
+      current_index: 1,
+      attempts: [
+        { qid: 'PT118-S2-Q1', selected_answer: 'D', correct: false },
+        { qid: 'PT118-S3-Q22', selected_answer: 'D', correct: true },
+        { qid: 'PT118-S2-Q5', selected_answer: 'E', correct: true },
+      ],
+      regulation_answered_qids: ['PT118-S3-Q22', 'PT118-S2-Q5'],
+    });
+    const migrated = migratePracticeSession(row);
+    expect(migrated.question_queue).toEqual(['PT118-S2-Q1', 'PT118-S2-Q5', 'PT118-S3-Q23']);
+    expect(migrated.current_index).toBe(1);
+    expect(migrated.attempts.map(({ qid, correct }) => [qid, correct])).toEqual([
+      ['PT118-S2-Q1', true], ['PT118-S2-Q5', false],
+    ]);
+    expect(migrated.regulation_answered_qids).toEqual(['PT118-S2-Q5']);
+  });
+
+  it('writes the migrated version on load and does not remap it twice', async () => {
+    const store = makeStore();
+    __setPersistenceForTests(store);
+    const id = practiceSessionIdFor(USER, legacy.pool_slug);
+    await store.set(TABLES.practice_sessions, id, { ...legacy, id });
+    const first = await loadPracticeSession(USER, legacy.pool_slug);
+    const second = await loadPracticeSession(USER, legacy.pool_slug);
+    const persisted = await store.get<PracticeSession>(TABLES.practice_sessions, id);
+    expect(second).toEqual(first);
+    expect(persisted?.data_version).toBe(PRACTICE_SESSION_DATA_VERSION);
+    expect(persisted?.question_queue).toEqual(first?.question_queue);
+  });
+
+  it('leaves an unknown producer namespace untouched', () => {
+    const canonical = PracticeSession.parse({ ...legacy, pool_slug: 'catalog::pt118-s1' });
+    expect(migratePracticeSession(canonical)).toBe(canonical);
+  });
+});
 
 beforeEach(() => {
   __setPersistenceForTests(makeStore());

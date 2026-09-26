@@ -293,6 +293,7 @@ export interface QuestionManifest {
     section: number;
     count: number;
     filename: string;
+    removedPositions?: number[];
   }>;
 }
 
@@ -1052,11 +1053,19 @@ export class QuestionBank {
       const pt = parseInt(filename.match(/PT(\d+)/)?.[1] || '0');
       const section = parseInt(filename.match(/S(\d+)/)?.[1] || '0');
       let count = 0;
+      const removedPositions: number[] = [];
       const normalizedRaw = normalizeQuestionTextFields(raw);
 
       for (const item of normalizedRaw) {
         const qnum = item.questionNumber || 0;
         const qid = hashQid(pt, section, qnum);
+
+        // The published test can retain a numbered position that LSAC removed
+        // from scoring. Keep its position in the manifest, never in the pool.
+        if (item.status === 'removed') {
+          removedPositions.push(qnum);
+          continue;
+        }
 
         if (!item.answerChoices || !item.correctAnswer || !item.questionStem) {
           console.warn(`Invalid question: ${qid}`);
@@ -1087,7 +1096,7 @@ export class QuestionBank {
       }
 
       if (count > 0) {
-        this.manifest.sections.push({ pt, section, count, filename });
+        this.manifest.sections.push({ pt, section, count, filename, removedPositions });
       }
     }
 

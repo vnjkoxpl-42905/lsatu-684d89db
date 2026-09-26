@@ -5059,6 +5059,10 @@ function DrillContent() {
                   const isAnswered = session.attempts.has(qid);
                   const isCurrent = index === session.currentIndex;
                   const isFlaggedQ = isFlagged && isCurrent;
+                  const printedNumber = Number(/-Q(\d+)$/.exec(qid)?.[1]);
+                  const displayNumber = session.mode === 'full-section' && Number.isFinite(printedNumber)
+                    ? printedNumber
+                    : index + 1;
                   
                   return (
                     <button
@@ -5081,9 +5085,9 @@ function DrillContent() {
                         !isCurrent && isAnswered && "w-7 h-7 bg-accent text-foreground",
                         !isCurrent && !isAnswered && "w-7 h-7 border border-border text-muted-foreground hover:bg-accent/50"
                       )}
-                      title={`Question ${index + 1}${isAnswered ? ' (answered)' : ''}`}
+                      title={`Question ${displayNumber}${isAnswered ? ' (answered)' : ''}`}
                     >
-                      {index + 1}
+                      {displayNumber}
                     </button>
                   );
                 })}

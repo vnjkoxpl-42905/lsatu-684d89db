@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   formatPracticeTestClock,
+  hasOutdatedPt118Structure,
   legLabel,
   loadPracticeTestRun,
   practiceTestPaceLabel,
@@ -173,7 +174,7 @@ export default function PracticeTestRunPage() {
    * either produced a row or it has not, and there is nothing to poll for.
    */
   React.useEffect(() => {
-    if (!run || !user) return;
+    if (!run || !user || hasOutdatedPt118Structure(run)) return;
     const leg = run.legs[run.currentLeg];
     if (!leg || !leg.startedAt || leg.completedAt) return;
     let cancelled = false;
@@ -216,14 +217,14 @@ export default function PracticeTestRunPage() {
 
   /** The break clock starts the moment the break becomes due, not on render. */
   React.useEffect(() => {
-    if (!run || run.status !== "in-progress") return;
+    if (!run || hasOutdatedPt118Structure(run) || run.status !== "in-progress") return;
     if (run.breakTaken || run.currentLeg !== run.breakAfterLeg) return;
     if (run.breakStartedAt) return;
     commit({ ...run, breakStartedAt: new Date().toISOString() });
   }, [run, commit]);
 
   const begin = () => {
-    if (!run) return;
+    if (!run || hasOutdatedPt118Structure(run)) return;
     const leg = run.legs[run.currentLeg];
     if (!leg) return;
     const startedAt = new Date().toISOString();
@@ -265,6 +266,20 @@ export default function PracticeTestRunPage() {
         <p className="testing-lede">
           This sitting is not on this device. Practice tests in progress are kept
           in the browser you started them in.
+        </p>
+        <Button onClick={() => navigate("/testing")}>Back to the Testing Centre</Button>
+      </>
+    );
+  }
+
+  if (hasOutdatedPt118Structure(run)) {
+    return (
+      <>
+        <h1 className="classroom-title">Practice Test 118 changed</h1>
+        <p className="testing-lede">
+          This saved sitting used an unscored section and an extra question. Its
+          score would be inaccurate, so start a new PT118 sitting. Your earlier
+          work remains saved.
         </p>
         <Button onClick={() => navigate("/testing")}>Back to the Testing Centre</Button>
       </>

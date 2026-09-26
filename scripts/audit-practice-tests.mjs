@@ -17,7 +17,8 @@
  *       LOWER BOUND: it catches numbering gaps but cannot see a truncated tail.
  *       Every LR line says which it is rather than implying certainty.
  *
- * The offer rules below mirror buildPracticeTests() and buildRcSections(). They
+ * PT118's modern PDF identifies S3 as unscored, so its scored sitting uses S1
+ * and S4. The offer rules below mirror buildPracticeTests() and buildRcSections(). They
  * are duplicated because this script is plain Node and those are TypeScript;
  * practiceTest.audit.test.ts asserts the two agree, so drift fails CI.
  *
@@ -41,6 +42,18 @@ const RC_SOURCE = join(ROOT, 'scripts/rc-source/data/questions.csv');
 const LR_FULL_SECTION_MIN_QUESTIONS = 24;
 /** Mirrors RC_SECTION_PASSAGE_COUNT in src/features/rc/lib/rcSections.ts. */
 const RC_SECTION_PASSAGE_COUNT = 4;
+// Explicit official modern-test positions, verified against the PT118 PDF.
+const OFFICIAL_LR_ROSTERS = new Map([
+  ['118:1', { lastPosition: 26, removed: [5] }],
+  ['118:3', { lastPosition: 25, removed: [22] }],
+]);
+
+function fingerprint(q) {
+  const choices = q.answerChoices ?? {};
+  return [q.stimulus, q.questionStem, ...'ABCDE'.split('').map((letter) => choices[letter])]
+    .map((part) => String(part ?? '').trim().replace(/\s+/g, ' '))
+    .join('\u0000');
+}
 
 const args = process.argv.slice(2);
 const flag = (name) => args.includes(name);
@@ -80,25 +93,45 @@ function loadLrSections() {
     const m = /^PT(\d+)-S(\d+)-LR\.json$/.exec(file);
     if (!m) continue;
     const questions = JSON.parse(readFileSync(join(DATA, file), 'utf8'));
-    const published = questions
+    const pt = Number(m[1]);
+    const section = Number(m[2]);
+    const officialRoster = OFFICIAL_LR_ROSTERS.get(`${pt}:${section}`);
+    const officialRemoved = officialRoster?.removed ?? [];
+    const removed = questions.filter((q) => q.status === 'removed');
+    const active = questions.filter((q) => q.status !== 'removed');
+    const published = active
       .map((q) => Number(q.questionNumber))
       .filter((n) => Number.isFinite(n))
       .sort((a, b) => a - b);
     const highest = published.length ? published[published.length - 1] : 0;
     // Lower bound: we can see holes, not a missing tail.
-    const expected = Array.from({ length: highest }, (_, i) => i + 1);
+    const expected = Array.from({ length: officialRoster?.lastPosition ?? highest }, (_, i) => i + 1)
+      .filter((n) => !officialRemoved.includes(n));
     const duplicates = published.filter((n, i) => i > 0 && n === published[i - 1]);
+    const seen = new Map();
+    const duplicateContent = [];
+    for (const q of active) {
+      const key = fingerprint(q);
+      if (seen.has(key)) duplicateContent.push([seen.get(key), Number(q.questionNumber)]);
+      else seen.set(key, Number(q.questionNumber));
+    }
     sections.push({
       kind: 'lr',
-      pt: Number(m[1]),
-      section: Number(m[2]),
+      pt,
+      section,
       file,
-      count: questions.length,
+      count: active.length,
       published,
       expected,
       missing: gaps(published, expected),
       duplicates: [...new Set(duplicates)],
-      rosterExact: false,
+      duplicateContent,
+      removed: removed.map((q) => Number(q.questionNumber)),
+      invalidRemoved: removed.map((q) => Number(q.questionNumber)).filter((n) => !officialRemoved.includes(n)),
+      missingRemoved: officialRemoved.filter((n) => !removed.some((q) => Number(q.questionNumber) === n)),
+      liveAtRemoved: published.filter((n) => officialRemoved.includes(n)),
+      unexpectedLive: officialRoster ? published.filter((n) => n < 1 || n > officialRoster.lastPosition) : [],
+      rosterExact: !!officialRoster,
     });
   }
   return sections;
@@ -172,8 +205,9 @@ function loadRcSections(roster) {
 
 /**
  * Rebuild the Testing Centre's offer list. Mirrors buildPracticeTests(): two
- * full LR sections and one four-passage RC section with no empty passage, the
- * lowest-numbered two LR sections where a third exists, legs in section order.
+ * full LR sections and one four-passage RC section with no empty passage. PT118
+ * uses S1 and S4 because S3 is unscored; other tests use the lowest-numbered
+ * two LR sections where a third exists. Legs remain in section order.
  */
 function buildOffers(lrSections, rcSections) {
   const lrByPt = new Map();
@@ -202,7 +236,9 @@ function buildOffers(lrSections, rcSections) {
   for (const [pt, lrList] of lrByPt) {
     const rc = rcByPt.get(pt);
     if (!rc) continue;
-    const lr = [...lrList].sort((a, b) => a.section - b.section).slice(0, 2);
+    const lr = pt === 118
+      ? lrList.filter((s) => s.section === 1 || s.section === 4).sort((a, b) => a.section - b.section)
+      : [...lrList].sort((a, b) => a.section - b.section).slice(0, 2);
     if (lr.length < 2) continue;
     const legs = [...lr, rc].sort((a, b) => a.section - b.section);
     offers.push({
@@ -210,7 +246,7 @@ function buildOffers(lrSections, rcSections) {
       legs,
       questionCount: legs.reduce((n, l) => n + l.count, 0),
       expectedCount: legs.reduce((n, l) => n + l.expected.length, 0),
-      missingCount: legs.reduce((n, l) => n + l.missing.length, 0),
+      missingCount: legs.reduce((n, l) => n + l.missing.length + (l.missingRemoved?.length ?? 0) + (l.liveAtRemoved?.length ?? 0) + (l.invalidRemoved?.length ?? 0) + (l.unexpectedLive?.length ?? 0) + l.duplicates.length + (l.duplicateContent?.length ?? 0), 0),
     });
   }
   return offers.sort((a, b) => a.pt - b.pt);
@@ -237,8 +273,8 @@ if (!flag('--summary')) {
   console.log('Practice tests the Testing Centre offers, question by question');
   console.log('='.repeat(78));
   console.log('\u2020 the expected count is the highest question number present, so it is a');
-  console.log('  lower bound: a gap is real, a missing tail cannot be seen. RC lines carry');
-  console.log('  no dagger because their roster comes from the LSAT Lab question table.');
+  console.log('  lower bound: a gap is real, a missing tail cannot be seen. PT118 LR');
+  console.log('  removed positions and RC source-table rosters are exact.');
   console.log('');
   for (const o of offers) {
     const status = o.missingCount === 0 ? 'COMPLETE' : `SHORT ${o.missingCount}`;
@@ -256,6 +292,12 @@ if (!flag('--summary')) {
       if (leg.duplicates.length) {
         console.log(`        DUPLICATE question numbers: ${ranges(leg.duplicates)}`);
       }
+      if (leg.removed?.length) console.log(`        Officially removed: ${ranges(leg.removed)}`);
+      if (leg.missingRemoved?.length) console.log(`        MISSING removed markers: ${ranges(leg.missingRemoved)}`);
+      if (leg.liveAtRemoved?.length) console.log(`        LIVE at removed positions: ${ranges(leg.liveAtRemoved)}`);
+      if (leg.invalidRemoved?.length) console.log(`        INVALID removed positions: ${ranges(leg.invalidRemoved)}`);
+      if (leg.unexpectedLive?.length) console.log(`        UNEXPECTED live positions: ${ranges(leg.unexpectedLive)}`);
+      if (leg.duplicateContent?.length) console.log(`        DUPLICATE content: ${leg.duplicateContent.map(([a, b]) => `${a}/${b}`).join(', ')}`);
     }
     console.log('');
   }
@@ -271,19 +313,19 @@ console.log('Summary');
 console.log('='.repeat(78));
 console.log(`  PrepTests offered as a full sitting   ${offers.length}`);
 console.log(`  ...complete from beginning to end     ${complete.length}`);
-console.log(`  ...short at least one question        ${incomplete.length}`);
+console.log(`  ...with a completeness defect        ${incomplete.length}`);
 if (notOffered.length) {
   console.log(`  PrepTests with LR but no sittable RC  ${notOffered.length} (${notOffered.join(', ')})`);
 }
 const totalMissing = offers.reduce((n, o) => n + o.missingCount, 0);
-console.log(`  Questions missing across all offers   ${totalMissing}`);
+console.log(`  Completeness defects across offers   ${totalMissing}`);
 console.log('');
 
-const lrBad = lrSections.filter((s) => s.missing.length || s.duplicates.length);
+const lrBad = lrSections.filter((s) => s.missing.length || s.duplicates.length || s.duplicateContent.length || s.missingRemoved.length || s.liveAtRemoved.length || s.invalidRemoved.length || s.unexpectedLive.length);
 console.log(`  LR sections in the bank               ${lrSections.length}`);
-console.log(`  ...with a numbering gap or duplicate  ${lrBad.length}`);
+  console.log(`  ...with an integrity defect         ${lrBad.length}`);
 for (const s of lrBad) {
-  console.log(`      ${s.file}  missing ${ranges(s.missing) || 'none'}${s.duplicates.length ? `  duplicates ${ranges(s.duplicates)}` : ''}`);
+  console.log(`      ${s.file}  missing ${ranges(s.missing) || 'none'}${s.duplicates.length ? `  duplicates ${ranges(s.duplicates)}` : ''}${s.duplicateContent.length ? `  duplicate content ${s.duplicateContent.map(([a, b]) => `${a}/${b}`).join(', ')}` : ''}${s.missingRemoved.length ? `  missing removed marker ${ranges(s.missingRemoved)}` : ''}${s.liveAtRemoved.length ? `  live at removed position ${ranges(s.liveAtRemoved)}` : ''}${s.invalidRemoved.length ? `  invalid removed position ${ranges(s.invalidRemoved)}` : ''}${s.unexpectedLive.length ? `  unexpected live position ${ranges(s.unexpectedLive)}` : ''}`);
 }
 const rcBad = rcSections.filter((s) => s.missing.length);
 console.log(`  RC sections in the bank               ${rcSections.length}`);
@@ -309,8 +351,13 @@ if (jsonPath) {
         missingQuestionIds: s.missingIds,
       })),
     lr: lrSections
-      .filter((s) => s.missing.length)
-      .map((s) => ({ preptest: s.pt, section: s.section, missingPositions: s.missing })),
+      .filter((s) => s.missing.length || s.duplicates.length || s.duplicateContent.length || s.missingRemoved.length || s.liveAtRemoved.length || s.invalidRemoved.length || s.unexpectedLive.length)
+      .map((s) => ({ preptest: s.pt, section: s.section, missingPositions: s.missing,
+        officialRemovedPositions: OFFICIAL_LR_ROSTERS.get(`${s.pt}:${s.section}`)?.removed ?? [],
+        missingRemovedMarkers: s.missingRemoved, liveAtRemovedPositions: s.liveAtRemoved,
+        invalidRemovedPositions: s.invalidRemoved, unexpectedLivePositions: s.unexpectedLive,
+        duplicateNumbers: s.duplicates,
+        duplicateContentPositions: s.duplicateContent })),
   };
   writeFileSync(jsonPath, `${JSON.stringify(work, null, 2)}\n`);
   console.log(`Recovery work list written to ${jsonPath}`);

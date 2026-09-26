@@ -13,6 +13,20 @@ const base = {
 };
 
 describe("AnswerOvals", () => {
+  it("uses printed numbers across a removed position in an official section", () => {
+    render(
+      <AnswerOvals
+        {...base}
+        questionQueue={["PT118-S1-Q4", "PT118-S1-Q6", "PT118-S1-Q7"]}
+        useOfficialQuestionNumbers
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Question 4" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Question 6, current" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Question 7" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Question 5" })).not.toBeInTheDocument();
+  });
   it("names every question, and says which are answered and which is current", () => {
     render(<AnswerOvals {...base} onJumpTo={vi.fn()} />);
 

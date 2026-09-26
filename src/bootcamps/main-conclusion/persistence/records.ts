@@ -212,6 +212,8 @@ export const PracticeSession = z.object({
   user_id: UuidV4Schema,
   pool_slug: z.string(),
   completion_id: z.string(),
+  /** Version of question identity and answer-key semantics in saved resume rows. */
+  data_version: z.number().int().optional(),
   question_queue: z.array(z.string()),
   current_index: z.number().int().min(0).default(0),
   attempts: z.array(PracticeSessionAttempt).default([]),

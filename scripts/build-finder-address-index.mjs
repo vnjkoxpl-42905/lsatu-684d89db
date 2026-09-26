@@ -47,6 +47,7 @@ function section(pt, sec) {
 for (const file of lrFiles) {
   const questions = JSON.parse(readFileSync(resolve(root, "public", file.replace(/^\//, "")), "utf8"));
   for (const q of questions) {
+    if (q.status === 'removed') continue;
     const pt = Number(String(q.practiceTest ?? "").replace(/^PT/i, ""));
     const sec = Number(q.sectionNumber);
     const qnum = Number(q.questionNumber);

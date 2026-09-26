@@ -26,6 +26,75 @@ import {
   type PracticePool,
 } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 
+export const PRACTICE_SESSION_DATA_VERSION = 2;
+
+const PT118_S1_ANSWERS: Record<number, string> = {
+  1: 'A', 2: 'C', 3: 'B', 4: 'C', 6: 'D', 7: 'B', 8: 'A',
+  9: 'E', 10: 'A', 11: 'C', 12: 'C', 13: 'E', 14: 'E',
+  15: 'E', 16: 'C', 17: 'B', 18: 'D', 19: 'A', 20: 'D',
+  21: 'A', 22: 'E', 23: 'C', 24: 'B', 25: 'C', 26: 'E',
+};
+
+function migratePt118Qid(qid: string): string | null {
+  const match = /^PT118-S([1234])-Q(\d+)$/.exec(qid);
+  if (!match) return qid;
+  const section = Number(match[1]);
+  const number = Number(match[2]);
+  if (section === 3 && number === 22) return null;
+  if (section === 1 && number >= 5 && number <= 25) return `PT118-S1-Q${number + 1}`;
+  return qid;
+}
+
+function pt118CorrectAnswer(qid: string): string | undefined {
+  const match = /^PT118-S([12])-Q(\d+)$/.exec(qid);
+  if (!match) return undefined;
+  const section = Number(match[1]);
+  const number = Number(match[2]);
+  if (section === 1) return PT118_S1_ANSWERS[number];
+  if (section === 2) return ({ 1: 'D', 5: 'A' } as Record<number, string>)[number];
+  return undefined;
+}
+
+/** Remap pre-repair PT118 resume IDs once, preserving the student's place by content. */
+export function migratePracticeSession(row: PracticeSession): PracticeSession {
+  if ((row.data_version ?? 0) >= PRACTICE_SESSION_DATA_VERSION) return row;
+  // These namespaces are written by the Drill runner, whose displayed LR
+  // content comes from the local JSON QuestionBank. An unknown producer may
+  // have used the already-canonical catalog, so its IDs are not safe to shift.
+  if (!row.pool_slug.startsWith('drill::') && !row.pool_slug.startsWith('guided::')) return row;
+  const oldCurrent = row.question_queue[row.current_index];
+  const mappedCurrent = oldCurrent ? migratePt118Qid(oldCurrent) : null;
+  const seen = new Set<string>();
+  const questionQueue = row.question_queue.flatMap((qid) => {
+    const mapped = migratePt118Qid(qid);
+    if (!mapped || seen.has(mapped)) return [];
+    seen.add(mapped);
+    return [mapped];
+  });
+  const seenAttempts = new Set<string>();
+  const attempts = row.attempts.flatMap((attempt) => {
+    const qid = migratePt118Qid(attempt.qid);
+    if (!qid || seenAttempts.has(qid)) return [];
+    seenAttempts.add(qid);
+    const answer = pt118CorrectAnswer(qid);
+    return [{ ...attempt, qid, correct: answer ? attempt.selected_answer === answer : attempt.correct }];
+  });
+  const currentIndex = mappedCurrent && questionQueue.includes(mappedCurrent)
+    ? questionQueue.indexOf(mappedCurrent)
+    : Math.min(row.current_index, Math.max(questionQueue.length - 1, 0));
+  const regulationAnsweredQids = row.regulation_answered_qids && [
+    ...new Set(row.regulation_answered_qids.map(migratePt118Qid).filter((qid): qid is string => !!qid)),
+  ];
+  return PracticeSession.parse({
+    ...row,
+    data_version: PRACTICE_SESSION_DATA_VERSION,
+    question_queue: questionQueue,
+    current_index: currentIndex,
+    attempts,
+    regulation_answered_qids: regulationAnsweredQids,
+  });
+}
+
 /**
  * Deterministic per-user, per-pool record id, so every read and write lands on
  * the same row without a lookup. Mirrors progressIdFor's FNV-1a approach but
@@ -106,7 +175,16 @@ export async function loadPracticeSession(
       });
       return null;
     }
-    return parsed.data;
+    const migrated = migratePracticeSession(parsed.data);
+    if (migrated !== parsed.data) {
+      try {
+        await persist.set(TABLES.practice_sessions, migrated.id, migrated);
+      } catch (error) {
+        // A sync failure must not hide an otherwise usable local resume row.
+        console.warn('[practice-session] migration write failed', { poolSlug, error });
+      }
+    }
+    return migrated;
   } catch (e) {
     console.warn('[practice-session] load failed, starting fresh', { poolSlug, error: e });
     return null;
@@ -155,6 +233,7 @@ export async function savePracticeSessionSnapshot(
       user_id: userId,
       pool_slug: pool.slug,
       completion_id: pool.completionId,
+      data_version: PRACTICE_SESSION_DATA_VERSION,
       question_queue: snapshot.questionQueue,
       current_index: Math.min(
         Math.max(snapshot.currentIndex, 0),
@@ -196,6 +275,7 @@ export async function completePracticeSession(
       user_id: userId,
       pool_slug: pool.slug,
       completion_id: pool.completionId,
+      data_version: PRACTICE_SESSION_DATA_VERSION,
       question_queue: snapshot.questionQueue.length
         ? snapshot.questionQueue
         : existing?.question_queue ?? [],
