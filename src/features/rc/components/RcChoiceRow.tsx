@@ -173,7 +173,7 @@ export function RcChoiceRow({
         // rc-choice is a hook for the accessibility schemes, which need to
         // neutralise these fills. It carries no styling of its own.
         'rc-choice group relative rounded-lg border transition-all duration-200',
-        'grid grid-cols-[auto_1fr_auto] items-start gap-3 p-3',
+        'grid grid-cols-[auto_1fr_auto] items-start gap-3 px-3 py-1.5',
         isCorrect
           ? 'rc-choice-correct'
           : selected

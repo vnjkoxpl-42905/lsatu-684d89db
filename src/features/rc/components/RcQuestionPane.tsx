@@ -6,6 +6,7 @@ import { RcChoiceRow } from './RcChoiceRow';
 import { RcChoiceDisclosure } from './RcChoiceDisclosure';
 import { RcReviewLayer } from './RcReviewLayer';
 import { RcSelectionPopover, type RcSelectionAnchor } from './RcSelectionPopover';
+import { ScrollMoreCue } from '@/components/drill/official/ScrollMoreCue';
 import type { RcTypeStyles } from './RcExamPane';
 import { useRcMarkSurface, type RcMarkSurfaceHandle } from '../hooks/useRcMarkSurface';
 import { paintRcAnnotations } from '../lib/rcHighlightPaint';
@@ -148,7 +149,7 @@ export function RcQuestionPane({
 
   return (
     <div
-      className="rc-exam-col relative min-w-0 overflow-y-auto px-6 py-7 sm:pl-10 sm:pr-8"
+      className="rc-exam-col relative min-w-0 overflow-y-auto px-6 pt-4 pb-3 sm:pl-10 sm:pr-8"
       style={type.question}
       ref={paneRef}
     >
@@ -207,7 +208,7 @@ export function RcQuestionPane({
         />
       )}
 
-      <ul className="mt-4 space-y-3.5">
+      <ul className="mt-3 space-y-1">
         {question.choices.map((choice) => {
           /* Blind means blind. `reattemptPick ?? selected` fell back to the
              original answer while the student was being asked to answer again,
@@ -275,6 +276,14 @@ export function RcQuestionPane({
         onApply={(chosen) => popover?.surfaces.forEach((s) => s.applyPending(chosen))}
         onRemove={() => popover?.surfaces.forEach((s) => s.removePending())}
         onDismiss={() => setPopover(null)}
+      />
+      {/* Last child on purpose: the cue is a zero-height sticky anchor. */}
+      <ScrollMoreCue
+        scrollRef={paneRef}
+        fadeStyle={{
+          background:
+            "linear-gradient(to top, var(--rc-bg, #fff) 40%, transparent)",
+        }}
       />
     </div>
   );

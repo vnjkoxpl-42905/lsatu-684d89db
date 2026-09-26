@@ -15,6 +15,7 @@ import {
 } from "@/lib/highlightUtils";
 import { cn } from "@/lib/utils";
 import { useDeferredPick } from "@/hooks/useDeferredPick";
+import { ScrollMoreCue } from "./ScrollMoreCue";
 
 interface Question {
   qid: string;
@@ -160,6 +161,11 @@ export default function OfficialQuestionPane({
 
   const stimulusRef = React.useRef<HTMLDivElement | null>(null);
   const stemRef = React.useRef<HTMLDivElement | null>(null);
+  // The two scrolling columns. The screen is pinned to the viewport, so a
+  // question longer than its column scrolls inside it, and each column shows a
+  // "More below" cue while anything is still out of sight.
+  const stimulusColumnRef = React.useRef<HTMLDivElement | null>(null);
+  const questionColumnRef = React.useRef<HTMLDivElement | null>(null);
   const choiceRefs = React.useRef(new Map<string, HTMLDivElement>());
   // Set on mouse-up when the drag was a marking gesture, read by the click
   // that follows it. A drag that ends on a choice must not also pick it.
@@ -196,9 +202,13 @@ export default function OfficialQuestionPane({
   // face; stem and choices stay on the sans stack at the same size.
   //
   // On a short screen 19px pushed choice D and E below the fold, so the size
-  // steps down with viewport height (17px floor) and a full question fits
-  // without scrolling or zooming. Tall screens still get the 7Sage 19px.
-  const baseSize = `calc(${fontScale} * clamp(17px, 2.2vh, 19px))`;
+  // steps down with viewport height and a full question fits without
+  // scrolling or zooming. Tall screens still get the 7Sage 19px. The floor is
+  // 16px: measured over all 3,965 LR questions, it took the ones that fit with
+  // nothing hidden from 54% to 79% on a 1366x625 laptop (90% to 93% at
+  // 1536x695). It depends on the window only, so every question on a given
+  // screen reads at one size, and the student's own text size multiplies it.
+  const baseSize = `calc(${fontScale} * clamp(16px, 2.2vh, 19px))`;
   const officialContentTextStyle: React.CSSProperties = {
     color: "#111827",
     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
@@ -231,16 +241,16 @@ export default function OfficialQuestionPane({
       onMouseUp={handleMouseUp}
     >
       <DrillSplit
-        ratio="passage-weighted"
+        ratio="question-weighted"
         maxWidthClassName={null}
         left={
           // Stimulus column. The wrapper scrolls; the stimulus block keeps its
           // own padding, face and measure, and the Argument Breakdown sits
           // under it as a sibling rather than inside its serif/pre-wrap box.
-          <div className="flex min-h-0 flex-col overflow-y-auto lg:border-r border-slate-200">
+          <div ref={stimulusColumnRef} className="flex min-h-0 flex-col overflow-y-auto lg:border-r border-slate-200">
           <div
             className={cn(
-              "min-w-0 px-6 pt-5 pb-6 sm:pl-9 sm:pr-8 whitespace-pre-wrap",
+              "min-w-0 px-6 pt-3 pb-6 sm:pl-9 sm:pr-8 whitespace-pre-wrap",
               // Cap the reading measure. The frame is max-w-[1400px] and this column
               // takes 53fr of it, which ran ~100 characters per line — well past the
               // 45-75 readable band. `ch` is the width of "0", which is narrow in
@@ -268,11 +278,12 @@ export default function OfficialQuestionPane({
               {belowStimulus}
             </div>
           )}
+          <ScrollMoreCue scrollRef={stimulusColumnRef} />
           </div>
         }
         right={
           // Question column
-          <div className="min-w-0 px-6 py-5 sm:pl-10 sm:pr-8 bg-white overflow-y-auto" style={stemStyle}>
+          <div ref={questionColumnRef} className="min-w-0 px-6 pt-3 pb-3 sm:pl-10 sm:pr-8 bg-white overflow-y-auto" style={stemStyle}>
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 flex items-start gap-2">
                 <span className="font-bold tabular-nums shrink-0 min-w-[20px] text-slate-950">
@@ -311,7 +322,7 @@ export default function OfficialQuestionPane({
 
             {aboveChoices && <div className="mt-4">{aboveChoices}</div>}
 
-            <ul className="mt-3 space-y-1.5">
+            <ul className="mt-3 space-y-1">
               {answerEntries.map(([key, text]) => {
                 const isSelected = selectedAnswer === key;
                 const isEliminated = eliminatedAnswers.has(key);
@@ -342,7 +353,7 @@ export default function OfficialQuestionPane({
                     key={key}
                     className={cn(
                       "group relative rounded-lg border transition-all duration-200",
-                      "grid grid-cols-[auto_1fr_auto_auto] items-start gap-3 px-3 py-2",
+                      "grid grid-cols-[auto_1fr_auto_auto] items-start gap-3 px-3 py-1.5",
                       showCorrectColour
                         ? "border-green-500 bg-green-50"
                         : isWrongPick
@@ -526,6 +537,7 @@ export default function OfficialQuestionPane({
                 </button>
               </div>
             )}
+            <ScrollMoreCue scrollRef={questionColumnRef} />
           </div>
         }
       />

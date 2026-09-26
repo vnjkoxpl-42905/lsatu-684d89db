@@ -14,17 +14,21 @@ import { cn } from '@/lib/utils';
  * right column is present at all (RC's Passage Only View, and the LR
  * pool-exhausted state, both render a single full-width pane).
  *
- * Both drill runners currently pass `passage-weighted` with no page cap, so the
- * defaults below are for other callers rather than for them. The doc used to
+ * RC passes `passage-weighted` and LR passes `question-weighted`, both with no
+ * page cap, so the defaults below are for other callers rather than for them. The doc used to
  * say LR split evenly and capped at max-w-7xl, which stopped being true when
  * the LR pane was rebuilt and was never corrected.
  */
 
-export type DrillSplitRatio = 'even' | 'passage-weighted';
+export type DrillSplitRatio = 'even' | 'passage-weighted' | 'question-weighted';
 
 const RATIO_CLASS: Record<DrillSplitRatio, string> = {
   even: 'grid-cols-1 lg:grid-cols-2',
   'passage-weighted': 'grid-cols-1 lg:grid-cols-[minmax(0,53fr)_minmax(0,47fr)]',
+  // LR: the stimulus is short (868 characters at most) and capped at a 52ch
+  // measure, so it never used a 53% column. The stem and five choices run to
+  // 2,050 characters, and they are what fell below the fold. Give them the room.
+  'question-weighted': 'grid-cols-1 lg:grid-cols-[minmax(0,42fr)_minmax(0,58fr)]',
 };
 
 interface Props {
