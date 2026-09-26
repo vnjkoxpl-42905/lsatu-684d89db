@@ -202,9 +202,13 @@ export default function OfficialQuestionPane({
   // face; stem and choices stay on the sans stack at the same size.
   //
   // On a short screen 19px pushed choice D and E below the fold, so the size
-  // steps down with viewport height (17px floor) and a full question fits
-  // without scrolling or zooming. Tall screens still get the 7Sage 19px.
-  const baseSize = `calc(${fontScale} * clamp(17px, 2.2vh, 19px))`;
+  // steps down with viewport height and a full question fits without
+  // scrolling or zooming. Tall screens still get the 7Sage 19px. The floor is
+  // 16px: measured over all 3,965 LR questions, it took the ones that fit with
+  // nothing hidden from 54% to 79% on a 1366x625 laptop (90% to 93% at
+  // 1536x695). It depends on the window only, so every question on a given
+  // screen reads at one size, and the student's own text size multiplies it.
+  const baseSize = `calc(${fontScale} * clamp(16px, 2.2vh, 19px))`;
   const officialContentTextStyle: React.CSSProperties = {
     color: "#111827",
     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
