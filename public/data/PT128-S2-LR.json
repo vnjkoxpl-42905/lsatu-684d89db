@@ -298,7 +298,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 1,
+    "questionDifficulty": 4,
     "stimulus": "Scientist: There is little doubt that the ice ages were caused by the unusually rich growth of vegetation worldwide. Since vegetation converts carbon dioxide into oxygen, excessive vegetation would have depleted the carbon dioxide in the atmosphere. Carbon dioxide helps the atmosphere retain the sun's heat. Thus, if this carbon dioxide is depleted, the earth cools significantly, thereby causing an ice age.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the scientist's argument?",
     "answerChoices": {
@@ -310,8 +310,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion",
-      "Science"
+      "Science",
+      "First Sentence Conclusion"
     ]
   },
   {

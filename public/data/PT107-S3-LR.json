@@ -277,7 +277,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -369,7 +370,6 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Predictions"
     ]
@@ -520,7 +520,6 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Rebuttals"
     ]

@@ -481,8 +481,8 @@
     "questionNumber": 20,
     "questionType": "Unknown",
     "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
+      "Comparative Reasoning",
+      "Causation"
     ],
     "questionDifficulty": 4,
     "stimulus": "Neural connections carrying signals from the cortex (the brain region responsible for thought) down to the amygdala (a brain region crucial for emotions) are less well developed than connections carrying signals from the amygdala up to the cortex. Thus, the amygdala exerts a greater influence on the cortex than vice versa.",
@@ -498,7 +498,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Science",
-      "Volume Dial"
+      "Volume Dial",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -570,11 +571,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Relative vs. Absolute",
-      "Missing Link / Idea",
+      "Principles in Stimulus",
       "Contrapositive Logic",
-      "Principles in Stimulus"
+      "Missing Link / Idea",
+      "Relative vs. Absolute"
     ]
   },
   {

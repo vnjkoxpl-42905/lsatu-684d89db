@@ -383,9 +383,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender",
       "Plans / Recommendations",
-      "Timeframes"
+      "Timeframes",
+      "Defender",
+      "Assumes Similarity"
     ]
   },
   {

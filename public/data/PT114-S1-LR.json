@@ -47,7 +47,7 @@
     "questionNumber": 3,
     "questionType": "Principle-Strengthen",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 1,
     "stimulus": "An anthropologist hypothesized that a certain medicinal powder contained a significant amount of the deadly toxin T. When the test she performed for the presence of toxin T was negative, the anthropologist did not report the results. A chemist who nevertheless learned about the test results charged the anthropologist with fraud. The anthropologist, however, countered that those results were invalid because the powder had inadvertently been tested in an acidic solution.",
     "questionStem": "In the absence of the anthropologist's reply, which one of the following principles, if established, would most support the chemist's charge?",
     "answerChoices": {
@@ -201,7 +201,7 @@
     "questionNumber": 10,
     "questionType": "Strengthen",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 5,
     "stimulus": "Bernard: For which language, and thus which frequency distribution of letters and letter sequences, was the standard typewriter keyboard designed?\nCora: To ask this question, you must be making a mistaken assumption: that typing speed was to be maximized. The real danger with early typewriters was that operators would hit successive keys too quickly, thereby crashing typebars into each other, bending connecting wires, and so on. So the idea was to slow the operator down by making the most common letter sequences awkward to type.\nBernard: This is surely not right! These technological limitations have long since vanished, yet the keyboard is still as it was then.",
     "questionStem": "Which one of the following, if true, could be used by Cora to counter Bernard's rejection of her explanation?",
     "answerChoices": {
@@ -246,7 +246,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 1,
     "stimulus": "Economist: Technology now changes so rapidly that workers need periodic retraining. Such retraining can be efficient only if it allows individual companies to meet their own short-term needs. Hence, large governmental job retraining programs are no longer a viable option in the effort to retrain workers efficiently.",
     "questionStem": "Which one of the following is an assumption required by the economist's argument?",
     "answerChoices": {
@@ -320,7 +320,7 @@
     "questionNumber": 15,
     "questionType": "Most Supported",
     "reasoningType": [],
-    "questionDifficulty": 1,
+    "questionDifficulty": 4,
     "stimulus": "Mystery stories often feature a brilliant detective and the detective's dull companion. Clues are presented in the story, and the companion wrongly infers an inaccurate solution to the mystery using the same clues that the detective uses to deduce the correct solution. Thus, the author's strategy of including the dull companion gives readers a chance to solve the mystery while also diverting them from the correct solution.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
     "answerChoices": {
@@ -330,7 +330,8 @@
       "D": "The actions of the brilliant detective in a mystery story rarely divert readers from the actions of the detective's dull companion.",
       "E": "The detective's dull companion in a mystery story generally uncovers the misleading clues that divert readers from the mystery's correct solution."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT114",
@@ -338,7 +339,7 @@
     "questionNumber": 16,
     "questionType": "Parallel Flaw",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 1,
     "stimulus": "Policy analyst: Increasing the size of a police force is only a stopgap method of crime prevention; it does not get at the root causes of crime. Therefore, city officials should not respond to rising crime rates by increasing the size of their city's police force.",
     "questionStem": "The flawed reasoning in which one of the following arguments most closely resembles the flawed reasoning in the policy analyst's argument?",
     "answerChoices": {
@@ -359,7 +360,7 @@
     "questionNumber": 17,
     "questionType": "Weaken",
     "reasoningType": [],
-    "questionDifficulty": 1,
+    "questionDifficulty": 2,
     "stimulus": "In order to determine automobile insurance premiums for a driver, insurance companies calculate various risk factors; as the risk factors increase, so does the premium. Certain factors, such as the driver's age and past accident history, play an important role in these calculations. Yet these premiums should also increase with the frequency with which a person drives. After all, a person's chance of being involved in a mishap increases in proportion to the number of times that person drives.",
     "questionStem": "Which one of the following, if true, most undermines the argument?",
     "answerChoices": {
@@ -369,7 +370,8 @@
       "D": "People who drive frequently are more likely to make long-distance trips in the course of a year than are people who drive infrequently.",
       "E": "People who drive frequently are more likely to become distracted while driving than are people who drive infrequently."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT114",
@@ -377,7 +379,7 @@
     "questionNumber": 18,
     "questionType": "Role",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "In order to determine automobile insurance premiums for a driver, insurance companies calculate various risk factors; as the risk factors increase, so does the premium. Certain factors, such as the driver's age and past accident history, play an important role in these calculations. Yet these premiums should also increase with the frequency with which a person drives. After all, a person's chance of being involved in a mishap increases in proportion to the number of times that person drives.",
     "questionStem": "The claim that insurance premiums should increase as the frequency with which a driver drives increases plays which one of the following roles in the argument?",
     "answerChoices": {
@@ -398,7 +400,7 @@
     "questionNumber": 19,
     "questionType": "Most Supported",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 4,
     "stimulus": "Essayist: Only happiness is intrinsically valuable; other things are valuable only insofar as they contribute to happiness. Some philosophers argue that the fact that we do not approve of a bad person’s being happy shows that we value happiness only when it is deserved. This supposedly shows that we find something besides happiness to be intrinsically valuable. But the happiness people deserve is determined by the amount of happiness they bring to others. Therefore, _______.",
     "questionStem": "Which one of the following most logically completes the final sentence of the essayist’s argument?",
     "answerChoices": {
@@ -408,7 +410,8 @@
       "D": "the only way to be assured of happiness is to bring happiness to those who have done something to deserve it",
       "E": "a truly bad person cannot actually be very happy"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT114",
@@ -416,7 +419,7 @@
     "questionNumber": 20,
     "questionType": "Most Supported",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 5,
     "stimulus": "Sociologist: Climate and geology determine where human industry can be established. Drastic shifts in climate always result in migrations, and migrations bring about the intermingling of ideas necessary for rapid advances in civilization.",
     "questionStem": "The sociologist's statements, if true, most strongly support which one of the following?",
     "answerChoices": {
@@ -426,7 +429,8 @@
       "D": "Populations settle in every place where human industry can be established.",
       "E": "Every migration is accompanied by rapid advances in civilization."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT114",
@@ -434,7 +438,7 @@
     "questionNumber": 21,
     "questionType": "Most Supported",
     "reasoningType": [],
-    "questionDifficulty": 4,
+    "questionDifficulty": 5,
     "stimulus": "Some educators claim that it is best that school courses cover only basic subject matter, but cover it in depth. These educators argue that if students achieve a solid grasp of the basic concepts and investigatory techniques in a subject, they will be able to explore the breadth of that subject on their own after the course is over. But if they simply learn a lot of factual information, without truly understanding its significance, they will not be well equipped for further study on their own.",
     "questionStem": "The educators' reasoning provides grounds for accepting which one of the following statements?",
     "answerChoices": {
@@ -444,7 +448,8 @@
       "D": "It is easier to understand any Greek tragedy after one has analyzed a few of them in detail.",
       "E": "It is easier to learn many simple ideas well than to learn a few complicated ideas well."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT114",
@@ -452,7 +457,7 @@
     "questionNumber": 22,
     "questionType": "Parallel",
     "reasoningType": [],
-    "questionDifficulty": 4,
+    "questionDifficulty": 2,
     "stimulus": "Damming the Merv River would provide irrigation for the dry land in its upstream areas; unfortunately, a dam would reduce agricultural productivity in the fertile land downstream by reducing the availability and quality of the water there. The productivity loss in the downstream area would be greater than the productivity gain upstream, so building a dam would yield no overall gain in agricultural productivity in the region as a whole.",
     "questionStem": "The reasoning in the argument above most closely parallels that in which one of the following?",
     "answerChoices": {
@@ -464,8 +469,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Net Effect",
       "Plans / Recommendations",
+      "Net Effect",
       "Predictions",
       "Weighing Tradeoffs"
     ]
@@ -476,7 +481,7 @@
     "questionNumber": 23,
     "questionType": "Flaw",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "Activist: Food producers irradiate food in order to prolong its shelf life. Five animal studies were recently conducted to investigate whether this process alters food in a way that could be dangerous to people who eat it. The studies concluded that irradiated food is safe for humans to eat. However, because these studies were subsequently found by a panel of independent scientists to be seriously flawed in their methodology, it follows that irradiated food is not safe for human consumption.",
     "questionStem": "The reasoning in the activist's argument is flawed because that argument",
     "answerChoices": {
@@ -512,9 +517,10 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
+      "Timeframes",
       "Alternatives",
       "Defender",
-      "Timeframes"
+      "Explain Curious Fact"
     ]
   }
 ]

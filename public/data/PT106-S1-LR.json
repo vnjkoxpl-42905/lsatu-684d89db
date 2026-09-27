@@ -31,8 +31,8 @@
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
     "reasoningType": [
-      "Causation",
-      "Conditional Reasoning"
+      "Conditional Reasoning",
+      "Causation"
     ],
     "questionDifficulty": 2,
     "stimulus": "If the government increases its funding for civilian scientific research, private patrons and industries will believe that such research has become primarily the government’s responsibility. When they believe that research is no longer primarily their responsibility, private patrons and industries will decrease their contributions toward research. Therefore, in order to keep from depressing the overall level of funding for civilian scientific research, the government should not increase its own funding.",
@@ -46,12 +46,11 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
+      "Net Effect",
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
-      "Conditional Conclusion",
       "Contrapositive Logic",
       "Math-y Stuff",
-      "Net Effect",
+      "Conditional Conclusion",
       "New Concept in Conclusion"
     ]
   },
@@ -247,10 +246,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic",
       "Principles in Answers",
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -298,12 +296,11 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea",
+      "Rebuttals",
       "Assumes Similarity",
       "Contrapositive Logic",
-      "Rebuttals",
-      "Untriggered Conditional"
+      "Untriggered Conditional",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -326,10 +323,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Intermediate Conclusions",
-      "Untriggered Conditional"
+      "Untriggered Conditional",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -353,7 +349,6 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Science"
     ]
@@ -501,7 +496,6 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -606,12 +600,11 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea",
       "Contrapositive Logic",
       "Intermediate Conclusions",
-      "Links Between Premises",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {

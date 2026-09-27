@@ -431,8 +431,8 @@
     "questionNumber": 20,
     "questionType": "Necessary Assumption",
     "reasoningType": [
-      "Causation",
-      "Conditional Reasoning"
+      "Conditional Reasoning",
+      "Causation"
     ],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 2, questions\n20 through 21.\nSome people have been promoting a new herbal\nmixture as a remedy for the common cold. The mixture\ncontains, among other things, extracts of the plants\npurple coneflower and goldenseal. A cold sufferer,\nskeptical of the claim that the mixture is an effective\ncold remedy, argued, “Suppose that the mixture were\nan effective cold remedy. Since most people with\ncolds wish to recover quickly, it follows that almost\neverybody with a cold would be using it. Therefore,\nsince there are many people who have colds but do not\nuse the mixture, it is obviously not effective.”",
@@ -446,13 +446,12 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
+      "EXCEPT",
       "Anti-Causal",
       "Contrapositive Logic",
-      "Defender",
-      "EXCEPT",
       "Focused on Evidence",
       "Intermediate Conclusions",
+      "Defender",
       "Untriggered Conditional"
     ]
   },

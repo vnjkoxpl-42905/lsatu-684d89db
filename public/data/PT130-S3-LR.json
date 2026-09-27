@@ -245,7 +245,6 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -348,7 +347,6 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -496,9 +494,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Plans / Recommendations",
+      "Proposition/Generalization",
       "Principles in Answers",
-      "Proposition/Generalization"
+      "Plans / Recommendations",
+      "Important Pivot"
     ]
   },
   {
@@ -533,10 +532,10 @@
     "questionNumber": 22,
     "questionType": "Flaw",
     "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
+      "Comparative Reasoning",
+      "Causation"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 4,
     "stimulus": "Columnist: Several recent studies show, and insurance statistics confirm, that more pedestrians are killed every year in North American cities when crossing with the light than when crossing against it. Crossing against the light in North American cities is therefore less dangerous than crossing with the light.",
     "questionStem": "The columnist's reasoning is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
@@ -588,7 +587,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "The asteroid that hit the Yucatán Peninsula 65 million years ago caused both long-term climatic change and a tremendous firestorm that swept across North America. We cannot show that it was this fire that caused the extinction of the triceratops, a North American dinosaur in existence at the time of the impact of the asteroid. Nor can we show that the triceratops became extinct due to the climatic changes resulting from the asteroid's impact. Hence, we cannot attribute the triceratops's extinction to the asteroid's impact.",
     "questionStem": "Which one of the following has flawed reasoning most similar to the flawed reasoning in the argument above?",
     "answerChoices": {
@@ -600,9 +599,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
+      "Anti-Causal",
       "Famous Flaws",
-      "Part vs. Whole",
-      "Anti-Causal"
+      "Part vs. Whole"
     ]
   },
   {

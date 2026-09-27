@@ -165,8 +165,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact",
-      "Volume Dial"
+      "Volume Dial",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -282,7 +282,6 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Quantifiers"
     ]
@@ -351,7 +350,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "Rebuttals"
+      "Rebuttals",
+      "Analogies"
     ]
   },
   {
@@ -363,7 +363,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 1,
+    "questionDifficulty": 3,
     "stimulus": "A recent study carefully tracked the specific behaviors of five East African chimpanzee groups of one subspecies, and of two West African groups of another subspecies, in activities such as grooming and foraging. The study found that one of the East African groups was behaviorally more similar to the West African groups than to the other East African groups. It is therefore likely that these behaviors are determined by cultural factors rather than by genetics.",
     "questionStem": "Which one of the following, if true, provides the most support for the argument?",
     "answerChoices": {
@@ -424,7 +424,6 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -471,7 +470,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Science",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -518,7 +519,6 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },

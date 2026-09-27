@@ -515,7 +515,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "Designer: Any garden and adjoining living room that are separated from one another by sliding glass doors can visually merge into a single space. If the sliding doors are open, as may happen in summer, this effect will be created if it does not already exist and intensified if it does. The effect remains quite strong during colder months if the garden is well coordinated with the room and contributes strong visual interest of its own.",
     "questionStem": "The designer's statements, if true, most strongly support which one of the following?",
     "answerChoices": {
@@ -589,7 +589,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 4,
     "stimulus": "The supernova event of 1987 is interesting in that there is still no evidence of the neutron star that current theory says should have remained after a supernova of that size. This is in spite of the fact that many of the most sensitive instruments ever developed have searched for the tell-tale pulse of radiation that neutron stars emit. Thus, current theory is wrong in claiming that supernovas of a certain size always produce neutron stars.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
     "answerChoices": {
@@ -601,10 +601,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender",
-      "Focused on Evidence",
       "Refute a Conditional",
-      "Science"
+      "Science",
+      "Defender",
+      "Focused on Evidence"
     ]
   },
   {

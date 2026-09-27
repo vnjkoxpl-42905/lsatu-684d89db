@@ -347,7 +347,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 5,
     "stimulus": "There is a popular view among literary critics that a poem can never be accurately paraphrased because a poem is itself the only accurate expression of its meaning. But these same critics hold that their own paraphrases of particular poems are accurate. Thus, their view that poetry cannot be accurately paraphrased is false.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
     "answerChoices": {
@@ -359,10 +359,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Battle of Opinions",
+      "Worst of the Worst",
       "Rebuttals",
-      "Ruling Out Options",
-      "Worst of the Worst"
+      "Battle of Opinions",
+      "Ruling Out Options"
     ]
   },
   {
@@ -373,7 +373,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "The tax bill passed 2 years ago provides substantial incentives for businesses that move to this area and hire 50 or more employees. Critics say the bill reduces the government’s tax revenues. Yet clearly it has already created many jobs in this area. Last year, Plastonica qualified for incentives under the bill by opening a new plastics factory here that hired 75 employees.",
     "questionStem": "The argument’s reasoning depends on which one of the following assumptions?",
     "answerChoices": {
@@ -396,10 +396,10 @@
     "questionNumber": 17,
     "questionType": "Must Be True",
     "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
+      "Comparative Reasoning",
+      "Causation"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 1,
     "stimulus": "When a chain of service stations began applying a surcharge of $0.25 per purchase on fuel paid for by credit card, the chain’s owners found that this policy made their customers angry. So they decided instead to simply raise the price of fuel a compensatory amount and give a $0.25 discount to customers paying with cash. Customers were much happier with this policy.",
     "questionStem": "Which one of the following generalizations does the situation described above most clearly illustrate?",
     "answerChoices": {
@@ -411,8 +411,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker",
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Causal Difference-Maker"
     ]
   },
   {

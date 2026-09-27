@@ -225,11 +225,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "2-Speaker",
       "Contrapositive Logic",
       "Rebuttals",
-      "Untriggered Conditional"
+      "Untriggered Conditional",
+      "2-Speaker"
     ]
   },
   {
@@ -578,7 +577,6 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },

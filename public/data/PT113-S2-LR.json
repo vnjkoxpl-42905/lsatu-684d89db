@@ -86,7 +86,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Sufficient Assumption",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Although consciousness seems to arise from physical processes, physical theories can explain only why physical systems have certain physical structures and how these systems perform various physical functions. Thus, no strictly physical theory can explain consciousness.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -97,7 +99,10 @@
       "D": "Consciousness arises from processes that are entirely explainable by physical theories.",
       "E": "An explanation of physical structures and functions must be formulated in strictly physical terms."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "New Concept in Conclusion"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -107,7 +112,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "Advertisement: At most jewelry stores, the person assessing the diamond is the person selling it, so you can see why an assessor might say that a diamond is of higher quality than it really is. But because all diamonds sold at Gem World are certified in writing, you're assured of a fair price when purchasing a diamond from Gem World.",
     "questionStem": "The reasoning in the advertisement would be most strengthened if which one of the following were true?",
     "answerChoices": {
@@ -119,8 +124,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -383,9 +388,10 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers",
       "Proposition/Generalization",
-      "Weighing Tradeoffs"
+      "Abstract Answers",
+      "Weighing Tradeoffs",
+      "Causal Difference-Maker"
     ]
   },
   {

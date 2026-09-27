@@ -116,7 +116,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "Heavy salting of Albritten's roads to melt winter ice and snow began about 20 years ago. The area's groundwater now contains approximately 100 milligrams of dissolved salt per liter. Groundwater in a nearby, less highly urbanized area, where little salt is used and where traffic patterns resemble those of Albritten 20 years ago, contains only about 10 milligrams of dissolved salt per liter. Since water that contains 250 or more milligrams of dissolved salt per liter tastes unacceptably salty, continuing the salting of Albritten's roads at its present rate will render Albritten's groundwater unpalatable within the next few decades.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
     "answerChoices": {
@@ -128,12 +128,12 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact",
-      "Conditional Conclusion",
       "Math-y Stuff",
-      "Predictions",
       "Science",
-      "Timeframes"
+      "Explain Curious Fact",
+      "Timeframes",
+      "Predictions",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -186,7 +186,7 @@
     "questionNumber": 9,
     "questionType": "Flaw",
     "reasoningType": [],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "Editorial: When legislators discover that some public service is not being adequately provided, their most common response is to boost the funding for that public service. Because of this, the least efficiently run government bureaucracies are the ones that most commonly receive an increase in funds.",
     "questionStem": "The statements in the editorial, if true, most strongly support which one of the following?",
     "answerChoices": {
@@ -196,7 +196,8 @@
       "D": "If legislators boost funding for a public service, the government bureaucracy providing that service will commonly become less efficient as a result.",
       "E": "The most inefficiently run government bureaucracy receives the most funding of any government bureaucracy."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT119",
@@ -268,7 +269,7 @@
     "questionNumber": 13,
     "questionType": "Flaw",
     "reasoningType": [],
-    "questionDifficulty": 5,
+    "questionDifficulty": 3,
     "stimulus": "It is characteristic of great artists generally, and of great writers in particular, to have a discerning view of the basic social and political arrangements of the society in which they live. Therefore, the greater a writer one is, the more astute one will be in perceiving the basic social and political arrangements of one's society.",
     "questionStem": "Which one of the following most accurately describes a flaw in the reasoning above?",
     "answerChoices": {
@@ -278,7 +279,8 @@
       "D": "It assumes, without providing justification, that only great individuals can make discerning criticisms of their societies.",
       "E": "It assumes, without providing justification, that because people who have one quality tend to have a second quality, those who have more of the first quality will have more of the second."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT119",
@@ -288,7 +290,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 2,
     "stimulus": "Political scientist: The economies of a number of European countries are currently in severe difficulty. Germany is the only neighboring country that has the resources to resuscitate these economies. Therefore, Germany should begin aiding these economically troubled countries.",
     "questionStem": "Which one of the following principles most helps to justify the political scientist's reasoning?",
     "answerChoices": {
@@ -300,8 +302,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -310,10 +312,10 @@
     "questionNumber": 15,
     "questionType": "Necessary Assumption",
     "reasoningType": [
-      "Causation",
-      "Conditional Reasoning"
+      "Conditional Reasoning",
+      "Causation"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 5,
     "stimulus": "Critic: Works of literature often present protagonists who scorn allegiance to their society and who advocate detachment rather than civic-mindedness. However, modern literature is distinguished from the literature of earlier eras in part because it more frequently treats such protagonists sympathetically. Sympathetic treatment of such characters suggests to readers that one should be unconcerned about contributing to societal good. Thus, modern literature can damage individuals who appropriate this attitude, as well as damage society at large.",
     "questionStem": "Which one of the following is an assumption on which the critic's argument relies?",
     "answerChoices": {
@@ -325,8 +327,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea",
       "Causal Chains",
+      "Missing Link / Idea",
       "Dense Stimulus",
       "New Concept in Conclusion"
     ]
@@ -357,7 +359,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 5,
     "stimulus": "Traditionally, students at Kelly University have evaluated professors on the last day of class. But some professors at Kelly either do not distribute the paper evaluation forms or do so selectively, and many students cannot attend the last day of class. Soon, students will be able to use school computers to evaluate their professors at any time during the semester. Therefore, evaluations under the new system will accurately reflect the distribution of student opinion about teaching performance.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
     "answerChoices": {
@@ -369,9 +371,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
+      "Plans / Recommendations",
       "Sampling",
-      "Defender",
-      "Plans / Recommendations"
+      "Defender"
     ]
   },
   {
@@ -403,7 +405,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 4,
     "stimulus": "Tanya would refrain from littering if everyone else refrained from littering. None of her friends litter, and therefore she does not litter either.",
     "questionStem": "Which one of the following uses flawed reasoning most similar to the flawed reasoning in the argument above?",
     "answerChoices": {
@@ -427,7 +429,7 @@
       "Conditional Reasoning",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 1,
     "stimulus": "Scientist: Genetic engineering has aided new developments in many different fields. But because these techniques require the manipulation of the genetic codes of organisms, they are said to be unethical. What the critics fail to realize is that this kind of manipulation has been going on for millennia; virtually every farm animal is the result of selective breeding for desired traits. Since selective breeding is genetic engineering of a crude sort, genetic engineering is not unethical.",
     "questionStem": "Which one of the following is an assumption on which the scientist's argument depends?",
     "answerChoices": {
@@ -439,11 +441,12 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
+      "Science",
+      "Rebuttals",
       "Analogies",
       "Assumes Similarity",
       "Defender",
-      "Rebuttals",
-      "Science"
+      "Timeframes"
     ]
   },
   {

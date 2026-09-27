@@ -8,7 +8,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 1,
+    "questionDifficulty": 2,
     "stimulus": "Educators studied the performance of 200 students in a university's history classes. They found that those students who performed the best had either part-time jobs or full-time jobs, had their history classes early in the morning, and had a very limited social life, whereas those students who performed the worst had no jobs, had their history classes early in the morning, and had a very active social life.",
     "questionStem": "Which one of the following, if true, most helps to explain the educators' findings?",
     "answerChoices": {
@@ -29,7 +29,7 @@
     "questionNumber": 2,
     "questionType": "Flaw",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 1,
     "stimulus": "Politician: Most of those at the meeting were not persuaded by Kuyler's argument, nor should they have been, for Kuyler's argument implied that it would be improper to enter into a contract with the government; and yet as many people know-Kuyler's company has had numerous lucrative contracts with the government.",
     "questionStem": "Which one of the following describes a flaw in the politician's argument?",
     "answerChoices": {
@@ -150,7 +150,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 1,
+    "questionDifficulty": 3,
     "stimulus": "Scientists removed all viruses from a seawater sample and then measured the growth rate of the plankton population in the water. They expected the rate to increase dramatically, but the population actually got smaller.",
     "questionStem": "Which one of the following, if true, most helps to explain the unexpected result described above?",
     "answerChoices": {
@@ -174,7 +174,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 1,
     "stimulus": "City council member: The Senior Guild has asked for a temporary exception to the ordinance prohibiting automobiles in municipal parks. Their case does appear to deserve the exception. However, if we grant this exception, we will find ourselves granting many other exceptions to this ordinance, some of which will be undeserved. Before long, we will be granting exceptions to all manner of other city ordinances. If we are to prevent anarchy in our city, we must deny the Senior Guild’s request.",
     "questionStem": "The city council member’s argument is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
@@ -187,8 +187,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Causal Chains",
-      "Conditional Conclusion",
-      "Rebuttals"
+      "Rebuttals",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -379,7 +379,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "Critic: As modern methods of communication and transportation have continued to improve, the pace of life today has become faster than ever before. This speed has created feelings of impermanence and instability, making us feel as if we never have enough time to achieve what we want—or at least what we think we want.",
     "questionStem": "The critic’s statements most closely conform to which one of the following assessments?",
     "answerChoices": {

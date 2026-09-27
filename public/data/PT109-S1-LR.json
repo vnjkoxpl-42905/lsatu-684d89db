@@ -432,7 +432,9 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Weaken",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Recently discovered prehistoric rock paintings on small islands off the northern coast of Norway have archaeologists puzzled. The predominant theory about northern cave paintings was that they were largely a description of the current diets of the painters. This theory cannot be right, because the painters must have needed to eat the sea animals populating the waters north of Norway if they were to make the long journey to and from the islands, and there are no paintings that unambiguously depict such creatures.",
     "questionStem": "Each of the following, if true, weakens the argument against the predominant theory about northern cave paintings except:",
@@ -445,7 +447,11 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Science"
+      "Science",
+      "Explain Curious Fact",
+      "Rebuttals",
+      "EXCEPT",
+      "Focused on Evidence"
     ]
   },
   {
