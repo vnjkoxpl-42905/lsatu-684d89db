@@ -633,7 +633,7 @@
       "A": "Most novels are not made into movies. However, the more popular a novel is, the more likely it is to be made into a movie. Thus, if a movie is quite unpopular, it was probably not based on a novel.",
       "B": "Most novels are not made into movies. However, the more popular a movie is, the more likely it is that the movie was based on a novel. Thus, if a novel is particularly popular, it will probably be made into a movie.",
       "C": "Most novels are not made into movies. Moreover, if a novel is particularly unpopular, it will probably not be made into a movie. Thus, the more popular a novel is, the more likely it is to be made into a movie.",
-      "D": "Most novels are not made into movies. However, the more popular a novel is, the more likely it is to be made into a movie. Thus, if a movie is quite unpopular, it will probably not be made into a movie.",
+      "D": "Most novels are not made into movies. However, the more popular a novel is, the more likely it is to be made into a movie. Thus, if a novel is quite unpopular, it will probably not be made into a movie.",
       "E": "Most novels are not made into movies. Moreover, the more complex a novel’s plot, the less likely the novel is to be made into a movie. Thus, if a novel has a particularly simple plot, it will probably be made into a movie."
     },
     "correctAnswer": "D",
