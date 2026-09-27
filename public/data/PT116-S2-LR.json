@@ -72,66 +72,76 @@
     "practiceTest": "PT116",
     "sectionNumber": 2,
     "questionNumber": 4,
-    "questionType": "Method",
-    "reasoningType": [],
-    "questionDifficulty": 1,
-    "stimulus": "Marie: I gave the cashier at my local convenience store a 10-dollar bill to pay for my purchase, and he mistakenly gave me change for a 20-dollar bill. I kept the extra 10 dollars. Since I did not trick, threaten, or physically force the cashier into giving me the extra money, it was not morally wrong for me to keep it.\nJulia: Nonsense. If you mistakenly hand me your coat, thinking it is my coat, then even though I did not get the coat by means of any deception, threats, or violence against you, I am not morally entitled to keep it for myself.",
-    "questionStem": "Julia's response functions in which one of the following ways?",
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A study claims that the average temperature on Earth has permanently increased, because the average temperature each year for the last five years has been higher than any previous yearly average on record. However, periods of up to ten years of average temperatures that have consistently been record highs are often merely part of the random fluctuations in temperature that are always occurring.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
     "answerChoices": {
-      "A": "It strongly questions the application of Marie's principle to the case that Marie described, while accepting that principle.",
-      "B": "It offers an additional reason to accept Marie's conclusion.",
-      "C": "It challenges Marie's conclusion by claiming that the proper conclusion to draw in a relevantly similar situation would be the opposite of Marie's.",
-      "D": "It uses Marie's criterion as a means of solving a moral problem Julia herself faces.",
-      "E": "It proposes a radically different principle by which Marie's action might be judged, but reserves judgment as to whether Marie acted rightly."
+      "A": "All large increases in average temperature on record have occurred in ten-year periods.",
+      "B": "Five successive years of increasing annual average temperature does not always signify a permanent increase in temperature.",
+      "C": "Record high temperatures can be expected on Earth for another five years.",
+      "D": "Random fluctuations in Earth's average temperature typically last less than ten years.",
+      "E": "The average temperature on Earth never increases except in cases of random temperature fluctuation."
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot",
-      "Science"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Science",
+      "Timeframes"
     ]
   },
   {
     "practiceTest": "PT116",
     "sectionNumber": 2,
     "questionNumber": 5,
-    "questionType": "Paradox",
-    "reasoningType": [],
-    "questionDifficulty": 1,
-    "stimulus": "We are taught that pedestrians should cross the street at a corner and that jaywalking, in the sense of crossing other than at a corner, is dangerous and illegal. It also seems true that drivers anticipate people crossing at corners more than drivers anticipate people crossing elsewhere. Thus we might infer that crossing at a corner is safer than jaywalking. Nevertheless, statistics show that more pedestrians die crossing at corners than while jaywalking.",
-    "questionStem": "Which one of the following, if true, most helps to explain the statistical claim cited above?",
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Shipping Coordinator: If we send your shipment by air express, it will arrive tomorrow morning. If we send your shipment via ground carrier, it will arrive either tomorrow or the next day. Ground carrier is less expensive than air express, so which do you prefer?\nCustomer: If I don't choose air express, then I will not receive my shipment tomorrow, so I clearly have no choice but to spend the extra money and have it sent via air express.",
+    "questionStem": "The customer's response can best be explained on the assumption that she has misinterpreted the shipping coordinator to mean which one of the following?",
     "answerChoices": {
-      "A": "Far more pedestrians cross at corners than jaywalk.",
-      "B": "Some people jaywalk only when there is little traffic.",
-      "C": "Drivers are often unfamiliar with the laws concerning jaywalking.",
-      "D": "Traffic laws in most locations state that the pedestrian always has the right of way, whether or not the pedestrian is crossing at a corner.",
-      "E": "Good drivers anticipate jaywalkers as much as they anticipate pedestrians crossing at corners."
+      "A": "Ground carrier is as reliable a shipping method as air express.",
+      "B": "If the shipment is sent by air express, it will arrive tomorrow.",
+      "C": "Ground carrier is not more expensive than air express.",
+      "D": "Unless the shipment is sent by air express, it will not arrive tomorrow.",
+      "E": "The greater the shipping cost, the faster the shipment will arrive."
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker",
-      "Argue the Anti-Conclusion"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Science"
     ]
   },
   {
     "practiceTest": "PT116",
     "sectionNumber": 2,
     "questionNumber": 6,
-    "questionType": "Most Supported",
+    "questionType": "Weaken",
     "reasoningType": [],
-    "questionDifficulty": 2,
-    "stimulus": "Poor writers often express mundane ideas with elaborate syntax and esoteric vocabulary. Inattentive readers may be impressed but may well misunderstand the writing, while alert readers will easily see through the pretentiousness. Thus, a good principle for writers is: _______.",
-    "questionStem": "Which one of the following completes the passage most logically?",
+    "questionDifficulty": 1,
+    "stimulus": "Therapists who treat violent criminals cannot both respect their clients' right to confidentiality and be sincerely concerned for the welfare of victims of future violent crimes. Reporting a client's unreported crimes violates the client's trust, but remaining silent leaves the dangerous client out of prison, free to commit more crimes.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
     "answerChoices": {
-      "A": "the simpler the style, the better the writing",
-      "B": "inattentive readers are not worth writing for",
-      "C": "only the most talented writers can successfully adopt a complex style",
-      "D": "a writing style should not be more complex than the ideas expressed",
-      "E": "alert readers are the only readers who are sensitive to writing style"
+      "A": "Most therapists who treat violent criminals are assigned this task by a judicial body.",
+      "B": "Criminals are no more likely to receive therapy in prison than they are out of prison.",
+      "C": "Victims of future violent crimes also have a right to confidentiality should they need therapy.",
+      "D": "The right of victims of violent crimes to compensation is as important as the right of criminals in therapy to confidentiality.",
+      "E": "A therapist who has gained a violent criminal's trust can persuade that criminal not to commit repeat offenses."
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion",
-      "Binaries"
+      "2-Speaker",
+      "Focused on Evidence"
     ]
   },
   {
@@ -139,46 +149,47 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Must be True",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "The kind of thoughts that keep a person from falling asleep can arise in either half of the brain. Therefore, a person being prevented from sleeping solely by such thoughts would be able to fall asleep by closing the eyes and counting sheep, because this activity fully occupies the left half of the brain with counting and the right half of the brain with imagining sheep, thereby excluding the sleep-preventing thoughts.",
-    "questionStem": "According to the hypothesis, for a person to use counting imaginary sheep as an effective method of inducing sleep, which one of the following must be true?",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Failure to rotate crops depletes the soil's nutrients gradually unless other preventive measures are taken. If the soil's nutrients are completely depleted, additional crops cannot be grown unless fertilizer is applied to the soil. All other things being equal, if vegetables are grown in soil that has had fertilizer applied rather than being grown in non-fertilized soil, they are more vulnerable to pests and, as a consequence, must be treated with larger amounts of pesticides. The more pesticides used on vegetables, the greater the health risks to humans from eating those vegetables.",
+    "questionStem": "Suppose there were some vegetables that were grown in soil to which fertilizer had never been applied. On the basis of the passage, which one of the following would have to be true regarding those vegetables?",
     "answerChoices": {
-      "A": "The person is able to imagine a wide variety of things.",
-      "B": "The person normally has a difficult time falling asleep.",
-      "C": "Thoughts of sheep would not keep the person awake at that time.",
-      "D": "Thoughts of sheep would induce sleep in the person whenever those thoughts arose.",
-      "E": "Thoughts of sheep rarely, if ever, arise in the person's dreams."
+      "A": "The soil in which the vegetables were grown may have been completely depleted of nutrients because of an earlier failure to rotate crops.",
+      "B": "It is not possible that the vegetables were grown in soil in which crops had been rotated.",
+      "C": "The vegetables were grown in soil that had not been completely depleted of nutrients but not necessarily soil in which crops had been rotated.",
+      "D": "Whatever the health risks to humans from eating the vegetables, these risks would not be attributable to the use of pesticides on them.",
+      "E": "The health risks to humans from eating the vegetables were no less than the health risks to humans from eating the same kinds of vegetables treated with pesticides."
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Complex Conditionals"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
     "practiceTest": "PT116",
     "sectionNumber": 2,
     "questionNumber": 8,
-    "questionType": "Parallel",
+    "questionType": "Weaken",
     "reasoningType": [
-      "Causation"
+      "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
-    "stimulus": "The kind of thoughts that keep a person from falling asleep can arise in either half of the brain. Therefore, a person being prevented from sleeping solely by such thoughts would be able to fall asleep by closing the eyes and counting sheep, because this activity fully occupies the left half of the brain with counting and the right half of the brain with imagining sheep, thereby excluding the sleep-preventing thoughts.",
-    "questionStem": "Which one of the following most closely parallels the reasoning in the argument above?",
+    "questionDifficulty": 3,
+    "stimulus": "Criminologist: Increasing the current prison term for robbery will result in no significant effect in discouraging people from committing robbery.",
+    "questionStem": "Each of the following, if true, supports the criminologist's claim except:",
     "answerChoices": {
-      "A": "Stucco is a poor insulator but brick and wood are good insulators, so a person who wants to build a house in an area with a cold climate should use brick or wood instead of stucco.",
-      "B": "Cats can damage furniture with either their claws or their teeth, so such damage can be prevented by providing cats with other objects that they will claw and bite, such as toy mice.",
-      "C": "This map indicates two roads of equal length each leading to Centreville, so a person who wants to take the shortest route to Centreville could choose either one.",
-      "D": "These chemicals are harmless by themselves but explosive when mixed together, so in order to be kept in the same laboratory without risk, they should be stored separately.",
-      "E": "This island has two harbors but one of them is too shallow to permit large ships, so this ship will have to dock in the other harbor in order to unload its cargo."
+      "A": "Many people who rob are motivated primarily by thrill-seeking and risk-taking.",
+      "B": "An increase in the prison term for embezzlement did not change the rate at which that crime was committed.",
+      "C": "Prison terms for robbery have generally decreased in length recently.",
+      "D": "Most people committing robbery believe that they will not get caught.",
+      "E": "Most people committing robbery have no idea what the average sentence for robbery is."
     },
     "correctAnswer": "C",
     "questionFeatures": [
       "Anti-Causal",
-      "Predictions"
+      "Assumes Similarity",
+      "EXCEPT",
+      "Science"
     ]
   },
   {

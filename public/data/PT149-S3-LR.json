@@ -446,203 +446,144 @@
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 19,
-    "questionType": "Agree/Disagree",
-    "reasoningType": [
-      "Conditional Reasoning",
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 1,
-    "stimulus": "Ana: On libertarian principles, I oppose the proposed smoking ban. It is not the government’s business to prevent people from doing things that harm only themselves.\nPankaj: But keep in mind that the ban would apply only to smoking in public places. People could still smoke all they want in private.",
-    "questionStem": "The dialogue provides the most support for the claim that Ana and Pankaj disagree over whether",
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [],
+    "stimulus": "Business owner: Around noon in one section of the city, food trucks that sell lunch directly to customers on the sidewalk occupy many of the limited metered parking spaces available, thus worsening already bad traffic congestion. This led the city council to consider a bill to prohibit food trucks from parking in metered spaces in any commercially zoned area. This bill should be rejected since there is plenty of available parking and little traffic congestion in most areas of the city.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the business owner's argument?",
     "answerChoices": {
-      "A": "it is the government’s business to prevent people from harming themselves",
-      "B": "government should be restrained by libertarian principles",
-      "C": "the proposed smoking ban is intended to prevent harm only to smokers themselves",
-      "D": "the proposed ban would prohibit smoking in public places",
-      "E": "there are cases in which government should attempt to regulate private behavior"
+      "A": "Unless a business provides a product or service that is valued by consumers, the business should not be allowed to make use of scarce city resources.",
+      "B": "If a serious problem exists in one part of a city, the city government should address the problem before it spreads to another area of the city.",
+      "C": "No proposed solution to a city problem should be implemented until the problem has been thoroughly studied.",
+      "D": "A law that would disadvantage businesses of a certain type throughout a city should not be used to solve a problem that does not affect most areas of the city.",
+      "E": "If a city has a serious problem, then it should not implement any policy that would aggravate that problem even if the policy would address another serious problem."
     },
     "correctAnswer": "D",
-    "questionFeatures": [
-      "Plans / Recommendations",
-      "Principles in Answers",
-      "Rebuttals"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 20,
-    "questionType": "Flawed Reasoning",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "Agricultural scientist: Wild apples are considerably smaller than cultivated apples found in supermarkets. In one particular region, archaeologists have looked for remains of cultivated apples dating from 5,000 years ago, around the time people first started cultivating fruit. But the only remains of apples that archaeologists have found from this period are from fruits the same size as the wild apples native to the region. So apples were probably not cultivated in this region 5,000 years ago.",
-    "questionStem": "The agricultural scientist’s argument is most vulnerable to criticism on the grounds that the argument",
+    "questionType": "Agree/Disagree",
+    "reasoningType": [],
+    "stimulus": "Michele: In my professional experience, it's usually not a good idea for a company to overhaul its databases. The rewards rarely exceed the problems experienced along the way, and I'd suggest that anyone considering a database overhaul think twice before proceeding.\n\nAlvaro: But the problems are always caused by a failure to recode the database properly. The best advice for a company considering a database overhaul is to do the job right.",
+    "questionStem": "Michele and Alvaro disagree with each other about which one of the following?",
     "answerChoices": {
-      "A": "fails to consider that even if a plant was not cultivated in a given region at a specific time, it may have been cultivated in nearby regions at that time",
-      "B": "fails to consider that plants that have been cultivated for only a short time may tend to resemble their wild counterparts much more closely than plants that have been cultivated for a long time",
-      "C": "takes for granted that all apples are either the size of wild apples or the size of the cultivated apples now found in supermarkets",
-      "D": "employs a premise that is incompatible with the conclusion it is supposed to justify",
-      "E": "uses a claim that presupposes the truth of its main conclusion as part of the justification for that conclusion"
+      "A": "why companies should consider overhauling their databases",
+      "B": "whether the problems experienced during a database overhaul ever outweigh the rewards",
+      "C": "which kinds of database overhauls have more problems than are justified by the rewards",
+      "D": "what a company should do when considering a database overhaul",
+      "E": "when professional experience is required to correctly recode a database"
     },
     "correctAnswer": "D",
-    "questionFeatures": [
-      "2-Speaker",
-      "Plans / Recommendations"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 21,
-    "questionType": "Necessary Assumption",
-    "reasoningType": [
-      "Conditional Reasoning",
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "Genuine happiness consists not in pleasurable feelings but instead in one’s sense of approval of one’s character and projects. Thus the happy life, in fact, tends to be the good life, where the good life is understood not—as it usually is these days—as a life of material well-being but rather as a morally virtuous life.",
-    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "questionType": "Must be True",
+    "reasoningType": [],
+    "stimulus": "In an experiment, subjects were shown a series of images on a computer screen, appearing usually at the top but occasionally at the bottom. Subjects were asked to guess each time where the next image would appear on the screen. They guessed correctly less than half of the time. The subjects all reported that they based their guesses on patterns they believed they saw in the sequence. Instead, if they had simply guessed that the next image would always appear at the top, they would have been correct most of the time.",
+    "questionStem": "If all of the statements above are true, which one of the following must also be true?",
     "answerChoices": {
-      "A": "A morally virtuous life requires the rejection of material well-being.",
-      "B": "People who approve of their own character and projects tend to lead morally virtuous lives.",
-      "C": "Approval of one’s own character and projects tends not to result in pleasurable feelings.",
-      "D": "Attaining happiness is the real goal of people who strive for material well-being.",
-      "E": "Material well-being does not increase one’s sense of approval of one’s character and projects."
+      "A": "If the subjects had always guessed that the next image would appear at the top, they would not have been basing their guesses on any pattern they believed they saw in the sequence.",
+      "B": "Basing one's guesses about what will happen next on the basis of patterns one believes one sees is less likely to lead to correct guesses than always guessing that what has happened before will happen next.",
+      "C": "There was no predictable pattern that one could reasonably believe occurred in the series of images on the computer screen.",
+      "D": "Some of the subjects sometimes guessed that the next image would appear at the bottom of the computer screen, but were incorrect.",
+      "E": "The most rational strategy for guessing correctly where the next image would appear would have been simply to always guess that the image would appear at the top."
     },
     "correctAnswer": "D",
-    "questionFeatures": [
-      "Math-y Stuff"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "questionType": "Flawed Parallel Reasoning",
-    "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "The return of organic wastes to the soil is a good solution to waste disposal problems only if the wastes are nontoxic and not too much energy is expended in transporting them. In small-scale organic farming, the wastes are nontoxic and not too much energy is expended in transporting them. Hence, returning organic wastes to the soil is a good way for small-scale organic farms to solve their waste disposal problems.",
-    "questionStem": "Which one of the following exhibits flawed reasoning most similar to the flawed reasoning exhibited by the argument above?",
+    "questionType": "Paradox (EXCEPT)",
+    "reasoningType": [],
+    "stimulus": "The temperature in Taychester is always at least 10 degrees lower than the temperature in Charlesville. However, the average resident of Charlesville spends 10 to 20 percent more on winter heating expenses than does the average resident of Taychester.",
+    "questionStem": "Each of the following, if true, helps to resolve the apparent paradox described above except:",
     "answerChoices": {
-      "A": "Plants thrive if they get an abundance of moisture, light, and nutrients. In greenhouses, plants get an optimal combination of all three, which is why commercially produced plants are so healthy when you first buy them.",
-      "B": "When every country has equal access to markets, which will be the case 20 years from now, globalization of markets will provide a way for each country to optimize its use of resources. So, globalization of markets will show the desired results 20 years from now.",
-      "C": "To be viable, a business idea must be clear, cost-effective, practical, and responsive to a market demand. Your idea for a website information service has all these properties, so it is viable.",
-      "D": "Those competitors—and only those—who meet all of the following criteria are eligible for the award: they must be under 19 years of age, be in secondary school, and have played the sport for at least the two years immediately preceding the competition. You meet all the criteria, so you are eligible.",
-      "E": "A meal is nutritious only if it includes both carbohydrates and protein. Almost 80 percent of the calories in what I ate for lunch were from fat, so what I ate for lunch was not nutritious."
+      "A": "Heat loss due to wind is less in Taychester than in Charlesville.",
+      "B": "Although Charlesville is always fairly warm during the daytime, temperatures in Charlesville drop steeply at night.",
+      "C": "Utility rates in Taychester are lower than utility rates in Charlesville.",
+      "D": "People who are used to warmer temperatures generally keep their homes warmer in the winter than do people who are used to colder temperatures.",
+      "E": "Houses in colder climates are usually better insulated than houses in warmer climates."
     },
     "correctAnswer": "B",
-    "questionFeatures": [
-      "EXCEPT",
-      "Net Effect"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 23,
-    "questionType": "Strengthen",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "Scientist: Some colonies of bacteria produce antibiotic molecules called phenazines, which they use to fend off other bacteria. We hypothesize that phenazines also serve as molecular pipelines that give interior bacteria access to essential nutrients in the environment surrounding the colony.",
-    "questionStem": "Which one of the following, if true, provides the most support for the scientist’s hypothesis?",
+    "questionType": "Parallel",
+    "reasoningType": [],
+    "stimulus": "Each new car in the lot at Rollway Motors costs more than $18,000. Any car in their lot that is ten or more years old costs less than $5,000. Thus, if a car in Rollway's lot costs between $5,000 and $18,000, it is a used car that is less than ten years old.",
+    "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",
     "answerChoices": {
-      "A": "Bacteria colonies that do not produce phenazines form wrinkled surfaces, thus increasing the number of bacteria that are in direct contact with the surrounding environment.",
-      "B": "The rate at which a bacteria colony produces phenazines is determined by the number of foreign bacteria in the environment immediately surrounding the colony.",
-      "C": "When bacteria colonies that do not produce phenazines are buried in nutrient-rich soil, they grow as quickly as colonies that do produce phenazines.",
-      "D": "Bacteria colonies that produce phenazines are better able to fend off other bacteria than are bacteria colonies that do not produce phenazines.",
-      "E": "Within bacteria colonies that produce phenazines, interior bacteria are more likely to die than are bacteria along the edges."
+      "A": "Each apartment above the fourth floor of the building has more than two bedrooms. But all apartments below the fourth floor have fewer than two bedrooms. Thus, any apartment on the fourth floor of the building has exactly two bedrooms.",
+      "B": "Each apartment above the fourth floor of the building has two or three bedrooms. But no apartment below the fourth floor has more than two bedrooms. Thus, all of the building's threebedroom apartments are on the fourth floor or higher.",
+      "C": "No apartment above the fourth floor of the building has fewer than three bedrooms. But all apartments below the fourth floor have fewer than two bedrooms. Thus, if there are apartments in the building with exactly two bedrooms, they are on the fourth floor.",
+      "D": "No apartment above the fourth floor of the building has more than two bedrooms. But only three-bedroom apartments have balconies. Thus, if any apartment in the building has a balcony, it is on the fourth floor or lower.",
+      "E": "Each apartment above the fourth floor of the building has more than two bedrooms. The building has no vacant apartments on or below the fourth floor. Thus, if there is any vacant apartment in the building, it will have more than two bedrooms."
     },
     "correctAnswer": "C",
-    "questionFeatures": [
-      "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic",
-      "Math-y Stuff",
-      "Repetitive Answers"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 24,
-    "questionType": "Must Be True",
-    "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "Library preservationist: Due to the continual physical deterioration of the medieval manuscripts in our library’s collection, we have decided to restore most of our medieval manuscripts that are of widely acknowledged cultural significance, though this means that some medieval manuscripts whose authenticity is suspect will be restored. However, only manuscripts whose safety can be ensured during the restoration process will be restored, and manuscripts that are not frequently consulted by researchers will not be restored.",
-    "questionStem": "If all of the library preservationist’s statements are true, which one of the following must be true of the medieval manuscripts in the library’s collection?",
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "stimulus": "Meteorologist: The number of tornadoes reported annually has more than doubled since the 1950s. But their actual number has probably not increased. Our ability to find tornadoes has improved, so we're probably just finding a higher percentage of them than we used to.",
+    "questionStem": "Which one of the following, if true, provides the most support for the meteorologist's argument?",
     "answerChoices": {
-      "A": "Some of the medieval manuscripts whose authenticity is suspect are frequently consulted by researchers.",
-      "B": "All of the medieval manuscripts widely acknowledged to be of cultural significance are manuscripts whose safety can be ensured during the restoration process.",
-      "C": "All of the medieval manuscripts whose safety can be ensured during the restoration process are frequently consulted by researchers.",
-      "D": "The medieval manuscripts most susceptible to deterioration are those most frequently consulted by researchers.",
-      "E": "None of the medieval manuscripts that are rarely consulted by researchers is widely acknowledged to be of cultural significance."
+      "A": "The physical damage caused by the average tornado has remained roughly constant since the 1950s.",
+      "B": "The number of tornadoes hitting major population centers annually has more than doubled since the 1950s.",
+      "C": "The number of large and medium sized tornadoes reported annually has remained roughly constant since the 1950s.",
+      "D": "The annual number of deaths due to tornadoes has increased steadily since the 1950s.",
+      "E": "The geographic range in which tornadoes are most prevalent has remained roughly constant since the 1950s."
     },
     "correctAnswer": "C",
-    "questionFeatures": [
-      "Explain Curious Fact",
-      "Math-y Stuff",
-      "Plausibility",
-      "Timeframes"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Strengthen",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "Direct-mail advertising usually consists of advertisements for products to be purchased from the home, so the perception that it is bad for the environment is misguided. Because of direct-mail advertising, millions of people buy products by phone or online—products whose purchase would otherwise require the use of a car, thus adding pollutants to the air.",
-    "questionStem": "Which one of the following, if true, would most strengthen the argument?",
+    "reasoningType": [],
+    "stimulus": "Salesperson: If your vacuuming needs are limited to cleaning small areas of uncarpeted floors, an inexpensive handheld vacuum cleaner is likely to be sufficient. After all, most are easy to use and will likely satisfy all your vacuuming needs on wood and tile floors.",
+    "questionStem": "The conclusion of the salesperson's argument is most strongly supported if which one of the following is assumed?",
     "answerChoices": {
-      "A": "Although the primary intent of most direct-mail advertisers is to convince people to buy products from their homes, direct mail can also lead to increased sales in stores by customers who prefer to see a product prior to purchasing it.",
-      "B": "Most of the products purchased in response to direct-mail advertisements would be purchased even without the direct-mail advertisements.",
-      "C": "A person who receives and reads a direct-mail advertisement is more likely to purchase the product advertised than is a person who reads an advertisement for a product in a magazine that they subscribe to.",
-      "D": "Usually, a company that sends out direct-mail advertisements has good reason to think that the person to whom the advertisement is sent would be more interested in the product than would the average person.",
-      "E": "Products purchased as the result of direct-mail advertising comprise an increasingly large portion of the consumer products purchased each year."
+      "A": "The only types of floor surfaces that most consumers encounter are carpet, wood, and tile.",
+      "B": "Inexpensive handheld vacuum cleaners are sufficient for cleaning small areas of carpeted floors.",
+      "C": "Any handheld vacuum cleaner that is easy to use but sufficient only for cleaning small areas of uncarpeted floors is likely to be inexpensive.",
+      "D": "If your household cleaning needs include cleaning small areas of uncarpeted floors, it is likely that you will need a vacuum cleaner.",
+      "E": "The more versatile a vacuum cleaner is, the more likely it is to be expensive."
     },
     "correctAnswer": "A",
-    "questionFeatures": [
-      "First Sentence Conclusion",
-      "Missing Link / Idea",
-      "Conditional Conclusion",
-      "New Concept in Conclusion"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 26,
-    "questionType": "Parallel Reasoning",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "The older a country is, the more likely it is to be ruled by a monarch. Thus, since most countries are not ruled by monarchs, if a country is particularly new it is probably not ruled by a monarch.",
-    "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
+    "questionType": "Parallel Flaw",
+    "reasoningType": [],
+    "stimulus": "Decreased reliance on fossil fuels is required if global warming is to be halted. The current reliance would decrease if economic incentives to develop alternative energy sources were present. So ending global warming requires offering economic incentives to develop alternative energy sources.",
+    "questionStem": "The flawed pattern of reasoning exhibited by the argument above most closely parallels that exhibited by which one of the following?",
     "answerChoices": {
-      "A": "Most novels are not made into movies. However, the more popular a novel is, the more likely it is to be made into a movie. Thus, if a movie is quite unpopular, it was probably not based on a novel.",
-      "B": "Most novels are not made into movies. However, the more popular a movie is, the more likely it is that the movie was based on a novel. Thus, if a novel is particularly popular, it will probably be made into a movie.",
-      "C": "Most novels are not made into movies. Moreover, if a novel is particularly unpopular, it will probably not be made into a movie. Thus, the more popular a novel is, the more likely it is to be made into a movie.",
-      "D": "Most novels are not made into movies. However, the more popular a novel is, the more likely it is to be made into a movie. Thus, if a novel is quite unpopular, it will probably not be made into a movie.",
-      "E": "Most novels are not made into movies. Moreover, the more complex a novel’s plot, the less likely the novel is to be made into a movie. Thus, if a novel has a particularly simple plot, it will probably be made into a movie."
+      "A": "If we end poverty we will end hunger. Ending unemployment will end poverty. So ending unemployment will end hunger.",
+      "B": "Daily exercise guarantees good health. Good health ensures a happy life. So daily exercise is required for good health.",
+      "C": "Going to college is required for getting a professional job. Graduating from high school is necessary for going to college. So graduating from high school is necessary for getting a professional job.",
+      "D": "Keeping good teachers is necessary for improving education. If teachers' salaries were improved, good teachers would remain in the profession. So an increase in teachers' salaries is necessary to improve education.",
+      "E": "Preventing abuse of prescription drugs requires expanding drug education efforts. Increased cooperation between schools and law enforcement agencies is needed if drug education efforts are to be expanded. So, if cooperation between law enforcement and schools increases, the abuse of prescription drugs will be prevented."
     },
     "correctAnswer": "D",
-    "questionFeatures": [
-      "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
-    ]
+    "questionFeatures": []
   }
 ]

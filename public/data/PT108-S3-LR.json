@@ -49,22 +49,19 @@
     "practiceTest": "PT108",
     "sectionNumber": 3,
     "questionNumber": 3,
-    "questionType": "Paradox",
+    "questionType": "Paradox EXCEPT",
     "reasoningType": [],
-    "questionDifficulty": 2,
-    "stimulus": "The local fair held its annual photography contest and accepted entries from both amateur and professional photographers. However, when the awards were announced, the winners in each category were professionals. While this may seem to be an unusual result, it should not be surprising.",
-    "questionStem": "Each of the following, if true, could by itself constitute an explanation of the result of the contest EXCEPT:",
+    "stimulus": "The local fair held its annual photography contest and accepted entries from both amateurs and professionals. The contest awarded prizes in each of several categories. As it turned out, most of the prizes in the contest were won by amateurs.",
+    "questionStem": "Each of the following, if true, could by itself constitute an explanation of the outcome of the photography contest EXCEPT:",
     "answerChoices": {
-      "A": "Many more of the entries in the contest were from amateurs than from professionals.",
-      "B": "The contest is widely advertised every year and the prize money is substantial.",
-      "C": "The professionals had access to better equipment than the amateurs.",
-      "D": "The judges for the contest were all professionals.",
-      "E": "The categories were defined in such a way that amateur entries could not easily compete with the professional entries."
+      "A": "Many more of the entries in the contest were from amateurs than were from professionals.",
+      "B": "The judges in the contest were amateurs, and amateurs tend to prefer photographs taken by other amateurs.",
+      "C": "Amateurs tend to enter their best photographs while professionals tend to save their best work for their clients.",
+      "D": "Each category in the contest was restricted to amateurs only or professionals only, and there were more categories open to amateurs.",
+      "E": "Three times as many amateurs entered the contest as had entered in any previous year."
     },
     "correctAnswer": "E",
-    "questionFeatures": [
-      "EXCEPT"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT108",
@@ -112,20 +109,18 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Paradox",
-    "reasoningType": [
-      "Causation"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "Shortly after the power plant opened and began discharging its wastewater into the river, there was a notable increase in the algae population downstream from the discharge point. The algae in this river are known to feed on phosphorus and nitrogen compounds. The plant’s wastewater is free of such nutrients, but it does raise the temperature of the river water.",
-    "questionStem": "Which one of the following, if true, most helps to explain the increase in the algae population?",
+    "reasoningType": [],
+    "stimulus": "Shortly after the power plant opened and began discharging its wastewater into the river, there was a decrease in the overall number of bass caught by anglers downstream from the plant.",
+    "questionStem": "Each of the following, if true, could explain the decrease described above EXCEPT:",
     "answerChoices": {
-      "A": "The wastewater contains trace amounts of detergents that are known to inhibit the growth of algae.",
-      "B": "The algae population decreased in a nearby river that does not receive wastewater discharges.",
-      "C": "Higher water temperatures increase the rate at which algae absorb nutrients already present in the river.",
-      "D": "The plant’s wastewater contains dissolved oxygen, which is essential to the survival of fish but not to the survival of algae.",
-      "E": "The river water’s temperature returns to normal within 2 miles of the discharge point."
+      "A": "The discharged wastewater made the river more attractive to fish that are the natural predators of bass.",
+      "B": "The discharged water was warmer than the normal river temperature, leading the bass to seek cooler water elsewhere.",
+      "C": "Because of the new plant, access to the part of the river downstream from the plant was improved, leading to an increase in the number of anglers fishing for bass.",
+      "D": "Because of the new plant, the level of noise downstream increased, making that section of the river a less popular place for anglers to fish.",
+      "E": "The discharged wastewater created turbulence that disrupted the vegetation of the river downstream, destroying some of the bass's natural habitat."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT108",

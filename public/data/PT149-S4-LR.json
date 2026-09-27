@@ -546,62 +546,36 @@
     "practiceTest": "PT149",
     "sectionNumber": 4,
     "questionNumber": 24,
-    "questionType": "Principle Justify",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "A contract between two parties is valid only if one party accepts a legitimate offer from the other; an offer is not legitimate if someone in the position of the party to whom it was made would reasonably believe the offer to be made in jest.",
-    "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
+    "questionType": "Must be True",
+    "reasoningType": [],
+    "stimulus": "All unemployed artists are sympathetic to social justice. And no employed artists are interested in the prospect of great personal fame.",
+    "questionStem": "If the claims made above are true, then which one of the following must be true?",
     "answerChoices": {
-      "A": "Joe made a legitimate offer to buy Sandy’s car and Sandy has not rejected the offer. Thus, there was a valid contract.",
-      "B": "Kenta accepted Gus’s offer to buy a shipment of goods, but Gus, unknown to Kenta, made the offer in jest. Thus, the contract was not valid.",
-      "C": "Frank’s offer to buy Mindy’s business from her was legitimate. Thus, if Mindy is a reasonable person, she will accept the offer.",
-      "D": "Hai’s offer to sell artworks to Lea was made in such a way that no one in Lea’s position would have reasonably believed it to be made in jest. Thus, if Lea accepts the offer, they have a valid contract.",
-      "E": "The only offer that Sal made to Veronica was not a legitimate one. Thus, regardless of whether Sal made the offer in jest, there is no valid contract between them."
+      "A": "If there are artists interested in the prospect of great personal fame, they are sympathetic to social justice.",
+      "B": "All artists uninterested in the prospect of great personal fame are sympathetic to social justice.",
+      "C": "Every unemployed artist is interested in the prospect of great personal fame.",
+      "D": "If an artist is sympathetic to social justice, that artist is unemployed.",
+      "E": "All artists are either sympathetic to social justice or are interested in the prospect of great personal fame."
     },
     "correctAnswer": "A",
-    "questionFeatures": [
-      "Binaries",
-      "Quantifiers"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 4,
     "questionNumber": 25,
-    "questionType": "Weaken",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "Scientist: A small group of islands near Australia is inhabited by several species of iguana; closely related species also exist in the Americas, but nowhere else. The islands in question formed long after the fragmentation of Gondwana, the ancient supercontinent that included present-day South America and Australia. Thus, these species’ progenitors must have rafted on floating debris across the Pacific Ocean from the Americas.",
-    "questionStem": "Which one of the following, if true, most weakens the scientist’s argument?",
-    "answerChoices": {
-      "A": "A number of animal species that inhabit the islands are not found in the Americas.",
-      "B": "Genetic analysis indicates that the iguana species on the islands are different in several respects from those found in the Americas.",
-      "C": "Documented cases of iguanas rafting long distances between land masses are uncommon.",
-      "D": "Fossils of iguana species closely related to those that inhabit the islands have been found in Australia.",
-      "E": "The lineages of numerous plant and animal species found in Australia or in South America date back to a period prior to the fragmentation of Gondwana."
-    },
-    "correctAnswer": "D"
-  },
-  {
-    "practiceTest": "PT149",
-    "sectionNumber": 4,
-    "questionNumber": 26,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [],
-    "questionDifficulty": 3,
-    "stimulus": "A recent archaeological find in what was once the ancient kingdom of Macedonia contains the remains of the largest tomb ever found in the region. It must be the tomb of Alexander the Great since he was the greatest Macedonian in history, and so would have had the largest tomb. After all, he conquered an empire that stretched from Greece to much of Asia, though it collapsed after his death.",
-    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "The police department has two suspects for the burglary that occurred last night, Schaeffer and Forster. Schaeffer has an ironclad alibi, so Forster must be the burglar.",
+    "questionStem": "Which one of the following arguments exhibits a flawed pattern of reasoning that is most similar to that exhibited by the argument above?",
     "answerChoices": {
-      "A": "takes for granted that greatness can be attained only by military conquest",
-      "B": "takes for granted that the largest tomb found so far must be the largest that was built",
-      "C": "does not show how the recently discovered tomb compares with other tombs from the same period that have been found in other regions",
-      "D": "fails to evaluate the significance of the fact that Alexander’s empire did not survive his death",
-      "E": "takes for granted that archaeologists can determine the size of the tomb from its remains"
+      "A": "It has been known for some time that the Wrightsburg Zoo might build a new primate house and that it might refurbish its polar bear exhibit. There is now good reason to believe the zoo will build a new primate house. Therefore, the zoo will not refurbish its polar bear exhibit.",
+      "B": "If Watson, a robbery suspect, had been picked out of a police lineup by the victim, then charging Watson with robbery would have been reasonable. But the victim did not pick Watson out of the lineup. So Watson should not be charged.",
+      "C": "If Iano Industries does not borrow money so that it can upgrade its factories, it will be unable to compete. While it is undesirable for Iano to take on more debt, being unable to compete would be even worse. So Iano should borrow the money needed to upgrade its factories.",
+      "D": "Baxim Corporation announced last year that it was considering moving its headquarters to Evansville and that it was also considering moving to Rivertown. But Baxim has now decided not to move to Evansville. Thus, we can be sure that Baxim will move to Rivertown.",
+      "E": "The only viable candidates in the mayoral race are Slater and Gonzales. Political analysts believe that Slater has little chance of winning. Therefore, it is likely that Gonzales will win the election."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "D",
+    "questionFeatures": []
   }
 ]

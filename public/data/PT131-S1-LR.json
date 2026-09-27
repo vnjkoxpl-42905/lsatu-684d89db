@@ -632,23 +632,5 @@
       "Alternatives",
       "Plans / Recommendations"
     ]
-  },
-  {
-    "practiceTest": "PT131",
-    "sectionNumber": 1,
-    "questionNumber": 26,
-    "questionType": "Method",
-    "reasoningType": [],
-    "questionDifficulty": 4,
-    "stimulus": "Philosopher: Wolves do not tolerate an attack by one wolf on another if the latter wolf demonstrates submission by baring its throat. The same is true of foxes and domesticated dogs. So it would be erroneous to deny that animals have rights on the grounds that only human beings are capable of obeying moral rules.",
-    "questionStem": "The philosopher's argument proceeds by attempting to",
-    "answerChoices": {
-      "A": "provide counterexamples to refute a premise on which a particular conclusion is based",
-      "B": "establish inductively that all animals possess some form of morality",
-      "C": "cast doubt on the principle that being capable of obeying moral rules is a necessary condition for having rights",
-      "D": "establish a claim by showing that the denial of that claim entails a logical contradiction",
-      "E": "provide evidence suggesting that the concept of morality is often applied too broadly"
-    },
-    "correctAnswer": "B"
   }
 ]
