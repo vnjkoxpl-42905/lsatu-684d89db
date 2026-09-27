@@ -8,7 +8,8 @@ export type NotificationType =
   | "message"
   | "reminder"
   | "streak"
-  | "signup";
+  | "signup"
+  | "payment_needs_tier";
 
 /** Lifecycle for actionable notifications. NULL/absent on informational ones. */
 export type NotificationStatus = "pending" | "approved" | "dismissed";
