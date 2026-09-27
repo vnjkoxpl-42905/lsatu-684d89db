@@ -1474,13 +1474,34 @@ html.dark .classroom-root.classroom-root-drill {
     transform var(--observatory-motion);
 }
 
+/* A breath, not a blink: the button swells slightly while a soft ring of its
+   own colour rises off it and fades. The old 5px outline at 16% opacity was
+   too faint to read as motion on the dark hero. */
 @keyframes drill-observatory-smart-drill-pulse {
-  0%, 100% { outline: 0 solid rgba(244, 241, 234, 0); }
-  50% { outline: 5px solid rgba(244, 241, 234, 0.16); }
+  0% {
+    transform: scale(1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(244, 241, 234, 0.55);
+  }
+  50% {
+    transform: scale(1.045);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35), 0 0 0 10px rgba(244, 241, 234, 0.12);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 0 18px rgba(244, 241, 234, 0);
+  }
 }
 
 .drill-observatory-root .drill-observatory-smart-drill-pulse {
-  animation: drill-observatory-smart-drill-pulse 2.4s ease-in-out infinite;
+  animation: drill-observatory-smart-drill-pulse 2s ease-in-out infinite;
+}
+
+/* The one Smart Drill button is the hero's main action, so it is a size up
+   from the other pill buttons. */
+.drill-observatory-root .drill-observatory-smart .drill-observatory-cta {
+  font-size: 16px;
+  height: 54px;
+  padding: 0 34px;
 }
 
 /* No transform on the primary CTA — it is the one fixed point on the page. */
