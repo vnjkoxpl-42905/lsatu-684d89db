@@ -58,3 +58,6 @@ verify_jwt = true
 # scheduler has no user session to present.
 [functions.sweep-rrc-grading]
 verify_jwt = false
+
+[functions.stripe-sync]
+verify_jwt = true

@@ -10,6 +10,7 @@ import {
   listPaymentLinkLineItems,
   retrievePaymentLink,
 } from "../_shared/stripe.ts";
+import { recordCharge, stripeGet } from "../_shared/stripeLedger.ts";
 
 const MAX_BODY_BYTES = 256 * 1024;
 const APP_ORIGIN = Deno.env.get("APP_ORIGIN") || "https://lsatprep.study";
@@ -197,6 +198,18 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
     return json({ error: "invalid_signature" }, 400);
   }
 
+  // Every charge lands in the teacher's payments ledger. The ledger is a view,
+  // never a trigger, so a failure here is logged and never makes Stripe retry.
+  const ledgerChargeId = await chargeIdForLedger(event, stripeSecret).catch(() => null);
+  if (ledgerChargeId) {
+    try {
+      await recordCharge(supabase, stripeSecret, ledgerChargeId, "webhook");
+    } catch (err) {
+      console.error("ledger write failed", { event: event.id, type: event.type, error: err instanceof Error ? err.message : String(err) });
+    }
+    if (event.type.startsWith("charge.")) return json({ received: true });
+  }
+
   if (event.type.startsWith("refund.")) {
     const refund = event.data.object as Stripe.Refund;
     if (event.livemode !== expectedLivemode()) return json({ error: "livemode_mismatch" }, 400);
@@ -336,14 +349,10 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
     if (error) throw error;
     return json({ received: true, match: "pending" });
   }
-  const { error } = await supabase.rpc("apply_booking_package_payment", {
-    _student_id: student.id,
-    _offer_id: offer.id,
-    _provider_event_id: event.id,
-    _email: email,
-  });
-  if (error) throw error;
-  return json({ received: true, student_id: student.id });
+  // A package payment never grants passes by itself (decisions/log.md,
+  // 2026-09-27). The ledger row above is marked "awaiting", and the teacher
+  // grants it from Today with one click (admin_grant_stripe_payment).
+  return json({ received: true, student_id: student.id, grant: "awaiting_teacher" });
 }
 
 Deno.serve(async (req) => {
@@ -403,7 +412,14 @@ Deno.serve(async (req) => {
     return json({ error: "unknown_provider" }, 400);
   } catch (error) {
     if (error instanceof Error && error.message === "payload_too_large") return json({ error: "payload_too_large" }, 413);
-    console.error("booking-commerce-webhook", { error: error instanceof Error ? error.message : String(error) });
+    // Name the failing step: Stripe only ever sees the generic code below.
+    console.error("booking-commerce-webhook", {
+      error: error instanceof Error ? error.message : String(error),
+      code: (error as any)?.code ?? null,
+      details: (error as any)?.details ?? null,
+      stack: error instanceof Error ? error.stack?.split("
+").slice(0, 4).join(" | ") : null,
+    });
     return json({ error: "provider_processing_failed" }, 500);
   }
 });
@@ -433,4 +449,18 @@ async function notifyAdminsOfPayment(
   // A failed notice must not abort the webhook: the payment itself is already
   // recorded, and throwing here would make the provider retry the whole event.
   if (insertError) console.error("payment notice failed", { error: insertError });
+}
+
+
+/** The charge a Stripe event is about, for the payments ledger. */
+async function chargeIdForLedger(event: any, secret: string): Promise<string | null> {
+  const obj = event.data?.object ?? {};
+  if (event.type.startsWith("charge.dispute.")) return typeof obj.charge === "string" ? obj.charge : null;
+  if (event.type.startsWith("charge.")) return obj.id ?? null;
+  if (event.type.startsWith("refund.")) return typeof obj.charge === "string" ? obj.charge : null;
+  if (event.type === "checkout.session.completed" && obj.payment_status === "paid" && typeof obj.payment_intent === "string") {
+    const intent = await stripeGet(secret, `/payment_intents/${obj.payment_intent}`);
+    return typeof intent.latest_charge === "string" ? intent.latest_charge : null;
+  }
+  return null;
 }
