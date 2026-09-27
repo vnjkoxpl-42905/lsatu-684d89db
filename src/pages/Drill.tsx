@@ -471,22 +471,10 @@ function DrillContent() {
   // Smart Drill: questions skipped (advanced without answering). Excluded from
   // the adaptive selector so a skipped question is not immediately re-served.
   const [skippedQids, setSkippedQids] = React.useState<Set<string>>(new Set());
-  // Smart Drill: auto-reveal the correct answer after submitting. Persisted.
-  const [autoReveal, setAutoReveal] = React.useState<boolean>(() => {
-    try {
-      return localStorage.getItem('lsatu.smartdrill.autoReveal') !== 'false';
-    } catch {
-      return true;
-    }
-  });
-  const handleAutoRevealChange = React.useCallback((next: boolean) => {
-    setAutoReveal(next);
-    try {
-      localStorage.setItem('lsatu.smartdrill.autoReveal', String(next));
-    } catch {
-      /* ignore quota/availability errors */
-    }
-  }, []);
+  // Submit always reveals the correct answer. There used to be a switch to
+  // turn that off, but the Answer pill in the header strip already lets a
+  // student look or not look, so the switch only hid feedback by accident.
+  const autoReveal = true;
 
   const currentViewId = React.useRef<string | null>(null);
 
@@ -3664,8 +3652,8 @@ function DrillContent() {
     setTutorChatOpen(true);
   };
 
-  // Reveal the correct answer in place, without opening any panel. Mirrors the
-  // auto-reveal toggle's effect for a student who left it off.
+  // Reveal the correct answer in place, without opening any panel. Used by the
+  // Answer and Explanation pills (see handleRevealRequest below).
   const revealAnswerForCurrent = () => {
     if (!currentQuestion) return;
     setShowAnswerRevealed(prev => new Map(prev).set(currentQuestion.qid, true));
@@ -4551,8 +4539,6 @@ function DrillContent() {
           {renderVoiceCoachChip()}
           {isAdaptiveMode ? (
             <OfficialSmartDrillBar
-              autoReveal={autoReveal}
-              onAutoRevealChange={handleAutoRevealChange}
               primaryAction={currentAttempted || currentUnscored ? 'next' : 'submit'}
               primaryDisabled={!selectedAnswer || !!timer?.isPaused}
               onSubmit={() => {
@@ -4606,15 +4592,10 @@ function DrillContent() {
           ) : (
             // Same chrome as the adaptive Smart Drill, but driven by the fixed
             // queue the student hand-picked from the Smart LR Drill card. Submit
-            // saves and reveals in place (honoring the auto-reveal toggle); Next
+            // saves and reveals in place; Next
             // walks the queue via the shared officialNext; Skip advances past the
             // answer gate; End finishes the section.
             <OfficialSmartDrillBar
-              autoReveal={autoReveal}
-              // A fixed drill has no auto-reveal switch: Answer and Explanation
-              // in the strip are the review controls. The preference is left
-              // alone for Smart Drill.
-              onAutoRevealChange={reviewPolicy === 'fixed' ? undefined : handleAutoRevealChange}
               primaryAction={currentAttempted || currentUnscored ? 'next' : 'submit'}
               primaryDisabled={!selectedAnswer || !!timer?.isPaused || actionInFlight}
               onSubmit={() => {
