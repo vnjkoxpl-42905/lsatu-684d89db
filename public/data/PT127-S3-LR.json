@@ -515,14 +515,14 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 21,
-    "questionType": "Flaw",
+    "questionType": "Unknown",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "George: Throughout the 1980s and early 1990s, hardly anyone learned ballroom dancing. Why is it that a large number of people now take ballroom dancing lessons? Boris: It's because, beginning in 1995, many people learned the merengue and several related ballroom dances. Because these dances are so popular, other ballroom dances are now catching on.",
-    "questionStem": "Boris's response to George is most vulnerable to criticism because it fails to",
+    "stimulus": "George: Throughout the 1980s and early 1990s, hardly anyone learned ballroom dancing.",
+    "questionStem": "Why is it that a large number of people now take ballroom dancing lessons?",
     "answerChoices": {
       "A": "show that the people who learned the merengue are the same people who are now interested in other ballroom dances",
       "B": "explain why ballroom dancing was so unpopular before 1995",

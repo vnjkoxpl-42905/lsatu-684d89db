@@ -335,10 +335,11 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Rebuttals",
       "Dense Stimulus",
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {
@@ -440,9 +441,10 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "New Concept in Conclusion",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "New Concept in Conclusion"
     ]
   },
   {

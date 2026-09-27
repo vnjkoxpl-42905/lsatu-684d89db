@@ -8,35 +8,34 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "New technologies that promise to extend life and decrease pain involve innovations that require extensive scientific research. Therefore, investment in such technologies is very risky, because innovations requiring extensive scientific research also require large amounts of capital but are unlikely to provide any financial return. Nonetheless, some people are willing to invest in these new technologies.",
-    "questionStem": "Which one of the following, if true, most helps to explain why some people are willing to invest in new technologies that promise to extend life and decrease pain?",
+    "stimulus": "Educators studied the performance of 200 students in a university's history classes. They found that those students who performed the best had either part-time jobs or full-time jobs, had their history classes early in the morning, and had a very limited social life, whereas those students who performed the worst had no jobs, had their history classes early in the morning, and had a very active social life.",
+    "questionStem": "Which one of the following, if true, most helps to explain the educators' findings?",
     "answerChoices": {
-      "A": "When investments in new technologies that promise to extend life and decrease pain do provide financial return, they generally return many times the original investment, which is much more than the return on safer investments.",
-      "B": "A large variety of new technologies that promise to extend life and decrease pain have been developed in the last decade.",
-      "C": "The development of certain new technologies other than those that promise to extend life and decrease pain is also very risky, because these technologies require large amounts of capital but are unlikely to provide any financial return.",
-      "D": "Some investments that initially seem likely to provide reasonably large financial return ultimately provide no financial return.",
-      "E": "The scientific research necessary to develop new technologies that promise to extend life and decrease pain sometimes leads to no greater understanding of the natural world."
+      "A": "The students compensated for any study time lost due to their jobs but they did not compensate for any study time lost due to their social lives.",
+      "B": "The students who had full-time jobs typically worked late-night hours at those jobs.",
+      "C": "Better students tend to choose classes that are scheduled to meet early in the morning.",
+      "D": "A larger percentage of those students interested in majoring in history had part-time jobs than had full-time jobs.",
+      "E": "Although having a job tends to provide a release from stress, thus increasing academic performance, having a full-time job, like having an active social life, can distract a student from studying."
     },
-    "correctAnswer": "A",
-    "questionFeatures": []
+    "correctAnswer": "A"
   },
   {
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 2,
-    "questionType": "Weaken",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "A university psychology department received a large donation from a textbook company after agreeing to use one of the company's books for a large introductory course. The department chair admitted that the department would not have received the donation if it used another company's textbook, but insisted that the book was chosen solely for academic reasons. As proof, she noted that the department's textbook committee had given that textbook its highest rating.",
-    "questionStem": "Which one of the following, if true, most weakens the case for the department chair's position?",
+    "stimulus": "All works of art are beautiful and have something to teach us. Thus, since the natural world as a whole is both beautiful and instructive, it is a work of art.",
+    "questionStem": "The reasoning in the argument is flawed because the argument",
     "answerChoices": {
-      "A": "The members of the textbook committee were favorably influenced toward the textbook by the prospect of their department receiving a large donation.",
-      "B": "The department has a long-standing policy of using only textbooks that receive the committee's highest rating.",
-      "C": "In the previous year, a different textbook from the same company was used in the introductory course.",
-      "D": "The department chair is one of the members of the textbook committee.",
-      "E": "The textbook company does not routinely make donations to academic departments that use its books."
+      "A": "uses the inherently vague term \"beautiful\" without providing an explicit definition of that term",
+      "B": "attempts to establish an evaluative conclusion solely on the basis of claims about factual matters",
+      "C": "concludes, simply because an object possesses two qualities that are each common to all works of art, that the object is a work of art",
+      "D": "presumes, without providing justification, that only objects that are beautiful are instructive",
+      "E": "fails to consider the possibility that there are many things that are both beautiful and instructive but are not part of the natural world"
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -48,8 +47,50 @@
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 3,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Although free international trade allows countries to specialize, which in turn increases productivity, such specialization carries risks. After all, small countries often rely on one or two products for the bulk of their exports. If those products are raw materials, the supply is finite and can be used up. If they are foodstuffs, a natural disaster can wipe out a season's production overnight.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the argument as a whole?",
+    "answerChoices": {
+      "A": "Specialization within international trade comes with risks.",
+      "B": "A natural disaster can destroy a whole season's production overnight, devastating a small country's economy.",
+      "C": "A small country's supply of raw materials can be used up in a short period.",
+      "D": "Some countries rely on a small number of products for the export-based sectors of their economies.",
+      "E": "When international trade is free, countries can specialize in what they export."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Politician: Most of those at the meeting were not persuaded by Kuyler's argument, nor should they have been, for Kuyler's argument implied that it would be improper to enter into a contract with the government; and yet as many people know-Kuyler's company has had numerous lucrative contracts with the government.",
+    "questionStem": "Which one of the following describes a flaw in the politician's argument?",
+    "answerChoices": {
+      "A": "It concludes that an argument is defective merely on the grounds that the argument has failed to persuade anyone of the truth of its conclusion.",
+      "B": "It relies on testimony that is likely to be biased.",
+      "C": "It rejects an argument merely on the grounds that the arguer has not behaved in a way that is consistent with the argument.",
+      "D": "It rejects a position merely on the grounds that an inadequate argument has been given for it.",
+      "E": "It rejects an argument on the basis of an appeal to popular opinion."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 5,
     "questionType": "Weaken",
     "reasoningType": [
+      "Causation",
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
@@ -62,52 +103,7 @@
       "D": "A hemoglobin molecule that has picked up four oxygen molecules will have the same shape as a hemoglobin molecule that has not picked up any oxygen molecules.",
       "E": "Each hemoglobin molecule in human blood picks up between one and four oxygen molecules in or near the lungs and transports them to some other part of the body."
     },
-    "correctAnswer": "C",
-    "questionFeatures": []
-  },
-  {
-    "practiceTest": "PT131",
-    "sectionNumber": 3,
-    "questionNumber": 4,
-    "questionType": "Paradox",
-    "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 1,
-    "stimulus": "On a short trip a driver is more likely to have an accident if there is a passenger in the car, presumably because passengers distract drivers. However, on a long trip a driver is more likely to have an accident if the driver is alone.",
-    "questionStem": "Which one of the following, if true, most helps to explain the facts described above?",
-    "answerChoices": {
-      "A": "People are much more likely to drive alone on short trips than on long trips.",
-      "B": "Good drivers tend to take more long trips than bad drivers.",
-      "C": "The longer a car trip is, the more likely a passenger is to help the driver maintain alertness.",
-      "D": "On a long trip the likelihood of an accident does not increase with each additional passenger.",
-      "E": "Most drivers take far more short trips than long trips."
-    },
-    "correctAnswer": "C",
-    "questionFeatures": []
-  },
-  {
-    "practiceTest": "PT131",
-    "sectionNumber": 3,
-    "questionNumber": 5,
-    "questionType": "Flaw",
-    "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 1,
-    "stimulus": "Challenger: The mayor claims she has vindicated those who supported her in the last election by fulfilling her promise to increase employment opportunities in our city, citing the 8 percent increase in the number of jobs in the city since she took office. But during her administration, the national government relocated an office to our city, bringing along nearly the entire staff from the outside. The 8 percent increase merely represents the jobs held by these newcomers. Mayor: Clearly my opponent does not dispute the employment statistics. The unemployed voters in this city want jobs. The 8 percent increase in the number of jobs during my term exceeds that of any of my predecessors.",
-    "questionStem": "As a response to the challenger, the mayor's answer is flawed in that it",
-    "answerChoices": {
-      "A": "takes for granted that those who supported the mayor in the last election believed job availability to be a significant city issue",
-      "B": "does not consider whether the number of unemployed persons within the city represents more than 8 percent of the eligible voters",
-      "C": "fails to address the challenger's objection that the 8 percent increase did not result in an increase in job availability for those who lived in the city at the time of the last election",
-      "D": "ignores the challenger's contention that the influx of newcomers during the mayor's administration has increased the size of the voting public and altered its priorities",
-      "E": "explicitly attributes to the challenger beliefs that the challenger has neither asserted nor implied"
-    },
-    "correctAnswer": "C",
-    "questionFeatures": []
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT131",
@@ -306,32 +302,8 @@
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 15,
-    "questionType": "Parallel Flaw",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 2,
-    "stimulus": "There are circumstances in which it is not immoral to make certain threats, and there are circumstances in which it is not immoral to ask for money or some other favor. Therefore, there are circumstances in which it is not immoral to ask for money or a favor while making a threat.",
-    "questionStem": "Which one of the following exhibits a flawed pattern of reasoning most similar to that in the argument above?",
-    "answerChoices": {
-      "A": "There are many business events for which casual dress is appropriate, and there are many social events for which casual dress is appropriate; therefore, if an occasion is neither a business event nor a social event, casual dress is not likely to be appropriate.",
-      "B": "It is usually easy to move a piano after you have convinced five people to help you, provided that you do not need to take it up or down stairs. Therefore, it is usually easy to move a piano.",
-      "C": "It is healthful to take drug A for a headache, and it is healthful to take drug B for a headache; therefore, it is healthful to take drug A together with drug B for a headache.",
-      "D": "Heavy trucks are generally operated in a safe manner, but the ability to drive a truck safely can be impaired by certain prescription drugs. Therefore, heavy trucks cannot be operated safely while the driver is under the effect of a prescription drug.",
-      "E": "The mountain roads are treacherous after it rains, and the mountain streams are full after a rain. So, if the roads in the mountains are treacherous, and the mountain streams are full, it surely has rained recently."
-    },
-    "correctAnswer": "C",
-    "questionFeatures": [
-      "Quantifiers"
-    ]
-  },
-  {
-    "practiceTest": "PT131",
-    "sectionNumber": 3,
-    "questionNumber": 16,
     "questionType": "Necessary Assumption",
     "reasoningType": [
-      "Causation",
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
@@ -344,22 +316,19 @@
       "D": "Persons who do not have the genetic mutation that lowers levels of cathepsin C do not get gum disease.",
       "E": "A person whose cathepsin C level has been restored to normal will not suffer from periodontitis."
     },
-    "correctAnswer": "E",
+    "correctAnswer": "C",
     "questionFeatures": [
-      "Science",
-      "Missing Link / Idea",
-      "Alternatives",
-      "Defender"
+      "Quantifiers"
     ]
   },
   {
     "practiceTest": "PT131",
     "sectionNumber": 3,
-    "questionNumber": 17,
+    "questionNumber": 16,
     "questionType": "Paradox",
     "reasoningType": [
-      "Conditional Reasoning",
-      "Comparative Reasoning"
+      "Causation",
+      "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
     "stimulus": "A recent study of major motion pictures revealed that the vast majority of their plots were simply variations on plots that had been used many times before. Despite this fact, many people enjoy seeing several new movies each year.",
@@ -371,6 +340,33 @@
       "D": "A certain aesthetic pleasure is derived from seeing several movies that develop the same plot in slightly different ways.",
       "E": "Although most modern movie plots have been used before, most of those previous uses occurred during the 1940s and 1950s."
     },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Alternatives",
+      "Defender",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Education critics' contention that the use of calculators in mathematics classes will undermine students' knowledge of the rationale underlying calculational procedures is clearly false. Every new information-handling technology has produced virtually the same accusation. Some Greek philosophers, for example, believed that the advent of written language would erode people's capacity to remember information and speak extemporaneously.",
+    "questionStem": "The reasoning in the argument above is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "presents only evidence whose relevancy to the issue raised by the opponents has not been established",
+      "B": "draws a conclusion based on an ambiguous notion of knowledge",
+      "C": "takes for granted that the advantages offered by new information-handling technologies always outweigh the disadvantages",
+      "D": "takes a condition that suffices to prove its conclusion to be a condition necessary for the truth of that conclusion",
+      "E": "concludes that a hypothesis is false simply because it contradicts other beliefs held by the advocates of that hypothesis"
+    },
     "correctAnswer": "A",
     "questionFeatures": [
       "EXCEPT"
@@ -380,46 +376,46 @@
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 18,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 4,
-    "stimulus": "Those who claim that governments should not continue to devote resources to space exploration are wrong. Although most people's lives are relatively unaffected by the direct consequences of space exploration, many modern technologies that have a tremendous impact on daily life—e.g., fiber optics, computers, and lasers—are unexpected consequences of it. Society might have missed the benefits of these technologies if governments had not devoted resources to space exploration.",
-    "questionStem": "Which one of the following most accurately expresses the principle underlying the argument above?",
+    "questionDifficulty": 3,
+    "stimulus": "Scott: The Hippocratic oath demands, specifically, that doctors \"never divulge\" information about patients. Hence the psychiatrist who released tapes of a poet's therapy sessions after the poet's death violated his oath by his actions, even though the tapes were released after the poet's death and to the poet's official biographer. It makes no difference that the poet's published works were written in a confessional manner or that she had assured the psychiatrist that he could do with the tapes as he saw fit.\nBonara: I agree that doctors are bound not to divulge patient information and would not myself release such tapes without written permission from the patient. Nevertheless, I disagree that the circumstances were irrelevant in this case. I do not think the poet's psychiatrist violated the Hippocratic oath.",
+    "questionStem": "Which one of the following principles, if established, helps most to justify Scott's evaluation of the psychiatrist's actions?",
     "answerChoices": {
-      "A": "Governments should not be prevented from allocating resources to projects whose intended consequences do not directly benefit most people.",
-      "B": "One can never underestimate the beneficial consequences of government support of ambitious technological undertakings.",
-      "C": "The less practical the goal of a governmentsupported project, the more unexpected the consequences of that project.",
-      "D": "Governments should continue to support those projects that have, in the past, produced unintended benefits.",
-      "E": "In attempting to advance the welfare of society, governments should continue to dedicate resources to ambitious technological undertakings."
+      "A": "Restrictions on the release of patient information by psychiatrists are not binding after the patient's death, since after death a person can no longer suffer harm.",
+      "B": "Once a patient has granted a psychiatrist permission to release confidential information, that information can be released to anyone at the psychiatrist's discretion.",
+      "C": "Since a psychiatrist could influence a patient's opinions during therapy, any directives to the psychiatrist by the patient must be interpreted in the light of the patient's actions outside the therapeutic setting.",
+      "D": "Since any psychiatrist's divulging to the public information about a patient could undermine the trust of other patients in their psychiatrists, no patient can release a psychiatrist from the obligation to keep patient information confidential.",
+      "E": "If a patient has expressed an intention to make public information about himself or herself that is in a psychiatrist's possession, the psychiatrist is released from the obligation to keep that information confidential."
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Principles in Answers",
-      "Rebuttals",
+      "First Sentence Conclusion",
       "Missing Link / Idea",
       "Plans / Recommendations",
-      "First Sentence Conclusion"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 19,
-    "questionType": "Must be True",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 5,
-    "stimulus": "If understanding a word always involves knowing its dictionary definition, then understanding a word requires understanding the words that occur in that definition. But clearly there are people—for example, all babies—who do not know the dictionary definitions of some of the words they utter.",
-    "questionStem": "Which one of the following statements follows logically from the statements above?",
+    "questionDifficulty": 4,
+    "stimulus": "Professor Gandolf says that all political systems that aim at preventing conflict are legitimate. However, totalitarian political systems are usually good at preventing conflict, since those who are not in power are subject to the will of the powerful. But since all totalitarian political systems are illegitimate, Professor Gandolf's principle must be false.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
     "answerChoices": {
-      "A": "Some babies utter individual words that they do not understand.",
-      "B": "Any number of people can understand some words without knowing their dictionary definitions.",
-      "C": "If some words can be understood without knowing their dictionary definitions, then babies understand some words.",
-      "D": "If it is possible to understand a word without knowing its dictionary definition, then it is possible to understand a word without having to understand any other word.",
-      "E": "If some babies understand all the words they utter, then understanding a word does not always involve knowing its dictionary definition."
+      "A": "At least one political system that does not aim at preventing conflict is legitimate.",
+      "B": "If a totalitarian political system prevents conflict, such prevention is only incidental to its true aims.",
+      "C": "At least one totalitarian political system aims at preventing conflict.",
+      "D": "No political system that fails to prevent conflict is legitimate.",
+      "E": "Some political systems that are not totalitarian are illegitimate."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -431,40 +427,39 @@
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 20,
-    "questionType": "Flaw",
+    "questionType": "Most Supported",
     "reasoningType": [
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "The peppered moth avoids predators by blending into its background, typically the bark of trees. In the late nineteenth century, those peppered moths with the lightest pigmentation had the greatest contrast with their backgrounds, and therefore were the most likely to be seen and eaten by predators. It follows, then, that the darkest peppered moths were the least likely to be seen and eaten.",
-    "questionStem": "Which one of the following most accurately describes a flaw in the reasoning of the argument?",
+    "stimulus": "Musicologist: Ludwig van Beethoven began losing his hearing when he was 30. This loss continued gradually, but was not complete until late in his life. While it may seem that complete hearing loss would be a severe liability for a composer, in Beethoven's case it gave his later music a wonderfully introspective quality that his earlier music lacked.",
+    "questionStem": "Which one of the following statements is most strongly supported by the musicologist's claims?",
     "answerChoices": {
-      "A": "The argument overlooks the possibility that light peppered moths had more predators than dark peppered moths.",
-      "B": "The argument takes for granted that peppered moths are able to control the degree to which they blend into their backgrounds.",
-      "C": "The argument presumes, without providing justification, that all peppered moths with the same coloring had the same likelihood of being seen and eaten by a predator.",
-      "D": "The argument overlooks the possibility that there were peppered moths of intermediate color that contrasted less with their backgrounds than the darkest peppered moths did.",
-      "E": "The argument presumes, without providing justification, that the only defense mechanism available to peppered moths was to blend into their backgrounds."
+      "A": "It was more difficult for Beethoven to compose his later works than his earlier ones.",
+      "B": "Had he not lost his hearing, Beethoven's later music would have been of poorer quality than it is.",
+      "C": "Had he not lost his hearing, Beethoven would have been less introspective than he was.",
+      "D": "Beethoven's music became gradually more introspective as he grew older.",
+      "E": "Had he not lost his hearing, Beethoven's later music would probably have been different than it is."
     },
-    "correctAnswer": "D",
-    "questionFeatures": []
+    "correctAnswer": "D"
   },
   {
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 21,
-    "questionType": "Most Supported",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 5,
-    "stimulus": "Historian: The standard \"QWERTY\" configuration of the keys on typewriters and computer keyboards was originally designed to be awkward and limit typing speed. This was because early typewriters would jam frequently if adjacent keys were struck in quick succession. Experiments have shown that keyboard configurations more efficient than QWERTY can double typing speed while tremendously reducing typing effort. However, the expense and inconvenience of switching to a new keyboard configuration prevent any configuration other than QWERTY from attaining widespread use.",
-    "questionStem": "Which one of the following is most strongly supported by the historian's statements?",
+    "questionDifficulty": 4,
+    "stimulus": "Critic: Historians purport to discover the patterns inherent in the course of events. But historians actually impose, rather than find, such patterns by choosing what to include in and exclude from their historical narratives. Thus, properly understood, histories reveal more about the presuppositions underlying different historians' attempts to understand what happened than about what actually happened.",
+    "questionStem": "The critic's argument depends on which one of the following assumptions?",
     "answerChoices": {
-      "A": "Most people who have tried typing with nonQWERTY keyboards have typed significantly more quickly using those keyboards than they usually have done using QWERTY keyboards.",
-      "B": "Early QWERTY typewriters were less likely to jam than were at least some more recent typewriters if adjacent keys were struck in quick succession.",
-      "C": "If the designers of early typewriters had foreseen the possibility that technology would make it possible for adjacent keyboard keys to be struck in rapid succession without jamming, then they would not have proposed the QWERTY configuration.",
-      "D": "The benefit to society that would result from switching to a keyboard configuration other than QWERTY is significantly greater than the overall cost of such a switch.",
-      "E": "If the keyboard had been designed for computers, then it would not have been designed to limit typing speed."
+      "A": "Historians have many presuppositions in common with one another.",
+      "B": "There is no way to determine with certainty whether a pattern described by a historian is actually present in and not merely imposed upon the events.",
+      "C": "Historians presuppose that certain historical patterns accurately describe many different eras.",
+      "D": "Most historians cannot become aware of the presuppositions that they bring to their narratives.",
+      "E": "Which pattern a historian imposes upon events is affected by that historian's presuppositions."
     },
     "correctAnswer": "E",
     "questionFeatures": [

@@ -67,11 +67,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Plans / Recommendations",
-      "Weighing Tradeoffs",
       "Logical Completion",
+      "Plans / Recommendations",
       "Timeframes",
-      "Important Pivot"
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -168,10 +167,11 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Science",
       "Dense Stimulus",
-      "Logical Completion"
+      "Logical Completion",
+      "Science"
     ]
   },
   {
@@ -195,6 +195,7 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -218,9 +219,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Plans / Recommendations",
       "Assumes Difference",
-      "Net Effect"
+      "Plans / Recommendations"
     ]
   },
   {
@@ -229,8 +229,7 @@
     "questionNumber": 10,
     "questionType": "Weaken",
     "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
+      "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
     "stimulus": "The Industrial Revolution decreased the value that\n society conferred on physical labor because it enabled\n unskilled workers to quickly produce goods that\n formerly took skilled craftspeople long periods of time\n to produce. Clearly, our most important intellectual\n skills will similarly be devalued by electronic data-\n processing technology. Computations that once took\n skilled mathematicians a long time to perform can now\n be quickly performed by moderately well-trained high\n school students using computers.",
@@ -244,9 +243,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Timeframes",
+      "Missing Link / Idea",
       "Analogies",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -318,10 +318,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Defender",
       "Alternatives",
-      "Timeframes",
-      "Rebuttals"
+      "Defender",
+      "Timeframes"
     ]
   },
   {
@@ -369,10 +368,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Weighing Tradeoffs",
-      "Logical Completion",
       "Causal Difference-Maker",
-      "Important Pivot"
+      "Logical Completion",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -420,8 +418,7 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws",
-      "Explain Curious Fact"
+      "Famous Flaws"
     ]
   },
   {
@@ -488,6 +485,7 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
+      "Missing Link / Idea",
       "Argue the Anti-Conclusion"
     ]
   },
@@ -536,9 +534,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "New Concept in Conclusion",
       "Missing Link / Idea",
-      "Quantifiers"
+      "New Concept in Conclusion"
     ]
   },
   {

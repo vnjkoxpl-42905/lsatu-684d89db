@@ -17,9 +17,10 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Rebuttals",
-      "Implied Conclusion"
+      "Implied Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -326,8 +327,7 @@
     "questionNumber": 15,
     "questionType": "Strengthen",
     "reasoningType": [
-      "Comparative Reasoning",
-      "Causation"
+      "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
     "stimulus": "More and more academic institutions are using citation analysis as the main technique for measuring the quality of scientific research. This technique involves a yearly scanning of scientific journals to count the number of references to a researcher's work. Although academic institutions want to encourage good research, use of citation analysis actually works against this goal since scientists seeking to maximize citation counts will avoid multiyear projects in favor of short-term projects in faddish areas.",
@@ -341,10 +341,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Plans / Recommendations",
       "Focused on Evidence",
-      "Anti-Causal",
-      "Defender"
+      "Plans / Recommendations"
     ]
   },
   {
@@ -469,9 +467,7 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Cognitive psychologist: The majority of skilled artists are very creative people, and all people who are very creative are also good at abstract reasoning. However, not all skilled artists are famous. It follows that some people who are good at abstract reasoning are famous.",
     "questionStem": "The cognitive psychologist's conclusion follows logically if which one of the following is assumed?",
@@ -484,8 +480,7 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Quantifiers",
-      "New Concept in Conclusion"
+      "Quantifiers"
     ]
   },
   {
@@ -540,7 +535,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 1,
     "stimulus": "Good students learn more than what their parents and teachers compel them to learn. This requires that these students derive pleasure from the satisfaction of their curiosity, and one cannot experience such pleasure unless one is capable of concentrating on a topic so intently that one loses track of one's own identity.",
     "questionStem": "If the statements above are true, each of the following could also be true except:",
     "answerChoices": {

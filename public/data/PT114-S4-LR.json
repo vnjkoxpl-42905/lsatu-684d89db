@@ -71,9 +71,7 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Principle",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "The government-owned gas company has begun selling stoves and other gas appliances to create a larger market for its gas. Merchants who sell such products complain that the competition will hurt their businesses. That may well be; however, the government-owned gas company is within its rights. After all, the owner of a private gas company might well decide to sell such appliances and surely there would be nothing wrong with that.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning above?",
@@ -86,8 +84,7 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Principles in Answers",
-      "Analogies"
+      "Principles in Answers"
     ]
   },
   {

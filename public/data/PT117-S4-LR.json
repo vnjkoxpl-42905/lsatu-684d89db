@@ -20,10 +20,11 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Breadcrumbs",
+      "Sufficient vs. Necessary Flaw",
       "Argue the Anti-Conclusion",
-      "Medical",
-      "Contrapositive Logic"
+      "Breadcrumbs",
+      "Contrapositive Logic",
+      "Medical"
     ]
   },
   {
@@ -476,7 +477,7 @@
     "questionNumber": 22,
     "questionType": "Flaw",
     "reasoningType": [
-      "Causation"
+      "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
     "stimulus": "Trainer: Research shows that when dogs are neutered in early puppyhood, their leg bones usually do not develop properly. Improper bone development leads in turn to problems with arthritis as dogs grow older. Thus, if you want to protect your dog from arthritis you should not neuter your dog until it is full-grown.",
@@ -490,11 +491,11 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
-      "Contrapositive Logic",
-      "Ruling Out Options",
       "Binaries",
-      "Conditional Conclusion"
+      "Contrapositive Logic",
+      "Ruling Out Options"
     ]
   },
   {

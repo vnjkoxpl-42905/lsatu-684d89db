@@ -19,6 +19,7 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Logical Completion"
     ]
@@ -43,10 +44,7 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact",
-      "Alternatives",
-      "Plausibility",
-      "Implied Conclusion"
+      "Ruling Out Options"
     ]
   },
   {
@@ -415,6 +413,7 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -558,6 +557,7 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },

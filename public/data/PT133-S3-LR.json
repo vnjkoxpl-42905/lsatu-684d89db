@@ -46,8 +46,7 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling",
-      "First Sentence Conclusion"
+      "Sampling"
     ]
   },
   {
@@ -328,7 +327,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "It was misleading for James to tell the Core Curriculum Committee that the chair of the Anthropology Department had endorsed his proposal. The chair of the Anthropology Department had told James that his proposal had her endorsement, but only if the draft proposal she saw included all the recommendations James would ultimately make to the Core Curriculum Committee.",
     "questionStem": "The argument relies on which one of the following assumptions?",
     "answerChoices": {
@@ -340,10 +339,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
       "Contrapositive Logic",
-      "Untriggered Conditional",
-      "Assumes Difference"
+      "Untriggered Conditional"
     ]
   },
   {
@@ -354,7 +353,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "Travaillier Corporation has recently hired employees with experience in the bus tour industry, and its executives have also been negotiating with charter bus companies that subcontract with bus tour companies. But Travaillier has traditionally focused on serving consumers who travel primarily by air, and marketing surveys show that Travaillier's traditional consumers have not changed their vacation preferences. Therefore, Travaillier must be attempting to enlarge its consumer base by attracting new customers.",
     "questionStem": "Which one of the following, if true, would most weaken the argument?",
     "answerChoices": {
@@ -489,8 +488,7 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "Missing Link / Idea"
     ]
   },
   {

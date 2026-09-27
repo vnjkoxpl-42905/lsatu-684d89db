@@ -19,8 +19,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Contrapositive Logic",
+      "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
+      "Contrapositive Logic",
       "Logical Completion"
     ]
   },
@@ -445,10 +446,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Abstract Answers",
       "Conditional Diagramming",
-      "Repetitive Answers",
-      "Belief / Knowledge / Intent"
+      "Abstract Answers",
+      "Repetitive Answers"
     ]
   },
   {

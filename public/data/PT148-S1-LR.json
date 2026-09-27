@@ -20,9 +20,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic",
       "Medical",
-      "Percentages",
-      "Contrapositive Logic"
+      "Percentages"
     ]
   },
   {
@@ -340,6 +341,7 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Science"
     ]

@@ -169,9 +169,10 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Logical Completion",
+      "Sufficient vs. Necessary Flaw",
+      "Important Pivot",
       "Contrapositive Logic",
-      "Important Pivot"
+      "Logical Completion"
     ]
   },
   {

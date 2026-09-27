@@ -183,6 +183,7 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Logical Completion"
     ]
@@ -610,6 +611,7 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   }

@@ -323,9 +323,7 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Most Supported",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Ideally, scientific laws should display the virtues of precision and generality, as do the laws of physics. However, because of the nature of their subject matter, laws of social science often have to use terms that are imprecise; for example, one knows only vaguely what is meant by “republicanism” or “class.” As for generality, laws that apply only in certain social systems are typically the only ones possible for the social sciences.",
     "questionStem": "Which one of the following statements is most strongly supported by the information above?",
@@ -336,11 +334,7 @@
       "D": "Social scientists should make an effort to construct more laws that apply to all societies.",
       "E": "The laws of social science are invariably not truly scientific."
     },
-    "correctAnswer": "A",
-    "questionFeatures": [
-      "Science",
-      "Important Pivot"
-    ]
+    "correctAnswer": "A"
   },
   {
     "practiceTest": "PT105",

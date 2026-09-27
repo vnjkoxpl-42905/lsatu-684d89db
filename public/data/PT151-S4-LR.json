@@ -113,6 +113,7 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -307,9 +308,10 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Logical Completion",
       "Conditional Diagramming",
-      "Contrapositive Logic"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic",
+      "Logical Completion"
     ]
   },
   {
@@ -529,12 +531,7 @@
       "D": "The researchers found some radioactive material from spent fuel rods as well as some material that was ejected into the atmosphere directly from the plant’s core.",
       "E": "Spent fuel rods do not contain heavy isotopes in significant quantities."
     },
-    "correctAnswer": "B",
-    "questionFeatures": [
-      "Explain Curious Fact",
-      "Ruling Out Options",
-      "Dense Stimulus"
-    ]
+    "correctAnswer": "B"
   },
   {
     "practiceTest": "PT151",

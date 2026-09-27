@@ -177,9 +177,10 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Principles in Answers",
+      "Sufficient vs. Necessary Flaw",
       "2-Speaker",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Principles in Answers"
     ]
   },
   {
@@ -492,9 +493,6 @@
     "practiceTest": "PT118",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "reasoningType": [],
-    "questionDifficulty": 4,
-    "questionFeatures": [],
     "status": "removed"
   },
   {

@@ -192,9 +192,7 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Unknown",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Some paleontologists have suggested that Apatosaurus, a huge dinosaur, was able to gallop. This, however, is unlikely, because galloping would probably have broken Apatosaurus’s legs. Experiments with modern bones show how much strain they can withstand before breaking. By taking into account the diameter and density of Apatosaurus leg bones, it is possible to calculate that those bones could not have withstood the strains of galloping.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn by the argument as a whole?",
@@ -207,9 +205,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Rebuttals",
       "Important Pivot",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {

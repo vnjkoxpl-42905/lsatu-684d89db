@@ -583,12 +583,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Principles in Answers",
       "First Sentence Conclusion",
-      "Intermediate Conclusions",
       "Missing Link / Idea",
-      "Anti-Causal",
-      "Rebuttals"
+      "Intermediate Conclusions",
+      "Principles in Answers"
     ]
   },
   {

@@ -249,11 +249,12 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Rebuttals",
+      "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
       "Contrapositive Logic",
       "Dense Stimulus",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -310,9 +311,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Argument part",
-    "reasoningType": [
-      "Causation"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Many people think that the only way to remedy the problem of crime is by increasing the number of police officers, but recent statistics show that many major cities had similar ratios of police officers to citizens, yet diverged widely in their crime rates.",
     "questionStem": "The statistics cited function in the argument to",
@@ -505,10 +504,11 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Science",
-      "Contrapositive Logic",
+      "Sufficient vs. Necessary Flaw",
+      "Battle of Opinions",
       "Conditional Conclusion",
-      "Battle of Opinions"
+      "Contrapositive Logic",
+      "Science"
     ]
   },
   {

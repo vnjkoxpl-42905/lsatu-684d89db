@@ -240,11 +240,12 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Contrapositive Logic",
-      "Science",
+      "Sufficient vs. Necessary Flaw",
       "Important Pivot",
+      "Conditional Conclusion",
+      "Contrapositive Logic",
       "Intermediate Conclusions",
-      "Conditional Conclusion"
+      "Science"
     ]
   },
   {
@@ -343,8 +344,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Quantifiers",
-      "Contrapositive Logic"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic",
+      "Quantifiers"
     ]
   },
   {
@@ -426,8 +428,8 @@
     "questionNumber": 18,
     "questionType": "Main Conclusion",
     "reasoningType": [
-      "Comparative Reasoning",
-      "Conditional Reasoning"
+      "Conditional Reasoning",
+      "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
     "stimulus": "Classicist: Our mastery of Latin and Ancient Greek is\n at best imperfect. The best students of a modern\n language may so immerse themselves in a\n country where it is spoken as to attain nearly\n perfect knowledge; but you cannot travel back in\n time to spend a year abroad at Plato’s Academy.",
@@ -441,9 +443,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "First Sentence Conclusion",
       "Contrapositive Logic",
-      "Timeframes",
-      "First Sentence Conclusion"
+      "Timeframes"
     ]
   },
   {

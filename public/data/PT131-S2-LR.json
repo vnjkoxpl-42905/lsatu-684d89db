@@ -3,40 +3,39 @@
     "practiceTest": "PT131",
     "sectionNumber": 2,
     "questionNumber": 1,
-    "questionType": "Strengthen",
+    "questionType": "Principle Conform",
     "reasoningType": [
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "On the Caribbean island of Guadeloupe, a researcher examined 35 patients with atypical Parkinson's disease and compared their eating habits to those of 65 healthy adults. She found that all of the patients with atypical Parkinson's regularly ate the tropical fruits soursop, custard apple, and pomme cannelle, whereas only 10 of the healthy adults regularly ate these fruits. From this, she concluded that eating these fruits causes atypical Parkinson's.",
-    "questionStem": "Which one of the following, if true, most strengthens the researcher's reasoning?",
+    "stimulus": "Many doctors cater to patients' demands that they be prescribed antibiotics for their colds. However, colds are caused by viruses, and antibiotics have no effect on viruses, and so antibiotics have no effect on colds. Such treatments are also problematic because antibiotics can have dangerous side effects. So doctors should never prescribe antibiotics to treat colds.",
+    "questionStem": "The reasoning above most closely conforms to which one of the following principles?",
     "answerChoices": {
-      "A": "For many of the atypical Parkinson's patients, their symptoms stopped getting worse, and in some cases actually abated, when they stopped eating soursop, custard apple, and pomme cannelle.",
-      "B": "Of the healthy adults who did not regularly eat soursop, custard apple, and pomme cannelle, most had eaten each of these fruits on at least one occasion.",
-      "C": "In areas other than Guadeloupe, many people who have never eaten soursop, custard apple, and pomme cannelle have contracted atypical Parkinson's.",
-      "D": "The 10 healthy adults who regularly ate soursop, custard apple, and pomme cannelle ate significantly greater quantities of these fruits, on average, than did the 35 atypical Parkinson's patients.",
-      "E": "Soursop, custard apple, and pomme cannelle contain essential vitamins not contained in any other food that is commonly eaten by residents of Guadeloupe."
+      "A": "A doctor should not prescribe a drug for a condition if it cannot improve that condition and if the drug potentially has adverse side effects.",
+      "B": "A doctor should not prescribe any drug that might have harmful effects on the patient even if the drug might have a positive effect on the patient.",
+      "C": "A doctor should attempt to prescribe every drug that is likely to affect the patient's health positively.",
+      "D": "A doctor should withhold treatment from a patient if the doctor is uncertain whether the treatment will benefit the patient.",
+      "E": "A doctor should never base the decision to prescribe a certain medication for a patient on the patient's claims about the effectiveness of that medication."
     },
-    "correctAnswer": "A",
-    "questionFeatures": []
+    "correctAnswer": "A"
   },
   {
     "practiceTest": "PT131",
     "sectionNumber": 2,
     "questionNumber": 2,
-    "questionType": "Agree/Disagree",
+    "questionType": "Most Supported",
     "reasoningType": [
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Price: A corporation's primary responsibility is to its shareholders. They are its most important constituency because they take the greatest risks. If the corporation goes bankrupt, they lose their investment. Albrecht: Shareholders typically have diversified investment portfolios. For employees, however, the well-being of the corporation for which they have chosen to work represents their very livelihood. The corporation's primary responsibility should be to them.",
-    "questionStem": "On the basis of their statements, Price and Albrecht are committed to disagreeing about whether",
+    "stimulus": "Long-distance runners use two different kinds of cognitive strategies: “associative” and “dissociative.” Associative strategies involve attending closely to physical sensations, while dissociative strategies involve mostly ignoring physical sensations. Associative strategies, unlike dissociative ones, require so much concentration that they result in mental exhaustion lasting more than a day. Since it is important for long-distance runners to enter a race mentally refreshed, _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
     "answerChoices": {
-      "A": "corporations have a responsibility to their shareholders",
-      "B": "corporations are responsible for the welfare of their employees",
-      "C": "means should be provided for a corporation's investors to recoup their losses if the corporation goes bankrupt",
-      "D": "a corporation's shareholders have more at stake than anyone else does in the corporation's success or failure",
-      "E": "the livelihood of some of the shareholders depends on the corporation's success"
+      "A": "long-distance runners should not rely heavily on associative strategies during training the day before they run in a race",
+      "B": "unless they regularly train using associative strategies, long-distance runners should use dissociative strategies during races",
+      "C": "maximizing the benefits of training for long-distance running involves frequently alternating associative and dissociative strategies",
+      "D": "long-distance runners are about evenly divided between those who use dissociative strategies during races and those who use associative strategies during races",
+      "E": "in long-distance running, dissociative strategies are generally more effective for a day's training run than are associative strategies"
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -47,22 +46,21 @@
     "practiceTest": "PT131",
     "sectionNumber": 2,
     "questionNumber": 3,
-    "questionType": "Strengthen",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
-    "stimulus": "Despite the enormous number of transactions processed daily by banks nowadays, if a customer's bank account is accidentally credited with a large sum of money, it is extremely unlikely that the error will not be detected by the bank's internal audit procedures.",
-    "questionStem": "Which one of the following, if true, most strongly supports the claim above?",
+    "questionDifficulty": 1,
+    "stimulus": "MetroBank made loans to ten small companies, in amounts ranging from $1,000 to $100,000. These ten loans all had graduated payment plans, i.e., the scheduled monthly loan payment increased slightly each month over the five-year term of the loan. Nonetheless, the average payment received by MetroBank for these ten loans had decreased by the end of the five-year term.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the statements above?",
     "answerChoices": {
-      "A": "Banks initially process all transactions using one set of computer programs, but then use a different set of programs to double-check large transactions.",
-      "B": "Recent changes in banking standards require that customers present identification both when making deposits into their accounts and when making withdrawals from their accounts.",
-      "C": "Banks are required by law to send each customer a monthly statement detailing every transaction of the previous month.",
-      "D": "The average ratio of bank auditors to customer accounts has slowly increased over the past 100 years.",
-      "E": "The development of sophisticated security software has rendered bank computers nearly impervious to tampering by computer hackers."
+      "A": "The number of small companies receiving new loans from MetroBank increased over the five-year term.",
+      "B": "Several of the ten small companies also borrowed money from other banks.",
+      "C": "Most banks offer a greater number of loans for under $100,000 than for over $100,000.",
+      "D": "Of the ten small companies, the three that had borrowed the largest amounts paid off their loans within three years.",
+      "E": "For some loans made by MetroBank, the monthly payment decreases slightly over the term of the loan."
     },
-    "correctAnswer": "A",
-    "questionFeatures": []
+    "correctAnswer": "A"
   },
   {
     "practiceTest": "PT131",
@@ -73,17 +71,16 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Scientist: While studying centuries-old Antarctic ice deposits, I found that several years of relatively severe atmospheric pollution in the 1500s coincided with a period of relatively high global temperatures. So it is clear in this case that atmospheric pollution did cause global temperatures to rise.",
-    "questionStem": "The reasoning in the scientist's argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "Professor: A guest speaker recently delivered a talk entitled “The Functions of Democratic Governments” to a Political Ideologies class at this university. The talk was carefully researched and theoretical in nature. But two students who disagreed with the theory hurled vicious taunts at the speaker. Several others applauded their attempt to humiliate the speaker. This incident shows that universities these days do not foster fair-minded and tolerant intellectual debate.",
+    "questionStem": "The professor's reasoning is flawed in that it",
     "answerChoices": {
-      "A": "presumes, without providing justification, that a rise in global temperatures is harmful",
-      "B": "draws a general conclusion based on a sample that is likely to be unrepresentative",
-      "C": "inappropriately generalizes from facts about a specific period of time to a universal claim",
-      "D": "takes for granted that the method used for gathering data was reliable",
-      "E": "infers, merely from a claim that two phenomena are associated, that one phenomenon causes the other"
+      "A": "draws a conclusion based on the professor's own opinion rather than on that of the majority of the students present at the talk",
+      "B": "is inconsistent in advocating tolerance while showing intolerance of the dissenting students' views",
+      "C": "relies primarily on an emotional appeal",
+      "D": "draws a general conclusion based on too small a sample",
+      "E": "incorrectly focuses on the behavior of the dissenting students rather than relating the reasons for that behavior"
     },
-    "correctAnswer": "E",
-    "questionFeatures": []
+    "correctAnswer": "E"
   },
   {
     "practiceTest": "PT131",
@@ -93,18 +90,17 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
-    "stimulus": "Gilbert: This food label is mistaken. It says that these cookies contain only natural ingredients, but they contain alphahydroxy acids that are chemically synthesized by the cookie company at their plant. Sabina: The label is not mistaken. After all, alphahydroxy acids also are found occurring naturally in sugarcane.",
-    "questionStem": "Which one of the following, if true, would most strengthen Sabina's argument?",
+    "questionDifficulty": 3,
+    "stimulus": "Studies reveal that most people select the foods they eat primarily on the basis of flavor, and that nutrition is usually a secondary concern at best. This suggests that health experts would have more success in encouraging people to eat wholesome foods if they emphasized how flavorful those foods truly are rather than how nutritious they are.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument above?",
     "answerChoices": {
-      "A": "The cookie company has recently dropped alphahydroxy acids from its cookie ingredients.",
-      "B": "Not all chemicals that are part of the manufacturing process are ingredients of the cookies.",
-      "C": "The label was printed before the cookie company decided to switch from sugarcane alphahydroxy acids to synthesized ones.",
-      "D": "Many other foods advertising all natural ingredients also contain some ingredients that are chemically synthesized.",
-      "E": "All substances except those that do not occur naturally in any source are considered natural."
+      "A": "Most people currently believe that wholesome foods are more flavorful, on average, than unwholesome foods are.",
+      "B": "Few people, when given a choice between foods that are flavorful but not nutritious and foods that are nutritious but not flavorful, will choose the foods that are nutritious but not flavorful.",
+      "C": "Health experts' attempts to encourage people to eat wholesome foods by emphasizing how nutritious those foods are have been moderately successful.",
+      "D": "The studies that revealed that people choose the foods they eat primarily on the basis of flavor also revealed that people rated as most flavorful those foods that were least nutritious.",
+      "E": "In a study, subjects who were told that a given food was very flavorful were more willing to try the food and more likely to enjoy it than were subjects who were told that the food was nutritious."
     },
-    "correctAnswer": "E",
-    "questionFeatures": []
+    "correctAnswer": "E"
   },
   {
     "practiceTest": "PT131",

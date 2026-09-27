@@ -346,10 +346,7 @@
       "D": "The untreated chicks experienced a higher incidence of illness from infection by bacteria other than Salmonella than did treated chicks.",
       "E": "The bacteria found in the treated chicks were nonvirulent types whose growth is inhibited by Salmonella bacteria."
     },
-    "correctAnswer": "E",
-    "questionFeatures": [
-      "Medical"
-    ]
+    "correctAnswer": "E"
   },
   {
     "practiceTest": "PT142",
@@ -372,8 +369,7 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "2-Speaker",
-      "Rebuttals"
+      "2-Speaker"
     ]
   },
   {
@@ -446,6 +442,7 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Repetitive Answers"
     ]
@@ -489,12 +486,7 @@
       "D": "Were there any cases in which the dog who was given a reward became more inclined to obey the command?",
       "E": "How many repetitions were required before the unrewarded dogs began to disobey the command?"
     },
-    "correctAnswer": "B",
-    "questionFeatures": [
-      "Explain Curious Fact",
-      "Alternatives",
-      "Plausibility"
-    ]
+    "correctAnswer": "B"
   },
   {
     "practiceTest": "PT142",
@@ -561,8 +553,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Complex Conditionals",
       "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
+      "Complex Conditionals",
       "Contrapositive Logic"
     ]
   },

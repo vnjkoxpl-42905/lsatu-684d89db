@@ -335,9 +335,10 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Ruling Out Options",
-      "Conditional Diagramming"
+      "Ruling Out Options"
     ]
   },
   {
@@ -502,6 +503,7 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Causal Chains",
       "Contrapositive Logic"
     ]

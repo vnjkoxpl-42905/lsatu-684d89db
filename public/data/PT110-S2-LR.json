@@ -227,8 +227,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Abstract Answers",
+      "Sufficient vs. Necessary Flaw",
       "Belief / Knowledge / Intent",
+      "Abstract Answers",
       "Contrapositive Logic"
     ]
   },

@@ -164,9 +164,10 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Contrapositive Logic",
+      "Sufficient vs. Necessary Flaw",
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Contrapositive Logic"
     ]
   },
   {

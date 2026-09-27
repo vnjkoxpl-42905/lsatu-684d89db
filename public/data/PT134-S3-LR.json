@@ -271,11 +271,10 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea",
       "Conditional Diagramming",
+      "Missing Link / Idea",
       "Conditional Conclusion",
-      "Untriggered Conditional",
-      "Links Between Premises"
+      "Untriggered Conditional"
     ]
   },
   {
@@ -387,12 +386,11 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Science",
-      "Focused on Evidence",
       "Explain Curious Fact",
       "Breadcrumbs",
+      "Focused on Evidence",
       "Medical",
-      "First Sentence Conclusion"
+      "Science"
     ]
   },
   {

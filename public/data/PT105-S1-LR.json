@@ -115,9 +115,7 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Must be True",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "We should do what will make others more virtuous and not do what will make others less virtuous. It is an irony of human existence that praise makes those who are less virtuous more virtuous, while it makes those who are more virtuous less virtuous. And, of course, none except the more virtuous deserve praise.",
     "questionStem": "From the statements above, if true, which one of the following can be properly inferred?",
@@ -128,8 +126,7 @@
       "D": "We should praise everyone, regardless of whether or not they deserve it.",
       "E": "We should withhold praise from everyone, regardless of whether or not they deserve it."
     },
-    "correctAnswer": "C",
-    "questionFeatures": []
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT105",
@@ -242,7 +239,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 1,
     "stimulus": "Alice will volunteer to work on the hospital fund-raising drive only if her brother Bruce also volunteers and a majority of the others working on the drive promise to select Bruce to manage the drive. However, although Bruce is willing to volunteer, none of the others working on the drive will promise to select Bruce to manage the drive. Thus it is certain that Alice will not volunteer.",
     "questionStem": "In which one of the following arguments is the pattern of reasoning most similar to the pattern of reasoning in the argument above?",
     "answerChoices": {
@@ -255,6 +252,7 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -264,7 +262,7 @@
     "questionNumber": 13,
     "questionType": "Parallel",
     "reasoningType": [],
-    "questionDifficulty": 1,
+    "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 1, questions 13 through 14.\nIf an artist receives a public subsidy to support work on a specific project—e.g., making a film—and if this project then proves successful enough to allow the artist to repay the subsidy, is the artist then morally obliged to do so? The answer is clearly yes, since the money returned to the agency distributing the subsidies will be welcome as a source of support for other artists deserving of public subsidies.",
     "questionStem": "The passage tries to establish an artist’s obligation by arguing that",
     "answerChoices": {
@@ -431,7 +429,6 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Difference-Maker",
       "Causal Chains"
     ]
   },

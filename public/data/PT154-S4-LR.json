@@ -161,40 +161,39 @@
     "practiceTest": "PT154",
     "sectionNumber": 4,
     "questionNumber": 8,
-    "questionType": "Most Supported",
+    "questionType": "Weaken",
     "reasoningType": [
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Advertisement: At BigFoods, we compare prices for you. We recently determined which items our shoppers buy most often. A varied sample of these items cost 10 percent more at Grocerytown than at BigFoods! None of these regularly purchased grocery items were on sale at BigFoods—these are our everyday prices!",
-    "questionStem": "The statements in the advertisement, if true, most strongly support which one of the following?",
+    "stimulus": "Statistics show clearly that in those countries with the most severe penalties for driving while intoxicated, a smaller percentage of drivers have traffic accidents involving alcohol use than in other countries. This refutes those who claim that would-be drunk drivers will not be deterred by the prospect of severe penalties.",
+    "questionStem": "Which one of the following would, if true, most undermine the argument?",
     "answerChoices": {
-      "A": "BigFoods lowered its everyday prices before making the comparison with Grocerytown.",
-      "B": "Shoppers who usually patronize Grocerytown prefer to shop there for some reason other than its prices.",
-      "C": "Some of the items that shoppers at BigFoods buy most often are less expensive at BigFoods than at Grocerytown.",
-      "D": "Few of the items that shoppers at BigFoods buy most often were on sale at Grocerytown when the price comparison was carried out.",
-      "E": "The items that shoppers at BigFoods buy most often are not the same as those that shoppers at Grocerytown buy most often."
+      "A": "The countries with the largest populations do not have severe penalties for driving while intoxicated.",
+      "B": "Very severe penalties against driving while intoxicated are in effect only in countries in which alcohol use is rare.",
+      "C": "The higher a country’s speed limits, the more frequent traffic accidents tend to be in that country.",
+      "D": "Only a relatively small minority of those who drive while intoxicated are actually apprehended while doing so.",
+      "E": "All countries impose severer penalties on those who cause accidents while driving intoxicated than on those who are merely apprehended while driving intoxicated."
     },
-    "correctAnswer": "C",
-    "questionFeatures": []
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT154",
     "sectionNumber": 4,
     "questionNumber": 9,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle Conform",
     "reasoningType": [
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Martin: I have heard it argued that, because changes in diet and exercise rarely result in weight loss, doctors should stop advising their patients to eat less and exercise more. But this is no reason for doctors to abandon their advice, even supposing that weight loss is rare. Changes in diet and exercise have beneficial effects other than weight loss.",
-    "questionStem": "Which one of the following conforms most closely to the principle illustrated in Martin's position?",
+    "stimulus": "Many airlines offer, for a fee, to “offset” the carbon emissions produced when you fly, but such schemes are almost entirely ineffective. Although the fees are usually invested in projects that directly reduce carbon emissions, in most cases these projects would have proceeded even without that investment, so no carbon emissions are prevented.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
     "answerChoices": {
-      "A": "The fact that only one person can win a marathon is no reason for Jen to avoid participating in the marathon, since every participant still has a chance of winning.",
-      "B": "The fact that the engineers could not solve the problem is no reason to deem their work a failure, since their work nonetheless produced new and useful insights.",
-      "C": "The fact that Chester was unsuccessful in his first attempt to grow a vegetable garden is no reason for him to give up, since one's gardening skills generally improve over time.",
-      "D": "The fact that the construction project is costing more than expected is no reason to halt it, since the project's backers were well aware that it might run over budget.",
-      "E": "The fact that the company's charitable act is also a public relations stunt is no reason to criticize the charitable act, since charity is laudable in itself."
+      "A": "Steps that are taken in order to mitigate the harmful effects of one’s freely chosen, harmful actions do not absolve one from the original harm.",
+      "B": "If an outcome would have occurred in the absence of a certain action, then the outcome was not a consequence of that action.",
+      "C": "If a company or individual gains financially from a particular action, they should not be considered morally praiseworthy for any positive consequences of that action.",
+      "D": "Measures aimed at achieving a certain outcome should only be taken when they are of demonstrable effectiveness at achieving that outcome.",
+      "E": "If a project for reducing carbon emissions does not tackle the largest source of carbon emissions, then it is of limited value in reducing such emissions."
     },
     "correctAnswer": "B",
     "questionFeatures": [

@@ -403,13 +403,11 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Rebuttals",
-      "Science",
       "Important Pivot",
       "Intermediate Conclusions",
-      "Timeframes",
-      "Explain Curious Fact",
-      "Implied Conclusion"
+      "Rebuttals",
+      "Science",
+      "Timeframes"
     ]
   },
   {

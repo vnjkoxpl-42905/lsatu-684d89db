@@ -333,9 +333,7 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Sufficient Assumption",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "People who have doctorates in the liberal arts are interested in improving their intellects. Companies, however, rarely hire people who are not concerned with the financial gain that can be obtained by hard work in the business world. As a result, companies rarely hire people who have doctorates in the liberal arts.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",

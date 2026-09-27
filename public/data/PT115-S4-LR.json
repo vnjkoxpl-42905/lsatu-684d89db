@@ -425,7 +425,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "Some people believe that good health is due to luck. However, studies from many countries indicate a strong correlation between good health and high educational levels. Thus research supports the view that good health is largely the result of making informed lifestyle choices.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
@@ -448,7 +448,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "In a small town, every complaint filed about a plumber's work was filed against Moore, who has a relatively small business. So there is good evidence that Moore is a poor plumber who cannot be counted on to do a good job.",
     "questionStem": "The argument is questionable because it fails to consider",
     "answerChoices": {

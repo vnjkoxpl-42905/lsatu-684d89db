@@ -278,10 +278,11 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Contrapositive Logic",
+      "Sufficient vs. Necessary Flaw",
+      "Argue the Anti-Conclusion",
       "Binaries",
-      "Intermediate Conclusions",
-      "Argue the Anti-Conclusion"
+      "Contrapositive Logic",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -450,9 +451,7 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Most Strongly Supported",
-    "reasoningType": [
-      "Causation"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "All social systems are based upon a division of economic roles. The values of a social system are embodied in the prestige accorded persons who fill various economic roles. It is therefore unsurprising that, for any social system, the introduction of labor-saving technology that makes certain economic roles obsolete will tend to undermine the values in that social system.",
     "questionStem": "Which one of the following can most reasonably be concluded on the basis of the information above?",
@@ -463,8 +462,7 @@
       "D": "A technologically advanced society will place little value on the prestige associated with an economic role.",
       "E": "A technological innovation that is implemented in a social system foreign to the one in which it was developed will tend to undermine the foreign social system."
     },
-    "correctAnswer": "C",
-    "questionFeatures": []
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT111",

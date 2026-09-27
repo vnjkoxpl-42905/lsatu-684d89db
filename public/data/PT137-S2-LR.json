@@ -225,8 +225,7 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker",
-      "Plans / Recommendations"
+      "2-Speaker"
     ]
   },
   {
@@ -249,8 +248,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Science",
-      "Contrapositive Logic"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic",
+      "Science"
     ]
   },
   {

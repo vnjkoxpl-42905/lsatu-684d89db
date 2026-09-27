@@ -209,7 +209,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "Biologists often announce that a certain kind of animal has been found capable of using tools; this usually refers to something like using a stick to hunt for ants in a log, or a stone to crack nuts. But such announcements are completely unsurprising, since all animals use tools. Birds build nests, fish hide in the mud to escape predators, and squirrels use buildings as shortcuts between trees. If an animal executes its purpose by means of an external physical object, then that object can reasonably be regarded as a tool.",
     "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that the biologists' announcements that a certain animal has been found capable of using tools are unsurprising?",
     "answerChoices": {
@@ -219,8 +219,7 @@
       "D": "It calls into question the basis of the biologists' conception of a tool.",
       "E": "It addresses a weakness in the biologists' announcements that stems from their ambiguous use of the word \"external.\""
     },
-    "correctAnswer": "B",
-    "questionFeatures": []
+    "correctAnswer": "B"
   },
   {
     "practiceTest": "PT128",
@@ -251,7 +250,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "Clothes dryers manufactured by Archway Appliances, Inc. are of poor quality. Crucial bolts are missing and some sections are assembled in the wrong order, thereby creating a shock and fire hazard. Concern for safety and quality is conspicuously lacking. So Archway must use shoddy, substandard components in its clothes dryers.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it fails to consider the possibility that",
     "answerChoices": {
@@ -261,8 +260,7 @@
       "D": "a shoddily constructed appliance can be made of high-quality parts",
       "E": "Archway's other product lines exhibit careful and safe assembly and use high-quality components"
     },
-    "correctAnswer": "D",
-    "questionFeatures": []
+    "correctAnswer": "D"
   },
   {
     "practiceTest": "PT128",

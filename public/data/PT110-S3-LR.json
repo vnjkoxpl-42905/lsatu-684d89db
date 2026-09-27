@@ -275,9 +275,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Flaw Fill-in",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Politician: My opponents argue that the future of our city depends on compromise—that unless the city’s leaders put aside their differences and work together toward common goals, the city will suffer. However, the founders of this city based the city’s charter on definite principles, and anyone who compromises those principles betrays the city founders’ goals. What my opponents are advocating, therefore, is nothing less than betraying the goals of the city’s founders. Critic: I’m afraid your argument is flawed. Unless you’re assuming that the differences among the city’s leaders are differences of principle, your argument depends on a misleading use of the term _______.",
     "questionStem": "Which one of the following provides the most logical completion of the critic’s statement?",
@@ -288,12 +286,7 @@
       "D": "principles",
       "E": "opponents"
     },
-    "correctAnswer": "C",
-    "questionFeatures": [
-      "Famous Flaws",
-      "2-Speaker",
-      "Logical Completion"
-    ]
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT110",
@@ -478,8 +471,7 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "New Concept in Conclusion",
-      "Assumes Difference"
+      "New Concept in Conclusion"
     ]
   },
   {

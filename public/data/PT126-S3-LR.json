@@ -506,12 +506,13 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Explain Curious Fact",
-      "Rebuttals",
-      "Science",
+      "Contrapositive Logic",
       "Intermediate Conclusions",
       "Plausibility",
-      "Contrapositive Logic"
+      "Rebuttals",
+      "Science"
     ]
   },
   {

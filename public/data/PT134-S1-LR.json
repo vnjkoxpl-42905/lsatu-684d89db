@@ -30,7 +30,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "There are 70 to 100 Florida panthers alive today. This represents a very large increase over their numbers in the 1970s, but their population must reach at least 250 if it is to be self-sustaining. Their current habitat is not large enough to support any more of these animals, however.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
     "answerChoices": {
@@ -40,8 +40,7 @@
       "D": "The population of Florida panthers will never increase much beyond its current level.",
       "E": "Today, Florida panthers occupy a larger habitat than they did in the 1970s."
     },
-    "correctAnswer": "C",
-    "questionFeatures": []
+    "correctAnswer": "C"
   },
   {
     "practiceTest": "PT134",
@@ -430,8 +429,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Contrapositive Logic",
-      "Relative vs. Absolute"
+      "Sufficient vs. Necessary Flaw",
+      "Relative vs. Absolute",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -477,9 +477,7 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming",
-      "Binaries",
-      "Ruling Out Options"
+      "Conditional Diagramming"
     ]
   },
   {
@@ -525,10 +523,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Plans / Recommendations",
-      "Missing Link / Idea",
       "Conditional Diagramming",
-      "New Concept in Conclusion"
+      "Missing Link / Idea",
+      "Plans / Recommendations"
     ]
   },
   {

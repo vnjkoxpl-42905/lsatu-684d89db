@@ -278,10 +278,11 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "First Sentence Conclusion",
       "Contrapositive Logic",
-      "Rebuttals",
-      "Predictions"
+      "Predictions",
+      "Rebuttals"
     ]
   },
   {
@@ -629,6 +630,7 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },

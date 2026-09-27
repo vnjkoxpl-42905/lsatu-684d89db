@@ -588,9 +588,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Science",
-      "Contrapositive Logic",
+      "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
+      "Contrapositive Logic",
+      "Science",
       "Untriggered Conditional"
     ]
   },

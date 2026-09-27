@@ -493,10 +493,11 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
+      "Contrapositive Logic",
       "Dense Stimulus",
       "Links Between Premises",
-      "Contrapositive Logic",
       "Untriggered Conditional"
     ]
   },

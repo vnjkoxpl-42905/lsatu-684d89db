@@ -385,8 +385,7 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Conclusion",
-      "Plans / Recommendations"
+      "Conditional Conclusion"
     ]
   },
   {
@@ -477,8 +476,7 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "Missing Link / Idea"
     ]
   },
   {

@@ -568,7 +568,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 3,
     "stimulus": "Sasha: Handwriting analysis should be banned in court as evidence of a person’s character: handwriting analysts called as witnesses habitually exaggerate the reliability of their analyses.\nGregory: You are right that the current use of handwriting analysis as evidence is problematic. But this problem exists only because there is no\nlicensing board to set professional standards and thus deter irresponsible analysts from making exaggerated claims. When such a board is established, however, handwriting analysis by licensed practitioners will be a legitimate courtroom tool for character assessment.",
     "questionStem": "Which one of the following, if true, would provide Sasha with the strongest counter to Gregory’s response?",
     "answerChoices": {

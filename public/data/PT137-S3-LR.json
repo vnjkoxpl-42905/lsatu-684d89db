@@ -231,6 +231,7 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Science"
     ]
@@ -565,8 +566,7 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Principles in Answers",
-      "Missing Link / Idea"
+      "Principles in Answers"
     ]
   },
   {

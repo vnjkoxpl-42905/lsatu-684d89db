@@ -315,8 +315,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Contrapositive Logic",
+      "Sufficient vs. Necessary Flaw",
       "Causal Chains",
+      "Contrapositive Logic",
       "Logical Completion"
     ]
   },
@@ -554,8 +555,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Quantifiers",
-      "Contrapositive Logic"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic",
+      "Quantifiers"
     ]
   },
   {

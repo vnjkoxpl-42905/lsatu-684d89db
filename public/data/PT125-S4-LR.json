@@ -617,6 +617,7 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   }

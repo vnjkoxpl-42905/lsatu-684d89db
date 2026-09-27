@@ -174,17 +174,17 @@
     "practiceTest": "PT119",
     "sectionNumber": 4,
     "questionNumber": 8,
-    "questionType": "Sufficient Assumption",
+    "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Some students attending a small university with a well-known choir live off campus. From the fact that all music majors are members of the choir, a professor in the music department concluded that none of the students who live off campus is a music major.",
-    "questionStem": "The professor's conclusion is properly drawn if which one of the following is assumed?",
+    "stimulus": "Journalist: A free marketplace of ideas ensures that all ideas get a fair hearing. Even ideas tainted with prejudice and malice can prompt beneficial outcomes. In most countries, however, the government is responsible for over half the information released to the public through all media. For this reason, the power of governments over information needs to be curtailed. Everyone grants that governments should not suppress free expression, yet governments continue to construct near monopolies on the publication and dissemination of enormous amounts of information.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the journalist's argument?",
     "answerChoices": {
-      "A": "None of the students who live off campus is a member of the choir.",
-      "B": "None of the students who are music majors has failed to join the choir.",
-      "C": "Some of the students who do not live off campus are not music majors.",
-      "D": "All students who live on campus are music majors.",
-      "E": "All students who are members of the choir are music majors."
+      "A": "The freedom of the marketplace of ideas is in jeopardy.",
+      "B": "Preserving a free marketplace of ideas is important.",
+      "C": "The control that governments have over information needs to be reduced.",
+      "D": "Ideas that have malicious content or stem from questionable sources can be valuable.",
+      "E": "Governments have near monopolies on the dissemination of many kinds of information."
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -195,19 +195,19 @@
     "practiceTest": "PT119",
     "sectionNumber": 4,
     "questionNumber": 9,
-    "questionType": "Main Conclusion",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Journalist: A free marketplace of ideas ensures that all ideas get a fair hearing. Even ideas tainted with prejudice and malice can prompt beneficial outcomes. In most countries, however, the government is responsible for over half the information released to the public through all media. For this reason, the power of governments over information needs to be curtailed. Everyone grants that governments should not suppress free expression, yet governments continue to construct near monopolies on the publication and dissemination of enormous amounts of information.",
-    "questionStem": "Which one of the following most accurately expresses the conclusion of the journalist's argument?",
+    "stimulus": "Some students attending a small university with a well-known choir live off campus. From the fact that all music majors are members of the choir, a professor in the music department concluded that none of the students who live off campus is a music major.",
+    "questionStem": "The professor's conclusion is properly drawn if which one of the following is assumed?",
     "answerChoices": {
-      "A": "The freedom of the marketplace of ideas is in jeopardy.",
-      "B": "Preserving a free marketplace of ideas is important.",
-      "C": "The control that governments have over information needs to be reduced.",
-      "D": "Ideas that have malicious content or stem from questionable sources can be valuable.",
-      "E": "Governments have near monopolies on the dissemination of many kinds of information."
+      "A": "None of the students who live off campus is a member of the choir.",
+      "B": "None of the students who are music majors has failed to join the choir.",
+      "C": "Some of the students who do not live off campus are not music majors.",
+      "D": "All students who live on campus are music majors.",
+      "E": "All students who are members of the choir are music majors."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -480,8 +480,7 @@
     "questionNumber": 21,
     "questionType": "Sufficient Assumption",
     "reasoningType": [
-      "Comparative Reasoning",
-      "Conditional Reasoning"
+      "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
     "stimulus": "Pizzerias are the only restaurants that routinely record the names, addresses, and menu selections of their customers. Simply by organizing these data, they can easily identify regular, average, and infrequent customers. Therefore, pizzerias utilize direct-mail marketing more effectively than do other restaurants.",

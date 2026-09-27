@@ -212,6 +212,7 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -476,7 +477,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 4,
     "stimulus": "Industrial engineer: Some people have suggested that the problem of global warming should be addressed by pumping some of the carbon dioxide produced by the burning of fossil fuels into the deep ocean. Many environmentalists worry that this strategy would simply exchange one form of pollution for an equally destructive form. This worry is unfounded, however; much of the carbon dioxide now released into the atmosphere eventually ends up in the ocean anyway, where it does not cause environmental disturbances as destructive as global warming.",
     "questionStem": "Which one of the following most accurately expresses the conclusion of the industrial engineer's argument as a whole?",
     "answerChoices": {
@@ -488,10 +489,10 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
+      "Important Pivot",
       "Plans / Recommendations",
       "Rebuttals",
-      "Science",
-      "Important Pivot"
+      "Science"
     ]
   },
   {
@@ -500,11 +501,11 @@
     "questionNumber": 21,
     "questionType": "Paradox",
     "reasoningType": [
-      "Conditional Reasoning",
       "Causation",
+      "Conditional Reasoning",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 2,
     "stimulus": "Several people came down with an illness caused by a type of bacteria in seafood. Health officials traced the history of each person who became ill to the same restaurant and date. Careful testing showed that most people who ate seafood at the restaurant on that date had not come in contact with the bacteria in question. Despite this finding, health officials remained confident that contaminated seafood from this restaurant caused the cases of illness.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy indicated above?",
     "answerChoices": {
@@ -514,8 +515,7 @@
       "D": "The restaurant in question had recently been given a warning about violations of health regulations.",
       "E": "All and only those who ate a particular seafood dish at the restaurant contracted the illness."
     },
-    "correctAnswer": "E",
-    "questionFeatures": []
+    "correctAnswer": "E"
   },
   {
     "practiceTest": "PT129",
@@ -525,7 +525,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 4,
     "stimulus": "Economist: Real wages in this country will increase significantly only if productivity increases notably. Thus, it is unlikely that real wages will increase significantly in the near future, since this country's businesses are currently investing very little in new technology and this pattern is likely to continue for at least several more years.",
     "questionStem": "Which one of the following, if assumed about the economist's country, allows the economist's conclusion to be properly drawn?",
     "answerChoices": {
@@ -539,8 +539,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Predictions",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Predictions"
     ]
   },
   {

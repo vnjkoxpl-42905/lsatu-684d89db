@@ -28,7 +28,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 1,
+    "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 1 through 2.\nPolitician: The funding for the new nationwide healthawareness campaign should come from an increase in taxes on cigarettes. It is well established that cigarette smoking causes many serious health problems, and it is only reasonable that people whose unhealthful habits cause so many health problems should bear the costs of that campaign.\nSmoker: But it is equally well established that regularly eating high-fat, high-cholesterol foods causes as many serious health problems as does smoking, yet it would be manifestly unreasonable to force those who purchase such foods to bear the burden of financing this campaign.",
     "questionStem": "The smoker’s response to the politician’s argument",
     "answerChoices": {
@@ -41,9 +41,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Abstract Answers",
+      "2-Speaker",
       "Medical",
-      "Plans / Recommendations",
-      "2-Speaker"
+      "Plans / Recommendations"
     ]
   },
   {
@@ -52,7 +52,7 @@
     "questionNumber": 3,
     "questionType": "Strengthen",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "There should be a greater use of gasohol. Gasohol is a mixture of alcohol and gasoline, and has a higher octane rating and fewer carbon monoxide emissions than straight gasoline. Burning gasohol adds no more carbon dioxide to the atmosphere than plants remove by photosynthesis.",
     "questionStem": "Each of the following, if true, strengthens the argument above except:",
     "answerChoices": {
@@ -65,8 +65,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "EXCEPT",
-      "Plans / Recommendations",
-      "Net Effect"
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -75,7 +75,7 @@
     "questionNumber": 4,
     "questionType": "Paradox",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "Cats spend much of their time sleeping; they seem to awaken only to stretch and yawn. Yet they have a strong, agile musculature that most animals would have to exercise strenuously to acquire.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent paradox described above?",
     "answerChoices": {
@@ -148,7 +148,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "In Debbie’s magic act, a volunteer supposedly selects a card in a random fashion, looks at it without showing it to her, and replaces it in the deck. After several shuffles, Debbie cuts the deck and supposedly reveals the same selected card. A skeptic conducted three trials. In the first, Debbie was videotaped, and no sleight of hand was found. In the second, the skeptic instead supplied a standard deck of cards. For the third trial, the skeptic selected the card. Each time, Debbie apparently revealed the selected card. The skeptic concluded that Debbie uses neither sleight of hand, nor a trick deck, nor a planted “volunteer” to achieve her effect.",
     "questionStem": "Which one of the following most accurately describes a flaw in the skeptic’s reasoning?",
     "answerChoices": {
@@ -172,7 +172,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "Nutritionist: Many people claim that simple carbohydrates are a reasonable caloric replacement for the fatty foods forbidden to those on low-fat diets. This is now in doubt. New studies show that, for many people, a high intake of simple carbohydrates stimulates an overproduction of insulin, a hormone that is involved in processing sugars and starches to create energy when the body requires energy, or, when energy is not required, to store the resulting by-products as fat.",
     "questionStem": "Which one of the following is most strongly supported by the nutritionist’s statements?",
     "answerChoices": {
@@ -184,11 +184,12 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Science",
-      "Rebuttals",
-      "Medical",
+      "Sufficient vs. Necessary Flaw",
+      "Causal Chains",
       "Contrapositive Logic",
-      "Causal Chains"
+      "Medical",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -245,7 +246,7 @@
     "questionNumber": 11,
     "questionType": "Main Conclusion",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 11 through 12.\nIt is well known that many species adapt to their environment, but it is usually assumed that only the most highly evolved species alter their environment in ways that aid their own survival. However, this characteristic is actually quite common. Certain species of plankton, for example, generate a gas that is converted in the atmosphere into particles of sulfate. These particles cause water vapor to condense, thus forming clouds. Indeed, the formation of clouds over the ocean largely depends on the presence of these particles. More cloud cover means more sunlight is reflected, and so the Earth\nabsorbs less heat. Thus plankton cause the surface of the Earth to be cooler and this benefits the plankton.",
     "questionStem": "Of the following, which one most accurately expresses the main point of the argument?",
     "answerChoices": {
@@ -257,12 +258,12 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Science",
-      "Refute a Conditional",
-      "Rebuttals",
-      "Dense Stimulus",
       "Important Pivot",
-      "Intermediate Conclusions"
+      "Dense Stimulus",
+      "Intermediate Conclusions",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Science"
     ]
   },
   {
@@ -271,7 +272,7 @@
     "questionNumber": 12,
     "questionType": "Method",
     "reasoningType": [],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 11 through 12.\nIt is well known that many species adapt to their environment, but it is usually assumed that only the most highly evolved species alter their environment in ways that aid their own survival. However, this characteristic is actually quite common. Certain species of plankton, for example, generate a gas that is converted in the atmosphere into particles of sulfate. These particles cause water vapor to condense, thus forming clouds. Indeed, the formation of clouds over the ocean largely depends on the presence of these particles. More cloud cover means more sunlight is reflected, and so the Earth absorbs less heat. Thus plankton cause the surface of the Earth to be cooler and this benefits the plankton.",
     "questionStem": "Which one of the following accurately describes the argumentative strategy employed?",
     "answerChoices": {
@@ -283,12 +284,12 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Science",
-      "Refute a Conditional",
-      "Rebuttals",
-      "Intermediate Conclusions",
+      "Abstract Answers",
       "Dense Stimulus",
-      "Abstract Answers"
+      "Intermediate Conclusions",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Science"
     ]
   },
   {
@@ -349,7 +350,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "Ordinary mountain sickness, a common condition among mountain climbers, and one from which most people can recover, is caused by the characteristic shortage of oxygen in the atmosphere at high altitudes. Cerebral edema, a rarer disruption of blood circulation in the brain that quickly becomes life-threatening if not correctly treated from its onset, can also be caused by a shortage of oxygen. Since the symptoms of cerebral edema resemble those of ordinary mountain sickness, cerebral edema is especially dangerous at high altitudes.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
     "answerChoices": {
@@ -361,14 +362,14 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Science",
+      "Missing Link / Idea",
       "Argue the Anti-Conclusion",
       "Assumes Difference",
       "Defender",
       "Dense Stimulus",
+      "Medical",
       "New Concept in Conclusion",
-      "Missing Link / Idea",
-      "Medical"
+      "Science"
     ]
   },
   {
@@ -377,7 +378,7 @@
     "questionNumber": 16,
     "questionType": "Weaken",
     "reasoningType": [],
-    "questionDifficulty": 5,
+    "questionDifficulty": 3,
     "stimulus": "We can learn about the living conditions of a vanished culture by examining its language. Thus, it is likely that the people who spoke Proto-Indo-European, the language from which all Indo-European languages descended,\nlived in a cold climate, isolated from ocean or sea, because Proto-Indo-European lacks a word for “sea,” yet contains words for “winter,” “snow,” and “wolf.”",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
     "answerChoices": {
@@ -389,10 +390,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact",
       "Missing Link / Idea",
-      "Implicit Principles",
-      "Argue the Anti-Conclusion"
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion",
+      "Implicit Principles"
     ]
   },
   {
@@ -400,10 +401,8 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": [
-      "Causation"
-    ],
-    "questionDifficulty": 5,
+    "reasoningType": [],
+    "questionDifficulty": 3,
     "stimulus": "Columnist: It is impossible for there to be real evidence that lax radiation standards that were once in effect at nuclear reactors actually contributed to the increase in cancer rates near such sites. The point is a familiar one: who can say if a particular case of cancer is due to radiation, exposure to environmental toxins, smoking, poor diet, or genetic factors.",
     "questionStem": "The argument’s reasoning is most vulnerable to criticism on which one of the following grounds?",
     "answerChoices": {
@@ -415,10 +414,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Science",
-      "New Concept in Conclusion",
       "Argue the Anti-Conclusion",
-      "Anti-Causal"
+      "New Concept in Conclusion",
+      "Science"
     ]
   },
   {
@@ -429,7 +427,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 3,
     "stimulus": "Some planning committee members—those representing the construction industry—have significant financial interests in the committee’s decisions. No one who is on the planning committee lives in the suburbs, although many of them work there.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
     "answerChoices": {
@@ -452,7 +450,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "Arbitrator: The shipping manager admits that he decided to close the old facility on October 14 and to schedule the new facility’s opening for October\n17, the following Monday. But he also claims that he is not responsible for the business that was lost due to the new facility’s failing to open as scheduled. He blames the contractor for not finishing on time, but he, too, is to blame, for he was aware of the contractor’s typical delays and should have planned for this contingency.",
     "questionStem": "Which one of the following principles underlies the arbitrator’s argument?",
     "answerChoices": {
@@ -464,13 +462,13 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Principles in Answers",
       "Missing Link / Idea",
       "Important Pivot",
-      "Intermediate Conclusions",
-      "New Concept in Conclusion",
       "Implicit Principles",
-      "Links Between Premises"
+      "Intermediate Conclusions",
+      "Links Between Premises",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -481,7 +479,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "The price of a full-fare coach ticket from Toronto to Dallas on Breezeway Airlines is the same today as it was a year ago, if inflation is taken into account by calculating prices in constant dollars. However, today 90 percent of the Toronto-to-Dallas coach tickets that Breezeway sells are discount tickets and only 10 percent are full-fare tickets, whereas a year ago half were discount tickets and half were full-fare tickets. Therefore, on average, people pay less today in constant dollars for a Breezeway Toronto-to-Dallas coach ticket than they did a year ago.",
     "questionStem": "Which one of the following, if assumed, would allow the conclusion above to be properly drawn?",
     "answerChoices": {
@@ -493,12 +491,12 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
+      "Relative vs. Absolute",
       "Assumes Similarity",
-      "Timeframes",
-      "Math-y Stuff",
       "Dense Stimulus",
+      "Math-y Stuff",
       "Percentages",
-      "Relative vs. Absolute"
+      "Timeframes"
     ]
   },
   {
@@ -509,7 +507,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 21 through 22.\nEditorial: The government claims that the country’s nuclear power plants are entirely safe and hence that the public’s fear of nuclear accidents at these plants is groundless. The government also contends that its recent action to limit the nuclear industry’s financial liability in the case of nuclear accidents at power plants is justified by the need to protect the nuclear industry from the threat of bankruptcy. But even the government says that unlimited liability poses such a threat only if injury claims can be sustained against the industry; and the government admits that for such claims to be sustained, injury must result from a nuclear accident. The public’s fear, therefore, is well founded.",
     "questionStem": "If all of the statements offered in support of the editorial’s conclusion correctly describe the government’s position, which one of the following must also be true on the basis of those statements?",
     "answerChoices": {
@@ -521,10 +519,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Difference-Maker",
       "Important Pivot",
-      "Dense Stimulus",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Causal Difference-Maker",
+      "Dense Stimulus"
     ]
   },
   {
@@ -533,7 +531,7 @@
     "questionNumber": 22,
     "questionType": "Principle-Strengthen",
     "reasoningType": [],
-    "questionDifficulty": 5,
+    "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 21 through 22.\nEditorial: The government claims that the country’s nuclear power plants are entirely safe and hence that the public’s fear of nuclear accidents at these plants is groundless. The government also contends that its recent action to limit the nuclear industry’s financial liability in the case of nuclear accidents at power plants is justified by the need to protect the nuclear industry from the threat of bankruptcy. But even the government says that unlimited liability poses such a threat only if injury claims can be sustained against the industry; and the government admits that for such claims to be sustained, injury must result from a nuclear accident. The public’s fear, therefore, is well founded.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the editorial’s argumentation?",
     "answerChoices": {
@@ -545,10 +543,11 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Principles in Answers",
+      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Dense Stimulus",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -559,7 +558,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "Linda says that, as a scientist, she knows that no scientist appreciates poetry. And, since most scientists are logical, at least some of the people who appreciate poetry are illogical.",
     "questionStem": "Which one of the following is most parallel in its reasoning to the flawed reasoning above?",
     "answerChoices": {
@@ -571,8 +570,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Quantifiers",
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   },
   {
@@ -581,7 +580,7 @@
     "questionNumber": 24,
     "questionType": "Weaken",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "Automobile-emission standards are enforced through annual inspection. At those inspections cars are tested while idling; that is, standing still with their engines running. Testing devices measure the levels of various pollutants as exhaust gases leave the tail pipe.",
     "questionStem": "Which one of the following, if true, most strongly indicates that current enforcement of automobile-emission standards might be ineffective in controlling overall pollutant levels?",
     "answerChoices": {
@@ -593,8 +592,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Breadcrumbs",
       "Argue the Anti-Conclusion",
+      "Breadcrumbs",
       "Plans / Recommendations"
     ]
   },
@@ -606,7 +605,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "The indigenous people of Tasmania are clearly related to the indigenous people of Australia, but were separated from them when the land bridge between Australia and Tasmania disappeared approximately 10,000 years ago. Two thousand years after the disappearance of the land bridge, however, there were major differences between the culture and technology of the indigenous Tasmanians and those of the indigenous Australians. The indigenous Tasmanians, unlike their Australian relatives, had no domesticated dogs, fishing nets, polished stone tools, or hunting implements like the boomerang and the spearthrower.",
     "questionStem": "Each of the following, if true, would contribute to an explanation of differences described above except:",
     "answerChoices": {

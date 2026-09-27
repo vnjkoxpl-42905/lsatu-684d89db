@@ -610,6 +610,7 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
       "Explain Curious Fact",
       "Alternatives",
       "Argue the Anti-Conclusion",

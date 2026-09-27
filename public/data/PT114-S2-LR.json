@@ -560,9 +560,7 @@
     "sectionNumber": 2,
     "questionNumber": 26,
     "questionType": "Principle-Strengthen",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Sociologist: Suggestions for improved efficiency that derive from employers are unlikely to elicit positive responses from employees, who tend to resent suggestions they did not generate. An employer should therefore engage the employee in a nonthreatening dialogue that emphasizes the positive contributions of the employee to the development of such ideas. Then the ideas employers want to try will be implemented more quickly and effectively.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the sociologist's reasoning?",
@@ -575,9 +573,7 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Principles in Answers",
-      "Plans / Recommendations",
-      "Intermediate Conclusions"
+      "Principles in Answers"
     ]
   }
 ]
