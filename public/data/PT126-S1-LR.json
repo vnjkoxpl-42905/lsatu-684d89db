@@ -527,13 +527,12 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Conditional Conclusion",
+      "Principles in Answers",
+      "Plans / Recommendations",
+      "New Concept in Conclusion",
       "Contrapositive Logic",
       "Intermediate Conclusions",
-      "New Concept in Conclusion",
-      "Plans / Recommendations",
-      "Principles in Answers"
+      "Conditional Conclusion"
     ]
   },
   {
@@ -632,10 +631,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic",
       "EXCEPT",
-      "Quantifiers"
+      "Quantifiers",
+      "Contrapositive Logic"
     ]
   }
 ]

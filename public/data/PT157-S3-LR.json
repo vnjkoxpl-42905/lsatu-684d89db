@@ -5,7 +5,7 @@
     "questionNumber": 1,
     "questionType": "Strengthen",
     "reasoningType": [
-      "Conditional Reasoning"
+      "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
     "stimulus": "Over the long run, apple orchards that use organic\n farming methods cost no more to run than, and are just as\n productive as, apple orchards using conventional methods.\n However, organically grown apples tend to be better\n tasting, and thus, organic orchards are likely to be more\n profitable than conventional orchards in the long run.",
@@ -27,7 +27,9 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Most Strongly Supported",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Banking industry visionaries foresee a bright day in\n the near future when customers will be able to transact\n all their financial business by means of computers or\n telephones from the comfort of their own homes. But\n that may be more of a paradise for banks than for their\n customers. As banks eliminate their branch offices and\n customer-service employees, customers will have to\n serve as their own tellers—and pay more transaction fees\n for their efforts.",
     "questionStem": "Which one of the following most accurately expresses\n the conclusion of the argument?",
@@ -40,8 +42,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
+      "Rebuttals",
       "Important Pivot",
-      "Rebuttals"
+      "Predictions"
     ]
   },
   {
@@ -62,7 +65,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -108,7 +112,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Causal Chains",
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Important Pivot"
     ]
   },
   {
@@ -317,7 +322,6 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -485,7 +489,6 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },

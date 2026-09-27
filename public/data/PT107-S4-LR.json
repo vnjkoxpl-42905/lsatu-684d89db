@@ -301,12 +301,11 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
+      "Ruling Out Options",
       "Important Pivot",
       "Plans / Recommendations",
-      "Ruling Out Options"
+      "Conditional Diagramming"
     ]
   },
   {

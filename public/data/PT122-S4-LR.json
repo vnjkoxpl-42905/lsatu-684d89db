@@ -188,7 +188,7 @@
     "questionNumber": 9,
     "questionType": "Principle Conform",
     "reasoningType": [],
-    "questionDifficulty": 4,
+    "questionDifficulty": 1,
     "stimulus": "Executive: In order to add to our profits, I was planning to promote and distribute herbal tinctures. However, some members of my advisory staff questioned the medical efficacy of such products. So I have consulted a variety of reliable medical publications, and these likewise claim that herbal tinctures are ineffective. Therefore, I must conclude that marketing such products would not produce the result I intended.",
     "questionStem": "The executive's reasoning most closely conforms to which one of the following generalizations?",
     "answerChoices": {
@@ -480,7 +480,10 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Counselor: Constantly comparing oneself to those one sees as more able or more successful almost invariably leads to self-disparagement. Conversely, constantly comparing oneself to those one sees as less able or less successful almost invariably leads to being dismissive of others. So, those who for the most part refrain from comparing themselves to others will most likely be, on the whole, self-accepting and accepting of others.",
     "questionStem": "The counselor's reasoning is most vulnerable to criticism because it",
@@ -494,7 +497,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Worst of the Worst"
+      "Worst of the Worst",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {

@@ -161,13 +161,12 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Famous Flaws",
-      "Belief / Knowledge / Intent",
-      "Missing Link / Idea",
       "Contrapositive Logic",
+      "Famous Flaws",
+      "Refute a Conditional",
       "Rebuttals",
-      "Refute a Conditional"
+      "Missing Link / Idea",
+      "Belief / Knowledge / Intent"
     ]
   },
   {

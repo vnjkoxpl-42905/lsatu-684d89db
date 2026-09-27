@@ -3,20 +3,20 @@
     "practiceTest": "PT130",
     "sectionNumber": 3,
     "questionNumber": 1,
-    "questionType": "Paradox",
+    "questionType": "Most Supported",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Educators studied the performance of 200 students in a university's history classes. They found that those students who performed the best had either part-time jobs or full-time jobs, had their history classes early in the morning, and had a very limited social life, whereas those students who performed the worst had no jobs, had their history classes early in the morning, and had a very active social life.",
-    "questionStem": "Which one of the following, if true, most helps to explain the educators' findings?",
+    "stimulus": "Students in a first-year undergraduate course were divided into two groups. All the students in both groups were given newspaper articles identical in every respect, except for the headline, which was different for each group. When the students were later asked questions about the contents of the article, the answers given by the two groups were markedly different, though within each group the answers were similar.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
     "answerChoices": {
-      "A": "The students compensated for any study time lost due to their jobs but they did not compensate for any study time lost due to their social lives.",
-      "B": "The students who had full-time jobs typically worked late-night hours at those jobs.",
-      "C": "Better students tend to choose classes that are scheduled to meet early in the morning.",
-      "D": "A larger percentage of those students interested in majoring in history had part-time jobs than had full-time jobs.",
-      "E": "Although having a job tends to provide a release from stress, thus increasing academic performance, having a full-time job, like having an active social life, can distract a student from studying."
+      "A": "Readers base their impressions of what is in a newspaper on headlines alone.",
+      "B": "Newspaper headlines hamper a reader's ability to comprehend the corresponding articles.",
+      "C": "Careless reading is more common among firstyear undergraduates than among more senior students.",
+      "D": "Newspaper headlines tend to be highly misleading.",
+      "E": "Newspaper headlines influence a reader's interpretation of the corresponding articles."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -245,7 +245,6 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -348,7 +347,6 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -431,44 +429,44 @@
     "practiceTest": "PT130",
     "sectionNumber": 3,
     "questionNumber": 18,
-    "questionType": "Flaw",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "A study found that patients referred by their doctors to psychotherapists practicing a new experimental form of therapy made more progress with respect to their problems than those referred to psychotherapists practicing traditional forms of therapy. Therapists practicing the new form of therapy, therefore, are more effective than therapists practicing traditional forms.",
-    "questionStem": "Which one of the following most accurately describes a flaw in the argument?",
+    "stimulus": "It was once thought that pesticide TSX-400 was extremely harmful to the environment but that pesticides Envirochem and Zanar were environmentally harmless. TSX-400 was banned; Envirochem and Zanar were not. However, according to recent studies, Envirochem and Zanar each cause greater environmental harm than does TSX-400. If these studies are accurate, then either Envirochem and Zanar should be banned or TSX-400 should be legalized.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the argumentation?",
     "answerChoices": {
-      "A": "It ignores the possibility that therapists trained in traditional forms of therapy use the same techniques in treating their patients as therapists trained in the new form of therapy do.",
-      "B": "It ignores the possibility that the patients referred to therapists practicing the new form of therapy had problems more amenable to treatment than did those referred to therapists practicing traditional forms.",
-      "C": "It presumes, without providing justification, that any psychotherapist trained in traditional forms of therapy is untrained in the new form of therapy.",
-      "D": "It ignores the possibility that therapists practicing the new form of therapy systematically differ from therapists practicing traditional forms of therapy with regard to some personality attribute relevant to effective treatment.",
-      "E": "It presumes, without providing justification, that the personal rapport between therapist and patient has no influence on the effectiveness of the treatment the patient receives."
+      "A": "Two pesticides should not both be legal if one is measurably more harmful to the environment than the other is.",
+      "B": "Two pesticides should both be legal only if neither is harmful to the environment.",
+      "C": "Two pesticides should both be illegal only if both are harmful to the environment.",
+      "D": "One pesticide should be legal and another illegal only if the former is less harmful to the environment than is the latter.",
+      "E": "One pesticide should be legal and another illegal if the former is harmless to the environment and the latter is harmful to it."
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Conclusion",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Conditional Conclusion"
     ]
   },
   {
     "practiceTest": "PT130",
     "sectionNumber": 3,
     "questionNumber": 19,
-    "questionType": "Principle Strengthen",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Essayist: One of the drawbacks of extreme personal and political freedom is that free choices are often made for the worst. To expect people to thrive when they are given the freedom to make unwise decisions is frequently unrealistic. Once people see the destructive consequences of extreme freedom, they may prefer to establish totalitarian political regimes that allow virtually no freedom. Thus, one should not support political systems that allow extreme freedom.",
-    "questionStem": "Which one of the following principles, if valid, most helps to justify the essayist's reasoning?",
+    "stimulus": "Recent studies have demonstrated that smokers are more likely than nonsmokers to develop heart disease. Other studies have established that smokers are more likely than others to drink caffeinated beverages. Therefore, even though drinking caffeinated beverages is not thought to be a cause of heart disease, there is a positive correlation between drinking caffeinated beverages and the development of heart disease.",
+    "questionStem": "The argument's reasoning is most vulnerable to criticism on the grounds that the argument fails to take into account the possibility that",
     "answerChoices": {
-      "A": "One should not support any political system that will inevitably lead to the establishment of a totalitarian political regime.",
-      "B": "One should not expect everyone to thrive even in a political system that maximizes people's freedom in the long run.",
-      "C": "One should support only those political systems that give people the freedom to make wise choices.",
-      "D": "One should not support any political system whose destructive consequences could lead people to prefer totalitarian political regimes.",
-      "E": "One should not support any political system that is based on unrealistic expectations about people's behavior under that system."
+      "A": "smokers who drink caffeinated beverages are less likely to develop heart disease than are smokers who do not drink caffeinated beverages",
+      "B": "something else, such as dietary fat intake, may be a more important factor in the development of heart disease than are the factors cited in the argument",
+      "C": "drinking caffeinated beverages is more strongly correlated with the development of heart disease than is smoking",
+      "D": "it is only among people who have a hereditary predisposition to heart disease that caffeine consumption is positively correlated with the development of heart disease",
+      "E": "there is a common cause of both the development of heart disease and behaviors such as drinking caffeinated beverages and smoking"
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -496,9 +494,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Plans / Recommendations",
+      "Proposition/Generalization",
       "Principles in Answers",
-      "Proposition/Generalization"
+      "Plans / Recommendations",
+      "Important Pivot"
     ]
   },
   {
@@ -533,10 +532,10 @@
     "questionNumber": 22,
     "questionType": "Flaw",
     "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
+      "Comparative Reasoning",
+      "Causation"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 4,
     "stimulus": "Columnist: Several recent studies show, and insurance statistics confirm, that more pedestrians are killed every year in North American cities when crossing with the light than when crossing against it. Crossing against the light in North American cities is therefore less dangerous than crossing with the light.",
     "questionStem": "The columnist's reasoning is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
@@ -588,7 +587,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "The asteroid that hit the Yucatán Peninsula 65 million years ago caused both long-term climatic change and a tremendous firestorm that swept across North America. We cannot show that it was this fire that caused the extinction of the triceratops, a North American dinosaur in existence at the time of the impact of the asteroid. Nor can we show that the triceratops became extinct due to the climatic changes resulting from the asteroid's impact. Hence, we cannot attribute the triceratops's extinction to the asteroid's impact.",
     "questionStem": "Which one of the following has flawed reasoning most similar to the flawed reasoning in the argument above?",
     "answerChoices": {
@@ -600,9 +599,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
+      "Anti-Causal",
       "Famous Flaws",
-      "Part vs. Whole",
-      "Anti-Causal"
+      "Part vs. Whole"
     ]
   },
   {

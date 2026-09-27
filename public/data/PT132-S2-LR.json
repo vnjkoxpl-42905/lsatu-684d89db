@@ -337,7 +337,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 3,
     "stimulus": "Speaker: Like many contemporary critics, Smith argues that the true meaning of an author's statements can be understood only through insight into the author's social circumstances. But this same line of analysis can be applied to Smith's own words. Thus, if she is right we should be able, at least in part, to discern from Smith's social circumstances the \"true meaning\" of Smith's statements. This, in turn, suggests that Smith herself is not aware of the true meaning of her own words.",
     "questionStem": "The speaker's main conclusion logically follows if which one of the following is assumed?",
     "answerChoices": {
@@ -349,8 +349,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Diagramming"
     ]
   },
   {

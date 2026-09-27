@@ -31,7 +31,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 1,
+    "questionDifficulty": 2,
     "stimulus": "When the ancient fossils of a primitive land mammal were unearthed in New Zealand, they provided the first concrete evidence that the island country had once had indigenous land mammals. Until that discovery, New Zealand had no known native land mammals. The discovery thus falsifies the theory that New Zealand’s rich and varied native bird population owes its existence to the lack of competition from mammals.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
     "answerChoices": {
@@ -52,7 +52,7 @@
     "questionNumber": 3,
     "questionType": "Main Conclusion",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 1,
     "stimulus": "Restaurant owner: The newspaper reporter who panned my restaurant acknowledges having no special expertise about food and its preparation. His previous job was as a political reporter. He is a good writer, but he is not a true restaurant critic. A newspaper would never call someone a drama critic who had no special training in theater.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the restaurant owner’s argument?",
     "answerChoices": {
@@ -64,10 +64,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Important Pivot",
+      "Contrapositive Logic",
       "Analogies",
-      "Contrapositive Logic"
+      "Important Pivot"
     ]
   },
   {
@@ -78,7 +77,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 1,
+    "questionDifficulty": 2,
     "stimulus": "It has been hypothesized that our solar system was formed from a cloud of gas and dust produced by a supernova—an especially powerful explosion of a star. Supernovas produce the isotope iron-60, so if this hypothesis were correct, then iron-60 would have been present in the early history of the solar system. But researchers have found no iron-60 in meteorites that formed early in the solar system’s history, thereby disproving the hypothesis.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
     "answerChoices": {
@@ -90,11 +89,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea",
-      "Contrapositive Logic",
       "Rebuttals",
-      "Science"
+      "Science",
+      "Missing Link / Idea",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -106,7 +104,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 1,
     "stimulus": "Safety expert: Tuna is often treated with carbon monoxide so that it will not turn brown as it ages. Treating tuna with carbon monoxide does not make it harmful in any way. Nonetheless, there is a danger that such treatment will result in more people getting sick from eating tuna.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the safety expert’s statements?",
     "answerChoices": {
@@ -116,7 +114,8 @@
       "D": "Treating tuna with carbon monoxide is the only way to keep it from turning brown as it ages.",
       "E": "Most consumers strongly prefer tuna that is not brown because they believe that brown tuna is not fresh."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT149",
@@ -151,7 +150,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 5,
     "stimulus": "In one study, hospital patients’ immune systems grew stronger when the patients viewed comic videos. This indicates that laughter can aid recovery from illness. But much greater gains in immune system strength occurred in the patients whose tendency to laugh was greater to begin with. So hospital patients with a greater tendency to laugh are helped more in their recovery from illness even when they laugh a little than other patients are helped when they laugh a greater amount.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
@@ -174,7 +173,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "A study of guppy fish shows that a male guppy will alter its courting patterns in response to feedback from a female guppy. Males with more orange on one side than the other were free to vary which side they showed to a female. Females were drawn to those males with more orange showing, and males tended to show the females their more orange side when courting.",
     "questionStem": "Which one of the following, if true, provides the most support for the argument?",
     "answerChoices": {
@@ -360,7 +359,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 2,
     "stimulus": "Economist: Currently, many countries rely primarily on taxing income to fund government expenditures. But taxing income does nothing to promote savings and investment. Taxing consumption, on the other hand, would encourage savings. The most important challenge facing these countries is improving their economies, and the only way to accomplish this is to increase their savings rates.",
     "questionStem": "Which one of the following most logically completes the economist’s argument?",
     "answerChoices": {
@@ -372,9 +371,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Alternatives",
       "Logical Completion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Alternatives"
     ]
   },
   {
@@ -546,62 +545,45 @@
     "practiceTest": "PT149",
     "sectionNumber": 4,
     "questionNumber": 24,
-    "questionType": "Principle Justify",
+    "questionType": "Must be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "A contract between two parties is valid only if one party accepts a legitimate offer from the other; an offer is not legitimate if someone in the position of the party to whom it was made would reasonably believe the offer to be made in jest.",
-    "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
+    "stimulus": "All unemployed artists are sympathetic to social justice. And no employed artists are interested in the prospect of great personal fame.",
+    "questionStem": "If the claims made above are true, then which one of the following must be true?",
     "answerChoices": {
-      "A": "Joe made a legitimate offer to buy Sandy’s car and Sandy has not rejected the offer. Thus, there was a valid contract.",
-      "B": "Kenta accepted Gus’s offer to buy a shipment of goods, but Gus, unknown to Kenta, made the offer in jest. Thus, the contract was not valid.",
-      "C": "Frank’s offer to buy Mindy’s business from her was legitimate. Thus, if Mindy is a reasonable person, she will accept the offer.",
-      "D": "Hai’s offer to sell artworks to Lea was made in such a way that no one in Lea’s position would have reasonably believed it to be made in jest. Thus, if Lea accepts the offer, they have a valid contract.",
-      "E": "The only offer that Sal made to Veronica was not a legitimate one. Thus, regardless of whether Sal made the offer in jest, there is no valid contract between them."
+      "A": "If there are artists interested in the prospect of great personal fame, they are sympathetic to social justice.",
+      "B": "All artists uninterested in the prospect of great personal fame are sympathetic to social justice.",
+      "C": "Every unemployed artist is interested in the prospect of great personal fame.",
+      "D": "If an artist is sympathetic to social justice, that artist is unemployed.",
+      "E": "All artists are either sympathetic to social justice or are interested in the prospect of great personal fame."
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Binaries",
-      "Quantifiers"
+      "Quantifiers",
+      "Binaries"
     ]
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 4,
     "questionNumber": 25,
-    "questionType": "Weaken",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 5,
-    "stimulus": "Scientist: A small group of islands near Australia is inhabited by several species of iguana; closely related species also exist in the Americas, but nowhere else. The islands in question formed long after the fragmentation of Gondwana, the ancient supercontinent that included present-day South America and Australia. Thus, these species’ progenitors must have rafted on floating debris across the Pacific Ocean from the Americas.",
-    "questionStem": "Which one of the following, if true, most weakens the scientist’s argument?",
-    "answerChoices": {
-      "A": "A number of animal species that inhabit the islands are not found in the Americas.",
-      "B": "Genetic analysis indicates that the iguana species on the islands are different in several respects from those found in the Americas.",
-      "C": "Documented cases of iguanas rafting long distances between land masses are uncommon.",
-      "D": "Fossils of iguana species closely related to those that inhabit the islands have been found in Australia.",
-      "E": "The lineages of numerous plant and animal species found in Australia or in South America date back to a period prior to the fragmentation of Gondwana."
-    },
-    "correctAnswer": "D"
-  },
-  {
-    "practiceTest": "PT149",
-    "sectionNumber": 4,
-    "questionNumber": 26,
-    "questionType": "Flaw",
-    "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "A recent archaeological find in what was once the ancient kingdom of Macedonia contains the remains of the largest tomb ever found in the region. It must be the tomb of Alexander the Great since he was the greatest Macedonian in history, and so would have had the largest tomb. After all, he conquered an empire that stretched from Greece to much of Asia, though it collapsed after his death.",
-    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "stimulus": "The police department has two suspects for the burglary that occurred last night, Schaeffer and Forster. Schaeffer has an ironclad alibi, so Forster must be the burglar.",
+    "questionStem": "Which one of the following arguments exhibits a flawed pattern of reasoning that is most similar to that exhibited by the argument above?",
     "answerChoices": {
-      "A": "takes for granted that greatness can be attained only by military conquest",
-      "B": "takes for granted that the largest tomb found so far must be the largest that was built",
-      "C": "does not show how the recently discovered tomb compares with other tombs from the same period that have been found in other regions",
-      "D": "fails to evaluate the significance of the fact that Alexander’s empire did not survive his death",
-      "E": "takes for granted that archaeologists can determine the size of the tomb from its remains"
+      "A": "It has been known for some time that the Wrightsburg Zoo might build a new primate house and that it might refurbish its polar bear exhibit. There is now good reason to believe the zoo will build a new primate house. Therefore, the zoo will not refurbish its polar bear exhibit.",
+      "B": "If Watson, a robbery suspect, had been picked out of a police lineup by the victim, then charging Watson with robbery would have been reasonable. But the victim did not pick Watson out of the lineup. So Watson should not be charged.",
+      "C": "If Iano Industries does not borrow money so that it can upgrade its factories, it will be unable to compete. While it is undesirable for Iano to take on more debt, being unable to compete would be even worse. So Iano should borrow the money needed to upgrade its factories.",
+      "D": "Baxim Corporation announced last year that it was considering moving its headquarters to Evansville and that it was also considering moving to Rivertown. But Baxim has now decided not to move to Evansville. Thus, we can be sure that Baxim will move to Rivertown.",
+      "E": "The only viable candidates in the mayoral race are Slater and Gonzales. Political analysts believe that Slater has little chance of winning. Therefore, it is likely that Gonzales will win the election."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "D",
+    "questionFeatures": []
   }
 ]

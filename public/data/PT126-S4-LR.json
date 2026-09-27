@@ -7,7 +7,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 1,
     "stimulus": "Carl is clearly an incompetent detective. He has solved a smaller percentage of the cases assigned to him in the last 3 years—only 1 out of 25—than any other detective on the police force.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument above?",
     "answerChoices": {
@@ -30,7 +30,7 @@
     "questionNumber": 2,
     "questionType": "Role",
     "reasoningType": [],
-    "questionDifficulty": 1,
+    "questionDifficulty": 2,
     "stimulus": "It is well documented that people have positive responses to some words, such as \"kind\" and \"wonderful,\" and negative responses to others, such as \"evil\" and \"nausea.\" Recently, psychological experiments have revealed that people also have positive or negative responses to many nonsense words. This shows that people's responses to words are conditioned not only by what the words mean, but also by how they sound.",
     "questionStem": "The claim that people have positive or negative responses to many nonsense words plays which one of the following roles in the argument?",
     "answerChoices": {
@@ -40,7 +40,8 @@
       "D": "It is a premise offered in support of the conclusion that people's responses to words are engendered not only by what the words mean, but also by how they sound.",
       "E": "It is a conclusion supported by the claim that people's responses under experimental conditions are essentially different from their responses in ordinary situations."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT126",

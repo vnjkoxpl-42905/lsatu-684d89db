@@ -56,20 +56,20 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "In an experiment, tennis players who were told that their performance would be used to assess only the quality of their rackets performed much better than an equally skilled group of tennis players who were told that their tennis-playing talent would be measured.",
-    "questionStem": "The situation described above most closely conforms to which one of the following propositions?",
+    "stimulus": "Chairperson: The board of directors of our corporation should not allow the incentives being offered by two foreign governments to entice us to expand our operations into their countries without further consideration of the issue. Although there is an opportunity to increase our profits by expanding our operations there, neither of these countries is politically stable.",
+    "questionStem": "The chairperson's reasoning most closely conforms to which one of the following principles?",
     "answerChoices": {
-      "A": "People do less well on a task if they have been told that they will be closely watched while doing it.",
-      "B": "People execute a task more proficiently when they do not believe their abilities are being judged.",
-      "C": "People perform a task more proficiently when they have confidence in their abilities.",
-      "D": "People who assess their talents accurately generally perform near their actual level of proficiency.",
-      "E": "People who think that a superior performance will please those who are testing them generally try harder."
+      "A": "A corporation should never expand operations into countries that are politically unstable.",
+      "B": "Corporations should expand operations into countries when there is a chance of increasing profits.",
+      "C": "Political stability is the most important consideration in deciding whether to expand operations into a country.",
+      "D": "Corporations should always be cautious about expanding operations into politically unstable countries.",
+      "E": "Boards of directors should always disregard governmental incentives when considering where to expand corporate operations."
     },
     "correctAnswer": "D",
     "questionFeatures": [
+      "Principles in Answers",
       "Missing Link / Idea",
-      "Plans / Recommendations",
-      "Principles in Answers"
+      "Plans / Recommendations"
     ]
   },
   {
@@ -82,58 +82,59 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Sydonie: Parents differ in their beliefs about the rules to which their children should be subject. So any disciplinary structure in schools is bound to create resentment because it will contradict some parental approaches to raising children.\nStephanie: Your conclusion is incorrect; educational research shows that when parents list the things that they most want their children's schools to provide, good discipline is always high on the list.",
-    "questionStem": "Stephanie's argument is most vulnerable to criticism on the grounds that",
+    "stimulus": "Maria: Thomas Edison was one of the most productive inventors of his time, perhaps of all time. His contributions significantly shaped the development of modern lighting and communication systems. Yet he had only a few months of formal schooling. Therefore, you do not need a formal education to make crucial contributions to technological advancement.Frank: That is definitely not true anymore. Since Edison’s day there have been many new developments in technology; to make crucial contributions today you need much more extensive technical knowledge than was needed then.",
+    "questionStem": "Frank's reasoning in his response to Maria is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
-      "A": "it focuses on educational research rather than educational practice",
-      "B": "it addresses a more general issue than that addressed in Sydonie's argument",
-      "C": "it does not counter Sydonie's suggestion that parents have diverse ideas of what constitutes good discipline",
-      "D": "the phrase \"high on the list\" is not specific enough to give useful information about what parents desire from a school",
-      "E": "it fails to discuss educators' attitudes toward discipline in schools"
+      "A": "fails to address the possibility that technical knowledge may be acquired without formal education",
+      "B": "does not consider whether there have been improvements in formal education since Edison's day",
+      "C": "relies on using the term \"crucial\" differently from the way Maria used it",
+      "D": "presumes that no other inventor of Edison's time could have been as productive as Edison",
+      "E": "fails to criticize or question any of Maria's statements about Edison"
     },
     "correctAnswer": "A",
     "questionFeatures": [
+      "Timeframes",
       "Missing Link / Idea",
       "2-Speaker",
       "Alternatives",
-      "Rebuttals",
       "Refute a Conditional",
-      "Timeframes"
+      "Rebuttals"
     ]
   },
   {
     "practiceTest": "PT117",
     "sectionNumber": 3,
     "questionNumber": 5,
-    "questionType": "Principle-Conform",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Art critic: The aesthetic value of a work of art lies in its ability to impart a stimulating character to the audience's experience of the work.",
-    "questionStem": "Which one of the following judgments most closely conforms with the principle cited above?",
+    "stimulus": "In some countries, there is a free flow of information about infrastructure, agriculture, and industry, whereas in other countries, this information is controlled by a small elite. In the latter countries, the vast majority of the population is denied vital information about factors that determine their welfare. Thus, these countries are likely to experience more frequent economic crises than other countries do.",
+    "questionStem": "The conclusion follows logically if which one of the following is assumed?",
     "answerChoices": {
-      "A": "This painting is aesthetically deficient because it is an exact copy of a painting done 30 years ago.",
-      "B": "This symphony is beautiful because, even though it does not excite the audience, it is competently performed.",
-      "C": "This sculpted four-inch cube is beautiful because it is carved from material which, although much like marble, is very rare.",
-      "D": "This painting is aesthetically valuable because it was painted by a highly controversial artist.",
-      "E": "This poem is aesthetically deficient because it has little impact on its audience."
+      "A": "It is more likely that people without political power will suffer from economic crises than it is that people in power will.",
+      "B": "Economic crises become more frequent as the amount of information available to the population about factors determining its welfare decreases.",
+      "C": "In nations in which the government controls access to information about infrastructure, agriculture, and industry, economic crises are common.",
+      "D": "The higher the percentage of the population that participates in economic decisions, the better those decisions are.",
+      "E": "A small elite that controls information about infrastructure, agriculture, and industry is likely to manipulate that information for its own benefit."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT117",
     "sectionNumber": 3,
     "questionNumber": 6,
-    "questionType": "Agree/Disagree",
+    "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Antonia: The stock market is the best place to invest your money these days; although it is often volatile, it provides the opportunity to make a large profit quickly.\nMaria: I agree that the stock market provides the opportunity to make large profits quickly, but one is just as likely to take a huge loss. I think it is better to invest in savings bonds, which provide a constant, reliable income over many years.",
-    "questionStem": "Antonia's and Maria's statements provide the most support for holding that they disagree about whether",
+    "stimulus": "Hana said she was not going to invite her brothers to her birthday party. However, among the gifts Hana received at her party was a recording in which she had expressed an interest. Since her brothers had planned to give her that recording, at least some of Hana’s brothers must have been among the guests at Hana’s birthday party after all.",
+    "questionStem": "A reasoning error in the argument is that the argument",
     "answerChoices": {
-      "A": "the stock market is often volatile but provides the opportunity to make a large profit quickly",
-      "B": "savings bonds can provide a large return on one's investment",
-      "C": "the stock market provides the opportunity for an investor to make a constant, reliable income over many years",
-      "D": "it is safer to invest in savings bonds than to invest in the stock market",
-      "E": "it is preferable to pick an investment offering a reliable income over a riskier opportunity to make a large profit quickly"
+      "A": "disregards the possibility that a change of mind might be justified by a change in circumstances",
+      "B": "treats the fact of someone's presence at a given event as a guarantee that that person had a legitimate reason to be at that event",
+      "C": "uses a term that is intrinsically evaluative as though that term was purely descriptive",
+      "D": "fails to establish that something true of some people is true of only those people",
+      "E": "overlooks the possibility that a person's interest in one kind of thing is compatible with that person's interest in a different kind of thing"
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -145,24 +146,23 @@
     "practiceTest": "PT117",
     "sectionNumber": 3,
     "questionNumber": 7,
-    "questionType": "Principle-Strengthen",
+    "questionType": "Must be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Very little is known about prehistoric hominid cave dwellers. However, a recent study of skeletons of these hominids has revealed an important clue about their daily activities: skeletal fractures present are most like the type and distribution of fractures sustained by rodeo riders. Therefore, it is likely that these cave dwellers engaged in activities similar to rodeo riders—chasing and tackling animals.",
-    "questionStem": "Which one of the following principles, if valid, most helps to justify the argumentation above?",
+    "stimulus": "If you have no keyboarding skills at all, you will not be able to use a computer. And if you are not able to use a computer, you will not be able to write your essays using a word processing program.",
+    "questionStem": "If the statements above are true, which one of the following must be true?",
     "answerChoices": {
-      "A": "The primary source of clues about the lives of prehistoric hominids is their skeletal remains.",
-      "B": "The most important aspect of prehistoric life to be studied is how food was obtained.",
-      "C": "If direct evidence as to the cause of a phenomenon is available, then indirect evidence should not be sought.",
-      "D": "If there is a similarity between two effects, then there is probably a similarity between their causes.",
-      "E": "The frequency with which a hazardous activity is performed is proportional to the frequency of injuries resulting from that activity."
+      "A": "If you have some keyboarding skills, you will be able to write your essays using a word processing program.",
+      "B": "If you are not able to write your essays using a word processing program, you have no keyboarding skills.",
+      "C": "If you are able to write your essays using a word processing program, you have at least some keyboarding skills.",
+      "D": "If you are able to use a computer, you will probably be able to write your essays using a word processing program.",
+      "E": "If you are not able to write your essays using a word processing program, you are not able to use a computer."
     },
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -171,7 +171,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Weaken",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Rossi: It is undemocratic for people to live under a government in which their interests are not represented. So children should have the right to vote, since sometimes the interests of children are different from those of their parents.\nSmith: Granted, children's interests are not always the same as their parents'; governmental deficits incurred by their parents' generation will later affect their own generation's standard of living. But even if children are told about the issues affecting them, which is not generally the case, their conceptions of what can or should be done are too simple, and their time horizons are radically different from those of adults, so we cannot give them the responsibility of voting.",
     "questionStem": "Which one of the following most accurately describes Rossi's argument?",
@@ -184,7 +186,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -529,7 +532,8 @@
     "questionNumber": 24,
     "questionType": "Most Supported",
     "reasoningType": [
-      "Comparative Reasoning"
+      "Comparative Reasoning",
+      "Causation"
     ],
     "questionDifficulty": 4,
     "stimulus": "Science journalist: Brown dwarfs are celestial objects with more mass than planets but less mass than stars. They are identified by their mass and whether or not lithium is present in their atmospheres. Stars at least as massive as the Sun have lithium remaining in their atmospheres because the mixing of elements in their internal nuclear furnaces is incomplete. Stars with less mass than the Sun have no lithium because the element has been fully mixed into their nuclear furnaces and consumed. A brown dwarf does not have a fully functional nuclear furnace and so its lithium cannot be consumed.",

@@ -560,7 +560,9 @@
     "sectionNumber": 1,
     "questionNumber": 26,
     "questionType": "Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Researchers gave 100 first-graders after-school lessons in handwriting. They found that those whose composition skills had improved the most had learned to write letters the most automatically. This suggests that producing\ncharacters more automatically frees up mental resources for other activities.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
