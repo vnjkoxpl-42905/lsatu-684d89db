@@ -1029,6 +1029,7 @@ export type Database = {
           label: string
           provider: string
           provider_ref: string
+          student_visible: boolean
           url: string
         }
         Insert: {
@@ -1039,6 +1040,7 @@ export type Database = {
           label: string
           provider: string
           provider_ref: string
+          student_visible?: boolean
           url: string
         }
         Update: {
@@ -1049,6 +1051,7 @@ export type Database = {
           label?: string
           provider?: string
           provider_ref?: string
+          student_visible?: boolean
           url?: string
         }
         Relationships: []
