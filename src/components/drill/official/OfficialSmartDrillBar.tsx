@@ -1,26 +1,10 @@
 import * as React from "react";
-import { ClipboardCheck } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
 
 /** Outline pill shared by Previous, Next, and Skip. */
 const OUTLINE_PILL_CLASS =
   "rounded-full border border-slate-400 bg-white text-slate-700 px-6 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors";
 
 interface Props {
-  /**
-   * When true, the correct answer is revealed automatically after submitting.
-   * Omit `onAutoRevealChange` to hide the toggle — RC chooses its reveal mode
-   * when the drill is built, so the switch has nothing to mean there.
-   */
-  autoReveal?: boolean;
-  onAutoRevealChange?: (next: boolean) => void;
   /** "submit" before an answer is committed, "next" after. */
   primaryAction: "submit" | "next";
   /** Submit disabled until an answer is selected (or while paused). */
@@ -61,15 +45,12 @@ interface Props {
 
 /**
  * Smart Drill (adaptive) bottom action bar. Replaces the arrow navigator used
- * by fixed-queue modes. Left: End and Menu. Right: auto-reveal toggle, the
- * queue walk (Previous/Next for a fixed queue, Skip for the adaptive one),
+ * by fixed-queue modes. Left: End and Menu. Right: the queue walk (Previous/Next for a fixed queue, Skip for the adaptive one),
  * and a primary Submit/Next pill. Answer and Explanation deliberately are not
  * here — they sit in the header strip (`OfficialSessionStrip`), because four
  * controls crowded this bar's left corner.
  */
 export default function OfficialSmartDrillBar({
-  autoReveal,
-  onAutoRevealChange,
   primaryAction,
   primaryDisabled,
   primaryLabel,
@@ -124,37 +105,6 @@ export default function OfficialSmartDrillBar({
 
         {/* Right cluster */}
         <div className="ml-auto flex shrink-0 items-center gap-3">
-          {onAutoRevealChange && (
-          <TooltipProvider delayDuration={150}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <label
-                  className={cn(
-                    "flex items-center gap-2 cursor-pointer select-none",
-                    disabled && "opacity-40 pointer-events-none",
-                  )}
-                >
-                  <ClipboardCheck
-                    className={cn(
-                      "w-4 h-4 transition-colors",
-                      autoReveal ? "text-[#7f1d1d]" : "text-slate-400",
-                    )}
-                  />
-                  <Switch
-                    checked={autoReveal}
-                    onCheckedChange={onAutoRevealChange}
-                    disabled={disabled}
-                    aria-label="Auto-reveal correct answer after answering"
-                    className="data-[state=checked]:bg-[#7f1d1d]"
-                  />
-                </label>
-              </TooltipTrigger>
-              <TooltipContent side="top" className="max-w-[260px] text-center">
-                Toggle on to automatically show correct answers after answering
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          )}
 
           {onPrev && (
             <button
