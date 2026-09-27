@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
 
     const window = { "created[gte]": String(since) };
     const [charges, sessions, students, offers] = await Promise.all([
-      stripeListAll(secret, "/charges", window),
+      stripeListAll(secret, "/charges", { ...window, "expand[]": "data.customer" }),
       stripeListAll(secret, "/checkout/sessions", window),
       loadStudentIndex(supabase),
       loadOfferIndex(supabase),

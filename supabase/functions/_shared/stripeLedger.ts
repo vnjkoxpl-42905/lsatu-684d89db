@@ -84,7 +84,8 @@ export function buildPaymentRow(
   source: "webhook" | "backfill",
 ) {
   const email: string | null =
-    session?.customer_details?.email ?? charge.billing_details?.email ?? charge.receipt_email ?? session?.customer_email ?? null;
+    session?.customer_details?.email ?? charge.billing_details?.email ?? charge.receipt_email ?? session?.customer_email ??
+    (typeof charge.customer === "object" ? charge.customer?.email : null) ?? null;
   const paymentLink = typeof session?.payment_link === "string" ? session.payment_link : session?.payment_link?.id ?? null;
   const offer = paymentLink ? offers.get(paymentLink) : undefined;
   const studentId = email ? students.get(email.trim().toLowerCase()) ?? null : null;
@@ -97,7 +98,8 @@ export function buildPaymentRow(
     payment_link_id: paymentLink,
     customer_id: typeof charge.customer === "string" ? charge.customer : charge.customer?.id ?? null,
     email,
-    payer_name: session?.customer_details?.name ?? charge.billing_details?.name ?? null,
+    payer_name: session?.customer_details?.name ?? charge.billing_details?.name ??
+      (typeof charge.customer === "object" ? charge.customer?.name : null) ?? null,
     description: charge.description ?? null,
     product: session?.metadata?.product ?? (isPackage ? "package" : null),
     amount_cents: charge.amount,
@@ -156,7 +158,7 @@ export async function upsertPayment(supabase: any, row: ReturnType<typeof buildP
 
 /** Record one charge (by id) into the ledger, looking up its Checkout Session. */
 export async function recordCharge(supabase: any, secret: string, chargeId: string, source: "webhook" | "backfill") {
-  const charge = await stripeGet(secret, `/charges/${chargeId}`);
+  const charge = await stripeGet(secret, `/charges/${chargeId}`, { "expand[]": "customer" });
   let session: any = null;
   const pi = typeof charge.payment_intent === "string" ? charge.payment_intent : null;
   if (pi) {

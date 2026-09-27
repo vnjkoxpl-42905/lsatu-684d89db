@@ -24,6 +24,7 @@ export interface StripePayment {
   grant_state: 'none' | 'awaiting' | 'granted' | 'dismissed';
   granted_credits: number | null;
   livemode: boolean;
+  source: 'webhook' | 'backfill';
 }
 
 const PAYMENTS_KEY = ['stripe-payments'] as const;
@@ -34,10 +35,14 @@ export function money(cents: number, currency: string) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.toUpperCase() || 'USD' }).format(cents / 100);
 }
 
-/** Payments that need Joshua: a package waiting for a grant, or a paid payer nobody is linked to. */
+/**
+ * Payments that need Joshua: a package waiting for a grant, or a new paid payer
+ * nobody is linked to. Backfilled history was already handled by hand, so an
+ * old unmatched charge stays in the list without asking for anything.
+ */
 export function needsAttention(p: StripePayment) {
   if (p.grant_state === 'awaiting') return true;
-  return p.match_state === 'unmatched' && p.status === 'succeeded';
+  return p.match_state === 'unmatched' && p.status === 'succeeded' && p.source === 'webhook';
 }
 
 export function matchesSearch(p: StripePayment, q: string, studentName: (id: string | null) => string | null) {
