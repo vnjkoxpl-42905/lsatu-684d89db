@@ -592,23 +592,5 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent"
     ]
-  },
-  {
-    "practiceTest": "PT128",
-    "sectionNumber": 2,
-    "questionNumber": 26,
-    "questionType": "Weaken",
-    "reasoningType": [],
-    "questionDifficulty": null,
-    "stimulus": "Editorialist: Some people argue that highway speed limits should be increased to reflect the actual average speeds of highway drivers, which are currently 10 to 20 percent higher than posted speed limits. Any such increase would greatly decrease highway safety, however; as past experience teaches, higher average highway speeds would result, since even though most drivers who currently violate posted speed limits would obey higher ones, almost all drivers who obey current speed limits would likely increase their speed.",
-    "questionStem": "Which one of the following, if true, most seriously weakens the editorialist's argument?",
-    "answerChoices": {
-      "A": "Some drivers who obey current speed limits would not change their speeds after the introduction of the new speed limits.",
-      "B": "Uniformity of speeds among vehicles is more important for highway safety than is a low average highway speed.",
-      "C": "Most drivers who drive 10 to 20 percent faster than current speed limits have never been involved in a highway accident.",
-      "D": "Some drivers who violate current speed limits would also violate higher speed limits.",
-      "E": "Most drivers who violate current speed limits determine their speeds by what they believe to be safe in the situation."
-    },
-    "correctAnswer": "E"
   }
 ]
