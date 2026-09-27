@@ -67,6 +67,7 @@ function getQuestionSearchText(question: LRQuestion): string {
   return normalizeSearchText(
     [
       question.qid,
+      `PT${question.pt}.S${question.section}.Q${question.qnum}`,
       question.stimulus ?? '',
       question.questionStem,
       ...Object.values(question.answerChoices ?? {}),
@@ -144,7 +145,12 @@ export function matchesLRDrillFilters(
   }
 
   const query = normalizeSearchText(filters.searchQuery);
-  if (query && !getQuestionSearchText(question).includes(query)) return false;
+  const address = /^pt(\d+)\.s(\d+)\.q(\d+)$/i.exec(query);
+  if (address) {
+    if (question.pt !== Number(address[1]) || question.section !== Number(address[2]) || question.qnum !== Number(address[3])) return false;
+  } else if (query && !getQuestionSearchText(question).includes(query)) {
+    return false;
+  }
 
   return true;
 }

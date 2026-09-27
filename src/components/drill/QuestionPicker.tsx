@@ -1,9 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import {
   parseSpec,
-  formatSpec,
   parseExactRefs,
-  type DrillSpec,
   type SpecIssue,
   type SpecVocabulary,
 } from '@/lib/drillSpecParser';
@@ -17,11 +15,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ChevronDown, X, Search, Sparkles } from 'lucide-react';
+import { ArrowLeft, ChevronDown, X, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { TypeDrillConfig } from '@/types/drill';
 import type { QuestionManifest, LRQuestion } from '@/lib/questionLoader';
-import { questionBank, CANONICAL_QTYPES, shuffleArray } from '@/lib/questionLoader';
+import { questionBank, CANONICAL_QTYPES } from '@/lib/questionLoader';
 import { getFeatureFamiliesWithFallback } from '@/lib/questionFeatureFamilies';
 import {
   createEmptyLRDrillFilters,
@@ -44,6 +42,7 @@ import {
 import { useSavedSets } from '@/hooks/useSavedSets';
 import { Bookmark } from 'lucide-react';
 import { recordExposures } from '@/lib/questionExposure';
+import { composeLRDrillSet, getLRDrillSetAvailability } from '@/lib/lrDrillSetComposition';
 
 // Item J — abbreviations for the table's Type pill so multi-word qtypes
 // stay on one line at a consistent height. Full name surfaces via title.
@@ -121,9 +120,6 @@ const STEM_MIN_WIDTH = 204;
  */
 const TABLE_MIN_WIDTH = FIXED_COLS_WIDTH + STEM_MIN_WIDTH; // 644
 
-/** Fixed width of the summary rail. */
-const SUMMARY_RAIL_WIDTH = 320;
-
 /**
  * Container width at which the summary rail moves beside the table.
  *
@@ -135,12 +131,17 @@ const SUMMARY_RAIL_WIDTH = 320;
  * which is why the rail never once appeared beside the table.
  *
  * 644 + 320 + 16 = 980 fits inside 1008, so the split now engages on a 1440px
- * screen. Keep in sync with the `@[980px]` utilities below; Tailwind needs the
- * literal at build time and the geometry test asserts the two agree.
+ * screen. Keep the `@[980px]` utilities below aligned with these dimensions;
+ * Tailwind needs the literal at build time.
  */
-const SPLIT_AT = TABLE_MIN_WIDTH + SUMMARY_RAIL_WIDTH + 16; // 980
-
 const reasoningTypeLabel = (value: string): string => REASONING_TYPE_LABELS[value] ?? value;
+
+function getSearchMode(value: string): 'text' | 'exact' | 'range' {
+  const text = value.trim();
+  if (/\.s\d+\.q\d+/i.test(text)) return 'exact';
+  if (!/^pt\d+-s\d+-q\d+$/i.test(text) && /^(?:pt\s*\d|[sq]\s*\d)/i.test(text)) return 'range';
+  return 'text';
+}
 
 interface QuestionRow extends LRQuestion {
   attemptCount: number;
@@ -152,9 +153,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   
   // Filter state
   const [filters, setFilters] = useState<FilterState>(() => createEmptyLRDrillFilters());
+  const [discoverySearch, setDiscoverySearch] = useState('');
   
   // Selection state
   const [selectedQids, setSelectedQids] = useState<Set<string>>(new Set());
+  const [searchIssues, setSearchIssues] = useState<SpecIssue[]>([]);
 
   // Item N (Wave 4) — Save set dialog (used by both selection and preview branches)
   const { save: saveSetMut } = useSavedSets();
@@ -167,7 +170,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   const [attemptCounts, setAttemptCounts] = useState<Map<string, number>>(new Map());
 
   // Target set size for Generate
-  const [setSize, setSetSize] = useState<number>(10);
+  const [setSize, setSetSize] = useState<number>(manifest.totalQuestions >= 10 ? 10 : 5);
   const setSizeOptions = [5, 10, 15, 25];
 
   // Materialized preview of a generated set (exact qids that would launch).
@@ -213,6 +216,13 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   );
 
   const allQuestions = useMemo(() => questionBank.getAllQuestions(), []);
+  const questionByAddress = useMemo(
+    () => new Map(allQuestions.map((question) => [
+      `${question.pt}.${question.section}.${question.qnum}`,
+      question,
+    ])),
+    [allQuestions],
+  );
 
   const contextualCounts = useMemo(
     () => ({
@@ -254,116 +264,54 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     () => getVisibleLRDrillOptions(allSections, filters.sections, contextualCounts.sections),
     [allSections, contextualCounts.sections, filters.sections],
   );
-  /* ---- Spec line -------------------------------------------------------
-     The bar and the PT/S/Q controls are two notations for one state. The
-     filters are the source of truth; `specText` is a draft buffer that only
-     writes back on an explicit commit. Parsing on a debounce would
-     canonicalize mid-token — `PT1` is a complete, valid spec while you are
-     still typing `PT101` — and eat the caret. */
-
+  const addressNumbers = useMemo(() => {
+    if (filters.prepTests.length !== 1 || filters.sections.length !== 1) return [];
+    return Array.from(new Set(allQuestions
+      .filter((question) => question.pt === filters.prepTests[0] && question.section === filters.sections[0])
+      .map((question) => question.qnum))).sort((a, b) => a - b);
+  }, [allQuestions, filters.prepTests, filters.sections]);
   const specVocabulary = useMemo<SpecVocabulary>(
     () => ({
       prepTests: allPTs,
       sections: allSections,
-      maxQuestionNumber: allQuestions.reduce((max, q) => Math.max(max, q.qnum), 0) || 26,
+      maxQuestionNumber: allQuestions.reduce((max, question) => Math.max(max, question.qnum), 0) || 26,
     }),
     [allPTs, allSections, allQuestions],
   );
-
-  const specFromFilters = useMemo<DrillSpec>(
-    () => ({
-      prepTests: filters.prepTests,
-      sections: filters.sections,
-      questionNumbers: filters.questionNumbers,
-    }),
-    [filters.prepTests, filters.sections, filters.questionNumbers],
+  const searchMode = getSearchMode(discoverySearch);
+  const exactSearch = useMemo(
+    () => searchMode === 'exact' ? parseExactRefs(discoverySearch) : null,
+    [discoverySearch, searchMode],
   );
 
-  const [specText, setSpecText] = useState(() => formatSpec(specFromFilters));
-  const [specIssues, setSpecIssues] = useState<SpecIssue[]>([]);
-
-  // Any PT/S/Q mutation from anywhere — popover, chip grid, badge remove,
-  // "Any PT" — re-runs the one formatter, so the bar can never show stale text.
-  const canonicalSpecText = formatSpec(specFromFilters);
-  useEffect(() => {
-    setSpecText(canonicalSpecText);
-    setSpecIssues([]);
-  }, [canonicalSpecText]);
-
-  const commitSpec = () => {
-    const result = parseSpec(specText, specVocabulary);
-    setSpecIssues(result.issues);
-    if (!result.ok) return; // nothing is written while anything is rejected
-
-    // A commit replaces all three grammar-owned facets. Absence means
-    // unrestricted — otherwise deleting the last `S2` would leave sections
-    // unnamed, the old value would survive, and the formatter would write it
-    // straight back, making deletion impossible.
-    setFilters((prev) => ({
-      ...prev,
-      prepTests: result.spec.prepTests,
-      sections: result.spec.sections,
-      questionNumbers: result.spec.questionNumbers,
-    }));
+  const applySearchInput = () => {
+    const text = discoverySearch.trim();
+    if (!text || searchMode === 'text') return;
+    if (searchMode === 'exact') {
+      const parsed = parseExactRefs(text);
+      if (!parsed.ok) {
+        setSearchIssues(parsed.issues);
+        return;
+      }
+      const missing = parsed.refs.filter((ref) => !questionByAddress.has(`${ref.pt}.${ref.section}.${ref.qnum}`));
+      if (missing.length > 0) {
+        setSearchIssues([{ kind: 'unknown-value', token: missing.map((ref) => ref.label).join(', '), message: `Not in the bank: ${missing.map((ref) => ref.label).join(', ')}. Nothing was added.` }]);
+        return;
+      }
+      setSelectedQids((previous) => new Set([
+        ...previous,
+        ...parsed.refs.map((ref) => questionByAddress.get(`${ref.pt}.${ref.section}.${ref.qnum}`)!.qid),
+      ]));
+      setDiscoverySearch('');
+      setSearchIssues([]);
+      return;
+    }
+    const result = parseSpec(text, specVocabulary);
+    setSearchIssues(result.issues);
+    if (!result.ok) return;
+    setFilters((previous) => ({ ...previous, ...result.spec }));
     setCurrentPage(1);
-    setSpecText(formatSpec(result.spec));
-  };
-
-  /* ---- Exact references ------------------------------------------------
-     A separate input on purpose. Sharing one field would allow
-     `PT101 PT102.S2.Q1`, which requests a generated set and a manual one at
-     once, with the manual qids silently overriding the visible spec. */
-
-  const [exactText, setExactText] = useState('');
-  const [exactIssues, setExactIssues] = useState<SpecIssue[]>([]);
-
-  const commitExactRefs = () => {
-    const parsed = parseExactRefs(exactText);
-    if (!parsed.ok) {
-      setExactIssues(parsed.issues);
-      return;
-    }
-    if (parsed.refs.length === 0) {
-      setExactIssues([]);
-      return;
-    }
-
-    // Resolve against the bank before touching state. Atomic: if any reference
-    // names a question that does not exist, nothing is added at all — a
-    // partially accepted paste is how a set quietly becomes the wrong set.
-    const resolved: string[] = [];
-    const missing: string[] = [];
-    for (const ref of parsed.refs) {
-      const q = allQuestions.find(
-        (x) => x.pt === ref.pt && x.section === ref.section && x.qnum === ref.qnum,
-      );
-      if (q) resolved.push(q.qid);
-      else missing.push(ref.label);
-    }
-
-    if (missing.length > 0) {
-      setExactIssues([
-        {
-          kind: 'unknown-value',
-          token: missing.join(', '),
-          message: `Not in the bank: ${missing.join(', ')}. Nothing was added.`,
-        },
-      ]);
-      return;
-    }
-
-    setSelectedQids((prev) => {
-      const next = new Set(prev);
-      resolved.forEach((qid) => next.add(qid));
-      return next;
-    });
-    setPreviewedQids(null);
-    setExactIssues([]);
-    setExactText('');
-    toast({
-      title: `Added ${resolved.length} question${resolved.length === 1 ? '' : 's'}`,
-      description: 'Your set is now a manual selection.',
-    });
+    setDiscoverySearch('');
   };
 
   const visibleDifficulties = useMemo(
@@ -411,27 +359,29 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   }, [user]);
   
   // Filter and paginate questions
-  const { filteredQuestions, totalCount } = useMemo(() => {
-    const questions = filterLRQuestions(allQuestions, filters);
-    
-    return {
-      filteredQuestions: questions,
-      totalCount: questions.length
-    };
-  }, [allQuestions, filters]);
+  const filteredQuestions = useMemo(() => filterLRQuestions(allQuestions, filters), [allQuestions, filters]);
+  const visibleQuestions = useMemo(
+    () => searchMode === 'exact' && exactSearch?.ok
+      ? exactSearch.refs.map((ref) => questionByAddress.get(`${ref.pt}.${ref.section}.${ref.qnum}`)).filter((question): question is LRQuestion => Boolean(question))
+      : searchMode === 'range' || !discoverySearch.trim()
+      ? filteredQuestions
+      : filterLRQuestions(filteredQuestions, { ...createEmptyLRDrillFilters(), searchQuery: discoverySearch }),
+    [filteredQuestions, discoverySearch, searchMode, exactSearch, questionByAddress],
+  );
+  const totalCount = visibleQuestions.length;
   
   // Paginated questions
   const paginatedQuestions: QuestionRow[] = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     
-    return filteredQuestions
+    return visibleQuestions
       .slice(startIndex, endIndex)
       .map(q => ({
         ...q,
         attemptCount: attemptCounts.get(q.qid) || 0
       }));
-  }, [filteredQuestions, currentPage, pageSize, attemptCounts]);
+  }, [visibleQuestions, currentPage, pageSize, attemptCounts]);
   
   const totalPages = Math.ceil(totalCount / pageSize);
   
@@ -471,6 +421,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
 
   const clearAllFilters = () => {
     setFilters(createEmptyLRDrillFilters());
+    setDiscoverySearch('');
+    setSearchIssues([]);
     setQtypeSearch('');
     setReasoningSearch('');
     setFeatureSearch('');
@@ -490,43 +442,13 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     });
   };
   
-  // Add random questions
-  const addRandomQuestions = (count: number) => {
-    const available = filteredQuestions
-      .filter(q => !selectedQids.has(q.qid))
-      .map(q => q.qid);
-    
-    if (available.length === 0) {
-      if (filteredQuestions.length === 0) {
-        toast({
-          title: "No questions available",
-          description: "Try adjusting your filters to see more questions.",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "All questions selected",
-          description: "All questions matching your filters are already selected.",
-          variant: "destructive",
-        });
-      }
-      return;
-    }
-    
-    const toAdd = Math.min(count, available.length);
-    const randomQids = shuffleArray(available).slice(0, toAdd);
-    
-    setSelectedQids(prev => {
-      const next = new Set(prev);
-      randomQids.forEach(qid => next.add(qid));
-      return next;
-    });
-    
-    toast({
-      title: `Added ${randomQids.length} questions`,
-      description: `${randomQids.length} random questions added to your selection.`,
-    });
-  };
+  const availability = getLRDrillSetAvailability(selectedQids, filteredQuestions, setSize);
+  const canGenerate = !availability.exceedsSize && availability.missingCount === 0;
+  const generateHint = availability.exceedsSize
+    ? `You selected ${selectedQids.size} questions. Increase the set size or remove some.`
+    : availability.missingCount > 0
+    ? `The filters need ${availability.missingCount} more question${availability.missingCount === 1 ? '' : 's'}. Try broader filters or a smaller set.`
+    : null;
   
   const hasAnyFilter =
     filters.prepTests.length > 0 ||
@@ -535,24 +457,26 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     filters.questionFeatures.length > 0 ||
     filters.sections.length > 0 ||
     filters.difficulties.length > 0 ||
-    filters.searchQuery.trim() !== '' ||
+    discoverySearch.trim() !== '' ||
     filters.questionNumbers.length > 0;
 
-  // Materialize a fresh preview from the current filter pool.
-  // No filter is a valid pool — it means the whole bank — because every facet
-  // already treats an empty array as unrestricted. Refusing to generate from
-  // it was a dead end that made the panel promise a set it would not build.
+  // Materialize exact picks plus the remaining places from the filtered pool.
   const handleGeneratePreview = () => {
-    if (filteredQuestions.length === 0) {
+    const sample = composeLRDrillSet(
+      selectedQids,
+      allQuestions,
+      filteredQuestions,
+      setSize,
+      questionBank.shuffleQuestions,
+    );
+    if (!sample) {
       toast({
-        title: "No questions match filters",
-        description: "Try relaxing your filters to find more questions.",
+        title: "This set needs an adjustment",
+        description: generateHint ?? "Check the selected questions and filters.",
         variant: "destructive",
       });
       return;
     }
-    const count = Math.min(setSize, filteredQuestions.length);
-    const sample = questionBank.shuffleQuestions(filteredQuestions).slice(0, count);
     setPreviewedQids(sample.map((q) => q.qid));
   };
 
@@ -563,68 +487,15 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     setPreviewedQids(null);
   };
 
-  // Launch the drill. Source-of-truth order:
-  //   1. selectedQids (manual picks)
-  //   2. previewedQids (generated preview)
-  //   3. otherwise: materialize now from filters (legacy fallback)
+  // The displayed preview is the launch contract. A filter or selection change
+  // invalidates it, so nothing can silently resample after review.
   const handleLaunch = () => {
-    let questionsToUse: LRQuestion[] = [];
-
-    if (selectedQids.size === 0 && (!previewedQids || previewedQids.length === 0)) {
-      if (!hasAnyFilter) {
-        toast({
-          title: "Nothing to build a set from",
-          description: "Pick at least one filter or select questions from the table.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      if (filteredQuestions.length === 0) {
-        toast({
-          title: "No questions match filters",
-          description: "Try relaxing your filters to find more questions.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const count = Math.min(setSize, filteredQuestions.length);
-      questionsToUse = questionBank.shuffleQuestions(filteredQuestions).slice(0, count);
-    } else if (selectedQids.size === 0 && previewedQids && previewedQids.length > 0) {
-      questionsToUse = previewedQids
-        .map((qid) => questionBank.getQuestion(qid))
-        .filter(Boolean) as LRQuestion[];
-      if (questionsToUse.length === 0) {
-        toast({
-          title: "Preview invalid",
-          description: "Generated questions could not be loaded. Try Generate again.",
-          variant: "destructive",
-        });
-        return;
-      }
-    } else {
-      // Use manually selected questions
-      questionsToUse = Array.from(selectedQids)
-        .map(qid => questionBank.getQuestion(qid))
-        .filter(Boolean) as LRQuestion[];
-      
-      if (questionsToUse.length === 0) {
-        toast({
-          title: "Invalid selection",
-          description: "None of the selected questions could be found. Please try again.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      if (questionsToUse.length !== selectedQids.size) {
-        toast({
-          title: "Some questions unavailable",
-          description: `${selectedQids.size - questionsToUse.length} selected questions could not be found and were skipped.`,
-        });
-      }
+    const previewQuestions = previewedQids?.map((qid) => questionBank.getQuestion(qid)) ?? [];
+    if (!canGenerate || previewQuestions.length !== setSize || previewQuestions.some((question) => !question)) {
+      toast({ title: 'Preview the set first', description: 'Create a set preview before starting.', variant: 'destructive' });
+      return;
     }
+    const questionsToUse = previewQuestions as LRQuestion[];
     
     const qtypes = Array.from(new Set(questionsToUse.map(q => q.qtype)));
     const difficulties = Array.from(new Set(questionsToUse.map(q => q.difficulty)));
@@ -639,7 +510,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       qfeatures: filters.questionFeatures.length > 0 ? [...filters.questionFeatures] : undefined,
       reasoningTypes: filters.reasoningTypes.length > 0 ? [...filters.reasoningTypes] : undefined,
       sections: filters.sections.length > 0 ? [...filters.sections] : undefined,
-      searchQuery: filters.searchQuery.trim() || undefined,
+      searchQuery: undefined,
       // No question-number metadata. `selectedQids` above already carries the
       // resolved set, so passing it would duplicate state the runner does not
       // read — and `TypeDrillConfig`'s field is a scalar that cannot hold the
@@ -677,22 +548,20 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     });
   };
   
-  // Live summary stats — selectedQids wins, then previewedQids, then filter pool
+  // Before preview, these are candidate-pool statistics, not a promised mix.
   const summary = useMemo(() => {
-    let mode: 'selection' | 'preview' | 'pool' = 'pool';
+    let mode: 'preview' | 'pool' = 'pool';
     let source: LRQuestion[];
-    if (selectedQids.size > 0) {
-      mode = 'selection';
-      source = Array.from(selectedQids)
-        .map(qid => questionBank.getQuestion(qid))
-        .filter(Boolean) as LRQuestion[];
-    } else if (previewedQids && previewedQids.length > 0) {
+    if (previewedQids && previewedQids.length > 0) {
       mode = 'preview';
       source = previewedQids
         .map(qid => questionBank.getQuestion(qid))
         .filter(Boolean) as LRQuestion[];
     } else {
-      source = filteredQuestions;
+      source = [
+        ...Array.from(selectedQids).map((qid) => questionBank.getQuestion(qid)).filter(Boolean) as LRQuestion[],
+        ...filteredQuestions.filter((question) => !selectedQids.has(question.qid)),
+      ];
     }
 
     const qtypeCounts = new Map<string, number>();
@@ -730,19 +599,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       attempted,
       unseen: source.length - attempted,
       mode,
-      isFromSelection: mode === 'selection',
       isFromPreview: mode === 'preview',
     };
   }, [selectedQids, previewedQids, filteredQuestions, attemptCounts]);
 
   const hasPreview = !!previewedQids && previewedQids.length > 0;
-
-  // Enabled whenever there is a pool and no manual selection. An unfiltered
-  // pool is the full bank, which is a legitimate thing to draw a set from.
-  const canGenerate = selectedQids.size === 0 && filteredQuestions.length > 0;
-
-  const generateHint =
-    filteredQuestions.length === 0 ? 'No questions match. Adjust your filters.' : null;
 
   // Get first 6-7 words of stem
   const getStemPreview = (stem: string): string => {
@@ -757,7 +618,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         <div className="min-w-0">
           <h1 className="text-3xl font-bold tracking-[-0.025em]">Set up an LR drill</h1>
         </div>
-        <Button variant="ghost" onClick={onCancel}>Cancel</Button>
+        <Button variant="ghost" onClick={onCancel} className="gap-2">
+          <ArrowLeft className="h-4 w-4" aria-hidden /> Back to practice options
+        </Button>
       </div>
 
       {/* Container query, not `lg:` — this picker no longer owns a full page.
@@ -787,9 +650,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         <div>
           <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1" aria-live="polite">
-              <p className="text-lg font-semibold tracking-[-0.015em]">Filter the question bank</p>
+              <p className="text-lg font-semibold tracking-[-0.015em]">Choose your questions</p>
               <p className="text-sm tabular-nums text-muted-foreground">
-                {totalCount.toLocaleString()} matching {totalCount === 1 ? 'question' : 'questions'}
+                {filteredQuestions.length.toLocaleString()} matching {filteredQuestions.length === 1 ? 'question' : 'questions'}
               </p>
             </div>
             {hasAnyFilter && (
@@ -798,138 +661,72 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </Button>
             )}
           </div>
-          {/* Choose a PT, section, or question number first, then refine the
-              pool by what each question tests. Text search sits with results. */}
+          {/* One field searches the table and accepts pasted references. The
+              address controls below provide a visual route to exact picks. */}
           <div className="space-y-4 border-t border-border/60 px-5 py-4">
-            {/* Spec line. Replaces a single `Q#` number input that could hold
-                exactly one value — so "Q1, 6, 8, 23", the thing you actually
-                want when rebuilding a set, was not expressible at all.
-
-                It owns PT, section and question number only. Type, reasoning,
-                features and levels stay in their popovers, because a bar that
-                round-tripped through a grammar unable to express them would
-                drop them silently on every commit. */}
-            <div className="grid gap-3 sm:grid-cols-[132px_minmax(0,1fr)] sm:gap-4">
-              {/* The typed field supports multiple question numbers, while the
-                  popovers below offer the same PT and section selection. */}
-              <div className="sm:pt-3">
-                <div className="text-sm font-semibold text-foreground">
-                  Choose questions
-                </div>
-                <p className="mt-1 text-xs leading-snug text-muted-foreground">PT · Section · Number</p>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-sm font-semibold text-foreground">Find a question</h2>
+                <span className="text-xs tabular-nums text-muted-foreground">{selectedQids.size} added to set</span>
               </div>
-              <div className="min-w-0 space-y-2">
-                <div className="flex flex-wrap items-center gap-2">
-                  <div className="relative min-w-0 flex-1">
-                    <Input
-                      value={specText}
-                      onChange={(e) => {
-                        setSpecText(e.target.value);
-                        if (specIssues.length > 0) setSpecIssues([]);
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          commitSpec();
-                        }
-                      }}
-                      onBlur={commitSpec}
-                      placeholder="PT 101-110 S2,3 Q1,6,8,23"
-                      aria-label="Type a PrepTest, section and question range"
-                      aria-invalid={specIssues.length > 0}
-                      aria-describedby={specIssues.length > 0 ? 'spec-errors' : undefined}
-                      className={cn(
-                        'h-11 pr-4 text-[15px] font-mono',
-                        specIssues.length > 0 && 'border-destructive focus-visible:ring-destructive',
-                      )}
-                    />
-                  </div>
-                  <Button
-                    variant="outline"
-                    className="h-11 px-4"
-                    onClick={commitSpec}
-                    disabled={specText === formatSpec(specFromFilters)}
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-4 top-3.5 h-4 w-4 text-white/65" aria-hidden />
+                <Input
+                  type="search"
+                  placeholder="Find a question"
+                  value={discoverySearch}
+                  onChange={(event) => {
+                    setDiscoverySearch(event.target.value);
+                    setSearchIssues([]);
+                    setCurrentPage(1);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' && searchMode !== 'text') {
+                      event.preventDefault();
+                      applySearchInput();
+                    }
+                  }}
+                  className="drill-setup-search h-11 pl-11 pr-11 text-sm"
+                  aria-label="Find questions by text or PrepTest reference"
+                  aria-invalid={searchIssues.length > 0}
+                  aria-describedby={searchIssues.length > 0 ? 'search-errors' : undefined}
+                />
+                {discoverySearch && (
+                  <button
+                    type="button"
+                    className="absolute right-1 top-0.5 inline-flex h-10 w-10 items-center justify-center rounded-full text-white/75 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    onClick={() => { setDiscoverySearch(''); setSearchIssues([]); }}
+                    aria-label="Clear question search"
                   >
-                    Apply
+                    <X className="h-4 w-4" aria-hidden />
+                  </button>
+                )}
+              </div>
+              {searchMode !== 'text' && (
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+                  <span>{searchMode === 'exact' ? 'Add these exact questions to your set.' : 'Use this range to narrow the question bank.'}</span>
+                  <Button type="button" variant="outline" size="sm" onClick={applySearchInput}>
+                    {searchMode === 'exact'
+                      ? exactSearch?.ok && exactSearch.refs.length === 1 ? 'Add question' : 'Add questions'
+                      : 'Filter bank'}
                   </Button>
                 </div>
-                {specIssues.length > 0 && (
-                  <div id="spec-errors" role="alert" className="space-y-0.5">
-                    {specIssues.map((issue, i) => (
-                      <p key={`${issue.token}-${i}`} className="text-xs text-destructive">
-                        {issue.message}
-                      </p>
-                    ))}
-                  </div>
-                )}
-
-                {/* Naming exact questions is a different job from narrowing a
-                    pool, so it gets its own field. These append to the
-                    selection and never touch the facets above. */}
-                <details className="group rounded-md border border-border/60 px-3 py-2">
-                  <summary className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-foreground">
-                    Add specific questions
-                  </summary>
-                <div className="mt-2 flex flex-wrap items-center gap-2">
-                  <div className="relative min-w-0 flex-1">
-                    <Input
-                      value={exactText}
-                      onChange={(e) => {
-                        setExactText(e.target.value);
-                        // Editing is an attempt to fix the problem; keeping the
-                        // old error on screen just makes it look unfixable.
-                        if (exactIssues.length > 0) setExactIssues([]);
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          commitExactRefs();
-                        }
-                      }}
-                      placeholder="Add exact questions, e.g. PT101.S2.Q1, PT101.S2.Q6"
-                      aria-label="Add exact questions"
-                      aria-invalid={exactIssues.length > 0}
-                      aria-describedby={exactIssues.length > 0 ? 'exact-errors' : undefined}
-                      className={cn(
-                        'h-10 text-sm font-mono',
-                        exactIssues.length > 0 && 'border-destructive focus-visible:ring-destructive',
-                      )}
-                    />
-                  </div>
-                  <Button
-                    variant="outline"
-                    className="h-10 px-4"
-                    onClick={commitExactRefs}
-                    disabled={exactText.trim() === ''}
-                  >
-                    Add
-                  </Button>
+              )}
+              {searchIssues.length > 0 && (
+                <div id="search-errors" role="alert" className="space-y-1 text-xs text-destructive">
+                  {searchIssues.map((issue, index) => <p key={`${issue.token}-${index}`}>{issue.message}</p>)}
                 </div>
-                {exactIssues.length > 0 && (
-                  <div id="exact-errors" role="alert" className="space-y-0.5">
-                    {exactIssues.map((issue, i) => (
-                      <p key={`${issue.token}-${i}`} className="text-xs text-destructive">
-                        {issue.message}
-                      </p>
-                    ))}
-                  </div>
-                )}
-                </details>
-              </div>
+              )}
             </div>
 
-            <div className="grid gap-3 border-t border-border/50 pt-4 sm:grid-cols-[132px_minmax(0,1fr)] sm:gap-4">
-              <div className="sm:pt-3">
-                <div className="text-sm font-semibold text-foreground">
-                  Choose PrepTests
-                </div>
-              </div>
-              <div className="flex min-w-0 flex-wrap items-center gap-2.5">
+            <div className="space-y-2 border-t border-border/50 pt-4">
+              <p className="text-xs text-muted-foreground">Check a search result below, paste question IDs above, or choose by PrepTest, section, and number.</p>
+              <div className="grid min-w-0 gap-2 sm:grid-cols-3">
             {/* PrepTest Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[168px]">
-                  PrepTests {filters.prepTests.length > 0 && `(${filters.prepTests.length})`}
+                <Button variant="outline" aria-label={`PrepTest selector, ${filters.prepTests.length ? filters.prepTests.join(', ') : 'any'}`} className="h-11 w-full min-w-0 justify-between px-4 text-sm">
+                  {filters.prepTests.length === 1 ? `PT ${filters.prepTests[0]}` : `PrepTest${filters.prepTests.length > 1 ? `s (${filters.prepTests.length})` : ''}`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
@@ -992,8 +789,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             {/* Section Filter (moved earlier per Item D) */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[148px]">
-                  Section {filters.sections.length > 0 && `(${filters.sections.length})`}
+                <Button variant="outline" aria-label={`Section selector, ${filters.sections.length ? filters.sections.join(', ') : 'any'}`} className="h-11 w-full min-w-0 justify-between px-4 text-sm">
+                  {filters.sections.length === 1 ? `Section ${filters.sections[0]}` : `Section${filters.sections.length > 1 ? `s (${filters.sections.length})` : ''}`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
@@ -1020,21 +817,48 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </PopoverContent>
             </Popover>
 
+            <Select
+              value=""
+              disabled={addressNumbers.length === 0}
+              onValueChange={(value) => {
+                const question = questionByAddress.get(`${filters.prepTests[0]}.${filters.sections[0]}.${value}`);
+                if (question) setSelectedQids((previous) => new Set([...previous, question.qid]));
+              }}
+            >
+              <SelectTrigger className="h-11 w-full text-sm" aria-label="Question number">
+                <SelectValue placeholder="Question number" />
+              </SelectTrigger>
+              <SelectContent className="drill-observatory-launcher-panel">
+                {addressNumbers.map((number) => (
+                  <SelectItem key={number} value={String(number)}>Question {number}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
               </div>
+              {selectedQids.size > 0 && (
+                <div className="flex flex-wrap items-center gap-2 pt-1" aria-label="Questions added to the set">
+                  {Array.from(selectedQids).map((qid) => {
+                    const question = questionBank.getQuestion(qid);
+                    if (!question) return null;
+                    return (
+                      <button key={qid} type="button" className="inline-flex h-8 items-center gap-1 rounded-md border border-border px-2 text-xs hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground" onClick={() => toggleQuestion(qid)} aria-label={`Remove PT${question.pt} section ${question.section} question ${question.qnum}`}>
+                        PT{question.pt} · S{question.section} · Q{question.qnum}<X className="h-3 w-3" aria-hidden />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
 
-            <div className="grid gap-3 border-t border-border/50 pt-4 sm:grid-cols-[132px_minmax(0,1fr)] sm:gap-4">
-              <div className="sm:pt-3">
-                <div className="text-sm font-semibold text-foreground">
-                  Refine your set
-                </div>
-              </div>
-              <div className="flex min-w-0 flex-wrap items-center gap-2.5">
+            <div className="space-y-3 border-t border-border/50 pt-4">
+              <h2 className="text-sm font-semibold text-foreground">Narrow the rest</h2>
+              <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2">
             {/* Question Type Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[188px]">
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
                   Question Type {filters.questionTypes.length > 0 && `(${filters.questionTypes.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -1125,7 +949,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             {/* Reasoning Type Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[194px]">
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
                   Reasoning Types {filters.reasoningTypes.length > 0 && `(${filters.reasoningTypes.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -1182,7 +1006,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 families simultaneously. */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[220px]">
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
                   Question Features {filters.questionFeatures.length > 0 && `(${filters.questionFeatures.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -1267,7 +1091,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             {/* Difficulty Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-[15px] sm:w-auto sm:min-w-[132px]">
+                <Button variant="outline" className="h-11 w-full min-w-0 justify-between px-4 text-sm">
                   Levels {filters.difficulties.length > 0 && `(${filters.difficulties.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
@@ -1307,7 +1131,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             filters.sections.length > 0 ||
             filters.difficulties.length > 0 ||
             filters.questionNumbers.length > 0 ||
-            filters.searchQuery.trim() !== '') && (
+            (searchMode === 'text' && discoverySearch.trim() !== '')) && (
             <div className="flex flex-wrap gap-2 border-t border-border/60 px-5 py-4">
               {filters.prepTests.map(pt => (
                 <Badge key={`pt-${pt}`} variant="secondary" className="gap-1">
@@ -1360,13 +1184,13 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   />
                 </Badge>
               ))}
-              {filters.searchQuery.trim() !== '' && (
+              {searchMode === 'text' && discoverySearch.trim() !== '' && (
                 <Badge variant="secondary" className="gap-1">
-                  Search: {filters.searchQuery.trim()}
+                  Search: {discoverySearch.trim()}
                   <X
                     className="h-3 w-3 cursor-pointer"
                     onClick={() => {
-                      setFilters((prev) => ({ ...prev, searchQuery: '' }));
+                      setDiscoverySearch('');
                       setCurrentPage(1);
                     }}
                   />
@@ -1379,42 +1203,15 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       
       <>
       {/* Results header — Item J: groups page-size with the table not the filters. */}
-      <div className="mb-3 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-sm sm:grid-cols-[auto_minmax(0,1fr)_auto]">
-        <div className="col-start-1 row-start-2 text-muted-foreground sm:row-start-1">
+      <div className="mb-3 flex items-center justify-between gap-3 text-sm">
+        <div className="text-muted-foreground">
           Showing <span className="font-medium text-foreground">{paginatedQuestions.length}</span>{' '}
           of <span className="font-medium text-foreground">{totalCount}</span> questions
           {selectedQids.size > 0 && (
             <span className="text-foreground"> · {selectedQids.size} selected</span>
           )}
         </div>
-          <div className="relative col-span-2 row-start-1 min-w-0 sm:col-span-1 sm:col-start-2 sm:mx-auto sm:w-full sm:max-w-sm">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search question text"
-              value={filters.searchQuery}
-              onChange={(e) => {
-                setFilters(prev => ({ ...prev, searchQuery: e.target.value }));
-                setCurrentPage(1);
-              }}
-              className="h-9 pl-9 pr-9 text-sm"
-              aria-label="Search question text"
-            />
-            {filters.searchQuery.trim() !== '' && (
-              <button
-                type="button"
-                onClick={() => {
-                  setFilters((prev) => ({ ...prev, searchQuery: '' }));
-                  setCurrentPage(1);
-                }}
-                className="absolute right-1 top-0.5 inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label="Clear question search"
-              >
-                <X className="h-4 w-4" aria-hidden />
-              </button>
-            )}
-          </div>
-        <div className="col-start-2 row-start-2 sm:col-start-3 sm:row-start-1">
+        <div>
         <Select
           value={pageSize.toString()}
           onValueChange={(value) => {
@@ -1504,7 +1301,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                       `table-layout: fixed` a colSpan of 8 would mint an
                       anonymous eighth column and skew every width. */}
                   <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
-                    No questions match your filters
+                    {discoverySearch.trim() ? 'No questions match this search' : 'No questions match your filters'}
                   </TableCell>
                 </TableRow>
               ) : (
@@ -1611,13 +1408,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         <aside className="hidden @[980px]:block" data-testid="summary-rail">
           <div className="sticky top-4">
             <Card className="p-4 space-y-3">
-              <div className="font-semibold text-sm">
-                {summary.isFromPreview
-                  ? 'Preview'
-                  : summary.isFromSelection
-                  ? 'Selection'
-                  : 'Set Summary'}
-              </div>
+              <div className="font-semibold text-sm">{hasPreview ? 'Your set is ready' : 'Your set'}</div>
 
               {/* No empty state here. The rail is the feedback loop, so it
                   always shows real numbers — unfiltered, those describe the
@@ -1627,31 +1418,27 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   {/* Set size is the first thing to confirm before launching. */}
                   <div className="rounded-md bg-primary/[0.06] border border-primary/15 px-3 py-3">
                     <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">
-                      {summary.isFromPreview ? 'Ready to start' : summary.isFromSelection ? 'Selected' : 'Your set'}
+                      {summary.isFromPreview ? 'Preview' : 'Set size'}
                     </div>
                     <div className="mt-1 text-2xl font-bold text-primary tabular-nums">
-                      {summary.isFromSelection || summary.isFromPreview
-                        ? summary.total
-                        : Math.min(setSize, summary.total)} questions
+                      {setSize} questions
                     </div>
-                    {!summary.isFromSelection && !summary.isFromPreview && (
-                      <div className="text-[11px] text-muted-foreground mt-0.5">
-                        from {summary.total.toLocaleString()} available
-                      </div>
-                    )}
+                    <div className="text-[11px] text-muted-foreground mt-0.5">
+                      {selectedQids.size} chosen · {setSize - selectedQids.size > 0 ? setSize - selectedQids.size : 0} from filters
+                    </div>
                   </div>
 
                   {/* Tier 2: type + difficulty */}
                   <div className="space-y-2 text-xs">
                     <div>
                       <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1">
-                        Question types
+                        {hasPreview ? 'Question types' : 'Available question types'}
                       </div>
                       <div className="font-medium text-foreground">{summary.qtypeMix}</div>
                     </div>
                     <div>
                       <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1">
-                        Difficulty
+                        {hasPreview ? 'Difficulty' : 'Available difficulty'}
                       </div>
                       <div className="font-medium text-foreground">{summary.difficulty}</div>
                     </div>
@@ -1718,26 +1505,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   </Select>
                 </div>
 
-                {selectedQids.size > 0 ? (
+                {hasPreview ? (
                   <div className="space-y-2">
                     <Button onClick={handleLaunch} className="w-full">
-                      Launch ({selectedQids.size})
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setSaveDialogName('');
-                        setSaveDialogOpen(true);
-                      }}
-                      className="w-full gap-2"
-                    >
-                      <Bookmark className="h-3.5 w-3.5" aria-hidden /> Save set
-                    </Button>
-                  </div>
-                ) : hasPreview ? (
-                  <div className="space-y-2">
-                    <Button onClick={handleLaunch} className="w-full">
-                      Launch this set ({previewedQids!.length})
+                      Start this drill ({previewedQids!.length})
                     </Button>
                     <Button
                       variant="outline"
@@ -1766,19 +1537,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   </div>
                 ) : (
                   <>
-                    <Button
-                      onClick={handleGeneratePreview}
-                      disabled={!canGenerate}
-                      className={cn(
-                        "w-full transition-all",
-                        canGenerate
-                          ? "shadow-sm hover:shadow-md hover:-translate-y-px"
-                          : "opacity-60 cursor-not-allowed hover:bg-primary",
-                      )}
-                    >
-                      {canGenerate
-                        ? `Generate ${Math.min(setSize, filteredQuestions.length)}`
-                        : 'Generate preview'}
+                    <Button onClick={handleGeneratePreview} disabled={!canGenerate} className="w-full">
+                      Create set preview ({setSize})
                     </Button>
                     {generateHint && (
                       <div className="text-xs text-muted-foreground">{generateHint}</div>
@@ -1801,12 +1561,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         data-testid="selection-tray"
         className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-lg z-50 @[980px]:hidden"
       >
-        <div className="max-w-7xl mx-auto p-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="font-medium">
-                Selected: <span className="text-primary">{selectedQids.size}</span>
-              </div>
+        <div className="mx-auto max-w-7xl space-y-2 px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-sm">
+              <div className="font-medium">{selectedQids.size} chosen · {setSize} in set</div>
               {selectedQids.size > 0 && (
                 <Button
                   variant="ghost"
@@ -1817,13 +1575,13 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 </Button>
               )}
             </div>
-            
             <div className="flex items-center gap-2">
+              <label htmlFor="drill-set-size-mobile" className="text-xs text-muted-foreground">Set size</label>
               <Select
                 value={setSize.toString()}
                 onValueChange={(v) => setSetSize(parseInt(v))}
               >
-                <SelectTrigger className="w-20 h-9">
+                <SelectTrigger id="drill-set-size-mobile" className="w-20 h-9">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="drill-observatory-launcher-panel">
@@ -1833,51 +1591,17 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 </SelectContent>
               </Select>
 
-              {filteredQuestions.length > selectedQids.size && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    const count = Math.min(setSize, filteredQuestions.length - selectedQids.size);
-                    addRandomQuestions(count);
-                  }}
-                >
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  Add {Math.min(setSize, filteredQuestions.length - selectedQids.size)} Random
-                </Button>
-              )}
-
-              {selectedQids.size > 0 ? (
-                <Button onClick={handleLaunch} className="min-w-[160px]">
-                  Start Drill ({selectedQids.size})
-                </Button>
-              ) : hasPreview ? (
-                <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleGeneratePreview}
-                  >
-                    Regenerate
-                  </Button>
-                  <Button onClick={handleLaunch} className="min-w-[160px]">
-                    Launch ({previewedQids!.length})
-                  </Button>
-                </>
-              ) : (
-                <Button
-                  onClick={handleGeneratePreview}
-                  disabled={!canGenerate}
-                  className="min-w-[160px]"
-                  title={generateHint ?? undefined}
-                >
-                  {canGenerate
-                    ? `Generate ${Math.min(setSize, filteredQuestions.length)}`
-                    : 'Generate Preview'}
-                </Button>
-              )}
             </div>
           </div>
+          {hasPreview ? (
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={handleGeneratePreview} className="min-w-0 flex-1">Create another</Button>
+              <Button onClick={handleLaunch} className="min-w-0 flex-1">Start drill ({setSize})</Button>
+            </div>
+          ) : (
+            <Button onClick={handleGeneratePreview} disabled={!canGenerate} className="w-full">Create set preview ({setSize})</Button>
+          )}
+          {generateHint && <p role="status" className="text-xs text-muted-foreground">{generateHint}</p>}
         </div>
       </div>
 
@@ -2026,9 +1750,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 void (async () => {
                   const name = saveDialogName.trim();
                   if (!name) return;
-                  const ids = selectedQids.size > 0
-                    ? Array.from(selectedQids)
-                    : (previewedQids ?? []);
+                  const ids = previewedQids ?? [];
                   if (ids.length === 0) {
                     toast({ title: 'Nothing to save', description: 'Select or generate questions first.' });
                     return;
@@ -2062,9 +1784,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               onClick={async () => {
                 const name = saveDialogName.trim();
                 if (!name) return;
-                const ids = selectedQids.size > 0
-                  ? Array.from(selectedQids)
-                  : (previewedQids ?? []);
+                const ids = previewedQids ?? [];
                 if (ids.length === 0) {
                   toast({ title: 'Nothing to save', description: 'Select or generate questions first.' });
                   return;

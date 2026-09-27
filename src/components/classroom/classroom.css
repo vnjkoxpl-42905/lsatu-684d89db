@@ -897,7 +897,8 @@ html.dark .classroom-root.classroom-root-home .classroom-stage {
    a classroom stage but belongs to the same visual system. It hosts the ladder
    here rather than restating the values, so there is still one source. */
 .classroom-root.classroom-root-drill,
-.rc-page {
+.rc-page,
+.drill-setup-preview {
   /* Ink. One ivory, stepped by opacity. The ladder is closed — if a value is not
      on it, it does not belong on this page. */
   --observatory-ink: #f4f1ea;
@@ -1477,15 +1478,18 @@ html.dark .classroom-root.classroom-root-drill {
 @keyframes drill-observatory-smart-drill-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(244, 241, 234, 0.42);
+    box-shadow: 0 0 0 0 rgba(244, 241, 234, 0.5), 0 6px 20px rgba(0, 0, 0, 0.3);
   }
-  50% {
-    box-shadow: 0 0 0 9px rgba(244, 241, 234, 0);
+  38% {
+    box-shadow: 0 0 0 7px rgba(244, 241, 234, 0.17), 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+  62% {
+    box-shadow: 0 0 0 13px rgba(244, 241, 234, 0), 0 6px 20px rgba(0, 0, 0, 0.3);
   }
 }
 
 .drill-observatory-root .drill-observatory-smart-drill-pulse {
-  animation: drill-observatory-smart-drill-pulse 2.4s ease-in-out infinite;
+  animation: drill-observatory-smart-drill-pulse 2.6s cubic-bezier(0.25, 1, 0.5, 1) infinite;
 }
 
 /* No transform on the primary CTA — it is the one fixed point on the page. */
@@ -3705,6 +3709,28 @@ html.dark .classroom-root.classroom-root-drill {
   --ring: 40 20% 80%;
 
   color: hsl(var(--foreground));
+}
+
+.drill-observatory-launcher-panel .drill-setup-search {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--input));
+  border-radius: 999px;
+  color: hsl(var(--foreground));
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+.drill-observatory-launcher-panel .drill-setup-search::placeholder {
+  color: hsl(var(--muted-foreground));
+  opacity: 1;
+}
+
+.drill-observatory-launcher-panel .drill-setup-search::-webkit-search-cancel-button {
+  display: none;
+}
+
+.drill-observatory-launcher-panel .drill-setup-search:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
 }
 
 

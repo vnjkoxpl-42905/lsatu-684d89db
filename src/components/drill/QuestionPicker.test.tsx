@@ -45,6 +45,7 @@ const { mockQuestions, mockToast, mockRecordExposures } = vi.hoisted(() => {
         section: 2,
         qnum: 6,
         qtype: 'Weaken',
+        stimulus: 'A rare botanical argument.',
         difficulty: 3,
         reasoningType: ['Conditional Reasoning'],
         questionFeatures: ['Conditional Diagramming'],
@@ -126,10 +127,11 @@ const manifest: QuestionManifest = {
 
 function setup() {
   const onStartDrill = vi.fn();
+  const onCancel = vi.fn();
   const view = render(
-    <QuestionPicker manifest={manifest} onStartDrill={onStartDrill} onCancel={vi.fn()} />,
+    <QuestionPicker manifest={manifest} onStartDrill={onStartDrill} onCancel={onCancel} />,
   );
-  return { ...view, onStartDrill };
+  return { ...view, onStartDrill, onCancel };
 }
 
 function trigger(name: RegExp) {
@@ -144,129 +146,110 @@ function togglePopoverOption(triggerName: RegExp, checkboxId: string) {
   fireEvent.click(trigger(triggerName));
 }
 
-/** Type a spec and commit it the way a user does: Enter. */
-function applySpec(text: string) {
-  const input = screen.getByLabelText('Type a PrepTest, section and question range');
+function pasteReferences(text: string) {
+  const input = screen.getByRole('searchbox', { name: 'Find questions by text or PrepTest reference' });
   fireEvent.change(input, { target: { value: text } });
   fireEvent.keyDown(input, { key: 'Enter' });
 }
 
-describe('QuestionPicker unified LR drill builder', () => {
+function previewSet() {
+  fireEvent.click(screen.getAllByRole('button', { name: 'Create set preview (5)' })[0]);
+}
+
+describe('QuestionPicker LR drill setup', () => {
   beforeEach(() => {
     mockToast.mockClear();
     mockRecordExposures.mockClear();
   });
 
-  it('renders every filter trigger in the required order', () => {
-    setup();
+  it('returns to practice options from the header', () => {
+    const { onCancel } = setup();
+    fireEvent.click(screen.getByRole('button', { name: 'Back to practice options' }));
+    expect(onCancel).toHaveBeenCalledOnce();
+  });
 
-    // The scalar "Question number" input is gone; question numbers are now
-    // expressed through the spec line, which sits below the focus row.
+  it('places search and address controls before the four focus controls', () => {
+    setup();
     const controls = [
-      screen.getByLabelText('Type a PrepTest, section and question range'),
-      screen.getByLabelText('Add exact questions'),
-      trigger(/^PrepTests/),
-      trigger(/^Section/),
+      screen.getByRole('searchbox', { name: 'Find questions by text or PrepTest reference' }),
+      trigger(/^PrepTest selector/),
+      trigger(/^Section selector/),
+      screen.getByRole('combobox', { name: 'Question number' }),
       trigger(/^Question Type/),
       trigger(/^Reasoning Types/),
       trigger(/^Question Features/),
       trigger(/^Levels/),
-      screen.getByLabelText('Search question text'),
     ];
-
     for (let index = 0; index < controls.length - 1; index += 1) {
-      expect(
-        controls[index].compareDocumentPosition(controls[index + 1]) &
-          Node.DOCUMENT_POSITION_FOLLOWING,
-      ).toBeTruthy();
+      expect(controls[index].compareDocumentPosition(controls[index + 1]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     }
+    expect(screen.getByText('Choose your questions')).toBeInTheDocument();
+    expect(screen.getByText('Narrow the rest')).toBeInTheDocument();
   });
 
-  it('labels each filter row in plain words rather than internal names', () => {
+  it('combines PrepTest, section, reasoning, feature, and level filters', () => {
     setup();
-
-    // "Spec" was the internal name for the grammar and read as jargon beside
-    // SOURCE and FOCUS, which name what you are choosing.
-    expect(screen.queryByText('Spec')).toBeNull();
-    for (const label of ['Choose questions', 'Choose PrepTests', 'Refine your set']) {
-      expect(screen.getByText(label)).toBeInTheDocument();
-    }
-    for (const hint of ['PT · Section · Number']) {
-      expect(screen.getByText(hint)).toBeInTheDocument();
-    }
-  });
-
-  it('combines independently selected PT, section, reasoning, feature, and level filters', () => {
-    setup();
-
-    togglePopoverOption(/^PrepTests/, 'pt-101');
-    expect(trigger(/^PrepTests/)).toHaveTextContent('(1)');
-
-    togglePopoverOption(/^Section/, 'section-1');
+    togglePopoverOption(/^PrepTest selector/, 'pt-101');
+    togglePopoverOption(/^Section selector/, 'section-1');
     togglePopoverOption(/^Reasoning Types/, 'rt-Causation');
     togglePopoverOption(/^Question Features/, 'feat-Alternative Cause');
     togglePopoverOption(/^Levels/, 'diff-1');
-
-    expect(trigger(/^PrepTests/)).toHaveTextContent('(1)');
-    expect(trigger(/^Section/)).toHaveTextContent('(1)');
-    expect(trigger(/^Reasoning Types/)).toHaveTextContent('(1)');
-    expect(trigger(/^Question Features/)).toHaveTextContent('(1)');
-    expect(trigger(/^Levels/)).toHaveTextContent('(1)');
     expect(screen.getByText('1 matching question')).toBeInTheDocument();
-    expect(screen.getByText('Which answer most strengthens the argument?')).toBeInTheDocument();
   });
 
-  it('hides unselected zero-count options while keeping a selected zero-count option removable', () => {
+  it('retains a selected option when its contextual count becomes zero', () => {
     setup();
-
     togglePopoverOption(/^Reasoning Types/, 'rt-Comparative Reasoning');
-    applySpec('Q1');
-
+    pasteReferences('Q1');
     expect(screen.getByText('0 matching questions')).toBeInTheDocument();
     fireEvent.click(trigger(/^Reasoning Types/));
-
-    const selectedZeroOption = document.getElementById('rt-Comparative Reasoning');
-    expect(selectedZeroOption).toBeChecked();
-    expect(document.querySelector('label[for="rt-Comparative Reasoning"]')).toHaveTextContent(
-      'Comparison (0)',
-    );
-    expect(document.getElementById('rt-Conditional Reasoning')).toBeNull();
-
-    fireEvent.click(selectedZeroOption!);
-    expect(trigger(/^Reasoning Types/)).not.toHaveTextContent('(1)');
-    expect(screen.getByText('1 matching question')).toBeInTheDocument();
+    expect(document.getElementById('rt-Comparative Reasoning')).toBeChecked();
+    expect(document.querySelector('label[for="rt-Comparative Reasoning"]')).toHaveTextContent('Comparison (0)');
   });
 
-  it('supports per-facet Clear and Clear all without disturbing unrelated filters', () => {
+  it('clears one facet or all filters without removing exact picks', () => {
     setup();
-
-    togglePopoverOption(/^PrepTests/, 'pt-101');
+    pasteReferences('PT101.S1.Q1');
+    togglePopoverOption(/^PrepTest selector/, 'pt-101');
     fireEvent.click(trigger(/^Reasoning Types/));
     fireEvent.click(document.getElementById('rt-Causation')!);
-
-    const reasoningHeader = screen.getByText('Select Reasoning Types').parentElement;
-    expect(reasoningHeader).not.toBeNull();
-    fireEvent.click(within(reasoningHeader!).getByRole('button', { name: 'Clear' }));
-
-    expect(trigger(/^PrepTests/)).toHaveTextContent('(1)');
-    expect(trigger(/^Reasoning Types/)).not.toHaveTextContent('(1)');
-    expect(screen.getByText('5 matching questions')).toBeInTheDocument();
-
+    const header = screen.getByText('Select Reasoning Types').parentElement!;
+    fireEvent.click(within(header).getByRole('button', { name: 'Clear' }));
+    expect(trigger(/^PrepTest selector/)).toHaveAccessibleName(/101/);
     fireEvent.click(screen.getByRole('button', { name: 'Clear all' }));
-    expect(trigger(/^PrepTests/)).not.toHaveTextContent('(1)');
+    expect(screen.getByText('1 added to set')).toBeInTheDocument();
     expect(screen.getByText('7 matching questions')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Clear all' })).not.toBeInTheDocument();
   });
 
-  it('materializes and launches the exact deterministic preview QIDs', async () => {
+  it('finds a question by its dotted address', () => {
+    setup();
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Find questions by text or PrepTest reference' }), {
+      target: { value: 'PT102.S2.Q6' },
+    });
+    expect(screen.getByText('7 matching questions')).toBeInTheDocument();
+    expect(within(screen.getByRole('table')).getAllByRole('row')).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: 'Create set preview (5)' })[0]).toBeEnabled();
+  });
+
+  it('uses the same field for text search and multiple exact questions', () => {
+    setup();
+    const search = screen.getByRole('searchbox', { name: 'Find questions by text or PrepTest reference' });
+    fireEvent.change(search, { target: { value: 'botanical' } });
+    expect(within(screen.getByRole('table')).getAllByRole('row')).toHaveLength(2);
+    expect(screen.queryByRole('button', { name: 'Add questions' })).not.toBeInTheDocument();
+
+    fireEvent.change(search, { target: { value: 'PT101.S1.Q1, PT101.S1.Q2' } });
+    expect(within(screen.getByRole('table')).getAllByRole('row')).toHaveLength(3);
+    fireEvent.click(screen.getByRole('button', { name: 'Add questions' }));
+    expect(screen.getByText('2 added to set')).toBeInTheDocument();
+    expect(search).toHaveValue('');
+  });
+
+  it('previews and launches the exact set shown', () => {
     const { onStartDrill } = setup();
-    togglePopoverOption(/^PrepTests/, 'pt-101');
-
-    fireEvent.click(screen.getAllByRole('button', { name: 'Generate 5' })[0]);
-    fireEvent.click(await screen.findByRole('button', { name: 'Launch this set (5)' }));
-
-    expect(onStartDrill).toHaveBeenCalledTimes(1);
-    expect(onStartDrill.mock.calls[0][0]).toMatchObject({
+    previewSet();
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill (5)' }));
+    expect(onStartDrill).toHaveBeenCalledWith(expect.objectContaining({
       count: 5,
       selectedQids: [
         'PT101-S1-Q1',
@@ -275,119 +258,31 @@ describe('QuestionPicker unified LR drill builder', () => {
         'PT101-S2-Q4',
         'PT101-S1-Q5',
       ],
-    });
+    }));
   });
 
-  it('launches a manual selection instead of the larger matching filter pool', async () => {
-    const { container, onStartDrill } = setup();
-    togglePopoverOption(/^PrepTests/, 'pt-101');
-
-    const firstRow = container.querySelector<HTMLElement>('tbody tr');
-    expect(firstRow).not.toBeNull();
-    fireEvent.click(within(firstRow!).getByRole('checkbox'));
-    fireEvent.click(await screen.findByRole('button', { name: 'Launch (1)' }));
-
-    expect(onStartDrill).toHaveBeenCalledTimes(1);
-    expect(onStartDrill.mock.calls[0][0]).toMatchObject({
-      count: 1,
-      selectedQids: ['PT101-S1-Q1'],
-    });
+  it('guarantees exact picks and fills the remaining places from filters', () => {
+    const { onStartDrill } = setup();
+    pasteReferences('PT102.S2.Q6');
+    togglePopoverOption(/^PrepTest selector/, 'pt-101');
+    previewSet();
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill (5)' }));
+    expect(onStartDrill.mock.calls[0][0].selectedQids).toEqual([
+      'PT102-S2-Q6',
+      'PT101-S1-Q1',
+      'PT101-S1-Q2',
+      'PT101-S2-Q3',
+      'PT101-S2-Q4',
+    ]);
   });
 
-  describe('spec line', () => {
-    it('applies PT, section and multiple question numbers in one commit', () => {
-      setup();
-      applySpec('PT101 S1 Q1,2');
-
-      expect(trigger(/^PrepTests/)).toHaveTextContent('(1)');
-      expect(trigger(/^Section/)).toHaveTextContent('(1)');
-      expect(screen.getByText('2 matching questions')).toBeInTheDocument();
-    });
-
-    it('expresses a set of question numbers the old scalar input could not', () => {
-      setup();
-      applySpec('Q1,3');
-
-      // Two distinct numbers at once. The previous control held exactly one.
-      expect(screen.getByText('2 matching questions')).toBeInTheDocument();
-    });
-
-    it('canonicalizes the text it commits', () => {
-      setup();
-      applySpec('q2,1 pt101');
-
-      expect(screen.getByLabelText('Type a PrepTest, section and question range')).toHaveValue('PT101 Q1,2');
-    });
-
-    it('reflects a popover change back into the bar', () => {
-      setup();
-      togglePopoverOption(/^PrepTests/, 'pt-101');
-
-      expect(screen.getByLabelText('Type a PrepTest, section and question range')).toHaveValue('PT101');
-    });
-
-    it('clears a facet when its tokens are removed, rather than restoring the old value', () => {
-      setup();
-      applySpec('PT101 S1');
-      expect(trigger(/^Section/)).toHaveTextContent('(1)');
-
-      applySpec('PT101');
-      expect(trigger(/^Section/)).not.toHaveTextContent('(1)');
-      expect(trigger(/^PrepTests/)).toHaveTextContent('(1)');
-    });
-
-    it('rejects an invalid spec without touching the filters', () => {
-      setup();
-      applySpec('PT101');
-      applySpec('PT999');
-
-      expect(screen.getByRole('alert')).toHaveTextContent('not in the bank');
-      // The valid earlier commit survives; the bad one wrote nothing.
-      expect(trigger(/^PrepTests/)).toHaveTextContent('(1)');
-    });
-
-    it('surfaces an unreadable token instead of silently ignoring it', () => {
-      setup();
-      applySpec('PT101 flaw');
-
-      expect(screen.getByRole('alert')).toHaveTextContent('flaw');
-    });
-  });
-
-  describe('exact references', () => {
-    function addExact(text: string) {
-      const input = screen.getByLabelText('Add exact questions');
-      fireEvent.change(input, { target: { value: text } });
-      fireEvent.keyDown(input, { key: 'Enter' });
-    }
-
-    it('adds named questions to the selection', async () => {
-      const { onStartDrill } = setup();
-      addExact('PT101.S1.Q1, PT101.S2.Q3');
-
-      fireEvent.click(await screen.findByRole('button', { name: 'Launch (2)' }));
-      expect(onStartDrill.mock.calls[0][0]).toMatchObject({
-        selectedQids: ['PT101-S1-Q1', 'PT101-S2-Q3'],
-      });
-    });
-
-    it('leaves the existing selection byte-identical when one reference is invalid', async () => {
-      setup();
-      addExact('PT101.S1.Q1');
-      expect(await screen.findByRole('button', { name: 'Launch (1)' })).toBeInTheDocument();
-
-      // One good, one nonexistent: the whole submission is a no-op.
-      addExact('PT101.S1.Q2, PT101.S9.Q99');
-
-      expect(screen.getByRole('alert')).toHaveTextContent('Nothing was added');
-      expect(screen.getByRole('button', { name: 'Launch (1)' })).toBeInTheDocument();
-    });
-
-    it('rejects a facet-style token, which belongs in the spec bar', () => {
-      setup();
-      addExact('PT101');
-
-      expect(screen.getByRole('alert')).toHaveTextContent('PT101.S2.Q1');
-    });
+  it('applies a pasted range and rejects invalid references atomically', () => {
+    setup();
+    expect(screen.queryByText('Advanced: add several by reference')).not.toBeInTheDocument();
+    pasteReferences('PT101 S1 Q1,2');
+    expect(screen.getByText('2 matching questions')).toBeInTheDocument();
+    pasteReferences('PT101.S1.Q1, PT101.S9.Q99');
+    expect(screen.getByRole('alert')).toHaveTextContent('Nothing was added');
+    expect(screen.getByText('0 added to set')).toBeInTheDocument();
   });
 });

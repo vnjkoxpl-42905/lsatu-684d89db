@@ -123,6 +123,10 @@ describe('filterLRQuestions', () => {
     expect(filterLRQuestions(QUESTIONS, filters({ searchQuery: 'pt103-s3-q9' }))[0]?.qid).toBe(
       'PT103-S3-Q9',
     );
+    expect(filterLRQuestions([
+      ...QUESTIONS,
+      question({ qid: 'PT101-S1-Q10', qnum: 10 }),
+    ], filters({ searchQuery: 'PT101.S1.Q1' })).map((item) => item.qid)).toEqual(['PT101-S1-Q1']);
   });
 
   it('keeps untagged questions only while reasoning and feature facets are empty', () => {

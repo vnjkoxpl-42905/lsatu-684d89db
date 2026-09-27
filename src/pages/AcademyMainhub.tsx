@@ -35,15 +35,11 @@ function MainhubHero({
   drillReturnTo,
   onOpenBuilder,
   onStartSmartRc,
-  smartDrillPulseActive,
-  onSmartDrillClick,
 }: {
   section: DrillSection;
   drillReturnTo: string;
   onOpenBuilder: () => void;
   onStartSmartRc: () => void;
-  smartDrillPulseActive: boolean;
-  onSmartDrillClick: () => void;
 }) {
   const navigate = useNavigate();
 
@@ -70,13 +66,8 @@ function MainhubHero({
             </p>
           </div>
           <Button
-            onClick={() => {
-              onSmartDrillClick();
-              startSmart();
-            }}
-            className={`drill-observatory-cta mt-5 w-fit${
-              smartDrillPulseActive ? " drill-observatory-smart-drill-pulse" : ""
-            }`}
+            onClick={startSmart}
+            className="drill-observatory-cta drill-observatory-smart-drill-pulse mt-5 w-fit"
           >
             Smart Drill
           </Button>
@@ -148,8 +139,7 @@ function LauncherStage({
 
   return (
     <div className="drill-observatory-launcher relative overflow-hidden">
-      {/* No header here on purpose: QuestionPicker renders its own title and
-          Cancel control, so adding one would show two titles and two Cancels. */}
+      {/* QuestionPicker renders its own title and return control. */}
       <div className="relative z-10">
         {isLoading && (
           <div className="flex flex-col items-center justify-center gap-3 py-14" role="status">
@@ -199,7 +189,6 @@ export default function AcademyMainhub({
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [smartDrillPulseActive, setSmartDrillPulseActive] = React.useState(true);
   const navigate = useNavigate();
 
   /* Which section the hub is showing. URL first, then what this browser
@@ -321,7 +310,7 @@ export default function AcademyMainhub({
   }, [setSearchParams]);
 
   /* Escape leaves a stage. The stage is a room the hub opened, and every other
-     room in this app closes on Escape; the Cancel button stays the visible way
+     room in this app closes on Escape; the return control stays the visible way
      out. Deliberately narrow about when it fires:
 
      - only when a stage is actually open, so it never swallows Escape on the
@@ -376,7 +365,7 @@ export default function AcademyMainhub({
             dark-on-black in dark theme, the mirror of the 1.07:1 ivory-on-cream
             fail it was written to fix. The section switch beside it follows the
             same stage tokens; the finder's trigger is a dark pill either way. */}
-        <div className="drill-observatory-tools">
+        {!isLauncherStage && <div className="drill-observatory-tools">
           <QuestionJump
             returnTo={drillReturnTo}
             tone={theme === "dark" ? "dark" : "light"}
@@ -392,12 +381,12 @@ export default function AcademyMainhub({
             <QuestionFinder returnTo={drillReturnTo} tone="dark" bank={section} />
             <SectionToggle section={section} onChange={changeSection} />
           </div>
-        </div>
+        </div>}
 
         {/* The hero stays mounted across section changes (its content swaps in
             place so the LR/RC switch never shows an empty frame), and leaves
             the page entirely while a stage is open. The launcher carries its
-            own title and Cancel; keeping a 400px hero above it put "Set up an
+            own title and return control; keeping a 400px hero above it put "Set up an
             LR drill" on screen twice, 500px apart, and pushed the builder's
             own title below the fold. */}
         {stage === "default" && (
@@ -406,8 +395,6 @@ export default function AcademyMainhub({
             drillReturnTo={drillReturnTo}
             onOpenBuilder={() => openLauncher("type-drill")}
             onStartSmartRc={startSmartRc}
-            smartDrillPulseActive={smartDrillPulseActive}
-            onSmartDrillClick={() => setSmartDrillPulseActive(false)}
           />
         )}
 
