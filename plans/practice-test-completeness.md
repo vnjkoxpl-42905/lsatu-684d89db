@@ -49,8 +49,20 @@ wanted, 548 returned, none missing and none unexpected.
 no-op when it is not. The count assertions scale with it rather than being
 edited by hand.
 
-One Logical Reasoning question was recovered the same way: PT118 S3 Q22, which
-PT118's sitting depends on.
+One historical Logical Reasoning question was recovered at PT118 S3 Q22 during
+that numeric-completeness repair. The modern official PT118 marks this position
+"Item Removed From Scoring," so it is now a removed marker, not an active
+question. PT118 S1 Q5 is likewise officially removed. Neither counts as a
+missing-data defect or as a question to answer or score.
+
+The modern PT118 labels S3 as an unscored section. Its scored sitting therefore
+offers S1 LR, S2 RC, and S4 LR (77 answerable questions). S3 remains available
+in the bank for reference, with its removed Q22 marker, but is not a scored leg.
+
+Pre-repair student history can contain Section I IDs attached to the shifted
+content. `plans/pt118-history-migration-draft.sql` records a proposed repair,
+but must not run until live row provenance and uniqueness collisions are checked.
+The application preserves existing sittings and blocks inaccurate legacy scores.
 
 ## They carry no written explanation, and that is fine
 
@@ -82,7 +94,9 @@ Lab's own question table has no record of them:
 - `scripts/audit-practice-tests.mjs` exits non-zero while any offered test is
   short. RC rosters come from the source question table, so a missing tail is
   caught, not just an interior gap; LR rosters are the highest number present and
-  are marked with a dagger as the lower bound they are.
+  are marked with a dagger as the lower bound they are. The PT118 LR removed
+  positions are explicit exceptions, checked against the official modern PDF.
+  The audit also catches duplicate LR numbers and duplicate question content.
 - `practiceTest.audit.test.ts` pins the audit's offer rules to the app's real
   `buildPracticeTests`, so the two cannot drift apart.
 - `practiceTest.bank.test.ts` asserts every sitting has a full-length RC section.

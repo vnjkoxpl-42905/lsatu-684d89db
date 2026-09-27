@@ -36,7 +36,8 @@ function realManifest(): QuestionManifest {
     .map((m) => ({
       pt: Number(m[1]),
       section: Number(m[2]),
-      count: (JSON.parse(readFileSync(resolve(DATA, m[0]), 'utf8')) as unknown[]).length,
+      count: (JSON.parse(readFileSync(resolve(DATA, m[0]), 'utf8')) as { status?: string }[])
+        .filter((q) => q.status !== 'removed').length,
       filename: m[0],
     }));
   return { sections } as QuestionManifest;
@@ -62,6 +63,15 @@ function runAudit() {
 describe('the practice-test audit', () => {
   const tests = buildPracticeTests(realManifest(), realRcSections());
   const work = runAudit();
+
+  it('offers the scored PT118 sections S1, S2 RC, and S4', () => {
+    const pt118 = tests.find((test) => test.pt === 118);
+    expect(pt118).toBeDefined();
+    expect(pt118!.legs.map((leg) => [leg.section, leg.kind])).toEqual([
+      [1, 'lr'], [2, 'rc'], [4, 'lr'],
+    ]);
+    expect(pt118!.questionCount).toBe(77);
+  });
 
   it('reads the exact RC roster rather than guessing at it', () => {
     // Without the LSAT Lab question table the audit cannot see a missing tail,

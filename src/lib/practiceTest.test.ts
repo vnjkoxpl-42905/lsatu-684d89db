@@ -3,6 +3,7 @@ import {
   buildPracticeTests,
   estimateScaledScore,
   formatPracticeTestClock,
+  hasOutdatedPt118Structure,
   LR_FULL_SECTION_MIN_QUESTIONS,
   practiceTestPaces,
   practiceTestRunSectionSeconds,
@@ -23,6 +24,30 @@ const manifest = (sections: { pt: number; section: number; count: number }[]) =>
   ({ sections: sections.map((s) => ({ ...s, filename: `PT${s.pt}-S${s.section}-LR.json` })) }) as never;
 
 describe('buildPracticeTests', () => {
+  it('uses only the scored PT118 sections', () => {
+    const [test] = buildPracticeTests(
+      manifest([
+        { pt: 118, section: 1, count: 25 },
+        { pt: 118, section: 3, count: 24 },
+        { pt: 118, section: 4, count: 25 },
+      ]),
+      [rc(118, 2)],
+    );
+    expect(test.legs.map((leg) => leg.section)).toEqual([1, 2, 4]);
+    expect(test.questionCount).toBe(77);
+  });
+
+  it('flags saved PT118 sittings that used the experimental section', () => {
+    const oldRun = {
+      pt: 118,
+      legs: [
+        { kind: 'lr', section: 1, questionCount: 26 },
+        { kind: 'rc', section: 2, questionCount: 27 },
+        { kind: 'lr', section: 3, questionCount: 25 },
+      ],
+    } as never;
+    expect(hasOutdatedPt118Structure(oldRun)).toBe(true);
+  });
   it('builds a three-section test from two LR sections and one RC section', () => {
     const tests = buildPracticeTests(
       manifest([

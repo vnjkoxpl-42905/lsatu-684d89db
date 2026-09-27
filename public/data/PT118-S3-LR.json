@@ -493,20 +493,7 @@
     "practiceTest": "PT118",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "questionType": "Must be True",
-    "reasoningType": [],
-    "questionDifficulty": 4,
-    "stimulus": "In 1988 the government of Country X began using a new computer program to determine the number of people employed in that country. The program simply tallied the number of paychecks per pay period issued by employers in X, and used that figure as its estimate of employment. The government reported that, compared with the immediately preceding quarter, there was a large increase in the number of people employed for the first quarter for which the program was used.",
-    "questionStem": "Which one of the following can be properly concluded from the information above, together with the fact that in the first quarter for which the program was used, some employers in X issued separate paychecks for the regular hours an employee worked, for the employee’s overtime, and for bonuses and commissions?",
-    "answerChoices": {
-      "A": "The government’s estimate of growth in the number of people employed was less accurate after the government began using the new program than it had been before.",
-      "B": "The people who designed the new program were unaware of the fact that some workers in X receive more than one paycheck per pay period.",
-      "C": "The government had not reported strong growth in the number of people employed for the quarters just before the new program was used.",
-      "D": "The government overestimated the total number of people employed in X for the first quarter for which the program was used.",
-      "E": "Contrary to the claims of the government of Country X, there was no growth in the number of people employed in X in the first quarter for which the program was used."
-    },
-    "correctAnswer": "D",
-    "questionFeatures": []
+    "status": "removed"
   },
   {
     "practiceTest": "PT118",

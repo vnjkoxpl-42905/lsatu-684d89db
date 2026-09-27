@@ -156,6 +156,13 @@ export interface PracticeTestRun {
   createdAt: string;
 }
 
+/** Earlier PT118 sittings included experimental S3 and an extra S1 item. */
+export function hasOutdatedPt118Structure(run: PracticeTestRun): boolean {
+  if (run.pt !== 118) return false;
+  const legs = run.legs.map((leg) => `${leg.kind}:${leg.section}:${leg.questionCount}`);
+  return legs.join(',') !== 'lr:1:25,rc:2:27,lr:4:25';
+}
+
 export interface PracticeTestBlueprint {
   pt: number;
   legs: Omit<PracticeTestLeg, 'startedAt' | 'completedAt' | 'correct' | 'answered' | 'timeMs'>[];
@@ -188,9 +195,9 @@ export interface PracticeTestBlueprint {
  * passage carries no answerable questions at all. Reading a passage you cannot
  * be asked about is not practice, it is padding.
  *
- * Where a PrepTest carries a third LR section, the lowest-numbered two are
- * used: the real test administers one unscored experimental section, and
- * which one it was is not in the bank. Section order is the published one.
+ * Where a PrepTest carries a third LR section, use the lowest-numbered two
+ * unless the official key identifies the experimental section. PT118's key
+ * identifies Section III as unscored, so its scored LR sections are I and IV.
  */
 export function buildPracticeTests(
   manifest: QuestionManifest,
@@ -198,6 +205,9 @@ export function buildPracticeTests(
 ): PracticeTestBlueprint[] {
   const lrByPt = new Map<number, { section: number; count: number }[]>();
   for (const s of manifest.sections) {
+    // The modern PT118 key explicitly marks Section III as experimental.
+    // A scored sitting uses its two scored LR sections, I and IV.
+    if (s.pt === 118 && s.section === 3) continue;
     if (s.count < LR_FULL_SECTION_MIN_QUESTIONS) continue;
     const list = lrByPt.get(s.pt);
     if (list) list.push({ section: s.section, count: s.count });

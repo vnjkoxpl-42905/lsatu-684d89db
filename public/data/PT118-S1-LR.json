@@ -95,9 +95,15 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 5,
+    "status": "removed"
+  },
+  {
+    "practiceTest": "PT118",
+    "sectionNumber": 1,
+    "questionNumber": 6,
     "questionType": "Agree/Disagree",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "Maria: Popular music is bad art because it greatly exaggerates the role love plays in everyday life and thereby fails to represent reality accurately.\nTheo: Popular music is not supposed to reflect reality; it performs other artistic functions, such as providing consoling fantasies and helping people create some romance in their often difficult lives. You should understand popular music before you condemn it.",
     "questionStem": "The dialogue provides the most support for the claim that Maria and Theo disagree over whether",
     "answerChoices": {
@@ -106,24 +112,6 @@
       "C": "art should always represent reality as it could be, not as it is",
       "D": "art need not represent reality accurately to be good art",
       "E": "popular music should not be considered to be an art form"
-    },
-    "correctAnswer": "D"
-  },
-  {
-    "practiceTest": "PT118",
-    "sectionNumber": 1,
-    "questionNumber": 6,
-    "questionType": "Method",
-    "reasoningType": [],
-    "questionDifficulty": 3,
-    "stimulus": "An artificial hormone has recently been developed that increases milk production in cows. Its development has prompted some lawmakers to propose that milk labels should be required to provide information to consumers about what artificial substances were used in milk production. This proposal should not be implemented: just imagine trying to list every synthetic fertilizer used to grow the grass and grain the cows ate, or every fungicide used to keep the grain from spoiling!",
-    "questionStem": "The argument proceeds by",
-    "answerChoices": {
-      "A": "proposing an alternative course of action for achieving the objectives of the proposal being argued against",
-      "B": "raising considerations in order to show that the proposal being argued against, if strictly implemented, would lead to absurd consequences",
-      "C": "using specific examples in order to show that an alternative to the proposal being argued against would better achieve the ends to which the original proposal was directed",
-      "D": "introducing a case analogous to the one under consideration to show that a general implementation of the proposal being argued against would be impossible",
-      "E": "questioning the motivation of those who made the proposal being argued against"
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -134,19 +122,19 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 7,
-    "questionType": "Must be True",
+    "questionType": "Method",
     "reasoningType": [
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Trust, which cannot be sustained in the absence of mutual respect, is essential to any long-lasting relationship, personal or professional. However, personal relationships, such as marriage or friendship, additionally require natural affinity. If a personal relationship is to endure, it must be supported by the twin pillars of mutual respect and affinity.",
-    "questionStem": "If the statements above are true, then which one of the following must also be true?",
+    "stimulus": "An artificial hormone has recently been developed that increases milk production in cows. Its development has prompted some lawmakers to propose that milk labels should be required to provide information to consumers about what artificial substances were used in milk production. This proposal should not be implemented: just imagine trying to list every synthetic fertilizer used to grow the grass and grain the cows ate, or every fungicide used to keep the grain from spoiling!",
+    "questionStem": "The argument proceeds by",
     "answerChoices": {
-      "A": "A friendship supported solely by trust and mutual respect will not be long-lasting.",
-      "B": "In the context of any professional relationship, mutual respect presupposes trust.",
-      "C": "If a personal relationship is supported by mutual respect and affinity, it will last a long time.",
-      "D": "Personal relationships, such as marriage or friendship, are longer-lasting than professional relationships.",
-      "E": "Basing a marriage on a natural affinity will ensure that it will endure."
+      "A": "proposing an alternative course of action for achieving the objectives of the proposal being argued against",
+      "B": "raising considerations in order to show that the proposal being argued against, if strictly implemented, would lead to absurd consequences",
+      "C": "using specific examples in order to show that an alternative to the proposal being argued against would better achieve the ends to which the original proposal was directed",
+      "D": "introducing a case analogous to the one under consideration to show that a general implementation of the proposal being argued against would be impossible",
+      "E": "questioning the motivation of those who made the proposal being argued against"
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -160,6 +148,24 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 8,
+    "questionType": "Must be True",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Trust, which cannot be sustained in the absence of mutual respect, is essential to any long-lasting relationship, personal or professional. However, personal relationships, such as marriage or friendship, additionally require natural affinity. If a personal relationship is to endure, it must be supported by the twin pillars of mutual respect and affinity.",
+    "questionStem": "If the statements above are true, then which one of the following must also be true?",
+    "answerChoices": {
+      "A": "A friendship supported solely by trust and mutual respect will not be long-lasting.",
+      "B": "In the context of any professional relationship, mutual respect presupposes trust.",
+      "C": "If a personal relationship is supported by mutual respect and affinity, it will last a long time.",
+      "D": "Personal relationships, such as marriage or friendship, are longer-lasting than professional relationships.",
+      "E": "Basing a marriage on a natural affinity will ensure that it will endure."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT118",
+    "sectionNumber": 1,
+    "questionNumber": 9,
     "questionType": "Principle-Conform",
     "reasoningType": [],
     "questionDifficulty": 2,
@@ -172,12 +178,15 @@
       "D": "Sharon loved cats, but her husband was allergic to them. Still, he was occasionally willing to accompany her to cat shows. As the saying goes, \"Shared lives mean shared loves.\"",
       "E": "Raoul spent a year planning and preparing for a fantastic ski trip. He enjoyed his ski trip greatly until he broke his leg and had to spend two weeks in the hospital. As the saying goes, \"All's well that ends well.\""
     },
-    "correctAnswer": "A"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT118",
     "sectionNumber": 1,
-    "questionNumber": 9,
+    "questionNumber": 10,
     "questionType": "Agree/Disagree",
     "reasoningType": [],
     "questionDifficulty": 2,
@@ -190,27 +199,6 @@
       "D": "inferior art from past eras is generally forgotten",
       "E": "one can correctly assess the quality of art only if it was produced in past eras"
     },
-    "correctAnswer": "E",
-    "questionFeatures": [
-      "Principles in Stimulus"
-    ]
-  },
-  {
-    "practiceTest": "PT118",
-    "sectionNumber": 1,
-    "questionNumber": 10,
-    "questionType": "Parallel Flaw",
-    "reasoningType": [],
-    "questionDifficulty": 2,
-    "stimulus": "The average cost of groceries will rise again next month. Consequently, butter and eggs can be expected to cost more next month.",
-    "questionStem": "The flawed reasoning in the argument above most closely parallels the reasoning in which one of the following?",
-    "answerChoices": {
-      "A": "The price of gasoline has been rising each month for the past year. Therefore, we can expect to pay more for gasoline next month.",
-      "B": "Either the government will reduce taxes or the economy will fall into a recession. The government is unlikely to reduce taxes. Therefore, the economy will fall into a recession.",
-      "C": "The average amount of time spent by people younger than 20 in watching television has recently risen rapidly. Therefore, the amount of time fourth graders spend watching television must have risen recently.",
-      "D": "Since sugar is a major ingredient in ice cream, the price of ice cream increases whenever the price of sugar increases. The price of sugar is expected to increase next month. Therefore, the price of ice cream can be expected to increase next month.",
-      "E": "Real estate prices go down when the population of those from 20 to 30 years old declines, and the number in that age group will decrease over the next decade. Therefore, real estate prices will go down over that period."
-    },
     "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
@@ -221,19 +209,19 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 11,
-    "questionType": "Weaken",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Biologists have noted reproductive abnormalities in fish that are immediately downstream of paper mills. One possible cause is dioxin, which paper mills release daily and which can alter the concentration of hormones in fish. However, dioxin is unlikely to be the cause, since the fish recover normal hormone concentrations relatively quickly during occasional mill shutdowns and dioxin decomposes very slowly in the environment.",
-    "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
+    "stimulus": "The average cost of groceries will rise again next month. Consequently, butter and eggs can be expected to cost more next month.",
+    "questionStem": "The flawed reasoning in the argument above most closely parallels the reasoning in which one of the following?",
     "answerChoices": {
-      "A": "Some of the studies that show that fish recover quickly during shutdowns were funded by paper manufacturers.",
-      "B": "The rate at which dioxin decomposes varies depending on the conditions to which it is exposed.",
-      "C": "Normal river currents carry the dioxin present in the river far downstream in a few hours.",
-      "D": "Some of the fish did not recover rapidly from the physiological changes that were induced by the changes in hormone concentrations.",
-      "E": "The connection between hormone concentrations and reproductive abnormalities is not thoroughly understood."
+      "A": "The price of gasoline has been rising each month for the past year. Therefore, we can expect to pay more for gasoline next month.",
+      "B": "Either the government will reduce taxes or the economy will fall into a recession. The government is unlikely to reduce taxes. Therefore, the economy will fall into a recession.",
+      "C": "The average amount of time spent by people younger than 20 in watching television has recently risen rapidly. Therefore, the amount of time fourth graders spend watching television must have risen recently.",
+      "D": "Since sugar is a major ingredient in ice cream, the price of ice cream increases whenever the price of sugar increases. The price of sugar is expected to increase next month. Therefore, the price of ice cream can be expected to increase next month.",
+      "E": "Real estate prices go down when the population of those from 20 to 30 years old declines, and the number in that age group will decrease over the next decade. Therefore, real estate prices will go down over that period."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -246,17 +234,17 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 12,
-    "questionType": "Flaw",
+    "questionType": "Weaken",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "If the play were successful, it would be adapted as a movie or revived at the Decade Festival. But it is not successful. We must, regrettably, conclude that it will neither become a movie nor be revived at the Decade Festival.",
-    "questionStem": "The argument's reasoning is flawed because the argument",
+    "stimulus": "Biologists have noted reproductive abnormalities in fish that are immediately downstream of paper mills. One possible cause is dioxin, which paper mills release daily and which can alter the concentration of hormones in fish. However, dioxin is unlikely to be the cause, since the fish recover normal hormone concentrations relatively quickly during occasional mill shutdowns and dioxin decomposes very slowly in the environment.",
+    "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
     "answerChoices": {
-      "A": "fails to draw the conclusion that the play will not both be adapted as a movie and be revived at the Decade Festival, rather than that it will do neither",
-      "B": "fails to explain in exactly what way the play is unsuccessful",
-      "C": "equates the play's aesthetic worth with its commercial success",
-      "D": "presumes, without providing justification, that there are no further avenues for the play other than adaptation as a movie or revival at the Decade Festival",
-      "E": "fails to recognize that the play's not satisfying one sufficient condition does not preclude its satisfying a different sufficient condition for adaptation as a movie or revival at the Decade Festival"
+      "A": "Some of the studies that show that fish recover quickly during shutdowns were funded by paper manufacturers.",
+      "B": "The rate at which dioxin decomposes varies depending on the conditions to which it is exposed.",
+      "C": "Normal river currents carry the dioxin present in the river far downstream in a few hours.",
+      "D": "Some of the fish did not recover rapidly from the physiological changes that were induced by the changes in hormone concentrations.",
+      "E": "The connection between hormone concentrations and reproductive abnormalities is not thoroughly understood."
     },
     "correctAnswer": "C",
     "questionFeatures": [
@@ -268,11 +256,32 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 13,
-    "questionType": "Strengthen",
+    "questionType": "Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
+    "stimulus": "If the play were successful, it would be adapted as a movie or revived at the Decade Festival. But it is not successful. We must, regrettably, conclude that it will neither become a movie nor be revived at the Decade Festival.",
+    "questionStem": "The argument's reasoning is flawed because the argument",
+    "answerChoices": {
+      "A": "fails to draw the conclusion that the play will not both be adapted as a movie and be revived at the Decade Festival, rather than that it will do neither",
+      "B": "fails to explain in exactly what way the play is unsuccessful",
+      "C": "equates the play's aesthetic worth with its commercial success",
+      "D": "presumes, without providing justification, that there are no further avenues for the play other than adaptation as a movie or revival at the Decade Festival",
+      "E": "fails to recognize that the play's not satisfying one sufficient condition does not preclude its satisfying a different sufficient condition for adaptation as a movie or revival at the Decade Festival"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT118",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 2,
     "stimulus": "Physician: In order to investigate diseases caused by hormonal imbalances, a certain researcher wants to study, among others, 200 children whose pituitary glands fail to produce typical amounts of Human Growth Hormone (HGH). The study would involve administering a synthetic version of HGH to the children over a two-year period. But medical research should be permitted only if it is likely to reveal important information about a medical condition and is known to pose only a minimal risk to the subjects. The researcher's proposed study should be prohibited.",
     "questionStem": "Which one of the following, if true, would most help to justify the physician's argumentation?",
     "answerChoices": {
@@ -284,16 +293,16 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Science"
     ]
   },
   {
     "practiceTest": "PT118",
     "sectionNumber": 1,
-    "questionNumber": 14,
+    "questionNumber": 15,
     "questionType": "Flaw",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "At the request of Grove Park residents, speed bumps were installed on all streets in their neighborhood. However, although through traffic does cause noise and congestion in Grove Park, this remedy is blatantly unfair. The neighborhood is not a private community, and its streets were built with public funds, and thus all drivers have the right to use them whenever they please.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
@@ -305,13 +314,13 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Science"
+      "Famous Flaws"
     ]
   },
   {
     "practiceTest": "PT118",
     "sectionNumber": 1,
-    "questionNumber": 15,
+    "questionNumber": 16,
     "questionType": "Weaken",
     "reasoningType": [],
     "questionDifficulty": 3,
@@ -324,27 +333,6 @@
       "D": "Many posthumously published books would have been published by the author had the author lived.",
       "E": "Some heirs of successful writers do not consider themselves qualified to judge the merits of a literary work."
     },
-    "correctAnswer": "E",
-    "questionFeatures": [
-      "Famous Flaws"
-    ]
-  },
-  {
-    "practiceTest": "PT118",
-    "sectionNumber": 1,
-    "questionNumber": 16,
-    "questionType": "Main Conclusion",
-    "reasoningType": [],
-    "questionDifficulty": 3,
-    "stimulus": "In practice the government will have the last word on what an individual's rights are, because its police will do what its officials and courts say. But that does not mean that the government's view is necessarily the correct view; anyone who thinks it is must believe that persons have only such moral rights as the government chooses to grant, which means that they have no moral rights at all.",
-    "questionStem": "Which one of the following most accurately expresses the conclusion of the argument?",
-    "answerChoices": {
-      "A": "Individuals have no rights at all unless the government says that they do.",
-      "B": "What government officials and courts say an individual's rights are may not be correct.",
-      "C": "Individuals have rights unless the government says that they do not.",
-      "D": "The police always agree with government officials and the courts about what an individual's rights are.",
-      "E": "One should always try to uphold one's individual rights against the government's view of what those rights are."
-    },
     "correctAnswer": "C",
     "questionFeatures": [
       "Plans / Recommendations"
@@ -354,17 +342,17 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 17,
-    "questionType": "Weaken",
+    "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "There is evidence to suggest that our cave-dwelling ancestors polished many of their flints to a degree far surpassing what was necessary for hunting purposes. It seems, therefore, that early humans possessed an aesthetic sense.",
-    "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
+    "stimulus": "In practice the government will have the last word on what an individual's rights are, because its police will do what its officials and courts say. But that does not mean that the government's view is necessarily the correct view; anyone who thinks it is must believe that persons have only such moral rights as the government chooses to grant, which means that they have no moral rights at all.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the argument?",
     "answerChoices": {
-      "A": "Most flints used by our cave-dwelling ancestors were not highly polished.",
-      "B": "The caves in which the highly polished flints were found are unadorned by cave paintings.",
-      "C": "There is evidence that these highly polished flints were used for display in religious ceremonies.",
-      "D": "Flints were often used by early humans for everyday chores other than hunting.",
-      "E": "Any benefits that an aesthetic sense would have given to cave-dwelling humans are poorly understood."
+      "A": "Individuals have no rights at all unless the government says that they do.",
+      "B": "What government officials and courts say an individual's rights are may not be correct.",
+      "C": "Individuals have rights unless the government says that they do not.",
+      "D": "The police always agree with government officials and the courts about what an individual's rights are.",
+      "E": "One should always try to uphold one's individual rights against the government's view of what those rights are."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -376,6 +364,27 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 18,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "There is evidence to suggest that our cave-dwelling ancestors polished many of their flints to a degree far surpassing what was necessary for hunting purposes. It seems, therefore, that early humans possessed an aesthetic sense.",
+    "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "Most flints used by our cave-dwelling ancestors were not highly polished.",
+      "B": "The caves in which the highly polished flints were found are unadorned by cave paintings.",
+      "C": "There is evidence that these highly polished flints were used for display in religious ceremonies.",
+      "D": "Flints were often used by early humans for everyday chores other than hunting.",
+      "E": "Any benefits that an aesthetic sense would have given to cave-dwelling humans are poorly understood."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT118",
+    "sectionNumber": 1,
+    "questionNumber": 19,
     "questionType": "Strengthen",
     "reasoningType": [],
     "questionDifficulty": 3,
@@ -388,27 +397,6 @@
       "D": "If a compromise between the proponents of economic growth and the environmentalists had been enacted rather than the current policies, the environment would have seen significantly less improvement.",
       "E": "The concern demonstrated by a nation for the health and integrity of its natural ecosystems leads to an increase in that nation's wealth."
     },
-    "correctAnswer": "D",
-    "questionFeatures": [
-      "Explain Curious Fact"
-    ]
-  },
-  {
-    "practiceTest": "PT118",
-    "sectionNumber": 1,
-    "questionNumber": 19,
-    "questionType": "Flaw",
-    "reasoningType": [],
-    "questionDifficulty": 3,
-    "stimulus": "Reviewer: Many historians claim, in their own treatment of subject matter, to be as little affected as any natural scientist by moral or aesthetic preconceptions. But we clearly cannot accept these proclamations of objectivity, for it is easy to find instances of false historical explanations embodying the ideological and other prejudices of their authors.",
-    "questionStem": "The reviewer's reasoning is most vulnerable to criticism on the grounds that it",
-    "answerChoices": {
-      "A": "takes for granted that the model of objectivity offered by the natural sciences should apply in other fields",
-      "B": "offers evidence that undermines rather than supports the conclusion it reaches",
-      "C": "fails to recognize that many historians employ methodologies that are intended to uncover and compensate for prejudices",
-      "D": "takes for granted that some historical work that embodies prejudices is written by historians who purport to be objective",
-      "E": "fails to recognize that not all historical explanations embodying ideologies are false"
-    },
     "correctAnswer": "A",
     "questionFeatures": [
       "Science"
@@ -418,19 +406,19 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 20,
-    "questionType": "Sufficient Assumption",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Although the geological record contains some hints of major meteor impacts preceding mass extinctions, there were many extinctions that did not follow any known major meteor impacts. Likewise, there are many records of major meteor impacts that do not seem to have been followed by mass extinctions. Thus the geological record suggests that there is no consistent causal link between major meteor impacts and mass extinctions.",
-    "questionStem": "Which one of the following assumptions enables the argument's conclusion to be properly inferred?",
+    "stimulus": "Reviewer: Many historians claim, in their own treatment of subject matter, to be as little affected as any natural scientist by moral or aesthetic preconceptions. But we clearly cannot accept these proclamations of objectivity, for it is easy to find instances of false historical explanations embodying the ideological and other prejudices of their authors.",
+    "questionStem": "The reviewer's reasoning is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
-      "A": "If there were a consistent causal link between major meteor impacts and mass extinctions, then all major meteor impacts would be followed by mass extinctions.",
-      "B": "Major meteor impacts and mass extinctions cannot be consistently causally linked unless many mass extinctions have followed major meteor impacts.",
-      "C": "Of the mass extinctions that did not follow any known major meteor impacts, few if any followed major meteor impacts of which the geological record contains no hints.",
-      "D": "If there is no consistent causal link between major meteor impacts and mass extinctions, then not all mass extinctions could have followed major meteor impacts.",
-      "E": "There could be a consistent causal link between major meteor impacts and mass extinctions even if not every major meteor impact has been followed by a mass extinction."
+      "A": "takes for granted that the model of objectivity offered by the natural sciences should apply in other fields",
+      "B": "offers evidence that undermines rather than supports the conclusion it reaches",
+      "C": "fails to recognize that many historians employ methodologies that are intended to uncover and compensate for prejudices",
+      "D": "takes for granted that some historical work that embodies prejudices is written by historians who purport to be objective",
+      "E": "fails to recognize that not all historical explanations embodying ideologies are false"
     },
     "correctAnswer": "D",
     "questionFeatures": [
@@ -442,17 +430,17 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 21,
-    "questionType": "Must be True",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "When uncontrollable factors such as lack of rain cause farmers' wheat crops to fail, fertilizer and seed dealers, as well as truckers and mechanics, lose business, and fuel suppliers are unable to sell enough diesel fuel to make a profit.",
-    "questionStem": "Which one of the following claims follows logically from the information above?",
+    "stimulus": "Although the geological record contains some hints of major meteor impacts preceding mass extinctions, there were many extinctions that did not follow any known major meteor impacts. Likewise, there are many records of major meteor impacts that do not seem to have been followed by mass extinctions. Thus the geological record suggests that there is no consistent causal link between major meteor impacts and mass extinctions.",
+    "questionStem": "Which one of the following assumptions enables the argument's conclusion to be properly inferred?",
     "answerChoices": {
-      "A": "If several of the businesses that sell to farmers do not prosper, it is because farming itself is not prospering.",
-      "B": "If rainfall is below average, those businesses that profit from farmers' purchases tend to lose money.",
-      "C": "Farmers are not responsible for the consequences of a wheat crop's failing if wheat growth has been affected by lack of rain.",
-      "D": "A country's dependence on agriculture can lead to major economic crises.",
-      "E": "The consequences of a drought are not restricted to the drought's impact on farm productivity."
+      "A": "If there were a consistent causal link between major meteor impacts and mass extinctions, then all major meteor impacts would be followed by mass extinctions.",
+      "B": "Major meteor impacts and mass extinctions cannot be consistently causally linked unless many mass extinctions have followed major meteor impacts.",
+      "C": "Of the mass extinctions that did not follow any known major meteor impacts, few if any followed major meteor impacts of which the geological record contains no hints.",
+      "D": "If there is no consistent causal link between major meteor impacts and mass extinctions, then not all mass extinctions could have followed major meteor impacts.",
+      "E": "There could be a consistent causal link between major meteor impacts and mass extinctions even if not every major meteor impact has been followed by a mass extinction."
     },
     "correctAnswer": "A",
     "questionFeatures": [
@@ -464,17 +452,17 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 22,
-    "questionType": "Sufficient Assumption",
+    "questionType": "Must be True",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "For each action we perform, we can know only some of its consequences. Thus the view that in no situation can we know what action is morally right would be true if an action's being morally right were the same as the action's having the best consequences.",
-    "questionStem": "The conclusion follows logically if which one of the following is assumed?",
+    "stimulus": "When uncontrollable factors such as lack of rain cause farmers' wheat crops to fail, fertilizer and seed dealers, as well as truckers and mechanics, lose business, and fuel suppliers are unable to sell enough diesel fuel to make a profit.",
+    "questionStem": "Which one of the following claims follows logically from the information above?",
     "answerChoices": {
-      "A": "On some occasions we can come to learn that it is morally wrong to perform a certain action.",
-      "B": "On some occasions we can know what action is morally right.",
-      "C": "Knowing that an action has the best consequences requires knowing all the consequences of that action.",
-      "D": "Only the immediate consequences of our actions are relevant in determining whether they are morally right.",
-      "E": "An action may be morally right for one particular person without being morally right for all people."
+      "A": "If several of the businesses that sell to farmers do not prosper, it is because farming itself is not prospering.",
+      "B": "If rainfall is below average, those businesses that profit from farmers' purchases tend to lose money.",
+      "C": "Farmers are not responsible for the consequences of a wheat crop's failing if wheat growth has been affected by lack of rain.",
+      "D": "A country's dependence on agriculture can lead to major economic crises.",
+      "E": "The consequences of a drought are not restricted to the drought's impact on farm productivity."
     },
     "correctAnswer": "E",
     "questionFeatures": [
@@ -485,9 +473,27 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 23,
-    "questionType": "Flaw",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [],
     "questionDifficulty": 4,
+    "stimulus": "For each action we perform, we can know only some of its consequences. Thus the view that in no situation can we know what action is morally right would be true if an action's being morally right were the same as the action's having the best consequences.",
+    "questionStem": "The conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "On some occasions we can come to learn that it is morally wrong to perform a certain action.",
+      "B": "On some occasions we can know what action is morally right.",
+      "C": "Knowing that an action has the best consequences requires knowing all the consequences of that action.",
+      "D": "Only the immediate consequences of our actions are relevant in determining whether they are morally right.",
+      "E": "An action may be morally right for one particular person without being morally right for all people."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT118",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 3,
     "stimulus": "In criminal proceedings, defense attorneys occasionally attempt to establish that a suspect was not present at the commission of a crime by comparing the suspect's DNA to the DNA of blood or hair samples taken from the scene of the crime. Although every person's DNA is unique, DNA tests often fail to distinguish among DNA samples taken from distinct individuals. Hence, it is a mistake to exonerate a suspect simply because that person's DNA did not match the DNA samples taken from the scene of the crime.",
     "questionStem": "Which one of the following is an error in the reasoning above?",
     "answerChoices": {
@@ -496,24 +502,6 @@
       "C": "It generalizes about the reliability of all methods used to identify those involved in the commission of a crime on the basis of results that pertain to only a few such methods.",
       "D": "It relies on experimental data derived from DNA testing that have not been shown to hold under nonexperimental conditions.",
       "E": "It fails to demonstrate that physical evidence taken from the scene of a crime is the only sort of evidence that should be admitted in criminal court proceedings."
-    },
-    "correctAnswer": "C"
-  },
-  {
-    "practiceTest": "PT118",
-    "sectionNumber": 1,
-    "questionNumber": 24,
-    "questionType": "Parallel",
-    "reasoningType": [],
-    "questionDifficulty": 3,
-    "stimulus": "Some visitors to the park engage in practices that seriously harm the animals. Surely, no one who knew that these practices seriously harm the animals would engage in them. So it must be concluded that some of the visitors do not know that these practices seriously harm the animals.",
-    "questionStem": "The pattern of reasoning exhibited by which one of the following arguments is most similar to that exhibited by the argument above?",
-    "answerChoices": {
-      "A": "Some of the people who worked on the failed project will be fired. Everyone in this department played an important part in that project. Therefore some people in this department will be fired.",
-      "B": "Some of the people who signed the petition were among the mayor's supporters. Yet the mayor denounced everyone who signed the petition. Hence the mayor denounced some of her own supporters.",
-      "C": "Some of the people polled live outside the city limits. However, no one who can vote in city elections lives outside the city. Therefore some of the people polled cannot vote in the upcoming city election.",
-      "D": "All of the five original planners are responsible for this problem. Yet none of the original planners will admit responsibility for the problem. Thus some of the people responsible for the problem will not admit responsibility.",
-      "E": "Some members of the Liberal Party are in favor of the proposed ordinance. But all members of the city council are opposed to the proposed ordinance. Hence some members of the city council are not Liberals."
     },
     "correctAnswer": "B",
     "questionFeatures": [
@@ -525,17 +513,17 @@
     "practiceTest": "PT118",
     "sectionNumber": 1,
     "questionNumber": 25,
-    "questionType": "Strengthen",
+    "questionType": "Parallel",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Rapid population growth can be disastrous for a small city. Ideally there should be at least one municipal employee for every hundred residents; when too many people move in at once, city services responsible for utilities and permits are quickly overloaded. Most city budgets do not allow for the immediate hiring of new staff.",
-    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "stimulus": "Some visitors to the park engage in practices that seriously harm the animals. Surely, no one who knew that these practices seriously harm the animals would engage in them. So it must be concluded that some of the visitors do not know that these practices seriously harm the animals.",
+    "questionStem": "The pattern of reasoning exhibited by which one of the following arguments is most similar to that exhibited by the argument above?",
     "answerChoices": {
-      "A": "During budget shortages, small cities tend to place a high priority on basic municipal services while cutting back on less essential services.",
-      "B": "New residents of any city bring with them new ideas about how a city should be run.",
-      "C": "Some large cities can absorb rapid population growth more readily than many small cities can.",
-      "D": "A low unemployment rate is one of the main reasons that new residents move to a city.",
-      "E": "New residents of most small cities do not start paying city taxes for at least a year."
+      "A": "Some of the people who worked on the failed project will be fired. Everyone in this department played an important part in that project. Therefore some people in this department will be fired.",
+      "B": "Some of the people who signed the petition were among the mayor's supporters. Yet the mayor denounced everyone who signed the petition. Hence the mayor denounced some of her own supporters.",
+      "C": "Some of the people polled live outside the city limits. However, no one who can vote in city elections lives outside the city. Therefore some of the people polled cannot vote in the upcoming city election.",
+      "D": "All of the five original planners are responsible for this problem. Yet none of the original planners will admit responsibility for the problem. Thus some of the people responsible for the problem will not admit responsibility.",
+      "E": "Some members of the Liberal Party are in favor of the proposed ordinance. But all members of the city council are opposed to the proposed ordinance. Hence some members of the city council are not Liberals."
     },
     "correctAnswer": "C",
     "questionFeatures": [

@@ -74,6 +74,7 @@ export default function OfficialAnswerNavigator({
         {showQuestionList ? (
           <AnswerOvals
             questionQueue={questionQueue}
+            useOfficialQuestionNumbers
             currentIndex={currentIndex}
             attemptedQids={attemptedQids}
             jumpEnabled={jumpEnabled}
