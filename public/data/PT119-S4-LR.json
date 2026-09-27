@@ -175,10 +175,8 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Sufficient Assumption",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 1,
+    "reasoningType": [],
+    "questionDifficulty": 4,
     "stimulus": "Some students attending a small university with a well-known choir live off campus. From the fact that all music majors are members of the choir, a professor in the music department concluded that none of the students who live off campus is a music major.",
     "questionStem": "The professor's conclusion is properly drawn if which one of the following is assumed?",
     "answerChoices": {
@@ -190,7 +188,7 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Quantifiers"
     ]
   },
   {
@@ -198,8 +196,10 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Main Conclusion",
-    "reasoningType": [],
-    "questionDifficulty": 4,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "Journalist: A free marketplace of ideas ensures that all ideas get a fair hearing. Even ideas tainted with prejudice and malice can prompt beneficial outcomes. In most countries, however, the government is responsible for over half the information released to the public through all media. For this reason, the power of governments over information needs to be curtailed. Everyone grants that governments should not suppress free expression, yet governments continue to construct near monopolies on the publication and dissemination of enormous amounts of information.",
     "questionStem": "Which one of the following most accurately expresses the conclusion of the journalist's argument?",
     "answerChoices": {
@@ -211,7 +211,7 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Quantifiers"
+      "Plans / Recommendations"
     ]
   },
   {

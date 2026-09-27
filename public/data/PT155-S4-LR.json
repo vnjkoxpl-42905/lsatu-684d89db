@@ -390,7 +390,11 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Most Supported",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "In an effort to boost milk production, some dairy farmers are treating cows with a genetically engineered hormone called BST. Consumer groups have opposed the use of BST even though the milk of BST-treated cows is identical in nutritional value to that of untreated cows; the treated cows run a greater risk of infection and hence are more likely to be given antibiotics, which may show up in their milk. In high levels, these antibiotics may be harmful to humans. Yet the milk of treated and untreated cows alike is regularly screened for antibiotics.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
     "answerChoices": {
@@ -401,14 +405,20 @@
       "E": "The only threat posed by drinking milk from cows treated with BST is high levels of antibiotics."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT155",
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Role",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "Legislator: University humanities departments bring in less tuition and grant money than science departments. But because teaching and research cost significantly less in the humanities than in the sciences, humanities departments bring in more money than they spend while the reverse is true of science departments. As a result, contrary to the typical characterization that humanities departments freeload on science departments, humanities departments actually subsidize science departments. Thus, it is a mistake for universities to cut humanities departments when facing budget shortfalls.",
     "questionStem": "Which one of the following most accurately describes the role played in the legislator's argument by the claim that teaching and research cost significantly less in the humanities than in the sciences?",
     "answerChoices": {
@@ -419,14 +429,21 @@
       "E": "It is one of many claims each presented as independent support for the argument's overall conclusion."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT155",
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Weaken",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Certain changes in North American residential architecture after World War II are attributable mainly to the increased availability and affordability of air-conditioning. Soon after World War II, many builders found that air-conditioned houses lacking the high ceilings and thick walls that traditionally kept residents cool during extreme heat generally sold well.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
     "answerChoices": {
@@ -437,7 +454,12 @@
       "E": "Soon after World War II, new thermal-insulating technology was widely applied in house building."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility",
+      "Timeframes",
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT155",

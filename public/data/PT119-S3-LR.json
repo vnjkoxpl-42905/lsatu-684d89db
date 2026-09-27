@@ -5,6 +5,7 @@
     "questionNumber": 1,
     "questionType": "Paradox",
     "reasoningType": [],
+    "questionDifficulty": 1,
     "stimulus": "Sambar deer are physically incapable of digesting meat. Yet sambar deer have been reported feeding on box turtles after killing them.",
     "questionStem": "Which one of the following, if true, best resolves the discrepancy above?",
     "answerChoices": {
@@ -22,7 +23,10 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "Benson: In order to maintain the quality of life in our city, we need to restrict growth. That is why I support the new zoning regulations.Willett: I had heard such arguments ten years ago, and again five years ago. Each time the city council was justified in deciding not to restrict growth. Since there is nothing new in this idea of restricting growth, I oppose the regulations.",
     "questionStem": "Which one of the following most accurately describes a way in which Willett's reasoning is questionable?",
     "answerChoices": {
@@ -40,7 +44,10 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Evaluate",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "A recent study involved feeding a high-salt diet to a rat colony. A few months after the experiment began, standard tests of the rats’ blood pressure revealed that about 25 percent of the colony had normal, healthy blood pressure, about 70 percent of the colony had high blood pressure, and 5 percent of the colony had extremely high blood pressure. The conclusion from these results is that high-salt diets are linked to high blood pressure in rats.",
     "questionStem": "The answer to which one of the following questions is most relevant to evaluating the conclusion drawn above?",
     "answerChoices": {
@@ -51,7 +58,11 @@
       "E": "Have other species of rodents been used in experiments of the same kind?"
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Science",
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -59,6 +70,7 @@
     "questionNumber": 4,
     "questionType": "Flaw",
     "reasoningType": [],
+    "questionDifficulty": 1,
     "stimulus": "Detective: Bill has been accused of committing the burglary at the warehouse last night. But no one saw Bill in the vicinity of the warehouse. So we must conclude that Bill did not commit the burglary.",
     "questionStem": "The reasoning in the detective's argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
@@ -69,7 +81,9 @@
       "E": "fails to establish the true identity of the burglar"
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -128,6 +142,7 @@
     "questionNumber": 7,
     "questionType": "Flaw",
     "reasoningType": [],
+    "questionDifficulty": 2,
     "stimulus": "Numerous books describe the rules of etiquette. Usually the authors of such books merely codify standards of behavior by classifying various behaviors as polite or rude. However, this suggests that there is a single, objective standard of politeness. Clearly, standards of politeness vary from culture to culture, so it is absurd to label any one set of behaviors as correct and others as incorrect.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
@@ -145,7 +160,10 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Principle-Conform",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "In jazz history, there have been gifted pianists who, because they had no striking musical ideas, led no memorable recording sessions. But precisely because they lacked such ideas, they were able to respond quickly to the ideas of imaginative and difficult leaders. Thus, these pianists are often heard adding masterful touches to some of the greatest jazz recordings.",
     "questionStem": "Which one of the following principles is best illustrated by the information above?",
     "answerChoices": {
@@ -156,7 +174,11 @@
       "E": "No one can achieve great success without the help of others who are able to bring one's ideas to fruition."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Principles in Answers",
+      "Causal Difference-Maker",
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -199,7 +221,10 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Must be True",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "In early 1990, Queenston instituted a tax increase that gave its school system a larger operating budget. The school system used the larger budget to increase the total number of teachers in the system by 30 percent between 1990 and 1993. Nevertheless, there was no change in the average number of students per teacher between 1990 and 1993.",
     "questionStem": "If the statements above are true, then on the basis of them which one of the following must also be true?",
     "answerChoices": {
@@ -210,7 +235,11 @@
       "E": "The most inefficiently run government bureaucracy receives the most funding of any government bureaucracy."
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Timeframes",
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -423,6 +452,7 @@
     "questionNumber": 21,
     "questionType": "Main Conclusion",
     "reasoningType": [],
+    "questionDifficulty": 3,
     "stimulus": "Baumgartner’s comparison of the environmental hazards of gasoline-powered cars with those of electric cars is misleading. He examines only production of the cars, whereas it is the product’s total life cycle—production, use, and recycling—that matters in determining its environmental impact. A typical gasoline-powered car consumes 3 times more resources and produces 15 to 20 times more air pollution than a typical electric car.",
     "questionStem": "Which one of the following most accurately expresses the conclusion of the argument?",
     "answerChoices": {
@@ -433,14 +463,21 @@
       "E": "The production of gasoline-powered cars creates more environmental hazards than does that of electric cars."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Net Effect",
+      "Rebuttals",
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT119",
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Over the last 10 years, there has been a dramatic increase in the number of people over the age of 65 living in this region. This is evident from the fact that during this time the average age of people living in this region has increased from approximately 52 to 57 years.",
     "questionStem": "Which one of the following, if true, would most strengthen the argument?",
     "answerChoices": {
@@ -451,14 +488,19 @@
       "E": "The average age for people in the region is higher than that for people in surrounding regions."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT119",
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Editorial: A recently passed law limits freedom of speech in order to silence dissenters. It has been said that those who are ignorant of history will repeat its patterns. If this is true, then those responsible for passing the law must be ignorant of a great deal of history. Historically, silencing dissenters has tended to promote undemocratic policies and the establishment of authoritarian regimes.",
     "questionStem": "The editorialist's reasoning is flawed in that it fails to take into account that",
     "answerChoices": {
@@ -469,7 +511,10 @@
       "E": "even those who are not ignorant of history may repeat its patterns"
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Famous Flaws",
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -477,6 +522,7 @@
     "questionNumber": 24,
     "questionType": "Sufficient Assumption",
     "reasoningType": [],
+    "questionDifficulty": 5,
     "stimulus": "Editorialist: Despite the importance it seems to have in our lives, money does not really exist. This is evident from the fact that all that would be needed to make money disappear would be a universal loss of belief in it. We witness this phenomenon on a small scale daily in the rises and falls of financial markets, whose fluctuations are often entirely independent of concrete causes and are the results of mere beliefs of investors.",
     "questionStem": "The conclusion of the editorialist's argument can be properly drawn if which one of the following is assumed?",
     "answerChoices": {

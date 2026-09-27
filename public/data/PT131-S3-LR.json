@@ -4,7 +4,10 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Paradox",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "New technologies that promise to extend life and decrease pain involve innovations that require extensive scientific research. Therefore, investment in such technologies is very risky, because innovations requiring extensive scientific research also require large amounts of capital but are unlikely to provide any financial return. Nonetheless, some people are willing to invest in these new technologies.",
     "questionStem": "Which one of the following, if true, most helps to explain why some people are willing to invest in new technologies that promise to extend life and decrease pain?",
     "answerChoices": {
@@ -22,7 +25,10 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Weaken",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "A university psychology department received a large donation from a textbook company after agreeing to use one of the company's books for a large introductory course. The department chair admitted that the department would not have received the donation if it used another company's textbook, but insisted that the book was chosen solely for academic reasons. As proof, she noted that the department's textbook committee had given that textbook its highest rating.",
     "questionStem": "Which one of the following, if true, most weakens the case for the department chair's position?",
     "answerChoices": {
@@ -33,7 +39,10 @@
       "E": "The textbook company does not routinely make donations to academic departments that use its books."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -41,7 +50,6 @@
     "questionNumber": 3,
     "questionType": "Weaken",
     "reasoningType": [
-      "Causation",
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
@@ -54,14 +62,19 @@
       "D": "A hemoglobin molecule that has picked up four oxygen molecules will have the same shape as a hemoglobin molecule that has not picked up any oxygen molecules.",
       "E": "Each hemoglobin molecule in human blood picks up between one and four oxygen molecules in or near the lungs and transports them to some other part of the body."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Paradox",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "On a short trip a driver is more likely to have an accident if there is a passenger in the car, presumably because passengers distract drivers. However, on a long trip a driver is more likely to have an accident if the driver is alone.",
     "questionStem": "Which one of the following, if true, most helps to explain the facts described above?",
     "answerChoices": {
@@ -79,7 +92,11 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "Challenger: The mayor claims she has vindicated those who supported her in the last election by fulfilling her promise to increase employment opportunities in our city, citing the 8 percent increase in the number of jobs in the city since she took office. But during her administration, the national government relocated an office to our city, bringing along nearly the entire staff from the outside. The 8 percent increase merely represents the jobs held by these newcomers. Mayor: Clearly my opponent does not dispute the employment statistics. The unemployed voters in this city want jobs. The 8 percent increase in the number of jobs during my term exceeds that of any of my predecessors.",
     "questionStem": "As a response to the challenger, the mayor's answer is flawed in that it",
     "answerChoices": {
@@ -290,7 +307,10 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Parallel Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "There are circumstances in which it is not immoral to make certain threats, and there are circumstances in which it is not immoral to ask for money or some other favor. Therefore, there are circumstances in which it is not immoral to ask for money or a favor while making a threat.",
     "questionStem": "Which one of the following exhibits a flawed pattern of reasoning most similar to that in the argument above?",
     "answerChoices": {
@@ -301,7 +321,9 @@
       "E": "The mountain roads are treacherous after it rains, and the mountain streams are full after a rain. So, if the roads in the mountains are treacherous, and the mountain streams are full, it surely has rained recently."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -309,6 +331,7 @@
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
     "reasoningType": [
+      "Causation",
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
@@ -323,7 +346,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Quantifiers"
+      "Science",
+      "Missing Link / Idea",
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -332,8 +358,8 @@
     "questionNumber": 17,
     "questionType": "Paradox",
     "reasoningType": [
-      "Causation",
-      "Conditional Reasoning"
+      "Conditional Reasoning",
+      "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
     "stimulus": "A recent study of major motion pictures revealed that the vast majority of their plots were simply variations on plots that had been used many times before. Despite this fact, many people enjoy seeing several new movies each year.",
@@ -347,10 +373,7 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea",
-      "Alternatives",
-      "Defender",
-      "Science"
+      "EXCEPT"
     ]
   },
   {
@@ -358,7 +381,10 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Principle-Conform",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Those who claim that governments should not continue to devote resources to space exploration are wrong. Although most people's lives are relatively unaffected by the direct consequences of space exploration, many modern technologies that have a tremendous impact on daily life—e.g., fiber optics, computers, and lasers—are unexpected consequences of it. Society might have missed the benefits of these technologies if governments had not devoted resources to space exploration.",
     "questionStem": "Which one of the following most accurately expresses the principle underlying the argument above?",
     "answerChoices": {
@@ -369,14 +395,23 @@
       "E": "In attempting to advance the welfare of society, governments should continue to dedicate resources to ambitious technological undertakings."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Principles in Answers",
+      "Rebuttals",
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Must be True",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "If understanding a word always involves knowing its dictionary definition, then understanding a word requires understanding the words that occur in that definition. But clearly there are people—for example, all babies—who do not know the dictionary definitions of some of the words they utter.",
     "questionStem": "Which one of the following statements follows logically from the statements above?",
     "answerChoices": {
@@ -387,14 +422,20 @@
       "E": "If some babies understand all the words they utter, then understanding a word does not always involve knowing its dictionary definition."
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "The peppered moth avoids predators by blending into its background, typically the bark of trees. In the late nineteenth century, those peppered moths with the lightest pigmentation had the greatest contrast with their backgrounds, and therefore were the most likely to be seen and eaten by predators. It follows, then, that the darkest peppered moths were the least likely to be seen and eaten.",
     "questionStem": "Which one of the following most accurately describes a flaw in the reasoning of the argument?",
     "answerChoices": {
@@ -412,7 +453,10 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Most Supported",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Historian: The standard \"QWERTY\" configuration of the keys on typewriters and computer keyboards was originally designed to be awkward and limit typing speed. This was because early typewriters would jam frequently if adjacent keys were struck in quick succession. Experiments have shown that keyboard configurations more efficient than QWERTY can double typing speed while tremendously reducing typing effort. However, the expense and inconvenience of switching to a new keyboard configuration prevent any configuration other than QWERTY from attaining widespread use.",
     "questionStem": "Which one of the following is most strongly supported by the historian's statements?",
     "answerChoices": {
@@ -423,7 +467,9 @@
       "E": "If the keyboard had been designed for computers, then it would not have been designed to limit typing speed."
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT131",

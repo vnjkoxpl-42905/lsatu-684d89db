@@ -447,7 +447,11 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Principle-Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "Business owner: Around noon in one section of the city, food trucks that sell lunch directly to customers on the sidewalk occupy many of the limited metered parking spaces available, thus worsening already bad traffic congestion. This led the city council to consider a bill to prohibit food trucks from parking in metered spaces in any commercially zoned area. This bill should be rejected since there is plenty of available parking and little traffic congestion in most areas of the city.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the business owner's argument?",
     "answerChoices": {
@@ -458,14 +462,21 @@
       "E": "If a city has a serious problem, then it should not implement any policy that would aggravate that problem even if the policy would address another serious problem."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Principles in Answers",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Agree/Disagree",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "Michele: In my professional experience, it's usually not a good idea for a company to overhaul its databases. The rewards rarely exceed the problems experienced along the way, and I'd suggest that anyone considering a database overhaul think twice before proceeding.\n\nAlvaro: But the problems are always caused by a failure to recode the database properly. The best advice for a company considering a database overhaul is to do the job right.",
     "questionStem": "Michele and Alvaro disagree with each other about which one of the following?",
     "answerChoices": {
@@ -476,14 +487,21 @@
       "E": "when professional experience is required to correctly recode a database"
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Must be True",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "In an experiment, subjects were shown a series of images on a computer screen, appearing usually at the top but occasionally at the bottom. Subjects were asked to guess each time where the next image would appear on the screen. They guessed correctly less than half of the time. The subjects all reported that they based their guesses on patterns they believed they saw in the sequence. Instead, if they had simply guessed that the next image would always appear at the top, they would have been correct most of the time.",
     "questionStem": "If all of the statements above are true, which one of the following must also be true?",
     "answerChoices": {
@@ -494,14 +512,20 @@
       "E": "The most rational strategy for guessing correctly where the next image would appear would have been simply to always guess that the image would appear at the top."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Paradox (EXCEPT)",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "The temperature in Taychester is always at least 10 degrees lower than the temperature in Charlesville. However, the average resident of Charlesville spends 10 to 20 percent more on winter heating expenses than does the average resident of Taychester.",
     "questionStem": "Each of the following, if true, helps to resolve the apparent paradox described above except:",
     "answerChoices": {
@@ -512,14 +536,20 @@
       "E": "Houses in colder climates are usually better insulated than houses in warmer climates."
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "EXCEPT",
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Parallel",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Each new car in the lot at Rollway Motors costs more than $18,000. Any car in their lot that is ten or more years old costs less than $5,000. Thus, if a car in Rollway's lot costs between $5,000 and $18,000, it is a used car that is less than ten years old.",
     "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",
     "answerChoices": {
@@ -530,14 +560,23 @@
       "E": "Each apartment above the fourth floor of the building has more than two bedrooms. The building has no vacant apartments on or below the fourth floor. Thus, if there is any vacant apartment in the building, it will have more than two bedrooms."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Repetitive Answers",
+      "Conditional Diagramming",
+      "Contrapositive Logic",
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Meteorologist: The number of tornadoes reported annually has more than doubled since the 1950s. But their actual number has probably not increased. Our ability to find tornadoes has improved, so we're probably just finding a higher percentage of them than we used to.",
     "questionStem": "Which one of the following, if true, provides the most support for the meteorologist's argument?",
     "answerChoices": {
@@ -548,14 +587,22 @@
       "E": "The geographic range in which tornadoes are most prevalent has remained roughly constant since the 1950s."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Explain Curious Fact",
+      "Timeframes",
+      "Plausibility"
+    ]
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Salesperson: If your vacuuming needs are limited to cleaning small areas of uncarpeted floors, an inexpensive handheld vacuum cleaner is likely to be sufficient. After all, most are easy to use and will likely satisfy all your vacuuming needs on wood and tile floors.",
     "questionStem": "The conclusion of the salesperson's argument is most strongly supported if which one of the following is assumed?",
     "answerChoices": {
@@ -566,14 +613,22 @@
       "E": "The more versatile a vacuum cleaner is, the more likely it is to be expensive."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Conditional Conclusion",
+      "New Concept in Conclusion",
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 26,
     "questionType": "Parallel Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Decreased reliance on fossil fuels is required if global warming is to be halted. The current reliance would decrease if economic incentives to develop alternative energy sources were present. So ending global warming requires offering economic incentives to develop alternative energy sources.",
     "questionStem": "The flawed pattern of reasoning exhibited by the argument above most closely parallels that exhibited by which one of the following?",
     "answerChoices": {
@@ -584,6 +639,9 @@
       "E": "Preventing abuse of prescription drugs requires expanding drug education efforts. Increased cooperation between schools and law enforcement agencies is needed if drug education efforts are to be expanded. So, if cooperation between law enforcement and schools increases, the abuse of prescription drugs will be prevented."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
+    ]
   }
 ]

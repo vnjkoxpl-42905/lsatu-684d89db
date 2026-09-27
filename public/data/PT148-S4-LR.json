@@ -430,7 +430,10 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Parallel",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "Employee: The company I work for has installed website filtering software that blocks access to non-related websites. It claims that being able to visit such sites distracts us, keeping us from doing our best work. But offices that have windows or are nicely decorated can be highly distracting too, and no one claims that people do their best work in an undecorated, windowless room.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to the employee's argument?",
     "answerChoices": {
@@ -441,14 +444,19 @@
       "E": "In the movie industry, a film's success is judged in terms of its profit relative to its cost. This is misguided, because under this criterion an expensive movie that sells just as many tickets as a lower-budget movie would be less successful than the lower-budget movie, which is clearly counterintuitive."
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Sufficient Assumption",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "At Tromen University this semester, some students taking French Literature 205 are also taking Biology 218. Every student taking Biology 218 at Tromen is a biology major. Therefore, some of the students taking French Literature 205 are not French-literature majors.",
     "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed to be true at Tromen University?",
     "answerChoices": {
@@ -459,14 +467,20 @@
       "E": "It is not possible to major in both biology and French literature."
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Quantifiers",
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Must be True",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "Critic: To be a literary classic a book must reveal something significant about the human condition. Furthermore, nothing that is unworthy of serious study reveals anything significant about the human condition.",
     "questionStem": "If the critic's statements are true, which one of the following must also be true?",
     "answerChoices": {
@@ -477,14 +491,21 @@
       "E": "Some books that reveal something significant about the human condition are not literary classics."
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Evaluate",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Scientists once believed that the oversized head, long hind legs, and tiny forelimbs that characterized Tyrannosaurus rex developed in order to accommodate the great size and weight of this prehistoric predator. However, this belief must now be abandoned. The nearly complete skeleton of an earlier dinosaur has recently been discovered. This specimen had the characteristic T rex features but was one-fifth the size and one-hundredth the weight.",
     "questionStem": "The answer to which one of the following questions would most help in evaluating the argument?",
     "answerChoices": {
@@ -495,14 +516,20 @@
       "E": "Did the recently discovered dinosaur prey on species as large as those that T. rex preyed on?"
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Anti-Causal",
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Parallel Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "YXK is currently the television network with the highest overall number of viewers. Among YXK's programs, Bliss has the highest numbers of viewers. So Bliss currently has more viewers than any other program on television.",
     "questionStem": "The flawed reasoning exhibited by the argument above is most similar to that exhibited by which one of the following?",
     "answerChoices": {
@@ -513,7 +540,9 @@
       "E": "Falling Fast is the film that is currently earning the most at the box office in the country. The most successful film in the country is typically the one that is showing in the most theaters. So Falling Fast is probably the film that is currently showing in the most theaters."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -535,8 +564,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Binaries",
-      "Quantifiers"
+      "Principles in Stimulus",
+      "Worst of the Worst"
     ]
   },
   {
@@ -545,7 +574,7 @@
     "questionNumber": 25,
     "questionType": "Weaken",
     "reasoningType": [
-      "Comparative Reasoning"
+      "Causation"
     ],
     "questionDifficulty": 5,
     "stimulus": "Scientist: A small group of islands near Australia is inhabited by several species of iguana; closely related species also exist in the Americas, but nowhere else. The islands in question formed long after the fragmentation of Gondwana, the ancient supercontinent that included present-day South America and Australia. Thus, these species’ progenitors must have rafted on floating debris across the Pacific Ocean from the Americas.",
@@ -557,15 +586,20 @@
       "D": "Fossils of iguana species closely related to those that inhabit the islands have been found in Australia.",
       "E": "The lineages of numerous plant and animal species found in Australia or in South America date back to a period prior to the fragmentation of Gondwana."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Flaw",
-    "reasoningType": [],
-    "questionDifficulty": 3,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "A recent archaeological find in what was once the ancient kingdom of Macedonia contains the remains of the largest tomb ever found in the region. It must be the tomb of Alexander the Great since he was the greatest Macedonian in history, and so would have had the largest tomb. After all, he conquered an empire that stretched from Greece to much of Asia, though it collapsed after his death.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
@@ -575,6 +609,10 @@
       "D": "fails to evaluate the significance of the fact that Alexander’s empire did not survive his death",
       "E": "takes for granted that archaeologists can determine the size of the tomb from its remains"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Intermediate Conclusions",
+      "Explain Curious Fact"
+    ]
   }
 ]

@@ -95,7 +95,10 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Method",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "Hernandez: I recommend that staff cars be replaced every four years instead of every three years. Three-year-old cars are still in good condition and this would result in big savings. Green: I disagree. Some of our salespeople with big territories wear out their cars in three years. Hernandez: I meant three-year-old cars subjected to normal use.",
     "questionStem": "In the conversation, Hernandez responds to Green's objection in which one of the following ways?",
     "answerChoices": {
@@ -106,14 +109,22 @@
       "E": "by indicating that Green used a phrase ambiguously"
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals",
+      "2-Speaker",
+      "Clarification/Misunderstanding"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "Economist: As should be obvious, raising the minimum wage significantly would make it more expensive for businesses to pay workers for minimum-wage jobs. Therefore, businesses could not afford to continue to employ as many workers for such jobs. So raising the minimum wage significantly will cause an increase in unemployment.",
     "questionStem": "Which one of the following, if true, most weakens the economist's argument?",
     "answerChoices": {
@@ -124,7 +135,12 @@
       "E": "The unemployment rate has been declining steadily in recent years."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Net Effect",
+      "Predictions",
+      "Intermediate Conclusions",
+      "Focused on Evidence"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -180,7 +196,11 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "Physician: In comparing our country with two other countries of roughly the same population size, I found that even though we face the same dietary, bacterial, and stress-related causes of ulcers as they do, prescriptions for ulcer medicines in all socioeconomic strata are much rarer here than in those two countries. It's clear that we suffer significantly fewer ulcers, per capita, than they do.",
     "questionStem": "Which one of the following, if true, most strengthens the physician's argument?",
     "answerChoices": {
@@ -191,7 +211,12 @@
       "E": "The physician's country has a much better system for reporting the number of prescriptions of a given type that are obtained each year than is present in either of the other two countries."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Defender",
+      "Alternatives",
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -222,7 +247,11 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "Many vaccines create immunity to viral diseases by introducing a certain portion of the disease-causing virus's outer coating into the body. Exposure to that part of a virus is as effective as exposure to the whole virus in stimulating production of antibodies that will subsequently recognize and kill the whole virus. To create a successful vaccine of this type, doctors must first isolate in the disease-causing virus a portion that stimulates antibody production. Now that a suitable portion of the virus that causes hepatitis E has been isolated, doctors claim they can produce a vaccine that will produce permanent immunity to that disease.",
     "questionStem": "Which one of the following, if true, most strongly counters the doctors' claim?",
     "answerChoices": {
@@ -233,14 +262,22 @@
       "E": "Many children who are exposed to viruses that cause childhood diseases such as chicken pox never develop those diseases."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Predictions",
+      "Science",
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Necessary Assumption",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Editorial: To qualify as an effective law, as opposed to merely an impressive declaration, a command must be backed up by an effective enforcement mechanism. That is why societies have police. The power of the police to enforce a society's laws makes those laws effective. But there is currently no international police force. Hence, what is called \"international law\" is not effective law.",
     "questionStem": "Which one of the following is an assumption required by the editorial's argument?",
     "answerChoices": {
@@ -251,14 +288,24 @@
       "E": "Only an international police force could effectively enforce international law."
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Contrapositive Logic",
+      "Untriggered Conditional",
+      "Links Between Premises"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Most Supported",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "Art historian: More than any other genre of representational painting, still-life painting lends itself naturally to art whose goal is the artist's self-expression, rather than merely the reflection of a preexisting external reality. This is because in still-life painting, the artist invariably chooses, modifies, and arranges the objects to be painted. Thus, the artist has considerably more control over the composition and subject of a still-life painting than over those of a landscape painting or portrait, for example.",
     "questionStem": "Which one of the following is most strongly supported by the art historian's statements?",
     "answerChoices": {
@@ -269,14 +316,19 @@
       "E": "When painting a portrait, artists rarely attempt to express themselves through the choice, modification, or arrangement of the background elements against which the subject of the portrait is painted."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Must be False",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "Food labeling regulation: Food of a type that does not ordinarily contain fat cannot be labeled \"nonfat\" unless most people mistakenly believe the food ordinarily contains fat. If most people mistakenly believe that a food ordinarily contains fat, the food may be labeled \"nonfat\" if the label also states that the food ordinarily contains no fat.",
     "questionStem": "Which one of the following situations violates the food labeling regulation?",
     "answerChoices": {
@@ -287,14 +339,20 @@
       "E": "Although most people mistakenly believe that salsa ordinarily contains fat, the label on Lester's Zesty Salsa says \"This product, like all salsas, is nonfat.\""
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Principles in Stimulus",
+      "Complex Conditionals"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Parallel Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "Medical ethicist: Assuming there is a reasonable chance for a cure, it is acceptable to offer experimental treatments for a disease to patients who suffer from extreme symptoms of that disease. Such patients are best able to weigh a treatment's risks against the benefits of a cure. Therefore, it is never acceptable to offer experimental treatments to patients who experience no extreme symptoms of the relevant disease.",
     "questionStem": "The flawed reasoning in which one of the following is most similar to the flawed reasoning in the medical ethicist's argument?",
     "answerChoices": {
@@ -305,7 +363,12 @@
       "E": "Almost any industrial development will have unwelcome environmental side effects. Therefore, it is not worthwhile to weigh the costs of potential environmental side effects since such side effects are unavoidable."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Famous Flaws",
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -337,7 +400,10 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "Consumer: If you buy a watch at a department store and use it only in the way it was intended to be used, but the watch stops working the next day, then the department store will refund your money. So by this very reasonable standard, Bingham's Jewelry Store should give me a refund even though they themselves are not a department store, since the watch I bought from them stopped working the very next day.",
     "questionStem": "The consumer's argument relies on the assumption that",
     "answerChoices": {
@@ -348,7 +414,10 @@
       "E": "the watch that was purchased from Bingham's Jewelry Store was not a new watch"
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Untriggered Conditional"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -356,10 +425,10 @@
     "questionNumber": 18,
     "questionType": "Flaw",
     "reasoningType": [
-      "Conditional Reasoning",
+      "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 2,
     "stimulus": "A study found that patients referred by their doctors to psychotherapists practicing a new experimental form of therapy made more progress with respect to their problems than those referred to psychotherapists practicing traditional forms of therapy. Therapists practicing the new form of therapy, therefore, are more effective than therapists practicing traditional forms.",
     "questionStem": "Which one of the following most accurately describes a flaw in the argument?",
     "answerChoices": {
@@ -371,8 +440,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Conclusion",
-      "Principles in Answers"
+      "Explain Curious Fact",
+      "Famous Flaws",
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -381,9 +452,10 @@
     "questionNumber": 19,
     "questionType": "Principle Strengthen",
     "reasoningType": [
-      "Comparative Reasoning"
+      "Conditional Reasoning",
+      "Causation"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 3,
     "stimulus": "Essayist: One of the drawbacks of extreme personal and political freedom is that free choices are often made for the worst. To expect people to thrive when they are given the freedom to make unwise decisions is frequently unrealistic. Once people see the destructive consequences of extreme freedom, they may prefer to establish totalitarian political regimes that allow virtually no freedom. Thus, one should not support political systems that allow extreme freedom.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the essayist's reasoning?",
     "answerChoices": {
@@ -395,8 +467,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Math-y Stuff",
-      "Medical"
+      "Principles in Answers",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -404,7 +476,10 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Parallel",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Ethicist: Every moral action is the keeping of an agreement, and keeping an agreement is nothing more than an act of securing mutual benefit. Clearly, however, not all instances of agreement-keeping are moral actions. Therefore, some acts of securing mutual benefit are not moral actions.",
     "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the ethicist's argument?",
     "answerChoices": {
@@ -415,14 +490,21 @@
       "E": "All books are texts, and all texts are documents. However, not all texts are books. Therefore, some documents are not books."
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Quantifiers",
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Role",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "Sociologist: The more technologically advanced a society is, the more marked its members' resistance to technological innovations. This is not surprising, because the more technologically advanced a society is, the more aware its members are of technology's drawbacks. Specifically, people realize that sophisticated technologies deeply affect the quality of human relations.",
     "questionStem": "The claim that the more technologically advanced a society is, the more aware its members are of technology's drawbacks plays which one of the following roles in the sociologist's argument?",
     "answerChoices": {
@@ -433,14 +515,21 @@
       "E": "It is an example presented to illustrate the claim that resistance to technological innovations deeply affects the quality of human relations."
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Volume Dial"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "To win democratic elections that are not fully subsidized by the government, nonwealthy candidates must be supported by wealthy patrons. This makes plausible the belief that these candidates will compromise their views to win that support. But since the wealthy are dispersed among the various political parties in roughly equal proportion to their percentage in the overall population, this belief is false.",
     "questionStem": "The argument is vulnerable to criticism on the grounds that it fails to consider that",
     "answerChoices": {
@@ -451,14 +540,21 @@
       "E": "a democracy in which candidates do not compromise their views in order to be elected to office might have other flaws"
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Anti-Causal",
+      "Assumes Similarity",
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Most Supported",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "In modern \"brushless\" car washes, cloth strips called mitters have replaced brushes. Mitters are easier on most cars' finishes than brushes are. This is especially important with the new clear-coat finishes found on many cars today, which are more easily scratched than older finishes are.",
     "questionStem": "Which one of the following is most strongly supported by the statements above, if those statements are true?",
     "answerChoices": {
@@ -469,14 +565,21 @@
       "E": "More cars in use today have clear-coat finishes rather than older finishes."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Sufficient Assumption",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "It is widely believed that lancelets—small, primitive sea animals—do not have hearts. Each lancelet has a contracting vessel, but this vessel is considered an artery rather than a heart. However, this vessel is indeed a heart. After all, it strongly resembles the structure of the heart of certain other sea animals. Moreover, the muscular contractions in the lancelet's vessel closely resemble the muscular contractions of other animals' hearts.",
     "questionStem": "The argument's conclusion follows logically if which one of the following is assumed?",
     "answerChoices": {
@@ -487,14 +590,22 @@
       "E": "No animal that has a heart lacks an artery."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Rebuttals",
+      "Part vs. Whole",
+      "New Concept in Conclusion",
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Most Supported",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Manager: I recommend that our company reconsider the decision to completely abandon our allegedly difficult-to-use computer software and replace it companywide with a new software package advertised as more flexible and easier to use. Several other companies in our region officially replaced the software we currently use with the new package, and while their employees can all use the new software, unofficially many continue to use their former software as much as possible.",
     "questionStem": "Which one of the following is most strongly supported by the manager's statements?",
     "answerChoices": {
@@ -505,6 +616,10 @@
       "E": "Many of the employees in the manager's company would not prefer the new software package to the software currently in use."
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Assumes Similarity",
+      "Rebuttals"
+    ]
   }
 ]

@@ -52,7 +52,10 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Principle-Conform",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "Chairperson: The board of directors of our corporation should not allow the incentives being offered by two foreign governments to entice us to expand our operations into their countries without further consideration of the issue. Although there is an opportunity to increase our profits by expanding our operations there, neither of these countries is politically stable.",
     "questionStem": "The chairperson's reasoning most closely conforms to which one of the following principles?",
     "answerChoices": {
@@ -63,14 +66,22 @@
       "E": "Boards of directors should always disregard governmental incentives when considering where to expand corporate operations."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Principles in Answers",
+      "Missing Link / Idea",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT117",
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "Maria: Thomas Edison was one of the most productive inventors of his time, perhaps of all time. His contributions significantly shaped the development of modern lighting and communication systems. Yet he had only a few months of formal schooling. Therefore, you do not need a formal education to make crucial contributions to technological advancement.Frank: That is definitely not true anymore. Since Edison’s day there have been many new developments in technology; to make crucial contributions today you need much more extensive technical knowledge than was needed then.",
     "questionStem": "Frank's reasoning in his response to Maria is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
@@ -81,7 +92,14 @@
       "E": "fails to criticize or question any of Maria's statements about Edison"
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Timeframes",
+      "Missing Link / Idea",
+      "2-Speaker",
+      "Alternatives",
+      "Refute a Conditional",
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -89,6 +107,7 @@
     "questionNumber": 5,
     "questionType": "Sufficient Assumption",
     "reasoningType": [],
+    "questionDifficulty": 2,
     "stimulus": "In some countries, there is a free flow of information about infrastructure, agriculture, and industry, whereas in other countries, this information is controlled by a small elite. In the latter countries, the vast majority of the population is denied vital information about factors that determine their welfare. Thus, these countries are likely to experience more frequent economic crises than other countries do.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",
     "answerChoices": {
@@ -107,6 +126,7 @@
     "questionNumber": 6,
     "questionType": "Flaw",
     "reasoningType": [],
+    "questionDifficulty": 3,
     "stimulus": "Hana said she was not going to invite her brothers to her birthday party. However, among the gifts Hana received at her party was a recording in which she had expressed an interest. Since her brothers had planned to give her that recording, at least some of Hana’s brothers must have been among the guests at Hana’s birthday party after all.",
     "questionStem": "A reasoning error in the argument is that the argument",
     "answerChoices": {
@@ -117,14 +137,20 @@
       "E": "overlooks the possibility that a person's interest in one kind of thing is compatible with that person's interest in a different kind of thing"
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Abstract Answers",
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT117",
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Must be True",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "If you have no keyboarding skills at all, you will not be able to use a computer. And if you are not able to use a computer, you will not be able to write your essays using a word processing program.",
     "questionStem": "If the statements above are true, which one of the following must be true?",
     "answerChoices": {
@@ -135,7 +161,10 @@
       "E": "If you are not able to write your essays using a word processing program, you are not able to use a computer."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Contrapositive Logic"
+    ]
   },
   {
     "practiceTest": "PT117",

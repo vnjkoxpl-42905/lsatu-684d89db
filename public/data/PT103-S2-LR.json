@@ -439,7 +439,10 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Must be True",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Anthropologist: Violence is an extreme form of aggression, and is distinct from the self-expression sufficient for survival under normal conditions. Human beings in certain situations react to unpleasant stimuli with violence—but only because they are conditioned by their culture to react in this manner.",
     "questionStem": "Each of the following can be logically inferred from the anthropologist's statements EXCEPT:",
     "answerChoices": {
@@ -450,14 +453,19 @@
       "E": "Violent behavior is a product of one's cultural environment."
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT103",
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Parallel Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Martha’s friend, who is very knowledgeable about edible flowers, told Martha that there are no edible daisies, at least not any that are palatable. Martha, however, reasons that since there are daisies that are a kind of chrysanthemum and since there are edible chrysanthemums that are quite palatable, what her friend told her must be incorrect.",
     "questionStem": "Which one of the following has a flawed pattern of reasoning most like that in Martha's reasoning?",
     "answerChoices": {
@@ -495,7 +503,10 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Necessary Assumption",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Most students are bored by history courses as they are usually taught, primarily because a large amount of time is spent teaching dates and statistics. The best way to teach history, therefore, is to spend most class time recounting the lives of historical figures and very little on dates and statistics.",
     "questionStem": "Each of the following is an assumption on which the argument depends EXCEPT:",
     "answerChoices": {
@@ -506,7 +517,13 @@
       "E": "Students are more bored by history courses as they are usually taught than they would be by courses that spend most class time recounting the lives of historical figures."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "EXCEPT",
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Assumes Difference",
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -536,7 +553,10 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Agree/Disagree",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Monica: The sculpture commissioned for our town plaza has been scorned by the public ever since it went up. But since the people in our town do not know very much about contemporary art, the unpopularity of the work says nothing about its artistic merit and thus gives no reason for removing it.\n\nHector: You may be right about what the sculpture’s popularity means about its artistic merit. However, a work of art that was commissioned for a public space ought to benefit the public, and popular opinion is ultimately the only way of determining what the public feels is to its benefit. Thus, if public opinion of this sculpture is what you say, then it certainly ought to be removed.",
     "questionStem": "Monica's and Hector's statements commit them to disagreeing about which one of the following principles?",
     "answerChoices": {
@@ -547,7 +567,11 @@
       "E": "In determining whether the sculpture should remain in the town plaza, the artistic merit of the sculpture should be a central consideration."
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "2-Speaker",
+      "Causal Difference-Maker",
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT103",
