@@ -304,6 +304,17 @@ export default function Auth() {
   // refresh doesn't replay the toast.
   React.useEffect(() => {
     const reason = (location.state as { reason?: string } | null)?.reason;
+    if (reason === 'account_archived') {
+      toast({
+        title: 'Account archived',
+        description: 'Your account has been archived by your instructor. Contact them if you think this is a mistake.',
+      });
+      navigate(`${location.pathname}${location.search}${location.hash}`, {
+        replace: true,
+        state: null,
+      });
+      return;
+    }
     if (reason === 'session_expired') {
       setModalOpen(true);
       toast({

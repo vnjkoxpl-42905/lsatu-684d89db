@@ -4777,6 +4777,131 @@ export type Database = {
         }
         Relationships: []
       }
+      stripe_payments: {
+        Row: {
+          amount_cents: number
+          amount_refunded_cents: number
+          checkout_session_id: string | null
+          created_at: string
+          currency: string
+          customer_id: string | null
+          description: string | null
+          email: string | null
+          grant_state: string
+          granted_at: string | null
+          granted_by: string | null
+          granted_credits: number | null
+          id: string
+          livemode: boolean
+          match_state: string
+          offer_id: string | null
+          paid_at: string
+          payer_name: string | null
+          payment_intent_id: string | null
+          payment_link_id: string | null
+          product: string | null
+          source: string
+          status: string
+          stripe_charge_id: string
+          student_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          amount_refunded_cents?: number
+          checkout_session_id?: string | null
+          created_at?: string
+          currency: string
+          customer_id?: string | null
+          description?: string | null
+          email?: string | null
+          grant_state?: string
+          granted_at?: string | null
+          granted_by?: string | null
+          granted_credits?: number | null
+          id?: string
+          livemode: boolean
+          match_state?: string
+          offer_id?: string | null
+          paid_at: string
+          payer_name?: string | null
+          payment_intent_id?: string | null
+          payment_link_id?: string | null
+          product?: string | null
+          source?: string
+          status: string
+          stripe_charge_id: string
+          student_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          amount_refunded_cents?: number
+          checkout_session_id?: string | null
+          created_at?: string
+          currency?: string
+          customer_id?: string | null
+          description?: string | null
+          email?: string | null
+          grant_state?: string
+          granted_at?: string | null
+          granted_by?: string | null
+          granted_credits?: number | null
+          id?: string
+          livemode?: boolean
+          match_state?: string
+          offer_id?: string | null
+          paid_at?: string
+          payer_name?: string | null
+          payment_intent_id?: string | null
+          payment_link_id?: string | null
+          product?: string | null
+          source?: string
+          status?: string
+          stripe_charge_id?: string
+          student_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stripe_payments_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "booking_offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stripe_sync_runs: {
+        Row: {
+          charges_seen: number
+          error: string | null
+          finished_at: string | null
+          id: string
+          rows_written: number
+          since: string
+          started_at: string
+        }
+        Insert: {
+          charges_seen?: number
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          rows_written?: number
+          since: string
+          started_at?: string
+        }
+        Update: {
+          charges_seen?: number
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          rows_written?: number
+          since?: string
+          started_at?: string
+        }
+        Relationships: []
+      }
       student_analytics_sources: {
         Row: {
           created_at: string
@@ -5951,6 +6076,117 @@ export type Database = {
       abandon_stale_practice_tests: {
         Args: { exclude_ids?: string[] }
         Returns: string[]
+      }
+      admin_dismiss_stripe_payment: {
+        Args: { _payment_id: string }
+        Returns: {
+          amount_cents: number
+          amount_refunded_cents: number
+          checkout_session_id: string | null
+          created_at: string
+          currency: string
+          customer_id: string | null
+          description: string | null
+          email: string | null
+          grant_state: string
+          granted_at: string | null
+          granted_by: string | null
+          granted_credits: number | null
+          id: string
+          livemode: boolean
+          match_state: string
+          offer_id: string | null
+          paid_at: string
+          payer_name: string | null
+          payment_intent_id: string | null
+          payment_link_id: string | null
+          product: string | null
+          source: string
+          status: string
+          stripe_charge_id: string
+          student_id: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "stripe_payments"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      admin_grant_stripe_payment: {
+        Args: { _payment_id: string }
+        Returns: {
+          amount_cents: number
+          amount_refunded_cents: number
+          checkout_session_id: string | null
+          created_at: string
+          currency: string
+          customer_id: string | null
+          description: string | null
+          email: string | null
+          grant_state: string
+          granted_at: string | null
+          granted_by: string | null
+          granted_credits: number | null
+          id: string
+          livemode: boolean
+          match_state: string
+          offer_id: string | null
+          paid_at: string
+          payer_name: string | null
+          payment_intent_id: string | null
+          payment_link_id: string | null
+          product: string | null
+          source: string
+          status: string
+          stripe_charge_id: string
+          student_id: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "stripe_payments"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      admin_link_stripe_payment: {
+        Args: { _payment_id: string; _student_id: string }
+        Returns: {
+          amount_cents: number
+          amount_refunded_cents: number
+          checkout_session_id: string | null
+          created_at: string
+          currency: string
+          customer_id: string | null
+          description: string | null
+          email: string | null
+          grant_state: string
+          granted_at: string | null
+          granted_by: string | null
+          granted_credits: number | null
+          id: string
+          livemode: boolean
+          match_state: string
+          offer_id: string | null
+          paid_at: string
+          payer_name: string | null
+          payment_intent_id: string | null
+          payment_link_id: string | null
+          product: string | null
+          source: string
+          status: string
+          stripe_charge_id: string
+          student_id: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "stripe_payments"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       append_waj_correct: {
         Args: { p_class_id: string; p_item: Json; p_qid: string }

@@ -430,5 +430,7 @@ async function notifyAdminsOfPayment(
   }));
   if (rows.length === 0) return;
   const { error: insertError } = await supabase.from("notifications").insert(rows);
-  if (insertError) throw insertError;
+  // A failed notice must not abort the webhook: the payment itself is already
+  // recorded, and throwing here would make the provider retry the whole event.
+  if (insertError) console.error("payment notice failed", { error: insertError });
 }
