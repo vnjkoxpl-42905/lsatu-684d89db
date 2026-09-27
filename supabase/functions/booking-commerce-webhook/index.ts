@@ -11,6 +11,7 @@ import {
   retrievePaymentLink,
 } from "../_shared/stripe.ts";
 import { recordCharge, stripeGet } from "../_shared/stripeLedger.ts";
+import { sendAppEmail } from "../_shared/sendAppEmail.ts";
 
 const MAX_BODY_BYTES = 256 * 1024;
 const APP_ORIGIN = Deno.env.get("APP_ORIGIN") || "https://lsatprep.study";
@@ -216,6 +217,7 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
           awaitingGrant: row.grant_state === "awaiting",
           unmatched: !row.student_id,
         });
+        await emailJoshuaOfPayment(supabase, row);
       }
     } catch (err) {
       console.error("ledger write failed", { event: event.id, type: event.type, error: err instanceof Error ? err.message : String(err) });
@@ -470,4 +472,36 @@ async function chargeIdForLedger(event: any, secret: string): Promise<string | n
     return typeof intent.latest_charge === "string" ? intent.latest_charge : null;
   }
   return null;
+}
+
+/**
+ * One email to Joshua per new paid charge. Keyed on the charge id, so a Stripe
+ * retry or a second event for the same charge can never send it twice. A failed
+ * send is logged (sendAppEmail writes email_send_log) and never fails the webhook.
+ */
+async function emailJoshuaOfPayment(supabase: any, row: any) {
+  try {
+    let whatFor = row.product === "single_session" ? "Single session" : row.description || "";
+    if (row.offer_id) {
+      const { data: offer } = await supabase.from("booking_offers").select("label,credits").eq("id", row.offer_id).maybeSingle();
+      if (offer) whatFor = `${offer.label} (package, ${offer.credits} passes)`;
+    }
+    const amount = new Intl.NumberFormat("en-US", { style: "currency", currency: (row.currency || "usd").toUpperCase() })
+      .format(row.amount_cents / 100);
+    const paidAt = new Intl.DateTimeFormat("en-US", {
+      dateStyle: "medium", timeStyle: "short", timeZone: "America/New_York",
+    }).format(new Date(row.paid_at)) + " ET";
+    const nextStep = row.grant_state === "awaiting"
+      ? "Waiting on you: grant the passes on Today."
+      : !row.student_id
+        ? "No student account matches this email. Link one on Today."
+        : "Nothing waiting on you. It is in the Payments list on Today.";
+    await sendAppEmail("payment-received", "", {
+      idempotencyKey: `payment-received:${row.stripe_charge_id}`,
+      replyTo: row.email ?? undefined,
+      templateData: { who: row.payer_name || row.email || "Someone", email: row.email ?? "", amount, paidAt, whatFor, nextStep },
+    });
+  } catch (err) {
+    console.error("payment email failed", { charge: row.stripe_charge_id, error: err instanceof Error ? err.message : String(err) });
+  }
 }
