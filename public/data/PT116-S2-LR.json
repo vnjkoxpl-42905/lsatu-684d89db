@@ -73,10 +73,7 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
-    ],
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "A study claims that the average temperature on Earth has permanently increased, because the average temperature each year for the last five years has been higher than any previous yearly average on record. However, periods of up to ten years of average temperatures that have consistently been record highs are often merely part of the random fluctuations in temperature that are always occurring.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -89,10 +86,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact",
-      "Alternatives",
       "Science",
-      "Timeframes"
+      "Important Pivot"
     ]
   },
   {
@@ -100,10 +95,8 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Flaw",
-    "reasoningType": [
-      "Causation"
-    ],
-    "questionDifficulty": 3,
+    "reasoningType": [],
+    "questionDifficulty": 1,
     "stimulus": "Shipping Coordinator: If we send your shipment by air express, it will arrive tomorrow morning. If we send your shipment via ground carrier, it will arrive either tomorrow or the next day. Ground carrier is less expensive than air express, so which do you prefer?\nCustomer: If I don't choose air express, then I will not receive my shipment tomorrow, so I clearly have no choice but to spend the extra money and have it sent via air express.",
     "questionStem": "The customer's response can best be explained on the assumption that she has misinterpreted the shipping coordinator to mean which one of the following?",
     "answerChoices": {
@@ -115,11 +108,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact",
-      "Alternatives",
-      "Argue the Anti-Conclusion",
-      "Defender",
-      "Science"
+      "2-Speaker",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -128,7 +118,7 @@
     "questionNumber": 6,
     "questionType": "Weaken",
     "reasoningType": [],
-    "questionDifficulty": 1,
+    "questionDifficulty": 3,
     "stimulus": "Therapists who treat violent criminals cannot both respect their clients' right to confidentiality and be sincerely concerned for the welfare of victims of future violent crimes. Reporting a client's unreported crimes violates the client's trust, but remaining silent leaves the dangerous client out of prison, free to commit more crimes.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
     "answerChoices": {
@@ -140,8 +130,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker",
-      "Focused on Evidence"
+      "Argue the Anti-Conclusion",
+      "Binaries"
     ]
   },
   {
@@ -149,8 +139,10 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Must be True",
-    "reasoningType": [],
-    "questionDifficulty": 2,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Failure to rotate crops depletes the soil's nutrients gradually unless other preventive measures are taken. If the soil's nutrients are completely depleted, additional crops cannot be grown unless fertilizer is applied to the soil. All other things being equal, if vegetables are grown in soil that has had fertilizer applied rather than being grown in non-fertilized soil, they are more vulnerable to pests and, as a consequence, must be treated with larger amounts of pesticides. The more pesticides used on vegetables, the greater the health risks to humans from eating those vegetables.",
     "questionStem": "Suppose there were some vegetables that were grown in soil to which fertilizer had never been applied. On the basis of the passage, which one of the following would have to be true regarding those vegetables?",
     "answerChoices": {
@@ -162,8 +154,7 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion",
-      "Plans / Recommendations"
+      "Complex Conditionals"
     ]
   },
   {
@@ -172,7 +163,7 @@
     "questionNumber": 8,
     "questionType": "Weaken",
     "reasoningType": [
-      "Comparative Reasoning"
+      "Causation"
     ],
     "questionDifficulty": 3,
     "stimulus": "Criminologist: Increasing the current prison term for robbery will result in no significant effect in discouraging people from committing robbery.",
@@ -186,10 +177,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Anti-Causal",
-      "Assumes Similarity",
-      "EXCEPT",
-      "Science"
+      "Predictions",
+      "Anti-Causal"
     ]
   },
   {

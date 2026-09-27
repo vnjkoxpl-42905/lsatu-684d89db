@@ -298,7 +298,10 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Agree/Disagree",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Steven: The allowable blood alcohol level for drivers should be cut in half. With this reduced limit, social drinkers will be deterred from drinking and driving, resulting in significantly increased highway safety.\n\nMiguel: No, lowering the current allowable blood alcohol level would have little effect on highway safety, because it would not address the most important aspect of the drunken driving problem, which is the danger to the public posed by heavy drinkers, who often drive with a blood alcohol level of twice the current legal limit.",
     "questionStem": "Steven and Miguel's statements provide the most support for holding that they would disagree about the truth of which one of the following statements?",
     "answerChoices": {
@@ -309,7 +312,9 @@
       "E": "A driver with a blood alcohol level slightly greater than half the current legal limit poses no danger to the public."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -317,6 +322,7 @@
     "questionNumber": 15,
     "questionType": "Main Conclusion",
     "reasoningType": [],
+    "questionDifficulty": 1,
     "stimulus": "The authors of a recent article examined warnings of an impending wave of extinctions of animal species within the next 100 years. These authors say that no evidence exists to support the idea that the rate of extinction of animal species is now accelerating. They are wrong, however. Consider only the data on fishes: 40 species and subspecies of North American fishes have vanished in the twentieth century, 13 between 1900 and 1950, and 27 since 1950.",
     "questionStem": "Which one of the following is the main point of the argument?",
     "answerChoices": {
@@ -327,14 +333,20 @@
       "E": "A substantial number of fish species are in danger of imminent extinction."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Rebuttals",
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT101",
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Evaluate",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "The authors of a recent article examined warnings of an impending wave of extinctions of animal species within the next 100 years. These authors say that no evidence exists to support the idea that the rate of extinction of animal species is now accelerating. They are wrong, however. Consider only the data on fishes: 40 species and subspecies of North American fishes have vanished in the twentieth century, 13 between 1900 and 1950, and 27 since 1950.",
     "questionStem": "The answer to which one of the following questions would contribute most to an evaluation of the argument?",
     "answerChoices": {
@@ -345,7 +357,11 @@
       "E": "Were any of the species or subspecies of North American fishes that became extinct in the twentieth century commercially important?"
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Rebuttals",
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -401,9 +417,10 @@
     "questionNumber": 19,
     "questionType": "Sufficient Assumption",
     "reasoningType": [
-      "Conditional Reasoning"
+      "Causation",
+      "Comparative Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 5,
     "stimulus": "In Australia the population that is of driving age has grown larger over the last five years, but the annual number of traffic fatalities has declined. This leads to the conclusion that, overall, the driving-age population of Australia consists of more skillful drivers now than five years ago.",
     "questionStem": "Each of the statements below, if true, weakens the argument except:",
     "answerChoices": {
@@ -415,10 +432,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea",
-      "New Concept in Conclusion",
-      "Quantifiers",
-      "Untriggered Conditional"
+      "EXCEPT",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -427,7 +442,8 @@
     "questionNumber": 20,
     "questionType": "Principle-Strengthen",
     "reasoningType": [
-      "Conditional Reasoning"
+      "Conditional Reasoning",
+      "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
     "stimulus": "Anthropological studies indicate that distinct cultures differ in their moral codes. Thus, as long as\nthere are distinct cultures, there are no values shared across cultures.",
@@ -441,8 +457,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers",
-      "Principles in Answers"
+      "EXCEPT",
+      "Argue the Anti-Conclusion",
+      "Focused on Evidence"
     ]
   },
   {

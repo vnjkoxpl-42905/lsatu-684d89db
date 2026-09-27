@@ -51,6 +51,7 @@
     "questionNumber": 3,
     "questionType": "Paradox EXCEPT",
     "reasoningType": [],
+    "questionDifficulty": 2,
     "stimulus": "The local fair held its annual photography contest and accepted entries from both amateurs and professionals. The contest awarded prizes in each of several categories. As it turned out, most of the prizes in the contest were won by amateurs.",
     "questionStem": "Each of the following, if true, could by itself constitute an explanation of the outcome of the photography contest EXCEPT:",
     "answerChoices": {
@@ -61,7 +62,9 @@
       "E": "Three times as many amateurs entered the contest as had entered in any previous year."
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -109,7 +112,10 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Paradox",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Shortly after the power plant opened and began discharging its wastewater into the river, there was a decrease in the overall number of bass caught by anglers downstream from the plant.",
     "questionStem": "Each of the following, if true, could explain the decrease described above EXCEPT:",
     "answerChoices": {

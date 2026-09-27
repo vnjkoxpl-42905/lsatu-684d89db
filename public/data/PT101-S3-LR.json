@@ -4,7 +4,10 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Agree/Disagree",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "Francis: Failure to become properly registered to vote prevents one-third of the voting-age citizens of Lagonia from voting. If local election boards made the excessively cumbersome registration process easier, more people would register  and vote. \nSharon: The high number of citizens not registered to vote has persisted despite many attempts to make registering easier. Surveys show that most of these citizens believe that their votes would not make a difference. Until that belief is changed, simplifying the registration process will not increase the percentage of citizens registering to vote.",
     "questionStem": "The main issue in dispute between Francis and Sharon is",
     "answerChoices": {
@@ -15,7 +18,9 @@
       "E": "why the public lacks confidence in the effects of voting"
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -412,10 +417,9 @@
     "questionNumber": 19,
     "questionType": "Weaken",
     "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
+      "Conditional Reasoning"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 3,
     "stimulus": "Every student who walks to school goes home for lunch. It follows that some students who have part-time jobs do not walk to school.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
     "answerChoices": {
@@ -427,8 +431,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact",
-      "EXCEPT"
+      "Quantifiers",
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -437,8 +443,7 @@
     "questionNumber": 20,
     "questionType": "Weaken",
     "reasoningType": [
-      "Conditional Reasoning",
-      "Comparative Reasoning"
+      "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
     "stimulus": "When the Pinecrest Animal Shelter, a charitable organization, was in danger of closing because it could not pay for important repairs, its directors appealed to the townspeople to donate money that would be earmarked to pay for those repairs. Since more funds were ultimately donated than were used for the repairs, the directors plan to donate the surplus funds to other animal shelters. But before doing so, the directors should obtain permission from those who made the donations.",
@@ -452,9 +457,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion",
-      "EXCEPT",
-      "Focused on Evidence"
+      "Abstract Answers",
+      "Principles in Answers"
     ]
   },
   {
@@ -462,7 +466,10 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Parallel Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "The amount of electricity consumed in Millville on any day in August is directly proportional to peak humidity on that day. Since the average peak humidity this August was three points higher than the average peak humidity last August, it follows that more energy was consumed in Millville this August than last August.",
     "questionStem": "Which one of the following arguments has a pattern of reasoning most similar to the one in the argument above?",
     "answerChoices": {
@@ -473,14 +480,21 @@
       "E": "The number of instructors employed by the Aesthetic Institute in any term is directly proportional to the number of classes offered in that term and also directly proportional to the number of students enrolled at the institute. Thus, the number of classes offered by the institute in any term is directly proportional to the number of students enrolled in that term."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Conditional Diagramming",
+      "Repetitive Answers"
+    ]
   },
   {
     "practiceTest": "PT101",
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Weaken",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "Letter to the editor: After Baerton’s factory closed, there was a sharp increase in the number of claims filed for job-related injury compensation by the factory’s former employees. Hence there is reason to believe that most of those who filed for compensation after the factory closed were just out to gain benefits they did not deserve, and filed only to help them weather their job loss.",
     "questionStem": "Each of the following, if true, weakens the argument above EXCEPT:",
     "answerChoices": {
@@ -491,14 +505,22 @@
       "E": "Workers who are aware that they will soon be laid off from a job often become depressed, making them more prone to job-related injuries."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "EXCEPT",
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT101",
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Historians of North American architecture who have studied early nineteenth-century houses with wooden floors have observed that the boards used on the floors of bigger houses were generally much narrower than those used on the floors of smaller houses. These historians have argued that, since the people for whom the bigger houses were built were generally richer than the people for whom the smaller houses were built, floors made out of narrow floorboards were probably once a status symbol, designed to proclaim the owner’s wealth.",
     "questionStem": "Which one of the following, if true, most helps to strengthen the historians' argument?",
     "answerChoices": {
@@ -509,14 +531,19 @@
       "E": "Many of the biggest early nineteenth-century houses but very few small houses from that period had some floors that were made of materials that were considerably more expensive than wood, such as marble."
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT101",
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Principle-Conform",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Ethicist: A society is just when, and only when, first, each person has an equal right to basic liberties, and second, inequalities in the distribution of income and wealth are not tolerated unless these inequalities are to everyone’s advantage and are attached to jobs open to everyone.",
     "questionStem": "Which one of the following judgments most closely conforms to the principle described above?",
     "answerChoices": {
@@ -527,7 +554,12 @@
       "E": "Society S gives everyone an equal right to basic liberties, and although there is an inequality in the distribution of income and wealth, the jobs to which these inequalities are attached are open to all. Thus, society S is just."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Principles in Stimulus",
+      "Repetitive Answers",
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT101",

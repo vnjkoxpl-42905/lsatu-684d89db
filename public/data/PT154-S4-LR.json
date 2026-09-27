@@ -162,7 +162,10 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Most Supported",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "Advertisement: At BigFoods, we compare prices for you. We recently determined which items our shoppers buy most often. A varied sample of these items cost 10 percent more at Grocerytown than at BigFoods! None of these regularly purchased grocery items were on sale at BigFoods—these are our everyday prices!",
     "questionStem": "The statements in the advertisement, if true, most strongly support which one of the following?",
     "answerChoices": {
@@ -180,7 +183,10 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Principle-Conform",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "Martin: I have heard it argued that, because changes in diet and exercise rarely result in weight loss, doctors should stop advising their patients to eat less and exercise more. But this is no reason for doctors to abandon their advice, even supposing that weight loss is rare. Changes in diet and exercise have beneficial effects other than weight loss.",
     "questionStem": "Which one of the following conforms most closely to the principle illustrated in Martin's position?",
     "answerChoices": {
@@ -191,7 +197,9 @@
       "E": "The fact that the company's charitable act is also a public relations stunt is no reason to criticize the charitable act, since charity is laudable in itself."
     },
     "correctAnswer": "B",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT154",

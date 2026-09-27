@@ -4,7 +4,10 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "On the Caribbean island of Guadeloupe, a researcher examined 35 patients with atypical Parkinson's disease and compared their eating habits to those of 65 healthy adults. She found that all of the patients with atypical Parkinson's regularly ate the tropical fruits soursop, custard apple, and pomme cannelle, whereas only 10 of the healthy adults regularly ate these fruits. From this, she concluded that eating these fruits causes atypical Parkinson's.",
     "questionStem": "Which one of the following, if true, most strengthens the researcher's reasoning?",
     "answerChoices": {
@@ -22,7 +25,10 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Agree/Disagree",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "Price: A corporation's primary responsibility is to its shareholders. They are its most important constituency because they take the greatest risks. If the corporation goes bankrupt, they lose their investment. Albrecht: Shareholders typically have diversified investment portfolios. For employees, however, the well-being of the corporation for which they have chosen to work represents their very livelihood. The corporation's primary responsibility should be to them.",
     "questionStem": "On the basis of their statements, Price and Albrecht are committed to disagreeing about whether",
     "answerChoices": {
@@ -33,14 +39,19 @@
       "E": "the livelihood of some of the shareholders depends on the corporation's success"
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT131",
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "Despite the enormous number of transactions processed daily by banks nowadays, if a customer's bank account is accidentally credited with a large sum of money, it is extremely unlikely that the error will not be detected by the bank's internal audit procedures.",
     "questionStem": "Which one of the following, if true, most strongly supports the claim above?",
     "answerChoices": {
@@ -58,7 +69,10 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "Scientist: While studying centuries-old Antarctic ice deposits, I found that several years of relatively severe atmospheric pollution in the 1500s coincided with a period of relatively high global temperatures. So it is clear in this case that atmospheric pollution did cause global temperatures to rise.",
     "questionStem": "The reasoning in the scientist's argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
@@ -76,7 +90,10 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
     "stimulus": "Gilbert: This food label is mistaken. It says that these cookies contain only natural ingredients, but they contain alphahydroxy acids that are chemically synthesized by the cookie company at their plant. Sabina: The label is not mistaken. After all, alphahydroxy acids also are found occurring naturally in sugarcane.",
     "questionStem": "Which one of the following, if true, would most strengthen Sabina's argument?",
     "answerChoices": {

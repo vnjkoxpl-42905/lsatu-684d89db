@@ -590,7 +590,10 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Necessary Assumption",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Sometimes one reads a poem and believes that the poem expresses contradictory ideas, even if it is a great poem. So it is wrong to think that the meaning of a poem is whatever the author intends to communicate to the reader by means of the poem. No one who is writing a great poem intends it to communicate contradictory ideas.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
     "answerChoices": {
@@ -601,14 +604,23 @@
       "E": "If a reader believes that a poem expresses a particular idea, then that idea is part of the meaning of the poem."
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Refute a Conditional",
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Links Between Premises",
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Must be True",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "The law of the city of Weston regarding contributions to mayoral campaigns is as follows: all contributions to these campaigns in excess of $100 made by nonresidents of Weston who are not former residents of Weston must be registered with the city council. Brimley's mayoral campaign clearly complied with this law since it accepted contributions only from residents and former residents of Weston.",
     "questionStem": "If all the statements above are true, which one of the following statements must be true?",
     "answerChoices": {
@@ -619,7 +631,10 @@
       "E": "Brimley's campaign did not register any contributions with the city council."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT129",

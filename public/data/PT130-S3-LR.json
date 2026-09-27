@@ -4,7 +4,11 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Most Supported",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
     "stimulus": "Students in a first-year undergraduate course were divided into two groups. All the students in both groups were given newspaper articles identical in every respect, except for the headline, which was different for each group. When the students were later asked questions about the contents of the article, the answers given by the two groups were markedly different, though within each group the answers were similar.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
     "answerChoices": {
@@ -15,7 +19,9 @@
       "E": "Newspaper headlines influence a reader's interpretation of the corresponding articles."
     },
     "correctAnswer": "E",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -426,7 +432,11 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Principle-Strengthen",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
     "stimulus": "It was once thought that pesticide TSX-400 was extremely harmful to the environment but that pesticides Envirochem and Zanar were environmentally harmless. TSX-400 was banned; Envirochem and Zanar were not. However, according to recent studies, Envirochem and Zanar each cause greater environmental harm than does TSX-400. If these studies are accurate, then either Envirochem and Zanar should be banned or TSX-400 should be legalized.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the argumentation?",
     "answerChoices": {
@@ -437,14 +447,20 @@
       "E": "One pesticide should be legal and another illegal if the former is harmless to the environment and the latter is harmful to it."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Principles in Answers",
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT130",
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "Recent studies have demonstrated that smokers are more likely than nonsmokers to develop heart disease. Other studies have established that smokers are more likely than others to drink caffeinated beverages. Therefore, even though drinking caffeinated beverages is not thought to be a cause of heart disease, there is a positive correlation between drinking caffeinated beverages and the development of heart disease.",
     "questionStem": "The argument's reasoning is most vulnerable to criticism on the grounds that the argument fails to take into account the possibility that",
     "answerChoices": {
@@ -455,7 +471,10 @@
       "E": "there is a common cause of both the development of heart disease and behaviors such as drinking caffeinated beverages and smoking"
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT130",

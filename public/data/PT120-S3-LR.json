@@ -552,6 +552,7 @@
     "questionNumber": 26,
     "questionType": "Principle-Strengthen",
     "reasoningType": [],
+    "questionDifficulty": 2,
     "stimulus": "Students in a college ethics class were asked to judge whether two magazines had been morally delinquent in publishing a particular classified advertisement that was highly offensive in its demeaning portrayal of some people. They were told only that the first magazine had undertaken to screen all classified advertisements and reject for publication those it found offensive, whereas the second magazine’s policy was to publish any advertisement received from its subscribers. Most students judged the first magazine, but not the second, to have been morally delinquent in publishing the advertisement.",
     "questionStem": "Which one of the following principles, if established, provides the strongest justification for the judgment that the first magazine and not the second was morally delinquent?",
     "answerChoices": {
@@ -562,6 +563,9 @@
       "E": "A magazine should not be considered at fault for publishing a classified advertisement if that advertisement would not be offensive to any of the magazine's subscribers."
     },
     "correctAnswer": "D",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Principles in Answers",
+      "Causal Difference-Maker"
+    ]
   }
 ]

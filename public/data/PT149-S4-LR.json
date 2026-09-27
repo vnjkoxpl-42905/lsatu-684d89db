@@ -547,7 +547,10 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Must be True",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
     "stimulus": "All unemployed artists are sympathetic to social justice. And no employed artists are interested in the prospect of great personal fame.",
     "questionStem": "If the claims made above are true, then which one of the following must be true?",
     "answerChoices": {
@@ -558,14 +561,20 @@
       "E": "All artists are either sympathetic to social justice or are interested in the prospect of great personal fame."
     },
     "correctAnswer": "A",
-    "questionFeatures": []
+    "questionFeatures": [
+      "Quantifiers",
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT149",
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Parallel Flaw",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
     "stimulus": "The police department has two suspects for the burglary that occurred last night, Schaeffer and Forster. Schaeffer has an ironclad alibi, so Forster must be the burglar.",
     "questionStem": "Which one of the following arguments exhibits a flawed pattern of reasoning that is most similar to that exhibited by the argument above?",
     "answerChoices": {
