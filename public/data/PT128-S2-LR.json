@@ -112,7 +112,7 @@
       "D": "assess the trustworthiness of employees who claim that they must miss work because they are ill",
       "E": "make any reliable predictions about an employee's future behavior from his or her absenteeism record"
     },
-    "correctAnswer": "D",
+    "correctAnswer": "C",
     "questionFeatures": [
       "Logical Completion",
       "Weighing Tradeoffs"

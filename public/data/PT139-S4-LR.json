@@ -504,7 +504,7 @@
       "D": "takes a single fact that is incompatible with a general claim as enough to show that claim to be false",
       "E": "treats an occurrence that will ensure a certain outcome as something that is required for that outcome"
     },
-    "correctAnswer": "B",
+    "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
       "Famous Flaws"

@@ -134,11 +134,11 @@
     "stimulus": "Chai: The use of the word “tree” to denote both deciduous and coniferous plant forms, while acceptable as a lay term, is scientifically inadequate; it masks the fact that the two plant types have utterly different lineages.Dodd: But the common name highlights the crucial fact that both are composed of the same material and have very similar structures; so it is acceptable as a scientific term.",
     "questionStem": "The conversation provides the strongest grounds for holding that Chai and Dodd disagree over whether",
     "answerChoices": {
-      "A": "The bird species known to have been eaten by the islanders had few natural predators on Tiliga.",
-      "B": "Many of the bird species that disappeared from Tiliga did not disappear from other, similar, uninhabited islands until much later.",
-      "C": "The arrival of a species of microbe, carried by some birds but deadly to many others, immediately preceded the first human immigration to Tiliga.",
-      "D": "Bones from bird species known to have been eaten by the islanders were found in the underlying 150 centimeters of soil.",
-      "E": "The birds that lived on Tiliga prior to the first human immigration generally did not fly well."
+      "A": "it is advisable to use ordinary terms as names for biological forms in scientific discourse",
+      "B": "using the same term for two biological forms with different lineages can be scientifically acceptable",
+      "C": "both deciduous and coniferous plant forms evolved from simpler biological forms",
+      "D": "it is important that the lay terms for plant forms reflect the current scientific theories about them",
+      "E": "biological forms with similar structures can have different lineages"
     },
     "correctAnswer": "B",
     "questionFeatures": [

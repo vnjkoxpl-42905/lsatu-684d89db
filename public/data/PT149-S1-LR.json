@@ -34,7 +34,7 @@
     ],
     "questionDifficulty": 2,
     "stimulus": "Rose: Let’s not see the movie Winter Fields. I caught a review of it in the local paper and it was the worst review I’ve read in years.\nChester: I don’t understand why that might make you not want to see the movie. And besides, nothing in that paper is particularly well written.",
-    "questionStem": "Rose: Let’s not see the movie Winter Fields. I caught a review of it in the local paper and it was the worst review I’ve read in years.\nChester: I don’t understand why that might make you not want to see the movie. And besides, nothing in that paper is particularly well written.\nChester’s response suggests that he misinterpreted which one of the following expressions used by Rose?",
+    "questionStem": "Chester's response suggests that he misinterpreted which one of the following expressions used by Rose?",
     "answerChoices": {
       "A": "see the movie",
       "B": "caught a review",
@@ -203,7 +203,7 @@
     ],
     "questionDifficulty": 5,
     "stimulus": "Ted, a senior employee, believes he is underpaid and attempts to compensate by routinely keeping short hours, though it is obvious to everyone that he still makes some valuable, unique, and perhaps irreplaceable contributions. Tatiana, Ted’s supervisor, is aware of the deficit in Ted’s performance, and realizes other workers work harder than they should to make up for it. Nevertheless, Tatiana decides that she should not request that Ted be replaced.",
-    "questionStem": "Which one of the following principles, if valid, most help to justify Tatiana’s decision?",
+    "questionStem": "Which one of the following principles, if valid, would most help to justify Tatiana's decision?",
     "answerChoices": {
       "A": "Supervisors should request that an employee be replaced only if they know that all the work done by that employee can be performed equally well by another employee.",
       "B": "Employers should compensate all their employees in a way that is adequate in relation to the value of the contributions they make.",
@@ -420,7 +420,7 @@
     ],
     "questionDifficulty": 5,
     "stimulus": "If the standards committee has a quorum, then the general assembly will begin at 6:00 P.M. today. If the awards committee has a quorum, then the general assembly will begin at 7:00 P.M. today.",
-    "questionStem": "If the statements above are true, which one of the following statements follows logically from the statements above?",
+    "questionStem": "Which one of the following statements follows logically from the statements above?",
     "answerChoices": {
       "A": "If the general assembly does not begin at 6:00 P.M. today, then the awards committee has a quorum.",
       "B": "If the standards committee does not have a quorum, then the awards committee has a quorum.",

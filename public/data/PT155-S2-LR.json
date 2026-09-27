@@ -211,7 +211,7 @@
     ],
     "questionDifficulty": 4,
     "stimulus": "Rodents are small, gnawing mammals characterized by their chisel-like incisor teeth. Although most North American mammal species are not rodent species, most of the individual mammals in North America are rodents.",
-    "questionStem": "Which one of the following one of the following is most strongly supported by the information above?",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
     "answerChoices": {
       "A": "Most species of North American mammals have chisel-like incisor teeth.",
       "B": "In North America, rodent species tend to have more individual members than other species of mammals have.",

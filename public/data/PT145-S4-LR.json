@@ -242,8 +242,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Polls have shown that a higher percentage of graduating university students are against proposals to reduce government social services than are students entering their first year at a university.",
-    "questionStem": "These polls lead us to the conclusion that people with a university education are more likely to favor retaining or increasing the present level of government social services than are members of the overall population. Which one of the following, if true, most seriously weakens the argument?",
+    "stimulus": "Polls have shown that a higher percentage of graduating university students are against proposals to reduce government social services than are students entering their first year at a university. These polls lead us to the conclusion that people with a university education are more likely to favor retaining or increasing the present level of government social services than are members of the overall population.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
     "answerChoices": {
       "A": "The polls of graduating university students were designed to avoid overrepresenting any single academic discipline.",
       "B": "The political views of people with a university education are to a large degree influenced by their professors, and university professors are usually against reducing government social services.",
