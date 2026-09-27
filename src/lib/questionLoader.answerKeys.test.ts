@@ -19,6 +19,7 @@ type BankItem = {
   sectionNumber?: number;
   questionNumber?: number;
   correctAnswer?: string;
+  status?: string;
 };
 
 function sectionFiles(): string[] {
@@ -29,8 +30,10 @@ function loadStats(): Record<string, { c?: string }> {
   return JSON.parse(readFileSync(join(DATA_DIR, 'question-stats.json'), 'utf8')).q ?? {};
 }
 
+// A position LSAC removed from scoring has no key to grade against, and the
+// loader never puts it in the pool.
 function bankEntries(items: BankItem[]): Array<{ qid: string; answer?: string }> {
-  return items.map((q) => ({
+  return items.filter((q) => q.status !== 'removed').map((q) => ({
     qid: `${q.practiceTest}-S${q.sectionNumber}-Q${q.questionNumber}`,
     answer: q.correctAnswer,
   }));
