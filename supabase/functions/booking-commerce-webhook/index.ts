@@ -417,8 +417,7 @@ Deno.serve(async (req) => {
       error: error instanceof Error ? error.message : String(error),
       code: (error as any)?.code ?? null,
       details: (error as any)?.details ?? null,
-      stack: error instanceof Error ? error.stack?.split("
-").slice(0, 4).join(" | ") : null,
+      stack: error instanceof Error ? error.stack?.split("\n").slice(0, 4).join(" | ") : null,
     });
     return json({ error: "provider_processing_failed" }, 500);
   }
