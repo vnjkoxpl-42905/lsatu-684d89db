@@ -229,11 +229,11 @@
     "stimulus": "In early 1990, Queenston instituted a tax increase that gave its school system a larger operating budget. The school system used the larger budget to increase the total number of teachers in the system by 30 percent between 1990 and 1993. Nevertheless, there was no change in the average number of students per teacher between 1990 and 1993.",
     "questionStem": "If the statements above are true, then on the basis of them which one of the following must also be true?",
     "answerChoices": {
-      "A": "The least efficiently run government bureaucracies are the bureaucracies that legislators most commonly discover to be failing to provide some public service adequately.",
-      "B": "When legislators discover that a public service is not being adequately provided, they never respond to the problem by reducing the funding of the government bureaucracy providing that service.",
-      "C": "Throughout the time a government bureaucracy is run inefficiently, legislators repeatedly boost the funding for the public service that this bureaucracy provides.",
-      "D": "If legislators boost funding for a public service, the government bureaucracy providing that service will commonly become less efficient as a result.",
-      "E": "The most inefficiently run government bureaucracy receives the most funding of any government bureaucracy."
+      "A": "No classes in Queenston’s school system experienced an increase in enrollment between 1990 and 1993.",
+      "B": "The total number of students enrolled in Queenston’s school system increased between 1990 and 1993.",
+      "C": "The operating budget of Queenston’s school system increased by exactly 30 percent between 1990 and 1993.",
+      "D": "Most teachers who worked for Queenston’s school system in 1990 were still working for the system in 1993.",
+      "E": "The quality of education in Queenston’s school system improved between 1990 and 1993."
     },
     "correctAnswer": "B",
     "questionFeatures": [

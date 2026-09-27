@@ -113,7 +113,7 @@
       "A": "The abridgment was prepared by Shakespeare.",
       "B": "The abridgment was created to make Hamlet easier to produce on stage.",
       "C": "The abridgment was produced by an actor who had played a role in Hamlet.",
-      "D": "The abridgement was prepared by a spectator of a performance of Hamlet.",
+      "D": "The abridgment was prepared by a spectator of a performance of Hamlet.",
       "E": "The abridgment was produced by an actor who was trying to improve the play."
     },
     "correctAnswer": "C",

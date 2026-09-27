@@ -172,8 +172,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Merton: A study showed that people who live on very busy streets have higher rates of heart disease than average. I conclude that this elevated rate of heart disease is caused by air pollution from automobile exhaust. Ortiz: Are you sure?",
-    "questionStem": "Do we know whether people living on busy streets have other lifestyle factors that are especially conducive to heart disease?",
+    "stimulus": "Merton: A study showed that people who live on very busy streets have higher rates of heart disease than average. I conclude that this elevated rate of heart disease is caused by air pollution from automobile exhaust.\nOrtiz: Are you sure? Do we know whether people living on busy streets have other lifestyle factors that are especially conducive to heart disease?",
+    "questionStem": "Ortiz criticizes Merton's argument by",
     "answerChoices": {
       "A": "raising a question about the validity of the study that Merton cites",
       "B": "contending that Merton needs to take into account other effects of air pollution",

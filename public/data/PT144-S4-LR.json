@@ -501,8 +501,8 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "At a large elementary school researchers studied a small group of children who successfully completed an experimental program in which they learned to play chess. The study found that most of the children who completed the program soon showed a significant increase in achievement levels in all of their schoolwork.",
-    "questionStem": "Thus, it is likely that the reasoning power and spatial intuition exercised in chess-playing also contribute to achievement in many other areas of intellectual activity. Which one of the following, if true, most tends to undermine the argument?",
+    "stimulus": "At a large elementary school researchers studied a small group of children who successfully completed an experimental program in which they learned to play chess. The study found that most of the children who completed the program soon showed a significant increase in achievement levels in all of their schoolwork. Thus, it is likely that the reasoning power and spatial intuition exercised in chess-playing also contribute to achievement in many other areas of intellectual activity.",
+    "questionStem": "Which one of the following, if true, most tends to undermine the argument?",
     "answerChoices": {
       "A": "Some students who did not participate in the chess program had learned to play chess at home.",
       "B": "Those children who began the program but who did not successfully complete it had lower preprogram levels of achievement than did those who eventually did successfully complete the program.",

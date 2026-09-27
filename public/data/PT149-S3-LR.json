@@ -349,7 +349,7 @@
     ],
     "questionDifficulty": 5,
     "stimulus": "There is a popular view among literary critics that a poem can never be accurately paraphrased because a poem is itself the only accurate expression of its meaning. But these same critics hold that their own paraphrases of particular poems are accurate. Thus, their view that poetry cannot be accurately paraphrased is false.",
-    "questionStem": "The reasoning in the argument is flawed because the argument",
+    "questionStem": "The reasoning in the argument is most vulnerable to the criticism that the argument",
     "answerChoices": {
       "A": "presupposes the falsity of the view that it sets out to refute",
       "B": "takes for granted that the main purpose of poems is to convey information rather than express feelings",
