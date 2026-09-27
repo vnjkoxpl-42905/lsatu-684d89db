@@ -3335,6 +3335,7 @@ export type Database = {
       }
       practice_test_runs: {
         Row: {
+          active_device_id: string | null
           break_after_leg: number
           break_started_at: string | null
           break_taken: boolean
@@ -3350,11 +3351,13 @@ export type Database = {
           revision: number
           scaled_score: number | null
           score_source: string | null
+          section_seconds: number | null
           status: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          active_device_id?: string | null
           break_after_leg: number
           break_started_at?: string | null
           break_taken?: boolean
@@ -3370,11 +3373,13 @@ export type Database = {
           revision?: number
           scaled_score?: number | null
           score_source?: string | null
+          section_seconds?: number | null
           status: string
           updated_at?: string
           user_id?: string
         }
         Update: {
+          active_device_id?: string | null
           break_after_leg?: number
           break_started_at?: string | null
           break_taken?: boolean
@@ -3390,6 +3395,7 @@ export type Database = {
           revision?: number
           scaled_score?: number | null
           score_source?: string | null
+          section_seconds?: number | null
           status?: string
           updated_at?: string
           user_id?: string
