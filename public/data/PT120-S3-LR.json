@@ -552,20 +552,16 @@
     "questionNumber": 26,
     "questionType": "Principle-Strengthen",
     "reasoningType": [],
-    "questionDifficulty": 2,
-    "stimulus": "The number of applications for admission reported by North American Ph.D. programs in art history has declined in each of the last four years. We can conclude from this that interest among recent North American college and university graduates in choosing art history as a career has declined in the last four years.",
-    "questionStem": "Each of the following, if true, weakens the argument except:",
+    "stimulus": "Students in a college ethics class were asked to judge whether two magazines had been morally delinquent in publishing a particular classified advertisement that was highly offensive in its demeaning portrayal of some people. They were told only that the first magazine had undertaken to screen all classified advertisements and reject for publication those it found offensive, whereas the second magazine’s policy was to publish any advertisement received from its subscribers. Most students judged the first magazine, but not the second, to have been morally delinquent in publishing the advertisement.",
+    "questionStem": "Which one of the following principles, if established, provides the strongest justification for the judgment that the first magazine and not the second was morally delinquent?",
     "answerChoices": {
-      "A": "The number of North American Ph.D. programs in art history that opted to report data about applications for admission has declined in each of the last four years.",
-      "B": "The average age of applicants for admission to North American Ph.D. programs in art history has increased in each of the last four years.",
-      "C": "The number of errors in data about applications for admission to North American Ph.D. programs in art history has increased substantially during the last four years.",
-      "D": "The number of North American employers willing to hire individuals without a Ph.D. for jobs in art history has increased in each of the last four years.",
-      "E": "The percentage of applications for admission received from outside North America by North American Ph.D. programs in art history has declined substantially in the last four years."
+      "A": "It is wrong to publish messages that could cause direct or indirect harm to innocent people.",
+      "B": "Anyone regularly transmitting messages to the public has a moral responsibility to monitor the content of those messages.",
+      "C": "If two similar agents commit two similar actions, those agents should be held to the same standard of accountability.",
+      "D": "Failure to uphold a moral standard is not necessarily a moral failing except for those who have specifically committed themselves to upholding that standard.",
+      "E": "A magazine should not be considered at fault for publishing a classified advertisement if that advertisement would not be offensive to any of the magazine's subscribers."
     },
     "correctAnswer": "D",
-    "questionFeatures": [
-      "Causal Difference-Maker",
-      "Principles in Answers"
-    ]
+    "questionFeatures": []
   }
 ]

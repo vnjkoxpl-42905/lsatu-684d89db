@@ -390,76 +390,54 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Most Supported",
-    "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "Researchers investigating the accuracy of eyewitness accounts staged and made a video of a crime, and showed it to test subjects. A lineup of “suspects,” none of whom was the person playing the criminal in the video, was then shown to the subjects. When the subjects were not told that the suspect might not be in the lineup, 78 percent of them misidentified one or another of the persons in the lineup as the criminal. Only 38 percent of the subjects made misidentifications when they were told that the suspect might not be in the lineup.",
+    "reasoningType": [],
+    "stimulus": "In an effort to boost milk production, some dairy farmers are treating cows with a genetically engineered hormone called BST. Consumer groups have opposed the use of BST even though the milk of BST-treated cows is identical in nutritional value to that of untreated cows; the treated cows run a greater risk of infection and hence are more likely to be given antibiotics, which may show up in their milk. In high levels, these antibiotics may be harmful to humans. Yet the milk of treated and untreated cows alike is regularly screened for antibiotics.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
     "answerChoices": {
-      "A": "Eyewitnesses are no more likely to accurately select a suspect from a lineup than are people who are given an accurate verbal description of the suspect.",
-      "B": "People tend to want to satisfy the stated expectations of those who ask them for information.",
-      "C": "When specifically directed by a person of authority to say that something is among a group of things when it is not, most people will comply.",
-      "D": "People fail to recognize the physical similarities among a group of people unless they are given information in addition to visual clues.",
-      "E": "People are less likely to think they see something that is not actually present the less they expect to see it."
+      "A": "Consumer groups have no legitimate reasons for opposing the use of BST.",
+      "B": "Milk from BST-treated cows is as safe for human consumption as that from untreated cows.",
+      "C": "There is no advantage to the use of BST on dairy cows.",
+      "D": "Milk from BST-treated cows can be presumed safe for humans only if it is successfully screened for high levels of antibiotics.",
+      "E": "The only threat posed by drinking milk from cows treated with BST is high levels of antibiotics."
     },
     "correctAnswer": "D",
-    "questionFeatures": [
-      "Medical",
-      "Plans / Recommendations"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT155",
     "sectionNumber": 4,
     "questionNumber": 17,
-    "questionType": "Principle Strengthen",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "Advice columnist: Parents should not encourage their children to place great value on outdoing others. Being motivated in this way not only fosters resentment, it makes one less happy because it gives one a desire for achievement that is difficult to satisfy.",
-    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the advice columnist’s argument?",
+    "questionType": "Role",
+    "reasoningType": [],
+    "stimulus": "Legislator: University humanities departments bring in less tuition and grant money than science departments. But because teaching and research cost significantly less in the humanities than in the sciences, humanities departments bring in more money than they spend while the reverse is true of science departments. As a result, contrary to the typical characterization that humanities departments freeload on science departments, humanities departments actually subsidize science departments. Thus, it is a mistake for universities to cut humanities departments when facing budget shortfalls.",
+    "questionStem": "Which one of the following most accurately describes the role played in the legislator's argument by the claim that teaching and research cost significantly less in the humanities than in the sciences?",
     "answerChoices": {
-      "A": "Parents should encourage their children to be happy about the things that they do well.",
-      "B": "Parents should try to ensure that their children have at least some desires that are easy to satisfy.",
-      "C": "One should never encourage a person to acquire a trait if having the trait would make that person less happy.",
-      "D": "Parents should do everything they can to ensure that their children have significant achievements.",
-      "E": "How much one achieves relative to one’s own potential is just as important as how much one achieves relative to others."
+      "A": "It is offered as support for the accuracy of an alleged stereotype.",
+      "B": "It is an alleged stereotype rejected in the argument's overall conclusion.",
+      "C": "It is put forward as a component of an explanation for a premise of the argument.",
+      "D": "It is an intermediate conclusion from which the argument's overall conclusion is inferred.",
+      "E": "It is one of many claims each presented as independent support for the argument's overall conclusion."
     },
     "correctAnswer": "C",
-    "questionFeatures": [
-      "Intermediate Conclusions",
-      "Plans / Recommendations",
-      "Rebuttals"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT155",
     "sectionNumber": 4,
     "questionNumber": 18,
-    "questionType": "Most Supported",
-    "reasoningType": [
-      "Causation"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "Economist: Machinery firms in this country argue that in order to grow big enough to compete successfully with foreign rivals, the protection that they have been receiving from foreign competition must be extended for several more years. Yet these firms have been receiving protection from foreign competition for the last ten years. If it were possible for protection from foreign competition to enable this country’s machinery firms to grow big enough to compete successfully with foreign rivals, ten years would be a sufficient time frame for this to happen.",
-    "questionStem": "The economist’s statements, if true, most strongly support which one of the following?",
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "stimulus": "Certain changes in North American residential architecture after World War II are attributable mainly to the increased availability and affordability of air-conditioning. Soon after World War II, many builders found that air-conditioned houses lacking the high ceilings and thick walls that traditionally kept residents cool during extreme heat generally sold well.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
     "answerChoices": {
-      "A": "Protection from foreign competition rarely if ever enables firms to grow big enough to compete with foreign rivals.",
-      "B": "Ten years is a sufficient time frame for assessing the success of any economic policy.",
-      "C": "None of the machinery firms in the economist’s country has grown significantly over the last ten years.",
-      "D": "Most of the machinery firms in the economist’s country will go out of business unless they are protected from foreign competition.",
-      "E": "Protection from foreign competition will not enable machinery firms in the economist’s country to grow big enough to take on foreign rivals."
+      "A": "High ceilings and thick walls enable houses to withstand many types of severe weather that are common in North America.",
+      "B": "Thin-walled, low-ceilinged houses are more costly to heat in winter than thick-walled, highceilinged houses.",
+      "C": "Houses with low ceilings and thin walls were prevalent in North America even where there was no demand for residential air-conditioning.",
+      "D": "Thin walls allow cool, air-conditioned air to escape more readily from houses than do thick walls.",
+      "E": "Soon after World War II, new thermal-insulating technology was widely applied in house building."
     },
     "correctAnswer": "C",
-    "questionFeatures": [
-      "First Sentence Conclusion",
-      "Explain Curious Fact",
-      "Plausibility",
-      "Timeframes"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT155",

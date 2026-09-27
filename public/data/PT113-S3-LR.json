@@ -97,484 +97,390 @@
     "practiceTest": "PT113",
     "sectionNumber": 3,
     "questionNumber": 5,
-    "questionType": "Weaken",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "Solicitor: Loux named Zembaty executor of her will. Her only beneficiary was her grandson, of whom she was very fond. Prior to distributing the remainder to the beneficiary, Zembaty was legally required to choose which properties in the estate should be sold to clear the estate's heavy debts. Loux never expressed any particular desire about the Stoke Farm, which includes the only farmland in her estate. Thus, it is unlikely that Loux would have had any objection to Zembaty's having sold it rather than having transferred it to her grandson.",
-    "questionStem": "Which one of the following, if true, most weakens the solicitor's argument?",
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "stimulus": "Television executives recently announced that advertising time on television will cost 10 to 15 percent more next fall than it cost last fall. The executives argued that in spite of this increase, advertisers will continue to profit from television advertising, and so advertising time will be no harder to sell next fall than it was last fall.",
+    "questionStem": "Which one of the following, if true, would most support the television executives' argument?",
     "answerChoices": {
-      "A": "The estate's debts could not have been cleared without selling the Stoke Farm.",
-      "B": "Loux repeatedly told her grandson that she would take care of him in her will.",
-      "C": "Loux was well aware of the legal requirements the executor of her will would have to satisfy.",
-      "D": "The Stoke Farm was the main cause of the estate's debts.",
-      "E": "Loux's grandson had repeatedly expressed his desire to own a farm."
+      "A": "Most costs of production and distribution of products typically advertised on television are expected to rise 3 to 7 percent in the next year.",
+      "B": "The system for rating the size of the audience watching any given television advertisement will change next fall.",
+      "C": "Next fall advertising time on television will no longer be available in blocks smaller than 30 seconds.",
+      "D": "The amount of television advertising time purchased by providers of services is increasing, while the amount of such time purchased by providers of products is decreasing.",
+      "E": "A recent survey has shown that the average number of hours people spend watching television is increasing at the rate of 2 percent every two months."
     },
     "correctAnswer": "E",
-    "questionFeatures": [
-      "Predictions"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT113",
     "sectionNumber": 3,
     "questionNumber": 6,
-    "questionType": "Role",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 1,
-    "stimulus": "Government official: A satisfactory way of eliminating chronic food shortages in our country is not easily achievable. Direct aid from other countries in the form of food shipments tends to undermine our prospects for long-term agricultural self-sufficiency. If external sources of food are delivered effectively by external institutions, local food producers and suppliers are forced out of business. On the other hand, foreign capital funneled to long-term development projects would inject so much cash into our economy that inflation would drive the price of food beyond the reach of most of our citizens.",
-    "questionStem": "The claim that foreign capital funneled into the economy would cause inflation plays which one of the following roles in the government official's argument?",
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "stimulus": "It is proposed to allow the sale, without prescription, of a medication that physicians currently prescribe to treat the common ear inflammation called “swimmer’s ear.” The principal objection is that most people lack the expertise for proper self-diagnosis and might not seek medical help for more serious conditions in the mistaken belief that they have swimmer’s ear. Yet in a recent study, of 1,000 people who suspected that they had swimmer’s ear, 84 percent had made a correct diagnosis—a slightly better accuracy rate than physicians have in diagnosing swimmer’s ear. Thus, clearly, most people can diagnose swimmer’s ear in themselves without ever having to consult a physician.",
+    "questionStem": "Which one of the following, if true, most undermines the conclusion?",
     "answerChoices": {
-      "A": "It supports the claim that the official's country must someday be agriculturally self-sufficient.",
-      "B": "It supports the claim that there is no easy solution to the problem of chronic food shortages in the official's country.",
-      "C": "It is supported by the claim that the official's country must someday be agriculturally self-sufficient.",
-      "D": "It supports the claim that donations of food from other countries will not end the chronic food shortages in the official's country.",
-      "E": "It is supported by the claim that food producers and suppliers in the official's country may be forced out of business by donations of food from other countries."
+      "A": "Cases in which swimmer's ear progresses to more serious infections are very rare.",
+      "B": "Most of those who suspected incorrectly that they had swimmer's ear also believed that they had other ailments that in fact they did not have.",
+      "C": "Most of the people who diagnosed themselves correctly had been treated by a physician for a prior occurrence of swimmer's ear.",
+      "D": "Physicians who specialize in ear diseases are generally able to provide more accurate diagnoses than those provided by general practitioners.",
+      "E": "For many people who develop swimmer's ear, the condition disappears without medical or pharmaceutical intervention."
     },
     "correctAnswer": "C",
-    "questionFeatures": [
-      "Sampling",
-      "Argue the Anti-Conclusion",
-      "Medical"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT113",
     "sectionNumber": 3,
     "questionNumber": 7,
-    "questionType": "Strengthen",
-    "reasoningType": [
-      "Causation"
-    ],
-    "questionDifficulty": 2,
-    "stimulus": "Medical doctor: Sleep deprivation is the cause of many social ills, ranging from irritability to potentially dangerous instances of impaired decision making. Most people today suffer from sleep deprivation to some degree. Therefore we should restructure the workday to allow people flexibility in scheduling their work hours.",
-    "questionStem": "Which one of the following, if true, would most strengthen the medical doctor's argument?",
-    "answerChoices": {
-      "A": "The primary cause of sleep deprivation is overwork.",
-      "B": "Employees would get more sleep if they had greater latitude in scheduling their work hours.",
-      "C": "Individuals vary widely in the amount of sleep they require.",
-      "D": "More people would suffer from sleep deprivation today than did in the past if the average number of hours worked per week had not decreased.",
-      "E": "The extent of one's sleep deprivation is proportional to the length of one's workday."
-    },
-    "correctAnswer": "D",
-    "questionFeatures": [
-      "Rebuttals"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 8,
-    "questionType": "Method",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "Essayist: Knowledge has been defined as a true belief formed by a reliable process. This definition has been criticized on the grounds that if someone had a reliable power of clairvoyance, we would not accept that person's claim to know certain things on the basis of this power. I agree that we would reject such claims, but we would do so because we really do not believe in clairvoyance as a reliable process. Were we to believe in clairvoyance, we would accept knowledge claims made on the basis of it.",
-    "questionStem": "Which one of the following most accurately describes the essayist's method of defending the definition against the objection?",
-    "answerChoices": {
-      "A": "asserting that the objection is based on a belief about the reliability of clairvoyance rather than on the nature of knowledge or its definition",
-      "B": "asserting that the case of clairvoyance is one of knowledge even though we do not really believe in clairvoyance as a reliable process",
-      "C": "arguing against the assumption that clairvoyance is unreliable",
-      "D": "explaining that the definition of knowledge is a matter of personal choice",
-      "E": "demonstrating that the case of clairvoyance is not a case of knowledge and does not fit the definition of knowledge"
-    },
-    "correctAnswer": "B",
-    "questionFeatures": [
-      "EXCEPT",
-      "Refute a Conditional",
-      "Science"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 9,
-    "questionType": "Main Conclusion",
-    "reasoningType": [],
-    "questionDifficulty": 2,
-    "stimulus": "I agree that Hogan's actions resulted in grievous injury to Winters. And I do not deny that Hogan fully realized the nature of his actions and the effects that they would have. Indeed, I would not disagree if you pointed out that intentionally causing such effects is reprehensible, other things being equal. But in asking you to concur with me that Hogan's actions not be wholly condemned I emphasize again that Hogan mistakenly believed Winters to be the robber who had been terrorizing west-side apartment buildings for the past several months.",
-    "questionStem": "Which one of the following most accurately expresses the conclusion of the argument?",
-    "answerChoices": {
-      "A": "Hogan should not be considered responsible for the injuries sustained by Winters.",
-      "B": "The robber who had been terrorizing west-side apartment buildings should be considered to be as responsible for Winters's injuries as Hogan.",
-      "C": "The actions of Hogan that seriously injured Winters are not completely blameworthy.",
-      "D": "Hogan thought that Winters was the person who had been terrorizing west-side apartment buildings for the last few months.",
-      "E": "The actions of Hogan that seriously injured Winters were reprehensible, other things being equal."
-    },
-    "correctAnswer": "A"
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 10,
-    "questionType": "Method",
-    "reasoningType": [],
-    "questionDifficulty": 3,
-    "stimulus": "Peter: Because the leaves of mildly drought-stressed plants are tougher in texture than the leaves of abundantly watered plants, insects prefer to feed on the leaves of abundantly watered plants. Therefore, to minimize crop damage, farmers should water crops only just enough to ensure that there is no substantial threat, from a lack of water, to either the growth or the yield of the crops.\nJennifer: Indeed. In fact, a mildly drought-stressed plant will divert a small amount of its resources from normal growth to the development of pesticidal toxins, but abundantly watered plants will not.",
-    "questionStem": "Jennifer's comment is related to Peter's argument in which one of the following ways?",
-    "answerChoices": {
-      "A": "It offers information that supports each of the claims that Peter makes in his argument.",
-      "B": "It supports Peter's argument by supplying a premise without which Peter's conclusion cannot properly be drawn.",
-      "C": "It supports Peter's argument by offering an explanation of all of Peter's premises.",
-      "D": "It supports one of Peter's premises although it undermines Peter's conclusion.",
-      "E": "It supports the conclusion of Peter's argument by offering independent grounds for that conclusion."
-    },
-    "correctAnswer": "D",
-    "questionFeatures": [
-      "Quantifiers"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 11,
-    "questionType": "Strengthen",
-    "reasoningType": [],
-    "questionDifficulty": 1,
-    "stimulus": "Peter: Because the leaves of mildly drought-stressed plants are tougher in texture than the leaves of abundantly watered plants, insects prefer to feed on the leaves of abundantly watered plants. Therefore, to minimize crop damage, farmers should water crops only just enough to ensure that there is no substantial threat, from a lack of water, to either the growth or the yield of the crops.\nJennifer: Indeed. In fact, a mildly drought-stressed plant will divert a small amount of its resources from normal growth to the development of pesticidal toxins, but abundantly watered plants will not.",
-    "questionStem": "Which one of the following, if true, most strengthens Peter's argument?",
-    "answerChoices": {
-      "A": "The leaves of some crop plants are much larger, and therefore absorb more water, than the leaves of some other crop plants.",
-      "B": "In industrialized nations there are more crops that are abundantly watered than there are crops grown under mild drought stress.",
-      "C": "Insect damage presents a greater threat to crop plants than does mild drought stress.",
-      "D": "Farmers are not always able to control the amount of water that their crops receive when, for instance, there are rainstorms in the areas where their crops are growing.",
-      "E": "Mexican bean beetles are more likely to feed on the leaves of slightly drought-stressed soybeans than oak lace bugs are to feed on the leaves of abundantly watered soybeans."
-    },
-    "correctAnswer": "E"
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 12,
-    "questionType": "Sufficient Assumption",
-    "reasoningType": [],
-    "questionDifficulty": 4,
-    "stimulus": "Vague laws set vague limits on people's freedom, which makes it impossible for them to know for certain whether their actions are legal. Thus, under vague laws people cannot feel secure.",
-    "questionStem": "The conclusion follows logically if which one of the following is assumed?",
-    "answerChoices": {
-      "A": "People can feel secure only if they know for certain whether their actions are legal.",
-      "B": "If people do not know for certain whether their actions are legal, then they might not feel secure.",
-      "C": "If people know for certain whether their actions are legal, they can feel secure.",
-      "D": "People can feel secure if they are governed by laws that are not vague.",
-      "E": "Only people who feel secure can know for certain whether their actions are legal."
-    },
-    "correctAnswer": "A",
-    "questionFeatures": [
-      "Science"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 13,
-    "questionType": "Flaw",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 2,
-    "stimulus": "While it was once believed that the sort of psychotherapy appropriate for the treatment of neuroses caused by environmental factors is also appropriate for schizophrenia and other psychoses, it is now known that these latter, more serious forms of mental disturbance are best treated by biochemical-that is, medicinal-means. This is conclusive evidence that psychoses, unlike neuroses, have nothing to do with environmental factors but rather are caused by some sort of purely organic condition, such as abnormal brain chemistry or brain malformations.",
-    "questionStem": "The argument is vulnerable to criticism because it ignores the possibility that",
-    "answerChoices": {
-      "A": "the organic conditions that result in psychoses can be caused or exacerbated by environmental factors",
-      "B": "the symptoms of mental disturbance caused by purely organic factors can be alleviated with medicine",
-      "C": "organic illnesses that are nonpsychological in nature may be treatable without using biochemical methods",
-      "D": "the nature of any medical condition can be inferred from the nature of the treatment that cures that condition",
-      "E": "organic factors having little to do with brain chemistry may be at least partially responsible for neuroses"
-    },
-    "correctAnswer": "C"
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 14,
-    "questionType": "Necessary Assumption",
-    "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "We learn to use most of the machines in our lives through written instructions, without knowledge of the machines' inner workings, because most machines are specifically designed for use by nonexperts. So, in general, attaining technological expertise would prepare students for tomorrow's job market no better than would a more traditional education stressing verbal and quantitative skills.",
-    "questionStem": "The argument depends on assuming which one of the following?",
-    "answerChoices": {
-      "A": "Fewer people receive a traditional education stressing verbal and quantitative skills now than did 20 years ago.",
-      "B": "Facility in operating machines designed for use by nonexperts is almost never enhanced by expert knowledge of the machines' inner workings.",
-      "C": "Most jobs in tomorrow's job market will not demand the ability to operate many machines that are designed for use only by experts.",
-      "D": "Students cannot attain technological expertise and also receive an education that does not neglect verbal and quantitative skills.",
-      "E": "When learning to use a machine, technological expertise is never more important than verbal and quantitative skills."
-    },
-    "correctAnswer": "E",
-    "questionFeatures": [
-      "Explain Curious Fact",
-      "Alternatives",
-      "Defender",
-      "Timeframes"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 15,
-    "questionType": "Principle-Conform",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 2,
-    "stimulus": "Environmentalists who seek stricter governmental regulations controlling water pollution should be certain to have their facts straight. For if it turns out, for example, that water pollution is a lesser threat than they proclaimed, then there will be a backlash and the public will not listen to them even when dire threats exist.",
-    "questionStem": "Which one of the following best illustrates the principle illustrated by the argument above?",
-    "answerChoices": {
-      "A": "Middle-level managers who ask their companies to hire additional employees should have strong evidence that doing so will benefit the company; otherwise, higher-level managers will refuse to follow their suggestions to hire additional employees even when doing so really would benefit the company.",
-      "B": "Politicians who defend the rights of unpopular constituencies ought to see to it that they use cool, dispassionate rhetoric in their appeals. Even if they have their facts straight, inflammatory rhetoric can cause a backlash that results in more negative reactions to these constituencies, whether or not they are deserving of more rights.",
-      "C": "People who are trying to convince others to take some sort of action should make every effort to present evidence that is emotionally compelling. Such evidence is invariably more persuasive than dry, technical data, even when the data strongly support their claims.",
-      "D": "Whoever wants to advance a political agenda ought to take the time to convince legislators that their own political careers are at stake in the matter at hand; otherwise, the agenda will simply be ignored.",
-      "E": "Activists who want to prevent excessive globalization of the economy should assign top priority to an appeal to the economic self-interest of those who would be adversely affected by it, for if they fail in such an appeal, extreme economic globalization is inevitable."
-    },
-    "correctAnswer": "A",
-    "questionFeatures": [
-      "Dense Stimulus",
-      "Math-y Stuff"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 16,
-    "questionType": "Necessary Assumption",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "Herpetologist: Some psychologists attribute complex reasoning to reptiles, claiming that simple stimulus-response explanations of some reptiles' behaviors, such as food gathering, cannot account for the complexity of such behavior. But since experiments show that reptiles are incapable of making major alterations in their behavior, for example, when faced with significant changes in their environment, these animals must be incapable of complex reasoning.",
-    "questionStem": "Which one of the following is an assumption required by the herpetologist's argument?",
-    "answerChoices": {
-      "A": "Animals could make major changes in their behavior only if they were capable of complex reasoning.",
-      "B": "Simple stimulus-response explanations can in principle account for all reptile behaviors.",
-      "C": "Reptile behavior appears more complex in the field than laboratory experiments reveal it to be.",
-      "D": "If reptiles were capable of complex reasoning, they would sometimes be able to make major changes in their behavior.",
-      "E": "Complex reasoning and responses to stimuli cannot both contribute to the same behavior."
-    },
-    "correctAnswer": "E",
-    "questionFeatures": [
-      "Assumes Difference",
-      "Medical",
-      "Plans / Recommendations"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 17,
-    "questionType": "Most Supported",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "The purpose of a general theory of art is to explain every aesthetic feature that is found in any of the arts. Premodern general theories of art, however, focused primarily on painting and sculpture. Every premodern general theory of art, even those that succeed as theories of painting and sculpture, fails to explain some aesthetic feature of music.",
-    "questionStem": "The statements above, if true, most strongly support which one of the following?",
-    "answerChoices": {
-      "A": "Any general theory of art that explains the aesthetic features of painting also explains those of sculpture.",
-      "B": "A general theory of art that explains every aesthetic feature of music will achieve its purpose.",
-      "C": "Any theory of art that focuses primarily on sculpture and painting cannot explain every aesthetic feature of music.",
-      "D": "No premodern general theory of art achieves its purpose unless music is not art.",
-      "E": "No premodern general theory of art explains any aesthetic features of music that are not shared with painting and sculpture."
-    },
-    "correctAnswer": "A",
-    "questionFeatures": [
-      "Analogies",
-      "Rebuttals"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 18,
-    "questionType": "Necessary Assumption",
-    "reasoningType": [],
-    "questionDifficulty": 4,
-    "stimulus": "It is said that people should accept themselves as they are instead of being dissatisfied with their own abilities. But this is clearly a bad principle if the goal is a society whose citizens are genuinely happy, for no one can be genuinely happy if he or she is not pursuing personal excellence and is unwilling to undergo personal change of any kind.",
-    "questionStem": "Which one of the following is an assumption required by the argument?",
-    "answerChoices": {
-      "A": "Those who are willing to change will probably find genuine happiness.",
-      "B": "People who are not dissatisfied with themselves are less likely than others to pursue personal excellence.",
-      "C": "Personal excellence cannot be acquired by those who lack genuine confidence in their own abilities.",
-      "D": "People are justified in feeling content with themselves when they have achieved some degree of personal excellence.",
-      "E": "Happiness is not genuine unless it is based on something that is painful to obtain."
-    },
-    "correctAnswer": "C"
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 19,
-    "questionType": "Parallel Flaw",
-    "reasoningType": [],
-    "questionDifficulty": 5,
-    "stimulus": "My father likes turnips, but not potatoes, which he says are tasteless. So it is not true that whoever likes potatoes likes turnips.",
-    "questionStem": "The flawed reasoning in the argument above most closely resembles that in which one of the following?",
-    "answerChoices": {
-      "A": "This book is not a paperback, but it is expensive. So it is not true that some paperbacks are expensive.",
-      "B": "Although this recently published work of fiction has more than 75 pages, it is not a novel. Thus, it is not the case that all novels have more than 75 pages.",
-      "C": "All ornate buildings were constructed before the twentieth century. This house is ornate, so it must be true that it was built before the twentieth century.",
-      "D": "Erica enjoys studying physics, but not pure mathematics, which she says is boring. So it is not true that whoever enjoys studying physics enjoys studying pure mathematics.",
-      "E": "People who do their own oil changes are car fanatics. My next-door neighbors are car fanatics, so it follows that they do their own oil changes."
-    },
-    "correctAnswer": "B"
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 20,
-    "questionType": "Principle-Strengthen",
-    "reasoningType": [],
-    "questionDifficulty": 5,
-    "stimulus": "Critic: Although some people claim it is inconsistent to support freedom of speech and also support legislation limiting the amount of violence in TV programs, it is not. We can limit TV program content because the damage done by violent programs is more harmful than the decrease in freedom of speech that would result from the limitations envisioned by the legislation.",
-    "questionStem": "Which one of the following principles, if valid, most helps to justify the critic's reasoning?",
-    "answerChoices": {
-      "A": "In evaluating legislation that would impinge on a basic freedom, we should consider the consequences of not passing the legislation.",
-      "B": "One can support freedom of speech while at the same time recognizing that it can sometimes be overridden by other interests.",
-      "C": "When facing a choice between restricting freedom of speech or not, we must decide based on what would make the greatest number of people the happiest.",
-      "D": "If the exercise of a basic freedom leads to some harm, then the exercise of that freedom should be restricted.",
-      "E": "In some circumstances, we should tolerate regulations that impinge on a basic freedom."
-    },
-    "correctAnswer": "B"
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 21,
-    "questionType": "Flaw",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "Sandy: I play the Bigbucks lottery—that's the one where you pick five numbers and all the players who have picked the five numbers drawn at the end of the week share the money pot. But it's best to play only after there have been a few weeks with no winners, because the money pot increases each week that there is no winner.\nAlex: No, you're more likely to win the lottery when the money pot is small, because that's when the fewest other people are playing.",
-    "questionStem": "Which one of the following most accurately describes a mistake in the reasoning of one of the two speakers?",
-    "answerChoices": {
-      "A": "Sandy holds that the chances of anyone's winning are unaffected by the number of times that person plays.",
-      "B": "Alex holds that the chances of Sandy's winning are affected by the number of other people playing.",
-      "C": "Sandy holds that the chances of anyone's winning are unaffected by the size of the pot.",
-      "D": "Alex holds that the chances of Sandy's winning in a given week are unaffected by whether anyone has won the week before.",
-      "E": "Sandy holds that the chances of there being a winner go up if no one has won the lottery for quite a while."
-    },
-    "correctAnswer": "C",
-    "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Belief / Knowledge / Intent"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 22,
-    "questionType": "Necessary Assumption",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "The retail price of decaffeinated coffee is considerably higher than that of regular coffee. However, the process by which coffee beans are decaffeinated is fairly simple and not very costly. Therefore, the price difference cannot be accounted for by the greater cost of providing decaffeinated coffee to the consumer.",
-    "questionStem": "The argument relies on assuming which one of the following?",
-    "answerChoices": {
-      "A": "Processing regular coffee costs more than processing decaffeinated coffee.",
-      "B": "Price differences between products can generally be accounted for by such factors as supply and demand, not by differences in production costs.",
-      "C": "There is little competition among companies that process decaffeinated coffee.",
-      "D": "Retail coffee-sellers do not expect that consumers are content to pay more for decaffeinated coffee than for regular coffee.",
-      "E": "The beans used for producing decaffeinated coffee do not cost much more before processing than the beans used for producing regular coffee."
-    },
-    "correctAnswer": "D",
-    "questionFeatures": [
-      "Abstract Answers",
-      "Missing Link / Idea",
-      "Plans / Recommendations",
-      "Principles in Answers",
-      "Weighing Tradeoffs"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 23,
-    "questionType": "Main Conclusion",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "A newspaper article on Britain's unions argued that their strength was declining. The article's evidence was the decreasing number and size of strikes, as if the reason for the unions' existence was to organize strikes. Surely, in a modern industrial society, the calling of a strike is evidence that the negotiating position of the union was too weak. Strong unions do not need to call strikes. They can concentrate their efforts on working with others in the labor market to achieve common goals, such as profitable and humane working conditions.",
-    "questionStem": "The argument criticizing the newspaper article is directed toward establishing which one of the following as its main conclusion?",
-    "answerChoices": {
-      "A": "The negotiating position of a union is weak if the only means it has of achieving its end is a strike or the threat of a strike.",
-      "B": "Although unions represent the interests of their members, that does not preclude them from having interests in common with other participants in the labor market.",
-      "C": "There is no reason to believe, on the basis of what the newspaper article said, that union strength in Britain is declining.",
-      "D": "The reason for unions' existence is to work for goals such as profitable and humane working conditions by organizing strikes.",
-      "E": "With strong unions it is possible for a modern industrial society to achieve profitable and humane working conditions, but without them it would be impossible."
-    },
-    "correctAnswer": "B",
-    "questionFeatures": [
-      "Plans / Recommendations"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 24,
-    "questionType": "Method",
-    "reasoningType": [
-      "Conditional Reasoning",
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 1,
-    "stimulus": "A newspaper article on Britain's unions argued that their strength was declining. The article's evidence was the decreasing number and size of strikes, as if the reason for the unions' existence was to organize strikes. Surely, in a modern industrial society, the calling of a strike is evidence that the negotiating position of the union was too weak. Strong unions do not need to call strikes. They can concentrate their efforts on working with others in the labor market to achieve common goals, such as profitable and humane working conditions.",
-    "questionStem": "The argument criticizing the newspaper article employs which one of the following strategies?",
-    "answerChoices": {
-      "A": "questioning the accuracy of the statistical evidence that the newspaper article uses",
-      "B": "detailing historical changes that make the newspaper article's analysis outdated",
-      "C": "reinterpreting evidence that the newspaper article uses as indicating the opposite of what the newspaper concludes",
-      "D": "arguing that the newspaper article's conclusion is motivated by a desire to change the role of unions",
-      "E": "pointing to common interests among unions and management which the newspaper article ignores"
-    },
-    "correctAnswer": "E",
-    "questionFeatures": [
-      "Missing Link / Idea",
-      "Net Effect",
-      "Principles in Answers"
-    ]
-  },
-  {
-    "practiceTest": "PT113",
-    "sectionNumber": 3,
-    "questionNumber": 25,
     "questionType": "Flaw",
     "reasoningType": [],
-    "questionDifficulty": 2,
-    "stimulus": "Anthropologist: All music is based on a few main systems of scale building. Clearly, if the popularity of a musical scale were a result of social conditioning, we would expect, given the diversity of social systems, a diverse mixture of diatonic and nondiatonic scales in the world's music. Yet diatonic scales have always dominated the music of most of the world. Therefore, the popularity of diatonic music can be attributed only to innate dispositions of the human mind.",
-    "questionStem": "The anthropologist's argument is most vulnerable to criticism on the grounds that it fails to",
+    "questionDifficulty": 3,
+    "stimulus": "Social critic: The whole debate over the legal right of rock singers to utter violent lyrics misses the point. Legally, there is very little that may not be said. But not everything that may legally be said, ought to be said. Granted, violence predates the rise in popularity of such music. Yet words also have the power to change the way we see and the way we act.",
+    "questionStem": "Which one of the following is most strongly supported by the passage?",
     "answerChoices": {
-      "A": "consider the possibility that some people appreciate nondiatonic music more than they do diatonic music",
-      "B": "explain how innate dispositions increase appreciation of nondiatonic music",
-      "C": "explain the existence of diatonic scales as well as the existence of nondiatonic scales",
-      "D": "consider that innate dispositions and social conditioning could jointly affect the popularity of a type of music",
-      "E": "consider whether any appreciation of nondiatonic music is demonstrated by some nonhuman species of animals"
+      "A": "If rock music that contains violent lyrics is morally wrong, then it should be illegal.",
+      "B": "The law should be changed so that the government is mandated to censor rock music that contains violent lyrics.",
+      "C": "Violent rock song lyrics do not incite violence, they merely reflect the violence in society.",
+      "D": "If rock musicians voluntarily censor their violent lyrics, this may help to reduce violence in society.",
+      "E": "Stopping the production of rock music that contains violent lyrics would eliminate much of the violence within society."
     },
     "correctAnswer": "D"
   },
   {
     "practiceTest": "PT113",
     "sectionNumber": 3,
-    "questionNumber": 26,
-    "questionType": "Strengthen",
-    "reasoningType": [],
-    "questionDifficulty": 4,
-    "stimulus": "Before 1986 physicists believed they could describe the universe in terms of four universal forces. Experiments then suggested, however, a fifth universal force of mutual repulsion between particles of matter. This fifth force would explain the occurrence in the experiments of a smaller measurement of the gravitational attraction between bodies than the established theory predicted.",
-    "questionStem": "Which one of the following, if true, most strengthens the argument that there is a fifth universal force?",
+    "questionNumber": 8,
+    "questionType": "Must be False",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "For all species of higher animals, reproduction requires the production of eggs but not necessarily the production of sperm. There are some species whose members are all female; the eggs produced by a rare female-only species of salamander hatch without fertilization. This has the drawback that all offspring have genetic codes nearly identical to that of the single parent, making the species less adaptive than species containing both male and female members.",
+    "questionStem": "If the statements above are true, each of the following could be true except:",
     "answerChoices": {
-      "A": "The extremely sophisticated equipment used for the experiments was not available to physicists before the 1970s.",
-      "B": "No previously established scientific results are incompatible with the notion of a fifth universal force.",
-      "C": "Some scientists have suggested that the alleged fifth universal force is an aspect of gravity rather than being fundamental in itself.",
-      "D": "The experiments were conducted by physicists in remote geological settings in which factors affecting the force of gravity could not be measured with any degree of precision.",
-      "E": "The fifth universal force was postulated at a time in which many other exciting and productive ideas in theoretical physics were developed."
+      "A": "There are some species of salamanders that have both male and female members.",
+      "B": "There are some species of higher animals none of whose members produce eggs.",
+      "C": "There is a significant number of female-only species of higher animals.",
+      "D": "Some species of higher animals containing both female and male members are not very adaptive.",
+      "E": "Some offspring of species of higher animals containing both female and male members have genetic codes more similar to one parent than to the other parent."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains",
+      "Causal Difference-Maker",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "stimulus": "As part of a survey, approximately 10,000 randomly selected individuals were telephoned and asked a number of questions about their income and savings. Those conducting the survey observed that the older the person being queried, the more likely it was that he or she would refuse to answer any of the questions. This finding clearly demonstrates that, in general, people are more willing when they are younger than when they are older to reveal personal financial information to strangers over the telephone.",
+    "questionStem": "The argument above is vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "offers no evidence that the individuals queried would have responded differently had they been asked the same questions in years prior to the survey",
+      "B": "fails to specify the exact number of people who were telephoned as part of the survey",
+      "C": "assumes without warrant that age is the main determinant of personal income and savings levels",
+      "D": "assumes from the outset what it purports to establish on the basis of a body of statistical evidence",
+      "E": "provides no reason to believe that what is true of a given age group in general is also true of all individuals within that age group"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [],
+    "stimulus": "If something would have been justifiably regretted if it had occurred, then it is something that one should not have desired in the first place. It follows that many forgone pleasures should not have been desired in the first place.",
+    "questionStem": "The conclusion above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "One should never regret one's pleasures.",
+      "B": "Forgone pleasures that were not desired would not have been justifiably regretted.",
+      "C": "Everything that one desires and then regrets not having is a forgone pleasure.",
+      "D": "Many forgone pleasures would have been justifiably regretted.",
+      "E": "Nothing that one should not have desired in the first place fails to be a pleasure."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Several thousand years ago, people in what is now North America began to grow corn, which grows faster and produces more food per unit of land than do the grains these people had grown previously. Corn is less nutritious than those other grains, however, and soon after these people established corn as their staple grain crop, they began having nutrition-related health problems. Yet the people continued to grow corn as their staple grain, although they could have returned to growing the more nutritious grains.",
+    "questionStem": "Which one of the following, if true, most helps to explain why the people mentioned continued to grow corn as their staple grain crop?",
+    "answerChoices": {
+      "A": "The variety of corn that the people relied on as their staple grain produced more food than did the ancestors of that variety.",
+      "B": "Modern varieties of corn are more nutritious than were the varieties grown by people in North America several thousand years ago.",
+      "C": "The people did not domesticate large animals for meat or milk, either of which could supply nutrients not provided by corn.",
+      "D": "Some of the grain crops that could have been planted instead of corn required less fertile soil in order to flourish than corn required.",
+      "E": "The people discovered some years after adopting corn as their staple grain that a diet that supplemented corn with certain readily available nongrain foods significantly improved their health."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Math-y Stuff",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Role",
+    "reasoningType": [],
+    "stimulus": "Some biologists believe that the capacity for flight first developed in marine reptiles, claiming that feathers are clearly developed from scales. Other biologists rightly reject this suggestion, pointing out that bats have no scales and that nonmarine reptiles also have scales. Those who believe that flight first developed in tree-dwelling reptiles reject the claim that the limbs of land-dwelling reptiles might have developed into wings. They insist that it is more likely that tree-dwelling reptiles developed wings to assist their leaps from branch to branch.",
+    "questionStem": "Which one of the following most accurately describes the role played in the passage by the claim that nonmarine reptiles have scales?",
+    "answerChoices": {
+      "A": "It is cited as evidence against the claim that the capacity for flight first developed in marine reptiles.",
+      "B": "It is cited as evidence against the claim that the capacity for flight first developed in landdwelling animals.",
+      "C": "It is cited as evidence against the claim that the capacity for flight first developed in treedwelling reptiles.",
+      "D": "It weakens the claim that tree-dwelling reptiles were the first kind of reptile to develop the capacity for flight.",
+      "E": "It corroborates the observation that some mammals without scales, such as bats, developed the capacity to fly."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Paradox",
+    "reasoningType": [],
+    "stimulus": "Studies have shown that, contrary to popular belief, middle-aged people have more fear of dying than do elderly people.",
+    "questionStem": "Each of the following, if true, contributes to an explanation of the phenomenon shown by the studies EXCEPT:",
+    "answerChoices": {
+      "A": "The longer one lives, the more likely it is that one has come to terms with dying.",
+      "B": "Middle-aged people have more people dependent upon them than people of any other age group.",
+      "C": "Many people who suffer from depression first become depressed in middle age.",
+      "D": "The longer one lives, the more imperturbable one becomes.",
+      "E": "Middle-aged people have a more acute sense of their own mortality than do people of any other age group."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [],
+    "stimulus": "Historian: Leibniz, the seventeenth-century philosopher, published his version of calculus before Newton did. But then Newton revealed his private notebooks, which showed he had been using these ideas for at least a decade before Leibniz’s publication. Newton also claimed that he had disclosed these ideas to Leibniz in a letter shortly before Leibniz’s publication. Yet close examination of the letter shows that Newton’s few cryptic remarks did not reveal anything important about calculus. Thus, Leibniz and Newton each independently discovered calculus.",
+    "questionStem": "Which one of the following is an assumption required by the historian's argument?",
+    "answerChoices": {
+      "A": "Leibniz did not tell anyone about calculus prior to publishing his version of it.",
+      "B": "No third person independently discovered calculus prior to Newton and Leibniz.",
+      "C": "Newton believed that Leibniz was able to learn something important about calculus from his letter to him.",
+      "D": "Neither Newton nor Leibniz knew that the other had developed a version of calculus prior to Leibniz's publication.",
+      "E": "Neither Newton nor Leibniz learned crucial details about calculus from some third source."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Must be False",
+    "reasoningType": [],
+    "stimulus": "For a ten-month period, the total monthly sales of new cars within the country of Calistan remained constant. During this period the monthly sales of new cars manufactured by Marvel Automobile Company doubled, and its share of the new car market within Calistan increased correspondingly. At the end of this period, emission standards were imposed on new cars sold within Calistan. During the three months following this imposition, Marvel Automobile Company’s share of the Calistan market declined substantially even though its monthly sales within Calistan remained constant at the level reached in the last month of the ten-month period.",
+    "questionStem": "If the statements above are true, which one of the following CANNOT be true?",
+    "answerChoices": {
+      "A": "The total monthly sales within Calistan of new cars by companies other than Marvel Automobile Company decreased over the three months following the imposition of the emission standards.",
+      "B": "Over the three months before the imposition of the emission standards, the combined market share of companies other than Marvel Automobile Company selling new cars in Calistan decreased.",
+      "C": "If the emission standards had not been imposed, Marvel Automobile Company would have lost an even larger share of the number of new cars sold in Calistan than, in fact, it did.",
+      "D": "A decrease in the total monthly sales of new cars within Calistan will occur if the emission standards remain in effect.",
+      "E": "Since the imposition of the emission standards, Marvel Automobile Company's average profit on each new car sold within Calistan has increased."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "stimulus": "Because addictive drugs are physically harmful, their use by athletes is never justified. Purists, however, claim that taking massive doses of even such nonaddictive drugs as aspirin and vitamins before competing should also be prohibited because they are unnatural. This is ridiculous; almost everything in sports is unnatural, from high-tech running shoes to padded boxing gloves to highly-specialized bodybuilding machines. Yet, none of these is prohibited on the basis of its being unnatural. Furthermore, we should be attending to far more serious problems that plague modern sports and result in unnecessary deaths and injuries. Therefore, the use of nonaddictive drugs by athletes should not be prohibited.",
+    "questionStem": "Which one of the following statements, if true, would be the strongest challenge to the author's conclusion?",
+    "answerChoices": {
+      "A": "Massive doses of aspirin and vitamins enhance athletic performance.",
+      "B": "Addictive drugs are just as unnatural as nonaddictive drugs like aspirin and vitamins.",
+      "C": "Unnecessary deaths and injuries occur in other walks of life besides modern sports.",
+      "D": "There would be more unnecessary deaths and injuries if it were not for running shoes, boxing gloves, and bodybuilding machines.",
+      "E": "Taking massive doses of aspirin or vitamins can be physically harmful."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Must be True",
+    "reasoningType": [],
+    "stimulus": "Because addictive drugs are physically harmful, their use by athletes is never justified. Purists, however, claim that taking massive doses of even such nonaddictive drugs as aspirin and vitamins before competing should also be prohibited because they are unnatural. This is ridiculous; almost everything in sports is unnatural, from high-tech running shoes to padded boxing gloves to highly-specialized bodybuilding machines. Yet, none of these is prohibited on the basis of its being unnatural. Furthermore, we should be attending to far more serious problems that plague modern sports and result in unnecessary deaths and injuries. Therefore, the use of nonaddictive drugs by athletes should not be prohibited.",
+    "questionStem": "Which one of the following can be inferred from the passage above?",
+    "answerChoices": {
+      "A": "The fact that something is unnatural is not a sufficient reason for banning it.",
+      "B": "There is nothing unnatural about the use of nonaddictive drugs by athletes.",
+      "C": "The use of addictive drugs by athletes should be prohibited because addictive drugs are unnatural.",
+      "D": "Some of the unnecessary deaths and injuries in modern sports are caused by the use of addictive drugs by athletes.",
+      "E": "The use of addictive drugs by athletes is a less serious problem than are unnecessary injuries."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "stimulus": "Not all works of art represent something, but some do, and their doing so is relevant to our aesthetic experience of them; representation is therefore an aesthetically relevant property. Whether a work of art possesses this property is dependent upon context. Yet there are no clear criteria for determining whether context-dependent properties are present in an object, so there cannot be any clear criteria for determining whether an object qualifies as art.",
+    "questionStem": "The reasoning above is questionable because it fails to exclude the possibility that",
+    "answerChoices": {
+      "A": "because some works of art are nonrepresentational, there is no way of judging our aesthetic experience of them",
+      "B": "an object may have some aesthetic properties and not be a work of art",
+      "C": "aesthetically relevant properties other than representation can determine whether an object is a work of art",
+      "D": "some works of art may have properties that are not relevant to our aesthetic experience of them",
+      "E": "some objects that represent things other than themselves are not works of art"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "stimulus": "If the flowers Drew received today had been sent by someone who knows Drew well, that person would have known that Drew prefers violets to roses. Yet Drew received roses. On the other hand, if the flowers had been sent by someone who does not know Drew well, then that person would have sent a signed card with the flowers. Yet Drew received no card. Therefore, the florist must have made some sort of mistake: either Drew was supposed to receive violets, or a card, or these flowers were intended for someone else.",
+    "questionStem": "Which one of the following statements, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Most people send roses when they send flowers.",
+      "B": "Some people send flowers for a reason other than the desire to please.",
+      "C": "Someone who does not know Drew well would be unlikely to send Drew flowers.",
+      "D": "The florist has never delivered the wrong flowers to Drew before.",
+      "E": "Some people who know Drew well have sent Drew cards along with flowers."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Most Supported",
+    "reasoningType": [],
+    "stimulus": "One of the most vexing problems in historiography is dating an event when the usual sources offer conflicting chronologies of the event. Historians should attempt to minimize the number of competing sources, perhaps by eliminating the less credible ones. Once this is achieved and several sources are left, as often happens, historians may try, though on occasion unsuccessfully, to determine independently of the usual sources which date is more likely to be right.",
+    "questionStem": "Which one of the following inferences is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "We have no plausible chronology of most of the events for which attempts have been made by historians to determine the right date.",
+      "B": "Some of the events for which there are conflicting chronologies and for which attempts have been made by historians to determine the right date cannot be dated reliably by historians.",
+      "C": "Attaching a reliable date to any event requires determining which of several conflicting chronologies is most likely to be true.",
+      "D": "Determining independently of the usual sources which of several conflicting chronologies is more likely to be right is an ineffective way of dating events.",
+      "E": "The soundest approach to dating an event for which the usual sources give conflicting chronologies is to undermine the credibility of as many of these sources as possible."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Bank deposits are credited on the date of the transaction only when they are made before 3 P.M. Alicia knows that the bank deposit was made before 3 P.M. So, Alicia knows that the bank deposit was credited on the date of the transaction.",
+    "questionStem": "Which one of the following exhibits both of the logical flaws exhibited by the argument above?",
+    "answerChoices": {
+      "A": "Journalists are the only ones who will be permitted to ask questions at the press conference. Since Marjorie is a journalist, she will be permitted to ask questions.",
+      "B": "We know that Patrice works only on Thursday. Today is Thursday, so it follows that Patrice is working today.",
+      "C": "It is clear that George knows he will be promoted to shift supervisor, because George will be promoted to shift supervisor only if Helen resigns, and George knows Helen will resign.",
+      "D": "John believes that 4 is a prime number and that 4 is divisible by 2. Hence John believes that there is a prime number divisible by 2.",
+      "E": "Pat wants to become a social worker. It is well known that social workers are poorly paid. Pat apparently wants to be poorly paid."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Net Effect",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "On the surface, Melville's Billy Budd is a simple story with a simple theme. However, if one views the novel as a religious allegory, then it assumes a richness and profundity that place it among the great novels of the nineteenth century. However, the central question remains: Did Melville intend an allegorical reading? Since there is no textual or historical evidence that he did, we should be content with reading Billy Budd as a simple tragedy.",
+    "questionStem": "Which one of the following most accurately expresses the principle underlying the argument?",
+    "answerChoices": {
+      "A": "Given a choice between an allegorical and a nonallegorical reading of a novel, one should choose the latter.",
+      "B": "The only relevant evidence in deciding in which genre to place a novel is the author's stated intention.",
+      "C": "In deciding between rival readings of a novel, one should choose the one that is most favorable to the work.",
+      "D": "Without relevant evidence as to a novel's intended reading, one should avoid viewing the work allegorically.",
+      "E": "The only relevant evidence in deciding the appropriate interpretation of a text is the text itself."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Parallel",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Town councillor: The only reason for the town to have ordinances restricting where skateboarding can be done would be to protect children from danger. Skateboarding in the town's River Park is undoubtedly dangerous, but we should not pass an ordinance prohibiting it. If children cannot skateboard in the park, they will most certainly skateboard in the streets. And skateboarding in the streets is more dangerous than skateboarding in the park.",
+    "questionStem": "The pattern of reasoning in which one of the following is most similar to that in the town councillor's argument?",
+    "answerChoices": {
+      "A": "The reason for requiring environmental reviews is to ensure that projected developments do not harm the natural environment. Currently, environmental concerns are less compelling than economic concerns, but in the long run, the environment must be protected. Therefore, the requirement for environmental reviews should not be waived.",
+      "B": "Insecticides are designed to protect crops against insect damage. Aphids damage tomato crops, but using insecticides against aphids kills wasps that prey on insecticide-resistant pests. Since aphids damage tomato crops less than the insecticide-resistant pests do, insecticides should not be used against aphids on tomato crops.",
+      "C": "The purpose of compulsory vaccination for schoolchildren was to protect both the children themselves and others in the community against smallpox. Smallpox was indeed a dreadful disease, but it has now been eliminated from the world's population. So children should not be vaccinated against it.",
+      "D": "The function of a sealer on wood siding is to retard deterioration caused by weather. However, cedar is a wood that is naturally resistant to weather-related damage and thus does not need additional protection. Sealers, therefore, should not be applied to cedar siding.",
+      "E": "Traffic patterns that involve one-way streets are meant to accelerate the flow of traffic in otherwise congested areas. However, it would be detrimental to the South Main Street area to have traffic move faster. So traffic patterns involving one-way streets should not be implemented there."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT113",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Town councillor: The only reason for the town to have ordinances restricting where skateboarding can be done would be to protect children from danger. Skateboarding in the town's River Park is undoubtedly dangerous, but we should not pass an ordinance prohibiting it. If children cannot skateboard in the park, they will most certainly skateboard in the streets. And skateboarding in the streets is more dangerous than skateboarding in the park.",
+    "questionStem": "Which one of the following principles, if established, would provide the strongest support for the town councillor's argument?",
+    "answerChoices": {
+      "A": "Ordinances that restrict the recreational activities of a town's inhabitants should not be passed unless those activities pose a danger to participants.",
+      "B": "Since the town could be legally liable for accidents that occur on public property, town ordinances should restrict any unnecessarily dangerous activities in publicly owned areas.",
+      "C": "Since safety in a recreational activity depends on the level of skill of the participant in that activity, the regulation of children's recreational activities should be left to the discretion of the children's parents.",
+      "D": "If recreational activities constitute a danger to the participants in those activities, then the town council should enact ordinances prohibiting those activities.",
+      "E": "Ordinances that seek to eliminate dangers should not be enacted if their enactment would lead to dangers that are greater than those they seek to eliminate."
+    },
+    "correctAnswer": "E"
   }
 ]

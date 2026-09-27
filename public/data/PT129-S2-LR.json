@@ -589,52 +589,37 @@
     "practiceTest": "PT129",
     "sectionNumber": 2,
     "questionNumber": 24,
-    "questionType": "Agree/Disagree",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "Clarissa: The natural sciences would not have made such progress but for the power of mathematics. No observation is worth serious attention unless it is stated precisely in quantitative terms.\nMyungsook: I disagree. Converting observations into numbers is the hardest and last task; it can be done only when you have thoroughly explored the observations themselves.",
-    "questionStem": "Clarissa and Myungsook's statements provide the most support for claiming that they disagree about whether",
+    "questionType": "Necessary Assumption",
+    "reasoningType": [],
+    "stimulus": "Sometimes one reads a poem and believes that the poem expresses contradictory ideas, even if it is a great poem. So it is wrong to think that the meaning of a poem is whatever the author intends to communicate to the reader by means of the poem. No one who is writing a great poem intends it to communicate contradictory ideas.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
     "answerChoices": {
-      "A": "mathematics has been a highly significant factor in the advance of the natural sciences",
-      "B": "converting observations into quantitative terms is usually easy",
-      "C": "not all observations can be stated precisely in quantitative terms",
-      "D": "successfully doing natural science demands careful consideration of observations not stated precisely in quantitative terms",
-      "E": "useful scientific theories require the application of mathematics"
+      "A": "Different readers will usually disagree about what the author of a particular poem intends to communicate by means of that poem.",
+      "B": "If someone writes a great poem, he or she intends the poem to express one primary idea.",
+      "C": "Readers will not agree about the meaning of a poem if they do not agree about what the author of the poem intended the poem to mean.",
+      "D": "Anyone reading a great poem can discern every idea that the author intended to express in the poem.",
+      "E": "If a reader believes that a poem expresses a particular idea, then that idea is part of the meaning of the poem."
     },
     "correctAnswer": "E",
-    "questionFeatures": [
-      "Missing Link / Idea",
-      "Links Between Premises",
-      "New Concept in Conclusion",
-      "Rebuttals",
-      "Refute a Conditional"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT129",
     "sectionNumber": 2,
     "questionNumber": 25,
-    "questionType": "Flaw",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "Although Stillwater Pond has been polluted by farm runoff for years, several species of fish still live there. The local fishing guide says that \"the most populous fish species in the pond is also the one that has adapted best to living in polluted water.\" So if, as recent studies suggest, the most populous fish species in the pond is the bullhead catfish, then it must be that the local fishing guide believes that the species of fish in the pond that has adapted best to living in polluted water is the bullhead catfish.",
-    "questionStem": "The argument above is most vulnerable to criticism on the grounds that it",
+    "questionType": "Must be True",
+    "reasoningType": [],
+    "stimulus": "The law of the city of Weston regarding contributions to mayoral campaigns is as follows: all contributions to these campaigns in excess of $100 made by nonresidents of Weston who are not former residents of Weston must be registered with the city council. Brimley's mayoral campaign clearly complied with this law since it accepted contributions only from residents and former residents of Weston.",
+    "questionStem": "If all the statements above are true, which one of the following statements must be true?",
     "answerChoices": {
-      "A": "takes for granted that the local fishing guide believes that Stillwater Pond has been polluted by farm runoff for years",
-      "B": "fails to take into account the possibility that the catfish in Stillwater Pond had to adapt very little to survive in polluted water",
-      "C": "fails to take into account the possibility that the recent studies on fish populations in Stillwater Pond are inaccurate",
-      "D": "fails to take into account the possibility that the local fishing guide mistakenly believes that some fish species other than the bullhead catfish is the most populous fish species in Stillwater Pond",
-      "E": "takes for granted that Stillwater Pond has only one species of catfish living in it"
+      "A": "No nonresident of Weston contributed in excess of $100 to Brimley's campaign.",
+      "B": "Some contributions to Brimley's campaign in excess of $100 were registered with the city council.",
+      "C": "No contributions to Brimley's campaign needed to be registered with the city council.",
+      "D": "All contributions to Brimley's campaign that were registered with the city council were in excess of $100.",
+      "E": "Brimley's campaign did not register any contributions with the city council."
     },
     "correctAnswer": "C",
-    "questionFeatures": [
-      "Conditional Diagramming",
-      "Binaries"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT129",

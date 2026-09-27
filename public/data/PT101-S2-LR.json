@@ -298,23 +298,18 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Agree/Disagree",
-    "reasoningType": [
-      "Causation"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "In an effort to boost sales during the summer months, which are typically the best for soft-drink sales, Foamy Soda lowered its prices. In spite of this, however, the sales of Foamy Soda dropped during the summer months.",
-    "questionStem": "Each of the following, if true, contributes to reconciling the apparent discrepancy indicated above except:",
+    "reasoningType": [],
+    "stimulus": "Steven: The allowable blood alcohol level for drivers should be cut in half. With this reduced limit, social drinkers will be deterred from drinking and driving, resulting in significantly increased highway safety.\n\nMiguel: No, lowering the current allowable blood alcohol level would have little effect on highway safety, because it would not address the most important aspect of the drunken driving problem, which is the danger to the public posed by heavy drinkers, who often drive with a blood alcohol level of twice the current legal limit.",
+    "questionStem": "Steven and Miguel's statements provide the most support for holding that they would disagree about the truth of which one of the following statements?",
     "answerChoices": {
-      "A": "The soft-drink industry as a whole experienced depressed sales during the summer months.",
-      "B": "Foamy Soda’s competitors lowered their prices even more drastically during the summer months.",
-      "C": "Because of an increase in the price of sweeteners, the production costs of Foamy Soda rose during the summer months.",
-      "D": "A strike at Foamy Soda’s main plant forced production cutbacks that resulted in many stores not receiving their normal shipments during the summer months.",
-      "E": "The weather during the summer months was unseasonably cool, decreasing the demand for soft drinks."
+      "A": "Social drinkers who drink and drive pose a substantial threat to the public.",
+      "B": "There is a direct correlation between a driver's blood alcohol level and the driver's ability to drive safely.",
+      "C": "A driver with a blood alcohol level above the current legal limit poses a substantial danger to the public.",
+      "D": "Some drivers whose blood alcohol level is lower than the current legal limit pose a danger to the public.",
+      "E": "A driver with a blood alcohol level slightly greater than half the current legal limit poses no danger to the public."
     },
     "correctAnswer": "A",
-    "questionFeatures": [
-      "2-Speaker"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT101",
@@ -322,46 +317,35 @@
     "questionNumber": 15,
     "questionType": "Main Conclusion",
     "reasoningType": [],
-    "questionDifficulty": 1,
-    "stimulus": "Dr. Z: Many of the characterizations of my work offered by Dr. Q are imprecise, and such characterizations do not provide an adequate basis for sound criticism of my work.",
-    "questionStem": "Which one of the following can be properly inferred from Dr. Z’s statement?",
+    "stimulus": "The authors of a recent article examined warnings of an impending wave of extinctions of animal species within the next 100 years. These authors say that no evidence exists to support the idea that the rate of extinction of animal species is now accelerating. They are wrong, however. Consider only the data on fishes: 40 species and subspecies of North American fishes have vanished in the twentieth century, 13 between 1900 and 1950, and 27 since 1950.",
+    "questionStem": "Which one of the following is the main point of the argument?",
     "answerChoices": {
-      "A": "Some of Dr. Q’s characterizations of Dr. Z’s work provide an adequate basis for sound criticism of Dr. Z’s work.",
-      "B": "All of Dr. Q’s characterizations of Dr. Z’s work that are not imprecise provide an adequate basis for sound criticism of Dr. Z’s work.",
-      "C": "All of the characterizations of Dr. Z’s work by Dr. Q that do not provide an adequate basis for sound criticism of Dr. Z’s work are imprecise.",
-      "D": "If the characterization of someone’s work is precise, then it provides a sound basis for criticizing that work.",
-      "E": "At least one of Dr. Q’s characterizations of Dr. Z’s work fails to provide an adequate basis for sound criticism of that work."
+      "A": "There is evidence that the rate of extinction of animal species is accelerating.",
+      "B": "The future rate of extinction of animal species cannot be determined from available evidence.",
+      "C": "The rate of extinction of North American fishes is parallel to the rate of extinction of all animal species taken together.",
+      "D": "Forty species and subspecies of North American fishes have vanished in the twentieth century.",
+      "E": "A substantial number of fish species are in danger of imminent extinction."
     },
     "correctAnswer": "A",
-    "questionFeatures": [
-      "Important Pivot",
-      "Rebuttals"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT101",
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Evaluate",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "K, a research scientist, was accused of having falsified laboratory data. Although the original data in question have disappeared, data from K’s more recent experiments have been examined and clearly none of them were falsified. Therefore, the accusation should be dismissed.",
-    "questionStem": "Which one of the following contains questionable reasoning that is most similar to that in the argument above?",
+    "reasoningType": [],
+    "stimulus": "The authors of a recent article examined warnings of an impending wave of extinctions of animal species within the next 100 years. These authors say that no evidence exists to support the idea that the rate of extinction of animal species is now accelerating. They are wrong, however. Consider only the data on fishes: 40 species and subspecies of North American fishes have vanished in the twentieth century, 13 between 1900 and 1950, and 27 since 1950.",
+    "questionStem": "The answer to which one of the following questions would contribute most to an evaluation of the argument?",
     "answerChoices": {
-      "A": "L, an accountant, was charged with having embezzled funds from a client. The charge should be ignored, however, because although the records that might reveal this embezzlement have been destroyed, records of L’s current clients show clearly that there has never been any embezzlement from them.",
-      "B": "M, a factory supervisor, was accused of failing to enforce safety standards. This accusation should be discussed, because although the identity of the accuser was not revealed, a survey of factory personnel revealed that some violations of the standards have occurred.",
-      "C": "N, a social scientist, was charged with plagiarism. The charge is without foundation because although strong similarities between N’s book and the work of another scholar have been discovered, the other scholar’s work was written after N’s work was published.",
-      "D": "O, an auto mechanic, has been accused of selling stolen auto parts. The accusation seems to be justified since although no evidence links O directly to these sales, the pattern of distribution of the auto parts points to O as the source.",
-      "E": "P, a politician, has been accused of failing to protect the public interest. From at least some points of view, however, the accusation will undoubtedly be considered false, because there is clearly disagreement about where the public interest lies."
+      "A": "Were the fish species and subspecies that became extinct unrepresentative of animal species in general with regard to their pattern of extinction?",
+      "B": "How numerous were the populations in 1950 of the species and subspecies of North American fishes that have become extinct since 1950?",
+      "C": "Did any of the species or subspecies of North American fishes that became extinct in the twentieth century originate in regions outside of North America?",
+      "D": "What proportion of North American fish species and subspecies whose populations were endangered in 1950 are now thriving?",
+      "E": "Were any of the species or subspecies of North American fishes that became extinct in the twentieth century commercially important?"
     },
     "correctAnswer": "A",
-    "questionFeatures": [
-      "Part vs. Whole",
-      "Sampling",
-      "Rebuttals"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT101",
@@ -415,51 +399,50 @@
     "practiceTest": "PT101",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Weaken",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
+      "Conditional Reasoning"
     ],
-    "questionDifficulty": 5,
-    "stimulus": "Every student who walks to school goes home for lunch. It follows that some students who have part-time jobs do not walk to school.",
-    "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
+    "questionDifficulty": 3,
+    "stimulus": "In Australia the population that is of driving age has grown larger over the last five years, but the annual number of traffic fatalities has declined. This leads to the conclusion that, overall, the driving-age population of Australia consists of more skillful drivers now than five years ago.",
+    "questionStem": "Each of the statements below, if true, weakens the argument except:",
     "answerChoices": {
-      "A": "Some students who do not have part-time jobs go home for lunch.",
-      "B": "Every student who goes home for lunch has a part-time job.",
-      "C": "Some students who do not have part-time jobs do not go home for lunch.",
-      "D": "Some students who do not go home for lunch have part-time jobs.",
-      "E": "Every student who goes home for lunch walks to school."
+      "A": "Three years ago, a mandatory seat-belt law went into effect throughout Australia.",
+      "B": "Five years ago, Australia began a major road repair project.",
+      "C": "Because of increases in the price of fuel, Australians on average drive less each year than in the preceding year.",
+      "D": "The number of hospital emergency facilities in Australia has doubled in the last five years.",
+      "E": "In response to an increase in traffic fatalities, Australia instituted a program of mandatory driver education five years ago."
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact",
-      "EXCEPT"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Quantifiers",
+      "Untriggered Conditional"
     ]
   },
   {
     "practiceTest": "PT101",
     "sectionNumber": 2,
     "questionNumber": 20,
-    "questionType": "Weaken",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
-      "Conditional Reasoning",
-      "Comparative Reasoning"
+      "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "When the Pinecrest Animal Shelter, a charitable organization, was in danger of closing because it could not pay for important repairs, its directors appealed to the townspeople to donate money that would be earmarked to pay for those repairs. Since more funds were ultimately donated than were used for the repairs, the directors plan to donate the surplus funds to other animal shelters. But before doing so, the directors should obtain permission from those who made the donations.",
-    "questionStem": "Which one of the following principles, if valid, most helps to justify the position advocated above and yet places the least restriction on the allocation of funds by directors of charitable organizations?",
+    "stimulus": "Anthropological studies indicate that distinct cultures differ in their moral codes. Thus, as long as\nthere are distinct cultures, there are no values shared across cultures.",
+    "questionStem": "Each of the following, if true, would weaken the argument except:",
     "answerChoices": {
-      "A": "The directors of charitable organizations cannot allocate publicly solicited funds to any purposes for which the directors had not specifically earmarked the funds in advance.",
-      "B": "People who solicit charitable donations from the public for a specific cause should spend the funds only on that cause or, if that becomes impossible, should dispose of the funds according to the express wishes of the donors.",
-      "C": "A charitable organization that has solicited funds for a specific cause must return to the donors any funds not spent on that cause unless the donors permit the organization to spend the funds for other purposes.",
-      "D": "Charitable organizations should not solicit funds for specific causes unless they can guarantee that the funds raised will be spent only on those causes.",
-      "E": "Charitable organizations should be allowed to allocate funds as they see fit, provided the funds are spent for charitable purposes."
+      "A": "Anthropologists rely on inadequate translation techniques to investigate the values of cultures that use languages different from the anthropologists’ languages.",
+      "B": "As a result of advancing technology and global communication, we will someday all share the same culture and the same values.",
+      "C": "Although specific moral values differ across cultures, more general moral principles, such as “Friendship is good,” are common to all cultures.",
+      "D": "The anthropologists who have studied various cultures have been biased in favor of finding differences rather than similarities between distinct cultures.",
+      "E": "What appear to be differences in values between distinct cultures are nothing more than differences in beliefs about how to live in accordance with shared values."
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion",
-      "EXCEPT",
-      "Focused on Evidence"
+      "Abstract Answers",
+      "Principles in Answers"
     ]
   },
   {

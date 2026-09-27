@@ -429,190 +429,152 @@
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 19,
-    "questionType": "Parallel Reasoning",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "The recent concert was probably not properly promoted. Wells, who is quite knowledgeable about the concert business, was certain that it would sell out unless it was poorly promoted. But the concert did not sell out.",
-    "questionStem": "The pattern of reasoning in which one of the following is most similar to that in the argument above?",
+    "questionType": "Parallel",
+    "reasoningType": [],
+    "stimulus": "Employee: The company I work for has installed website filtering software that blocks access to non-related websites. It claims that being able to visit such sites distracts us, keeping us from doing our best work. But offices that have windows or are nicely decorated can be highly distracting too, and no one claims that people do their best work in an undecorated, windowless room.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the employee's argument?",
     "answerChoices": {
-      "A": "Dr. Smith, a well-trained cardiologist, said the patient would probably survive the heart transplant if it were performed by a highly skilled surgeon. Thus, since the patient did not survive the surgery, it probably was not properly performed.",
-      "B": "Professor Willis, who is quite knowledgeable about organic chemistry, said that the sample probably did not contain any organic compounds. So, the sample probably is not labeled correctly, for if it were, it would contain organic compounds.",
-      "C": "My neighbor, who is an experienced home renovator, said the damage to the wall would not be noticeable if it were properly repaired. Thus, the repair to the wall probably was not properly done, since one can still notice the damage.",
-      "D": "The builder said that the school’s roof would not require repairs for years, unless it is damaged in a storm. The roof is already leaking. Thus, since there have been no major storms, the builder was probably wrong.",
-      "E": "Professor Yanakita, who is an expert on the subject, said that the tests would find lead in the soil if they were properly conducted. So, since the tests did find lead in the soil, they probably were properly conducted."
+      "A": "Some people advocate moderation in all things. But different people react differently to certain substances, so what counts as a moderate amount of, say, caffeine for you might be too much for me. So to talk about moderation is to fail to take into account people's basic biological differences.",
+      "B": "Activists are calling for an electronic device to be banned, for research has shown that prolonged exposure to the device while it is in use causes cancer in laboratory animals. But most chemicals probably cause cancer when administered in very high doses, yet no one would argue that we should ban all these chemicals for that reason.",
+      "C": "Acme expects that approximately 1,000 of its employees will retire over the next year. No one would claim that Acme does not need a work force as large as its present one. So Acme will need to hire approximately 1,000 people over the next year.",
+      "D": "In many creative writing classes, aspiring writers are told that if the characters they create are not engaging, their novels and stories will not sell. But this does not mean that engaging characters guarantee a sale--publishers and agents often reject manuscripts that emphasize character to the exclusion of other elements.",
+      "E": "In the movie industry, a film's success is judged in terms of its profit relative to its cost. This is misguided, because under this criterion an expensive movie that sells just as many tickets as a lower-budget movie would be less successful than the lower-budget movie, which is clearly counterintuitive."
     },
     "correctAnswer": "B",
-    "questionFeatures": [
-      "Analogies"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 20,
-    "questionType": "Flaw",
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [],
+    "stimulus": "At Tromen University this semester, some students taking French Literature 205 are also taking Biology 218. Every student taking Biology 218 at Tromen is a biology major. Therefore, some of the students taking French Literature 205 are not French-literature majors.",
+    "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed to be true at Tromen University?",
+    "answerChoices": {
+      "A": "French Literature 205 is a required course for French-literature majors.",
+      "B": "Only biology majors are allowed to take Biology 218.",
+      "C": "There are more biology majors than there are French-literature majors.",
+      "D": "There are more French-literature majors than there are biology majors.",
+      "E": "It is not possible to major in both biology and French literature."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Must be True",
+    "reasoningType": [],
+    "stimulus": "Critic: To be a literary classic a book must reveal something significant about the human condition. Furthermore, nothing that is unworthy of serious study reveals anything significant about the human condition.",
+    "questionStem": "If the critic's statements are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Any book worthy of serious study is a literary classic.",
+      "B": "A book is a literary classic only if it is worthy of serious study.",
+      "C": "There are no literary classics worthy of serious study.",
+      "D": "Some books worthy of serious study do not reveal anything significant about the human condition.",
+      "E": "Some books that reveal something significant about the human condition are not literary classics."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Evaluate",
+    "reasoningType": [],
+    "stimulus": "Scientists once believed that the oversized head, long hind legs, and tiny forelimbs that characterized Tyrannosaurus rex developed in order to accommodate the great size and weight of this prehistoric predator. However, this belief must now be abandoned. The nearly complete skeleton of an earlier dinosaur has recently been discovered. This specimen had the characteristic T rex features but was one-fifth the size and one-hundredth the weight.",
+    "questionStem": "The answer to which one of the following questions would most help in evaluating the argument?",
+    "answerChoices": {
+      "A": "Was the ratio of the head size of the recently discovered dinosaur to its body size the same as that for T. rex?",
+      "B": "At what stage in its life did the recently discovered dinosaur die?",
+      "C": "Was T. rex the largest and heaviest prehistoric predator?",
+      "D": "Was the species to which the recently discovered dinosaur belonged related to T. rex?",
+      "E": "Did the recently discovered dinosaur prey on species as large as those that T. rex preyed on?"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [],
+    "stimulus": "YXK is currently the television network with the highest overall number of viewers. Among YXK's programs, Bliss has the highest numbers of viewers. So Bliss currently has more viewers than any other program on television.",
+    "questionStem": "The flawed reasoning exhibited by the argument above is most similar to that exhibited by which one of the following?",
+    "answerChoices": {
+      "A": "Soccer players suffer more leg injuries, on average, than any other athletes at this university. Linda Wilson has suffered more leg injuries than any other soccer player at this university. Thus, Linda Wilson is the athlete at this university who has suffered the most leg injuries.",
+      "B": "Teachers at our school have won more teaching awards, on average, than teachers at any other school in this city. Janna Patel is the teacher who has won the most awards in the city. So Janna Patel is the best teacher at our school.",
+      "C": "The Olson Motor Company manufactures the three best-selling automobile models in the country. The Decade is the Olson Motor Company's best-selling model. Thus, the Decade is the best-selling model in the country.",
+      "D": "In this city the highest-paid police officer earns more than the highest-paid firefighter, and the lowest-paid police officer earns more than the lowest-paid firefighter. So in this city police officers earn more, on average, than firefighters do.",
+      "E": "Falling Fast is the film that is currently earning the most at the box office in the country. The most successful film in the country is typically the one that is showing in the most theaters. So Falling Fast is probably the film that is currently showing in the most theaters."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Principle Justify",
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 2,
-    "stimulus": "Economist: Global recessions can never be prevented, for they could be prevented only if they were predictable. Yet economists, using the best techniques at their disposal, consistently fail to accurately predict global recessions.",
-    "questionStem": "The economist’s argument is most vulnerable to the criticism that it",
+    "questionDifficulty": 5,
+    "stimulus": "A contract between two parties is valid only if one party accepts a legitimate offer from the other; an offer is not legitimate if someone in the position of the party to whom it was made would reasonably believe the offer to be made in jest.",
+    "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
     "answerChoices": {
-      "A": "presupposes in a premise the conclusion that it purports to establish",
-      "B": "fails to establish that economists claim to be able to accurately predict global recessions",
-      "C": "treats the predictability of an event, which is required for the event to be preventable, as a characteristic that assures its prevention",
-      "D": "fails to address the possibility that the techniques available to economists for the prediction of global recessions will significantly improve",
-      "E": "implicitly bases an inference that something will not occur solely on the information that its occurrence is not predictable"
+      "A": "Joe made a legitimate offer to buy Sandy’s car and Sandy has not rejected the offer. Thus, there was a valid contract.",
+      "B": "Kenta accepted Gus’s offer to buy a shipment of goods, but Gus, unknown to Kenta, made the offer in jest. Thus, the contract was not valid.",
+      "C": "Frank’s offer to buy Mindy’s business from her was legitimate. Thus, if Mindy is a reasonable person, she will accept the offer.",
+      "D": "Hai’s offer to sell artworks to Lea was made in such a way that no one in Lea’s position would have reasonably believed it to be made in jest. Thus, if Lea accepts the offer, they have a valid contract.",
+      "E": "The only offer that Sal made to Veronica was not a legitimate one. Thus, regardless of whether Sal made the offer in jest, there is no valid contract between them."
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea",
+      "Binaries",
       "Quantifiers"
     ]
   },
   {
     "practiceTest": "PT148",
     "sectionNumber": 4,
-    "questionNumber": 21,
-    "questionType": "Principle Conform",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "Letter to the editor: When your newspaper reported the (admittedly extraordinary) claim by Mr. Hanlon that he saw an alien spaceship, the tone of your article was very skeptical despite the fact that Hanlon has over the years proved to be a trusted member of the community. If Hanlon claimed to have observed a rare natural phenomenon like a large meteor, your article would not have been skeptical. So your newspaper exhibits an unjustified bias.",
-    "questionStem": "The argument in the letter conflicts with which one of the following principles?",
-    "answerChoices": {
-      "A": "If a claim is extraordinary, it should not be presented uncritically unless it is backed by evidence of an extraordinarily high standard.",
-      "B": "One should be skeptical of claims that are based upon testimonial evidence that is acquired only through an intermediary source.",
-      "C": "If a media outlet has trusted a source in the past and the source has a good reputation, the outlet should continue to trust that source.",
-      "D": "People who think they observe supernatural phenomena should not publicize that fact unless they can present corroborating evidence.",
-      "E": "A newspaper should not publish a report unless it is confirmed by an independent source."
-    },
-    "correctAnswer": "B",
-    "questionFeatures": [
-      "Conditional Diagramming",
-      "Causal Chains"
-    ]
-  },
-  {
-    "practiceTest": "PT148",
-    "sectionNumber": 4,
-    "questionNumber": 22,
-    "questionType": "Flaw",
-    "reasoningType": [
-      "Causation",
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "Fish with teeth specialized for scraping algae occur in both Flower Lake and Blue Lake. Some biologists argue that because such specialized characteristics are rare, fish species that have them should be expected to be closely related. If they are closely related, then the algae-scraping specialization evolved only once. But genetic tests show that the two algae-scraping species, although possibly related, are not closely related. Thus, the algae-scraping specialization evolved more than once.",
-    "questionStem": "The reasoning in the argument is flawed in that it",
-    "answerChoices": {
-      "A": "infers a cause merely from a correlation",
-      "B": "infers that just because the evidence for a particular claim has not yet been confirmed, that claim is false",
-      "C": "takes a sufficient condition as a necessary one",
-      "D": "infers merely because something was likely to occur that it did occur",
-      "E": "appeals to the authority of biologists who may not be representative of all biologists with expertise in the relevant area"
-    },
-    "correctAnswer": "B",
-    "questionFeatures": [
-      "Explain Curious Fact",
-      "Anti-Causal"
-    ]
-  },
-  {
-    "practiceTest": "PT148",
-    "sectionNumber": 4,
-    "questionNumber": 23,
-    "questionType": "Must Be True",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "The constitution of Country F requires that whenever the government sells a state-owned entity, it must sell that entity for the highest price it can command on the open market. The constitution also requires that whenever the government sells a state-owned entity, it must ensure that citizens of Country F will have majority ownership of the resulting company for at least one year after the sale.",
-    "questionStem": "The government of Country F must violate at least one of the constitutional requirements described above if it is faced with which one of the following situations?",
-    "answerChoices": {
-      "A": "The government will sell StateAir, a state-owned airline. The highest bid received was from a corporation that was owned entirely by citizens of Country F when the bid was received. Shortly after the bid was received, however, noncitizens purchased a minority share in the corporation.",
-      "B": "The government has agreed to sell National Silver, a state-owned mine, to a corporation. Although citizens of Country F have majority ownership of the corporation, most of the corporation’s operations and sales take place in other countries.",
-      "C": "The government will sell PetroNat, a state-owned oil company. World Oil Company has made one of the highest offers for PetroNat, but World Oil’s ownership structure is so complex that the government cannot determine whether citizens of Country F have majority ownership.",
-      "D": "The government will sell National Telephone, a state-owned utility. The highest bid received was from a company in which citizens of Country F have majority ownership but noncitizens own a minority share. However, the second-highest bid, from a consortium of investors all of whom are citizens of Country F, was almost as high as the highest bid.",
-      "E": "The government will sell StateRail, a state-owned railway. The government must place significant restrictions on who can purchase StateRail to ensure that citizens of Country F will gain majority ownership. However, any such restrictions will reduce the price the government receives for StateRail."
-    },
-    "correctAnswer": "A",
-    "questionFeatures": [
-      "Math-y Stuff"
-    ]
-  },
-  {
-    "practiceTest": "PT148",
-    "sectionNumber": 4,
-    "questionNumber": 24,
+    "questionNumber": 25,
     "questionType": "Weaken",
     "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 4,
-    "stimulus": "The makers of Activite, a natural dietary supplement, claim that it promotes energy and mental alertness. To back up their claim, they offer a month’s supply of Activite free to new customers. Clearly, Activite must be effective, since otherwise it would not be in the company’s interest to make such an offer.",
-    "questionStem": "Which one of the following, if true, most weakens the argument?",
-    "answerChoices": {
-      "A": "The nutrients in Activite can all be obtained from a sufficiently varied and well-balanced diet.",
-      "B": "There are less expensive dietary supplements on the market that are just as effective as Activite.",
-      "C": "A month is not a sufficient length of time for most dietary supplements to be fully effective.",
-      "D": "The makers of Activite charge a handling fee that is considerably more than what it costs them to pack and ship their product.",
-      "E": "The mere fact that a dietary supplement contains only natural ingredients does not insure that it has no harmful side effects."
-    },
-    "correctAnswer": "E",
-    "questionFeatures": [
-      "Principles in Stimulus",
-      "Worst of the Worst"
-    ]
-  },
-  {
-    "practiceTest": "PT148",
-    "sectionNumber": 4,
-    "questionNumber": 25,
-    "questionType": "Flawed Parallel Reasoning",
-    "reasoningType": [
-      "Causation"
+      "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Of the citizens who disapprove of the prime minister’s overall job performance, most disapprove because of the prime minister’s support for increasing the income tax. However, Theresa believes that the income tax should be increased. So Theresa probably approves of the prime minister’s overall job performance.",
-    "questionStem": "Which one of the following arguments exhibits flawed reasoning that is most parallel to that in the argument above?",
+    "stimulus": "Scientist: A small group of islands near Australia is inhabited by several species of iguana; closely related species also exist in the Americas, but nowhere else. The islands in question formed long after the fragmentation of Gondwana, the ancient supercontinent that included present-day South America and Australia. Thus, these species’ progenitors must have rafted on floating debris across the Pacific Ocean from the Americas.",
+    "questionStem": "Which one of the following, if true, most weakens the scientist’s argument?",
     "answerChoices": {
-      "A": "Of the people who support allowing limited logging in the Grizzly National Forest, most support it because they think it will reduce the risk of fire in the forest. Andy thinks that limited logging will not reduce the risk of fire in the forest, so he probably opposes allowing limited logging there.",
-      "B": "Of the people who expect the population in the area to increase over the next ten years, most think that an expected population increase is a good reason to build a new school. Bonita does not expect the population to increase over the next ten years, so she probably does not favor building a new school.",
-      "C": "Of the people who believe that the overall economy has improved, most believe it because they believe that their own financial situation has improved. Chung believes that the economy has worsened, so he probably believes that his own financial situation has worsened.",
-      "D": "Of the people who oppose funding a study to determine the feasibility of building a light rail line in the Loffoch Valley, most also believe that the Valley Freeway should be built. Donna opposes increasing funding for a study, so she probably supports building the Valley Freeway.",
-      "E": "Of the people who believe that there will be a blizzard tomorrow, most believe it because of the weather report on the Channel 9 news. Eduardo believes that there will be a blizzard tomorrow, so he probably saw the weather report on the Channel 9 news."
+      "A": "A number of animal species that inhabit the islands are not found in the Americas.",
+      "B": "Genetic analysis indicates that the iguana species on the islands are different in several respects from those found in the Americas.",
+      "C": "Documented cases of iguanas rafting long distances between land masses are uncommon.",
+      "D": "Fossils of iguana species closely related to those that inhabit the islands have been found in Australia.",
+      "E": "The lineages of numerous plant and animal species found in Australia or in South America date back to a period prior to the fragmentation of Gondwana."
     },
-    "correctAnswer": "D",
-    "questionFeatures": [
-      "Explain Curious Fact"
-    ]
+    "correctAnswer": "D"
   },
   {
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 26,
-    "questionType": "Strengthen",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 5,
-    "stimulus": "Bird watcher: The decrease in the mourning-dove population in this area is probably a result of the loss of nesting habitat. Many mourning doves had formerly nested in the nearby orchards, but after overhead sprinklers were installed in the orchards last year, the doves ceased building nests there.",
-    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "A recent archaeological find in what was once the ancient kingdom of Macedonia contains the remains of the largest tomb ever found in the region. It must be the tomb of Alexander the Great since he was the greatest Macedonian in history, and so would have had the largest tomb. After all, he conquered an empire that stretched from Greece to much of Asia, though it collapsed after his death.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
-      "A": "Mourning doves were recently designated a migratory game species, meaning that they can be legally hunted.",
-      "B": "The trees in the nearby orchards were the only type of trees in the area attractive to nesting mourning doves.",
-      "C": "Blue jays that had nested in the orchards also ceased doing so after the sprinklers were installed.",
-      "D": "Many residents of the area fill their bird feeders with canola or wheat, which are appropriate seeds for attracting mourning doves.",
-      "E": "Mourning doves often nest in fruit trees."
+      "A": "takes for granted that greatness can be attained only by military conquest",
+      "B": "takes for granted that the largest tomb found so far must be the largest that was built",
+      "C": "does not show how the recently discovered tomb compares with other tombs from the same period that have been found in other regions",
+      "D": "fails to evaluate the significance of the fact that Alexander’s empire did not survive his death",
+      "E": "takes for granted that archaeologists can determine the size of the tomb from its remains"
     },
-    "correctAnswer": "B",
-    "questionFeatures": [
-      "Explain Curious Fact",
-      "Intermediate Conclusions"
-    ]
+    "correctAnswer": "B"
   }
 ]

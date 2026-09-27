@@ -438,44 +438,37 @@
     "practiceTest": "PT103",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Principle",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 2,
-    "stimulus": "Geneticist: Billions of dollars are spent each year on high-profile experiments that attempt to link particular human genes with particular personality traits. Though such experiments seem to promise a new understanding of human nature, they have few practical consequences. Meanwhile, more mundane and practical genetic projects—for example, those that look for natural ways to make edible plants hardier or more nutritious—are grossly underfunded. Thus, funding for human gene research should be reduced while funding for other genetic research should be increased.",
-    "questionStem": "Which one of the following principles, if valid, most helps to justify the geneticist's reasoning?",
+    "questionType": "Must be True",
+    "reasoningType": [],
+    "stimulus": "Anthropologist: Violence is an extreme form of aggression, and is distinct from the self-expression sufficient for survival under normal conditions. Human beings in certain situations react to unpleasant stimuli with violence—but only because they are conditioned by their culture to react in this manner.",
+    "questionStem": "Each of the following can be logically inferred from the anthropologist's statements EXCEPT:",
     "answerChoices": {
-      "A": "Experiments that have the potential to help the whole human race are more worthwhile than those that help only a small number of people.",
-      "B": "Scientific experiments that have little practical value should not receive public funding.",
-      "C": "Money spent on expensive research projects would be better spent on ameliorating present ills than on satisfying scientific curiosity.",
-      "D": "At a time when money is limited, scientific research projects that have immediate practical consequences should be given priority over projects that have few or no such consequences.",
-      "E": "In allocating funds for scientific research, projects that seek to unravel fundamental mysteries should be given priority over projects that seek only immediate practical applications."
+      "A": "Not all aggression is violent.",
+      "B": "The self-expression required for survival is generally nonaggressive.",
+      "C": "Some behaviors are influenced by the cultures in which human beings live.",
+      "D": "In normal circumstances, human beings can survive by responding nonviolently.",
+      "E": "Violent behavior is a product of one's cultural environment."
     },
     "correctAnswer": "B",
-    "questionFeatures": [
-      "EXCEPT"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT103",
     "sectionNumber": 2,
     "questionNumber": 20,
-    "questionType": "Weaken",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 2,
-    "stimulus": "Commentator: Although the present freshwater supply is adequate for today's patterns of water use, the human population is increasing so rapidly that in the not-too-distant future our demand for freshwater will outstrip its supply. So a permanent solution to the impending crisis is not better methods of desalinating seawater, but rather population control.",
-    "questionStem": "Which one of the following, if true, would most seriously weaken the commentator's argument?",
+    "questionType": "Parallel Flaw",
+    "reasoningType": [],
+    "stimulus": "Martha’s friend, who is very knowledgeable about edible flowers, told Martha that there are no edible daisies, at least not any that are palatable. Martha, however, reasons that since there are daisies that are a kind of chrysanthemum and since there are edible chrysanthemums that are quite palatable, what her friend told her must be incorrect.",
+    "questionStem": "Which one of the following has a flawed pattern of reasoning most like that in Martha's reasoning?",
     "answerChoices": {
-      "A": "For the indefinite future, it will be cheaper to desalinate seawater than to control population growth.",
-      "B": "Even if population growth were halted immediately, freshwater demand would continue to increase for at least several decades.",
-      "C": "Most of the freshwater on Earth is contained in glaciers and polar icecaps.",
-      "D": "If the technology is developed to make desalination economically feasible, fresh water could be made available for those needs not satisfied by the natural supply.",
-      "E": "The decline in freshwater supply is much less severe than is the decline in the quality of the freshwater supply."
+      "A": "Jeanne is a member of the city chorus, and the city chorus is renowned. So Jeanne is an excellent singer.",
+      "B": "Rolfe belongs to the library reading group, and all members of that group are avid readers. So Rolfe is an avid reader.",
+      "C": "Some of Noriko's sisters are on the debate team, and some members of the debate team are poor students. So at least one of Noriko's sisters must be a poor student.",
+      "D": "Most of Leon's friends are good swimmers, and good swimmers are quite strong. So it is likely that at least some of Leon's friends are quite strong.",
+      "E": "Many of Teresa's colleagues have written books. Most of the books they have written are on good writing. So some of Teresa's colleagues are good writers."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT103",
@@ -501,28 +494,19 @@
     "practiceTest": "PT103",
     "sectionNumber": 2,
     "questionNumber": 22,
-    "questionType": "Flaw",
-    "reasoningType": [
-      "Comparative Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "Doctor: It would benefit public health if junk food were taxed. Not only in this country but in many other countries, junk food is the cheapest food available. So if junk food were taxed, it would no longer be so cheap, and people would be encouraged to eat more nutritious foods.",
-    "questionStem": "Which one of the following most accurately describes a flaw in the doctor's argument?",
+    "questionType": "Necessary Assumption",
+    "reasoningType": [],
+    "stimulus": "Most students are bored by history courses as they are usually taught, primarily because a large amount of time is spent teaching dates and statistics. The best way to teach history, therefore, is to spend most class time recounting the lives of historical figures and very little on dates and statistics.",
+    "questionStem": "Each of the following is an assumption on which the argument depends EXCEPT:",
     "answerChoices": {
-      "A": "It presumes that people will continue to consume junk food even if it is heavily taxed.",
-      "B": "It fails to consider that even if junk food were taxed, it might still be the cheapest food available.",
-      "C": "It presumes, without providing justification, that the tax on junk food would be used to subsidize the cost of more nutritious food.",
-      "D": "It overlooks the possibility that taxing junk food would encourage people to consume even more junk food.",
-      "E": "It confuses something that is conducive to public health with something that is required for public health."
+      "A": "One should avoid boring one's students when teaching a history course.",
+      "B": "It is not incompatible with the attainable goals of teaching history to spend very little class time on dates and statistics.",
+      "C": "It is possible to recount the lives of historical figures without referring to dates and statistics.",
+      "D": "It is compatible with the attainable goals of teaching history to spend most class time recounting the lives of historical figures.",
+      "E": "Students are more bored by history courses as they are usually taught than they would be by courses that spend most class time recounting the lives of historical figures."
     },
     "correctAnswer": "C",
-    "questionFeatures": [
-      "Missing Link / Idea",
-      "Assumes Difference",
-      "Defender",
-      "EXCEPT",
-      "Plans / Recommendations"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT103",
@@ -551,26 +535,19 @@
     "practiceTest": "PT103",
     "sectionNumber": 2,
     "questionNumber": 24,
-    "questionType": "Paradox",
-    "reasoningType": [
-      "Conditional Reasoning"
-    ],
-    "questionDifficulty": 3,
-    "stimulus": "In an experiment, researchers played a series of musical intervals—pairs of notes that were either harmonious or dissonant. Each time, subjects indicated whether they found the notes pleasant or unpleasant. Most subjects found harmonious intervals pleasant and dissonant intervals unpleasant. However, when the same pairs of notes were played to members of an isolated tribe living in a remote area, these people showed no preference for harmonious notes over dissonant ones.",
-    "questionStem": "Which one of the following, if true, most helps to explain the differing preferences described above?",
+    "questionType": "Agree/Disagree",
+    "reasoningType": [],
+    "stimulus": "Monica: The sculpture commissioned for our town plaza has been scorned by the public ever since it went up. But since the people in our town do not know very much about contemporary art, the unpopularity of the work says nothing about its artistic merit and thus gives no reason for removing it.\n\nHector: You may be right about what the sculpture’s popularity means about its artistic merit. However, a work of art that was commissioned for a public space ought to benefit the public, and popular opinion is ultimately the only way of determining what the public feels is to its benefit. Thus, if public opinion of this sculpture is what you say, then it certainly ought to be removed.",
+    "questionStem": "Monica's and Hector's statements commit them to disagreeing about which one of the following principles?",
     "answerChoices": {
-      "A": "The characteristic of harmonies that Western subjects found pleasant is a characteristic that all harmonious pairs of notes have in common.",
-      "B": "Several subjects who took part in the experiment had no formal training in music.",
-      "C": "The types of musical intervals that are considered harmonious in Western music are considered dissonant in the music of some other cultures.",
-      "D": "Because of the remoteness of the tribe, its members have never been exposed to Western music.",
-      "E": "Perception of harmony is strongly influenced by the music one has previously been exposed to, even when the exposure occurred early in life."
+      "A": "Public opinion of a work of art is an important consideration in determining the work's artistic merit.",
+      "B": "Works of art commissioned for public spaces ought at least to have sufficient artistic merit to benefit the public.",
+      "C": "The only reason for removing a work of art commissioned for a public space would be that the balance of public opinion is against the work.",
+      "D": "The sculpture cannot benefit the public by remaining in the town plaza unless the sculpture has artistic merit.",
+      "E": "In determining whether the sculpture should remain in the town plaza, the artistic merit of the sculpture should be a central consideration."
     },
     "correctAnswer": "E",
-    "questionFeatures": [
-      "2-Speaker",
-      "Causal Difference-Maker",
-      "Principles in Answers"
-    ]
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT103",
@@ -599,23 +576,5 @@
       "Rebuttals",
       "Untriggered Conditional"
     ]
-  },
-  {
-    "practiceTest": "PT103",
-    "sectionNumber": 2,
-    "questionNumber": 26,
-    "questionType": "Sufficient Assumption",
-    "reasoningType": [],
-    "questionDifficulty": 3,
-    "stimulus": "Linguist: Only if a sentence can be diagrammed is it grammatical. Any grammatical sentence is easily understood by speakers of the language.",
-    "questionStem": "Which one of the following conclusions can be correctly drawn from the linguist's statements?",
-    "answerChoices": {
-      "A": "If a sentence is not easily understood by most speakers of the language, then it cannot be diagrammed.",
-      "B": "If a sentence cannot be diagrammed, then it will not be easily understood by most speakers of the language.",
-      "C": "A sentence that cannot be diagrammed is not a grammatical sentence.",
-      "D": "A sentence that can be diagrammed will be easily understood by most speakers of the language.",
-      "E": "Any sentence that is not easily understood by most speakers of the language is not grammatical."
-    },
-    "correctAnswer": "A"
   }
 ]
