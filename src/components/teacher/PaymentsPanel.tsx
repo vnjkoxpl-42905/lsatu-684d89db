@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
@@ -117,6 +117,19 @@ export function PaymentsPanel() {
     return m;
   }, [students.data]);
   const studentName = (id: string | null) => (id ? nameById.get(id) ?? null : null);
+
+  // A new or updated payment (webhook, sync, another tab) refreshes the list live.
+  useEffect(() => {
+    const channel = supabase
+      .channel(`stripe-payments-${Math.random().toString(36).slice(2)}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'stripe_payments' }, () => {
+        void queryClient.invalidateQueries({ queryKey: PAYMENTS_KEY });
+      })
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   const rows = payments.data ?? [];
   const attention = rows.filter(needsAttention);

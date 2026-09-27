@@ -11,6 +11,7 @@ import {
   retrievePaymentLink,
 } from "../_shared/stripe.ts";
 import { recordCharge, stripeGet } from "../_shared/stripeLedger.ts";
+import { sendAppEmail } from "../_shared/sendAppEmail.ts";
 
 const MAX_BODY_BYTES = 256 * 1024;
 const APP_ORIGIN = Deno.env.get("APP_ORIGIN") || "https://lsatprep.study";
@@ -203,7 +204,21 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
   const ledgerChargeId = await chargeIdForLedger(event, stripeSecret).catch(() => null);
   if (ledgerChargeId) {
     try {
-      await recordCharge(supabase, stripeSecret, ledgerChargeId, "webhook");
+      const { inserted, row } = await recordCharge(supabase, stripeSecret, ledgerChargeId, "webhook");
+      // Every new paid charge tells the admins once, whatever it paid for:
+      // payment links, the native single session, and Cal.com bookings alike.
+      // Only the writer that created the ledger row announces it.
+      if (inserted && row.status === "succeeded") {
+        await notifyAdminsOfPayment(supabase, {
+          email: row.email,
+          name: row.payer_name,
+          amountCents: row.amount_cents,
+          currency: row.currency,
+          awaitingGrant: row.grant_state === "awaiting",
+          unmatched: !row.student_id,
+        });
+        await emailJoshuaOfPayment(supabase, row);
+      }
     } catch (err) {
       console.error("ledger write failed", { event: event.id, type: event.type, error: err instanceof Error ? err.message : String(err) });
     }
@@ -243,22 +258,8 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
   const session = event.data.object;
 
   // A payment never changes access. Access is Joshua's decision, made by tier
-  // on the People page, and it never changes by itself. What a payment does is
-  // tell him, so a paying student is not left waiting unnoticed in the queue.
-  if (session.payment_status === "paid") {
-    try {
-      await notifyAdminsOfPayment(supabase, {
-        email: session.customer_details?.email ?? session.customer_email ?? null,
-        name: session.customer_details?.name ?? null,
-        amountCents: typeof session.amount_total === "number" ? session.amount_total : null,
-        currency: session.currency ?? null,
-      });
-    } catch (err) {
-      // A notice is a convenience on top of the payment record. Failing to
-      // write it must never make Stripe retry a payment that was recorded.
-      console.error("payment notice failed", { event: event.id, err });
-    }
-  }
+  // on the People page, and it never changes by itself. The admin notice for
+  // this payment is sent from the ledger write above, once per charge.
 
   if (session.metadata?.product === "single_session") {
     const bookingId = String(session.metadata?.booking_id || "");
@@ -424,10 +425,17 @@ Deno.serve(async (req) => {
 });
 
 
-/** One notification per admin: someone paid, decide their tier. */
+/** One notification per admin for each new paid charge. */
 async function notifyAdminsOfPayment(
   supabase: { from: (t: string) => any },
-  payment: { email: string | null; name: string | null; amountCents: number | null; currency: string | null },
+  payment: {
+    email: string | null;
+    name: string | null;
+    amountCents: number | null;
+    currency: string | null;
+    awaitingGrant?: boolean;
+    unmatched?: boolean;
+  },
 ) {
   const { data: admins, error } = await supabase.from("user_roles").select("user_id").eq("role", "admin");
   if (error) throw error;
@@ -440,8 +448,10 @@ async function notifyAdminsOfPayment(
     user_id: a.user_id,
     type: "payment_needs_tier",
     title: "Payment received",
-    body: `${who}${payment.email && payment.name ? ` (${payment.email})` : ""} paid${amount}. Their access has not changed. Set their tier if they need more.`,
-    link: "/teacher/students",
+    body: `${who}${payment.email && payment.name ? ` (${payment.email})` : ""} paid${amount}.${
+      payment.awaitingGrant ? " It is a package: grant the passes on Today." : ""
+    }${payment.unmatched ? " No student account matches this email: link one on Today." : ""} Access has not changed.`,
+    link: "/teacher/today",
   }));
   if (rows.length === 0) return;
   const { error: insertError } = await supabase.from("notifications").insert(rows);
@@ -462,4 +472,36 @@ async function chargeIdForLedger(event: any, secret: string): Promise<string | n
     return typeof intent.latest_charge === "string" ? intent.latest_charge : null;
   }
   return null;
+}
+
+/**
+ * One email to Joshua per new paid charge. Keyed on the charge id, so a Stripe
+ * retry or a second event for the same charge can never send it twice. A failed
+ * send is logged (sendAppEmail writes email_send_log) and never fails the webhook.
+ */
+async function emailJoshuaOfPayment(supabase: any, row: any) {
+  try {
+    let whatFor = row.product === "single_session" ? "Single session" : row.description || "";
+    if (row.offer_id) {
+      const { data: offer } = await supabase.from("booking_offers").select("label,credits").eq("id", row.offer_id).maybeSingle();
+      if (offer) whatFor = `${offer.label} (package, ${offer.credits} passes)`;
+    }
+    const amount = new Intl.NumberFormat("en-US", { style: "currency", currency: (row.currency || "usd").toUpperCase() })
+      .format(row.amount_cents / 100);
+    const paidAt = new Intl.DateTimeFormat("en-US", {
+      dateStyle: "medium", timeStyle: "short", timeZone: "America/New_York",
+    }).format(new Date(row.paid_at)) + " ET";
+    const nextStep = row.grant_state === "awaiting"
+      ? "Waiting on you: grant the passes on Today."
+      : !row.student_id
+        ? "No student account matches this email. Link one on Today."
+        : "Nothing waiting on you. It is in the Payments list on Today.";
+    await sendAppEmail("payment-received", "", {
+      idempotencyKey: `payment-received:${row.stripe_charge_id}`,
+      replyTo: row.email ?? undefined,
+      templateData: { who: row.payer_name || row.email || "Someone", email: row.email ?? "", amount, paidAt, whatFor, nextStep },
+    });
+  } catch (err) {
+    console.error("payment email failed", { charge: row.stripe_charge_id, error: err instanceof Error ? err.message : String(err) });
+  }
 }

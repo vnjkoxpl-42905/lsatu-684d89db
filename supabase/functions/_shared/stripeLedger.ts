@@ -117,15 +117,19 @@ export function buildPaymentRow(
   };
 }
 
-/** Insert, or refresh Stripe facts on an existing row without touching teacher decisions. */
-export async function upsertPayment(supabase: any, row: ReturnType<typeof buildPaymentRow>) {
+/**
+ * Insert, or refresh Stripe facts on an existing row without touching teacher
+ * decisions. Returns true only when this call created the row, so exactly one
+ * writer (webhook or sync) ever announces a new payment.
+ */
+export async function upsertPayment(supabase: any, row: ReturnType<typeof buildPaymentRow>): Promise<boolean> {
   const { data: existing, error } = await supabase.from("stripe_payments")
     .select("id,match_state,grant_state,student_id,source").eq("stripe_charge_id", row.stripe_charge_id).maybeSingle();
   if (error) throw error;
   if (!existing) {
     const { error: insertError } = await supabase.from("stripe_payments").insert(row);
     // A concurrent writer (webhook vs sync) inserted first: fall through to update.
-    if (!insertError) return;
+    if (!insertError) return true;
     if (insertError.code !== "23505") throw insertError;
     return upsertPayment(supabase, row);
   }
@@ -154,6 +158,7 @@ export async function upsertPayment(supabase: any, row: ReturnType<typeof buildP
   for (const k of Object.keys(facts)) if (facts[k] === undefined) delete facts[k];
   const { error: updateError } = await supabase.from("stripe_payments").update(facts).eq("id", existing.id);
   if (updateError) throw updateError;
+  return false;
 }
 
 /** Record one charge (by id) into the ledger, looking up its Checkout Session. */
@@ -166,5 +171,7 @@ export async function recordCharge(supabase: any, secret: string, chargeId: stri
     session = sessions.data?.[0] ?? null;
   }
   const [students, offers] = await Promise.all([loadStudentIndex(supabase), loadOfferIndex(supabase)]);
-  await upsertPayment(supabase, buildPaymentRow(charge, session, students, offers, source));
+  const row = buildPaymentRow(charge, session, students, offers, source);
+  const inserted = await upsertPayment(supabase, row);
+  return { inserted, row };
 }
