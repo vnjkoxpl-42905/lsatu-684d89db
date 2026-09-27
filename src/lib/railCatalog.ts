@@ -57,7 +57,7 @@ export const RAIL_CATALOG: RailItem[] = [
   // rail entry rather than a tab inside Drill — drilling is practice you stop
   // and think inside, and a sitting is not, so putting them behind one door
   // invites starting a 35:00 clock by accident.
-  { id: "testing", label: "Testing Centre", group: "classroom", flags: ["has_practice_access"] },
+  { id: "testing", label: "Practice Exams", group: "classroom", flags: ["has_practice_access"] },
   { id: "work", label: "Assigned work", group: "classroom", flags: ["has_classroom_access"], section: true },
   { id: "notes", label: "Notes and recaps", group: "study", flags: ["has_classroom_access"], section: true },
   { id: "bootcamps", label: "Bootcamps", group: "study", flags: ["has_bootcamp_access"] },

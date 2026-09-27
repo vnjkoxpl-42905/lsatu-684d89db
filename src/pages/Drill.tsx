@@ -70,6 +70,7 @@ import {
   recordCloseoutProgress,
 } from '@/lib/practiceTestCloseout';
 import { isSittingReturn } from '@/lib/practiceTestRunner';
+import { isActivePracticeTestDevice } from '@/lib/practiceTestStore';
 import { useAdaptiveEngine } from '@/contexts/AdaptiveEngineContext';
 import { normalizeText } from '@/lib/utils';
 import type { HighlightMode, HighlightRegion } from '@/lib/highlightUtils';
@@ -275,8 +276,9 @@ function DrillContent() {
       // A homework assignment is its own sitting. Keyed by the section alone,
       // a second assignment of PT156.S2 opened on the first assignment's row.
       assignmentId,
+      ptRun,
     });
-  }, [isMcPractice, guidedSessionKey, state, genericResumeIdentity, assignmentId]);
+  }, [isMcPractice, guidedSessionKey, state, genericResumeIdentity, assignmentId, ptRun]);
   // Rows written before a bootcamp day had its own identity were named by the
   // picked question list. Read that key only when the day-keyed row is absent;
   // every new snapshot and completion still writes the day-keyed row.
@@ -465,6 +467,7 @@ function DrillContent() {
   const [availablePoolSize, setAvailablePoolSize] = React.useState(0);
   const [poolExhausted, setPoolExhausted] = React.useState(false);
   const [bootError, setBootError] = React.useState<string | null>(null);
+  const [handoffLost, setHandoffLost] = React.useState(false);
   const [adaptiveHydrationStatus, setAdaptiveHydrationStatus] = React.useState<'idle' | 'loading' | 'ready' | 'failed'>('idle');
   const { classId, loading: classIdLoading } = useClassId();
   const [advanceToken, setAdvanceToken] = React.useState(0);
@@ -995,6 +998,8 @@ function DrillContent() {
         // Stored as time SPENT, so it reads the same whether the surface
         // counts down or up.
         elapsedMs: sectionElapsedMs(),
+        timerMode: source.fullSectionConfig?.timer.mode,
+        timerCustomMinutes: source.fullSectionConfig?.timer.customMinutes,
         regulationAnsweredQids: source.regulationMark?.answeredQids,
       };
     },
@@ -1018,13 +1023,16 @@ function DrillContent() {
       // Re-checked on every beat: the section can finish between two of them.
       if (genericFinalizedRef.current) return;
       const snapshot = snapshotRef.current(session);
-      if (!snapshot || snapshot.attempts.length === 0) return;
+      if (!snapshot) return;
       void saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot).catch((err) => {
+        if (ptRun && err instanceof Error && err.message.includes('another device')) {
+          setHandoffLost(true);
+        }
         console.error('[drill:resume:heartbeat] resume write failed', { err });
       });
     }, 20_000);
     return () => window.clearInterval(id);
-  }, [genericResumeKey, user, session, hasTimer]);
+  }, [genericResumeKey, user, session, hasTimer, ptRun]);
 
   React.useEffect(() => {
     if (!isMcPractice || !mcPracticePool || !user || !session) return;
@@ -1061,16 +1069,19 @@ function DrillContent() {
     });
   }, [session, guidedSessionKey, user, drillResumeSnapshot]);
 
-  // And the same again for every other drill surface. Only runs with at least
-  // one answered question are written: an untouched shuffle is not progress,
-  // and storing it would freeze a stale question order in place.
+  // And the same again for every other drill surface. A section is saved as
+  // soon as it starts, even before its first answer; other untouched drills
+  // remain fresh on their next launch.
   React.useEffect(() => {
     if (!genericResumeKey || !user || !session) return;
     if (genericFinalizedRef.current) return;
     if (session.questionQueue.length === 0) return;
     const snapshot = drillResumeSnapshot(session);
-    if (!snapshot || snapshot.attempts.length === 0) return;
+    if (!snapshot || (snapshot.attempts.length === 0 && session.mode !== 'full-section')) return;
     void saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot).catch((err) => {
+      if (ptRun && err instanceof Error && err.message.includes('another device')) {
+        setHandoffLost(true);
+      }
       // Non-fatal: the drill still works, they just lose the resume point.
       console.error('[drill:resume:snapshot] resume write failed', {
         userId: user.id,
@@ -1078,7 +1089,7 @@ function DrillContent() {
         err,
       });
     });
-  }, [session, genericResumeKey, user, drillResumeSnapshot]);
+  }, [session, genericResumeKey, user, drillResumeSnapshot, ptRun]);
 
 
 
@@ -1130,9 +1141,9 @@ function DrillContent() {
           .eq('status', 'assigned');
         if (error) throw error;
       } catch (err) {
-        console.error('[drill:assignment:start] update failed', {
-          userId: user.id,
-          assignmentId,
+          console.error('[drill:assignment:start] update failed', {
+            userId: user.id,
+            assignmentId,
           err,
         });
         // No user-facing toast — drill works regardless. Completion failure is the one we surface.
@@ -1663,6 +1674,10 @@ function DrillContent() {
     attemptData: Parameters<typeof saveAttemptToDatabase>[0],
   ): Promise<PersistResult> => {
     try {
+      if (ptRun && user && !await isActivePracticeTestDevice(user.id, ptRun.runId)) {
+        setHandoffLost(true);
+        return { ok: false, errorKind: 'auth' };
+      }
       const saved = await saveAttemptToDatabase(attemptData);
       return saved ? { ok: true } : { ok: false, errorKind: 'unknown' };
     } catch (e) {
@@ -1702,6 +1717,10 @@ function DrillContent() {
     /** Journal rows that landed. A short list means closeout work is owed. */
     wajQids: string[];
   }> => {
+    if (ptRun && user && !await isActivePracticeTestDevice(user.id, ptRun.runId)) {
+      setHandoffLost(true);
+      throw new Error('This practice test is active on another device.');
+    }
     let saved = 0;
     let wajFailed = 0;
     let timeMsZero = 0;
@@ -2662,6 +2681,10 @@ function DrillContent() {
     attempts: DrillSession['attempts'],
     finishedSession: DrillSession,
   ) => {
+    if (ptRun && user && !await isActivePracticeTestDevice(user.id, ptRun.runId)) {
+      setHandoffLost(true);
+      return;
+    }
     const back = drillReturnTo || '/classroom';
     const key =
       user && ptRun
@@ -2716,6 +2739,7 @@ function DrillContent() {
           stats,
           classId,
           userId: user.id,
+          practiceTestRun: ptRun,
         });
         // Every leg of a practice test is a section, and each one gets its own
         // report. Not awaited: the leg is saved, and the sitting has to be able
@@ -2738,6 +2762,10 @@ function DrillContent() {
     options?: { returnToAfterFinish?: string },
   ) => {
     if (!session) return;
+    if (ptRun && user && !await isActivePracticeTestDevice(user.id, ptRun.runId)) {
+      setHandoffLost(true);
+      return;
+    }
 
     // The last question never gets left, so its visit would never be banked.
     // Close it here or every section under-counts by one.
@@ -3266,6 +3294,20 @@ function DrillContent() {
         }}
         onBack={() => navigate(drillReturnTo || '/classroom')}
       />
+    );
+  }
+
+  if (handoffLost) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Card className="p-8 max-w-md text-center">
+          <h2 className="text-xl font-semibold mb-3">Practice test moved to another device</h2>
+          <p className="text-sm text-muted-foreground mb-6">
+            This device has stopped saving answers. Continue the test on the device now using it.
+          </p>
+          <Button onClick={() => navigate('/testing')}>Practice Exams</Button>
+        </Card>
+      </div>
     );
   }
 

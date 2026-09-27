@@ -7,11 +7,9 @@
  * composition is fixed, the order is the published one, and nothing is revealed
  * until the whole sitting is over.
  *
- * Nothing new is stored server-side. A test is a plan held in local storage
- * that hands each leg to the runner that already exists (`/drill` for LR,
- * `/rc` for RC) and reads that leg's result back out of the tables those
- * runners already write. That keeps one code path for actually answering
- * questions, which is the part that must never fork.
+ * The run is saved to the student's account by practiceTestStore. A device
+ * copy remains available as a recovery aid. Each leg still uses the existing
+ * question runner (`/drill` for LR, `/rc` for RC).
  */
 import type { QuestionManifest } from '@/lib/questionLoader';
 import type { RcSection } from '@/features/rc/lib/rcSections';
@@ -134,6 +132,13 @@ export type PracticeTestStatus = 'in-progress' | 'complete' | 'abandoned';
 
 export interface PracticeTestRun {
   id: string;
+  /** Account owner. Older device-only runs may not have this field. */
+  userId?: string;
+  /** Server revision used for conditional writes across devices. */
+  revision?: number;
+  /** The browser currently allowed to write this run. */
+  activeDeviceId?: string | null;
+  updatedAt?: string;
   pt: number;
   pace: PracticeTestPaceId;
   /**

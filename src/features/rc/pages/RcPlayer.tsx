@@ -42,6 +42,7 @@ import {
   getSession,
   getSessionAttempts,
   recordAttempt,
+  saveSessionClock,
   setAttemptFlag,
 } from '../api/rcProgress';
 import type { RcDrillConfig, RcHighlightMode, RcLetter, RcPassage } from '../lib/rcTypes';
@@ -55,6 +56,26 @@ const DEFAULT_CONFIG: RcDrillConfig = {
   timing: { mode: 'unlimited' },
   source: 'manual',
 };
+const isHandoffError = (err: unknown) =>
+  err instanceof Error && err.message.includes('another device');
+const clockBackupKey = (sessionId: string) => `lsatu:rc-clock:${sessionId}`;
+
+function readClockBackup(sessionId: string): number {
+  try {
+    const seconds = Number(window.localStorage.getItem(clockBackupKey(sessionId)));
+    return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function writeClockBackup(sessionId: string, seconds: number): void {
+  try {
+    window.localStorage.setItem(clockBackupKey(sessionId), String(Math.max(0, seconds)));
+  } catch {
+    // The account row still saves on the heartbeat when local storage is unavailable.
+  }
+}
 
 export default function RcPlayer() {
   const navigate = useNavigate();
@@ -122,6 +143,7 @@ export default function RcPlayer() {
           const loaded = await loadPassages(session.passageIds);
           if (cancelled) return;
           setConfig(session.config);
+          setElapsed(Math.max(session.config.clockElapsedSeconds ?? 0, readClockBackup(session.id)));
           setSessionId(session.id);
           setPassages(loaded);
           return;
@@ -146,7 +168,10 @@ export default function RcPlayer() {
               ? await getSession(routed.sessionId)
               : await createSession(nextConfig, routed.passageIds);
           if (cancelled) return;
-          setConfig(nextConfig);
+          setConfig(session?.config ?? nextConfig);
+          if (session) {
+            setElapsed(Math.max(session.config.clockElapsedSeconds ?? 0, readClockBackup(session.id)));
+          }
           setSessionId(session?.id ?? null);
           setPassages(loaded);
           return;
@@ -277,20 +302,54 @@ export default function RcPlayer() {
   /* ---------------------------------------------------------- clocks */
 
   const [elapsed, setElapsed] = React.useState(0);
+  const elapsedRef = React.useRef(0);
+  elapsedRef.current = elapsed;
   const questionStart = React.useRef<number>(Date.now());
 
   React.useEffect(() => {
-    if (state.paused) return;
-    const id = window.setInterval(() => setElapsed((e) => e + 1), 1000);
+    if (state.paused || !sessionId || !passages || reviewOnly) return;
+    let lastTick = Date.now();
+    const id = window.setInterval(() => {
+      const now = Date.now();
+      const delta = Math.max(0, (now - lastTick) / 1000);
+      lastTick = now;
+      setElapsed((e) => {
+        const next = e + delta;
+        writeClockBackup(sessionId, next);
+        return next;
+      });
+    }, 1000);
     return () => window.clearInterval(id);
-  }, [state.paused]);
+  }, [state.paused, sessionId, passages, reviewOnly]);
+
+  React.useEffect(() => {
+    if (!sessionId || reviewOnly) return;
+    const save = () => {
+      writeClockBackup(sessionId, elapsedRef.current);
+      void saveSessionClock(sessionId, elapsedRef.current).catch((err) => {
+        if (isHandoffError(err)) {
+          setError('This practice test is active on another device. This device has stopped saving.');
+          return;
+        }
+        setSaveError('The section clock did not save.');
+        console.error('[rc:clock] save failed', err);
+      });
+    };
+    const heartbeat = window.setInterval(save, 5000);
+    window.addEventListener('pagehide', save);
+    return () => {
+      window.clearInterval(heartbeat);
+      window.removeEventListener('pagehide', save);
+      save();
+    };
+  }, [sessionId, reviewOnly]);
 
   React.useEffect(() => {
     questionStart.current = Date.now();
   }, [state.currentIndex]);
 
   const budget = totalBudgetSeconds(config, passages?.length ?? 0);
-  const clockSeconds = budget == null ? elapsed : budget - elapsed;
+  const clockSeconds = budget == null ? Math.floor(elapsed) : budget - Math.floor(elapsed);
   const overBudget = budget != null && clockSeconds < 0;
 
   /* --------------------------------------------------------- writing */
@@ -318,7 +377,11 @@ export default function RcPlayer() {
         });
         dispatch({ type: 'markRecorded', questionIds: [target.question.questionId] });
         return true;
-      } catch {
+      } catch (err) {
+        if (isHandoffError(err)) {
+          setError('This practice test is active on another device. This device has stopped saving.');
+          return false;
+        }
         /*
          * A failed write used to return quietly and the caller carried on:
          * Confirm revealed, the passage moved into review, and submit walked to
@@ -390,7 +453,11 @@ export default function RcPlayer() {
     if (sessionId) {
       try {
         await completeSession(sessionId);
-      } catch {
+      } catch (err) {
+        if (isHandoffError(err)) {
+          setError('This practice test is active on another device. This device has stopped saving.');
+          return;
+        }
         setSaveError('The drill did not finish saving.');
         return;
       }
@@ -536,9 +603,9 @@ export default function RcPlayer() {
           <button
             type="button"
             className="rounded-full bg-slate-900 px-7 py-2 text-[14px] font-semibold text-white transition-colors hover:bg-black"
-            onClick={() => navigate(exitPath)}
+            onClick={() => navigate(error.includes('another device') ? '/testing' : exitPath)}
           >
-            Go to Reading Comprehension
+            {error.includes('another device') ? 'Practice Exams' : 'Go to Reading Comprehension'}
           </button>
         </div>
       </OfficialDrillFrame>

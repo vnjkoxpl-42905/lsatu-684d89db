@@ -9,9 +9,8 @@
  *   - Reads come from the local cache (fast, offline-friendly).
  *   - Writes are committed to the local cache immediately, then queued for a
  *     debounced background upsert into Supabase.
- *   - On hydrate(), all rows for this user are pulled from Supabase and merged
- *     into the local cache (server is authoritative — last-write-wins by
- *     `updated_at`).
+ *   - On hydrate(), account rows are merged with local rows. A newer local
+ *     practice session is queued for sync instead of overwritten.
  *   - Blobs (audio) stay local only.
  */
 
@@ -23,6 +22,14 @@ import { supabase } from '@/integrations/supabase/client';
 
 const FLUSH_DEBOUNCE_MS = 800;
 
+function updatedAt(value: unknown): number {
+  if (!value || typeof value !== 'object') return Number.NEGATIVE_INFINITY;
+  const timestamp = (value as { updated_at?: unknown }).updated_at;
+  if (typeof timestamp !== 'string') return Number.NEGATIVE_INFINITY;
+  const parsed = Date.parse(timestamp);
+  return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
+}
+
 interface PendingWrite {
   table: string;
   id: string;
@@ -32,6 +39,8 @@ interface PendingWrite {
 export class SupabaseSyncedPersistence implements Persistence {
   private local: V1Persistence;
   private pending = new Map<string, PendingWrite>();
+  private inFlightWrites = new Map<string, PendingWrite>();
+  private flushInFlight: Promise<void> | null = null;
   private flushTimer: ReturnType<typeof setTimeout> | null = null;
   private hydrated = false;
   private readyPromise: Promise<void>;
@@ -78,6 +87,17 @@ export class SupabaseSyncedPersistence implements Persistence {
       }
       for (const row of data ?? []) {
         try {
+          const key = this.key(row.table_name, row.record_id);
+          // A write made while the cloud request was in flight owns this row.
+          // Replacing it with the fetched snapshot would lose the latest answer.
+          if (this.pending.has(key) || this.inFlightWrites.has(key)) continue;
+          const local = await this.local.get<unknown>(row.table_name, row.record_id);
+          if (this.pending.has(key) || this.inFlightWrites.has(key)) continue;
+          if (row.table_name === 'practice_sessions' && updatedAt(local) > updatedAt(row.data)) {
+            this.pending.set(key, { table: row.table_name, id: row.record_id, data: local });
+            this.scheduleFlush();
+            continue;
+          }
           await this.local.set(row.table_name, row.record_id, row.data as object);
         } catch (e) {
           console.warn('[SupabaseSyncedPersistence] hydrate row failed', e);
@@ -97,10 +117,23 @@ export class SupabaseSyncedPersistence implements Persistence {
   }
 
   async flush(): Promise<void> {
+    if (this.flushInFlight) return this.flushInFlight;
     if (!this.userId || this.userId === 'anon') return;
     if (this.pending.size === 0) return;
+    const operation = this.flushPending();
+    this.flushInFlight = operation;
+    try {
+      await operation;
+    } finally {
+      this.flushInFlight = null;
+      if (this.pending.size > 0 && !this.flushTimer) this.scheduleFlush();
+    }
+  }
+
+  private async flushPending(): Promise<void> {
     const batch = Array.from(this.pending.values());
     this.pending.clear();
+    for (const item of batch) this.inFlightWrites.set(this.key(item.table, item.id), item);
     if (this.flushTimer) {
       clearTimeout(this.flushTimer);
       this.flushTimer = null;
@@ -123,7 +156,10 @@ export class SupabaseSyncedPersistence implements Persistence {
         if (error) {
           console.warn('[SupabaseSyncedPersistence] upsert failed', error.message);
           // Re-queue on failure.
-          for (const b of upserts) this.pending.set(this.key(b.table, b.id), b);
+          for (const b of upserts) {
+            const key = this.key(b.table, b.id);
+            if (!this.pending.has(key)) this.pending.set(key, b);
+          }
           this.scheduleFlush();
         }
       }
@@ -143,8 +179,16 @@ export class SupabaseSyncedPersistence implements Persistence {
       }
     } catch (e) {
       console.warn('[SupabaseSyncedPersistence] flush threw', e);
-      for (const b of batch) this.pending.set(this.key(b.table, b.id), b);
+      for (const b of batch) {
+        const key = this.key(b.table, b.id);
+        if (!this.pending.has(key)) this.pending.set(key, b);
+      }
       this.scheduleFlush();
+    } finally {
+      for (const item of batch) {
+        const key = this.key(item.table, item.id);
+        if (this.inFlightWrites.get(key) === item) this.inFlightWrites.delete(key);
+      }
     }
   }
 

@@ -145,6 +145,22 @@ export function rcLegHref(
   return `/rc?${params.toString()}`;
 }
 
+/** Reopen the one RC session attached to this exam leg instead of inserting another. */
+export async function findRcLegSession(
+  userId: string,
+  runId: string,
+  legIndex: number,
+): Promise<{ id: string; status: string } | null> {
+  const { data, error } = await supabase.from('rc_drill_sessions')
+    .select('id,status')
+    .eq('user_id', userId)
+    .eq('practice_test_run_id', runId)
+    .eq('practice_test_leg', legIndex)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
 export interface LegResult {
   correct: number;
   answered: number;
@@ -164,14 +180,18 @@ export async function readLrLegResult(
   pt: number,
   section: number,
   startedAtIso: string,
+  identity?: PtLegIdentity,
 ): Promise<LegResult | null> {
-  const { data, error } = await supabase
+  let query = supabase
     .from('section_history')
     .select('initial_score, initial_total, total_questions, total_time_ms, time_taken_ms, completed_at')
     .eq('user_id', userId)
     .eq('pt', pt)
-    .eq('section', section)
-    .gte('completed_at', startedAtIso)
+    .eq('section', section);
+  query = identity
+    ? query.eq('practice_test_run_id', identity.runId).eq('practice_test_leg', identity.legIndex)
+    : query.gte('completed_at', startedAtIso);
+  const { data, error } = await query
     .order('completed_at', { ascending: false })
     .limit(1);
 
@@ -194,13 +214,17 @@ export async function readRcLegResult(
   userId: string,
   passageIds: number[],
   startedAtIso: string,
+  identity?: PtLegIdentity,
 ): Promise<LegResult | null> {
-  const { data: sessions, error } = await supabase
+  let query = supabase
     .from('rc_drill_sessions')
     .select('id, passage_ids, completed_at')
     .eq('user_id', userId)
-    .eq('status', 'completed')
-    .gte('completed_at', startedAtIso)
+    .eq('status', 'completed');
+  query = identity
+    ? query.eq('practice_test_run_id', identity.runId).eq('practice_test_leg', identity.legIndex)
+    : query.gte('completed_at', startedAtIso);
+  const { data: sessions, error } = await query
     .order('completed_at', { ascending: false })
     .limit(5);
 
@@ -232,7 +256,12 @@ export async function readLegResult(
   leg: PracticeTestLeg,
 ): Promise<LegResult | null> {
   if (!leg.startedAt) return null;
+  // Account-backed runs require an exact leg link. Timestamp proximity could
+  // score an unrelated section taken in another tab or on another device.
+  const identity = run.revision === undefined
+    ? undefined
+    : { runId: run.id, legIndex: run.currentLeg };
   return leg.kind === 'lr'
-    ? readLrLegResult(userId, run.pt, leg.section, leg.startedAt)
-    : readRcLegResult(userId, leg.passageIds ?? [], leg.startedAt);
+    ? readLrLegResult(userId, run.pt, leg.section, leg.startedAt, identity)
+    : readRcLegResult(userId, leg.passageIds ?? [], leg.startedAt, identity);
 }

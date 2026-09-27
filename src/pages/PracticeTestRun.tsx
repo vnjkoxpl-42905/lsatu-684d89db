@@ -20,16 +20,21 @@ import {
   formatPracticeTestClock,
   hasOutdatedPt118Structure,
   legLabel,
-  loadPracticeTestRun,
   practiceTestPaceLabel,
   practiceTestRunSectionSeconds,
   practiceTestRaw,
   practiceTestScaled,
-  savePracticeTestRun,
   PRACTICE_TEST_BREAK_SECONDS,
   type PracticeTestRun as Run,
 } from "@/lib/practiceTest";
-import { lrLegLaunch, rcLegHref, readLegResult } from "@/lib/practiceTestRunner";
+import {
+  continueAccountPracticeTestHere,
+  getPracticeTestDeviceId,
+  loadAccountPracticeTestRun,
+  readPendingPracticeTestBackup,
+  saveAccountPracticeTestRun,
+} from "@/lib/practiceTestStore";
+import { findRcLegSession, lrLegLaunch, rcLegHref, readLegResult } from "@/lib/practiceTestRunner";
 import "./testing-centre.css";
 
 function mmss(seconds: number) {
@@ -146,7 +151,7 @@ function ScoreReport({ run, onExit }: { run: Run; onExit: () => void }) {
       )}
 
       <div className="testing-actions">
-        <Button onClick={onExit}>Back to the Testing Centre</Button>
+        <Button onClick={onExit}>Back to Practice Exams</Button>
       </div>
     </div>
   );
@@ -159,29 +164,68 @@ export default function PracticeTestRunPage() {
   const [run, setRun] = React.useState<Run | null | undefined>(undefined);
   const [checking, setChecking] = React.useState(false);
   const [noResult, setNoResult] = React.useState(false);
+  const [saveError, setSaveError] = React.useState<string | null>(null);
+  const [saving, setSaving] = React.useState(false);
+  const [pendingRun, setPendingRun] = React.useState<Run | null>(null);
 
   React.useEffect(() => {
-    setRun(runId ? loadPracticeTestRun(runId) : null);
-  }, [runId]);
+    let cancelled = false;
+    setRun(undefined);
+    setSaveError(null);
+    if (!runId || !user) {
+      setRun(null);
+      return;
+    }
+    void loadAccountPracticeTestRun(user.id, runId)
+      .then((loaded) => {
+        if (cancelled) return;
+        setRun(loaded);
+        const backup = readPendingPracticeTestBackup(user.id, runId);
+        setPendingRun(backup && loaded && backup.revision === loaded.revision ? backup : null);
+        if (backup && loaded && backup.revision !== loaded.revision) {
+          setSaveError("This device has an unsynced copy, but your account has newer changes. The device copy has been preserved for recovery.");
+        }
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          setSaveError(error instanceof Error ? error.message : "Could not load this exam from your account.");
+          setRun(null);
+        }
+      });
+    return () => { cancelled = true; };
+  }, [runId, user?.id]);
 
-  const commit = React.useCallback((next: Run) => {
-    savePracticeTestRun(next);
-    setRun(next);
-  }, []);
+  const commit = React.useCallback(async (next: Run): Promise<Run | null> => {
+    if (!user) return null;
+    setSaving(true);
+    setSaveError(null);
+    try {
+      const saved = await saveAccountPracticeTestRun(user.id, next);
+      setRun(saved);
+      setPendingRun(null);
+      return saved;
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : "This exam could not be saved to your account.");
+      setPendingRun(next);
+      return null;
+    } finally {
+      setSaving(false);
+    }
+  }, [user?.id]);
 
   /**
    * Coming back from a leg. Runs once per return: the leg that was started has
    * either produced a row or it has not, and there is nothing to poll for.
    */
   React.useEffect(() => {
-    if (!run || !user || hasOutdatedPt118Structure(run)) return;
+    if (!run || !user || run.activeDeviceId !== getPracticeTestDeviceId() || hasOutdatedPt118Structure(run)) return;
     const leg = run.legs[run.currentLeg];
     if (!leg || !leg.startedAt || leg.completedAt) return;
     let cancelled = false;
 
     setChecking(true);
     void readLegResult(user.id, run, leg)
-      .then((result) => {
+      .then(async (result) => {
         if (cancelled) return;
         if (!result) {
           setNoResult(true);
@@ -199,7 +243,7 @@ export default function PracticeTestRunPage() {
             : l,
         );
         const nextLeg = run.currentLeg + 1;
-        commit({
+        await commit({
           ...run,
           legs,
           currentLeg: nextLeg,
@@ -217,32 +261,50 @@ export default function PracticeTestRunPage() {
 
   /** The break clock starts the moment the break becomes due, not on render. */
   React.useEffect(() => {
-    if (!run || hasOutdatedPt118Structure(run) || run.status !== "in-progress") return;
+    if (!run || saving || pendingRun || run.activeDeviceId !== getPracticeTestDeviceId() || hasOutdatedPt118Structure(run) || run.status !== "in-progress") return;
     if (run.breakTaken || run.currentLeg !== run.breakAfterLeg) return;
     if (run.breakStartedAt) return;
-    commit({ ...run, breakStartedAt: new Date().toISOString() });
-  }, [run, commit]);
+    void commit({ ...run, breakStartedAt: new Date().toISOString() });
+  }, [run, commit, saving, pendingRun]);
 
-  const begin = () => {
-    if (!run || hasOutdatedPt118Structure(run)) return;
+  const begin = async () => {
+    if (!run || saving || hasOutdatedPt118Structure(run)) return;
     const leg = run.legs[run.currentLeg];
     if (!leg) return;
-    const startedAt = new Date().toISOString();
-    const next: Run = {
-      ...run,
-      legs: run.legs.map((l, i) => (i === run.currentLeg ? { ...l, startedAt } : l)),
-    };
-    // Stamped and saved BEFORE navigating: the readback matches on this
-    // timestamp, and a leg that starts without one can never be scored.
-    savePracticeTestRun(next);
-    setRun(next);
+    let saved = run;
+    if (!leg.startedAt) {
+      const next: Run = {
+        ...run,
+        legs: run.legs.map((l, i) => i === run.currentLeg
+          ? { ...l, startedAt: new Date().toISOString() }
+          : l),
+      };
+      // Stamp and save before opening the runner so every leg has a durable
+      // identity and the exam can be resumed on another device.
+      const created = await commit(next);
+      if (!created) return;
+      saved = created;
+    }
     setNoResult(false);
 
     if (leg.kind === "lr") {
-      const launch = lrLegLaunch(next, leg, next.currentLeg);
+      const launch = lrLegLaunch(saved, leg, saved.currentLeg);
       navigate(launch.pathname, { state: launch.state });
     } else {
-      navigate(rcLegHref(next, leg, next.currentLeg));
+      try {
+        const existing = await findRcLegSession(user!.id, saved.id, saved.currentLeg);
+        if (existing?.status === "in_progress") {
+          navigate(`/rc/drill?sessionId=${encodeURIComponent(existing.id)}&ptRun=${encodeURIComponent(saved.id)}&ptLeg=${saved.currentLeg}&returnTo=${encodeURIComponent(`/testing/test/${saved.id}`)}`);
+        } else if (existing?.status === "completed") {
+          navigate(`/rc/results/${encodeURIComponent(existing.id)}?returnTo=${encodeURIComponent(`/testing/test/${saved.id}`)}`);
+        } else if (existing) {
+          setSaveError("This section was closed. Mark it unfinished to continue the exam.");
+        } else {
+          navigate(rcLegHref(saved, leg, saved.currentLeg));
+        }
+      } catch (error) {
+        setSaveError(error instanceof Error ? error.message : "Could not reopen this section.");
+      }
     }
   };
 
@@ -264,10 +326,9 @@ export default function PracticeTestRunPage() {
       <>
         <h1 className="classroom-title">Practice test not found</h1>
         <p className="testing-lede">
-          This sitting is not on this device. Practice tests in progress are kept
-          in the browser you started them in.
+          {saveError ?? "This exam was not found in your account."}
         </p>
-        <Button onClick={() => navigate("/testing")}>Back to the Testing Centre</Button>
+        <Button onClick={() => navigate("/testing")}>Back to Practice Exams</Button>
       </>
     );
   }
@@ -281,7 +342,7 @@ export default function PracticeTestRunPage() {
           score would be inaccurate, so start a new PT118 sitting. Your earlier
           work remains saved.
         </p>
-        <Button onClick={() => navigate("/testing")}>Back to the Testing Centre</Button>
+        <Button onClick={() => navigate("/testing")}>Back to Practice Exams</Button>
       </>
     );
   }
@@ -291,6 +352,7 @@ export default function PracticeTestRunPage() {
   const leg = run.legs[run.currentLeg];
   const breakDue =
     !run.breakTaken && run.currentLeg === run.breakAfterLeg && run.status === "in-progress";
+  const onAnotherDevice = run.status === "in-progress" && run.activeDeviceId !== getPracticeTestDeviceId();
 
   return (
     <>
@@ -299,6 +361,25 @@ export default function PracticeTestRunPage() {
         {run.legs.length} scored sections · {paceLabel}
         {clock ? ` · ${clock} a section` : ""}
       </p>
+
+      {saveError && <p className="testing-note" role="alert">{saveError} Your account copy is still available. Retry after the connection returns.</p>}
+      {pendingRun && pendingRun.revision === run.revision && !onAnotherDevice && (
+        <Button disabled={saving} onClick={() => { void commit(pendingRun); }}>Save pending changes</Button>
+      )}
+      {onAnotherDevice && (
+        <div className="testing-panel">
+          <p className="testing-note">This exam is open on another device. Continue here to move it to this device.</p>
+          <Button disabled={saving} onClick={() => {
+            if (!user) return;
+            setSaving(true);
+            setSaveError(null);
+            void continueAccountPracticeTestHere(user.id, run)
+              .then(setRun)
+              .catch((error: unknown) => setSaveError(error instanceof Error ? error.message : "Could not move this exam here."))
+              .finally(() => setSaving(false));
+          }}>Continue on this device</Button>
+        </div>
+      )}
 
       {run.status !== "complete" && (
       <div className="testing-shape">
@@ -334,7 +415,7 @@ export default function PracticeTestRunPage() {
         </div>
       )}
 
-      {!checking && noResult && (
+      {!pendingRun && !onAnotherDevice && !checking && noResult && (
         <div className="testing-panel">
           <p className="testing-note">
             That section has not been submitted yet, so there is no result to
@@ -342,12 +423,13 @@ export default function PracticeTestRunPage() {
             unfinished section still counts its questions against the raw total.
           </p>
           <div className="testing-actions">
-            <Button onClick={begin}>Go back to that section</Button>
+            <Button disabled={saving} onClick={() => { void begin(); }}>Go back to that section</Button>
             <Button
               variant="outline"
+              disabled={saving}
               onClick={() => {
                 const nextLeg = run.currentLeg + 1;
-                commit({
+                void commit({
                   ...run,
                   currentLeg: nextLeg,
                   status: nextLeg >= run.legs.length ? "complete" : "in-progress",
@@ -361,18 +443,18 @@ export default function PracticeTestRunPage() {
         </div>
       )}
 
-      {!checking && !noResult && run.status === "complete" && (
+      {!pendingRun && !checking && !noResult && run.status === "complete" && (
         <ScoreReport run={run} onExit={() => navigate("/testing")} />
       )}
 
-      {!checking && !noResult && run.status === "in-progress" && breakDue && (
+      {!pendingRun && !onAnotherDevice && !checking && !noResult && run.status === "in-progress" && breakDue && (
         <BreakScreen
           run={run}
-          onDone={() => commit({ ...run, breakTaken: true, breakStartedAt: undefined })}
+          onDone={() => { void commit({ ...run, breakTaken: true, breakStartedAt: undefined }); }}
         />
       )}
 
-      {!checking && !noResult && run.status === "in-progress" && !breakDue && leg && (
+      {!pendingRun && !onAnotherDevice && !checking && !noResult && run.status === "in-progress" && !breakDue && leg && (
         <div className="testing-panel">
           {/* The only sentence on this page that says what the button below
               it commits the student to. It is not a footnote. */}
@@ -381,7 +463,7 @@ export default function PracticeTestRunPage() {
             {clock ? `, ${clock} on the clock` : ", untimed"}.
           </p>
           <div className="testing-actions">
-            <Button onClick={begin}>
+            <Button disabled={saving} onClick={() => { void begin(); }}>
               {leg.startedAt ? "Return to" : "Begin"} section {run.currentLeg + 1}
             </Button>
             <Button variant="ghost" onClick={() => navigate("/testing")}>

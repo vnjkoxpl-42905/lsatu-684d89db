@@ -18,6 +18,8 @@ export interface RcDrillSessionRow {
   excluded_from_analytics: boolean;
   started_at: string;
   completed_at: string | null;
+  practice_test_run_id?: string | null;
+  practice_test_leg?: number | null;
 }
 
 export interface RcAttemptRow {

@@ -403,7 +403,185 @@ html.dark .testing-menu {
 }
 
 .classroom-root .testing-resume {
+  margin-top: 32px;
   margin-bottom: 32px;
+}
+
+.classroom-root .practice-exams-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 28px;
+  border-bottom: 1px solid var(--classroom-line);
+}
+
+.classroom-root .practice-exams-nav-link {
+  color: var(--classroom-meta-text);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.classroom-root .practice-exams-nav-link.active {
+  color: var(--classroom-ink);
+  border-bottom-color: var(--classroom-ink);
+}
+
+.classroom-root .practice-exams-search-label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.classroom-root .practice-exams-search {
+  width: min(100%, 320px);
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  background: var(--classroom-panel);
+  color: var(--classroom-ink);
+}
+
+.classroom-root .practice-exams-list {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0;
+  max-width: 760px;
+}
+
+.classroom-root .practice-exams-card {
+  align-items: center;
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink);
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  min-height: 76px;
+  padding: 16px 20px;
+  transition: background-color var(--classroom-transition) ease;
+}
+
+.classroom-root .practice-exams-card:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .practice-exams-card > span:first-child {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.classroom-root .practice-exams-card small,
+.classroom-root .practice-exams-card > span:last-child {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+}
+
+.classroom-root .practice-exams-card > span:last-child {
+  flex-shrink: 0;
+}
+
+.classroom-root .practice-exams-primary-link,
+.classroom-root .practice-exams-secondary-link {
+  align-items: center;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  display: inline-flex;
+  justify-content: center;
+  min-height: 44px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.classroom-root .practice-exams-primary-link {
+  background: var(--classroom-active);
+  color: var(--classroom-active-ink);
+}
+
+.classroom-root .practice-exams-secondary-link {
+  background: var(--classroom-panel);
+  color: var(--classroom-ink);
+}
+
+.classroom-root .practice-exams-subheading {
+  margin-top: 40px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.classroom-root .practice-exams-back {
+  color: var(--classroom-meta-text);
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+@media (max-width: 560px) {
+  .classroom-root .practice-exams-card {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.classroom-root .practice-exams-preview-sidebar {
+  display: flex;
+  flex: 0 0 240px;
+  flex-direction: column;
+  gap: 13px;
+  min-height: 100dvh;
+  padding: 28px 20px;
+  border-right: 1px solid var(--classroom-line);
+}
+
+.classroom-root .practice-exams-preview-sidebar small {
+  color: var(--classroom-meta-text);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  margin-top: 18px;
+}
+
+.classroom-root .practice-exams-preview-sidebar span {
+  font-size: 13px;
+}
+
+.classroom-root .practice-exams-preview-sidebar .selected {
+  background: var(--classroom-active);
+  border-radius: 5px;
+  color: var(--classroom-active-ink);
+  padding: 9px;
+}
+
+.classroom-root .practice-exams-preview-main {
+  flex: 1;
+  min-width: 0;
+  max-width: 1100px;
+  padding: 42px clamp(20px, 6vw, 80px);
+}
+
+.classroom-root .practice-exams-preview-mobilebar { display: none; }
+
+@media (max-width: 1023px) {
+  .classroom-root .practice-exams-preview-sidebar { display: none; }
+  .classroom-root .practice-exams-preview-mobilebar {
+    align-items: center;
+    border-bottom: 1px solid var(--classroom-line);
+    display: flex;
+    gap: 22px;
+    min-height: 56px;
+    padding: 0 20px;
+    font-size: 13px;
+  }
+  .classroom-root .practice-exams-preview-main { padding: 24px 16px; }
 }
 
 .classroom-root .testing-resume h2 {

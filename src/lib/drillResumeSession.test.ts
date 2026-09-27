@@ -12,6 +12,7 @@ vi.mock('@/bootcamps/main-conclusion/lib/practiceSessionStore', () => ({
 
 import {
   drillResumeKey,
+  isResumableDrillSession,
   isSpentDrillSession,
   loadDrillResumeSession,
   type DrillResumeSession,
@@ -72,6 +73,13 @@ describe('naming the Run Record', () => {
     expect(drillResumeKey({ ...section, assignmentId: null })).toBe('drill::section::pt156-s2');
   });
 
+  it('keeps full exam legs separate from standalone sections and each other', () => {
+    expect(drillResumeKey({ ...section, ptRun: { runId: 'run-a', legIndex: 0 } }))
+      .toBe('drill::practice-test::run-a::leg-0');
+    expect(drillResumeKey({ ...section, ptRun: { runId: 'run-a', legIndex: 2 } }))
+      .toBe('drill::practice-test::run-a::leg-2');
+  });
+
   it('lets the assignment win over every other identity', () => {
     expect(
       drillResumeKey({
@@ -82,6 +90,12 @@ describe('naming the Run Record', () => {
       }),
     ).toBe('drill::assignment::hw-c');
   });
+});
+
+it('offers an untouched official section for resume, but not an untouched custom drill', () => {
+  const base = { status: 'in_progress', question_queue: ['PT101-S2-Q1'], attempts: [] };
+  expect(isResumableDrillSession({ ...base, pool_slug: 'drill::section::pt101-s2' } as DrillResumeSession)).toBe(true);
+  expect(isResumableDrillSession({ ...base, pool_slug: 'drill::type-drill::abc' } as DrillResumeSession)).toBe(false);
 });
 
 describe('a row whose clock was already spent', () => {
