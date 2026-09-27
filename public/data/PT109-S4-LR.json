@@ -70,7 +70,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Must be True",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 4, questions 3 through 4.\nMuriel: I admire Favilla’s novels, but she does not deserve to be considered a great writer. The point is that, no matter how distinctive her style may be, her subject matter is simply not varied enough.\nJohn: I think you are wrong to use that criterion. A great writer does not need any diversity in subject matter; however, a great writer must at least have the ability to explore a particular theme deeply.",
     "questionStem": "John’s statements commit him to which one of the following positions?",

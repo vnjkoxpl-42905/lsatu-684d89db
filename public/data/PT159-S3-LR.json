@@ -372,10 +372,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic",
+      "Rebuttals",
       "Dense Stimulus",
-      "Rebuttals"
+      "Contrapositive Logic"
     ]
   },
   {
@@ -433,7 +432,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 5,
     "stimulus": "When plants are growing quickly, they take more carbon dioxide out of the atmosphere than they release into it. But when they are growing very slowly, the reverse is true. Any substantial increase in the amount of carbon dioxide released into the atmosphere causes temperatures to increase in the tropics, where the bulk of Earth’s plants are found. And the more temperatures increase in the tropics, the more slowly, on average, the plants there grow.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
     "answerChoices": {
@@ -542,7 +541,9 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Principle-Conform",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Principle: An author of an article that has appeared in a magazine should be allowed to respond in that magazine to harsh criticism of the article if the criticism was published in the same magazine, or, alternatively, if the criticism was published in another magazine and is unfair. Application: McFinton should be allowed to publish a response in Speculator’s Digest to Wallace’s most recent article, because Wallace’s article is harshly critical of McFinton’s essay on self-deception.",
     "questionStem": "Which one of the following, if true, justifies the above application of the principle?",
@@ -555,9 +556,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Plans / Recommendations",
-      "Principles in Stimulus",
-      "Untriggered Conditional"
+      "Untriggered Conditional",
+      "Principles in Stimulus"
     ]
   },
   {

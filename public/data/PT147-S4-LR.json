@@ -91,10 +91,12 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion",
+      "Ruling Out Options",
       "Argue the Anti-Conclusion",
+      "First Sentence Conclusion",
       "Binaries",
-      "Ruling Out Options"
+      "Famous Flaws",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -137,7 +139,6 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
       "Contrapositive Logic",
       "Links Between Premises"

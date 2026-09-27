@@ -5,7 +5,7 @@
     "questionNumber": 1,
     "questionType": "Sufficient Assumption",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "A government ought to protect and encourage free speech, because free speech is an activity that is conducive to a healthy nation and thus is in the best interest of its people.",
     "questionStem": "The main conclusion above follows logically if which one of the following is assumed?",
     "answerChoices": {
@@ -15,7 +15,8 @@
       "D": "A government ought to protect and encourage an activity that is conducive to the interests of that government.",
       "E": "Universal human rights that are in the best interest of the people ought to be protected and encouraged by a nation's government."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT112",
@@ -23,7 +24,7 @@
     "questionNumber": 2,
     "questionType": "Main Conclusion",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "The current theory about earthquakes holds that they are caused by adjoining plates of rock sliding past each other; the plates are pressed together until powerful forces overcome the resistance. As plausible as this may sound, at least one thing remains mysterious on this theory. The overcoming of such resistance should create enormous amounts of heat. But so far no increases in temperature unrelated to weather have been detected following earthquakes.",
     "questionStem": "Which one of the following most accurately expresses the main point of the argument?",
     "answerChoices": {
@@ -35,8 +36,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Rebuttals",
-      "Science"
+      "Science",
+      "Rebuttals"
     ]
   },
   {
@@ -47,7 +48,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 1,
     "stimulus": "Legal theorist: It is unreasonable to incarcerate anyone for any other reason than that he or she is a serious threat to the property or lives of other people. The breaking of a law does not justify incarceration, for lawbreaking proceeds either from ignorance of the law or of the effects of one's actions, or from the free choice of the lawbreaker. Obviously mere ignorance cannot justify incarcerating a lawbreaker, and even free choice on the part of the lawbreaker fails to justify incarceration, for free choice proceeds from the desires of an agent, and the desires of an agent are products of genetics and environmental conditioning, neither of which is controlled by the agent.",
     "questionStem": "The claim in the first sentence of the passage plays which one of the following roles in the argument?",
     "answerChoices": {
@@ -59,8 +60,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
+      "Ruling Out Options",
       "First Sentence Conclusion",
-      "Ruling Out Options"
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -69,7 +71,7 @@
     "questionNumber": 4,
     "questionType": "Must be True",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "A certain gene can be stimulated by chemicals in cigarette smoke, causing lung cells to metabolize the chemicals in a way that makes the cells cancerous. Yet smokers in whom this gene is not stimulated have as high a risk of developing lung cancer from smoking as other smokers do.",
     "questionStem": "If the statements above are true, it can be concluded on the basis of them that",
     "answerChoices": {
@@ -90,7 +92,7 @@
     "questionNumber": 5,
     "questionType": "Paradox",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "In a poll of eligible voters conducted on the eve of a mayoral election, more of those polled stated that they favored Panitch than stated that they favored any other candidate. Despite this result, another candidate, Yeung, defeated Panitch by a comfortable margin.",
     "questionStem": "Each of the following, if true, contributes to a resolution of the discrepancy described above except:",
     "answerChoices": {
@@ -113,7 +115,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "Commissioner: Budget forecasters project a revenue shortfall of a billion dollars in the coming fiscal year. Since there is no feasible way to increase the available funds, our only choice is to decrease expenditures. The plan before you outlines feasible cuts that would yield savings of a billion dollars over the coming fiscal year. We will be able to solve the problem we face, therefore, only if we adopt this plan.",
     "questionStem": "The reasoning in the commissioner's argument is flawed because this argument",
     "answerChoices": {
@@ -125,8 +127,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Alternatives",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Alternatives"
     ]
   },
   {
@@ -135,7 +137,7 @@
     "questionNumber": 7,
     "questionType": "Must be False",
     "reasoningType": [],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "Critic: Emily Dickinson's poetry demonstrates that meaning cannot reside entirely within a poem itself, but is always the unique result of an interaction between a reader's system of beliefs and the poem; and, of course, any two readers from different cultures or eras have radically different systems of beliefs.",
     "questionStem": "If the critic's statements are true, each of the following could be true except:",
     "answerChoices": {
@@ -158,7 +160,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 1,
     "stimulus": "Archaeologist: The fact that the ancient Egyptians and the Maya both built pyramids is often taken as evidence of a historical link between Old- and New-World civilizations that is earlier than any yet documented. But while these buildings are similar to each other, there are important differences in both design and function. The Egyptian pyramids were exclusively tombs for rulers, whereas the Mayan pyramids were used as temples. This shows conclusively that there was no such link between Old- and New-World civilizations.",
     "questionStem": "Which one of the following most accurately describes a flaw in the archaeologist's argument?",
     "answerChoices": {
@@ -180,7 +182,7 @@
     "questionNumber": 9,
     "questionType": "Parallel",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "Manuscripts written by first-time authors generally do not get serious attention by publishers except when these authors happen to be celebrities. My manuscript is unlikely to be taken seriously by publishers for I am a first-time author who is not a celebrity.",
     "questionStem": "The structure of which one of the following arguments is most similar to the structure of the argument above?",
     "answerChoices": {
@@ -190,7 +192,8 @@
       "D": "The bulk of an estate generally goes to the spouse, if surviving, and otherwise goes to the surviving children. In this case there is no surviving spouse; hence the bulk of the estate is likely to go to the surviving children.",
       "E": "Normally about 40 percent of the deer population will die over the winter unless it is extremely mild. The percentage of the deer population that died over the recent winter was the normal 40 percent. I conclude that the recent winter was not unusually mild."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT112",
@@ -201,7 +204,7 @@
       "Causation",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "Twelve healthy volunteers with the Apo-A-IV-1 gene and twelve healthy volunteers who instead have the Apo-A-IV-2 gene each consumed a standard diet supplemented daily by a high-cholesterol food. A high level of cholesterol in the blood is associated with an increased risk of heart disease. After three weeks, the blood cholesterol levels of the subjects in the second group were unchanged, whereas the blood cholesterol levels of those with the Apo-A-IV-1 gene rose 20 percent.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
     "answerChoices": {
@@ -213,9 +216,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
+      "Science",
       "Causal Difference-Maker",
-      "Medical",
-      "Science"
+      "Medical"
     ]
   },
   {
@@ -250,7 +253,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 1,
     "stimulus": "The television show Henry was not widely watched until it was scheduled for Tuesday evenings immediately after That's Life, the most popular show on television. During the year after the move, Henry was consistently one of the ten most-watched shows on television. Since Henry's recent move to Wednesday evenings, however, it has been watched by far fewer people. We must conclude that Henry was widely watched before the move to Wednesday evenings because it followed That's Life and not because people especially liked it.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
     "answerChoices": {
@@ -295,7 +298,7 @@
     "questionNumber": 14,
     "questionType": "Flaw",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 4,
     "stimulus": "Joseph: My encyclopedia says that the mathematician Pierre de Fermat died in 1665 without leaving behind any written proof for a theorem that he claimed nonetheless to have proved. Probably this alleged theorem simply cannot be proved, since as the article points out no one else has been able to prove it. Therefore it is likely that Fermat was either lying or else mistaken when he made his claim.\nLaura: Your encyclopedia is out of date. Recently someone has in fact proved Fermat's theorem. And since the theorem is provable, your claim— that Fermat was lying or mistaken—clearly is wrong.",
     "questionStem": "Which one of the following most accurately describes a reasoning error in Laura's argument?",
     "answerChoices": {
@@ -307,10 +310,10 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws",
       "Abstract Answers",
+      "Rebuttals",
       "2-Speaker",
-      "Rebuttals"
+      "Famous Flaws"
     ]
   },
   {
@@ -343,7 +346,7 @@
     "questionNumber": 16,
     "questionType": "Method",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "Sales manager: The highest priority should be given to the needs of the sales department, because without successful sales the company as a whole would fail.\nShipping manager: There are several departments other than sales that also must function successfully for the company to succeed. It is impossible to give the highest priority to all of them.",
     "questionStem": "The shipping manager criticizes the sales manager's argument by pointing out",
     "answerChoices": {
@@ -355,8 +358,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker",
-      "Rebuttals"
+      "Rebuttals",
+      "2-Speaker"
     ]
   },
   {
@@ -365,7 +368,7 @@
     "questionNumber": 17,
     "questionType": "Weaken",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "Researchers have found that people who drink five or more cups of coffee a day have a risk of heart disease 2.5 times the average after corrections are made for age and smoking habits. Members of the research team say that, on the basis of their findings, they now limit their own daily coffee intake to two cups.",
     "questionStem": "Which one of the following, if true, indicates that the researchers' precaution might not have the result of decreasing their risk of heart disease?",
     "answerChoices": {
@@ -387,7 +390,7 @@
     "questionNumber": 18,
     "questionType": "Strengthen",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "People who have political power tend to see new technologies as a means of extending or protecting their power, whereas they generally see new ethical arguments and ideas as a threat to it. Therefore, technical ingenuity usually brings benefits to those who have this ingenuity, whereas ethical inventiveness brings only pain to those who have this inventiveness.",
     "questionStem": "Which one of the following statements, if true, most strengthens the argument?",
     "answerChoices": {
@@ -397,7 +400,8 @@
       "D": "New technologies are often used by people who strive to defeat those who currently have political power.",
       "E": "Many people who possess ethical inventiveness conceal their novel ethical arguments for fear of retribution by the politically powerful."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT112",
@@ -433,7 +437,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 5,
     "stimulus": "Consumer advocate: The introduction of a new drug into the marketplace should be contingent upon our having a good understanding of its social impact. However, the social impact of the newly marketed antihistamine is far from clear. It is obvious, then, that there should be a general reduction in the pace of bringing to the marketplace new drugs that are now being tested.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
     "answerChoices": {
@@ -445,8 +449,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sampling",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Sampling"
     ]
   },
   {
@@ -455,7 +459,7 @@
     "questionNumber": 21,
     "questionType": "Agree/Disagree",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "Tina: For centuries oceans and human eccentricity have been linked in the literary and artistic imagination. Such linkage is probably due to the European Renaissance practice of using ships as asylums for the socially undesirable.\nSergio: No. Oceans have always been viewed as mysterious and unpredictable—qualities that people have invariably associated with eccentricity.",
     "questionStem": "Tina's and Sergio's statements lend the most support to the claim that they disagree about which one of the following statements?",
     "answerChoices": {
@@ -504,7 +508,7 @@
       "Conditional Reasoning",
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 1,
     "stimulus": "When investigators discovered that the director of a local charity had repeatedly overstated the number of people his charity had helped, the director accepted responsibility for the deception. However, the investigators claimed that journalists were as much to blame as the director was for inflating the charity's reputation, since they had naïvely accepted what the director told them, and simply reported as fact the numbers he gave them.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the investigators' claim?",
     "answerChoices": {
@@ -516,8 +520,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -552,7 +556,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 5,
+    "questionDifficulty": 2,
     "stimulus": "The judgment that an artist is great always rests on assessments of the work the artist has produced. A series of great works is the only indicator of greatness. Therefore, to say that an artist is great is just to summarize the quality of his or her known works, and the artist's greatness can provide no basis for predicting the quality of the artist's unknown or future works.",
     "questionStem": "Which one of the following contains questionable reasoning most similar to that in the argument above?",
     "answerChoices": {

@@ -430,7 +430,6 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -607,9 +606,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic",
-      "Quantifiers"
+      "Quantifiers",
+      "Contrapositive Logic"
     ]
   }
 ]
