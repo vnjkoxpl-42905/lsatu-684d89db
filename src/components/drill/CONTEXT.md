@@ -5,7 +5,7 @@ The practice domain: how LSAT U presents drills, the questions inside them, and 
 ## Language
 
 **Question Explanation**:
-The question-level teaching shown *after* a student answers one specific question. In the schema this is the `breakdown` (conclusion, conclusionSimple, evidence, justification, objection, prediction, crucialInsight) plus `answerChoiceExplanations` (per-choice verdict + whyCorrect/whyIncorrect) on an `LRQuestion`. One per question. Currently authored for **0 of 3,964** questions — this is the headline gap (Phase 2).
+The question-level teaching shown *after* a student answers one specific question. In the schema this is the `breakdown` (conclusion, conclusionSimple, evidence, justification, objection, prediction, crucialInsight) plus `answerChoiceExplanations` (per-choice verdict + whyCorrect/whyIncorrect) on an `LRQuestion`. One per question. How far each question has one is its Coverage State.
 _Avoid_: explanation (ambiguous), breakdown (that's only one half), answer key, rationale.
 
 **Drill Instruction Card**:
@@ -123,6 +123,23 @@ per choice. A choice with nothing published gets
 no dropdown at all, never an empty one.
 _Avoid_: inline explanation (the component's old name), answer explanation,
 rationale.
+
+**Explanation Source**:
+Who wrote a Question Explanation: **LSAT Lab** (transcribed from LSAT Lab's
+published explanations) or **LSAT U** (written in-house to fill a gap, in the
+same voice and step structure). Recorded so in-house explanations can be
+found, audited, or withdrawn as a set. Never shown to students: to a student
+an explanation is just the explanation.
+_Avoid_: author (a person, not a source), AI-written, generated.
+
+**Coverage State**:
+How explained one question is. Exactly one of four:
+**Complete** (an Argument Breakdown and Choice Notes),
+**Notes-only** (Choice Notes but no Argument Breakdown, so half explained),
+**Unexplained** (loaded, with neither), and
+**Unloaded** (in the question bank, with no explanation record at all).
+Only Complete counts as explained.
+_Avoid_: "explained" for a Notes-only question, has-explanation, done.
 
 **Reset Response**:
 The control under the choices that clears the student's pick and nothing else.
