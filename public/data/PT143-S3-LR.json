@@ -44,10 +44,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact",
       "Assumes Difference",
       "Plausibility",
-      "Rebuttals",
+      "Explain Curious Fact",
       "Ruling Out Options"
     ]
   },
@@ -71,8 +70,7 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Principles in Answers",
-      "Rebuttals"
+      "Principles in Answers"
     ]
   },
   {
@@ -95,8 +93,7 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker",
-      "Rebuttals"
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -140,8 +137,7 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility",
-      "Rebuttals"
+      "Plausibility"
     ]
   },
   {
@@ -209,7 +205,6 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -417,7 +412,6 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Plans / Recommendations",
       "Untriggered Conditional"

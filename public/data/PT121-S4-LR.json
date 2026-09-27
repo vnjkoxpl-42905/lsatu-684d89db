@@ -184,7 +184,7 @@
     "reasoningType": [
       "Causation"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "A recent study of several hundred female physicians showed that their tendency to develop coronary disease was inversely proportional to their dietary intake of two vitamins, folate and B6. The researchers concluded that folate and B6 inhibit the development of heart disease in women.",
     "questionStem": "Which one of the following would, if true, most weaken the researchers' conclusion?",
     "answerChoices": {
@@ -254,7 +254,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Main Conclusion",
-    "reasoningType": [],
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Some species are called “indicator species\" because the loss of a population of such a species serves as an early warning of problems arising from pollution. Environmentalists tracking the effects of pollution have increasingly paid heed to indicator species; yet environmentalists would be misguided if they attributed the loss of a population to pollution in all cases. Though declines in population often do signal environmental degradation, they are just as often a result of the natural evolution of an ecosystem. We must remember that, in nature, change is the status quo.",
     "questionStem": "Which one of the following most accurately expresses the argument's conclusion?",
@@ -267,9 +269,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
+      "Rebuttals",
       "Important Pivot",
       "Conditional Conclusion",
-      "Rebuttals"
+      "Explain Curious Fact"
     ]
   },
   {
@@ -375,7 +378,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "A large amount of rainfall in April and May typically leads to an increase in the mosquito population and thus to an increased threat of encephalitis. People cannot change the weather. Thus people cannot decrease the threat of encephalitis.",
     "questionStem": "The reasoning in the argument above is flawed in that the argument",
     "answerChoices": {

@@ -235,7 +235,6 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -578,10 +577,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Repetitive Answers",
-      "Ruling Out Options"
+      "Ruling Out Options",
+      "Repetitive Answers"
     ]
   },
   {

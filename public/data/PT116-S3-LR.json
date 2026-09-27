@@ -232,10 +232,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea",
+      "Science",
       "Contrapositive Logic",
-      "Science"
+      "Missing Link / Idea"
     ]
   },
   {
@@ -592,7 +591,6 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },

@@ -40,7 +40,6 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic"
     ]
   },
@@ -145,10 +144,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Binaries",
+      "Science",
       "Contrapositive Logic",
-      "Science"
+      "Binaries"
     ]
   },
   {

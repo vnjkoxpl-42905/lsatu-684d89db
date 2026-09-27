@@ -213,9 +213,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Important Pivot",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Important Pivot"
     ]
   },
   {
@@ -442,7 +441,9 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Sufficient Assumption",
-    "reasoningType": [],
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Clearly, fitness consultants who smoke cigarettes cannot help their clients become healthier. If they do not care about their own health, they cannot really care for their clients’ health, and if they do not care for their clients’ health, they cannot help them to become healthier.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",

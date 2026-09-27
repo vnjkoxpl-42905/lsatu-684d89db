@@ -112,12 +112,11 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "First Sentence Conclusion",
-      "Dense Stimulus",
-      "Intermediate Conclusions",
-      "Plans / Recommendations",
       "Rebuttals",
-      "Science"
+      "Science",
+      "First Sentence Conclusion",
+      "Intermediate Conclusions",
+      "Dense Stimulus"
     ]
   },
   {
@@ -140,7 +139,6 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Alternatives",
       "Dense Stimulus",
       "Focused on Evidence"
     ]
@@ -369,9 +367,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Belief / Knowledge / Intent",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Famous Flaws",
+      "Belief / Knowledge / Intent"
     ]
   },
   {

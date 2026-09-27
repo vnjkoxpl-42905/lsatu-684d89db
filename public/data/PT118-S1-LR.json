@@ -103,7 +103,7 @@
     "questionNumber": 6,
     "questionType": "Agree/Disagree",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "Maria: Popular music is bad art because it greatly exaggerates the role love plays in everyday life and thereby fails to represent reality accurately.\nTheo: Popular music is not supposed to reflect reality; it performs other artistic functions, such as providing consoling fantasies and helping people create some romance in their often difficult lives. You should understand popular music before you condemn it.",
     "questionStem": "The dialogue provides the most support for the claim that Maria and Theo disagree over whether",
     "answerChoices": {
@@ -126,7 +126,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "An artificial hormone has recently been developed that increases milk production in cows. Its development has prompted some lawmakers to propose that milk labels should be required to provide information to consumers about what artificial substances were used in milk production. This proposal should not be implemented: just imagine trying to list every synthetic fertilizer used to grow the grass and grain the cows ate, or every fungicide used to keep the grain from spoiling!",
     "questionStem": "The argument proceeds by",
     "answerChoices": {
@@ -138,10 +138,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Belief / Knowledge / Intent",
       "Abstract Answers",
+      "Rebuttals",
       "Plans / Recommendations",
-      "Rebuttals"
+      "Belief / Knowledge / Intent"
     ]
   },
   {
@@ -150,7 +150,7 @@
     "questionNumber": 8,
     "questionType": "Must be True",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 4,
     "stimulus": "Trust, which cannot be sustained in the absence of mutual respect, is essential to any long-lasting relationship, personal or professional. However, personal relationships, such as marriage or friendship, additionally require natural affinity. If a personal relationship is to endure, it must be supported by the twin pillars of mutual respect and affinity.",
     "questionStem": "If the statements above are true, then which one of the following must also be true?",
     "answerChoices": {
@@ -160,7 +160,8 @@
       "D": "Personal relationships, such as marriage or friendship, are longer-lasting than professional relationships.",
       "E": "Basing a marriage on a natural affinity will ensure that it will endure."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT118",
@@ -236,7 +237,7 @@
     "questionNumber": 12,
     "questionType": "Weaken",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 5,
     "stimulus": "Biologists have noted reproductive abnormalities in fish that are immediately downstream of paper mills. One possible cause is dioxin, which paper mills release daily and which can alter the concentration of hormones in fish. However, dioxin is unlikely to be the cause, since the fish recover normal hormone concentrations relatively quickly during occasional mill shutdowns and dioxin decomposes very slowly in the environment.",
     "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
     "answerChoices": {
@@ -281,7 +282,7 @@
     "questionNumber": 14,
     "questionType": "Strengthen",
     "reasoningType": [],
-    "questionDifficulty": 2,
+    "questionDifficulty": 4,
     "stimulus": "Physician: In order to investigate diseases caused by hormonal imbalances, a certain researcher wants to study, among others, 200 children whose pituitary glands fail to produce typical amounts of Human Growth Hormone (HGH). The study would involve administering a synthetic version of HGH to the children over a two-year period. But medical research should be permitted only if it is likely to reveal important information about a medical condition and is known to pose only a minimal risk to the subjects. The researcher's proposed study should be prohibited.",
     "questionStem": "Which one of the following, if true, would most help to justify the physician's argumentation?",
     "answerChoices": {
@@ -302,7 +303,7 @@
     "questionNumber": 15,
     "questionType": "Flaw",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 2,
     "stimulus": "At the request of Grove Park residents, speed bumps were installed on all streets in their neighborhood. However, although through traffic does cause noise and congestion in Grove Park, this remedy is blatantly unfair. The neighborhood is not a private community, and its streets were built with public funds, and thus all drivers have the right to use them whenever they please.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
@@ -366,7 +367,7 @@
     "questionNumber": 18,
     "questionType": "Weaken",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "There is evidence to suggest that our cave-dwelling ancestors polished many of their flints to a degree far surpassing what was necessary for hunting purposes. It seems, therefore, that early humans possessed an aesthetic sense.",
     "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
     "answerChoices": {
@@ -387,7 +388,7 @@
     "questionNumber": 19,
     "questionType": "Strengthen",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "Columnist: Much of North America and western Europe is more heavily forested and has less acid rain and better air quality now than five decades ago. Though this may be due largely to policies advocated by environmentalists, it nonetheless lends credibility to the claims of people who reject predictions of imminent ecological doom and argue that environmental policies that excessively restrict the use of natural resources may diminish the wealth necessary to adopt and sustain the policies that brought about these improvements.",
     "questionStem": "Which one of the following, if true, most strengthens the columnist's reasoning?",
     "answerChoices": {
@@ -410,7 +411,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "Reviewer: Many historians claim, in their own treatment of subject matter, to be as little affected as any natural scientist by moral or aesthetic preconceptions. But we clearly cannot accept these proclamations of objectivity, for it is easy to find instances of false historical explanations embodying the ideological and other prejudices of their authors.",
     "questionStem": "The reviewer's reasoning is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
@@ -422,8 +423,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Dense Stimulus",
-      "Rebuttals"
+      "Rebuttals",
+      "Dense Stimulus"
     ]
   },
   {
@@ -432,7 +433,7 @@
     "questionNumber": 21,
     "questionType": "Sufficient Assumption",
     "reasoningType": [],
-    "questionDifficulty": 4,
+    "questionDifficulty": 5,
     "stimulus": "Although the geological record contains some hints of major meteor impacts preceding mass extinctions, there were many extinctions that did not follow any known major meteor impacts. Likewise, there are many records of major meteor impacts that do not seem to have been followed by mass extinctions. Thus the geological record suggests that there is no consistent causal link between major meteor impacts and mass extinctions.",
     "questionStem": "Which one of the following assumptions enables the argument's conclusion to be properly inferred?",
     "answerChoices": {
@@ -454,7 +455,7 @@
     "questionNumber": 22,
     "questionType": "Must be True",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "When uncontrollable factors such as lack of rain cause farmers' wheat crops to fail, fertilizer and seed dealers, as well as truckers and mechanics, lose business, and fuel suppliers are unable to sell enough diesel fuel to make a profit.",
     "questionStem": "Which one of the following claims follows logically from the information above?",
     "answerChoices": {
@@ -475,7 +476,7 @@
     "questionNumber": 23,
     "questionType": "Sufficient Assumption",
     "reasoningType": [],
-    "questionDifficulty": 4,
+    "questionDifficulty": 3,
     "stimulus": "For each action we perform, we can know only some of its consequences. Thus the view that in no situation can we know what action is morally right would be true if an action's being morally right were the same as the action's having the best consequences.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",
     "answerChoices": {
@@ -485,7 +486,8 @@
       "D": "Only the immediate consequences of our actions are relevant in determining whether they are morally right.",
       "E": "An action may be morally right for one particular person without being morally right for all people."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT118",
@@ -515,7 +517,7 @@
     "questionNumber": 25,
     "questionType": "Parallel",
     "reasoningType": [],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "Some visitors to the park engage in practices that seriously harm the animals. Surely, no one who knew that these practices seriously harm the animals would engage in them. So it must be concluded that some of the visitors do not know that these practices seriously harm the animals.",
     "questionStem": "The pattern of reasoning exhibited by which one of the following arguments is most similar to that exhibited by the argument above?",
     "answerChoices": {

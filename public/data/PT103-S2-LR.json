@@ -185,7 +185,6 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "First Sentence Conclusion",
       "Contrapositive Logic",
       "Rebuttals"
@@ -486,7 +485,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 5,
     "stimulus": "Attorney for Ziegler: My client continued to do consulting work between the time of his arrest for attempted murder and the start of this trial. But I contend that Ziegler was insane at the time that he fired the shot. This is the only reasonable conclusion to draw from the fact that the accusers have submitted no evidence that he was sane at the time he pulled the trigger, only that he was sane some time after he did so.",
     "questionStem": "Which one of the following most accurately describes a flaw in the reasoning of Ziegler’s attorney?",
     "answerChoices": {
@@ -496,7 +495,8 @@
       "D": "It presumes that whether one is sane is relevant to whether one is morally responsible for one’s actions.",
       "E": "It fails to consider the possibility that Ziegler’s being sane after the shooting is an indication that he was sane at the time of the shooting."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": []
   },
   {
     "practiceTest": "PT103",
@@ -533,7 +533,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 3,
+    "questionDifficulty": 4,
     "stimulus": "In a certain municipality, a judge overturned a suspect’s conviction for possession of an illegal weapon. The suspect had fled upon seeing police and subsequently discarded the illegal weapon after the police gave chase. The judge reasoned as follows: the only cause for the police giving chase was the suspect’s flight; by itself, flight from the police does not create a reasonable suspicion of a criminal act; evidence collected during an illegal chase is inadmissible; therefore, the evidence in this case was inadmissible.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the judge’s decision that the evidence was inadmissible?",
     "answerChoices": {
@@ -581,7 +581,7 @@
     "reasoningType": [
       "Conditional Reasoning"
     ],
-    "questionDifficulty": 4,
+    "questionDifficulty": 5,
     "stimulus": "Monica: The sculpture commissioned for our town plaza has been scorned by the public ever since it went up. But since the people in our town do not know very much about contemporary art, the unpopularity of the work says nothing about its artistic merit and thus gives no reason for removing it.\n\nHector: You may be right about what the sculpture’s popularity means about its artistic merit. However, a work of art that was commissioned for a public space ought to benefit the public, and popular opinion is ultimately the only way of determining what the public feels is to its benefit. Thus, if public opinion of this sculpture is what you say, then it certainly ought to be removed.",
     "questionStem": "The argument Hector makes in responding to Monica depends on the assumption that",
     "answerChoices": {
@@ -593,11 +593,11 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
+      "Rebuttals",
       "Missing Link / Idea",
       "2-Speaker",
       "Conditional Conclusion",
       "Links Between Premises",
-      "Rebuttals",
       "Untriggered Conditional"
     ]
   }

@@ -88,11 +88,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
       "Argue the Anti-Conclusion",
-      "Contrapositive Logic",
-      "Defender",
       "Focused on Evidence",
+      "Defender",
+      "Contrapositive Logic",
       "Untriggered Conditional"
     ]
   },

@@ -180,7 +180,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 3,
     "stimulus": "Politician: Some cities have reversed the decay of aging urban areas by providing tax incentives and zoning variances that encourage renovation and revitalization in selected areas. But such legislation should not be commended. Its principal beneficiaries have turned out to be well-to-do professionals who could afford the cost of restoring deteriorating buildings; the long-term residents these programs were intended to help now face displacement due to increased rent and taxes.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the politician’s criticism?",
     "answerChoices": {
@@ -408,7 +408,7 @@
     "reasoningType": [
       "Comparative Reasoning"
     ],
-    "questionDifficulty": 2,
+    "questionDifficulty": 5,
     "stimulus": "Tax reformer: The proposed tax reform legislation is being criticized by political groups on the right for being too specific and by political groups on the left for being too vague. Since one and the same statement cannot be both too specific and too vague, the criticisms just go to show that the legislation is framed just as it should be.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
     "answerChoices": {
@@ -420,9 +420,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
+      "Ruling Out Options",
       "Argue the Anti-Conclusion",
-      "Rebuttals",
-      "Ruling Out Options"
+      "Rebuttals"
     ]
   },
   {

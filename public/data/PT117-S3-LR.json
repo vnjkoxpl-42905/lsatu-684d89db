@@ -171,7 +171,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Weaken",
-    "reasoningType": [],
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Rossi: It is undemocratic for people to live under a government in which their interests are not represented. So children should have the right to vote, since sometimes the interests of children are different from those of their parents.\nSmith: Granted, children's interests are not always the same as their parents'; governmental deficits incurred by their parents' generation will later affect their own generation's standard of living. But even if children are told about the issues affecting them, which is not generally the case, their conceptions of what can or should be done are too simple, and their time horizons are radically different from those of adults, so we cannot give them the responsibility of voting.",
     "questionStem": "Which one of the following most accurately describes Rossi's argument?",
@@ -184,7 +186,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -529,7 +532,8 @@
     "questionNumber": 24,
     "questionType": "Most Supported",
     "reasoningType": [
-      "Comparative Reasoning"
+      "Comparative Reasoning",
+      "Causation"
     ],
     "questionDifficulty": 4,
     "stimulus": "Science journalist: Brown dwarfs are celestial objects with more mass than planets but less mass than stars. They are identified by their mass and whether or not lithium is present in their atmospheres. Stars at least as massive as the Sun have lithium remaining in their atmospheres because the mixing of elements in their internal nuclear furnaces is incomplete. Stars with less mass than the Sun have no lithium because the element has been fully mixed into their nuclear furnaces and consumed. A brown dwarf does not have a fully functional nuclear furnace and so its lithium cannot be consumed.",

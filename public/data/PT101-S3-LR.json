@@ -65,8 +65,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
+      "Plausibility",
       "2-Speaker",
-      "Plausibility"
+      "Explain Curious Fact"
     ]
   },
   {

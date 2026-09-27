@@ -227,9 +227,10 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming",
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Diagramming",
+      "Links Between Premises"
     ]
   },
   {
@@ -307,7 +308,8 @@
     "questionNumber": 14,
     "questionType": "Method of reasoning or descriptive",
     "reasoningType": [
-      "Causation"
+      "Causation",
+      "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
     "stimulus": "Inez: Space-exploration programs pay for themselves many times over, since such programs result in technological advances with everyday, practical applications. Space exploration is more than the search for knowledge for its own sake; investment in space exploration is such a productive investment in developing widely useful technology that we can’t afford not to invest in space exploration. Winona: It is absurd to try to justify funding for space exploration merely by pointing out that such programs will lead to technological advances. If technology with practical applications is all that is desired, then it should be funded directly.",
@@ -321,9 +323,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker",
+      "Rebuttals",
       "Alternatives",
-      "Rebuttals"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -493,10 +496,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw",
-      "Important Pivot",
       "Contrapositive Logic",
       "Quantifiers",
+      "Important Pivot",
       "Worst of the Worst"
     ]
   },
