@@ -146,6 +146,8 @@ export interface PracticeSessionSnapshot {
   attempts: PracticeSessionAttempt[];
   /** Section clock already spent, for the surfaces that run one. */
   elapsedMs?: number;
+  timerMode?: '35' | '52.5' | '70' | 'custom' | 'unlimited';
+  timerCustomMinutes?: number;
   /** Answers that were already down when the clock ran out, if it did. */
   regulationAnsweredQids?: string[];
 }
@@ -244,6 +246,8 @@ export async function savePracticeSessionSnapshot(
       // Never hand back time already spent: a snapshot with no clock keeps
       // whatever the row already knew rather than clearing it.
       elapsed_ms: snapshot.elapsedMs ?? existing?.elapsed_ms,
+      timer_mode: snapshot.timerMode ?? existing?.timer_mode,
+      timer_custom_minutes: snapshot.timerCustomMinutes ?? existing?.timer_custom_minutes,
       regulation_answered_qids:
         snapshot.regulationAnsweredQids ?? existing?.regulation_answered_qids,
       started_at: existing?.started_at ?? now(),
@@ -283,6 +287,8 @@ export async function completePracticeSession(
       attempts: snapshot.attempts.length ? snapshot.attempts : existing?.attempts ?? [],
       status: 'completed',
       elapsed_ms: snapshot.elapsedMs ?? existing?.elapsed_ms,
+      timer_mode: snapshot.timerMode ?? existing?.timer_mode,
+      timer_custom_minutes: snapshot.timerCustomMinutes ?? existing?.timer_custom_minutes,
       regulation_answered_qids:
         snapshot.regulationAnsweredQids ?? existing?.regulation_answered_qids,
       started_at: existing?.started_at ?? now(),

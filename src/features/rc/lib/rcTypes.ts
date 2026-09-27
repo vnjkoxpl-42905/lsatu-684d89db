@@ -157,6 +157,11 @@ export interface RcDrillConfig {
   reveal: RcRevealMode;
   timing: RcTiming;
   source: 'manual' | 'adaptive' | 'assignment';
+  /** Spent section time, saved with the account so reopening never restarts the clock. */
+  clockElapsedSeconds?: number;
+  lastActiveAt?: string;
+  practiceTestRunId?: string;
+  practiceTestLegIndex?: number;
 }
 
 export type RcSessionStatus = 'in_progress' | 'completed' | 'abandoned';

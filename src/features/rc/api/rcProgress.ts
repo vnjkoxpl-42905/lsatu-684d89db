@@ -21,6 +21,7 @@ import type {
   RcQuestionHistory,
   RcSessionStatus,
 } from '../lib/rcTypes';
+import { isActivePracticeTestDevice } from '@/lib/practiceTestStore';
 
 /** Postgres "relation does not exist" — the migration has not been run. */
 const MISSING_TABLE = '42P01';
@@ -55,10 +56,15 @@ async function requireUserId(): Promise<string> {
 }
 
 function toSession(row: RcDrillSessionRow): RcDrillSession {
+  const config = row.config as RcDrillConfig;
   return {
     id: row.id,
     userId: row.user_id,
-    config: row.config as RcDrillConfig,
+    config: {
+      ...config,
+      practiceTestRunId: config.practiceTestRunId ?? row.practice_test_run_id ?? undefined,
+      practiceTestLegIndex: config.practiceTestLegIndex ?? row.practice_test_leg ?? undefined,
+    },
     passageIds: row.passage_ids ?? [],
     status: row.status as RcSessionStatus,
     excludedFromAnalytics: row.excluded_from_analytics,
@@ -84,6 +90,14 @@ function toAttempt(row: RcAttemptRow): RcAttempt {
   };
 }
 
+async function assertActivePracticeTestSession(sessionId: string): Promise<void> {
+  const session = await getSession(sessionId);
+  if (!session) throw new Error('That practice section could not be found.');
+  if (session.config.practiceTestRunId && !await isActivePracticeTestDevice(session.userId, session.config.practiceTestRunId)) {
+    throw new Error('This practice test is active on another device.');
+  }
+}
+
 /* ----------------------------------------------------------------- sessions */
 
 export async function createSession(
@@ -91,9 +105,18 @@ export async function createSession(
   passageIds: number[],
 ): Promise<RcDrillSession> {
   const userId = await requireUserId();
+  if (config.practiceTestRunId && !await isActivePracticeTestDevice(userId, config.practiceTestRunId)) {
+    throw new Error('This practice test is active on another device.');
+  }
   const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
-    .insert({ user_id: userId, config, passage_ids: passageIds })
+    .insert({
+      user_id: userId,
+      config,
+      passage_ids: passageIds,
+      practice_test_run_id: config.practiceTestRunId ?? null,
+      practice_test_leg: config.practiceTestLegIndex ?? null,
+    })
     .select()
     .single();
   raise(error);
@@ -115,7 +138,30 @@ export async function listSessions(): Promise<RcDrillSession[]> {
   return ((data ?? []) as RcDrillSessionRow[]).map(toSession);
 }
 
+/** Save the spent clock to the existing account-owned session row. */
+export async function saveSessionClock(id: string, elapsedSeconds: number): Promise<void> {
+  const userId = await requireUserId();
+  const session = await getSession(id);
+  if (!session || session.userId !== userId || session.status !== 'in_progress') return;
+  await assertActivePracticeTestSession(id);
+  const seconds = Math.max(session.config.clockElapsedSeconds ?? 0, Math.floor(elapsedSeconds));
+  const { error } = await rcDb
+    .from(RC_SESSIONS_TABLE)
+    .update({
+      config: {
+        ...session.config,
+        clockElapsedSeconds: seconds,
+        lastActiveAt: new Date().toISOString(),
+      },
+    })
+    .eq('id', id)
+    .eq('user_id', userId)
+    .eq('status', 'in_progress');
+  raise(error);
+}
+
 export async function completeSession(id: string): Promise<void> {
+  await assertActivePracticeTestSession(id);
   const { error } = await rcDb
     .from(RC_SESSIONS_TABLE)
     .update({ status: 'completed', completed_at: new Date().toISOString() })
@@ -146,6 +192,7 @@ export async function deleteSession(id: string): Promise<void> {
  */
 export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
   const userId = attempt.userId ?? (await requireUserId());
+  await assertActivePracticeTestSession(attempt.sessionId);
 
   const { data: prior, error: priorError } = await rcDb
     .from(RC_ATTEMPTS_TABLE)
@@ -193,6 +240,7 @@ export async function setAttemptFlag(
   questionId: number,
   flagged: boolean,
 ): Promise<void> {
+  await assertActivePracticeTestSession(sessionId);
   const { error } = await rcDb
     .from(RC_ATTEMPTS_TABLE)
     .update({ flagged })

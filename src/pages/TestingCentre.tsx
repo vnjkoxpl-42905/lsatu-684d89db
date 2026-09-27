@@ -13,7 +13,7 @@
  * door hands off to the same two runners, one leg at a time.
  */
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,18 +36,22 @@ import { loadAllIndexPassages } from "@/features/rc/lib/rcBank";
 import { buildRcSections, type RcSection } from "@/features/rc/lib/rcSections";
 import {
   buildPracticeTests,
-  createPracticeTestRun,
-  deletePracticeTestRun,
   formatPracticeTestClock,
   legLabel,
-  listPracticeTestRuns,
   practiceTestPaces,
   practiceTestSectionSeconds,
   type PracticeTestBlueprint,
   type PracticeTestPaceId,
   type PracticeTestRun,
 } from "@/lib/practiceTest";
+import {
+  abandonAccountPracticeTestRun,
+  createAccountPracticeTestRun,
+  listAccountPracticeTestRuns,
+} from "@/lib/practiceTestStore";
 import { practiceTestPath } from "@/lib/practiceTestRunner";
+import { PracticeExamsNav } from "./PracticeExamsNav";
+import { listPracticeSectionAttempts, type PracticeSectionAttempt } from "@/lib/practiceSectionAttempts";
 import "./testing-centre.css";
 
 type Door = null | "section" | "test";
@@ -115,16 +119,18 @@ function PracticeTestSelector({
   tests,
   onBegin,
   assignedOnly = false,
+  initialPt = null,
 }: {
   tests: PracticeTestBlueprint[];
   assignedOnly?: boolean;
+  initialPt?: number | null;
   onBegin: (
     blueprint: PracticeTestBlueprint,
     pace: PracticeTestPaceId,
     sectionSeconds: number | null,
   ) => void;
 }) {
-  const [pt, setPt] = React.useState<number | null>(null);
+  const [pt, setPt] = React.useState<number | null>(initialPt);
   const [pace, setPace] = React.useState<PracticeTestPaceId>("standard");
   const { settings } = useUserSettings();
 
@@ -288,16 +294,20 @@ function PracticeTestSelector({
   );
 }
 
-function ResumeList({
+export function ResumeList({
   runs,
+  sections,
   onResume,
+  onResumeSection,
   onDiscard,
 }: {
   runs: PracticeTestRun[];
+  sections: PracticeSectionAttempt[];
   onResume: (run: PracticeTestRun) => void;
+  onResumeSection: (href: string) => void;
   onDiscard: (run: PracticeTestRun) => void;
 }) {
-  // Discard deletes a sitting that can be ninety minutes into a two-hour clock,
+  // Discard marks an exam abandoned while preserving its saved account record,
   // and it did that on one click with no confirm and no undo. Below 560px
   // .testing-shape-actions goes full width, which puts it exactly where a thumb
   // lands. The confirm is inline rather than a dialog: this room has no modal,
@@ -323,13 +333,10 @@ function ResumeList({
     }
   }, [runs, confirming]);
 
-  if (runs.length === 0) return null;
+  if (runs.length === 0 && sections.length === 0) return null;
   return (
     <div className="testing-resume">
-      {/* h2, not h3: this is the first section of the page and the only other
-          heading is the page title. It sits above the doors because an
-          unfinished sitting is the next step, not an afterthought. */}
-      <h2>Unfinished sittings</h2>
+      <h2>Unfinished exams and sections</h2>
       <div className="testing-shape">
         {runs.map((run) => {
           return (
@@ -348,9 +355,9 @@ function ResumeList({
                 <div
                   className="testing-shape-actions"
                   role="group"
-                  aria-label={`Discard the unfinished PrepTest ${run.pt} sitting?`}
+                  aria-label={`Discard the unfinished PrepTest ${run.pt} exam?`}
                 >
-                  <span className="testing-confirm">Discard this sitting?</span>
+                  <span className="testing-confirm">Discard this exam?</span>
                   <Button
                     size="sm"
                     variant="ghost"
@@ -359,7 +366,7 @@ function ResumeList({
                       onDiscard(run);
                       setConfirming(null);
                     }}
-                    aria-label={`Yes, discard the unfinished PrepTest ${run.pt} sitting`}
+                    aria-label={`Yes, discard the unfinished PrepTest ${run.pt} exam`}
                   >
                     Discard
                   </Button>
@@ -369,7 +376,7 @@ function ResumeList({
                     variant="outline"
                     className="min-h-[44px]"
                     onClick={() => setConfirming(null)}
-                    aria-label={`Keep the unfinished PrepTest ${run.pt} sitting`}
+                    aria-label={`Keep the unfinished PrepTest ${run.pt} exam`}
                   >
                     Keep
                   </Button>
@@ -390,7 +397,7 @@ function ResumeList({
                     variant="ghost"
                     className="min-h-[44px]"
                     onClick={() => setConfirming(run.id)}
-                    aria-label={`Discard the unfinished PrepTest ${run.pt} sitting`}
+                    aria-label={`Discard the unfinished PrepTest ${run.pt} exam`}
                   >
                     Discard
                   </Button>
@@ -399,6 +406,27 @@ function ResumeList({
             </div>
           );
         })}
+        {sections.map((section) => (
+          <div className="testing-shape-row" key={`${section.kind}-${section.id}`}>
+            <b>PT {section.preptest}</b>
+            <span>
+              {section.kind === "lr-section" ? "Logical Reasoning" : "Reading Comprehension"}
+              {` · Section ${section.section}`}
+            </span>
+            <em>{section.answered} of {section.total} answered</em>
+            <div className="testing-shape-actions">
+              <Button
+                size="sm"
+                variant="outline"
+                className="min-h-[44px]"
+                onClick={() => onResumeSection(section.href)}
+                aria-label={`Resume PrepTest ${section.preptest} section ${section.section}`}
+              >
+                Resume
+              </Button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -427,6 +455,8 @@ function useAssignedPrepTests(enabled: boolean, userId: string | undefined) {
 
 export default function TestingCentre() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const selectedPt = Number(searchParams.get("pt")) || null;
   const { manifest, isLoading, error } = useQuestionBank();
   const { user } = useAuth();
   const permissions = useUserPermissions();
@@ -434,16 +464,29 @@ export default function TestingCentre() {
   const { data: assignedPts } = useAssignedPrepTests(assignedOnly, user?.id);
   // An assigned-only student has one door: the sittings they were given. The
   // section door runs through Drill, which is a switch they do not have.
-  const [door, setDoor] = React.useState<Door>(null);
+  const [door, setDoor] = React.useState<Door>(selectedPt ? "test" : searchParams.get("view") === "section" ? "section" : null);
   React.useEffect(() => {
     if (assignedOnly) setDoor("test");
   }, [assignedOnly]);
   const { sections: rcSections, error: rcError } = useRcSections(door === "test");
-  const [runs, setRuns] = React.useState<PracticeTestRun[]>([]);
-
-  React.useEffect(() => {
-    setRuns(listPracticeTestRuns().filter((r) => r.status === "in-progress"));
-  }, []);
+  const [actionError, setActionError] = React.useState<string | null>(null);
+  const runsQuery = useQuery({
+    queryKey: ["practice-exam-runs", user?.id],
+    enabled: !!user?.id,
+    queryFn: () => listAccountPracticeTestRuns(user!.id),
+  });
+  const sectionsQuery = useQuery({
+    queryKey: ["practice-section-attempts", user?.id],
+    enabled: !!user?.id,
+    queryFn: () => listPracticeSectionAttempts(user!.id),
+  });
+  const runs = (runsQuery.data ?? []).filter((run) =>
+    run.status === "in-progress" && (!assignedOnly || !!assignedPts?.includes(run.pt)),
+  );
+  const canResumeSection = permissions.is_admin || permissions.has_drill_access;
+  const sections = canResumeSection
+    ? (sectionsQuery.data ?? []).filter((section) => section.status === "in-progress")
+    : [];
 
   const tests = React.useMemo(() => {
     const all = manifest && rcSections ? buildPracticeTests(manifest, rcSections) : [];
@@ -452,18 +495,30 @@ export default function TestingCentre() {
     return all.filter((t) => allowed.has(t.pt));
   }, [manifest, rcSections, assignedOnly, assignedPts]);
 
-  const beginTest = (
+  const beginTest = async (
     blueprint: PracticeTestBlueprint,
     pace: PracticeTestPaceId,
     sectionSeconds: number | null,
   ) => {
-    const run = createPracticeTestRun(blueprint, pace, sectionSeconds);
-    navigate(practiceTestPath(run.id));
+    if (!user) return;
+    setActionError(null);
+    try {
+      const run = await createAccountPracticeTestRun(user.id, blueprint, pace, sectionSeconds);
+      navigate(practiceTestPath(run.id));
+    } catch {
+      setActionError("This exam could not be saved to your account. Try again before starting.");
+    }
   };
 
-  const discard = (run: PracticeTestRun) => {
-    deletePracticeTestRun(run.id);
-    setRuns((current) => current.filter((r) => r.id !== run.id));
+  const discard = async (run: PracticeTestRun) => {
+    if (!user) return;
+    setActionError(null);
+    try {
+      await abandonAccountPracticeTestRun(user.id, run);
+      await runsQuery.refetch();
+    } catch {
+      setActionError("This exam could not be discarded. It is still saved to your account.");
+    }
   };
 
   // A door's panel renders below the two door buttons, which on a laptop puts it
@@ -501,16 +556,11 @@ export default function TestingCentre() {
 
   return (
     <>
-      <h1 className="classroom-title">Testing Centre</h1>
+      <PracticeExamsNav />
+      <h1 className="classroom-title">Practice Exams</h1>
       <p className="testing-lede">
         Official LSAT material, timed like test day.
       </p>
-
-      <ResumeList
-        runs={runs}
-        onResume={(run) => navigate(practiceTestPath(run.id))}
-        onDiscard={discard}
-      />
 
       {/* The doors carry a title and two supporting lines, and those used to be
           an h2 and a p. Neither is legal inside a button — its content model is
@@ -585,11 +635,22 @@ export default function TestingCentre() {
               </div>
             )}
             {!isLoading && !error && !rcError && manifest && rcSections && (
-              <PracticeTestSelector tests={tests} onBegin={beginTest} assignedOnly={assignedOnly} />
+              <PracticeTestSelector tests={tests} onBegin={beginTest} assignedOnly={assignedOnly} initialPt={selectedPt} />
             )}
           </>
         )}
       </div>
+      {actionError && <p className="testing-note" role="alert">{actionError}</p>}
+      {(runsQuery.isLoading || sectionsQuery.isLoading) && <Working>Loading your unfinished work…</Working>}
+      {runsQuery.isError && <p className="testing-note" role="alert">Your saved exams could not be loaded. Refresh to try again.</p>}
+      {sectionsQuery.isError && <p className="testing-note" role="alert">Your saved sections could not be loaded. Refresh to try again.</p>}
+      <ResumeList
+        runs={runs}
+        sections={sections}
+        onResume={(run) => navigate(practiceTestPath(run.id))}
+        onResumeSection={(href) => navigate(href)}
+        onDiscard={discard}
+      />
     </>
   );
 }

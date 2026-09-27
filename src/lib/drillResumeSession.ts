@@ -26,11 +26,63 @@ import {
   loadPracticeSession,
   savePracticeSessionSnapshot,
   completePracticeSession,
+  migratePracticeSession,
+  practiceSessionIdFor,
   type PracticeSessionSnapshot,
 } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
-import type { PracticeSession } from '@/bootcamps/main-conclusion/persistence/records';
+import { PracticeSession, TABLES } from '@/bootcamps/main-conclusion/persistence/records';
+import { supabase } from '@/integrations/supabase/client';
+import { isActivePracticeTestDevice } from '@/lib/practiceTestStore';
 
 export const DRILL_SESSION_PREFIX = 'drill::';
+const SECTION_PREFIX = `${DRILL_SESSION_PREFIX}section::`;
+const TEST_LEG_PREFIX = `${DRILL_SESSION_PREFIX}practice-test::`;
+const accountSectionKey = (key: string) =>
+  key.startsWith(SECTION_PREFIX) || key.startsWith(TEST_LEG_PREFIX);
+const accountWriteChains = new Map<string, Promise<void>>();
+
+function queueAccountWrite(userId: string, key: string, write: () => Promise<void>): Promise<void> {
+  const identity = `${userId}::${key}`;
+  const previous = accountWriteChains.get(identity) ?? Promise.resolve();
+  const current = previous.catch(() => undefined).then(write);
+  accountWriteChains.set(identity, current);
+  void current.finally(() => {
+    if (accountWriteChains.get(identity) === current) accountWriteChains.delete(identity);
+  }).catch(() => undefined);
+  return current;
+}
+
+async function assertActiveTestLeg(userId: string, key: string): Promise<void> {
+  if (!key.startsWith(TEST_LEG_PREFIX)) return;
+  const runId = key.slice(TEST_LEG_PREFIX.length).split('::')[0];
+  if (!await isActivePracticeTestDevice(userId, runId)) {
+    throw new Error('This practice test is active on another device.');
+  }
+}
+
+async function readSectionFromAccount(userId: string, key: string): Promise<PracticeSession | null> {
+  const { data, error } = await supabase.from('bootcamp_kv')
+    .select('data')
+    .eq('user_id', userId)
+    .eq('table_name', TABLES.practice_sessions)
+    .eq('record_id', practiceSessionIdFor(userId, key))
+    .maybeSingle();
+  if (error) throw error;
+  const parsed = PracticeSession.safeParse(data?.data);
+  return parsed.success ? migratePracticeSession(parsed.data) : null;
+}
+
+async function syncSectionToAccount(userId: string, key: string): Promise<void> {
+  const record = await loadPracticeSession(userId, key);
+  if (!record) throw new Error('The section could not be saved.');
+  const { error } = await supabase.from('bootcamp_kv').upsert({
+    user_id: userId,
+    table_name: TABLES.practice_sessions,
+    record_id: record.id,
+    data: record,
+  }, { onConflict: 'user_id,table_name,record_id' });
+  if (error) throw error;
+}
 
 export type DrillResumeSession = PracticeSession;
 export type DrillResumeSnapshot = PracticeSessionSnapshot;
@@ -70,7 +122,12 @@ export function drillResumeKey(input: {
   identity?: DrillResumeIdentity;
   /** The classroom homework assignment this run belongs to, when it does. */
   assignmentId?: string | null;
+  /** Full exam legs must never share the standalone section's resume row. */
+  ptRun?: { runId: string; legIndex: number } | null;
 }): string | null {
+  if (input.ptRun) {
+    return `${TEST_LEG_PREFIX}${input.ptRun.runId}::leg-${input.ptRun.legIndex}`;
+  }
   if (input.assignmentId) {
     return `${DRILL_SESSION_PREFIX}assignment::${input.assignmentId}`;
   }
@@ -123,19 +180,37 @@ export async function loadDrillResumeSession(
   legacyKey?: string | null,
 ): Promise<DrillResumeSession | null> {
   if (!userId || !key) return null;
+  // Hydration compares the locally saved timestamp with the account row before
+  // returning. Reading the cloud first could bypass a newer unsynced answer.
   const current = await loadPracticeSession(userId, key);
+  if (accountSectionKey(key)) {
+    try {
+      const account = await readSectionFromAccount(userId, key);
+      if (account && (!current || account.updated_at >= current.updated_at)) return account;
+      if (current) {
+        await syncSectionToAccount(userId, key);
+        return current;
+      }
+    } catch (error) {
+      console.warn('[drill:section] account read failed, checking local backup', error);
+    }
+  }
   if (current || !legacyKey || legacyKey === key) return current;
   return loadPracticeSession(userId, legacyKey);
 }
 
-/** Write where the student is right now (local-first, debounced cloud upsert). */
-export function saveDrillResumeSnapshot(
+/** Write the local safety copy and confirm the account write for official sections. */
+export async function saveDrillResumeSnapshot(
   userId: string,
   key: string | null,
   snapshot: DrillResumeSnapshot,
 ): Promise<void> {
-  if (!userId || !key) return Promise.resolve();
-  return savePracticeSessionSnapshot(userId, { slug: key, completionId: key }, snapshot);
+  if (!userId || !key) return;
+  await queueAccountWrite(userId, key, async () => {
+    await assertActiveTestLeg(userId, key);
+    await savePracticeSessionSnapshot(userId, { slug: key, completionId: key }, snapshot);
+    if (accountSectionKey(key)) await syncSectionToAccount(userId, key);
+  });
 }
 
 /**
@@ -143,13 +218,17 @@ export function saveDrillResumeSnapshot(
  * in the row for review — it simply stops being offered as a resume, so the
  * next launch of the same drill draws fresh questions.
  */
-export function completeDrillResumeSession(
+export async function completeDrillResumeSession(
   userId: string,
   key: string | null,
   snapshot: DrillResumeSnapshot,
 ): Promise<void> {
-  if (!userId || !key) return Promise.resolve();
-  return completePracticeSession(userId, { slug: key, completionId: key }, snapshot);
+  if (!userId || !key) return;
+  await queueAccountWrite(userId, key, async () => {
+    await assertActiveTestLeg(userId, key);
+    await completePracticeSession(userId, { slug: key, completionId: key }, snapshot);
+    if (accountSectionKey(key)) await syncSectionToAccount(userId, key);
+  });
 }
 
 /**
@@ -157,16 +236,16 @@ export function completeDrillResumeSession(
  *
  * Unlike a guided drill, these runs are drawn fresh on every launch, so there
  * is no fixed set to compare against — the stored queue IS the run. It is
- * resumable when it is still in progress and the student actually answered
- * something; a row with no answers has nothing to restore and would only
- * freeze a stale shuffle in place.
+ * resumable when it is still in progress and the student answered something.
+ * Official sections are resumable as soon as they start, including before the
+ * first answer, because their fixed question order is itself worth restoring.
  */
 export function isResumableDrillSession(stored: DrillResumeSession | null): boolean {
   return (
     !!stored &&
     stored.status === 'in_progress' &&
     stored.question_queue.length > 0 &&
-    stored.attempts.length > 0
+    (stored.attempts.length > 0 || accountSectionKey(stored.pool_slug))
   );
 }
 

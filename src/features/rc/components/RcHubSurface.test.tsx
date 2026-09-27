@@ -105,6 +105,19 @@ describe('RcHubSurface autostart', () => {
     );
   });
 
+  it('carries the practice-test identity into the RC player route', async () => {
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188&start=1&ptRun=run-1&ptLeg=0');
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][0]).toMatchObject({
+      practiceTestRunId: 'run-1',
+      practiceTestLegIndex: 0,
+    });
+    expect(navigate).toHaveBeenCalledWith(
+      expect.stringContaining('/rc/drill?sessionId=session-1&ptRun=run-1&ptLeg=0'),
+      { replace: true },
+    );
+  });
+
   it('does not autostart a link that only describes a drill', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=2');
     await screen.findByRole('button', { name: 'Start drill' });

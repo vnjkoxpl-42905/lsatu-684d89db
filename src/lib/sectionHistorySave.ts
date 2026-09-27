@@ -263,6 +263,7 @@ export interface PersistSectionResultsArgs {
    * practice-test scorer matches on it.
    */
   userId: string;
+  practiceTestRun?: { runId: string; legIndex: number };
 }
 
 /**
@@ -280,6 +281,7 @@ export async function persistSectionResults({
   brResults,
   classId,
   userId,
+  practiceTestRun,
 }: PersistSectionResultsArgs): Promise<string | null> {
   const totals = buildSectionTotals(stats, brResults);
 
@@ -290,6 +292,8 @@ export async function persistSectionResults({
   const row = {
     class_id: classId,
     user_id: userId,
+    practice_test_run_id: practiceTestRun?.runId ?? null,
+    practice_test_leg: practiceTestRun?.legIndex ?? null,
     pt: session.fullSectionConfig?.pt || 0,
     section: session.fullSectionConfig?.section || 0,
     mode: session.mode,

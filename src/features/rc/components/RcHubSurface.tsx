@@ -270,6 +270,11 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
         ? customSeconds
         : 0;
 
+  const ptRun = params.get('ptRun');
+  const ptLeg = params.get('ptLeg');
+  const practiceTestLegIndex = ptRun && ptLeg !== null && /^\d+$/.test(ptLeg)
+    ? Number(ptLeg)
+    : undefined;
   const config: RcDrillConfig = {
     reveal,
     timing:
@@ -277,6 +282,8 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
         ? { mode: 'unlimited' }
         : { mode: 'per_passage_budget', secondsPerPassage },
     source: handPicked.length > 0 ? 'manual' : 'adaptive',
+    practiceTestRunId: practiceTestLegIndex !== undefined ? ptRun ?? undefined : undefined,
+    practiceTestLegIndex,
   };
 
   /**
@@ -309,8 +316,13 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
       // A link that said where to go afterwards keeps saying it: the practice
       // test hands off its RC leg this way and needs the student back.
       const back = safeReturnTo(params.get('returnTo'));
+      const testLeg = config.practiceTestRunId && config.practiceTestLegIndex !== undefined
+        ? '&ptRun=' + encodeURIComponent(config.practiceTestRunId) +
+          '&ptLeg=' + encodeURIComponent(String(config.practiceTestLegIndex))
+        : '';
       navigate(
-        '/rc/drill?sessionId=' + session.id + (back ? '&returnTo=' + encodeURIComponent(back) : ''),
+        '/rc/drill?sessionId=' + session.id + testLeg +
+          (back ? '&returnTo=' + encodeURIComponent(back) : ''),
         { replace: options?.replace },
       );
     } catch (err) {

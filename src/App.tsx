@@ -28,6 +28,7 @@ import { loadDrillHub } from "@/lib/routePreload";
 import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const DrillSetupPreview = React.lazy(() => import('./dev/DrillSetupPreview'));
+const PracticeExamsPreview = React.lazy(() => import('./dev/PracticeExamsPreview'));
 const Drill = safeLazy(() => import("./pages/Drill"));
 const DrillLaunchGate = safeLazy(() => import("./components/drill/DrillLaunchGate"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));
@@ -37,6 +38,10 @@ const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
 const RcResults = safeLazy(() => import("./features/rc/pages/RcResults"));
 const RcSearch = safeLazy(() => import("./features/rc/pages/RcSearch"));
 const TestingCentre = safeLazy(() => import("./pages/TestingCentre"));
+const AllPracticeExams = safeLazy(() => import("./pages/PracticeExamPages").then((module) => ({ default: module.AllPracticeExams })));
+const PracticeExamDetail = safeLazy(() => import("./pages/PracticeExamPages").then((module) => ({ default: module.PracticeExamDetail })));
+const PracticeExamAttempts = safeLazy(() => import("./pages/PracticeExamPages").then((module) => ({ default: module.PracticeExamAttempts })));
+const PracticeSectionResult = safeLazy(() => import("./pages/PracticeExamPages").then((module) => ({ default: module.PracticeSectionResult })));
 const PracticeTestRunPage = safeLazy(() => import("./pages/PracticeTestRun"));
 const SectionDirectionsPage = safeLazy(() => import("./pages/SectionDirections"));
 const Auth = safeLazy(() => import("./pages/Auth"));
@@ -254,6 +259,7 @@ const App = () => {
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
             {import.meta.env.DEV && <Route path="/dev/drill-setup-preview" element={<DrillSetupPreview />} />}
+            {import.meta.env.DEV && <Route path="/dev/practice-exams-preview/*" element={<PracticeExamsPreview />} />}
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
 
@@ -463,7 +469,7 @@ const App = () => {
                     <DrillAssignmentGate><RcPlayer /></DrillAssignmentGate>
                   } />
                   <Route path="/rc/results/:sessionId" element={
-                    <ProtectedRoute flag="has_drill_access"><RcResults /></ProtectedRoute>
+                    <ProtectedRoute allowSignedIn><RcResults /></ProtectedRoute>
                   } />
                   <Route path="/rc/search" element={
                     <ProtectedRoute flag="has_drill_access"><RcSearch /></ProtectedRoute>
@@ -583,6 +589,18 @@ const App = () => {
                         takeovers registered above, outside this shell. */}
                     <Route path="/testing" element={
                       <TestingCentreGate><TestingCentre /></TestingCentreGate>
+                    } />
+                    <Route path="/testing/exams" element={
+                      <TestingCentreGate><AllPracticeExams /></TestingCentreGate>
+                    } />
+                    <Route path="/testing/exams/:pt" element={
+                      <TestingCentreGate><PracticeExamDetail /></TestingCentreGate>
+                    } />
+                    <Route path="/testing/attempts" element={
+                      <ProtectedRoute flag="has_classroom_access" allowSignedIn><PracticeExamAttempts /></ProtectedRoute>
+                    } />
+                    <Route path="/testing/attempts/section/lr/:sessionId" element={
+                      <ProtectedRoute allowSignedIn><PracticeSectionResult /></ProtectedRoute>
                     } />
                     <Route path="/testing/test/:runId" element={
                       <PracticeTestRunGate><PracticeTestRunPage /></PracticeTestRunGate>

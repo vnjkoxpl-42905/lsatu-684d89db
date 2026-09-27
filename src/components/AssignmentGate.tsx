@@ -157,12 +157,26 @@ export function TestingCentreGate({ children }: { children: ReactNode }) {
 /** /testing/test/:runId */
 export function PracticeTestRunGate({ children }: { children: ReactNode }) {
   const { runId } = useParams<{ runId: string }>();
-  const pt = ptOfRun(runId);
   return (
     <AssignmentGate
       flag="has_practice_access"
-      authKey={pt !== null ? `pt:${pt}` : null}
-      authorize={(uid) => hasPracticeTestAssignment(uid, pt!)}
+      authKey={runId ? `practice-run:${runId}` : null}
+      authorize={async (uid) => {
+        if (!runId) return false;
+        const { data, error } = await supabase
+          .from("practice_test_runs" as never)
+          .select("pt,status")
+          .eq("id", runId)
+          .eq("user_id", uid)
+          .maybeSingle();
+        if (!error && data) {
+          const accountRun = data as { pt: number; status: string };
+          return accountRun.status === "complete" ||
+            hasPracticeTestAssignment(uid, accountRun.pt);
+        }
+        const localPt = ptOfRun(runId);
+        return localPt !== null && hasPracticeTestAssignment(uid, localPt);
+      }}
     >
       {children}
     </AssignmentGate>
@@ -269,8 +283,21 @@ export function DrillAssignmentGate({ children }: { children: ReactNode }) {
   return (
     <AssignmentGate
       flag="has_drill_access"
-      authKey={authKeyOf(auth)}
-      authorize={(uid) => (auth ? authoriseDrill(auth, uid) : Promise.resolve(false))}
+      authKey={ptRunId ? `practice-leg:${ptRunId}` : authKeyOf(auth)}
+      authorize={async (uid) => {
+        if (ptRunId) {
+          const { data, error } = await supabase.from("practice_test_runs" as never)
+            .select("pt,status")
+            .eq("id", ptRunId)
+            .eq("user_id", uid)
+            .maybeSingle();
+          if (!error && data) {
+            const run = data as { pt: number; status: string };
+            return run.status === "in-progress" && hasPracticeTestAssignment(uid, run.pt);
+          }
+        }
+        return auth ? authoriseDrill(auth, uid) : false;
+      }}
     >
       {children}
     </AssignmentGate>

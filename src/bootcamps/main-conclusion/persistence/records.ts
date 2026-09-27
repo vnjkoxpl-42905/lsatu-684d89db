@@ -224,6 +224,9 @@ export const PracticeSession = z.object({
    * used, which makes the score meaningless. Absent for anything untimed.
    */
   elapsed_ms: z.number().min(0).optional(),
+  /** Original section clock, needed to resume accommodations on another device. */
+  timer_mode: z.enum(['35', '52.5', '70', 'custom', 'unlimited']).optional(),
+  timer_custom_minutes: z.number().positive().optional(),
   /**
    * Which questions already carried an answer when the section clock ran out.
    * Kept so a section resumed during overtime still knows which side of the
