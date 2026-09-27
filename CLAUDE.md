@@ -81,6 +81,7 @@ No Prettier. Formatting is ESLint-only.
 
 - **Git workflow:** Always commit and push directly to `main`. Never create feature branches or pull requests unless explicitly asked. After completing any code change: stage relevant files, commit with a descriptive message, and push to `main`.
 - **Push via `.claude/safe-push.sh`, not raw `git push`.** Lovable auto-commits to `main` mid-session; a raw push can get rejected or race a concurrent commit. The script fetches, merges origin/main if it diverged (never rebases, never force-pushes), then pushes.
+- **Never roll `main` back.** Do not use Lovable's "Revert to commit", "revert and resend", or history restore, and never reset or force-push `main`. On 2026-09-27 an accidental "revert and resend" (b998596) silently undid three merged PRs across 121 question-bank files, and students saw the wrong questions again. To undo your own work, `git revert <your SHA>` only. If a Lovable dialog offers a revert, dismiss it; if one fires, stop and tell Joshua before repairing anything.
 - Path alias `@/` → `./src/` (set in `vite.config.ts` and `tsconfig.json`).
 - TypeScript strict mode is **off** (`strictNullChecks: false`, `noImplicitAny: false`, `noUnusedLocals: false`). Do not flip these without explicit approval — it would cascade into a very large diff.
 - Lovable-specific plumbing that must not be removed:

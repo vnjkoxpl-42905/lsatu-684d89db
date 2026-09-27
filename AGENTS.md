@@ -68,6 +68,7 @@ On `/drill`, adaptive Smart Drill can show a `currentQuestion` that is not the s
 - If tests are relevant to the change, run them too.
 - After completing a change, stage the intended files, commit with a concise message, and push to `origin main` unless the user says otherwise.
 - **Push via `.claude/safe-push.sh`, not raw `git push`.** Lovable auto-commits to `main` mid-session, so a raw push can be rejected or race a concurrent commit. The script fetches, merges `origin/main` if it diverged (never rebases, never force-pushes), then pushes. It also gates on `npm run typecheck`.
+- **Never roll `main` back.** Do not use Lovable's "Revert to commit", "revert and resend", or history restore, and never reset or force-push `main`. On 2026-09-27 an accidental "revert and resend" (b998596) silently undid three merged PRs across 121 question-bank files, and students saw the wrong questions again. To undo your own work, `git revert <your SHA>` only. If a Lovable dialog offers a revert, dismiss it; if one fires, stop and tell Joshua before repairing anything.
 - Existing Codex repo hooks live in `.codex/hooks.json`; preserve them unless the task explicitly requires a hook change.
 
 ## Session Protocol (second brain)
