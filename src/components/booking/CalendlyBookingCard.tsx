@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import BookingConfirmDialog from "@/components/booking/BookingConfirmDialog";
 import { toast } from "sonner";
@@ -99,6 +99,7 @@ export default function CalendlyBookingCard({
   const [slotsLoading, setSlotsLoading] = useState(false);
   const [monthAnchor, setMonthAnchor] = useState<Date>(() => startOfDay(new Date()));
   const [pickedDay, setPickedDay] = useState<Date | null>(null);
+  const initialDaySelected = useRef(false);
   const [selected, setSelected] = useState<string | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [infoError, setInfoError] = useState<string | null>(null);
@@ -148,11 +149,12 @@ export default function CalendlyBookingCard({
   }, [slots]);
 
   useEffect(() => {
-    if (pickedDay || slots.length === 0) return;
+    if (initialDaySelected.current || slots.length === 0) return;
     const first = new Date(slots[0].start_at);
     setMonthAnchor(startOfDay(new Date(first.getFullYear(), first.getMonth(), 1)));
     setPickedDay(startOfDay(first));
-  }, [slots, pickedDay]);
+    initialDaySelected.current = true;
+  }, [slots]);
 
   const monthDays = useMemo(() => {
     return buildMonthCells(monthAnchor);
