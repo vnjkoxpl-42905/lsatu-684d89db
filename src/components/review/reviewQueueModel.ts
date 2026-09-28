@@ -1,8 +1,9 @@
 import type { FlaggedQuestionRow } from "@/lib/flaggedService";
 import type { WrongAnswerSmartRow } from "@/lib/journalService";
+import type { ActivityAssignment, ActivityItemResponse } from "@/features/activity-centre/api/types";
 
 export type ReviewReason = "missed" | "flagged";
-export type ReviewSource = "wrong_answer_journal" | "flagged_questions" | "rc_attempts";
+export type ReviewSource = "wrong_answer_journal" | "flagged_questions" | "rc_attempts" | "activity_item_responses";
 export type ReviewArea = "lr" | "rc";
 
 export interface ReviewQueueItem {
@@ -88,4 +89,50 @@ export function buildReviewQueue(
   }
 
   return [...items.values()].sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt));
+}
+
+/** One row per missed item in each assigned Activity sitting. Never merge repeat assignments. */
+export function buildActivityReviewQueue(
+  assignments: ActivityAssignment[],
+  responses: ActivityItemResponse[],
+): ReviewQueueItem[] {
+  const attemptsByItem = new Map<string, ActivityItemResponse[]>();
+  for (const response of responses) {
+    const key = `${response.assignment_id}:${response.item_order}`;
+    const attempts = attemptsByItem.get(key) ?? [];
+    attempts.push(response);
+    attemptsByItem.set(key, attempts);
+  }
+
+  const result: ReviewQueueItem[] = [];
+  for (const assignment of assignments) {
+    if (assignment.status !== "completed" || assignment.mode === "section" || assignment.item_format === "spoken-recall") continue;
+    for (const item of assignment.items) {
+      const attempts = attemptsByItem.get(`${assignment.id}:${item.order}`);
+      if (!attempts?.length) continue;
+      const ordered = [...attempts].sort((a, b) => a.attempt_no - b.attempt_no || a.created_at.localeCompare(b.created_at));
+      const judged = ordered.filter((attempt) => attempt.verdict != null);
+      const firstMiss = judged.find((attempt) => attempt.verdict === "incorrect" || attempt.verdict === "partial");
+      if (!firstMiss) continue;
+      const latest = judged.at(-1)!;
+      result.push({
+        key: `activity:${assignment.id}:${item.order}`,
+        area: "lr",
+        qid: `${assignment.id}:${item.order}`,
+        label: `${assignment.title} · Item ${item.order}`,
+        qtype: item.category ?? null,
+        reasons: ["missed"],
+        sources: ["activity_item_responses"],
+        firstAnswer: judged[0].response_text,
+        latestAnswer: latest.response_text,
+        correctAnswer: item.credited_answers.join("; ") || null,
+        firstMissAt: firstMiss.created_at,
+        lastActivityAt: latestDate(latest.created_at, assignment.completed_at, assignment.started_at),
+        reflection: null,
+        flaggedNote: null,
+        href: `/review/activity/${encodeURIComponent(assignment.id)}/${item.order}`,
+      });
+    }
+  }
+  return result.sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt));
 }

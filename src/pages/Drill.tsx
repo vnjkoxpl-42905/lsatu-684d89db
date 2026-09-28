@@ -271,9 +271,9 @@ function DrillContent() {
   const guidedFinalizedRef = React.useRef(false);
   const genericResumeIdentity = state.resumeIdentity;
   const standaloneSourceKey = React.useMemo(() => {
-    if (state.mode !== 'type-drill' || isMcPractice || guidedSessionKey || assignmentId || ptRun || genericResumeIdentity) return null;
+    if (state.mode !== 'type-drill' || isMcPractice || state.isGuidedDrill || guidedSetId || guidedSessionKey || assignmentId || ptRun || genericResumeIdentity) return null;
     return drillResumeKey({ mode: 'type-drill', config: state.config });
-  }, [state.mode, state.config, isMcPractice, guidedSessionKey, assignmentId, ptRun, genericResumeIdentity]);
+  }, [state.mode, state.config, state.isGuidedDrill, guidedSetId, isMcPractice, guidedSessionKey, assignmentId, ptRun, genericResumeIdentity]);
   const standaloneRunIdRef = React.useRef<string | null>(requestedStandaloneRunId);
   const standaloneWriteRef = React.useRef<Promise<unknown>>(Promise.resolve());
   const legacyStandaloneResumeRef = React.useRef(false);

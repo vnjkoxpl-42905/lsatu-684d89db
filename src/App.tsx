@@ -34,6 +34,7 @@ const DrillLaunchGate = safeLazy(() => import("./components/drill/DrillLaunchGat
 const Analytics = safeLazy(() => import("./pages/Analytics"));
 const DrillHistory = safeLazy(() => import("./pages/DrillHistory"));
 const DrillRuns = safeLazy(() => import("./pages/DrillRuns"));
+const ActivityReviewDetail = safeLazy(() => import("./pages/ActivityReviewDetail"));
 const ProgressTopics = safeLazy(() => import("./pages/ProgressTopics"));
 const RcRedirect = safeLazy(() => import("./features/rc/pages/RcRedirect"));
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
@@ -602,7 +603,8 @@ const App = () => {
 
                     <Route path="/review" element={<ProtectedRoute allowSignedIn><StudentDestination destination="review" /></ProtectedRoute>}>
                       <Route index element={<RedirectWithSearch to="/review/to-review" />} />
-                      <Route path="to-review" element={<ProtectedRoute flag={["has_journal_access", "has_flagged_access", "has_drill_access"]}><ReviewQueuePage /></ProtectedRoute>} />
+                      <Route path="to-review" element={<ProtectedRoute flag={["has_journal_access", "has_flagged_access", "has_drill_access", "has_activity_access"]}><ReviewQueuePage /></ProtectedRoute>} />
+                      <Route path="activity/:assignmentId/:itemOrder" element={<ProtectedRoute flag="has_activity_access"><ActivityReviewDetail /></ProtectedRoute>} />
                       <Route path="wrong" element={<ProtectedRoute flag="has_journal_access"><ReviewIndexList section="journal" /></ProtectedRoute>} />
                       <Route path="flagged" element={<ProtectedRoute flag="has_flagged_access"><ReviewIndexList section="flagged" /></ProtectedRoute>} />
                     </Route>

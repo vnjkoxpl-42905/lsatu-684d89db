@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { FlaggedQuestionRow } from "@/lib/flaggedService";
 import type { WrongAnswerSmartRow } from "@/lib/journalService";
-import { buildReviewQueue } from "./reviewQueueModel";
+import type { ActivityAssignment, ActivityItemResponse } from "@/features/activity-centre/api/types";
+import { buildActivityReviewQueue, buildReviewQueue } from "./reviewQueueModel";
 
 function journalRow(overrides: Partial<WrongAnswerSmartRow> = {}): WrongAnswerSmartRow {
   return {
@@ -53,5 +54,61 @@ describe("buildReviewQueue", () => {
   it("keeps separate questions and orders the newest activity first", () => {
     const items = buildReviewQueue([journalRow()], [flagRow({ qid: "90-1-2", pt: 90, section: 1, qnum: 2, flagged_at: "2026-09-08T00:00:00Z" })]);
     expect(items.map((item) => item.qid)).toEqual(["90-1-2", "80-2-14"]);
+  });
+});
+
+function activityAssignment(id: string, overrides: Partial<ActivityAssignment> = {}): ActivityAssignment {
+  return {
+    id, activity_id: "activity-1", student_id: "student-1", title: "Spot the Relationship",
+    subtitle: null, instructions: {}, item_format: "free-text",
+    items: [{ order: 1, prompt: "Find the relationship", credited_answers: ["A implies B"], explanation: "The arrow points to B", category: "Conditional" }],
+    status: "completed", score: 50, started_at: "2026-09-01T00:00:00Z", completed_at: "2026-09-01T01:00:00Z",
+    assigned_by: "teacher-1", class_id: "class-1", created_at: "2026-08-31T00:00:00Z", ...overrides,
+  };
+}
+
+function activityResponse(assignmentId: string, attemptNo: number, verdict: ActivityItemResponse["verdict"]): ActivityItemResponse {
+  return {
+    id: `${assignmentId}-${attemptNo}`, assignment_id: assignmentId, student_id: "student-1", item_order: 1,
+    response_text: attemptNo === 1 ? "B implies A" : "A implies B", verdict, attempt_no: attemptNo,
+    created_at: `2026-09-01T00:0${attemptNo}:00Z`,
+  };
+}
+
+describe("buildActivityReviewQueue", () => {
+  it("keeps a judged miss after a later correct answer, with the exact item link", () => {
+    const [item] = buildActivityReviewQueue([activityAssignment("run-1")], [
+      activityResponse("run-1", 2, "correct"), activityResponse("run-1", 1, "partial"),
+    ]);
+    expect(item.key).toBe("activity:run-1:1");
+    expect(item.href).toBe("/review/activity/run-1/1");
+    expect(item.firstAnswer).toBe("B implies A");
+    expect(item.latestAnswer).toBe("A implies B");
+    expect(item.firstMissAt).toBe("2026-09-01T00:01:00Z");
+    expect(item.sources).toEqual(["activity_item_responses"]);
+  });
+
+  it("retains repeated assignments as distinct misses", () => {
+    const items = buildActivityReviewQueue(
+      [activityAssignment("run-1"), activityAssignment("run-2")],
+      [activityResponse("run-1", 1, "incorrect"), activityResponse("run-2", 1, "partial")],
+    );
+    expect(items.map((item) => item.key).sort()).toEqual(["activity:run-1:1", "activity:run-2:1"]);
+  });
+
+  it("excludes unjudged and spoken-recall work", () => {
+    const items = buildActivityReviewQueue(
+      [activityAssignment("unjudged"), activityAssignment("section", { mode: "section", item_format: "spoken-recall" })],
+      [activityResponse("unjudged", 1, null), activityResponse("section", 1, "incorrect")],
+    );
+    expect(items).toEqual([]);
+  });
+
+  it("does not reveal credited answers while an assignment is still in progress", () => {
+    const items = buildActivityReviewQueue(
+      [activityAssignment("run-1", { status: "in_progress", completed_at: null })],
+      [activityResponse("run-1", 1, "incorrect")],
+    );
+    expect(items).toEqual([]);
   });
 });

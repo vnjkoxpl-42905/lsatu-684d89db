@@ -5,8 +5,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useFlagged } from "@/hooks/useFlagged";
 import { useJournalEntries } from "@/hooks/useJournalEntries";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
-import { buildReviewQueue, type ReviewReason } from "@/components/review/reviewQueueModel";
+import { buildActivityReviewQueue, buildReviewQueue, type ReviewReason } from "@/components/review/reviewQueueModel";
 import { loadRcReviewQueue } from "@/components/review/rcReviewSource";
+import { listAssignmentsForStudent, listResponsesForAssignments } from "@/features/activity-centre/api/activitiesClient";
 import "./reviewQueue.css";
 
 type ReasonFilter = "all" | ReviewReason;
@@ -27,6 +28,7 @@ export default function ReviewQueuePage() {
   const canJournal = !permissions.loading && (permissions.is_admin || permissions.has_journal_access);
   const canFlag = !permissions.loading && (permissions.is_admin || permissions.has_flagged_access);
   const canRc = !permissions.loading && (permissions.is_admin || permissions.has_drill_access);
+  const canActivity = !permissions.loading && (permissions.is_admin || permissions.has_activity_access);
   const journal = useJournalEntries(canJournal);
   const flagged = useFlagged();
   const rcReview = useQuery({
@@ -34,6 +36,16 @@ export default function ReviewQueuePage() {
     enabled: canRc && !!user,
     staleTime: 60_000,
     queryFn: () => loadRcReviewQueue(user!.id),
+  });
+  const activityReview = useQuery({
+    queryKey: ["review", "activity", user?.id],
+    enabled: canActivity && !!user,
+    staleTime: 60_000,
+    queryFn: async () => {
+      const assignments = await listAssignmentsForStudent(user!.id);
+      const responses = await listResponsesForAssignments(assignments.map((assignment) => assignment.id));
+      return buildActivityReviewQueue(assignments, responses);
+    },
   });
   const reasonParam = searchParams.get("reason");
   const reason: ReasonFilter = reasonParam === "missed" || reasonParam === "flagged" ? reasonParam : "all";
@@ -44,7 +56,8 @@ export default function ReviewQueuePage() {
   const items = useMemo(() => [
     ...buildReviewQueue(canJournal ? journal.data ?? [] : [], canFlag ? flagged.data ?? [] : []),
     ...(canRc ? rcReview.data ?? [] : []),
-  ].sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt)), [canJournal, canFlag, canRc, journal.data, flagged.data, rcReview.data]);
+    ...(canActivity ? activityReview.data ?? [] : []),
+  ].sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt)), [canJournal, canFlag, canRc, canActivity, journal.data, flagged.data, rcReview.data, activityReview.data]);
   const visibleItems = useMemo(() => items.filter((item) =>
     (reason === "all" || item.reasons.includes(reason)) &&
     (!search.trim() || `${item.label} ${item.qid} ${item.qtype ?? ""} ${item.area}`.toLowerCase().includes(search.trim().toLowerCase())),
@@ -52,12 +65,13 @@ export default function ReviewQueuePage() {
   const shownItems = visibleItems.slice(0, shownCount);
   const returnTo = `/review/to-review${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
   const detailLink = (href: string) => `${href}${href.includes("?") ? "&" : "?"}returnTo=${encodeURIComponent(returnTo)}`;
-  const loading = permissions.loading || (canJournal && journal.isLoading) || (canFlag && flagged.isLoading) || (canRc && rcReview.isLoading);
+  const loading = permissions.loading || (canJournal && journal.isLoading) || (canFlag && flagged.isLoading) || (canRc && rcReview.isLoading) || (canActivity && activityReview.isLoading);
   const journalError = canJournal && journal.isError;
   const flagError = canFlag && flagged.isError;
   const rcError = canRc && rcReview.isError;
-  const hasError = journalError || flagError || rcError;
-  const failedSources = [journalError && "LR wrong answers", flagError && "LR flags", rcError && "RC drills"].filter(Boolean).join(", ");
+  const activityError = canActivity && activityReview.isError;
+  const hasError = journalError || flagError || rcError || activityError;
+  const failedSources = [journalError && "LR wrong answers", flagError && "LR flags", rcError && "RC drills", activityError && "Activities"].filter(Boolean).join(", ");
 
   const setParam = (key: string, value: string | null) => {
     const next = new URLSearchParams(searchParams);
@@ -68,26 +82,26 @@ export default function ReviewQueuePage() {
   };
 
   return (
-    <section className="review-queue" aria-label="Questions to review">
+    <section className="review-queue" aria-label="Work to review">
       <div className="review-queue-intro">
         <div>
-          <h2>Questions to review</h2>
-          <p>This list includes saved wrong answers and flags from LR question practice and completed RC drills. Activity items, bootcamp exercises, active RC sessions, practice test sections, and teacher-selected review are not yet included here.</p>
+          <h2>Work to review</h2>
+          <p>This list includes saved wrong answers and flags from LR question practice and completed RC drills, plus judged misses from Activities. Bootcamp exercises, active RC sessions, practice test sections, and teacher-selected review are not yet included here.</p>
         </div>
-        <span className="review-queue-count" aria-live="polite">{loading ? "Loading…" : `${visibleItems.length} ${visibleItems.length === 1 ? "question" : "questions"}`}</span>
+        <span className="review-queue-count" aria-live="polite">{loading ? "Loading…" : `${visibleItems.length} ${visibleItems.length === 1 ? "item" : "items"}`}</span>
       </div>
 
       <div className="review-queue-controls">
         <div className="review-queue-filters" role="group" aria-label="Review reason">
           {(["all", "missed", "flagged"] as ReasonFilter[]).map((filter) => (
-            <button key={filter} type="button" onClick={() => setParam("reason", filter === "all" ? null : filter)} aria-pressed={reason === filter} disabled={filter === "missed" && !canJournal && !canRc || filter === "flagged" && !canFlag && !canRc}>
+            <button key={filter} type="button" onClick={() => setParam("reason", filter === "all" ? null : filter)} aria-pressed={reason === filter} disabled={filter === "missed" && !canJournal && !canRc && !canActivity || filter === "flagged" && !canFlag && !canRc}>
               {filter === "all" ? "All" : filter === "missed" ? "Missed" : "Flagged"}
             </button>
           ))}
         </div>
         <label className="review-queue-search">
-          <span className="sr-only">Find a question</span>
-          <input type="search" value={search} onChange={(event) => setParam("q", event.target.value || null)} placeholder="Find a question" />
+          <span className="sr-only">Find review work</span>
+          <input type="search" value={search} onChange={(event) => setParam("q", event.target.value || null)} placeholder="Find review work" />
         </label>
         <button className="review-queue-view" type="button" onClick={() => setParam("view", table ? null : "table")} aria-pressed={table}>
           {table ? "Compact view" : "Detailed table"}
@@ -97,27 +111,27 @@ export default function ReviewQueuePage() {
       {hasError ? (
         <div className="review-queue-error" role="alert">
           {`${failedSources} could not be loaded. Showing available sources only.`}
-          <button type="button" onClick={() => { if (journalError) void journal.refetch(); if (flagError) void flagged.refetch(); if (rcError) void rcReview.refetch(); }}>Try again</button>
+          <button type="button" onClick={() => { if (journalError) void journal.refetch(); if (flagError) void flagged.refetch(); if (rcError) void rcReview.refetch(); if (activityError) void activityReview.refetch(); }}>Try again</button>
         </div>
       ) : null}
 
-      {loading ? <p className="review-queue-state" role="status">Loading saved questions…</p> : visibleItems.length === 0 ? (
+      {loading ? <p className="review-queue-state" role="status">Loading saved work…</p> : visibleItems.length === 0 ? (
         <div className="review-queue-state">
-          <h3>{hasError ? "No questions from the loaded source" : items.length > 0 ? "No questions match these filters" : "No saved questions here yet"}</h3>
-          <p>{hasError ? "Retry to see the full list." : items.length > 0 ? "Try another reason or clear the search." : "Questions you miss or flag in question practice will appear here."}</p>
+          <h3>{hasError ? "No items from the loaded source" : items.length > 0 ? "No items match these filters" : "No saved work here yet"}</h3>
+          <p>{hasError ? "Retry to see the full list." : items.length > 0 ? "Try another reason or clear the search." : "Questions and Activities you miss or flag will appear here."}</p>
         </div>
       ) : table ? (
         <div className="review-queue-table-wrap">
           <table className="review-queue-table">
-            <thead><tr><th>Question</th><th>Area</th><th>Reason</th><th>First answer</th><th>Latest answer</th><th>Source</th><th>Note</th><th>Last activity</th></tr></thead>
+            <thead><tr><th>Item</th><th>Area</th><th>Reason</th><th>First answer</th><th>Latest answer</th><th>Source</th><th>Note</th><th>Last activity</th></tr></thead>
             <tbody>{shownItems.map((item) => (
               <tr key={item.key}>
-                <td><Link to={detailLink(item.href)}>{item.label}</Link><small>{item.qtype || "Question"}</small></td>
+                <td><Link to={detailLink(item.href)}>{item.label}</Link><small>{item.qtype || "Item"}</small></td>
                 <td>{item.area === "rc" ? "Reading Comprehension" : "Logical Reasoning"}</td>
                 <td>{item.reasons.map(reasonLabel).join(" · ")}</td>
                 <td>{item.firstAnswer ?? "Not recorded"}</td>
                 <td>{item.latestAnswer ?? "Not recorded"}</td>
-                <td>{item.sources.map((source) => source === "wrong_answer_journal" ? "Wrong-answer journal" : source === "flagged_questions" ? "Flag" : "RC drill attempt").join(" · ")}</td>
+                <td>{item.sources.map((source) => source === "wrong_answer_journal" ? "Wrong-answer journal" : source === "flagged_questions" ? "Flag" : source === "activity_item_responses" ? "Activity attempt" : "RC drill attempt").join(" · ")}</td>
                 <td>{item.reflection || item.flaggedNote || "—"}</td>
                 <td>{readableDate(item.lastActivityAt)}</td>
               </tr>
@@ -130,12 +144,12 @@ export default function ReviewQueuePage() {
             <Link className="review-queue-card" to={detailLink(item.href)}>
               <span className="review-queue-card-main">
                 <strong>{item.label}</strong>
-                <span>{item.area === "rc" ? "Reading Comprehension" : "Logical Reasoning"} · {item.qtype || "Question"} · {readableDate(item.lastActivityAt)}</span>
+                <span>{item.area === "rc" ? "Reading Comprehension" : "Logical Reasoning"} · {item.qtype || "Item"} · {readableDate(item.lastActivityAt)}</span>
                 {item.reflection || item.flaggedNote ? <span className="review-queue-note">{item.reflection || item.flaggedNote}</span> : null}
               </span>
               <span className="review-queue-card-side">
                 {item.reasons.map((entry) => <span className="review-queue-reason" key={entry}>{reasonLabel(entry)}</span>)}
-                <span className="review-queue-open">Open question →</span>
+                <span className="review-queue-open">Open item →</span>
               </span>
             </Link>
           </li>
