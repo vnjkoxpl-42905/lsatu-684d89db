@@ -32,7 +32,7 @@ async function allPages<T>(read: (from: number, to: number) => Promise<{ data: T
 
 const readLrAttempts = (studentId: string) => allPages<LrAttemptSourceRow>(async (from, to) => {
   const result = await supabase.from('attempts')
-    .select('id,user_id,qid,mode,correct,selected_answer,timestamp_iso')
+    .select('id,user_id,qid,qtype,mode,correct,selected_answer,timestamp_iso')
     .eq('user_id', studentId).order('id').range(from, to);
   return result as unknown as { data: LrAttemptSourceRow[] | null; error: { message: string } | null };
 });

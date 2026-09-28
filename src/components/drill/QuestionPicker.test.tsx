@@ -231,6 +231,16 @@ describe('QuestionPicker LR drill setup', () => {
     expect(screen.getAllByRole('button', { name: 'Create set preview (5)' })[0]).toBeEnabled();
   });
 
+  it('adds an exact PT, section, and question-number choice without starting a drill', () => {
+    const { onStartDrill } = setup();
+    togglePopoverOption(/^PrepTest selector/, 'pt-101');
+    togglePopoverOption(/^Section selector/, 'section-2');
+    fireEvent.click(screen.getByRole('combobox', { name: 'Question number' }));
+    fireEvent.click(screen.getByRole('option', { name: 'Question 3' }));
+    expect(screen.getByRole('button', { name: 'Remove PT101 section 2 question 3' })).toBeInTheDocument();
+    expect(onStartDrill).not.toHaveBeenCalled();
+  });
+
   it('uses the same field for text search and multiple exact questions', () => {
     setup();
     const search = screen.getByRole('searchbox', { name: 'Find questions by text or PrepTest reference' });
@@ -274,6 +284,31 @@ describe('QuestionPicker LR drill setup', () => {
       'PT101-S2-Q3',
       'PT101-S2-Q4',
     ]);
+  });
+
+  it('shows the actual fill pool and every launched question before starting', () => {
+    const { onStartDrill } = setup();
+    pasteReferences('PT102.S2.Q6');
+    togglePopoverOption(/^PrepTest selector/, 'pt-101');
+    expect(screen.getAllByText(/5 available from filters for 4 remaining places/)).not.toHaveLength(0);
+    expect(screen.getAllByText(/1 chosen question stays.*outside these filters/)).not.toHaveLength(0);
+
+    previewSet();
+    fireEvent.click(screen.getAllByRole('button', { name: 'View all 5 questions' })[0]);
+    const dialog = screen.getByRole('dialog', { name: 'Your set: 5 questions' });
+    expect(within(dialog).getAllByRole('listitem')).toHaveLength(5);
+    expect(within(dialog).getByText(/1\. PT102 · S2 · Q6/)).toBeInTheDocument();
+    expect(within(dialog).getByText(/5\. PT101 · S2 · Q4/)).toBeInTheDocument();
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Start this drill (5)' }));
+    expect(onStartDrill.mock.calls[0][0].selectedQids).toHaveLength(5);
+  });
+
+  it('blocks preview when filters cannot fill the remaining places', () => {
+    setup();
+    togglePopoverOption(/^PrepTest selector/, 'pt-102');
+    expect(screen.getAllByText(/2 available from filters for 5 remaining places/)).not.toHaveLength(0);
+    expect(screen.getAllByText(/filters need 3 more questions/)).not.toHaveLength(0);
+    expect(screen.getAllByRole('button', { name: 'Create set preview (5)' })[0]).toBeDisabled();
   });
 
   it('applies a pasted range and rejects invalid references atomically', () => {

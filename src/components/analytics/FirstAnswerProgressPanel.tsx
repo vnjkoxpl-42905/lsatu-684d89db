@@ -1,14 +1,7 @@
-import { useState } from 'react';
 import { useFirstAnswerProgress } from '@/hooks/useFirstAnswerProgress';
-import type { AreaProgress, ProgressWindow } from '@/lib/firstAnswerProgress';
-
-const WINDOWS: Array<{ value: ProgressWindow; label: string }> = [
-  { value: 7, label: '7 days' },
-  { value: 14, label: '14 days' },
-  { value: 21, label: '21 days' },
-  { value: 30, label: '30 days' },
-  { value: 'all', label: 'All time' },
-];
+import { useProgressWindow } from '@/hooks/useProgressWindow';
+import type { AreaProgress } from '@/lib/firstAnswerProgress';
+import ProgressWindowControl from './ProgressWindowControl';
 
 function AreaCard({ label, result, unavailable, partial }: { label: string; result: AreaProgress; unavailable: boolean; partial: boolean }) {
   return (
@@ -36,7 +29,7 @@ function AreaCard({ label, result, unavailable, partial }: { label: string; resu
 
 /** Shared student/teacher view of the same student-scoped, first-answer ledger. */
 export default function FirstAnswerProgressPanel({ studentId }: { studentId?: string }) {
-  const [window, setWindow] = useState<ProgressWindow>(30);
+  const [window, setWindow] = useProgressWindow();
   const { resolution, progress, loading, error, refresh } = useFirstAnswerProgress(window, studentId);
 
   return (
@@ -48,21 +41,7 @@ export default function FirstAnswerProgressPanel({ studentId }: { studentId?: st
             Each question counts once, using its first saved, graded answer. Repeats do not raise or lower this score.
           </p>
         </div>
-        <div className="flex min-w-0 max-w-full flex-wrap gap-1" role="group" aria-label="Accuracy date window">
-          {WINDOWS.map((option) => (
-            <button
-              key={option.label}
-              type="button"
-              onClick={() => setWindow(option.value)}
-              aria-pressed={window === option.value}
-              className={`rounded-md border px-2.5 py-1.5 text-xs transition-colors ${window === option.value
-                ? 'border-foreground bg-foreground text-background'
-                : 'border-border text-muted-foreground hover:text-foreground'}`}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
+        <ProgressWindowControl value={window} onChange={setWindow} />
       </div>
 
       {loading ? (

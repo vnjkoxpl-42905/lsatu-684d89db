@@ -134,7 +134,7 @@ function renderDestinationChild(initialEntry: string) {
     <MemoryRouter initialEntries={[initialEntry]}>
       <Routes>
         <Route path="/review" element={<ProtectedRoute allowSignedIn><Outlet /></ProtectedRoute>}>
-          <Route path="to-review" element={<ProtectedRoute flag={["has_journal_access", "has_flagged_access"]}><div>review queue</div></ProtectedRoute>} />
+          <Route path="to-review" element={<ProtectedRoute flag={["has_journal_access", "has_flagged_access", "has_drill_access"]}><div>review queue</div></ProtectedRoute>} />
         </Route>
         <Route path="/practice" element={<ProtectedRoute allowSignedIn><Outlet /></ProtectedRoute>}>
           <Route path="drills" element={<ProtectedRoute flag="has_drill_access"><div>drills page</div></ProtectedRoute>} />
@@ -178,6 +178,13 @@ describe("ProtectedRoute", () => {
   it("opens the combined Review child when either source is available", () => {
     mockUseAuth.mockReturnValue({ user: { id: "student" }, authReady: true });
     mockUseUserPermissions.mockReturnValue({ ...NO_FLAGS, has_flagged_access: true });
+    renderDestinationChild("/review/to-review");
+    expect(screen.getByText("review queue")).toBeInTheDocument();
+  });
+
+  it("opens the combined Review child for an RC-only drill account", () => {
+    mockUseAuth.mockReturnValue({ user: { id: "student" }, authReady: true });
+    mockUseUserPermissions.mockReturnValue({ ...NO_FLAGS, has_drill_access: true });
     renderDestinationChild("/review/to-review");
     expect(screen.getByText("review queue")).toBeInTheDocument();
   });

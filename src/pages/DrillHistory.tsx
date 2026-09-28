@@ -1,7 +1,8 @@
 /**
- * Drill History — every question the student has ever attempted, across every
- * surface: drills, bootcamps, Reading Comp, Abstract Reasoning, Causation
- * Station. Two views over the same data:
+ * Full practice log across drills, bootcamps, Reading Comp, Abstract
+ * Reasoning, and Causation Station. The selected window applies to this log;
+ * the saved first-answer history uses its own graded source ledger.
+ * Two views over the log:
  *
  *   Timeline    — an ordered, day-grouped list of attempts (newest first),
  *                 with the attempt number for that question ("Attempt #3").
@@ -27,6 +28,10 @@ import { fetchSectionHistory, type SectionHistoryRow } from '@/lib/sectionHistor
 import SectionHistoryList from '@/components/history/SectionHistoryList';
 import { Check, ListFilter, Loader2, Minus, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import FirstAnswerHistoryPanel from '@/components/analytics/FirstAnswerHistoryPanel';
+import ProgressWindowControl from '@/components/analytics/ProgressWindowControl';
+import { useProgressWindow } from '@/hooks/useProgressWindow';
+import { inProgressWindow } from '@/lib/firstAnswerDetails';
 
 type ViewMode = 'timeline' | 'by-question' | 'sections';
 
@@ -96,6 +101,8 @@ const DrillHistory: React.FC = () => {
   const [resultFilter, setResultFilter] = useState<ResultFilter>('all');
   const [search, setSearch] = useState('');
   const [sections, setSections] = useState<SectionHistoryRow[] | null>(null);
+  const [window, setWindow] = useProgressWindow();
+  const windowRows = useMemo(() => rows?.filter((row) => inProgressWindow(row.attempted_at, window, new Date().toISOString())) ?? null, [rows, window]);
 
   // Sections load alongside the attempts rather than on tab entry: the count
   // belongs on the tab, and a student who lands here should not watch a second
@@ -133,9 +140,9 @@ const DrillHistory: React.FC = () => {
   }, [user?.id]);
 
   const filtered = useMemo(() => {
-    if (!rows) return [];
+    if (!windowRows) return [];
     const q = search.trim().toLowerCase();
-    return rows.filter((row) => {
+    return windowRows.filter((row) => {
       if (sourceFilter !== 'all' && row.source !== sourceFilter) return false;
       if (resultFilter === 'correct' && row.correct !== true) return false;
       if (resultFilter === 'missed' && row.correct !== false) return false;
@@ -148,24 +155,24 @@ const DrillHistory: React.FC = () => {
         return false;
       return true;
     });
-  }, [rows, sourceFilter, resultFilter, search]);
+  }, [windowRows, sourceFilter, resultFilter, search]);
 
   const numbers = useMemo(() => (rows ? attemptNumbers(rows) : new Map()), [rows]);
   const rollups = useMemo(() => rollupByQuestion(filtered), [filtered]);
 
   const stats = useMemo(() => {
-    if (!rows) return null;
-    const graded = rows.filter((r) => r.correct !== null);
+    if (!windowRows) return null;
+    const graded = windowRows.filter((r) => r.correct !== null);
     const correct = graded.filter((r) => r.correct).length;
-    const totalTime = rows.reduce((sum, r) => sum + (r.time_ms ?? 0), 0);
-    const unique = new Set(rows.map((r) => `${r.source}|${r.question_key}`)).size;
+    const totalTime = windowRows.reduce((sum, r) => sum + (r.time_ms ?? 0), 0);
+    const unique = new Set(windowRows.map((r) => `${r.source}|${r.question_key}`)).size;
     return {
-      attempts: rows.length,
+      attempts: windowRows.length,
       accuracy: graded.length > 0 ? Math.round((correct / graded.length) * 100) : null,
       totalTime,
       unique,
     };
-  }, [rows]);
+  }, [windowRows]);
 
   const dayGroups = useMemo(() => {
     const groups: { label: string; rows: DrillHistoryRow[] }[] = [];
@@ -179,16 +186,18 @@ const DrillHistory: React.FC = () => {
   }, [filtered]);
 
   const presentSources = useMemo(() => {
-    if (!rows) return [];
-    const set = new Set(rows.map((r) => r.source));
+    if (!windowRows) return [];
+    const set = new Set(windowRows.map((r) => r.source));
     return SOURCE_ORDER.filter((s) => set.has(s));
-  }, [rows]);
+  }, [windowRows]);
 
   if (error) {
     return (
-      <div className="flex min-h-full items-center justify-center bg-background p-8">
-        <div className="max-w-md rounded-xl border border-destructive/30 bg-card p-6 text-center">
-          <p className="font-medium text-foreground">Your history could not be loaded.</p>
+      <div className="mx-auto min-h-full max-w-5xl min-w-0 bg-background px-4 py-8">
+        <ProgressWindowControl value={window} onChange={setWindow} />
+        <div className="mt-5"><FirstAnswerHistoryPanel window={window} /></div>
+        <div className="rounded-xl border border-destructive/30 bg-card p-6">
+          <p className="font-medium text-foreground">The full practice log could not be loaded.</p>
           <p className="mt-1 text-sm text-muted-foreground">{error}</p>
         </div>
       </div>
@@ -207,11 +216,16 @@ const DrillHistory: React.FC = () => {
     <div className="min-h-full bg-background">
       <div className="mx-auto max-w-5xl px-4 py-8">
         <header className="mb-6">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Drill history</h1>
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground">History</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Every question you have attempted across drills, bootcamps, and practice — with results and time.
+            See your saved graded answers and your broader practice log.
           </p>
         </header>
+
+        <ProgressWindowControl value={window} onChange={setWindow} />
+        <FirstAnswerHistoryPanel window={window} />
+        <h2 className="mb-2 text-lg font-semibold text-foreground">Full practice log</h2>
+        <p className="mb-4 text-xs text-muted-foreground">This log includes graded and ungraded attempts across drills, bootcamps, and practice. Its accuracy counts every graded attempt, including repeats. Sections below show all time.</p>
 
         {/* The attempt tiles describe questions, not sittings. The Sections view
             brings its own, so they are swapped rather than stacked. */}
@@ -225,7 +239,7 @@ const DrillHistory: React.FC = () => {
           <StatCard
             label="Accuracy"
             value={stats.accuracy === null ? '—' : `${stats.accuracy}%`}
-            sub={stats.accuracy === null ? 'No graded attempts yet' : 'Graded attempts'}
+            sub={stats.accuracy === null ? 'No graded attempts yet' : 'All graded attempts, including repeats'}
           />
           <StatCard label="Time practiced" value={formatDurationMs(stats.totalTime)} />
           <StatCard label="Questions seen" value={stats.unique.toLocaleString()} />
@@ -314,12 +328,12 @@ const DrillHistory: React.FC = () => {
         ) : filtered.length === 0 ? (
           <div className="rounded-xl border border-border bg-card p-10 text-center">
             <p className="font-medium text-foreground">
-              {rows.length === 0 ? 'No attempts recorded yet.' : 'Nothing matches these filters.'}
+              {rows.length === 0 ? 'No attempts recorded yet.' : 'Nothing matches this window and these filters.'}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
               {rows.length === 0
                 ? 'Complete a drill or bootcamp question and it will show up here.'
-                : 'Try a different source, result, or search.'}
+                : 'Try another date window, source, result, or search.'}
             </p>
           </div>
         ) : view === 'timeline' ? (

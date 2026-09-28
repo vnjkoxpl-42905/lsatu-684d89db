@@ -176,6 +176,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   // Materialized preview of a generated set (exact qids that would launch).
   // null = no active preview.
   const [previewedQids, setPreviewedQids] = useState<string[] | null>(null);
+  const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
 
   // Drawer state — single qid open at a time
   const [drawerQid, setDrawerQid] = useState<string | null>(null);
@@ -443,6 +444,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   };
   
   const availability = getLRDrillSetAvailability(selectedQids, filteredQuestions, setSize);
+  const remainingPlaces = Math.max(0, setSize - selectedQids.size);
+  const selectedOutsideFilters = Array.from(selectedQids).filter(
+    (qid) => !filteredQuestions.some((question) => question.qid === qid),
+  ).length;
   const canGenerate = !availability.exceedsSize && availability.missingCount === 0;
   const generateHint = availability.exceedsSize
     ? `You selected ${selectedQids.size} questions. Increase the set size or remove some.`
@@ -532,6 +537,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   // Invalidate preview when filters, size, or selection change
   useEffect(() => {
     setPreviewedQids(null);
+    setPreviewDialogOpen(false);
   }, [filters, setSize, selectedQids]);
 
   // Reset reveal toggle whenever a different drawer opens
@@ -1424,8 +1430,12 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                       {setSize} questions
                     </div>
                     <div className="text-[11px] text-muted-foreground mt-0.5">
-                      {selectedQids.size} chosen · {setSize - selectedQids.size > 0 ? setSize - selectedQids.size : 0} from filters
+                      {selectedQids.size} guaranteed · {remainingPlaces} from filters
                     </div>
+                  </div>
+                  <div className="text-xs text-muted-foreground" role="status">
+                    {availability.availableCount} available from filters for {remainingPlaces} remaining {remainingPlaces === 1 ? 'place' : 'places'}.
+                    {selectedOutsideFilters > 0 && ` ${selectedOutsideFilters} chosen ${selectedOutsideFilters === 1 ? 'question stays' : 'questions stay'} in the set outside these filters.`}
                   </div>
 
                   {/* Tier 2: type + difficulty */}
@@ -1482,6 +1492,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                       </li>
                     )}
                   </ul>
+                  <Button type="button" variant="ghost" size="sm" className="w-full" onClick={() => setPreviewDialogOpen(true)}>
+                    View all {previewedQids.length} questions
+                  </Button>
                 </div>
               )}
 
@@ -1593,10 +1606,19 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
 
             </div>
           </div>
+          <p className="text-xs text-muted-foreground" role="status">
+            {availability.availableCount} available from filters for {remainingPlaces} remaining {remainingPlaces === 1 ? 'place' : 'places'}.
+            {selectedOutsideFilters > 0 && ` ${selectedOutsideFilters} chosen ${selectedOutsideFilters === 1 ? 'question stays' : 'questions stay'} outside the filters.`}
+          </p>
           {hasPreview ? (
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={handleGeneratePreview} className="min-w-0 flex-1">Create another</Button>
-              <Button onClick={handleLaunch} className="min-w-0 flex-1">Start drill ({setSize})</Button>
+            <div className="space-y-2">
+              <Button type="button" variant="outline" onClick={() => setPreviewDialogOpen(true)} className="w-full">
+                View all {previewedQids!.length} questions in this set
+              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={handleGeneratePreview} className="min-w-0 flex-1">Create another</Button>
+                <Button onClick={handleLaunch} className="min-w-0 flex-1">Start drill ({setSize})</Button>
+              </div>
             </div>
           ) : (
             <Button onClick={handleGeneratePreview} disabled={!canGenerate} className="w-full">Create set preview ({setSize})</Button>
@@ -1726,6 +1748,33 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           })()}
         </SheetContent>
       </Sheet>
+
+      <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
+        <DialogContent className="drill-observatory-launcher-panel max-h-[85vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Your set: {previewedQids?.length ?? 0} questions</DialogTitle>
+            <DialogDescription>
+              These are the exact questions that will appear when you start this drill. Chosen questions are guaranteed; the other places come from your filters.
+            </DialogDescription>
+          </DialogHeader>
+          <ol className="min-h-0 overflow-y-auto space-y-1 pr-2 text-sm">
+            {previewedQids?.map((qid, index) => {
+              const question = questionBank.getQuestion(qid);
+              if (!question) return null;
+              return (
+                <li key={qid} className="flex items-start justify-between gap-3 rounded-md border border-border/60 px-3 py-2">
+                  <span className="font-medium tabular-nums">{index + 1}. PT{question.pt} · S{question.section} · Q{question.qnum}</span>
+                  <span className="text-xs text-muted-foreground text-right">{selectedQids.has(qid) ? 'Chosen' : 'From filters'} · {question.qtype} · L{question.difficulty}</span>
+                </li>
+              );
+            })}
+          </ol>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setPreviewDialogOpen(false)}>Back to setup</Button>
+            <Button type="button" onClick={handleLaunch}>Start this drill ({previewedQids?.length ?? 0})</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Item N (Wave 4) — Save Set dialog. Captures a name + persists the
           current set's question_ids + filter_state to user_saved_sets via

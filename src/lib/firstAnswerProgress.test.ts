@@ -57,9 +57,10 @@ describe('persisted source eligibility', () => {
   it('takes saved LR drill answers and excludes Inspect, blind and unfinished section rows', () => {
     const rows = ['adaptive', 'post-answer', 'full-section', 'inspect'].map((mode, index) => ({
       id: `a-${index}`, user_id: student, qid: `PT101-S2-Q${index + 1}`, mode,
-      selected_answer: 'B', correct: true, timestamp_iso: '2026-09-27T00:00:00Z',
+      selected_answer: 'B', correct: true, qtype: 'Strengthen', timestamp_iso: '2026-09-27T00:00:00Z',
     }));
     expect(adaptLrAttempts(rows, student).map((a) => a.attemptId)).toEqual(['attempts:a-0']);
+    expect(adaptLrAttempts(rows, student)[0].topic).toBe('Strengthen');
   });
 
   it('includes the bank-backed bootcamp modal writer mode', () => {
@@ -73,13 +74,13 @@ describe('persisted source eligibility', () => {
     const section = {
       id: 'section-1', user_id: student, mode: 'full-section', completed_at: '2026-09-27T00:00:00Z',
       practice_test_run_id: 'run-1', questions_json: [
-        { qid: 'PT101-S2-Q1', initialAnswer: 'B', initialCorrect: false, brAnswer: 'C', brCorrect: true },
+        { qid: 'PT101-S2-Q1', qtype: 'Weaken', initialAnswer: 'B', initialCorrect: false, brAnswer: 'C', brCorrect: true },
         { qid: 'PT101-S2-Q2', initialAnswer: '—', initialCorrect: false },
       ],
     };
     expect(adaptLrSections([section], student, new Set())).toEqual([]);
     expect(adaptLrSections([section], student, new Set(['run-1']))).toMatchObject([
-      { questionKey: 'LR:PT101-S2-Q1', correct: false, mode: 'practice-test' },
+      { questionKey: 'LR:PT101-S2-Q1', correct: false, mode: 'practice-test', topic: 'Weaken' },
     ]);
   });
 

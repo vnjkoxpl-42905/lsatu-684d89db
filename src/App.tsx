@@ -33,6 +33,7 @@ const Drill = safeLazy(() => import("./pages/Drill"));
 const DrillLaunchGate = safeLazy(() => import("./components/drill/DrillLaunchGate"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));
 const DrillHistory = safeLazy(() => import("./pages/DrillHistory"));
+const ProgressTopics = safeLazy(() => import("./pages/ProgressTopics"));
 const RcRedirect = safeLazy(() => import("./features/rc/pages/RcRedirect"));
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
 const RcResults = safeLazy(() => import("./features/rc/pages/RcResults"));
@@ -596,7 +597,7 @@ const App = () => {
 
                     <Route path="/review" element={<ProtectedRoute allowSignedIn><StudentDestination destination="review" /></ProtectedRoute>}>
                       <Route index element={<RedirectWithSearch to="/review/to-review" />} />
-                      <Route path="to-review" element={<ProtectedRoute flag={["has_journal_access", "has_flagged_access"]}><ReviewQueuePage /></ProtectedRoute>} />
+                      <Route path="to-review" element={<ProtectedRoute flag={["has_journal_access", "has_flagged_access", "has_drill_access"]}><ReviewQueuePage /></ProtectedRoute>} />
                       <Route path="wrong" element={<ProtectedRoute flag="has_journal_access"><ReviewIndexList section="journal" /></ProtectedRoute>} />
                       <Route path="flagged" element={<ProtectedRoute flag="has_flagged_access"><ReviewIndexList section="flagged" /></ProtectedRoute>} />
                     </Route>
@@ -605,7 +606,7 @@ const App = () => {
                       <Route index element={<RedirectWithSearch to="/progress/overview" />} />
                       <Route path="overview" element={<Analytics />} />
                       <Route path="history" element={<DrillHistory />} />
-                      <Route path="topics" element={<DestinationLinks heading="Topics" description="Your current topic breakdown is in your progress overview." links={[{ label: "See topic breakdown", description: "Open your saved practice analytics and opportunity areas.", path: "/progress/overview" }]} />} />
+                      <Route path="topics" element={<ProgressTopics />} />
                     </Route>
 
                     <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>

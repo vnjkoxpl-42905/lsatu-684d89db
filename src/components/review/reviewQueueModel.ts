@@ -2,9 +2,12 @@ import type { FlaggedQuestionRow } from "@/lib/flaggedService";
 import type { WrongAnswerSmartRow } from "@/lib/journalService";
 
 export type ReviewReason = "missed" | "flagged";
-export type ReviewSource = "wrong_answer_journal" | "flagged_questions";
+export type ReviewSource = "wrong_answer_journal" | "flagged_questions" | "rc_attempts";
+export type ReviewArea = "lr" | "rc";
 
 export interface ReviewQueueItem {
+  key: string;
+  area: ReviewArea;
   qid: string;
   label: string;
   qtype: string | null;
@@ -38,6 +41,8 @@ export function buildReviewQueue(
     if (!firstMiss && !isLegacyMiss) continue;
 
     items.set(row.qid, {
+      key: `lr:${row.qid}`,
+      area: "lr",
       qid: row.qid,
       label: row.label,
       qtype: row.qtype || null,
@@ -64,6 +69,8 @@ export function buildReviewQueue(
       continue;
     }
     items.set(flag.qid, {
+      key: `lr:${flag.qid}`,
+      area: "lr",
       qid: flag.qid,
       label: `PT${flag.pt}–S${flag.section}–Q${flag.qnum}`,
       qtype: flag.qtype || null,

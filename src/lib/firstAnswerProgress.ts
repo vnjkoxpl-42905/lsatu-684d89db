@@ -17,6 +17,8 @@ export interface GradedQuestionAnswer {
   gradedAt: string;
   /** Saved answer order when multiple choices become graded together at submission. */
   answeredAt?: string;
+  /** Persisted LR question type. RC has no comparable topic in these rows. */
+  topic?: string;
 }
 
 export interface ProgressCoverage {
@@ -50,6 +52,7 @@ export interface LrAttemptSourceRow {
   correct: boolean;
   selected_answer: string | null;
   timestamp_iso: string | null;
+  qtype?: string | null;
 }
 
 export interface LrSectionSourceRow {
@@ -110,6 +113,7 @@ export function adaptLrAttempts(rows: LrAttemptSourceRow[], studentId: string): 
       correct: row.correct,
       gradedAt: row.timestamp_iso,
       answeredAt: row.timestamp_iso,
+      topic: row.qtype?.trim() || undefined,
     }];
   });
 }
@@ -139,6 +143,7 @@ export function adaptLrSections(
         mode: row.practice_test_run_id ? 'practice-test' : 'timed-section',
         correct: question.initialCorrect,
         gradedAt: row.completed_at,
+        topic: typeof question.qtype === 'string' ? question.qtype.trim() || undefined : undefined,
       });
     }
   }
