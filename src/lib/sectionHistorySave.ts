@@ -27,6 +27,8 @@ import type { Json } from '@/integrations/supabase/types';
 import { questionBank } from '@/lib/questionLoader';
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
 import { analyseSection, type AnalysisInput } from '@/lib/sectionAnalysis';
+import { UNANSWERED } from '@/lib/sectionAnswer';
+export { UNANSWERED } from '@/lib/sectionAnswer';
 
 /** One question's outcome in a sat section. */
 export interface SectionQuestionStat {
@@ -74,9 +76,6 @@ export interface SectionQuestionStat {
   answeredInOvertime?: boolean;
   flagged: boolean;
 }
-
-/** The answer a student never gave. Rendered, and counted as unanswered. */
-export const UNANSWERED = '—';
 
 /**
  * Per-question stats for a sat section, in the order the questions were served.

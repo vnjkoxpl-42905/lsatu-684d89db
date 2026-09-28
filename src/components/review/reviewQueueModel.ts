@@ -1,9 +1,11 @@
 import type { FlaggedQuestionRow } from "@/lib/flaggedService";
 import type { WrongAnswerSmartRow } from "@/lib/journalService";
 import type { ActivityAssignment, ActivityItemResponse } from "@/features/activity-centre/api/types";
+import type { SectionHistoryRow } from "@/lib/sectionHistory";
+import { UNANSWERED } from "@/lib/sectionAnswer";
 
-export type ReviewReason = "missed" | "flagged";
-export type ReviewSource = "wrong_answer_journal" | "flagged_questions" | "rc_attempts" | "activity_item_responses";
+export type ReviewReason = "missed" | "flagged" | "skipped";
+export type ReviewSource = "wrong_answer_journal" | "flagged_questions" | "rc_attempts" | "activity_item_responses" | "section_history";
 export type ReviewArea = "lr" | "rc";
 
 export interface ReviewQueueItem {
@@ -135,4 +137,34 @@ export function buildActivityReviewQueue(
     }
   }
   return result.sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt));
+}
+
+/** Each completed standalone section is a separate sitting, even when it uses the same PT question. */
+export function buildSectionReviewQueue(rows: SectionHistoryRow[]): ReviewQueueItem[] {
+  const items: ReviewQueueItem[] = [];
+  for (const row of rows) {
+    if (row.mode !== "full-section" || row.practiceTestRunId || !row.questions.length) continue;
+    for (const question of row.questions) {
+      // A blank the student never opened is not a deliberate skip.
+      if (question.initialAnswer !== UNANSWERED || question.everVisited !== true) continue;
+      items.push({
+        key: `section:${row.id}:${question.qid}`,
+        area: "lr",
+        qid: question.qid,
+        label: `PT${row.pt}–S${row.section}–Q${question.qnum} · Timed section`,
+        qtype: question.qtype || null,
+        reasons: ["skipped"],
+        sources: ["section_history"],
+        firstAnswer: null,
+        latestAnswer: question.brAnswer && question.brAnswer !== UNANSWERED ? question.brAnswer : null,
+        correctAnswer: question.correctAnswer || null,
+        firstMissAt: row.completedAt,
+        lastActivityAt: row.completedAt,
+        reflection: null,
+        flaggedNote: null,
+        href: `/review/section/${encodeURIComponent(row.id)}/${encodeURIComponent(question.qid)}`,
+      });
+    }
+  }
+  return items.sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt));
 }

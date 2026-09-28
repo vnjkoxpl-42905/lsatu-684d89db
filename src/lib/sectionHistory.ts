@@ -23,6 +23,7 @@ import type { SectionAnalysis } from '@/lib/sectionAnalysis';
 
 export interface SectionHistoryRow {
   id: string;
+  practiceTestRunId: string | null;
   pt: number;
   section: number;
   mode: string | null;
@@ -94,6 +95,47 @@ export async function fetchSectionHistoryByClass(
   return fetchSectionHistoryBy('class_id', classId);
 }
 
+/** Load one completed section for its owning account, including saved question outcomes. */
+export async function fetchOwnedSectionHistoryItem(
+  userId: string,
+  historyId: string,
+): Promise<SectionHistoryRow | null> {
+  const { data, error } = await supabase
+    .from('section_history')
+    .select('*')
+    .eq('id', historyId)
+    .eq('user_id', userId)
+    .is('practice_test_run_id', null)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? toHistoryRow(data as Record<string, any>) : null;
+}
+
+function toHistoryRow(r: Record<string, any>): SectionHistoryRow {
+  return {
+    id: r.id,
+    practiceTestRunId: r.practice_test_run_id ?? null,
+    pt: r.pt,
+    section: r.section,
+    mode: r.mode,
+    initialScore: r.initial_score ?? 0,
+    initialTotal: r.initial_total ?? 0,
+    initialPercent: r.initial_percent ?? 0,
+    brScore: r.br_used ? r.br_score : null,
+    brPercent: r.br_used ? r.br_percent : null,
+    brDelta: r.br_used ? r.br_delta : null,
+    brUsed: Boolean(r.br_used),
+    totalTimeMs: r.total_time_ms ?? 0,
+    avgTimeMs: r.avg_time_ms ?? 0,
+    unansweredCount: r.unanswered_count ?? 0,
+    byQtype: asTally(r.by_qtype_json),
+    byDifficulty: asTally(r.by_difficulty_json),
+    questions: asQuestions(r.questions_json),
+    analysis: (r.analysis_json as SectionAnalysis) ?? null,
+    completedAt: r.completed_at ?? r.created_at ?? new Date().toISOString(),
+  };
+}
+
 async function fetchSectionHistoryBy(
   column: 'user_id' | 'class_id',
   value: string,
@@ -111,30 +153,7 @@ async function fetchSectionHistoryBy(
 
   if (error) throw error;
 
-  return ((data ?? []) as unknown as Array<Record<string, any>>).map((r) => ({
-    id: r.id,
-    pt: r.pt,
-    section: r.section,
-    mode: r.mode,
-    initialScore: r.initial_score ?? 0,
-    initialTotal: r.initial_total ?? 0,
-    initialPercent: r.initial_percent ?? 0,
-    // `br_used` is the authority, not the presence of a number. A row from
-    // before the empty-array fix can carry a br_score for a review that was
-    // never sat; without this guard those rows would report it as real.
-    brScore: r.br_used ? r.br_score : null,
-    brPercent: r.br_used ? r.br_percent : null,
-    brDelta: r.br_used ? r.br_delta : null,
-    brUsed: Boolean(r.br_used),
-    totalTimeMs: r.total_time_ms ?? 0,
-    avgTimeMs: r.avg_time_ms ?? 0,
-    unansweredCount: r.unanswered_count ?? 0,
-    byQtype: asTally(r.by_qtype_json),
-    byDifficulty: asTally(r.by_difficulty_json),
-    questions: asQuestions(r.questions_json),
-    analysis: (r.analysis_json as SectionAnalysis) ?? null,
-    completedAt: r.completed_at ?? r.created_at ?? new Date().toISOString(),
-  }));
+  return ((data ?? []) as unknown as Array<Record<string, any>>).map(toHistoryRow);
 }
 
 export interface SectionSummary {

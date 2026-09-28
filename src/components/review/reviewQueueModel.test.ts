@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import type { FlaggedQuestionRow } from "@/lib/flaggedService";
 import type { WrongAnswerSmartRow } from "@/lib/journalService";
 import type { ActivityAssignment, ActivityItemResponse } from "@/features/activity-centre/api/types";
-import { buildActivityReviewQueue, buildReviewQueue } from "./reviewQueueModel";
+import type { SectionHistoryRow } from "@/lib/sectionHistory";
+import { UNANSWERED } from "@/lib/sectionAnswer";
+import { buildActivityReviewQueue, buildReviewQueue, buildSectionReviewQueue } from "./reviewQueueModel";
 
 function journalRow(overrides: Partial<WrongAnswerSmartRow> = {}): WrongAnswerSmartRow {
   return {
@@ -110,5 +112,43 @@ describe("buildActivityReviewQueue", () => {
       [activityResponse("run-1", 1, "incorrect")],
     );
     expect(items).toEqual([]);
+  });
+});
+
+function sectionRow(id: string, overrides: Partial<SectionHistoryRow> = {}): SectionHistoryRow {
+  return {
+    id, pt: 80, section: 2, mode: "full-section", practiceTestRunId: null,
+    initialScore: 0, initialTotal: 2, initialPercent: 0,
+    brScore: null, brPercent: null, brDelta: null, brUsed: false,
+    totalTimeMs: 1000, avgTimeMs: 500, unansweredCount: 2,
+    byQtype: {}, byDifficulty: {}, analysis: null,
+    completedAt: "2026-09-10T00:00:00Z",
+    questions: [
+      { qid: "80-2-1", qnum: 1, qtype: "Flaw", difficulty: 3, initialAnswer: UNANSWERED, correctAnswer: "B", initialCorrect: false, flagged: false, timeMs: 500, switchCount: 0, everVisited: true },
+      { qid: "80-2-2", qnum: 2, qtype: "Strengthen", difficulty: 2, initialAnswer: UNANSWERED, correctAnswer: "C", initialCorrect: false, flagged: false, timeMs: 0, switchCount: 0, everVisited: false },
+    ],
+    ...overrides,
+  };
+}
+
+describe("buildSectionReviewQueue", () => {
+  it("includes only opened blanks from completed standalone sections with exact sitting links", () => {
+    const [item] = buildSectionReviewQueue([sectionRow("sitting-1")]);
+    expect(item.key).toBe("section:sitting-1:80-2-1");
+    expect(item.href).toBe("/review/section/sitting-1/80-2-1");
+    expect(item.reasons).toEqual(["skipped"]);
+    expect(item.sources).toEqual(["section_history"]);
+    expect(item.firstAnswer).toBeNull();
+  });
+
+  it("preserves repeat sittings and excludes PT legs and legacy rows without question detail", () => {
+    const rows = [sectionRow("sitting-1"), sectionRow("sitting-2"), sectionRow("pt-leg", { practiceTestRunId: "pt-run" }), sectionRow("legacy", { questions: [] }), sectionRow("other", { mode: "practice-test" })];
+    expect(buildSectionReviewQueue(rows).map((item) => item.key)).toEqual(["section:sitting-1:80-2-1", "section:sitting-2:80-2-1"]);
+  });
+
+  it("does not call an answered question or an unknown visit a deliberate skip", () => {
+    const answered = { ...sectionRow("x").questions[0], initialAnswer: "A" };
+    const unknown = { ...sectionRow("x").questions[0], qid: "80-2-3", everVisited: undefined };
+    expect(buildSectionReviewQueue([sectionRow("x", { questions: [answered, unknown] })])).toEqual([]);
   });
 });
