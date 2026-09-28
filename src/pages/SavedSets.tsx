@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Bookmark, Copy, Pencil, Play, Trash2 } from "lucide-react";
+import { ArrowLeft, Bookmark, Copy, Eye, Pencil, Play, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,14 +14,24 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useAuth } from "@/contexts/AuthContext";
+import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { useSavedSets } from "@/hooks/useSavedSets";
+import { questionBank } from "@/lib/questionLoader";
 import { recordExposures } from "@/lib/questionExposure";
 import { launchDrill } from "@/lib/drillLaunch";
 import { format } from "date-fns";
 
 // Saved-set surface. Lists every set the
 // user has saved (from Build a Set or Smart Builder preview). Each row has:
+//   - Inspect → reads the exact stored questions without starting a run
 //   - Launch  → navigates to /drill with the stored question_ids
 //   - Rename  → inline edit
 //   - Duplicate → server-side copy via the savedSets service
@@ -33,10 +43,13 @@ import { format } from "date-fns";
 export default function SavedSets() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isLoading: questionsLoading, error: questionsError } = useQuestionBank();
   const { sets, isLoading, remove, duplicate, rename } = useSavedSets();
+  const [inspectingId, setInspectingId] = React.useState<string | null>(null);
   const [renamingId, setRenamingId] = React.useState<string | null>(null);
   const [renameValue, setRenameValue] = React.useState("");
   const [confirmDeleteId, setConfirmDeleteId] = React.useState<string | null>(null);
+  const inspectingSet = sets.find((set) => set.id === inspectingId && set.user_id === user?.id);
 
   // The set's id, not its questions. A link that names the set stays correct
   // when the set is edited, and it is short enough to read; handing over the
@@ -141,7 +154,7 @@ export default function SavedSets() {
               return (
                 <li
                   key={set.id}
-                  className="rounded-xl border border-border bg-card px-4 py-4 flex items-center gap-4 hover:border-foreground/20 transition-colors"
+                  className="rounded-xl border border-border bg-card px-4 py-4 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 hover:border-foreground/20 transition-colors"
                 >
                   <div className="flex-1 min-w-0">
                     {isRenaming ? (
@@ -184,7 +197,16 @@ export default function SavedSets() {
                     )}
                   </div>
                   {!isRenaming && (
-                    <div className="flex items-center gap-1.5 shrink-0">
+                    <div className="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setInspectingId(set.id)}
+                        disabled={!user || set.user_id !== user.id}
+                        className="min-h-11 gap-1.5"
+                      >
+                        <Eye className="h-3.5 w-3.5" aria-hidden /> Inspect
+                      </Button>
                       <Button
                         size="sm"
                         onClick={() => launch(set.id, set.question_ids)}
@@ -225,6 +247,53 @@ export default function SavedSets() {
           </ul>
         )}
       </main>
+
+      <Dialog open={!!inspectingSet} onOpenChange={(open) => !open && setInspectingId(null)}>
+        <DialogContent className="max-w-3xl max-h-[85vh] flex flex-col overflow-hidden [&>button]:right-1 [&>button]:top-1 [&>button]:flex [&>button]:h-11 [&>button]:w-11 [&>button]:items-center [&>button]:justify-center">
+          <DialogHeader className="pr-10">
+            <DialogTitle>Inspect {inspectingSet?.name}</DialogTitle>
+            <DialogDescription>
+              These are the exact questions saved in this set, in order. Inspecting does not start a drill or record practice.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="min-h-0 overflow-y-auto space-y-3 pr-2 text-sm">
+            {questionsLoading ? (
+              <p role="status" className="text-muted-foreground">Loading questions…</p>
+            ) : questionsError ? (
+              <p role="alert" className="text-destructive">Questions could not be loaded. Close this preview and try again later.</p>
+            ) : inspectingSet?.question_ids.length === 0 ? (
+              <p className="text-muted-foreground">This set has no questions.</p>
+            ) : (
+              inspectingSet?.question_ids.map((qid, index) => {
+                const question = questionBank.getQuestion(qid);
+                return (
+                  <details key={`${qid}-${index}`} className="rounded-lg border border-border bg-card p-3 open:p-4">
+                    <summary className="min-h-11 cursor-pointer py-2 font-medium">
+                      {index + 1}. {question ? `PT${question.pt} · S${question.section} · Q${question.qnum} · ${question.qtype}` : `${qid} · unavailable`}
+                    </summary>
+                    {question ? (
+                      <div className="mt-4 space-y-4 leading-relaxed">
+                        {question.stimulus && <p className="whitespace-pre-wrap">{question.stimulus}</p>}
+                        <p className="font-medium whitespace-pre-wrap">{question.questionStem}</p>
+                        <ol className="space-y-2" aria-label={`Answer choices for question ${index + 1}`}>
+                          {(["A", "B", "C", "D", "E"] as const).map((letter) => (
+                            <li key={letter} className="flex gap-2 rounded border border-border/60 p-2">
+                              <span className="font-semibold">{letter}.</span>
+                              <span className="whitespace-pre-wrap">{question.answerChoices[letter]}</span>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    ) : (
+                      <p className="mt-3 text-muted-foreground">This saved question is no longer available in the question bank.</p>
+                    )}
+                  </details>
+                );
+              })
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <AlertDialog open={!!confirmDeleteId} onOpenChange={(open) => !open && setConfirmDeleteId(null)}>
         <AlertDialogContent>
