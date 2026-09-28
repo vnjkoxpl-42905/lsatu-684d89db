@@ -124,6 +124,13 @@ describe('rail catalog agrees with the route table', () => {
       ).toBe(routeAllowsSignedIn);
     },
   );
+
+  it('keeps Admissions visible in the rail but reserves its route for admins', () => {
+    const admissions = RAIL_CATALOG.find((item) => item.id === 'admissions');
+    expect(admissions?.requireAdmin).toBe(true);
+    expect(admissions?.allowSignedIn).toBeUndefined();
+    expect(routeElement('admissions')).toContain('<ProtectedRoute requireAdmin>');
+  });
 });
 
 describe('legacy review rail preferences', () => {

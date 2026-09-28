@@ -39,6 +39,23 @@ function renderProtected(initialEntry = "/teacher/session-ingest?foo=1") {
   );
 }
 
+function renderAdmissionsRoute() {
+  return render(
+    <MemoryRouter initialEntries={["/classroom/admissions"]}>
+      <Routes>
+        <Route
+          path="/classroom/admissions"
+          element={(
+            <ProtectedRoute requireAdmin>
+              <div>admissions content</div>
+            </ProtectedRoute>
+          )}
+        />
+      </Routes>
+    </MemoryRouter>,
+  );
+}
+
 const NO_FLAGS = {
   loading: false,
   is_admin: false,
@@ -269,6 +286,25 @@ describe("ProtectedRoute", () => {
     renderProtected();
 
     expect(screen.getByText("secret admin content")).toBeInTheDocument();
+  });
+
+  it("locks the Admissions direct URL for a signed-in student, even with classroom access", () => {
+    mockUseAuth.mockReturnValue({ user: { id: "student-1" }, authReady: true });
+    mockUseUserPermissions.mockReturnValue({ ...NO_FLAGS, has_classroom_access: true });
+
+    renderAdmissionsRoute();
+
+    expect(screen.getByText("Not open yet")).toBeInTheDocument();
+    expect(screen.queryByText("admissions content")).not.toBeInTheDocument();
+  });
+
+  it("opens the Admissions direct URL for an admin", () => {
+    mockUseAuth.mockReturnValue({ user: { id: "admin-1" }, authReady: true });
+    mockUseUserPermissions.mockReturnValue({ ...NO_FLAGS, is_admin: true });
+
+    renderAdmissionsRoute();
+
+    expect(screen.getByText("admissions content")).toBeInTheDocument();
   });
 
   // ── Phase 0: authentication is intrinsic ──────────────────────────────────

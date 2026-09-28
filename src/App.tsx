@@ -563,11 +563,10 @@ const App = () => {
                       <Route path="recaps" element={
                         <ProtectedRoute flag="has_classroom_access"><ClassroomRecapsView /></ProtectedRoute>
                       } />
-                      {/* Admissions is reference, not a paid feature: a student
-                          deciding whether to work with Joshua should be able to
-                          see what the schools they want actually took. */}
+                      {/* Admissions is unfinished. Keep the rail entry visible,
+                          but only Joshua and admins can open the page. */}
                       <Route path="admissions" element={
-                        <ProtectedRoute flag="has_classroom_access" allowSignedIn>
+                        <ProtectedRoute requireAdmin>
                           <AdmissionsPage />
                         </ProtectedRoute>
                       } />

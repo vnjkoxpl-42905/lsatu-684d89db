@@ -36,6 +36,8 @@ export interface RailItem {
    * Keep this in step with `src/App.tsx`. `railCatalog.test.ts` pins the pairs.
    */
   allowSignedIn?: boolean;
+  /** Mirrors `requireAdmin` on routes reserved for Joshua and admins. */
+  requireAdmin?: boolean;
   /** Section items open the side list and render a › chevron when unlocked. */
   section?: boolean;
   /** Home can never be hidden — it is the guaranteed way back. */
@@ -64,9 +66,7 @@ export const RAIL_CATALOG: RailItem[] = [
   { id: "activities", label: "Activities", group: "study", flags: ["has_activity_access"] },
   { id: "review", label: "Review", group: "review", flags: ["has_journal_access", "has_flagged_access"], section: true },
   { id: "analytics", label: "Analytics", group: "review", flags: ["has_analytics_access"] },
-  // Reference, not a paid feature: what the schools a student is aiming at
-  // actually admitted. Open to anyone signed in, like Home.
-  { id: "admissions", label: "Admissions", group: "review", flags: ["has_classroom_access"], allowSignedIn: true },
+  { id: "admissions", label: "Admissions", group: "review", flags: [], requireAdmin: true },
   { id: "history", label: "History", group: "review", flags: ["has_analytics_access"] },
   { id: "messages", label: "Messages", group: "support", flags: ["has_chat_access"] },
   // Schedule owns booking too: one rail entry, two stage tabs (Schedule | Book

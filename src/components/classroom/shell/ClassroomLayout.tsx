@@ -217,12 +217,14 @@ function ClassroomSidebar({
   // `loading` is "unknown", never "denied": every flag reads false until the
   // permission fetch lands, so treating that as denial padlocks the whole rail
   // for a beat on every cold load.
-  const canAccess = (item: Pick<RailItem, "flags" | "allowSignedIn">) =>
-    permissions.loading ||
-    permissions.is_admin ||
-    item.flags.length === 0 ||
-    (item.allowSignedIn && !!user) ||
-    item.flags.some((flag) => permissions[flag]);
+  const canAccess = (item: Pick<RailItem, "flags" | "allowSignedIn" | "requireAdmin">) =>
+    item.requireAdmin
+      ? permissions.is_admin
+      : permissions.loading ||
+        permissions.is_admin ||
+        item.flags.length === 0 ||
+        (item.allowSignedIn && !!user) ||
+        item.flags.some((flag) => permissions[flag]);
 
   // `onPrefetch` fires on hover and keyboard focus, not on click: the point is
   // to have the route's chunk parsed before the click lands, so the student
