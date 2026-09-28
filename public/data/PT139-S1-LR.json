@@ -252,9 +252,9 @@
     "questionStem": "The statement that the majority of students picked a twentieth-century poet functions primarily in the argument",
     "answerChoices": {
       "A": "as evidence that the educational system is producing students who are ignorant of the history of poetry",
-      "B": "as evidence of the ambiguity of some questions to illustrate that research results are difficult to interpret",
-      "C": "as evidence that the ambiguity of data should not prevent us from drawing conclusions from them",
-      "D": "as evidence that something is deeply wrong with the educational system",
+      "B": "as evidence of the ambiguity of some questions",
+      "C": "to illustrate that research results are difficult to interpret",
+      "D": "as evidence that the ambiguity of data should not prevent us from drawing conclusions from them",
       "E": "as evidence that something is deeply wrong with the educational system"
     },
     "correctAnswer": "E"
