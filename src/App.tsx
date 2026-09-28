@@ -276,8 +276,6 @@ const App = () => {
                 pinned time -- and it sells exactly one session. Nested under
                 /book/x/ so it cannot collide with the bearer-slug route below. */}
             <Route path="/book/x/:slug" element={<React.Suspense fallback={null}><OneOffBooking /></React.Suspense>} />
-            {/* Gianna's short link uses account-bound booking, so the URL does not expose a pass credential. */}
-            <Route path="/book/gianna" element={<RedirectWithSearch to="/booking" />} />
             {/* Public, no-login per-student booking link (Calendly-style). */}
             <Route path="/book/:slug" element={<React.Suspense fallback={null}><PublicBooking /></React.Suspense>} />
             {/* Legacy booking-workspace URLs used to mount a second app shell.
