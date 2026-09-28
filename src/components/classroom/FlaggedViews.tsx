@@ -6,7 +6,7 @@
  * why it was flagged, ask about it, practise it, or clear it.
  */
 import * as React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
@@ -29,6 +29,7 @@ import {
   shortDate,
 } from "@/components/classroom/StageIndexList";
 import { ReviewTabs } from "@/components/classroom/ReviewTabs";
+import { ReviewReturnLink, reviewReturnTo } from "@/components/review/ReviewReturnLink";
 
 function formatClassroomDate(value: string | Date) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -252,6 +253,9 @@ export function FlaggedIndexView() {
 
 export function FlaggedQuestionView() {
   const { qid } = useParams<{ qid: string }>();
+  const location = useLocation();
+  const queueReturnTo = reviewReturnTo(location.search);
+  const reviewNav = queueReturnTo ? <ReviewReturnLink /> : <ReviewTabs />;
   const navigate = useNavigate();
   const query = useFlagged();
   const invalidate = useInvalidateFlagged();
@@ -273,7 +277,7 @@ export function FlaggedQuestionView() {
 
   const practise = () => {
     if (!question) return;
-    navigate("/drill?returnTo=/flagged", {
+    navigate(`/drill?returnTo=${encodeURIComponent(queueReturnTo ?? "/flagged")}`, {
       state: {
         mode: "type-drill",
         config: {
@@ -295,7 +299,7 @@ export function FlaggedQuestionView() {
     try {
       await unflag(id);
       await invalidate();
-      navigate("/flagged", { replace: true });
+      navigate(queueReturnTo ?? "/flagged", { replace: true });
       toast("Unflagged", {
         action: {
           label: "Undo",
@@ -304,7 +308,7 @@ export function FlaggedQuestionView() {
               try {
                 await restoreFlag(payload);
                 await invalidate();
-                navigate(`/flagged/${encodeURIComponent(payload.qid)}`);
+                navigate(`/flagged/${encodeURIComponent(payload.qid)}${queueReturnTo ? `?returnTo=${encodeURIComponent(queueReturnTo)}` : ""}`);
               } catch (error) {
                 toast.error(
                   error instanceof Error
@@ -326,7 +330,7 @@ export function FlaggedQuestionView() {
   if (query.isLoading && !query.data) {
     return (
       <>
-        <ReviewTabs />
+        {reviewNav}
         <div className="classroom-skeleton-stack" aria-label="Loading">
           <span className="classroom-skeleton" />
           <span className="classroom-skeleton" />
@@ -339,7 +343,7 @@ export function FlaggedQuestionView() {
   if (query.error) {
     return (
       <>
-        <ReviewTabs />
+        {reviewNav}
         <div className="classroom-inline-error">
           <p>Could not load your flagged questions.</p>
           <button
@@ -357,7 +361,7 @@ export function FlaggedQuestionView() {
   if (!row) {
     return (
       <>
-        <ReviewTabs />
+        {reviewNav}
         <DetailHeading
           date={new Date().toISOString()}
           kind="Review"
@@ -371,7 +375,7 @@ export function FlaggedQuestionView() {
 
   return (
     <>
-      <ReviewTabs />
+      {reviewNav}
       <DetailHeading
         date={row.flagged_at ?? new Date().toISOString()}
         kind="Flagged"

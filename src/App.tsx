@@ -49,21 +49,22 @@ import ResetPassword from "./pages/ResetPassword";
 import ClassroomAccountView from "./components/classroom/AccountView";
 import Classroom from "./pages/Classroom";
 import AdmissionsPage from "./pages/classroom/AdmissionsPage";
-import ClassroomLayout from "./components/classroom/shell/ClassroomLayout";
+import ClassroomLayout, { ReviewIndexList } from "./components/classroom/shell/ClassroomLayout";
+import { DestinationLinks, StudentDestination } from "./pages/StudentDestination";
+import MyWorkPage from "./pages/MyWorkPage";
+import MyWorkNotesPage from "./pages/MyWorkNotesPage";
+import ReviewQueuePage from "./pages/ReviewQueuePage";
 import {
   ClassroomAssignmentView,
   ClassroomItemView,
-  ClassroomRecapsView,
   ClassroomTAAssignmentView,
   ClassroomUploadsView,
 } from "./components/classroom/ClassroomRouteViews";
 import {
-  FlaggedIndexView,
   FlaggedQuestionView,
 } from "./components/classroom/FlaggedViews";
 import {
   JournalEntryView,
-  JournalIndexView,
 } from "@/components/classroom/JournalViews";
 const CausationStation = safeLazy(() => import("./pages/CausationStation"));
 
@@ -185,7 +186,7 @@ function RedirectBootcampStudentToInsights() {
  * dropping it at the redirect.
  */
 function RedirectWithSearch({ to }: { to: string }) {
-  const { search } = useLocation();
+  const { search, hash } = useLocation();
   const incoming = new URLSearchParams(search);
   const [path, targetSearch] = to.split("?");
   const merged = new URLSearchParams(targetSearch ?? "");
@@ -193,7 +194,13 @@ function RedirectWithSearch({ to }: { to: string }) {
     if (!merged.has(key)) merged.append(key, value);
   });
   const query = merged.toString();
-  return <Navigate to={query ? `${path}?${query}` : path} replace />;
+  return <Navigate to={`${path}${query ? `?${query}` : ""}${hash}`} replace />;
+}
+
+function RedirectLegacyDrill() {
+  const { search } = useLocation();
+  const stage = new URLSearchParams(search).get("stage");
+  return <RedirectWithSearch to={stage === "full-section" ? "/practice/exams" : stage === "analytics" ? "/progress/overview" : "/practice/drills"} />;
 }
 
 function RedirectSmartboardToWhiteboard() {
@@ -545,11 +552,7 @@ const App = () => {
                       <ProtectedRoute flag="has_classroom_access" allowSignedIn><Outlet /></ProtectedRoute>
                     }>
                       <Route index element={<Classroom />} />
-                      <Route path="drill" element={
-                        <ProtectedRoute flag="has_drill_access">
-                          <AcademyMainhub />
-                        </ProtectedRoute>
-                      } />
+                      <Route path="drill" element={<RedirectLegacyDrill />} />
                       {/* Uploads are coursework too: what the student hands in
                           and what Joshua hands back. Same door as the rest. */}
                       <Route path="uploads" element={
@@ -560,16 +563,10 @@ const App = () => {
                           fresh signup can reach the intake and their account.
                           Coursework does not ride on that: notes, recaps and
                           assigned work are what has_classroom_access buys. */}
-                      <Route path="recaps" element={
-                        <ProtectedRoute flag="has_classroom_access"><ClassroomRecapsView /></ProtectedRoute>
-                      } />
+                      <Route path="recaps" element={<RedirectWithSearch to="/my-work/notes" />} />
                       {/* Admissions is unfinished. Keep the rail entry visible,
                           but only Joshua and admins can open the page. */}
-                      <Route path="admissions" element={
-                        <ProtectedRoute requireAdmin>
-                          <AdmissionsPage />
-                        </ProtectedRoute>
-                      } />
+                      <Route path="admissions" element={<RedirectWithSearch to="/library/admissions" />} />
                       <Route path="item/:itemId" element={
                         <ProtectedRoute flag="has_classroom_access"><ClassroomItemView /></ProtectedRoute>
                       } />
@@ -581,23 +578,55 @@ const App = () => {
                       } />
                     </Route>
 
+                    <Route path="/my-work" element={<ProtectedRoute flag="has_classroom_access"><StudentDestination destination="my-work" /></ProtectedRoute>}>
+                      <Route index element={<RedirectWithSearch to="/my-work/to-do" />} />
+                      <Route path="to-do" element={<MyWorkPage completed={false} />} />
+                      <Route path="completed" element={<MyWorkPage completed />} />
+                      <Route path="notes" element={<MyWorkNotesPage />} />
+                    </Route>
+
+                    <Route path="/practice" element={<ProtectedRoute allowSignedIn><StudentDestination destination="practice" /></ProtectedRoute>}>
+                      <Route index element={<RedirectWithSearch to="/practice/drills" />} />
+                      <Route path="drills" element={<ProtectedRoute flag="has_drill_access"><AcademyMainhub /></ProtectedRoute>} />
+                      <Route path="drills/saved" element={<ProtectedRoute flag="has_drill_access"><SavedSets /></ProtectedRoute>} />
+                      <Route path="exams" element={<TestingCentreGate><TestingCentre /></TestingCentreGate>} />
+                      <Route path="exams/all" element={<TestingCentreGate><AllPracticeExams /></TestingCentreGate>} />
+                      <Route path="exams/attempts" element={<ProtectedRoute allowSignedIn><PracticeExamAttempts /></ProtectedRoute>} />
+                    </Route>
+
+                    <Route path="/review" element={<ProtectedRoute allowSignedIn><StudentDestination destination="review" /></ProtectedRoute>}>
+                      <Route index element={<RedirectWithSearch to="/review/to-review" />} />
+                      <Route path="to-review" element={<ProtectedRoute flag={["has_journal_access", "has_flagged_access"]}><ReviewQueuePage /></ProtectedRoute>} />
+                      <Route path="wrong" element={<ProtectedRoute flag="has_journal_access"><ReviewIndexList section="journal" /></ProtectedRoute>} />
+                      <Route path="flagged" element={<ProtectedRoute flag="has_flagged_access"><ReviewIndexList section="flagged" /></ProtectedRoute>} />
+                    </Route>
+
+                    <Route path="/progress" element={<ProtectedRoute flag="has_analytics_access"><StudentDestination destination="progress" /></ProtectedRoute>}>
+                      <Route index element={<RedirectWithSearch to="/progress/overview" />} />
+                      <Route path="overview" element={<Analytics />} />
+                      <Route path="history" element={<DrillHistory />} />
+                      <Route path="topics" element={<DestinationLinks heading="Topics" description="Your current topic breakdown is in your progress overview." links={[{ label: "See topic breakdown", description: "Open your saved practice analytics and opportunity areas.", path: "/progress/overview" }]} />} />
+                    </Route>
+
+                    <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>
+                      <Route index element={<RedirectWithSearch to="/library/lessons" />} />
+                      <Route path="lessons" element={<ProtectedRoute flag={["has_activity_access", "has_bootcamp_access"]}><DestinationLinks heading="Study library" description="Choose the lessons and exercises available to you." links={[{ label: "Activities", description: "Short exercises assigned to your account.", path: "/library/activities", flag: "has_activity_access" }, { label: "Bootcamps", description: "Focused programs assigned to your account.", path: "/library/bootcamps", flag: "has_bootcamp_access" }]} /></ProtectedRoute>} />
+                      <Route path="activities" element={<ProtectedRoute flag="has_activity_access"><ActivityCentre /></ProtectedRoute>} />
+                      <Route path="bootcamps" element={<ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>} />
+                      <Route path="admissions" element={<ProtectedRoute requireAdmin><AdmissionsPage /></ProtectedRoute>} />
+                    </Route>
+
                     {/* The Testing Centre sits inside the classroom frame on
                         purpose: choosing a section is still classroom time, and
                         the rail has to stay reachable right up to the moment the
                         clock starts. The runners themselves are full-screen
                         takeovers registered above, outside this shell. */}
-                    <Route path="/testing" element={
-                      <TestingCentreGate><TestingCentre /></TestingCentreGate>
-                    } />
-                    <Route path="/testing/exams" element={
-                      <TestingCentreGate><AllPracticeExams /></TestingCentreGate>
-                    } />
+                    <Route path="/testing" element={<RedirectWithSearch to="/practice/exams" />} />
+                    <Route path="/testing/exams" element={<RedirectWithSearch to="/practice/exams/all" />} />
                     <Route path="/testing/exams/:pt" element={
                       <TestingCentreGate><PracticeExamDetail /></TestingCentreGate>
                     } />
-                    <Route path="/testing/attempts" element={
-                      <ProtectedRoute flag="has_classroom_access" allowSignedIn><PracticeExamAttempts /></ProtectedRoute>
-                    } />
+                    <Route path="/testing/attempts" element={<RedirectWithSearch to="/practice/exams/attempts" />} />
                     <Route path="/testing/attempts/section/lr/:sessionId" element={
                       <ProtectedRoute allowSignedIn><PracticeSectionResult /></ProtectedRoute>
                     } />
@@ -608,17 +637,11 @@ const App = () => {
                     {/* Review keeps both historic URL families. The shared tabs
                         switch between them while each route retains its own
                         permission gate and data surface. */}
-                    <Route path="/flagged" element={
-                      <ProtectedRoute flag="has_flagged_access"><FlaggedIndexView /></ProtectedRoute>
-                    } />
+                    <Route path="/flagged" element={<RedirectWithSearch to="/review/flagged" />} />
                     <Route path="/flagged/:qid" element={
                       <ProtectedRoute flag="has_flagged_access"><FlaggedQuestionView /></ProtectedRoute>
                     } />
-                    <Route path="/journal" element={
-                      <ProtectedRoute flag="has_journal_access">
-                        <JournalIndexView />
-                      </ProtectedRoute>
-                    } />
+                    <Route path="/journal" element={<RedirectWithSearch to="/review/wrong" />} />
                     <Route path="/journal/:qid" element={
                       <ProtectedRoute flag="has_journal_access">
                         <JournalEntryView />
@@ -643,16 +666,8 @@ const App = () => {
                         frame: a different sidebar, a different item set, and
                         each page's own header on top. They are ordinary stage
                         content like everything else here now. */}
-                    <Route path="/sets" element={
-                      <ProtectedRoute flag="has_drill_access"><SavedSets /></ProtectedRoute>
-                    } />
-                    <Route path="/activities" element={
-                      <ProtectedRoute flag="has_activity_access">
-                        <React.Suspense fallback={null}>
-                          <ActivityCentre />
-                        </React.Suspense>
-                      </ProtectedRoute>
-                    } />
+                    <Route path="/sets" element={<RedirectWithSearch to="/practice/drills/saved" />} />
+                    <Route path="/activities" element={<RedirectWithSearch to="/library/activities" />} />
                     {/* Teaching content, so it closes with the doors that
                         teach: the Activities and Drill flags. Any signed-in
                         user used to pass, which meant a revoked account could
@@ -662,12 +677,8 @@ const App = () => {
                         <ConditionalIndicatorsRefresher />
                       </ProtectedRoute>
                     } />
-                    <Route path="/analytics" element={
-                      <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>
-                    } />
-                    <Route path="/history" element={
-                      <ProtectedRoute flag="has_analytics_access"><DrillHistory /></ProtectedRoute>
-                    } />
+                    <Route path="/analytics" element={<RedirectWithSearch to="/progress/overview" />} />
+                    <Route path="/history" element={<RedirectWithSearch to="/progress/history" />} />
                     <Route path="/schedule" element={
                       <ProtectedRoute flag="has_schedule_access" allowSignedIn><Schedule /></ProtectedRoute>
                     } />
@@ -677,9 +688,7 @@ const App = () => {
                     {/* The rail padlocks Bootcamps on has_bootcamp_access, so
                         the route has to enforce it too. Unguarded, the padlock
                         was decorative and the URL opened anyway. */}
-                    <Route path="/bootcamps" element={
-                      <ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>
-                    } />
+                    <Route path="/bootcamps" element={<RedirectWithSearch to="/library/bootcamps" />} />
                     {/* The teacher workspace rooms use real nested routes
                         (spec D1/D3), rendering into the shell's <Outlet/> so
                         room-to-room navigation is real browser history.
@@ -847,8 +856,7 @@ const App = () => {
                   {/* The /practice hub was removed; its Full Section and
                       Build a Set launchers now live on the drill hub as
                       ?stage= panels. Redirects keep old links alive. */}
-                  <Route path="/practice" element={<Navigate to="/classroom/drill" replace />} />
-                  <Route path="/practice/sets" element={<Navigate to="/sets" replace />} />
+                  <Route path="/practice/sets" element={<RedirectWithSearch to="/practice/drills/saved" />} />
                   {/* Old standalone pages now live inside the classroom
                       Account stage; redirects keep bookmarks alive. */}
                   <Route path="/profile" element={<Navigate to="/classroom/account" replace />} />

@@ -41,6 +41,8 @@ export interface HomeRow {
   isNew: boolean;
   dueToday: boolean;
   overdue: boolean;
+  /** Saved work evidence, not a click or page view. */
+  workStatus?: 'assigned' | 'in_progress';
   /** Existing feed deadline, retained for the Continue action. */
   dueAt?: string | null;
   /** Work the student can close out by hand; reading matter cannot. */
@@ -168,6 +170,9 @@ export interface ClassroomHomeModel {
   /** Calendar days until the student's test date; absent for null or past dates. */
   daysToTest: number | null;
   dueTodayCount: number;
+  /** Omitted while assignment sources are loading or incomplete. */
+  workSummary?: { open: number; inProgress: number } | null;
+  workFailed?: boolean;
   hero: HomeHero | null;
   rows: HomeRow[];
   /** Chosen before the display list is capped at four rows. */
@@ -427,8 +432,7 @@ export function buildWeek(
 }
 
 /** Reading matter and completed Report Cards are not work to continue. */
-export function pickContinueWork(rows: HomeRow[], access: HomeAccess, isAdmin: boolean): HomeRow | null {
-  if (isAdmin) return null;
+export function pickContinueWork(rows: HomeRow[], access: HomeAccess, _isAdmin: boolean): HomeRow | null {
   const deadline = (row: HomeRow) => {
     if (!row.dueAt) return Infinity;
     const time = (parseLocalDay(row.dueAt) ?? new Date(row.dueAt)).getTime();

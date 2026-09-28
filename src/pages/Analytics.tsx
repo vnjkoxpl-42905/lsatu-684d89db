@@ -12,6 +12,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import BreakdownPanel from '@/components/analytics/BreakdownPanel';
 import FlaggedQuestionsList from '@/components/analytics/FlaggedQuestionsList';
 import ImportedMetricsPanel from '@/components/analytics/ImportedMetricsPanel';
+import FirstAnswerProgressPanel from '@/components/analytics/FirstAnswerProgressPanel';
 import { Flag } from 'lucide-react';
 
 const Analytics = () => {
@@ -95,12 +96,16 @@ const Analytics = () => {
   const sortedTypes = hasData ? Object.keys(data.accuracyByType).sort() : [];
 
   return (
-    // No header of its own: the classroom rail owns the way back, sign out and
-    // the theme toggle. The page keeps its own h1 — the rail is navigation, not
-    // the document's heading, and stripping the header left the page untitled.
-    <div className="bg-background">
-      <div className="max-w-7xl mx-auto pb-16">
-        <h1 className="text-3xl font-semibold tracking-tight mb-10">Analytics</h1>
+    // The Progress destination owns the page heading and classroom navigation.
+    <div className="min-w-0 bg-background">
+      <div className="mx-auto w-full min-w-0 max-w-7xl pb-16">
+        <div className="mb-10 min-w-0">
+          <FirstAnswerProgressPanel />
+        </div>
+
+        <p className="mb-5 text-xs leading-relaxed text-muted-foreground">
+          The breakdown and opportunity charts below use saved attempts, including repeat answers. Their percentages may differ from first-answer accuracy above.
+        </p>
 
         {/* Tag breakdowns. Self-contained: reads the student's own attempts and
             the question bank, so it renders regardless of the rollup below. */}
@@ -238,12 +243,12 @@ const Analytics = () => {
               </div>
 
               {/* Matrix */}
-              <div className="lg:w-96">
+              <div className="min-w-0 lg:w-96">
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium mb-5">
                   Type × Level Matrix
                 </p>
-                <div className="rounded-xl bg-card border border-border shadow-sm p-4">
-                  <div className="space-y-2">
+                <div className="max-w-full overflow-x-auto rounded-xl bg-card border border-border shadow-sm p-4" role="region" aria-label="Type by level matrix" tabIndex={0}>
+                  <div className="min-w-[380px] space-y-2">
                     <div className="flex gap-2 mb-3">
                       <div className="w-28" />
                       {[1, 2, 3, 4, 5].map(level => (
@@ -288,7 +293,7 @@ const Analytics = () => {
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium mb-5">
                 Performance by Difficulty
               </p>
-              <div className="grid grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
                 {[1, 2, 3, 4, 5].map(level => {
                   const stats = data.accuracyByLevel[level] || { accuracy: 0, total: 0 };
                   return (

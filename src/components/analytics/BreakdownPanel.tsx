@@ -84,8 +84,8 @@ export default function BreakdownPanel() {
   }, [attempts]);
 
   return (
-    <section className="rounded-xl border border-border bg-card shadow-sm">
-      <header className="border-b border-border px-6 py-5">
+    <section className="w-full min-w-0 max-w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+      <header className="min-w-0 border-b border-border px-4 py-5 sm:px-6">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <h2 className="font-serif text-2xl font-semibold text-foreground">Logical Reasoning</h2>
           {totals && totals.total > 0 ? (
@@ -98,7 +98,7 @@ export default function BreakdownPanel() {
           ) : null}
         </div>
 
-        <nav aria-label="Analytics breakdowns" className="-mb-5 mt-4 flex gap-1 overflow-x-auto">
+        <nav aria-label="Analytics breakdowns" className="-mb-5 mt-4 flex w-full min-w-0 max-w-full gap-1 overflow-x-auto">
           {TABS.map((t) => {
             const active = t.id === tab;
             return (
@@ -121,7 +121,7 @@ export default function BreakdownPanel() {
         </nav>
       </header>
 
-      <div className="px-6 pb-6">
+      <div className="min-w-0 px-4 pb-6 sm:px-6">
         {error ? (
           <p className="py-10 text-center text-sm text-muted-foreground">
             Could not load your attempt history.
@@ -129,21 +129,25 @@ export default function BreakdownPanel() {
         ) : isLoading || !bankReady ? (
           <p className="py-10 text-center text-sm text-muted-foreground">Loading…</p>
         ) : (
-          <BreakdownTable
-            rows={rows}
-            groups={groupOrder(tab)}
-            showDifficulty={tab !== 'difficulty'}
-            countLabel={
-              tab === 'wrongByQtype'
-                ? (r) => `${r.attempted} missed of ${r.poolCount} in the pool`
-                : undefined
-            }
-            emptyMessage={
-              tab === 'wrongByQtype'
-                ? 'No wrong answers recorded yet.'
-                : 'Nothing here yet. Answer some questions and this fills in.'
-            }
-          />
+          <div className="w-full min-w-0 overflow-x-auto" role="region" aria-label="Logical Reasoning breakdown table" tabIndex={0}>
+            <div className="min-w-[36rem]">
+              <BreakdownTable
+                rows={rows}
+                groups={groupOrder(tab)}
+                showDifficulty={tab !== 'difficulty'}
+                countLabel={
+                  tab === 'wrongByQtype'
+                    ? (r) => `${r.attempted} missed of ${r.poolCount} in the pool`
+                    : undefined
+                }
+                emptyMessage={
+                  tab === 'wrongByQtype'
+                    ? 'No wrong answers recorded yet.'
+                    : 'Nothing here yet. Answer some questions and this fills in.'
+                }
+              />
+            </div>
+          </div>
         )}
       </div>
     </section>

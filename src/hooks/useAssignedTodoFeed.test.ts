@@ -87,6 +87,20 @@ describe('H8 · one feed, not two disjoint ones', () => {
     expect(rows[0].subtitle).toContain('6 questions');
   });
 
+  it('does not let a mirror mark an unfinished guided attempt complete', () => {
+    const [row] = buildAssignedRows({
+      ...EMPTY,
+      guided: [guidedRow({ status: 'read' })],
+      items: [item({
+        type: 'drill',
+        source_table: 'guided_drill_assignments',
+        source_id: 'ga-1',
+        status: 'completed',
+      })],
+    });
+    expect(row.status).toBe('assigned');
+  });
+
   it('does not treat notes and recaps as work', () => {
     const rows = buildAssignedRows({
       ...EMPTY,
@@ -96,8 +110,8 @@ describe('H8 · one feed, not two disjoint ones', () => {
   });
 });
 
-describe('H9 · duplicate assignments of one drill collapse', () => {
-  it('keeps a single row for two assignments of the same drill', () => {
+describe('Repeated assignments keep their own history', () => {
+  it('keeps both issued instances of the same drill', () => {
     const rows = buildAssignedRows({
       ...EMPTY,
       guided: [
@@ -105,23 +119,38 @@ describe('H9 · duplicate assignments of one drill collapse', () => {
         guidedRow({ id: 'a84153c7', assigned_at: '2026-05-22T15:37:08Z' }),
       ],
     });
-    expect(rows).toHaveLength(1);
-    expect(rows[0].refId).toBe('a84153c7'); // the newer of the two
+    expect(rows.map((row) => row.refId)).toEqual(['a84153c7', 'e47f7ea5']);
   });
 
-  it('prefers an open assignment over a newer completed one', () => {
+  it('shows an open assignment and a separately completed one', () => {
     const rows = buildAssignedRows({
       ...EMPTY,
       guided: [
         guidedRow({ id: 'old-open', status: 'assigned', assigned_at: '2026-05-01T00:00:00Z' }),
-        guidedRow({ id: 'new-done', status: 'completed', assigned_at: '2026-05-22T00:00:00Z' }),
+        guidedRow({ id: 'new-done', status: 'completed', completed_at: '2026-05-23T00:00:00Z', assigned_at: '2026-05-22T00:00:00Z' }),
       ],
     });
-    expect(rows).toHaveLength(1);
-    // Hiding still-owed work because a later twin was finished would be worse
-    // than showing a stale date.
-    expect(rows[0].refId).toBe('old-open');
-    expect(rows[0].status).toBe('assigned');
+    expect(rows.map((row) => [row.refId, row.status])).toEqual([
+      ['old-open', 'assigned'],
+      ['new-done', 'completed'],
+    ]);
+  });
+
+  it('uses an account-saved answer, not Start click, for In progress', () => {
+    const rows = buildAssignedRows({
+      ...EMPTY,
+      guided: [guidedRow({ id: 'clicked-start', status: 'started' }), guidedRow({ id: 'saved-answer', status: 'started' })],
+      guidedEvidence: { 'saved-answer': { sessionId: 'session-1', savedAnswerCount: 1, status: 'in_progress' } },
+    });
+    expect(rows.find((row) => row.refId === 'clicked-start')?.status).toBe('assigned');
+    expect(rows.find((row) => row.refId === 'saved-answer')?.status).toBe('in_progress');
+  });
+
+  it('uses a saved Activity response, not Start click, for In progress', () => {
+    const activity = { id: 'activity-a', title: 'Spot the Relationship', subtitle: null, status: 'in_progress', created_at: '2026-09-28T00:00:00Z', completed_at: null } as never;
+    expect(buildAssignedRows({ ...EMPTY, activities: [activity] })[0].status).toBe('assigned');
+    expect(buildAssignedRows({ ...EMPTY, activities: [activity], activityEvidence: new Set(['activity-a']) })[0].status)
+      .toBe('in_progress');
   });
 
   it('keeps genuinely different drills apart', () => {
@@ -199,5 +228,17 @@ describe('an assigned PrepTest section is sat, not marked', () => {
     expect(rows).toHaveLength(1);
     expect(rows[0].route).toBe('/section/hw-9');
     expect(rows[0].selfCompleting).toBe(true);
+  });
+});
+
+describe('homework progress requires a saved answer', () => {
+  it('does not count first-question render or a completed mirror as completion', () => {
+    const homework = { id: 'hw-opened', set_title: 'LR homework', question_qids: ['PT101-S2-Q1'], status: 'in_progress', completed_at: null, created_at: '2026-09-28T00:00:00Z', score: null };
+    const [row] = buildAssignedRows({
+      ...EMPTY,
+      hw: [homework as never],
+      items: [item({ type: 'homework', source_table: 'homework_assignments', source_id: 'hw-opened', status: 'completed' })],
+    });
+    expect(row.status).toBe('assigned');
   });
 });

@@ -154,9 +154,11 @@ async function requireUserId(): Promise<string> {
 
 /** All non-archived pages for the current user (the full tree + all rows). */
 export async function listPages(): Promise<JournalPage[]> {
+  const userId = await requireUserId();
   const { data, error } = await supabase
     .from('journal_pages')
     .select('*')
+    .eq('user_id', userId)
     .eq('is_archived', false)
     .order('sort_order', { ascending: true });
   if (error) throw error;
@@ -164,10 +166,12 @@ export async function listPages(): Promise<JournalPage[]> {
 }
 
 export async function getPage(id: string): Promise<JournalPage | null> {
+  const userId = await requireUserId();
   const { data, error } = await supabase
     .from('journal_pages')
     .select('*')
     .eq('id', id)
+    .eq('user_id', userId)
     .maybeSingle();
   if (error) throw error;
   return data ? toPage(data) : null;
@@ -215,6 +219,22 @@ export async function updatePageMeta(
 ): Promise<void> {
   const { error } = await supabase.from('journal_pages').update(meta).eq('id', id);
   if (error) throw error;
+}
+
+/** Save a student's plain-text note in one write, scoped to the signed-in owner. */
+export async function updateMyNotePage(id: string, title: string, body: TiptapDoc): Promise<JournalPage> {
+  const userId = await requireUserId();
+  const { data, error } = await supabase
+    .from('journal_pages')
+    .update({ title, body: body as unknown as Json })
+    .eq('id', id)
+    .eq('user_id', userId)
+    .eq('type', 'doc')
+    .select('*')
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new Error('This note could not be saved to your account.');
+  return toPage(data);
 }
 
 /** Move/reorder a page: set its parent and a fractional sort_order. */

@@ -114,10 +114,35 @@ const FULL: ClassroomHomeModel = {
 const HERO_ONLY: ClassroomHomeModel = { ...FULL, continueRow: null };
 
 describe("ClassroomHomeView", () => {
+  it("shows the saved-work summary and explains the next assignment", () => {
+    render(<ClassroomHomeView model={{
+      ...FULL,
+      workSummary: { open: 3, inProgress: 1 },
+      continueRow: { ...FULL.rows[0], workStatus: 'in_progress' },
+    }} loading={false} onOpen={vi.fn()} />);
+    expect(screen.getByText('3 open assignments · 1 with saved work')).toBeInTheDocument();
+    expect(screen.getByText('This assignment is due today.')).toBeInTheDocument();
+    expect(screen.getByText('Continue')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Continue assigned work' })).toBeInTheDocument();
+  });
+
+  it("does not claim an empty work list when an assignment source fails", () => {
+    const retry = vi.fn();
+    render(<ClassroomHomeView model={{
+      ...EMPTY,
+      workFailed: true,
+      subtitle: 'Could not load all assigned work. Try again.',
+    }} loading={false} onOpen={vi.fn()} onRetryWork={retry} />);
+    expect(screen.queryByText('Nothing assigned right now.')).not.toBeInTheDocument();
+    expect(screen.getByText('Some assigned work could not load. Retry above.')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Retry assigned work' }));
+    expect(retry).toHaveBeenCalledOnce();
+  });
+
   it("opens the assigned work and adaptive Smart Drill from the action cards", () => {
     const onOpen = vi.fn();
     render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
-    fireEvent.click(screen.getByRole("button", { name: "Continue assigned work" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start assigned work" }));
     expect(onOpen).toHaveBeenLastCalledWith("/activities/a");
     fireEvent.click(screen.getByRole("button", { name: "Smart Drill" }));
     expect(onOpen).toHaveBeenLastCalledWith("/drill?drill=smart-drill&returnTo=%2Fclassroom");
@@ -314,7 +339,7 @@ describe("ClassroomHomeView", () => {
         onOpen={vi.fn()}
       />,
     );
-    expect(screen.queryByRole("button", { name: "Continue assigned work" })).toBeNull();
+    expect(screen.queryByRole("button", { name: /assigned work$/ })).toBeNull();
     expect(screen.getByRole("button", { name: "Smart Drill" })).toBeInTheDocument();
   });
 
@@ -329,7 +354,7 @@ describe("ClassroomHomeView", () => {
         onOpen={vi.fn()}
       />,
     );
-    for (const name of ["Continue assigned work", "Smart Drill", "Timed section"]) {
+    for (const name of ["Start assigned work", "Smart Drill", "Timed section"]) {
       expect(screen.queryByRole("button", { name })).toBeNull();
     }
     // The finder was never gated on Home; the redesign keeps it that way.
@@ -338,9 +363,12 @@ describe("ClassroomHomeView", () => {
     expect(screen.getByLabelText("Next seven days")).toBeInTheDocument();
   });
 
-  it("never offers the coach assigned work to continue", () => {
-    render(<ClassroomHomeView model={{ ...FULL, isAdmin: true }} loading={false} onOpen={vi.fn()} />);
-    expect(screen.queryByRole("button", { name: "Continue assigned work" })).toBeNull();
+  it("offers the teacher their own assigned work without changing student ownership", () => {
+    const onOpen = vi.fn();
+    render(<ClassroomHomeView model={{ ...FULL, isAdmin: true, workSummary: { open: 1, inProgress: 0 } }} loading={false} onOpen={onOpen} />);
+    expect(screen.getByText('1 open assignment · 0 with saved work')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Start assigned work" }));
+    expect(onOpen).toHaveBeenCalledWith('/activities/a');
   });
 
   it("uses the existing unread count and inbox route", () => {
@@ -364,7 +392,7 @@ describe("ClassroomHomeView", () => {
       },
     };
     render(<ClassroomHomeView model={{ ...FULL, continueRow }} loading={false} onOpen={onOpen} />);
-    fireEvent.click(screen.getByRole("button", { name: "Continue assigned work" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start assigned work" }));
     expect(screen.getByRole("dialog", { name: "Logical Reasoning" })).toBeInTheDocument();
     expect(onOpen).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole("button", { name: "Enter" }));
@@ -455,12 +483,13 @@ describe("ClassroomHomeView", () => {
     });
   });
 
-  it("offers a Mark done control on assigned work and reports the row key", () => {
+  it("offers a Mark done control for a manual teacher task and reports its key", () => {
     const onMarkDone = vi.fn();
+    const task = { ...FULL.rows[0], key: 'ta-1', title: 'Read Joshua’s feedback', kind: 'ta' as const, canComplete: true };
     const model = {
       ...FULL,
-      rows: [{ ...FULL.rows[0], canComplete: true }],
-      hero: { ...FULL.hero!, row: { ...FULL.hero!.row, canComplete: true } },
+      rows: [task],
+      hero: { ...FULL.hero!, row: task },
     };
     render(
       <ClassroomHomeView
@@ -472,8 +501,8 @@ describe("ClassroomHomeView", () => {
       />,
     );
 
-    fireEvent.click(screen.getByLabelText("Mark Negation Station as done"));
-    expect(onMarkDone).toHaveBeenCalledWith("a");
+    fireEvent.click(screen.getByLabelText("Mark Read Joshua’s feedback as done"));
+    expect(onMarkDone).toHaveBeenCalledWith("ta-1");
   });
 
   it("omits Mark done for reading matter", () => {
@@ -665,7 +694,7 @@ describe("ClassroomHomeView", () => {
   it("drops the hero when the Continue card already offers the same work", () => {
     render(<ClassroomHomeView model={FULL} loading={false} onOpen={vi.fn()} />);
 
-    expect(screen.getByRole("button", { name: "Continue assigned work" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start assigned work" })).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "Pick up where you left off" })).toBeNull();
   });
 

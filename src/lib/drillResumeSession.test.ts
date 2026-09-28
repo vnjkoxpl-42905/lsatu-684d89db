@@ -5,9 +5,24 @@ const store = vi.hoisted(() => ({
   savePracticeSessionSnapshot: vi.fn(),
   completePracticeSession: vi.fn(),
 }));
+const accountWrites = vi.hoisted(() => ({ fail: false }));
 
-vi.mock('@/bootcamps/main-conclusion/lib/practiceSessionStore', () => ({
+vi.mock('@/bootcamps/main-conclusion/lib/practiceSessionStore', async (importOriginal) => ({
+  ...await importOriginal<typeof import('@/bootcamps/main-conclusion/lib/practiceSessionStore')>(),
   ...store,
+}));
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    from: () => ({
+      upsert: async () => ({ error: accountWrites.fail ? { message: 'offline' } : null }),
+      select: () => {
+        const chain: Record<string, unknown> = {};
+        chain.eq = () => chain;
+        chain.maybeSingle = async () => ({ data: null, error: null });
+        return chain;
+      },
+    }),
+  },
 }));
 
 import {
@@ -15,6 +30,9 @@ import {
   isResumableDrillSession,
   isSpentDrillSession,
   loadDrillResumeSession,
+  saveDrillResumeSnapshot,
+  hasPendingSectionDeviceBackup,
+  writeSectionDeviceBackup,
   type DrillResumeSession,
 } from './drillResumeSession';
 
@@ -58,6 +76,50 @@ describe('loading a renamed Run Record', () => {
     ).resolves.toBe(currentRecord);
     expect(store.loadPracticeSession).toHaveBeenCalledTimes(1);
   });
+});
+
+it('restores an unsaved section choice from the same account device backup', async () => {
+  const userId = '11111111-1111-4111-8111-111111111111';
+  const otherUserId = '22222222-2222-4222-8222-222222222222';
+  const key = 'drill::section::pt23-s2';
+  window.localStorage.clear();
+  store.loadPracticeSession.mockReset().mockResolvedValue(null);
+  expect(writeSectionDeviceBackup(userId, key, {
+    questionQueue: ['PT23-S2-Q1', 'PT23-S2-Q2'],
+    currentIndex: 0,
+    attempts: [{ qid: 'PT23-S2-Q1', selected_answer: 'B', correct: true, time_ms: 1200 }],
+    elapsedMs: 9000,
+    timerMode: '35',
+  })).toBeTruthy();
+  expect(hasPendingSectionDeviceBackup(userId, key)).toBe(true);
+  expect(hasPendingSectionDeviceBackup(otherUserId, key)).toBe(false);
+
+  const restored = await loadDrillResumeSession(userId, key);
+  expect(restored?.current_index).toBe(0);
+  expect(restored?.attempts[0]?.selected_answer).toBe('B');
+  expect(restored?.elapsed_ms).toBe(9000);
+});
+
+it('keeps the section backup until the account acknowledges it', async () => {
+  const userId = '11111111-1111-4111-8111-111111111111';
+  const key = 'drill::section::pt23-s2';
+  const snapshot = {
+    questionQueue: ['PT23-S2-Q1'],
+    currentIndex: 0,
+    attempts: [{ qid: 'PT23-S2-Q1', selected_answer: 'B', correct: true, time_ms: 1200 }],
+    elapsedMs: 9000,
+    timerMode: '35' as const,
+  };
+  window.localStorage.clear();
+  store.savePracticeSessionSnapshot.mockReset().mockResolvedValue(undefined);
+  store.loadPracticeSession.mockReset().mockResolvedValue({ id: '33333333-3333-4333-8333-333333333333' });
+  accountWrites.fail = true;
+  await expect(saveDrillResumeSnapshot(userId, key, snapshot)).rejects.toBeTruthy();
+  expect(hasPendingSectionDeviceBackup(userId, key)).toBe(true);
+
+  accountWrites.fail = false;
+  await saveDrillResumeSnapshot(userId, key, snapshot);
+  expect(hasPendingSectionDeviceBackup(userId, key)).toBe(false);
 });
 
 describe('naming the Run Record', () => {

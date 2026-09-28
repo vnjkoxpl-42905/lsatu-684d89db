@@ -28,6 +28,7 @@ import {
   completePracticeSession,
   migratePracticeSession,
   practiceSessionIdFor,
+  PRACTICE_SESSION_DATA_VERSION,
   type PracticeSessionSnapshot,
 } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { PracticeSession, TABLES } from '@/bootcamps/main-conclusion/persistence/records';
@@ -86,6 +87,64 @@ async function syncSectionToAccount(userId: string, key: string): Promise<void> 
 
 export type DrillResumeSession = PracticeSession;
 export type DrillResumeSnapshot = PracticeSessionSnapshot;
+
+const sectionBackupKey = (userId: string, key: string) =>
+  `lsatu:section-backup:${practiceSessionIdFor(userId, key)}`;
+
+/** Synchronous device copy, including the latest unacknowledged choice. */
+export function writeSectionDeviceBackup(
+  userId: string,
+  key: string | null,
+  snapshot: DrillResumeSnapshot,
+): string | null {
+  if (!userId || !key || !accountSectionKey(key) || !snapshot.questionQueue.length) return null;
+  const previous = readSectionDeviceBackup(userId, key);
+  const time = new Date(Math.max(Date.now(), previous ? Date.parse(previous.updated_at) + 1 : 0)).toISOString();
+  const record = PracticeSession.safeParse({
+    id: practiceSessionIdFor(userId, key),
+    user_id: userId,
+    pool_slug: key,
+    completion_id: key,
+    data_version: PRACTICE_SESSION_DATA_VERSION,
+    question_queue: snapshot.questionQueue,
+    current_index: Math.min(Math.max(snapshot.currentIndex, 0), snapshot.questionQueue.length - 1),
+    attempts: snapshot.attempts,
+    status: 'in_progress',
+    elapsed_ms: snapshot.elapsedMs,
+    timer_mode: snapshot.timerMode,
+    timer_custom_minutes: snapshot.timerCustomMinutes,
+    regulation_answered_qids: snapshot.regulationAnsweredQids,
+    started_at: time,
+    updated_at: time,
+  });
+  if (!record.success) return null;
+  try {
+    window.localStorage.setItem(sectionBackupKey(userId, key), JSON.stringify(record.data));
+    return time;
+  } catch (error) {
+    console.warn('[drill:section] device backup unavailable', error);
+    return null;
+  }
+}
+
+function readSectionDeviceBackup(userId: string, key: string): DrillResumeSession | null {
+  try {
+    const raw = window.localStorage.getItem(sectionBackupKey(userId, key));
+    const parsed = PracticeSession.safeParse(raw ? JSON.parse(raw) : null);
+    if (!parsed.success || parsed.data.user_id !== userId || parsed.data.pool_slug !== key) return null;
+    return parsed.data;
+  } catch {
+    return null;
+  }
+}
+
+function clearSectionDeviceBackup(userId: string, key: string): void {
+  try {
+    window.localStorage.removeItem(sectionBackupKey(userId, key));
+  } catch {
+    // The completed account row is authoritative even if browser storage is unavailable.
+  }
+}
 
 export type DrillResumeIdentity = {
   kind: 'bootcamp-day';
@@ -182,13 +241,26 @@ export async function loadDrillResumeSession(
   if (!userId || !key) return null;
   // Hydration compares the locally saved timestamp with the account row before
   // returning. Reading the cloud first could bypass a newer unsynced answer.
-  const current = await loadPracticeSession(userId, key);
+  let current: DrillResumeSession | null;
+  try {
+    current = await loadPracticeSession(userId, key);
+  } catch (error) {
+    console.warn('[drill:section] local resume read failed', error);
+    current = null;
+  }
   if (accountSectionKey(key)) {
+    const backup = readSectionDeviceBackup(userId, key);
+    if (backup && (!current || backup.updated_at > current.updated_at)) current = backup;
     try {
       const account = await readSectionFromAccount(userId, key);
-      if (account && (!current || account.updated_at >= current.updated_at)) return account;
+      if (account && (!current || account.updated_at >= current.updated_at)) {
+        if (backup) clearSectionDeviceBackup(userId, key);
+        return account;
+      }
       if (current) {
-        await syncSectionToAccount(userId, key);
+        // A backup can be newer than IndexedDB. The runner will sync it as soon
+        // as it mounts; syncing the stale IndexedDB row here would overwrite it.
+        if (current !== backup) await syncSectionToAccount(userId, key);
         return current;
       }
     } catch (error) {
@@ -206,11 +278,19 @@ export async function saveDrillResumeSnapshot(
   snapshot: DrillResumeSnapshot,
 ): Promise<void> {
   if (!userId || !key) return;
+  const backupStamp = accountSectionKey(key) ? writeSectionDeviceBackup(userId, key, snapshot) : null;
   await queueAccountWrite(userId, key, async () => {
     await assertActiveTestLeg(userId, key);
     await savePracticeSessionSnapshot(userId, { slug: key, completionId: key }, snapshot);
     if (accountSectionKey(key)) await syncSectionToAccount(userId, key);
   });
+  if (backupStamp && readSectionDeviceBackup(userId, key)?.updated_at === backupStamp) {
+    clearSectionDeviceBackup(userId, key);
+  }
+}
+
+export function hasPendingSectionDeviceBackup(userId: string, key: string | null): boolean {
+  return !!userId && !!key && !!readSectionDeviceBackup(userId, key);
 }
 
 /**
@@ -229,6 +309,7 @@ export async function completeDrillResumeSession(
     await completePracticeSession(userId, { slug: key, completionId: key }, snapshot);
     if (accountSectionKey(key)) await syncSectionToAccount(userId, key);
   });
+  if (accountSectionKey(key)) clearSectionDeviceBackup(userId, key);
 }
 
 /**

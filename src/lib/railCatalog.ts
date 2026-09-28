@@ -1,84 +1,37 @@
 import type { PermissionFlag } from "@/hooks/useUserPermissions";
 
-// The classroom rail as data. Behavior (active state, click handlers) stays in
-// ClassroomLayout, keyed by id — this file owns only what the rail contains,
-// so the Account layout editor and the rail render from one source of truth.
-
-export type RailGroupId = "classroom" | "study" | "review" | "support";
-
-export type RailItemId =
-  | "home"
-  | "notes"
-  | "work"
-  | "drill"
-  | "testing"
-  | "bootcamps"
-  | "activities"
-  | "review"
-  | "analytics"
-  | "history"
-  | "admissions"
-  | "messages"
-  | "schedule";
+export type RailGroupId = "classroom";
+export type RailItemId = "home" | "my-work" | "practice" | "review" | "progress" | "library" | "schedule";
 
 export interface RailItem {
   id: RailItemId;
   label: string;
   group: RailGroupId;
-  /** Empty = available to every signed-in student. */
   flags: PermissionFlag[];
-  /**
-   * Mirrors the `allowSignedIn` prop on this item's route. Where the route lets
-   * any signed-in user through regardless of `flags`, the rail must not draw a
-   * padlock from those same flags — a padlock over a route anyone can open is
-   * a lie the student can disprove by typing the URL.
-   *
-   * Keep this in step with `src/App.tsx`. `railCatalog.test.ts` pins the pairs.
-   */
   allowSignedIn?: boolean;
-  /** Mirrors `requireAdmin` on routes reserved for Joshua and admins. */
   requireAdmin?: boolean;
-  /** Section items open the side list and render a › chevron when unlocked. */
   section?: boolean;
-  /** Home can never be hidden — it is the guaranteed way back. */
   required?: boolean;
 }
 
 export const RAIL_GROUPS: { id: RailGroupId; title: string }[] = [
   { id: "classroom", title: "Classroom" },
-  { id: "study", title: "Study" },
-  { id: "review", title: "Review" },
-  { id: "support", title: "Support" },
 ];
 
+// Each destination stays visible, including while its contents are locked.
+// Every tab and deep route applies its own permission gate.
 export const RAIL_CATALOG: RailItem[] = [
   { id: "home", label: "Home", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, required: true },
-  { id: "drill", label: "Drill", group: "classroom", flags: ["has_drill_access"] },
-  // The Testing Centre is where a student sits something under test conditions:
-  // one real timed section, or a full practice test. It is deliberately its own
-  // rail entry rather than a tab inside Drill — drilling is practice you stop
-  // and think inside, and a sitting is not, so putting them behind one door
-  // invites starting a 35:00 clock by accident.
-  { id: "testing", label: "Practice Exams", group: "classroom", flags: ["has_practice_access"] },
-  { id: "work", label: "Assigned work", group: "classroom", flags: ["has_classroom_access"], section: true },
-  { id: "notes", label: "Notes and recaps", group: "study", flags: ["has_classroom_access"], section: true },
-  { id: "bootcamps", label: "Bootcamps", group: "study", flags: ["has_bootcamp_access"] },
-  { id: "activities", label: "Activities", group: "study", flags: ["has_activity_access"] },
-  { id: "review", label: "Review", group: "review", flags: ["has_journal_access", "has_flagged_access"], section: true },
-  { id: "analytics", label: "Analytics", group: "review", flags: ["has_analytics_access"] },
-  { id: "admissions", label: "Admissions", group: "review", flags: [], requireAdmin: true },
-  { id: "history", label: "History", group: "review", flags: ["has_analytics_access"] },
-  { id: "messages", label: "Messages", group: "support", flags: ["has_chat_access"] },
-  // Schedule owns booking too: one rail entry, two stage tabs (Schedule | Book
-  // a session). Two adjacent Support entries for the same errand opened
-  // unrelated-looking screens, and the empty Schedule had no way to book at all.
-  { id: "schedule", label: "Schedule", group: "support", flags: ["has_schedule_access"], allowSignedIn: true },
+  { id: "my-work", label: "My Work", group: "classroom", flags: ["has_classroom_access"] },
+  { id: "practice", label: "Practice", group: "classroom", flags: ["has_drill_access", "has_practice_access"], allowSignedIn: true },
+  { id: "review", label: "Review", group: "classroom", flags: ["has_journal_access", "has_flagged_access"], allowSignedIn: true },
+  { id: "progress", label: "Progress", group: "classroom", flags: ["has_analytics_access"] },
+  { id: "library", label: "Library", group: "classroom", flags: ["has_activity_access", "has_bootcamp_access"], allowSignedIn: true },
+  { id: "schedule", label: "Schedule", group: "classroom", flags: ["has_schedule_access"], allowSignedIn: true },
 ];
 
 export interface RailPrefs {
-  /** Item ids in display order per group. Missing ids append in catalog order; unknown ids are dropped. */
   order: Partial<Record<RailGroupId, string[]>>;
-  /** Item ids the student chose to hide. Required items are never hidden. */
   hidden: string[];
 }
 
@@ -86,71 +39,88 @@ export function defaultRailPrefs(): RailPrefs {
   return { order: {}, hidden: [] };
 }
 
+const LEGACY_DESTINATION: Record<string, RailItemId> = {
+  home: "home",
+  "my-work": "my-work",
+  work: "my-work",
+  notes: "my-work",
+  drill: "practice",
+  practice: "practice",
+  testing: "practice",
+  journal: "review",
+  flagged: "review",
+  review: "review",
+  analytics: "progress",
+  progress: "progress",
+  history: "progress",
+  bootcamps: "library",
+  library: "library",
+  activities: "library",
+  admissions: "library",
+  schedule: "schedule",
+};
+
 export function normalizeRailPrefs(raw: unknown): RailPrefs {
   if (!raw || typeof raw !== "object") return defaultRailPrefs();
-  const r = raw as Partial<RailPrefs>;
-  const validIds = new Set(RAIL_CATALOG.map((i) => i.id));
-  const order: RailPrefs["order"] = {};
-  if (r.order && typeof r.order === "object") {
-    for (const group of RAIL_GROUPS) {
-      const list = (r.order as Record<string, unknown>)[group.id];
-      if (Array.isArray(list)) {
-        const migrated = list.map((id) =>
-          id === "journal" || id === "flagged" ? "review" : id,
-        );
-        order[group.id] = migrated.filter(
-          (id, index): id is string =>
-            typeof id === "string" &&
-            validIds.has(id as RailItemId) &&
-            migrated.indexOf(id) === index,
-        );
-      }
-    }
-  }
-  const rawHidden = Array.isArray(r.hidden) ? r.hidden : [];
-  const legacyReviewHidden =
-    rawHidden.includes("journal") && rawHidden.includes("flagged");
-  const migratedHidden = [
-    ...rawHidden.filter((id) => id !== "journal" && id !== "flagged"),
-    ...(legacyReviewHidden ? ["review"] : []),
-  ];
-  const hidden = Array.isArray(r.hidden)
-    ? migratedHidden.filter((id, index): id is string => {
-        if (typeof id !== "string" || !validIds.has(id as RailItemId)) return false;
-        const item = RAIL_CATALOG.find((i) => i.id === id);
-        return !item?.required && migratedHidden.indexOf(id) === index;
-      })
+  const source = raw as Partial<RailPrefs>;
+  const valid = new Set(RAIL_CATALOG.map((item) => item.id));
+  const order = Array.isArray(source.order?.classroom)
+    ? [...new Set(source.order.classroom)].filter((id): id is RailItemId => typeof id === "string" && valid.has(id as RailItemId))
     : [];
-  return { order, hidden };
+  const hidden = Array.isArray(source.hidden)
+    ? [...new Set(source.hidden)].filter((id): id is RailItemId => typeof id === "string" && valid.has(id as RailItemId) && id !== "home")
+    : [];
+  return { order: order.length ? { classroom: order } : {}, hidden };
 }
 
-/**
- * Resolve prefs into the per-group item lists the rail renders.
- * includeHidden keeps hidden items in place (the layout editor needs them).
- */
-export function resolveRailGroups(
-  prefs: RailPrefs,
-  opts?: { includeHidden?: boolean },
-): {
-  id: RailGroupId;
-  title: string;
-  items: RailItem[];
-}[] {
-  const hidden = new Set(opts?.includeHidden ? [] : prefs.hidden);
-  return RAIL_GROUPS.map((group) => {
-    const catalogItems = RAIL_CATALOG.filter((i) => i.group === group.id);
-    const byId = new Map(catalogItems.map((i) => [i.id as string, i]));
-    const ordered: RailItem[] = [];
-    for (const id of prefs.order[group.id] ?? []) {
-      const item = byId.get(id);
-      if (item && !ordered.includes(item)) ordered.push(item);
+const LEGACY_ORDER: Record<string, string[]> = {
+  classroom: ["home", "drill", "testing", "work"],
+  study: ["notes", "bootcamps", "activities"],
+  review: ["review", "analytics", "admissions", "history"],
+  support: ["messages", "schedule"],
+};
+const OLD_MEMBERS: Partial<Record<RailItemId, string[]>> = {
+  "my-work": ["work", "notes"],
+  practice: ["drill", "testing"],
+  review: ["review"],
+  progress: ["analytics", "history"],
+  library: ["bootcamps", "activities", "admissions"],
+  schedule: ["schedule"],
+};
+
+/** One-time migration from layout_prefs.classroom_rail to classroom_rail_v2. */
+export function migrateLegacyRailPrefs(raw: unknown): RailPrefs {
+  if (!raw || typeof raw !== "object") return defaultRailPrefs();
+  const source = raw as { order?: Record<string, unknown>; hidden?: unknown };
+  const oldHidden = new Set(Array.isArray(source.hidden) ? source.hidden.filter((id): id is string => typeof id === "string") : []);
+  const seen = new Set<RailItemId>();
+  const order: RailItemId[] = [];
+  for (const [group, defaults] of Object.entries(LEGACY_ORDER)) {
+    const preferred = Array.isArray(source.order?.[group]) ? source.order[group] as string[] : [];
+    for (const oldId of [...preferred, ...defaults]) {
+      if (oldHidden.has(oldId)) continue;
+      const id = LEGACY_DESTINATION[oldId];
+      if (id && !seen.has(id)) { seen.add(id); order.push(id); }
     }
-    for (const item of catalogItems) {
-      if (!ordered.includes(item)) ordered.push(item);
-    }
-    return {
-      ...group,
-      items: ordered.filter((i) => i.required || !hidden.has(i.id)),
-    };
-  }).filter((group) => group.items.length > 0);
+  }
+  const hidden = RAIL_CATALOG.filter((item) => {
+    const members = item.id === "review" && (oldHidden.has("journal") || oldHidden.has("flagged")) && !oldHidden.has("review")
+      ? ["journal", "flagged"]
+      : OLD_MEMBERS[item.id] ?? [];
+    return !item.required && members.length > 0 && members.every((member) => oldHidden.has(member));
+  }).map((item) => item.id);
+  return normalizeRailPrefs({ order: { classroom: order }, hidden });
+}
+
+export function resolveRailGroups(prefs: RailPrefs, _opts?: { includeHidden?: boolean }) {
+  const ordered: RailItem[] = [];
+  for (const id of prefs.order.classroom ?? []) {
+    const item = RAIL_CATALOG.find((candidate) => candidate.id === id);
+    if (item && !ordered.includes(item)) ordered.push(item);
+  }
+  for (const item of RAIL_CATALOG) {
+    if (!ordered.includes(item)) ordered.push(item);
+  }
+  const hidden = new Set(_opts?.includeHidden ? [] : prefs.hidden);
+  return [{ ...RAIL_GROUPS[0], items: ordered.filter((item) => item.required || !hidden.has(item.id)) }];
 }

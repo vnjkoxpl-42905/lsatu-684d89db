@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Pencil } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
@@ -35,6 +35,7 @@ import {
 import { JournalQuestionView } from "@/components/classroom/JournalQuestionView";
 import { JournalReviewPanel } from "@/components/classroom/JournalReviewPanel";
 import { ReviewTabs } from "@/components/classroom/ReviewTabs";
+import { ReviewReturnLink, reviewReturnTo } from "@/components/review/ReviewReturnLink";
 
 const EMPTY_DRAFT: JournalDraft = {
   self_rating: null,
@@ -236,6 +237,8 @@ export function JournalIndexView() {
 
 export function JournalEntryView() {
   const { qid } = useParams<{ qid: string }>();
+  const location = useLocation();
+  const reviewNav = reviewReturnTo(location.search) ? <ReviewReturnLink /> : <ReviewTabs />;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const query = useJournalEntries();
@@ -336,7 +339,7 @@ export function JournalEntryView() {
     return (
       <main className="classroom-stage classroom-journal-stage">
         <div className="classroom-journal-stage-inner">
-          <ReviewTabs />
+          {reviewNav}
           <LoadingState />
         </div>
       </main>
@@ -347,7 +350,7 @@ export function JournalEntryView() {
     return (
       <main className="classroom-stage classroom-journal-stage">
         <div className="classroom-journal-stage-inner">
-          <ReviewTabs />
+          {reviewNav}
           <div className="classroom-inline-error">
             <p>Could not load your wrong answers.</p>
             <button
@@ -367,7 +370,7 @@ export function JournalEntryView() {
     return (
       <main className="classroom-stage classroom-journal-stage">
         <div className="classroom-journal-stage-inner">
-          <ReviewTabs />
+          {reviewNav}
           <DetailHeading
             date={new Date().toISOString()}
             title="This entry is not in your wrong answers"
@@ -390,7 +393,7 @@ export function JournalEntryView() {
     <>
       <main className="classroom-stage classroom-journal-stage">
         <div className="classroom-journal-stage-inner">
-          <ReviewTabs />
+          {reviewNav}
           <div className="classroom-journal-entry-heading">
             <div>
               <DetailHeading date={row.first_missed} title={row.label} />

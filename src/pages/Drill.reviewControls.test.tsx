@@ -15,6 +15,7 @@ import type { DrillRunSpec } from '@/lib/drillRunSpec';
 import type { LRQuestion } from '@/lib/questionLoader';
 
 const insertCalls = vi.hoisted(() => ({ attempts: [] as Array<Record<string, unknown>>, failNext: 0, delayMs: 0 }));
+const resumeSave = vi.hoisted(() => ({ fail: false, failNext: 0, calls: 0 }));
 const journalCalls = vi.hoisted(() => ({ wrong: vi.fn(), correct: vi.fn() }));
 
 vi.mock('@rrweb/record', () => ({ record: () => () => {} }));
@@ -55,6 +56,22 @@ vi.mock('@/lib/wajService', () => ({
   logCorrectAnswer: journalCalls.correct,
 }));
 vi.mock('@/lib/lastActivity', () => ({ upsertLastActivity: vi.fn(async () => {}) }));
+vi.mock('@/lib/drillResumeSession', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/drillResumeSession')>();
+  return {
+    ...actual,
+    saveDrillResumeSnapshot: async () => {
+      resumeSave.calls += 1;
+      if (resumeSave.fail || resumeSave.failNext > 0) {
+        if (resumeSave.failNext > 0) resumeSave.failNext -= 1;
+        throw new Error('The account save failed.');
+      }
+      // Navigation tests control account acknowledgments explicitly. The
+      // real adapter needs IndexedDB, which jsdom does not provide.
+      return undefined;
+    },
+  };
+});
 vi.mock('@/lib/questionPoolService', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/questionPoolService')>();
   return {
@@ -278,6 +295,9 @@ beforeEach(() => {
   insertCalls.attempts = [];
   insertCalls.failNext = 0;
   insertCalls.delayMs = 0;
+  resumeSave.fail = false;
+  resumeSave.failNext = 0;
+  resumeSave.calls = 0;
   journalCalls.wrong.mockReset();
   journalCalls.correct.mockReset();
   journalCalls.wrong.mockResolvedValue(undefined);
@@ -489,6 +509,45 @@ describe('Drill review controls — Smart Drill (adaptive)', () => {
 });
 
 describe('Drill review controls — full section keeps the legacy behaviour', () => {
+  it.each(['Next', 'question index', 'keyboard'])(
+    'keeps the current timed question when %s cannot save to the account',
+    async (navigation) => {
+      renderDrill({
+        ...sectionSpec,
+        config: { pt: 23, section: 2, timer: { mode: '35' } } as DrillRunSpec['config'],
+      });
+      await waitForQuestion(18);
+      await waitFor(() => expect(resumeSave.calls).toBeGreaterThan(0));
+      const initialSaves = resumeSave.calls;
+      fireEvent.click(choiceButton('B'));
+      await waitFor(() => expect(resumeSave.calls).toBeGreaterThan(initialSaves));
+      resumeSave.failNext = 1;
+      if (navigation === 'Next') {
+        fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+      } else if (navigation === 'question index') {
+        fireEvent.click(screen.getByRole('button', { name: 'Question 19' }));
+      } else {
+        fireEvent.keyDown(window, { key: 'ArrowRight' });
+      }
+      expect(await screen.findByRole('alertdialog', { name: 'Saving paused this section' })).toBeInTheDocument();
+      expect(screen.getByText(/Stimulus 18:/)).toBeInTheDocument();
+      expect(screen.getByText('Choice B of 18')).toBeInTheDocument();
+      expect(screen.queryByText(/Stimulus 19:/)).not.toBeInTheDocument();
+    },
+  );
+
+  it('pauses a timed section when its account snapshot cannot be saved', async () => {
+    resumeSave.fail = true;
+    renderDrill({
+      ...sectionSpec,
+      config: { pt: 23, section: 2, timer: { mode: '35' } } as DrillRunSpec['config'],
+    });
+    await waitForQuestion(18);
+    expect(await screen.findByRole('alertdialog', { name: 'Saving paused this section' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Retry save' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Resume Section', hidden: true })).toBeInTheDocument();
+  });
+
   it('Answer is gated until the question is attempted and Explanation opens the drawer', async () => {
     renderDrill(sectionSpec);
     await waitForQuestion(18);

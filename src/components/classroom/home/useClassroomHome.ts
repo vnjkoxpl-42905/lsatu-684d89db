@@ -60,6 +60,7 @@ import {
   type HomeMessage,
   type HomeRow,
 } from "./homeModel";
+import { manualCompletionAllowed, workSummary } from "./homeNextAction";
 
 const RECAP_WINDOW_DAYS = 21;
 
@@ -91,6 +92,7 @@ export function useClassroomHome(): {
   /** Clear one thread off the Home message card (marks it read; no delete). */
   clearMessage: (conversationId: string) => Promise<void>;
   completingKey: string | null;
+  retryWork: () => void;
 } {
 
   const { user } = useAuth();
@@ -119,7 +121,7 @@ export function useClassroomHome(): {
     [canAccess],
   );
   const { pathname } = useLocation();
-  const { rows: assigned, loading: assignedLoading } = useAssignedTodoFeed();
+  const { rows: assigned, loading: assignedLoading, failed: assignedFailed, retry: retryWork } = useAssignedTodoFeed();
   const itemsQuery = useClassroomItems();
   const bookingQuery = useStudentBooking();
   const planQuery = useCurrentWeeklyPlan();
@@ -172,10 +174,8 @@ export function useClassroomHome(): {
   }, [itemsQuery.data]);
 
   const workRows = React.useMemo<HomeRow[]>(() => {
-    // A teacher is never the student. Verification writes and test assignments
-    // that name the admin account are not work; showing them as "assigned to
-    // you" is a lie about a list only students are supposed to own.
-    if (permissions.is_admin) return [];
+    // This feed is scoped to the signed-in actor. Joshua's own assignments and
+    // practice stay his; a selected student's dossier is a separate read.
     return assigned
       .filter((row) => row.status !== "completed")
 
@@ -206,14 +206,15 @@ export function useClassroomHome(): {
           isNew: row.status === "assigned",
           dueToday: due === "due today",
           overdue: !!due?.includes("overdue"),
+          workStatus: row.status === "in_progress" ? "in_progress" : "assigned",
           dueAt,
-          // Suppressed for work that closes its own card. See selfCompleting.
-          canComplete: !row.selfCompleting,
+          // Practice completes only from saved submission/finish evidence.
+          canComplete: manualCompletionAllowed(kind, row.selfCompleting),
           briefing: row.briefing,
         };
 
       });
-  }, [access.activities, assigned, dueBySourceId, now, pathname, permissions.is_admin]);
+  }, [access.activities, assigned, dueBySourceId, now, pathname]);
 
   /**
    * Recent recaps and notes: reading matter, not work, so they never carry a
@@ -543,7 +544,11 @@ export function useClassroomHome(): {
     isAdmin: permissions.is_admin,
     access,
     dateline: datelineFor(now),
-    subtitle: subtitleFor(dueTodayCount, workRows.length, unread),
+    subtitle: assignedFailed
+      ? "Could not load all assigned work. Try again."
+      : assignedLoading
+        ? "Loading your assigned work…"
+        : subtitleFor(dueTodayCount, workRows.length, unread),
     daysToTest: (() => {
       const testDate = testDateQuery.data;
       if (!testDate) return null;
@@ -552,6 +557,8 @@ export function useClassroomHome(): {
       return Number.isFinite(delta) && delta >= 0 ? delta : null;
     })(),
     dueTodayCount,
+    workSummary: assignedLoading || assignedFailed ? null : workSummary(workRows),
+    workFailed: assignedFailed,
     hero,
     rows: listRows,
     continueRow: pickContinueWork(workRows, access, permissions.is_admin),
@@ -586,5 +593,6 @@ export function useClassroomHome(): {
     markDone,
     clearMessage,
     completingKey,
+    retryWork,
   };
 }

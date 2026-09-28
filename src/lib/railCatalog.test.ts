@@ -1,161 +1,64 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { describe, it, expect } from 'vitest';
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { describe, expect, it } from "vitest";
 import {
   RAIL_CATALOG,
+  migrateLegacyRailPrefs,
   normalizeRailPrefs,
   resolveRailGroups,
-  type RailItemId,
-} from './railCatalog';
+} from "./railCatalog";
 
-/**
- * The rail draws a padlock from an item's flags. The route enforces its own.
- * When the two disagree the padlock is decorative and the student reaches the
- * content by typing the URL, which is exactly what shipped for /bootcamps
- * (no guard at all) and for the `allowSignedIn` routes (flags never ran).
- *
- * These tests read src/App.tsx as text rather than rendering it. Mounting the
- * route tree drags in Supabase, auth and every lazy page; the question here is
- * only what the route table declares, and the text answers it.
- */
+const app = readFileSync(resolve(process.cwd(), "src/App.tsx"), "utf8");
 
-const APP_SOURCE = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
-
-/** The rail item -> the path its route registers under. */
-const ROUTE_FOR: Record<RailItemId, string> = {
-  home: '/classroom',
-  // Notes/recaps and assigned work are the coursework inside the shell, and
-  // they carry their own guard. The shell itself (home) stays signed-in-open so
-  // a fresh signup can reach the intake.
-  notes: 'recaps',
-  work: ':assignmentId',
-  drill: 'drill',
-  testing: '/testing',
-  bootcamps: '/bootcamps',
-  activities: '/activities',
-  review: '/journal',
-  analytics: '/analytics',
-  history: '/history',
-  admissions: 'admissions',
-  messages: '/inbox/*',
-  // Schedule owns booking: `/booking` is the same shell with the Book tab
-  // open, so there is no separate `booking` rail item to map.
-  schedule: '/schedule',
-};
-
-/**
- * The `element={...}` text for a `<Route path="X">`, up to the next `<Route`.
- * Good enough to answer "is there a guard, and on what flags".
- */
-function routeElement(path: string): string {
-  const start = APP_SOURCE.indexOf(`path="${path}"`);
-  expect(start, `no route registered for path "${path}"`).toBeGreaterThan(-1);
-  const rest = APP_SOURCE.slice(start);
-  const next = rest.indexOf('<Route', 1);
-  return next === -1 ? rest : rest.slice(0, next);
-}
-
-// Routes that an assignment can also open are wrapped in a named gate from
-// src/components/AssignmentGate.tsx instead of a bare ProtectedRoute. Each gate
-// falls back to ProtectedRoute on this flag, so for this test it counts as one.
-const ASSIGNMENT_GATE_FLAGS: Record<string, string> = {
-  DrillAssignmentGate: 'has_drill_access',
-  TestingCentreGate: 'has_practice_access',
-  PracticeTestRunGate: 'has_practice_access',
-  ActivityAssignmentGate: 'has_activity_access',
-  TAAssignmentGate: 'has_ta_access',
-};
-
-function guardText(element: string): string {
-  let text = element;
-  for (const [gate, flag] of Object.entries(ASSIGNMENT_GATE_FLAGS)) {
-    if (element.includes(`<${gate}>`)) text += ` ProtectedRoute ${flag}`;
-  }
-  return text;
-}
-
-describe('rail catalog agrees with the route table', () => {
-  it('every rail item maps to a route this test knows about', () => {
-    for (const item of RAIL_CATALOG) {
-      expect(ROUTE_FOR[item.id], `rail item "${item.id}" has no route`).toBeTruthy();
+describe("seven destination rail", () => {
+  it("has exactly seven top-level destinations with canonical routes", () => {
+    expect(RAIL_CATALOG.map((item) => item.id)).toEqual([
+      "home", "my-work", "practice", "review", "progress", "library", "schedule",
+    ]);
+    for (const path of ["/classroom", "/my-work", "/practice", "/review", "/progress", "/library", "/schedule"]) {
+      expect(app).toContain(`path="${path}"`);
     }
   });
 
-  it.each(RAIL_CATALOG.filter((i) => i.flags.length > 0))(
-    'a padlocked item is enforced by its route: $id',
-    (item) => {
-      const element = guardText(routeElement(ROUTE_FOR[item.id]));
-
-      // A padlock over an unguarded route is the /bootcamps bug.
-      expect(
-        element.includes('ProtectedRoute'),
-        `rail padlocks "${item.id}" on ${item.flags.join('/')} but its route has no ProtectedRoute`,
-      ).toBe(true);
-
-      // The route has to gate on at least one flag the rail padlocks on,
-      // or the two are guarding different things.
-      expect(
-        item.flags.some((flag) => element.includes(flag)),
-        `rail padlocks "${item.id}" on ${item.flags.join('/')}, its route gates on something else`,
-      ).toBe(true);
-    },
-  );
-
-  it('the consolidated Review item covers both separately protected routes', () => {
-    const review = RAIL_CATALOG.find((item) => item.id === 'review');
-    expect(review?.label).toBe('Review');
-    expect(routeElement('/journal')).toContain('has_journal_access');
-    // The Wrong answer journal switch is retired: one switch, one page.
-    expect(routeElement('/journal')).not.toContain('has_waj_access');
-    expect(routeElement('/flagged')).toContain('has_flagged_access');
+  it("registers every URL-backed tab", () => {
+    const tabs = readFileSync(resolve(process.cwd(), "src/pages/StudentDestination.tsx"), "utf8");
+    for (const path of [
+      "/my-work/to-do", "/my-work/completed", "/my-work/notes",
+      "/practice/drills", "/practice/drills/saved", "/practice/exams", "/practice/exams/all", "/practice/exams/attempts",
+      "/review/to-review", "/review/wrong", "/review/flagged",
+      "/progress/overview", "/progress/history", "/progress/topics",
+      "/library/lessons", "/library/activities", "/library/bootcamps", "/library/admissions",
+    ]) expect(tabs).toContain(path);
   });
 
-  it.each(RAIL_CATALOG)(
-    'allowSignedIn matches the route: $id',
-    (item) => {
-      const element = routeElement(ROUTE_FOR[item.id]);
-      const routeAllowsSignedIn = element.includes('allowSignedIn');
-
-      expect(
-        !!item.allowSignedIn,
-        routeAllowsSignedIn
-          ? `route for "${item.id}" lets any signed-in user through, so the rail must not padlock it (set allowSignedIn: true)`
-          : `rail marks "${item.id}" allowSignedIn but its route does not, so the rail unlocks a door the route keeps shut`,
-      ).toBe(routeAllowsSignedIn);
-    },
-  );
-
-  it('keeps Admissions visible in the rail but reserves its route for admins', () => {
-    const admissions = RAIL_CATALOG.find((item) => item.id === 'admissions');
-    expect(admissions?.requireAdmin).toBe(true);
-    expect(admissions?.allowSignedIn).toBeUndefined();
-    expect(routeElement('admissions')).toContain('<ProtectedRoute requireAdmin>');
+  it("keeps each parent available while locking individual tabs and Admissions", () => {
+    expect(app).toContain('path="admissions" element={<ProtectedRoute requireAdmin><AdmissionsPage />');
+    expect(app).toContain('path="flagged" element={<ProtectedRoute flag="has_flagged_access">');
+    expect(app).toContain('path="wrong" element={<ProtectedRoute flag="has_journal_access">');
+    expect(app).toContain('path="activities" element={<ProtectedRoute flag="has_activity_access">');
   });
 });
 
-describe('legacy review rail preferences', () => {
-  it('collapses old journal and flagged ordering into one Review entry', () => {
-    const prefs = normalizeRailPrefs({
-      order: { review: ['analytics', 'journal', 'flagged', 'history'] },
+describe("versioned rail preference migration", () => {
+  it("orders each new parent by the first visible old member", () => {
+    const migrated = migrateLegacyRailPrefs({
+      order: { classroom: ["work", "drill", "home"], study: ["activities", "notes"], review: ["history", "review"] },
       hidden: [],
     });
-
-    expect(prefs.order.review).toEqual(['analytics', 'review', 'history']);
-    expect(
-      resolveRailGroups(prefs)
-        .find((group) => group.id === 'review')
-        ?.items.map((item) => item.id),
-    ).toEqual(['analytics', 'review', 'history', 'admissions']);
+    expect(migrated.order.classroom?.slice(0, 5)).toEqual(["my-work", "practice", "home", "library", "progress"]);
   });
 
-  it('keeps Review visible when only one former entry was hidden', () => {
-    expect(normalizeRailPrefs({ hidden: ['journal'] }).hidden).toEqual([]);
-    expect(normalizeRailPrefs({ hidden: ['flagged'] }).hidden).toEqual([]);
+  it("hides a merged destination only when all former members were hidden", () => {
+    expect(migrateLegacyRailPrefs({ hidden: ["drill"] }).hidden).not.toContain("practice");
+    expect(migrateLegacyRailPrefs({ hidden: ["drill", "testing"] }).hidden).toContain("practice");
+    expect(migrateLegacyRailPrefs({ hidden: ["home"] }).hidden).not.toContain("home");
   });
 
-  it('hides Review only when both former entries were hidden', () => {
-    expect(normalizeRailPrefs({ hidden: ['journal', 'flagged'] }).hidden).toEqual([
-      'review',
-    ]);
+  it("normalizes v2 once and always keeps Home visible", () => {
+    const prefs = normalizeRailPrefs({ order: { classroom: ["progress", "home", "progress", "unknown"] }, hidden: ["home", "library"] });
+    expect(prefs.order.classroom).toEqual(["progress", "home"]);
+    expect(prefs.hidden).toEqual(["library"]);
+    expect(resolveRailGroups(prefs)[0].items.map((item) => item.id)).not.toContain("library");
+    expect(resolveRailGroups(prefs)[0].items.map((item) => item.id)).toContain("home");
   });
 });

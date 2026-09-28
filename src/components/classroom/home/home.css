@@ -1452,6 +1452,27 @@ html.dark .classroom-root .classroom-home-shine {
   line-height: 1.5;
 }
 
+.classroom-root .classroom-home-work-summary,
+.classroom-root .classroom-home-work-retry {
+  margin-top: 10px;
+  color: var(--home-v3-ink);
+  font: 600 12px / 1.4 var(--home-ui);
+}
+
+.classroom-root .classroom-home-work-retry {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.classroom-root .classroom-home-work-retry:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
 .classroom-root .classroom-home-next-session-line {
   display: inline-flex;
   margin-top: 12px;
@@ -2001,5 +2022,43 @@ html.dark .classroom-root .classroom-home-main-card .classroom-home-row-wrap:hov
   .classroom-root .classroom-home > .classroom-home-main-card:has(~ .classroom-home-message-card),
   .classroom-root .classroom-home > .classroom-home-main-card ~ .classroom-home-message-card {
     grid-column: 1 / -1;
+  }
+
+  /* This must follow the wide masthead rule above. At narrow widths its
+     360px tools minimum otherwise squeezes the greeting into a sliver. */
+  .classroom-root .classroom-home .classroom-home-masthead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .classroom-root .classroom-home .classroom-home-top-tools,
+  .classroom-root .classroom-home .classroom-home-finderbar {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@container classroom-home (max-width: 420px) {
+  .classroom-root .classroom-home .classroom-home-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .classroom-root .classroom-home .classroom-home-actions .classroom-home-action {
+    min-width: 0;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .classroom-root .classroom-home .classroom-home-title em {
+    white-space: normal;
+  }
+
+  .classroom-root .classroom-home .classroom-home-action-continue {
+    gap: 8px;
+    padding-inline: 12px;
+  }
+
+  .classroom-root .classroom-home .classroom-home-continue-arrow {
+    width: 38px;
+    height: 38px;
   }
 }

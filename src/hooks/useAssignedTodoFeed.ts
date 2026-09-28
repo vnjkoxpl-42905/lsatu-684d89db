@@ -9,6 +9,8 @@ import { singleSectionOf } from '@/lib/drillRunSpec';
 import { sectionDirectionsRoute } from '@/lib/sectionDirections';
 import { listAssignmentsForStudent as listGuidedForStudent, type GuidedDrill, type GuidedDrillAssignment } from '@/lib/guidedDrills';
 import { listStudentAssignments as listActivityForStudent } from '@/features/activity-centre/api/activitiesClient';
+import { activityWorkStatus, guidedWorkStatus, homeworkWorkStatus, studentWorkKey, teacherWorkStatus } from '@/lib/studentWorkProjection';
+import { loadActivityWorkEvidence, loadAssignmentWorkEvidence, type GuidedWorkEvidence, type HomeworkWorkEvidence } from '@/lib/studentWorkEvidence';
 
 /**
  * A unified read-only "assigned" row surfaced in the student's Today list.
@@ -43,6 +45,7 @@ export interface AssignedTodoRow {
 }
 
 type GuidedRow = GuidedDrillAssignment & { guided_drill: GuidedDrill };
+const EMPTY_ACTIVITY_EVIDENCE = new Set<string>();
 
 function normalizeStatus(raw: string | null | undefined): AssignedTodoRow['status'] {
   if (raw === 'completed') return 'completed';
@@ -94,6 +97,9 @@ export interface AssignedFeedSources {
   guided: GuidedRow[];
   activities: Awaited<ReturnType<typeof listActivityForStudent>>;
   items: ClassroomItem[];
+  guidedEvidence?: Record<string, GuidedWorkEvidence>;
+  homeworkEvidence?: Record<string, HomeworkWorkEvidence>;
+  activityEvidence?: ReadonlySet<string>;
 }
 
 /**
@@ -106,10 +112,13 @@ export function buildAssignedRows({
   guided,
   activities,
   items,
+  guidedEvidence = {},
+  homeworkEvidence = {},
+  activityEvidence = EMPTY_ACTIVITY_EVIDENCE,
 }: AssignedFeedSources): AssignedTodoRow[] {
   {
     const byIdentity = new Map<string, AssignedTodoRow>();
-    const put = (row: AssignedTodoRow) => byIdentity.set(`${row.sourceTable}:${row.refId}`, row);
+    const put = (row: AssignedTodoRow) => byIdentity.set(studentWorkKey({ sourceTable: row.sourceTable, assignmentId: row.refId }), row);
 
     for (const a of hw) {
       // A set that is exactly one PrepTest section is sat, not worked through:
@@ -124,7 +133,7 @@ export function buildAssignedRows({
         sourceTable: 'homework_assignments',
         title: a.set_title || 'Homework',
         subtitle: `${a.question_qids?.length ?? 0} questions${a.score != null ? ` · ${Math.round(a.score)}%` : ''}`,
-        status: normalizeStatus(a.status),
+        status: homeworkWorkStatus(a, homeworkEvidence[a.id]),
         createdAt: a.created_at,
         dueAt: null,
         route: section ? sectionDirectionsRoute(a.id) : `/classroom/${encodeURIComponent(a.id)}`,
@@ -140,36 +149,16 @@ export function buildAssignedRows({
         sourceTable: 'ta_assignments',
         title: a.title || 'From Joshua',
         subtitle: a.pdf_url ? 'PDF attached' : 'TA assignment',
-        status: a.status === 'viewed' ? 'in_progress' : normalizeStatus(a.status),
+        status: teacherWorkStatus(a),
         createdAt: a.assigned_at,
         dueAt: null,
         route: `/classroom/ta/${encodeURIComponent(a.id)}`,
       });
     }
 
-    // Assigning the same drill twice writes two rows that render identically,
-    // so they collapse to one. An open assignment always wins over a completed
-    // one — otherwise finishing the older twin would hide work still owed —
-    // and the newest wins within that.
-    const bestByDrill = new Map<string, GuidedRow>();
+    // Preserve every assignment instance, even when the teacher issued the
+    // same drill twice. The assignment ID, not guided_drill_id, is identity.
     for (const g of guided) {
-      const drillId = g.guided_drill_id ?? g.id;
-      const held = bestByDrill.get(drillId);
-      if (!held) {
-        bestByDrill.set(drillId, g);
-        continue;
-      }
-      const heldOpen = held.status !== 'completed';
-      const thisOpen = g.status !== 'completed';
-      if (thisOpen !== heldOpen) {
-        if (thisOpen) bestByDrill.set(drillId, g);
-        continue;
-      }
-      if (new Date(g.assigned_at).getTime() > new Date(held.assigned_at).getTime()) {
-        bestByDrill.set(drillId, g);
-      }
-    }
-    for (const g of bestByDrill.values()) {
       put({
         key: `g-${g.id}`,
         kind: 'guided',
@@ -177,7 +166,7 @@ export function buildAssignedRows({
         sourceTable: 'guided_drill_assignments',
         title: g.guided_drill?.title || 'Guided drill',
         subtitle: `${g.guided_drill?.question_count ?? '?'} questions${g.guided_drill?.estimated_minutes ? ` · ${g.guided_drill.estimated_minutes} min` : ''}`,
-        status: g.status === 'completed' ? 'completed' : g.status === 'assigned' ? 'assigned' : 'in_progress',
+        status: guidedWorkStatus(g, guidedEvidence[g.id]),
         createdAt: g.assigned_at,
         dueAt: null,
         route: `/guided/${encodeURIComponent(g.id)}`,
@@ -192,7 +181,7 @@ export function buildAssignedRows({
         sourceTable: 'activity_assignments',
         title: a.title || 'Activity',
         subtitle: a.subtitle || 'Activity',
-        status: normalizeStatus(a.status),
+        status: activityWorkStatus(a, activityEvidence.has(a.id)),
         createdAt: a.created_at,
         dueAt: null,
         route: `/activities/${encodeURIComponent(a.id)}`,
@@ -206,15 +195,27 @@ export function buildAssignedRows({
       if (!route) continue;
       const sourceTable = item.source_table ?? 'classroom_items';
       const refId = item.source_id ?? item.id;
-      const existing = byIdentity.get(`${sourceTable}:${refId}`);
+      const identity = studentWorkKey({ sourceTable, assignmentId: refId });
+      const existing = byIdentity.get(identity);
       // Completion wins over the mirror. A student who finished the underlying
       // assignment must not see it come back because the classroom_items row it
       // was mirrored into still says "assigned" — that is why finished work kept
       // reappearing on Home.
       const itemStatus = normalizeStatus(item.status);
-      const status =
-        itemStatus === 'completed' || existing?.status === 'completed' ? 'completed' : itemStatus;
-      byIdentity.set(`${sourceTable}:${refId}`, {
+      // Guided and written teacher assignments have their own persisted
+      // completion/progress evidence. A stale or manually updated mirror must
+      // not promote them merely because the page was opened or a button was
+      // pressed outside the actual work flow.
+      const sourceOwnsStatus = existing && (
+        sourceTable === 'guided_drill_assignments' ||
+        sourceTable === 'homework_assignments' ||
+        sourceTable === 'ta_assignments' ||
+        sourceTable === 'activity_assignments'
+      );
+      const status = sourceOwnsStatus
+        ? existing.status
+        : itemStatus === 'completed' || existing?.status === 'completed' ? 'completed' : itemStatus;
+      byIdentity.set(identity, {
         key: `ci-${item.id}`,
         kind,
         refId,
@@ -272,10 +273,27 @@ export function useAssignedTodoFeed(): {
     queryFn: async () => listActivityForStudent(user!.id),
   });
 
+  const { data: assignmentEvidence, isLoading: evidenceLoading, isError: evidenceError, refetch: evidenceRefetch } = useQuery({
+    queryKey: ['todo-feed:assignment-evidence', user?.id],
+    enabled: !!user,
+    staleTime: 5_000,
+    queryFn: () => loadAssignmentWorkEvidence(user!.id),
+  });
+  const guidedEvidence = assignmentEvidence?.guided;
+  const homeworkEvidence = assignmentEvidence?.homework;
+
+  const activityIds = useMemo(() => activities.map((activity) => activity.id), [activities]);
+  const { data: activityEvidence = EMPTY_ACTIVITY_EVIDENCE, isLoading: activityEvidenceLoading, isError: activityEvidenceError, refetch: activityEvidenceRefetch } = useQuery({
+    queryKey: ['todo-feed:activity-evidence', user?.id, activityIds],
+    enabled: !!user && !actLoading,
+    staleTime: 5_000,
+    queryFn: () => loadActivityWorkEvidence(user!.id, activityIds),
+  });
+
   const items = itemsQuery.data ?? [];
   const rows = useMemo(
-    () => buildAssignedRows({ hw, ta, guided, activities, items }),
-    [hw, ta, guided, activities, items],
+    () => buildAssignedRows({ hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence }),
+    [hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence],
   );
 
   const retry = useMemo(
@@ -283,16 +301,18 @@ export function useAssignedTodoFeed(): {
       void hwRefresh();
       void taRefresh();
       void guidedRefetch();
+      void evidenceRefetch();
+      void activityEvidenceRefetch();
       void actRefetch();
       void itemsQuery.refetch();
     },
-    [hwRefresh, taRefresh, guidedRefetch, actRefetch, itemsQuery],
+    [hwRefresh, taRefresh, guidedRefetch, evidenceRefetch, actRefetch, activityEvidenceRefetch, itemsQuery],
   );
 
   return {
     rows,
-    loading: hwLoading || taLoading || guidedLoading || actLoading || itemsQuery.isLoading,
-    failed: !!hwError || !!taError || guidedError || actError || itemsQuery.isError,
+    loading: hwLoading || taLoading || guidedLoading || evidenceLoading || actLoading || activityEvidenceLoading || itemsQuery.isLoading,
+    failed: !!hwError || !!taError || guidedError || evidenceError || actError || activityEvidenceError || itemsQuery.isError,
     retry,
   };
 }

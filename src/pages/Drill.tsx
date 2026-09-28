@@ -143,6 +143,8 @@ import {
   drillResumeKey,
   loadDrillResumeSession,
   saveDrillResumeSnapshot,
+  writeSectionDeviceBackup,
+  hasPendingSectionDeviceBackup,
   completeDrillResumeSession,
   isResumableDrillSession,
   isSpentDrillSession,
@@ -468,6 +470,8 @@ function DrillContent() {
   const [poolExhausted, setPoolExhausted] = React.useState(false);
   const [bootError, setBootError] = React.useState<string | null>(null);
   const [handoffLost, setHandoffLost] = React.useState(false);
+  const [sectionSaveError, setSectionSaveError] = React.useState(false);
+  const [retryingSectionSave, setRetryingSectionSave] = React.useState(false);
   const [adaptiveHydrationStatus, setAdaptiveHydrationStatus] = React.useState<'idle' | 'loading' | 'ready' | 'failed'>('idle');
   const { classId, loading: classIdLoading } = useClassId();
   const [advanceToken, setAdvanceToken] = React.useState(0);
@@ -882,6 +886,12 @@ function DrillContent() {
           genericFinalizedRef.current = true;
         }
         if (isResumableDrillSession(stored)) {
+          if (mode === 'full-section' && hasPendingSectionDeviceBackup(user.id, genericResumeKey)) {
+            // The newest device copy has not been acknowledged by the account.
+            // Keep the student on that exact question until a retry succeeds.
+            initialIndex = stored!.current_index;
+            setSectionSaveError(true);
+          }
           // Come back on the clock they left. A timed section that resumed
           // with a fresh 35:00 was handing back time already spent, which
           // makes the score it produces meaningless.
@@ -903,11 +913,13 @@ function DrillContent() {
             }
           }
           questionQueue = stored.question_queue;
-          initialIndex = guidedResumeIndex(
-            questionQueue,
-            stored.current_index,
-            stored.attempts.map((a) => a.qid),
-          );
+          if (!hasPendingSectionDeviceBackup(user.id, genericResumeKey)) {
+            initialIndex = guidedResumeIndex(
+              questionQueue,
+              stored.current_index,
+              stored.attempts.map((a) => a.qid),
+            );
+          }
           for (const attempt of stored.attempts) {
             restoredAttempts.set(attempt.qid, {
               selectedAnswer: attempt.selected_answer,
@@ -964,6 +976,14 @@ function DrillContent() {
   // second, and a cloud debounce that never settled while the clock ran.
   const timerRef = React.useRef(timer);
   timerRef.current = timer;
+  React.useEffect(() => {
+    if (sectionSaveError && session?.mode === 'full-section') timerRef.current?.pause();
+  }, [sectionSaveError, session?.mode]);
+  const pauseForSectionSave = React.useCallback(() => {
+    if (session?.mode !== 'full-section') return;
+    if (session.fullSectionConfig?.timer.mode !== 'unlimited') timerRef.current?.pause();
+    setSectionSaveError(true);
+  }, [session?.mode, session?.fullSectionConfig?.timer.mode]);
   const sectionTimerConfig = session?.fullSectionConfig?.timer;
   const sectionElapsedMs = React.useCallback((): number | undefined => {
     const clock = timerRef.current;
@@ -1027,12 +1047,14 @@ function DrillContent() {
       void saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot).catch((err) => {
         if (ptRun && err instanceof Error && err.message.includes('another device')) {
           setHandoffLost(true);
+        } else {
+          pauseForSectionSave();
         }
         console.error('[drill:resume:heartbeat] resume write failed', { err });
       });
     }, 20_000);
     return () => window.clearInterval(id);
-  }, [genericResumeKey, user, session, hasTimer, ptRun]);
+  }, [genericResumeKey, user, session, hasTimer, ptRun, pauseForSectionSave]);
 
   React.useEffect(() => {
     if (!isMcPractice || !mcPracticePool || !user || !session) return;
@@ -1081,6 +1103,8 @@ function DrillContent() {
     void saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot).catch((err) => {
       if (ptRun && err instanceof Error && err.message.includes('another device')) {
         setHandoffLost(true);
+      } else {
+        pauseForSectionSave();
       }
       // Non-fatal: the drill still works, they just lose the resume point.
       console.error('[drill:resume:snapshot] resume write failed', {
@@ -1089,7 +1113,26 @@ function DrillContent() {
         err,
       });
     });
-  }, [session, genericResumeKey, user, drillResumeSnapshot, ptRun]);
+  }, [session, genericResumeKey, user, drillResumeSnapshot, ptRun, pauseForSectionSave]);
+
+  const retrySectionSave = async () => {
+    if (!user || !genericResumeKey || !session || retryingSectionSave) return;
+    const snapshot = drillResumeSnapshot(session);
+    if (!snapshot) return;
+    setRetryingSectionSave(true);
+    try {
+      await saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot);
+      setSectionSaveError(false);
+      timerRef.current?.resume();
+    } catch (err) {
+      if (ptRun && err instanceof Error && err.message.includes('another device')) {
+        setHandoffLost(true);
+      }
+      console.error('[drill:resume:retry] account save failed', err);
+    } finally {
+      setRetryingSectionSave(false);
+    }
+  };
 
 
 
@@ -1470,6 +1513,10 @@ function DrillContent() {
       if ((session?.mode === 'full-section' || isPracticeSetMode) && currentQuestion) {
         const newAttempts = new Map(session.attempts);
         newAttempts.delete(currentQuestion.qid);
+        if (session.mode === 'full-section' && genericResumeKey && user) {
+          const snapshot = drillResumeSnapshot({ ...session, attempts: newAttempts });
+          if (snapshot) writeSectionDeviceBackup(user.id, genericResumeKey, snapshot);
+        }
         setSession({ ...session, attempts: newAttempts });
         
         if (isPracticeSetMode) {
@@ -1507,6 +1554,10 @@ function DrillContent() {
           // the count and the trail can never disagree.
           switchCount: Math.max(0, answerTrail.length - 1),
         });
+        if (session.mode === 'full-section' && genericResumeKey && user) {
+          const snapshot = drillResumeSnapshot({ ...session, attempts: newAttempts });
+          if (snapshot) writeSectionDeviceBackup(user.id, genericResumeKey, snapshot);
+        }
         setSession({ ...session, attempts: newAttempts });
         
         if (isPracticeSetMode) {
@@ -1679,8 +1730,10 @@ function DrillContent() {
         return { ok: false, errorKind: 'auth' };
       }
       const saved = await saveAttemptToDatabase(attemptData);
+      if (!saved) pauseForSectionSave();
       return saved ? { ok: true } : { ok: false, errorKind: 'unknown' };
     } catch (e) {
+      pauseForSectionSave();
       const errorKind = classifyPersistError(e);
       console.error('[drill:persistAttempt] threw, surfacing as save-failed', {
         qid: attemptData.qid,
@@ -2629,7 +2682,39 @@ function DrillContent() {
     setPostSectionScreen('score-report');
   };
 
-  const handleNext = () => {
+  const timedNavigationRef = React.useRef(false);
+  const moveTimedSection = async (
+    nextIndex: number,
+    attempts?: DrillSession['attempts'],
+  ): Promise<boolean> => {
+    if (!session || sectionSaveError || timerRef.current?.isPaused || timedNavigationRef.current) return false;
+    if (!user || !genericResumeKey) {
+      pauseForSectionSave();
+      return false;
+    }
+    timedNavigationRef.current = true;
+    setActionInFlight(true);
+    const nextSession = { ...session, attempts: attempts ?? session.attempts, currentIndex: nextIndex };
+    try {
+      const snapshot = drillResumeSnapshot(nextSession);
+      if (!snapshot) throw new Error('Could not save this section.');
+      // Save the destination and current answer together. No question change is
+      // visible until the account has acknowledged this exact snapshot.
+      await saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot);
+      if (nextIndex !== session.currentIndex || attempts) setSession(nextSession);
+      return true;
+    } catch (err) {
+      if (ptRun && err instanceof Error && err.message.includes('another device')) setHandoffLost(true);
+      else pauseForSectionSave();
+      console.error('[drill:section:navigation] account save failed', err);
+      return false;
+    } finally {
+      timedNavigationRef.current = false;
+      setActionInFlight(false);
+    }
+  };
+
+  const handleNext = async (attempts?: DrillSession['attempts']) => {
     if (!session) return;
 
     if (session.mode === 'adaptive') {
@@ -2642,19 +2727,26 @@ function DrillContent() {
     } else {
       // Move to next in queue
       if (session.currentIndex < session.questionQueue.length - 1) {
-        setSession(prev => prev ? {
-          ...prev,
-          currentIndex: prev.currentIndex + 1,
-        } : prev);
+        if (session.mode === 'full-section') {
+          await moveTimedSection(session.currentIndex + 1, attempts);
+        } else {
+          setSession(prev => prev ? { ...prev, currentIndex: prev.currentIndex + 1 } : prev);
+        }
       } else {
         // Reached the end - show results
-        handleFinishSection();
+        if (session.mode !== 'full-section' || await moveTimedSection(session.currentIndex, attempts)) {
+          await handleFinishSection(attempts ?? session.attempts);
+        }
       }
     }
   };
 
-  const handlePrevious = () => {
+  const handlePrevious = async (attempts?: DrillSession['attempts']) => {
     if (!session || session.mode === 'adaptive') return;
+    if (session.mode === 'full-section') {
+      if (session.currentIndex > 0) await moveTimedSection(session.currentIndex - 1, attempts);
+      return;
+    }
     
     // Move to previous in queue. See handlePracticeSetPrevious: functional, so
     // an attempt committed moments earlier survives the step back.
@@ -2911,10 +3003,10 @@ function DrillContent() {
       // Arrow keys for navigation
       if (e.key === 'ArrowRight' || e.key === 'Enter') {
         e.preventDefault();
-        handleNext();
+        void handleNext();
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        handlePrevious();
+        void handlePrevious();
       }
       // Number keys 1-5 for selecting A-E
       else if (['1', '2', '3', '4', '5'].includes(e.key)) {
@@ -4020,13 +4112,18 @@ function DrillContent() {
     // the queue at any time, which is what the oval strip is for. Jumping is
     // frozen while the timer is paused so the paused screen is not a peephole.
     const jumpEnabled = !timer?.isPaused;
-    const handleJumpTo = (idx: number) => {
+    const handleJumpTo = async (idx: number, attempts?: DrillSession['attempts']) => {
       if (!session) return;
+      if (session.mode === 'full-section') {
+        await moveTimedSection(idx, attempts);
+        return;
+      }
       if (isPracticeSetMode) questionTimer.current.pause();
       setSession({ ...session, currentIndex: idx });
     };
     const handleTogglePauseClick = timer
       ? () => {
+          if (sectionSaveError) return;
           if (timer.isPaused) {
             timer.resume();
             return;
@@ -4075,7 +4172,9 @@ function DrillContent() {
         !selectedAnswer &&
         !currentAttempted &&
         !currentUnscored);
-    const officialPrev = isPracticeSetMode ? handlePracticeSetPrevious : handlePrevious;
+    const officialPrev = isPracticeSetMode
+      ? handlePracticeSetPrevious
+      : () => { void handlePrevious(); };
     // Walking a built set is free movement in both directions, so an answer
     // sitting on screen uncommitted is saved on the way out rather than
     // silently dropped when the question changes. Returns a discriminated
@@ -4100,13 +4199,15 @@ function DrillContent() {
       }
       return { ok: true, attempts };
     };
-    const advanceInQueue = (committed: DrillSession['attempts'] | null) => {
+    const advanceInQueue = async (committed: DrillSession['attempts'] | null) => {
       if (isPracticeSetMode) {
         handlePracticeSetNext();
       } else if (session.currentIndex >= session.questionQueue.length - 1) {
-        void handleFinishSection(committed ?? session.attempts);
+        if (session.mode !== 'full-section' || await moveTimedSection(session.currentIndex, committed ?? undefined)) {
+          await handleFinishSection(committed ?? session.attempts);
+        }
       } else {
-        handleNext();
+        await handleNext(committed ?? undefined);
       }
     };
     // One wrapper for leaving a question on a fixed queue: arrows, ovals and
@@ -4122,11 +4223,16 @@ function DrillContent() {
       try {
         const result = await commitPendingSelection();
         if (!result.ok) return;
-        if (destination === 'prev') officialPrev();
-        else if (destination === 'advance') advanceInQueue(result.attempts);
+        if (destination === 'prev') {
+          if (isPracticeSetMode) handlePracticeSetPrevious();
+          else await handlePrevious(result.attempts ?? undefined);
+        }
+        else if (destination === 'advance') await advanceInQueue(result.attempts);
         else if (destination === 'end') {
-          await handleFinishSection(result.attempts ?? session.attempts);
-        } else handleJumpTo(destination.jumpTo);
+          if (session.mode !== 'full-section' || await moveTimedSection(session.currentIndex, result.attempts ?? undefined)) {
+            await handleFinishSection(result.attempts ?? session.attempts);
+          }
+        } else await handleJumpTo(destination.jumpTo, result.attempts ?? undefined);
       } finally {
         actionLockRef.current = false;
         setActionInFlight(false);
@@ -4159,9 +4265,9 @@ function DrillContent() {
       } else if (isAdaptiveMode) {
         setAdvanceToken(t => t + 1);
       } else if (!isAdaptiveMode && session.currentIndex >= session.questionQueue.length - 1) {
-        await handleFinishSection(committedAttempts ?? session.attempts);
+        await handleNext(committedAttempts ?? undefined);
       } else {
-        handleNext();
+        await handleNext(committedAttempts ?? undefined);
       }
     };
     const displayNum = getDrillDisplayNumber({
@@ -4244,7 +4350,7 @@ function DrillContent() {
         setIsEndingBootcampPracticeDrill(false);
       }
     };
-    const officialIsPaused = !!timer?.isPaused && !isEndingBootcampPracticeDrill;
+    const officialIsPaused = (!!timer?.isPaused || sectionSaveError) && !isEndingBootcampPracticeDrill;
 
     return (
       <>
@@ -4268,6 +4374,22 @@ function DrillContent() {
           </AlertDialogContent>
         </AlertDialog>
 
+        <AlertDialog open={sectionSaveError}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Saving paused this section</AlertDialogTitle>
+              <AlertDialogDescription>
+                Your clock and questions are paused because this section did not save to your account.
+                Your current choice remains on this page. Retry the account save to continue.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <Button onClick={() => { void retrySectionSave(); }} disabled={retryingSectionSave}>
+                {retryingSectionSave ? 'Trying to save…' : 'Retry save'}
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
         <AlertDialog open={pauseNoticeOpen} onOpenChange={setPauseNoticeOpen}>
           {/* LawHub's own notice, in LawHub's own dress: white card, plain
               sans, blue buttons. It sits over the official player, so it must
@@ -4418,7 +4540,7 @@ function DrillContent() {
 
         <OfficialDrillFrame
           isPaused={officialIsPaused}
-          onResume={timer?.resume}
+          onResume={sectionSaveError ? () => { void retrySectionSave(); } : timer?.resume}
           pauseNoun={isFullSection ? 'Section' : 'Question'}
           notesPanelEnabled={usesSmartChrome}
           notesPanelOpen={notesOpen}
@@ -5040,7 +5162,7 @@ function DrillContent() {
                     {session.mode === 'adaptive' && (
                       <div className="flex justify-end pt-2">
                         <Button
-                          onClick={handleNext}
+                          onClick={() => { void handleNext(); }}
                           size="lg"
                           className="min-w-[120px]"
                         >
@@ -5064,7 +5186,7 @@ function DrillContent() {
             <Button
               variant="ghost"
               size="lg"
-              onClick={isPracticeSetMode ? handlePracticeSetPrevious : handlePrevious}
+              onClick={isPracticeSetMode ? handlePracticeSetPrevious : () => { void handlePrevious(); }}
               disabled={session.currentIndex === 0 || timer?.isPaused}
               className={cn(
                 "rounded-lg transition-all duration-150 min-w-[100px]",
@@ -5096,7 +5218,11 @@ function DrillContent() {
                           if (isPracticeSetMode && currentQuestion) {
                             questionTimer.current.pause();
                           }
-                          setSession({ ...session, currentIndex: index });
+                          if (session.mode === 'full-section') {
+                            void moveTimedSection(index);
+                          } else {
+                            setSession({ ...session, currentIndex: index });
+                          }
                         }
                       }}
                       disabled={timer?.isPaused}
@@ -5121,7 +5247,7 @@ function DrillContent() {
             <Button
               variant="default"
               size="lg"
-              onClick={isPracticeSetMode ? handlePracticeSetNext : handleNext}
+              onClick={isPracticeSetMode ? handlePracticeSetNext : () => { void handleNext(); }}
               disabled={timer?.isPaused}
               className="rounded-lg shadow-md min-w-[100px] font-medium transition-all duration-150 hover:shadow-lg"
             >

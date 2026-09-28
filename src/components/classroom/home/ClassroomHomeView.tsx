@@ -23,6 +23,7 @@ import { SectionBriefing } from "./SectionBriefing";
 import { markReportCardSeen } from "./reportCardSeen";
 import { launchDrill } from "@/lib/drillLaunch";
 import { pickContinueWork } from "./homeModel";
+import { nextActionFor } from "./homeNextAction";
 import QuestionFinder, { type QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 
 function WorkRow({
@@ -162,6 +163,7 @@ export function ClassroomHomeView({
   onMarkDone,
   onClearMessage,
   completingKey,
+  onRetryWork,
 }: {
   model: ClassroomHomeModel;
   loading: boolean;
@@ -169,6 +171,7 @@ export function ClassroomHomeView({
   onMarkDone?: (key: string) => void;
   onClearMessage?: (conversationId: string) => void;
   completingKey?: string | null;
+  onRetryWork?: () => void;
 
   /** Kept for callers; the hero no longer duplicates the sidebar's Assigned work link. */
   onSeeAllWork?: () => void;
@@ -182,7 +185,7 @@ export function ClassroomHomeView({
   // The Continue card already offers this work at the top of the page; a hero
   // for the same item would list it a second time above its own row.
   const hero =
-    model.hero && !(continueRow && model.hero.row.route === continueRow.route)
+    !loading && !model.workFailed && model.hero && !(continueRow && model.hero.row.route === continueRow.route)
       ? model.hero
       : null;
   const [briefing, setBriefing] = React.useState<SectionBriefingData | null>(null);
@@ -235,6 +238,7 @@ export function ClassroomHomeView({
 
   const testDate = model.daysToTest;
   const testDateLabel = testDate === 1 ? "day to test day" : "days to test day";
+  const nextAction = continueRow ? nextActionFor(continueRow) : null;
 
   return (
     <div className="classroom-home">
@@ -261,6 +265,14 @@ export function ClassroomHomeView({
               {model.displayName ? <>, <em>{model.displayName}</em>.</> : "."}
             </h1>
             <p className="classroom-home-subtitle">{model.subtitle}</p>
+            {model.workFailed && onRetryWork ? (
+              <button type="button" className="classroom-home-work-retry" onClick={onRetryWork}>Retry assigned work</button>
+            ) : model.workSummary && model.workSummary.open > 0 ? (
+              <p className="classroom-home-work-summary">
+                {model.workSummary.open} open {model.workSummary.open === 1 ? 'assignment' : 'assignments'}
+                {' · '}{model.workSummary.inProgress} with saved work
+              </p>
+            ) : null}
             {!model.isAdmin && model.homeBooking.state === "booked" ? (
               <button
                 type="button"
@@ -286,11 +298,11 @@ export function ClassroomHomeView({
             <div className="classroom-home-finderbar">
               <QuestionFinder ref={finderRef} returnTo="/classroom" />
             </div>
-            {continueRow ? (
+            {continueRow && !loading && !model.workFailed ? (
               <button
                 type="button"
                 className="classroom-home-action classroom-home-action-continue"
-                aria-label="Continue assigned work"
+                aria-label={`${nextAction?.label ?? 'Open'} assigned work`}
                 onClick={() => handleOpenRow(continueRow)}
               >
                 <span className="classroom-home-continue-copy">
@@ -303,8 +315,9 @@ export function ClassroomHomeView({
                   </span>
                   <strong>{continueRow.title}</strong>
                   <small>{continueRow.meta}</small>
+                  {nextAction ? <small>{nextAction.reason}</small> : null}
                 </span>
-                <span className="classroom-home-continue-label">Continue</span>
+                <span className="classroom-home-continue-label">{nextAction?.label}</span>
                 <span className="classroom-home-continue-arrow">
                   <ArrowRight size={21} aria-hidden="true" />
                 </span>
@@ -506,7 +519,7 @@ export function ClassroomHomeView({
                 </div>
               ) : (
                 <p className="classroom-home-empty">
-                  {loading ? "Loading your work…" : "Nothing assigned right now."}
+                  {model.workFailed ? "Some assigned work could not load. Retry above." : loading ? "Loading your work…" : "Nothing assigned right now."}
                 </p>
               )}
             </section>

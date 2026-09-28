@@ -13,7 +13,7 @@ import "./home.css";
 export default function ClassroomHome() {
   const navigate = useNavigate();
   const { openSection } = useClassroomLayout();
-  const { model, loading, markDone, clearMessage, completingKey } = useClassroomHome();
+  const { model, loading, markDone, clearMessage, completingKey, retryWork } = useClassroomHome();
 
   return (
     <ClassroomHomeView
@@ -30,6 +30,7 @@ export default function ClassroomHome() {
         }
       }}
       completingKey={completingKey}
+      onRetryWork={retryWork}
     />
   );
 }

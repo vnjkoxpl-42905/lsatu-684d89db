@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
+import { MemoryRouter, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -129,6 +129,25 @@ function renderStudentCoreRoute(initialEntry = "/classroom") {
   );
 }
 
+function renderDestinationChild(initialEntry: string) {
+  return render(
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <Routes>
+        <Route path="/review" element={<ProtectedRoute allowSignedIn><Outlet /></ProtectedRoute>}>
+          <Route path="to-review" element={<ProtectedRoute flag={["has_journal_access", "has_flagged_access"]}><div>review queue</div></ProtectedRoute>} />
+        </Route>
+        <Route path="/practice" element={<ProtectedRoute allowSignedIn><Outlet /></ProtectedRoute>}>
+          <Route path="drills" element={<ProtectedRoute flag="has_drill_access"><div>drills page</div></ProtectedRoute>} />
+        </Route>
+        <Route path="/library" element={<ProtectedRoute allowSignedIn><Outlet /></ProtectedRoute>}>
+          <Route path="admissions" element={<ProtectedRoute requireAdmin><div>admissions page</div></ProtectedRoute>} />
+          <Route path="bootcamps" element={<ProtectedRoute flag="has_bootcamp_access"><div>bootcamps page</div></ProtectedRoute>} />
+        </Route>
+      </Routes>
+    </MemoryRouter>,
+  );
+}
+
 describe("ProtectedRoute", () => {
   const originalLocation = window.location;
 
@@ -146,6 +165,40 @@ describe("ProtectedRoute", () => {
       configurable: true,
       value: originalLocation,
     });
+  });
+
+  it("guards a directly opened Review child when neither source is available", () => {
+    mockUseAuth.mockReturnValue({ user: { id: "student" }, authReady: true });
+    mockUseUserPermissions.mockReturnValue({ ...NO_FLAGS, has_classroom_access: true });
+    renderDestinationChild("/review/to-review");
+    expect(screen.queryByText("review queue")).not.toBeInTheDocument();
+    expect(screen.getByText("Not open yet")).toBeInTheDocument();
+  });
+
+  it("opens the combined Review child when either source is available", () => {
+    mockUseAuth.mockReturnValue({ user: { id: "student" }, authReady: true });
+    mockUseUserPermissions.mockReturnValue({ ...NO_FLAGS, has_flagged_access: true });
+    renderDestinationChild("/review/to-review");
+    expect(screen.getByText("review queue")).toBeInTheDocument();
+  });
+
+  it("guards a directly opened Admissions child for non-admin users", () => {
+    mockUseAuth.mockReturnValue({ user: { id: "student" }, authReady: true });
+    mockUseUserPermissions.mockReturnValue({ ...NO_FLAGS, has_classroom_access: true, has_activity_access: true, has_bootcamp_access: true });
+    renderDestinationChild("/library/admissions");
+    expect(screen.queryByText("admissions page")).not.toBeInTheDocument();
+    expect(screen.getByText("Not open yet")).toBeInTheDocument();
+  });
+
+  it.each([
+    ["/practice/drills", "drills page"],
+    ["/library/bootcamps", "bootcamps page"],
+  ])("guards directly opened paid child %s", (path, content) => {
+    mockUseAuth.mockReturnValue({ user: { id: "student" }, authReady: true });
+    mockUseUserPermissions.mockReturnValue({ ...NO_FLAGS, has_classroom_access: true });
+    renderDestinationChild(path);
+    expect(screen.queryByText(content)).not.toBeInTheDocument();
+    expect(screen.getByText("Not open yet")).toBeInTheDocument();
   });
 
   it("redirects anonymous users on admin routes to auth with returnTo preserved", () => {

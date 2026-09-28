@@ -30,7 +30,7 @@ import { useRailPrefs } from "@/hooks/useRailPrefs";
 import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
 import { preloadDrillHub } from "@/lib/routePreload";
 import { flagLabel } from "@/lib/flaggedService";
-import { reviewDefaultPath } from "@/components/classroom/ReviewTabs";
+import { reviewReturnTo } from "@/components/review/ReviewReturnLink";
 import {
   useStudentAssignments,
   useStudentTAAssignments,
@@ -128,13 +128,11 @@ function PanelWash() {
 function ClassroomSidebar({
   displayName,
   activeSection,
-  onSection,
   onHome,
   onNavigate,
 }: {
   displayName: string;
   activeSection: ClassroomSection | null;
-  onSection: (section: ClassroomSection) => void;
   onHome: () => void;
   onNavigate?: () => void;
 }) {
@@ -258,51 +256,31 @@ function ClassroomSidebar({
             onHome();
           },
         };
-      case "notes":
-        return { active: activeSection === "notes", onClick: () => onSection("notes") };
-      case "work":
-        return { active: activeSection === "work", onClick: () => onSection("work") };
-      case "drill":
+      case "my-work":
         return {
-          active: location.pathname === "/classroom/drill",
-          onClick: () => go("/classroom/drill"),
+          active: location.pathname.startsWith("/my-work") || activeSection === "notes" || activeSection === "work",
+          onClick: () => go("/my-work/to-do"),
+        };
+      case "practice":
+        return {
+          active: location.pathname.startsWith("/practice") || location.pathname === "/classroom/drill" || location.pathname.startsWith("/testing") || location.pathname === "/sets",
+          onClick: () => go(permissions.is_admin || permissions.has_drill_access || permissions.loading ? "/practice/drills" : "/practice/exams/attempts"),
           onPrefetch: preloadDrillHub,
         };
-      case "testing":
-        return {
-          active: location.pathname.startsWith("/testing"),
-          onClick: () => go("/testing"),
-        };
-      case "bootcamps":
-        return { active: false, onClick: () => go("/bootcamps") };
-      case "activities":
-        return { active: false, onClick: () => go("/activities") };
       case "review":
         return {
-          active: activeSection === "journal" || activeSection === "flagged",
-          onClick: () => go(reviewDefaultPath(permissions)),
+          active: location.pathname.startsWith("/review") || activeSection === "journal" || activeSection === "flagged",
+          onClick: () => go("/review/to-review"),
         };
-      case "analytics":
+      case "progress":
         return {
-          active: location.pathname.startsWith("/analytics"),
-          onClick: () => go("/analytics"),
+          active: location.pathname.startsWith("/progress") || location.pathname.startsWith("/analytics") || location.pathname.startsWith("/history"),
+          onClick: () => go("/progress/overview"),
         };
-      case "admissions":
+      case "library":
         return {
-          active: location.pathname === "/classroom/admissions",
-          onClick: () => go("/classroom/admissions"),
-        };
-      case "history":
-        return {
-          active: location.pathname.startsWith("/history"),
-          onClick: () => go("/history"),
-        };
-      case "messages":
-        return {
-          active:
-            location.pathname === "/inbox" ||
-            location.pathname.startsWith("/inbox/"),
-          onClick: () => go("/inbox"),
+          active: location.pathname.startsWith("/library") || location.pathname.startsWith("/bootcamps") || location.pathname.startsWith("/activities") || location.pathname === "/classroom/admissions",
+          onClick: () => go("/library/lessons"),
         };
       case "schedule":
         // One entry, two stage tabs. /booking is the same shell with the Book
@@ -325,7 +303,7 @@ function ClassroomSidebar({
         <button
           type="button"
           className="classroom-brand"
-          onClick={() => go("/classroom")}
+          onClick={() => { onNavigate?.(); onHome(); }}
         >
           <i>LS</i>
           <span>LSAT U</span>
@@ -345,13 +323,6 @@ function ClassroomSidebar({
                     {...navProps(active, unlocked, onClick, onPrefetch)}
                   >
                     {item.label}
-                    {item.id === "messages" && unlocked && unreadMessages > 0 ? (
-                      <span className="classroom-nav-badge">
-                        {unreadMessages > 9 ? "9+" : unreadMessages}
-                        <span className="sr-only"> unread messages</span>
-                      </span>
-                    ) : null}
-                    {item.section && unlocked ? <em>›</em> : null}
                     {!unlocked ? (
                       <Lock className="classroom-nav-lock" aria-hidden="true" />
                     ) : null}
@@ -360,6 +331,16 @@ function ClassroomSidebar({
               })}
             </div>
           ))}
+
+          <div className="classroom-nav-group classroom-nav-shortcuts">
+            <b>Quick access</b>
+            <button type="button" className={`${navClass(location.pathname.startsWith("/inbox"))}${canAccess({ flags: ["has_chat_access"] }) ? "" : " classroom-nav-locked"}`} disabled={!canAccess({ flags: ["has_chat_access"] })} title={canAccess({ flags: ["has_chat_access"] }) ? undefined : "Messages is locked for your account"} onClick={() => go("/inbox")}>
+              Messages
+              {unreadMessages > 0 ? <span className="classroom-nav-badge">{unreadMessages > 9 ? "9+" : unreadMessages}<span className="sr-only"> unread messages</span></span> : null}
+              {!canAccess({ flags: ["has_chat_access"] }) ? <Lock className="classroom-nav-lock" aria-hidden="true" /> : null}
+            </button>
+            <button type="button" className={`classroom-nav${canAccess({ flags: ["has_drill_access"] }) ? "" : " classroom-nav-locked"}`} disabled={!canAccess({ flags: ["has_drill_access"] })} title={canAccess({ flags: ["has_drill_access"] }) ? undefined : "Find a question is locked for your account"} onClick={() => go("/practice/drills")}>Find a question{!canAccess({ flags: ["has_drill_access"] }) ? <Lock className="classroom-nav-lock" aria-hidden="true" /> : null}</button>
+          </div>
 
           {permissions.is_admin ? (
             <div className="classroom-nav-group">
@@ -877,6 +858,14 @@ function SectionList({
   );
 }
 
+// The canonical Review tabs need their own list in the stage. The legacy
+// index pages expected the old secondary rail, which disappears on the new
+// routes and at narrower widths.
+// eslint-disable-next-line react-refresh/only-export-components
+export function ReviewIndexList({ section }: { section: "journal" | "flagged" }) {
+  return <div className="student-destination-review-list"><SectionList section={section} activeId={undefined} /></div>;
+}
+
 /**
  * Holds the stage open while a code-split route resolves.
  *
@@ -946,7 +935,13 @@ export default function ClassroomLayout() {
   }, [authReady, navigate, user]);
 
   const pathSection = sectionFromPath(location.pathname);
-  const drillHub = location.pathname === "/classroom/drill";
+  const drillHub = location.pathname === "/classroom/drill" || location.pathname === "/practice/drills";
+  const destinationName = location.pathname.startsWith("/my-work") ? "My Work"
+    : location.pathname.startsWith("/practice") ? "Practice"
+    : location.pathname.startsWith("/review") ? "Review"
+    : location.pathname.startsWith("/progress") ? "Progress"
+    : location.pathname.startsWith("/library") ? "Library"
+    : null;
   // Messages owns the whole stage beside the rail: no section list, and none of
   // the reading-column padding. Like the drill hub it also has to suppress a
   // remembered section, or arriving from Notes would leave that list open.
@@ -959,7 +954,7 @@ export default function ClassroomLayout() {
   const workspaceStage =
     location.pathname === "/teacher" || location.pathname.startsWith("/teacher/");
   const activeSection =
-    drillHub || messagesStage || workspaceStage ? null : pathSection ?? selectedSection;
+    drillHub || destinationName || messagesStage || workspaceStage ? null : pathSection ?? selectedSection;
 
   // Modal semantics for the two overlays. Declared after `activeSection`
   // because the section drawer takes its accessible name from it.
@@ -1033,6 +1028,7 @@ export default function ClassroomLayout() {
   // they signed up with rather than an empty row and a blank avatar.
   const sidebarName = displayName || user.email || "";
   const journalDetail = /^\/journal\/[^/]+$/.test(location.pathname);
+  const reviewFromQueue = /^\/(?:journal|flagged)\/[^/]+$/.test(location.pathname) && !!reviewReturnTo(location.search);
   // Home is a dashboard, not a reading column: it needs the whole stage beside
   // the rail rather than the 720px measure every other reading surface uses.
   const homeStage = location.pathname === "/classroom";
@@ -1054,6 +1050,8 @@ export default function ClassroomLayout() {
           ? "Teacher Workspace"
           : scheduleStage
             ? "Schedule"
+            : destinationName
+              ? destinationName
             : homeStage
               ? "Home"
               : "Classroom";
@@ -1067,8 +1065,10 @@ export default function ClassroomLayout() {
         ? "classroom-root classroom-root-drill"
         : messagesStage
           ? "classroom-root classroom-root-messages"
-          : workspaceStage
+        : workspaceStage
             ? "classroom-root classroom-root-workspace"
+            : destinationName
+              ? "classroom-root classroom-root-destination"
             : homeStage
               ? "classroom-root classroom-root-home"
               : scheduleStage
@@ -1077,7 +1077,7 @@ export default function ClassroomLayout() {
 
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>
-      <div className={rootClass}>
+      <div className={`${rootClass}${reviewFromQueue ? " classroom-root-review-return" : ""}`}>
         <div className="classroom-mobile-bar">
           <button
             type="button"
@@ -1120,7 +1120,6 @@ export default function ClassroomLayout() {
           <ClassroomSidebar
             displayName={sidebarName}
             activeSection={activeSection}
-            onSection={openSection}
             onHome={goHome}
           />
         </aside>
@@ -1146,10 +1145,6 @@ export default function ClassroomLayout() {
               <ClassroomSidebar
                 displayName={sidebarName}
                 activeSection={activeSection}
-                onSection={(section) => {
-                  setMobileMenuOpen(false);
-                  openSection(section);
-                }}
                 onHome={goHome}
                 onNavigate={() => setMobileMenuOpen(false)}
               />
@@ -1157,7 +1152,7 @@ export default function ClassroomLayout() {
           </div>
         ) : null}
 
-        {activeSection ? (
+        {activeSection && !reviewFromQueue ? (
           <aside className="classroom-section-list">
             <SectionList section={activeSection} activeId={activeId} />
           </aside>

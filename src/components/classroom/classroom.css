@@ -192,12 +192,12 @@ html.dark .classroom-root .classroom-panel-wash-dark {
 }
 
 .classroom-root .classroom-sidebar {
-  flex: 0 0 336px;
+  flex: 0 0 280px;
   height: 100dvh;
   padding: 8px;
   position: sticky;
   top: 0;
-  width: 336px;
+  width: 280px;
   z-index: 20;
 }
 
@@ -3100,7 +3100,7 @@ html.dark .classroom-root.classroom-root-drill {
 
 .classroom-root.classroom-root-journal-detail {
   display: grid;
-  grid-template-columns: 336px 320px minmax(0, 1fr) 320px;
+  grid-template-columns: 280px 320px minmax(0, 1fr) 320px;
   height: 100dvh;
   overflow: hidden;
 }
@@ -3516,7 +3516,7 @@ html.dark .classroom-root.classroom-root-drill {
   }
 
   .classroom-root.classroom-root-journal-detail {
-    grid-template-columns: 336px minmax(0, 1fr) 320px;
+    grid-template-columns: 280px minmax(0, 1fr) 320px;
   }
 
   .classroom-root.classroom-root-journal-detail .classroom-journal-stage {
@@ -3537,7 +3537,7 @@ html.dark .classroom-root.classroom-root-drill {
 
 @media (max-width: 1099px) {
   .classroom-root.classroom-root-journal-detail {
-    grid-template-columns: 336px minmax(0, 1fr);
+    grid-template-columns: 280px minmax(0, 1fr);
     height: auto;
     min-height: 100dvh;
     overflow: visible;
@@ -5517,4 +5517,161 @@ html.dark .classroom-root.classroom-root-drill {
   line-height: 1.6;
   margin: 0 0 24px;
   max-width: 56ch;
+}
+
+/* One roomy stage serves the seven destination pages. The rail remains narrow
+   while the tab row wraps cleanly at phone and sidecar widths. */
+.classroom-root.classroom-root-destination .classroom-column {
+  max-width: 1160px;
+  padding-top: 48px;
+}
+
+.classroom-root .student-destination-heading h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.classroom-root .student-destination-heading p,
+.classroom-root .student-destination-links > p {
+  color: var(--classroom-meta-text);
+  font-size: 14px;
+  margin: 10px 0 0;
+}
+
+.classroom-root .student-destination-tabs {
+  border-bottom: 1px solid var(--classroom-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin: 30px 0 32px;
+}
+
+.classroom-root .student-destination-tabs:has(+ .student-destination-subtabs) {
+  margin-bottom: 0;
+}
+
+.classroom-root .student-destination-subtabs {
+  background: var(--classroom-hover);
+  border-bottom: 1px solid var(--classroom-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin-bottom: 32px;
+  padding: 0 14px;
+}
+
+.classroom-root .student-destination-tab {
+  align-items: center;
+  border-bottom: 2px solid transparent;
+  color: var(--classroom-meta-text);
+  display: inline-flex;
+  font-size: 14px;
+  gap: 6px;
+  min-height: 44px;
+  padding: 10px 2px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.classroom-root .student-destination-tab:hover,
+.classroom-root .student-destination-tab-active {
+  border-bottom-color: var(--classroom-accent);
+  color: var(--classroom-ink);
+}
+
+.classroom-root .student-destination-tab:focus-visible,
+.classroom-root .student-destination-link-card:focus-visible,
+.classroom-root .student-work-row:focus-visible {
+  outline: 2px solid var(--classroom-accent);
+  outline-offset: 3px;
+}
+
+.classroom-root .student-destination-tab-locked {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+/* The retained Review lists include their old two-tab heading for legacy
+   question URLs. Canonical Review already has its full tab row above them. */
+.classroom-root .student-destination-content .classroom-review-heading {
+  display: none;
+}
+
+.classroom-root .student-destination-content .practice-exams-nav {
+  display: none;
+}
+
+.classroom-root .student-destination-review-list .classroom-section-card {
+  border: 1px solid var(--classroom-line);
+  border-radius: 12px;
+  height: auto;
+  max-height: 70dvh;
+  padding: 24px;
+}
+
+.classroom-root .student-destination-links h2 {
+  font-family: Georgia, serif;
+  font-size: 25px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.classroom-root .student-destination-link-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  margin-top: 24px;
+}
+
+.classroom-root .student-destination-link-card {
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 12px;
+  color: var(--classroom-ink);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 150px;
+  padding: 22px;
+  text-decoration: none;
+}
+
+.classroom-root .student-destination-link-card span {
+  color: var(--classroom-meta-text);
+  font-size: 13px;
+}
+
+.classroom-root .student-destination-link-card span:last-child {
+  color: var(--classroom-link-text);
+  margin-top: auto;
+}
+
+.classroom-root .student-work-count {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.classroom-root .student-work-list ul { list-style: none; margin: 0; padding: 0; }
+.classroom-root .student-work-list li + li { border-top: 1px solid var(--classroom-line); }
+.classroom-root .student-work-row {
+  align-items: center;
+  color: var(--classroom-ink);
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 14px 4px;
+  text-decoration: none;
+}
+.classroom-root .student-work-row:hover { background: var(--classroom-hover); }
+.classroom-root .student-work-row span:first-child { display: grid; gap: 4px; }
+.classroom-root .student-work-row small,
+.classroom-root .student-work-status,
+.classroom-root .student-destination-message { color: var(--classroom-meta-text); font-size: 13px; }
+
+@media (max-width: 1023px) {
+  .classroom-root.classroom-root-destination .classroom-column { padding-top: 24px; }
 }

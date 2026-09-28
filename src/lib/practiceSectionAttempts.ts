@@ -4,6 +4,30 @@ import { getPersistence } from '@/bootcamps/main-conclusion/persistence/factory'
 import { loadRcIndex } from '@/features/rc/lib/rcBank';
 import { getSessionAttempts, listSessions } from '@/features/rc/api/rcProgress';
 
+interface CompletedLrMirror {
+  pt: number;
+  section: number;
+  completedAt: string;
+  questions: unknown;
+}
+
+/** A legacy resume row and a result row are mirrors only when their saved question identities and first answers agree. */
+export function isCompletedLrMirror(session: PracticeSession, result: CompletedLrMirror): boolean {
+  if (session.status !== 'completed') return false;
+  const match = /^drill::section::pt(\d+)-s(\d+)$/.exec(session.pool_slug);
+  if (!match || Number(match[1]) !== result.pt || Number(match[2]) !== result.section) return false;
+  const completed = Date.parse(result.completedAt);
+  if (!Number.isFinite(completed) || completed < Date.parse(session.started_at) || completed > Date.parse(session.updated_at) + 5 * 60_000) return false;
+  if (!Array.isArray(result.questions) || result.questions.length !== session.question_queue.length) return false;
+  const saved = new Map(session.attempts.map((attempt) => [attempt.qid, attempt.selected_answer]));
+  return result.questions.every((raw, index) => {
+    if (!raw || typeof raw !== 'object') return false;
+    const question = raw as Record<string, unknown>;
+    return question.qid === session.question_queue[index]
+      && question.initialAnswer === (saved.get(question.qid as string) ?? '—');
+  });
+}
+
 export interface PracticeSectionAttempt {
   id: string;
   kind: 'lr-section' | 'rc-section';
@@ -62,7 +86,7 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
 
   const { data: completedRows, error: historyError } = await supabase
     .from('section_history')
-    .select('id, pt, section, initial_score, initial_total, unanswered_count, created_at, completed_at')
+    .select('id, pt, section, initial_score, initial_total, unanswered_count, created_at, completed_at, questions_json')
     .eq('user_id', userId)
     .eq('mode', 'full-section')
     .is('practice_test_run_id', null)
@@ -96,10 +120,9 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     if (!match) continue;
     const preptest = Number(match[1]);
     const section = Number(match[2]);
-    if (session.status === 'completed' && completedLr.some((attempt) =>
-      attempt.preptest === preptest && attempt.section === section &&
-      attempt.updatedAt >= session.started_at && attempt.updatedAt <= session.updated_at,
-    )) continue;
+    if (completedRows?.some((row) => row.completed_at && isCompletedLrMirror(session, {
+      pt: row.pt, section: row.section, completedAt: row.completed_at, questions: row.questions_json,
+    }))) continue;
     const timer = session.timer_mode && session.timer_mode !== '35'
       ? `&timer=${encodeURIComponent(session.timer_mode)}`
       : '';

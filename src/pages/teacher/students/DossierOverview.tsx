@@ -2,6 +2,7 @@ import { Crown, Shield, UserCheck, UserX } from 'lucide-react';
 import { toast } from 'sonner';
 import HubSnapshot from '@/components/hub/HubSnapshot';
 import StudentOverview from '@/components/hub/StudentOverview';
+import FirstAnswerProgressPanel from '@/components/analytics/FirstAnswerProgressPanel';
 import { CONFIGURABLE_FLAG_KEYS, ALL_FLAG_LABELS, isPrimaryAdmin } from '@/lib/adminUsers';
 import { cn } from '@/lib/utils';
 import { useSetStudentLevel, useStudentLevels } from '@/hooks/useStudentLevels';
@@ -77,6 +78,8 @@ export default function DossierOverview() {
     <div className="space-y-5 p-5">
       <HubSnapshot studentId={studentId} />
       <StudentOverview studentId={studentId} />
+
+      <FirstAnswerProgressPanel studentId={studentId} />
 
       <section className="border border-black/10 bg-white/20 p-4">
         <h2 className="text-[13px] font-bold uppercase tracking-[0.04em] text-black/45">Level</h2>
