@@ -89,8 +89,11 @@ export function useInbox() {
       return;
     }
 
-    const lastReadMap = new Map<string, string>(
-      (myParts ?? []).map((p) => [p.conversation_id, p.last_read_at])
+    const lastReadMap = new Map<string, number>(
+      (myParts ?? []).map((p) => [
+        p.conversation_id,
+        p.last_read_at ? new Date(p.last_read_at).getTime() : 0,
+      ])
     );
 
     const homeClearedMap = new Map<string, string | null>(
@@ -161,6 +164,28 @@ export function useInbox() {
       lastMsgMap.set(m.conversation_id, { body: m.body, created_at: m.created_at, sender_id: m.sender_id });
     }
 
+    // Match the rail badge: a conversation is unread when it contains any
+    // incoming message newer than this viewer's read timestamp, even if a
+    // later message in the thread was sent by the viewer.
+    const oldestReadAt = Math.min(...lastReadMap.values());
+    const { data: unreadMessages, error: unreadMessagesError } = await supabase
+      .from('messages')
+      .select('conversation_id, created_at')
+      .in('conversation_id', convIds)
+      .neq('sender_id', user.id)
+      .gt('created_at', new Date(oldestReadAt).toISOString());
+    if (unreadMessagesError) {
+      console.error('[inbox] load unread messages failed:', unreadMessagesError);
+      setError('Could not load your messages');
+      setLoading(false);
+      return;
+    }
+    const unreadConversationIds = new Set(
+      (unreadMessages ?? [])
+        .filter((m) => new Date(m.created_at).getTime() > (lastReadMap.get(m.conversation_id) ?? 0))
+        .map((m) => m.conversation_id),
+    );
+
     // Per-conversation attachment presence via RPC — exact across ALL messages in
     // the conversation. The old stopgap only inspected recently-fetched messages,
     // so an attachment older than the cutoff lost its paperclip. Non-fatal: on
@@ -187,9 +212,8 @@ export function useInbox() {
           is_admin: adminSet.has(p.user_id),
           last_seen_at: lastSeenMap.get(p.user_id) ?? null,
         }));
-      const lastRead = lastReadMap.get(c.id);
       const lastMsg = lastMsgMap.get(c.id) ?? null;
-      const unread = !!(lastMsg && lastRead && new Date(lastMsg.created_at) > new Date(lastRead) && lastMsg.sender_id !== user.id);
+      const unread = unreadConversationIds.has(c.id);
       return {
         ...c,
         participants: parts,
@@ -228,6 +252,15 @@ export function useInbox() {
       supabase.removeChannel(channel);
     };
   }, [user, loadConversations]);
+
+  // A thread view marks itself read after its messages load. Refresh this
+  // hook's list after that write so the Unread filter clears immediately in
+  // the same tab, even if Realtime is delayed.
+  useEffect(() => {
+    const handleRead = () => void loadConversations();
+    window.addEventListener('inbox:read', handleRead);
+    return () => window.removeEventListener('inbox:read', handleRead);
+  }, [loadConversations]);
 
   const deleteConversation = useCallback(async (conversationId: string) => {
     // Optimistic remove; messages + participants cascade off the conversation row.
