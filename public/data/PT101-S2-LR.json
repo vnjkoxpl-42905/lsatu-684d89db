@@ -578,9 +578,9 @@
     "answerChoices": {
       "A": "Knowingly making a false claim is unethical only if it is reasonable for people to accept the claim as true.",
       "B": "Knowingly making a false claim is unethical if those making it derive a gain at the expense of those acting as if the claim were true.",
-      "C": "Knowingly making a false claim is unethical only if those making it expect that most people will accept the claim as true.",
-      "D": "Knowingly making a false claim is ethical only if those making it have good intentions.",
-      "E": "Knowingly making a false claim is always unethical."
+      "C": "Knowingly making a false claim is unethical in only those cases in which those who accept the claim as true suffer a hardship greater than the gain they were anticipating.",
+      "D": "Knowingly making a false claim is unethical only if there is a possibility that someone will act as if the claim might be true.",
+      "E": "Knowingly making a false claim is unethical in at least those cases in which for someone else to discover that the claim is false, that person must have acted as if the claim were true."
     },
     "correctAnswer": "A",
     "questionFeatures": [

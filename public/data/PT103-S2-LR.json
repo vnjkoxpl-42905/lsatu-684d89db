@@ -401,7 +401,7 @@
       "B": "It draws a conclusion about the recommendations of the association from incomplete recollections.",
       "C": "It takes for granted that the association's report is the only direct evidence that needed to be considered.",
       "D": "It hastily concludes that the association's report is accurate, without having studied it thoroughly.",
-      "E": "It takes for granted that the association's information is not distorted by bias."
+      "E": "It takes for granted that agreeing with the association’s past recommendation helps to justify agreeing with its current recommendation."
     },
     "correctAnswer": "B",
     "questionFeatures": [

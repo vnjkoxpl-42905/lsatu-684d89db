@@ -472,7 +472,7 @@
       "B": "Has compliance with tax laws by small and midsized businesses increased since tax filing was simplified?",
       "C": "For small and midsized businesses in the finance minister’s country, is tax preparation and filing more difficult than complying with other regulations?",
       "D": "Is what the finance minister considers to be a midsized business smaller than the hypothetical business used to produce the “Doing Business” report?",
-      "E": "Was the finance minister in office when the last"
+      "E": "Was the finance minister in office when the last “Doing Business” report was issued?"
     },
     "correctAnswer": "D",
     "questionFeatures": [

@@ -452,9 +452,9 @@
     "answerChoices": {
       "A": "The directors of charitable organizations cannot allocate publicly solicited funds to any purposes for which the directors had not specifically earmarked the funds in advance.",
       "B": "People who solicit charitable donations from the public for a specific cause should spend the funds only on that cause or, if that becomes impossible, should dispose of the funds according to the express wishes of the donors.",
-      "C": "A charitable organization that has solicited funds for a specific cause must return to the donors any funds not spent on that cause unless the donors permit the organization to spend the funds for other purposes.",
-      "D": "Charitable organizations should not solicit funds for specific causes unless they can guarantee that the funds raised will be spent only on those causes.",
-      "E": "Charitable organizations should be allowed to allocate funds as they see fit, provided the funds are spent for charitable purposes."
+      "C": "Directors of charitable organizations who solicit money from the public must return all the money received from an appeal if more money is received than can practicably be used for the purposes specified in the appeal.",
+      "D": "Donors of money to charitable organizations cannot delegate to the directors of those organizations the responsibility of allocating the funds received to various purposes consonant with the purposes of the organization as the directors of the organization see fit.",
+      "E": "People who contribute money to charitable organizations should be considered to be placing their trust in the directors of those organizations to use the money wisely according to whatever circumstance might arise."
     },
     "correctAnswer": "B",
     "questionFeatures": [
