@@ -212,7 +212,7 @@
       "B": "Creutzfeldt-Jakob disease affects only motor nerves in rats’ limbs, not their brains.",
       "C": "The virus that causes Creutzfeldt-Jakob disease in rats has no effect on humans.",
       "D": "The symptoms known, respectively, as Creutzfeldt-Jakob disease and Alzheimer’s disease are different manifestations of the same disease.",
-      "E": "Blood from rats without Creutzfeldt-Jakob disease produced no symptoms of the disease when injected into other experimental rats."
+      "E": "Blood from rats with Creutzfeldt-Jakob disease produced no symptoms of the disease when injected into other experimental rats."
     },
     "correctAnswer": "D",
     "questionFeatures": [

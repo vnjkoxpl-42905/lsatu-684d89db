@@ -491,7 +491,7 @@
       "B": "A laundry detergent formulated especially for front-loading washers dissolves more readily in them than it does in top-loading washers.",
       "C": "A washing machine gets clothes really clean only with a laundry detergent specially formulated for that machine.",
       "D": "A laundry detergent does not get clothes really clean in a washer unless it dissolves readily in it.",
-      "E": "Washers that use more water get clothes cleaner"
+      "E": "Washers that use more water get clothes cleaner than those that use less."
     },
     "correctAnswer": "D",
     "questionFeatures": [

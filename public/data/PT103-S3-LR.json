@@ -403,7 +403,7 @@
       "B": "A stingray is a free-ranging predator that feeds on smaller organisms but has few predators itself.",
       "C": "A parasite drains part of the vitality of its host by drawing nourishment from the host.",
       "D": "An ecosystem can be considered stressed if only a few species of very simple organisms can live there.",
-      "E": "Since the life of parasites depends on that of their host, they need to live without killing their host or else to reproduce and infect other individuals before their own host dies."
+      "E": "Since the life of parasites depends on that of their host, they need to live without killing their host or else not reproduce and infect other individuals before their own host dies."
     },
     "correctAnswer": "A"
   },
