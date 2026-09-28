@@ -1,8 +1,8 @@
 import { Crown, Shield, UserCheck, UserX } from 'lucide-react';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 import HubSnapshot from '@/components/hub/HubSnapshot';
 import StudentOverview from '@/components/hub/StudentOverview';
-import FirstAnswerProgressPanel from '@/components/analytics/FirstAnswerProgressPanel';
 import { CONFIGURABLE_FLAG_KEYS, ALL_FLAG_LABELS, isPrimaryAdmin } from '@/lib/adminUsers';
 import { cn } from '@/lib/utils';
 import { useSetStudentLevel, useStudentLevels } from '@/hooks/useStudentLevels';
@@ -79,7 +79,16 @@ export default function DossierOverview() {
       <HubSnapshot studentId={studentId} />
       <StudentOverview studentId={studentId} />
 
-      <FirstAnswerProgressPanel studentId={studentId} />
+      <div className="flex flex-wrap items-center justify-between gap-3 border border-black/10 bg-white/20 p-4">
+        <div>
+          <h2 className="text-[13px] font-bold uppercase tracking-[0.04em] text-black/70">Saved answers</h2>
+          <p className="mt-1 text-xs text-black/55">Review first-answer misses and check diagnostic progress for this student.</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link to="../review" className="inline-flex min-h-11 items-center border border-black/15 px-3 py-2 text-xs font-semibold text-black/70 hover:bg-white/30">Open review</Link>
+          <Link to="../progress" className="inline-flex min-h-11 items-center border border-black/15 px-3 py-2 text-xs font-semibold text-black/70 hover:bg-white/30">Open progress</Link>
+        </div>
+      </div>
 
       <section className="border border-black/10 bg-white/20 p-4">
         <h2 className="text-[13px] font-bold uppercase tracking-[0.04em] text-black/45">Level</h2>

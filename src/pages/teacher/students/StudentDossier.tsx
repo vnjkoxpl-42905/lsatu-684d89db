@@ -31,6 +31,8 @@ export function useDossier() {
 const TABS = [
   { to: 'overview', label: 'Overview' },
   { to: 'work', label: 'Work' },
+  { to: 'review', label: 'Review' },
+  { to: 'progress', label: 'Progress' },
   { to: 'notes', label: 'Notes' },
   { to: 'messages', label: 'Messages' },
   { to: 'schedule', label: 'Schedule' },
@@ -107,6 +109,10 @@ export default function StudentDossier() {
             Assign work
           </button>
         </div>
+
+        <p className="mt-3 max-w-3xl text-xs leading-relaxed text-black/55">
+          Viewing this student's records in the teacher workspace. Assignments, notes, and access changes here apply to this student. Questions you answer in Practice stay in your own account.
+        </p>
 
         {/* Sub-tabs sit below the shell's room rail, so they take the ramp's
             13px label step — subordinate to the rail's 14px without inventing

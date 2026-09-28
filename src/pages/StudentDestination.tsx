@@ -43,9 +43,9 @@ const DESTINATIONS: Record<Destination, { title: string; introduction: string; t
   },
   library: {
     title: "Library",
-    introduction: "Lessons and exercises assigned to your account.",
+    introduction: "Written lessons and exercises available to your account.",
     tabs: [
-      { label: "Lessons", path: "/library/lessons", flags: ["has_bootcamp_access", "has_activity_access"] },
+      { label: "Lessons", path: "/library/lessons", flags: ["has_bootcamp_access", "has_activity_access", "has_drill_access", "has_analytics_access"] },
       { label: "Activities", path: "/library/activities", flags: ["has_activity_access"] },
       { label: "Bootcamps", path: "/library/bootcamps", flags: ["has_bootcamp_access"] },
       { label: "Admissions", path: "/library/admissions", admin: true },

@@ -52,6 +52,7 @@ import Classroom from "./pages/Classroom";
 import AdmissionsPage from "./pages/classroom/AdmissionsPage";
 import ClassroomLayout, { ReviewIndexList } from "./components/classroom/shell/ClassroomLayout";
 import { DestinationLinks, StudentDestination } from "./pages/StudentDestination";
+import StudentLibraryLessons from "./pages/StudentLibraryLessons";
 import MyWorkPage from "./pages/MyWorkPage";
 import MyWorkNotesPage from "./pages/MyWorkNotesPage";
 import ReviewQueuePage from "./pages/ReviewQueuePage";
@@ -121,6 +122,8 @@ const TeacherHomeworkDetail = safeLazy(() => import("./pages/teacher/library/Tea
 const StudentDossier = safeLazy(() => import("./pages/teacher/students/StudentDossier"));
 const DossierOverview = safeLazy(() => import("./pages/teacher/students/DossierOverview"));
 const DossierWork = safeLazy(() => import("./pages/teacher/students/DossierWork"));
+const DossierReview = safeLazy(() => import("./pages/teacher/students/DossierReview"));
+const DossierProgress = safeLazy(() => import("./pages/teacher/students/DossierProgress"));
 const DossierNotes = safeLazy(() => import("./pages/teacher/students/DossierNotes"));
 const DossierMessages = safeLazy(() => import("./pages/teacher/students/DossierMessages"));
 const DossierSchedule = safeLazy(() => import("./pages/teacher/students/DossierSchedule"));
@@ -611,7 +614,7 @@ const App = () => {
 
                     <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>
                       <Route index element={<RedirectWithSearch to="/library/lessons" />} />
-                      <Route path="lessons" element={<ProtectedRoute flag={["has_activity_access", "has_bootcamp_access"]}><DestinationLinks heading="Study library" description="Choose the lessons and exercises available to you." links={[{ label: "Activities", description: "Short exercises assigned to your account.", path: "/library/activities", flag: "has_activity_access" }, { label: "Bootcamps", description: "Focused programs assigned to your account.", path: "/library/bootcamps", flag: "has_bootcamp_access" }]} /></ProtectedRoute>} />
+                      <Route path="lessons" element={<ProtectedRoute flag={["has_activity_access", "has_bootcamp_access", "has_drill_access", "has_analytics_access"]}><StudentLibraryLessons /></ProtectedRoute>} />
                       <Route path="activities" element={<ProtectedRoute flag="has_activity_access"><ActivityCentre /></ProtectedRoute>} />
                       <Route path="bootcamps" element={<ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>} />
                       <Route path="admissions" element={<ProtectedRoute requireAdmin><AdmissionsPage /></ProtectedRoute>} />
@@ -737,6 +740,12 @@ const App = () => {
                         } />
                         <Route path="work" element={
                           <React.Suspense fallback={<div />}><DossierWork /></React.Suspense>
+                        } />
+                        <Route path="review" element={
+                          <React.Suspense fallback={<div />}><DossierReview /></React.Suspense>
+                        } />
+                        <Route path="progress" element={
+                          <React.Suspense fallback={<div />}><DossierProgress /></React.Suspense>
                         } />
                         <Route path="notes" element={
                           <React.Suspense fallback={<div />}><DossierNotes /></React.Suspense>
