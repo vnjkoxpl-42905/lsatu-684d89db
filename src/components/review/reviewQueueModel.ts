@@ -24,6 +24,7 @@ export interface ReviewQueueItem {
   reflection: string | null;
   flaggedNote: string | null;
   href: string;
+  actionLabel?: string;
 }
 
 function latestDate(...dates: Array<string | null | undefined>): string {

@@ -114,7 +114,7 @@ export default function ReviewQueuePage() {
       <div className="review-queue-intro">
         <div>
           <h2>Work to review</h2>
-          <p>This list includes saved LR wrong answers and flags, completed RC drills and PrepTests, judged misses from Activities, and questions opened and left blank in completed LR sections. A question can appear in both its journal and a specific sitting. Bootcamp exercises, active RC sessions, and teacher-selected review are not yet included here.</p>
+          <p>This list includes saved LR wrong answers and flags, completed RC drills and PrepTests, flags in active RC drills, judged misses from Activities, and questions opened and left blank in completed LR sections. Active RC flags continue the drill without opening answer review. A question can appear in both its journal and a specific sitting. Bootcamp exercises and teacher-selected review are not yet included here.</p>
         </div>
         <span className="review-queue-count" aria-live="polite">{loading ? "Loading…" : `${visibleItems.length} ${visibleItems.length === 1 ? "item" : "items"}`}</span>
       </div>
@@ -177,7 +177,7 @@ export default function ReviewQueuePage() {
               </span>
               <span className="review-queue-card-side">
                 {item.reasons.map((entry) => <span className="review-queue-reason" key={entry}>{reasonLabel(entry)}</span>)}
-                <span className="review-queue-open">Open item →</span>
+                <span className="review-queue-open">{item.actionLabel ?? "Open item"} →</span>
               </span>
             </Link>
           </li>

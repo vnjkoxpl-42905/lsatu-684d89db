@@ -1,4 +1,18 @@
 import { isSittingReturn } from '@/lib/practiceTestRunner';
+import type { RcSessionStatus } from './rcTypes';
+
+export function inProgressRcDestination(search: string): string {
+  const params = new URLSearchParams(search);
+  params.delete('review');
+  const query = params.toString();
+  return `/rc/drill${query ? `?${query}` : ''}`;
+}
+
+export function rcReviewRedirect(status: RcSessionStatus, reviewOnly: boolean, search: string): string | null {
+  if (!reviewOnly || status === 'completed') return null;
+  if (status === 'in_progress') return inProgressRcDestination(search);
+  throw new Error('This drill is not available for review.');
+}
 
 export function completedRcDestination(
   sessionId: string,

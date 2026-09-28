@@ -41,9 +41,17 @@ describe("RC Review adapter", () => {
     ], [session], [question])).toEqual([]);
   });
 
-  it("excludes active and practice-test sessions until their review gate is known", () => {
+  it("continues an active flagged drill without treating its answer as a reviewable miss", () => {
     const saved = attempt({ flagged: true });
-    expect(buildRcReviewQueue([saved], [{ ...session, status: "in_progress" }], [question])).toEqual([]);
+    expect(buildRcReviewQueue([saved], [{ ...session, status: "in_progress" }], [question])).toMatchObject([{
+      reasons: ["flagged"], firstMissAt: null, actionLabel: "Continue drill",
+      href: "/rc/drill?sessionId=session-1&q=101",
+    }]);
+    expect(buildRcReviewQueue([attempt()], [{ ...session, status: "in_progress" }], [question])).toEqual([]);
+  });
+
+  it("excludes practice-test sessions until their run is complete", () => {
+    const saved = attempt({ flagged: true });
     expect(buildRcReviewQueue([saved], [{ ...session, practice_test_run_id: "test-1" }], [question])).toEqual([]);
     expect(buildRcReviewQueue([saved], [{ ...session, config: { practiceTestRunId: "test-1" } }], [question])).toEqual([]);
   });
@@ -51,5 +59,6 @@ describe("RC Review adapter", () => {
   it("requires the source session owner and valid question index identity", () => {
     expect(buildRcReviewQueue([attempt({ user_id: "another-student" })], [session], [question])).toEqual([]);
     expect(buildRcReviewQueue([attempt()], [session], [{ ...question, passageId: 99 }])).toEqual([]);
+    expect(buildRcReviewQueue([attempt()], [{ ...session, passage_ids: [99] }], [question])).toEqual([]);
   });
 });

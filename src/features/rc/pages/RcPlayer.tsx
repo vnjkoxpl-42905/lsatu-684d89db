@@ -22,7 +22,7 @@ import {
 } from '../components/RcModals';
 import { RC_DIRECTIONS, RC_FONT_SCALE_OPTIONS } from '../lib/rcDirections';
 import { readActiveRcAnswerBackup, readRcAnswerBackup, writeRcAnswerBackup, clearRcAnswerBackup } from '../lib/rcAnswerBackup';
-import { completedRcDestination } from '../lib/rcSessionDestination';
+import { completedRcDestination, rcReviewRedirect } from '../lib/rcSessionDestination';
 import { useRcA11y } from '../hooks/useRcA11y';
 import { useRcHighlights } from '../hooks/useRcHighlights';
 import { loadPassage, loadPassages } from '../lib/rcBank';
@@ -125,6 +125,8 @@ export default function RcPlayer() {
     // across a search-param change, so without this the previous sitting's
     // re-attempts, clock, scroll positions and open modal ride into the next one.
     setError(null);
+    setPassages(null);
+    setSessionId(null);
     setSessionOwnerId(null);
     setSessionStatus(null);
     completedRef.current = false;
@@ -157,6 +159,11 @@ export default function RcPlayer() {
           const session = await getSession(existingId);
           if (!session) throw new Error('That drill could not be found.');
           if (!user || session.userId !== user.id) throw new Error('This drill belongs to another account.');
+          const reviewRedirect = rcReviewRedirect(session.status, reviewOnly, location.search);
+          if (reviewRedirect) {
+            if (!cancelled) navigate(reviewRedirect, { replace: true });
+            return;
+          }
           if (session.status === 'completed' && !reviewOnly) {
             if (!cancelled) {
               completedRef.current = true;
@@ -176,6 +183,7 @@ export default function RcPlayer() {
         }
 
         if (passageParam) {
+          if (reviewOnly) throw new Error('A saved drill is needed for review.');
           const passage = await loadPassage(Number(passageParam));
           if (!passage) throw new Error('That passage could not be found.');
           const session = await createSession(DEFAULT_CONFIG, [passage.passageId]);
@@ -189,6 +197,7 @@ export default function RcPlayer() {
         }
 
         if (routed.passageIds?.length) {
+          if (reviewOnly && !routed.sessionId) throw new Error('A saved drill is needed for review.');
           const nextConfig = routed.config ?? DEFAULT_CONFIG;
           const loaded = await loadPassages(routed.passageIds);
           const session =
@@ -196,15 +205,19 @@ export default function RcPlayer() {
               ? await getSession(routed.sessionId)
               : await createSession(nextConfig, routed.passageIds);
           if (cancelled) return;
+          if (session && (!user || session.userId !== user.id)) throw new Error('This drill belongs to another account.');
+          const reviewRedirect = session ? rcReviewRedirect(session.status, reviewOnly, location.search) : null;
+          if (reviewRedirect) {
+            navigate(reviewRedirect, { replace: true });
+            return;
+          }
           if (session?.status === 'completed' && !reviewOnly) {
-            if (!user || session.userId !== user.id) throw new Error('This drill belongs to another account.');
             completedRef.current = true;
             navigate(completedRcDestination(session.id, returnTo, session.config.practiceTestRunId), { replace: true });
             return;
           }
           setConfig(session?.config ?? nextConfig);
           if (session) {
-            if (!user || session.userId !== user.id) throw new Error('This drill belongs to another account.');
             setSessionOwnerId(session.userId);
             setSessionStatus(session.status);
             setElapsed(Math.max(session.config.clockElapsedSeconds ?? 0, readClockBackup(session.id)));
