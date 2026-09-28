@@ -149,6 +149,12 @@ import {
   isResumableDrillSession,
   isSpentDrillSession,
 } from '@/lib/drillResumeSession';
+import {
+  createStandaloneDrillRun,
+  loadStandaloneDrillRun,
+  saveStandaloneDrillRun,
+  completeStandaloneDrillRun,
+} from '@/lib/drillRunLedger';
 
 
 /**
@@ -175,6 +181,7 @@ function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const requestedStandaloneRunId = searchParams.get('run');
   const { user } = useAuth();
   // Depend on the id, never the user object: Supabase hands out a fresh object
   // on every token refresh, and effects keyed on the object re-run for no reason.
@@ -263,12 +270,19 @@ function DrillContent() {
   // a drill the student already completed.
   const guidedFinalizedRef = React.useRef(false);
   const genericResumeIdentity = state.resumeIdentity;
+  const standaloneSourceKey = React.useMemo(() => {
+    if (state.mode !== 'type-drill' || isMcPractice || guidedSessionKey || assignmentId || ptRun || genericResumeIdentity) return null;
+    return drillResumeKey({ mode: 'type-drill', config: state.config });
+  }, [state.mode, state.config, isMcPractice, guidedSessionKey, assignmentId, ptRun, genericResumeIdentity]);
+  const standaloneRunIdRef = React.useRef<string | null>(requestedStandaloneRunId);
+  const standaloneWriteRef = React.useRef<Promise<unknown>>(Promise.resolve());
+  const legacyStandaloneResumeRef = React.useRef(false);
   // Every remaining drill surface — Smart Drill, custom type drills, full
   // sections — gets the same durable resume row, so closing the browser or
   // signing out mid-drill is never a loss. Null while the guided/practice-set
   // surfaces own the run, so the three can never write over each other.
   const genericResumeKey = React.useMemo(() => {
-    if (isMcPractice || guidedSessionKey) return null;
+    if (isMcPractice || guidedSessionKey || standaloneSourceKey) return null;
     if (!state?.mode) return null;
     const mode = state.mode === 'practice-set' ? 'type-drill' : state.mode;
     return drillResumeKey({
@@ -280,7 +294,7 @@ function DrillContent() {
       assignmentId,
       ptRun,
     });
-  }, [isMcPractice, guidedSessionKey, state, genericResumeIdentity, assignmentId, ptRun]);
+  }, [isMcPractice, guidedSessionKey, standaloneSourceKey, state, genericResumeIdentity, assignmentId, ptRun]);
   // Rows written before a bootcamp day had its own identity were named by the
   // picked question list. Read that key only when the day-keyed row is absent;
   // every new snapshot and completion still writes the day-keyed row.
@@ -596,6 +610,7 @@ function DrillContent() {
         classId,
         guidedSessionKey ?? null,
         genericResumeKey ?? null,
+        requestedStandaloneRunId ?? null,
         mcPracticePool?.slug ?? null,
         initialIndexParam ?? null,
       ]);
@@ -872,6 +887,43 @@ function DrillContent() {
       // rather than comparing it to a new shuffle, or the student loses the
       // questions they already answered. An explicit ?initialIndex wins, since
       // that is someone deliberately jumping to a question.
+      if (standaloneSourceKey && user && !initialIndexParam) {
+        standaloneRunIdRef.current = requestedStandaloneRunId;
+        legacyStandaloneResumeRef.current = false;
+        const ownedRun = requestedStandaloneRunId
+          ? await loadStandaloneDrillRun(user.id, requestedStandaloneRunId)
+          : null;
+        if (requestedStandaloneRunId && !ownedRun) {
+          setBootError('This saved drill run could not be found in your account.');
+          return;
+        }
+        if (ownedRun?.session.status === 'completed') {
+          navigate(`/practice/drills/runs/${ownedRun.id}?view=results`, { replace: true });
+          return;
+        }
+        const stored = ownedRun?.session ?? (!requestedStandaloneRunId
+          ? await loadDrillResumeSession(user.id, standaloneSourceKey)
+          : null);
+        if (isResumableDrillSession(stored)) {
+          legacyStandaloneResumeRef.current = !ownedRun;
+          questionQueue = stored.question_queue;
+          initialIndex = guidedResumeIndex(questionQueue, stored.current_index, stored.attempts.map((a) => a.qid));
+          for (const attempt of stored.attempts) {
+            restoredAttempts.set(attempt.qid, {
+              selectedAnswer: attempt.selected_answer,
+              correct: attempt.correct,
+              timeMs: attempt.time_ms,
+              timestamp: Date.now(),
+              confidence: undefined,
+              reviewDone: false,
+              switchCount: attempt.switch_count,
+              brMarked: attempt.flagged,
+              answerRevealed: attempt.answer_revealed ?? false,
+              answerTrail: attempt.answer_trail?.map((entry) => ({ answer: entry.answer, atMs: entry.at_ms })),
+            });
+          }
+        }
+      }
       if (genericResumeKey && user && !initialIndexParam) {
         const stored = await loadDrillResumeSession(
           user.id,
@@ -955,7 +1007,7 @@ function DrillContent() {
     };
 
     initializeSession();
-  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, guidedLegacySessionKey, genericResumeKey, genericLegacyResumeKey, userId]);
+  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, guidedLegacySessionKey, genericResumeKey, genericLegacyResumeKey, standaloneSourceKey, requestedStandaloneRunId, userId]);
 
   // Shapes the student's current place into a resume snapshot. Shared by the two
   // surfaces that persist one — Intro to LR practice sets and guided drills — and
@@ -1025,6 +1077,34 @@ function DrillContent() {
     },
     [sectionElapsedMs],
   );
+
+  const persistStandaloneSession = React.useCallback((source: DrillSession, finish = false): Promise<void> => {
+    if (!standaloneSourceKey || !user) return Promise.resolve();
+    const snapshot = drillResumeSnapshot(source);
+    if (!snapshot || snapshot.attempts.length === 0) return Promise.resolve();
+    const task = standaloneWriteRef.current.catch(() => undefined).then(async () => {
+      let runId = standaloneRunIdRef.current;
+      if (!runId) {
+        const run = await createStandaloneDrillRun(user.id, standaloneSourceKey, snapshot, {
+          mode: source.mode,
+          label: practicingLabel || 'Custom drill',
+        });
+        runId = run.id;
+        standaloneRunIdRef.current = runId;
+        const url = new URL(window.location.href);
+        url.searchParams.set('run', runId);
+        window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+      }
+      if (finish) await completeStandaloneDrillRun(user.id, runId, snapshot);
+      else await saveStandaloneDrillRun(user.id, runId, snapshot);
+      if (finish && legacyStandaloneResumeRef.current) {
+        await completeDrillResumeSession(user.id, standaloneSourceKey, snapshot);
+        legacyStandaloneResumeRef.current = false;
+      }
+    });
+    standaloneWriteRef.current = task;
+    return task.then(() => undefined);
+  }, [standaloneSourceKey, user, drillResumeSnapshot, practicingLabel]);
 
   /**
    * The clock keeps running between answers, and a student can sit on one
@@ -1114,6 +1194,14 @@ function DrillContent() {
       });
     });
   }, [session, genericResumeKey, user, drillResumeSnapshot, ptRun, pauseForSectionSave]);
+
+  React.useEffect(() => {
+    if (!standaloneSourceKey || !session || genericFinalizedRef.current || session.attempts.size === 0) return;
+    void persistStandaloneSession(session).catch((error) => {
+      console.error('[drill:run] account save failed', error);
+      toast.error("Your drill progress has not saved to your account. Try again before leaving.");
+    });
+  }, [standaloneSourceKey, session, persistStandaloneSession]);
 
   const retrySectionSave = async () => {
     if (!user || !genericResumeKey || !session || retryingSectionSave) return;
@@ -2469,7 +2557,7 @@ function DrillContent() {
     setShowSolution(true);
   };
 
-  const handlePracticeSetNext = () => {
+  const handlePracticeSetNext = async () => {
     if (!session) return;
     
     // Pause timer on current question
@@ -2479,17 +2567,23 @@ function DrillContent() {
     
     // Move to next
     if (session.currentIndex < session.questionQueue.length - 1) {
-      setSession(prev => prev ? {
-        ...prev,
-        currentIndex: prev.currentIndex + 1,
-      } : prev);
+      const nextSession = { ...session, currentIndex: session.currentIndex + 1 };
+      if (standaloneSourceKey && nextSession.attempts.size > 0) {
+        try {
+          await persistStandaloneSession(nextSession);
+        } catch (error) {
+          toast.error("Your answer has not saved to your account. Retry Next.");
+          return;
+        }
+      }
+      setSession(nextSession);
     } else {
       // Finished
-      handleFinishPracticeSet();
+      await handleFinishPracticeSet();
     }
   };
 
-  const handlePracticeSetPrevious = () => {
+  const handlePracticeSetPrevious = async () => {
     if (!session) return;
     
     // Pause timer on current question
@@ -2500,9 +2594,18 @@ function DrillContent() {
     // Move to previous. Functional, like every other queue move: stepping back
     // can follow an answer that was just committed, and a spread of the
     // closure's `session` would write that attempt straight back out.
-    setSession(prev =>
-      prev && prev.currentIndex > 0 ? { ...prev, currentIndex: prev.currentIndex - 1 } : prev,
-    );
+    if (session.currentIndex > 0) {
+      const previousSession = { ...session, currentIndex: session.currentIndex - 1 };
+      if (standaloneSourceKey && previousSession.attempts.size > 0) {
+        try {
+          await persistStandaloneSession(previousSession);
+        } catch (error) {
+          toast.error("Your place has not saved to your account. Retry Previous.");
+          return;
+        }
+      }
+      setSession(previousSession);
+    }
   };
 
   /**
@@ -2638,6 +2741,15 @@ function DrillContent() {
 
     // Every other drill surface: same close-out.
     await finalizeDrillResumeSession(attemptsWithTiming);
+    if (standaloneSourceKey && !genericFinalizedRef.current) {
+      try {
+        await persistStandaloneSession({ ...session, attempts: attemptsWithTiming }, true);
+        genericFinalizedRef.current = true;
+      } catch (error) {
+        toast.error("Your drill results could not be saved to your account. Retry Finish.");
+        throw error;
+      }
+    }
 
 
     // Homework assignment: write status=completed + score.
@@ -2730,7 +2842,16 @@ function DrillContent() {
         if (session.mode === 'full-section') {
           await moveTimedSection(session.currentIndex + 1, attempts);
         } else {
-          setSession(prev => prev ? { ...prev, currentIndex: prev.currentIndex + 1 } : prev);
+          const nextSession = { ...session, attempts: attempts ?? session.attempts, currentIndex: session.currentIndex + 1 };
+          if (standaloneSourceKey && nextSession.attempts.size > 0) {
+            try {
+              await persistStandaloneSession(nextSession);
+            } catch (error) {
+              toast.error("Your answer has not saved to your account. Retry Next.");
+              return;
+            }
+          }
+          setSession(nextSession);
         }
       } else {
         // Reached the end - show results
@@ -2750,9 +2871,18 @@ function DrillContent() {
     
     // Move to previous in queue. See handlePracticeSetPrevious: functional, so
     // an attempt committed moments earlier survives the step back.
-    setSession(prev =>
-      prev && prev.currentIndex > 0 ? { ...prev, currentIndex: prev.currentIndex - 1 } : prev,
-    );
+    if (session.currentIndex > 0) {
+      const previousSession = { ...session, attempts: attempts ?? session.attempts, currentIndex: session.currentIndex - 1 };
+      if (standaloneSourceKey && previousSession.attempts.size > 0) {
+        try {
+          await persistStandaloneSession(previousSession);
+        } catch (error) {
+          toast.error("Your place has not saved to your account. Retry Previous.");
+          return;
+        }
+      }
+      setSession(previousSession);
+    }
   };
 
   // One-shot: expiry firing while a manual finish is in flight must be a no-op.
@@ -2941,6 +3071,15 @@ function DrillContent() {
 
     // Same for Smart Drill / custom drills / full sections.
     await finalizeDrillResumeSession(updatedAttempts);
+    if (standaloneSourceKey && !genericFinalizedRef.current) {
+      try {
+        await persistStandaloneSession(updatedSession, true);
+        genericFinalizedRef.current = true;
+      } catch (error) {
+        toast.error("Your drill results could not be saved to your account. Retry Finish.");
+        throw error;
+      }
+    }
 
     // An assigned section closes its own Classroom card. Sitting the section is
     // the completion, so there is nothing for the student to assert afterwards
@@ -4119,7 +4258,16 @@ function DrillContent() {
         return;
       }
       if (isPracticeSetMode) questionTimer.current.pause();
-      setSession({ ...session, currentIndex: idx });
+      const nextSession = { ...session, attempts: attempts ?? session.attempts, currentIndex: idx };
+      if (standaloneSourceKey && nextSession.attempts.size > 0) {
+        try {
+          await persistStandaloneSession(nextSession);
+        } catch (error) {
+          toast.error("Your place has not saved to your account. Retry this question.");
+          return;
+        }
+      }
+      setSession(nextSession);
     };
     const handleTogglePauseClick = timer
       ? () => {
@@ -5212,16 +5360,25 @@ function DrillContent() {
                   return (
                     <button
                       key={qid}
-                      onClick={() => {
+                      onClick={async () => {
                         if (!timer?.isPaused) {
                           // Pause timer on current question before switching
                           if (isPracticeSetMode && currentQuestion) {
                             questionTimer.current.pause();
                           }
                           if (session.mode === 'full-section') {
-                            void moveTimedSection(index);
+                            await moveTimedSection(index);
                           } else {
-                            setSession({ ...session, currentIndex: index });
+                            const nextSession = { ...session, currentIndex: index };
+                            if (standaloneSourceKey && nextSession.attempts.size > 0) {
+                              try {
+                                await persistStandaloneSession(nextSession);
+                              } catch (error) {
+                                toast.error("Your place has not saved to your account. Retry this question.");
+                                return;
+                              }
+                            }
+                            setSession(nextSession);
                           }
                         }
                       }}

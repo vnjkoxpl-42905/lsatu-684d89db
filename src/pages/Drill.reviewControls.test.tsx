@@ -16,6 +16,7 @@ import type { LRQuestion } from '@/lib/questionLoader';
 
 const insertCalls = vi.hoisted(() => ({ attempts: [] as Array<Record<string, unknown>>, failNext: 0, delayMs: 0 }));
 const resumeSave = vi.hoisted(() => ({ fail: false, failNext: 0, calls: 0 }));
+const ledgerSave = vi.hoisted(() => ({ fail: false, created: 0 }));
 const journalCalls = vi.hoisted(() => ({ wrong: vi.fn(), correct: vi.fn() }));
 
 vi.mock('@rrweb/record', () => ({ record: () => () => {} }));
@@ -72,6 +73,16 @@ vi.mock('@/lib/drillResumeSession', async (importOriginal) => {
     },
   };
 });
+vi.mock('@/lib/drillRunLedger', () => ({
+  createStandaloneDrillRun: vi.fn(async () => {
+    if (ledgerSave.fail) throw new Error('offline');
+    ledgerSave.created += 1;
+    return { id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa' };
+  }),
+  loadStandaloneDrillRun: vi.fn(async () => null),
+  saveStandaloneDrillRun: vi.fn(async () => ({})),
+  completeStandaloneDrillRun: vi.fn(async () => ({})),
+}));
 vi.mock('@/lib/questionPoolService', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/questionPoolService')>();
   return {
@@ -298,6 +309,8 @@ beforeEach(() => {
   resumeSave.fail = false;
   resumeSave.failNext = 0;
   resumeSave.calls = 0;
+  ledgerSave.fail = false;
+  ledgerSave.created = 0;
   journalCalls.wrong.mockReset();
   journalCalls.correct.mockReset();
   journalCalls.wrong.mockResolvedValue(undefined);
@@ -385,6 +398,19 @@ describe('Drill review controls — guided drill (fixed + list)', () => {
 });
 
 describe('Drill review controls — filter drill (fixed + commit)', () => {
+  it('keeps the picked question in place when its account run cannot be created', async () => {
+    ledgerSave.fail = true;
+    renderDrill(filterSpec);
+    await screen.findByText(/Stimulus 1[89]:/, {}, { timeout: 4000 });
+    const before = screen.getByText(/Stimulus 1[89]:/).textContent;
+    fireEvent.click(choiceButton('C'));
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    await waitFor(() => expect(console.error).toHaveBeenCalledWith('[drill:run] account save failed', expect.any(Error)));
+    expect(screen.getByText(/Stimulus 1[89]:/).textContent).toBe(before);
+    expect(choiceButton('C')).toHaveClass('bg-slate-900');
+    expect(ledgerSave.created).toBe(0);
+  });
+
   it('the arrow commits once, and a pill press never commits', async () => {
     renderDrill(filterSpec);
     await screen.findByText(/Stimulus 1[89]:/, {}, { timeout: 4000 });

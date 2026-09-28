@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { listStandaloneDrillRuns, type StandaloneDrillRun } from "@/lib/drillRunLedger";
 import {
   ArrowRight,
   Loader2,
@@ -186,10 +188,37 @@ export default function AcademyMainhub({
   drillReturnTo?: string;
 }) {
   const perms = useUserPermissions();
+  const { user } = useAuth();
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const viewParam = searchParams.get("view");
+  const view = viewParam === "in-progress" || viewParam === "completed" || viewParam === "saved" ? viewParam : "create";
+  const [runs, setRuns] = React.useState<StandaloneDrillRun[]>([]);
+  const [runsLoading, setRunsLoading] = React.useState(false);
+  const [runsError, setRunsError] = React.useState<string | null>(null);
+  const [runsRevision, refreshRuns] = React.useReducer((value) => value + 1, 0);
+
+  React.useEffect(() => {
+    if (!user?.id || (view !== "in-progress" && view !== "completed")) return;
+    let active = true;
+    setRunsLoading(true);
+    setRunsError(null);
+    void listStandaloneDrillRuns(user.id).then(
+      (loaded) => { if (active) setRuns(loaded); },
+      (error: unknown) => { if (active) setRunsError(error instanceof Error ? error.message : "Drill runs could not be loaded."); },
+    ).finally(() => { if (active) setRunsLoading(false); });
+    return () => { active = false; };
+  }, [user?.id, view, runsRevision]);
+
+  const changeView = React.useCallback((next: "create" | "in-progress" | "completed" | "saved") => {
+    const params = new URLSearchParams(searchParams);
+    params.set("view", next);
+    params.delete("stage");
+    params.delete("tab");
+    setSearchParams(params);
+  }, [searchParams, setSearchParams]);
 
   /* Which section the hub is showing. URL first, then what this browser
      remembers, then LR — see `src/lib/drillSection.ts`. Reading it from the
@@ -351,6 +380,40 @@ export default function AcademyMainhub({
           their padding by design — they read as three objects on one field, not
           as one split surface. */}
       <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5">
+        <nav aria-label="Drills" className="flex flex-wrap gap-2 border-b border-border pb-3">
+          {([ ["create", "Create"], ["in-progress", "In progress"], ["completed", "Completed"], ["saved", "Saved sets"] ] as const).map(([key, label]) => (
+            <Button key={key} type="button" size="sm" variant={view === key ? "default" : "ghost"} aria-current={view === key ? "page" : undefined} onClick={() => changeView(key)}>{label}</Button>
+          ))}
+        </nav>
+        {view === "saved" ? (
+          <section className="rounded-xl border border-border bg-card p-6" aria-label="Saved sets">
+            <h1 className="text-xl font-semibold">Saved sets</h1>
+            <p className="mt-2 text-sm text-muted-foreground">Inspect, launch, rename, or duplicate a set you saved.</p>
+            <Button className="mt-5" onClick={() => navigate("/practice/drills/saved")}>Open saved sets <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
+          </section>
+        ) : view === "in-progress" || view === "completed" ? (
+          <section className="rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={view === "completed" ? "Completed drills" : "Drills in progress"}>
+            <div className="flex items-center justify-between gap-3">
+              <h1 className="text-xl font-semibold">{view === "completed" ? "Completed drills" : "Drills in progress"}</h1>
+              <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">Saved custom LR runs appear here. Smart Drill and RC have their own history for now.</p>
+            {runsLoading ? <p className="mt-6 text-sm text-muted-foreground" role="status">Loading your drills…</p> : runsError ? <p className="mt-6 text-sm text-destructive" role="alert">{runsError}</p> : (() => {
+              const selected = runs.filter((run) => run.session.status === (view === "completed" ? "completed" : "in_progress") && (view === "completed" || run.session.attempts.length > 0));
+              return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill and save an answer to see it here."}</p> : (
+                <ul className="mt-5 space-y-3">{selected.map((run) => (
+                  <li key={run.id} className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border p-4">
+                    <div className="min-w-0">
+                      <p className="font-medium">{run.label || "LR drill"}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{run.session.attempts.length} of {run.session.question_queue.length} answered · {new Date(run.updated_at).toLocaleDateString()}</p>
+                    </div>
+                    {view === "completed" ? <div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => navigate(`/practice/drills/runs/${run.id}?view=results`)}>Results</Button><Button size="sm" onClick={() => navigate(`/practice/drills/runs/${run.id}?view=review`)}>Review</Button></div> : <Button size="sm" onClick={() => navigate(`/drill?${launchDrill({kind: "questions", qids: run.session.question_queue, options: {returnTo: "/practice/drills"}})}&run=${encodeURIComponent(run.id)}`)}>Continue</Button>}
+                  </li>
+                ))}</ul>
+              );
+            })()}
+          </section>
+        ) : <>
         {/* The address row rides above the hero rather than inside it: the
             route label row is decorative and aria-hidden, and the hero's two
             columns are already the page's two primary actions. It sits in the
@@ -472,6 +535,7 @@ export default function AcademyMainhub({
             </section>
           </section>
         )}
+        </>}
       </div>
     </div>
   );

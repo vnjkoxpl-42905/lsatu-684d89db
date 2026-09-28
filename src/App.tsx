@@ -33,6 +33,7 @@ const Drill = safeLazy(() => import("./pages/Drill"));
 const DrillLaunchGate = safeLazy(() => import("./components/drill/DrillLaunchGate"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));
 const DrillHistory = safeLazy(() => import("./pages/DrillHistory"));
+const DrillRuns = safeLazy(() => import("./pages/DrillRuns"));
 const ProgressTopics = safeLazy(() => import("./pages/ProgressTopics"));
 const RcRedirect = safeLazy(() => import("./features/rc/pages/RcRedirect"));
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
@@ -592,6 +593,7 @@ const App = () => {
                     <Route path="/practice" element={<ProtectedRoute allowSignedIn><StudentDestination destination="practice" /></ProtectedRoute>}>
                       <Route index element={<RedirectWithSearch to="/practice/drills" />} />
                       <Route path="drills" element={<ProtectedRoute flag="has_drill_access"><AcademyMainhub /></ProtectedRoute>} />
+                      <Route path="drills/runs/:runId" element={<ProtectedRoute flag="has_drill_access"><DrillRuns /></ProtectedRoute>} />
                       <Route path="drills/saved" element={<ProtectedRoute flag="has_drill_access"><SavedSets /></ProtectedRoute>} />
                       <Route path="exams" element={<TestingCentreGate><TestingCentre /></TestingCentreGate>} />
                       <Route path="exams/all" element={<TestingCentreGate><AllPracticeExams /></TestingCentreGate>} />

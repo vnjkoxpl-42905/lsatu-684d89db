@@ -254,4 +254,5 @@ export const TABLES = {
   journal_entries: 'journal_entries',
   calibration_attempts: 'calibration_attempts',
   practice_sessions: 'practice_sessions',
+  drill_runs: 'drill_runs',
 } as const;

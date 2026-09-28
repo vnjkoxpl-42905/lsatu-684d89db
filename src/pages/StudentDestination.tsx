@@ -53,10 +53,6 @@ const DESTINATIONS: Record<Destination, { title: string; introduction: string; t
   },
 };
 
-const DRILL_TABS: Tab[] = [
-  { label: "Drills", path: "/practice/drills", flags: ["has_drill_access"] },
-  { label: "Saved sets", path: "/practice/drills/saved", flags: ["has_drill_access"] },
-];
 const EXAM_TABS: Tab[] = [
   { label: "Overview", path: "/practice/exams", flags: ["has_practice_access"] },
   { label: "All Exams", path: "/practice/exams/all", flags: ["has_practice_access"] },
@@ -100,9 +96,9 @@ export function StudentDestination({ destination }: { destination: Destination }
       <nav className="student-destination-tabs" aria-label={`${config.title} sections`} aria-busy={permissions.loading}>
         {renderTabs(config.tabs)}
       </nav>
-      {destination === "practice" ? (
-        <nav className="student-destination-subtabs" aria-label={pathname.startsWith("/practice/exams") ? "Practice Exams pages" : "Drill pages"} aria-busy={permissions.loading}>
-          {renderTabs(pathname.startsWith("/practice/exams") ? EXAM_TABS : DRILL_TABS, true)}
+      {destination === "practice" && pathname.startsWith("/practice/exams") ? (
+        <nav className="student-destination-subtabs" aria-label="Practice Exams pages" aria-busy={permissions.loading}>
+          {renderTabs(EXAM_TABS, true)}
         </nav>
       ) : null}
       <div className="student-destination-content"><Outlet /></div>
