@@ -4,8 +4,10 @@ import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 import HelpSheet from '@/components/help/HelpSheet';
-import { isSittingReturn } from '@/lib/practiceTestRunner';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { RcPager, RcToolbarButton, RcToolbarIcon, formatClock } from '../components/RcChrome';
 import { RcExamPane, rcTypeStyles } from '../components/RcExamPane';
@@ -19,6 +21,8 @@ import {
   RcTextSettings,
 } from '../components/RcModals';
 import { RC_DIRECTIONS, RC_FONT_SCALE_OPTIONS } from '../lib/rcDirections';
+import { readActiveRcAnswerBackup, readRcAnswerBackup, writeRcAnswerBackup, clearRcAnswerBackup } from '../lib/rcAnswerBackup';
+import { completedRcDestination } from '../lib/rcSessionDestination';
 import { useRcA11y } from '../hooks/useRcA11y';
 import { useRcHighlights } from '../hooks/useRcHighlights';
 import { loadPassage, loadPassages } from '../lib/rcBank';
@@ -78,6 +82,7 @@ function writeClockBackup(sessionId: string, seconds: number): void {
 }
 
 export default function RcPlayer() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [params] = useSearchParams();
@@ -100,8 +105,13 @@ export default function RcPlayer() {
   const [config, setConfig] = React.useState<RcDrillConfig>(DEFAULT_CONFIG);
   const [passages, setPassages] = React.useState<RcPassage[] | null>(null);
   const [sessionId, setSessionId] = React.useState<string | null>(null);
+  const [sessionOwnerId, setSessionOwnerId] = React.useState<string | null>(null);
+  const [sessionStatus, setSessionStatus] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [state, dispatch] = React.useReducer(rcSessionReducer, [], () => initialState([]));
+  const completedRef = React.useRef(false);
+  const completionPendingRef = React.useRef(false);
+  const attemptIdsRef = React.useRef(new Map<number, string>());
 
   const reviewOnly = params.get('review') === '1';
   const targetQuestionId = Number(params.get('q')) || null;
@@ -115,6 +125,12 @@ export default function RcPlayer() {
     // across a search-param change, so without this the previous sitting's
     // re-attempts, clock, scroll positions and open modal ride into the next one.
     setError(null);
+    setSessionOwnerId(null);
+    setSessionStatus(null);
+    completedRef.current = false;
+    completionPendingRef.current = false;
+    attemptIdsRef.current.clear();
+    pendingSaveRef.current = null;
     setSaveError(null);
     setReattemptPicks(new Map());
     setSkippedReattempt(new Set());
@@ -140,9 +156,19 @@ export default function RcPlayer() {
         if (existingId) {
           const session = await getSession(existingId);
           if (!session) throw new Error('That drill could not be found.');
+          if (!user || session.userId !== user.id) throw new Error('This drill belongs to another account.');
+          if (session.status === 'completed' && !reviewOnly) {
+            if (!cancelled) {
+              completedRef.current = true;
+              navigate(completedRcDestination(session.id, returnTo, session.config.practiceTestRunId), { replace: true });
+            }
+            return;
+          }
           const loaded = await loadPassages(session.passageIds);
           if (cancelled) return;
           setConfig(session.config);
+          setSessionOwnerId(session.userId);
+          setSessionStatus(session.status);
           setElapsed(Math.max(session.config.clockElapsedSeconds ?? 0, readClockBackup(session.id)));
           setSessionId(session.id);
           setPassages(loaded);
@@ -155,6 +181,8 @@ export default function RcPlayer() {
           const session = await createSession(DEFAULT_CONFIG, [passage.passageId]);
           if (cancelled) return;
           setConfig(DEFAULT_CONFIG);
+          setSessionOwnerId(session.userId);
+          setSessionStatus(session.status);
           setSessionId(session.id);
           setPassages([passage]);
           return;
@@ -168,8 +196,17 @@ export default function RcPlayer() {
               ? await getSession(routed.sessionId)
               : await createSession(nextConfig, routed.passageIds);
           if (cancelled) return;
+          if (session?.status === 'completed' && !reviewOnly) {
+            if (!user || session.userId !== user.id) throw new Error('This drill belongs to another account.');
+            completedRef.current = true;
+            navigate(completedRcDestination(session.id, returnTo, session.config.practiceTestRunId), { replace: true });
+            return;
+          }
           setConfig(session?.config ?? nextConfig);
           if (session) {
+            if (!user || session.userId !== user.id) throw new Error('This drill belongs to another account.');
+            setSessionOwnerId(session.userId);
+            setSessionStatus(session.status);
             setElapsed(Math.max(session.config.clockElapsedSeconds ?? 0, readClockBackup(session.id)));
           }
           setSessionId(session?.id ?? null);
@@ -207,7 +244,21 @@ export default function RcPlayer() {
       },
     });
 
-    if (!sessionId) return;
+    if (!sessionId || !sessionOwnerId) return;
+    const pendingAnswer = readActiveRcAnswerBackup(sessionOwnerId, sessionId, sessionStatus, reviewOnly);
+    if (pendingAnswer) {
+      attemptIdsRef.current.set(pendingAnswer.questionId, pendingAnswer.attemptId);
+      dispatch({
+        type: 'restore',
+        state: {
+          answers: new Map([[pendingAnswer.questionId, pendingAnswer.selected]]),
+          currentIndex: Math.min(Math.max(pendingAnswer.currentIndex, 0), seeded.items.length - 1),
+          paused: true,
+        },
+      });
+      setElapsed((old) => Math.max(old, pendingAnswer.elapsed));
+      setSaveError('Your last answer still needs to save.');
+    }
     // The component stays mounted across a session change, so this promise can
     // land after the player has already moved to a different drill. Without the
     // guard, session A's answers get restored into session B.
@@ -224,7 +275,9 @@ export default function RcPlayer() {
         dispatch({
           type: 'restore',
           state: {
-            answers: hydrated.answers,
+            answers: pendingAnswer && !hydrated.recorded.has(pendingAnswer.questionId)
+              ? new Map(hydrated.answers).set(pendingAnswer.questionId, pendingAnswer.selected)
+              : hydrated.answers,
             // In review this stays empty: `state.eliminations` is what a
             // re-attempt writes, and seeding it with the FIRST attempt's
             // cross-outs would file them against the second. The restored set
@@ -237,14 +290,21 @@ export default function RcPlayer() {
             revealed: hydrated.revealed,
             reviewedPassages: hydrated.reviewedPassages,
             currentIndex:
-              targetIndex >= 0
+              pendingAnswer && !hydrated.recorded.has(pendingAnswer.questionId)
+                ? pendingAnswer.currentIndex
+                : targetIndex >= 0
                 ? targetIndex
                 : hydrated.firstUnansweredIndex === -1
                   ? 0
                   : hydrated.firstUnansweredIndex,
             submitted: hydrated.submitted,
+            paused: !!pendingAnswer && !hydrated.recorded.has(pendingAnswer.questionId),
           },
         });
+        if (pendingAnswer && hydrated.recorded.has(pendingAnswer.questionId)) {
+          clearRcAnswerBackup(sessionOwnerId, sessionId);
+          setSaveError(null);
+        }
         // What the student crossed out the first time is theirs to see in
         // review. It is display only: the array written with a re-attempt is
         // built from what they do on this visit, not from this.
@@ -258,7 +318,7 @@ export default function RcPlayer() {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [passages, sessionId, targetQuestionId]);
+  }, [passages, sessionId, sessionOwnerId, sessionStatus, targetQuestionId]);
 
   /* ----------------------------------------------------------- tools */
 
@@ -286,6 +346,15 @@ export default function RcPlayer() {
   >(new Map());
   /** A write that did not land. Shown to the student rather than swallowed. */
   const [saveError, setSaveError] = React.useState<string | null>(null);
+  const [retryingSave, setRetryingSave] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+  const [savingNavigation, setSavingNavigation] = React.useState(false);
+  const navigationInFlightRef = React.useRef(false);
+  const pendingSaveRef = React.useRef<(() => Promise<boolean>) | null>(null);
+  const failAccountSave = React.useCallback((message: string) => {
+    setSaveError(message);
+    dispatch({ type: 'setPaused', paused: true });
+  }, []);
   /**
    * LR carries a help circle on every question and RC carried none, in either
    * mode — so a student stuck on a passage had no route to Joshua from where
@@ -323,15 +392,16 @@ export default function RcPlayer() {
   }, [state.paused, sessionId, passages, reviewOnly]);
 
   React.useEffect(() => {
-    if (!sessionId || reviewOnly) return;
+    if (!sessionId || reviewOnly || sessionStatus !== 'in_progress' || completedRef.current) return;
     const save = () => {
+      if (completedRef.current) return;
       writeClockBackup(sessionId, elapsedRef.current);
       void saveSessionClock(sessionId, elapsedRef.current).catch((err) => {
         if (isHandoffError(err)) {
           setError('This practice test is active on another device. This device has stopped saving.');
           return;
         }
-        setSaveError('The section clock did not save.');
+        failAccountSave('The section clock did not save.');
         console.error('[rc:clock] save failed', err);
       });
     };
@@ -340,9 +410,45 @@ export default function RcPlayer() {
     return () => {
       window.clearInterval(heartbeat);
       window.removeEventListener('pagehide', save);
-      save();
+      if (!completedRef.current) save();
     };
-  }, [sessionId, reviewOnly]);
+  }, [sessionId, sessionStatus, reviewOnly, failAccountSave]);
+
+  const retryAccountSave = async () => {
+    if (!sessionId || sessionStatus !== 'in_progress' || retryingSave) return;
+    setRetryingSave(true);
+    try {
+      writeClockBackup(sessionId, elapsedRef.current);
+      const pendingAnswer = sessionOwnerId ? readRcAnswerBackup(sessionOwnerId, sessionId) : null;
+      const pending = pendingSaveRef.current ?? (pendingAnswer
+        ? async () => {
+            const target = state.items.find((entry) => entry.question.questionId === pendingAnswer.questionId);
+            return target ? writeAttempt(target, pendingAnswer.selected) : false;
+          }
+        : null);
+      // An answer retry alone does not acknowledge the stopped section clock.
+      // If completion reached the account before its response was lost, the
+      // completion retry is idempotent and there is no active clock to update.
+      const latest = completionPendingRef.current ? await getSession(sessionId) : null;
+      if (latest?.status !== 'completed' || latest.userId !== sessionOwnerId) {
+        await saveSessionClock(sessionId, elapsedRef.current);
+      }
+      if (pending) {
+        if (!await pending()) return;
+      }
+      pendingSaveRef.current = null;
+      setSaveError(null);
+      dispatch({ type: 'setPaused', paused: false });
+    } catch (err) {
+      if (isHandoffError(err)) {
+        setError('This practice test is active on another device. This device has stopped saving.');
+      } else {
+        console.error('[rc:save:retry] account save failed', err);
+      }
+    } finally {
+      setRetryingSave(false);
+    }
+  };
 
   React.useEffect(() => {
     questionStart.current = Date.now();
@@ -362,11 +468,15 @@ export default function RcPlayer() {
       // question that was already answered and inserted a second attempt row
       // for it. The reveal state is restored now; this is the belt.
       if (state.recorded.has(target.question.questionId)) return true;
+      const questionId = target.question.questionId;
+      const attemptId = attemptIdsRef.current.get(questionId) ?? crypto.randomUUID();
+      attemptIdsRef.current.set(questionId, attemptId);
       const timeMs = Math.max(0, Date.now() - questionStart.current);
       try {
         await recordAttempt({
+          id: attemptId,
           sessionId,
-          questionId: target.question.questionId,
+          questionId,
           passageId: target.passage.passageId,
           selected,
           isCorrect: selected ? selected === target.question.correctAnswer : null,
@@ -375,7 +485,11 @@ export default function RcPlayer() {
           eliminations: state.eliminations.get(target.question.questionId) ?? [],
           isFirstAttempt: true,
         });
-        dispatch({ type: 'markRecorded', questionIds: [target.question.questionId] });
+        dispatch({ type: 'markRecorded', questionIds: [questionId] });
+        if (sessionOwnerId && readRcAnswerBackup(sessionOwnerId, sessionId)?.questionId === questionId) {
+          clearRcAnswerBackup(sessionOwnerId, sessionId);
+        }
+        attemptIdsRef.current.delete(questionId);
         return true;
       } catch (err) {
         if (isHandoffError(err)) {
@@ -389,11 +503,26 @@ export default function RcPlayer() {
          * when none of it was. Losing their place is still the wrong cure, so
          * the drill stays where it is and says what happened instead.
          */
-        setSaveError('That answer did not save.');
+        if (selected && sessionOwnerId) {
+          const backedUp = writeRcAnswerBackup(sessionOwnerId, sessionId, {
+            questionId,
+            selected,
+            attemptId,
+            currentIndex: state.currentIndex,
+            elapsed: elapsedRef.current,
+          });
+          if (!backedUp) {
+            pendingSaveRef.current = () => writeAttempt(target, selected);
+            failAccountSave('The answer did not reach your account, and a device backup is unavailable. Keep this page open and retry.');
+            return false;
+          }
+        }
+        pendingSaveRef.current = () => writeAttempt(target, selected);
+        failAccountSave('That answer did not save.');
         return false;
       }
     },
-    [sessionId, state.flagged, state.eliminations, state.recorded],
+    [sessionId, sessionOwnerId, state.flagged, state.eliminations, state.recorded, state.currentIndex, failAccountSave],
   );
 
   const recordPassage = React.useCallback(
@@ -401,18 +530,18 @@ export default function RcPlayer() {
       const items = itemsForPassage(state, passageId).filter(
         (i) => !state.recorded.has(i.question.questionId),
       );
-      let allSaved = true;
-      for (const target of items) {
-        const saved = await writeAttempt(
-          target,
-          state.answers.get(target.question.questionId) ?? null,
-        );
-        if (!saved) allSaved = false;
-      }
-      // Feedback is the reward for a recorded answer. Opening it over a write
-      // that failed would show the student a verdict on work nothing holds.
-      if (allSaved) dispatch({ type: 'reviewPassage', passageId });
-      return allSaved;
+      const saveFrom = async (start: number): Promise<boolean> => {
+        for (let index = start; index < items.length; index++) {
+          const target = items[index];
+          if (!await writeAttempt(target, state.answers.get(target.question.questionId) ?? null)) {
+            pendingSaveRef.current = () => saveFrom(index);
+            return false;
+          }
+        }
+        dispatch({ type: 'reviewPassage', passageId });
+        return true;
+      };
+      return saveFrom(0);
     },
     [state, writeAttempt],
   );
@@ -420,70 +549,126 @@ export default function RcPlayer() {
   /* ------------------------------------------------------ navigation */
 
   const goTo = React.useCallback(
-    (index: number) => {
-      const leaving = getCurrentItem(state);
-      // end_of_set writes silently as the student moves on.
-      if (
-        leaving &&
-        config.reveal === 'end_of_set' &&
-        !state.recorded.has(leaving.question.questionId) &&
-        state.answers.has(leaving.question.questionId)
-      ) {
-        void writeAttempt(leaving, state.answers.get(leaving.question.questionId) ?? null);
+    async (index: number) => {
+      if (state.paused || navigationInFlightRef.current) return;
+      navigationInFlightRef.current = true;
+      setSavingNavigation(true);
+      try {
+        const leaving = getCurrentItem(state);
+        // Save the pending answer before leaving; a failed write keeps the
+        // student on this question with their choice still selected.
+        if (
+          leaving &&
+          config.reveal === 'end_of_set' &&
+          !state.recorded.has(leaving.question.questionId) &&
+          state.answers.has(leaving.question.questionId)
+        ) {
+          const saved = await writeAttempt(leaving, state.answers.get(leaving.question.questionId) ?? null);
+          if (!saved) {
+            pendingSaveRef.current = async () => {
+              if (!await writeAttempt(leaving, state.answers.get(leaving.question.questionId) ?? null)) return false;
+              dispatch({ type: 'goto', index });
+              return true;
+            };
+            return;
+          }
+        }
+        dispatch({ type: 'goto', index });
+      } finally {
+        navigationInFlightRef.current = false;
+        setSavingNavigation(false);
       }
-      dispatch({ type: 'goto', index });
     },
     [state, config.reveal, writeAttempt],
   );
 
   const handleSubmit = React.useCallback(async () => {
-    for (const target of state.items) {
-      if (!state.recorded.has(target.question.questionId)) {
-        const saved = await writeAttempt(
-          target,
-          state.answers.get(target.question.questionId) ?? null,
-        );
-        // Stop at the first failure. Completing the session and walking to a
-        // results screen built on answers that were never stored is the worst
-        // version of this: the student sees a score for work that is gone.
-        if (!saved) return;
-      }
-    }
-    dispatch({ type: 'submit' });
-    if (sessionId) {
+    if (navigationInFlightRef.current || submitting) return;
+    navigationInFlightRef.current = true;
+    setSubmitting(true);
+    const targets = state.items.filter((target) => !state.recorded.has(target.question.questionId));
+    const finish = async (): Promise<boolean> => {
+      if (!sessionId) return false;
+      completionPendingRef.current = true;
       try {
+        const latest = await getSession(sessionId);
+        if (latest?.status !== 'completed') await saveSessionClock(sessionId, elapsedRef.current);
         await completeSession(sessionId);
       } catch (err) {
         if (isHandoffError(err)) {
           setError('This practice test is active on another device. This device has stopped saving.');
-          return;
+          return false;
         }
-        setSaveError('The drill did not finish saving.');
-        return;
+        pendingSaveRef.current = finish;
+        failAccountSave('The drill did not finish saving.');
+        return false;
       }
+      completedRef.current = true;
+      completionPendingRef.current = false;
+      dispatch({ type: 'submit' });
       // A leg of a practice test goes straight back to the invigilator. The
       // session is already completed in the database by this point, so the
       // sitting can score it; showing the results screen first would reveal a
       // section score with sections still to sit. RC is frequently section 1
       // or 2, so this is the common case, not an edge one.
-      if (isSittingReturn(returnTo)) {
-        navigate(returnTo);
-        return;
+      navigate(completedRcDestination(sessionId, returnTo, config.practiceTestRunId));
+      return true;
+    };
+    const saveFrom = async (start: number): Promise<boolean> => {
+      for (let index = start; index < targets.length; index++) {
+        const target = targets[index];
+        if (!await writeAttempt(target, state.answers.get(target.question.questionId) ?? null)) {
+          pendingSaveRef.current = () => saveFrom(index);
+          return false;
+        }
       }
-      // Carried, not dropped: anything else with a returnTo has somewhere to be
-      // after the results screen, and only this query string knows where.
-      navigate(`/rc/results/${sessionId}${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ''}`);
+      return finish();
+    };
+    try {
+      await saveFrom(0);
+    } finally {
+      setSubmitting(false);
+      navigationInFlightRef.current = false;
     }
-  }, [state, writeAttempt, sessionId, navigate, returnTo]);
+  }, [state, writeAttempt, sessionId, navigate, returnTo, config.practiceTestRunId, failAccountSave, submitting]);
+
+  const handleSaveExit = React.useCallback(async () => {
+    if (reviewOnly) {
+      navigate(exitPath);
+      return;
+    }
+    if (!sessionId || state.paused || navigationInFlightRef.current) return;
+    navigationInFlightRef.current = true;
+    setModal(null);
+    try {
+      const current = getCurrentItem(state);
+      if (current && state.answers.has(current.question.questionId)
+        && !state.recorded.has(current.question.questionId)) {
+        if (!await writeAttempt(current, state.answers.get(current.question.questionId) ?? null)) return;
+      }
+      await saveSessionClock(sessionId, elapsedRef.current);
+      navigate(exitPath);
+    } catch (err) {
+      if (isHandoffError(err)) {
+        setError('This practice test is active on another device. This device has stopped saving.');
+      } else {
+        failAccountSave('Your work did not finish saving. Keep this page open and retry.');
+        console.error('[rc:exit] account save failed', err);
+      }
+    } finally {
+      navigationInFlightRef.current = false;
+    }
+  }, [reviewOnly, navigate, exitPath, sessionId, state, writeAttempt, failAccountSave]);
 
   const toggleFlag = React.useCallback(
     (questionId: number) => {
+      if (state.paused || navigationInFlightRef.current || submitting) return;
       dispatch({ type: 'toggleFlag', questionId });
       if (sessionId) {
         void setAttemptFlag(sessionId, questionId, !state.flagged.has(questionId));
       }
     },
-    [sessionId, state.flagged],
+    [sessionId, state.flagged, state.paused, submitting],
   );
 
   /* ------------------------------------------------- selection, guarded */
@@ -524,7 +709,7 @@ export default function RcPlayer() {
    */
   const selectLetter = React.useCallback(
     (letter: RcLetter) => {
-      if (!item) return;
+      if (!item || state.paused || navigationInFlightRef.current || submitting) return;
       const id = item.question.questionId;
       if (!item.question.choices.some((c) => c.letter === letter)) return;
 
@@ -552,9 +737,24 @@ export default function RcPlayer() {
       }
 
       if (revealed) return;
+      if (sessionId && sessionOwnerId && !reviewOnly) {
+        const attemptId = crypto.randomUUID();
+        attemptIdsRef.current.set(id, attemptId);
+        const backedUp = writeRcAnswerBackup(sessionOwnerId, sessionId, {
+          questionId: id,
+          selected: letter,
+          attemptId,
+          currentIndex: state.currentIndex,
+          elapsed: elapsedRef.current,
+        });
+        if (!backedUp) {
+          pendingSaveRef.current = () => writeAttempt(item, letter);
+          failAccountSave('A device backup could not be saved. Keep this page open and save your answer to your account.');
+        }
+      }
       dispatch({ type: 'select', questionId: id, letter });
     },
-    [item, awaitingReattempt, revealed, sessionId, state.flagged, state.eliminations],
+    [item, awaitingReattempt, revealed, sessionId, sessionOwnerId, reviewOnly, state.currentIndex, state.flagged, state.eliminations, state.paused, submitting, writeAttempt, failAccountSave],
   );
 
   /* -------------------------------------------------------- keyboard */
@@ -678,6 +878,12 @@ export default function RcPlayer() {
           // Reveal is the reward for a recorded answer, so it waits for one.
           if (await writeAttempt(item, selected)) {
             dispatch({ type: 'reveal', questionId });
+          } else {
+            pendingSaveRef.current = async () => {
+              if (!await writeAttempt(item, selected)) return false;
+              dispatch({ type: 'reveal', questionId });
+              return true;
+            };
           }
         },
       };
@@ -718,7 +924,7 @@ export default function RcPlayer() {
         fillViewport
         notepadEnabled={false}
         isPaused={state.paused}
-        onResume={() => dispatch({ type: 'setPaused', paused: false })}
+        onResume={saveError ? () => { void retryAccountSave(); } : () => dispatch({ type: 'setPaused', paused: false })}
         pauseNoun="Drill"
         header={
           <OfficialSessionStrip
@@ -851,8 +1057,11 @@ export default function RcPlayer() {
               onToggleFlag={() => toggleFlag(questionId)}
               type={type}
               onSelect={selectLetter}
+              interactionDisabled={state.paused || savingNavigation || submitting}
               onToggleElimination={(letter) =>
-                dispatch({ type: 'toggleElimination', questionId, letter })
+                !navigationInFlightRef.current && !submitting && !state.paused
+                  ? dispatch({ type: 'toggleElimination', questionId, letter })
+                  : undefined
               }
               onSkipToAnswer={() => setSkippedReattempt((prev) => new Set(prev).add(questionId))}
               highlights={highlights.forPassage(item.passage.passageId)}
@@ -872,12 +1081,18 @@ export default function RcPlayer() {
           }
         />
 
+        {submitting && !saveError && (
+          <div className="rc-save-error" role="status">Saving your section…</div>
+        )}
+
         {saveError && (
           <div className="rc-save-error" role="alert">
-            <span>{saveError} Your place in the drill is safe.</span>
-            <button type="button" className="rc-skip-link" onClick={() => setSaveError(null)}>
-              Dismiss
-            </button>
+            {saveError}{reviewOnly ? '' : ' The clock and questions are paused.'}
+            {reviewOnly && (
+              <button type="button" className="rc-skip-link" onClick={() => setSaveError(null)}>
+                Dismiss
+              </button>
+            )}
           </div>
         )}
 
@@ -885,13 +1100,13 @@ export default function RcPlayer() {
           primaryAction="submit"
           primaryVisible={!!primary}
           primaryLabel={primary?.label}
-          primaryDisabled={primary?.disabled}
+          primaryDisabled={primary?.disabled || submitting}
           onSubmit={() => primary?.onClick()}
           onNext={() => undefined}
           endLabel={reviewOnly ? 'Exit' : undefined}
-          onEnd={() => navigate(exitPath)}
+          onEnd={() => { void handleSaveExit(); }}
           onOpenMenu={() => setModal('menu')}
-          disabled={state.paused}
+          disabled={state.paused || submitting}
           pager={
             <RcPager
               entries={pagerEntries(state)}
@@ -913,6 +1128,22 @@ export default function RcPlayer() {
         />
       </OfficialDrillFrame>
 
+      <AlertDialog open={!!saveError && !reviewOnly}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Saving paused this section</AlertDialogTitle>
+            <AlertDialogDescription>
+              {saveError} Your clock and questions are paused. Your current choices remain on this page.
+              Retry the account save to continue.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button onClick={() => { void retryAccountSave(); }} disabled={retryingSave}>
+              {retryingSave ? 'Trying to save…' : 'Retry save'}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       {helpOpen && <HelpSheet open={helpOpen} onOpenChange={setHelpOpen} />}
 
       {modal === 'details' && (
@@ -940,7 +1171,7 @@ export default function RcPlayer() {
                   setModal(null);
                 }
           }
-          onSaveExit={() => navigate(exitPath)}
+          onSaveExit={() => { void handleSaveExit(); }}
           saveExitLabel={reviewOnly ? 'Exit review' : 'Save and exit'}
           onSubmit={
             config.reveal === 'end_of_set' && !reviewOnly ? () => setModal('submit') : undefined

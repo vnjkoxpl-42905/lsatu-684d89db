@@ -32,6 +32,7 @@ interface Props {
   flagged: boolean;
   onToggleFlag: () => void;
   onSelect: (letter: RcLetter) => void;
+  interactionDisabled?: boolean;
   onToggleElimination: (letter: RcLetter) => void;
   onSkipToAnswer: () => void;
   type: RcTypeStyles;
@@ -72,6 +73,7 @@ export function RcQuestionPane({
   flagged,
   onToggleFlag,
   onSelect,
+  interactionDisabled = false,
   onToggleElimination,
   onSkipToAnswer,
   type,
@@ -185,6 +187,7 @@ export function RcQuestionPane({
         <button
           type="button"
           onClick={onToggleFlag}
+          disabled={interactionDisabled}
           aria-pressed={flagged}
           aria-label={flagged ? 'Remove flag' : 'Flag question'}
           title={flagged ? 'Remove flag' : 'Flag question'}
@@ -234,8 +237,8 @@ export function RcQuestionPane({
                 !reattemptMode && !isPicked && eliminations.includes(choice.letter)
               }
               revealed={showFeedback}
-              disabled={showFeedback}
-              eliminationDisabled={reattemptMode}
+              disabled={showFeedback || interactionDisabled}
+              eliminationDisabled={reattemptMode || interactionDisabled}
               onSelect={onSelect}
               onToggleElimination={onToggleElimination}
               textStyle={type.choiceText}

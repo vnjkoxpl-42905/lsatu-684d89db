@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CONFIGURABLE_FLAG_KEYS, FLOOR_FLAG_KEYS, tierFlags, type ManagedUser } from '@/lib/adminUsers';
 import { signupQueueRows } from '@/components/teacher/SignupQueue';
-import { drillAuthorisation } from '@/components/AssignmentGate';
+import { drillAuthorisation, isActivePracticeTestLrLeg, isActivePracticeTestRcLeg } from '@/components/AssignmentGate';
 
 describe('tierFlags', () => {
   it('Tier 1 turns all twelve switches on', () => {
@@ -24,6 +24,55 @@ describe('tierFlags', () => {
   it('the retired Wrong answer journal switch is not one of the twelve', () => {
     expect(CONFIGURABLE_FLAG_KEYS).not.toContain('has_waj_access');
     expect(CONFIGURABLE_FLAG_KEYS).toHaveLength(12);
+  });
+});
+
+describe('assigned PrepTest LR leg gate', () => {
+  const run = {
+    pt: 140, status: 'in-progress', current_leg: 1,
+    legs: [
+      { kind: 'rc', section: 1, startedAt: '2026-09-28', completedAt: '2026-09-28' },
+      { kind: 'lr', section: 2, startedAt: '2026-09-28' },
+    ],
+  };
+  const exact = { kind: 'section', pt: 140, section: 2, ptLeg: { runId: 'own-run', legIndex: 1 } } as const;
+
+  it('opens only the active, started LR leg of the owned run', () => {
+    expect(isActivePracticeTestLrLeg(run, exact, 'own-run')).toBe(true);
+    expect(isActivePracticeTestLrLeg({ ...run, status: 'complete' }, exact, 'own-run')).toBe(false);
+    expect(isActivePracticeTestLrLeg({ ...run, legs: [run.legs[0], { ...run.legs[1], completedAt: '2026-09-28' }] }, exact, 'own-run')).toBe(false);
+  });
+
+  it('does not turn a sitting ID into general drill access', () => {
+    expect(isActivePracticeTestLrLeg(run, { ...exact, ptLeg: { runId: 'other-run', legIndex: 1 } }, 'own-run')).toBe(false);
+    expect(isActivePracticeTestLrLeg(run, { ...exact, section: 3 }, 'own-run')).toBe(false);
+    expect(isActivePracticeTestLrLeg(run, { ...exact, ptLeg: { runId: 'own-run', legIndex: 0 } }, 'own-run')).toBe(false);
+    expect(isActivePracticeTestLrLeg(run, { kind: 'questions', qids: ['PT140-S2-Q3'] }, 'own-run')).toBe(false);
+  });
+});
+
+describe('assigned PrepTest RC session gate', () => {
+  const run = {
+    status: 'in-progress', current_leg: 0,
+    legs: [{ kind: 'rc', startedAt: '2026-09-28', passageIds: [51, 52] }],
+  };
+  const session = {
+    user_id: 'student-1', practice_test_run_id: 'own-run', practice_test_leg: 0,
+    status: 'in_progress', passage_ids: [52, 51],
+  };
+
+  it('permits only the owned, active RC session of the exact sitting leg', () => {
+    expect(isActivePracticeTestRcLeg(run, session, 'student-1', 'own-run', 0)).toBe(true);
+    expect(isActivePracticeTestRcLeg(run, { ...session, user_id: 'student-2' }, 'student-1', 'own-run', 0)).toBe(false);
+    expect(isActivePracticeTestRcLeg(run, { ...session, practice_test_run_id: 'other-run' }, 'student-1', 'own-run', 0)).toBe(false);
+    expect(isActivePracticeTestRcLeg(run, { ...session, passage_ids: [51, 53] }, 'student-1', 'own-run', 0)).toBe(false);
+    expect(isActivePracticeTestRcLeg(run, session, 'student-1', 'own-run', 1)).toBe(false);
+  });
+
+  it('denies a completed sitting, closed leg, or completed session', () => {
+    expect(isActivePracticeTestRcLeg({ ...run, status: 'complete' }, session, 'student-1', 'own-run', 0)).toBe(false);
+    expect(isActivePracticeTestRcLeg({ ...run, legs: [{ ...run.legs[0], completedAt: '2026-09-28' }] }, session, 'student-1', 'own-run', 0)).toBe(false);
+    expect(isActivePracticeTestRcLeg(run, { ...session, status: 'completed' }, 'student-1', 'own-run', 0)).toBe(false);
   });
 });
 

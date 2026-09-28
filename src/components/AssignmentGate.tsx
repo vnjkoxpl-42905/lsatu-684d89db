@@ -247,6 +247,36 @@ async function authoriseDrill(auth: NonNullable<DrillAuthorisation>, uid: string
   }
 }
 
+/** A sitting grants its active LR section only, never a fresh ad-hoc drill. */
+export function isActivePracticeTestLrLeg(
+  row: { pt: number; status: string; current_leg: number; legs: Array<{ kind: string; section: number; startedAt?: string; completedAt?: string }> },
+  launch: DrillLaunch | null,
+  runId: string,
+): boolean {
+  if (row.status !== 'in-progress' || launch?.kind !== 'section') return false;
+  const leg = row.legs?.[row.current_leg];
+  return !!leg && leg.kind === 'lr' && !!leg.startedAt && !leg.completedAt &&
+    launch.ptLeg?.runId === runId && launch.ptLeg.legIndex === row.current_leg &&
+    launch.pt === row.pt && launch.section === leg.section;
+}
+
+/** Resuming RC requires the exact account session for the active sitting leg. */
+export function isActivePracticeTestRcLeg(
+  row: { status: string; current_leg: number; legs: Array<{ kind: string; startedAt?: string; completedAt?: string; passageIds?: number[] }> },
+  session: { user_id: string; practice_test_run_id: string | null; practice_test_leg: number | null; status: string; passage_ids: number[] },
+  userId: string,
+  runId: string,
+  legIndex: number,
+): boolean {
+  const leg = row.legs?.[row.current_leg];
+  return row.status === 'in-progress' && leg?.kind === 'rc' && !!leg.startedAt && !leg.completedAt &&
+    row.current_leg === legIndex && session.user_id === userId &&
+    session.practice_test_run_id === runId && session.practice_test_leg === legIndex &&
+    session.status === 'in_progress' &&
+    JSON.stringify([...session.passage_ids].sort((a, b) => a - b)) ===
+      JSON.stringify([...(leg.passageIds ?? [])].sort((a, b) => a - b));
+}
+
 function authKeyOf(auth: DrillAuthorisation): string | null {
   if (!auth) return null;
   switch (auth.kind) {
@@ -277,24 +307,40 @@ export function DrillAssignmentGate({ children }: { children: ReactNode }) {
   } catch {
     launch = null;
   }
-  const ptRunId = state?.ptRun?.runId ?? searchParams.get("ptRun");
+  const ptRunId = state?.ptRun?.runId ?? searchParams.get("ptRun") ??
+    (launch?.kind === 'section' ? launch.ptLeg?.runId : null) ??
+    (launch?.kind === 'questions' ? launch.carry?.ptLeg?.runId : null);
   const auth = drillAuthorisation(launch, ptRunId, undefined, searchParams.get("assignmentId"));
+  const rcSessionId = location.pathname === '/rc/drill' ? searchParams.get('sessionId') : null;
+  const rcLegParam = searchParams.get('ptLeg');
+  const rcLegIndex = rcLegParam !== null && /^\d+$/.test(rcLegParam) ? Number(rcLegParam) : null;
 
   return (
     <AssignmentGate
       flag="has_drill_access"
-      authKey={ptRunId ? `practice-leg:${ptRunId}` : authKeyOf(auth)}
+      authKey={ptRunId ? `practice-leg:${ptRunId}:${launch?.kind === 'section' ? `${launch.ptLeg?.legIndex}:${launch.pt}:${launch.section}` : rcSessionId ? `rc:${rcSessionId}:${rcLegIndex}` : 'invalid'}` : authKeyOf(auth)}
       authorize={async (uid) => {
         if (ptRunId) {
           const { data, error } = await supabase.from("practice_test_runs" as never)
-            .select("pt,status")
+            .select("pt,status,current_leg,legs")
             .eq("id", ptRunId)
             .eq("user_id", uid)
             .maybeSingle();
-          if (!error && data) {
-            const run = data as { pt: number; status: string };
-            return run.status === "in-progress" && hasPracticeTestAssignment(uid, run.pt);
+          if (error || !data) return false;
+          const run = data as Parameters<typeof isActivePracticeTestLrLeg>[0];
+          if (isActivePracticeTestLrLeg(run, launch, ptRunId)) {
+            return hasPracticeTestAssignment(uid, run.pt);
           }
+          if (!rcSessionId || rcLegIndex === null || launch) return false;
+          const { data: session, error: sessionError } = await supabase.from('rc_drill_sessions')
+            .select('user_id,practice_test_run_id,practice_test_leg,status,passage_ids')
+            .eq('id', rcSessionId)
+            .eq('user_id', uid)
+            .eq('practice_test_run_id', ptRunId)
+            .eq('practice_test_leg', rcLegIndex)
+            .maybeSingle();
+          if (sessionError || !session || !isActivePracticeTestRcLeg(run, session, uid, ptRunId, rcLegIndex)) return false;
+          return hasPracticeTestAssignment(uid, run.pt);
         }
         return auth ? authoriseDrill(auth, uid) : false;
       }}

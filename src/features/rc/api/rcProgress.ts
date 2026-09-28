@@ -142,10 +142,12 @@ export async function listSessions(): Promise<RcDrillSession[]> {
 export async function saveSessionClock(id: string, elapsedSeconds: number): Promise<void> {
   const userId = await requireUserId();
   const session = await getSession(id);
-  if (!session || session.userId !== userId || session.status !== 'in_progress') return;
+  if (!session || session.userId !== userId || session.status !== 'in_progress') {
+    throw new Error('The section is no longer available to save.');
+  }
   await assertActivePracticeTestSession(id);
   const seconds = Math.max(session.config.clockElapsedSeconds ?? 0, Math.floor(elapsedSeconds));
-  const { error } = await rcDb
+  const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
     .update({
       config: {
@@ -156,17 +158,34 @@ export async function saveSessionClock(id: string, elapsedSeconds: number): Prom
     })
     .eq('id', id)
     .eq('user_id', userId)
-    .eq('status', 'in_progress');
+    .eq('status', 'in_progress')
+    .select('id')
+    .maybeSingle();
   raise(error);
+  if (!data) throw new Error('The section clock did not reach your account.');
 }
 
 export async function completeSession(id: string): Promise<void> {
+  const userId = await requireUserId();
+  const session = await getSession(id);
+  if (!session || session.userId !== userId) throw new Error('This section is not available.');
+  if (session.status === 'completed') return;
+  if (session.status !== 'in_progress') throw new Error('This section cannot be completed.');
   await assertActivePracticeTestSession(id);
-  const { error } = await rcDb
+  const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
     .update({ status: 'completed', completed_at: new Date().toISOString() })
-    .eq('id', id);
+    .eq('id', id)
+    .eq('user_id', userId)
+    .eq('status', 'in_progress')
+    .select('id')
+    .maybeSingle();
   raise(error);
+  if (!data) {
+    const latest = await getSession(id);
+    if (latest?.userId === userId && latest.status === 'completed') return;
+    throw new Error('The completed section did not reach your account.');
+  }
 }
 
 export async function setSessionExcluded(id: string, excluded: boolean): Promise<void> {
@@ -194,6 +213,24 @@ export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
   const userId = attempt.userId ?? (await requireUserId());
   await assertActivePracticeTestSession(attempt.sessionId);
 
+  const existingAttempt = async (): Promise<RcAttempt | null> => {
+    if (!attempt.id) return null;
+    const { data, error } = await rcDb.from(RC_ATTEMPTS_TABLE).select()
+      .eq('id', attempt.id).eq('user_id', userId).maybeSingle();
+    raise(error);
+    if (!data) return null;
+    const saved = toAttempt(data as RcAttemptRow);
+    if (saved.sessionId !== attempt.sessionId || saved.questionId !== attempt.questionId
+      || saved.passageId !== attempt.passageId || saved.selected !== attempt.selected) {
+      throw new Error('The saved answer ID belongs to different work.');
+    }
+    return saved;
+  };
+  // The client keeps this UUID in its device backup. A successful insert whose
+  // response was lost must be acknowledged as the same row on retry.
+  const alreadySaved = await existingAttempt();
+  if (alreadySaved) return alreadySaved;
+
   const { data: prior, error: priorError } = await rcDb
     .from(RC_ATTEMPTS_TABLE)
     .select('id')
@@ -207,6 +244,7 @@ export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
   const { data, error } = await rcDb
     .from(RC_ATTEMPTS_TABLE)
     .insert({
+      ...(attempt.id ? { id: attempt.id } : {}),
       session_id: attempt.sessionId,
       user_id: userId,
       question_id: attempt.questionId,
@@ -220,6 +258,10 @@ export async function recordAttempt(attempt: RcAttempt): Promise<RcAttempt> {
     })
     .select()
     .single();
+  if (error?.code === '23505') {
+    const saved = await existingAttempt();
+    if (saved) return saved;
+  }
   raise(error);
   return toAttempt(data as RcAttemptRow);
 }

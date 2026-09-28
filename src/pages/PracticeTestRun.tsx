@@ -16,6 +16,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useQuestionBank } from "@/contexts/QuestionBankContext";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { questionBank } from "@/lib/questionLoader";
 import {
   formatPracticeTestClock,
   hasOutdatedPt118Structure,
@@ -34,7 +37,9 @@ import {
   readPendingPracticeTestBackup,
   saveAccountPracticeTestRun,
 } from "@/lib/practiceTestStore";
-import { findRcLegSession, lrLegLaunch, rcLegHref, readLegResult } from "@/lib/practiceTestRunner";
+import { findRcLegSession, lrLegLaunch, readLegResult } from "@/lib/practiceTestRunner";
+import { createSession } from "@/features/rc/api/rcProgress";
+import { loadPracticeTestReview, type PracticeTestLegReview } from "@/lib/practiceTestReview";
 import "./testing-centre.css";
 
 function mmss(seconds: number) {
@@ -102,10 +107,25 @@ function BreakScreen({ run, onDone }: { run: Run; onDone: () => void }) {
   );
 }
 
-function ScoreReport({ run, onExit }: { run: Run; onExit: () => void }) {
+function ScoreReport({ run, userId, onExit }: { run: Run; userId: string; onExit: () => void }) {
+  const { isLoading: questionBankLoading } = useQuestionBank();
+  const permissions = useUserPermissions();
+  const canOpenDrill = !permissions.loading && (permissions.is_admin || permissions.has_drill_access);
   const { correct, total } = practiceTestRaw(run);
   const scaled = practiceTestScaled(run);
   const unfinished = run.legs.filter((l) => !l.completedAt);
+  const [reviews, setReviews] = React.useState<PracticeTestLegReview[] | null>(null);
+  const [reviewError, setReviewError] = React.useState(false);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    setReviews(null);
+    setReviewError(false);
+    void loadPracticeTestReview(userId, run)
+      .then((value) => { if (!cancelled) setReviews(value); })
+      .catch(() => { if (!cancelled) setReviewError(true); });
+    return () => { cancelled = true; };
+  }, [run.id, userId]);
 
   return (
     <div className="testing-panel">
@@ -149,6 +169,55 @@ function ScoreReport({ run, onExit }: { run: Run; onExit: () => void }) {
           estimate is lower than a completed sitting would give you.
         </p>
       )}
+
+      <section className="mt-8" aria-labelledby="exam-question-review">
+        <h3 id="exam-question-review" className="text-lg font-semibold">Review each question</h3>
+        <p className="testing-note">Open a section to see your first answer, the correct answer, and saved timing.</p>
+        {!reviews && !reviewError && <p role="status" className="testing-note">Loading question results…</p>}
+        {reviewError && <p role="alert" className="testing-note">Question results could not be loaded. Refresh to try again.</p>}
+        {reviews?.map((review) => {
+          const section = run.legs[review.legIndex];
+          return <details key={review.legIndex} className="my-3 rounded-lg border border-border bg-background p-4">
+            <summary className="cursor-pointer font-semibold">Section {review.legIndex + 1} · {legLabel(section)} · {review.available ? `${review.questions.length} questions` : 'Question detail unavailable'}</summary>
+            {!review.available ? <p className="testing-note">This sitting has no saved question detail for this section.</p> :
+              <div className="mt-3 grid gap-2">
+                {review.questions.map((question) => {
+                  const lrContent = section.kind === 'lr' && !questionBankLoading
+                    ? questionBank.getQuestion(question.id) : null;
+                  return <details key={question.id} className="rounded-md border border-border p-3">
+                  <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-2">
+                    <span className="font-medium">Question {question.number}{question.type ? ` · ${question.type}` : ''}</span>
+                    <span className="text-sm">{question.selected === null ? 'Unanswered' : question.correct === true ? 'Correct' : question.correct === false ? 'Missed' : 'Answer saved'}</span>
+                  </summary>
+                  <div className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+                    <span>Your first answer: <strong>{question.selected ?? 'No answer'}</strong></span>
+                    <span>Correct answer: <strong>{question.correctAnswer}</strong></span>
+                    {question.timeMs !== null && <span>Time: {Math.round(question.timeMs / 1000)} seconds</span>}
+                    {question.flagged === true && <span>Flagged during the section</span>}
+                    {question.blindReviewAnswer && <span>Blind review answer: <strong>{question.blindReviewAnswer}</strong></span>}
+                  </div>
+                  {(lrContent || question.rcContent) && <div className="mt-4 space-y-3 border-t border-border pt-4 text-sm">
+                    {lrContent?.stimulus && <p className="whitespace-pre-wrap leading-relaxed">{lrContent.stimulus}</p>}
+                    {question.rcContent && <p className="whitespace-pre-wrap leading-relaxed">{question.rcContent.passage}</p>}
+                    <p className="font-medium whitespace-pre-wrap">{lrContent?.questionStem ?? question.rcContent?.prompt}</p>
+                    <ol className="space-y-2" aria-label={`Question ${question.number} answer choices`}>
+                      {(lrContent
+                        ? Object.entries(lrContent.answerChoices).map(([letter, text]) => ({ letter, text }))
+                        : question.rcContent?.choices ?? []
+                      ).map(({ letter, text }) => <li key={letter} className="flex gap-2">
+                        <strong>{letter}.</strong><span className="whitespace-pre-wrap">{text}</span>
+                      </li>)}
+                    </ol>
+                  </div>}
+                  {canOpenDrill && <a className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold underline" href={question.href}>
+                    {section.kind === 'lr' ? 'Practice this question' : 'Review in RC player'}
+                  </a>}
+                  {!lrContent && !question.rcContent && !questionBankLoading && <p className="mt-3 text-sm text-muted-foreground">Question text is unavailable for this saved result.</p>}
+                </details>})}
+              </div>}
+          </details>;
+        })}
+      </section>
 
       <div className="testing-actions">
         <Button onClick={onExit}>Back to Practice Exams</Button>
@@ -300,7 +369,21 @@ export default function PracticeTestRunPage() {
         } else if (existing) {
           setSaveError("This section was closed. Mark it unfinished to continue the exam.");
         } else {
-          navigate(rcLegHref(saved, leg, saved.currentLeg));
+          // The legacy /rc?start=1 link passes through the general Drill hub,
+          // which an assigned-only student cannot open. Create this exact
+          // sitting leg under their account and enter its own runner directly.
+          const sectionSeconds = practiceTestRunSectionSeconds(saved);
+          const passageIds = leg.passageIds ?? [];
+          const session = await createSession({
+            reveal: 'end_of_set',
+            timing: sectionSeconds === null
+              ? { mode: 'unlimited' }
+              : { mode: 'per_passage_budget', secondsPerPassage: Math.round(sectionSeconds / (passageIds.length || 4)) },
+            source: 'manual',
+            practiceTestRunId: saved.id,
+            practiceTestLegIndex: saved.currentLeg,
+          }, passageIds);
+          navigate(`/rc/drill?sessionId=${encodeURIComponent(session.id)}&ptRun=${encodeURIComponent(saved.id)}&ptLeg=${saved.currentLeg}&returnTo=${encodeURIComponent(`/testing/test/${saved.id}`)}`);
         }
       } catch (error) {
         setSaveError(error instanceof Error ? error.message : "Could not reopen this section.");
@@ -444,7 +527,7 @@ export default function PracticeTestRunPage() {
       )}
 
       {!pendingRun && !checking && !noResult && run.status === "complete" && (
-        <ScoreReport run={run} onExit={() => navigate("/testing")} />
+        <ScoreReport run={run} userId={user!.id} onExit={() => navigate("/testing")} />
       )}
 
       {!pendingRun && !onAnotherDevice && !checking && !noResult && run.status === "in-progress" && breakDue && (
