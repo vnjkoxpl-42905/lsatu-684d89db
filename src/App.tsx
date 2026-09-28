@@ -604,7 +604,7 @@ const App = () => {
 
                     <Route path="/review" element={<ProtectedRoute allowSignedIn><StudentDestination destination="review" /></ProtectedRoute>}>
                       <Route index element={<RedirectWithSearch to="/review/to-review" />} />
-                      <Route path="to-review" element={<ProtectedRoute flag={["has_journal_access", "has_flagged_access", "has_drill_access", "has_activity_access"]}><ReviewQueuePage /></ProtectedRoute>} />
+                      <Route path="to-review" element={<ProtectedRoute allowSignedIn><ReviewQueuePage /></ProtectedRoute>} />
                       <Route path="activity/:assignmentId/:itemOrder" element={<ProtectedRoute flag="has_activity_access"><ActivityReviewDetail /></ProtectedRoute>} />
                       <Route path="section/:historyId/:qid" element={<ProtectedRoute flag="has_drill_access"><SectionReviewDetail /></ProtectedRoute>} />
                       <Route path="wrong" element={<ProtectedRoute flag="has_journal_access"><ReviewIndexList section="journal" /></ProtectedRoute>} />

@@ -12,7 +12,7 @@
  * much more discouraging claim than "you walked away from section 2".
  */
 import * as React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -108,6 +108,15 @@ function BreakScreen({ run, onDone }: { run: Run; onDone: () => void }) {
 }
 
 function ScoreReport({ run, userId, onExit }: { run: Run; userId: string; onExit: () => void }) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const requestedReturn = searchParams.get("returnTo");
+  const reviewReturn = requestedReturn?.split("?")[0] === "/review/to-review" ? requestedReturn : null;
+  const legValue = searchParams.get("leg");
+  const legParam = Number(legValue);
+  const targetLeg = legValue !== null && Number.isSafeInteger(legParam) && legParam >= 0 && legParam < run.legs.length
+    ? legParam : null;
+  const targetQuestion = searchParams.get("q");
   const { isLoading: questionBankLoading } = useQuestionBank();
   const permissions = useUserPermissions();
   const canOpenDrill = !permissions.loading && (permissions.is_admin || permissions.has_drill_access);
@@ -126,6 +135,12 @@ function ScoreReport({ run, userId, onExit }: { run: Run; userId: string; onExit
       .catch(() => { if (!cancelled) setReviewError(true); });
     return () => { cancelled = true; };
   }, [run.id, userId]);
+
+  React.useEffect(() => {
+    if (!reviews || targetLeg === null || !targetQuestion) return;
+    const target = document.getElementById(`pt-review-question-${targetLeg}-${encodeURIComponent(targetQuestion)}`);
+    target?.scrollIntoView?.({ block: "start" });
+  }, [reviews, targetLeg, targetQuestion]);
 
   return (
     <div className="testing-panel">
@@ -177,14 +192,14 @@ function ScoreReport({ run, userId, onExit }: { run: Run; userId: string; onExit
         {reviewError && <p role="alert" className="testing-note">Question results could not be loaded. Refresh to try again.</p>}
         {reviews?.map((review) => {
           const section = run.legs[review.legIndex];
-          return <details key={review.legIndex} className="my-3 rounded-lg border border-border bg-background p-4">
+          return <details key={review.legIndex} open={targetLeg === review.legIndex || undefined} className="my-3 rounded-lg border border-border bg-background p-4">
             <summary className="cursor-pointer font-semibold">Section {review.legIndex + 1} · {legLabel(section)} · {review.available ? `${review.questions.length} questions` : 'Question detail unavailable'}</summary>
             {!review.available ? <p className="testing-note">This sitting has no saved question detail for this section.</p> :
               <div className="mt-3 grid gap-2">
                 {review.questions.map((question) => {
                   const lrContent = section.kind === 'lr' && !questionBankLoading
                     ? questionBank.getQuestion(question.id) : null;
-                  return <details key={question.id} className="rounded-md border border-border p-3">
+                  return <details key={question.id} id={`pt-review-question-${review.legIndex}-${encodeURIComponent(question.id)}`} open={targetLeg === review.legIndex && targetQuestion === question.id || undefined} className="scroll-mt-6 rounded-md border border-border p-3">
                   <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-2">
                     <span className="font-medium">Question {question.number}{question.type ? ` · ${question.type}` : ''}</span>
                     <span className="text-sm">{question.selected === null ? 'Unanswered' : question.correct === true ? 'Correct' : question.correct === false ? 'Missed' : 'Answer saved'}</span>
@@ -220,7 +235,7 @@ function ScoreReport({ run, userId, onExit }: { run: Run; userId: string; onExit
       </section>
 
       <div className="testing-actions">
-        <Button onClick={onExit}>Back to Practice Exams</Button>
+        <Button onClick={() => reviewReturn ? navigate(reviewReturn) : onExit()}>{reviewReturn ? "Back to Review" : "Back to Practice Exams"}</Button>
       </div>
     </div>
   );

@@ -208,12 +208,18 @@ export async function importOwnedDevicePracticeTestRuns(userId: string): Promise
 export async function listAccountPracticeTestRuns(userId: string): Promise<PracticeTestRun[]> {
   await assertAccount(userId);
   await importOwnedDevicePracticeTestRuns(userId);
+  const runs = await listSavedAccountPracticeTestRuns(userId);
+  runs.forEach(remember);
+  return runs;
+}
+
+/** Read persisted account runs without importing or writing device backups. */
+export async function listSavedAccountPracticeTestRuns(userId: string): Promise<PracticeTestRun[]> {
+  await assertAccount(userId);
   const { data, error } = await table()
     .select('*').eq('user_id', userId).order('created_at', { ascending: false });
   if (error) throw error;
-  const runs = (data ?? []).map(row => fromRow(row as unknown as RunRow));
-  runs.forEach(remember);
-  return runs;
+  return (data ?? []).map(row => fromRow(row as unknown as RunRow));
 }
 
 export async function loadAccountPracticeTestRun(userId: string, id: string): Promise<PracticeTestRun | null> {

@@ -27,7 +27,7 @@ const DESTINATIONS: Record<Destination, { title: string; introduction: string; t
     title: "Review",
     introduction: "Return to questions that deserve another look.",
     tabs: [
-      { label: "To review", path: "/review/to-review", flags: ["has_journal_access", "has_flagged_access", "has_drill_access", "has_activity_access"] },
+      { label: "To review", path: "/review/to-review", allowSignedIn: true },
       { label: "Wrong answers", path: "/review/wrong", flags: ["has_journal_access"] },
       { label: "Flagged", path: "/review/flagged", flags: ["has_flagged_access"] },
     ],
