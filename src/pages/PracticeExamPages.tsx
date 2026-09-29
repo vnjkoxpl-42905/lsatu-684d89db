@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
@@ -84,7 +84,7 @@ export function AllPracticeExams() {
       {assignedOnly ? "No PrepTest has been assigned to you yet." : "No matching PrepTests are available."}
     </p>}
     <div className="practice-exams-list">
-      {!loading && !error && shown.map((exam) => <Link key={exam.pt} className="practice-exams-card" to={`/testing/exams/${exam.pt}`}>
+      {!loading && !error && shown.map((exam) => <Link key={exam.pt} className="practice-exams-card" to={`/practice/exams/${exam.pt}`}>
         <span><strong>PrepTest {exam.pt}</strong><small>{exam.legs.length} sections · {exam.questionCount} questions</small></span>
         <span aria-hidden="true">View exam →</span>
       </Link>)}
@@ -114,7 +114,7 @@ export function PracticeExamDetail() {
   });
   const related = (runs.data ?? []).filter((run) => run.pt === exam?.pt && run.status !== "abandoned");
   return <ExamLayout>
-    <Link className="practice-exams-back" to="/testing/exams">← All Exams</Link>
+    <Link className="practice-exams-back" to="/practice/exams/all">← All Exams</Link>
     <h1 className="classroom-title">PrepTest {pt}</h1>
     {loading && <p className="testing-note" role="status">Loading exam…</p>}
     {error && <p className="testing-note" role="alert">This exam could not be loaded. Refresh to try again.</p>}
@@ -124,8 +124,8 @@ export function PracticeExamDetail() {
       <ExamSections exam={exam} />
       {!exam.rcFullLength && <p className="testing-note">This Reading Comprehension section has fewer scorable questions than a full section. All four passages are included.</p>}
       <div className="testing-actions">
-        <Link className="practice-exams-primary-link" to={`/testing?pt=${exam.pt}`}>Set up this exam</Link>
-        <Link className="practice-exams-secondary-link" to="/testing?view=section">Take one section</Link>
+        <Link className="practice-exams-primary-link" to={`/practice/exams?pt=${exam.pt}`}>Set up this exam</Link>
+        <Link className="practice-exams-secondary-link" to="/practice/exams?view=section">Take one section</Link>
       </div>
       <h2 className="practice-exams-subheading">Your attempts</h2>
       {runs.isLoading && <p className="testing-note" role="status">Loading attempts…</p>}
@@ -142,6 +142,9 @@ export function PracticeExamDetail() {
 }
 
 export function PracticeExamAttempts() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const statusParam = searchParams.get("status");
+  const statusFilter = statusParam === "unfinished" || statusParam === "completed" ? statusParam : "all";
   const { user } = useAuth();
   const permissions = useUserPermissions();
   const assigned = useQuery({
@@ -188,18 +191,43 @@ export function PracticeExamAttempts() {
       canOpen: section.status === "completed" || permissions.is_admin || permissions.has_drill_access,
     })),
   ].sort((a, b) => b.at.localeCompare(a.at));
+  const visibleEntries = statusFilter === "all"
+    ? entries
+    : entries.filter((entry) => entry.status === (statusFilter === "completed" ? "Completed" : "Unfinished"));
+  const setStatusFilter = (status: "all" | "unfinished" | "completed") => {
+    const next = new URLSearchParams(searchParams);
+    if (status === "all") next.delete("status");
+    else next.set("status", status);
+    setSearchParams(next);
+  };
   const navigate = useNavigate();
   return <ExamLayout>
     <h1 className="classroom-title">Exam Attempts</h1>
     <p className="testing-lede">Your unfinished and completed practice exams and timed sections.</p>
+    <div className="flex flex-wrap gap-2" role="group" aria-label="Filter exam attempts">
+      {([ ["all", "All"], ["unfinished", "Unfinished"], ["completed", "Completed"] ] as const).map(([value, label]) => (
+        <button
+          key={value}
+          type="button"
+          className={`practice-exams-nav-link${statusFilter === value ? " active" : ""}`}
+          aria-pressed={statusFilter === value}
+          onClick={() => setStatusFilter(value)}
+        >
+          {label} ({value === "all" ? entries.length : entries.filter((entry) => entry.status === (value === "completed" ? "Completed" : "Unfinished")).length})
+        </button>
+      ))}
+    </div>
     {(exams.isLoading || sections.isLoading) && <p className="testing-note" role="status">Loading your attempts…</p>}
     {(exams.isError || sections.isError) && <p className="testing-note" role="alert">Some attempts could not be loaded. Refresh to try again.</p>}
     {!exams.isLoading && !sections.isLoading && entries.length === 0 && <div className="testing-panel">
       <p>You have not started an exam or timed section yet.</p>
-      <button className="practice-exams-primary-link" onClick={() => navigate("/testing")}>Choose a practice exam</button>
+      <button className="practice-exams-primary-link" onClick={() => navigate("/practice/exams")}>Choose a practice exam</button>
     </div>}
+    {!exams.isLoading && !sections.isLoading && !exams.isError && !sections.isError && entries.length > 0 && visibleEntries.length === 0 && (
+      <p className="testing-note">No {statusFilter === "completed" ? "completed" : "unfinished"} attempts yet.</p>
+    )}
     <div className="practice-exams-list">
-      {entries.map((entry) => entry.canOpen
+      {visibleEntries.map((entry) => entry.canOpen
         ? <Link className="practice-exams-card" key={entry.id} to={entry.href}>
             <span><strong>{entry.title}</strong><small>{entry.status} · {entry.result ?? entry.detail} · Started {new Date(entry.at).toLocaleDateString()}</small></span>
             <span aria-hidden="true">{entry.status === "Completed" ? "View results →" : "Resume →"}</span>
@@ -224,7 +252,7 @@ export function PracticeSectionResult() {
     section.kind === "lr-section" && section.id === sessionId && section.status === "completed",
   );
   return <ExamLayout>
-    <Link className="practice-exams-back" to="/testing/attempts">← Attempts</Link>
+    <Link className="practice-exams-back" to="/practice/exams/attempts">← Attempts</Link>
     <h1 className="classroom-title">Logical Reasoning result</h1>
     {sections.isLoading && <p className="testing-note" role="status">Loading your result…</p>}
     {sections.isError && <p className="testing-note" role="alert">This result could not be loaded. Refresh to try again.</p>}

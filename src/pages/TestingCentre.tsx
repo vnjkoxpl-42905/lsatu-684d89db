@@ -612,7 +612,7 @@ export default function TestingCentre() {
                 manifest={manifest}
                 onStartSection={(config) =>
                   navigate("/drill", {
-                    state: { mode: "full-section", config, returnTo: "/testing" },
+                    state: { mode: "full-section", config, returnTo: "/practice/exams" },
                   })
                 }
                 onStartRcSection={(href) => navigate(href)}

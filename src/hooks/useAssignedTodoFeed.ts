@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
 import { useStudentAssignments, useStudentTAAssignments } from '@/hooks/useStudentAssignments';
 import { useClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
+import type { WeeklyPlanItem } from '@/hooks/useWeeklyPlan';
+import { supabase } from '@/integrations/supabase/client';
 import { resolveItemRoute } from '@/lib/classroomItems';
 import { readSectionBriefing, type SectionBriefing } from '@/lib/sectionBriefing';
 import { singleSectionOf } from '@/lib/drillRunSpec';
@@ -100,6 +102,8 @@ export interface AssignedFeedSources {
   guidedEvidence?: Record<string, GuidedWorkEvidence>;
   homeworkEvidence?: Record<string, HomeworkWorkEvidence>;
   activityEvidence?: ReadonlySet<string>;
+  /** Undefined until the source read succeeds; plan mirrors cannot stand in for it. */
+  weeklyPlanStatusById?: Readonly<Record<string, WeeklyPlanItem['status']>>;
 }
 
 /**
@@ -115,6 +119,7 @@ export function buildAssignedRows({
   guidedEvidence = {},
   homeworkEvidence = {},
   activityEvidence = EMPTY_ACTIVITY_EVIDENCE,
+  weeklyPlanStatusById,
 }: AssignedFeedSources): AssignedTodoRow[] {
   {
     const byIdentity = new Map<string, AssignedTodoRow>();
@@ -191,6 +196,13 @@ export function buildAssignedRows({
     for (const item of items) {
       const kind = WORK_ITEM_KIND[item.type];
       if (!kind) continue; // notes and recaps are reading material, not work
+      // The plan item can be checked off independently of its classroom mirror.
+      // A missing source (including a failed or pending read) cannot certify a
+      // status, and a skipped task no longer belongs on an assigned-work list.
+      const planStatus = kind === 'plan' && item.source_table === 'weekly_plan_items' && item.source_id
+        ? weeklyPlanStatusById?.[item.source_id]
+        : undefined;
+      if (kind === 'plan' && (!planStatus || planStatus === 'skipped')) continue;
       const route = resolveItemRoute(item);
       if (!route) continue;
       const sourceTable = item.source_table ?? 'classroom_items';
@@ -212,7 +224,9 @@ export function buildAssignedRows({
         sourceTable === 'ta_assignments' ||
         sourceTable === 'activity_assignments'
       );
-      const status = sourceOwnsStatus
+      const status = kind === 'plan' && planStatus && planStatus !== 'skipped'
+        ? planStatus
+        : sourceOwnsStatus
         ? existing.status
         : itemStatus === 'completed' || existing?.status === 'completed' ? 'completed' : itemStatus;
       byIdentity.set(identity, {
@@ -255,9 +269,25 @@ export function useAssignedTodoFeed(): {
   retry: () => void;
 } {
   const { user } = useAuth();
+  const userId = user?.id;
   const { assignments: hw, loading: hwLoading, error: hwError, refresh: hwRefresh } = useStudentAssignments();
   const { assignments: ta, loading: taLoading, error: taError, refresh: taRefresh } = useStudentTAAssignments();
   const itemsQuery = useClassroomItems();
+  const hasPlanMirrors = itemsQuery.data?.some((item) => item.type === 'weekly_plan_task') ?? false;
+
+  const { data: weeklyPlanStatusById, isFetching: planFetching, isError: planError, refetch: planRefetch } = useQuery({
+    queryKey: ['weekly-plan', 'assigned-status', userId],
+    enabled: !!userId && hasPlanMirrors,
+    staleTime: 0,
+    queryFn: async (): Promise<Record<string, WeeklyPlanItem['status']>> => {
+      const { data, error } = await supabase
+        .from('weekly_plan_items')
+        .select('id,status')
+        .eq('student_id', userId!);
+      if (error) throw error;
+      return Object.fromEntries((data ?? []).map(({ id, status }) => [id, status as WeeklyPlanItem['status']]));
+    },
+  });
 
   const { data: guided = [], isLoading: guidedLoading, isError: guidedError, refetch: guidedRefetch } = useQuery<GuidedRow[]>({
     queryKey: ['todo-feed:guided', user?.id],
@@ -290,10 +320,10 @@ export function useAssignedTodoFeed(): {
     queryFn: () => loadActivityWorkEvidence(user!.id, activityIds),
   });
 
-  const items = itemsQuery.data ?? [];
+  const items = useMemo(() => itemsQuery.data ?? [], [itemsQuery.data]);
   const rows = useMemo(
-    () => buildAssignedRows({ hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence }),
-    [hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence],
+    () => buildAssignedRows({ hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById: planError || planFetching ? undefined : weeklyPlanStatusById }),
+    [hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById, planError, planFetching],
   );
 
   const retry = useMemo(
@@ -305,14 +335,15 @@ export function useAssignedTodoFeed(): {
       void activityEvidenceRefetch();
       void actRefetch();
       void itemsQuery.refetch();
+      void planRefetch();
     },
-    [hwRefresh, taRefresh, guidedRefetch, evidenceRefetch, actRefetch, activityEvidenceRefetch, itemsQuery],
+    [hwRefresh, taRefresh, guidedRefetch, evidenceRefetch, actRefetch, activityEvidenceRefetch, itemsQuery, planRefetch],
   );
 
   return {
     rows,
-    loading: hwLoading || taLoading || guidedLoading || evidenceLoading || actLoading || activityEvidenceLoading || itemsQuery.isLoading,
-    failed: !!hwError || !!taError || guidedError || evidenceError || actError || activityEvidenceError || itemsQuery.isError,
+    loading: hwLoading || taLoading || guidedLoading || evidenceLoading || actLoading || activityEvidenceLoading || itemsQuery.isLoading || planFetching,
+    failed: !!hwError || !!taError || guidedError || evidenceError || actError || activityEvidenceError || itemsQuery.isError || planError,
     retry,
   };
 }

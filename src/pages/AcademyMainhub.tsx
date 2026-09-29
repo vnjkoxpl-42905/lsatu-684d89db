@@ -3,7 +3,9 @@
 import * as React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { listStandaloneDrillRuns, type StandaloneDrillRun } from "@/lib/drillRunLedger";
+import { listStandaloneDrillRuns } from "@/lib/drillRunLedger";
+import { getSessionAttempts, listSessions } from "@/features/rc/api/rcProgress";
+import { buildStandaloneDrillHistory, type StandaloneDrillHistoryItem } from "@/lib/standaloneDrillHistory";
 import {
   ArrowRight,
   Loader2,
@@ -195,17 +197,25 @@ export default function AcademyMainhub({
   const navigate = useNavigate();
   const viewParam = searchParams.get("view");
   const view = viewParam === "in-progress" || viewParam === "completed" || viewParam === "saved" ? viewParam : "create";
-  const [runs, setRuns] = React.useState<StandaloneDrillRun[]>([]);
+  const [runs, setRuns] = React.useState<StandaloneDrillHistoryItem[]>([]);
   const [runsLoading, setRunsLoading] = React.useState(false);
   const [runsError, setRunsError] = React.useState<string | null>(null);
   const [runsRevision, refreshRuns] = React.useReducer((value) => value + 1, 0);
 
   React.useEffect(() => {
-    if (!user?.id || (view !== "in-progress" && view !== "completed")) return;
+    if (!user?.id || (view !== "in-progress" && view !== "completed")) {
+      setRuns([]);
+      return;
+    }
     let active = true;
     setRunsLoading(true);
     setRunsError(null);
-    void listStandaloneDrillRuns(user.id).then(
+    void Promise.all([listStandaloneDrillRuns(user.id), listSessions()]).then(async ([lr, allRc]) => {
+      const rc = allRc.filter((session) => session.userId === user.id && !session.config.practiceTestRunId && session.config.source !== "assignment" &&
+        (session.status === "completed" || session.status === "in_progress"));
+      const attempts = await Promise.all(rc.map(async (session) => [session.id, await getSessionAttempts(session.id)] as const));
+      return buildStandaloneDrillHistory(lr, rc, new Map(attempts));
+    }).then(
       (loaded) => { if (active) setRuns(loaded); },
       (error: unknown) => { if (active) setRunsError(error instanceof Error ? error.message : "Drill runs could not be loaded."); },
     ).finally(() => { if (active) setRunsLoading(false); });
@@ -397,17 +407,17 @@ export default function AcademyMainhub({
               <h1 className="text-xl font-semibold">{view === "completed" ? "Completed drills" : "Drills in progress"}</h1>
               <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">Saved custom LR runs appear here. Smart Drill and RC have their own history for now.</p>
+            <p className="mt-2 text-sm text-muted-foreground">Your saved custom LR and RC drills. Assigned work stays in My Work.</p>
             {runsLoading ? <p className="mt-6 text-sm text-muted-foreground" role="status">Loading your drills…</p> : runsError ? <p className="mt-6 text-sm text-destructive" role="alert">{runsError}</p> : (() => {
-              const selected = runs.filter((run) => run.session.status === (view === "completed" ? "completed" : "in_progress") && (view === "completed" || run.session.attempts.length > 0));
+              const selected = runs.filter((run) => run.status === (view === "completed" ? "completed" : "in_progress"));
               return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill and save an answer to see it here."}</p> : (
                 <ul className="mt-5 space-y-3">{selected.map((run) => (
-                  <li key={run.id} className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border p-4">
+                  <li key={run.key} className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border p-4">
                     <div className="min-w-0">
-                      <p className="font-medium">{run.label || "LR drill"}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">{run.session.attempts.length} of {run.session.question_queue.length} answered · {new Date(run.updated_at).toLocaleDateString()}</p>
+                      <p className="font-medium">{run.title}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{run.detail} · {new Date(run.date).toLocaleDateString()}</p>
                     </div>
-                    {view === "completed" ? <div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => navigate(`/practice/drills/runs/${run.id}?view=results`)}>Results</Button><Button size="sm" onClick={() => navigate(`/practice/drills/runs/${run.id}?view=review`)}>Review</Button></div> : <Button size="sm" onClick={() => navigate(`/drill?${launchDrill({kind: "questions", qids: run.session.question_queue, options: {returnTo: "/practice/drills"}})}&run=${encodeURIComponent(run.id)}`)}>Continue</Button>}
+                    {view === "completed" ? <div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => navigate(run.resultsTo!)}>Results</Button><Button size="sm" onClick={() => navigate(run.reviewTo!)}>Review</Button></div> : <Button size="sm" onClick={() => navigate(run.continueTo!)}>Continue</Button>}
                   </li>
                 ))}</ul>
               );

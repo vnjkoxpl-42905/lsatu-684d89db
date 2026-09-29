@@ -242,3 +242,45 @@ describe('homework progress requires a saved answer', () => {
     expect(row.status).toBe('assigned');
   });
 });
+
+describe('weekly plan source status', () => {
+  const planMirror = item({
+    id: 'ci-plan',
+    type: 'weekly_plan_task',
+    source_table: 'weekly_plan_items',
+    source_id: 'plan-task-1',
+  });
+
+  it('uses the plan item after either side of the mirror becomes stale', () => {
+    expect(buildAssignedRows({
+      ...EMPTY,
+      items: [{ ...planMirror, status: 'assigned' }],
+      weeklyPlanStatusById: { 'plan-task-1': 'completed' },
+    })[0].status).toBe('completed');
+    expect(buildAssignedRows({
+      ...EMPTY,
+      items: [{ ...planMirror, status: 'completed' }],
+      weeklyPlanStatusById: { 'plan-task-1': 'assigned' },
+    })[0].status).toBe('assigned');
+    expect(buildAssignedRows({
+      ...EMPTY,
+      items: [{ ...planMirror, status: 'completed' }],
+      weeklyPlanStatusById: { 'plan-task-1': 'in_progress' },
+    })[0].status).toBe('in_progress');
+  });
+
+  it('withholds plan mirrors until their source is read, and omits missing or skipped sources', () => {
+    expect(buildAssignedRows({ ...EMPTY, items: [planMirror] })).toEqual([]);
+    expect(buildAssignedRows({ ...EMPTY, items: [planMirror], weeklyPlanStatusById: {} })).toEqual([]);
+    expect(buildAssignedRows({
+      ...EMPTY,
+      items: [planMirror],
+      weeklyPlanStatusById: { 'plan-task-1': 'skipped' },
+    })).toEqual([]);
+  });
+
+  it('does not hide other work while weekly plan status is unavailable', () => {
+    const rows = buildAssignedRows({ ...EMPTY, items: [planMirror, item({ id: 'ci-bootcamp' })] });
+    expect(rows.map((row) => row.kind)).toEqual(['bootcamp']);
+  });
+});

@@ -58,6 +58,10 @@ vi.mock("@/hooks/useClassroomItems", () => ({
   }),
 }));
 
+vi.mock("@/hooks/useAssignedTodoFeed", () => ({
+  useAssignedTodoFeed: () => ({ rows: [], loading: false, failed: false, retry: vi.fn() }),
+}));
+
 vi.mock("@/hooks/useLastActivity", () => ({
   useLastActivity: () => ({ data: null }),
 }));
@@ -174,7 +178,7 @@ describe("AcademyMainhub", () => {
     expect(screen.queryByText("Robot scene")).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Build the drill you need." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Set up an LR drill" })).toBeInTheDocument();
-    expect(screen.queryByRole("combobox", { name: "PrepTest" })).not.toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "PrepTest" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Advanced/i })).not.toBeInTheDocument();
     expect(
       screen.getByRole("region", { name: "Practice and insight workspace" }),

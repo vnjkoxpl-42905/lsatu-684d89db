@@ -204,6 +204,11 @@ function RedirectWithSearch({ to }: { to: string }) {
   return <Navigate to={`${path}${query ? `?${query}` : ""}${hash}`} replace />;
 }
 
+function RedirectLegacyExamDetail() {
+  const { pt } = useParams<{ pt: string }>();
+  return <RedirectWithSearch to={`/practice/exams/${pt}`} />;
+}
+
 function RedirectLegacyDrill() {
   const { search } = useLocation();
   const stage = new URLSearchParams(search).get("stage");
@@ -599,6 +604,7 @@ const App = () => {
                       <Route path="drills/saved" element={<ProtectedRoute flag="has_drill_access"><SavedSets /></ProtectedRoute>} />
                       <Route path="exams" element={<TestingCentreGate><TestingCentre /></TestingCentreGate>} />
                       <Route path="exams/all" element={<TestingCentreGate><AllPracticeExams /></TestingCentreGate>} />
+                      <Route path="exams/:pt" element={<TestingCentreGate><PracticeExamDetail /></TestingCentreGate>} />
                       <Route path="exams/attempts" element={<ProtectedRoute allowSignedIn><PracticeExamAttempts /></ProtectedRoute>} />
                     </Route>
 
@@ -633,9 +639,7 @@ const App = () => {
                         takeovers registered above, outside this shell. */}
                     <Route path="/testing" element={<RedirectWithSearch to="/practice/exams" />} />
                     <Route path="/testing/exams" element={<RedirectWithSearch to="/practice/exams/all" />} />
-                    <Route path="/testing/exams/:pt" element={
-                      <TestingCentreGate><PracticeExamDetail /></TestingCentreGate>
-                    } />
+                    <Route path="/testing/exams/:pt" element={<RedirectLegacyExamDetail />} />
                     <Route path="/testing/attempts" element={<RedirectWithSearch to="/practice/exams/attempts" />} />
                     <Route path="/testing/attempts/section/lr/:sessionId" element={
                       <ProtectedRoute allowSignedIn><PracticeSectionResult /></ProtectedRoute>
