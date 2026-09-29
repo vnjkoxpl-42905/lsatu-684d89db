@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { loadAllIndexPassages } from '../lib/rcBank';
+import { loadAllIndexPassages, loadPassages } from '../lib/rcBank';
+import { RcMarkdown } from './RcMarkdown';
 import {
   RC_ADAPTIVE_LABEL,
   passageStatus,
@@ -28,6 +29,7 @@ import {
   type RcDrillSession,
   type RcQuestionHistory,
   type RcRevealMode,
+  type RcPassage,
 } from '../lib/rcTypes';
 import '../rc.css';
 
@@ -120,6 +122,13 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
   const [search, setSearch] = React.useState('');
   const [starting, setStarting] = React.useState(false);
   const [autoStart, setAutoStart] = React.useState(false);
+  const [inspecting, setInspecting] = React.useState(false);
+  const [selectedSet, setSelectedSet] = React.useState<{
+    key: string;
+    ids: number[];
+    passages: RcPassage[];
+  } | null>(null);
+  const inspectRequest = React.useRef(0);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -286,6 +295,50 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
     practiceTestLegIndex,
   };
 
+  // A change to any launch setting makes an inspected set stale. The same IDs
+  // are used for both the read-only inspection and the eventual session.
+  const selectionKey = JSON.stringify({ count, timing, customSeconds, reveal, filters, handPicked, query: params.toString() });
+  const selectionKeyRef = React.useRef(selectionKey);
+  selectionKeyRef.current = selectionKey;
+  const activeSet = selectedSet?.key === selectionKey ? selectedSet : null;
+
+  const inspectSet = async () => {
+    const request = ++inspectRequest.current;
+    const key = selectionKey;
+    setSelectedSet(null);
+    setInspecting(true);
+    setNotice(null);
+    try {
+      const ids = handPicked.length > 0
+        ? [...handPicked]
+        : selectPassages({
+            pool: passages,
+            questionIdsByPassage,
+            filters,
+            history,
+            count,
+            seed: Date.now() % 2147483647,
+          }).selected.map((p) => p.passageId);
+      if (ids.length === 0) {
+        setNotice('No passages match those filters. Loosen one and try again.');
+        return;
+      }
+      const full = await loadPassages(ids);
+      if (request !== inspectRequest.current || key !== selectionKeyRef.current) return;
+      if (full.length !== ids.length || full.some((passage, index) => passage.passageId !== ids[index])) {
+        setNotice('Some passages could not be loaded. Try inspecting the set again.');
+        return;
+      }
+      setSelectedSet({ key, ids, passages: full });
+    } catch {
+      if (request === inspectRequest.current && key === selectionKeyRef.current) {
+        setNotice('The selected passages could not be loaded. Try again.');
+      }
+    } finally {
+      if (request === inspectRequest.current) setInspecting(false);
+    }
+  };
+
   /**
    * `replace` is for the autostart path only. A link carrying `start=1` puts
    * the builder on the history stack with that param still in the URL, so Back
@@ -295,8 +348,8 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
   const start = async (options?: { replace?: boolean }) => {
     setStarting(true);
     try {
-      const chosen =
-        handPicked.length > 0
+      const chosen = options?.replace
+        ? handPicked.length > 0
           ? handPicked
           : selectPassages({
               pool: passages,
@@ -305,7 +358,14 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
               history,
               count,
               seed: Date.now() % 2147483647,
-            }).selected.map((p) => p.passageId);
+            }).selected.map((p) => p.passageId)
+        : activeSet?.ids ?? [];
+
+      if (!options?.replace && !activeSet) {
+        setNotice('Inspect a set before starting it.');
+        setStarting(false);
+        return;
+      }
 
       if (chosen.length === 0) {
         setNotice('No passages match those filters. Loosen one and try again.');
@@ -598,15 +658,44 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
           </div>
         )}
 
-        <button
-          type="button"
-          className="rc-button rc-button-primary"
-          disabled={starting}
-          onClick={() => void start()}
-        >
-          {starting ? 'Starting…' : 'Start drill'}
-        </button>
+        <div className="rc-actions" style={{ flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            className="rc-button rc-button-primary"
+            disabled={starting || inspecting || (activeSet === null && passages.length === 0)}
+            onClick={() => void (activeSet ? start() : inspectSet())}
+          >
+            {starting ? 'Starting…' : inspecting ? 'Loading set…' : activeSet ? 'Start this drill' : 'Inspect set'}
+          </button>
+          {activeSet && <button type="button" className="rc-button" onClick={() => void inspectSet()}>Choose another set</button>}
+        </div>
       </div>
+
+      {activeSet && (
+        <section className="rc-card" aria-label="Selected reading set">
+          <h2>Selected reading set</h2>
+          <p className="rc-field-hint">These exact passages and questions will appear in your drill. Answers and explanations are hidden.</p>
+          {activeSet.passages.map((passage, index) => (
+            <details key={passage.passageId} style={{ marginTop: 16 }}>
+              <summary style={{ cursor: 'pointer' }}>
+                {index + 1}. PT {passage.preptest} · {passage.title || `Passage ${passage.setNumber}`} · {passage.questions.length} questions
+              </summary>
+              <div style={{ maxHeight: 560, overflowY: 'auto', padding: '12px 4px' }}>
+                <RcMarkdown>{passage.text}</RcMarkdown>
+                {passage.questions.map((question) => (
+                  <div key={question.questionId} style={{ marginTop: 24 }}>
+                    <strong>Question {question.position}</strong>
+                    <RcMarkdown>{question.prompt}</RcMarkdown>
+                    <div>
+                      {question.choices.map((choice) => <div key={choice.letter} style={{ display: 'flex', gap: 8, marginTop: 8 }}><strong>{choice.letter}.</strong><RcMarkdown>{choice.text}</RcMarkdown></div>)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </details>
+          ))}
+        </section>
+      )}
 
       {/* -------------------------------------------------------- hand-pick */}
       {handPickOpen && (
@@ -688,10 +777,10 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
             <button
               type="button"
               className="rc-button rc-button-primary"
-              disabled={handPicked.length === 0 || starting}
-              onClick={() => void start()}
+              disabled={handPicked.length === 0 || starting || inspecting}
+              onClick={() => void (activeSet ? start() : inspectSet())}
             >
-              Start drill
+              {activeSet ? 'Start this drill' : 'Inspect set'}
             </button>
             {handPicked.length > 0 && (
               <button type="button" className="rc-button" onClick={() => setHandPicked([])}>
