@@ -81,16 +81,9 @@ const Analytics = () => {
     });
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border border-border border-t-foreground/30 rounded-full animate-spin" />
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Loading analytics</p>
-        </div>
-      </div>
-    );
-  }
+  // The first-answer panel has its own data source and must not wait for the
+  // legacy rollup. Keep the auth redirect's previous no-content behavior.
+  if (!user) return null;
 
   const hasData = data && Object.keys(data.accuracyByType).length > 0;
   const sortedTypes = hasData ? Object.keys(data.accuracyByType).sort() : [];
@@ -113,7 +106,15 @@ const Analytics = () => {
           <BreakdownPanel />
         </div>
 
-        {loadError ? (
+        {classIdLoading || (classId && loading) ? (
+          <div className="rounded-xl bg-card border border-border shadow-sm p-12 text-center" role="status">
+            <p className="text-muted-foreground text-sm">Loading breakdown and opportunity charts…</p>
+          </div>
+        ) : !classId ? (
+          <div className="rounded-xl bg-card border border-border shadow-sm p-12 text-center" role="alert">
+            <p className="text-foreground text-sm font-medium">Could not load breakdown and opportunity charts. Refresh this page to try again.</p>
+          </div>
+        ) : loadError ? (
           <div className="rounded-xl bg-card border border-border shadow-sm p-12 text-center">
             <p className="text-foreground text-sm font-medium">{loadError}</p>
             <Button

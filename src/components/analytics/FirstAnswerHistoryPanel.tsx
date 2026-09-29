@@ -21,6 +21,24 @@ export default function FirstAnswerHistoryPanel({ window }: { window: ProgressWi
     && (result === 'all' || row.correct === (result === 'correct'))
     && (answer === 'all' || row.isFirst === (answer === 'first')),
   ), [details, area, result, answer]);
+  const dateGroups = useMemo(() => {
+    const groups: { key: string; label: string; rows: typeof filtered }[] = [];
+    for (const row of filtered) {
+      const date = new Date(row.gradedAt);
+      const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+      const previous = groups[groups.length - 1];
+      if (previous?.key === key) {
+        previous.rows.push(row);
+      } else {
+        groups.push({
+          key,
+          label: date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
+          rows: [row],
+        });
+      }
+    }
+    return groups;
+  }, [filtered]);
 
   return (
     <section className="mb-7 min-w-0 rounded-xl border border-border bg-card p-4 sm:p-5" aria-labelledby="saved-answer-history-title">
@@ -45,17 +63,24 @@ export default function FirstAnswerHistoryPanel({ window }: { window: ProgressWi
             </div>
             <p className="mt-3 text-xs text-muted-foreground">{filtered.length} saved {filtered.length === 1 ? 'answer' : 'answers'} match these filters.</p>
             {filtered.length === 0 ? <p className="mt-3 text-sm text-muted-foreground">No saved answers match this window and these filters.</p> : (
-              <ol className="mt-2 max-h-80 divide-y divide-border overflow-y-auto rounded-lg border border-border">
-                {filtered.map((row) => (
-                  <li key={row.attemptId} className="flex min-w-0 flex-wrap items-center justify-between gap-2 p-3 text-xs">
-                    <div className="min-w-0">
-                      <strong className="block break-all text-foreground">{row.questionKey.replace(':', ' · ')}</strong>
-                      <span className="text-muted-foreground">{row.topic ? `${row.topic} · ` : ''}{row.mode.replace(/-/g, ' ')} · {new Date(row.gradedAt).toLocaleDateString()}</span>
-                    </div>
-                    <span className="text-muted-foreground">{row.correct ? 'Correct' : 'Missed'} · {row.isFirst ? 'First answer' : 'Repeat'}</span>
-                  </li>
+              <div className="mt-2 max-h-80 overflow-y-auto rounded-lg border border-border">
+                {dateGroups.map((group) => (
+                  <section key={group.key} aria-label={group.label}>
+                    <h3 className="sticky top-0 border-b border-border bg-muted px-3 py-2 text-xs font-semibold text-foreground">{group.label}</h3>
+                    <ol className="divide-y divide-border">
+                      {group.rows.map((row) => (
+                        <li key={row.attemptId} className="flex min-w-0 flex-wrap items-center justify-between gap-2 p-3 text-xs">
+                          <div className="min-w-0">
+                            <strong className="block break-all text-foreground">{row.questionKey.replace(':', ' · ')}</strong>
+                            <span className="text-muted-foreground">{row.topic ? `${row.topic} · ` : ''}{row.mode.replace(/-/g, ' ')}</span>
+                          </div>
+                          <span className="text-muted-foreground">{row.correct ? 'Correct' : 'Missed'} · {row.isFirst ? 'First answer' : 'Repeat'}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
                 ))}
-              </ol>
+              </div>
             )}
             <div className="mt-4 flex flex-wrap gap-3 text-xs font-medium">
               <Link className="text-foreground underline" to="/review/to-review">Open Review</Link>
