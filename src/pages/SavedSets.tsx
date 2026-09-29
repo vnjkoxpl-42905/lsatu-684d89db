@@ -24,7 +24,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { useSavedSets } from "@/hooks/useSavedSets";
-import { questionBank } from "@/lib/questionLoader";
+import { LrQuestionInspectList } from "@/components/drill/LrQuestionInspectList";
 import { recordExposures } from "@/lib/questionExposure";
 import { launchDrill } from "@/lib/drillLaunch";
 import { format } from "date-fns";
@@ -256,42 +256,13 @@ export default function SavedSets() {
               These are the exact questions saved in this set, in order. Inspecting does not start a drill or record practice.
             </DialogDescription>
           </DialogHeader>
-          <div className="min-h-0 overflow-y-auto space-y-3 pr-2 text-sm">
-            {questionsLoading ? (
+          {questionsLoading ? (
               <p role="status" className="text-muted-foreground">Loading questions…</p>
             ) : questionsError ? (
               <p role="alert" className="text-destructive">Questions could not be loaded. Close this preview and try again later.</p>
-            ) : inspectingSet?.question_ids.length === 0 ? (
-              <p className="text-muted-foreground">This set has no questions.</p>
             ) : (
-              inspectingSet?.question_ids.map((qid, index) => {
-                const question = questionBank.getQuestion(qid);
-                return (
-                  <details key={`${qid}-${index}`} className="rounded-lg border border-border bg-card p-3 open:p-4">
-                    <summary className="min-h-11 cursor-pointer py-2 font-medium">
-                      {index + 1}. {question ? `PT${question.pt} · S${question.section} · Q${question.qnum} · ${question.qtype}` : `${qid} · unavailable`}
-                    </summary>
-                    {question ? (
-                      <div className="mt-4 space-y-4 leading-relaxed">
-                        {question.stimulus && <p className="whitespace-pre-wrap">{question.stimulus}</p>}
-                        <p className="font-medium whitespace-pre-wrap">{question.questionStem}</p>
-                        <ol className="space-y-2" aria-label={`Answer choices for question ${index + 1}`}>
-                          {(["A", "B", "C", "D", "E"] as const).map((letter) => (
-                            <li key={letter} className="flex gap-2 rounded border border-border/60 p-2">
-                              <span className="font-semibold">{letter}.</span>
-                              <span className="whitespace-pre-wrap">{question.answerChoices[letter]}</span>
-                            </li>
-                          ))}
-                        </ol>
-                      </div>
-                    ) : (
-                      <p className="mt-3 text-muted-foreground">This saved question is no longer available in the question bank.</p>
-                    )}
-                  </details>
-                );
-              })
+              <LrQuestionInspectList qids={inspectingSet?.question_ids ?? []} />
             )}
-          </div>
         </DialogContent>
       </Dialog>
 

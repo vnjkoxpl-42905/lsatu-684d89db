@@ -42,6 +42,7 @@ import {
 import { useSavedSets } from '@/hooks/useSavedSets';
 import { Bookmark } from 'lucide-react';
 import { recordExposures } from '@/lib/questionExposure';
+import { LrQuestionInspectList } from './LrQuestionInspectList';
 import { composeLRDrillSet, getLRDrillSetAvailability } from '@/lib/lrDrillSetComposition';
 
 // Item J — abbreviations for the table's Type pill so multi-word qtypes
@@ -1493,7 +1494,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     )}
                   </ul>
                   <Button type="button" variant="ghost" size="sm" className="w-full" onClick={() => setPreviewDialogOpen(true)}>
-                    View all {previewedQids.length} questions
+                    Inspect all {previewedQids.length} questions
                   </Button>
                 </div>
               )}
@@ -1613,7 +1614,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           {hasPreview ? (
             <div className="space-y-2">
               <Button type="button" variant="outline" onClick={() => setPreviewDialogOpen(true)} className="w-full">
-                View all {previewedQids!.length} questions in this set
+                Inspect all {previewedQids!.length} questions in this set
               </Button>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleGeneratePreview} className="min-w-0 flex-1">Create another</Button>
@@ -1750,25 +1751,14 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       </Sheet>
 
       <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
-        <DialogContent className="drill-observatory-launcher-panel max-h-[85vh] overflow-hidden flex flex-col">
+        <DialogContent className="drill-observatory-launcher-panel max-w-3xl max-h-[85vh] overflow-hidden flex flex-col [&>button]:right-1 [&>button]:top-1 [&>button]:flex [&>button]:h-11 [&>button]:w-11 [&>button]:items-center [&>button]:justify-center">
           <DialogHeader>
             <DialogTitle>Your set: {previewedQids?.length ?? 0} questions</DialogTitle>
             <DialogDescription>
-              These are the exact questions that will appear when you start this drill. Chosen questions are guaranteed; the other places come from your filters.
+              These are the exact questions that will appear when you start this drill. Chosen questions are guaranteed; the other places come from your filters. Inspecting does not record practice.
             </DialogDescription>
           </DialogHeader>
-          <ol className="min-h-0 overflow-y-auto space-y-1 pr-2 text-sm">
-            {previewedQids?.map((qid, index) => {
-              const question = questionBank.getQuestion(qid);
-              if (!question) return null;
-              return (
-                <li key={qid} className="flex items-start justify-between gap-3 rounded-md border border-border/60 px-3 py-2">
-                  <span className="font-medium tabular-nums">{index + 1}. PT{question.pt} · S{question.section} · Q{question.qnum}</span>
-                  <span className="text-xs text-muted-foreground text-right">{selectedQids.has(qid) ? 'Chosen' : 'From filters'} · {question.qtype} · L{question.difficulty}</span>
-                </li>
-              );
-            })}
-          </ol>
+          <LrQuestionInspectList qids={previewedQids ?? []} chosenQids={selectedQids} />
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setPreviewDialogOpen(false)}>Back to setup</Button>
             <Button type="button" onClick={handleLaunch}>Start this drill ({previewedQids?.length ?? 0})</Button>

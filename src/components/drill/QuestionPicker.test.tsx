@@ -294,11 +294,17 @@ describe('QuestionPicker LR drill setup', () => {
     expect(screen.getAllByText(/1 chosen question stays.*outside these filters/)).not.toHaveLength(0);
 
     previewSet();
-    fireEvent.click(screen.getAllByRole('button', { name: 'View all 5 questions' })[0]);
+    fireEvent.click(screen.getAllByRole('button', { name: 'Inspect all 5 questions' })[0]);
     const dialog = screen.getByRole('dialog', { name: 'Your set: 5 questions' });
-    expect(within(dialog).getAllByRole('listitem')).toHaveLength(5);
+    expect(dialog.querySelectorAll('details')).toHaveLength(5);
     expect(within(dialog).getByText(/1\. PT102 · S2 · Q6/)).toBeInTheDocument();
     expect(within(dialog).getByText(/5\. PT101 · S2 · Q4/)).toBeInTheDocument();
+    fireEvent.click(within(dialog).getByText(/1\. PT102 · S2 · Q6/));
+    expect(within(dialog).getByText('A rare botanical argument.')).toBeInTheDocument();
+    expect(within(dialog).getAllByText('Which answer most strengthens the argument?').length).toBeGreaterThan(0);
+    expect(within(dialog).queryByText(/correct answer:/i)).not.toBeInTheDocument();
+    expect(onStartDrill).not.toHaveBeenCalled();
+    expect(mockRecordExposures).not.toHaveBeenCalled();
     fireEvent.click(within(dialog).getByRole('button', { name: 'Start this drill (5)' }));
     expect(onStartDrill.mock.calls[0][0].selectedQids).toHaveLength(5);
   });
