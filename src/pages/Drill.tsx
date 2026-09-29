@@ -2671,6 +2671,26 @@ function DrillContent() {
     }
   };
 
+  const finalizeGuidedAssignment = async (): Promise<void> => {
+    if (!guidedAssignmentId || !user) return;
+    try {
+      const { error } = await supabase
+        .from('guided_drill_assignments')
+        .update({ completed_at: new Date().toISOString(), status: 'completed' })
+        .eq('id', guidedAssignmentId)
+        .eq('student_id', user.id);
+      if (error) throw error;
+      await completeLinkedTodo(guidedAssignmentId);
+    } catch (err) {
+      console.error('[drill:guided-assignment:complete] update failed', {
+        userId: user.id,
+        guidedAssignmentId,
+        err,
+      });
+      toast.error("Couldn't mark your guided drill complete. Your attempts saved; let Joshua know.");
+    }
+  };
+
   /**
    * Close out the resume row for Smart Drill / custom drills / full sections.
    * The row keeps the queue and every answer for review; completing it only
@@ -2738,6 +2758,7 @@ function DrillContent() {
 
     // Guided drill: close the resume row so a re-attempt starts fresh.
     await finalizeGuidedDrillSession(attemptsWithTiming);
+    await finalizeGuidedAssignment();
 
     // Every other drill surface: same close-out.
     await finalizeDrillResumeSession(attemptsWithTiming);
@@ -2768,25 +2789,6 @@ function DrillContent() {
           err,
         });
         toast.error("Couldn't mark your assignment complete. Your attempts saved; let Joshua know.");
-      }
-    }
-
-    if (guidedAssignmentId && user) {
-      try {
-        const { error } = await supabase
-          .from('guided_drill_assignments')
-          .update({ completed_at: new Date().toISOString(), status: 'completed' })
-          .eq('id', guidedAssignmentId)
-          .eq('student_id', user.id);
-        if (error) throw error;
-        await completeLinkedTodo(guidedAssignmentId);
-      } catch (err) {
-        console.error('[drill:guided-assignment:complete] update failed', {
-          userId: user.id,
-          guidedAssignmentId,
-          err,
-        });
-        toast.error("Couldn't mark your guided drill complete. Your attempts saved; let Joshua know.");
       }
     }
 
@@ -3068,6 +3070,7 @@ function DrillContent() {
     // Guided drill closed out from here (the End Drill button) rather than by
     // answering the last question — same closeout, so a re-attempt is fresh.
     await finalizeGuidedDrillSession(updatedAttempts);
+    await finalizeGuidedAssignment();
 
     // Same for Smart Drill / custom drills / full sections.
     await finalizeDrillResumeSession(updatedAttempts);

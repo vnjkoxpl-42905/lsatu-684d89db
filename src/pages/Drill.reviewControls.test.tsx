@@ -18,6 +18,10 @@ const insertCalls = vi.hoisted(() => ({ attempts: [] as Array<Record<string, unk
 const resumeSave = vi.hoisted(() => ({ fail: false, failNext: 0, calls: 0 }));
 const ledgerSave = vi.hoisted(() => ({ fail: false, created: 0 }));
 const journalCalls = vi.hoisted(() => ({ wrong: vi.fn(), correct: vi.fn() }));
+const guidedCompletion = vi.hoisted(() => ({
+  updates: [] as Array<{ values: Record<string, unknown>; filters: Record<string, string> }>,
+  linkedTodo: vi.fn(async (_id: string) => {}),
+}));
 
 vi.mock('@rrweb/record', () => ({ record: () => () => {} }));
 vi.mock('@/contexts/AuthContext', () => ({
@@ -57,6 +61,7 @@ vi.mock('@/lib/wajService', () => ({
   logCorrectAnswer: journalCalls.correct,
 }));
 vi.mock('@/lib/lastActivity', () => ({ upsertLastActivity: vi.fn(async () => {}) }));
+vi.mock('@/lib/todoActions', () => ({ completeLinkedTodo: guidedCompletion.linkedTodo }));
 vi.mock('@/lib/drillResumeSession', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/drillResumeSession')>();
   return {
@@ -146,6 +151,25 @@ vi.mock('@/integrations/supabase/client', () => {
   return {
     supabase: {
       from: (table: string) => {
+        if (table === 'guided_drill_assignments') {
+          return {
+            ...chain(),
+            update: (values: Record<string, unknown>) => {
+              const filters: Record<string, string> = {};
+              const query = {
+                eq: (field: string, value: string) => {
+                  filters[field] = value;
+                  return query;
+                },
+                then: (resolve: (value: unknown) => void) => {
+                  guidedCompletion.updates.push({ values, filters });
+                  resolve({ error: null });
+                },
+              };
+              return query;
+            },
+          };
+        }
         if (table === 'attempts') {
           return {
             ...chain(),
@@ -315,6 +339,8 @@ beforeEach(() => {
   journalCalls.correct.mockReset();
   journalCalls.wrong.mockResolvedValue(undefined);
   journalCalls.correct.mockResolvedValue(undefined);
+  guidedCompletion.updates = [];
+  guidedCompletion.linkedTodo.mockClear();
   window.localStorage.clear();
   store = memoryPersistence();
   __setPersistenceForTests(store);
@@ -394,6 +420,29 @@ describe('Drill review controls — guided drill (fixed + list)', () => {
     await waitFor(() => expect(insertCalls.attempts).toHaveLength(1));
     expect(insertCalls.attempts[0]).toMatchObject({ qid: Q1.qid, selected_answer: 'C' });
     expect(await screen.findByText(/Section Complete/i)).toBeInTheDocument();
+    await waitFor(() => expect(guidedCompletion.updates).toHaveLength(1));
+    expect(guidedCompletion.updates[0]).toMatchObject({
+      values: { status: 'completed', completed_at: expect.any(String) },
+      filters: { id: 'test-end-persist', student_id: '11111111-1111-4111-8111-111111111111' },
+    });
+    expect(guidedCompletion.linkedTodo).toHaveBeenCalledWith('test-end-persist');
+  });
+
+  it('marks the assigned guided drill complete after finishing its last question', async () => {
+    renderDrill(guidedEndSpec);
+    await waitForQuestion(18);
+    fireEvent.click(choiceButton('B'));
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    await waitForQuestion(19);
+    fireEvent.click(choiceButton('C'));
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+
+    await waitFor(() => expect(guidedCompletion.updates).toHaveLength(1));
+    expect(guidedCompletion.updates[0].filters).toEqual({
+      id: 'test-end-persist',
+      student_id: '11111111-1111-4111-8111-111111111111',
+    });
+    expect(guidedCompletion.linkedTodo).toHaveBeenCalledWith('test-end-persist');
   });
 });
 

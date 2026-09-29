@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { buildStandaloneDrillHistory } from './standaloneDrillHistory';
 import type { StandaloneDrillRun } from './drillRunLedger';
 import type { RcAttempt, RcDrillSession } from '@/features/rc/lib/rcTypes';
+import type { DrillResumeSession } from './drillResumeSession';
 
 const rc = (id: string, overrides: Partial<RcDrillSession> = {}): RcDrillSession => ({
   id,
@@ -22,6 +23,11 @@ const lr = (id: string, status: 'in_progress' | 'completed', attempts: number): 
   id, label: 'Custom LR', updated_at: '2026-09-29T12:00:00Z',
   session: { status, attempts: Array.from({ length: attempts }, () => ({})), question_queue: ['q1'] },
 } as StandaloneDrillRun);
+const smart = (status: 'in_progress' | 'completed', attempts: number): DrillResumeSession => ({
+  pool_slug: 'drill::adaptive', status,
+  attempts: Array.from({ length: attempts }, () => ({})),
+  question_queue: ['q1', 'q2'], updated_at: '2026-09-30T14:00:00Z',
+} as DrillResumeSession);
 
 describe('buildStandaloneDrillHistory', () => {
   it('keeps each saved sitting distinct and sorts LR with RC', () => {
@@ -48,5 +54,21 @@ describe('buildStandaloneDrillHistory', () => {
       new Map([['pt-rc', [answer('pt-rc')]], ['assigned-rc', [answer('assigned-rc')]]]),
     );
     expect(rows.map((row) => row.key)).toEqual(['lr:finished', 'rc:finished-rc']);
+  });
+
+  it('shows a saved Smart Drill as one resumable row, never as completed history', () => {
+    const rows = buildStandaloneDrillHistory([], [], new Map(), smart('in_progress', 1));
+    expect(rows).toMatchObject([{
+      key: 'smart:adaptive', title: 'Smart Drill', detail: '1 answer saved', status: 'in_progress',
+      continueTo: '/drill?drill=smart-drill&returnTo=%2Fclassroom',
+    }]);
+    expect(buildStandaloneDrillHistory([], [], new Map(), smart('completed', 1))).toEqual([]);
+    expect(buildStandaloneDrillHistory([], [], new Map(), smart('in_progress', 0))).toEqual([]);
+  });
+
+  it('does not duplicate an active Smart Drill when it has an account ledger row', () => {
+    const ledger = { ...lr('run', 'in_progress', 1), source_key: 'drill::adaptive' };
+    const rows = buildStandaloneDrillHistory([ledger], [], new Map(), smart('in_progress', 1));
+    expect(rows.map((row) => row.key)).toEqual(['lr:run']);
   });
 });
