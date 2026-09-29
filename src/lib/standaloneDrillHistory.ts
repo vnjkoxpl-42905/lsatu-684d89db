@@ -22,6 +22,7 @@ export function buildStandaloneDrillHistory(
   smartDrill: DrillResumeSession | null = null,
 ): StandaloneDrillHistoryItem[] {
   const lr: StandaloneDrillHistoryItem[] = lrRuns
+    .filter((run) => !run.source_key.startsWith('guided::'))
     .filter((run) => run.session.status === 'completed' || run.session.attempts.length > 0)
     .map((run) => ({
       key: `lr:${run.id}`,

@@ -34,13 +34,37 @@ import {
   resetPracticeSession,
   type PracticeSessionSnapshot,
 } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
-import type { PracticeSession } from '@/bootcamps/main-conclusion/persistence/records';
+import type { PracticeSession, PracticeSessionAttempt } from '@/bootcamps/main-conclusion/persistence/records';
 import type { DrillSession } from '@/types/drill';
 
 export const GUIDED_SESSION_PREFIX = 'guided::';
 
+/** Stable identity for one question in one sitting, including closeout retries. */
+export async function guidedAttemptId(runId: string, qid: string): Promise<string> {
+  const bytes = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`${runId}:${qid}`)));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = [...bytes.slice(0, 16)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
+}
+
 export type GuidedDrillSession = PracticeSession;
 export type GuidedDrillSnapshot = PracticeSessionSnapshot;
+
+/** A migrated singleton can remain in progress if its cleanup write failed. */
+export function isLegacyGuidedSessionSuperseded(
+  legacy: GuidedDrillSession | null,
+  completed: GuidedDrillSession[],
+): boolean {
+  if (!legacy || legacy.status !== 'in_progress') return false;
+  return completed.some((run) =>
+    run.status === 'completed' &&
+    run.question_queue.join('|') === legacy.question_queue.join('|') &&
+    legacy.attempts.every((old) => run.attempts.some((attempt) =>
+      attempt.qid === old.qid && attempt.selected_answer === old.selected_answer,
+    )),
+  );
+}
 
 /**
  * Key one guided drill's resume row. The assignment id is preferred: it is what
@@ -228,21 +252,30 @@ export function guidedSessionToDrillSession(
   stored: GuidedDrillSession | null,
 ): Pick<DrillSession, 'mode' | 'questionQueue' | 'currentIndex' | 'attempts'> | null {
   if (!stored || stored.question_queue.length === 0) return null;
-  const attempts: DrillSession['attempts'] = new Map();
-  for (const a of stored.attempts) {
-    attempts.set(a.qid, {
-      selectedAnswer: a.selected_answer,
-      correct: a.correct,
-      timeMs: a.time_ms ?? 0,
-      timestamp: 0,
-    });
-  }
+  const attempts = guidedAttemptsToDrillAttempts(stored.attempts);
   return {
     mode: 'type-drill',
     questionQueue: stored.question_queue,
     currentIndex: stored.current_index,
     attempts,
   };
+}
+
+export function guidedAttemptsToDrillAttempts(stored: PracticeSessionAttempt[]): DrillSession['attempts'] {
+  const attempts: DrillSession['attempts'] = new Map();
+  for (const a of stored) {
+    attempts.set(a.qid, {
+      selectedAnswer: a.selected_answer,
+      correct: a.correct,
+      timeMs: a.time_ms ?? 0,
+      timestamp: 0,
+      switchCount: a.switch_count,
+      brMarked: a.flagged,
+      answerRevealed: a.answer_revealed ?? false,
+      answerTrail: a.answer_trail?.map((e) => ({ answer: e.answer, atMs: e.at_ms })),
+    });
+  }
+  return attempts;
 }
 
 /**

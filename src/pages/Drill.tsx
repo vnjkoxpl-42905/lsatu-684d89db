@@ -134,8 +134,10 @@ import { DrillSplit } from '@/components/drill/DrillSplit';
 import {
   guidedSessionKeyForRunner,
   guidedResumeIndex,
+  guidedAttemptId,
+  guidedAttemptsToDrillAttempts,
+  isLegacyGuidedSessionSuperseded,
   loadGuidedDrillSession,
-  saveGuidedDrillSnapshot,
   completeGuidedDrillSession,
   isResumableGuidedSession,
 } from '@/lib/guidedDrillSession';
@@ -155,6 +157,7 @@ import {
   listStandaloneDrillRuns,
   saveStandaloneDrillRun,
   completeStandaloneDrillRun,
+  beginGuidedDrillCloseout,
 } from '@/lib/drillRunLedger';
 
 
@@ -270,6 +273,10 @@ function DrillContent() {
   // snapshot write would flip the row back to in_progress and offer a resume on
   // a drill the student already completed.
   const guidedFinalizedRef = React.useRef(false);
+  const guidedCloseoutAttemptsRef = React.useRef<DrillSession['attempts'] | null>(null);
+  const guidedRunIdRef = React.useRef<string | null>(requestedStandaloneRunId);
+  const guidedWriteRef = React.useRef<Promise<unknown>>(Promise.resolve());
+  const guidedLegacyResumeRef = React.useRef(false);
   const genericResumeIdentity = state.resumeIdentity;
   const standaloneSourceKey = React.useMemo(() => {
     if ((state.mode !== 'type-drill' && state.mode !== 'adaptive') || isMcPractice || state.isGuidedDrill || guidedSetId || guidedSessionKey || assignmentId || ptRun || genericResumeIdentity) return null;
@@ -845,19 +852,46 @@ function DrillContent() {
       // drill and coming back must return the student to the question they
       // stopped on with their earlier answers intact, not to a fresh shuffle.
       if (guidedSessionKey && user) {
-        const stored = await loadGuidedDrillSession(
-          user.id,
-          guidedSessionKey,
-          guidedLegacySessionKey,
+        const guidedRuns = await listStandaloneDrillRuns(user.id);
+        const ownedRun = requestedStandaloneRunId
+          ? await loadStandaloneDrillRun(user.id, requestedStandaloneRunId)
+          : guidedRuns.find((run) => run.source_key === guidedSessionKey && run.session.status === 'in_progress' && run.session.attempts.length > 0) ?? null;
+        if ((requestedStandaloneRunId && !ownedRun) || (ownedRun && ownedRun.source_key !== guidedSessionKey)) {
+          setBootError('This guided drill sitting could not be found in your account.');
+          return;
+        }
+        guidedRunIdRef.current = ownedRun?.id ?? null;
+        if (ownedRun?.session.status === 'completed') {
+          navigate(`/practice/drills/runs/${ownedRun.id}?view=results`, { replace: true });
+          return;
+        }
+        if (ownedRun?.session.question_queue.some((qid) => !questionBank.getQuestion(qid))) {
+          setBootError('A question in this saved guided drill is no longer available. Your saved answers are unchanged. Please contact Joshua.');
+          return;
+        }
+        const legacyStored = requestedStandaloneRunId ? null : await loadGuidedDrillSession(
+          user.id, guidedSessionKey, guidedLegacySessionKey,
         );
-        if (isResumableGuidedSession(stored, questionQueue)) {
+        const staleLegacy = isLegacyGuidedSessionSuperseded(legacyStored,
+          guidedRuns.filter((run) => run.source_key === guidedSessionKey && run.session.status === 'completed')
+            .map((run) => run.session));
+        const stored = ownedRun?.session ?? (staleLegacy ? null : legacyStored);
+        if (ownedRun?.closeout_attempts) {
+          guidedCloseoutAttemptsRef.current = guidedAttemptsToDrillAttempts(ownedRun.closeout_attempts);
+        }
+        guidedLegacyResumeRef.current = !ownedRun && stored?.status === 'in_progress' && stored.attempts.length > 0;
+        const canResume = ownedRun
+          ? stored?.status === 'in_progress' && stored.question_queue.length > 0 &&
+            stored.question_queue.every((qid) => !!questionBank.getQuestion(qid))
+          : isResumableGuidedSession(stored, questionQueue);
+        if (canResume && stored) {
           questionQueue = stored.question_queue;
           initialIndex = guidedResumeIndex(
             questionQueue,
             stored.current_index,
             stored.attempts.map((a) => a.qid),
           );
-          for (const attempt of stored.attempts) {
+          for (const attempt of ownedRun?.closeout_attempts ?? stored.attempts) {
             restoredAttempts.set(attempt.qid, {
               selectedAnswer: attempt.selected_answer,
               correct: attempt.correct,
@@ -876,7 +910,7 @@ function DrillContent() {
               })),
             });
           }
-        } else if (stored?.status === 'in_progress') {
+        } else if (stored?.status === 'in_progress' && stored.attempts.length > 0) {
           console.warn('[drill:guided] stored resume set no longer matches this drill, starting fresh', {
             key: guidedSessionKey,
           });
@@ -1110,6 +1144,39 @@ function DrillContent() {
     return task.then(() => undefined);
   }, [standaloneSourceKey, user, drillResumeSnapshot, practicingLabel]);
 
+  const persistGuidedSession = React.useCallback((source: DrillSession, finish = false): Promise<void> => {
+    if (!guidedSessionKey || !user) return Promise.resolve();
+    const snapshot = drillResumeSnapshot(source);
+    if (!snapshot || snapshot.attempts.length === 0) return Promise.resolve();
+    const task = guidedWriteRef.current.catch(() => undefined).then(async () => {
+      let runId = guidedRunIdRef.current;
+      if (!runId) {
+        const run = await createStandaloneDrillRun(user.id, guidedSessionKey, snapshot, {
+          mode: source.mode, label: practicingLabel || 'Guided drill',
+        });
+        runId = run.id;
+        guidedRunIdRef.current = runId;
+        const url = new URL(window.location.href);
+        url.searchParams.set('run', runId);
+        window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+      }
+      if (finish) await completeStandaloneDrillRun(user.id, runId, snapshot);
+      else await saveStandaloneDrillRun(user.id, runId, snapshot);
+      if (finish && guidedLegacyResumeRef.current) {
+        try {
+          await completeGuidedDrillSession(user.id, guidedSessionKey, snapshot);
+        } catch (error) {
+          // The individual sitting is already completed. Do not strand the
+          // student because the old singleton cleanup failed.
+          console.warn('[drill:guided] legacy resume closeout failed', error);
+        }
+        guidedLegacyResumeRef.current = false;
+      }
+    });
+    guidedWriteRef.current = task;
+    return task.then(() => undefined);
+  }, [guidedSessionKey, user, drillResumeSnapshot, practicingLabel]);
+
   /**
    * The clock keeps running between answers, and a student can sit on one
    * question for five minutes. Snapshots written only on answer changes would
@@ -1159,21 +1226,8 @@ function DrillContent() {
   // Same snapshot on every answer and every question move for guided drills, so
   // the student's place survives a tab close, a sign-out, or another device —
   // none of which a URL param can carry.
-  React.useEffect(() => {
-    if (!guidedSessionKey || !user || !session) return;
-    if (guidedFinalizedRef.current) return;
-    if (session.questionQueue.length === 0) return;
-    const snapshot = drillResumeSnapshot(session);
-    if (!snapshot) return;
-    void saveGuidedDrillSnapshot(user.id, guidedSessionKey, snapshot).catch((err) => {
-      // Non-fatal: the drill still works, they just lose the resume point.
-      console.error('[drill:guided:snapshot] resume write failed', {
-        userId: user.id,
-        key: guidedSessionKey,
-        err,
-      });
-    });
-  }, [session, guidedSessionKey, user, drillResumeSnapshot]);
+  // Guided sittings are written by the answer and navigation gates below.
+  // A background write would hide account failures and could revive a finished run.
 
   // And the same again for every other drill surface. A section is saved as
   // soon as it starts, even before its first answer; other untouched drills
@@ -1595,6 +1649,10 @@ function DrillContent() {
   };
 
   const handleAnswerSelect = (answer: string) => {
+    if (guidedSessionKey && guidedCloseoutAttemptsRef.current) {
+      toast.info('Finish is pending. Retry Finish to save these results.');
+      return;
+    }
     if (!reviewControlsAvailable && !isPracticeSetMode && !isRetryAfterWrong && answerLocked) return;
     // Review controls never lock a choice: a pick after a reveal is a recorded
     // change of mind, not a blocked click.
@@ -1660,6 +1718,7 @@ function DrillContent() {
   };
 
   const handleEliminateAnswer = (key: string) => {
+    if (guidedSessionKey && guidedCloseoutAttemptsRef.current) return;
     if (!currentQuestion) return;
     const qid = currentQuestion.qid;
     setEliminatedByQid(prev => {
@@ -1723,6 +1782,7 @@ function DrillContent() {
   // Returns false ONLY for the "classId not yet resolved" case, which is a
   // deliberate skip during cold-start — not a write failure.
   const saveAttemptToDatabase = async (attemptData: {
+    id?: string;
     qid: string;
     correct: boolean;
     time_ms: number;
@@ -1749,6 +1809,7 @@ function DrillContent() {
     }
     try {
       const { error } = await supabase.from('attempts').insert({
+        ...(attemptData.id ? { id: attemptData.id } : {}),
         user_id: user?.id,
         class_id: resolvedClassId,
         qid: attemptData.qid,
@@ -1766,6 +1827,9 @@ function DrillContent() {
       });
 
       if (error) {
+        // Guided sittings use a stable id for each question. A retry after the
+        // server accepted an earlier insert is the same attempt, not new work.
+        if (attemptData.id && error.code === '23505') return true;
         console.error('[drill:saveAttempt] supabase insert failed', {
           userId: user?.id,
           qid: attemptData.qid,
@@ -1887,6 +1951,9 @@ function DrillContent() {
 
       try {
         const ok = await saveAttemptToDatabase({
+          id: guidedSessionKey && guidedRunIdRef.current
+            ? await guidedAttemptId(guidedRunIdRef.current, qid)
+            : undefined,
           qid,
           correct: attempt.correct,
           time_ms: attempt.timeMs,
@@ -1959,7 +2026,7 @@ function DrillContent() {
     const timeMs = Math.floor(performance.now() - questionStartTime);
     
     // Save to attempts database (final attempt after review)
-    const saved = await persistAttempt({
+    const saved = guidedSessionKey ? { ok: true as const } : await persistAttempt({
       qid: currentQuestion.qid,
       correct: false,
       time_ms: timeMs,
@@ -2080,7 +2147,7 @@ function DrillContent() {
     const timeMs = Math.floor(performance.now() - questionStartTime);
 
     // Save attempt to database (no confidence for non-adaptive)
-    const saved = await persistAttempt({
+    const saved = guidedSessionKey ? { ok: true as const } : await persistAttempt({
       qid: currentQuestion.qid,
       correct,
       time_ms: timeMs,
@@ -2114,6 +2181,14 @@ function DrillContent() {
       answerRevealed: answerSeenQidsRef.current.has(currentQuestion.qid),
     });
 
+    if (guidedSessionKey) {
+      try {
+        await persistOwnedDrillSession({ ...session, attempts: newAttempts });
+      } catch (error) {
+        toast.error('Your guided drill answer did not save to your account. Retry Submit.');
+        return null;
+      }
+    }
     adaptiveEngine.recordAttempt({
       qid: currentQuestion.qid,
       correct,
@@ -2125,11 +2200,10 @@ function DrillContent() {
       questionFeatures: currentQuestion.questionFeatures ?? [],
     });
 
-    // Track question usage
+    // Track question usage only after this sitting is saved.
     if (classId && session?.mode) {
       QuestionPoolService.markQuestionSeen(currentQuestion.qid, classId, session.mode);
     }
-
     setSession({ ...session, attempts: newAttempts });
     if (!options?.advanceAfterSubmit) {
       setShowSolution(true);
@@ -2588,9 +2662,9 @@ function DrillContent() {
     // Move to next
     if (session.currentIndex < session.questionQueue.length - 1) {
       const nextSession = { ...session, currentIndex: session.currentIndex + 1 };
-      if (standaloneSourceKey && nextSession.attempts.size > 0) {
+      if ((standaloneSourceKey || guidedSessionKey) && nextSession.attempts.size > 0) {
         try {
-          await persistStandaloneSession(nextSession);
+          await persistOwnedDrillSession(nextSession);
         } catch (error) {
           toast.error("Your answer has not saved to your account. Retry Next.");
           return;
@@ -2616,9 +2690,9 @@ function DrillContent() {
     // closure's `session` would write that attempt straight back out.
     if (session.currentIndex > 0) {
       const previousSession = { ...session, currentIndex: session.currentIndex - 1 };
-      if (standaloneSourceKey && previousSession.attempts.size > 0) {
+      if ((standaloneSourceKey || guidedSessionKey) && previousSession.attempts.size > 0) {
         try {
-          await persistStandaloneSession(previousSession);
+          await persistOwnedDrillSession(previousSession);
         } catch (error) {
           toast.error("Your place has not saved to your account. Retry Previous.");
           return;
@@ -2675,20 +2749,46 @@ function DrillContent() {
    */
   const finalizeGuidedDrillSession = async (attempts: DrillSession['attempts']): Promise<void> => {
     if (!guidedSessionKey || !user) return;
-    guidedFinalizedRef.current = true;
-
-    const snapshot = drillResumeSnapshot(session ? { ...session, attempts } : null);
-    if (!snapshot) return;
+    if (guidedFinalizedRef.current) return;
+    if (attempts.size === 0 || !session) {
+      toast.error('Submit at least one answer before finishing this guided drill.');
+      throw new Error('No guided drill answers have been saved.');
+    }
     try {
-      await completeGuidedDrillSession(user.id, guidedSessionKey, snapshot);
+      await persistGuidedSession({ ...session, attempts }, true);
+      guidedFinalizedRef.current = true;
     } catch (err) {
-      // Non-fatal: the attempts are already saved; this only affects resume.
-      console.error('[drill:guided:complete] resume row write failed', {
+      console.error('[drill:guided:complete] account run write failed', {
         userId: user.id,
         key: guidedSessionKey,
         err,
       });
+      toast.error('Your guided drill results did not save to your account. Retry Finish.');
+      throw err;
     }
+  };
+
+  /** Save guided choices to the sitting; final analytics are written on closeout. */
+  const persistOwnedDrillSession = async (source: DrillSession): Promise<void> => {
+    if (!guidedSessionKey) return persistStandaloneSession(source);
+    await persistGuidedSession(source);
+  };
+
+  const lockGuidedCloseout = async (source: DrillSession): Promise<DrillSession['attempts']> => {
+    if (!guidedSessionKey || !user) return source.attempts;
+    if (guidedCloseoutAttemptsRef.current) return guidedCloseoutAttemptsRef.current;
+    const snapshot = drillResumeSnapshot(source);
+    if (!snapshot?.attempts.length) throw new Error('Submit an answer before finishing.');
+    // The first account write creates the sitting; the next seals its answers
+    // before analytics receives any row. A failed write stops finish here.
+    await persistGuidedSession(source);
+    const runId = guidedRunIdRef.current;
+    if (!runId) throw new Error('This guided drill sitting could not be saved.');
+    const run = await beginGuidedDrillCloseout(user.id, runId, snapshot);
+    const locked = guidedAttemptsToDrillAttempts(run.closeout_attempts ?? run.session.attempts);
+    guidedCloseoutAttemptsRef.current = locked;
+    setSession((current) => current ? { ...current, attempts: locked } : current);
+    return locked;
   };
 
   const finalizeGuidedAssignment = async (): Promise<void> => {
@@ -2749,11 +2849,13 @@ function DrillContent() {
     if (timer) timer.pause();
 
     // Sync timer metrics into attempt.timeMs before commit (practice-set uses cumulative timer)
-    const attemptsWithTiming: DrillSession['attempts'] = new Map(session.attempts);
+    let attemptsWithTiming: DrillSession['attempts'] = new Map(session.attempts);
     for (const [qid, attempt] of attemptsWithTiming) {
       const totalTimeMs = questionTimer.current.getMetrics(qid).totalTimeMs;
       attemptsWithTiming.set(qid, { ...attempt, timeMs: totalTimeMs });
     }
+
+    if (guidedSessionKey) attemptsWithTiming = await lockGuidedCloseout({ ...session, attempts: attemptsWithTiming });
 
     try {
       const { wajFailed, timeMsZero } = await commitSessionAttempts(attemptsWithTiming, 'practice-set');
@@ -2864,9 +2966,9 @@ function DrillContent() {
           await moveTimedSection(session.currentIndex + 1, attempts);
         } else {
           const nextSession = { ...session, attempts: attempts ?? session.attempts, currentIndex: session.currentIndex + 1 };
-          if (standaloneSourceKey && nextSession.attempts.size > 0) {
+          if ((standaloneSourceKey || guidedSessionKey) && nextSession.attempts.size > 0) {
             try {
-              await persistStandaloneSession(nextSession);
+              await persistOwnedDrillSession(nextSession);
             } catch (error) {
               toast.error("Your answer has not saved to your account. Retry Next.");
               return;
@@ -2894,9 +2996,9 @@ function DrillContent() {
     // an attempt committed moments earlier survives the step back.
     if (session.currentIndex > 0) {
       const previousSession = { ...session, attempts: attempts ?? session.attempts, currentIndex: session.currentIndex - 1 };
-      if (standaloneSourceKey && previousSession.attempts.size > 0) {
+      if ((standaloneSourceKey || guidedSessionKey) && previousSession.attempts.size > 0) {
         try {
-          await persistStandaloneSession(previousSession);
+          await persistOwnedDrillSession(previousSession);
         } catch (error) {
           toast.error("Your place has not saved to your account. Retry Previous.");
           return;
@@ -3022,7 +3124,7 @@ function DrillContent() {
     if (currentQuestion) await flushReplay(currentQuestion.qid, session.mode);
 
     // Evaluate correctness for all attempted questions
-    const updatedAttempts = new Map(attemptsOverride ?? session.attempts);
+    let updatedAttempts = new Map(attemptsOverride ?? session.attempts);
     for (const [qid, attempt] of updatedAttempts) {
       const question = questionBank.getQuestion(qid);
       if (question) {
@@ -3035,10 +3137,15 @@ function DrillContent() {
     }
 
     // Create updated session with evaluated attempts
-    const updatedSession = {
+    let updatedSession = {
       ...session,
       attempts: updatedAttempts,
     };
+
+    if (guidedSessionKey && !inSitting) {
+      updatedAttempts = await lockGuidedCloseout(updatedSession);
+      updatedSession = { ...updatedSession, attempts: updatedAttempts };
+    }
 
     // A section sat inside a practice test closes out to the invigilator and
     // never shows a score. The whole path is failure-proof and retryable: any
@@ -4288,9 +4395,9 @@ function DrillContent() {
       }
       if (isPracticeSetMode) questionTimer.current.pause();
       const nextSession = { ...session, attempts: attempts ?? session.attempts, currentIndex: idx };
-      if (standaloneSourceKey && nextSession.attempts.size > 0) {
+      if ((standaloneSourceKey || guidedSessionKey) && nextSession.attempts.size > 0) {
         try {
-          await persistStandaloneSession(nextSession);
+          await persistOwnedDrillSession(nextSession);
         } catch (error) {
           toast.error("Your place has not saved to your account. Retry this question.");
           return;
@@ -4382,7 +4489,7 @@ function DrillContent() {
     };
     const advanceInQueue = async (committed: DrillSession['attempts'] | null) => {
       if (isPracticeSetMode) {
-        handlePracticeSetNext();
+        await handlePracticeSetNext();
       } else if (session.currentIndex >= session.questionQueue.length - 1) {
         if (session.mode !== 'full-section' || await moveTimedSection(session.currentIndex, committed ?? undefined)) {
           await handleFinishSection(committed ?? session.attempts);
@@ -4405,11 +4512,15 @@ function DrillContent() {
         const result = await commitPendingSelection();
         if (!result.ok) return;
         if (destination === 'prev') {
-          if (isPracticeSetMode) handlePracticeSetPrevious();
+          if (isPracticeSetMode) await handlePracticeSetPrevious();
           else await handlePrevious(result.attempts ?? undefined);
         }
         else if (destination === 'advance') await advanceInQueue(result.attempts);
         else if (destination === 'end') {
+          if (guidedSessionKey && (result.attempts ?? session.attempts).size === 0) {
+            navigate(guidedAwareReturnTo || '/classroom/drill');
+            return;
+          }
           if (session.mode !== 'full-section' || await moveTimedSection(session.currentIndex, result.attempts ?? undefined)) {
             await handleFinishSection(result.attempts ?? session.attempts);
           }
@@ -4538,9 +4649,13 @@ function DrillContent() {
         <AlertDialog open={showExitDialog} onOpenChange={setShowExitDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>{isAdaptiveMode && session.attempts.size > 0 ? 'Finish Smart Drill?' : 'Leave drill session?'}</AlertDialogTitle>
+              <AlertDialogTitle>{guidedSessionKey && session.attempts.size > 0 ? 'Finish guided drill?' : isAdaptiveMode && session.attempts.size > 0 ? 'Finish Smart Drill?' : 'Leave drill session?'}</AlertDialogTitle>
               <AlertDialogDescription>
-                {isAdaptiveMode && session.attempts.size > 0
+                {guidedSessionKey && session.attempts.size > 0
+                  ? 'This sitting will move to Completed. You can review its saved answers afterward.'
+                  : guidedSessionKey
+                    ? 'No answers have been saved in this sitting.'
+                  : isAdaptiveMode && session.attempts.size > 0
                   ? 'This sitting will move to Completed. You can review your saved answers afterward.'
                   : isAdaptiveMode
                     ? 'No answers have been saved in this sitting.'
@@ -4553,7 +4668,7 @@ function DrillContent() {
                 disabled={actionInFlight}
                 onClick={() => { void commitThenNavigate('end'); }}
               >
-                {isAdaptiveMode && session.attempts.size > 0 ? 'Finish drill' : 'Yes, leave'}
+                {(isAdaptiveMode || guidedSessionKey) && session.attempts.size > 0 ? 'Finish drill' : 'Yes, leave'}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -5407,9 +5522,9 @@ function DrillContent() {
                             await moveTimedSection(index);
                           } else {
                             const nextSession = { ...session, currentIndex: index };
-                            if (standaloneSourceKey && nextSession.attempts.size > 0) {
+                            if ((standaloneSourceKey || guidedSessionKey) && nextSession.attempts.size > 0) {
                               try {
-                                await persistStandaloneSession(nextSession);
+                                await persistOwnedDrillSession(nextSession);
                               } catch (error) {
                                 toast.error("Your place has not saved to your account. Retry this question.");
                                 return;

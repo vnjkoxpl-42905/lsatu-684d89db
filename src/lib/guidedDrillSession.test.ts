@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import {
   guidedSessionKey,
+  guidedAttemptId,
+  isLegacyGuidedSessionSuperseded,
   guidedSessionKeyForRunner,
   isResumableGuidedSession,
   guidedResumeIndex,
@@ -27,6 +29,34 @@ function session(overrides: Partial<GuidedDrillSession> = {}): GuidedDrillSessio
 }
 
 describe('guidedSessionKey', () => {
+  it('hides a stale legacy resume when its completed individual sitting contains the same saved work', () => {
+    const legacy = session({ attempts: [{ qid: 'q1', selected_answer: 'B', correct: true, time_ms: 4000 }] });
+    const completed = session({
+      status: 'completed',
+      attempts: [...legacy.attempts, { qid: 'q2', selected_answer: 'D', correct: false, time_ms: 5000 }],
+    });
+    expect(isLegacyGuidedSessionSuperseded(legacy, [completed])).toBe(true);
+    expect(isLegacyGuidedSessionSuperseded(legacy, [session({ ...completed, question_queue: ['other'] })])).toBe(false);
+  });
+  it('uses one attempt ID per sitting and question across retries', async () => {
+    const first = await guidedAttemptId('11111111-1111-4111-8111-111111111111', 'PT140-S3-Q5');
+    expect(first).toBe(await guidedAttemptId('11111111-1111-4111-8111-111111111111', 'PT140-S3-Q5'));
+    expect(first).not.toBe(await guidedAttemptId('22222222-2222-4222-8222-222222222222', 'PT140-S3-Q5'));
+    expect(first).not.toBe(await guidedAttemptId('11111111-1111-4111-8111-111111111111', 'PT140-S3-Q6'));
+    expect(first).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+  });
+  it('keeps the same closeout ID when the final choice changes before finish', async () => {
+    const firstPick = session();
+    const changedPick = session({ attempts: [{ ...firstPick.attempts[0], selected_answer: 'C', answer_trail: [
+      { answer: 'B', at_ms: 100 }, { answer: 'C', at_ms: 200 },
+    ] }] });
+    const runId = '11111111-1111-4111-8111-111111111111';
+    expect(await guidedAttemptId(runId, firstPick.attempts[0].qid)).toBe(
+      await guidedAttemptId(runId, changedPick.attempts[0].qid),
+    );
+    expect(changedPick.attempts).toHaveLength(1);
+    expect(changedPick.attempts[0].answer_trail).toHaveLength(2);
+  });
   it('prefers the assignment id so each assignment gets its own run', () => {
     expect(guidedSessionKey({ assignmentId: 'abc', slug: 'parallel-flaw' })).toBe(
       `${GUIDED_SESSION_PREFIX}abc`,

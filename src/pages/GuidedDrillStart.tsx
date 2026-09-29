@@ -34,6 +34,7 @@ import {
 } from '@/lib/guidedDrillNavigation';
 import {
   guidedSessionKey,
+  isLegacyGuidedSessionSuperseded,
   guidedResumeNotice,
   loadGuidedDrillSession,
   loadCompletedGuidedDrillSession,
@@ -43,6 +44,8 @@ import {
 import { PracticeSetResults } from '@/components/drill/PracticeSetResults';
 import type { DrillSession } from '@/types/drill';
 import { launchDrill } from '@/lib/drillLaunch';
+import { listStandaloneDrillRuns, type StandaloneDrillRun } from '@/lib/drillRunLedger';
+import { Button } from '@/components/ui/button';
 
 type AssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill };
 
@@ -85,6 +88,7 @@ export default function GuidedDrillStart({
   const assignmentId = assignmentIdProp ?? params.assignmentId;
   const slug = slugProp ?? params.slug;
   const [searchParams] = useSearchParams();
+  const requestedRunId = searchParams.get('run');
   const navigate = useNavigate();
   const location = useLocation();
   const { isLoading: qbLoading } = useQuestionBank();
@@ -134,13 +138,36 @@ export default function GuidedDrillStart({
   // reshuffles the pool, which is what makes a guided drill look like it
   // "restarted" — the student gets different questions, not just question 1.
   const [storedGuided, setStoredGuided] = React.useState<GuidedDrillSession | null>(null);
+  const [guidedRuns, setGuidedRuns] = React.useState<StandaloneDrillRun[]>([]);
+  const [runsLoading, setRunsLoading] = React.useState(true);
+  React.useEffect(() => {
+    let active = true;
+    setGuidedRuns([]);
+    setRunsLoading(true);
+    if (!user || !guidedKey || bootcampOverride) { setRunsLoading(false); return; }
+    void listStandaloneDrillRuns(user.id).then((runs) => {
+      if (active) setGuidedRuns(runs.filter((run) => run.source_key === guidedKey));
+    }).catch(() => toast.error("Could not load your guided drill sittings. Please retry.")).finally(() => {
+      if (active) setRunsLoading(false);
+    });
+    return () => { active = false; };
+  }, [user?.id, guidedKey, bootcampOverride]);
+  const activeGuidedRun = React.useMemo(() =>
+    guidedRuns.find((run) => run.session.status === 'in_progress' && run.session.attempts.length > 0) ?? null,
+  [guidedRuns]);
+  const completedGuidedRuns = React.useMemo(() =>
+    guidedRuns.filter((run) => run.session.status === 'completed' && run.session.attempts.length > 0),
+  [guidedRuns]);
+  const visibleStoredGuided = isLegacyGuidedSessionSuperseded(
+    storedGuided, completedGuidedRuns.map((run) => run.session),
+  ) ? null : storedGuided;
   React.useEffect(() => {
     let cancelled = false;
     setStoredGuided(null);
     if (!user || !guidedKey || bootcampOverride) return;
     void loadGuidedDrillSession(user.id, guidedKey, guidedLegacyKey).then((stored) => {
       if (cancelled) return;
-      setStoredGuided(stored && stored.status === 'in_progress' ? stored : null);
+      setStoredGuided(stored && stored.status === 'in_progress' && stored.attempts.length > 0 ? stored : null);
     });
     return () => {
       cancelled = true;
@@ -155,6 +182,7 @@ export default function GuidedDrillStart({
   // they ask for a fresh attempt we stop showing the review for this visit.
   const [completedGuided, setCompletedGuided] = React.useState<GuidedDrillSession | null>(null);
   const [retaking, setRetaking] = React.useState(false);
+  const [showLegacyResults, setShowLegacyResults] = React.useState(false);
   React.useEffect(() => {
     let cancelled = false;
     setCompletedGuided(null);
@@ -172,6 +200,13 @@ export default function GuidedDrillStart({
     () => guidedSessionToDrillSession(completedGuided),
     [completedGuided],
   );
+  const legacyCompletedVisible = completedSession && !completedGuidedRuns.some((run) =>
+    run.session.question_queue.join('|') === completedGuided?.question_queue.join('|') &&
+    run.session.attempts.length === completedGuided?.attempts.length &&
+    run.session.attempts.every((attempt) => completedGuided?.attempts.some((old) =>
+      old.qid === attempt.qid && old.selected_answer === attempt.selected_answer,
+    )),
+  );
 
   // An unfinished practice run is surfaced before the student presses Start, so
   // they know their earlier answers are still there rather than guessing.
@@ -179,7 +214,7 @@ export default function GuidedDrillStart({
   React.useEffect(() => {
     let cancelled = false;
     if (!user || !bootcampOverride || bootcampOverride.source !== 'intro-to-lr-practice-drills') {
-      setResumeNotice(guidedResumeNotice(storedGuided));
+      setResumeNotice(guidedResumeNotice(activeGuidedRun?.session ?? visibleStoredGuided));
       return;
     }
     void loadPracticeSession(user.id, bootcampOverride.slug).then((stored) => {
@@ -197,7 +232,7 @@ export default function GuidedDrillStart({
     return () => {
       cancelled = true;
     };
-  }, [user, bootcampOverride, storedGuided]);
+  }, [user, bootcampOverride, visibleStoredGuided, activeGuidedRun]);
 
   const [assignment, setAssignment] = React.useState<AssignmentWithDrill | null>(null);
   const [directDrill, setDirectDrill] = React.useState<GuidedDrill | null>(null);
@@ -347,8 +382,14 @@ export default function GuidedDrillStart({
       return;
     }
 
-    navigate(
-      `/drill?${launchDrill({
+    const resumeRun = requestedRunId
+      ? guidedRuns.find((run) => run.id === requestedRunId && run.session.status === 'in_progress')
+      : activeGuidedRun;
+    if (requestedRunId && !resumeRun) {
+      toast.error('This saved guided drill could not be found in your account.');
+      return;
+    }
+    const launch = launchDrill({
         kind: 'guided-drill',
         drillId: drill.id,
         assignmentId: assignment?.id,
@@ -358,9 +399,9 @@ export default function GuidedDrillStart({
           label: drill.title,
           initialIndex: resumeIndex ?? undefined,
         },
-      })}`,
-    );
-  }, [assignment, drill, navigate, qbLoading, bootcampOverride, slug, resumeQids, resumeIndex, storedGuided, launchReturnTo]);
+      });
+    navigate(`/drill?${launch}${resumeRun ? `&run=${encodeURIComponent(resumeRun.id)}` : ''}`);
+  }, [assignment, drill, navigate, qbLoading, bootcampOverride, slug, resumeQids, resumeIndex, storedGuided, launchReturnTo, requestedRunId, guidedRuns, activeGuidedRun]);
 
   if (loading) {
     return <div className="min-h-screen bg-background text-foreground p-8">Loading...</div>;
@@ -373,7 +414,37 @@ export default function GuidedDrillStart({
   // Reopening a drill they already finished: show what they did. The question
   // bank has to be loaded first, since the scorecard resolves each qid through
   // it — without that gate the rows render blank for a moment.
-  if (completedSession && !retaking && !qbLoading) {
+  if (runsLoading && !bootcampOverride) {
+    return <div className="min-h-screen bg-background text-foreground p-8" role="status">Loading your guided drill sittings…</div>;
+  }
+
+  if ((completedGuidedRuns.length > 0 || legacyCompletedVisible) && !retaking && !activeGuidedRun && !visibleStoredGuided && !qbLoading) {
+    if (showLegacyResults && legacyCompletedVisible) return (
+      <PracticeSetResults
+        session={completedSession as DrillSession}
+        title={drill?.title ?? 'Your results'}
+        subtitle="Earlier guided drill sitting"
+        onBack={() => setShowLegacyResults(false)}
+        onRetry={() => { setRetaking(true); void handleStart(); }}
+      />
+    );
+    if (completedGuidedRuns.length > 0) return (
+      <main className="mx-auto max-w-3xl space-y-5 px-5 py-8">
+        <Button variant="ghost" onClick={handleReturn}>Back</Button>
+        <h1 className="text-2xl font-semibold">{drill?.title ?? 'Guided drill'}</h1>
+        <p className="text-muted-foreground">Each completed sitting is saved separately. Open any one to see its results and answers.</p>
+        <div className="space-y-3">{completedGuidedRuns.map((run) => (
+          <div key={run.id} className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4">
+            <div><strong>{new Date(run.updated_at).toLocaleDateString()}</strong><p className="text-sm text-muted-foreground">{run.session.attempts.length} answered</p></div>
+            <Button variant="outline" onClick={() => navigate(`/practice/drills/runs/${run.id}?view=results`)}>Results & review</Button>
+          </div>
+        ))}{legacyCompletedVisible && <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4">
+          <div><strong>Earlier sitting</strong><p className="text-sm text-muted-foreground">Saved before individual sittings were available</p></div>
+          <Button variant="outline" onClick={() => setShowLegacyResults(true)}>Results & review</Button>
+        </div>}</div>
+        <Button onClick={() => { setRetaking(true); void handleStart(); }}>Start a new sitting</Button>
+      </main>
+    );
     const finishedOn = completedGuided?.updated_at
       ? new Date(completedGuided.updated_at).toLocaleDateString(undefined, {
           month: 'long',

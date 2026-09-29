@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PracticeSession, TABLES } from '@/bootcamps/main-conclusion/persistence/records';
+import { PracticeSession, PracticeSessionAttempt, TABLES } from '@/bootcamps/main-conclusion/persistence/records';
 import {
   migratePracticeSession,
   PRACTICE_SESSION_DATA_VERSION,
@@ -7,7 +7,7 @@ import {
 } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { supabase } from '@/integrations/supabase/client';
 
-/** Each standalone LR sitting has its own account row, even when its filters repeat. */
+/** Each LR or guided drill sitting has its own account row, even when its source repeats. */
 const StandaloneDrillRunSchema = z.object({
   id: z.string().uuid(),
   user_id: z.string().uuid(),
@@ -15,6 +15,9 @@ const StandaloneDrillRunSchema = z.object({
   mode: z.string(),
   label: z.string(),
   session: PracticeSession,
+  // The answer sent to analytics on closeout. Once acknowledged, a retry must
+  // finish with this exact answer even if the final status write fails.
+  closeout_attempts: z.array(PracticeSessionAttempt).optional(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
 });
@@ -101,7 +104,7 @@ export async function createStandaloneDrillRun(
   meta: StandaloneDrillRunMeta = {},
 ): Promise<StandaloneDrillRun> {
   await assertOwner(userId);
-  if (!sourceKey.startsWith('drill::') || [
+  if (!(sourceKey.startsWith('drill::') || sourceKey.startsWith('guided::')) || [
     'drill::section::',
     'drill::practice-test::',
     'drill::assignment::',
@@ -174,8 +177,37 @@ async function updateRun(
     const row = StandaloneDrillRunSchema.parse({
       ...current,
       session: sessionFromSnapshot(
-        userId, runId, current.source_key, snapshot, current.created_at, time, status, current.session,
+        userId, runId, current.source_key,
+        current.source_key.startsWith('guided::') && current.closeout_attempts
+          ? { ...snapshot, attempts: current.closeout_attempts }
+          : snapshot,
+        current.created_at, time, status, current.session,
       ),
+      updated_at: time,
+    });
+    return writeRun(row);
+  });
+}
+
+/** Acknowledged before analytics inserts, so a failed finish has one immutable answer set. */
+export async function beginGuidedDrillCloseout(
+  userId: string,
+  runId: string,
+  snapshot: PracticeSessionSnapshot,
+): Promise<StandaloneDrillRun> {
+  return withRun(runId, async () => {
+    const current = await loadStandaloneDrillRun(userId, runId);
+    if (!current || !current.source_key.startsWith('guided::')) {
+      throw new Error('This guided drill sitting could not be found in your account.');
+    }
+    if (current.session.status === 'completed' || current.closeout_attempts) return current;
+    if (snapshot.attempts.length === 0) throw new Error('Submit an answer before finishing.');
+    const time = new Date().toISOString();
+    const row = StandaloneDrillRunSchema.parse({
+      ...current,
+      session: sessionFromSnapshot(userId, runId, current.source_key, snapshot,
+        current.created_at, time, 'in_progress', current.session),
+      closeout_attempts: snapshot.attempts,
       updated_at: time,
     });
     return writeRun(row);

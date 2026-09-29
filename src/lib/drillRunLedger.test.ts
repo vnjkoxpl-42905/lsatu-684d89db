@@ -41,6 +41,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 
 import {
+  beginGuidedDrillCloseout,
   completeStandaloneDrillRun,
   createStandaloneDrillRun,
   listStandaloneDrillRuns,
@@ -61,6 +62,34 @@ beforeEach(() => {
 });
 
 describe('standalone drill run ledger', () => {
+  it('keeps repeated assigned guided drill sittings separate, even after one is completed', async () => {
+    const key = 'guided::33333333-3333-4333-8333-333333333333';
+    const first = await createStandaloneDrillRun(account.userId, key, snapshot, { mode: 'type-drill', label: 'Reasoning drill' });
+    await completeStandaloneDrillRun(account.userId, first.id, snapshot);
+    const second = await createStandaloneDrillRun(account.userId, key, {
+      ...snapshot,
+      attempts: [{ qid: 'PT150-S1-Q1', selected_answer: 'C', correct: false, time_ms: 2000 }],
+    });
+    expect(first.id).not.toBe(second.id);
+    expect((await loadStandaloneDrillRun(account.userId, first.id))?.session.status).toBe('completed');
+    expect((await loadStandaloneDrillRun(account.userId, second.id))?.session.attempts[0].selected_answer).toBe('C');
+    expect((await listStandaloneDrillRuns(account.userId)).filter((row) => row.source_key === key)).toHaveLength(2);
+  });
+  it('freezes the first guided closeout answer across a failed final save and retry', async () => {
+    const key = 'guided::33333333-3333-4333-8333-333333333333';
+    const run = await createStandaloneDrillRun(account.userId, key, snapshot);
+    const frozen = await beginGuidedDrillCloseout(account.userId, run.id, snapshot);
+    expect(frozen.closeout_attempts?.[0].selected_answer).toBe('B');
+    const changed = { ...snapshot, attempts: [{ ...snapshot.attempts[0], selected_answer: 'C', correct: false }] };
+    account.failWrite = true;
+    await expect(completeStandaloneDrillRun(account.userId, run.id, changed)).rejects.toThrow('offline');
+    account.failWrite = false;
+    const retried = await beginGuidedDrillCloseout(account.userId, run.id, changed);
+    expect(retried.closeout_attempts?.[0].selected_answer).toBe('B');
+    const completed = await completeStandaloneDrillRun(account.userId, run.id, changed);
+    expect(completed.session.attempts[0].selected_answer).toBe('B');
+    expect(completed.session.status).toBe('completed');
+  });
   it('keeps two sittings of the same question pool with distinct IDs and results', async () => {
     const key = 'drill::type-drill::abc';
     const first = await createStandaloneDrillRun(account.userId, key, snapshot, { mode: 'type-drill', label: 'Conclusion' });
