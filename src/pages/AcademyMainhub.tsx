@@ -412,7 +412,7 @@ export default function AcademyMainhub({
               <h1 className="text-xl font-semibold">{view === "completed" ? "Completed drills" : "Drills in progress"}</h1>
               <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">{view === "in-progress" ? "Your saved Smart Drill, custom LR, and RC drills. Assigned work stays in My Work." : "Your completed custom LR and RC drills. Assigned work stays in My Work."}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{view === "in-progress" ? "Your saved Smart Drill, custom LR, and RC drills. Assigned work stays in My Work." : "Your completed Smart Drill, custom LR, and RC drills. Assigned work stays in My Work."}</p>
             {runsLoading ? <p className="mt-6 text-sm text-muted-foreground" role="status">Loading your drills…</p> : runsError ? <p className="mt-6 text-sm text-destructive" role="alert">{runsError}</p> : (() => {
               const selected = runs.filter((run) => run.status === (view === "completed" ? "completed" : "in_progress"));
               return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill and save an answer to see it here."}</p> : (

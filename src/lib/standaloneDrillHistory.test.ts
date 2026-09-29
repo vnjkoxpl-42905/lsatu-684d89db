@@ -70,5 +70,21 @@ describe('buildStandaloneDrillHistory', () => {
     const ledger = { ...lr('run', 'in_progress', 1), source_key: 'drill::adaptive' };
     const rows = buildStandaloneDrillHistory([ledger], [], new Map(), smart('in_progress', 1));
     expect(rows.map((row) => row.key)).toEqual(['lr:run']);
+    expect(rows[0]).toMatchObject({
+      title: 'Smart Drill', detail: '1 answer saved', status: 'in_progress',
+      continueTo: '/drill?drill=smart-drill&returnTo=%2Fpractice%2Fdrills&run=run',
+    });
+  });
+
+  it('keeps completed adaptive sittings distinct from the current one', () => {
+    const rows = buildStandaloneDrillHistory([
+      { ...lr('old', 'completed', 1), source_key: 'drill::adaptive' },
+      { ...lr('new', 'completed', 1), source_key: 'drill::adaptive' },
+      { ...lr('current', 'in_progress', 1), source_key: 'drill::adaptive' },
+    ], [], new Map(), smart('in_progress', 1));
+    expect(rows.map((row) => row.key)).toEqual(['lr:old', 'lr:new', 'lr:current']);
+    expect(rows.filter((row) => row.status === 'completed')).toHaveLength(2);
+    expect(rows[0].resultsTo).toBe('/practice/drills/runs/old?view=results');
+    expect(rows[1].reviewTo).toBe('/practice/drills/runs/new?view=review');
   });
 });

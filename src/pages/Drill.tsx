@@ -152,6 +152,7 @@ import {
 import {
   createStandaloneDrillRun,
   loadStandaloneDrillRun,
+  listStandaloneDrillRuns,
   saveStandaloneDrillRun,
   completeStandaloneDrillRun,
 } from '@/lib/drillRunLedger';
@@ -271,14 +272,13 @@ function DrillContent() {
   const guidedFinalizedRef = React.useRef(false);
   const genericResumeIdentity = state.resumeIdentity;
   const standaloneSourceKey = React.useMemo(() => {
-    if (state.mode !== 'type-drill' || isMcPractice || state.isGuidedDrill || guidedSetId || guidedSessionKey || assignmentId || ptRun || genericResumeIdentity) return null;
-    return drillResumeKey({ mode: 'type-drill', config: state.config });
+    if ((state.mode !== 'type-drill' && state.mode !== 'adaptive') || isMcPractice || state.isGuidedDrill || guidedSetId || guidedSessionKey || assignmentId || ptRun || genericResumeIdentity) return null;
+    return drillResumeKey({ mode: state.mode, config: state.config });
   }, [state.mode, state.config, state.isGuidedDrill, guidedSetId, isMcPractice, guidedSessionKey, assignmentId, ptRun, genericResumeIdentity]);
   const standaloneRunIdRef = React.useRef<string | null>(requestedStandaloneRunId);
   const standaloneWriteRef = React.useRef<Promise<unknown>>(Promise.resolve());
   const legacyStandaloneResumeRef = React.useRef(false);
-  // Every remaining drill surface — Smart Drill, custom type drills, full
-  // sections — gets the same durable resume row, so closing the browser or
+  // Every remaining drill surface gets the same durable resume row, so closing the browser or
   // signing out mid-drill is never a loss. Null while the guided/practice-set
   // surfaces own the run, so the three can never write over each other.
   const genericResumeKey = React.useMemo(() => {
@@ -504,6 +504,7 @@ function DrillContent() {
   const stopRecordingRef = React.useRef<(() => void) | null>(null);
   const lastRecordedQidRef = React.useRef<string | null>(null);
   const adaptiveCommitInFlightRef = React.useRef<Set<string>>(new Set());
+  const adaptiveAdvanceInFlightRef = React.useRef(false);
 
   // Homework assignment: dedupe the status='in_progress' write per mount.
   const assignmentStartedRef = React.useRef(false);
@@ -882,7 +883,7 @@ function DrillContent() {
         }
       }
 
-      // Smart Drill, custom type drills and full sections. These are drawn
+      // Standalone Smart Drill and custom type drills are drawn
       // fresh on every launch, so the stored queue IS the run: adopt it whole
       // rather than comparing it to a new shuffle, or the student loses the
       // questions they already answered. An explicit ?initialIndex wins, since
@@ -892,11 +893,14 @@ function DrillContent() {
         legacyStandaloneResumeRef.current = false;
         const ownedRun = requestedStandaloneRunId
           ? await loadStandaloneDrillRun(user.id, requestedStandaloneRunId)
-          : null;
-        if (requestedStandaloneRunId && !ownedRun) {
+          : mode === 'adaptive'
+            ? (await listStandaloneDrillRuns(user.id)).find((run) => run.source_key === standaloneSourceKey && run.session.status === 'in_progress') ?? null
+            : null;
+        if ((requestedStandaloneRunId && !ownedRun) || (ownedRun && ownedRun.source_key !== standaloneSourceKey)) {
           setBootError('This saved drill run could not be found in your account.');
           return;
         }
+        if (ownedRun) standaloneRunIdRef.current = ownedRun.id;
         if (ownedRun?.session.status === 'completed') {
           navigate(`/practice/drills/runs/${ownedRun.id}?view=results`, { replace: true });
           return;
@@ -2319,6 +2323,22 @@ function DrillContent() {
     }
   };
 
+  const advanceAdaptiveAfterSave = async (source: DrillSession): Promise<boolean> => {
+    if (adaptiveAdvanceInFlightRef.current) return false;
+    adaptiveAdvanceInFlightRef.current = true;
+    try {
+      if (!user) throw new Error('Sign in to save your Smart Drill.');
+      await persistStandaloneSession(source);
+      setAdvanceToken((token) => token + 1);
+      return true;
+    } catch {
+      toast.error('Your Smart Drill answer has not saved to your account. Retry Next.');
+      return false;
+    } finally {
+      adaptiveAdvanceInFlightRef.current = false;
+    }
+  };
+
   const commitCurrentAdaptiveAnswer = async ({
     revealAfterSave,
     advanceAfterSave,
@@ -2345,7 +2365,7 @@ function DrillContent() {
           return { ...prev, attempts };
         });
       }
-      if (advanceAfterSave) setAdvanceToken(t => t + 1);
+      if (advanceAfterSave && !await advanceAdaptiveAfterSave(session)) return false;
       return true;
     }
 
@@ -2483,7 +2503,7 @@ function DrillContent() {
         setTutorChatOpen(true);
       }
 
-      if (advanceAfterSave) setAdvanceToken(t => t + 1);
+      if (advanceAfterSave && !await advanceAdaptiveAfterSave({ ...session, attempts: newAttempts })) return false;
       return true;
     } finally {
       adaptiveCommitInFlightRef.current.delete(qid);
@@ -2836,8 +2856,7 @@ function DrillContent() {
         toast.error("Save this answer before moving to the next Smart Drill question.");
         return;
       }
-      // Increment advanceToken to trigger adaptive question selection
-      setAdvanceToken(t => t + 1);
+      await advanceAdaptiveAfterSave(session);
     } else {
       // Move to next in queue
       if (session.currentIndex < session.questionQueue.length - 1) {
@@ -3072,7 +3091,7 @@ function DrillContent() {
     await finalizeGuidedDrillSession(updatedAttempts);
     await finalizeGuidedAssignment();
 
-    // Same for Smart Drill / custom drills / full sections.
+    // Close the applicable account-owned sitting before opening its results.
     await finalizeDrillResumeSession(updatedAttempts);
     if (standaloneSourceKey && !genericFinalizedRef.current) {
       try {
@@ -3122,6 +3141,13 @@ function DrillContent() {
 
     // Update session state
     setSession(updatedSession);
+
+    if (session.mode === 'adaptive') {
+      navigate(standaloneRunIdRef.current
+        ? `/practice/drills/runs/${standaloneRunIdRef.current}?view=results`
+        : '/practice/drills');
+      return;
+    }
 
     if (options?.returnToAfterFinish) {
       navigate(options.returnToAfterFinish);
@@ -4334,6 +4360,10 @@ function DrillContent() {
     const commitPendingSelection = async (): Promise<
       { ok: true; attempts: DrillSession['attempts'] | null } | { ok: false }
     > => {
+      if (isAdaptiveMode && selectedAnswer && !currentAttempted && !currentUnscored) {
+        toast.error('Submit this answer before ending Smart Drill.');
+        return { ok: false };
+      }
       if (isAdaptiveMode || !selectedAnswer || currentAttempted || currentUnscored) {
         return { ok: true, attempts: null };
       }
@@ -4508,9 +4538,13 @@ function DrillContent() {
         <AlertDialog open={showExitDialog} onOpenChange={setShowExitDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Leave drill session?</AlertDialogTitle>
+              <AlertDialogTitle>{isAdaptiveMode && session.attempts.size > 0 ? 'Finish Smart Drill?' : 'Leave drill session?'}</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to leave? Your progress in this session will be saved.
+                {isAdaptiveMode && session.attempts.size > 0
+                  ? 'This sitting will move to Completed. You can review your saved answers afterward.'
+                  : isAdaptiveMode
+                    ? 'No answers have been saved in this sitting.'
+                    : 'Are you sure you want to leave? Your progress in this session will be saved.'}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -4519,7 +4553,7 @@ function DrillContent() {
                 disabled={actionInFlight}
                 onClick={() => { void commitThenNavigate('end'); }}
               >
-                Yes, leave
+                {isAdaptiveMode && session.attempts.size > 0 ? 'Finish drill' : 'Yes, leave'}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -4862,7 +4896,7 @@ function DrillContent() {
                   advanceAfterSave: false,
                 });
               }}
-              onNext={() => setAdvanceToken(t => t + 1)}
+              onNext={() => { void handleNext(); }}
               onSkip={() => {
                 setSkippedQids(prev => new Set(prev).add(currentQuestion.qid));
                 setAdvanceToken(t => t + 1);

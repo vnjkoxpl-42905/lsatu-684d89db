@@ -25,11 +25,15 @@ export function buildStandaloneDrillHistory(
     .filter((run) => run.session.status === 'completed' || run.session.attempts.length > 0)
     .map((run) => ({
       key: `lr:${run.id}`,
-      title: run.label || 'LR drill',
-      detail: `${run.session.attempts.length} of ${run.session.question_queue.length} answered`,
+      title: run.source_key === 'drill::adaptive' ? 'Smart Drill' : run.label || 'LR drill',
+      detail: run.source_key === 'drill::adaptive'
+        ? `${run.session.attempts.length} answer${run.session.attempts.length === 1 ? '' : 's'} saved`
+        : `${run.session.attempts.length} of ${run.session.question_queue.length} answered`,
       date: run.updated_at,
       status: run.session.status,
-      continueTo: `/drill?${launchDrill({ kind: 'questions', qids: run.session.question_queue, options: { returnTo: '/practice/drills' } })}&run=${encodeURIComponent(run.id)}`,
+      continueTo: run.source_key === 'drill::adaptive'
+        ? `/drill?${launchDrill({ kind: 'smart-drill', options: { returnTo: '/practice/drills' } })}&run=${encodeURIComponent(run.id)}`
+        : `/drill?${launchDrill({ kind: 'questions', qids: run.session.question_queue, options: { returnTo: '/practice/drills' } })}&run=${encodeURIComponent(run.id)}`,
       resultsTo: `/practice/drills/runs/${run.id}?view=results`,
       reviewTo: `/practice/drills/runs/${run.id}?view=review`,
     }));
@@ -52,8 +56,8 @@ export function buildStandaloneDrillHistory(
       };
     });
 
-  // Smart Drill has one resumable row per student. It is not a ledger of past
-  // sittings, so a completed row cannot stand in for historical runs.
+  // The old shared resume row may still exist for an active sitting. Account
+  // ledger rows own distinct finished sittings and supersede that active row.
   const smart: StandaloneDrillHistoryItem[] = smartDrill?.pool_slug === 'drill::adaptive' &&
     smartDrill.status === 'in_progress' && smartDrill.attempts.length > 0 &&
     smartDrill.question_queue.length > 0 &&
