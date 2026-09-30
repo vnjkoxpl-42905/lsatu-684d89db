@@ -2,21 +2,19 @@ import { Plus } from 'lucide-react';
 import HubAssignments from '@/components/hub/HubAssignments';
 import { BootcampLessonProgress } from '@/components/teacher/bootcamps/BootcampLessonProgress';
 import { StudentIndicatorLedger } from '@/features/activity-centre/components/StudentIndicatorLedger';
+import { useScopedStudentWork } from '@/hooks/useScopedStudentWork';
 import { useDossier } from './StudentDossier';
 
 /**
  * Work = every assignment kind for this student in one place.
  *
- * This reuses `HubAssignments`, which already queries all three real sources
- * (`homework_assignments`, `ta_assignments`, `classroom_items`) and carries
- * the unassign/delete flows. It groups by kind rather than interleaving one
- * newest-first list; each group is already newest-first. Rebuilding it as a
- * single interleaved timeline would have meant re-deriving those queries and
- * dropping the delete affordances, so the grouping stands until there is a
- * reason to trade that away.
+ * HubAssignments keeps its existing homework, TA, and classroom-item controls.
+ * The owned-work panel adds issued guided and Activity assignments that are
+ * absent from Hub, using the student's My Work projection for their status.
  */
 export default function DossierWork() {
   const { studentId, openAssign } = useDossier();
+  const ownedWork = useScopedStudentWork(studentId);
 
   return (
     <div className="space-y-4 p-5">
@@ -30,6 +28,53 @@ export default function DossierWork() {
           Assign work
         </button>
       </div>
+
+      <section aria-label="Guided drills and Activities" className="space-y-2 px-4 py-2">
+        <h2 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          Guided drills and Activities
+        </h2>
+        {ownedWork.resolution.state === 'denied' ? (
+          <div role="alert" className="text-xs text-destructive">
+            This student view is unavailable to this account.
+          </div>
+        ) : (
+          <>
+            {ownedWork.error && (
+              <div role="alert" className="text-xs text-destructive">
+                Could not refresh guided drills and Activities. Earlier saved work is still shown when available.
+                <button type="button" className="ml-2 underline" onClick={() => void ownedWork.refresh()}>Try again</button>
+              </div>
+            )}
+            {ownedWork.failedSources.length > 0 && (
+              <div role="alert" className="text-xs text-destructive">
+                Could not confirm {ownedWork.failedSources.join(', ')}. This work list may be incomplete or have unverified progress.
+                <button type="button" className="ml-2 underline" onClick={() => void ownedWork.refresh()}>Try again</button>
+              </div>
+            )}
+            {ownedWork.loading && ownedWork.rows.length === 0 ? (
+              <p role="status" className="text-xs text-muted-foreground">Loading guided drills and Activities…</p>
+            ) : ownedWork.rows.length > 0 ? (
+              <ul className="space-y-1.5">
+                {ownedWork.rows.map((row) => (
+                  <li key={`${row.sourceTable}:${row.refId}`} className="flex items-start justify-between gap-3 rounded-lg border border-border/40 bg-card/40 px-3 py-2.5">
+                    <div className="min-w-0">
+                      <div className="truncate text-sm font-medium">{row.title}</div>
+                      <div className="mt-0.5 text-[11px] text-muted-foreground">
+                        {row.kind === 'guided' ? 'Guided drill' : 'Activity'} · {row.subtitle}
+                      </div>
+                    </div>
+                    <span className="shrink-0 text-[10px] uppercase tracking-wider text-muted-foreground">
+                      {row.status.replace('_', ' ')}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : ownedWork.failedSources.length === 0 && !ownedWork.error ? (
+              <p className="text-xs text-muted-foreground">No other guided drills or Activities.</p>
+            ) : null}
+          </>
+        )}
+      </section>
 
       <HubAssignments studentId={studentId} />
 

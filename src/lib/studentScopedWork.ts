@@ -6,6 +6,18 @@ import { listStudentAssignments as listActivityAssignments } from '@/features/ac
 import { loadActivityWorkEvidence, loadAssignmentWorkEvidence } from '@/lib/studentWorkEvidence';
 import type { StudentSubjectScope } from '@/lib/studentSubjectScope';
 
+export type ScopedWorkSource<T> =
+  | { state: 'ready'; data: T }
+  | { state: 'failed'; error: unknown };
+
+async function readSource<T>(read: () => Promise<T>): Promise<ScopedWorkSource<T>> {
+  try {
+    return { state: 'ready', data: await read() };
+  } catch (error) {
+    return { state: 'failed', error };
+  }
+}
+
 interface ScopeVerifier {
   authenticatedActorId(): Promise<string | null>;
   hasAdminRole(actorId: string): Promise<boolean>;
@@ -73,4 +85,31 @@ export async function loadScopedStudentWorkSources(scope: StudentSubjectScope) {
     homeworkEvidence: assignmentEvidence.homework,
     activityEvidence,
   };
+}
+
+/**
+ * Owned guided and Activity instances for the teacher's selected-student Work
+ * view. Independent results keep one failed source from hiding the other.
+ * The caller still uses the same row projection as student My Work.
+ */
+export async function loadScopedOwnedAssignmentSources(scope: StudentSubjectScope) {
+  await assertActiveStudentScope(scope);
+  const studentId = scope.studentId;
+  const [guided, activities, items, assignmentEvidence] = await Promise.all([
+    readSource(() => listGuidedAssignments(studentId)),
+    readSource(() => listActivityAssignments(studentId)),
+    readSource(async () => {
+      const { data, error } = await supabase
+        .from('classroom_items')
+        .select('*')
+        .eq('student_id', studentId);
+      if (error) throw error;
+      return (data ?? []) as ClassroomItem[];
+    }),
+    readSource(() => loadAssignmentWorkEvidence(studentId)),
+  ]);
+  const activityEvidence = activities.state === 'ready'
+    ? await readSource(() => loadActivityWorkEvidence(studentId, activities.data.map((item) => item.id)))
+    : null;
+  return { actorId: scope.actorId, studentId, guided, activities, items, assignmentEvidence, activityEvidence };
 }

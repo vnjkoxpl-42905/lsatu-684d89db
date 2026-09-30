@@ -84,4 +84,38 @@ describe('practice test account ownership', () => {
     expect(readPendingPracticeTestBackup('student-one', changed.id)?.currentLeg).toBe(1);
     expect(readPendingPracticeTestBackup('student-two', changed.id)).toBeNull();
   });
+
+  it('keeps a frozen break snapshot only in the failed heartbeat backup', async () => {
+    const deviceId = getPracticeTestDeviceId();
+    const update = {
+      eq: vi.fn().mockReturnThis(),
+      select: vi.fn().mockReturnThis(),
+      maybeSingle: vi.fn().mockResolvedValue({ data: null, error: new Error('offline') }),
+    };
+    account.from.mockReturnValue({ update: () => update });
+    const running = run({ userId: 'student-one', revision: 0, activeDeviceId: deviceId,
+      breakStartedAt: '2026-09-01T00:00:00.000Z' });
+    const backup = { ...running, breakRemainingSeconds: 585 };
+
+    await expect(saveAccountPracticeTestRun('student-one', running, backup)).rejects.toThrow('offline');
+    expect(readPendingPracticeTestBackup('student-one', running.id)).toEqual(backup);
+    expect(running.breakRemainingSeconds).toBeUndefined();
+  });
+
+  it('preserves a stale device backup when another device has taken the revision', async () => {
+    const deviceId = getPracticeTestDeviceId();
+    const update = {
+      eq: vi.fn().mockReturnThis(),
+      select: vi.fn().mockReturnThis(),
+      maybeSingle: vi.fn().mockResolvedValue({ data: null, error: null }),
+    };
+    account.from.mockReturnValue({ update: () => update });
+    const stale = run({ userId: 'student-one', revision: 2, activeDeviceId: deviceId,
+      breakStartedAt: '2026-09-01T00:00:00.000Z', breakTaken: true, breakRemainingSeconds: 480 });
+
+    await expect(saveAccountPracticeTestRun('student-one', stale)).rejects.toBeInstanceOf(PracticeTestConflictError);
+    expect(update.eq).toHaveBeenCalledWith('revision', 2);
+    expect(update.eq).toHaveBeenCalledWith('active_device_id', deviceId);
+    expect(readPendingPracticeTestBackup('student-one', stale.id)).toEqual(stale);
+  });
 });

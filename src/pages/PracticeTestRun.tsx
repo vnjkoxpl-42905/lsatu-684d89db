@@ -20,20 +20,24 @@ import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { questionBank } from "@/lib/questionLoader";
 import {
+  checkpointPracticeTestBreak,
   formatPracticeTestClock,
+  finishPracticeTestBreak,
   hasOutdatedPt118Structure,
   legLabel,
   practiceTestPaceLabel,
   practiceTestRunSectionSeconds,
+  practiceTestBreakRemainingSeconds,
   practiceTestRaw,
   practiceTestScaled,
-  PRACTICE_TEST_BREAK_SECONDS,
+  retryPracticeTestBreakSave,
   type PracticeTestRun as Run,
 } from "@/lib/practiceTest";
 import {
   continueAccountPracticeTestHere,
   getPracticeTestDeviceId,
   loadAccountPracticeTestRun,
+  PracticeTestConflictError,
   readPendingPracticeTestBackup,
   saveAccountPracticeTestRun,
 } from "@/lib/practiceTestStore";
@@ -65,21 +69,24 @@ function breakAnnouncement(remaining: number): string {
 }
 
 /** The break, on its own clock. Skippable — it is a break, not a gate. */
-function BreakScreen({ run, onDone }: { run: Run; onDone: () => void }) {
-  const startedAt = run.breakStartedAt ? Date.parse(run.breakStartedAt) : Date.now();
-  const [remaining, setRemaining] = React.useState(() =>
-    Math.max(0, PRACTICE_TEST_BREAK_SECONDS - (Date.now() - startedAt) / 1000),
-  );
+function BreakScreen({ run, onDone, paused = false, saving = false, retryLabel }: {
+  run: Run; onDone: () => void; paused?: boolean; saving?: boolean; retryLabel?: string;
+}) {
+  const [remaining, setRemaining] = React.useState(() => practiceTestBreakRemainingSeconds(run));
 
   React.useEffect(() => {
     // Nothing left to count. The interval used to keep firing at 2Hz for as
     // long as the student sat on a finished break.
-    if (remaining <= 0) return;
+    if (paused || remaining <= 0) return;
     const id = window.setInterval(() => {
-      setRemaining(Math.max(0, PRACTICE_TEST_BREAK_SECONDS - (Date.now() - startedAt) / 1000));
+      setRemaining(practiceTestBreakRemainingSeconds(run));
     }, 500);
     return () => window.clearInterval(id);
-  }, [startedAt, remaining]);
+  }, [run, paused, remaining]);
+
+  React.useEffect(() => {
+    setRemaining(practiceTestBreakRemainingSeconds(run));
+  }, [run]);
 
   return (
     <div className="testing-panel">
@@ -93,14 +100,15 @@ function BreakScreen({ run, onDone }: { run: Run; onDone: () => void }) {
           {breakAnnouncement(remaining)}
         </span>
       </div>
+      {paused && <p className="testing-note" role="status">The break clock is paused while this change waits to save to your account.</p>}
       <p className="testing-note">
         Stand up, get water, look at something further away than a screen. The
         real test gives you this, and taking it is part of practising the
         sitting rather than just the questions.
       </p>
       <div className="testing-actions">
-        <Button onClick={onDone}>
-          {remaining > 0 ? "Skip the break and continue" : "Continue"}
+        <Button disabled={saving} onClick={onDone}>
+          {paused ? retryLabel : remaining > 0 ? "Skip the break and continue" : "Continue"}
         </Button>
       </div>
     </div>
@@ -279,18 +287,34 @@ export default function PracticeTestRunPage() {
     return () => { cancelled = true; };
   }, [runId, user?.id]);
 
-  const commit = React.useCallback(async (next: Run): Promise<Run | null> => {
+  const commit = React.useCallback(async (next: Run, pendingBackup: Run = next): Promise<Run | null> => {
     if (!user) return null;
     setSaving(true);
     setSaveError(null);
     try {
-      const saved = await saveAccountPracticeTestRun(user.id, next);
+      // The frozen snapshot belongs only in the recovery copy. An acknowledged
+      // run must keep counting after a heartbeat succeeds.
+      const { breakRemainingSeconds: _frozen, ...accountRun } = next;
+      const saved = await saveAccountPracticeTestRun(user.id, accountRun, pendingBackup);
       setRun(saved);
       setPendingRun(null);
       return saved;
     } catch (error) {
       setSaveError(error instanceof Error ? error.message : "This exam could not be saved to your account.");
-      setPendingRun(next);
+      setPendingRun(pendingBackup);
+      if (error instanceof PracticeTestConflictError) {
+        try {
+          const latest = await loadAccountPracticeTestRun(user.id, next.id);
+          if (latest) {
+            setRun(latest);
+            if (latest.revision !== next.revision || latest.activeDeviceId !== getPracticeTestDeviceId()) {
+              setPendingRun(null);
+            }
+          }
+        } catch {
+          // Keep the unsynced device copy until the account can be checked again.
+        }
+      }
       return null;
     } finally {
       setSaving(false);
@@ -302,7 +326,7 @@ export default function PracticeTestRunPage() {
    * either produced a row or it has not, and there is nothing to poll for.
    */
   React.useEffect(() => {
-    if (!run || !user || run.activeDeviceId !== getPracticeTestDeviceId() || hasOutdatedPt118Structure(run)) return;
+    if (!run || pendingRun || !user || run.activeDeviceId !== getPracticeTestDeviceId() || hasOutdatedPt118Structure(run)) return;
     const leg = run.legs[run.currentLeg];
     if (!leg || !leg.startedAt || leg.completedAt) return;
     let cancelled = false;
@@ -341,7 +365,7 @@ export default function PracticeTestRunPage() {
     return () => {
       cancelled = true;
     };
-  }, [run, user, commit]);
+  }, [run, pendingRun, user, commit]);
 
   /** The break clock starts the moment the break becomes due, not on render. */
   React.useEffect(() => {
@@ -350,6 +374,17 @@ export default function PracticeTestRunPage() {
     if (run.breakStartedAt) return;
     void commit({ ...run, breakStartedAt: new Date().toISOString() });
   }, [run, commit, saving, pendingRun]);
+
+  /** Detect a lost account connection even when the student has not pressed Continue. */
+  React.useEffect(() => {
+    if (!run || saving || pendingRun || run.activeDeviceId !== getPracticeTestDeviceId() ||
+        run.status !== "in-progress" || run.breakTaken ||
+        run.currentLeg !== run.breakAfterLeg || !run.breakStartedAt) return;
+    const id = window.setTimeout(() => {
+      void commit(run, checkpointPracticeTestBreak(run));
+    }, 15_000);
+    return () => window.clearTimeout(id);
+  }, [run, saving, pendingRun, commit]);
 
   const begin = async () => {
     if (!run || saving || hasOutdatedPt118Structure(run)) return;
@@ -404,6 +439,11 @@ export default function PracticeTestRunPage() {
         setSaveError(error instanceof Error ? error.message : "Could not reopen this section.");
       }
     }
+  };
+
+  const retryPending = () => {
+    if (!run || !pendingRun || saving) return;
+    void commit(retryPracticeTestBreakSave(run, pendingRun));
   };
 
   if (run === undefined) {
@@ -461,8 +501,9 @@ export default function PracticeTestRunPage() {
       </p>
 
       {saveError && <p className="testing-note" role="alert">{saveError} Your account copy is still available. Retry after the connection returns.</p>}
-      {pendingRun && pendingRun.revision === run.revision && !onAnotherDevice && (
-        <Button disabled={saving} onClick={() => { void commit(pendingRun); }}>Save pending changes</Button>
+      {pendingRun && pendingRun.revision === run.revision && !onAnotherDevice &&
+        !(pendingRun.breakRemainingSeconds !== undefined && breakDue) && (
+        <Button disabled={saving} onClick={retryPending}>Save pending changes</Button>
       )}
       {onAnotherDevice && (
         <div className="testing-panel">
@@ -545,10 +586,17 @@ export default function PracticeTestRunPage() {
         <ScoreReport run={run} userId={user!.id} onExit={() => navigate("/testing")} />
       )}
 
-      {!pendingRun && !onAnotherDevice && !checking && !noResult && run.status === "in-progress" && breakDue && (
+      {pendingRun && pendingRun.revision === run.revision && !onAnotherDevice &&
+        pendingRun.breakRemainingSeconds !== undefined && breakDue && (
+        <BreakScreen run={pendingRun} paused saving={saving} onDone={retryPending}
+          retryLabel={pendingRun.breakTaken ? "Retry saving and continue" : "Retry saving break"} />
+      )}
+
+      {!pendingRun && !onAnotherDevice && !checking && !noResult && run.status === "in-progress" && breakDue && run.breakStartedAt && (
         <BreakScreen
           run={run}
-          onDone={() => { void commit({ ...run, breakTaken: true, breakStartedAt: undefined }); }}
+          saving={saving}
+          onDone={() => { void commit(finishPracticeTestBreak(run)); }}
         />
       )}
 

@@ -157,6 +157,8 @@ export interface PracticeTestRun {
   breakTaken: boolean;
   /** ISO stamp set when the break clock started, so it survives a reload. */
   breakStartedAt?: string;
+  /** Device backup of the clock at a failed break exit. Never a running clock. */
+  breakRemainingSeconds?: number;
   status: PracticeTestStatus;
   createdAt: string;
 }
@@ -166,6 +168,40 @@ export function hasOutdatedPt118Structure(run: PracticeTestRun): boolean {
   if (run.pt !== 118) return false;
   const legs = run.legs.map((leg) => `${leg.kind}:${leg.section}:${leg.questionCount}`);
   return legs.join(',') !== 'lr:1:25,rc:2:27,lr:4:25';
+}
+
+export function practiceTestBreakRemainingSeconds(run: PracticeTestRun, now = Date.now()): number {
+  if (run.breakRemainingSeconds !== undefined) return run.breakRemainingSeconds;
+  if (!run.breakStartedAt) return PRACTICE_TEST_BREAK_SECONDS;
+  return Math.max(0, PRACTICE_TEST_BREAK_SECONDS - (now - Date.parse(run.breakStartedAt)) / 1000);
+}
+
+/** A failed start or heartbeat resumes only after an account-acknowledged retry. */
+export function retryPracticeTestBreakSave(accountRun: PracticeTestRun, pendingRun: PracticeTestRun, now = Date.now()): PracticeTestRun {
+  if (pendingRun.breakTaken) return pendingRun;
+  if (!accountRun.breakStartedAt && pendingRun.breakStartedAt) {
+    return { ...pendingRun, breakStartedAt: new Date(now).toISOString() };
+  }
+  if (pendingRun.breakRemainingSeconds !== undefined) {
+    const elapsed = PRACTICE_TEST_BREAK_SECONDS - pendingRun.breakRemainingSeconds;
+    return { ...pendingRun, breakStartedAt: new Date(now - elapsed * 1000).toISOString() };
+  }
+  return pendingRun;
+}
+
+/** A heartbeat writes a clock snapshot to the device backup before account save. */
+export function checkpointPracticeTestBreak(run: PracticeTestRun, now = Date.now()): PracticeTestRun {
+  return { ...run, breakRemainingSeconds: practiceTestBreakRemainingSeconds(run, now) };
+}
+
+/** Keep the remaining time in the pending device copy while an exit save is unacknowledged. */
+export function finishPracticeTestBreak(run: PracticeTestRun, now = Date.now()): PracticeTestRun {
+  return {
+    ...run,
+    breakTaken: true,
+    breakRemainingSeconds: practiceTestBreakRemainingSeconds(run, now),
+    breakStartedAt: undefined,
+  };
 }
 
 export interface PracticeTestBlueprint {

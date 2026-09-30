@@ -72,7 +72,7 @@ export default function HubAssignments({ studentId }: Props) {
   const [pending, setPending] = useState<PendingDelete | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  const { data: homework, isLoading: hwLoading } = useQuery<HomeworkRow[]>({
+  const { data: homework, isLoading: hwLoading, isError: hwError, refetch: refetchHomework } = useQuery<HomeworkRow[]>({
     queryKey: ['hub-homework', studentId],
     enabled: !!studentId,
     queryFn: async () => {
@@ -86,11 +86,13 @@ export default function HubAssignments({ studentId }: Props) {
     },
   });
 
-  const { assignments: taAssignments, loading: taLoading, refresh: refreshTA } =
+  const { assignments: taAssignments, loading: taLoading, error: taError, refresh: refreshTA } =
     useAdminTAAssignmentsForStudent(studentId);
 
-  const { data: classroomItems, isLoading: ciLoading } =
+  const { data: classroomItems, isLoading: ciLoading, isError: ciError, refetch: refetchItems } =
     useStudentClassroomItems(studentId);
+  const failedSources = [hwError && 'homework', taError && 'TA assignments', ciError && 'posts and bootcamps']
+    .filter((source): source is string => typeof source === 'string');
 
   const posts = (classroomItems ?? []).filter(
     (i) => i.type !== 'drill' && i.type !== 'homework',
@@ -143,12 +145,12 @@ export default function HubAssignments({ studentId }: Props) {
     }
   }
 
-  if (!hwLoading && !taLoading && !ciLoading && !hasAny) {
+  if (!hwLoading && !taLoading && !ciLoading && !hasAny && failedSources.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center text-center px-6 py-12">
         <div className="max-w-sm space-y-2">
           <GraduationCap className="w-6 h-6 text-muted-foreground/70 mx-auto" />
-          <div className="text-sm font-medium">No assignments yet</div>
+          <div className="text-sm font-medium">No homework, TA assignments, or classroom posts yet</div>
           <p className="text-xs text-muted-foreground">
             Homework, bootcamps, and posts you assign will show up here so you
             can edit or unassign them.
@@ -160,10 +162,17 @@ export default function HubAssignments({ studentId }: Props) {
 
   return (
     <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+      {failedSources.length > 0 && (
+        <div role="alert" className="text-xs text-destructive">
+          Could not confirm {failedSources.join(', ')}. This list may be incomplete.
+          <button type="button" className="ml-2 underline" onClick={() => { void refetchHomework(); void refreshTA(); void refetchItems(); }}>Try again</button>
+        </div>
+      )}
       <Section
         title="Homework"
         icon={GraduationCap}
         loading={hwLoading}
+        error={hwError}
         empty={!hwLoading && (homework?.length ?? 0) === 0}
       >
         {homework?.map((h) => {
@@ -200,6 +209,7 @@ export default function HubAssignments({ studentId }: Props) {
         title="TA assignments"
         icon={Sparkles}
         loading={taLoading}
+        error={!!taError}
         empty={!taLoading && taAssignments.length === 0}
       >
         {taAssignments.map((a: StudentTAAssignment) => {
@@ -236,6 +246,7 @@ export default function HubAssignments({ studentId }: Props) {
         title="Posts & bootcamps"
         icon={Megaphone}
         loading={ciLoading}
+        error={ciError}
         empty={!ciLoading && posts.length === 0}
       >
         {posts.map((it: ClassroomItem) => {
@@ -324,12 +335,14 @@ function Section({
   title,
   icon: HeaderIcon,
   loading,
+  error,
   empty,
   children,
 }: {
   title: string;
   icon: React.ComponentType<{ className?: string }>;
   loading: boolean;
+  error: boolean;
   empty: boolean;
   children: React.ReactNode;
 }) {
@@ -344,6 +357,8 @@ function Section({
       <div className="space-y-1.5">
         {loading ? (
           <div className="text-xs text-muted-foreground">Loading…</div>
+        ) : empty && error ? (
+          <div className="text-xs text-destructive">Could not confirm this source.</div>
         ) : empty ? (
           <div className="text-xs text-muted-foreground italic">None.</div>
         ) : (

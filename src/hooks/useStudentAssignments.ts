@@ -256,38 +256,22 @@ export function useAdminTAAssignmentsForStudent(studentId: string | null | undef
   error: string | null;
   refresh: () => Promise<void>;
 } {
-  const [assignments, setAssignments] = useState<StudentTAAssignment[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const query = useQuery<StudentTAAssignment[], Error>({
+    queryKey: ["admin-ta-assignments", studentId],
+    enabled: !!studentId,
+    queryFn: async () => (await loadStudentTAAssignments(studentId!))
+      .sort((a, b) => new Date(b.assigned_at).getTime() - new Date(a.assigned_at).getTime()),
+  });
 
   const refresh = useCallback(async () => {
     if (!studentId) {
-      setAssignments([]);
       return;
     }
-    setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await supabase
-      .from("ta_assignments")
-      .select("*")
-      .eq("student_id", studentId)
-      .order("assigned_at", { ascending: false });
-    if (err) {
-      console.error("[ta:assign:admin:list] failed", { studentId, error: err });
-      setError(err.message);
-      setAssignments([]);
-    } else {
-      setAssignments(((data || []) as unknown) as StudentTAAssignment[]);
-      setError(null);
-    }
-    setLoading(false);
-  }, [studentId]);
+    await queryClient.invalidateQueries({ queryKey: ["admin-ta-assignments", studentId] });
+  }, [queryClient, studentId]);
 
-  useEffect(() => {
-    void refresh();
-  }, [refresh]);
-
-  return { assignments, loading, error, refresh };
+  return { assignments: query.data ?? EMPTY_TA, loading: query.isPending && !!studentId, error: query.error?.message ?? null, refresh };
 }
 
 export async function markTAAssignmentViewed(

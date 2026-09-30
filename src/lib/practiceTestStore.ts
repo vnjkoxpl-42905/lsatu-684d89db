@@ -268,12 +268,16 @@ export async function createAccountPracticeTestRun(
   return saved;
 }
 
-export async function saveAccountPracticeTestRun(userId: string, run: PracticeTestRun): Promise<PracticeTestRun> {
+export async function saveAccountPracticeTestRun(
+  userId: string,
+  run: PracticeTestRun,
+  pendingBackup: PracticeTestRun = run,
+): Promise<PracticeTestRun> {
   if (run.userId !== userId || run.revision === undefined) throw new PracticeTestConflictError();
   const deviceId = getPracticeTestDeviceId();
   if (run.activeDeviceId !== deviceId) throw new PracticeTestConflictError();
-  keepPendingCopy(run);
-  savePracticeTestRun(run);
+  keepPendingCopy(pendingBackup);
+  savePracticeTestRun(pendingBackup);
   await assertAccount(userId);
   const row = toRow(run, userId);
   const { id: _id, user_id: _owner, created_at: _created, ...changes } = row;

@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // by the other.
 
 const reads: string[] = [];
+let taFailure = false;
 const rows = {
   notifications: [] as Array<Record<string, unknown>>,
   homework_assignments: [] as Array<Record<string, unknown>>,
@@ -20,7 +21,9 @@ vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     from: (table: keyof typeof rows) => {
       const chain: Record<string, unknown> = {};
-      const result = () => Promise.resolve({ data: rows[table], error: null });
+      const result = () => Promise.resolve(table === 'ta_assignments' && taFailure
+        ? { data: null, error: new Error('TA read failed') }
+        : { data: rows[table], error: null });
       chain.select = () => {
         reads.push(table);
         return chain;
@@ -46,7 +49,7 @@ vi.mock("@/contexts/AuthContext", () => ({
 }));
 
 const { useNotifications } = await import("./useNotifications");
-const { useStudentAssignments, useStudentTAAssignments } = await import(
+const { useStudentAssignments, useStudentTAAssignments, useAdminTAAssignmentsForStudent } = await import(
   "./useStudentAssignments"
 );
 
@@ -62,6 +65,7 @@ function makeWrapper() {
 
 beforeEach(() => {
   reads.length = 0;
+  taFailure = false;
   rows.notifications = [
     { id: "n1", user_id: "student-1", type: "reminder", title: "Hi", read: false, created_at: "2026-09-10T00:00:00Z" },
     { id: "n2", user_id: "student-1", type: "reminder", title: "Yo", read: true, created_at: "2026-09-09T00:00:00Z" },
@@ -127,5 +131,22 @@ describe("shared rail queries", () => {
 
     await rail.result.current.refresh();
     expect(reads.filter((t) => t === "homework_assignments")).toHaveLength(2);
+  });
+
+  it('keeps only the selected student\'s cached TA rows after a failed refresh', async () => {
+    const wrapper = makeWrapper();
+    const view = renderHook(({ studentId }) => useAdminTAAssignmentsForStudent(studentId), {
+      wrapper,
+      initialProps: { studentId: 'student-a' },
+    });
+    await waitFor(() => expect(view.result.current.assignments.map((row) => row.id)).toEqual(['t1', 't2']));
+
+    taFailure = true;
+    await view.result.current.refresh();
+    await waitFor(() => expect(view.result.current.error).toBe('TA read failed'));
+    expect(view.result.current.assignments.map((row) => row.id)).toEqual(['t1', 't2']);
+
+    view.rerender({ studentId: 'student-b' });
+    expect(view.result.current.assignments).toEqual([]);
   });
 });
