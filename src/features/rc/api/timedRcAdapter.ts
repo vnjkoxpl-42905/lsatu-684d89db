@@ -186,4 +186,11 @@ export class TimedRcAdapter {
       throw new TimedWorkError('expired-writer', 'Claim or refresh the account writer before preparing another RC command.');
     return this.client.prepare(operation, {}, deviceId, view.parent);
   }
+  async prepareClose(view: TimedRcView, analysis: TimedObject, deviceId: string): Promise<TimedWorkCommand> {
+    await this.verifyContent(view.parent);
+    if (!object(analysis) || view.parent.current_leg !== this.legIndex || !['leg-running', 'leg-paused'].includes(view.parent.timed_phase)
+      || deviceId !== this.deviceId || view.parent.active_device_id !== deviceId
+      || projectTimedRcClock(view.parent, view.serverTime, Math.max(0, performance.now() - view.observedAt)).requiresRefresh) invalid('RC closeout requires matching writer, phase and analysis.');
+    return this.client.prepare('close-leg', { analysis }, deviceId, view.parent);
+  }
 }

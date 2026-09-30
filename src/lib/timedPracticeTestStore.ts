@@ -40,7 +40,7 @@ export function timedParentToPracticeTestRun(parent: TimedWorkParent): PracticeT
     for (const key of ['correct', 'answered', 'timeMs'] as const) { if (value[key] !== undefined) { if (!integer(value[key]) || (key !== 'timeMs' && value[key] > leg.questionCount)) invalid('Invalid official leg result.'); leg[key] = value[key]; } }
     return leg;
   });
-  return { id: parent.id, userId: parent.user_id, revision: parent.revision, activeDeviceId: parent.active_device_id,
+  return { timedContractVersion: 1, id: parent.id, userId: parent.user_id, revision: parent.revision, activeDeviceId: parent.active_device_id,
     ...(iso(parent.updated_at) ? { updatedAt: parent.updated_at } : {}), pt: parent.pt, pace: parent.pace as PracticeTestPaceId,
     sectionSeconds: parent.section_seconds, legs, currentLeg: parent.current_leg, breakAfterLeg: parent.break_after_leg,
     breakTaken: parent.break_taken, ...(iso(parent.break_started_at) ? { breakStartedAt: parent.break_started_at } : {}),
@@ -88,7 +88,7 @@ export function timedPracticeTestChildLaunch(snapshot: TimedPracticeTestSnapshot
   return invalid('The account checkpoint belongs to another section kind.');
 }
 
-/** Preparation only: existing parent/child stores and routes do not use this. */
+/** Account-authoritative parent transitions used by protected sittings. */
 export class TimedPracticeTestStore {
   constructor(private readonly client: TimedWorkClient, private readonly deviceId: string, private readonly now: () => number = () => performance.now()) {}
   private snapshot(value: { parent: TimedWorkParent; checkpoint: TimedObject | null; serverTime: string }): TimedPracticeTestSnapshot {

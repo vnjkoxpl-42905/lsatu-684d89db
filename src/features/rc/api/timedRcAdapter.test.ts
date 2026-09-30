@@ -52,6 +52,13 @@ beforeEach(() => {
 });
 
 describe('inactive RC atomic adapter', () => {
+  it('accepts native PostgreSQL offset/microsecond session and attempt timestamps', async () => {
+    (saved.session as TimedObject).started_at = '2026-09-30T10:00:00.454027+00:00';
+    (saved.attempts as TimedObject[])[0].created_at = '2026-09-30T05:00:05.454027-05:00';
+    expect((await create().refresh())!.state.answers.get(20)).toBe('A');
+    (saved.session as TimedObject).started_at = 'invalid-account-timestamp';
+    await expect(create().refresh()).rejects.toMatchObject({ kind: 'contract' });
+  });
   it('renders foreign-writer recovery paused and permits acknowledged paused closeout', async () => {
     authoritative.active_device_id = 'foreign-device';
     const foreign = (await create().refresh())!;

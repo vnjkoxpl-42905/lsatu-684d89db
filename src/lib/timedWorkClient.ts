@@ -6,14 +6,14 @@ export const TIMED_WORK_OPERATIONS = ['create', 'claim', 'start-leg', 'checkpoin
 export type TimedWorkOperation = typeof TIMED_WORK_OPERATIONS[number];
 export type TimedLetter = 'A' | 'B' | 'C' | 'D' | 'E';
 export type TimedCheckpointPayload =
-  | { currentIndex: number; answers: { qid: string; selected: TimedLetter; correct: boolean; timeMs: number; flagged?: boolean; switchCount?: number }[]; regulationAnsweredQids?: string[] }
+  | { currentIndex: number; answers: { qid: string; selected: TimedLetter; correct: boolean; timeMs: number; flagged?: boolean; switchCount?: number }[]; regulationAnsweredQids?: string[]; questionStates?: { qid: string; timeMs: number; flagged: boolean; eliminations: TimedLetter[] }[] }
   | { currentIndex: number; answers: { attemptId: string; questionId: number; passageId: number; selected: TimedLetter | null; isCorrect: boolean | null; timeMs: number; flagged?: boolean; eliminations?: TimedLetter[] }[] };
 export interface TimedWorkPayloads {
   create: { pt: number; pace: 'standard' | 'time-and-a-half' | 'double-time' | 'untimed'; sectionSeconds: number | null };
   claim: Record<string, never>; 'start-leg': Record<string, never>; heartbeat: Record<string, never>; pause: Record<string, never>; resume: Record<string, never>;
   'start-break': Record<string, never>; 'finish-break': Record<string, never>; abandon: Record<string, never>;
   checkpoint: TimedCheckpointPayload;
-  'close-leg': { answerKeys: { qid: string; correctAnswer: TimedLetter }[]; analysis?: TimedObject | null } | Record<string, never>;
+  'close-leg': { answerKeys: { qid: string; correctAnswer: TimedLetter }[]; analysis?: TimedObject | null } | { analysis?: TimedObject | null };
 }
 export interface TimedWorkCommand {
   workKind: 'practice-test'; workId: string; commandId: string; deviceId: string;
@@ -122,7 +122,7 @@ function validatePayload(operation: TimedWorkOperation, payload: TimedObject, st
   const kind = state?.timed_frozen_legs[state.current_leg]?.kind;
   const letter = (value: unknown) => typeof value === 'string' && /^[A-E]$/.test(value);
   if (operation === 'checkpoint') {
-    keys(kind === 'lr' ? ['currentIndex', 'answers', 'regulationAnsweredQids'] : ['currentIndex', 'answers']);
+    keys(kind === 'lr' ? ['currentIndex', 'answers', 'regulationAnsweredQids', 'questionStates'] : ['currentIndex', 'answers']);
     if (!integer(payload.currentIndex) || !Array.isArray(payload.answers) || !['lr', 'rc'].includes(kind as string)) fail('Invalid checkpoint payload.');
     for (const answer of payload.answers) {
       if (!object(answer) || !integer(answer.timeMs) || (answer.flagged !== undefined && typeof answer.flagged !== 'boolean')) fail('Invalid checkpoint answer.');
@@ -133,6 +133,7 @@ function validatePayload(operation: TimedWorkOperation, payload: TimedObject, st
           || !(answer.selected === null || letter(answer.selected)) || !(answer.isCorrect === null || typeof answer.isCorrect === 'boolean')
           || (answer.eliminations !== undefined && (!Array.isArray(answer.eliminations) || !answer.eliminations.every(letter)))) fail('Invalid checkpoint answer identity.');
     }
+    if (payload.questionStates !== undefined) validateQuestionStates(payload.questionStates, (state!.timed_manifest.legs as TimedObject[])[state!.current_leg].qids as string[]);
     if (payload.regulationAnsweredQids !== undefined && (!Array.isArray(payload.regulationAnsweredQids) || payload.regulationAnsweredQids.some(qid => typeof qid !== 'string'))) fail('Invalid regulation answer identities.');
     return;
   }
@@ -142,7 +143,22 @@ function validatePayload(operation: TimedWorkOperation, payload: TimedObject, st
       || (payload.analysis !== undefined && payload.analysis !== null && !object(payload.analysis))) fail('Invalid LR closeout payload.');
     return;
   }
+  if (operation === 'close-leg' && kind === 'rc') {
+    keys(['analysis']);
+    if (payload.analysis !== undefined && payload.analysis !== null && !object(payload.analysis)) fail('Invalid RC closeout analysis.');
+    return;
+  }
   keys([]);
+}
+function validateQuestionStates(value: unknown, qids: string[]): void {
+  if (!Array.isArray(value)) fail('Invalid LR question states.');
+  const seen = new Set<string>();
+  for (const entry of value) {
+    if (!object(entry) || typeof entry.qid !== 'string' || !qids.includes(entry.qid) || seen.has(entry.qid) || !integer(entry.timeMs) || typeof entry.flagged !== 'boolean'
+      || !Array.isArray(entry.eliminations) || entry.eliminations.some(letter => typeof letter !== 'string' || !/^[A-E]$/.test(letter)) || new Set(entry.eliminations).size !== entry.eliminations.length
+      || Object.keys(entry).length !== 4 || Object.keys(entry).some(key => !['qid', 'timeMs', 'flagged', 'eliminations'].includes(key))) fail('Invalid LR question state identity or timing.');
+    seen.add(entry.qid);
+  }
 }
 function checkpoint(value: unknown, ownerId: string, workId: string, state: TimedWorkParent): TimedObject | null {
   if (value === null) return null;
@@ -158,6 +174,7 @@ function checkpoint(value: unknown, ownerId: string, workId: string, state: Time
       || value.record.question_queue.some(qid => typeof qid !== 'string') || !integer(value.record.current_index)
       || canonical(value.record.question_queue) !== canonical(manifestLeg.qids)
       || value.record.current_index > value.record.question_queue.length || !Array.isArray(value.record.attempts)) fail('Invalid LR checkpoint binding or saved position.');
+    if (value.record.question_states !== undefined) validateQuestionStates(value.record.question_states, manifestLeg.qids as string[]);
   } else if (value.kind === 'rc') {
     if (!object(value.session) || value.session.user_id !== ownerId || value.session.practice_test_run_id !== workId || !Array.isArray(value.attempts)
       || value.attempts.some(attempt => !object(attempt) || attempt.user_id !== ownerId || attempt.session_id !== (value.session as Record<string, unknown>).id)) fail('The RC checkpoint belongs to a different owner or source.');
@@ -244,6 +261,8 @@ export class TimedWorkClient {
     this.write({ ...stored, pending: next, parent: state, pendingParent: state, rejection: null }, raw);
     return this.read().pending!;
   }
+  /** Read-only readiness check before offering a new protected sitting. */
+  async requireCapability(operation: TimedWorkOperation | 'read'): Promise<void> { await this.actor(); await this.capability(operation); await this.actor(); }
   private async capability(operation: TimedWorkOperation | 'read'): Promise<void> {
     let response: Awaited<ReturnType<TimedWorkTransport['rpc']>>;
     try { response = await this.transport.rpc('timed_practice_test_capability_v1'); } catch { throw new TimedWorkError('capability', 'Could not verify atomic timed work v1 capability. The saved command is preserved.'); }

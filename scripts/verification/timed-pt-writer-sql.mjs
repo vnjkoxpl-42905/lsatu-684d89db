@@ -23,6 +23,8 @@ try {
   for (const name of ['2026-09-30-timed-pt-control-foundation.sql','2026-09-30-timed-pt-writer.sql']) {
     await db.exec(await readFile(new URL('../../docs/implementation-plans/artifacts/'+name,import.meta.url),'utf8'));
   }
+  // Exercise the incremental artifact's helper bodies, not only fresh install.
+  await db.exec(await readFile(new URL('../../docs/implementation-plans/artifacts/2026-09-30-timed-pt-checkpoint-metadata-upgrade.sql',import.meta.url),'utf8'));
   check((await db.query("select has_schema_privilege('timed_pt_executor','auth','USAGE') as allowed")).rows[0].allowed,false);
   check((await db.query("select has_function_privilege('authenticated','public.timed_pt_actor_v1()','EXECUTE') as allowed")).rows[0].allowed,false);
   await db.query("select set_config('request.jwt.claim.sub',$1,false)",[owner]); await db.exec('set role timed_pt_executor');
@@ -63,6 +65,14 @@ try {
     await denied(()=>rpc('commit_timed_work_v1',commandFor(parent,'checkpoint',{currentIndex:0,answers:[{...validLr,...patch}]},randomUUID())),'PT422');
   }
   await denied(()=>rpc('commit_timed_work_v1',commandFor(parent,'checkpoint',{currentIndex:0,answers:[validLr,validLr]},randomUUID())),'PT422');
+  const blankState={qid:'PT140-S1-Q2',timeMs:900,flagged:true,eliminations:['A','E']};
+  await commit('checkpoint',{currentIndex:1,answers:[],questionStates:[blankState]});
+  check(response.checkpoint.record.question_states,[blankState]);check(response.checkpoint.record.attempts.length,1);
+  for(const patch of [{qid:null},{qid:'foreign'},{timeMs:'900'},{flagged:null},{eliminations:['Z']},{eliminations:['A','A']}]) {
+    await denied(()=>rpc('commit_timed_work_v1',commandFor(parent,'checkpoint',{currentIndex:1,answers:[],questionStates:[{...blankState,...patch}]},randomUUID())),'PT422');
+  }
+  await denied(()=>rpc('commit_timed_work_v1',commandFor(parent,'checkpoint',{currentIndex:1,answers:[],questionStates:[blankState,blankState]},randomUUID())),'PT422');
+  await denied(()=>rpc('commit_timed_work_v1',commandFor(parent,'checkpoint',{currentIndex:1,answers:[],questionStates:[{...blankState,timeMs:100}]},randomUUID())),'PT409');
   await denied(()=>rpc('commit_timed_work_v1',{...commandFor(parent,'heartbeat',{},randomUUID()),expectedRevision:String(parent.revision)}),'PT422');
   await denied(()=>db.query("update public.bootcamp_kv set data='{}' where user_id=$1",[owner]),'42501');
   await denied(()=>db.query("insert into public.bootcamp_kv(user_id,table_name,record_id,data) values($1,'practice_sessions','alternate',$2)",[owner,JSON.stringify({completion_id:'drill::practice-test::test-run::leg-0'})]),'42501');
@@ -84,6 +94,10 @@ try {
   await db.exec('create temporary table wrong_answer_journal (like public.wrong_answer_journal including all)'); await auth();
   await commit('close-leg',{answerKeys:blueprint.legs[0].qids.map(qid=>({qid,correctAnswer:'B'})),analysis:{}});
   check(parent.current_leg,1);
+  await db.exec('reset role');
+  const blankStats=(await db.query('select questions_json from public.section_history')).rows[0].questions_json[1];
+  check(blankStats.timeMs,900);check(blankStats.flagged,true);check(blankStats.eliminations,['A','E']);
+  await auth();
   check((await db.query('select count(*)::int as n from public.attempts')).rows[0].n,1);
   await db.exec('reset role');
   check((await db.query('select count(*)::int as n from public.wrong_answer_journal')).rows[0].n,2);
@@ -99,9 +113,19 @@ try {
   await commit('checkpoint',{currentIndex:0,answers:[answer]}); check(response.checkpoint.attempts.length,1);
   await commit('checkpoint',{currentIndex:0,answers:[{...answer,flagged:true,eliminations:['A']}]});
   check(response.checkpoint.attempts[0].flagged,true); check(response.checkpoint.attempts[0].eliminations,['A']);
+  const previousAnswerCommand=response.receipt.command;
+  await commit('checkpoint',{currentIndex:0,answers:[{...answer,selected:'D',isCorrect:false,timeMs:300}]});
+  check(response.checkpoint.attempts[0].id,answer.attemptId);check(response.checkpoint.attempts[0].selected,'D');
+  check(response.checkpoint.attempts[0].time_ms,300);check(response.checkpoint.attempts.length,1);
+  const revisited=await rpc('commit_timed_work_v1',previousAnswerCommand);
+  check(revisited.receipt.command.payload.answers[0].selected,'C');check(revisited.checkpoint.attempts[0].selected,'D');
+  await commit('checkpoint',{currentIndex:0,answers:[answer]});
   await denied(()=>rpc('commit_timed_work_v1',commandFor(parent,'checkpoint',{currentIndex:1,answers:[{...answer,attemptId:randomUUID()}]},randomUUID())),'PT409');
   await denied(()=>db.query('update public.rc_drill_sessions set practice_test_run_id=null,practice_test_leg=null,config=\'{}\''),'42501');
-  await commit('close-leg'); check(parent.current_leg,2); check(parent.break_taken,false);
+  await denied(()=>rpc('commit_timed_work_v1',commandFor(parent,'close-leg',{analysis:'bad'},randomUUID())),'PT422');
+  const rcSessionId=response.checkpoint.session.id;
+  await commit('close-leg',{analysis:{timedTelemetry:{visits:{'1001':2}}}}); check(parent.current_leg,2); check(parent.break_taken,false);
+  await db.exec('reset role');check((await db.query('select config from public.rc_drill_sessions where id=$1',[rcSessionId])).rows[0].config.analysis,{timedTelemetry:{visits:{'1001':2}}});await auth();
   await denied(()=>rpc('commit_timed_work_v1',commandFor(parent,'start-leg',{},randomUUID())),'PT409');
   await commit('start-break'); await commit('heartbeat'); check(parent.timed_phase,'break-running');
   await commit('pause'); await commit('resume'); await commit('finish-break');

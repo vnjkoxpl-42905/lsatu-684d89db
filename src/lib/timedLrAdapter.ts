@@ -2,6 +2,7 @@ import { PracticeSession, type PracticeSessionAttempt } from '@/bootcamps/main-c
 import { normalizeQuestionTextFields, normalizeQType, type LRQuestion } from './questionLoader';
 import { TimedPracticeTestStore, timedPracticeTestClock, type TimedPracticeTestSnapshot } from './timedPracticeTestStore';
 import { TimedWorkError, type TimedObject, type TimedLetter, type TimedWorkCommand } from './timedWorkClient';
+import { z } from 'zod';
 
 export interface TimedLrRawQuestion {
   practiceTest: string; sectionNumber: number;
@@ -16,11 +17,22 @@ export interface TimedLrView {
   session: PracticeSession;
   questions: LRQuestion[];
   clock: ReturnType<typeof timedPracticeTestClock>;
+  questionStates: TimedLrQuestionState[];
 }
+export interface TimedLrQuestionState { qid: string; timeMs: number; flagged: boolean; eliminations: TimedLetter[] }
 const object = (value: unknown): value is TimedObject => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 const integer = (value: unknown): value is number => Number.isSafeInteger(value) && Number(value) >= 0;
 const letter = (value: unknown): value is TimedLetter => typeof value === 'string' && /^[A-E]$/.test(value);
 function invalid(message: string): never { throw new TimedWorkError('contract', message); }
+// PostgreSQL JSON timestamps include an offset and microseconds; the legacy
+// PracticeSession schema requires UTC Z timestamps. Normalize this transport
+// representation only, without relaxing source or legacy-session validation.
+const accountTimestampSchema = z.string().datetime({ offset: true });
+function accountTimestamp(value: unknown): unknown {
+  if (typeof value !== 'string' || !accountTimestampSchema.safeParse(value).success) return value;
+  const milliseconds = Date.parse(value);
+  return Number.isFinite(milliseconds) ? new Date(milliseconds).toISOString() : value;
+}
 function canonical(value: unknown): string {
   if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
   if (object(value)) return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}`;
@@ -78,7 +90,9 @@ export class TimedLrAdapter {
     if (!saved || saved.kind !== 'lr' || !object(saved.record) || saved.record.user_id !== this.ownerId
       || saved.record.pool_slug !== sourceKey || saved.record.completion_id !== sourceKey
       || canonical(saved.record.question_queue) !== canonical(questions.map(question => question.qid))) invalid('Expected the exact acknowledged LR child.');
-    const parsed = PracticeSession.safeParse({ ...saved.record, timer_mode: snapshot.parent.section_seconds === null ? 'unlimited' : 'custom',
+    const parsed = PracticeSession.safeParse({ ...saved.record,
+      started_at: accountTimestamp(saved.record.started_at), updated_at: accountTimestamp(saved.record.updated_at),
+      timer_mode: snapshot.parent.section_seconds === null ? 'unlimited' : 'custom',
       ...(snapshot.parent.section_seconds === null ? { timer_custom_minutes: undefined } : { timer_custom_minutes: snapshot.parent.section_seconds / 60 }) });
     if (!parsed.success || parsed.data.current_index >= questions.length) invalid('The LR account checkpoint is invalid.');
     const session = parsed.data; const seen = new Set<string>();
@@ -92,12 +106,22 @@ export class TimedLrAdapter {
       || session.regulation_answered_qids.some(value => !seen.has(value)))) invalid('Invalid frozen LR regulation answers.');
     const clock = timedPracticeTestClock(snapshot, this.deviceId, this.now());
     session.elapsed_ms = clock.elapsedMs;
-    return { snapshot, session, questions, clock };
+    const rawStates = saved.record.question_states ?? [];
+    if (!Array.isArray(rawStates)) invalid('Invalid LR question markers.');
+    const seenStates = new Set<string>();
+    const questionStates = rawStates.map(value => {
+      if (!object(value) || typeof value.qid !== 'string' || !questions.some(question => question.qid === value.qid)
+        || seenStates.has(value.qid) || !integer(value.timeMs) || typeof value.flagged !== 'boolean'
+        || !Array.isArray(value.eliminations) || !value.eliminations.every(letter)) invalid('Invalid LR question marker ownership.');
+      seenStates.add(value.qid);
+      return { qid: value.qid, timeMs: value.timeMs, flagged: value.flagged, eliminations: [...value.eliminations] as TimedLetter[] };
+    });
+    return { snapshot, session, questions, clock, questionStates };
   }
   async load(): Promise<TimedLrView | null> { return this.view(await this.store.load()); }
   async retry(): Promise<TimedLrView | null> { return this.view(await this.store.retry()); }
 
-  async prepareCheckpoint(view: TimedLrView, currentIndex: number, answers: TimedLrAnswer[], regulationAnsweredQids?: string[]): Promise<TimedWorkCommand> {
+  async prepareCheckpoint(view: TimedLrView, currentIndex: number, answers: TimedLrAnswer[], regulationAnsweredQids?: string[], questionStates?: TimedLrQuestionState[]): Promise<TimedWorkCommand> {
     const questions = await this.content(view.snapshot);
     if (view.snapshot.parent.current_leg !== this.legIndex || view.snapshot.parent.timed_phase !== 'leg-running' || !integer(currentIndex) || currentIndex >= questions.length) invalid('LR checkpoint requires its acknowledged running leg and exact position.');
     const seen = new Set<string>();
@@ -110,8 +134,10 @@ export class TimedLrAdapter {
     }
     if (regulationAnsweredQids && (new Set(regulationAnsweredQids).size !== regulationAnsweredQids.length
       || regulationAnsweredQids.some(qid => !seen.has(qid) && !view.session.attempts.some(attempt => attempt.qid === qid)))) invalid('Regulation answers must belong to saved or pending frozen LR answers.');
+    if (questionStates && (new Set(questionStates.map(value => value.qid)).size !== questionStates.length || questionStates.some(value => !questions.some(question => question.qid === value.qid)
+      || !integer(value.timeMs) || typeof value.flagged !== 'boolean' || !Array.isArray(value.eliminations) || !value.eliminations.every(letter)))) invalid('Invalid LR question marker source or values.');
     return this.store.prepare('checkpoint', { currentIndex, answers,
-      ...(regulationAnsweredQids === undefined ? {} : { regulationAnsweredQids }) }, view.snapshot);
+      ...(regulationAnsweredQids === undefined ? {} : { regulationAnsweredQids }), ...(questionStates === undefined ? {} : { questionStates }) }, view.snapshot);
   }
   async prepareClose(view: TimedLrView, answerKeys: { qid: string; correctAnswer: TimedLetter }[], analysis: TimedObject): Promise<TimedWorkCommand> {
     const questions = await this.content(view.snapshot);

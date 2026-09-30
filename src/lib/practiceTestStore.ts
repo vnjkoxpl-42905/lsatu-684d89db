@@ -13,6 +13,7 @@ import {
 } from '@/lib/practiceTest';
 
 type RunRow = {
+  timed_contract_version?: number | null;
   id: string;
   user_id: string;
   pt: number;
@@ -84,6 +85,7 @@ async function assertAccount(userId: string): Promise<void> {
 
 function fromRow(row: RunRow): PracticeTestRun {
   return {
+    timedContractVersion: row.timed_contract_version ?? null,
     id: row.id,
     userId: row.user_id,
     revision: row.revision,
@@ -155,6 +157,7 @@ export function readPendingPracticeTestBackup(userId: string, id: string): Pract
 }
 
 function remember(run: PracticeTestRun): void {
+  if (run.timedContractVersion != null) return;
   // A local copy is kept after successful account writes and after failed
   // writes. It never silently replaces the account's newer revision.
   const previous = loadPracticeTestRun(run.id);
@@ -175,7 +178,7 @@ export async function importOwnedDevicePracticeTestRuns(userId: string): Promise
   await assertAccount(userId);
   let imported = 0;
   for (const run of listPracticeTestRuns()) {
-    if (run.userId !== userId || run.revision !== undefined) continue;
+    if (run.userId !== userId || run.revision !== undefined || run.timedContractVersion != null) continue;
     const { data: existing, error: lookupError } = await table()
       .select('*').eq('id', run.id).eq('user_id', userId).maybeSingle();
     if (lookupError) throw lookupError;
@@ -207,10 +210,12 @@ export async function importOwnedDevicePracticeTestRuns(userId: string): Promise
 
 export async function listAccountPracticeTestRuns(userId: string): Promise<PracticeTestRun[]> {
   await assertAccount(userId);
-  await importOwnedDevicePracticeTestRuns(userId);
   const runs = await listSavedAccountPracticeTestRuns(userId);
   runs.forEach(remember);
-  return runs;
+  const ids = new Set(runs.map(run => run.id));
+  // Device-only work remains readable; opening the exam does not adopt or rewrite it.
+  const preserved = listPracticeTestRuns().filter(run => run.userId === userId && !ids.has(run.id));
+  return [...runs, ...preserved];
 }
 
 /** Read persisted account runs without importing or writing device backups. */
@@ -234,8 +239,7 @@ export async function loadAccountPracticeTestRun(userId: string, id: string): Pr
   }
   const local = loadPracticeTestRun(id);
   if (local?.userId === userId && local.revision === undefined) {
-    await importOwnedDevicePracticeTestRuns(userId);
-    return loadAccountPracticeTestRun(userId, id);
+    return local;
   }
   return null;
 }
@@ -243,10 +247,10 @@ export async function loadAccountPracticeTestRun(userId: string, id: string): Pr
 /** Check the current writer before a PT leg commits answers or a result. */
 export async function isActivePracticeTestDevice(userId: string, runId: string): Promise<boolean> {
   await assertAccount(userId);
-  const { data, error } = await table().select('active_device_id, status')
+  const { data, error } = await table().select('*')
     .eq('id', runId).eq('user_id', userId).maybeSingle();
   if (error) throw error;
-  return data?.status === 'in-progress' && data.active_device_id === getPracticeTestDeviceId();
+  return data?.timed_contract_version == null && data?.status === 'in-progress' && data.active_device_id === getPracticeTestDeviceId();
 }
 
 export async function createAccountPracticeTestRun(
@@ -273,6 +277,7 @@ export async function saveAccountPracticeTestRun(
   run: PracticeTestRun,
   pendingBackup: PracticeTestRun = run,
 ): Promise<PracticeTestRun> {
+  if (run.timedContractVersion != null) throw new Error('Protected exams require the atomic timed writer.');
   if (run.userId !== userId || run.revision === undefined) throw new PracticeTestConflictError();
   const deviceId = getPracticeTestDeviceId();
   if (run.activeDeviceId !== deviceId) throw new PracticeTestConflictError();
@@ -301,6 +306,7 @@ export async function abandonAccountPracticeTestRun(userId: string, run: Practic
 /** Called only after the student chooses to continue this existing run here. */
 export async function continueAccountPracticeTestHere(userId: string, run: PracticeTestRun): Promise<PracticeTestRun> {
   await assertAccount(userId);
+  if (run.timedContractVersion != null) throw new Error('Protected exams require the atomic timed writer.');
   if (run.userId !== userId || run.revision === undefined || run.status !== 'in-progress') {
     throw new PracticeTestConflictError();
   }

@@ -119,3 +119,16 @@ describe('practice test account ownership', () => {
     expect(readPendingPracticeTestBackup('student-one', stale.id)).toEqual(stale);
   });
 });
+
+
+describe('protected and legacy parent separation', () => {
+  it('refuses the legacy save before creating a device backup for a protected row', async () => {
+    await expect(saveAccountPracticeTestRun('student-one', run({ userId: 'student-one', timedContractVersion: 1, revision: 2, activeDeviceId: getPracticeTestDeviceId() }))).rejects.toThrow('atomic timed writer');
+    expect(account.from).not.toHaveBeenCalled();
+    expect(readPendingPracticeTestBackup('student-one', 'old-run')).toBeNull();
+  });
+  it('excludes protected rows from the old child writer even on this device', async () => {
+    account.from.mockReturnValue({ select: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis(), maybeSingle: vi.fn().mockResolvedValue({ data: { timed_contract_version: 1, status: 'in-progress', active_device_id: getPracticeTestDeviceId() }, error: null }) });
+    expect(await isActivePracticeTestDevice('student-one', 'protected')).toBe(false);
+  });
+});

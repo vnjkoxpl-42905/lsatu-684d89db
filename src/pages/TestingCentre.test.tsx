@@ -10,9 +10,23 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, beforeAll, describe, expect, it, vi } from "vitest";
 import TestingCentre from "./TestingCentre";
 import { listPracticeTestRuns } from "@/lib/practiceTest";
+
+
+const officialEntry = vi.hoisted(() => ({ prepare: vi.fn() }));
+vi.mock('@/lib/timedPracticeTestEntry', () => ({ prepareOfficialPracticeTest: officialEntry.prepare }));
+vi.mock('@/lib/practiceTestStore', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/practiceTestStore')>('@/lib/practiceTestStore');
+  return { ...actual, listAccountPracticeTestRuns: async () => listPracticeTestRuns(), abandonAccountPracticeTestRun: async (_owner: string, run: { id: string }) => {
+    const key = `lsatu:practice-test:${run.id}`;
+    const saved = JSON.parse(localStorage.getItem(key)!);
+    localStorage.setItem(key, JSON.stringify({ ...saved, status: 'abandoned' }));
+  } };
+});
+vi.mock('@/lib/practiceSectionAttempts', () => ({ listPracticeSectionAttempts: async () => [] }));
+beforeEach(() => { officialEntry.prepare.mockReset(); officialEntry.prepare.mockResolvedValue('new-protected-run'); });
 
 const navigate = vi.fn();
 vi.mock("react-router-dom", async () => {
@@ -369,33 +383,33 @@ describe("Testing Centre", () => {
 
   afterEach(() => localStorage.removeItem(RUN_KEY));
 
-  it("does not delete a sitting on a single click of Discard", () => {
+  it("does not delete a sitting on a single click of Discard", async () => {
     seedSitting();
     renderPage();
 
-    fireEvent.click(screen.getByRole("button", { name: /Discard the unfinished PrepTest 159 sitting/ }));
+    fireEvent.click(await screen.findByRole("button", { name: /Discard the unfinished PrepTest 159 exam/ }));
 
     // The sitting survives, and the room asks before it destroys anything.
     expect(localStorage.getItem(RUN_KEY)).toBeTruthy();
-    expect(screen.getByText(/Discard this sitting\?/)).toBeTruthy();
-    expect(screen.getByRole("button", { name: /Keep the unfinished PrepTest 159 sitting/ })).toBeTruthy();
+    expect(screen.getByText(/Discard this exam\?/)).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Keep the unfinished PrepTest 159 exam/ })).toBeTruthy();
   });
 
-  it("keeps the sitting when Keep is chosen, and removes it only on a confirmed Discard", () => {
+  it("keeps saved data and ends the sitting only on a confirmed Discard", async () => {
     seedSitting();
     renderPage();
 
-    fireEvent.click(screen.getByRole("button", { name: /Discard the unfinished PrepTest 159 sitting/ }));
-    fireEvent.click(screen.getByRole("button", { name: /Keep the unfinished PrepTest 159 sitting/ }));
+    fireEvent.click(await screen.findByRole("button", { name: /Discard the unfinished PrepTest 159 exam/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Keep the unfinished PrepTest 159 exam/ }));
 
     expect(localStorage.getItem(RUN_KEY)).toBeTruthy();
     expect(screen.getByRole("button", { name: /Resume PrepTest 159/ })).toBeTruthy();
 
-    fireEvent.click(screen.getByRole("button", { name: /Discard the unfinished PrepTest 159 sitting/ }));
-    fireEvent.click(screen.getByRole("button", { name: /Yes, discard the unfinished PrepTest 159 sitting/ }));
+    fireEvent.click(await screen.findByRole("button", { name: /Discard the unfinished PrepTest 159 exam/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Yes, discard the unfinished PrepTest 159 exam/ }));
 
-    expect(localStorage.getItem(RUN_KEY)).toBeNull();
-    expect(screen.queryByText(/Unfinished sittings/)).toBeNull();
+    await waitFor(() => expect(JSON.parse(localStorage.getItem(RUN_KEY)!).status).toBe("abandoned"));
+    expect(localStorage.getItem(RUN_KEY)).toBeTruthy();
   });
   /**
    * The practice-test door's paces are percentages of the student's own clock.
@@ -421,8 +435,17 @@ describe("Testing Centre", () => {
       fireEvent.click(screen.getByRole("button", { name: /Begin practice test/ }));
       // Read through the library's own reader: it walks localStorage.key(i),
       // which the test store supports, unlike Object.keys.
-      return listPracticeTestRuns()[0];
+      await waitFor(() => expect(officialEntry.prepare).toHaveBeenCalled());
+      const [, , pace, sectionSeconds] = officialEntry.prepare.mock.calls[0];
+      return { pace, sectionSeconds };
     };
+
+    it("shows an inactive capability error and creates no legacy sitting", async () => {
+      officialEntry.prepare.mockRejectedValue(new Error('Protected sittings are not enabled'));
+      await beginPracticeTest();
+      expect(await screen.findByText('Protected sittings are not enabled')).toBeTruthy();
+      expect(listPracticeTestRuns()).toHaveLength(0);
+    });
 
     it("starts an unaccommodated sitting on the ordinary 35 minute clock", async () => {
       const run = await beginPracticeTest();

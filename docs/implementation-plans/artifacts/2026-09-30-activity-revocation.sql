@@ -76,10 +76,26 @@ create policy "activity_item_responses: owner can insert" on public.activity_ite
 -- Prevent a later mirror insert/unhide from resurrecting a revoked source.
 create or replace function public.guard_activity_mirror_access()
 returns trigger language plpgsql security definer set search_path = public as $$
-declare v_revoked timestamptz; v_student uuid;
+declare v_revoked timestamptz; v_student uuid; v_activity boolean;
 begin
-  if NEW.visible_to_student and NEW.source_id is not null and
-     (NEW.source_table = 'activity_assignments' or NEW.type = 'activity') then
+  v_activity := NEW.source_table = 'activity_assignments' or NEW.type = 'activity';
+  -- Existing orphan mirrors are historical data. Unrelated edits do not grant
+  -- access; newly visible or rebound mirrors must satisfy the source gate.
+  if TG_OP = 'UPDATE' then
+    v_activity := coalesce(v_activity,false) or OLD.source_table = 'activity_assignments' or OLD.type = 'activity';
+    if NEW.visible_to_student is not distinct from OLD.visible_to_student
+       and NEW.source_table is not distinct from OLD.source_table
+       and NEW.source_id is not distinct from OLD.source_id
+       and NEW.type is not distinct from OLD.type
+       and NEW.student_id is not distinct from OLD.student_id then
+      return NEW;
+    end if;
+  end if;
+  if NEW.visible_to_student and v_activity then
+    if NEW.source_id is null or
+       (NEW.source_table is distinct from 'activity_assignments' and NEW.type is distinct from 'activity') then
+      raise exception 'Visible Activity mirror source cannot be cleared' using errcode = '42501';
+    end if;
     select revoked_at, student_id into v_revoked, v_student
       from public.activity_assignments where id::text = NEW.source_id for share;
     if not found or v_revoked is not null or v_student is distinct from NEW.student_id then

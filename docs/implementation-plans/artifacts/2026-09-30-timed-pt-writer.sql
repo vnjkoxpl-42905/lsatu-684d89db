@@ -228,11 +228,11 @@ create function public.timed_pt_save_checkpoint_v1(p_run public.practice_test_ru
 returns void language plpgsql set search_path=pg_catalog,public as $$
 <<checkpoint_state>>
 declare leg jsonb:=p_run.timed_manifest->'legs'->p_run.current_leg;
-  a jsonb; q jsonb; existing jsonb; data jsonb; merged jsonb; position integer;
+  a jsonb; q jsonb; existing jsonb; question_state jsonb; data jsonb; merged jsonb; position integer;
   b public.timed_pt_lr_bindings_v1; s public.rc_drill_sessions; prior public.rc_attempts;
   attempt_id uuid;
 begin
-  perform public.timed_pt_check_keys_v1(p_payload,array['currentIndex','answers','regulationAnsweredQids']);
+  perform public.timed_pt_check_keys_v1(p_payload,array['currentIndex','answers','regulationAnsweredQids','questionStates']);
   position:=(p_payload->>'currentIndex')::integer;
   if jsonb_typeof(p_payload->'currentIndex') is distinct from 'number' or p_payload->>'currentIndex' !~ '^[0-9]+$'
     or position is null or position<0 or position>=(leg->>'questionCount')::integer
@@ -254,7 +254,8 @@ begin
         or (a ? 'switchCount' and (jsonb_typeof(a->'switchCount') is distinct from 'number' or a->>'switchCount' !~ '^[0-9]+$'))
         or coalesce((a->>'switchCount')::integer,0)<0 then raise exception 'Invalid LR answer' using errcode='PT422'; end if;
       select v into existing from jsonb_array_elements(data->'attempts') v where v->>'qid'=a->>'qid';
-      if coalesce((a->>'timeMs')::integer,0)<coalesce((existing->>'time_ms')::integer,0) then
+      select v into question_state from jsonb_array_elements(coalesce(data->'question_states','[]')) v where v->>'qid'=a->>'qid';
+      if coalesce((a->>'timeMs')::integer,0)<greatest(coalesce((existing->>'time_ms')::integer,0),coalesce((question_state->>'timeMs')::integer,0)) then
         raise exception 'Question time cannot decrease' using errcode='PT409'; end if;
       merged:=jsonb_build_object('qid',a->>'qid','selected_answer',a->>'selected','correct',a->'correct',
         'time_ms',(a->>'timeMs')::integer,'flagged',coalesce((a->>'flagged')::boolean,(existing->>'flagged')::boolean,false),
@@ -262,6 +263,28 @@ begin
       data:=jsonb_set(data,'{attempts}',coalesce((select jsonb_agg(v) from jsonb_array_elements(data->'attempts') v
         where v->>'qid'<>a->>'qid'),'[]')||jsonb_build_array(merged));
     end loop;
+    if p_payload ? 'questionStates' then
+      if jsonb_typeof(p_payload->'questionStates') is distinct from 'array' then
+        raise exception 'Question states must be an array' using errcode='PT422'; end if;
+      if (select count(*) from jsonb_array_elements(p_payload->'questionStates'))<>(select count(distinct v->>'qid') from jsonb_array_elements(p_payload->'questionStates') v) then
+        raise exception 'Duplicate question state' using errcode='PT422'; end if;
+      for q in select v from jsonb_array_elements(p_payload->'questionStates') v loop
+        perform public.timed_pt_check_keys_v1(q,array['qid','timeMs','flagged','eliminations']);
+        if jsonb_typeof(q->'qid') is distinct from 'string' or (q->>'qid'=any(b.frozen_qids)) is not true
+          or jsonb_typeof(q->'timeMs') is distinct from 'number' or q->>'timeMs' !~ '^[0-9]+$'
+          or jsonb_typeof(q->'flagged') is distinct from 'boolean'
+          or jsonb_typeof(q->'eliminations') is distinct from 'array' then
+          raise exception 'Invalid question state' using errcode='PT422'; end if;
+        if exists(select 1 from jsonb_array_elements(q->'eliminations') v where jsonb_typeof(v)<>'string' or v#>>'{}' not in ('A','B','C','D','E'))
+          or (select count(*) from jsonb_array_elements(q->'eliminations'))<>(select count(distinct v) from jsonb_array_elements(q->'eliminations') v) then
+          raise exception 'Invalid question state eliminations' using errcode='PT422'; end if;
+        select v into existing from jsonb_array_elements(coalesce(data->'question_states','[]')) v where v->>'qid'=q->>'qid';
+        select v into a from jsonb_array_elements(data->'attempts') v where v->>'qid'=q->>'qid';
+        if (q->>'timeMs')::integer<greatest(coalesce((existing->>'timeMs')::integer,0),coalesce((a->>'time_ms')::integer,0)) then
+          raise exception 'Question time cannot decrease' using errcode='PT409'; end if;
+        data:=jsonb_set(data,'{question_states}',coalesce((select jsonb_agg(v) from jsonb_array_elements(coalesce(data->'question_states','[]')) v where v->>'qid'<>q->>'qid'),'[]')||jsonb_build_array(q));
+      end loop;
+    end if;
     if p_payload ? 'regulationAnsweredQids' then
       if jsonb_typeof(p_payload->'regulationAnsweredQids') is distinct from 'array'
         or exists(select 1 from jsonb_array_elements(p_payload->'regulationAnsweredQids') x where jsonb_typeof(x)<>'string')
@@ -276,7 +299,7 @@ begin
     data:=data||jsonb_build_object('current_index',position,'elapsed_ms',p_run.timed_elapsed_ms,'updated_at',p_now);
     update public.bootcamp_kv kv set data=checkpoint_state.data,updated_at=p_now where user_id=p_run.user_id and table_name=b.namespace and record_id=b.record_id;
   else
-    if p_payload ? 'regulationAnsweredQids' then raise exception 'RC has no LR regulation field' using errcode='PT422'; end if;
+    if p_payload ? 'regulationAnsweredQids' or p_payload ? 'questionStates' then raise exception 'RC has no LR checkpoint fields' using errcode='PT422'; end if;
     select * into s from public.rc_drill_sessions where practice_test_run_id=p_run.id and practice_test_leg=p_run.current_leg and user_id=p_run.user_id for update;
     if not found or s.status<>'in_progress' then raise exception 'Frozen RC child missing' using errcode='PT409'; end if;
     if (select count(*) from jsonb_array_elements(p_payload->'answers'))<>(select count(distinct v->>'questionId') from jsonb_array_elements(p_payload->'answers') v) then
@@ -304,11 +327,13 @@ begin
       select * into prior from public.rc_attempts where id=attempt_id;
       if found then
         if prior.user_id<>p_run.user_id or prior.session_id<>s.id or prior.question_id<>(a->>'questionId')::integer
-          or prior.passage_id<>(a->>'passageId')::integer or prior.selected is distinct from a->>'selected'
-          or prior.is_correct is distinct from (a->>'isCorrect')::boolean or prior.time_ms<>(a->>'timeMs')::integer then
+          or prior.passage_id<>(a->>'passageId')::integer or not prior.is_first_attempt then
           raise exception 'Changed attempt replay' using errcode='PT409'; end if;
-        -- Flags/eliminations are mutable exam metadata, not answer identity.
-        update public.rc_attempts set flagged=case when a ? 'flagged' then (a->>'flagged')::boolean else prior.flagged end,
+        -- Stable sitting/question identity survives revisits. Immutable command
+        -- receipts retain each acknowledged answer; this row holds final choice.
+        update public.rc_attempts set selected=a->>'selected',is_correct=(a->>'isCorrect')::boolean,
+          time_ms=(a->>'timeMs')::integer,
+          flagged=case when a ? 'flagged' then (a->>'flagged')::boolean else prior.flagged end,
           eliminations=case when a ? 'eliminations' then array(select jsonb_array_elements_text(a->'eliminations')) else prior.eliminations end
           where id=prior.id;
       else
@@ -329,7 +354,7 @@ create function public.timed_pt_close_leg_v1(p_run public.practice_test_runs,p_p
 returns jsonb language plpgsql set search_path=pg_catalog,public as $$
 <<close_state>>
 declare leg jsonb:=p_run.timed_manifest->'legs'->p_run.current_leg;
-  b public.timed_pt_lr_bindings_v1; s public.rc_drill_sessions; data jsonb; q jsonb; a jsonb; key jsonb;
+  b public.timed_pt_lr_bindings_v1; s public.rc_drill_sessions; data jsonb; q jsonb; a jsonb; question_state jsonb; key jsonb;
   stats jsonb:='[]'; correct integer:=0; answered integer:=0; total integer:=(leg->>'questionCount')::integer;
   question_time bigint:=0; initial_answer text; is_correct boolean; history_id uuid; actor_class text;
 begin
@@ -350,14 +375,20 @@ begin
       if key->>'correctAnswer' is null or key->>'correctAnswer' not in ('A','B','C','D','E') then
         raise exception 'Invalid answer key structure' using errcode='PT422'; end if;
       select v into a from jsonb_array_elements(data->'attempts') v where v->>'qid'=q->>'qid';
+      select v into question_state from jsonb_array_elements(coalesce(data->'question_states','[]')) v where v->>'qid'=q->>'qid';
+      if a is not null then
+        a:=a||jsonb_build_object('time_ms',greatest(coalesce((a->>'time_ms')::integer,0),coalesce((question_state->>'timeMs')::integer,0)),
+          'flagged',coalesce((question_state->>'flagged')::boolean,(a->>'flagged')::boolean,false));
+      end if;
       initial_answer:=coalesce(a->>'selected_answer',U&'\2014'); is_correct:=coalesce((a->>'correct')::boolean,false);
       correct:=correct+case when is_correct then 1 else 0 end;
       answered:=answered+case when a is not null then 1 else 0 end;
-      question_time:=question_time+coalesce((a->>'time_ms')::integer,0);
+      question_time:=question_time+coalesce((a->>'time_ms')::integer,(question_state->>'timeMs')::integer,0);
       stats:=stats||jsonb_build_array(jsonb_build_object('qid',q->>'qid','qnum',(q->>'servedQnum')::integer,
         'qtype',q->>'qtype','difficulty',(q->>'level')::integer,'initialAnswer',initial_answer,
-        'correctAnswer',key->>'correctAnswer','initialCorrect',is_correct,'timeMs',coalesce((a->>'time_ms')::integer,0),
-        'switchCount',coalesce((a->>'switch_count')::integer,0),'flagged',coalesce((a->>'flagged')::boolean,false),
+        'correctAnswer',key->>'correctAnswer','initialCorrect',is_correct,'timeMs',coalesce((a->>'time_ms')::integer,(question_state->>'timeMs')::integer,0),
+        'switchCount',coalesce((a->>'switch_count')::integer,0),'flagged',coalesce((question_state->>'flagged')::boolean,(a->>'flagged')::boolean,false),
+        'eliminations',coalesce(question_state->'eliminations','[]'),
         'answeredInOvertime',case when data ? 'regulation_answered_qids' then not data->'regulation_answered_qids' ? (q->>'qid') else null end));
       if a is not null then
         insert into public.attempts(user_id,class_id,qid,pt,section,qnum,qtype,level,correct,time_ms,mode,selected_answer,timestamp_iso,timed_pt_run_id,timed_pt_leg)
@@ -368,7 +399,7 @@ begin
         insert into public.wrong_answer_journal(class_id,qid,pt,section,qnum,qtype,level,last_status,revisit_count,history_json)
           values(actor_class,q->>'qid',p_run.pt,(leg->>'section')::integer,(q->>'qnum')::integer,q->>'qtype',(q->>'level')::integer,
           'wrong',0,jsonb_build_array(jsonb_build_object('attempt_at_iso',p_now,'result',0,
-          'chosen_answer',initial_answer,'correct_answer',key->>'correctAnswer','time_ms',coalesce((a->>'time_ms')::integer,0),
+          'chosen_answer',initial_answer,'correct_answer',key->>'correctAnswer','time_ms',coalesce((a->>'time_ms')::integer,(question_state->>'timeMs')::integer,0),
           'confidence_1_5',null,'review',jsonb_build_object('q1','','q2','','q3',''))))
           on conflict(class_id,qid) do update set
             history_json=public.wrong_answer_journal.history_json||excluded.history_json,
@@ -389,7 +420,9 @@ begin
     update public.bootcamp_kv set data=close_state.data||jsonb_build_object('status','completed','elapsed_ms',p_run.timed_elapsed_ms,'updated_at',p_now),updated_at=p_now
       where user_id=p_run.user_id and table_name=b.namespace and record_id=b.record_id;
   else
-    perform public.timed_pt_check_keys_v1(p_payload,array[]::text[]);
+    perform public.timed_pt_check_keys_v1(p_payload,array['analysis']);
+    if p_payload ? 'analysis' and jsonb_typeof(p_payload->'analysis') not in ('object','null') then
+      raise exception 'Invalid RC analysis' using errcode='PT422'; end if;
     select * into s from public.rc_drill_sessions where practice_test_run_id=p_run.id and practice_test_leg=p_run.current_leg and user_id=p_run.user_id for update;
     if not found or s.status<>'in_progress' then raise exception 'Frozen RC child missing' using errcode='PT409'; end if;
     for q in select v from jsonb_array_elements(leg->'questions') v loop
@@ -400,7 +433,8 @@ begin
     select count(*) filter(where attempt.is_correct),count(*) filter(where attempt.selected is not null)
       into correct,answered from public.rc_attempts attempt where attempt.session_id=s.id and attempt.is_first_attempt;
     update public.rc_drill_sessions set status='completed',completed_at=p_now,
-      config=config||jsonb_build_object('clockElapsedSeconds',floor(p_run.timed_elapsed_ms/1000.0),'lastActiveAt',p_now) where id=s.id;
+      config=config||jsonb_build_object('clockElapsedSeconds',floor(p_run.timed_elapsed_ms/1000.0),'lastActiveAt',p_now)
+        ||case when p_payload ? 'analysis' then jsonb_build_object('analysis',p_payload->'analysis') else '{}'::jsonb end where id=s.id;
   end if;
   return jsonb_build_object('correct',correct,'answered',answered,'total',total,'timeMs',p_run.timed_elapsed_ms,'historyId',history_id);
 end $$;

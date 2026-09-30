@@ -26,6 +26,10 @@ Before deployment, apply the SQL through the approved Lovable Cloud backend rout
 
 ## Run the SQL in an isolated local database
 
+On 2026-09-30, `scripts/verification/activity-revocation-concurrency.mjs` passed 32 assertions against isolated PostgreSQL 17 using separate ordinary authenticated connections. Both response/revocation lock orders and concurrent two-admin revocation preserve source history and the first actor. It also applies the preservation wrapper under a nonsuperuser migration role with a separate auth-schema owner, schema USAGE without grant option, and auth.users REFERENCES. An intentionally injected existing-row mutation aborts and rolls back additive DDL. This is local proof, not live JWT acceptance.
+
+The live catalog contains one visible orphan Activity mirror. Installation preserves it. The mirror guard permits unchanged visibility/source/owner with unrelated edits, but denies newly visible orphan rows, source clearing, marker clearing, repointing, and new visible Activity inserts without an available matching source. No orphan repair or deletion is included.
+
 `scripts/verification/activity-revocation-sql.mjs` accepts `--pglite-module` or `PGLITE_MODULE`, points at an externally installed PGlite runtime, creates synthetic auth/admin/student fixtures in memory, and applies the draft SQL. It exercises denied student calls and forged attribution, owner mutation denial, atomic rollback when mirror hiding fails, retained source/response/grade history, idempotence across two admins, blocked mirror resurrection, direct student reads/writes, service-level recovery denial, and new issuance after revocation. No runtime dependency was added to the app.
 
 The client Vitest suite checks capability failure, no mutation against an unsupported backend, expected subject/actor receipt validation, and idempotent attribution. These are contract checks; the executable SQL harness is the database behavior check.

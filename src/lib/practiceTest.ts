@@ -131,6 +131,8 @@ export interface PracticeTestLeg {
 export type PracticeTestStatus = 'in-progress' | 'complete' | 'abandoned';
 
 export interface PracticeTestRun {
+  /** Null/absent rows are legacy history, never protected writers. */
+  timedContractVersion?: number | null;
   id: string;
   /** Account owner. Older device-only runs may not have this field. */
   userId?: string;

@@ -17,7 +17,7 @@
  */
 
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { formatRelativeShort } from '@/lib/time';
@@ -40,48 +40,45 @@ interface ProgressRow {
   updated_at?: string | null;
 }
 
-interface SourceResult {
-  source: LessonProgressSource;
-  rows: ProgressRow[];
-}
-
 /** Resolve the dossier's class_id to the auth user id the progress tables use. */
 function useStudentUserId(classId: string | undefined) {
   return useQuery<string | null>({
     queryKey: ['dossier-student-user-id', classId],
     enabled: !!classId,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('students')
         .select('user_id')
         .eq('class_id', classId as string)
         .maybeSingle();
-      return (data?.user_id as string) ?? null;
+      if (error) throw error;
+      if (data?.user_id == null) return null;
+      if (typeof data.user_id !== 'string' || !data.user_id.trim()) throw new Error('Student account lookup returned an invalid identity.');
+      return data.user_id;
     },
   });
 }
 
 function useLessonProgress(userId: string | null | undefined) {
-  return useQuery<SourceResult[]>({
-    queryKey: ['dossier-lesson-progress', userId],
-    enabled: !!userId,
-    queryFn: async () => {
-      const results = await Promise.all(
-        LESSON_PROGRESS_SOURCES.map(async (source) => {
-          const columns = source.hasDetail
-            ? 'lesson_id,data,completed_at,updated_at'
-            : 'lesson_id,completed_at';
-          let query = untypedDb.from(source.table).select(columns).eq('user_id', userId);
-          if (source.lessonId) query = query.eq('lesson_id', source.lessonId);
-          const { data, error } = await query;
-          // A source that errors (missing table, blocked read) contributes
-          // nothing rather than failing the whole tab.
-          if (error || !Array.isArray(data)) return { source, rows: [] };
-          return { source, rows: data as ProgressRow[] };
-        }),
-      );
-      return results;
-    },
+  return useQueries({
+    queries: LESSON_PROGRESS_SOURCES.map(source => ({
+      queryKey: ['dossier-lesson-progress', userId, source.key],
+      enabled: !!userId,
+      queryFn: async (): Promise<ProgressRow[]> => {
+        const columns = source.hasDetail
+          ? 'lesson_id,data,completed_at,updated_at'
+          : 'lesson_id,completed_at';
+        let query = untypedDb.from(source.table).select(columns).eq('user_id', userId);
+        if (source.lessonId) query = query.eq('lesson_id', source.lessonId);
+        const { data, error } = await query;
+        if (error) throw error;
+        if (!Array.isArray(data) || data.some(row => !row || typeof row !== 'object' || Array.isArray(row)
+          || typeof row.lesson_id !== 'string' || !row.lesson_id.trim())) {
+          throw new Error('Bootcamp progress returned an invalid response.');
+        }
+        return data as ProgressRow[];
+      },
+    })),
   });
 }
 
@@ -181,18 +178,38 @@ function LessonCard({ source, row }: { source: LessonProgressSource; row: Progre
 }
 
 export function BootcampLessonProgress({ studentClassId }: { studentClassId: string | undefined }) {
-  const { data: userId } = useStudentUserId(studentClassId);
-  const { data: results = [] } = useLessonProgress(userId);
+  const identity = useStudentUserId(studentClassId);
+  const userId = identity.data;
+  const progress = useLessonProgress(userId);
 
-  const cards = results.flatMap(({ source, rows }) =>
-    rows.map((row) => ({ source, row, key: `${source.key}:${row.lesson_id}` })),
+  const cards = progress.flatMap((result, index) =>
+    (result.data ?? []).map((row) => ({ source: LESSON_PROGRESS_SOURCES[index], row, key: `${LESSON_PROGRESS_SOURCES[index].key}:${row.lesson_id}` })),
   );
+  const failed = progress.map((result, index) => result.error ? LESSON_PROGRESS_SOURCES[index] : null).filter((source): source is LessonProgressSource => source !== null);
+  const identityMissing = !!studentClassId && identity.isSuccess && !userId;
+  const loading = !!studentClassId && (identity.isPending || (!!userId && progress.some(result => result.isPending)));
+  const refreshing = identity.isFetching || progress.some(result => result.isFetching);
+  const retry = () => {
+    if (identity.error || identityMissing) void identity.refetch();
+    for (const result of progress) if (userId && result.error) void result.refetch();
+  };
 
-  if (cards.length === 0) return null;
+  if (!studentClassId || (cards.length === 0 && !loading && !identity.error && !identityMissing && failed.length === 0)) return null;
 
   return (
     <section className="space-y-2 pt-2">
       <div className="text-[10px] uppercase tracking-wider text-black/45">Bootcamp lessons</div>
+      {(identity.error || identityMissing) && <div role="alert" className="text-xs text-destructive">
+        {identity.error ? 'Could not confirm the student account for bootcamp progress.' : 'No linked student account was found for bootcamp progress.'}
+        {cards.length > 0 && ' Earlier saved progress is still shown.'}
+        <button type="button" className="ml-2 underline" disabled={refreshing} onClick={retry}>Retry bootcamp progress</button>
+      </div>}
+      {failed.length > 0 && <div role="alert" className="text-xs text-destructive">
+        Could not confirm {failed.map(source => `${source.bootcamp}: ${source.title}`).join(', ')}. This progress view may be incomplete.
+        {cards.length > 0 && ' Earlier saved progress is still shown where available.'}
+        <button type="button" className="ml-2 underline" disabled={refreshing} onClick={retry}>Retry bootcamp progress</button>
+      </div>}
+      {loading && <p role="status" className="text-xs text-muted-foreground">Loading bootcamp progress…</p>}
       <ul className="space-y-2">
         {cards.map(({ source, row, key }) => (
           <LessonCard key={key} source={source} row={row} />

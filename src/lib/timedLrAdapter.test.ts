@@ -43,6 +43,23 @@ beforeEach(() => {
 });
 
 describe('inactive LR v1 adapter', () => {
+  it('accepts an empty start-leg checkpoint with actual PostgreSQL offset/microsecond timestamps', async () => {
+    saved = { id: recordId, user_id: owner, pool_slug: source, completion_id: source, data_version: 2, question_queue: qids,
+      current_index: 0, attempts: [], status: 'in_progress', elapsed_ms: 0, timer_mode: 'custom', timer_custom_minutes: 35,
+      started_at: '2026-09-30T14:20:06.454027+00:00', updated_at: '2026-09-30T14:20:06.454027+00:00' };
+    const view = (await create().load())!;
+    expect(view.session.current_index).toBe(0); expect(view.session.attempts).toEqual([]); expect(view.questionStates).toEqual([]);
+    expect(view.session.started_at).toBe('2026-09-30T14:20:06.454Z');
+    expect(saved.started_at).toBe('2026-09-30T14:20:06.454027+00:00');
+    saved.updated_at = '2026-09-30T09:20:06.454027-05:00';
+    expect((await create().load())!.session.updated_at).toBe('2026-09-30T14:20:06.454Z');
+    saved.updated_at = 'invalid-account-timestamp';
+    await expect(create().load()).rejects.toMatchObject({ kind: 'contract' });
+    saved.updated_at = '2026-02-30T10:00:00+00:00';
+    await expect(create().load()).rejects.toMatchObject({ kind: 'contract' });
+    saved.updated_at = '2026-09-30T14:20:06';
+    await expect(create().load()).rejects.toMatchObject({ kind: 'contract' });
+  });
   it('restores the exact PracticeSession queue, flags, switch count, regulation mark and lease clock with real loader normalization', async () => {
     const view = (await create().load())!;
     expect(view.session.question_queue).toEqual(qids); expect(view.session.current_index).toBe(1); expect(view.session.elapsed_ms).toBe(6000);

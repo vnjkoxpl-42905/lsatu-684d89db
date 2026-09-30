@@ -46,9 +46,9 @@ import {
 } from "@/lib/practiceTest";
 import {
   abandonAccountPracticeTestRun,
-  createAccountPracticeTestRun,
   listAccountPracticeTestRuns,
 } from "@/lib/practiceTestStore";
+import { prepareOfficialPracticeTest } from '@/lib/timedPracticeTestEntry';
 import { practiceTestPath } from "@/lib/practiceTestRunner";
 import { PracticeExamsNav } from "./PracticeExamsNav";
 import { listPracticeSectionAttempts, type PracticeSectionAttempt } from "@/lib/practiceSectionAttempts";
@@ -368,7 +368,7 @@ export function ResumeList({
                     }}
                     aria-label={`Yes, discard the unfinished PrepTest ${run.pt} exam`}
                   >
-                    Discard
+                    {run.timedContractVersion != null ? 'Manage' : 'Discard'}
                   </Button>
                   <Button
                     ref={keepRef}
@@ -396,10 +396,10 @@ export function ResumeList({
                     size="sm"
                     variant="ghost"
                     className="min-h-[44px]"
-                    onClick={() => setConfirming(run.id)}
-                    aria-label={`Discard the unfinished PrepTest ${run.pt} exam`}
+                    onClick={() => run.timedContractVersion != null ? onResume(run) : setConfirming(run.id)}
+                    aria-label={run.timedContractVersion != null ? `Manage PrepTest ${run.pt}` : `Discard the unfinished PrepTest ${run.pt} exam`}
                   >
-                    Discard
+                    {run.timedContractVersion != null ? 'Manage' : 'Discard'}
                   </Button>
                 </div>
               )}
@@ -503,10 +503,10 @@ export default function TestingCentre() {
     if (!user) return;
     setActionError(null);
     try {
-      const run = await createAccountPracticeTestRun(user.id, blueprint, pace, sectionSeconds);
-      navigate(practiceTestPath(run.id));
-    } catch {
-      setActionError("This exam could not be saved to your account. Try again before starting.");
+      const runId = await prepareOfficialPracticeTest(user.id, blueprint.pt, pace, sectionSeconds);
+      navigate(practiceTestPath(runId));
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "This exam is unavailable. Try again before starting.");
     }
   };
 
@@ -514,6 +514,7 @@ export default function TestingCentre() {
     if (!user) return;
     setActionError(null);
     try {
+      if (run.timedContractVersion != null) { navigate(practiceTestPath(run.id)); return; }
       await abandonAccountPracticeTestRun(user.id, run);
       await runsQuery.refetch();
     } catch {

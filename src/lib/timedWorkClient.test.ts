@@ -277,3 +277,30 @@ describe('durable authenticated timed-work transport', () => {
     expect(unsupported.readPending()).toBeNull();
   });
 });
+
+
+describe('protected question-state and RC analysis contract', () => {
+  it('retains unanswered LR question states under the same command after reply loss', async () => {
+    const payload = { currentIndex: 0, answers: [], questionStates: [{ qid: 'q2', timeMs: 300, flagged: true, eliminations: ['A' as const, 'B' as const] }] };
+    const pending = await client.prepare('checkpoint', payload, 'device-1', state());
+    rpc.mockImplementation(async name => { if (name.includes('capability')) return { data: capability, error: null }; throw new Error('lost'); });
+    await expect(client.retry()).rejects.toMatchObject({ kind: 'transport' });
+    expect(create().readPending()).toEqual(pending);
+    expect(pending.payload).toEqual(payload);
+  });
+  it.each([
+    [{ qid: 'foreign', timeMs: 1, flagged: false, eliminations: [] }],
+    [{ qid: 'q2', timeMs: -1, flagged: false, eliminations: [] }],
+    [{ qid: 'q2', timeMs: 1, flagged: false, eliminations: ['A', 'A'] }],
+    [{ qid: 'q2', timeMs: 1, flagged: false, eliminations: [] }, { qid: 'q2', timeMs: 2, flagged: false, eliminations: [] }],
+  ])('rejects invalid or duplicate LR state before persisting (%j)', async questionStates => {
+    await expect(client.prepare('checkpoint', { currentIndex: 0, answers: [], questionStates } as never, 'device-1', state())).rejects.toMatchObject({ kind: 'contract' });
+    expect(client.readPending()).toBeNull();
+  });
+  it('permits optional RC analysis and rejects LR fields for the RC contract', async () => {
+    const rc = state(); const leg = { kind: 'rc', section: 1, questionCount: 2, passageIds: [7] };
+    rc.timed_frozen_legs[0] = leg; rc.legs[0] = leg; (rc.timed_manifest.legs as Record<string, unknown>[])[0] = { ...leg, qids: ['1', '2'], questions: [{ qid: '1' }, { qid: '2' }] };
+    await expect(client.prepare('checkpoint', { currentIndex: 0, answers: [], questionStates: [] } as never, 'device-1', rc)).rejects.toMatchObject({ kind: 'contract' });
+    expect((await client.prepare('close-leg', { analysis: { summary: 'saved' } }, 'device-1', rc)).payload).toEqual({ analysis: { summary: 'saved' } });
+  });
+});

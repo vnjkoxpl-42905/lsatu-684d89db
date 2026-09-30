@@ -48,6 +48,7 @@ const PracticeExamDetail = safeLazy(() => import("./pages/PracticeExamPages").th
 const PracticeExamAttempts = safeLazy(() => import("./pages/PracticeExamPages").then((module) => ({ default: module.PracticeExamAttempts })));
 const PracticeSectionResult = safeLazy(() => import("./pages/PracticeExamPages").then((module) => ({ default: module.PracticeSectionResult })));
 const PracticeTestRunPage = safeLazy(() => import("./pages/PracticeTestRun"));
+const TimedOfficialChildRunner = safeLazy(() => import("./components/testing/TimedOfficialChildRunner"));
 const SectionDirectionsPage = safeLazy(() => import("./pages/SectionDirections"));
 const Auth = safeLazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
@@ -470,6 +471,12 @@ const App = () => {
                       runner stay OUTSIDE the persistent student shell. */}
                   <Route path="/drill" element={
                     <DrillAssignmentGate><DrillLaunchGate><Drill /></DrillLaunchGate></DrillAssignmentGate>
+                  } />
+                  <Route path="/testing/test/:runId/lr/:legIndex" element={
+                    <PracticeTestRunGate><TimedOfficialChildRunner kind="lr" /></PracticeTestRunGate>
+                  } />
+                  <Route path="/testing/test/:runId/rc/:legIndex" element={
+                    <PracticeTestRunGate><TimedOfficialChildRunner kind="rc" /></PracticeTestRunGate>
                   } />
                   {/* Reading Comprehension drilling. Content is static JSON; only
                       progress touches the database. See src/features/rc/CONTEXT.md. */}
