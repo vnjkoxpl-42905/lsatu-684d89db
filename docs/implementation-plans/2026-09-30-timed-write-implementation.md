@@ -2,7 +2,7 @@
 
 Date: 2026-09-30
 
-Status: **Implementation design only. No SQL, RPC, frontend switch, or backend deployment is implemented by this document.** Ticket #167 remains open. This expands [the proposed timed-write contract](2026-09-30-timed-write-contract.md); that contract's live metadata evidence and deployment approval requirements still apply.
+Status: **An inactive phase-1 control foundation SQL draft and isolated verification harness are prepared. No public writer RPC, frontend switch, or backend deployment.** See [foundation readiness and limits](2026-09-30-timed-pt-foundation-readiness.md). Ticket #167 remains open. This expands [the proposed timed-write contract](2026-09-30-timed-write-contract.md); that contract's live metadata evidence and deployment approval requirements still apply.
 
 The first backend release should cover PrepTest parent state, LR legs, RC legs, and the break together. Standalone timed LR/RC follows as a separate adoption phase. A parent-only RPC would leave the child-write race intact.
 
