@@ -56,6 +56,8 @@ try {
     create policy pt_runs_owner_update on public.practice_test_runs for update using(user_id=auth.uid()) with check(user_id=auth.uid());
   `);
   await db.exec(await readFile(new URL('../../docs/implementation-plans/artifacts/2026-09-30-timed-pt-control-foundation.sql',import.meta.url),'utf8'));
+  assert.equal((await db.query("select has_schema_privilege('timed_pt_executor','auth','USAGE') as allowed")).rows[0].allowed,false); checks++;
+  assert.equal((await db.query("select has_function_privilege('authenticated','public.timed_pt_actor_v1()','EXECUTE') as allowed")).rows[0].allowed,false); checks++;
   await authenticated(owner);
   await db.query(`insert into public.practice_test_runs(id,user_id,pt,pace,legs,break_after_leg,status)
     values('legacy',$1,140,'standard','[]',2,'in-progress')`,[owner]);

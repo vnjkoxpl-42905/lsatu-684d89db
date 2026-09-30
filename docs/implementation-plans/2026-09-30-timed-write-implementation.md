@@ -2,7 +2,7 @@
 
 Date: 2026-09-30
 
-Status: **An inactive phase-1 control foundation SQL draft and isolated verification harness are prepared. No public writer RPC, frontend switch, or backend deployment.** See [foundation readiness and limits](2026-09-30-timed-pt-foundation-readiness.md). Ticket #167 remains open. This expands [the proposed timed-write contract](2026-09-30-timed-write-contract.md); that contract's live metadata evidence and deployment approval requirements still apply.
+Status: **Inactive PrepTest control, typed writer, child enforcement, server manifest, and local SQL verification artifacts are prepared. No backend deployment or switch of existing frontend writers.** See [writer readiness and limits](2026-09-30-timed-pt-writer-readiness.md) and [the earlier foundation phase](2026-09-30-timed-pt-foundation-readiness.md). Ticket #167 remains open. This expands [the proposed timed-write contract](2026-09-30-timed-write-contract.md); that contract's live metadata evidence and deployment approval requirements still apply.
 
 The first backend release should cover PrepTest parent state, LR legs, RC legs, and the break together. Standalone timed LR/RC follows as a separate adoption phase. A parent-only RPC would leave the child-write race intact.
 

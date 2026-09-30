@@ -148,7 +148,7 @@ export function isRenderableLRQuestion(q: RenderableLRQuestionInput): boolean {
   );
 }
 
-function normalizeQuestionTextFields<T extends {
+export function normalizeQuestionTextFields<T extends {
   questionNumber?: number;
   stimulus?: string;
   questionStem?: string;

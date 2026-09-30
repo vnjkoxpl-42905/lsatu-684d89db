@@ -13,7 +13,18 @@ do $$ begin
     raise exception 'Unsafe timed executor role configuration';
   end if;
 end $$;
-grant usage on schema public, auth to timed_pt_executor;
+grant usage on schema public to timed_pt_executor;
+
+-- Managed postgres has auth USAGE but cannot grant that schema privilege.
+-- Keep this narrow helper owned by the installing migration role (not executor).
+-- It delegates only the actual auth.uid() identity semantic, never a progress
+-- write or caller-supplied actor. Executor callers need no auth schema USAGE.
+create function public.timed_pt_actor_v1() returns uuid
+language sql stable security definer set search_path=pg_catalog,public as $$
+  select auth.uid()
+$$;
+revoke all on function public.timed_pt_actor_v1() from public,anon,authenticated;
+grant execute on function public.timed_pt_actor_v1() to timed_pt_executor;
 
 create function public.timed_pt_leg_definitions_v1(p_legs jsonb) returns jsonb
 language sql immutable strict set search_path = pg_catalog as $$

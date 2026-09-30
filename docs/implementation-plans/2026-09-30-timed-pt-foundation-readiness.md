@@ -2,6 +2,8 @@
 
 Date: 2026-09-30
 
+Later on 2026-09-30, [the inactive writer and child-enforcement draft](2026-09-30-timed-pt-writer-readiness.md) added the next transaction phase. This document records the foundation's narrower validation and remains accurate for that artifact alone.
+
 **Code prepared: phase-1 draft only. Backend deployed: no. Frontend switched: no. Live acceptance verified: no.** Ticket #167 remains open. This implements part of [the timed implementation design](2026-09-30-timed-write-implementation.md), under [the proposed contract](2026-09-30-timed-write-contract.md).
 
 The reviewable SQL is [the control foundation artifact](artifacts/2026-09-30-timed-pt-control-foundation.sql). It lives outside `supabase/migrations` and has not been applied to the managed backend. There are no public create/commit RPCs, adapters, adoption, or historical backfill. Existing frontend writers remain unchanged.
