@@ -1,9 +1,16 @@
-import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Trash2 } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import HubAssignments from '@/components/hub/HubAssignments';
 import { BootcampLessonProgress } from '@/components/teacher/bootcamps/BootcampLessonProgress';
 import { StudentIndicatorLedger } from '@/features/activity-centre/components/StudentIndicatorLedger';
 import { useScopedStudentWork } from '@/hooks/useScopedStudentWork';
 import { useDossier } from './StudentDossier';
+import { useActivityRevocationCapability } from '@/features/activity-centre/hooks/useActivityRevocationCapability';
+import { revokeActivityAssignment } from '@/features/activity-centre/api/activityRevocation';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
 /**
  * Work = every assignment kind for this student in one place.
@@ -15,6 +22,31 @@ import { useDossier } from './StudentDossier';
 export default function DossierWork() {
   const { studentId, openAssign } = useDossier();
   const ownedWork = useScopedStudentWork(studentId);
+  const canRevokeActivity = useActivityRevocationCapability();
+  const qc = useQueryClient();
+  const [pending, setPending] = useState<{ id: string; title: string; studentId: string } | null>(null);
+  const [revoking, setRevoking] = useState(false);
+
+  async function confirmRevocation() {
+    if (!pending || revoking) return;
+    if (pending.studentId !== studentId) { setPending(null); return; }
+    setRevoking(true);
+    try {
+      await revokeActivityAssignment(pending.id, studentId);
+      toast.success('Activity unassigned. Saved work has been kept.');
+      setPending(null);
+      const refreshed = await Promise.allSettled([
+        Promise.resolve().then(() => ownedWork.refresh({ throwOnError: true })),
+        Promise.resolve().then(() => qc.invalidateQueries({ queryKey: ['classroom-items-admin', studentId] }, { throwOnError: true })),
+        Promise.resolve().then(() => qc.invalidateQueries({ queryKey: ['classroom-items', studentId] }, { throwOnError: true })),
+      ]);
+      if (refreshed.some(result => result.status === 'rejected')) {
+        toast.error('Activity unassigned, but the work list could not refresh. Reload to see the updated list.');
+      }
+    } catch (error) {
+      toast.error('Could not confirm Activity unassignment', { description: 'Refresh the work list before retrying.' });
+    } finally { setRevoking(false); }
+  }
 
   return (
     <div className="space-y-4 p-5">
@@ -66,6 +98,15 @@ export default function DossierWork() {
                     <span className="shrink-0 text-[10px] uppercase tracking-wider text-muted-foreground">
                       {row.status.replace('_', ' ')}
                     </span>
+                    {row.sourceTable === 'activity_assignments' && (
+                      <button type="button" disabled={!canRevokeActivity}
+                        aria-label={canRevokeActivity ? `Unassign ${row.title}` : `Unassign ${row.title} unavailable`}
+                        title={canRevokeActivity ? 'Unassign Activity and keep saved work' : 'Activity unassignment is unavailable. The assignment has been kept.'}
+                        onClick={() => setPending({ id: row.refId, title: row.title, studentId })}
+                        className="shrink-0 rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive disabled:opacity-40">
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -77,6 +118,25 @@ export default function DossierWork() {
       </section>
 
       <HubAssignments studentId={studentId} />
+
+      <AlertDialog open={!!pending} onOpenChange={(open) => !open && !revoking && setPending(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unassign from student?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {pending ? `"${pending.title}" will be removed from the student's view. Their saved answers and results will be kept. This can't be undone.` : ''}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={revoking}>Cancel</AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button variant="destructive" disabled={revoking} onClick={(event) => { event.preventDefault(); void confirmRevocation(); }}>
+                {revoking ? 'Removing…' : 'Unassign'}
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Renders nothing when there is no stored progress, so it never adds an
           empty block. */}

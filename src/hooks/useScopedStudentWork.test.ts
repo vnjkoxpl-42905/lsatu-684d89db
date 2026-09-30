@@ -26,6 +26,14 @@ function sources(over: Record<string, unknown> = {}) {
 }
 
 describe('selected-student owned Work projection', () => {
+  it('omits revoked issued sources and their retained mirrors from actionable work', () => {
+    const data = sources({ activities: ready([
+      { id: 'activity-owned', title: 'Revoked', status: 'in_progress', created_at: '2026-09-29T00:00:00Z', revoked_at: '2026-09-30T00:00:00Z' },
+      { id: 'activity-mirrored', title: 'Also revoked', status: 'completed', created_at: '2026-09-29T00:00:00Z', revoked_at: '2026-09-30T00:00:00Z' },
+    ]) });
+    expect(projectScopedOwnedRows(data).rows.map(row => row.refId)).toEqual(['guided-old', 'guided-new']);
+    expect(projectScopedActivityStatuses(data)).toEqual({});
+  });
   it('uses issued Activity source and saved responses instead of classroom mirror status', () => {
     const status = projectScopedActivityStatuses(sources({
       activities: ready([

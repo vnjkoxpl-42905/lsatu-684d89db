@@ -133,6 +133,16 @@ describe("ActivityRunner resume", () => {
     expect(screen.getByText("Statement number 4.")).toBeInTheDocument();
   });
 
+  it("blocks practice on an owned revoked source even when admin reads still return it", async () => {
+    activityState.assignment = { ...makeAssignment("assigned"), revoked_at: "2026-09-30T10:00:00Z", revoked_by: "teacher-1" };
+    renderRouted();
+    expect(await screen.findByText("This Activity is no longer assigned. Your earlier work has been kept.")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^start$/i })).not.toBeInTheDocument();
+    expect(listItemResponses).not.toHaveBeenCalled();
+    expect(markAssignmentStarted).not.toHaveBeenCalled();
+    expect(completeAssignment).not.toHaveBeenCalled();
+  });
+
   it("walks past the homepage once the run has been started", async () => {
     listItemResponses.mockResolvedValue([row(1, 1, "correct")]);
     renderRouted();

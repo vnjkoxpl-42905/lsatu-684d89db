@@ -31,6 +31,8 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { useScopedStudentWork } from '@/hooks/useScopedStudentWork';
+import { useActivityRevocationCapability } from '@/features/activity-centre/hooks/useActivityRevocationCapability';
+import { revokeActivityAssignment } from '@/features/activity-centre/api/activityRevocation';
 
 interface Props {
   studentId: string;
@@ -59,6 +61,7 @@ const TA_STATUS_ICON = {
 };
 
 type PendingDelete =
+  | { kind: 'activity'; id: string; title: string; studentId: string }
   | { kind: 'homework'; id: string; title: string }
   | { kind: 'ta'; id: string; title: string }
   | { kind: 'classroom'; id: string; title: string };
@@ -73,6 +76,7 @@ export default function HubAssignments({ studentId }: Props) {
   const [pending, setPending] = useState<PendingDelete | null>(null);
   const [deleting, setDeleting] = useState(false);
   const ownedWork = useScopedStudentWork(studentId);
+  const canRevokeActivity = useActivityRevocationCapability();
 
   const { data: homework, isLoading: hwLoading, isError: hwError, refetch: refetchHomework } = useQuery<HomeworkRow[]>({
     queryKey: ['hub-homework', studentId],
@@ -97,7 +101,8 @@ export default function HubAssignments({ studentId }: Props) {
     .filter((source): source is string => typeof source === 'string');
 
   const posts = (classroomItems ?? []).filter(
-    (i) => i.type !== 'drill' && i.type !== 'homework',
+    (i) => i.type !== 'drill' && i.type !== 'homework' &&
+      !((i.type === 'activity' || i.source_table === 'activity_assignments') && i.source_id && ownedWork.revokedActivityIds?.includes(i.source_id)),
   );
 
   const hasAny =
@@ -110,7 +115,25 @@ export default function HubAssignments({ studentId }: Props) {
     setDeleting(true);
     try {
       let error: { message: string } | null = null;
-      if (pending.kind === 'homework') {
+      if (pending.kind === 'activity') {
+        if (pending.studentId !== studentId) {
+          toast.error('The selected student changed. Open Unassign again for this student.');
+          setPending(null);
+          return;
+        }
+        await revokeActivityAssignment(pending.id, pending.studentId);
+        toast.success('Activity unassigned. Saved work has been kept.');
+        setPending(null);
+        const refreshed = await Promise.allSettled([
+          Promise.resolve().then(() => ownedWork.refresh({ throwOnError: true })),
+          Promise.resolve().then(() => qc.invalidateQueries({ queryKey: ['classroom-items-admin', studentId] }, { throwOnError: true })),
+          Promise.resolve().then(() => qc.invalidateQueries({ queryKey: ['classroom-items', studentId] }, { throwOnError: true })),
+        ]);
+        if (refreshed.some(result => result.status === 'rejected')) {
+          toast.error('Activity unassigned, but the work list could not refresh. Reload to see the updated list.');
+        }
+        return;
+      } else if (pending.kind === 'homework') {
         const r = await supabase
           .from('homework_assignments')
           .delete()
@@ -147,6 +170,10 @@ export default function HubAssignments({ studentId }: Props) {
         toast.success('Removed from student');
         setPending(null);
       }
+    } catch (error) {
+      toast.error(pending.kind === 'activity' ? 'Could not confirm Activity unassignment' : 'Could not unassign', {
+        description: pending.kind === 'activity' ? 'Refresh the work list before retrying.' : error instanceof Error ? error.message : 'Refresh before retrying.',
+      });
     } finally {
       setDeleting(false);
     }
@@ -262,6 +289,7 @@ export default function HubAssignments({ studentId }: Props) {
           const status = isActivity
             ? ownedWork.activityStatuses[it.source_id ?? ''] ?? 'unverified'
             : it.status;
+          const revokeAvailable = isActivity && canRevokeActivity && !!it.source_id && status !== 'unverified';
           return (
             <Row
               key={it.id}
@@ -276,8 +304,8 @@ export default function HubAssignments({ studentId }: Props) {
                 .filter((x): x is string => !!x)
                 .join(' · ')}
               Icon={Icon}
-              deleteUnavailable={isActivity ? 'Activity unassignment is unavailable. The assignment has been kept.' : undefined}
-              onDelete={isActivity ? undefined : () =>
+              deleteUnavailable={isActivity && !revokeAvailable ? 'Activity unassignment is unavailable. The assignment has been kept.' : undefined}
+              onDelete={isActivity ? (revokeAvailable ? () => setPending({ kind: 'activity', id: it.source_id!, title: it.title || 'this Activity', studentId }) : undefined) : () =>
                 setPending({
                   kind: 'classroom',
                   id: it.id,
@@ -298,7 +326,9 @@ export default function HubAssignments({ studentId }: Props) {
             <AlertDialogTitle>Unassign from student?</AlertDialogTitle>
             <AlertDialogDescription>
               {pending
-                ? `"${pending.title}" will be removed from the student's view immediately. This can't be undone.`
+                ? pending.kind === 'activity'
+                  ? `"${pending.title}" will be removed from the student's view. Their saved answers and results will be kept. This can't be undone.`
+                  : `"${pending.title}" will be removed from the student's view immediately. This can't be undone.`
                 : ''}
             </AlertDialogDescription>
           </AlertDialogHeader>

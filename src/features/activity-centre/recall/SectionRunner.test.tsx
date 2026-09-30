@@ -26,23 +26,33 @@ type Row = Record<string, unknown>;
 const upsert = vi.fn((_rows: Row[]) => Promise.resolve({ error: null }));
 /** The one read: which Attempt is this. */
 const attemptRows = { data: [] as Row[], error: null as unknown };
+const readAttempt = vi.fn(() => Promise.resolve(attemptRows));
+const responseRows = { data: [] as Row[], error: null as unknown };
 const upload = vi.fn(() => Promise.resolve({ error: null }));
 /** The assignment close: `.update(patch).eq("id", id)`. */
-const update = vi.fn((_patch: Row) => Promise.resolve({ error: null }));
+const update = vi.fn((_patch: Row) => Promise.resolve({ data: { id: "a1", status: "completed", completed_at: "2026-09-30T10:00:00Z" }, error: null }));
 /** The fire-and-forget ask for a grade. */
 const invoke = vi.fn((_fn: string, _opts: Row) => Promise.resolve({ data: null, error: null }));
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     from: () => ({
-      upsert: (rows: Row[]) => upsert(rows),
-      update: (patch: Row) => ({ eq: () => update(patch) }),
-      select: () => ({
+      upsert: async (rows: Row[]) => {
+        const result = await upsert(rows);
+        if (!result.error) for (const row of rows) {
+          if (!responseRows.data.some(saved => saved.item_order === row.item_order && saved.attempt_no === row.attempt_no)) responseRows.data.push(row);
+        }
+        return result;
+      },
+      update: (patch: Row) => ({ eq: () => ({ or: () => ({ select: () => ({ maybeSingle: () => update(patch) }) }) }) }),
+      select: (columns: string) => columns === "*" ? {
+        eq: () => ({ eq: () => ({ order: () => ({ order: () => Promise.resolve(responseRows) }) }) }),
+      } : columns.includes("completed_at") ? { eq: () => ({ maybeSingle: () => Promise.resolve({ data: null, error: null }) }) } : ({
         eq: () => ({
-          eq: () => ({ order: () => ({ limit: () => Promise.resolve(attemptRows) }) }),
+          eq: () => ({ order: () => ({ limit: () => readAttempt() }) }),
         }),
       }),
     }),
-    storage: { from: () => ({ upload: () => upload() }) },
+    storage: { from: () => ({ upload: () => upload(), list: () => Promise.resolve({ data: [{ id: "audio", name: "a1.webm" }, { id: "audio2", name: "a1-a2.webm" }, { id: "audio3", name: "a1-a3.webm" }], error: null }) }) },
     functions: { invoke: (fn: string, opts: Row) => invoke(fn, opts) },
   },
 }));
@@ -140,8 +150,13 @@ beforeEach(() => {
   grantMicrophone();
   upsert.mockClear();
   attemptRows.data = [];
+  attemptRows.error = null;
+  readAttempt.mockReset().mockImplementation(() => Promise.resolve(attemptRows));
+  responseRows.data = [];
+  responseRows.error = null;
   upload.mockClear();
   update.mockClear();
+  localStorage.removeItem("rrc:completion:s1:a1");
   invoke.mockClear();
 });
 
@@ -266,6 +281,76 @@ describe("what she never sees", () => {
 });
 
 describe("writing it down", () => {
+  it("shows truthful loading while section history is pending, before microphone or countdown", async () => {
+    let resolveHistory: (value: typeof attemptRows) => void;
+    readAttempt.mockImplementationOnce(() => new Promise(resolve => { resolveHistory = resolve; }));
+    await renderRun();
+    expect(screen.getByRole("status")).toHaveTextContent("Loading your section history. Recording has not started.");
+    expect(navigator.mediaDevices.getUserMedia).not.toHaveBeenCalled();
+    expect(screen.queryByText(/recording now/i)).not.toBeInTheDocument();
+    await act(async () => { resolveHistory(attemptRows); });
+    expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledTimes(1);
+  });
+  it("blocks microphone start and retries a failed history read without guessing attempt 1", async () => {
+    attemptRows.error = new Error("offline");
+    const { onComplete } = await renderRun();
+    await vi.waitFor(() => expect(screen.getByRole("button", { name: "Retry loading" })).toBeInTheDocument());
+    expect(navigator.mediaDevices.getUserMedia).not.toHaveBeenCalled();
+    expect(upload).not.toHaveBeenCalled();
+    attemptRows.error = null;
+    attemptRows.data = [{ attempt_no: 1 }];
+    fireEvent.click(screen.getByRole("button", { name: "Retry loading" }));
+    await act(async () => {});
+    finish(1);
+    await vi.waitFor(() => expect(onComplete).toHaveBeenCalledTimes(1));
+    expect(responseRows.data[0].attempt_no).toBe(2);
+  });
+
+  it("does not accept an ignored duplicate row belonging to another recording", async () => {
+    responseRows.data = [{ assignment_id: "a1", student_id: "s1", item_order: 1, attempt_no: 1, rrc: { audio_path: "old.webm" } }];
+    const { onComplete } = await renderRun();
+    finish(1);
+    await vi.waitFor(() => expect(screen.getByRole("button", { name: "Retry saving" })).toBeInTheDocument());
+    expect(update).not.toHaveBeenCalled();
+    expect(onComplete).not.toHaveBeenCalled();
+    expect(invoke).not.toHaveBeenCalled();
+  });
+
+  it("holds the report on denied completion and retries status without replaying evidence", async () => {
+    update.mockResolvedValueOnce({ data: null, error: { message: "offline" } });
+    const { onComplete } = await renderRun();
+    finish(1);
+    await vi.waitFor(() => expect(screen.getByRole("button", { name: "Retry saving" })).toBeInTheDocument());
+    expect(onComplete).not.toHaveBeenCalled();
+    expect(invoke).not.toHaveBeenCalled();
+    const writes = upsert.mock.calls.length;
+    expect(localStorage.getItem("rrc:completion:s1:a1")).not.toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Retry saving" }));
+    await vi.waitFor(() => expect(onComplete).toHaveBeenCalledTimes(1));
+    expect(update).toHaveBeenCalledTimes(2);
+    expect(upload).toHaveBeenCalledTimes(1);
+    expect(upsert).toHaveBeenCalledTimes(writes);
+    expect(localStorage.getItem("rrc:completion:s1:a1")).toBeNull();
+  });
+
+  it("treats a zero-row completion acknowledgment as a failed closeout", async () => {
+    update.mockResolvedValueOnce({ data: null, error: null });
+    const { onComplete } = await renderRun();
+    finish(1);
+    await vi.waitFor(() => expect(screen.getByRole("button", { name: "Retry saving" })).toBeInTheDocument());
+    expect(onComplete).not.toHaveBeenCalled();
+    expect(invoke).not.toHaveBeenCalled();
+  });
+
+  it("does not complete when final response persistence fails", async () => {
+    upsert.mockResolvedValue({ error: { message: "offline" } });
+    const { onComplete } = await renderRun();
+    finish(1);
+    await vi.waitFor(() => expect(screen.getByText(/answer did not reach us/i)).toBeInTheDocument());
+    expect(update).not.toHaveBeenCalled();
+    expect(onComplete).not.toHaveBeenCalled();
+    upsert.mockResolvedValue({ error: null });
+  });
   it("writes nothing until the section is over", async () => {
     await renderRun();
     // A dropped connection must not be able to stall her mid-section, so there
@@ -322,14 +407,13 @@ describe("writing it down", () => {
     }
   });
 
-  it("still closes the run when the rows could not be written", async () => {
+  it("closes the run after the backstop recovers a failed first row write", async () => {
     upsert.mockImplementationOnce(() => Promise.resolve({ error: { message: "nope" } }));
     await renderRun();
     space();
     space();
 
-    // `status` answers "did she do the work", and she did. A failure to store
-    // our evidence of it is ours, and must not leave her run looking abandoned.
+    // The first write failed; the final backstop succeeds before closeout.
     await vi.waitFor(() => expect(update).toHaveBeenCalledTimes(1));
     expect(update.mock.calls[0][0].status).toBe("completed");
   });

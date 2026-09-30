@@ -314,6 +314,9 @@ export interface Activity {
  * needed the same data, and the shared type is what made the waste invisible.
  */
 export interface ActivityAssignmentSummary {
+  /** Absent until source revocation is installed; independent of progress. */
+  revoked_at?: string | null;
+  revoked_by?: string | null;
   /** Section mode fields, so a list can tell an Attempt from other work. */
   mode?: ActivityMode | null;
   source_section?: string | null;
@@ -343,6 +346,8 @@ export interface ActivityAssignmentSummary {
 
 /** A row of `activity_assignments` (per-student snapshot). */
 export interface ActivityAssignment {
+  revoked_at?: string | null;
+  revoked_by?: string | null;
   id: string;
   activity_id: string | null;
   student_id: string;

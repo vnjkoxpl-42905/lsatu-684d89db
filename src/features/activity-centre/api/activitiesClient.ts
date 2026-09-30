@@ -14,6 +14,7 @@ import type {
 import type { RunScore } from "../progress";
 import type { SectionGrade, SectionGradeStub } from "./types";
 import type { Accommodation } from "../recall/section";
+import { activityRevocationAvailable } from "./activityRevocation";
 
 // Thin data layer for the Activity Centre. The jsonb columns (instructions,
 // items) come back from PostgREST as `Json`; we cast them to the domain shapes
@@ -47,9 +48,12 @@ const SUMMARY_COLUMNS =
 export async function listStudentAssignments(
   studentId: string,
 ): Promise<ActivityAssignmentSummary[]> {
+  // Current backend lacks these columns. An admin-only installed capability
+  // confirms that it is safe to name them; students rely on source SELECT RLS.
+  const revocationColumns = await activityRevocationAvailable() ? ",revoked_at,revoked_by" : "";
   const { data, error } = await supabase
     .from("activity_assignments")
-    .select(`${SUMMARY_COLUMNS},item_count`)
+    .select(`${SUMMARY_COLUMNS},item_count${revocationColumns}`)
     .eq("student_id", studentId)
     .order("created_at", { ascending: false });
   if (!error) return ((data ?? []) as unknown as Record<string, unknown>[]).map(toSummary);
@@ -60,7 +64,7 @@ export async function listStudentAssignments(
   if (!isUnknownColumn(error)) throw error;
   const fallback = await supabase
     .from("activity_assignments")
-    .select(`${SUMMARY_COLUMNS},items`)
+    .select(`${SUMMARY_COLUMNS},items${revocationColumns}`)
     .eq("student_id", studentId)
     .order("created_at", { ascending: false });
   if (fallback.error) throw fallback.error;
@@ -319,14 +323,27 @@ export async function completeAssignment(assignmentId: string, score: RunScore):
  * either way (ADR 0019). It is written here rather than being left behind.
  */
 export async function completeSectionRun(assignmentId: string): Promise<void> {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("activity_assignments")
     .update({
       status: "completed" satisfies ActivityStatus,
       completed_at: new Date().toISOString(),
     })
-    .eq("id", assignmentId);
+    .eq("id", assignmentId)
+    .or("status.in.(assigned,in_progress),and(status.eq.completed,completed_at.is.null)")
+    .select("id,status,completed_at")
+    .maybeSingle();
   if (error) throw error;
+  if (data) { requireConfirmedCompletion(data, assignmentId); return; }
+  // A lost response may follow a successful write. Read its original
+  // timestamp instead of rewriting an already completed assignment.
+  const { data: existing, error: readError } = await supabase
+    .from("activity_assignments")
+    .select("id,status,completed_at")
+    .eq("id", assignmentId)
+    .maybeSingle();
+  if (readError) throw readError;
+  requireConfirmedCompletion(existing, assignmentId);
 }
 
 /**

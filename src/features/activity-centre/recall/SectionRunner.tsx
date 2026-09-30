@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
-import { completeSectionRun, requestSectionGrading } from "../api/activitiesClient";
+import { listItemResponses, requestSectionGrading } from "../api/activitiesClient";
+import { acknowledgeSectionCompletion, keepSectionCompletion, requireSectionEvidence, requireSectionRecording, type PendingSectionCompletion } from "./sectionCompletion";
 import { SectionStage } from "./SectionStage";
 import { coachNote, hasSeenWalkthrough, markWalkthroughSeen } from "./coach";
 import { useSectionRecorder, type RecordingSegment } from "./useSectionRecorder";
@@ -244,6 +245,34 @@ function RunBody({
   const [unsavedCount, setUnsavedCount] = useState(0);
   /** True only after a real recording has reached storage. */
   const [recordingStored, setRecordingStored] = useState(false);
+  const [completionError, setCompletionError] = useState(false);
+  const [completionBusy, setCompletionBusy] = useState(true);
+  const completionInFlight = useRef(false);
+  const pendingCompletion = useRef<PendingSectionCompletion | null>(null);
+  const reportOpened = useRef(false);
+
+  const closeSavedSection = useCallback(async () => {
+    if (!pendingCompletion.current || completionInFlight.current || reportOpened.current) return;
+    completionInFlight.current = true;
+    setCompletionBusy(true);
+    setCompletionError(false);
+    try {
+      keepSectionCompletion(pendingCompletion.current);
+      const saved = await listItemResponses(assignmentId, studentId);
+      requireSectionEvidence(pendingCompletion.current, saved, run.stimuli.map(item => item.order));
+      await requireSectionRecording(pendingCompletion.current);
+      await acknowledgeSectionCompletion(assignmentId, studentId);
+      reportOpened.current = true;
+      void requestSectionGrading(assignmentId);
+      onComplete?.();
+    } catch (error) {
+      console.error("[rrc] could not close the assignment", error);
+      setCompletionError(true);
+    } finally {
+      completionInFlight.current = false;
+      setCompletionBusy(false);
+    }
+  }, [assignmentId, studentId, onComplete, run.stimuli]);
   /**
    * This sitting's own name for its local backup.
    *
@@ -376,6 +405,8 @@ function RunBody({
    */
   const attemptNo = useRef<number | null>(null);
   const [attemptReady, setAttemptReady] = useState(false);
+  const [attemptLoadFailed, setAttemptLoadFailed] = useState(false);
+  const [attemptLoadCycle, setAttemptLoadCycle] = useState(0);
   /** Stimuli already handed to the database for their first save. */
   const queued = useRef(0);
   /** Saves still resolving when the section ends. The backstop waits for them before retrying. */
@@ -491,11 +522,12 @@ function RunBody({
    * starts on the first Space has already missed it.
    */
   useEffect(() => {
+    if (!attemptReady) return;
     void startRecording();
     // Mount only. Restarting a recorder mid-section is the one thing the drill
     // forbids outright.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [attemptReady]);
 
   /*
    * A run she leaves has no backup worth keeping.
@@ -682,13 +714,18 @@ function RunBody({
    * every good response in the same request down with it.
    */
   const persistRow = useCallback(async (row: ResponseInsert): Promise<boolean> => {
-    const { error } = await supabase
-      .from("activity_item_responses")
-      .upsert([row], {
-        onConflict: "assignment_id,student_id,item_order,attempt_no",
-        ignoreDuplicates: true,
-      });
-    return !error;
+    try {
+      const { error } = await supabase
+        .from("activity_item_responses")
+        .upsert([row], {
+          onConflict: "assignment_id,student_id,item_order,attempt_no",
+          ignoreDuplicates: true,
+        });
+      return !error;
+    } catch (error) {
+      console.error("[rrc] response write failed", error);
+      return false;
+    }
   }, []);
 
   /**
@@ -708,10 +745,7 @@ function RunBody({
         .eq("student_id", studentId)
         .order("attempt_no", { ascending: false })
         .limit(1);
-      // A failed read must not stop the drill. Attempt 1 is the honest guess
-      // when nothing is known, and a collision on it is caught by the unique
-      // index rather than by overwriting anything.
-      if (error) console.error("[rrc] could not read the attempt number", error);
+      if (error) throw error;
       if (cancelled) return;
       attemptNo.current = (data?.[0]?.attempt_no ?? 0) + 1;
       setAttemptReady(true);
@@ -736,11 +770,14 @@ function RunBody({
         mimeType: getMimeType(),
         startedAt: Date.now(),
       });
-    })();
+    })().catch(error => {
+      console.error("[rrc] could not read the attempt number", error);
+      if (!cancelled) setAttemptLoadFailed(true);
+    });
     return () => {
       cancelled = true;
     };
-  }, [assignmentId, studentId, getMimeType]);
+  }, [assignmentId, studentId, getMimeType, attemptLoadCycle]);
 
   /**
    * Save every stimulus that has finished since the last time this ran.
@@ -930,6 +967,14 @@ function RunBody({
        */
       const finished = await stopRecording();
       const path = audioPath();
+      if (path) {
+        // Capture the finished take before either save can fail. Reload can
+        // recover its backups and verify both account evidence channels.
+        pendingCompletion.current = { assignmentId, studentId, audioPath: path,
+          attemptNo: attemptNo.current ?? 1, itemOrders: records.current.map(row => row.order) };
+        try { keepSectionCompletion(pendingCompletion.current); }
+        catch (error) { console.error("[rrc] could not retain closeout intent", error); }
+      }
       let storedRecording = false;
       if (finished && finished.blob.size > 0 && path) {
         /*
@@ -942,18 +987,16 @@ function RunBody({
          * nothing anywhere saying why. It is a real fault and it is hers to
          * know about, because the recovery needs her to open the section again.
          */
-        let upload = (
-          await supabase.storage
-            .from(RECORDING_BUCKET)
-            .upload(path, finished.blob, { contentType: finished.mimeType, upsert: true })
-        ).error;
+        const uploadRecording = async () => {
+          try {
+            return (await supabase.storage.from(RECORDING_BUCKET)
+              .upload(path, finished.blob, { contentType: finished.mimeType, upsert: true })).error;
+          } catch (error) { return error; }
+        };
+        let upload = await uploadRecording();
         if (upload) {
           console.error("[rrc] could not store the recording; retrying once", upload);
-          upload = (
-            await supabase.storage
-              .from(RECORDING_BUCKET)
-              .upload(path, finished.blob, { contentType: finished.mimeType, upsert: true })
-          ).error;
+          upload = await uploadRecording();
         }
         if (upload) {
           console.error("[rrc] could not store the recording", upload);
@@ -1030,67 +1073,39 @@ function RunBody({
         }
       }
 
-      /*
-       * Close the assignment.
-       *
-       * Deliberately after the rows and deliberately not conditional on them:
-       * `status` is the Classroom's answer to "did she do the work", and she
-       * did, whether or not our write of the evidence succeeded. Left out, an
-       * RRC section stayed `in_progress` for ever -- every run ever done still
-       * reads as unfinished -- because this branch never called the completion
-       * the free-text path calls.
-       *
-       * Logged rather than thrown, like every other failure in this effect. She
-       * has finished twenty unbroken minutes and a write we can retry is not a
-       * thing to hand her at the end of them.
-       */
-      try {
-        await completeSectionRun(assignmentId);
-      } catch (err) {
-        console.error("[rrc] could not close the assignment", err);
-      }
+      // Completion is acknowledged only after the recording and every row
+      // landed. Keep that evidence marker before attempting the status write,
+      // so a lost response or reload can retry closeout without another take.
+      if (missingRows === 0 && storedRecording && path && !cancelled) {
+        pendingCompletion.current = { assignmentId, studentId, audioPath: path,
+          attemptNo: attemptNo.current ?? 1, itemOrders: rows.map(row => row.item_order) };
+        await closeSavedSection();
+      } else if (!cancelled) setCompletionBusy(false);
 
-      /*
-       * Ask for the grade, and genuinely do not wait on it.
-       *
-       * This used to be awaited, which meant the ask's whole round trip stood
-       * between her and the next screen -- and that round trip is the grading
-       * job. On the trial run it was a 504 after two and a half minutes, spent
-       * staring at "Section finished" with a Report Card screen already built
-       * and polling for exactly this result on the other side of it.
-       *
-       * `void` is the fix and the intent: the Report Card polls, and the
-       * sweeper re-drives anything this call missed, so the ask being slow or
-       * lost costs nothing that is not already recovered.
-       */
-      /*
-       * Only when there is something to mark.
-       *
-       * `missingRows === 0` was the whole condition, so a run whose answers
-       * saved and whose AUDIO did not still handed her to the Report Card. The
-       * finished screen had just told her the recording was still on this
-       * computer and to open the section again; `onComplete` replaced that
-       * sentence within a frame with "Marking your run", and three minutes
-       * later with "Still being marked, it will be here when you come back".
-       * None of which was true, and the one instruction that would have
-       * recovered her run was on screen for a few hundred milliseconds.
-       *
-       * The grader refuses a run with no recording, so `storedRecording` is the
-       * honest test for "there is a gradable run": ask for a grade and move her
-       * on only when the audio is actually on the server. Otherwise she stays
-       * here, with the recovery sentence and a way out.
-       */
-      if (missingRows === 0 && storedRecording) {
-        void requestSectionGrading(assignmentId);
-        if (!cancelled) onComplete?.();
-      }
     })();
     return () => {
       cancelled = true;
     };
-  }, [assignmentId, audioPath, buildRow, done, onComplete, persistRow, seconds, stopRecording, studentId, transcript]);
+  }, [assignmentId, audioPath, buildRow, closeSavedSection, done, persistRow, seconds, stopRecording, studentId, transcript]);
 
   const stimulus = run.stimuli[cursor.item];
+
+  if (attemptLoadFailed) return (
+    <div className="ac-section is-finishing"><main className="ac-section-field"><div className="ac-section-paper">
+      <p role="alert">Could not load your section history. Recording has not started.</p>
+      <button type="button" className="ac-section-exit" onClick={() => {
+        setAttemptLoadFailed(false); setAttemptLoadCycle(cycle => cycle + 1);
+      }}>Retry loading</button>
+      {onExit && <button type="button" className="ac-section-exit" onClick={onExit}>Back to the Activity Centre</button>}
+    </div></main></div>
+  );
+
+  if (!attemptReady) return (
+    <div className="ac-section is-finishing"><main className="ac-section-field"><div className="ac-section-paper">
+      <p role="status">Loading your section history. Recording has not started.</p>
+      {onExit && <button type="button" className="ac-section-exit" onClick={onExit}>Back to the Activity Centre</button>}
+    </div></main></div>
+  );
 
   if (done) {
     /*
@@ -1113,7 +1128,11 @@ function RunBody({
               <p className="ac-section-finished">
                 Section finished.
                 <span>
-                  {unsavedCount > 0 && uploadFailed
+                  {completionError
+                    ? "Your section is kept for recovery. Your account has not confirmed all saved evidence and completion. Retry saving to open your Report Card."
+                    : completionBusy
+                      ? "Saving your recording and answers to your account."
+                      : unsavedCount > 0 && uploadFailed
                     ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us. Your recording did not reach us either, so both are still on this computer. Open this section again from the same browser and they will be sent, and then marked.`
                     : unsavedCount > 0 && recordingStored
                       ? `${unsavedCount} ${unsavedCount === 1 ? "answer" : "answers"} did not reach us, but the recording did. Open this section again from the same browser and they will be sent, and then marked.`
@@ -1126,7 +1145,13 @@ function RunBody({
                             : `${run.stimuli.length} stimuli, end to end. Your Report Card comes next.`}
                 </span>
               </p>
-              {(unsavedCount > 0 || !recordingStored) && onExit && (
+              {completionError && (
+                <button type="button" className="ac-section-exit" disabled={completionBusy}
+                  onClick={() => void closeSavedSection()}>
+                  {completionBusy ? "Saving" : "Retry saving"}
+                </button>
+              )}
+              {(completionError || unsavedCount > 0 || !recordingStored) && onExit && (
                 <button type="button" className="ac-section-exit" onClick={onExit}>
                   Back to the Activity Centre
                 </button>

@@ -5,7 +5,6 @@ import { useStudentActivity } from "../hooks/useStudentActivities";
 import {
   assignmentBelongsToAnotherAccount,
   completeAssignment,
-  completeSectionRun,
   getAccommodation,
   listItemResponses,
   markAssignmentStarted,
@@ -31,6 +30,7 @@ import { worldForTitle } from "../worlds/registry";
 import { SectionRunner } from "../recall/SectionRunner";
 import { SectionBriefingPage } from "./SectionBriefingPage";
 import { recoverPendingRecordings, recoverPendingRows } from "../recall/recoverRecordings";
+import { acknowledgeSectionCompletion, readSectionCompletion, requireSectionEvidence, requireSectionRecording } from "../recall/sectionCompletion";
 import type { Accommodation } from "../recall/section";
 import { SectionLibraryPanel } from "./SectionLibraryPanel";
 import { ActivityQuestionStack } from "./ActivityQuestionStack";
@@ -191,6 +191,12 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
     };
   }, [assignmentId, assignment, loading, error]);
 
+  // Ungraded run with no DB writes / score overwrite. True for teacher previews
+  // and for a "Practice again" re-run of a completed activity.
+  const [practice, setPractice] = useState(preview || Boolean(requestedPracticeId));
+  /** No row is written under this run: a practice re-run, a preview, or an admin looking. Saved practice owns a separate row. */
+  const readOnly = practice || viewingSomeoneElse;
+
   /**
    * The attempt log, started at mount rather than after the assignment lands.
    *
@@ -202,7 +208,8 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
    * flight the whole time.
    */
   const logRef = useRef<Promise<Awaited<ReturnType<typeof listItemResponses>>> | null>(null);
-  if (!logRef.current && assignmentId && logStudentId && !preview && !requestedPracticeId) {
+  if (!logRef.current && assignmentId && logStudentId && !preview && !requestedPracticeId &&
+      (!assignment?.revoked_at || readOnly)) {
     logRef.current = listItemResponses(assignmentId, logStudentId);
     // Nothing awaits this until the effect does, and an unhandled rejection in
     // between would surface as a page-level error. The effect still sees it.
@@ -234,11 +241,6 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   const closingRef = useRef(false);
   // The world's entrance plays once per run, on Start, before the first item.
   const [entered, setEntered] = useState(false);
-  // Ungraded run with no DB writes / score overwrite. True for teacher previews
-  // and for a "Practice again" re-run of a completed activity.
-  const [practice, setPractice] = useState(preview || Boolean(requestedPracticeId));
-  /** No row is written under this run: a practice re-run, a preview, or an admin looking. Saved practice owns a separate row. */
-  const readOnly = practice || viewingSomeoneElse;
   /**
    * The item the student stopped ON, mid-attempt, in an earlier sitting: which
    * index it is, how many attempts they had already spent, and what they had
@@ -377,7 +379,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
           throw new Error("Some answers have not reached your account yet.");
         }
       }
-      if (finishedPhase === "report") await completeSectionRun(assignment.id);
+      if (finishedPhase === "report") await acknowledgeSectionCompletion(assignment.id, assignment.student_id);
       else await completeAssignment(assignment.id, scoreFor(outcomes, items.length));
       void syncClassroom("completed");
       setPhase(finishedPhase);
@@ -401,6 +403,10 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   // back through the rules they have already read.
   useEffect(() => {
     if (!assignment || !user || hydrated || hydratingRef.current) return;
+    if (assignment.revoked_at && !readOnly) {
+      setHydrated(true);
+      return;
+    }
     hydratingRef.current = true;
 
     (async () => {
@@ -472,6 +478,25 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
         // Before the runner mounts, so her own goal is the one on screen from
         // the first frame rather than 25 minutes that changes a moment later.
         setAccommodation(await getAccommodation(assignment.student_id));
+        try {
+          const pending = readSectionCompletion(assignment.id, assignment.student_id);
+          if (pending && assignment.mode === "section") {
+            // Read again after recovery, then verify this exact take rather
+            // than combining rows from separate attempts into a finished run.
+            const saved = await listItemResponses(assignment.id, assignment.student_id);
+            requireSectionEvidence(pending, saved, items.map(item => item.order));
+            await requireSectionRecording(pending);
+            await closeAssignment({}, "report");
+            setHydrated(true);
+            return;
+          }
+        } catch (error) {
+          console.error("[rrc:closeout:load] failed", error);
+          setPhase("intro");
+          setProgressLoadFailed(true);
+          setHydrated(true);
+          return;
+        }
       }
 
       const progress = reconstructProgress(items, log);
@@ -504,7 +529,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       // Every item resolved but the run never closed (the tab went away on the
       // last Finish). The work is done; write the completion rather than
       // parking the student on a run with nothing left in it.
-      if (items.length > 0 && progress.resolvedCount >= items.length) {
+      if (!isSectionRun && items.length > 0 && progress.resolvedCount >= items.length) {
         setIndex(items.length - 1);
         // Keep the replayed answers until the account acknowledges closeout.
         // A failed write leaves a retry screen instead of a completion report.
@@ -747,6 +772,15 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
               : `Signed in as ${user.email}.`}
           </p>
         )}
+        {handleLeave && <ActivityExitButton onExit={handleLeave} tone="light" />}
+      </div>
+    );
+  }
+
+  if (assignment.revoked_at && !readOnly) {
+    return (
+      <div className="activity-centre min-h-screen flex flex-col items-center justify-center gap-4 p-6 text-center">
+        <p>This Activity is no longer assigned. Your earlier work has been kept.</p>
         {handleLeave && <ActivityExitButton onExit={handleLeave} tone="light" />}
       </div>
     );

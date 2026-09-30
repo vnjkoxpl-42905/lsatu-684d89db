@@ -3,6 +3,9 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ActivityRunner } from "./ActivityRunner";
 import type { ActivityItemResponse, ActivityStatus } from "../api/types";
+import { keepSectionCompletion } from "../recall/sectionCompletion";
+const storedRecording = vi.hoisted(() => vi.fn().mockResolvedValue({ data: [{ id: "audio-1", name: "saved.webm" }], error: null }));
+vi.mock("@/integrations/supabase/client", () => ({ supabase: { storage: { from: () => ({ list: storedRecording }) } } }));
 
 /**
  * Where a finished Read, Recall, Colour section lands when it is opened again.
@@ -157,6 +160,56 @@ function renderRouted(startSection = false) {
   );
 }
 
+describe("recovering an acknowledged-evidence RRC closeout after reload", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    completeSectionRun.mockReset().mockResolvedValue(undefined);
+    activityState.assignment = makeSectionAssignment("in_progress");
+    activityState.loading = false;
+    activityState.error = null;
+    storedRecording.mockReset().mockResolvedValue({ data: [{ id: "audio-1", name: "saved.webm" }], error: null });
+    keepSectionCompletion({ assignmentId: "assign-1", studentId: "user-1", audioPath: "user-1/assign-1/saved.webm", attemptNo: 1, itemOrders: [1, 2, 3] });
+    listItemResponses.mockReset().mockResolvedValue(sectionRows().map(row => ({ ...row, rrc: { audio_path: "user-1/assign-1/saved.webm" } })));
+  });
+  it("retries closeout before mounting the microphone runner", async () => {
+    renderRouted();
+    await waitFor(() => expect(completeSectionRun).toHaveBeenCalledWith("assign-1"));
+    expect(sectionRunnerProps).not.toHaveBeenCalled();
+    await waitFor(() => expect(localStorage.getItem("rrc:completion:user-1:assign-1")).toBeNull());
+  });
+  it("keeps retry saving on a lost completion response", async () => {
+    completeSectionRun.mockRejectedValueOnce(new Error("lost response"));
+    renderRouted();
+    await waitFor(() => expect(screen.getByRole("button", { name: /retry completion/i })).toBeInTheDocument());
+    expect(sectionRunnerProps).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: /retry completion/i }));
+    await waitFor(() => expect(completeSectionRun).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(localStorage.getItem("rrc:completion:user-1:assign-1")).toBeNull());
+  });
+  it("blocks reopening on a failed evidence read", async () => {
+    listItemResponses.mockResolvedValueOnce(sectionRows()).mockRejectedValueOnce(new Error("offline"));
+    renderRouted();
+    await waitFor(() => expect(screen.getByRole("button", { name: /retry loading/i })).toBeInTheDocument());
+    expect(completeSectionRun).not.toHaveBeenCalled();
+    expect(sectionRunnerProps).not.toHaveBeenCalled();
+    localStorage.removeItem("rrc:completion:user-1:assign-1");
+  });
+  it("does not mix rows from different takes into completion", async () => {
+    listItemResponses.mockResolvedValue(sectionRows());
+    renderRouted();
+    await waitFor(() => expect(screen.getByRole("button", { name: /retry loading/i })).toBeInTheDocument());
+    expect(completeSectionRun).not.toHaveBeenCalled();
+    localStorage.removeItem("rrc:completion:user-1:assign-1");
+  });
+  it("blocks closeout while the recording is absent from account storage", async () => {
+    storedRecording.mockResolvedValue({ data: [], error: null });
+    renderRouted();
+    await waitFor(() => expect(screen.getByRole("button", { name: /retry loading/i })).toBeInTheDocument());
+    expect(completeSectionRun).not.toHaveBeenCalled();
+    localStorage.removeItem("rrc:completion:user-1:assign-1");
+  });
+});
+
 describe("reopening a finished Read, Recall, Colour section", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -190,19 +243,15 @@ describe("reopening a finished Read, Recall, Colour section", () => {
     await waitFor(() => expect(getSectionGrade).toHaveBeenCalledWith("assign-1"));
   });
 
-  /*
-   * The run whose rows all landed but whose completion write did not. It is
-   * finished and must go to the Report Card too -- and it must be closed with
-   * `completeSectionRun`, which writes status alone. `completeAssignment` would
-   * post a score derived from per-item verdicts a section does not have, which
-   * is a fabricated zero on a row the student can write to anyway (ADR 0019).
-   */
-  it("closes an unclosed section without inventing a score for it", async () => {
+  // Historical rows can belong to separate abandoned attempts. Without a
+  // finished-take marker they cannot prove that this section was completed.
+  it("does not treat historical rows without a finished-take marker as closeout evidence", async () => {
     activityState.assignment = makeSectionAssignment("in_progress");
     const { container } = renderRouted();
-    await waitFor(() => expect(completeSectionRun).toHaveBeenCalledWith("assign-1"));
+    await waitFor(() => expect(screen.getAllByRole("button", { name: /start the section/i }).length).toBeGreaterThan(0));
+    expect(completeSectionRun).not.toHaveBeenCalled();
     expect(completeAssignment).not.toHaveBeenCalled();
-    expect(container.querySelector('[data-runner="recall-section-report"]')).toBeTruthy();
+    expect(container.querySelector('[data-runner="recall-section-report"]')).toBeFalsy();
   });
 });
 

@@ -68,3 +68,31 @@ Local browser checks used the existing designated-student Spot the Relationship 
 Independent review found no material defect in this scoped patch. Genuine free-text response/finish was not exercised: generic grading can invoke activity-coach through the Lovable AI gateway and requires immediate credit confirmation. Focused tests cover failed closeout, persisted-log checks and zero-row completion rejection. Final test counts, release gates and production publication are recorded in the build sequence.
 
 RRC SectionRunner is a separate deferred case: it catches completion failure around line 1048 and still opens its report around line 1085. It needs acknowledged closeout with recording/response retention and retry. This slice does not fix that flow or Activity source revocation. Keep #166 and #167 open.
+
+## Next foundation pass: ordinary-authenticated source parity
+
+On 2026-09-30 at 10:20 UTC, the read-only `scripts/verification/scoped-source-audit.mjs` authenticated the designated student and administrator separately using the existing central environment credentials and confirmed the administrator's role. It uses the public app key, no service-role key, and prints no credentials or student record content. Independent review corrected KV identity comparison to include both namespace and record ID, and made network failures explicit even when no error code is returned; the corrected probe passed.
+
+| Source | Student-owned rows | Admin reading that student | Same source IDs | Student reading admin-owned rows | Confirmed admin-owned rows |
+| --- | ---: | ---: | --- | ---: | ---: |
+| Guided assignments | 2 | 2 | Yes | 0 | 1 |
+| Activity assignments | 4 | 4 | Yes | 0 | 13 |
+| Bootcamp KV | 15 | 15 | Yes | 0 | 79 |
+| RC sessions | 9 | 9 | Yes | 0 | 12 |
+| PrepTest runs | 1 | 1 | Yes | 0 | 2 |
+| Classroom items | 9 | 9 | Yes | 0 | 7 |
+
+Every request succeeded. These are positive cross-owner read denials because the admin session confirmed foreign rows existed. The exact owned IDs matched between both authorized reads. This does not prove UI projection, every bootcamp source, assigned-only authorization, denied mutations, teacher mutation attribution, or timed races. Classroom sets may legitimately differ when visibility/unlock policies filter student reads. #166 remains open.
+
+Fresh read-only live catalogs separately confirmed no Activity revocation columns and broad student source UPDATE/response INSERT policies without source-revocation checks. A mirror-only Unassign cannot close those paths. Backend draft and isolated database verification are tracked separately from deployment and production acceptance.
+## Integrated RRC closeout and Activity revocation readiness (2026-09-30)
+
+Final integrated verification: 132 tests across ten files, typecheck, focused changed-file ESLint without errors, production build and diff check passed. Independent review corrected exact-take closeout, completion replay timestamps, stale selected-student mutations, and declaration ordering before release. The build retained existing asset, Tailwind and chunk-size warnings; its canonical-content check scanned 748 output files. Known generated churn was restored.
+
+RRC now retains a student/assignment-scoped finish marker for the exact attempt and recording. Closeout requires all frozen item orders for that same take, a stored audio object, and a matching account completion acknowledgment. A failed closeout retains recovery evidence and offers Retry completion before the report. Reload retries that exact finished take; unrelated older rows cannot supply missing items. Failed or pending attempt-history reads block recording. Idempotent completion readback preserves an existing timestamp; historical completed/null rows require a new verified finished take.
+
+Teacher Activity Unassign is wired to a capability-gated, receipt-validated source RPC in both mirrored and unmirrored Work rows. It freezes the selected student/source, keeps the confirmation open after an unconfirmed response, distinguishes acknowledged success from a subsequent refresh failure, and never falls back to deleting the mirror. Known revoked sources cannot hydrate student recovery or practice. The current live backend has no revocation capability, so these controls remain disabled. The unapplied SQL draft and readiness record are under `docs/implementation-plans/`; 35 isolated PGlite assertions exercise source preservation, ownership, actor attribution, response writes, mirror suppression, and replay. This is not live JWT or multi-client concurrency acceptance. Deployment route confirmation is pending.
+
+Browser evidence: the real local teacher Work page showed the exact selected student's owned and mirrored Activities with disabled controls. Synthetic intercepted capability/source responses enabled one explicitly labeled Activity and its saved-work confirmation; an intercepted 503 showed Could not confirm Activity unassignment / Refresh the work list before retrying and retained the dialog. Separate synthetic RRC recording/response/closeout responses showed Retry completion on failed acknowledgment, then the report after acknowledgment. These were isolated browser responses, not genuine completed or revoked account records. A real blocked RRC history request showed Recording has not started and Retry loading before any submitted recording. All test interceptions, network blocks and local markers were cleared. The original RRC source remained in progress with a null completion timestamp.
+
+Evidence screenshots are in the outer vault's `research/2026-09-30-lsatu-foundation-evidence/`: `rrc-closeout-retry-synthetic-local.png`, `rrc-closeout-ack-synthetic-local.png`, `rrc-history-read-failure-local.png`, `teacher-revocation-gated-local.png`, and `teacher-revocation-unconfirmed-synthetic-local.png`. A genuine graded Activity task walk requires immediate possible-credit approval. The atomic timed-write design remains a separate backend implementation/adoption phase; no atomic writer is active. #166 and #167 remain open.

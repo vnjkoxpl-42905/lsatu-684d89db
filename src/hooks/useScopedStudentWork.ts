@@ -12,7 +12,7 @@ export function projectScopedActivityStatuses(sources: OwnedSources): Record<str
   const { activities, activityEvidence } = sources;
   if (activities.state !== 'ready' || activityEvidence?.state !== 'ready') return {};
   const savedResponses = activityEvidence.data;
-  return Object.fromEntries(activities.data.map((row) => [
+  return Object.fromEntries(activities.data.filter((row) => !row.revoked_at).map((row) => [
     row.id, activityWorkStatus(row, savedResponses.has(row.id)),
   ]));
 }
@@ -32,8 +32,11 @@ export function projectScopedOwnedRows(sources: OwnedSources): {
   ].filter((name): name is string => typeof name === 'string');
 
   const ownedGuided = guided.state === 'ready' ? guided.data : [];
-  const ownedActivities = activities.state === 'ready' ? activities.data : [];
-  const classroomItems = items.state === 'ready' ? items.data : [];
+  const allActivities = activities.state === 'ready' ? activities.data : [];
+  const revokedIds = new Set(allActivities.filter((row) => row.revoked_at).map((row) => row.id));
+  const ownedActivities = allActivities.filter((row) => !row.revoked_at);
+  const classroomItems = (items.state === 'ready' ? items.data : []).filter((item) =>
+    !((item.type === 'activity' || item.source_table === 'activity_assignments') && item.source_id && revokedIds.has(item.source_id)));
   const ownedIds = new Set([
     ...ownedGuided.map((row) => `guided_drill_assignments:${row.id}`),
     ...ownedActivities.map((row) => `activity_assignments:${row.id}`),
@@ -73,6 +76,8 @@ export function useScopedStudentWork(selectedStudentId?: string | null) {
     resolution,
     rows: scope ? projected.rows : [],
     activityStatuses: scope && query.data && !query.error ? projectScopedActivityStatuses(query.data) : {},
+    revokedActivityIds: scope && query.data?.activities.state === 'ready'
+      ? query.data.activities.data.filter((row) => row.revoked_at).map((row) => row.id) : [],
     failedSources: scope ? projected.failedSources : [],
     loading: resolution.state === 'loading' || (!!scope && query.isPending),
     error: query.error,
