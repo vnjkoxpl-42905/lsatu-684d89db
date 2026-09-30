@@ -271,6 +271,29 @@ export function ClassroomItemView() {
     );
   }
 
+  if (
+    NOTE_TYPES.has(item.type) &&
+    item.content_html?.includes('<meta name="lsatu-interactive-lesson"')
+  ) {
+    return (
+      <div className="w-full">
+        <button
+          type="button"
+          className="classroom-button mb-4"
+          onClick={() => navigate("/classroom/recaps")}
+        >
+          Back to notes
+        </button>
+        <iframe
+          title={`${item.title} interactive lesson`}
+          srcDoc={item.content_html}
+          sandbox="allow-scripts allow-forms"
+          className="block w-full min-h-[calc(100dvh-7rem)] border-0"
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       {/* `item.type.replace(/_/g," ")` printed the raw column value, so students
