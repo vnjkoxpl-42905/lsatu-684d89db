@@ -6,6 +6,13 @@ const dependencies = vi.hoisted(() => ({
   resolveGuidedDrillQidsForLevel: vi.fn(),
   getLocalGuidedDrillBySlug: vi.fn(),
   loadGuidedDrillSession: vi.fn(),
+  listStandaloneDrillRuns: vi.fn(),
+  loadStandaloneDrillRun: vi.fn(),
+}));
+
+vi.mock('@/lib/drillRunLedger', () => ({
+  listStandaloneDrillRuns: dependencies.listStandaloneDrillRuns,
+  loadStandaloneDrillRun: dependencies.loadStandaloneDrillRun,
 }));
 
 vi.mock('@/lib/guidedDrills', () => ({
@@ -31,6 +38,8 @@ import { resolveDrillLaunch } from './drillLaunchResolve';
 describe('resolving an identity-named guided run', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    dependencies.listStandaloneDrillRuns.mockResolvedValue([]);
+    dependencies.loadStandaloneDrillRun.mockResolvedValue(null);
     dependencies.getGuidedDrill.mockResolvedValue({
       id: 'gd_7',
       slug: 'parallel-flaw',
@@ -76,6 +85,7 @@ describe('resolving an identity-named guided run', () => {
   it('resolves an assigned guided drill through its guided assignment row', async () => {
     const assignment = {
       id: 'asg_1',
+      student_id: 'user_1',
       question_count: 4,
       guided_drill: {
         id: 'gd_7',
@@ -106,5 +116,72 @@ describe('resolving an identity-named guided run', () => {
       drill: assignment.guided_drill,
       assignment,
     });
+  });
+
+  it('restores the latest answered owned sitting before an empty current pool', async () => {
+    dependencies.listStandaloneDrillRuns.mockResolvedValue([{
+      source_key: 'guided::drill:gd_7',
+      session: { status: 'in_progress', question_queue: ['frozen-q1', 'frozen-q2'], attempts: [{}] },
+    }]);
+    dependencies.resolveGuidedDrillQidsForLevel.mockReturnValue({ qids: [], warning: 'empty' });
+    await expect(resolveDrillLaunch({ kind: 'guided-drill', drillId: 'gd_7' }, 'user_1'))
+      .resolves.toEqual(['frozen-q1', 'frozen-q2']);
+    expect(dependencies.resolveGuidedDrillQidsForLevel).not.toHaveBeenCalled();
+    expect(dependencies.loadGuidedDrillSession).not.toHaveBeenCalled();
+  });
+
+  it('restores an explicitly requested sitting without drawing or selecting another sitting', async () => {
+    dependencies.loadStandaloneDrillRun.mockResolvedValue({
+      source_key: 'guided::drill:gd_7',
+      session: { status: 'in_progress', question_queue: ['requested-q'], attempts: [] },
+    });
+    await expect(resolveDrillLaunch({ kind: 'guided-drill', drillId: 'gd_7' }, 'user_1', 'run_1'))
+      .resolves.toEqual(['requested-q']);
+    expect(dependencies.loadStandaloneDrillRun).toHaveBeenCalledWith('user_1', 'run_1');
+    expect(dependencies.listStandaloneDrillRuns).not.toHaveBeenCalled();
+  });
+
+  it.each([null, { source_key: 'guided::other-assignment', session: { question_queue: ['wrong-q'] } }])(
+    'refuses missing or other-source requested sittings without a fresh draw', async (run) => {
+      dependencies.loadStandaloneDrillRun.mockResolvedValue(run);
+      await expect(resolveDrillLaunch({ kind: 'guided-drill', drillId: 'gd_7' }, 'user_1', 'run_1'))
+        .rejects.toThrow('could not be found in your account');
+      expect(dependencies.resolveGuidedDrillQidsForLevel).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each([null, { student_id: 'other-user', guided_drill: { id: 'gd_7' } }])(
+    'checks the current assignment before reading saved sittings', async (assignment) => {
+      dependencies.getAssignment.mockResolvedValue(assignment);
+      await expect(resolveDrillLaunch({ kind: 'guided-drill', assignmentId: 'asg_1' }, 'user_1', 'run_1'))
+        .rejects.toThrow('not available in your account');
+      expect(dependencies.loadStandaloneDrillRun).not.toHaveBeenCalled();
+    },
+  );
+
+  it('does not restore saved questions when the source drill was removed', async () => {
+    dependencies.getGuidedDrill.mockResolvedValue(null);
+    dependencies.getLocalGuidedDrillBySlug.mockReturnValue(null);
+    await expect(resolveDrillLaunch({ kind: 'guided-drill', drillId: 'gd_7' }, 'user_1', 'run_1'))
+      .rejects.toThrow('no longer exists');
+    expect(dependencies.loadStandaloneDrillRun).not.toHaveBeenCalled();
+  });
+
+  it('does not revive a legacy queue superseded by an acknowledged completion', async () => {
+    const session = { question_queue: ['legacy-q'], attempts: [{ qid: 'legacy-q', selected_answer: 'A' }] };
+    dependencies.listStandaloneDrillRuns.mockResolvedValue([{
+      source_key: 'guided::drill:gd_7', session: { ...session, status: 'completed' },
+    }]);
+    dependencies.loadGuidedDrillSession.mockResolvedValue({ ...session, status: 'in_progress' });
+    dependencies.resolveGuidedDrillQidsForLevel.mockReturnValue({ qids: ['fresh-q'], warning: null });
+    await expect(resolveDrillLaunch({ kind: 'guided-drill', drillId: 'gd_7' }, 'user_1'))
+      .resolves.toEqual(['fresh-q']);
+  });
+
+  it('rejects assignment and drill identity disagreement before reading the sitting', async () => {
+    dependencies.getAssignment.mockResolvedValue({ student_id: 'user_1', guided_drill: { id: 'gd_other' } });
+    await expect(resolveDrillLaunch({ kind: 'guided-drill', drillId: 'gd_7', assignmentId: 'asg_1' }, 'user_1', 'run_1'))
+      .rejects.toThrow('does not match');
+    expect(dependencies.loadStandaloneDrillRun).not.toHaveBeenCalled();
   });
 });

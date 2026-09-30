@@ -24,6 +24,7 @@ import {
   loadDrillResumeSession,
 } from '@/lib/drillResumeSession';
 import { getRecentExposureSet } from '@/lib/questionExposure';
+import { listStandaloneDrillRuns, loadStandaloneDrillRun } from '@/lib/drillRunLedger';
 import {
   getAssignment,
   getGuidedDrill,
@@ -37,6 +38,7 @@ import {
 } from '@/lib/guidedDrillsLocal';
 import {
   guidedSessionKey,
+  isLegacyGuidedSessionSuperseded,
   loadGuidedDrillSession,
 } from '@/lib/guidedDrillSession';
 
@@ -51,6 +53,7 @@ export class DeadDrillLinkError extends DrillLaunchError {
 export async function resolveDrillLaunch(
   launch: DrillLaunch,
   userId: string | undefined,
+  requestedRunId?: string | null,
 ): Promise<string[] | undefined> {
   if (!launchNeedsResolution(launch)) return undefined;
 
@@ -143,12 +146,21 @@ export async function resolveDrillLaunch(
     }
 
     case 'guided-drill': {
+      if (requestedRunId && !userId) {
+        throw new DeadDrillLinkError('Sign in to open your saved guided drill.');
+      }
       let assignment: (GuidedDrillAssignment & { guided_drill?: GuidedDrill }) | null = null;
       let drill: GuidedDrill | null = null;
 
       if (launch.assignmentId) {
         assignment = (await getAssignment(launch.assignmentId)) as typeof assignment;
+        if (!userId || assignment?.student_id !== userId) {
+          throw new DeadDrillLinkError('That guided assignment is not available in your account.');
+        }
         drill = assignment?.guided_drill ?? null;
+        if (launch.drillId && drill?.id !== launch.drillId) {
+          throw new DeadDrillLinkError('That guided assignment does not match this drill.');
+        }
       } else if (launch.drillId) {
         drill = await getGuidedDrill(launch.drillId);
         if (!drill) drill = getLocalGuidedDrillBySlug(launch.drillId);
@@ -175,11 +187,29 @@ export async function resolveDrillLaunch(
         const legacyKey = launch.assignmentId
           ? null
           : guidedSessionKey({ slug: drill.slug });
+        // The current filter describes a new sitting, not the frozen questions
+        // already acknowledged in this account. Read the source first above,
+        // then its owned sitting before attempting another pool draw.
+        const runs = requestedRunId ? [] : await listStandaloneDrillRuns(userId);
+        const run = requestedRunId
+          ? await loadStandaloneDrillRun(userId, requestedRunId)
+          : runs.find((row) => row.source_key === currentKey &&
+              row.session.status === 'in_progress' && row.session.attempts.length > 0);
+        if ((requestedRunId && !run) || (run && run.source_key !== currentKey)) {
+          throw new DeadDrillLinkError('This guided drill sitting could not be found in your account.');
+        }
+        if (run?.session.question_queue.length) return run.session.question_queue;
+        if (requestedRunId) {
+          throw new DeadDrillLinkError('This saved guided drill has no questions.');
+        }
         const stored = await loadGuidedDrillSession(userId, currentKey, legacyKey);
         if (
           stored?.status === 'in_progress' &&
           stored.question_queue.length > 0 &&
-          stored.attempts.length > 0
+          stored.attempts.length > 0 &&
+          !isLegacyGuidedSessionSuperseded(stored,
+            runs.filter((row) => row.source_key === currentKey && row.session.status === 'completed')
+              .map((row) => row.session))
         ) {
           return stored.question_queue;
         }

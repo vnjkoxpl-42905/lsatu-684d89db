@@ -156,10 +156,13 @@ export interface PracticeSessionSnapshot {
  * Read the stored session for one pool. Returns null when there is nothing to
  * resume, when the row is corrupt, or when persistence is unavailable — all of
  * which mean "start fresh", never "block the student".
+ * Official section recovery opts into readOnly so a migration cannot publish
+ * device state before its active-device and account-save gates acknowledge it.
  */
 export async function loadPracticeSession(
   userId: string,
   poolSlug: string,
+  options: { readOnly?: boolean } = {},
 ): Promise<PracticeSession | null> {
   if (!userId || !poolSlug) return null;
   try {
@@ -178,7 +181,7 @@ export async function loadPracticeSession(
       return null;
     }
     const migrated = migratePracticeSession(parsed.data);
-    if (migrated !== parsed.data) {
+    if (migrated !== parsed.data && !options.readOnly) {
       try {
         await persist.set(TABLES.practice_sessions, migrated.id, migrated);
       } catch (error) {

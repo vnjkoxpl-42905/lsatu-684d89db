@@ -106,6 +106,8 @@ export default function DrillLaunchGate({ children }: Props) {
   // Stable name for this run. The rewrite below produces the same key, which is
   // what stops the effect from resolving the same launch a second time.
   const launchKey = React.useMemo(() => (launch ? launchDrill(launch) : null), [launch]);
+  const requestedGuidedRunId = launch?.kind === 'guided-drill' ? searchParams.get('run') : null;
+  const resolutionKey = `${user?.id ?? ''}:${launchKey ?? ''}:${requestedGuidedRunId ?? ''}`;
 
   const needsResolution = !!launch && launchNeedsResolution(launch);
   const waitsForQuestionBank =
@@ -121,13 +123,16 @@ export default function DrillLaunchGate({ children }: Props) {
   React.useEffect(() => {
     if (!launch || !launchKey) return;
     if (!needsResolution) return;
-    if (resolved?.key === launchKey) return;
+    if (resolved?.key === resolutionKey) return;
     if (waitsForQuestionBank && questionBankLoading) return;
     let cancelled = false;
+    setFailure(null);
 
     const run = async () => {
       try {
-        const qids = await resolveDrillLaunch(launch, user?.id);
+        const qids = requestedGuidedRunId
+          ? await resolveDrillLaunch(launch, user?.id, requestedGuidedRunId)
+          : await resolveDrillLaunch(launch, user?.id);
 
         if (launch.kind === 'bootcamp-day' && user?.id && qids?.length) {
           void recordExposures(user.id, qids).catch((error) => {
@@ -136,7 +141,7 @@ export default function DrillLaunchGate({ children }: Props) {
         }
 
         if (cancelled) return;
-        setResolved({ key: launchKey, spec: drillRunSpecFromLaunch(launch, qids) });
+        setResolved({ key: resolutionKey, spec: drillRunSpecFromLaunch(launch, qids) });
       } catch (error) {
         if (cancelled) return;
         setFailure(
@@ -154,6 +159,8 @@ export default function DrillLaunchGate({ children }: Props) {
   }, [
     launch,
     launchKey,
+    resolutionKey,
+    requestedGuidedRunId,
     needsResolution,
     resolved?.key,
     waitsForQuestionBank,
@@ -173,7 +180,7 @@ export default function DrillLaunchGate({ children }: Props) {
     );
   }, [namedInUrl, launchKey, searchParams, navigate]);
 
-  const spec = syncSpec ?? (resolved?.key === launchKey ? resolved.spec : null);
+  const spec = syncSpec ?? (resolved?.key === resolutionKey ? resolved.spec : null);
 
   if (failure || parseError) {
     return (

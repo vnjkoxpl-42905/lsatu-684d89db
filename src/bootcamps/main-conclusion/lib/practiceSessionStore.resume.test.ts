@@ -124,6 +124,16 @@ describe('PT118 legacy resume migration', () => {
     const canonical = PracticeSession.parse({ ...legacy, pool_slug: 'catalog::pt118-s1' });
     expect(migratePracticeSession(canonical)).toBe(canonical);
   });
+
+  it('migrates a read-only recovery view without publishing the legacy record', async () => {
+    const store = makeStore();
+    __setPersistenceForTests(store);
+    const id = practiceSessionIdFor(USER, legacy.pool_slug);
+    await store.set(TABLES.practice_sessions, id, { ...legacy, id });
+    const restored = await loadPracticeSession(USER, legacy.pool_slug, { readOnly: true });
+    expect(restored?.data_version).toBe(PRACTICE_SESSION_DATA_VERSION);
+    expect(await store.get(TABLES.practice_sessions, id)).toEqual({ ...legacy, id });
+  });
 });
 
 beforeEach(() => {

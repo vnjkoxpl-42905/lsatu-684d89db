@@ -30,6 +30,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { useScopedStudentWork } from '@/hooks/useScopedStudentWork';
 
 interface Props {
   studentId: string;
@@ -64,13 +65,14 @@ type PendingDelete =
 
 /**
  * Center-panel "Assignments" tab. Real homework_assignments + ta_assignments
- * + classroom_items (posts/bootcamps) for the selected student. Admins can
- * unassign / delete each row, which removes it from the student's view.
+ * + classroom_items (posts/bootcamps) for the selected student. Activity
+ * mirrors use issued-source progress and cannot be removed on their own.
  */
 export default function HubAssignments({ studentId }: Props) {
   const qc = useQueryClient();
   const [pending, setPending] = useState<PendingDelete | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const ownedWork = useScopedStudentWork(studentId);
 
   const { data: homework, isLoading: hwLoading, isError: hwError, refetch: refetchHomework } = useQuery<HomeworkRow[]>({
     queryKey: ['hub-homework', studentId],
@@ -116,7 +118,6 @@ export default function HubAssignments({ studentId }: Props) {
         error = r.error;
         if (!error) await qc.invalidateQueries({ queryKey: ['hub-homework', studentId] });
       } else if (pending.kind === 'ta') {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const r = await supabase
           .from('ta_assignments')
           .delete()
@@ -124,7 +125,13 @@ export default function HubAssignments({ studentId }: Props) {
         error = r.error;
         if (!error) await refreshTA();
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const item = classroomItems?.find((row) => row.id === pending.id);
+        // Removing only a mirror leaves the student's issued Activity intact.
+        // Source and mirrors must be revoked together by a server transaction.
+        if (!item || item.source_table === 'activity_assignments' || item.type === 'activity') {
+          toast.error('Activity unassignment is unavailable. The assignment has been kept.');
+          return;
+        }
         const r = await supabase
           .from('classroom_items')
           .delete()
@@ -251,20 +258,26 @@ export default function HubAssignments({ studentId }: Props) {
       >
         {posts.map((it: ClassroomItem) => {
           const Icon = it.type === 'bootcamp_module' ? BookOpen : Megaphone;
+          const isActivity = it.source_table === 'activity_assignments' || it.type === 'activity';
+          const status = isActivity
+            ? ownedWork.activityStatuses[it.source_id ?? ''] ?? 'unverified'
+            : it.status;
           return (
             <Row
               key={it.id}
               title={it.title || 'Untitled'}
-              status={it.status}
+              status={status}
               meta={[
                 labelForType(it.type),
+                status === 'unverified' ? 'Saved Activity progress could not be confirmed' : null,
                 it.visible_to_student ? null : 'hidden',
                 `Created ${formatRelativeShort(it.created_at)}`,
               ]
                 .filter((x): x is string => !!x)
                 .join(' · ')}
               Icon={Icon}
-              onDelete={() =>
+              deleteUnavailable={isActivity ? 'Activity unassignment is unavailable. The assignment has been kept.' : undefined}
+              onDelete={isActivity ? undefined : () =>
                 setPending({
                   kind: 'classroom',
                   id: it.id,
@@ -375,12 +388,14 @@ function Row({
   meta,
   Icon,
   onDelete,
+  deleteUnavailable,
 }: {
   title: string;
   status: string;
   meta: string;
   Icon: React.ComponentType<{ className?: string }>;
   onDelete?: () => void;
+  deleteUnavailable?: string;
 }) {
   return (
     <div className="group flex items-start gap-3 px-3 py-2.5 rounded-lg border border-border/40 bg-card/40">
@@ -398,6 +413,9 @@ function Row({
         {meta && (
           <div className="text-[11px] text-muted-foreground mt-0.5 truncate">{meta}</div>
         )}
+        {deleteUnavailable && (
+          <p className="mt-1 text-[11px] text-muted-foreground">Unassign unavailable. The Activity assignment and saved work are kept.</p>
+        )}
       </div>
       <span className="text-[10px] uppercase tracking-wider text-muted-foreground shrink-0 mt-1">
         {status.replace('_', ' ')}
@@ -409,6 +427,11 @@ function Row({
           aria-label={`Unassign ${title}`}
           className="shrink-0 p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
         >
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
+      )}
+      {deleteUnavailable && (
+        <button type="button" disabled aria-label={`Unassign ${title} unavailable`} title={deleteUnavailable} className="shrink-0 p-1 text-muted-foreground/40">
           <Trash2 className="w-3.5 h-3.5" />
         </button>
       )}

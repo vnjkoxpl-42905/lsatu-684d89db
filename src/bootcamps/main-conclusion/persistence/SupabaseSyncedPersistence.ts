@@ -10,7 +10,8 @@
  *   - Writes are committed to the local cache immediately, then queued for a
  *     debounced background upsert into Supabase.
  *   - On hydrate(), account rows are merged with local rows. A newer local
- *     practice session is queued for sync instead of overwritten.
+ *     practice session is preserved. Official LR sections wait for the
+ *     runner's guarded account save; other sessions are queued for sync.
  *   - Blobs (audio) stay local only.
  */
 
@@ -21,6 +22,14 @@ import { IndexedDBPersistence } from './IndexedDBPersistence';
 import { supabase } from '@/integrations/supabase/client';
 
 const FLUSH_DEBOUNCE_MS = 800;
+
+/** Official LR sections use the runner's acknowledged save and PT lease gate. */
+function ownsAccountSave(table: string, record: unknown): boolean {
+  if (table !== 'practice_sessions' || !record || typeof record !== 'object') return false;
+  const slug = (record as { pool_slug?: unknown }).pool_slug;
+  return typeof slug === 'string' &&
+    (slug.startsWith('drill::section::') || slug.startsWith('drill::practice-test::'));
+}
 
 function updatedAt(value: unknown): number {
   if (!value || typeof value !== 'object') return Number.NEGATIVE_INFINITY;
@@ -94,8 +103,10 @@ export class SupabaseSyncedPersistence implements Persistence {
           const local = await this.local.get<unknown>(row.table_name, row.record_id);
           if (this.pending.has(key) || this.inFlightWrites.has(key)) continue;
           if (row.table_name === 'practice_sessions' && updatedAt(local) > updatedAt(row.data)) {
-            this.pending.set(key, { table: row.table_name, id: row.record_id, data: local });
-            this.scheduleFlush();
+            if (!ownsAccountSave(row.table_name, local)) {
+              this.pending.set(key, { table: row.table_name, id: row.record_id, data: local });
+              this.scheduleFlush();
+            }
             continue;
           }
           await this.local.set(row.table_name, row.record_id, row.data as object);
@@ -200,6 +211,7 @@ export class SupabaseSyncedPersistence implements Persistence {
 
   async set<T>(table: string, id: string, record: T): Promise<void> {
     await this.local.set(table, id, record);
+    if (ownsAccountSave(table, record)) return;
     this.pending.set(this.key(table, id), { table, id, data: record });
     this.scheduleFlush();
   }
@@ -226,7 +238,9 @@ export class SupabaseSyncedPersistence implements Persistence {
         get: <U>(t: string, i: string) => innerTx.get<U>(t, i),
         set: async <U>(t: string, i: string, r: U) => {
           await innerTx.set(t, i, r);
-          this.pending.set(this.key(t, i), { table: t, id: i, data: r });
+          if (!ownsAccountSave(t, r)) {
+            this.pending.set(this.key(t, i), { table: t, id: i, data: r });
+          }
         },
       };
       const result = await fn(tx);

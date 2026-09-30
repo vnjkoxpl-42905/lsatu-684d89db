@@ -21,7 +21,7 @@ vi.mock('@/components/drill/official/OfficialDrillToolbar', () => ({
   default: ({ timerLabel }: { timerLabel: string }) => <output data-testid="clock">{timerLabel}</output>,
 }));
 vi.mock('@/components/drill/official/OfficialSmartDrillBar', () => ({
-  default: ({ pager }: { pager: ReactNode }) => <div>{pager}</div>,
+  default: ({ pager, onOpenMenu }: { pager: ReactNode; onOpenMenu: () => void }) => <div>{pager}<button onClick={onOpenMenu}>Open drill menu</button></div>,
 }));
 vi.mock('../components/RcExamPane', () => ({
   rcTypeStyles: () => ({}),
@@ -46,7 +46,12 @@ vi.mock('../components/RcChrome', () => ({
 }));
 vi.mock('../components/RcPassagePane', () => ({ RcPassagePane: () => null }));
 vi.mock('../components/RcPassageSummary', () => ({ RcPassageSummary: () => null }));
-vi.mock('../components/RcModals', () => ({ RcOverflowMenu: () => null, RcQuestionDetails: () => null, RcSubmitConfirm: () => null, RcTextSettings: () => null }));
+vi.mock('../components/RcModals', () => ({
+  RcOverflowMenu: ({ onSubmit }: { onSubmit: () => void }) => <button onClick={onSubmit}>Submit from menu</button>,
+  RcQuestionDetails: () => null,
+  RcSubmitConfirm: ({ onConfirm }: { onConfirm: () => void }) => <button onClick={onConfirm}>Confirm submission</button>,
+  RcTextSettings: () => null,
+}));
 vi.mock('@/components/help/HelpSheet', () => ({ default: () => null }));
 
 import RcPlayer from './RcPlayer';
@@ -85,6 +90,20 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
 describe('RC account save safety', () => {
+  it('does not copy the visible question time onto untouched closeout rows', async () => {
+    mount();
+    expect(await screen.findByText('Question 1: blank')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Open drill menu' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Submit from menu' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm submission' }));
+    await waitFor(() => expect(api.completeSession).toHaveBeenCalledWith('session-one'));
+    const writes = api.recordAttempt.mock.calls.map(([value]) => value as RcAttempt);
+    expect(writes).toHaveLength(3);
+    expect(writes.map((value) => value.selected)).toEqual([null, null, null]);
+    expect(writes.filter((value) => value.questionId !== 1).map((value) => value.timeMs)).toEqual([0, 0]);
+    expect(api.saveSessionClock).toHaveBeenCalled();
+  });
+
   it('reports a missing routed account session instead of waiting forever for an owner', async () => {
     api.getSession.mockResolvedValue(null);
     render(<MemoryRouter initialEntries={[{ pathname: '/rc/drill', state: { sessionId: 'missing', passageIds: [10] } }]}><RcPlayer /></MemoryRouter>);

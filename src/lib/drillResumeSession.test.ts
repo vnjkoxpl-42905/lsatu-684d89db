@@ -5,7 +5,18 @@ const store = vi.hoisted(() => ({
   savePracticeSessionSnapshot: vi.fn(),
   completePracticeSession: vi.fn(),
 }));
-const accountWrites = vi.hoisted(() => ({ fail: false }));
+const accountWrites = vi.hoisted(() => ({ fail: false, readFail: false, row: null as unknown, upsert: vi.fn() }));
+const activeDevice = vi.hoisted(() => vi.fn());
+vi.mock('@/lib/practiceTestStore', () => ({ isActivePracticeTestDevice: activeDevice }));
+
+beforeEach(() => {
+  accountWrites.fail = false;
+  accountWrites.readFail = false;
+  accountWrites.row = null;
+  accountWrites.upsert.mockClear();
+  activeDevice.mockReset().mockResolvedValue(true);
+  window.localStorage.clear();
+});
 
 vi.mock('@/bootcamps/main-conclusion/lib/practiceSessionStore', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/bootcamps/main-conclusion/lib/practiceSessionStore')>(),
@@ -14,11 +25,17 @@ vi.mock('@/bootcamps/main-conclusion/lib/practiceSessionStore', async (importOri
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     from: () => ({
-      upsert: async () => ({ error: accountWrites.fail ? { message: 'offline' } : null }),
+      upsert: async (...args: unknown[]) => {
+        accountWrites.upsert(...args);
+        return { error: accountWrites.fail ? { message: 'offline' } : null };
+      },
       select: () => {
         const chain: Record<string, unknown> = {};
         chain.eq = () => chain;
-        chain.maybeSingle = async () => ({ data: null, error: null });
+        chain.maybeSingle = async () => ({
+          data: accountWrites.row ? { data: accountWrites.row } : null,
+          error: accountWrites.readFail ? new Error('offline') : null,
+        });
         return chain;
       },
     }),
@@ -120,6 +137,74 @@ it('keeps the section backup until the account acknowledges it', async () => {
   accountWrites.fail = false;
   await saveDrillResumeSnapshot(userId, key, snapshot);
   expect(hasPendingSectionDeviceBackup(userId, key)).toBe(false);
+});
+
+describe('official LR reload account safety', () => {
+  const userId = '11111111-1111-4111-8111-111111111111';
+  const key = 'drill::practice-test::44444444-4444-4444-8444-444444444444::leg-0';
+  const snapshot = {
+    questionQueue: ['PT23-S2-Q1', 'PT23-S2-Q2'],
+    currentIndex: 1,
+    attempts: [{ qid: 'PT23-S2-Q1', selected_answer: 'B', correct: true, time_ms: 1200 }],
+    elapsedMs: 9000,
+    timerMode: '35' as const,
+  };
+  const localRecord = () => {
+    writeSectionDeviceBackup(userId, key, snapshot);
+    const record = JSON.parse(window.localStorage.getItem(window.localStorage.key(0)!)!) as DrillResumeSession;
+    window.localStorage.clear();
+    return record;
+  };
+
+  it('does not publish a newer IndexedDB copy during hydration and retains it for explicit recovery', async () => {
+    const record = localRecord();
+    store.loadPracticeSession.mockReset().mockResolvedValue(record);
+    accountWrites.row = { ...record, elapsed_ms: 1000, updated_at: '2020-01-01T00:00:00.000Z' };
+    await expect(loadDrillResumeSession(userId, key)).resolves.toEqual(record);
+    expect(activeDevice).toHaveBeenCalledWith(userId, '44444444-4444-4444-8444-444444444444');
+    expect(accountWrites.upsert).not.toHaveBeenCalled();
+    expect(hasPendingSectionDeviceBackup(userId, key)).toBe(true);
+  });
+
+  it('keeps the exact local clock and question pending through repeated offline reloads', async () => {
+    const record = localRecord();
+    store.loadPracticeSession.mockReset().mockResolvedValue(record);
+    accountWrites.readFail = true;
+    await expect(loadDrillResumeSession(userId, key)).resolves.toEqual(record);
+    store.loadPracticeSession.mockResolvedValue(null);
+    await expect(loadDrillResumeSession(userId, key)).resolves.toEqual(record);
+    expect(hasPendingSectionDeviceBackup(userId, key)).toBe(true);
+    expect(accountWrites.upsert).not.toHaveBeenCalled();
+  });
+
+  it('refuses to start a fresh sitting when the account cannot be checked and there is no local copy', async () => {
+    store.loadPracticeSession.mockReset().mockResolvedValue(null);
+    accountWrites.readFail = true;
+    await expect(loadDrillResumeSession(userId, key)).rejects.toThrow('offline');
+    expect(accountWrites.upsert).not.toHaveBeenCalled();
+  });
+
+  it('does not write or clear recovery evidence after another device takes the test', async () => {
+    const record = localRecord();
+    store.loadPracticeSession.mockReset().mockResolvedValue(record);
+    store.savePracticeSessionSnapshot.mockClear();
+    activeDevice.mockResolvedValue(false);
+    await expect(loadDrillResumeSession(userId, key)).resolves.toEqual(record);
+    await expect(saveDrillResumeSnapshot(userId, key, snapshot)).rejects.toThrow('another device');
+    expect(store.savePracticeSessionSnapshot).not.toHaveBeenCalled();
+    expect(accountWrites.upsert).not.toHaveBeenCalled();
+    expect(hasPendingSectionDeviceBackup(userId, key)).toBe(true);
+  });
+
+  it('uses an acknowledged account row and releases the older device backup', async () => {
+    writeSectionDeviceBackup(userId, key, snapshot);
+    const record = JSON.parse(window.localStorage.getItem(window.localStorage.key(0)!)!) as DrillResumeSession;
+    store.loadPracticeSession.mockReset().mockResolvedValue(null);
+    accountWrites.row = record;
+    await expect(loadDrillResumeSession(userId, key)).resolves.toEqual(record);
+    expect(hasPendingSectionDeviceBackup(userId, key)).toBe(false);
+    expect(accountWrites.upsert).not.toHaveBeenCalled();
+  });
 });
 
 describe('naming the Run Record', () => {

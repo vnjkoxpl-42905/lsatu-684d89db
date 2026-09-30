@@ -18,8 +18,8 @@
  *     homework       →  pool_slug "drill::assignment::<assignmentId>"
  *     everything else→  pool_slug "drill::<mode>::<fingerprint>"
  *
- * Failure policy, inherited: reads degrade to null (a missing resume row must
- * never block starting a drill), writes surface to the caller.
+ * Official section reads must confirm the account or retain a paused device
+ * copy. Other drill reads preserve the legacy missing-row fallback.
  */
 
 import {
@@ -146,6 +146,11 @@ function clearSectionDeviceBackup(userId: string, key: string): void {
   }
 }
 
+/** Keep recovered IndexedDB state pending until the guarded save acknowledges it. */
+function retainUnverifiedSection(userId: string, key: string, record: DrillResumeSession): void {
+  window.localStorage.setItem(sectionBackupKey(userId, key), JSON.stringify(record));
+}
+
 export type DrillResumeIdentity = {
   kind: 'bootcamp-day';
   day: number;
@@ -243,7 +248,9 @@ export async function loadDrillResumeSession(
   // returning. Reading the cloud first could bypass a newer unsynced answer.
   let current: DrillResumeSession | null;
   try {
-    current = await loadPracticeSession(userId, key);
+    current = accountSectionKey(key)
+      ? await loadPracticeSession(userId, key, { readOnly: true })
+      : await loadPracticeSession(userId, key);
   } catch (error) {
     console.warn('[drill:section] local resume read failed', error);
     current = null;
@@ -252,19 +259,23 @@ export async function loadDrillResumeSession(
     const backup = readSectionDeviceBackup(userId, key);
     if (backup && (!current || backup.updated_at > current.updated_at)) current = backup;
     try {
+      await assertActiveTestLeg(userId, key);
       const account = await readSectionFromAccount(userId, key);
       if (account && (!current || account.updated_at >= current.updated_at)) {
         if (backup) clearSectionDeviceBackup(userId, key);
         return account;
       }
       if (current) {
-        // A backup can be newer than IndexedDB. The runner will sync it as soon
-        // as it mounts; syncing the stale IndexedDB row here would overwrite it.
-        if (current !== backup) await syncSectionToAccount(userId, key);
+        // Hydration is read-only. A newer local clock or choice must pass the
+        // runner's paused recovery gate and normal guarded account save.
+        retainUnverifiedSection(userId, key, current);
         return current;
       }
     } catch (error) {
       console.warn('[drill:section] account read failed, checking local backup', error);
+      if (!current) throw error;
+      retainUnverifiedSection(userId, key, current);
+      return current;
     }
   }
   if (current || !legacyKey || legacyKey === key) return current;

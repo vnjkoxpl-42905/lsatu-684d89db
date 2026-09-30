@@ -16,6 +16,7 @@ import type { LRQuestion } from '@/lib/questionLoader';
 
 const insertCalls = vi.hoisted(() => ({ attempts: [] as Array<Record<string, unknown>>, failNext: 0, delayMs: 0 }));
 const resumeSave = vi.hoisted(() => ({ fail: false, failNext: 0, calls: 0 }));
+const resumeLoad = vi.hoisted(() => ({ fail: false }));
 const ledgerSave = vi.hoisted(() => ({ fail: false, created: 0 }));
 const journalCalls = vi.hoisted(() => ({ wrong: vi.fn(), correct: vi.fn() }));
 const guidedCompletion = vi.hoisted(() => ({
@@ -66,6 +67,10 @@ vi.mock('@/lib/drillResumeSession', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/drillResumeSession')>();
   return {
     ...actual,
+    loadDrillResumeSession: async (...args: Parameters<typeof actual.loadDrillResumeSession>) => {
+      if (resumeLoad.fail) throw new Error('offline');
+      return actual.loadDrillResumeSession(...args);
+    },
     saveDrillResumeSnapshot: async () => {
       resumeSave.calls += 1;
       if (resumeSave.fail || resumeSave.failNext > 0) {
@@ -85,8 +90,10 @@ vi.mock('@/lib/drillRunLedger', () => ({
     return { id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa' };
   }),
   loadStandaloneDrillRun: vi.fn(async () => null),
+  listStandaloneDrillRuns: vi.fn(async () => []),
   saveStandaloneDrillRun: vi.fn(async () => ({})),
   completeStandaloneDrillRun: vi.fn(async () => ({})),
+  beginGuidedDrillCloseout: vi.fn(async (_userId, _runId, snapshot) => ({ closeout_attempts: snapshot.attempts })),
 }));
 vi.mock('@/lib/questionPoolService', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/questionPoolService')>();
@@ -333,6 +340,7 @@ beforeEach(() => {
   resumeSave.fail = false;
   resumeSave.failNext = 0;
   resumeSave.calls = 0;
+  resumeLoad.fail = false;
   ledgerSave.fail = false;
   ledgerSave.created = 0;
   journalCalls.wrong.mockReset();
@@ -415,7 +423,7 @@ describe('Drill review controls — guided drill (fixed + list)', () => {
 
     fireEvent.click(choiceButton('C'));
     fireEvent.click(screen.getByRole('button', { name: 'End' }));
-    fireEvent.click(await screen.findByRole('button', { name: 'Yes, leave' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Finish drill' }));
 
     await waitFor(() => expect(insertCalls.attempts).toHaveLength(1));
     expect(insertCalls.attempts[0]).toMatchObject({ qid: Q1.qid, selected_answer: 'C' });
@@ -584,6 +592,28 @@ describe('Drill review controls — Smart Drill (adaptive)', () => {
 });
 
 describe('Drill review controls — full section keeps the legacy behaviour', () => {
+  it('hides the questions and offers account-load retry when hydration fails', async () => {
+    resumeLoad.fail = true;
+    renderDrill(sectionSpec);
+    expect(await screen.findByRole('heading', { name: 'Your drill is paused' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Retry loading drill' })).toBeInTheDocument();
+    expect(screen.queryByText(/Stimulus 18:/)).not.toBeInTheDocument();
+    expect(resumeSave.calls).toBe(0);
+  });
+
+  it('does not automatically save a recovered device copy before Retry save', async () => {
+    const { writeSectionDeviceBackup } = await import('@/lib/drillResumeSession');
+    writeSectionDeviceBackup('11111111-1111-4111-8111-111111111111', 'drill::section::pt23-s2', {
+      questionQueue: [Q1.qid, Q2.qid], currentIndex: 0, attempts: [], elapsedMs: 9000, timerMode: '35',
+    });
+    renderDrill({ ...sectionSpec, config: { pt: 23, section: 2, timer: { mode: '35' } } as DrillRunSpec['config'] });
+    expect(await screen.findByRole('alertdialog', { name: 'Saving paused this section' })).toBeInTheDocument();
+    expect(resumeSave.calls).toBe(0);
+    fireEvent.click(screen.getByRole('button', { name: 'Retry save' }));
+    await waitFor(() => expect(resumeSave.calls).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.queryByRole('alertdialog', { name: 'Saving paused this section' })).not.toBeInTheDocument());
+  });
+
   it.each(['Next', 'question index', 'keyboard'])(
     'keeps the current timed question when %s cannot save to the account',
     async (navigation) => {

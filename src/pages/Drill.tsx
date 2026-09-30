@@ -490,6 +490,7 @@ function DrillContent() {
   const [availablePoolSize, setAvailablePoolSize] = React.useState(0);
   const [poolExhausted, setPoolExhausted] = React.useState(false);
   const [bootError, setBootError] = React.useState<string | null>(null);
+  const [bootLoadFailed, setBootLoadFailed] = React.useState(false);
   const [handoffLost, setHandoffLost] = React.useState(false);
   const [sectionSaveError, setSectionSaveError] = React.useState(false);
   const [retryingSectionSave, setRetryingSectionSave] = React.useState(false);
@@ -798,7 +799,7 @@ function DrillContent() {
       let initialIndex = Number.isFinite(requestedInitialIndex)
         ? Math.min(Math.max(requestedInitialIndex, 0), Math.max(questionQueue.length - 1, 0))
         : 0;
-      let restoredAttempts: DrillSession['attempts'] = new Map();
+      const restoredAttempts: DrillSession['attempts'] = new Map();
       // Set only when a stored section had already run out of time.
       let restoredRegulationMark: DrillSession['regulationMark'] | undefined;
 
@@ -962,7 +963,7 @@ function DrillContent() {
           }
         }
       }
-      if (genericResumeKey && user && !initialIndexParam) {
+      if (genericResumeKey && user && (!initialIndexParam || mode === 'full-section')) {
         const stored = await loadDrillResumeSession(
           user.id,
           genericResumeKey,
@@ -1044,7 +1045,11 @@ function DrillContent() {
       });
     };
 
-    initializeSession();
+    void initializeSession().catch((error) => {
+      console.warn('[drill] account resume could not be loaded', error);
+      setBootLoadFailed(true);
+      setBootError('Your saved drill could not be loaded from your account. Reload to try again.');
+    });
   }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, guidedLegacySessionKey, genericResumeKey, genericLegacyResumeKey, standaloneSourceKey, requestedStandaloneRunId, userId]);
 
   // Shapes the student's current place into a resume snapshot. Shared by the two
@@ -1192,7 +1197,7 @@ function DrillContent() {
     if (session.mode !== 'full-section') return;
     const id = window.setInterval(() => {
       // Re-checked on every beat: the section can finish between two of them.
-      if (genericFinalizedRef.current) return;
+      if (genericFinalizedRef.current || hasPendingSectionDeviceBackup(user.id, genericResumeKey)) return;
       const snapshot = snapshotRef.current(session);
       if (!snapshot) return;
       void saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot).catch((err) => {
@@ -1235,6 +1240,7 @@ function DrillContent() {
   React.useEffect(() => {
     if (!genericResumeKey || !user || !session) return;
     if (genericFinalizedRef.current) return;
+    if (session.mode === 'full-section' && sectionSaveError) return;
     if (session.questionQueue.length === 0) return;
     const snapshot = drillResumeSnapshot(session);
     if (!snapshot || (snapshot.attempts.length === 0 && session.mode !== 'full-section')) return;
@@ -1251,7 +1257,7 @@ function DrillContent() {
         err,
       });
     });
-  }, [session, genericResumeKey, user, drillResumeSnapshot, ptRun, pauseForSectionSave]);
+  }, [session, genericResumeKey, user, drillResumeSnapshot, ptRun, pauseForSectionSave, sectionSaveError]);
 
   React.useEffect(() => {
     if (!standaloneSourceKey || !session || genericFinalizedRef.current || session.attempts.size === 0) return;
@@ -3715,8 +3721,9 @@ function DrillContent() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Card className="p-8 max-w-md text-center">
-          <h2 className="text-xl font-semibold mb-3">No questions available</h2>
+          <h2 className="text-xl font-semibold mb-3">{bootLoadFailed ? 'Your drill is paused' : 'No questions available'}</h2>
           <p className="text-sm text-muted-foreground mb-6">{bootError}</p>
+          {bootLoadFailed && <Button className="mb-3" onClick={() => window.location.reload()}>Retry loading drill</Button>}
           <Button onClick={() => navigate(drillReturnTo || '/classroom')}>
             Return to {returnTo === '/flagged' ? 'Flagged' : 'your classroom'}
           </Button>

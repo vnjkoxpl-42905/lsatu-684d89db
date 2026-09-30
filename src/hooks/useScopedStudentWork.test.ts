@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { projectScopedOwnedRows } from './useScopedStudentWork';
+import { projectScopedOwnedRows, projectScopedActivityStatuses } from './useScopedStudentWork';
 
 function ready<T>(data: T) { return { state: 'ready' as const, data }; }
 function failed() { return { state: 'failed' as const, error: new Error('read failed') }; }
@@ -26,6 +26,24 @@ function sources(over: Record<string, unknown> = {}) {
 }
 
 describe('selected-student owned Work projection', () => {
+  it('uses issued Activity source and saved responses instead of classroom mirror status', () => {
+    const status = projectScopedActivityStatuses(sources({
+      activities: ready([
+        { id: 'historical', status: 'completed', completed_at: null },
+        { id: 'answered', status: 'assigned', completed_at: null },
+        { id: 'finished', status: 'completed', completed_at: '2026-09-30T01:00:00Z' },
+      ]),
+      activityEvidence: ready(new Set(['answered'])),
+    }));
+    expect(status).toEqual({ historical: 'assigned', answered: 'in_progress', finished: 'completed' });
+    expect(status['activity-mirrored']).toBeUndefined();
+  });
+
+  it('does not turn a failed Activity source or response read into assigned progress', () => {
+    expect(projectScopedActivityStatuses(sources({ activities: failed() }))).toEqual({});
+    expect(projectScopedActivityStatuses(sources({ activityEvidence: failed() }))).toEqual({});
+  });
+
   it('keeps repeated guided assignment IDs and omits only the Activity mirror already in Hub', () => {
     const { rows, failedSources } = projectScopedOwnedRows(sources());
     expect(failedSources).toEqual([]);

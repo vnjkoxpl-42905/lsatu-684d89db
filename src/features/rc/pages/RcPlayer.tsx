@@ -501,7 +501,11 @@ export default function RcPlayer() {
       const questionId = target.question.questionId;
       const attemptId = attemptIdsRef.current.get(questionId) ?? crypto.randomUUID();
       attemptIdsRef.current.set(questionId, attemptId);
-      const timeMs = Math.max(0, Date.now() - questionStart.current);
+      // Closing a set persists unanswered scoring rows too. Only the visible
+      // question owns this timer; other filler rows have no measured dwell.
+      const timeMs = state.items[state.currentIndex]?.question.questionId === questionId
+        ? Math.max(0, Date.now() - questionStart.current)
+        : 0;
       try {
         await recordAttempt({
           id: attemptId,
@@ -552,7 +556,7 @@ export default function RcPlayer() {
         return false;
       }
     },
-    [sessionId, sessionOwnerId, state.flagged, state.eliminations, state.recorded, state.currentIndex, failAccountSave],
+    [sessionId, sessionOwnerId, state.flagged, state.eliminations, state.recorded, state.currentIndex, state.items, failAccountSave],
   );
 
   const recordPassage = React.useCallback(

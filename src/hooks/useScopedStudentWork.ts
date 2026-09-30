@@ -3,10 +3,21 @@ import { useStudentSubjectScope } from '@/hooks/useStudentSubjectScope';
 import { buildAssignedRows, type AssignedFeedSources, type AssignedTodoRow } from '@/hooks/useAssignedTodoFeed';
 import { loadScopedOwnedAssignmentSources } from '@/lib/studentScopedWork';
 import { studentScopeQueryKey } from '@/lib/studentSubjectScope';
+import { activityWorkStatus, type StudentWorkStatus } from '@/lib/studentWorkProjection';
 
 type OwnedSources = Awaited<ReturnType<typeof loadScopedOwnedAssignmentSources>>;
 
-/** Preserve the issued assignment ID, and let an existing Hub mirror keep its Unassign control. */
+/** Mirrors name issued assignment IDs; their own status is not progress evidence. */
+export function projectScopedActivityStatuses(sources: OwnedSources): Record<string, StudentWorkStatus> {
+  const { activities, activityEvidence } = sources;
+  if (activities.state !== 'ready' || activityEvidence?.state !== 'ready') return {};
+  const savedResponses = activityEvidence.data;
+  return Object.fromEntries(activities.data.map((row) => [
+    row.id, activityWorkStatus(row, savedResponses.has(row.id)),
+  ]));
+}
+
+/** Preserve issued assignment IDs and suppress source rows already represented by Hub mirrors. */
 export function projectScopedOwnedRows(sources: OwnedSources): {
   rows: AssignedTodoRow[];
   failedSources: string[];
@@ -61,6 +72,7 @@ export function useScopedStudentWork(selectedStudentId?: string | null) {
   return {
     resolution,
     rows: scope ? projected.rows : [],
+    activityStatuses: scope && query.data && !query.error ? projectScopedActivityStatuses(query.data) : {},
     failedSources: scope ? projected.failedSources : [],
     loading: resolution.state === 'loading' || (!!scope && query.isPending),
     error: query.error,

@@ -205,6 +205,17 @@ describe('the gate', () => {
     expect(queueOf()).toEqual(['PT1-S1-Q1']);
   });
 
+  it('passes the requested guided sitting to resolution before opening the runner', async () => {
+    resolveDrillLaunch.mockResolvedValue(['frozen-q']);
+    renderAt({ pathname: '/drill', search: '?drill=guided-drill&guidedDrill=gd_7&run=run_1' });
+    await screen.findByTestId('runner');
+    expect(queueOf()).toEqual(['frozen-q']);
+    expect(resolveDrillLaunch).toHaveBeenCalledWith(
+      expect.objectContaining({ kind: 'guided-drill', drillId: 'gd_7' }), 'user_1', 'run_1',
+    );
+    expect(searchOf().get('run')).toBe('run_1');
+  });
+
   it('does not resolve a generated link before the question bank is ready', async () => {
     questionBankState.isLoading = true;
     renderAt({

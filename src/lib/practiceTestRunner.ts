@@ -167,6 +167,20 @@ export interface LegResult {
   timeMs: number;
 }
 
+/** Submission persists blank rows for scoring; they are not answered questions. */
+export function projectRcLegResult(
+  attempts: Array<{ selected: string | null; is_correct: boolean; time_ms: number | null }>,
+  clockElapsedSeconds?: unknown,
+): LegResult {
+  const answered = attempts.filter((attempt) => /^[A-E]$/.test(attempt.selected ?? ''));
+  // The persisted session clock includes reading and unanswered questions.
+  // Blank closeout rows may repeat the final question's time, so never sum them.
+  const timeMs = typeof clockElapsedSeconds === 'number' && Number.isFinite(clockElapsedSeconds) && clockElapsedSeconds >= 0
+    ? clockElapsedSeconds * 1000
+    : answered.reduce((total, attempt) => total + (Number.isFinite(attempt.time_ms) ? Math.max(0, attempt.time_ms ?? 0) : 0), 0);
+  return { correct: answered.filter((attempt) => attempt.is_correct).length, answered: answered.length, timeMs };
+}
+
 /**
  * Read one finished LR leg out of `section_history`.
  *
@@ -218,7 +232,7 @@ export async function readRcLegResult(
 ): Promise<LegResult | null> {
   let query = supabase
     .from('rc_drill_sessions')
-    .select('id, passage_ids, completed_at')
+    .select('id, passage_ids, completed_at, config')
     .eq('user_id', userId)
     .eq('status', 'completed');
   query = identity
@@ -236,18 +250,16 @@ export async function readRcLegResult(
   );
   if (!session) return null;
 
-  const { data: attempts } = await supabase
+  const { data: attempts, error: attemptsError } = await supabase
     .from('rc_attempts')
-    .select('is_correct, time_ms')
+    .select('selected, is_correct, time_ms')
     .eq('session_id', session.id)
+    .eq('user_id', userId)
     .eq('is_first_attempt', true);
 
-  if (!attempts) return null;
-  return {
-    correct: attempts.filter((a) => a.is_correct).length,
-    answered: attempts.length,
-    timeMs: attempts.reduce((n, a) => n + (a.time_ms ?? 0), 0),
-  };
+  if (attemptsError || !attempts) return null;
+  const config = session.config as { clockElapsedSeconds?: unknown } | null;
+  return projectRcLegResult(attempts, config?.clockElapsedSeconds);
 }
 
 export async function readLegResult(
