@@ -7,7 +7,7 @@ export default function MyWorkPage({ completed }: { completed: boolean }) {
   const visible = rows.filter((row) => (row.status === "completed") === completed);
 
   if (loading) return <p className="student-destination-message" role="status">Loading your work…</p>;
-  if (failed) return (
+  if (failed && rows.length === 0) return (
     <div className="student-destination-message" role="alert">
       <p>We could not load your assignments.</p>
       <button type="button" className="classroom-button" onClick={retry}>Try again</button>
@@ -16,10 +16,16 @@ export default function MyWorkPage({ completed }: { completed: boolean }) {
 
   return (
     <section className="student-work-list" aria-label={completed ? "Completed work" : "Work to do"}>
+      {failed && (
+        <div className="student-destination-message" role="alert">
+          <p>Some assignments could not refresh. Your saved work is still shown.</p>
+          <button type="button" className="classroom-button" onClick={retry}>Try again</button>
+        </div>
+      )}
       <div className="student-work-count">{visible.length} {completed ? "completed" : "to do"}</div>
       {visible.length === 0 ? (
         <p className="student-destination-message">
-          {completed ? "Finished assignments will appear here after your work is saved." : "Nothing is assigned right now."}
+          {failed ? "We could not confirm whether this list is complete." : completed ? "Finished assignments will appear here after your work is saved." : "Nothing is assigned right now."}
         </p>
       ) : (
         <ul>

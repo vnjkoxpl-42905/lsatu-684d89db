@@ -322,8 +322,8 @@ export function useAssignedTodoFeed(): {
 
   const items = useMemo(() => itemsQuery.data ?? [], [itemsQuery.data]);
   const rows = useMemo(
-    () => buildAssignedRows({ hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById: planError || planFetching ? undefined : weeklyPlanStatusById }),
-    [hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById, planError, planFetching],
+    () => buildAssignedRows({ hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById }),
+    [hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById],
   );
 
   const retry = useMemo(
@@ -342,7 +342,7 @@ export function useAssignedTodoFeed(): {
 
   return {
     rows,
-    loading: hwLoading || taLoading || guidedLoading || evidenceLoading || actLoading || activityEvidenceLoading || itemsQuery.isLoading || planFetching,
+    loading: rows.length === 0 && (hwLoading || taLoading || guidedLoading || evidenceLoading || actLoading || activityEvidenceLoading || itemsQuery.isLoading || (hasPlanMirrors && !weeklyPlanStatusById && !planError && planFetching)),
     failed: !!hwError || !!taError || guidedError || evidenceError || actError || activityEvidenceError || itemsQuery.isError || planError,
     retry,
   };

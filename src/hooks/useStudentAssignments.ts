@@ -87,7 +87,7 @@ export function useStudentAssignments(): UseStudentAssignmentsResult {
   }, [queryClient, userId]);
 
   return {
-    assignments: query.isError ? EMPTY_HOMEWORK : query.data ?? EMPTY_HOMEWORK,
+    assignments: query.data ?? EMPTY_HOMEWORK,
     loading: query.isPending,
     error: query.error?.message ?? null,
     refresh,
@@ -239,7 +239,7 @@ export function useStudentTAAssignments(): {
   }, [queryClient, userId]);
 
   return {
-    assignments: query.isError ? EMPTY_TA : query.data ?? EMPTY_TA,
+    assignments: query.data ?? EMPTY_TA,
     loading: query.isPending,
     error: query.error?.message ?? null,
     refresh,

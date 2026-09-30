@@ -557,8 +557,8 @@ export function useClassroomHome(): {
       return Number.isFinite(delta) && delta >= 0 ? delta : null;
     })(),
     dueTodayCount,
-    workSummary: assignedLoading || assignedFailed ? null : workSummary(workRows),
-    workFailed: assignedFailed,
+    workSummary: assignedLoading || (assignedFailed && assigned.length === 0) ? null : workSummary(workRows),
+    workFailed: assignedFailed && assigned.length === 0,
     hero,
     rows: listRows,
     continueRow: pickContinueWork(workRows, access, permissions.is_admin),
