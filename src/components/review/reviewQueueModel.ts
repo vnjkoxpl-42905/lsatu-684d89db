@@ -5,7 +5,7 @@ import type { SectionHistoryRow } from "@/lib/sectionHistory";
 import { UNANSWERED } from "@/lib/sectionAnswer";
 
 export type ReviewReason = "missed" | "flagged" | "skipped";
-export type ReviewSource = "wrong_answer_journal" | "flagged_questions" | "rc_attempts" | "activity_item_responses" | "section_history" | "practice_test";
+export type ReviewSource = "wrong_answer_journal" | "flagged_questions" | "rc_attempts" | "activity_item_responses" | "section_history" | "practice_test" | "intro_lr_attempts";
 export type ReviewArea = "lr" | "rc";
 
 export interface ReviewQueueItem {
