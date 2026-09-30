@@ -42,7 +42,7 @@ import "../recall/section.css";
 import "../activity-centre.css";
 
 /** `report` is the section-only tail: grading runs after she stops. */
-type Phase = "intro" | "running" | "done" | "report";
+type Phase = "intro" | "running" | "closing" | "done" | "report";
 
 /**
  * Student player: intro -> split-screen quiz -> completion summary.
@@ -125,6 +125,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   // one arrives as a flicker. "unknown" keeps the spinner up instead.
   const [ownership, setOwnership] = useState<"unknown" | "elsewhere" | "absent">("unknown");
   const { assignment, loading, error } = useStudentActivity(assignmentId, previewActivityId);
+  const confirmedCompletion = assignment?.status === "completed" && Boolean(assignment.completed_at);
 
   /**
    * Joshua, opening a link he handed to a student.
@@ -227,6 +228,10 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   const [verdicts, setVerdicts] = useState<Record<number, Verdict | null>>({});
   const [responses, setResponses] = useState<Record<number, string>>({});
   const [hydrated, setHydrated] = useState(false);
+  const [progressLoadFailed, setProgressLoadFailed] = useState(false);
+  const [completionError, setCompletionError] = useState(false);
+  const closeoutRef = useRef<{ verdicts: Record<number, Verdict | null>; phase: "done" | "report" } | null>(null);
+  const closingRef = useRef(false);
   // The world's entrance plays once per run, on Start, before the first item.
   const [entered, setEntered] = useState(false);
   // Ungraded run with no DB writes / score overwrite. True for teacher previews
@@ -268,14 +273,14 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
     if (!assignment) return [];
     if (savedPractice?.general) return savedPractice.general.items;
     const all = [...assignment.items].sort((a, b) => a.order - b.order).map(item =>
-      isGeneral && assignment.status !== "completed" && !viewingSomeoneElse ? repairConditionalItem(item) : item);
+      isGeneral && !confirmedCompletion && !viewingSomeoneElse ? repairConditionalItem(item) : item);
     if (!redrillOrders) return all;
     const wanted = new Set(redrillOrders);
     const subset = all.filter((i) => wanted.has(i.order));
     // An override that matches nothing is a stale list, not an empty activity.
     // Running the whole set is the wrong answer; running zero items is worse.
     return subset.length > 0 ? subset : all;
-  }, [assignment, redrillOrders, savedPractice?.general, isGeneral, viewingSomeoneElse]);
+  }, [assignment, redrillOrders, savedPractice?.general, isGeneral, viewingSomeoneElse, confirmedCompletion]);
 
   /**
    * The Activity's world, when it has one. Eight were built, one per Activity,
@@ -355,6 +360,35 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
     [assignment, readOnly],
   );
 
+  const closeAssignment = useCallback(async (outcomes: Record<number, Verdict | null>, finishedPhase: "done" | "report") => {
+    if (!assignment || closingRef.current) return;
+    if (readOnly) { setPhase(finishedPhase); return; }
+    closeoutRef.current = { verdicts: outcomes, phase: finishedPhase };
+    closingRef.current = true;
+    setCompletionError(false);
+    setPhase("closing");
+    try {
+      if (finishedPhase === "done") {
+        // A locally resolved answer may still be queued after a failed write.
+        // Retry those writes, then check the account's log before closing it.
+        await flushOutbox((pending) => recordItemResponse(pending));
+        const saved = await listItemResponses(assignment.id, assignment.student_id);
+        if (reconstructProgress(items, saved).resolvedCount < items.length) {
+          throw new Error("Some answers have not reached your account yet.");
+        }
+      }
+      if (finishedPhase === "report") await completeSectionRun(assignment.id);
+      else await completeAssignment(assignment.id, scoreFor(outcomes, items.length));
+      void syncClassroom("completed");
+      setPhase(finishedPhase);
+    } catch (e) {
+      console.error("[activity:complete] failed", e);
+      setCompletionError(true);
+    } finally {
+      closingRef.current = false;
+    }
+  }, [assignment, readOnly, items, syncClassroom]);
+
   // Open behavior: runs once when the assignment loads.
   //
   // Every attempt is already written to `activity_item_responses` as it
@@ -404,19 +438,18 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
         log = await (logRef.current ?? listItemResponses(assignment.id, assignment.student_id));
       } catch (e) {
         // A failed read must not silently look like "no progress" and hand the
-        // student a blank run over the top of real saved work. Start them at
-        // the intro, say so, and leave the log untouched.
+        // student a blank run over the top of real saved work. Block starting
+        // until a reload can read the log safely.
         console.error("[activity:resume:load] failed", e);
-        if (assignment.status !== "completed") {
-          toast({
-            title: "Could not load your saved progress",
-            description: "Your earlier answers are safe. Reload to pick up where you left off.",
-            variant: "destructive",
-          });
-          setPhase("intro");
-          setHydrated(true);
-          return;
-        }
+        toast({
+          title: "Could not load your saved progress",
+          description: "Your earlier answers are safe. Reload to pick up where you left off.",
+          variant: "destructive",
+        });
+        setPhase("intro");
+        setProgressLoadFailed(true);
+        setHydrated(true);
+        return;
       }
 
       /*
@@ -460,9 +493,9 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
        * assignment's life, showed the blank generic summary instead.
        */
       const isSectionRun = assignment.item_format === "spoken-recall" && assignment.mode === "section";
-      const finishedPhase: Phase = isSectionRun ? "report" : "done";
+      const finishedPhase = isSectionRun ? "report" as const : "done" as const;
 
-      if (assignment.status === "completed") {
+      if (confirmedCompletion) {
         setPhase(finishedPhase);
         setHydrated(true);
         return;
@@ -473,22 +506,9 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       // parking the student on a run with nothing left in it.
       if (items.length > 0 && progress.resolvedCount >= items.length) {
         setIndex(items.length - 1);
-        setPhase(finishedPhase);
-        // An admin looking at the run must not be the one who closes it: the
-        // student's own next open still owes them the completion write.
-        if (!readOnly) {
-          try {
-            // A section closes without a score. Its grade is not a count of
-            // per-item verdicts -- it has none -- and a grade the student can
-            // write is not a grade (ADR 0019), so nothing goes on the
-            // assignment row. `scoreFor` here would post a fabricated zero.
-            if (isSectionRun) await completeSectionRun(assignment.id);
-            else await completeAssignment(assignment.id, scoreFor(progress.verdicts, items.length));
-            void syncClassroom("completed");
-          } catch (e) {
-            console.error("[activity:resume:complete] failed", e);
-          }
-        }
+        // Keep the replayed answers until the account acknowledges closeout.
+        // A failed write leaves a retry screen instead of a completion report.
+        await closeAssignment(progress.verdicts, finishedPhase);
         setHydrated(true);
         return;
       }
@@ -541,7 +561,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
        */
       const started = isSectionRun
         ? false
-        : assignment.status === "in_progress" || progress.resolvedCount > 0;
+        : assignment.status === "in_progress" || progress.resolvedCount > 0 || progress.pendingAttempts > 0;
       setPhase(started ? "running" : "intro");
       // The world's entrance is the ceremony of arriving, and it runs two and a
       // half seconds. It belongs to Start, not to every reopen: a student who
@@ -560,7 +580,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       }
       setHydrated(true);
     })();
-  }, [assignment, user, items, hydrated, preview, readOnly, startSectionOnOpen, syncClassroom, isGeneral, location.pathname, requestedPracticeId, viewingSomeoneElse]);
+  }, [assignment, user, items, hydrated, preview, readOnly, startSectionOnOpen, syncClassroom, isGeneral, location.pathname, requestedPracticeId, viewingSomeoneElse, confirmedCompletion, closeAssignment]);
 
   const beginGeneralPractice = useCallback((selected: typeof items) => {
     if (!user || viewingSomeoneElse || !isGeneral) return false;
@@ -662,17 +682,8 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       setBandExpanded(false); // a new question starts with the answer box in reach
       return;
     }
-    if (!readOnly && assignment) {
-      try {
-        await completeAssignment(assignment.id, scoreFor(verdicts, items.length));
-      } catch (e) {
-        console.error("[activity:complete] failed", e);
-        toast({ title: "Could not save completion", description: "Your summary is shown below.", variant: "destructive" });
-      }
-      void syncClassroom("completed");
-    }
-    setPhase("done");
-  }, [index, items.length, verdicts, assignment, readOnly, syncClassroom, updatePractice]);
+    await closeAssignment(verdicts, "done");
+  }, [index, items.length, verdicts, updatePractice, closeAssignment]);
 
   // Re-run a completed activity for practice. Clears local state, writes nothing.
   const startPractice = useCallback((orders: number[] | null) => {
@@ -748,7 +759,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   // practice run has nothing stored and is always scored live.
   const liveScore = scoreFor(verdicts, items.length);
   const storedScore: RunScore | null =
-    !practice && assignment.status === "completed"
+    !practice && confirmedCompletion
       ? {
           numerator: assignment.score_numerator ?? 0,
           judged: assignment.score_judged ?? items.length,
@@ -757,6 +768,27 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
         }
       : null;
   const displayScore = storedScore ?? liveScore;
+
+  if (progressLoadFailed) {
+    return <div className="activity-centre min-h-screen p-8">
+      <p role="alert">Could not load your saved progress. Your earlier answers are safe. Reload before continuing.</p>
+      <button type="button" onClick={() => window.location.reload()}>Retry loading</button>
+      {handleLeave && <ActivityExitButton onExit={handleLeave} tone="light" />}
+    </div>;
+  }
+
+  if (phase === "closing") {
+    return <div className="activity-centre min-h-screen p-8">
+      {completionError ? <>
+        <p role="alert">Could not save completion to your account. Your answers are kept here. Retry to finish.</p>
+        <button type="button" onClick={() => {
+          const pending = closeoutRef.current;
+          if (pending) void closeAssignment(pending.verdicts, pending.phase);
+        }}>Retry completion</button>
+      </> : <p role="status">Saving completion to your account...</p>}
+      {handleLeave && <ActivityExitButton onExit={handleLeave} tone="light" />}
+    </div>;
+  }
 
   /**
    * The admin's own marker, on every phase of a run he is only looking at.

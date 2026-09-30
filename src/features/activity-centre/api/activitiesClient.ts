@@ -257,6 +257,12 @@ export async function listItemResponses(
 }
 
 /** Student: complete an assignment, writing the final score. */
+function requireConfirmedCompletion(row: { id: string; status: string; completed_at: string | null } | null, assignmentId: string): void {
+  if (!row || row.id !== assignmentId || row.status !== "completed" || !row.completed_at) {
+    throw new Error("Your account did not confirm completion. Retry to finish.");
+  }
+}
+
 export async function completeAssignment(assignmentId: string, score: RunScore): Promise<void> {
   const completion = {
     status: "completed" satisfies ActivityStatus,
@@ -272,21 +278,26 @@ export async function completeAssignment(assignmentId: string, score: RunScore):
     scoring_version: 2,
   };
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("activity_assignments")
     .update({ ...completion, ...breakdown })
-    .eq("id", assignmentId);
-  if (!error) return;
+    .eq("id", assignmentId)
+    .select("id,status,completed_at")
+    .maybeSingle();
+  if (!error) { requireConfirmedCompletion(data, assignmentId); return; }
   if (!isUnknownColumn(error)) throw error;
 
   // The breakdown columns arrive with their own migration. Closing the run is
   // what the student is waiting on; the audit trail for the denominator is not
   // worth failing the completion over.
-  const { error: retryError } = await supabase
+  const { data: retryData, error: retryError } = await supabase
     .from("activity_assignments")
     .update(completion)
-    .eq("id", assignmentId);
+    .eq("id", assignmentId)
+    .select("id,status,completed_at")
+    .maybeSingle();
   if (retryError) throw retryError;
+  requireConfirmedCompletion(retryData, assignmentId);
 }
 
 /**

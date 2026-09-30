@@ -56,3 +56,15 @@ RC section readback counts only A through E selections and uses the saved sectio
 Live read-only SQL metadata confirmed ownership/RLS and parent revision fields, but no atomic timed checkpoint RPC or writer/access/terminal enforcement trigger. Owner-only write policies do not prove those protections. The [timed-write contract](../../implementation-plans/2026-09-30-timed-write-contract.md) specifies proposed parent/child checkpoints, device epochs, revisions, idempotency and rollout checks. It is a prepared proposal, not a deployed backend.
 
 Keep #166 and #167 open for full source coverage, genuine Activity response/finish and source revocation, authorized teacher actions, assignment revocation, two-device races and server rejection of stale/revoked writes. Publication and fresh production routes are recorded separately in the build sequence. No backend deployment or credit-spending Lovable action occurred.
+
+## Twenty-fourth slice: confirmed generic Activity completion
+
+The generic Activity runner requires completed status plus a completion timestamp before reopening a report or trusting its stored score. An old completed-status row with no timestamp and no saved responses opens its normal introduction. A saved-response read failure blocks practice with Retry loading, including historical completed-status rows.
+
+Normal Finish and fully resolved recovery first flush pending responses, reread the persisted response log, and require all items resolved. The assignment completion API requires a returned matching row with completed status and timestamp. Zero-row writes fail. A failed closeout keeps responses and offers Retry saving; the classroom completion signal follows account acknowledgment.
+
+Local browser checks used the existing designated-student Spot the Relationship assignment, without altering its historical completion fields. It opened the normal introduction instead of an empty 48-item report. Blocking activity_item_responses reads showed the load failure gate without Start or questions; clearing the block and Retry loading restored the introduction. Network blocks were cleared.
+
+Independent review found no material defect in this scoped patch. Genuine free-text response/finish was not exercised: generic grading can invoke activity-coach through the Lovable AI gateway and requires immediate credit confirmation. Focused tests cover failed closeout, persisted-log checks and zero-row completion rejection. Final test counts, release gates and production publication are recorded in the build sequence.
+
+RRC SectionRunner is a separate deferred case: it catches completion failure around line 1048 and still opens its report around line 1085. It needs acknowledged closeout with recording/response retention and retry. This slice does not fix that flow or Activity source revocation. Keep #166 and #167 open.

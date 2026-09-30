@@ -1,9 +1,10 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ActivityRunner } from "./ActivityRunner";
 import { SEED_ACTIVITIES } from "../content";
 import type { ActivityItemResponse, ActivityStatus, Verdict } from "../api/types";
+import { syncClassroomItemStatusBySource } from "@/lib/classroomItems";
 
 // Resume. The runner used to open every unfinished Activity at its homepage
 // with question one and an empty score, even though every attempt was already
@@ -110,7 +111,8 @@ describe("ActivityRunner resume", () => {
   beforeEach(() => {
     navigate.mockClear();
     toast.mockClear();
-    completeAssignment.mockClear();
+    completeAssignment.mockReset().mockResolvedValue(undefined);
+    vi.mocked(syncClassroomItemStatusBySource).mockClear();
     listItemResponses.mockClear();
     markAssignmentStarted.mockClear();
     recordItemResponse.mockClear();
@@ -193,26 +195,69 @@ describe("ActivityRunner resume", () => {
   it("never overwrites real progress with a blank run when the log cannot be read", async () => {
     listItemResponses.mockRejectedValue(new Error("network"));
     renderRouted();
-    // The homepage, not question one of a run that would re-answer everything.
-    // Start appears twice on the intro: the real button and the sticky dock
-    // that stands in for it until it scrolls into view.
-    expect(
-      await screen.findAllByRole("button", { name: /back to question 1|^start$/i }),
-    ).not.toHaveLength(0);
+    expect(await screen.findByRole("button", { name: "Retry loading" })).toBeInTheDocument();
+    expect(screen.queryByText("Question 1")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^start$/i })).not.toBeInTheDocument();
     expect(toast).toHaveBeenCalledWith(
       expect.objectContaining({ title: expect.stringMatching(/saved progress/i) }),
     );
   });
 
   it("reviews a completed run rather than resuming it", async () => {
-    activityState.assignment = { ...makeAssignment("completed"), score: 88 };
+    activityState.assignment = { ...makeAssignment("completed"), completed_at: new Date().toISOString(), score: 88 };
     listItemResponses.mockResolvedValue([row(1, 1, "correct")]);
     renderRouted();
     expect(await screen.findByText("88%")).toBeInTheDocument();
   });
+
+  it("opens an empty historical completed row without a timestamp on the intro", async () => {
+    activityState.assignment = { ...makeAssignment("completed"), score: 88 };
+    renderRouted();
+    expect(await screen.findAllByRole("button", { name: /^start$/i })).not.toHaveLength(0);
+    expect(screen.queryByText("88%")).not.toBeInTheDocument();
+    expect(screen.queryByText(/An Activity With No World complete/)).not.toBeInTheDocument();
+    expect(completeAssignment).not.toHaveBeenCalled();
+  });
+
+  it("restores saved progress from a historical completed row without a timestamp", async () => {
+    activityState.assignment = makeAssignment("completed");
+    listItemResponses.mockResolvedValue([row(1, 1, "incorrect", "unfinished answer")]);
+    renderRouted();
+    expect(await screen.findByDisplayValue("unfinished answer")).toBeInTheDocument();
+    expect(screen.getByText(/attempt 1 of 2 already used/i)).toBeInTheDocument();
+    expect(completeAssignment).not.toHaveBeenCalled();
+  });
+
+  it.each([null, "2026-09-30T10:00:00Z"])("blocks false reports when completed-row responses fail to load (timestamp %s)", async (completed_at) => {
+    activityState.assignment = { ...makeAssignment("completed"), completed_at, score: 88 };
+    listItemResponses.mockRejectedValue(new Error("network"));
+    renderRouted();
+    expect(await screen.findByRole("button", { name: "Retry loading" })).toBeInTheDocument();
+    expect(screen.queryByText("88%")).not.toBeInTheDocument();
+    expect(completeAssignment).not.toHaveBeenCalled();
+  });
+
+  it("waits for rescued closeout and retries failure with the same answers and score", async () => {
+    activityState.assignment = { ...makeAssignment("completed", 2), score: 12 };
+    listItemResponses.mockResolvedValue([row(1, 1, "correct", "first answer"), row(2, 2, "partial", "last answer")]);
+    let rejectCloseout: (reason: Error) => void;
+    completeAssignment.mockImplementationOnce(() => new Promise<void>((_, reject) => { rejectCloseout = reject; }));
+    renderRouted();
+    await waitFor(() => expect(completeAssignment).toHaveBeenCalledTimes(1));
+    expect(screen.queryByText("75%")).not.toBeInTheDocument();
+    expect(syncClassroomItemStatusBySource).not.toHaveBeenCalled();
+    rejectCloseout!(new Error("offline"));
+    fireEvent.click(await screen.findByRole("button", { name: "Retry completion" }));
+    expect(await screen.findByText("75%")).toBeInTheDocument();
+    expect(screen.getByText("first answer")).toBeInTheDocument();
+    expect(screen.getByText("last answer")).toBeInTheDocument();
+    expect(screen.queryByText("12%")).not.toBeInTheDocument();
+    expect(completeAssignment).toHaveBeenNthCalledWith(2, ...completeAssignment.mock.calls[0]);
+    expect(syncClassroomItemStatusBySource).toHaveBeenCalledTimes(1);
+  });
 });
 
-describe("the world sees the run's real progress", () => {
+describe("General practice shows the run's real progress", () => {
   beforeEach(() => {
     navigate.mockClear();
     listItemResponses.mockResolvedValue([]);
@@ -220,7 +265,7 @@ describe("the world sees the run's real progress", () => {
     activityState.error = null;
   });
 
-  it("draws the mileposts from replayed verdicts, so the rail spans every sitting", async () => {
+  it("draws the progress rail from replayed verdicts across every sitting", async () => {
     const seed = SEED_ACTIVITIES.find((a) => a.slug === "conditional-rephrase")!;
     activityState.assignment = {
       ...makeAssignment("in_progress"),
@@ -239,10 +284,8 @@ describe("the world sees the run's real progress", () => {
     const { container } = renderRouted();
     // Straight onto the question: the world's 2.5s entrance belongs to Start,
     // not to every reopen of a run already under way.
-    await screen.findByText("Question 4");
-    expect(container.querySelector('[data-testid="sy-mileposts"]')).toBeTruthy();
-    expect(container.querySelector('[data-testid="sy-mileposts"]')!.textContent).toMatch(
-      new RegExp(`3 of ${seed.items.length} down the line`),
-    );
+    await screen.findByRole("progressbar", { name: "Practice progress" });
+    // General practice now shows its percentage in the progress rail.
+    expect(container.querySelector('[role="progressbar"]')).toHaveAttribute("aria-valuenow", String(Math.round(3 / seed.items.length * 100)));
   });
 });
