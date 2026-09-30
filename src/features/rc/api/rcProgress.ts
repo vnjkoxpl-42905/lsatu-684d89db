@@ -138,8 +138,23 @@ export async function listSessions(): Promise<RcDrillSession[]> {
   return ((data ?? []) as RcDrillSessionRow[]).map(toSession);
 }
 
-/** Save the spent clock to the existing account-owned session row. */
-export async function saveSessionClock(id: string, elapsedSeconds: number): Promise<void> {
+const clockWriteChains = new Map<string, Promise<void>>();
+
+/** Save spent time and, on navigation, the account-acknowledged question position. */
+export function saveSessionClock(id: string, elapsedSeconds: number, currentQuestionIndex?: number): Promise<void> {
+  const previous = clockWriteChains.get(id) ?? Promise.resolve();
+  const write = previous.catch(() => undefined).then(() => writeSessionClock(id, elapsedSeconds, currentQuestionIndex));
+  clockWriteChains.set(id, write);
+  void write.finally(() => {
+    if (clockWriteChains.get(id) === write) clockWriteChains.delete(id);
+  }).catch(() => undefined);
+  return write;
+}
+
+async function writeSessionClock(id: string, elapsedSeconds: number, currentQuestionIndex?: number): Promise<void> {
+  if (currentQuestionIndex !== undefined && (!Number.isSafeInteger(currentQuestionIndex) || currentQuestionIndex < 0)) {
+    throw new Error('That question position could not be saved.');
+  }
   const userId = await requireUserId();
   const session = await getSession(id);
   if (!session || session.userId !== userId || session.status !== 'in_progress') {
@@ -153,6 +168,7 @@ export async function saveSessionClock(id: string, elapsedSeconds: number): Prom
       config: {
         ...session.config,
         clockElapsedSeconds: seconds,
+        ...(currentQuestionIndex === undefined ? {} : { currentQuestionIndex }),
         lastActiveAt: new Date().toISOString(),
       },
     })

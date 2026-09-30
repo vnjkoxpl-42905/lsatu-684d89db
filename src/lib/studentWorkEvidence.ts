@@ -1,8 +1,9 @@
 import { supabase } from '@/integrations/supabase/client';
-import { PracticeSession } from '@/bootcamps/main-conclusion/persistence/records';
+import { PracticeSession, TABLES } from '@/bootcamps/main-conclusion/persistence/records';
 import { practiceSessionIdFor } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { GUIDED_SESSION_PREFIX } from '@/lib/guidedDrillSession';
 import { DRILL_SESSION_PREFIX } from '@/lib/drillResumeSession';
+import { parseOwnedDrillRun } from '@/lib/drillRunLedger';
 
 export interface GuidedWorkEvidence {
   sessionId: string;
@@ -45,8 +46,36 @@ function projectSavedAssignmentEvidence(
   return evidence;
 }
 
-export function projectGuidedWorkEvidence(studentId: string, rows: StoredWorkRow[]) {
-  return projectSavedAssignmentEvidence(studentId, rows, GUIDED_SESSION_PREFIX);
+export function projectGuidedWorkEvidence(studentId: string, rows: StoredWorkRow[], runRows: StoredWorkRow[] = []) {
+  const evidence = projectSavedAssignmentEvidence(studentId, rows, GUIDED_SESSION_PREFIX);
+  const times: Record<string, string> = {};
+  for (const row of rows) {
+    const parsed = PracticeSession.safeParse(row.data);
+    if (!parsed.success || !parsed.data.pool_slug.startsWith(GUIDED_SESSION_PREFIX)) continue;
+    const assignmentId = parsed.data.pool_slug.slice(GUIDED_SESSION_PREFIX.length);
+    if (evidence[assignmentId]?.sessionId === row.record_id) times[assignmentId] = parsed.data.updated_at;
+  }
+  // Sort ties as well as dates, so database page order cannot choose a different sitting.
+  const runs = runRows.map((row) => parseOwnedDrillRun(studentId, row.record_id, row.data))
+    .filter((run) => run !== null)
+    .sort((a, b) => a.updated_at.localeCompare(b.updated_at) || a.id.localeCompare(b.id));
+  for (const run of runs) {
+    const { source_key: sourceKey, session } = run;
+    if (!sourceKey.startsWith(GUIDED_SESSION_PREFIX) || session.pool_slug !== sourceKey || session.completion_id !== sourceKey) continue;
+    const assignmentId = sourceKey.slice(GUIDED_SESSION_PREFIX.length);
+    if (!assignmentId || assignmentId.startsWith('drill:') || assignmentId.startsWith('slug:') || session.attempts.length === 0) continue;
+    const previous = evidence[assignmentId];
+    // An already completed issued assignment stays complete when practiced again.
+    if (previous?.status === 'completed' && session.status !== 'completed') continue;
+    if (previous && previous.status === session.status && (times[assignmentId] ?? '') > run.updated_at) continue;
+    evidence[assignmentId] = {
+      sessionId: run.id,
+      savedAnswerCount: session.attempts.length,
+      status: session.status,
+    };
+    times[assignmentId] = run.updated_at;
+  }
+  return evidence;
 }
 
 export function projectHomeworkWorkEvidence(studentId: string, rows: StoredWorkRow[]) {
@@ -58,6 +87,17 @@ export async function loadAssignmentWorkEvidence(studentId: string): Promise<{
   guided: Record<string, GuidedWorkEvidence>;
   homework: Record<string, HomeworkWorkEvidence>;
 }> {
+  const [rows, runRows] = await Promise.all([
+    loadStoredWorkRows(studentId, TABLES.practice_sessions),
+    loadStoredWorkRows(studentId, TABLES.drill_runs),
+  ]);
+  return {
+    guided: projectGuidedWorkEvidence(studentId, rows, runRows),
+    homework: projectHomeworkWorkEvidence(studentId, rows),
+  };
+}
+
+async function loadStoredWorkRows(studentId: string, tableName: string): Promise<StoredWorkRow[]> {
   const rows: StoredWorkRow[] = [];
   const pageSize = 500;
   for (let offset = 0; ; offset += pageSize) {
@@ -65,17 +105,14 @@ export async function loadAssignmentWorkEvidence(studentId: string): Promise<{
       .from('bootcamp_kv')
       .select('record_id,data')
       .eq('user_id', studentId)
-      .eq('table_name', 'practice_sessions')
+      .eq('table_name', tableName)
       .order('record_id', { ascending: true })
       .range(offset, offset + pageSize - 1);
     if (error) throw error;
     rows.push(...(data ?? []));
     if ((data ?? []).length < pageSize) break;
   }
-  return {
-    guided: projectGuidedWorkEvidence(studentId, rows),
-    homework: projectHomeworkWorkEvidence(studentId, rows),
-  };
+  return rows;
 }
 
 /** Compatibility for consumers that need only guided evidence. */

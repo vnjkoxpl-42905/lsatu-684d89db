@@ -159,6 +159,8 @@ export interface RcDrillConfig {
   source: 'manual' | 'adaptive' | 'assignment';
   /** Spent section time, saved with the account so reopening never restarts the clock. */
   clockElapsedSeconds?: number;
+  /** Zero-based question position acknowledged by the account. Older sessions omit it. */
+  currentQuestionIndex?: number;
   lastActiveAt?: string;
   practiceTestRunId?: string;
   practiceTestLegIndex?: number;

@@ -107,6 +107,9 @@ export default function RcPlayer() {
   const [sessionId, setSessionId] = React.useState<string | null>(null);
   const [sessionOwnerId, setSessionOwnerId] = React.useState<string | null>(null);
   const [sessionStatus, setSessionStatus] = React.useState<string | null>(null);
+  const [loadingAnswers, setLoadingAnswers] = React.useState(true);
+  const [answerLoadError, setAnswerLoadError] = React.useState(false);
+  const [answerLoadRevision, retryAnswerLoad] = React.useReducer((revision: number) => revision + 1, 0);
   const [error, setError] = React.useState<string | null>(null);
   const [state, dispatch] = React.useReducer(rcSessionReducer, [], () => initialState([]));
   const completedRef = React.useRef(false);
@@ -129,6 +132,8 @@ export default function RcPlayer() {
     setSessionId(null);
     setSessionOwnerId(null);
     setSessionStatus(null);
+    setLoadingAnswers(true);
+    setAnswerLoadError(false);
     completedRef.current = false;
     completionPendingRef.current = false;
     attemptIdsRef.current.clear();
@@ -205,6 +210,7 @@ export default function RcPlayer() {
               ? await getSession(routed.sessionId)
               : await createSession(nextConfig, routed.passageIds);
           if (cancelled) return;
+          if (!session) throw new Error('That drill could not be found.');
           if (session && (!user || session.userId !== user.id)) throw new Error('This drill belongs to another account.');
           const reviewRedirect = session ? rcReviewRedirect(session.status, reviewOnly, location.search) : null;
           if (reviewRedirect) {
@@ -245,6 +251,8 @@ export default function RcPlayer() {
   // Seed the machine once the passages land, and restore prior work on resume.
   React.useEffect(() => {
     if (!passages) return;
+    setLoadingAnswers(true);
+    setAnswerLoadError(false);
     const seeded = initialState(passages);
     const targetIndex = targetQuestionId
       ? seeded.items.findIndex((item) => item.question.questionId === targetQuestionId)
@@ -254,10 +262,13 @@ export default function RcPlayer() {
       state: {
         ...seeded,
         currentIndex: targetIndex >= 0 ? targetIndex : seeded.currentIndex,
+        paused: true,
       },
     });
 
     if (!sessionId || !sessionOwnerId) return;
+    const clockNeedsSave = !reviewOnly && sessionStatus === 'in_progress'
+      && Math.floor(readClockBackup(sessionId)) > (config.clockElapsedSeconds ?? 0);
     const pendingAnswer = readActiveRcAnswerBackup(sessionOwnerId, sessionId, sessionStatus, reviewOnly);
     if (pendingAnswer) {
       attemptIdsRef.current.set(pendingAnswer.questionId, pendingAnswer.attemptId);
@@ -278,13 +289,16 @@ export default function RcPlayer() {
     let cancelled = false;
     getSessionAttempts(sessionId)
       .then((attempts) => {
-        if (cancelled || attempts.length === 0) return;
+        if (cancelled) return;
         const hydrated = hydrateFromAttempts({
           items: seeded.items,
           attempts,
           revealMode: config.reveal,
           reviewOnly,
         });
+        const savedIndex = config.currentQuestionIndex;
+        const resumeIndex = !reviewOnly && Number.isSafeInteger(savedIndex) && savedIndex >= 0 && savedIndex < seeded.items.length
+          ? savedIndex : hydrated.firstUnansweredIndex === -1 ? 0 : hydrated.firstUnansweredIndex;
         dispatch({
           type: 'restore',
           state: {
@@ -307,31 +321,34 @@ export default function RcPlayer() {
                 ? pendingAnswer.currentIndex
                 : targetIndex >= 0
                 ? targetIndex
-                : hydrated.firstUnansweredIndex === -1
-                  ? 0
-                  : hydrated.firstUnansweredIndex,
+                : resumeIndex,
             submitted: hydrated.submitted,
-            paused: !!pendingAnswer && !hydrated.recorded.has(pendingAnswer.questionId),
+            paused: clockNeedsSave || (!!pendingAnswer && !hydrated.recorded.has(pendingAnswer.questionId)),
           },
         });
         if (pendingAnswer && hydrated.recorded.has(pendingAnswer.questionId)) {
           clearRcAnswerBackup(sessionOwnerId, sessionId);
           setSaveError(null);
         }
+        if (clockNeedsSave) setSaveError('Your saved clock still needs to reach your account.');
         // What the student crossed out the first time is theirs to see in
         // review. It is display only: the array written with a re-attempt is
         // built from what they do on this visit, not from this.
         setFirstAttemptEliminations(hydrated.eliminations);
+        setLoadingAnswers(false);
       })
       .catch(() => {
-        /* resuming without prior answers is still a usable drill */
+        if (cancelled) return;
+        setAnswerLoadError(true);
+        setLoadingAnswers(false);
+        dispatch({ type: 'setPaused', paused: true });
       });
 
     return () => {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [passages, sessionId, sessionOwnerId, sessionStatus, targetQuestionId]);
+  }, [passages, sessionId, sessionOwnerId, sessionStatus, targetQuestionId, answerLoadRevision]);
 
   /* ----------------------------------------------------------- tools */
 
@@ -389,7 +406,7 @@ export default function RcPlayer() {
   const questionStart = React.useRef<number>(Date.now());
 
   React.useEffect(() => {
-    if (state.paused || !sessionId || !passages || reviewOnly) return;
+    if (state.paused || loadingAnswers || answerLoadError || !sessionId || !passages || reviewOnly) return;
     let lastTick = Date.now();
     const id = window.setInterval(() => {
       const now = Date.now();
@@ -402,10 +419,10 @@ export default function RcPlayer() {
       });
     }, 1000);
     return () => window.clearInterval(id);
-  }, [state.paused, sessionId, passages, reviewOnly]);
+  }, [state.paused, loadingAnswers, answerLoadError, sessionId, passages, reviewOnly]);
 
   React.useEffect(() => {
-    if (!sessionId || reviewOnly || sessionStatus !== 'in_progress' || completedRef.current) return;
+    if (!sessionId || loadingAnswers || answerLoadError || reviewOnly || sessionStatus !== 'in_progress' || completedRef.current) return;
     const save = () => {
       if (completedRef.current) return;
       writeClockBackup(sessionId, elapsedRef.current);
@@ -425,7 +442,7 @@ export default function RcPlayer() {
       window.removeEventListener('pagehide', save);
       if (!completedRef.current) save();
     };
-  }, [sessionId, sessionStatus, reviewOnly, failAccountSave]);
+  }, [sessionId, sessionStatus, loadingAnswers, answerLoadError, reviewOnly, failAccountSave]);
 
   const retryAccountSave = async () => {
     if (!sessionId || sessionStatus !== 'in_progress' || retryingSave) return;
@@ -444,7 +461,7 @@ export default function RcPlayer() {
       // completion retry is idempotent and there is no active clock to update.
       const latest = completionPendingRef.current ? await getSession(sessionId) : null;
       if (latest?.status !== 'completed' || latest.userId !== sessionOwnerId) {
-        await saveSessionClock(sessionId, elapsedRef.current);
+        await saveSessionClock(sessionId, elapsedRef.current, state.currentIndex);
       }
       if (pending) {
         if (!await pending()) return;
@@ -563,36 +580,45 @@ export default function RcPlayer() {
 
   const goTo = React.useCallback(
     async (index: number) => {
-      if (state.paused || navigationInFlightRef.current) return;
+      if (state.paused || loadingAnswers || answerLoadError || navigationInFlightRef.current || !state.items[index]) return;
       navigationInFlightRef.current = true;
       setSavingNavigation(true);
-      try {
-        const leaving = getCurrentItem(state);
-        // Save the pending answer before leaving; a failed write keeps the
-        // student on this question with their choice still selected.
-        if (
-          leaving &&
-          config.reveal === 'end_of_set' &&
-          !state.recorded.has(leaving.question.questionId) &&
-          state.answers.has(leaving.question.questionId)
-        ) {
-          const saved = await writeAttempt(leaving, state.answers.get(leaving.question.questionId) ?? null);
-          if (!saved) {
-            pendingSaveRef.current = async () => {
-              if (!await writeAttempt(leaving, state.answers.get(leaving.question.questionId) ?? null)) return false;
-              dispatch({ type: 'goto', index });
-              return true;
-            };
-            return;
+      const leaving = getCurrentItem(state);
+      let answerSaved = !leaving || config.reveal !== 'end_of_set'
+        || state.recorded.has(leaving.question.questionId) || !state.answers.has(leaving.question.questionId);
+      const move = async (): Promise<boolean> => {
+        if (!answerSaved && leaving) {
+          if (!await writeAttempt(leaving, state.answers.get(leaving.question.questionId) ?? null)) {
+            pendingSaveRef.current = move;
+            return false;
           }
+          answerSaved = true;
         }
-        dispatch({ type: 'goto', index });
+        try {
+          if (!reviewOnly) {
+            if (!sessionId) throw new Error('This section is not available to save.');
+            await saveSessionClock(sessionId, elapsedRef.current, index);
+          }
+          dispatch({ type: 'goto', index });
+          return true;
+        } catch (err) {
+          if (isHandoffError(err)) {
+            setError('This practice test is active on another device. This device has stopped saving.');
+          } else {
+            pendingSaveRef.current = move;
+            failAccountSave('Your question position did not save.');
+          }
+          return false;
+        }
+      };
+      try {
+        await move();
       } finally {
         navigationInFlightRef.current = false;
         setSavingNavigation(false);
       }
     },
-    [state, config.reveal, writeAttempt],
+    [state, config.reveal, writeAttempt, loadingAnswers, answerLoadError, reviewOnly, sessionId, failAccountSave],
   );
 
   const handleSubmit = React.useCallback(async () => {
@@ -659,7 +685,7 @@ export default function RcPlayer() {
         && !state.recorded.has(current.question.questionId)) {
         if (!await writeAttempt(current, state.answers.get(current.question.questionId) ?? null)) return;
       }
-      await saveSessionClock(sessionId, elapsedRef.current);
+      await saveSessionClock(sessionId, elapsedRef.current, state.currentIndex);
       navigate(exitPath);
     } catch (err) {
       if (isHandoffError(err)) {
@@ -825,11 +851,22 @@ export default function RcPlayer() {
     );
   }
 
-  if (!passages || !item) {
+  if (answerLoadError) {
+    return (
+      <OfficialDrillFrame notepadEnabled={false}>
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 p-10">
+          <p role="alert" className="text-[15px] text-slate-600">Your saved answers could not be loaded. The clock and questions are paused.</p>
+          <Button onClick={retryAnswerLoad}>Retry loading answers</Button>
+        </div>
+      </OfficialDrillFrame>
+    );
+  }
+
+  if (!passages || !item || loadingAnswers) {
     return (
       <OfficialDrillFrame notepadEnabled={false}>
         <div className="flex flex-1 items-center justify-center p-10">
-          <p className="text-[15px] text-slate-600">Loading the passage…</p>
+          <p className="text-[15px] text-slate-600">{passages ? 'Loading your saved answers…' : 'Loading the passage…'}</p>
         </div>
       </OfficialDrillFrame>
     );

@@ -44,7 +44,8 @@ async function assertOwner(userId: string): Promise<void> {
   }
 }
 
-function parseOwned(userId: string, recordId: string, raw: unknown): StandaloneDrillRun | null {
+/** Pure row validation; scoped teacher reads use RLS without changing the actor. */
+export function parseOwnedDrillRun(userId: string, recordId: string, raw: unknown): StandaloneDrillRun | null {
   const parsed = StandaloneDrillRunSchema.safeParse(raw);
   if (!parsed.success) return null;
   const row = parsed.data;
@@ -138,7 +139,7 @@ export async function loadStandaloneDrillRun(userId: string, runId: string): Pro
     .eq('record_id', runId)
     .maybeSingle();
   if (error) throw error;
-  return data ? parseOwned(userId, data.record_id, data.data) : null;
+  return data ? parseOwnedDrillRun(userId, data.record_id, data.data) : null;
 }
 
 /** Page through account rows so older sittings do not disappear at the API limit. */
@@ -155,7 +156,7 @@ export async function listStandaloneDrillRuns(userId: string): Promise<Standalon
       .range(offset, offset + pageSize - 1);
     if (error) throw error;
     for (const item of data ?? []) {
-      const run = parseOwned(userId, item.record_id, item.data);
+      const run = parseOwnedDrillRun(userId, item.record_id, item.data);
       if (run) runs.push(run);
     }
     if ((data ?? []).length < pageSize) break;

@@ -1,8 +1,59 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const store = vi.hoisted(() => ({
+  rows: {} as Record<string, { record_id: string; data: unknown }[]>,
+  reads: [] as { userId: string; table: string; start: number; end: number }[],
+  failedTable: '',
+  authRead: vi.fn(),
+}));
+
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    auth: { getUser: store.authRead },
+    from: () => {
+      const filters: Record<string, string> = {};
+      const query = {
+        select: () => query,
+        eq: (name: string, value: string) => { filters[name] = value; return query; },
+        order: () => query,
+        range: async (start: number, end: number) => {
+          store.reads.push({ userId: filters.user_id, table: filters.table_name, start, end });
+          return {
+            data: (store.rows[filters.table_name] ?? []).slice(start, end + 1),
+            error: filters.table_name === store.failedTable ? new Error('source unavailable') : null,
+          };
+        },
+      };
+      return query;
+    },
+  },
+}));
 import { practiceSessionIdFor } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
-import { projectGuidedWorkEvidence, projectHomeworkWorkEvidence } from './studentWorkEvidence';
+import { loadAssignmentWorkEvidence, projectGuidedWorkEvidence, projectHomeworkWorkEvidence } from './studentWorkEvidence';
 
 const studentId = '11111111-1111-4111-8111-111111111111';
+const answer = { qid: 'PT101-S2-Q1', selected_answer: 'B', correct: true, time_ms: 1000 };
+
+function runRow(assignmentId: string, options: { id?: string; status?: 'in_progress' | 'completed'; time?: string; attempts?: typeof answer[] } = {}) {
+  const id = options.id ?? '33333333-3333-4333-8333-333333333333';
+  const time = options.time ?? '2026-09-29T12:00:00.000Z';
+  const legacy = row(assignmentId, options.attempts ?? [answer]);
+  return {
+    record_id: id,
+    data: {
+      id, user_id: studentId, source_key: legacy.data.pool_slug, mode: 'type-drill', label: 'Reasoning drill',
+      session: { ...legacy.data, id, status: options.status ?? 'in_progress', updated_at: time },
+      created_at: time, updated_at: time,
+    },
+  };
+}
+
+beforeEach(() => {
+  store.rows = {};
+  store.reads = [];
+  store.failedTable = '';
+  store.authRead.mockClear();
+});
 
 function row(assignmentId: string, attempts: unknown[] = [], prefix = 'guided::') {
   const poolSlug = `${prefix}${assignmentId}`;
@@ -25,6 +76,62 @@ function row(assignmentId: string, attempts: unknown[] = [], prefix = 'guided::'
 }
 
 describe('account-saved guided assignment evidence', () => {
+  it('recognizes a newly answered ledger sitting without a legacy singleton', () => {
+    const run = runRow('assignment-a');
+    expect(projectGuidedWorkEvidence(studentId, [], [run])).toEqual({
+      'assignment-a': { sessionId: run.record_id, savedAnswerCount: 1, status: 'in_progress' },
+    });
+  });
+
+  it('keeps issued assignment IDs separate and chooses the newest answered sitting without summing retakes', () => {
+    const old = runRow('assignment-a', { time: '2026-09-28T12:00:00.000Z', attempts: [answer, answer] });
+    const newer = runRow('assignment-a', { id: '44444444-4444-4444-8444-444444444444' });
+    const other = runRow('assignment-b', { id: '55555555-5555-4555-8555-555555555555' });
+    const evidence = projectGuidedWorkEvidence(studentId, [], [newer, other, old]);
+    expect(Object.keys(evidence).sort()).toEqual(['assignment-a', 'assignment-b']);
+    expect(evidence['assignment-a']).toEqual({ sessionId: newer.record_id, savedAnswerCount: 1, status: 'in_progress' });
+  });
+
+  it('preserves completion through migration and later incomplete retakes in either source', () => {
+    const legacy = row('assignment-a', [answer]);
+    legacy.data.status = 'completed';
+    const newer = runRow('assignment-a');
+    expect(projectGuidedWorkEvidence(studentId, [legacy], [newer])['assignment-a'].status).toBe('completed');
+    legacy.data.status = 'in_progress';
+    const complete = runRow('assignment-a', { status: 'completed', time: '2026-09-27T12:00:00.000Z' });
+    expect(projectGuidedWorkEvidence(studentId, [legacy], [newer, complete])['assignment-a'].sessionId).toBe(complete.record_id);
+  });
+
+  it('uses a newer legacy snapshot while incomplete and selects equal-date sittings deterministically', () => {
+    const legacy = row('assignment-a', [answer]);
+    const older = runRow('assignment-a', { time: '2026-09-27T12:00:00.000Z' });
+    expect(projectGuidedWorkEvidence(studentId, [legacy], [older])['assignment-a'].sessionId).toBe(legacy.record_id);
+    const tied = runRow('assignment-a', { id: '44444444-4444-4444-8444-444444444444' });
+    const first = runRow('assignment-a');
+    expect(projectGuidedWorkEvidence(studentId, [], [tied, first])).toEqual(projectGuidedWorkEvidence(studentId, [], [first, tied]));
+  });
+
+  it('excludes direct launches, custom drills, and zero-answer ledger sittings', () => {
+    const direct = runRow('drill:content-id');
+    const slug = runRow('slug:content-slug');
+    const blank = runRow('assignment-a', { attempts: [] });
+    const custom = runRow('assignment-a');
+    custom.data.source_key = custom.data.session.pool_slug = custom.data.session.completion_id = 'drill::adaptive';
+    expect(projectGuidedWorkEvidence(studentId, [], [direct, slug, blank, custom])).toEqual({});
+  });
+
+  it('rejects malformed ownership, row IDs, and embedded assignment references', () => {
+    const otherId = '22222222-2222-4222-8222-222222222222';
+    const malformed = [
+      (run: ReturnType<typeof runRow>) => { run.data.user_id = otherId; },
+      (run: ReturnType<typeof runRow>) => { run.data.session.user_id = otherId; },
+      (run: ReturnType<typeof runRow>) => { run.record_id = otherId; },
+      (run: ReturnType<typeof runRow>) => { run.data.session.id = otherId; },
+      (run: ReturnType<typeof runRow>) => { run.data.session.pool_slug = 'guided::assignment-b'; },
+      (run: ReturnType<typeof runRow>) => { run.data.session.completion_id = 'guided::assignment-b'; },
+    ].map((mutate) => { const run = runRow('assignment-a'); mutate(run); return run; });
+    expect(projectGuidedWorkEvidence(studentId, [], malformed)).toEqual({});
+  });
   it('does not count a launched drill with no saved answer', () => {
     expect(projectGuidedWorkEvidence(studentId, [row('assignment-a')])).toEqual({});
   });
@@ -52,5 +159,32 @@ describe('account-saved guided assignment evidence', () => {
     const evidence = projectHomeworkWorkEvidence(studentId, [opened, answered]);
     expect(Object.keys(evidence)).toEqual(['homework-b']);
     expect(evidence['homework-b'].savedAnswerCount).toBe(1);
+  });
+});
+
+describe('selected-student assignment evidence reads', () => {
+  it('reads both sources for the subject without applying a self-only authentication guard', async () => {
+    store.rows.drill_runs = [runRow('assignment-a')];
+    const evidence = await loadAssignmentWorkEvidence(studentId);
+    expect(evidence.guided['assignment-a'].status).toBe('in_progress');
+    expect(store.reads.map((read) => [read.userId, read.table])).toEqual([
+      [studentId, 'practice_sessions'], [studentId, 'drill_runs'],
+    ]);
+    expect(store.authRead).not.toHaveBeenCalled();
+  });
+
+  it('pages each source so a late guided sitting still supplies progress', async () => {
+    const legacyFiller = row('drill:direct', [answer]);
+    const runFiller = runRow('drill:direct');
+    store.rows.practice_sessions = [...Array(500).fill(legacyFiller), row('assignment-legacy', [answer])];
+    store.rows.drill_runs = [...Array(500).fill(runFiller), runRow('assignment-ledger')];
+    const evidence = await loadAssignmentWorkEvidence(studentId);
+    expect(Object.keys(evidence.guided).sort()).toEqual(['assignment-ledger', 'assignment-legacy']);
+    expect(store.reads.filter((read) => read.start === 500).map((read) => read.table).sort()).toEqual(['drill_runs', 'practice_sessions']);
+  });
+
+  it('surfaces a failed ledger read instead of treating the source as untouched', async () => {
+    store.failedTable = 'drill_runs';
+    await expect(loadAssignmentWorkEvidence(studentId)).rejects.toThrow('source unavailable');
   });
 });
