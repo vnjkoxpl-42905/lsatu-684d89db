@@ -59,6 +59,26 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
 describe('account-acknowledged practice test breaks', () => {
+  it('shows a paused device copy after an offline reload and waits for account recovery', async () => {
+    const server = fixture({ breakStartedAt: '2026-09-01T00:00:00.000Z' });
+    const backup = { ...server, breakRemainingSeconds: 420 };
+    store.pending.mockReturnValue(backup);
+    store.load.mockRejectedValueOnce(new Error('Account connection unavailable'))
+      .mockResolvedValueOnce(server);
+
+    await mount();
+    expect(screen.getByRole('heading', { name: 'Practice test unavailable' })).toBeTruthy();
+    expect(screen.getByText(/An unsynced copy is saved on this device/)).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Begin section 3' })).toBeNull();
+    expect(store.save).not.toHaveBeenCalled();
+
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Retry loading account' })); });
+    expect(store.load).toHaveBeenCalledTimes(2);
+    expect(screen.getByText('7:00')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Retry saving break' })).toBeTruthy();
+    expect(store.save).not.toHaveBeenCalled();
+  });
+
   it('starts a failed break from the retry time, not from the offline wait', async () => {
     let server = fixture();
     store.load.mockImplementation(async () => server);

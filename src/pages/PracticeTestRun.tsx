@@ -259,11 +259,13 @@ export default function PracticeTestRunPage() {
   const [saveError, setSaveError] = React.useState<string | null>(null);
   const [saving, setSaving] = React.useState(false);
   const [pendingRun, setPendingRun] = React.useState<Run | null>(null);
+  const [loadRevision, retryAccountLoad] = React.useReducer((revision: number) => revision + 1, 0);
 
   React.useEffect(() => {
     let cancelled = false;
     setRun(undefined);
     setSaveError(null);
+    setPendingRun(null);
     if (!runId || !user) {
       setRun(null);
       return;
@@ -273,19 +275,23 @@ export default function PracticeTestRunPage() {
         if (cancelled) return;
         setRun(loaded);
         const backup = readPendingPracticeTestBackup(user.id, runId);
-        setPendingRun(backup && loaded && backup.revision === loaded.revision ? backup : null);
+        setPendingRun(backup && (!loaded || backup.revision === loaded.revision) ? backup : null);
         if (backup && loaded && backup.revision !== loaded.revision) {
           setSaveError("This device has an unsynced copy, but your account has newer changes. The device copy has been preserved for recovery.");
+        }
+        if (backup && !loaded) {
+          setSaveError("This device has an unsynced copy, but the exam could not be found in your account. The copy has been preserved for recovery.");
         }
       })
       .catch((error: unknown) => {
         if (!cancelled) {
           setSaveError(error instanceof Error ? error.message : "Could not load this exam from your account.");
+          setPendingRun(readPendingPracticeTestBackup(user.id, runId));
           setRun(null);
         }
       });
     return () => { cancelled = true; };
-  }, [runId, user?.id]);
+  }, [runId, user?.id, loadRevision]);
 
   const commit = React.useCallback(async (next: Run, pendingBackup: Run = next): Promise<Run | null> => {
     if (!user) return null;
@@ -462,11 +468,19 @@ export default function PracticeTestRunPage() {
   if (!run) {
     return (
       <>
-        <h1 className="classroom-title">Practice test not found</h1>
+        <h1 className="classroom-title">{saveError ? "Practice test unavailable" : "Practice test not found"}</h1>
         <p className="testing-lede">
           {saveError ?? "This exam was not found in your account."}
         </p>
-        <Button onClick={() => navigate("/testing")}>Back to Practice Exams</Button>
+        {pendingRun && (
+          <p className="testing-note" role="status">
+            An unsynced copy is saved on this device. Progress is paused until the account copy can be checked.
+          </p>
+        )}
+        <div className="testing-actions">
+          {saveError && <Button onClick={retryAccountLoad}>Retry loading account</Button>}
+          <Button onClick={() => navigate("/testing")}>Back to Practice Exams</Button>
+        </div>
       </>
     );
   }
