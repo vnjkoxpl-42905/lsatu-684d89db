@@ -18,7 +18,7 @@ export default function AssignedWorkPanel({
 }) {
   const navigate = useNavigate();
   const classroom = useOptionalClassroomLayout();
-  const { rows, loading, failed, retry } = useAssignedTodoFeed();
+  const { rows, loading, failed, retry, evidenceWarnings = [] } = useAssignedTodoFeed();
   const openRows = rows.filter((row) => row.status !== "completed");
   const shownRows = openRows.slice(0, 3);
 
@@ -43,6 +43,12 @@ export default function AssignedWorkPanel({
           )}
         </div>
 
+        {evidenceWarnings.length > 0 && (
+          <div className="drill-observatory-today-quiet mt-3" role="alert">
+            Could not confirm {evidenceWarnings.join(", ")}. Available saved work is still shown.{" "}
+            <button type="button" className="drill-observatory-insight-link" onClick={retry}>Try again</button>
+          </div>
+        )}
         {loading && shownRows.length === 0 ? (
           <div aria-label="Loading assigned work" className="mt-3 grid animate-pulse gap-3">
             <div className="drill-observatory-today-rail h-[62px]" />
@@ -72,15 +78,15 @@ export default function AssignedWorkPanel({
                     </span>
                   </span>
                   <span className="drill-observatory-ink-55 shrink-0 text-[11.5px]">
-                    {index === 0 ? "Next" : STATUS_LABEL[row.status]}
+                    {row.progressUnverified ? "Progress unverified" : index === 0 ? "Next" : STATUS_LABEL[row.status]}
                   </span>
                 </button>
               </li>
             ))}
           </ol>
-        ) : failed ? (
+        ) : evidenceWarnings.length > 0 ? null : failed ? (
           <div className="drill-observatory-today-quiet mt-3" role="alert">
-            Your assigned work did not load.{" "}
+            We could not confirm whether your assigned work list is complete.{" "}
             <button
               type="button"
               className="drill-observatory-insight-link"

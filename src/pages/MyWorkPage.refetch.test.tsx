@@ -1,8 +1,12 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+const evidenceState = vi.hoisted(() => ({ broken: false }));
+beforeEach(() => { evidenceState.broken = false; });
+afterEach(cleanup);
 
 let finishPlanRead: ((result: { data: null; error: Error }) => void) | undefined;
 
@@ -33,10 +37,11 @@ vi.mock('@/integrations/supabase/client', () => ({
     }),
   },
 }));
-vi.mock('@/lib/guidedDrills', () => ({ listAssignmentsForStudent: async () => [] }));
+vi.mock('@/lib/guidedDrills', () => ({ listAssignmentsForStudent: async () => evidenceState.broken ? [{ id: 'guided-1', assigned_at: '2026-09-30T00:00:00Z', status: 'assigned', completed_at: null, guided_drill: { title: 'Saved reasoning drill', question_count: 5 } }] : [] }));
 vi.mock('@/features/activity-centre/api/activitiesClient', () => ({ listStudentAssignments: async () => [] }));
-vi.mock('@/lib/studentWorkEvidence', () => ({
-  loadAssignmentWorkEvidence: async () => ({ guided: {}, homework: {} }),
+vi.mock('@/lib/studentWorkEvidence', async importOriginal => ({
+  ...await importOriginal<typeof import('@/lib/studentWorkEvidence')>(),
+  loadAssignmentWorkEvidence: async () => ({ guided: {}, homework: {}, diagnostics: evidenceState.broken ? [{ source: 'practice_sessions', family: 'guided', reason: 'invalid_record', assignmentId: 'guided-1' }] : [] }),
   loadActivityWorkEvidence: async () => new Set(),
 }));
 
@@ -65,4 +70,19 @@ describe('My Work while weekly plan status refreshes', () => {
     expect(screen.getByText('Read the passage')).toBeInTheDocument();
     expect(screen.getByText('Intro to LR')).toBeInTheDocument();
   });
+});
+
+
+it('names rejected saved progress, retains other work, and clears the warning after retry', async () => {
+  evidenceState.broken = true;
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  client.setQueryData(['weekly-plan', 'assigned-status', 'student-1'], { 'plan-task-1': 'assigned' });
+  render(<QueryClientProvider client={client}><MemoryRouter><MyWorkPage completed={false} /></MemoryRouter></QueryClientProvider>);
+  await waitFor(() => expect(screen.getByText('Progress unverified')).toBeInTheDocument());
+  expect(screen.getByText(/Could not confirm saved assignment sessions/)).toBeInTheDocument();
+  expect(screen.getByText('Intro to LR')).toBeInTheDocument();
+  evidenceState.broken = false;
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+  await waitFor(() => expect(screen.queryByText(/Could not confirm saved assignment sessions/)).not.toBeInTheDocument());
+  expect(screen.getByText('Intro to LR')).toBeInTheDocument();
 });

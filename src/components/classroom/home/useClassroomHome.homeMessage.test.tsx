@@ -16,6 +16,7 @@ import { renderHook, waitFor, act } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const workState = vi.hoisted(() => ({ uncertain: false }));
 const USER_ID = "user-1";
 const CONVO_ID = "conv-1";
 const MSG_CREATED_AT = "2026-08-23T12:00:00.000Z";
@@ -40,7 +41,9 @@ vi.mock("@/lib/completeAssignedWork", () => ({
   useCompleteAssignedWork: () => ({ mutate: vi.fn() }),
 }));
 vi.mock("@/hooks/useAssignedTodoFeed", () => ({
-  useAssignedTodoFeed: () => ({ rows: [], loading: false }),
+  useAssignedTodoFeed: () => ({ rows: workState.uncertain ? [
+    { key: 'guided', refId: 'issued', kind: 'guided', title: 'Reasoning drill', sourceTable: 'guided_drill_assignments', subtitle: '5 questions', createdAt: '2026-09-30T00:00:00Z', dueAt: null, route: '/guided/issued', status: 'assigned', progressUnverified: true },
+  ] : [], loading: false, failed: workState.uncertain, evidenceWarnings: workState.uncertain ? ['saved guided sittings'] : [], retry: vi.fn() }),
   routeWithReturnTo: (route: string) => route,
 }));
 vi.mock("@/hooks/useClassroomItems", () => ({
@@ -100,6 +103,7 @@ function wrapper({ children }: { children: React.ReactNode }) {
 }
 
 beforeEach(() => {
+  workState.uncertain = false;
   thread = { unread: true, home_cleared_at: null, created_at: MSG_CREATED_AT };
   clearConversationFromHome.mockClear();
 });
@@ -194,4 +198,22 @@ describe("Home message card visibility", () => {
     // The thread is still unread as far as every other surface is concerned.
     expect(thread.unread).toBe(true);
   });
+});
+
+
+it('keeps uncertain work available without counting it as new or claiming zero saved work', async () => {
+  workState.uncertain = true;
+  const { result, rerender } = renderHook(() => useClassroomHome(), { wrapper });
+  await waitFor(() => expect(result.current.model.rows).toHaveLength(1));
+  expect(result.current.model.subtitle).toContain('Could not confirm saved guided sittings');
+  expect(result.current.model.workFailed).toBe(true);
+  expect(result.current.model.workSummary).toBeNull();
+  expect(result.current.model.rows[0].isNew).toBe(false);
+  expect(result.current.model.rows[0].meta).toContain('Progress unverified');
+  expect(result.current.model.hero?.eyebrow).toBe('OPEN YOUR ASSIGNMENT');
+  expect(result.current.model.newCount).toBe(0);
+  workState.uncertain = false;
+  rerender();
+  expect(result.current.model.workFailed).toBe(false);
+  expect(result.current.model.subtitle).not.toContain('Could not confirm');
 });

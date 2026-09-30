@@ -12,7 +12,7 @@ import { sectionDirectionsRoute } from '@/lib/sectionDirections';
 import { listAssignmentsForStudent as listGuidedForStudent, type GuidedDrill, type GuidedDrillAssignment } from '@/lib/guidedDrills';
 import { listStudentAssignments as listActivityForStudent } from '@/features/activity-centre/api/activitiesClient';
 import { activityWorkStatus, guidedWorkStatus, homeworkWorkStatus, studentWorkKey, teacherWorkStatus } from '@/lib/studentWorkProjection';
-import { loadActivityWorkEvidence, loadAssignmentWorkEvidence, type GuidedWorkEvidence, type HomeworkWorkEvidence } from '@/lib/studentWorkEvidence';
+import { loadActivityWorkEvidence, loadAssignmentWorkEvidence, type GuidedWorkEvidence, type HomeworkWorkEvidence, type AssignmentWorkEvidence, assignmentEvidenceWarnings, assignmentProgressUnverified } from '@/lib/studentWorkEvidence';
 
 /**
  * A unified read-only "assigned" row surfaced in the student's Today list.
@@ -28,6 +28,7 @@ export interface AssignedTodoRow {
   title: string;
   subtitle: string;
   status: 'assigned' | 'in_progress' | 'completed';
+  progressUnverified?: boolean;
   createdAt: string;
   /** Due date, when a classroom_items row carries one. */
   dueAt: string | null;
@@ -102,6 +103,9 @@ export interface AssignedFeedSources {
   guidedEvidence?: Record<string, GuidedWorkEvidence>;
   homeworkEvidence?: Record<string, HomeworkWorkEvidence>;
   activityEvidence?: ReadonlySet<string>;
+  assignmentWorkEvidence?: AssignmentWorkEvidence;
+  assignmentEvidenceUnavailable?: boolean;
+  activityEvidenceUnavailable?: boolean;
   /** Undefined until the source read succeeds; plan mirrors cannot stand in for it. */
   weeklyPlanStatusById?: Readonly<Record<string, WeeklyPlanItem['status']>>;
 }
@@ -120,6 +124,9 @@ export function buildAssignedRows({
   homeworkEvidence = {},
   activityEvidence = EMPTY_ACTIVITY_EVIDENCE,
   weeklyPlanStatusById,
+  assignmentWorkEvidence,
+  assignmentEvidenceUnavailable = false,
+  activityEvidenceUnavailable = false,
 }: AssignedFeedSources): AssignedTodoRow[] {
   {
     const byIdentity = new Map<string, AssignedTodoRow>();
@@ -252,7 +259,13 @@ export function buildAssignedRows({
     }
 
     // Open work first, then completed; newest within each bucket.
-    return [...byIdentity.values()].sort((x, y) => {
+    return [...byIdentity.values()].map(row => {
+      const family = row.sourceTable === 'guided_drill_assignments' ? 'guided' : row.sourceTable === 'homework_assignments' ? 'homework' : null;
+      const uncertain = family
+        ? assignmentEvidenceUnavailable || (assignmentWorkEvidence && assignmentProgressUnverified(assignmentWorkEvidence, family, row.refId))
+        : row.sourceTable === 'activity_assignments' && activityEvidenceUnavailable;
+      return uncertain && row.status === 'assigned' ? { ...row, progressUnverified: true } : row;
+    }).sort((x, y) => {
       const s = (x.status === 'completed' ? 1 : 0) - (y.status === 'completed' ? 1 : 0);
       if (s !== 0) return s;
       return new Date(y.createdAt).getTime() - new Date(x.createdAt).getTime();
@@ -266,6 +279,7 @@ export function useAssignedTodoFeed(): {
   loading: boolean;
   /** A read failed. Never report "nothing assigned" on a failed read. */
   failed: boolean;
+  evidenceWarnings: string[];
   retry: () => void;
 } {
   const { user } = useAuth();
@@ -322,8 +336,8 @@ export function useAssignedTodoFeed(): {
 
   const items = useMemo(() => itemsQuery.data ?? [], [itemsQuery.data]);
   const rows = useMemo(
-    () => buildAssignedRows({ hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById }),
-    [hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById],
+    () => buildAssignedRows({ hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById, assignmentWorkEvidence: assignmentEvidence, assignmentEvidenceUnavailable: evidenceError || !assignmentEvidence, activityEvidenceUnavailable: activityEvidenceError || activityEvidenceLoading }),
+    [hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById, assignmentEvidence, evidenceError, activityEvidenceError, activityEvidenceLoading],
   );
 
   const retry = useMemo(
@@ -340,10 +354,12 @@ export function useAssignedTodoFeed(): {
     [hwRefresh, taRefresh, guidedRefetch, evidenceRefetch, actRefetch, activityEvidenceRefetch, itemsQuery, planRefetch],
   );
 
+  const evidenceWarnings = assignmentEvidenceWarnings(assignmentEvidence);
   return {
     rows,
+    evidenceWarnings,
     loading: rows.length === 0 && (hwLoading || taLoading || guidedLoading || evidenceLoading || actLoading || activityEvidenceLoading || itemsQuery.isLoading || (hasPlanMirrors && !weeklyPlanStatusById && !planError && planFetching)),
-    failed: !!hwError || !!taError || guidedError || evidenceError || actError || activityEvidenceError || itemsQuery.isError || planError,
+    failed: evidenceWarnings.length > 0 || !!hwError || !!taError || guidedError || evidenceError || actError || activityEvidenceError || itemsQuery.isError || planError,
     retry,
   };
 }

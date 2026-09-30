@@ -4,6 +4,7 @@ import { HelpCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { safeLazy } from '@/lib/safeLazy';
+import { isOfficialTimedChildPath } from '@/lib/officialTimedRoute';
 import {
   setHelpSheetOpen,
   useBottomRightSurfaceOpen,
@@ -33,7 +34,7 @@ export function FloatingHelpButton() {
   }, [open]);
 
   if (!user || loading || is_admin) return null;
-  if (HIDDEN_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
+  if (isOfficialTimedChildPath(pathname) || HIDDEN_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
     return null;
   }
 

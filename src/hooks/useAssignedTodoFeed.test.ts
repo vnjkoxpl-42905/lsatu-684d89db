@@ -284,3 +284,25 @@ describe('weekly plan source status', () => {
     expect(rows.map((row) => row.kind)).toEqual(['bootcamp']);
   });
 });
+
+
+it('keeps mirror identity and confirmed completion while labeling unavailable saved progress', () => {
+  const rows = buildAssignedRows({ ...EMPTY,
+    guided: [guidedRow(), guidedRow({ id: 'complete', status: 'completed', completed_at: '2026-09-30T00:00:00Z' })],
+    items: [item({ type: 'drill', source_table: 'guided_drill_assignments', source_id: 'ga-1' })],
+    assignmentEvidenceUnavailable: true,
+  });
+  expect(rows.find(row => row.refId === 'ga-1')).toMatchObject({ key: 'ci-ci-1', progressUnverified: true });
+  expect(rows.find(row => row.refId === 'complete')).toMatchObject({ status: 'completed' });
+  expect(rows.find(row => row.refId === 'complete')?.progressUnverified).toBeUndefined();
+});
+
+it('limits malformed record uncertainty to its issued assignment and clears it on recovery', () => {
+  const inputs = { ...EMPTY, guided: [guidedRow(), guidedRow({ id: 'other' })] };
+  const rows = buildAssignedRows({ ...inputs, assignmentWorkEvidence: { guided: {}, homework: {}, diagnostics: [
+    { source: 'practice_sessions', family: 'guided', reason: 'invalid_record', assignmentId: 'ga-1' },
+  ] } });
+  expect(rows.find(row => row.refId === 'ga-1')?.progressUnverified).toBe(true);
+  expect(rows.find(row => row.refId === 'other')?.progressUnverified).toBeUndefined();
+  expect(buildAssignedRows({ ...inputs, assignmentWorkEvidence: { guided: {}, homework: {}, diagnostics: [] } }).some(row => row.progressUnverified)).toBe(false);
+});

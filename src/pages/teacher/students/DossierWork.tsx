@@ -96,7 +96,7 @@ export default function DossierWork() {
                       </div>
                     </div>
                     <span className="shrink-0 text-[10px] uppercase tracking-wider text-muted-foreground">
-                      {row.status.replace('_', ' ')}
+                      {row.progressUnverified ? 'Progress unverified' : row.status.replace('_', ' ')}
                     </span>
                     {row.sourceTable === 'activity_assignments' && (
                       <button type="button" disabled={!canRevokeActivity}

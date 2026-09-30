@@ -4,6 +4,7 @@ const store = vi.hoisted(() => ({
   rows: {} as Record<string, { record_id: string; data: unknown }[]>,
   reads: [] as { userId: string; table: string; start: number; end: number }[],
   failedTable: '',
+  nullTable: '',
   authRead: vi.fn(),
 }));
 
@@ -19,7 +20,7 @@ vi.mock('@/integrations/supabase/client', () => ({
         range: async (start: number, end: number) => {
           store.reads.push({ userId: filters.user_id, table: filters.table_name, start, end });
           return {
-            data: (store.rows[filters.table_name] ?? []).slice(start, end + 1),
+            data: filters.table_name === store.nullTable ? null : (store.rows[filters.table_name] ?? []).slice(start, end + 1),
             error: filters.table_name === store.failedTable ? new Error('source unavailable') : null,
           };
         },
@@ -29,7 +30,7 @@ vi.mock('@/integrations/supabase/client', () => ({
   },
 }));
 import { practiceSessionIdFor } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
-import { loadAssignmentWorkEvidence, projectGuidedWorkEvidence, projectHomeworkWorkEvidence } from './studentWorkEvidence';
+import { loadAssignmentWorkEvidence, projectAssignmentWorkEvidence, assignmentProgressUnverified, projectGuidedWorkEvidence, projectHomeworkWorkEvidence } from './studentWorkEvidence';
 
 const studentId = '11111111-1111-4111-8111-111111111111';
 const answer = { qid: 'PT101-S2-Q1', selected_answer: 'B', correct: true, time_ms: 1000 };
@@ -52,6 +53,7 @@ beforeEach(() => {
   store.rows = {};
   store.reads = [];
   store.failedTable = '';
+  store.nullTable = '';
   store.authRead.mockClear();
 });
 
@@ -185,6 +187,74 @@ describe('selected-student assignment evidence reads', () => {
 
   it('surfaces a failed ledger read instead of treating the source as untouched', async () => {
     store.failedTable = 'drill_runs';
-    await expect(loadAssignmentWorkEvidence(studentId)).rejects.toThrow('source unavailable');
+    store.rows.practice_sessions = [row('homework-a', [answer], 'drill::assignment::')];
+    const evidence = await loadAssignmentWorkEvidence(studentId);
+    expect(evidence.homework['homework-a'].savedAnswerCount).toBe(1);
+    expect(evidence.diagnostics).toEqual([{ source: 'drill_runs', family: 'guided', reason: 'read_failed' }]);
+    expect(assignmentProgressUnverified(evidence, 'homework', 'homework-b')).toBe(false);
   });
+});
+
+
+describe('saved assignment diagnostics', () => {
+  it('keeps valid independent evidence and identifies malformed assigned records', () => {
+    const invalid = row('broken', [answer]);
+    invalid.data.current_index = -1;
+    const result = projectAssignmentWorkEvidence(studentId, [invalid, row('good', [answer])]);
+    expect(result.guided.good.savedAnswerCount).toBe(1);
+    expect(result.guided.broken).toBeUndefined();
+    expect(result.diagnostics).toEqual([{ source: 'practice_sessions', family: 'guided', reason: 'invalid_record', assignmentId: 'broken' }]);
+    expect(assignmentProgressUnverified(result, 'guided', 'broken')).toBe(true);
+    expect(assignmentProgressUnverified(result, 'guided', 'good')).toBe(false);
+  });
+
+  it('diagnoses conflicting run bindings without counting them as saved progress', () => {
+    const run = runRow('broken');
+    run.data.session.completion_id = 'guided::different';
+    const result = projectAssignmentWorkEvidence(studentId, [], [run]);
+    expect(result.guided).toEqual({});
+    expect(result.diagnostics?.[0]).toMatchObject({ source: 'drill_runs', family: 'guided' });
+    expect(result.diagnostics?.[0].assignmentId).toBeUndefined();
+    expect(assignmentProgressUnverified(result, 'guided', 'different')).toBe(true);
+  });
+
+  it('does not diagnose unrelated timed records, direct launches, or valid blank sessions', () => {
+    const unrelated = row('run::leg-0', [answer], 'drill::practice-test::');
+    unrelated.data.started_at = '2026-09-30T12:00:00+00:00';
+    const direct = row('drill:content', [answer]);
+    direct.data.current_index = -1;
+    expect(projectAssignmentWorkEvidence(studentId, [unrelated, direct, row('blank')], [runRow('blank', { attempts: [] })]).diagnostics).toEqual([]);
+  });
+
+  it('does not expose a foreign stored assignment identity', () => {
+    const foreign = row('private-assignment', [answer]);
+    foreign.data.user_id = '22222222-2222-4222-8222-222222222222';
+    const result = projectAssignmentWorkEvidence(studentId, [foreign]);
+    expect(result.guided).toEqual({});
+    expect(result.diagnostics?.[0].assignmentId).toBeUndefined();
+  });
+
+  it('preserves the independent ledger when legacy source reads fail and recovers cleanly', async () => {
+    store.rows.drill_runs = [runRow('good')];
+    store.failedTable = 'practice_sessions';
+    const failed = await loadAssignmentWorkEvidence(studentId);
+    expect(failed.guided.good.savedAnswerCount).toBe(1);
+    expect(failed.diagnostics).toHaveLength(1);
+    store.failedTable = '';
+    expect((await loadAssignmentWorkEvidence(studentId)).diagnostics).toEqual([]);
+  });
+
+  it('reports a null successful source response rather than genuine empty progress', async () => {
+    store.nullTable = 'practice_sessions';
+    expect((await loadAssignmentWorkEvidence(studentId)).diagnostics).toEqual([{ source: 'practice_sessions', family: 'unknown', reason: 'read_failed' }]);
+  });
+});
+
+
+it('diagnoses an owned embedded assignment claim that contradicts the outer run namespace', () => {
+  const run = runRow('broken');
+  run.data.source_key = 'drill::adaptive';
+  const result = projectAssignmentWorkEvidence(studentId, [], [run]);
+  expect(result.guided).toEqual({});
+  expect(result.diagnostics).toEqual([{ source: 'drill_runs', family: 'guided', reason: 'invalid_record', assignmentId: 'broken' }]);
 });

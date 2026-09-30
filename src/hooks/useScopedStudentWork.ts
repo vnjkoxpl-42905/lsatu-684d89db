@@ -5,6 +5,8 @@ import { loadScopedOwnedAssignmentSources } from '@/lib/studentScopedWork';
 import { studentScopeQueryKey } from '@/lib/studentSubjectScope';
 import { activityWorkStatus, type StudentWorkStatus } from '@/lib/studentWorkProjection';
 
+import { assignmentEvidenceWarnings } from '@/lib/studentWorkEvidence';
+
 type OwnedSources = Awaited<ReturnType<typeof loadScopedOwnedAssignmentSources>>;
 
 /** Mirrors name issued assignment IDs; their own status is not progress evidence. */
@@ -29,6 +31,7 @@ export function projectScopedOwnedRows(sources: OwnedSources): {
     items.state === 'failed' && 'classroom mirrors',
     assignmentEvidence.state === 'failed' && 'saved guided progress',
     activityEvidence?.state === 'failed' && 'saved Activity responses',
+    ...(assignmentEvidence.state === 'ready' ? assignmentEvidenceWarnings(assignmentEvidence.data) : []),
   ].filter((name): name is string => typeof name === 'string');
 
   const ownedGuided = guided.state === 'ready' ? guided.data : [];
@@ -53,6 +56,9 @@ export function projectScopedOwnedRows(sources: OwnedSources): {
     items: classroomItems.filter((item) => item.visible_to_student),
     guidedEvidence: assignmentEvidence.state === 'ready' ? assignmentEvidence.data.guided : {},
     activityEvidence: activityEvidence?.state === 'ready' ? activityEvidence.data : new Set<string>(),
+    assignmentWorkEvidence: assignmentEvidence.state === 'ready' ? assignmentEvidence.data : undefined,
+    assignmentEvidenceUnavailable: assignmentEvidence.state !== 'ready',
+    activityEvidenceUnavailable: activityEvidence?.state !== 'ready',
   }).filter((row) => ownedIds.has(`${row.sourceTable}:${row.refId}`) && !mirroredInHub.has(`${row.sourceTable}:${row.refId}`));
   return { rows, failedSources };
 }

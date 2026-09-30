@@ -24,11 +24,12 @@ describe("seven destination rail", () => {
     const tabs = readFileSync(resolve(process.cwd(), "src/pages/StudentDestination.tsx"), "utf8");
     for (const path of [
       "/my-work/to-do", "/my-work/completed", "/my-work/notes",
-      "/practice/drills", "/practice/drills/saved", "/practice/exams", "/practice/exams/all", "/practice/exams/attempts",
+      "/practice/drills", "/practice/exams", "/practice/exams/all", "/practice/exams/attempts",
       "/review/to-review", "/review/wrong", "/review/flagged",
       "/progress/overview", "/progress/history", "/progress/topics",
       "/library/lessons", "/library/activities", "/library/bootcamps", "/library/admissions",
     ]) expect(tabs).toContain(path);
+    expect(app).toContain('path="drills/saved" element={<ProtectedRoute flag="has_drill_access"><SavedSets />');
   });
 
   it("keeps each parent available while locking individual tabs and Admissions", () => {

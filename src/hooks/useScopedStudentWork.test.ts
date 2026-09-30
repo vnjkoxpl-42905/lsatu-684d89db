@@ -86,3 +86,22 @@ describe('selected-student owned Work projection', () => {
     expect(rows.map((row) => row.refId)).toContain('activity-mirrored');
   });
 });
+
+
+it('names rejected saved records and marks only uncertain untouched assignments', () => {
+  const result = projectScopedOwnedRows(sources({ assignmentEvidence: ready({ guided: {}, homework: {}, diagnostics: [
+    { source: 'practice_sessions', family: 'guided', reason: 'invalid_record', assignmentId: 'guided-old' },
+    { source: 'drill_runs', family: 'guided', reason: 'read_failed' },
+  ] }) }));
+  expect(result.failedSources).toEqual(['saved assignment sessions', 'saved guided sittings']);
+  expect(result.rows.find(row => row.refId === 'guided-old')?.progressUnverified).toBe(true);
+  expect(result.rows.find(row => row.refId === 'guided-new')?.progressUnverified).toBeUndefined();
+});
+
+it('keeps valid saved answers visible despite a missing independent source', () => {
+  const result = projectScopedOwnedRows(sources({ assignmentEvidence: ready({ guided: {
+    'guided-old': { sessionId: 'saved', savedAnswerCount: 1, status: 'in_progress' },
+  }, homework: {}, diagnostics: [{ source: 'drill_runs', family: 'guided', reason: 'read_failed' }] }) }));
+  expect(result.rows.find(row => row.refId === 'guided-old')).toMatchObject({ status: 'in_progress' });
+  expect(result.rows.find(row => row.refId === 'guided-old')?.progressUnverified).toBeUndefined();
+});

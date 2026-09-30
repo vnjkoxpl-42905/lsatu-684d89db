@@ -121,7 +121,7 @@ export function useClassroomHome(): {
     [canAccess],
   );
   const { pathname } = useLocation();
-  const { rows: assigned, loading: assignedLoading, failed: assignedFailed, retry: retryWork } = useAssignedTodoFeed();
+  const { rows: assigned, loading: assignedLoading, failed: assignedFailed, retry: retryWork, evidenceWarnings = [] } = useAssignedTodoFeed();
   const itemsQuery = useClassroomItems();
   const bookingQuery = useStudentBooking();
   const planQuery = useCurrentWeeklyPlan();
@@ -190,7 +190,7 @@ export function useClassroomHome(): {
         // classroom item of their own.
         const dueAt = row.dueAt ?? dueBySourceId.get(row.refId) ?? null;
         const due = dueLabel(dueAt, now);
-        const meta = [KIND_LABEL[kind], row.subtitle, due ?? assignedLabel(row.createdAt, now)]
+        const meta = [KIND_LABEL[kind], row.subtitle, row.progressUnverified ? "Progress unverified" : null, due ?? assignedLabel(row.createdAt, now)]
           .filter(Boolean)
           .join(" · ");
         return {
@@ -203,10 +203,10 @@ export function useClassroomHome(): {
           route: routeWithReturnTo(row.route, pathname),
           actionLabel: "Open",
           emphasis: false,
-          isNew: row.status === "assigned",
+          isNew: row.status === "assigned" && !row.progressUnverified,
           dueToday: due === "due today",
           overdue: !!due?.includes("overdue"),
-          workStatus: row.status === "in_progress" ? "in_progress" : "assigned",
+          workStatus: row.progressUnverified ? undefined : row.status === "in_progress" ? "in_progress" : "assigned",
           dueAt,
           // Practice completes only from saved submission/finish evidence.
           canComplete: manualCompletionAllowed(kind, row.selfCompleting),
@@ -375,18 +375,19 @@ export function useClassroomHome(): {
 
   const hero = React.useMemo(() => {
     if (!heroRow) return null;
-    const started = !heroRow.isNew;
+    const uncertain = assigned.find(row => row.key === heroRow.key)?.progressUnverified;
+    const started = !uncertain && !heroRow.isNew;
     const total = heroActivity?.item_count ?? 0;
     const answered = responses
       ? new Set(responses.map((response) => response.item_order)).size
       : null;
     return {
       row: heroRow,
-      eyebrow: started ? "PICK UP WHERE YOU LEFT OFF" : "START HERE",
+      eyebrow: uncertain ? "OPEN YOUR ASSIGNMENT" : started ? "PICK UP WHERE YOU LEFT OFF" : "START HERE",
       kindLabel: KIND_LABEL[heroRow.kind].toUpperCase(),
       meta: stripKind(heroRow.meta, heroRow.kind),
       prose: heroActivity?.instructions?.tagline ?? null,
-      primaryLabel: primaryLabelFor(heroRow.kind, started && (answered ?? 0) > 0),
+      primaryLabel: uncertain ? "Open assignment" : primaryLabelFor(heroRow.kind, started && (answered ?? 0) > 0),
       progress:
         heroActivity && total > 0
           ? {
@@ -397,7 +398,7 @@ export function useClassroomHome(): {
             }
           : null,
     };
-  }, [heroActivity, heroRow, responses]);
+  }, [assigned, heroActivity, heroRow, responses]);
 
   /* ── the coach's last word ─────────────────────────────────────────── */
 
@@ -545,7 +546,7 @@ export function useClassroomHome(): {
     access,
     dateline: datelineFor(now),
     subtitle: assignedFailed
-      ? "Could not load all assigned work. Try again."
+      ? evidenceWarnings.length > 0 ? `Could not confirm ${evidenceWarnings.join(", ")}. Available saved work is still shown.` : "Could not load all assigned work. Try again."
       : assignedLoading
         ? "Loading your assigned work…"
         : subtitleFor(dueTodayCount, workRows.length, unread),
@@ -557,8 +558,8 @@ export function useClassroomHome(): {
       return Number.isFinite(delta) && delta >= 0 ? delta : null;
     })(),
     dueTodayCount,
-    workSummary: assignedLoading || (assignedFailed && assigned.length === 0) ? null : workSummary(workRows),
-    workFailed: assignedFailed && assigned.length === 0,
+    workSummary: assignedLoading || assignedFailed ? null : workSummary(workRows),
+    workFailed: assignedFailed,
     hero,
     rows: listRows,
     continueRow: pickContinueWork(workRows, access, permissions.is_admin),

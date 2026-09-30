@@ -895,3 +895,16 @@ describe("unread notes on Home", () => {
     expect(onOpen).toHaveBeenCalledWith("/classroom/item/n1");
   });
 });
+
+
+it('shows a named partial-work warning and retry while suppressing unverified summary counts', () => {
+  const retry = vi.fn();
+  render(<ClassroomHomeView model={{ ...EMPTY, workFailed: true, workSummary: null,
+    subtitle: 'Could not confirm saved guided sittings. Available saved work is still shown.',
+  }} loading={false} onOpen={vi.fn()} onRetryWork={retry} />);
+  expect(screen.getByRole('alert').textContent).toContain('saved guided sittings');
+  fireEvent.click(screen.getByRole('button', { name: 'Retry assigned work' }));
+  expect(retry).toHaveBeenCalledOnce();
+  expect(screen.queryByText(/0 with saved work/)).toBeNull();
+  expect(screen.queryByText('Nothing assigned right now.')).toBeNull();
+});

@@ -264,7 +264,7 @@ export function ClassroomHomeView({
               {model.greeting}
               {model.displayName ? <>, <em>{model.displayName}</em>.</> : "."}
             </h1>
-            <p className="classroom-home-subtitle">{model.subtitle}</p>
+            <p className="classroom-home-subtitle" role={model.workFailed ? "alert" : undefined}>{model.subtitle}</p>
             {model.workFailed && onRetryWork ? (
               <button type="button" className="classroom-home-work-retry" onClick={onRetryWork}>Retry assigned work</button>
             ) : model.workSummary && model.workSummary.open > 0 ? (

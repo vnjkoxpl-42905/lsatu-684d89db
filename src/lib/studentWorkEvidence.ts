@@ -19,6 +19,76 @@ interface StoredWorkRow {
   data: unknown;
 }
 
+export interface AssignmentEvidenceDiagnostic {
+  source: 'practice_sessions' | 'drill_runs';
+  family: 'guided' | 'homework' | 'unknown';
+  reason: 'read_failed' | 'invalid_record';
+  /** Present only when the stored owner and assignment namespace are known. */
+  assignmentId?: string;
+}
+
+export interface AssignmentWorkEvidence {
+  guided: Record<string, GuidedWorkEvidence>;
+  homework: Record<string, HomeworkWorkEvidence>;
+  diagnostics?: AssignmentEvidenceDiagnostic[];
+}
+
+export function assignmentEvidenceWarnings(evidence?: AssignmentWorkEvidence): string[] {
+  return [...new Set((evidence?.diagnostics ?? []).map(diagnostic =>
+    diagnostic.source === 'drill_runs' ? 'saved guided sittings' : 'saved assignment sessions'))];
+}
+
+export function assignmentProgressUnverified(evidence: AssignmentWorkEvidence | undefined, family: 'guided' | 'homework', id: string): boolean {
+  if (!evidence) return true;
+  return (evidence.diagnostics ?? []).some(diagnostic =>
+    (diagnostic.family === family || diagnostic.family === 'unknown') &&
+    (!diagnostic.assignmentId || diagnostic.assignmentId === id));
+}
+
+function recordDiagnostics(studentId: string, rows: StoredWorkRow[], source: AssignmentEvidenceDiagnostic['source']): AssignmentEvidenceDiagnostic[] {
+  return rows.flatMap(row => {
+    const raw = row.data && typeof row.data === 'object' ? row.data as Record<string, unknown> : {};
+    const embedded = source === 'drill_runs' && raw.session && typeof raw.session === 'object'
+      ? raw.session as Record<string, unknown> : raw;
+    const key = source === 'drill_runs' ? raw.source_key : raw.pool_slug;
+    const claims = [key, embedded.pool_slug, embedded.completion_id].flatMap<{ family: 'guided' | 'homework'; id: string }>(value => {
+      if (typeof value !== 'string') return [];
+      if (value.startsWith(GUIDED_SESSION_PREFIX)) {
+        const id = value.slice(GUIDED_SESSION_PREFIX.length);
+        return id && !id.startsWith('drill:') && !id.startsWith('slug:') ? [{ family: 'guided' as const, id }] : [];
+      }
+      if (source === 'practice_sessions' && value.startsWith(HOMEWORK_SESSION_PREFIX)) {
+        const id = value.slice(HOMEWORK_SESSION_PREFIX.length);
+        return id ? [{ family: 'homework' as const, id }] : [];
+      }
+      return [];
+    });
+    // Truly unrelated/direct namespaces remain outside assignment diagnostics.
+    if (claims.length === 0 && typeof key === 'string') return [];
+    const family: AssignmentEvidenceDiagnostic['family'] = new Set(claims.map(claim => claim.family)).size > 1 ? 'unknown' : claims[0]?.family ?? 'unknown';
+    const assignmentId = new Set(claims.map(claim => claim.id)).size === 1 ? claims[0]?.id : undefined;
+    const run = source === 'drill_runs' ? parseOwnedDrillRun(studentId, row.record_id, row.data) : null;
+    const parsed = source === 'practice_sessions' ? PracticeSession.safeParse(row.data) : null;
+    const session = run?.session ?? (parsed?.success ? parsed.data : null);
+    const valid = session && session.user_id === studentId && row.record_id === session.id &&
+      (source === 'drill_runs'
+        ? run && session.pool_slug === run.source_key && session.completion_id === run.source_key
+        : row.record_id === practiceSessionIdFor(studentId, session.pool_slug) && session.completion_id === session.pool_slug);
+    if (valid) return [];
+    // Do not attach another account's stored assignment identity to this view.
+    return [{ source, family, reason: 'invalid_record' as const,
+      ...(raw.user_id === studentId && embedded.user_id === studentId && assignmentId ? { assignmentId } : {}) }];
+  });
+}
+
+export function projectAssignmentWorkEvidence(studentId: string, rows: StoredWorkRow[], runRows: StoredWorkRow[] = []): AssignmentWorkEvidence {
+  return {
+    guided: projectGuidedWorkEvidence(studentId, rows, runRows),
+    homework: projectHomeworkWorkEvidence(studentId, rows),
+    diagnostics: [...recordDiagnostics(studentId, rows, 'practice_sessions'), ...recordDiagnostics(studentId, runRows, 'drill_runs')],
+  };
+}
+
 /** Only account-saved, per-assignment guided sessions count as work evidence. */
 function projectSavedAssignmentEvidence(
   studentId: string,
@@ -35,7 +105,7 @@ function projectSavedAssignmentEvidence(
     // Only assignment keys identify an issued instance. Guided direct-launch
     // keys are under the same namespace but do not belong in My Work.
     if (!assignmentId || (prefix === GUIDED_SESSION_PREFIX && (assignmentId.startsWith('drill:') || assignmentId.startsWith('slug:')))) continue;
-    if (row.record_id !== session.id || row.record_id !== practiceSessionIdFor(studentId, session.pool_slug)) continue;
+    if (row.record_id !== session.id || row.record_id !== practiceSessionIdFor(studentId, session.pool_slug) || session.completion_id !== session.pool_slug) continue;
     if (session.attempts.length === 0) continue;
     evidence[assignmentId] = {
       sessionId: session.id,
@@ -83,18 +153,17 @@ export function projectHomeworkWorkEvidence(studentId: string, rows: StoredWorkR
 }
 
 /** RLS limits students to their own rows and permits authorized admins to read selected students. */
-export async function loadAssignmentWorkEvidence(studentId: string): Promise<{
-  guided: Record<string, GuidedWorkEvidence>;
-  homework: Record<string, HomeworkWorkEvidence>;
-}> {
-  const [rows, runRows] = await Promise.all([
+export async function loadAssignmentWorkEvidence(studentId: string): Promise<AssignmentWorkEvidence> {
+  const results = await Promise.allSettled([
     loadStoredWorkRows(studentId, TABLES.practice_sessions),
     loadStoredWorkRows(studentId, TABLES.drill_runs),
   ]);
-  return {
-    guided: projectGuidedWorkEvidence(studentId, rows, runRows),
-    homework: projectHomeworkWorkEvidence(studentId, rows),
-  };
+  const evidence = projectAssignmentWorkEvidence(studentId,
+    results[0].status === 'fulfilled' ? results[0].value : [],
+    results[1].status === 'fulfilled' ? results[1].value : []);
+  if (results[0].status === 'rejected') evidence.diagnostics!.push({ source: 'practice_sessions', family: 'unknown', reason: 'read_failed' });
+  if (results[1].status === 'rejected') evidence.diagnostics!.push({ source: 'drill_runs', family: 'guided', reason: 'read_failed' });
+  return evidence;
 }
 
 async function loadStoredWorkRows(studentId: string, tableName: string): Promise<StoredWorkRow[]> {
@@ -109,8 +178,9 @@ async function loadStoredWorkRows(studentId: string, tableName: string): Promise
       .order('record_id', { ascending: true })
       .range(offset, offset + pageSize - 1);
     if (error) throw error;
-    rows.push(...(data ?? []));
-    if ((data ?? []).length < pageSize) break;
+    if (!Array.isArray(data) || data.some(row => !row || typeof row.record_id !== 'string' || !('data' in row))) throw new Error('Saved assignment sessions returned an invalid response.');
+    rows.push(...data);
+    if (data.length < pageSize) break;
   }
   return rows;
 }
@@ -140,7 +210,8 @@ export async function loadActivityWorkEvidence(studentId: string, assignmentIds:
         .order('id', { ascending: true })
         .range(offset, offset + pageSize - 1);
       if (error) throw error;
-      const rows = data ?? [];
+      if (!Array.isArray(data) || data.some(row => !row || typeof row.assignment_id !== 'string' || !group.includes(row.assignment_id))) throw new Error('Saved Activity responses returned an invalid response.');
+      const rows = data;
       for (const row of rows) found.add(row.assignment_id);
       if (rows.length < pageSize || group.every((id) => found.has(id))) break;
     }
