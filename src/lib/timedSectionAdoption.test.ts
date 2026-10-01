@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 const state = vi.hoisted(() => ({ actor: 'owner', after: 'owner', count: 0, enabled: false, error: null as unknown, operations: ['create', 'read', 'start'], source: 'manual-canonical' }));
 vi.mock('@/integrations/supabase/client', () => ({ supabase: {
@@ -9,11 +10,19 @@ import { canonicalRcSection, manualSectionCoverage, manualSectionsEnabled, misse
 import coverage from './timedSectionCoverage.generated.json';
 describe('standalone section adoption boundaries', () => {
   beforeEach(() => Object.assign(state, { actor: 'owner', after: 'owner', count: 0, enabled: true, error: null, operations: ['create', 'read', 'start'], source: 'manual-canonical' }));
-  it('uses the exact installed manifest scored section roster without adopting excluded fourth sections', () => {
-    const manifest = JSON.parse(readFileSync('docs/implementation-plans/artifacts/timed-content-manifest-v1.generated.json', 'utf8'));
-    expect(coverage.map(({ kind, pt, section }) => ({ kind, pt, section }))).toEqual(manifest.blueprints.flatMap(test => test.legs.map(leg => ({ kind: leg.kind, pt: test.pt, section: leg.section }))));
-    expect(coverage).toHaveLength(177);
+  it('uses all236 exact standalone bank sections without substituting the scored PT selection', () => {
+    const manifest = JSON.parse(readFileSync('docs/implementation-plans/artifacts/timed-section-all-sections-v2.generated.json', 'utf8')) as {sections:{pt:number;definition:{kind:string;section:number}}[]};
+    expect(coverage.map(({ kind, pt, section }) => ({ kind, pt, section }))).toEqual(manifest.sections.map(({pt,definition})=>({kind:definition.kind,pt,section:definition.section})));
+    expect(coverage).toHaveLength(236);
+    expect(manualSectionCoverage('lr', 118, 3)).toMatchObject({kind:'lr',pt:118,section:3});
+    expect(manualSectionCoverage('rc', 101, 4)).toMatchObject({kind:'rc',pt:101,section:4,passageIds:[1352,1353,1355,1359]});
     expect(manualSectionCoverage('lr', 101, 4)).toBeUndefined();
+  });
+  it('regenerates the exact reviewed coverage deterministically without writing in check mode', () => {
+    const path='src/lib/timedSectionCoverage.generated.json';const before=readFileSync(path,'utf8');
+    const result=execFileSync(process.execPath,['scripts/knowledge/build-standalone-coverage.mjs','--check'],{encoding:'utf8'});
+    expect(JSON.parse(result)).toMatchObject({sections:236,check:true,manifestSha256:'714b27008d5c301c660d830d59562cc69814d06baae9d1e767240bece48b0c95'});
+    expect(readFileSync(path,'utf8')).toBe(before);
   });
   it('requires the exact ordered full RC passage set', () => {
     const row = coverage.find(row => row.kind === 'rc')!;
@@ -27,6 +36,8 @@ describe('standalone section adoption boundaries', () => {
     const href = newManualSectionHref('lr', 101, 2, 'standard');
     expect(href).toMatch(/\/testing\/sections\/[0-9a-f-]+\?kind=lr&pt=101&section=2&pace=standard/);
     expect(() => newManualSectionHref('lr', 101, 4, 'standard')).toThrow();
+    expect(newManualSectionHref('lr',118,3,'untimed')).toContain('?kind=lr&pt=118&section=3&pace=untimed');
+    expect(newManualSectionHref('rc',101,4,'standard')).toContain('?kind=rc&pt=101&section=4&pace=standard');
     expect(() => timedSectionResumeHref('not-a-uuid')).toThrow();
   });
   it('requires enabled capability, exact source and necessary operations under a stable actor', async () => {

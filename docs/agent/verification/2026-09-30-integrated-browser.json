@@ -1,7 +1,7 @@
 {
   "date": "2026-09-30",
   "environment": "local Vite frontend with managed backend and designated tester/admin accounts",
-  "frontendPublished": false,
+  "frontendPublished": true,
   "backendManualSectionsEnabled": true,
   "backendManifest": "c27b478f2d50f8353a98d4a1a905d2f94f87929ba2ea2179230d4f7a3d51c25c",
   "leaseMs": 30000,
@@ -10,10 +10,28 @@
   "networkBlocksCleared": true,
   "viewportOverrideReset": true,
   "evidenceDirectory": "C:/Users/Joshu/dev/ai-os/research/2026-09-30-lsatu-foundation-evidence",
-  "cssWidthsChecked": [390, 820, 1060, 1280, 1600],
-  "actualSidePane": { "cssWidth": 804, "documentScrollWidth": 789, "protectedPrepTestReviewReadOnly": true },
-  "focusedTestRun": { "files": 39, "tests": 319, "passed": true },
-  "additionalDisjointFocusedChecks": { "files": 4, "tests": 20, "passed": true },
+  "cssWidthsChecked": [
+    390,
+    820,
+    1060,
+    1280,
+    1600
+  ],
+  "actualSidePane": {
+    "cssWidth": 804,
+    "documentScrollWidth": 789,
+    "protectedPrepTestReviewReadOnly": true
+  },
+  "focusedTestRun": {
+    "files": 39,
+    "tests": 319,
+    "passed": true
+  },
+  "additionalDisjointFocusedChecks": {
+    "files": 4,
+    "tests": 20,
+    "passed": true
+  },
   "checks": [
     "Hard Sentences exact saved capstone answer and return-filter link",
     "Native Conclusion Type failed response save retains answer and withholds feedback; retry acknowledges one exact row",
@@ -54,12 +72,27 @@
     "teacherCapstoneEpisode": "a15c6f48-35ac-489a-ba91-1a417815bb38"
   },
   "limitations": [
-    "Local UI checks are not fresh production publication evidence",
+    "Fresh production routes confirm published integrated behavior; browser failure walks were local with the managed backend, not repeated live network outages.",
     "Physical second-device and committed-but-lost TCP response not induced",
     "Canonical coverage is 177 reviewed sections; absent, assigned, custom and legacy sources retain separate boundaries",
     "Review episode workflow is bounded to saved native and Hard Sentences misses; new answer/reveal does not reconstruct historical Blind Review",
     "Native interrupted run retained without claiming automatic runner resume",
     "Genuine AI-graded Activity completion requires immediate Lovable-credit confirmation",
     "All fourteen functional tickets and deferred design ticket remain open"
-  ]
+  ],
+  "publishedCommit": "a7d416a0fbbf0cb3ae6d747944f2e19d207609d8",
+  "publication": {
+    "deploymentId": "9b5745b6-c340-4b63-8d37-d68eb6c2cb12",
+    "toolResponse": "pending",
+    "freshProductionRoutesVerified": [
+      "/progress/history",
+      "/testing/sections/3a5b042c-2e72-464f-b4dd-435e26a67e70",
+      "/rc/results/06324cd6-76fe-46de-9689-f4644e7cb124",
+      "/review/to-review?reason=teacher_selected",
+      "/review/hard-sentences/capstone/4efc300a-dd57-489d-a5fd-9a0f353a19f1?episode=a15c6f48-35ac-489a-ba91-1a417815bb38",
+      "/teacher/students/d763bfe6-d710-4c4b-90ff-4b3a20929211/review"
+    ],
+    "newPublishedBehaviorObserved": true,
+    "creditSpend": false
+  }
 }

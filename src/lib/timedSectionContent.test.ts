@@ -8,6 +8,7 @@ import type { TimedLrRawQuestion } from './timedLrAdapter';
 import type { RcPassage } from '@/features/rc/lib/rcTypes';
 
 const manifest = JSON.parse(readFileSync('docs/implementation-plans/artifacts/timed-content-manifest-v1.generated.json', 'utf8'));
+const standalone = JSON.parse(readFileSync('docs/implementation-plans/artifacts/timed-section-all-sections-v2.generated.json', 'utf8')) as { sections: {pt:number;definition:TimedObject & {kind:'lr'|'rc';section:number;questions:TimedObject[];qids:string[];passageIds?:number[]}}[] };
 const nativeCrypto = crypto;
 beforeAll(() => vi.stubGlobal('crypto', { randomUUID: nativeCrypto.randomUUID.bind(nativeCrypto), subtle: webcrypto.subtle }));
 afterAll(() => vi.unstubAllGlobals());
@@ -19,13 +20,30 @@ function rc(pt: number): RcPassage[] { return JSON.parse(readFileSync(`public/da
 describe('standalone canonical frozen content', () => {
   it('verifies every supported section without substituting a PT leg or dropping removed-question gaps', async () => {
     let lrCount = 0; let rcCount = 0;
-    for (const blueprint of manifest.blueprints) for (const source of blueprint.legs) {
-      const state = sitting(blueprint.pt, source);
-      if (source.kind === 'lr') { expect((await verifyStandaloneLrContent(state, lr(blueprint.pt, source.section))).map(question => question.qid)).toEqual(source.qids); lrCount++; }
-      else { expect((await verifyStandaloneRcContent(state, rc(blueprint.pt))).map(passage => passage.passageId)).toEqual(source.passageIds); rcCount++; }
+    for (const {pt, definition:source} of standalone.sections) {
+      const state = sitting(pt, source);
+      if (source.kind === 'lr') { expect((await verifyStandaloneLrContent(state, lr(pt, source.section))).map(question => question.qid)).toEqual(source.qids); lrCount++; }
+      else { expect((await verifyStandaloneRcContent(state, rc(pt))).map(passage => passage.passageId)).toEqual(source.passageIds); rcCount++; }
     }
-    expect({ lrCount, rcCount }).toEqual({ lrCount: 118, rcCount: 59 });
+    expect({ lrCount, rcCount }).toEqual({ lrCount: 156, rcCount: 80 });
   }, 30000);
+  it('retains every old scored definition and verifies newly admitted original LR question gaps', async () => {
+    for(const blueprint of manifest.blueprints) for(const source of blueprint.legs) expect(standalone.sections.find(row=>row.pt===blueprint.pt && row.definition.section===source.section && row.definition.kind===source.kind)?.definition).toEqual(source);
+    const source=standalone.sections.find(row=>row.pt===118 && row.definition.section===3)!.definition;
+    const questions=await verifyStandaloneLrContent(sitting(118,source),lr(118,3));
+    expect(questions).toHaveLength(24);expect(questions.map(q=>q.qnum)).not.toContain(22);
+    expect(questions.find(q=>q.qnum===23)?.qid).toBe('PT118-S3-Q23');
+    const wrong=structuredClone(source);wrong.questions[21].qnum=22;
+    await expect(verifyStandaloneLrContent(sitting(118,wrong),lr(118,3))).rejects.toMatchObject({kind:'contract'});
+  });
+  it('verifies the omitted second RC section without substituting the scored RC passage set', async () => {
+    const source=standalone.sections.find(row=>row.pt===101 && row.definition.section===4)!.definition;
+    const passages=await verifyStandaloneRcContent(sitting(101,source),rc(101));
+    expect(passages.map(p=>p.passageId)).toEqual([1352,1353,1355,1359]);
+    expect(passages.flatMap(p=>p.questions)).toHaveLength(27);
+    const wrong=structuredClone(source);wrong.passageIds=manifest.blueprints[0].legs.find((leg:{kind:string;passageIds:number[]})=>leg.kind==='rc').passageIds;
+    await expect(verifyStandaloneRcContent(sitting(101,wrong),rc(101))).rejects.toMatchObject({kind:'contract'});
+  });
   it('denies LR source text drift even when qid and answer queue still match', async () => {
     const blueprint = manifest.blueprints[0]; const source = blueprint.legs.find((value: TimedObject) => value.kind === 'lr');
     const rows = lr(blueprint.pt, source.section); rows.find(row => row.status !== 'removed')!.questionStem += ' changed';
