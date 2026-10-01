@@ -44,7 +44,7 @@ export interface BootcampDef {
 }
 
 export const BOOTCAMPS: BootcampDef[] = [
-  {
+{
     id: 'conditional-indicators-refresher',
     title: 'Conditional Indicators Refresher',
     description:
@@ -93,6 +93,14 @@ export const BOOTCAMPS: BootcampDef[] = [
     },
   },
   {
+    id: 'conditionals',
+    title: 'Conditional Logic Bootcamp',
+    description: 'Learn conditional reasoning from the foundations, then practice at Medium and Advanced levels. Assign individual skills or the full path.',
+    route: '/bootcamp/conditionals',
+    stats: ['Progressive learning', 'Skills + guided practice', 'Quantifiers + review'],
+    theme: { style: 'editorial', bg: '#F5F2ED', ink: '#1a1a1a', inkSoft: '#74541B', accent: '#2F5B35', accentInk: '#FBF8F1' },
+  },
+    {
     id: 'causation-station',
     title: 'Causation Station',
     description: 'Association vs causation, alternate causes, reverse causality, and causal strengthen/weaken.',

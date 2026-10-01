@@ -89,6 +89,7 @@ import Schedule from "./pages/Schedule";
 import Booking from "./pages/Booking";
 import Bootcamps from "./pages/Bootcamps";
 const IntroToLrBootcamp = safeLazy(() => import("./pages/IntroToLrBootcamp"));
+const ConditionalBootcamp = safeLazy(() => import("./pages/ConditionalBootcamp"));
 const PrincipleFlawBootcamp = safeLazy(() => import("./pages/PrincipleFlawBootcamp"));
 const FallacyFlawBootcamp = safeLazy(() => import("./pages/FallacyFlawBootcamp"));
 const RcEngagingPassageBootcamp = safeLazy(() => import("./pages/RcEngagingPassageBootcamp"));
@@ -969,6 +970,11 @@ const App = () => {
                   <Route path="/bootcamp/intro-to-lr/*" element={
                     <BootcampGate routePath="/bootcamp/intro-to-lr" title="Intro to LR">
                       <IntroToLrBootcamp />
+                    </BootcampGate>
+                  } />
+                  <Route path="/bootcamp/conditionals/*" element={
+                    <BootcampGate routePath="/bootcamp/conditionals" title="Conditional Logic Bootcamp">
+                      <ConditionalBootcamp />
                     </BootcampGate>
                   } />
                   <Route path="/bootcamp/principle-flaw" element={
