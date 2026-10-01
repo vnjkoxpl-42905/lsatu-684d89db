@@ -26,7 +26,7 @@ export function filterProgressHistory(rows: HistoryAnswer[], filters: HistoryFil
   ).sort((a, b) => {
     const date = Date.parse(a.gradedAt) - Date.parse(b.gradedAt);
     if (filters.sort === 'oldest') return date || a.attemptId.localeCompare(b.attemptId);
-    if (filters.sort === 'question') return a.questionKey.localeCompare(b.questionKey) || date || a.attemptId.localeCompare(b.attemptId);
+    if (filters.sort === 'question') return a.questionKey.localeCompare(b.questionKey, undefined, { numeric: true }) || date || a.attemptId.localeCompare(b.attemptId);
     if (filters.sort === 'source') return a.source.localeCompare(b.source) || -date || a.attemptId.localeCompare(b.attemptId);
     return -date || a.attemptId.localeCompare(b.attemptId);
   });

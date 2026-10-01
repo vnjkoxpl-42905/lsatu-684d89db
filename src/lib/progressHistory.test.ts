@@ -24,4 +24,8 @@ describe('History uses the same first-answer identity before filtering', () => {
     expect(filterProgressHistory(history, { ...filters, sort: 'oldest' }).map((row) => row.attemptId)).toEqual(['repeat', 'rc']);
     expect(history.map((row) => row.attemptId)).toEqual(before);
   });
+  it('orders numbered questions numerically instead of putting Q10 before Q2', () => {
+    const rows = [10, 2, 1].map((n) => ({ ...history[0], questionKey: `LR:PT101-S2-Q${n}`, attemptId: `q${n}` }));
+    expect(filterProgressHistory(rows, { ...filters, sort: 'question' }).map((row) => row.attemptId)).toEqual(['q1', 'q2', 'q10']);
+  });
 });
