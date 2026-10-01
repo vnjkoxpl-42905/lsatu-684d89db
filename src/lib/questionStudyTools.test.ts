@@ -127,6 +127,29 @@ describe('restore across navigation and reload', () => {
     expect(result.current.hasActor).toBe(false);
     expect(eliminationsFor(result.current.state, LR)).toEqual([]);
   });
+
+  it('logout while mounted saves nothing, and returning to the first actor restores only their marks', () => {
+    const storage = memoryStorage();
+    const { result, rerender } = renderHook(({ actor }) => useQuestionStudyTools(actor, storage), {
+      initialProps: { actor: 'u1' as string | null },
+    });
+    act(() => result.current.update((s) => setEliminations(s, LR, ['C'])));
+
+    rerender({ actor: null });
+    expect(eliminationsFor(result.current.state, LR)).toEqual([]);
+    act(() => result.current.update((s) => setEliminations(s, LR, ['D'])));
+    expect(result.current.deviceSaved).toBe(false);
+
+    rerender({ actor: 'u2' });
+    expect(eliminationsFor(result.current.state, LR)).toEqual([]);
+    act(() => result.current.update((s) => setEliminations(s, LR2, ['B'])));
+    expect(eliminationsFor(loadStudyTools('u2', storage).state, LR)).toEqual([]);
+
+    rerender({ actor: 'u1' });
+    expect(eliminationsFor(result.current.state, LR)).toEqual(['C']);
+    expect(eliminationsFor(result.current.state, LR2)).toEqual([]);
+    expect(eliminationsFor(loadStudyTools('u1', storage).state, LR2)).toEqual([]);
+  });
 });
 
 describe('two tabs on one account', () => {
