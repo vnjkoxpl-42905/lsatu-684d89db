@@ -139,6 +139,7 @@ export function rcSectionHref(
     reveal,
     timing: pace.secondsPerPassage === null ? 'untimed' : 'standard',
     start: '1',
+    timedSection: 'manual-canonical',
   });
   // Only the non-default paces need to say so; a plain `standard` link stays
   // readable and keeps working on any build that predates this parameter.

@@ -2,6 +2,7 @@ import { useFirstAnswerProgress } from '@/hooks/useFirstAnswerProgress';
 import { useProgressWindow } from '@/hooks/useProgressWindow';
 import type { AreaProgress } from '@/lib/firstAnswerProgress';
 import ProgressWindowControl from './ProgressWindowControl';
+import { StudentIdentityUnavailableError } from '@/lib/studentAccountScope';
 
 function AreaCard({ label, result, unavailable, partial }: { label: string; result: AreaProgress; unavailable: boolean; partial: boolean }) {
   return (
@@ -50,7 +51,7 @@ export default function FirstAnswerProgressPanel({ studentId }: { studentId?: st
         <p className="mt-5 text-sm text-muted-foreground">This student’s progress is unavailable to this account.</p>
       ) : error ? (
         <div className="mt-5 text-sm text-muted-foreground" role="alert">
-          <p>Could not load saved answers. No accuracy has been calculated.</p>
+          <p>{error instanceof StudentIdentityUnavailableError ? error.message : 'Could not load saved answers. No accuracy has been calculated.'}</p>
           <button type="button" onClick={() => void refresh()} className="mt-2 font-medium text-foreground underline">Retry</button>
         </div>
       ) : !progress || progress.coverage.includedSources.length === 0 ? (

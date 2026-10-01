@@ -35,8 +35,9 @@ export function HardSentencesCapstone() {
     setPicks((p) => ({ ...p, [item.id]: choice.letter }));
     if (!user) return;
     const persist = getPersistence(user.id);
-    await persist.set(TABLES.calibration_attempts, newId(), {
-      id: newId(),
+    const attemptId = newId();
+    await persist.set(TABLES.calibration_attempts, attemptId, {
+      id: attemptId,
       user_id: user.id,
       calibration_only: true,
       calibration_module: 'M5',

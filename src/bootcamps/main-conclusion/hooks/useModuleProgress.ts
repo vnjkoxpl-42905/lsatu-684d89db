@@ -36,6 +36,8 @@ export function progressIdFor(userId: string): string {
 
 export function useModuleProgress(_userId?: string): {
   progress: ModuleProgress | null;
+  loadError: string | null;
+  retryLoad: () => void;
   markRouteVisited: (routeId: string) => Promise<void>;
   markLessonComplete: (lessonId: string, routeId: string) => Promise<void>;
   markDrillComplete: (drillId: string) => Promise<void>;
@@ -44,10 +46,14 @@ export function useModuleProgress(_userId?: string): {
   markCapstoneComplete: (capstoneId: 'M1.13' | 'M5.8') => Promise<void>;
 } {
   const { user: authUser } = useAuth();
-  const [progress, setProgress] = useState<ModuleProgress | null>(null);
+  const [storedProgress, setProgress] = useState<ModuleProgress | null>(null);
+  const progress = storedProgress?.user_id === authUser?.id ? storedProgress : null;
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadAttempt, setLoadAttempt] = useState(0);
 
   useEffect(() => {
     if (!authUser) return;
+    setLoadError(null);
     let cancelled = false;
     const userId = authUser.id;
     const progressId = progressIdFor(userId);
@@ -73,6 +79,7 @@ export function useModuleProgress(_userId?: string): {
             updated_at: now(),
           });
           await persist.set(TABLES.module_progress, progressId, existing);
+          existing = await persist.get<ModuleProgress>(TABLES.module_progress, progressId) ?? existing;
         }
         if (!cancelled) setProgress(existing);
       } catch (e) {
@@ -80,13 +87,13 @@ export function useModuleProgress(_userId?: string): {
           userId,
           error: e,
         });
-        throw e;
+        if (!cancelled) setLoadError('Bootcamp progress could not be confirmed in your account. Try loading it again.');
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [authUser]);
+  }, [authUser, loadAttempt]);
 
   const markRouteVisited = useCallback(async (_routeId: string) => {
     // Reserved for analytics in Module 6.
@@ -122,7 +129,7 @@ export function useModuleProgress(_userId?: string): {
           updated_at: now(),
         };
         await persist.set(TABLES.module_progress, progressId, merged);
-        setProgress(merged);
+        setProgress(await persist.get<ModuleProgress>(TABLES.module_progress, progressId) ?? merged);
       } catch (e) {
         console.error('[useModuleProgress] markLessonComplete failed', {
           userId,
@@ -167,7 +174,7 @@ export function useModuleProgress(_userId?: string): {
           updated_at: now(),
         };
         await persist.set(TABLES.module_progress, progressId, merged);
-        setProgress(merged);
+        setProgress(await persist.get<ModuleProgress>(TABLES.module_progress, progressId) ?? merged);
       } catch (e) {
         console.error('[useModuleProgress] markDrillComplete failed', {
           userId,
@@ -212,7 +219,7 @@ export function useModuleProgress(_userId?: string): {
           updated_at: now(),
         };
         await persist.set(TABLES.module_progress, progressId, merged);
-        setProgress(merged);
+        setProgress(await persist.get<ModuleProgress>(TABLES.module_progress, progressId) ?? merged);
       } catch (e) {
         console.error('[useModuleProgress] markMilestoneComplete failed', {
           userId,
@@ -248,7 +255,7 @@ export function useModuleProgress(_userId?: string): {
           updated_at: now(),
         };
         await persist.set(TABLES.module_progress, progressId, merged);
-        setProgress(merged);
+        setProgress(await persist.get<ModuleProgress>(TABLES.module_progress, progressId) ?? merged);
       } catch (e) {
         console.error('[useModuleProgress] markHardSectionComplete failed', {
           userId,
@@ -283,7 +290,7 @@ export function useModuleProgress(_userId?: string): {
           updated_at: now(),
         };
         await persist.set(TABLES.module_progress, progressId, merged);
-        setProgress(merged);
+        setProgress(await persist.get<ModuleProgress>(TABLES.module_progress, progressId) ?? merged);
       } catch (e) {
         console.error('[useModuleProgress] markCapstoneComplete failed', {
           userId,
@@ -301,6 +308,8 @@ export function useModuleProgress(_userId?: string): {
 
   return {
     progress,
+    loadError,
+    retryLoad: () => setLoadAttempt(value => value + 1),
     markRouteVisited,
     markLessonComplete,
     markDrillComplete,

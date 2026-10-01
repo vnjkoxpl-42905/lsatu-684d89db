@@ -3,9 +3,10 @@ import {act, cleanup, fireEvent, render, screen, waitFor} from '@testing-library
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import {BootcampLessonProgress} from './BootcampLessonProgress';
+vi.mock('@/contexts/AuthContext',()=>({useAuth:()=>({user:{id:mock.actorId}})}));
 
-const mock=vi.hoisted(()=>({results:{} as Record<string,{data:unknown;error:unknown}>, calls:[] as string[]}));
-vi.mock('@/integrations/supabase/client',()=>({supabase:{from:(table:string)=>{
+const mock=vi.hoisted(()=>({actorId:'teacher-a',results:{} as Record<string,{data:unknown;error:unknown}>, calls:[] as string[]}));
+vi.mock('@/integrations/supabase/client',()=>({supabase:{rpc:()=>{mock.calls.push('students');const result=mock.results.students;return Promise.resolve({...result,data:(result.data as {user_id?:string}|null)?.user_id??null});},from:(table:string)=>{
   const query={select:()=>query,eq:()=>query,maybeSingle:()=>read(),then:(resolve:(value:unknown)=>unknown,reject:(error:unknown)=>unknown)=>read().then(resolve,reject)};
   const read=()=>{mock.calls.push(table);return Promise.resolve(mock.results[table]);};
   return query;
@@ -16,6 +17,7 @@ function mount(qc=client(),classId='class-a'){
   return {qc,...render(<QueryClientProvider client={qc}><BootcampLessonProgress studentClassId={classId}/></QueryClientProvider>)};
 }
 beforeEach(()=>{
+  mock.actorId='teacher-a';
   mock.calls=[];mock.results={students:{data:{user_id:'student-a'},error:null},rc_lesson_progress:{data:[],error:null},abstract_lesson_progress:{data:[],error:null}};
 });
 afterEach(cleanup);
@@ -64,5 +66,13 @@ describe('bootcamp progress source disclosure',()=>{
     expect(await screen.findByText('Previous student lesson')).toBeTruthy();mock.results.students=failed;
     rerender(<QueryClientProvider client={qc}><BootcampLessonProgress studentClassId="class-b"/></QueryClientProvider>);
     expect(await screen.findByRole('alert')).toHaveTextContent('Could not confirm the student account');expect(screen.queryByText('Previous student lesson')).toBeNull();
+  });
+  it('withholds earlier actor progress while the new actor identity cannot be verified',async()=>{
+    mock.results.abstract_lesson_progress={data:[{lesson_id:'Earlier teacher view'}],error:null};const {qc,rerender}=mount();
+    expect(await screen.findByText('Earlier teacher view')).toBeTruthy();
+    mock.actorId='teacher-b';mock.results.students=failed;
+    rerender(<QueryClientProvider client={qc}><BootcampLessonProgress studentClassId="class-a"/></QueryClientProvider>);
+    expect(screen.queryByText('Earlier teacher view')).toBeNull();
+    expect(await screen.findByRole('alert')).toHaveTextContent('Could not confirm the student account');
   });
 });

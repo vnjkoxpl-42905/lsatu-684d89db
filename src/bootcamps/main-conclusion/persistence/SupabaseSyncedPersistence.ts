@@ -8,7 +8,8 @@
  * Strategy:
  *   - Reads come from the local cache (fast, offline-friendly).
  *   - Writes are committed to the local cache immediately, then queued for a
- *     debounced background upsert into Supabase.
+ *     debounced background upsert into Supabase. Module progress instead waits
+ *     for an exact account acknowledgement before updating the local cache.
  *   - On hydrate(), account rows are merged with local rows. A newer local
  *     practice session is preserved. Official LR sections wait for the
  *     runner's guarded account save; other sessions are queued for sync.
@@ -53,6 +54,7 @@ export class SupabaseSyncedPersistence implements Persistence {
   private flushTimer: ReturnType<typeof setTimeout> | null = null;
   private hydrated = false;
   private readyPromise: Promise<void>;
+  private moduleWrites = new Map<string, Promise<void>>();
 
   constructor(private userId: string) {
     this.local = new V1Persistence(
@@ -210,10 +212,52 @@ export class SupabaseSyncedPersistence implements Persistence {
   }
 
   async set<T>(table: string, id: string, record: T): Promise<void> {
+    if (table === 'module_progress') {
+      const previous = this.moduleWrites.get(id) ?? Promise.resolve();
+      const write = previous.catch(() => undefined).then(() => this.saveModuleProgress(id, record));
+      this.moduleWrites.set(id, write);
+      try { await write; } finally { if (this.moduleWrites.get(id) === write) this.moduleWrites.delete(id); }
+      return;
+    }
     await this.local.set(table, id, record);
     if (ownsAccountSave(table, record)) return;
     this.pending.set(this.key(table, id), { table, id, data: record });
     this.scheduleFlush();
+  }
+
+  private async saveModuleProgress<T>(id: string, record: T): Promise<void> {
+    await this.ready();
+    if (this.flushInFlight) await this.flushInFlight;
+    // This namespace never queues writes. Remove an older pending snapshot
+    // before acknowledging a direct save so it cannot flush afterward.
+    this.pending.delete(this.key('module_progress', id));
+    for (let attempt = 0; attempt < 3; attempt++) {
+      await this.requireModuleActor();
+      const { data: existing, error: readError } = await supabase.from('bootcamp_kv').select('user_id,table_name,record_id,data')
+        .eq('user_id', this.userId).eq('table_name', 'module_progress').eq('record_id', id).maybeSingle();
+      if (readError) throw readError;
+      if (existing && (existing.user_id !== this.userId || existing.table_name !== 'module_progress' || existing.record_id !== id)) throw new Error('Module progress owner could not be verified.');
+      const merged = mergeModuleProgress(this.userId, id, existing?.data ?? null, record);
+      const row = { user_id: this.userId, table_name: 'module_progress', record_id: id, data: merged as never };
+      await this.requireModuleActor();
+      const query = existing
+        ? supabase.from('bootcamp_kv').update({ data: row.data }).eq('user_id', this.userId).eq('table_name', 'module_progress').eq('record_id', id).eq('data', JSON.stringify(existing.data))
+        : supabase.from('bootcamp_kv').insert(row);
+      const { data: acknowledged, error } = await query.select('user_id,table_name,record_id,data').maybeSingle();
+      if (error) { if (!existing && error.code === '23505') continue; throw error; }
+      if (!acknowledged) continue; // Lost CAS or a missing returned row never counts as saved.
+      if (acknowledged.user_id !== row.user_id || acknowledged.table_name !== row.table_name || acknowledged.record_id !== id
+        || canonicalJson(acknowledged.data) !== canonicalJson(merged)) throw new Error('The account did not acknowledge module progress.');
+      await this.requireModuleActor();
+      await this.local.set('module_progress', id, merged);
+      return;
+    }
+    throw new Error('Module progress changed in another session. Try saving completion again.');
+  }
+  private async requireModuleActor(): Promise<void> {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error) throw error;
+    if (!user || user.id !== this.userId) throw new Error('The signed-in account changed. Module progress has not been acknowledged.');
   }
 
   async remove(table: string, id: string): Promise<void> {
@@ -237,6 +281,7 @@ export class SupabaseSyncedPersistence implements Persistence {
       const tx: PersistenceTx = {
         get: <U>(t: string, i: string) => innerTx.get<U>(t, i),
         set: async <U>(t: string, i: string, r: U) => {
+          if (t === 'module_progress') throw new Error('Module progress requires an acknowledged set outside a local transaction.');
           await innerTx.set(t, i, r);
           if (!ownsAccountSave(t, r)) {
             this.pending.set(this.key(t, i), { table: t, id: i, data: r });
@@ -248,4 +293,24 @@ export class SupabaseSyncedPersistence implements Persistence {
       return result;
     });
   }
+}
+
+function mergeModuleProgress(owner: string, id: string, saved: unknown, incoming: unknown): Record<string, unknown> {
+  const isRecord = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
+  if (!isRecord(incoming) || incoming.user_id !== owner || incoming.id !== id) throw new Error('Invalid module progress identity.');
+  if (saved !== null && (!isRecord(saved) || saved.user_id !== owner || saved.id !== id)) throw new Error('Saved module progress identity is invalid.');
+  const base = isRecord(saved) ? saved : {};
+  const merged = { ...base, ...incoming };
+  const keys = new Set([...Object.keys(base), ...Object.keys(incoming), 'unlocked_modules', 'unlocked_routes', 'completed_lessons', 'completed_drills', 'completed_milestones', 'completed_hard_sections', 'completed_capstones']);
+  for (const key of [...keys].filter(key => key.startsWith('completed_') || key.startsWith('unlocked_'))) {
+    const before = base[key] ?? []; const next = incoming[key] ?? [];
+    if (!Array.isArray(before) || !Array.isArray(next) || [...before, ...next].some(item => typeof item !== 'string')) throw new Error('Module progress lists are invalid.');
+    merged[key] = [...new Set([...before, ...next])];
+  }
+  return merged;
+}
+function canonicalJson(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`;
+  if (value && typeof value === 'object') return `{${Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonicalJson(item)}`).join(',')}}`;
+  return JSON.stringify(value);
 }

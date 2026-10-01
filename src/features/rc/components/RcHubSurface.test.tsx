@@ -5,6 +5,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 /* The surface's own navigate is spied so the autostart's `replace` is
    assertable; the driver below needs the REAL one to change the query. */
 const navigate = vi.fn();
+const adoption = vi.hoisted(() => ({ enabled: false, sessions: [] as unknown[] }));
+vi.mock('@/lib/timedSectionAdoption', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/timedSectionAdoption')>('@/lib/timedSectionAdoption');
+  return { ...actual, manualSectionsEnabled: vi.fn(async () => adoption.enabled), canonicalRcSection: (ids: number[]) => ids.length === 1 && ids[0] === 1188 ? { pt: 101, section: 1 } : undefined };
+});
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
   return { ...actual, useNavigate: () => navigate };
@@ -52,7 +57,7 @@ vi.mock('../api/rcProgress', () => ({
   deleteSession: vi.fn(),
   getQuestionHistory: vi.fn(async () => new Map()),
   getSessionAttempts: vi.fn(async () => []),
-  listSessions: vi.fn(async () => []),
+  listSessions: vi.fn(async () => adoption.sessions),
 }));
 
 /** Three drillable passages, enough for the adaptive selector to return one. */
@@ -97,7 +102,7 @@ function QueryDriver({ to }: { to: string }) {
   );
 }
 
-function mount(entry: string, next?: string) {
+function mount(entry: string, next?: string, showHistory = false) {
   return render(
     <MemoryRouter
       initialEntries={[entry]}
@@ -108,7 +113,7 @@ function mount(entry: string, next?: string) {
           path="/classroom/drill"
           element={
             <>
-              <RcHubSurface embedded showHistory={false} />
+              <RcHubSurface embedded showHistory={showHistory} />
               {next && <QueryDriver to={next} />}
             </>
           }
@@ -123,6 +128,8 @@ describe('RcHubSurface autostart', () => {
     navigate.mockClear();
     createSession.mockClear();
     loadPassages.mockClear();
+    adoption.enabled = false;
+    adoption.sessions = [];
   });
 
   it('REPLACES the launcher URL when a link starts the drill itself', async () => {
@@ -135,6 +142,31 @@ describe('RcHubSurface autostart', () => {
       expect.stringContaining('/rc/drill?sessionId=session-1'),
       { replace: true },
     );
+  });
+  it('hands an explicitly marked canonical full section to protected timing without creating a legacy child', async () => {
+    adoption.enabled = true;
+    mount('/classroom/drill?section=rc&passages=1188&start=1&reveal=end_of_set&timing=standard&secondsPerPassage=788&timedSection=manual-canonical');
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith(expect.stringMatching(/^\/testing\/sections\/[0-9a-f-]+\?kind=rc&pt=101&section=1&pace=time-and-a-half$/), { replace: true }));
+    expect(createSession).not.toHaveBeenCalled();
+  });
+  it.each([
+    '&timedSection=manual-canonical',
+    '',
+    '&timedSection=manual-canonical&assignmentId=assignment',
+    '&timedSection=manual-canonical&ptRun=test&ptLeg=0',
+  ])('preserves disabled and nonmanual legacy launches: %s', async suffix => {
+    adoption.enabled = suffix !== '&timedSection=manual-canonical';
+    mount(`/classroom/drill?section=rc&passages=1188&start=1&reveal=end_of_set&timing=standard${suffix}`);
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(navigate).toHaveBeenCalledWith(expect.stringContaining('/rc/drill?sessionId='), { replace: true });
+  });
+  it('keeps protected resume dedicated even with creation disabled', async () => {
+    const id = '10000000-0000-4000-8000-000000000001';
+    adoption.sessions = [{ id: 'child', config: { timedSectionSittingId: id, timing: { mode: 'unlimited' }, reveal: 'end_of_set' }, status: 'in_progress', passageIds: [1188], startedAt: '2026-09-30T00:00:00Z' }];
+    mount('/classroom/drill?section=rc', undefined, true);
+    fireEvent.click(await screen.findByRole('button', { name: 'Resume' }));
+    expect(navigate).toHaveBeenCalledWith(`/testing/sections/${id}`);
+    expect(createSession).not.toHaveBeenCalled();
   });
 
   it('carries the practice-test identity into the RC player route', async () => {

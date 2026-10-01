@@ -37,6 +37,7 @@ import { drillRunSpecFromLaunch, type DrillRunSpec } from '@/lib/drillRunSpec';
 import { recordExposures } from '@/lib/questionExposure';
 import { Button } from '@/components/ui/button';
 import { DrillRunSpecProvider } from '@/components/drill/DrillRunSpecContext';
+import { manualSectionCoverage, manualSectionsEnabled, newManualSectionHref, sectionPace, timedSectionResumeHref } from '@/lib/timedSectionAdoption';
 
 interface Props {
   children: React.ReactNode;
@@ -108,6 +109,29 @@ export default function DrillLaunchGate({ children }: Props) {
   const launchKey = React.useMemo(() => (launch ? launchDrill(launch) : null), [launch]);
   const requestedGuidedRunId = launch?.kind === 'guided-drill' ? searchParams.get('run') : null;
   const resolutionKey = `${user?.id ?? ''}:${launchKey ?? ''}:${requestedGuidedRunId ?? ''}`;
+  const protectedResume = searchParams.get('timedSectionSittingId');
+  const eligible = launch?.kind === 'section' && !launch.ptLeg && !launch.sealed &&
+    !searchParams.has('assignment') && !searchParams.has('assignmentId') && !searchParams.has('legacySectionResume') &&
+    manualSectionCoverage('lr', launch.pt, launch.section);
+  const pace = launch?.kind === 'section' ? sectionPace(launch.timerMode === 'unlimited' ? null :
+    launch.timerMode === '52.5' ? 52.5 : launch.timerMode === '70' ? 70 : launch.timerMode === 'custom' ? -1 : 35) : null;
+  const [adoption, setAdoption] = React.useState<{ key: string; redirect: boolean } | null>(null);
+  const checkingAdoption = !!eligible && !!pace && adoption?.key !== resolutionKey;
+  React.useEffect(() => {
+    let cancelled = false;
+    if (protectedResume) {
+      try { navigate(timedSectionResumeHref(protectedResume), { replace: true, state: null }); }
+      catch { setFailure('The saved section identity is invalid.'); }
+      return;
+    }
+    if (!eligible || !pace || launch?.kind !== 'section') return;
+    void manualSectionsEnabled(user?.id).then(enabled => {
+      if (cancelled) return;
+      if (enabled) navigate(newManualSectionHref('lr', launch.pt, launch.section, pace), { replace: true, state: null });
+      setAdoption({ key: resolutionKey, redirect: enabled });
+    });
+    return () => { cancelled = true; };
+  }, [eligible, pace, launch, protectedResume, resolutionKey, user?.id, navigate]);
 
   const needsResolution = !!launch && launchNeedsResolution(launch);
   const waitsForQuestionBank =
@@ -171,14 +195,14 @@ export default function DrillLaunchGate({ children }: Props) {
   // A handover with nothing in the address bar gets one written for it, so the
   // next refresh has something to rebuild the run from.
   React.useEffect(() => {
-    if (namedInUrl || !launchKey) return;
+    if (namedInUrl || !launchKey || checkingAdoption || protectedResume || adoption?.redirect) return;
     navigate(
       { pathname: '/drill', search: mergeUnclaimedParams(launchKey, searchParams) },
       // `state: null` is load-bearing: it is what stops this effect from seeing
       // the same handover again and rewriting forever.
       { replace: true, state: null },
     );
-  }, [namedInUrl, launchKey, searchParams, navigate]);
+  }, [namedInUrl, launchKey, searchParams, navigate, checkingAdoption, protectedResume, adoption?.redirect]);
 
   const spec = syncSpec ?? (resolved?.key === resolutionKey ? resolved.spec : null);
 
@@ -194,7 +218,7 @@ export default function DrillLaunchGate({ children }: Props) {
     );
   }
 
-  if (launch && !spec) {
+  if (protectedResume || checkingAdoption || adoption?.key === resolutionKey && adoption.redirect || launch && !spec) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex items-center gap-3 text-sm text-muted-foreground">

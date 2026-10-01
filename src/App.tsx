@@ -1,3 +1,4 @@
+import { preserveRedirectLocation } from "./lib/preserveRedirectLocation";
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -37,6 +38,8 @@ const DrillRuns = safeLazy(() => import("./pages/DrillRuns"));
 const ActivityReviewDetail = safeLazy(() => import("./pages/ActivityReviewDetail"));
 const SectionReviewDetail = safeLazy(() => import("./pages/SectionReviewDetail"));
 const IntroLrReviewDetail = safeLazy(() => import("./pages/IntroLrReviewDetail"));
+const HardSentencesReviewDetail = safeLazy(() => import("./pages/HardSentencesReviewDetail"));
+const NativeLabReviewDetail = safeLazy(() => import("./pages/NativeLabReviewDetail"));
 const ProgressTopics = safeLazy(() => import("./pages/ProgressTopics"));
 const RcRedirect = safeLazy(() => import("./features/rc/pages/RcRedirect"));
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
@@ -49,6 +52,7 @@ const PracticeExamAttempts = safeLazy(() => import("./pages/PracticeExamPages").
 const PracticeSectionResult = safeLazy(() => import("./pages/PracticeExamPages").then((module) => ({ default: module.PracticeSectionResult })));
 const PracticeTestRunPage = safeLazy(() => import("./pages/PracticeTestRun"));
 const TimedOfficialChildRunner = safeLazy(() => import("./components/testing/TimedOfficialChildRunner"));
+const TimedStandaloneSectionRunner = safeLazy(() => import("./components/timed/TimedStandaloneSectionRunner"));
 const SectionDirectionsPage = safeLazy(() => import("./pages/SectionDirections"));
 const Auth = safeLazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
@@ -183,11 +187,11 @@ function GlobalOverlayMount() {
 // bookmarked /teacher/* URL 404s.
 function RedirectBootcampToInsights() {
   const { topicId } = useParams();
-  return <Navigate to={`/teacher/insights/${topicId}`} replace />;
+  return <RedirectWithSearch to={`/teacher/insights/${topicId}`} />;
 }
 function RedirectBootcampStudentToInsights() {
   const { topicId, studentId } = useParams();
-  return <Navigate to={`/teacher/insights/${topicId}/students/${studentId}`} replace />;
+  return <RedirectWithSearch to={`/teacher/insights/${topicId}/students/${studentId}`} />;
 }
 /**
  * Redirect that carries the incoming query string to the target, merging it
@@ -197,14 +201,7 @@ function RedirectBootcampStudentToInsights() {
  */
 function RedirectWithSearch({ to }: { to: string }) {
   const { search, hash } = useLocation();
-  const incoming = new URLSearchParams(search);
-  const [path, targetSearch] = to.split("?");
-  const merged = new URLSearchParams(targetSearch ?? "");
-  incoming.forEach((value, key) => {
-    if (!merged.has(key)) merged.append(key, value);
-  });
-  const query = merged.toString();
-  return <Navigate to={`${path}${query ? `?${query}` : ""}${hash}`} replace />;
+  return <Navigate to={preserveRedirectLocation(to, search, hash)} replace />;
 }
 
 function RedirectLegacyExamDetail() {
@@ -219,8 +216,7 @@ function RedirectLegacyDrill() {
 }
 
 function RedirectSmartboardToWhiteboard() {
-  const { search } = useLocation();
-  return <Navigate to={`/teacher/whiteboard${search}`} replace />;
+  return <RedirectWithSearch to="/teacher/whiteboard" />;
 }
 /**
  * The Desk used `?ws=` (and `?tab=`) instead of routes. Those URLs are in
@@ -241,7 +237,7 @@ const LEGACY_WORKSPACE_ROOMS: Record<string, string> = {
 };
 
 function TeacherWorkspaceIndex() {
-  const { search } = useLocation();
+  const { search, hash } = useLocation();
   const params = new URLSearchParams(search);
   const ws = params.get("ws");
   const tab = params.get("tab");
@@ -256,7 +252,7 @@ function TeacherWorkspaceIndex() {
   params.delete("pane");
   const rest = params.toString();
 
-  return <Navigate to={rest ? `${target}?${rest}` : target} replace />;
+  return <Navigate to={preserveRedirectLocation(target, rest, hash)} replace />;
 }
 
 const App = () => {
@@ -315,11 +311,11 @@ const App = () => {
             <Route path="/foyer" element={<Navigate to="/classroom" replace />} />
 
             {/* Legacy Admin Dashboard entry now lives inside Teacher Workspace. */}
-            <Route path="/admin" element={<Navigate to="/teacher/students" replace />} />
+            <Route path="/admin" element={<RedirectWithSearch to="/teacher/students" />} />
             {/* The real whiteboard is the teacher workspace's: autosave, named
                 sessions, per-student scoping. /admin/board was a bare Excalidraw
                 with no save and no way to get a board back, so it forwards. */}
-            <Route path="/admin/board" element={<Navigate to="/teacher/whiteboard" replace />} />
+            <Route path="/admin/board" element={<RedirectWithSearch to="/teacher/whiteboard" />} />
             {/* The board is a teaching surface, not a workspace room: Joshua
                 teaches off it, so it takes the whole viewport with no rail and
                 no workspace header. That is why it sits here rather than as a
@@ -479,6 +475,9 @@ const App = () => {
                   <Route path="/testing/test/:runId/rc/:legIndex" element={
                     <PracticeTestRunGate><TimedOfficialChildRunner kind="rc" /></PracticeTestRunGate>
                   } />
+                  <Route path="/testing/sections/:sittingId" element={
+                    <ProtectedRoute flag="has_drill_access"><TimedStandaloneSectionRunner /></ProtectedRoute>
+                  } />
                   {/* Reading Comprehension drilling. Content is static JSON; only
                       progress touches the database. See src/features/rc/CONTEXT.md. */}
                   {/* The RC hub is a section of the drill hub now, chosen by
@@ -599,11 +598,11 @@ const App = () => {
                       } />
                     </Route>
 
-                    <Route path="/my-work" element={<ProtectedRoute flag="has_classroom_access"><StudentDestination destination="my-work" /></ProtectedRoute>}>
+                    <Route path="/my-work" element={<ProtectedRoute allowSignedIn><StudentDestination destination="my-work" /></ProtectedRoute>}>
                       <Route index element={<RedirectWithSearch to="/my-work/to-do" />} />
-                      <Route path="to-do" element={<MyWorkPage completed={false} />} />
-                      <Route path="completed" element={<MyWorkPage completed />} />
-                      <Route path="notes" element={<MyWorkNotesPage />} />
+                      <Route path="to-do" element={<ProtectedRoute flag="has_classroom_access"><MyWorkPage completed={false} /></ProtectedRoute>} />
+                      <Route path="completed" element={<ProtectedRoute flag="has_classroom_access"><MyWorkPage completed /></ProtectedRoute>} />
+                      <Route path="notes" element={<ProtectedRoute flag="has_classroom_access"><MyWorkNotesPage /></ProtectedRoute>} />
                     </Route>
 
                     <Route path="/practice" element={<ProtectedRoute allowSignedIn><StudentDestination destination="practice" /></ProtectedRoute>}>
@@ -623,15 +622,17 @@ const App = () => {
                       <Route path="activity/:assignmentId/:itemOrder" element={<ProtectedRoute flag="has_activity_access"><ActivityReviewDetail /></ProtectedRoute>} />
                       <Route path="section/:historyId/:qid" element={<ProtectedRoute flag="has_drill_access"><SectionReviewDetail /></ProtectedRoute>} />
                       <Route path="intro-lr/:attemptId" element={<ProtectedRoute flag="has_bootcamp_access"><IntroLrReviewDetail /></ProtectedRoute>} />
+                      <Route path="hard-sentences/:sourceKind/:attemptKey" element={<ProtectedRoute flag="has_bootcamp_access"><HardSentencesReviewDetail /></ProtectedRoute>} />
+                      <Route path="native-lab/:attemptId" element={<ProtectedRoute flag="has_bootcamp_access"><NativeLabReviewDetail /></ProtectedRoute>} />
                       <Route path="wrong" element={<ProtectedRoute flag="has_journal_access"><ReviewIndexList section="journal" /></ProtectedRoute>} />
                       <Route path="flagged" element={<ProtectedRoute flag="has_flagged_access"><ReviewIndexList section="flagged" /></ProtectedRoute>} />
                     </Route>
 
-                    <Route path="/progress" element={<ProtectedRoute flag="has_analytics_access"><StudentDestination destination="progress" /></ProtectedRoute>}>
+                    <Route path="/progress" element={<ProtectedRoute allowSignedIn><StudentDestination destination="progress" /></ProtectedRoute>}>
                       <Route index element={<RedirectWithSearch to="/progress/overview" />} />
-                      <Route path="overview" element={<Analytics />} />
-                      <Route path="history" element={<DrillHistory />} />
-                      <Route path="topics" element={<ProgressTopics />} />
+                      <Route path="overview" element={<ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>} />
+                      <Route path="history" element={<ProtectedRoute flag="has_analytics_access"><DrillHistory /></ProtectedRoute>} />
+                      <Route path="topics" element={<ProtectedRoute flag="has_analytics_access"><ProgressTopics /></ProtectedRoute>} />
                     </Route>
 
                     <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>
@@ -860,21 +861,21 @@ const App = () => {
                       <Route path="ai-ta" element={<RedirectWithSearch to="/teacher/today" />} />
                       <Route path="desk-preview" element={<RedirectWithSearch to="/teacher/today" />} />
                       <Route path="conversations" element={<RedirectWithSearch to="/teacher/inbox" />} />
-                      <Route path="bootcamps" element={<Navigate to="/teacher/insights" replace />} />
+                      <Route path="bootcamps" element={<RedirectWithSearch to="/teacher/insights" />} />
                       <Route path="bootcamps/:topicId" element={<RedirectBootcampToInsights />} />
                       <Route path="bootcamps/:topicId/students/:studentId" element={<RedirectBootcampStudentToInsights />} />
                       <Route path="admin" element={<RedirectWithSearch to="/teacher/students" />} />
-                      <Route path="access" element={<Navigate to="/teacher/students" replace />} />
-                      <Route path="permissions" element={<Navigate to="/teacher/students" replace />} />
+                      <Route path="access" element={<RedirectWithSearch to="/teacher/students" />} />
+                      <Route path="permissions" element={<RedirectWithSearch to="/teacher/students" />} />
                       <Route path="library/assignments/new" element={<RedirectWithSearch to="/teacher/library/bootcamps" />} />
-                      <Route path="library/recaps" element={<Navigate to="/teacher/library" replace />} />
+                      <Route path="library/recaps" element={<RedirectWithSearch to="/teacher/library" />} />
                       <Route path="library/uploads" element={<RedirectWithSearch to="/teacher/library" />} />
-                      <Route path="library/analytics" element={<Navigate to="/teacher/library" replace />} />
+                      <Route path="library/analytics" element={<RedirectWithSearch to="/teacher/library" />} />
                       <Route path="library/smartboard" element={<RedirectSmartboardToWhiteboard />} />
                       <Route path="assignments" element={<RedirectWithSearch to="/teacher/library/assignments" />} />
-                      <Route path="recaps" element={<Navigate to="/teacher/library" replace />} />
-                      <Route path="uploads" element={<Navigate to="/teacher/library" replace />} />
-                      <Route path="analytics-bridge" element={<Navigate to="/teacher/library" replace />} />
+                      <Route path="recaps" element={<RedirectWithSearch to="/teacher/library" />} />
+                      <Route path="uploads" element={<RedirectWithSearch to="/teacher/library" />} />
+                      <Route path="analytics-bridge" element={<RedirectWithSearch to="/teacher/library" />} />
                     </Route>
                   </Route>
 

@@ -9,6 +9,10 @@ import { buildActivityReviewQueue, buildReviewQueue, buildSectionReviewQueue, ty
 import { loadRcReviewQueue } from "@/components/review/rcReviewSource";
 import { loadPracticeTestReviewQueue } from "@/components/review/ptReviewSource";
 import { loadIntroLrReviewQueue } from "@/components/review/introLrReviewSource";
+import { loadHardSentencesReview } from "@/components/review/hardSentencesReviewSource";
+import { loadNativeLabReview } from "@/components/review/nativeLabReviewSource";
+import { createReviewEpisodeService } from "@/lib/reviewEpisodes";
+import { projectReviewEpisodes } from "@/lib/scopedReviewEpisodes";
 import { fetchSectionHistory } from "@/lib/sectionHistory";
 import { listAssignmentsForStudent, listResponsesForAssignments } from "@/features/activity-centre/api/activitiesClient";
 import "./reviewQueue.css";
@@ -21,7 +25,7 @@ function readableDate(value: string): string {
 }
 
 function reasonLabel(reason: ReviewReason): string {
-  return reason === "missed" ? "Missed answer" : reason === "skipped" ? "Opened and left blank" : "Flagged";
+  return reason === "missed" ? "Missed answer" : reason === "skipped" ? "Opened and left blank" : reason === "teacher_selected" ? "Teacher-selected" : "Flagged";
 }
 
 function sourceLabel(source: ReviewSource): string {
@@ -30,6 +34,9 @@ function sourceLabel(source: ReviewSource): string {
     : source === "activity_item_responses" ? "Activity attempt"
     : source === "practice_test" ? "Completed PrepTest"
     : source === "intro_lr_attempts" ? "Intro to LR exercise"
+    : source === "hard_sentences" ? "Hard Sentences saved submission"
+    : source === "native_lab_attempts" ? "Native lab saved submission"
+    : source === "review_episodes" ? "Saved review task"
     : source === "section_history" ? "Completed timed section" : "RC drill attempt";
 }
 
@@ -81,27 +88,40 @@ export default function ReviewQueuePage() {
     queryFn: () => loadIntroLrReviewQueue(user!.id),
   });
   const reasonParam = searchParams.get("reason");
-  const reason: ReasonFilter = reasonParam === "missed" || reasonParam === "flagged" || reasonParam === "skipped" ? reasonParam : "all";
+  const hardSentencesReview = useQuery({
+    queryKey: ["review", "hard-sentences", user?.id], enabled: canIntroLr && !!user,
+    staleTime: 60_000, queryFn: () => loadHardSentencesReview(user!.id),
+  });
+  const nativeLabReview = useQuery({
+    queryKey: ["review", "native-labs", user?.id], enabled: canIntroLr && !!user,
+    staleTime: 60_000, queryFn: () => loadNativeLabReview(user!.id),
+  });
+  const episodeReview = useQuery({ queryKey: ["review", "episodes", user?.id], enabled: canIntroLr && !!user,
+    staleTime: 0, queryFn: () => createReviewEpisodeService().list(user!.id, user!.id) });
+  const reason: ReasonFilter = reasonParam === "missed" || reasonParam === "flagged" || reasonParam === "skipped" || reasonParam === "teacher_selected" ? reasonParam : "all";
   const search = searchParams.get("q") ?? "";
   const table = searchParams.get("view") === "table";
   const requestedCount = Number(searchParams.get("show"));
   const shownCount = Number.isSafeInteger(requestedCount) && requestedCount > 30 ? requestedCount : 30;
-  const items = useMemo(() => [
+  const projection = useMemo(() => projectReviewEpisodes([
     ...buildReviewQueue(canJournal ? journal.data ?? [] : [], canFlag ? flagged.data ?? [] : []),
     ...(canRc ? rcReview.data ?? [] : []),
     ...(canActivity ? activityReview.data ?? [] : []),
     ...(canSection ? sectionReview.data ?? [] : []),
     ...(canPracticeTest ? practiceTestReview.data ?? [] : []),
     ...(canIntroLr ? introLrReview.data ?? [] : []),
-  ].sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt)), [canJournal, canFlag, canRc, canActivity, canSection, canPracticeTest, canIntroLr, journal.data, flagged.data, rcReview.data, activityReview.data, sectionReview.data, practiceTestReview.data, introLrReview.data]);
+    ...(canIntroLr ? hardSentencesReview.data?.items ?? [] : []),
+    ...(canIntroLr ? nativeLabReview.data ?? [] : []),
+  ], user?.id ?? '', canIntroLr ? episodeReview.data?.episodes ?? [] : [], canIntroLr ? episodeReview.data?.events ?? [] : []), [user?.id, canJournal, canFlag, canRc, canActivity, canSection, canPracticeTest, canIntroLr, journal.data, flagged.data, rcReview.data, activityReview.data, sectionReview.data, practiceTestReview.data, introLrReview.data, hardSentencesReview.data, nativeLabReview.data, episodeReview.data]);
+  const items = projection.items;
   const visibleItems = useMemo(() => items.filter((item) =>
     (reason === "all" || item.reasons.includes(reason)) &&
-    (!search.trim() || `${item.label} ${item.qid} ${item.qtype ?? ""} ${item.area}`.toLowerCase().includes(search.trim().toLowerCase())),
+    (!search.trim() || `${item.label} ${item.qid} ${item.qtype ?? ""} ${item.area} ${item.reflection ?? ''}`.toLowerCase().includes(search.trim().toLowerCase())),
   ), [items, reason, search]);
   const shownItems = visibleItems.slice(0, shownCount);
   const returnTo = `/review/to-review${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
   const detailLink = (href: string) => `${href}${href.includes("?") ? "&" : "?"}returnTo=${encodeURIComponent(returnTo)}`;
-  const loading = permissions.loading || (canJournal && journal.isLoading) || (canFlag && flagged.isLoading) || (canRc && rcReview.isLoading) || (canActivity && activityReview.isLoading) || (canSection && sectionReview.isLoading) || (canPracticeTest && practiceTestReview.isLoading) || (canIntroLr && introLrReview.isLoading);
+  const loading = permissions.loading || (canJournal && journal.isLoading) || (canFlag && flagged.isLoading) || (canRc && rcReview.isLoading) || (canActivity && activityReview.isLoading) || (canSection && sectionReview.isLoading) || (canPracticeTest && practiceTestReview.isLoading) || (canIntroLr && (introLrReview.isLoading || hardSentencesReview.isLoading || nativeLabReview.isLoading || episodeReview.isLoading));
   const journalError = canJournal && journal.isError;
   const flagError = canFlag && flagged.isError;
   const rcError = canRc && rcReview.isError;
@@ -109,8 +129,12 @@ export default function ReviewQueuePage() {
   const sectionError = canSection && sectionReview.isError;
   const practiceTestError = canPracticeTest && practiceTestReview.isError;
   const introLrError = canIntroLr && introLrReview.isError;
-  const hasError = journalError || flagError || rcError || activityError || sectionError || practiceTestError || introLrError;
-  const failedSources = [journalError && "LR wrong answers", flagError && "LR flags", rcError && "RC drills", activityError && "Activities", sectionError && "Timed sections", practiceTestError && "PrepTests", introLrError && "Intro to LR"].filter(Boolean).join(", ");
+  const hardSentencesUnavailable = canIntroLr ? hardSentencesReview.data?.unavailable ?? [] : [];
+  const hardSentencesError = canIntroLr && (hardSentencesReview.isError || hardSentencesUnavailable.length > 0);
+  const nativeLabError = canIntroLr && nativeLabReview.isError;
+  const episodeError = canIntroLr && episodeReview.isError;
+  const hasError = journalError || flagError || rcError || activityError || sectionError || practiceTestError || introLrError || hardSentencesError || nativeLabError || episodeError;
+  const failedSources = [journalError && "LR wrong answers", flagError && "LR flags", rcError && "RC drills", activityError && "Activities", sectionError && "Timed sections", practiceTestError && "PrepTests", introLrError && "Intro to LR", hardSentencesReview.isError && canIntroLr && "Hard Sentences", nativeLabError && "Native Intro to LR labs", episodeError && "Saved review tasks", ...hardSentencesUnavailable].filter(Boolean).join(", ");
 
   const setParam = (key: string, value: string | null) => {
     const next = new URLSearchParams(searchParams);
@@ -125,16 +149,16 @@ export default function ReviewQueuePage() {
       <div className="review-queue-intro">
         <div>
           <h2>Work to review</h2>
-          <p>This list includes saved LR wrong answers and flags, completed RC drills and PrepTests, flags in active RC drills, judged misses from Activities and earlier Intro to LR interactive exercises, and questions opened and left blank in completed LR sections. Active RC flags continue the drill without opening answer review. A question can appear in both its journal and a specific sitting. Newer bootcamp labs, other bootcamp exercises, and teacher-selected review are not yet included here.</p>
+          <p>This list includes saved LR wrong answers and flags, completed RC drills and PrepTests, flags in active RC drills, judged misses from Activities, earlier Intro to LR interactive exercises, Hard Sentences cluster and capstone submissions, and newly saved Main Conclusion, First-Sentence vs Rebuttal and Conclusion Type lab submissions. Teacher-selected tasks for the supported native labs and Hard Sentences include the teacher's reason. Completed review tasks stop appearing here for their exact saved submission; original attempts and flags remain. It also includes questions opened and left blank in completed LR sections. Active RC flags continue the drill without opening answer review. A question can appear in both its journal and a specific sitting. Older native lab answers that were never saved and other bootcamp exercises are not included here.</p>
         </div>
         <span className="review-queue-count" aria-live="polite">{loading ? "Loading…" : `${visibleItems.length} ${visibleItems.length === 1 ? "item" : "items"}`}</span>
       </div>
 
       <div className="review-queue-controls">
         <div className="review-queue-filters" role="group" aria-label="Review reason">
-          {(["all", "missed", "flagged", "skipped"] as ReasonFilter[]).map((filter) => (
+          {(["all", "missed", "flagged", "skipped", "teacher_selected"] as ReasonFilter[]).map((filter) => (
             <button key={filter} type="button" onClick={() => setParam("reason", filter === "all" ? null : filter)} aria-pressed={reason === filter} disabled={filter === "missed" && !canJournal && !canRc && !canActivity && !canPracticeTest && !canIntroLr || filter === "flagged" && !canFlag && !canRc && !canPracticeTest || filter === "skipped" && !canSection && !canPracticeTest}>
-              {filter === "all" ? "All" : filter === "missed" ? "Missed" : filter === "skipped" ? "Left blank" : "Flagged"}
+              {filter === "all" ? "All" : filter === "missed" ? "Missed" : filter === "skipped" ? "Left blank" : filter === "teacher_selected" ? "Teacher-selected" : "Flagged"}
             </button>
           ))}
         </div>
@@ -150,9 +174,11 @@ export default function ReviewQueuePage() {
       {hasError ? (
         <div className="review-queue-error" role="alert">
           {`${failedSources} could not be loaded. Showing available sources only.`}
-          <button type="button" onClick={() => { if (journalError) void journal.refetch(); if (flagError) void flagged.refetch(); if (rcError) void rcReview.refetch(); if (activityError) void activityReview.refetch(); if (sectionError) void sectionReview.refetch(); if (practiceTestError) void practiceTestReview.refetch(); if (introLrError) void introLrReview.refetch(); }}>Try again</button>
+          <button type="button" onClick={() => { if (journalError) void journal.refetch(); if (flagError) void flagged.refetch(); if (rcError) void rcReview.refetch(); if (activityError) void activityReview.refetch(); if (sectionError) void sectionReview.refetch(); if (practiceTestError) void practiceTestReview.refetch(); if (introLrError) void introLrReview.refetch(); if (hardSentencesError) void hardSentencesReview.refetch(); if (nativeLabError) void nativeLabReview.refetch(); if (episodeError) void episodeReview.refetch(); }}>Try again</button>
         </div>
       ) : null}
+
+      {projection.unavailable > 0 && <p role="status" className="review-queue-error">{projection.unavailable} saved review {projection.unavailable === 1 ? 'task has' : 'tasks have'} an unavailable or unsupported source here. This is a partial queue.</p>}
 
       {loading ? <p className="review-queue-state" role="status">Loading saved work…</p> : visibleItems.length === 0 ? (
         <div className="review-queue-state">

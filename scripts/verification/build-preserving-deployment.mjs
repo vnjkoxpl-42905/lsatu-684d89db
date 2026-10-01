@@ -6,7 +6,7 @@ import { resolve } from 'node:path';
 export function preservingDeployment(artifact, tables) {
   const artifacts=Array.isArray(artifact)?artifact:[artifact];
   if (!artifacts.length || artifacts.some(sql => !/^\s*(?:--[^\n]*\n)*\s*begin;/i.test(sql) || !/commit;\s*$/i.test(sql))) throw new Error('Expected explicit artifact transactions');
-  if (!tables.length || tables.some(name => !/^[a-z_]+$/.test(name))) throw new Error('Invalid preservation tables');
+  if (!tables.length || tables.some(name => !/^[a-z_][a-z0-9_]*$/.test(name))) throw new Error('Invalid preservation tables');
   const body = artifacts.map(sql => sql.replace(/\bbegin;/i, '').replace(/commit;\s*$/i, '')).join('\n');
   const names = tables.map(name => `'${name}'`).join(',');
   const measure = `select count(*), md5(coalesce(string_agg(row_hash, '' order by row_hash), ''))

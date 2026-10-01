@@ -19,6 +19,7 @@ import {
   SOURCE_LABELS,
   attemptNumbers,
   fetchDrillHistory,
+  filterCompletedHistorySections,
   formatDurationMs,
   rollupByQuestion,
   type DrillHistoryRow,
@@ -92,8 +93,7 @@ function StatCard({ label, value, sub }: { label: string; value: string; sub?: s
   );
 }
 
-const DrillHistory: React.FC = () => {
-  const { user } = useAuth();
+const DrillHistoryContent: React.FC<{ userId: string }> = ({ userId }) => {
   const [rows, setRows] = useState<DrillHistoryRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<ViewMode>('timeline');
@@ -101,6 +101,7 @@ const DrillHistory: React.FC = () => {
   const [resultFilter, setResultFilter] = useState<ResultFilter>('all');
   const [search, setSearch] = useState('');
   const [sections, setSections] = useState<SectionHistoryRow[] | null>(null);
+  const [sectionsError, setSectionsError] = useState<string | null>(null);
   const [window, setWindow] = useProgressWindow();
   const windowRows = useMemo(() => rows?.filter((row) => inProgressWindow(row.attempted_at, window, new Date().toISOString())) ?? null, [rows, window]);
 
@@ -108,26 +109,23 @@ const DrillHistory: React.FC = () => {
   // belongs on the tab, and a student who lands here should not watch a second
   // spinner to find out whether they have sat any.
   useEffect(() => {
-    if (!user?.id) return;
     let cancelled = false;
-    fetchSectionHistory(user.id)
+    fetchSectionHistory(userId)
+      .then((data) => filterCompletedHistorySections(userId, data))
       .then((data) => {
         if (!cancelled) setSections(data);
       })
       .catch(() => {
-        // A section-history failure must not take down the attempts view, which
-        // is the page's main job. An empty list is the honest fallback.
-        if (!cancelled) setSections([]);
+        if (!cancelled) setSectionsError('Saved section history could not be loaded. Reload to retry.');
       });
     return () => {
       cancelled = true;
     };
-  }, [user?.id]);
+  }, [userId]);
 
   useEffect(() => {
-    if (!user?.id) return;
     let cancelled = false;
-    fetchDrillHistory(user.id)
+    fetchDrillHistory(userId)
       .then((data) => {
         if (!cancelled) setRows(data);
       })
@@ -137,7 +135,7 @@ const DrillHistory: React.FC = () => {
     return () => {
       cancelled = true;
     };
-  }, [user?.id]);
+  }, [userId]);
 
   const filtered = useMemo(() => {
     if (!windowRows) return [];
@@ -225,7 +223,7 @@ const DrillHistory: React.FC = () => {
         <ProgressWindowControl value={window} onChange={setWindow} />
         <FirstAnswerHistoryPanel window={window} />
         <h2 className="mb-2 text-lg font-semibold text-foreground">Full practice log</h2>
-        <p className="mb-4 text-xs text-muted-foreground">This log includes graded and ungraded attempts across drills, bootcamps, and practice. Its accuracy counts every graded attempt, including repeats. Sections below show all time.</p>
+        <p className="mb-4 text-xs text-muted-foreground">This log includes graded and ungraded attempts across drills, bootcamps, and practice. Its accuracy counts every graded attempt, including repeats. Timed LR and RC outcomes appear only after saved completion. PrepTest outcomes wait for saved PrepTest completion. Sections below show all time.</p>
 
         {/* The attempt tiles describe questions, not sittings. The Sections view
             brings its own, so they are swapped rather than stacked. */}
@@ -318,7 +316,9 @@ const DrillHistory: React.FC = () => {
         </section>
 
         {view === 'sections' ? (
-          sections === null ? (
+          sectionsError ? (
+            <p role="alert">{sectionsError}</p>
+          ) : sections === null ? (
             <div className="flex justify-center py-16">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
             </div>
@@ -401,6 +401,11 @@ const DrillHistory: React.FC = () => {
       </div>
     </div>
   );
+};
+
+const DrillHistory: React.FC = () => {
+  const { user } = useAuth();
+  return user?.id ? <DrillHistoryContent key={user.id} userId={user.id} /> : <p>Sign in to view saved history.</p>;
 };
 
 export default DrillHistory;

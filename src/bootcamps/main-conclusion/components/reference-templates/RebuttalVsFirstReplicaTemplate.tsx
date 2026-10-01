@@ -4,6 +4,7 @@ import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import type { CanonicalStructureQuestion } from '@/bootcamps/main-conclusion/data/reference-drills/types';
 import { ReplicaShell, RoleKey, StimulusLine } from './shared';
+import { useNativeLabSave } from '@/bootcamps/main-conclusion/hooks/useNativeLabSave';
 
 interface StageSet {
   id: string;
@@ -16,11 +17,19 @@ export function RebuttalVsFirstReplicaTemplate({
   title,
   stages,
   onComplete,
+  saveNativeAnswers = false,
+  nativeUserId,
 }: {
   title: string;
   stages: StageSet[];
-  onComplete?: () => void;
+  onComplete?: () => void | Promise<void>;
+  saveNativeAnswers?: boolean;
+  nativeUserId?: string;
 }) {
+  const accountSave = useNativeLabSave(saveNativeAnswers ? 'structure' : undefined, nativeUserId);
+  const [completionError, setCompletionError] = useState(false);
+  const [completing, setCompleting] = useState(false);
+  const [finished, setFinished] = useState(false);
   const [stageIndex, setStageIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [selectedType, setSelectedType] = useState<'first-sentence' | 'rebuttal' | null>(null);
@@ -29,7 +38,13 @@ export function RebuttalVsFirstReplicaTemplate({
   const question = stage.questions[questionIndex]!;
   const expected = question.structureType === 'rebuttal' ? 'rebuttal' : 'first-sentence';
 
-  function next() {
+  async function submit(choice: 'first-sentence' | 'rebuttal') {
+    if (answered || accountSave.saving) return;
+    setSelectedType(choice);
+    if (await accountSave.save(question.id, choice, choice === expected)) setAnswered(true);
+  }
+  async function next() {
+    if (!answered || accountSave.blocked || completing || finished || !accountSave.isCurrent()) return;
     const nextQuestion = questionIndex + 1;
     if (nextQuestion < stage.questions.length) {
       setQuestionIndex(nextQuestion);
@@ -45,7 +60,9 @@ export function RebuttalVsFirstReplicaTemplate({
       setAnswered(false);
       return;
     }
-    onComplete?.();
+    setCompleting(true); setCompletionError(false);
+    try { await onComplete?.(); if (accountSave.isCurrent()) setFinished(true); } catch { if (accountSave.isCurrent()) setCompletionError(true); }
+    finally { setCompleting(false); }
   }
 
   return (
@@ -56,6 +73,10 @@ export function RebuttalVsFirstReplicaTemplate({
       tone="inverted"
     >
       <div className="space-y-6">
+        {accountSave.saving && <p role="status">Saving your answer…</p>}
+        {accountSave.error && <div role="alert"><p>{accountSave.error}</p><button className="min-h-11 underline" onClick={() => { if (selectedType) void submit(selectedType); }}>Try saving again</button></div>}
+        {completionError && <p role="alert">Completion could not be saved. Try finishing again.</p>}
+        {finished && <p role="status">Lab completion saved.</p>}
         <div className="grid gap-3 md:grid-cols-4">
           {stages.map((item, itemIndex) => (
             <Card
@@ -106,11 +127,8 @@ export function RebuttalVsFirstReplicaTemplate({
               <button
                 key={choice}
                 type="button"
-                disabled={answered}
-                onClick={() => {
-                  setSelectedType(choice);
-                  setAnswered(true);
-                }}
+                disabled={answered || accountSave.blocked}
+                onClick={() => void submit(choice)}
                 className={
                   selectedType === choice
                     ? 'rounded-[18px] border border-mc-accent bg-mc-accent/10 px-4 py-3 text-left font-semibold text-ink'
@@ -136,7 +154,7 @@ export function RebuttalVsFirstReplicaTemplate({
                   {question.revealExplanation}
                 </p>
               </div>
-              <Button onClick={next}>
+              <Button onClick={next} disabled={completing || finished || accountSave.blocked}>
                 {stageIndex === stages.length - 1 && questionIndex === stage.questions.length - 1 ? 'Finish Lab' : 'Next Question'}
               </Button>
             </div>

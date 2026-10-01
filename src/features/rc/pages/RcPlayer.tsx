@@ -6,6 +6,7 @@ import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolb
 import OfficialSmartDrillBar from '@/components/drill/official/OfficialSmartDrillBar';
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { timedSectionResumeHref } from '@/lib/timedSectionAdoption';
 import { useAuth } from '@/contexts/AuthContext';
 import HelpSheet from '@/components/help/HelpSheet';
 import { ChevronDown, ChevronUp } from 'lucide-react';
@@ -117,6 +118,7 @@ export default function RcPlayer() {
   const attemptIdsRef = React.useRef(new Map<number, string>());
 
   const reviewOnly = params.get('review') === '1';
+  const protectedReview = reviewOnly && (!!config.timedSectionSittingId || !!config.practiceTestRunId);
   const targetQuestionId = Number(params.get('q')) || null;
 
   /* ------------------------------------------------------------ boot */
@@ -164,6 +166,10 @@ export default function RcPlayer() {
           const session = await getSession(existingId);
           if (!session) throw new Error('That drill could not be found.');
           if (!user || session.userId !== user.id) throw new Error('This drill belongs to another account.');
+          if (session.config.timedSectionSittingId && (!reviewOnly || session.status !== 'completed')) {
+            if (!cancelled) navigate(timedSectionResumeHref(session.config.timedSectionSittingId), { replace: true });
+            return;
+          }
           const reviewRedirect = rcReviewRedirect(session.status, reviewOnly, location.search);
           if (reviewRedirect) {
             if (!cancelled) navigate(reviewRedirect, { replace: true });
@@ -212,6 +218,10 @@ export default function RcPlayer() {
           if (cancelled) return;
           if (!session) throw new Error('That drill could not be found.');
           if (session && (!user || session.userId !== user.id)) throw new Error('This drill belongs to another account.');
+          if (session.config.timedSectionSittingId && (!reviewOnly || session.status !== 'completed')) {
+            navigate(timedSectionResumeHref(session.config.timedSectionSittingId), { replace: true });
+            return;
+          }
           const reviewRedirect = session ? rcReviewRedirect(session.status, reviewOnly, location.search) : null;
           if (reviewRedirect) {
             navigate(reviewRedirect, { replace: true });
@@ -705,13 +715,13 @@ export default function RcPlayer() {
 
   const toggleFlag = React.useCallback(
     (questionId: number) => {
-      if (state.paused || navigationInFlightRef.current || submitting) return;
+      if (protectedReview || state.paused || navigationInFlightRef.current || submitting) return;
       dispatch({ type: 'toggleFlag', questionId });
       if (sessionId) {
         void setAttemptFlag(sessionId, questionId, !state.flagged.has(questionId));
       }
     },
-    [sessionId, state.flagged, state.paused, submitting],
+    [sessionId, state.flagged, state.paused, submitting, protectedReview],
   );
 
   /* ------------------------------------------------- selection, guarded */
@@ -730,11 +740,11 @@ export default function RcPlayer() {
    */
   const awaitingReattempt = React.useCallback(
     (id: number) =>
-      reviewOnly &&
+      reviewOnly && !protectedReview &&
       state.recorded.has(id) &&
       !reattemptPicks.has(id) &&
       !skippedReattempt.has(id),
-    [reviewOnly, state.recorded, reattemptPicks, skippedReattempt],
+    [reviewOnly, protectedReview, state.recorded, reattemptPicks, skippedReattempt],
   );
 
   const revealed = item ? isRevealed(state, config.reveal, item) : false;
@@ -752,7 +762,7 @@ export default function RcPlayer() {
    */
   const selectLetter = React.useCallback(
     (letter: RcLetter) => {
-      if (!item || state.paused || navigationInFlightRef.current || submitting) return;
+      if (protectedReview || !item || state.paused || navigationInFlightRef.current || submitting) return;
       const id = item.question.questionId;
       if (!item.question.choices.some((c) => c.letter === letter)) return;
 
@@ -797,7 +807,7 @@ export default function RcPlayer() {
       }
       dispatch({ type: 'select', questionId: id, letter });
     },
-    [item, awaitingReattempt, revealed, sessionId, sessionOwnerId, reviewOnly, state.currentIndex, state.flagged, state.eliminations, state.paused, submitting, writeAttempt, failAccountSave],
+    [item, awaitingReattempt, revealed, sessionId, sessionOwnerId, reviewOnly, protectedReview, state.currentIndex, state.flagged, state.eliminations, state.paused, submitting, writeAttempt, failAccountSave],
   );
 
   /* -------------------------------------------------------- keyboard */
@@ -974,6 +984,7 @@ export default function RcPlayer() {
 
   return (
     <>
+      {protectedReview && <p role="status" className="border-b bg-muted px-4 py-3 text-sm">This protected section keeps its saved answers and flags unchanged. Review is read-only. Use Drill your misses from the report for a new attempt.</p>}
       <OfficialDrillFrame
         fillViewport
         notepadEnabled={false}
@@ -1111,9 +1122,9 @@ export default function RcPlayer() {
               onToggleFlag={() => toggleFlag(questionId)}
               type={type}
               onSelect={selectLetter}
-              interactionDisabled={state.paused || savingNavigation || submitting}
+              interactionDisabled={protectedReview || state.paused || savingNavigation || submitting}
               onToggleElimination={(letter) =>
-                !navigationInFlightRef.current && !submitting && !state.paused
+                !protectedReview && !navigationInFlightRef.current && !submitting && !state.paused
                   ? dispatch({ type: 'toggleElimination', questionId, letter })
                   : undefined
               }

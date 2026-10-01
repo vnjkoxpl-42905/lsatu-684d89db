@@ -164,6 +164,7 @@ export interface RcDrillConfig {
   lastActiveAt?: string;
   practiceTestRunId?: string;
   practiceTestLegIndex?: number;
+  timedSectionSittingId?: string;
 }
 
 export type RcSessionStatus = 'in_progress' | 'completed' | 'abandoned';

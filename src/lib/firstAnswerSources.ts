@@ -17,6 +17,7 @@ import {
 } from '@/lib/firstAnswerProgress';
 import { assertActiveStudentScope } from '@/lib/studentScopedWork';
 import type { StudentSubjectScope } from '@/lib/studentSubjectScope';
+import { resolveStudentAccountId } from '@/lib/studentAccountScope';
 
 const PAGE_SIZE = 500;
 
@@ -53,7 +54,7 @@ const readRcAttempts = (studentId: string) => allPages<RcAttemptSourceRow>(async
 
 const readRcSessions = (studentId: string) => allPages<RcSessionSourceRow>(async (from, to) => {
   const result = await supabase.from('rc_drill_sessions')
-    .select('id,user_id,status,completed_at,excluded_from_analytics,practice_test_run_id')
+    .select('id,user_id,status,completed_at,excluded_from_analytics,practice_test_run_id,timed_section_sitting_id')
     .eq('user_id', studentId).order('id').range(from, to);
   return result as unknown as { data: RcSessionSourceRow[] | null; error: { message: string } | null };
 });
@@ -75,9 +76,10 @@ const errorReason = (reason: unknown) => reason instanceof Error ? reason.messag
 export async function loadFirstAnswerLedger(scope: StudentSubjectScope): Promise<{
   answers: GradedQuestionAnswer[];
   coverage: ProgressCoverage;
+  ownerId: string;
 }> {
   await assertActiveStudentScope(scope);
-  const studentId = scope.studentId;
+  const studentId = await resolveStudentAccountId(scope);
   const [lrAttemptsResult, lrSectionsResult, rcAttemptsResult, rcSessionsResult, runsResult] = await Promise.allSettled([
     readLrAttempts(studentId),
     readLrSections(studentId),
@@ -124,7 +126,8 @@ export async function loadFirstAnswerLedger(scope: StudentSubjectScope): Promise
   const rc = rcReady ? adaptRcAttempts(rcRows, rcSessions, studentId, completedRuns) : [];
   coverage.excludedRows.rc_attempts = rcReady ? rcRows.length - rc.length : 0;
 
-  return { answers: [...lr, ...sections, ...rc], coverage };
+  await assertActiveStudentScope(scope);
+  return { answers: [...lr, ...sections, ...rc], coverage, ownerId: studentId };
 }
 
 /** Direct one-off read. Mounted views should cache loadFirstAnswerLedger instead. */

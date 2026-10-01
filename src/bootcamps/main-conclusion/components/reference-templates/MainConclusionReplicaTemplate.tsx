@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import { DrillVerdict } from '@/bootcamps/main-conclusion/components/DrillVerdict';
 import type { CanonicalStructureQuestion } from '@/bootcamps/main-conclusion/data/reference-drills/types';
+import { useNativeLabSave } from '@/bootcamps/main-conclusion/hooks/useNativeLabSave';
 
 function escapeHtml(text: string) {
   return text
@@ -52,12 +53,19 @@ export function MainConclusionReplicaTemplate({
   questions,
   onComplete,
   userName = 'Student',
+  saveNativeAnswers = false,
+  nativeUserId,
 }: {
   title: string;
   questions: CanonicalStructureQuestion[];
-  onComplete?: () => void;
+  onComplete?: () => void | Promise<void>;
   userName?: string;
+  saveNativeAnswers?: boolean;
+  nativeUserId?: string;
 }) {
+  const accountSave = useNativeLabSave(saveNativeAnswers ? 'main-conclusion' : undefined, nativeUserId);
+  const [completionError, setCompletionError] = useState(false);
+  const [completing, setCompleting] = useState(false);
   const [screen, setScreen] = useState<'drill' | 'finish'>('drill');
   const [index, setIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -97,7 +105,7 @@ export function MainConclusionReplicaTemplate({
     }
 
     return [];
-  }, [current.hint, current.revealExplanation, status, userName]);
+  }, [current.hint, status, userName]);
 
   useEffect(() => {
     return () => {
@@ -116,8 +124,10 @@ export function MainConclusionReplicaTemplate({
     }, duration);
   }
 
-  function analyzeSelection() {
-    if (selectedIndex == null || isScanning) return;
+  async function analyzeSelection() {
+    if (selectedIndex == null || isScanning || accountSave.saving) return;
+    const isCorrect = selectedIndex === current.correctMainConclusionIndex;
+    if (!await accountSave.save(current.id, String(selectedIndex), isCorrect)) return;
     triggerScan(1000);
 
     if (analysisTimeoutRef.current) window.clearTimeout(analysisTimeoutRef.current);
@@ -137,7 +147,7 @@ export function MainConclusionReplicaTemplate({
   }
 
   function selectChunk(chunkIndex: number) {
-    if (status === 'correct') return;
+    if (status === 'correct' || accountSave.blocked) return;
     setSelectedIndex(chunkIndex);
     if (status === 'wrong') setStatus('idle');
     triggerScan(350);
@@ -149,10 +159,13 @@ export function MainConclusionReplicaTemplate({
     selectChunk(chunkIndex);
   }
 
-  function nextQuestion() {
+  async function nextQuestion() {
+    if (status !== 'correct' || accountSave.blocked || completing || !accountSave.isCurrent()) return;
     if (isLast) {
-      setScreen('finish');
-      onComplete?.();
+      setCompleting(true); setCompletionError(false);
+      try { await onComplete?.(); if (accountSave.isCurrent()) setScreen('finish'); }
+      catch { setCompletionError(true); }
+      finally { setCompleting(false); }
       return;
     }
 
@@ -162,6 +175,7 @@ export function MainConclusionReplicaTemplate({
   }
 
   function restart() {
+    if (!accountSave.restart()) return;
     setScreen('drill');
     setIndex(0);
     setSelectedIndex(null);
@@ -226,7 +240,7 @@ export function MainConclusionReplicaTemplate({
               isScanning && 'opacity-100',
             )}
             style={{
-              ['--scan-distance' as any]: 'calc(100% - 4px)',
+              '--scan-distance': 'calc(100% - 4px)',
               animation: isScanning ? `mc-scan-line ${scanDuration}ms linear` : 'none',
               transition: 'opacity 120ms linear',
             } as React.CSSProperties}
@@ -266,10 +280,14 @@ export function MainConclusionReplicaTemplate({
         </div>
 
         <div className="mt-4">
+          {accountSave.saving && <p role="status">Saving your answer…</p>}
+          {accountSave.error && <div role="alert"><p>{accountSave.error}</p><button className="min-h-11 underline" onClick={() => void analyzeSelection()}>Try saving again</button></div>}
+          {completionError && <p role="alert">Completion could not be saved. Your saved answers remain available. Try finishing again.</p>}
           {status === 'correct' ? (
             <button
               type="button"
               onClick={nextQuestion}
+              disabled={completing || accountSave.blocked}
               className="mt-[15px] w-full rounded-[14px] border-none bg-[#06b6d4] px-6 py-5 font-mc-mono text-[1.2rem] uppercase tracking-[2px] text-black transition-colors"
             >
               NEXT QUESTION &gt;&gt;
@@ -278,7 +296,7 @@ export function MainConclusionReplicaTemplate({
             <button
               type="button"
               onClick={analyzeSelection}
-              disabled={selectedIndex == null || isScanning}
+              disabled={selectedIndex == null || isScanning || accountSave.blocked}
               className={cn(
                 'mt-[15px] w-full rounded-[14px] border border-[#06b6d4] bg-transparent px-6 py-5 font-mc-mono text-[1.2rem] uppercase tracking-[2px] text-[#06b6d4] transition-colors',
                 selectedIndex == null || isScanning

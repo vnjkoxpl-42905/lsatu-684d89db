@@ -136,7 +136,7 @@ describe('rcSectionHref', () => {
 
   it('starts the section in order, under test conditions', () => {
     expect(rcSectionHref(section)).toBe(
-      '/rc?passages=10111%2C10112%2C10113%2C10114&reveal=end_of_set&timing=standard&start=1',
+      '/rc?passages=10111%2C10112%2C10113%2C10114&reveal=end_of_set&timing=standard&start=1&timedSection=manual-canonical',
     );
   });
 

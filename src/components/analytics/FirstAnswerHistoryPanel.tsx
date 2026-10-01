@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useFirstAnswerProgress } from '@/hooks/useFirstAnswerProgress';
 import { firstAnswerDetails } from '@/lib/firstAnswerDetails';
 import type { ProgressWindow } from '@/lib/firstAnswerProgress';
+import { StudentIdentityUnavailableError } from '@/lib/studentAccountScope';
 
 type AreaFilter = 'all' | 'LR' | 'RC';
 type ResultFilter = 'all' | 'correct' | 'missed';
@@ -48,7 +49,7 @@ export default function FirstAnswerHistoryPanel({ window }: { window: ProgressWi
         : resolution.state === 'denied' ? <p className="mt-4 text-sm text-muted-foreground">History is unavailable to this account.</p>
         : error || !ledger || ledger.coverage.includedSources.length === 0 ? (
           <div className="mt-4 text-sm text-muted-foreground" role="alert">
-            <p>Saved answer history could not be loaded.</p>
+            <p>{error instanceof StudentIdentityUnavailableError ? error.message : 'Saved answer history could not be loaded.'}</p>
             <button type="button" className="mt-2 underline" onClick={() => void refresh()}>Retry</button>
           </div>
         ) : (

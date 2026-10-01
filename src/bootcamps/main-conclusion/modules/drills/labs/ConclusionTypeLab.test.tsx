@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -14,6 +14,8 @@ import { ConclusionTypeLab } from './ConclusionTypeLab';
 vi.mock('@/bootcamps/main-conclusion/hooks/useUser', () => ({
   useUser: () => ({ id: 'student-1' }),
 }));
+vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'student-1' } }) }));
+vi.mock('@/bootcamps/main-conclusion/lib/nativeLabAttempt', () => ({ saveNativeLabSubmission: vi.fn().mockResolvedValue(undefined) }));
 
 vi.mock('canvas-confetti', () => ({
   default: vi.fn(),
@@ -41,16 +43,25 @@ function choose(type: ConclusionType) {
   fireEvent.click(screen.getByRole('radio', { name: optionName(type) }));
 }
 
-function reveal() {
-  fireEvent.click(screen.getByRole('button', { name: /reveal the type/i }));
+async function reveal() {
+  await act(async () => { fireEvent.click(screen.getByRole('button', { name: /reveal the type/i })); });
 }
 
-function advance() {
-  fireEvent.click(screen.getByRole('button', { name: /next question|finish drill/i }));
+async function advance() {
+  await act(async () => { fireEvent.click(screen.getByRole('button', { name: /next question|finish drill/i })); });
 }
 
 describe('ConclusionTypeLab', () => {
-  it('teaches the weakness on reveal and carries first-pick misses into review', () => {
+  it('does not invent a weakest type after an entirely clean sitting', async () => {
+    renderLab();
+    for (const question of ORDERED_CANONICAL_CONCLUSION_TYPE_QUESTIONS) {
+      choose(question.answer); await reveal(); await advance();
+    }
+    expect(screen.getByText(/No missed types in this sitting/)).toBeInTheDocument();
+    expect(screen.getByText(/Every type in this sitting was solved cleanly/)).toBeInTheDocument();
+    expect(screen.queryByText(/collected the most misses/)).not.toBeInTheDocument();
+  });
+  it('teaches the weakness after saving and carries first-pick misses into review', async () => {
     renderLab();
 
     const firstOptions = screen.getAllByRole('radio');
@@ -71,20 +82,20 @@ describe('ConclusionTypeLab', () => {
     expect(firstOptions[0]).not.toHaveClass('ctlab__option--wrong');
 
     choose('causal');
-    reveal();
+    await reveal();
 
     const teachBlock = screen.getByRole('status');
     expect(within(teachBlock).getByText(/this one is a recommendation/i)).toBeInTheDocument();
     expect(screen.getByText(/predictable weakness/i)).toBeInTheDocument();
     expect(screen.getByText(/staggering beats the costs and the alternatives/i)).toBeInTheDocument();
 
-    advance();
+    await advance();
 
-    ORDERED_CANONICAL_CONCLUSION_TYPE_QUESTIONS.slice(1).forEach((question) => {
+    for (const question of ORDERED_CANONICAL_CONCLUSION_TYPE_QUESTIONS.slice(1)) {
       choose(question.answer);
-      reveal();
-      advance();
-    });
+      await reveal();
+      await advance();
+    }
 
     expect(markDrillComplete).toHaveBeenCalledWith('MC-DRL-CT');
     const slippedCard = screen.getByText(/where it slipped/i).closest('.ctlab__review-card');

@@ -54,6 +54,13 @@ describe('first saved graded response', () => {
 });
 
 describe('persisted source eligibility', () => {
+  it('keeps protected standalone RC provenance distinct from ordinary drills and PrepTests', () => {
+    const session = { id: 'rc-1', user_id: student, status: 'completed', completed_at: '2026-09-27T00:00:00Z', excluded_from_analytics: false, practice_test_run_id: null };
+    const attempt = { id: 'a-1', user_id: student, session_id: 'rc-1', passage_id: 11, question_id: 1, selected: 'B', is_correct: false, created_at: '2026-09-26T00:00:00Z' };
+    expect(adaptRcAttempts([attempt], [session], student, new Set())[0].mode).toBe('rc-drill');
+    expect(adaptRcAttempts([attempt], [{ ...session, timed_section_sitting_id: 'protected' }], student, new Set())[0].mode).toBe('timed-section');
+    expect(adaptRcAttempts([attempt], [{ ...session, practice_test_run_id: 'run' }], student, new Set(['run']))[0].mode).toBe('practice-test');
+  });
   it('takes saved LR drill answers and excludes Inspect, blind and unfinished section rows', () => {
     const rows = ['adaptive', 'post-answer', 'full-section', 'inspect'].map((mode, index) => ({
       id: `a-${index}`, user_id: student, qid: `PT101-S2-Q${index + 1}`, mode,

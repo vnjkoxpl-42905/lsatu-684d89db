@@ -82,6 +82,7 @@ export interface RcSessionSourceRow {
   completed_at: string | null;
   excluded_from_analytics: boolean;
   practice_test_run_id: string | null;
+  timed_section_sitting_id?: string | null;
 }
 
 export interface PracticeTestSourceRow {
@@ -168,7 +169,7 @@ export function adaptRcAttempts(
       questionKey: `RC:${attempt.passage_id}:${attempt.question_id}`,
       area: 'RC' as const,
       source: 'rc_attempts' as const,
-      mode: session.practice_test_run_id ? 'practice-test' : 'rc-drill',
+      mode: session.practice_test_run_id ? 'practice-test' : session.timed_section_sitting_id ? 'timed-section' : 'rc-drill',
       correct: attempt.is_correct,
       // The answer is not eligible for diagnostic accuracy until graded work
       // is submitted, so the window uses session completion rather than pick time.

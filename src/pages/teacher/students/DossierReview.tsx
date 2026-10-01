@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useFirstAnswerProgress } from '@/hooks/useFirstAnswerProgress';
 import { useDossier } from './StudentDossier';
 import { selectDossierReviewEvidence } from './dossierReviewEvidence';
+import TeacherReviewSelections from '@/components/review/TeacherReviewSelections';
+import { StudentIdentityUnavailableError } from '@/lib/studentAccountScope';
 
 const PAGE_SIZE = 30;
 
@@ -28,11 +30,13 @@ export default function DossierReview() {
         </div>
       </header>
 
+      <TeacherReviewSelections studentId={studentId} />
+
       {loading ? <p role="status" className="text-sm text-black/55">Loading saved answers…</p>
         : resolution.state === 'denied' ? <p role="alert" className="text-sm text-black/55">This student's saved answers are unavailable to this account.</p>
         : error ? (
           <div role="alert" className="border border-amber-800/20 bg-amber-50/50 p-4 text-sm text-black/70">
-            <p>Saved answers could not be loaded.</p>
+            <p>{error instanceof StudentIdentityUnavailableError ? error.message : 'Saved answers could not be loaded.'}</p>
             <button type="button" onClick={() => void refresh()} className="mt-2 inline-flex min-h-11 items-center font-semibold underline">Retry</button>
           </div>
         ) : !ledger || ledger.coverage.includedSources.length === 0 ? (

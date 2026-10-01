@@ -14,6 +14,11 @@ vi.mock('@/contexts/AuthContext', () => ({
 const resolveDrillLaunch = vi.fn();
 const recordExposures = vi.fn();
 const questionBankState = vi.hoisted(() => ({ isLoading: false }));
+const adoptionState = vi.hoisted(() => ({ enabled: false }));
+vi.mock('@/lib/timedSectionAdoption', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/timedSectionAdoption')>('@/lib/timedSectionAdoption');
+  return { ...actual, manualSectionsEnabled: vi.fn(async () => adoptionState.enabled) };
+});
 
 vi.mock('@/contexts/QuestionBankContext', () => ({
   useQuestionBank: () => questionBankState,
@@ -61,9 +66,14 @@ function renderAt(entry: { pathname: string; search?: string; state?: unknown })
           }
         />
         <Route path="/classroom" element={<div>classroom</div>} />
+        <Route path="/testing/sections/:id" element={<SectionDestination />} />
       </Routes>
     </MemoryRouter>,
   );
+}
+function SectionDestination() {
+  const location = useLocation();
+  return <div data-testid="protected-section">{location.pathname}{location.search}</div>;
 }
 
 const searchOf = () => new URLSearchParams(screen.getByTestId('runner').textContent ?? '');
@@ -76,6 +86,7 @@ describe('the gate', () => {
     recordExposures.mockReset();
     recordExposures.mockResolvedValue(undefined);
     questionBankState.isLoading = false;
+    adoptionState.enabled = false;
   });
 
   it('runs an older link without touching the URL', async () => {
@@ -85,6 +96,31 @@ describe('the gate', () => {
     expect(runner.textContent).toBe('?mode=type-drill&qids=PT1-S1-Q1');
     expect(queueOf()).toEqual(['PT1-S1-Q1']);
     expect(resolveDrillLaunch).not.toHaveBeenCalled();
+  });
+  it('adopts a canonical manual section only when enabled and preserves its exact pace', async () => {
+    adoptionState.enabled = true;
+    renderAt({ pathname: '/drill', search: '?mode=full-section&pt=101&section=2&timer=52.5' });
+    const destination = await screen.findByTestId('protected-section');
+    expect(destination.textContent).toMatch(/^\/testing\/sections\/[0-9a-f-]+\?kind=lr&pt=101&section=2&pace=time-and-a-half$/);
+    expect(screen.queryByTestId('runner')).not.toBeInTheDocument();
+  });
+  it.each([
+    '?mode=full-section&pt=101&section=2&legacySectionResume=1',
+    '?mode=full-section&pt=101&section=2&timer=custom&minutes=53',
+    '?mode=full-section&pt=101&section=2&runId=test-run&leg=0',
+    '?mode=full-section&pt=101&section=2&sealed=1',
+    '?mode=full-section&pt=101&section=4',
+  ])('keeps legacy, custom, assigned, test and unsupported source boundaries: %s', async search => {
+    adoptionState.enabled = true;
+    renderAt({ pathname: '/drill', search });
+    await screen.findByTestId('runner');
+    expect(screen.queryByTestId('protected-section')).not.toBeInTheDocument();
+  });
+  it('opens saved protected work through its dedicated route even while creation is disabled', async () => {
+    const id = '10000000-0000-4000-8000-000000000001';
+    renderAt({ pathname: '/drill', search: `?timedSectionSittingId=${id}` });
+    expect((await screen.findByTestId('protected-section')).textContent).toBe(`/testing/sections/${id}`);
+    expect(screen.queryByTestId('runner')).not.toBeInTheDocument();
   });
 
   it('writes an in-memory launch into the address bar so a refresh can rebuild it', async () => {

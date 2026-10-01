@@ -26,10 +26,17 @@ import {
 // low-stakes preference, so there is no draft/Save/Discard state to lose.
 
 export default function RailLayoutEditor() {
-  const { prefs, save, saving, loading } = useRailPrefs();
+  const { prefs, save, saving, loading, error, retry, canSave, ownerId } = useRailPrefs();
   const permissions = useUserPermissions();
   const [justSaved, setJustSaved] = React.useState(false);
   const savedTimer = React.useRef<number | null>(null);
+  const ownerRef = React.useRef(ownerId);
+  ownerRef.current = ownerId;
+
+  React.useEffect(() => {
+    setJustSaved(false);
+    if (savedTimer.current) window.clearTimeout(savedTimer.current);
+  }, [ownerId]);
 
   React.useEffect(() => {
     return () => {
@@ -38,12 +45,16 @@ export default function RailLayoutEditor() {
   }, []);
 
   const commit = async (next: RailPrefs) => {
+    const savingOwner = ownerId;
+    setJustSaved(false);
     try {
       await save(next);
+      if (ownerRef.current !== savingOwner) return;
       setJustSaved(true);
       if (savedTimer.current) window.clearTimeout(savedTimer.current);
       savedTimer.current = window.setTimeout(() => setJustSaved(false), 1600);
     } catch {
+      if (ownerRef.current !== savingOwner) return;
       toast.error("Could not save your layout. Please try again.");
     }
   };
@@ -106,7 +117,7 @@ export default function RailLayoutEditor() {
                 type="button"
                 className="classroom-account-ghost-button"
                 onClick={() => void commit(defaultRailPrefs())}
-                disabled={saving || loading}
+                disabled={!canSave}
               >
                 <RotateCcw size={12} aria-hidden="true" />
                 Reset to default
@@ -114,6 +125,14 @@ export default function RailLayoutEditor() {
             ) : null}
           </div>
         </div>
+
+        {loading ? <p role="status">Loading your saved sidebar layout.</p> : null}
+        {error ? (
+          <div role="alert">
+            <p>Your saved sidebar layout could not be verified. Reload it before editing.</p>
+            <button type="button" className="classroom-account-ghost-button" onClick={() => void retry()}>Try again</button>
+          </div>
+        ) : null}
 
         {groups.map((group) => {
           const ids = group.items.map((i) => i.id as string);
@@ -131,7 +150,7 @@ export default function RailLayoutEditor() {
                         <button
                           type="button"
                           onClick={() => move(group.id, ids, idx, -1)}
-                          disabled={idx === 0 || saving}
+                          disabled={idx === 0 || !canSave}
                           aria-label={`Move ${item.label} up`}
                         >
                           <ChevronUp size={14} aria-hidden="true" />
@@ -139,7 +158,7 @@ export default function RailLayoutEditor() {
                         <button
                           type="button"
                           onClick={() => move(group.id, ids, idx, 1)}
-                          disabled={idx === ids.length - 1 || saving}
+                          disabled={idx === ids.length - 1 || !canSave}
                           aria-label={`Move ${item.label} down`}
                         >
                           <ChevronDown size={14} aria-hidden="true" />
@@ -166,7 +185,7 @@ export default function RailLayoutEditor() {
                           type="button"
                           className="classroom-account-eye"
                           onClick={() => toggleHidden(item)}
-                          disabled={saving}
+                          disabled={!canSave}
                           aria-pressed={!isHidden}
                           aria-label={
                             isHidden ? `Show ${item.label}` : `Hide ${item.label}`

@@ -55,13 +55,24 @@ async function requireUserId(): Promise<string> {
   return id;
 }
 
-function toSession(row: RcDrillSessionRow): RcDrillSession {
-  const config = row.config as RcDrillConfig;
+export function toSession(row: RcDrillSessionRow): RcDrillSession {
+  const config = row.config as RcDrillConfig & { timerSeconds?: number | null };
+  if (!config || typeof config !== 'object' || Array.isArray(config)) throw new Error('The saved reading section settings could not be verified.');
+  const protectedId = (row as RcDrillSessionRow & { timed_section_sitting_id?: string | null }).timed_section_sitting_id ?? config.timedSectionSittingId;
+  const protectedTestId = config.practiceTestRunId ?? row.practice_test_run_id;
+  // The protected writer stores one section budget, unlike legacy passage clocks.
+  // Adapt that acknowledged shape for the existing read-only report and review.
+  const timing = config.timing ?? ((protectedId || protectedTestId) && config.timerSeconds === null ? { mode: 'unlimited' as const }
+    : (protectedId || protectedTestId) && typeof config.timerSeconds === 'number' && Number.isFinite(config.timerSeconds) && config.timerSeconds > 0 && row.passage_ids?.length
+      ? { mode: 'per_passage_budget' as const, secondsPerPassage: config.timerSeconds / row.passage_ids.length } : undefined);
+  if (!timing || !['unlimited', 'per_passage_budget'].includes(timing.mode)) throw new Error('The saved reading section timing could not be verified.');
   return {
     id: row.id,
     userId: row.user_id,
     config: {
       ...config,
+      timing,
+      timedSectionSittingId: protectedId,
       practiceTestRunId: config.practiceTestRunId ?? row.practice_test_run_id ?? undefined,
       practiceTestLegIndex: config.practiceTestLegIndex ?? row.practice_test_leg ?? undefined,
     },

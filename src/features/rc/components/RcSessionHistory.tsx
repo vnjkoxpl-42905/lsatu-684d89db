@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteSession, getSessionAttempts, listSessions } from '../api/rcProgress';
 import { REVEAL_LABELS, type RcDrillSession } from '../lib/rcTypes';
+import { timedSectionResumeHref } from '@/lib/timedSectionAdoption';
 
 /**
  * A student's RC drills: resume an unfinished one, open the results of a
@@ -91,7 +92,7 @@ export function RcSessionHistory({ tone = 'light' }: { tone?: 'light' | 'dark' }
           <span>
             {s.passageIds.length} passage{s.passageIds.length === 1 ? '' : 's'} ·{' '}
             {s.config.timing.mode === 'unlimited' ? 'untimed' : 'timed'} ·{' '}
-            {REVEAL_LABELS[s.config.reveal]}
+            {REVEAL_LABELS[s.config.reveal] ?? 'Feedback timing not recorded'}
           </span>
           <span className="rc-status-chip">
             {s.status === 'in_progress' ? 'in progress' : s.status}
@@ -107,7 +108,7 @@ export function RcSessionHistory({ tone = 'light' }: { tone?: 'light' | 'dark' }
               <button
                 type="button"
                 className="rc-chip"
-                onClick={() => navigate('/rc/drill?sessionId=' + s.id)}
+                onClick={() => navigate(s.config.timedSectionSittingId ? timedSectionResumeHref(s.config.timedSectionSittingId) : '/rc/drill?sessionId=' + s.id)}
               >
                 Resume
               </button>
@@ -120,7 +121,7 @@ export function RcSessionHistory({ tone = 'light' }: { tone?: 'light' | 'dark' }
                 Results
               </button>
             )}
-            <button type="button" className="rc-chip" onClick={() => remove(s.id)}>
+            <button type="button" className="rc-chip" disabled={!!s.config.timedSectionSittingId || !!s.config.practiceTestRunId} title={s.config.timedSectionSittingId || s.config.practiceTestRunId ? 'Protected section records retain their saved answers and timings.' : undefined} onClick={() => remove(s.id)}>
               Delete
             </button>
           </span>

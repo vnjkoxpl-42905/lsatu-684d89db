@@ -12,14 +12,15 @@
  * rendered as text, never as markup.
  *
  * The dossier is keyed by `profiles.class_id`; progress tables are keyed by the
- * auth user id. `students` maps between them, the same join the bootcamp insights
- * pages use.
+ * auth user id. A scoped read-only RPC resolves the `students` mapping without
+ * broadening that table's owner-only read policy.
  */
 
 import { useState } from 'react';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import { formatRelativeShort } from '@/lib/time';
 import {
   LESSON_PROGRESS_SOURCES,
@@ -41,29 +42,25 @@ interface ProgressRow {
 }
 
 /** Resolve the dossier's class_id to the auth user id the progress tables use. */
-function useStudentUserId(classId: string | undefined) {
+function useStudentUserId(classId: string | undefined, actorId: string | undefined) {
   return useQuery<string | null>({
-    queryKey: ['dossier-student-user-id', classId],
-    enabled: !!classId,
+    queryKey: ['dossier-student-user-id', classId, actorId],
+    enabled: !!classId && !!actorId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('students')
-        .select('user_id')
-        .eq('class_id', classId as string)
-        .maybeSingle();
+      const { data, error } = await untypedDb.rpc('get_student_progress_user_id', { p_class_id: classId });
       if (error) throw error;
-      if (data?.user_id == null) return null;
-      if (typeof data.user_id !== 'string' || !data.user_id.trim()) throw new Error('Student account lookup returned an invalid identity.');
-      return data.user_id;
+      if (data == null) return null;
+      if (typeof data !== 'string' || !data.trim()) throw new Error('Student account lookup returned an invalid identity.');
+      return data;
     },
   });
 }
 
-function useLessonProgress(userId: string | null | undefined) {
+function useLessonProgress(userId: string | null | undefined, actorId: string | undefined) {
   return useQueries({
     queries: LESSON_PROGRESS_SOURCES.map(source => ({
-      queryKey: ['dossier-lesson-progress', userId, source.key],
-      enabled: !!userId,
+      queryKey: ['dossier-lesson-progress', userId, source.key, actorId],
+      enabled: !!userId && !!actorId,
       queryFn: async (): Promise<ProgressRow[]> => {
         const columns = source.hasDetail
           ? 'lesson_id,data,completed_at,updated_at'
@@ -178,9 +175,10 @@ function LessonCard({ source, row }: { source: LessonProgressSource; row: Progre
 }
 
 export function BootcampLessonProgress({ studentClassId }: { studentClassId: string | undefined }) {
-  const identity = useStudentUserId(studentClassId);
+  const { user } = useAuth();
+  const identity = useStudentUserId(studentClassId, user?.id);
   const userId = identity.data;
-  const progress = useLessonProgress(userId);
+  const progress = useLessonProgress(userId, user?.id);
 
   const cards = progress.flatMap((result, index) =>
     (result.data ?? []).map((row) => ({ source: LESSON_PROGRESS_SOURCES[index], row, key: `${LESSON_PROGRESS_SOURCES[index].key}:${row.lesson_id}` })),

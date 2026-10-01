@@ -28,6 +28,7 @@ import {
   type RcPassage,
 } from '../lib/rcTypes';
 import '../rc.css';
+import { missedRcConfig } from '@/lib/timedSectionAdoption';
 
 /** m:ss. Results show real recorded time, never an estimate. */
 function clock(ms: number): string {
@@ -161,7 +162,10 @@ export default function RcResults() {
   const answered = items.filter((i) => firstAttempts.get(i.question.questionId)?.selected).length;
   const totalMs = [...firstAttempts.values()].reduce((n, a) => n + a.timeMs, 0);
   const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
-  const avgMs = answered > 0 ? totalMs / answered : 0;
+  const protectedSection = !!session.config.timedSectionSittingId || !!session.config.practiceTestRunId;
+  const sectionTimeMs = protectedSection && Number.isFinite(session.config.clockElapsedSeconds)
+    ? session.config.clockElapsedSeconds! * 1000 : null;
+  const avgMs = total > 0 ? totalMs / total : 0;
   const isTimed = session.config.timing.mode === 'per_passage_budget';
 
   const perPassage = passages.map((p) => {
@@ -207,11 +211,12 @@ export default function RcResults() {
   ];
 
   const drillMisses = async () => {
-    const fresh = await createSession({ ...session.config, source: 'manual' }, missedPassageIds);
+    const fresh = await createSession(missedRcConfig(session.config), missedPassageIds);
     navigate('/rc/drill?sessionId=' + fresh.id);
   };
 
   const toggleExcluded = async () => {
+    if (protectedSection) return;
     const next = !excluded;
     setExcluded(next);
     await setSessionExcluded(session.id, next);
@@ -273,13 +278,13 @@ export default function RcResults() {
           {/* Stat chips */}
           <div className="mb-6 flex items-center justify-center gap-6">
             <div className="text-center">
-              <div className="text-sm font-medium">{clock(totalMs)}</div>
-              <div className="text-xs text-muted-foreground">Total Time</div>
+              <div className="text-sm font-medium">{protectedSection ? sectionTimeMs === null ? 'Unavailable' : clock(sectionTimeMs) : clock(totalMs)}</div>
+              <div className="text-xs text-muted-foreground">{protectedSection ? 'Section elapsed time' : 'Total Time'}</div>
             </div>
             <div className="h-8 w-px bg-border" />
             <div className="text-center">
               <div className="text-sm font-medium">{clock(avgMs)}</div>
-              <div className="text-xs text-muted-foreground">Avg per Q</div>
+              <div className="text-xs text-muted-foreground">Avg recorded question time</div>
             </div>
             <div className="h-8 w-px bg-border" />
             <div className="text-center">
@@ -602,11 +607,14 @@ export default function RcResults() {
         </Button>
         <Button
           variant={excluded ? 'secondary' : 'ghost'}
+          disabled={protectedSection}
+          title={protectedSection ? 'Protected section records retain their saved analytics status.' : undefined}
           aria-pressed={excluded}
           onClick={toggleExcluded}
         >
           {excluded ? 'Counted in your progress' : 'Exclude from analytics'}
         </Button>
+        {protectedSection && <p className="w-full text-sm text-muted-foreground">This protected section retains its saved analytics status. Section elapsed time comes from the account clock; question averages use recorded question time.</p>}
       </div>
     </div>
   );

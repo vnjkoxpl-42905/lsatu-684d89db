@@ -1,14 +1,15 @@
 import type { ReactNode } from 'react';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useLocation } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { RcAttempt, RcDrillSession, RcPassage } from '../lib/rcTypes';
 
 const api = vi.hoisted(() => ({
   getSession: vi.fn(), getSessionAttempts: vi.fn(), recordAttempt: vi.fn(),
   saveSessionClock: vi.fn(), completeSession: vi.fn(),
+  setAttemptFlag: vi.fn(),
 }));
-vi.mock('../api/rcProgress', () => ({ ...api, createSession: vi.fn(), setAttemptFlag: vi.fn() }));
+vi.mock('../api/rcProgress', () => ({ ...api, createSession: vi.fn() }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'student-one' } }) }));
 vi.mock('../lib/rcBank', () => ({ loadPassages: async () => [passage], loadPassage: vi.fn() }));
 vi.mock('../hooks/useRcA11y', () => ({ RC_FONT_SIZES: [100], useRcA11y: () => ({ settings: {}, fontScale: 1, update: vi.fn() }) }));
@@ -28,11 +29,12 @@ vi.mock('../components/RcExamPane', () => ({
   RcExamPane: ({ question }: { question: ReactNode }) => <div>{question}</div>,
 }));
 vi.mock('../components/RcQuestionPane', () => ({
-  RcQuestionPane: ({ item, selected, onSelect, interactionDisabled }: {
-    item: { number: number }; selected: string; onSelect: (letter: string) => void; interactionDisabled: boolean;
+  RcQuestionPane: ({ item, selected, onSelect, onToggleFlag, interactionDisabled }: {
+    item: { number: number }; selected: string; onSelect: (letter: string) => void; onToggleFlag(): void; interactionDisabled: boolean;
   }) => <div>
     <p>Question {item.number}: {selected ?? 'blank'}</p>
     <button disabled={interactionDisabled} onClick={() => onSelect('B')}>Choose B</button>
+    <button disabled={interactionDisabled} onClick={onToggleFlag}>Toggle question flag</button>
   </div>,
 }));
 vi.mock('../components/RcChrome', () => ({
@@ -77,8 +79,9 @@ const attempt: RcAttempt = {
 };
 
 function mount(search = '') {
-  return render(<MemoryRouter initialEntries={[`/rc/drill?sessionId=session-one${search}`]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}><RcPlayer /></MemoryRouter>);
+  return render(<MemoryRouter initialEntries={[`/rc/drill?sessionId=session-one${search}`]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}><RcPlayer /><LocationProbe /></MemoryRouter>);
 }
+function LocationProbe() { const location = useLocation(); return <output data-testid="location">{location.pathname}{location.search}</output>; }
 beforeEach(() => {
   localStorage.clear();
   vi.clearAllMocks();
@@ -90,6 +93,32 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
 describe('RC account save safety', () => {
+  it.each([
+    { timedSectionSittingId: '10000000-0000-4000-8000-000000000001' },
+    { practiceTestRunId: 'full-test', practiceTestLegIndex: 1 },
+  ])('reviews protected completed answers and flags read-only without legacy source writes: %o', async marker => {
+    api.getSession.mockResolvedValue({ ...session(marker), status: 'completed' });
+    api.getSessionAttempts.mockResolvedValue([attempt]);
+    mount('&review=1&q=1');
+    await screen.findByText(/Review is read-only/);
+    await screen.findByText('Question 1: B');
+    expect(screen.getByRole('button', { name: 'Choose B' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Toggle question flag' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Toggle question flag' }));
+    fireEvent.keyDown(document, { key: 'b' });
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(api.setAttemptFlag).not.toHaveBeenCalled();
+    expect(api.saveSessionClock).not.toHaveBeenCalled();
+    expect(api.completeSession).not.toHaveBeenCalled();
+  });
+  it('redirects direct protected in-progress legacy links to their exact dedicated sitting', async () => {
+    const sitting = '10000000-0000-4000-8000-000000000001';
+    api.getSession.mockResolvedValue(session({ timedSectionSittingId: sitting }));
+    mount('&review=1');
+    await waitFor(() => expect(screen.getByTestId('location')).toHaveTextContent(`/testing/sections/${sitting}`));
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(api.saveSessionClock).not.toHaveBeenCalled();
+  });
   it('does not copy the visible question time onto untouched closeout rows', async () => {
     mount();
     expect(await screen.findByText('Question 1: blank')).toBeInTheDocument();

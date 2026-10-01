@@ -21,6 +21,7 @@ export function useFirstAnswerProgress(window: ProgressWindow, selectedStudentId
     resolution,
     progress: scope ? progress : null,
     ledger: scope ? query.data ?? null : null,
+    accountId: scope ? query.data?.ownerId ?? null : null,
     loading: resolution.state === 'loading' || (!!scope && query.isPending),
     error: query.error,
     refresh: query.refetch,

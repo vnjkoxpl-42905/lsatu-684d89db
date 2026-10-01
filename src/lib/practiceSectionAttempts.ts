@@ -3,6 +3,7 @@ import { PracticeSession, TABLES } from '@/bootcamps/main-conclusion/persistence
 import { getPersistence } from '@/bootcamps/main-conclusion/persistence/factory';
 import { loadRcIndex } from '@/features/rc/lib/rcBank';
 import { getSessionAttempts, listSessions } from '@/features/rc/api/rcProgress';
+import { timedSectionResumeHref } from './timedSectionAdoption';
 
 interface CompletedLrMirror {
   pt: number;
@@ -48,6 +49,10 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
   if (authError || !auth.user || auth.user.id !== userId) {
     throw new Error('Sign in to see your practice sections.');
   }
+  const { data: protectedRows, error: protectedError } = await (supabase as unknown as {
+    from(name: string): { select(columns: string): { eq(key: string, value: string): Promise<{ data: Record<string, unknown>[] | null; error: { code?: string } | null }> } };
+  }).from('timed_section_sittings_v1').select('id,owner_id,kind,pt,section,phase,created_at,updated_at,frozen_qids,result').eq('owner_id', userId);
+  if (protectedError && protectedError.code !== '42P01' && protectedError.code !== 'PGRST205') throw protectedError;
 
   const { data: lrRows, error: lrError } = await supabase
     .from('bootcamp_kv')
@@ -60,6 +65,10 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
   for (const row of lrRows ?? []) {
     const parsed = PracticeSession.safeParse(row.data);
     if (parsed.success) cloud.set(parsed.data.id, parsed.data);
+    else if (row.data && typeof row.data === 'object' && !Array.isArray(row.data)) {
+      const protectedChild = row.data as Record<string, unknown>;
+      if (protectedChild.user_id === userId && typeof protectedChild.id === 'string' && protectedChild.id.startsWith('timed-section::')) cloud.set(protectedChild.id, protectedChild);
+    }
   }
   // Older section runs were cached per account before a cloud flush could finish.
   // Import only rows already namespaced to this authenticated account.
@@ -74,6 +83,8 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     const remote = cloud.get(session.id);
     const remoteParsed = PracticeSession.safeParse(remote);
     if (remoteParsed.success && remoteParsed.data.updated_at >= session.updated_at) continue;
+    const { data: writeActor, error: writeActorError } = await supabase.auth.getUser();
+    if (writeActorError || writeActor.user?.id !== userId) throw new Error('The signed-in account changed.');
     const { error } = await supabase.from('bootcamp_kv').upsert({
       user_id: userId,
       table_name: TABLES.practice_sessions,
@@ -93,7 +104,7 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     .order('completed_at', { ascending: false });
   if (historyError) throw historyError;
   const completedLr: PracticeSectionAttempt[] = (completedRows ?? [])
-    .filter((row) => row.pt > 0 && row.section > 0 && !!row.completed_at)
+    .filter((row) => row.pt > 0 && row.section > 0 && !!row.completed_at && !(protectedRows ?? []).some(sitting => (sitting.result as { historyId?: string } | null)?.historyId === row.id))
     .map((row) => {
       const total = row.initial_total ?? 0;
       return {
@@ -144,7 +155,7 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
         : null,
       href: session.status === 'completed'
         ? `/testing/attempts/section/lr/${encodeURIComponent(session.id)}`
-        : `/drill?mode=full-section&pt=${preptest}&section=${section}${timer}${minutes}&returnTo=%2Ftesting`,
+        : `/drill?mode=full-section&pt=${preptest}&section=${section}${timer}${minutes}&legacySectionResume=1&returnTo=%2Ftesting`,
     });
   }
 
@@ -164,7 +175,7 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
   }
 
   const rc = await Promise.all(rcSessions.filter((session) =>
-    session.status !== 'abandoned' && !session.config.practiceTestRunId,
+    session.status !== 'abandoned' && !session.config.practiceTestRunId && !session.config.timedSectionSittingId,
   ).map(async (session) => {
     const passages = session.passageIds.map((id) => passageMap.get(id));
     const first = passages[0];
@@ -190,6 +201,26 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     };
   }));
 
-  return [...lr, ...completedLr, ...rc.filter((item): item is NonNullable<typeof item> => item !== null)]
+  const protectedAttempts = await Promise.all((protectedRows ?? []).filter(row => row.owner_id === userId && row.phase !== 'abandoned').map(async row => {
+    if (typeof row.id !== 'string' || (row.kind !== 'lr' && row.kind !== 'rc') || !Number.isInteger(row.pt) || !Number.isInteger(row.section) || !Array.isArray(row.frozen_qids)) throw new Error('Your saved section could not be verified.');
+    const result = row.result as { correct?: number; answered?: number; historyId?: string } | null;
+    const lrChild = cloud.get(`timed-section::${row.id}`);
+    const lrAnswers = lrChild && typeof lrChild === 'object' && Array.isArray((lrChild as { attempts?: unknown }).attempts) ? (lrChild as { attempts: unknown[] }).attempts : null;
+    const rcChild = rcSessions.find(session => session.config.timedSectionSittingId === row.id);
+    const first = rcChild ? (await getSessionAttempts(rcChild.id)).filter(attempt => attempt.isFirstAttempt && attempt.selected !== null) : [];
+    return {
+      id: row.kind === 'lr' && row.phase === 'complete' && result?.historyId ? result.historyId : row.id,
+      kind: row.kind === 'lr' ? 'lr-section' as const : 'rc-section' as const,
+      status: row.phase === 'complete' ? 'completed' as const : 'in-progress' as const,
+      preptest: row.pt as number, section: row.section as number,
+      startedAt: row.created_at as string, updatedAt: row.updated_at as string,
+      answered: row.phase === 'complete' ? result?.answered ?? 0 : lrAnswers ? lrAnswers.length : first.length,
+      total: row.frozen_qids.length, correct: row.phase === 'complete' ? result?.correct ?? null : null,
+      href: timedSectionResumeHref(row.id),
+    };
+  }));
+  const { data: finalActor, error: finalActorError } = await supabase.auth.getUser();
+  if (finalActorError || finalActor.user?.id !== userId) throw new Error('The signed-in account changed.');
+  return [...lr, ...completedLr, ...rc.filter((item): item is NonNullable<typeof item> => item !== null), ...protectedAttempts]
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }

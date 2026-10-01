@@ -13,10 +13,11 @@ import {
   type ConclusionTypeQuestion,
 } from '@/bootcamps/main-conclusion/data/reference-drills/conclusionTypeQuestions';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
-import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
+import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 import './conclusionTypeLab.css';
+import { useNativeLabSave } from '@/bootcamps/main-conclusion/hooks/useNativeLabSave';
 
 type CTStatus = 'clean' | 'missed';
 
@@ -59,8 +60,14 @@ function typeBreakdown(attempts: Record<string, CTAttempt>) {
 }
 
 export function ConclusionTypeLab() {
-  const user = useUser();
-  const { markDrillComplete } = useModuleProgress(user?.id);
+  const { user } = useAuth();
+  return <OwnedConclusionTypeLab key={user?.id ?? 'signed-out'} ownerId={user?.id} />;
+}
+function OwnedConclusionTypeLab({ ownerId }: { ownerId?: string }) {
+  const { markDrillComplete, loadError, retryLoad } = useModuleProgress(ownerId);
+  const accountSave = useNativeLabSave('conclusion-type', ownerId);
+  const [completionError, setCompletionError] = useState(false);
+  const [completing, setCompleting] = useState(false);
 
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<ConclusionType | null>(null);
@@ -87,8 +94,9 @@ export function ConclusionTypeLab() {
 
   const breakdown = useMemo(() => typeBreakdown(attempts), [attempts]);
 
-  function submit() {
-    if (!picked || submitted) return;
+  async function submit() {
+    if (!picked || submitted || accountSave.saving) return;
+    if (!await accountSave.save(question.id, picked, picked === question.answer)) return;
     setAttempts((current) => ({
       ...current,
       [question.id]: {
@@ -100,21 +108,25 @@ export function ConclusionTypeLab() {
     }));
   }
 
-  function advance() {
-    if (!submitted) return;
+  async function advance() {
+    if (!submitted || accountSave.blocked || completing || !accountSave.isCurrent()) return;
     if (isLast) {
-      setFinished(true);
-      markDrillComplete?.('MC-DRL-CT');
+      setCompleting(true); setCompletionError(false);
+      try { await markDrillComplete?.('MC-DRL-CT'); if (accountSave.isCurrent()) setFinished(true); }
+      catch { if (accountSave.isCurrent()) setCompletionError(true); }
+      finally { setCompleting(false); }
       return;
     }
     setIndex((current) => current + 1);
   }
 
   function previous() {
+    if (accountSave.blocked || completing) return;
     setIndex((current) => Math.max(0, current - 1));
   }
 
   function restart() {
+    if (!accountSave.restart()) return;
     setIndex(0);
     setPicked(null);
     setAttempts({});
@@ -126,6 +138,7 @@ export function ConclusionTypeLab() {
     setReviewQuestionId(id);
   }
 
+  if (loadError) return <div role="alert"><p>{loadError}</p><button className="min-h-11 underline" onClick={retryLoad}>Try again</button></div>;
   if (finished) {
     return (
       <section className="ctlab">
@@ -187,7 +200,7 @@ export function ConclusionTypeLab() {
                     type="button"
                     role="radio"
                     aria-checked={isPicked}
-                    disabled={submitted}
+                    disabled={submitted || accountSave.blocked}
                     onClick={() => setPicked((current) => (current === meta.value ? null : meta.value))}
                     className={cn(
                       'ctlab__option',
@@ -214,18 +227,21 @@ export function ConclusionTypeLab() {
           </section>
 
           {submitted && attempt ? <TeachBlock refEl={teachRef} question={question} attempt={attempt} /> : null}
+          {accountSave.saving && <p role="status">Saving your answer…</p>}
+          {accountSave.error && <div role="alert"><p>{accountSave.error}</p><button className="ctlab__button" onClick={() => void submit()}>Try saving again</button></div>}
+          {completionError && <p role="alert">Completion could not be saved. Your saved answers remain available. Try finishing again.</p>}
 
           <footer className="ctlab__footer">
-            <button type="button" className="ctlab__button ctlab__button--secondary" onClick={previous} disabled={index === 0}>
+            <button type="button" className="ctlab__button ctlab__button--secondary" onClick={previous} disabled={index === 0 || accountSave.blocked || completing}>
               <ArrowLeft aria-hidden="true" />
               Previous
             </button>
             {!submitted ? (
-              <button type="button" className="ctlab__button" onClick={submit} disabled={!picked}>
+              <button type="button" className="ctlab__button" onClick={submit} disabled={!picked || accountSave.blocked}>
                 Reveal the type
               </button>
             ) : (
-              <button type="button" className="ctlab__button" onClick={advance}>
+              <button type="button" className="ctlab__button" onClick={advance} disabled={accountSave.blocked || completing}>
                 {isLast ? 'Finish drill' : 'Next question'}
                 <ArrowRight aria-hidden="true" />
               </button>
@@ -397,6 +413,7 @@ function SessionReview({
   const appeared = breakdown.filter((row) => row.total > 0);
   const strongest = [...appeared].sort((left, right) => left.missed - right.missed)[0];
   const weakest = [...appeared].sort((left, right) => right.missed - left.missed)[0];
+  const noMisses = appeared.every(row => row.missed === 0);
   const verdictItems = QUESTIONS.map((question) => ({
     id: question.id,
     ok: attempts[question.id]?.status === 'clean',
@@ -450,11 +467,11 @@ function SessionReview({
       <div className="ctlab__callouts">
         <div className="ctlab__callout ctlab__callout--strong">
           <p className="ctlab__review-label">Strongest type</p>
-          <p>{strongest?.meta.label ?? 'None'} cost you the fewest misses this set.</p>
+          <p>{noMisses ? 'Every type in this sitting was solved cleanly.' : `${strongest?.meta.label ?? 'None'} cost you the fewest misses this set.`}</p>
         </div>
         <div className="ctlab__callout ctlab__callout--weak">
           <p className="ctlab__review-label">Start here</p>
-          <p>{weakest?.meta.label ?? 'None'} collected the most misses. Review that weakness signature first.</p>
+          <p>{noMisses ? 'No missed types in this sitting. Continue along the path or use the answer key to explain your reasoning.' : `${weakest?.meta.label ?? 'None'} collected the most misses. Review that weakness signature first.`}</p>
         </div>
       </div>
 

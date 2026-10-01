@@ -32,6 +32,7 @@ import {
   type RcPassage,
 } from '../lib/rcTypes';
 import '../rc.css';
+import { canonicalRcSection, manualSectionsEnabled, newManualSectionHref, timedSectionResumeHref } from '@/lib/timedSectionAdoption';
 
 const mmss = (seconds: number) =>
   `${Math.floor(seconds / 60)}:${String(Math.round(seconds % 60)).padStart(2, '0')}`;
@@ -370,6 +371,14 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
       if (chosen.length === 0) {
         setNotice('No passages match those filters. Loosen one and try again.');
         setStarting(false);
+        return;
+      }
+      const canonical = params.get('timedSection') === 'manual-canonical' && !params.has('assignmentId') && !params.has('assignment') &&
+        !ptRun && !params.has('ptLeg') && reveal === 'end_of_set' ? canonicalRcSection(chosen) : null;
+      const protectedPace = timing === 'untimed' ? 'untimed' : secondsPerPassage === 525 ? 'standard' :
+        secondsPerPassage === 788 ? 'time-and-a-half' : secondsPerPassage === 1050 ? 'double-time' : null;
+      if (canonical && protectedPace && await manualSectionsEnabled()) {
+        navigate(newManualSectionHref('rc', canonical.pt, canonical.section, protectedPace), { replace: options?.replace });
         return;
       }
       const session = await createSession(config, chosen);
@@ -818,7 +827,7 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
               <button
                 type="button"
                 className="rc-chip"
-                onClick={() => navigate('/rc/drill?sessionId=' + s.id)}
+                onClick={() => navigate(s.config.timedSectionSittingId ? timedSectionResumeHref(s.config.timedSectionSittingId) : '/rc/drill?sessionId=' + s.id)}
               >
                 Resume
               </button>
