@@ -245,6 +245,146 @@ export type Database = {
         }
         Relationships: []
       }
+      activity_ai_budget_buckets_v1: {
+        Row: {
+          actor_key: string
+          admissions: number
+          bucket_start: string
+          kind: string
+        }
+        Insert: {
+          actor_key: string
+          admissions: number
+          bucket_start: string
+          kind: string
+        }
+        Update: {
+          actor_key?: string
+          admissions?: number
+          bucket_start?: string
+          kind?: string
+        }
+        Relationships: []
+      }
+      activity_ai_configuration_v1: {
+        Row: {
+          actor_concurrency: number
+          actor_day: number
+          actor_minute: number
+          enabled: boolean
+          global_day: number
+          lease_seconds: number
+          singleton: boolean
+        }
+        Insert: {
+          actor_concurrency?: number
+          actor_day?: number
+          actor_minute?: number
+          enabled?: boolean
+          global_day?: number
+          lease_seconds?: number
+          singleton?: boolean
+        }
+        Update: {
+          actor_concurrency?: number
+          actor_day?: number
+          actor_minute?: number
+          enabled?: boolean
+          global_day?: number
+          lease_seconds?: number
+          singleton?: boolean
+        }
+        Relationships: []
+      }
+      activity_ai_receipts_v1: {
+        Row: {
+          admitted_at: string
+          attempt_no: number
+          canonical_payload: Json
+          claim_id: string
+          dispatched_at: string | null
+          failure_category: string | null
+          finished_at: string | null
+          id: string
+          item_order: number
+          lease_expires_at: string
+          owner_id: string
+          payload_sha256: string
+          result: Json | null
+          source_id: string
+          source_kind: string
+          state: string
+        }
+        Insert: {
+          admitted_at?: string
+          attempt_no: number
+          canonical_payload: Json
+          claim_id: string
+          dispatched_at?: string | null
+          failure_category?: string | null
+          finished_at?: string | null
+          id: string
+          item_order: number
+          lease_expires_at: string
+          owner_id: string
+          payload_sha256: string
+          result?: Json | null
+          source_id: string
+          source_kind: string
+          state: string
+        }
+        Update: {
+          admitted_at?: string
+          attempt_no?: number
+          canonical_payload?: Json
+          claim_id?: string
+          dispatched_at?: string | null
+          failure_category?: string | null
+          finished_at?: string | null
+          id?: string
+          item_order?: number
+          lease_expires_at?: string
+          owner_id?: string
+          payload_sha256?: string
+          result?: Json | null
+          source_id?: string
+          source_kind?: string
+          state?: string
+        }
+        Relationships: []
+      }
+      activity_ai_request_keys_v1: {
+        Row: {
+          created_at: string
+          owner_id: string
+          payload_sha256: string
+          receipt_id: string
+          request_id: string
+        }
+        Insert: {
+          created_at?: string
+          owner_id: string
+          payload_sha256: string
+          receipt_id: string
+          request_id: string
+        }
+        Update: {
+          created_at?: string
+          owner_id?: string
+          payload_sha256?: string
+          receipt_id?: string
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_ai_request_keys_v1_receipt_id_owner_id_fkey"
+            columns: ["receipt_id", "owner_id"]
+            isOneToOne: false
+            referencedRelation: "activity_ai_receipts_v1"
+            referencedColumns: ["id", "owner_id"]
+          },
+        ]
+      }
       activity_assignments: {
         Row: {
           activity_id: string | null
@@ -6591,6 +6731,27 @@ export type Database = {
         Args: { exclude_ids?: string[] }
         Returns: string[]
       }
+      activity_ai_reply_v1: {
+        Args: {
+          p_code: string
+          p_http: number
+          p_receipt: Database["public"]["Tables"]["activity_ai_receipts_v1"]["Row"]
+          p_request: string
+          p_status: string
+        }
+        Returns: Json
+      }
+      activity_ai_source_v1: {
+        Args: {
+          p_attempt: number
+          p_kind: string
+          p_order: number
+          p_owner: string
+          p_response: string
+          p_source: string
+        }
+        Returns: Json
+      }
       activity_revocation_capability: { Args: never; Returns: Json }
       admin_dismiss_stripe_payment: {
         Args: { _payment_id: string }
@@ -6837,6 +6998,18 @@ export type Database = {
           correct: number
           total: number
         }[]
+      }
+      begin_activity_ai_request_v1: {
+        Args: {
+          p_attempt_no: number
+          p_item_order: number
+          p_owner_id: string
+          p_request_id: string
+          p_source_id: string
+          p_source_kind: string
+          p_student_response: string
+        }
+        Returns: Json
       }
       booking_buffer_minutes: { Args: never; Returns: number }
       booking_buffered_range: {
@@ -7267,6 +7440,10 @@ export type Database = {
         Returns: Json
       }
       create_timed_section_v1: { Args: { p_command: Json }; Returns: Json }
+      dispatch_activity_ai_request_v1: {
+        Args: { p_claim_id: string; p_owner_id: string; p_request_id: string }
+        Returns: Json
+      }
       enqueue_single_session_outbox: {
         Args: {
           _action: string
@@ -7485,6 +7662,16 @@ export type Database = {
           _provider_event_id: string
           _stripe_checkout_session_id: string
           _stripe_payment_intent_id: string
+        }
+        Returns: Json
+      }
+      finish_activity_ai_request_v1: {
+        Args: {
+          p_claim_id: string
+          p_failure_category?: string
+          p_owner_id: string
+          p_request_id: string
+          p_result?: Json
         }
         Returns: Json
       }
