@@ -31,7 +31,14 @@ export default function TimedPracticeTestRun({ ownerId, runId }: { ownerId: stri
     catch (e) { if (!scope.active) return null; setError(e instanceof Error ? e.message : 'The account save could not be confirmed. Retry before continuing.'); return null; }
     finally { scope.inFlight = false; if (scope.active) { syncRecovery(); setBusy(false); setLoaded(true); } }
   }, [syncRecovery, scope]);
-  React.useEffect(() => { setSnapshot(null); setLoaded(false); syncRecovery(); void perform(() => store.load()); }, [store, perform, syncRecovery]);
+  React.useEffect(() => {
+    setSnapshot(null); setError(null); setLoaded(false); syncRecovery();
+    // Preparation retains an exact create command before any account write.
+    // Retry that command to obtain authority; an initial read would report a
+    // nonexistent parent for a perfectly valid, not-yet-submitted sitting.
+    if (client.readPending()?.operation === 'create') { setLoaded(true); return; }
+    void perform(() => store.load());
+  }, [client, store, perform, syncRecovery]);
   React.useEffect(() => { const timer = window.setInterval(() => setTick(performance.now()), 500); return () => clearInterval(timer); }, []);
   const clock = snapshot ? timedPracticeTestClock({ ...snapshot, pending }, getPracticeTestDeviceId(), tick) : null;
   const phase = snapshot?.parent.timed_phase;
@@ -72,7 +79,7 @@ export default function TimedPracticeTestRun({ ownerId, runId }: { ownerId: stri
     {snapshot && <p className="testing-lede">{snapshot.run.legs.length} scored sections · {practiceTestPaceLabel(snapshot.run.pace)}</p>}
     {error && <p className="testing-note" role="alert">{error}</p>}
     {pending && <div className="testing-panel">
-      <p className="testing-note">A saved change is waiting for account confirmation. Retry it before continuing.</p>
+      <p className="testing-note">{pending.operation === 'create' && !snapshot ? 'Your practice test is ready to save. Confirm it to create or recover this exact sitting in your account.' : 'A saved change is waiting for account confirmation. Retry it before continuing.'}</p>
       <Button disabled={busy} onClick={() => { void perform(() => store.retry()); }}>{pending.operation === 'create' ? 'Confirm and start sitting' : 'Retry saved change'}</Button>
       {rejection && snapshot && <><p className="testing-note">The account rejected this change. Preserve its answers on this device, then reload the account state before continuing.</p><Button disabled={busy} variant="outline" onClick={() => { void perform(() => store.archiveRejectedCommand()); }}>Preserve rejected change and reload</Button></>}
     </div>}

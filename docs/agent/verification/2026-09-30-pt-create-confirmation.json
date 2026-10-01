@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-30",
+  "status": "local verified, publication pending",
+  "files": [
+    "src/pages/TimedPracticeTestRun.tsx",
+    "src/pages/TimedPracticeTestRun.test.tsx"
+  ],
+  "problem": "An unsent retained create caused a missing-parent read and misleading unavailable alert",
+  "checks": [
+    "Fresh unsent creation shows ready-to-save with no alert",
+    "Confirmation creates exact246a92e0-d8aa-4362-bd7e-bd1f218a7d90 as ownedPT104 ready",
+    "No questions or clock begin before account acknowledgment",
+    "Missing existing parent still reports unavailable",
+    "Ambiguous reply retries retained command rather than preparing replacement"
+  ],
+  "focusedTests": 72,
+  "typecheckPassed": true,
+  "buildPassed": true,
+  "independentReview": "no blockers",
+  "cssWidths": [
+    390,
+    820,
+    1060,
+    1280,
+    1600
+  ],
+  "horizontalOverflow": false,
+  "viewportReset": true,
+  "normalMeasuredViewport": 1280,
+  "actualSidePaneCheck": "Previously verified parent surface; new confirmation screenshot at normal1280 is not claimed as804px",
+  "proofDirectory": "C:/Users/Joshu/dev/ai-os/research/2026-09-30-lsatu-foundation-evidence"
+}

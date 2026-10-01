@@ -86,5 +86,18 @@
       "No revoked in-flight UI write",
       "Assigned/custom protected coverage remains separate"
     ]
+  },
+  "frontendCommit": "6b69bc75f88e8d8c0987c702f0c7b9a60db50e46",
+  "githubMainVerified": true,
+  "lovableExactImportVerified": true,
+  "freeDeployment": {
+    "id": "5784d95b-ac01-4bed-83f6-2d88d78b18eb",
+    "toolStatus": "pending"
+  },
+  "productionChecks": {
+    "differentAccountProtectedLrDenied": true,
+    "studentOwnerCompletedLrReport": "1 / 24, one answered",
+    "expandedRcReport": "1 / 27, 26 unanswered,1:33 account clock",
+    "expandedRosterLaunchPending": true
   }
 }
