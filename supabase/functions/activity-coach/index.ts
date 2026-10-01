@@ -1,41 +1,19 @@
-import { parseCoachResponse } from "./response.ts";
+import { gradeCoachRequest } from "./grading.ts";
+import { readBoundedBody, readCoachRequest } from "./request.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.75.0';
 const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
 
 
-// Activity Centre Coach: judges a student's free-text response to an Activity
-// item against the credited answer(s) and returns a structured verdict plus a
-// short, supportive coaching message. Modeled on analyze-stem-response (Lovable
-// AI gateway, gemini-3.8-flash on GEMINI_API_KEY, auth-guarded, 429/402 handling) but
-// returns { verdict, feedback } rather than prose alone.
+// Source-bound grading. Admission receipts prevent ambiguous retries from making another paid call.
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-/** One numbered thing the caller wants judged for coverage, not just credit. */
-interface Idea {
-  n: number;
-  text: string;
-}
-
-/**
- * Callers that ask for coverage send a numbered checklist. Anything malformed
- * drops the whole request for coverage rather than half-asking for it, since a
- * partial checklist would read to the student as "these are all the ideas".
- */
-function readIdeas(raw: unknown): Idea[] | null {
-  if (!Array.isArray(raw) || !raw.length) return null;
-  const ideas: Idea[] = [];
-  for (const item of raw) {
-    const n = Number(item?.n);
-    const text = item?.text;
-    if (!Number.isInteger(n) || typeof text !== "string" || !text.trim()) return null;
-    ideas.push({ n, text: text.trim() });
-  }
-  return ideas;
+function reply(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
 
 serve(async (req) => {
@@ -52,143 +30,26 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const { statement, studentResponse, creditedAnswers, explanation, attemptNo, coach, category, ideas } =
-      await req.json();
-
-    if (!statement || !studentResponse || !Array.isArray(creditedAnswers) || creditedAnswers.length === 0) {
-      return new Response(JSON.stringify({ error: "Missing required fields" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
+    if (req.method !== "POST") return reply({ error: "Method not allowed" }, 405);
+    const raw = await readBoundedBody(req);
+    const request = raw === null ? null : readCoachRequest(raw);
+    if (!request) return reply({ error: "Update this page before requesting a judgment.", code: "update_required" }, 400);
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
-
-    const attempt = Number(attemptNo) || 1;
-
-    // Each Activity trains a different skill, so each carries its own judging
-    // brief in `instructions.coach`. Activities authored before that field
-    // existed (Negation Station) send nothing and get the original negation
-    // rubric below, unchanged.
-    const NEGATION_DEFAULT = {
-      drill: "a statement-negation drill (the Negation Test used on Necessary Assumption questions)",
-      rubric: [
-        "A correct negation is the WEAKEST statement that contradicts the original, not its polar opposite.",
-        "A polar opposite (e.g. 'No rivers flow north' to negate 'Every river flows north') is the signature trap this drill teaches.",
-      ],
-      partial_rule: "Judge a polar opposite as 'partial', not 'correct'.",
+    if (!serviceKey || !LOVABLE_API_KEY) return reply({ error: "Coach unavailable", code: "disabled" }, 503);
+    const service = createClient(Deno.env.get("SUPABASE_URL")!, serviceKey);
+    const invoke = async (name: string, args: Record<string, unknown>) => {
+      const { data, error } = await service.rpc(name, args);
+      if (error || !data || typeof data !== "object") throw new Error("Receipt unavailable");
+      return data;
     };
+    const result = await gradeCoachRequest(request, _au.user.id, invoke, body => fetch(`${LSATU_GEMINI_PROXY_URL}/chat/completions`, {
+      method: "POST", signal: AbortSignal.timeout(10000),
+      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json", "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "" },
+      body: JSON.stringify(body),
+    }));
+    return reply(result.body, result.status);
 
-    const brief =
-      coach && typeof coach.drill === "string" && Array.isArray(coach.rubric) && coach.rubric.length
-        ? coach
-        : NEGATION_DEFAULT;
-
-    // Summary drills need to know WHICH ideas survived, not just whether enough
-    // did. That cannot be computed from the text (the checklist is written in
-    // analytic language a summary never uses), so it is asked for here and
-    // passed back. Drills that send no checklist are unaffected.
-    const checklist = readIdeas(ideas);
-
-    const systemPrompt = [
-      `You are a supportive LSAT coach running ${brief.drill}.`,
-      ...brief.rubric,
-      brief.partial_rule ? `Partial rule: ${brief.partial_rule}` : "",
-      "Judge the student's response against the credited answer(s) by MEANING, not wording. Equivalent phrasings are 'correct'.",
-      "Never mark a response 'incorrect' for style, length, or phrasing alone. Judge the content only.",
-      checklist
-        ? "Return ONLY a strict JSON object: {\"verdict\":\"correct\"|\"partial\"|\"incorrect\",\"feedback\":\"...\",\"covered\":[numbers]}."
-        : "Return ONLY a strict JSON object: {\"verdict\":\"correct\"|\"partial\"|\"incorrect\",\"feedback\":\"...\"}.",
-      checklist
-        ? "covered lists the numbers of the checklist ideas the student's response actually carries, by meaning. Include a number only if the idea is genuinely present; an idea merely gestured at is not carried. Use [] when none are. Never invent a number that is not on the checklist."
-        : "",
-      "feedback is 2-3 supportive sentences. Name what they got right, then guide the fix.",
-      "Write plainly, in the second person. Do not use em-dashes.",
-      attempt <= 1
-        ? "This is their first attempt: do NOT reveal the credited answer. Nudge them toward it instead."
-        : "This is a later attempt: you may be more explicit, but still encourage their own phrasing.",
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-    const userPrompt = [
-      `The item the student is working on:\n"${statement}"`,
-      // The item's own Question Type ("Requirement word: unless", "Compound
-      // condition: the only"). It names the form, not a difficulty band, and
-      // tells the model which discrimination this item exists to teach.
-      category ? `\nItem type: ${category}` : "",
-      `\nStudent's response:\n"${studentResponse}"`,
-      `\nCredited answer(s):\n${creditedAnswers.map((a: string) => `- ${a}`).join("\n")}`,
-      explanation ? `\nAuthor's note on this item (traps, near misses, the teaching point):\n${explanation}` : "",
-      checklist
-        ? `\nThe ideas that must survive, numbered:\n${checklist.map((i) => `${i.n}. ${i.text}`).join("\n")}`
-        : "",
-      `\nAttempt number: ${attempt}`,
-      "\nReturn the JSON verdict object now.",
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    const response = await fetch(`${LSATU_GEMINI_PROXY_URL}/chat/completions`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-        "X-Internal-Key": Deno.env.get("EDGE_INTERNAL_KEY") ?? "",
-      },
-      body: JSON.stringify({
-        model: "gemini-3.8-flash",
-        response_format: { type: "json_object" },
-        // The rubric asks for a verdict and two to three sentences. Uncapped,
-        // the call is roughly four seconds; capped it is roughly one, and the
-        // cap is well clear of what the format actually needs.
-        max_tokens: 220,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt },
-        ],
-      }),
-    });
-
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limited. Please try again in a moment." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      console.error("activity-coach upstream request failed", { status: response.status });
-      return new Response(JSON.stringify({ error: "AI analysis failed" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    let result: ReturnType<typeof parseCoachResponse>;
-    try {
-      result = parseCoachResponse(await response.json(), checklist);
-    } catch {
-      console.error("activity-coach malformed model response");
-      return new Response(JSON.stringify({ error: "Coach response was malformed" }), {
-        status: 502,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-    const { verdict, feedback, covered } = result;
-
-    // `covered` is omitted rather than sent empty when nobody asked for it or
-    // the model did not answer, so the caller can tell "none survived" from
-    // "not judged".
-    return new Response(JSON.stringify(covered ? { verdict, feedback, covered } : { verdict, feedback }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
   } catch {
     console.error("activity-coach request failed");
     return new Response(JSON.stringify({ error: "Coach unavailable. Please try again." }), {

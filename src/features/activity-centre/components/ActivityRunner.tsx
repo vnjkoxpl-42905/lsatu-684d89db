@@ -1171,6 +1171,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             items={items}
             format={assignment.item_format}
             coach={assignment.instructions?.coach}
+            coachSource={preview && previewActivityId ? { sourceKind: "preview", sourceId: previewActivityId } : !preview ? { sourceKind: "assignment", sourceId: assignment.id } : undefined}
             answerLabel={assignment.instructions?.answer_label}
             answerPlaceholder={assignment.instructions?.answer_placeholder}
             creditedSecondaryLabel={assignment.instructions?.credited_secondary_label}

@@ -6,8 +6,11 @@ import type { ActivityItem } from "../api/types";
 const invoke = vi.fn();
 
 vi.mock("@/integrations/supabase/client", () => ({
-  supabase: { functions: { invoke: (...args: unknown[]) => invoke(...args) } },
+  supabase: { auth: { getUser: async () => ({ data: { user: { id: "actor" } }, error: null }) }, functions: { invoke: (...args: unknown[]) => invoke(...args) } },
 }));
+
+vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "actor" } }) }));
+const source = { sourceKind: "assignment" as const, sourceId: "12345678-1234-4123-8123-123456789012" };
 
 // The Press is the only drill that asks which ideas survived, and the whole
 // point of that number is that it is judged rather than guessed. These pin the
@@ -21,12 +24,9 @@ const item = {
   category: "Tier 1",
 } as unknown as ActivityItem;
 
-const ideas = [
-  { n: 1, text: "first" },
-  { n: 2, text: "second" },
-];
 
-async function judgeWith(data: unknown, withIdeas = true) {
+
+async function judgeWith(data: unknown, _withIdeas = true) {
   invoke.mockResolvedValue({ data, error: null });
   const { result } = renderHook(() => useActivityCoach());
   // judge() flips the hook's `judging` state, so the call is the state update.
@@ -36,7 +36,7 @@ async function judgeWith(data: unknown, withIdeas = true) {
       item,
       studentResponse: "a summary",
       attemptNo: 1,
-      ideas: withIdeas ? ideas : undefined,
+      source,
     });
   });
   return out;
@@ -45,9 +45,10 @@ async function judgeWith(data: unknown, withIdeas = true) {
 describe("sending the checklist", () => {
   beforeEach(() => invoke.mockReset());
 
-  it("passes the ideas through so the Coach can judge coverage", async () => {
+  it("sends only exact source identity and response, leaving authored checklist to the server", async () => {
     await judgeWith({ verdict: "correct", feedback: "Yes.", covered: [1, 2] });
-    expect(invoke.mock.calls[0][1].body.ideas).toEqual(ideas);
+    expect(invoke.mock.calls[0][1].body).toMatchObject({ contractVersion: 1, ...source, itemOrder: 1, studentResponse: "a summary", attemptNo: 1 });
+    expect(Object.keys(invoke.mock.calls[0][1].body).sort()).toEqual(["contractVersion", "requestId", "sourceKind", "sourceId", "itemOrder", "studentResponse", "attemptNo"].sort());
   });
 
   it("sends no checklist for a drill that did not ask for one", async () => {

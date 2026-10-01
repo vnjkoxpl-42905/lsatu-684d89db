@@ -10,8 +10,10 @@ import type { ActivityItem } from "../api/types";
 const invoke = vi.fn();
 
 vi.mock("@/integrations/supabase/client", () => ({
-  supabase: { functions: { invoke: (...args: unknown[]) => invoke(...args) } },
+  supabase: { auth: { getUser: async () => ({ data: { user: { id: "actor" } }, error: null }) }, functions: { invoke: (...args: unknown[]) => invoke(...args) } },
 }));
+
+vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "actor" } }) }));
 
 vi.mock("@/hooks/use-toast", () => ({ toast: vi.fn() }));
 
@@ -38,6 +40,7 @@ function renderItem(props: Partial<React.ComponentProps<typeof ActivityItemView>
   const onResolved = vi.fn();
   render(
     <ActivityItemView
+      coachSource={{ sourceKind: "assignment", sourceId: "12345678-1234-4123-8123-123456789012" }}
       item={item}
       format="free-text"
       isLast={false}

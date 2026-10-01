@@ -1,3 +1,4 @@
+import type { CoachSource } from "../hooks/activityCoachRequest";
 import type { ActivityCoach, ActivityItem, CoachVerdict, ItemFormat, JudgeSource, Verdict } from "../api/types";
 import type { PaperDiagramChoice } from "../worlds/switchyard/diagramChoices";
 import { ActivityItemView } from "./ActivityItemView";
@@ -7,6 +8,7 @@ interface ActivityQuestionStackProps {
   format: ItemFormat;
   /** This Activity's judging brief, threaded through to the Coach. */
   coach?: ActivityCoach;
+  coachSource?: CoachSource;
   /** Authored per Activity: what this drill asks the student to write. */
   answerLabel?: string;
   answerPlaceholder?: string;
@@ -53,6 +55,7 @@ export function ActivityQuestionStack({
   items,
   format,
   coach,
+  coachSource,
   answerLabel,
   answerPlaceholder,
   creditedSecondaryLabel,
@@ -100,6 +103,7 @@ export function ActivityQuestionStack({
             item={activeItem}
             format={format}
             coach={coach}
+            coachSource={coachSource}
             answerLabel={answerLabel}
             answerPlaceholder={answerPlaceholder}
             creditedSecondaryLabel={creditedSecondaryLabel}
