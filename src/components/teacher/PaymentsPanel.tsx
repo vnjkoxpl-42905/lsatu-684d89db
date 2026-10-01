@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { listManagedUsers } from '@/lib/accessTierClient';
@@ -337,7 +338,7 @@ export function PaymentsPanel({ summary = false }: { summary?: boolean }) {
             {filtered.slice(0, shown).map((p) => (
               <li key={p.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-2 text-[13px]">
                 <span className="w-[86px] shrink-0 tabular-nums text-black/50">
-                  {p.paid_at.slice(0, 10)}
+                  {format(new Date(p.paid_at), 'yyyy-MM-dd')}
                 </span>
                 <span className="min-w-0 flex-1 truncate">
                   {who(p)}

@@ -78,7 +78,7 @@ export default function DeskTodaySurface() {
         </div>
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div className="border border-black/12 bg-white/25 px-4 py-3.5">
           <div className="mb-2.5 text-[10px] font-medium uppercase tracking-[0.2em] text-black/40">
             Today&rsquo;s sessions
@@ -116,6 +116,9 @@ export default function DeskTodaySurface() {
             ))}
           </dl>
         </div>
+        <div className="md:col-span-2 xl:col-span-1">
+          <PaymentsPanel summary />
+        </div>
       </section>
 
       {todoQueue.error && <p role="alert" className="text-sm text-red-900">Some sources could not load. The overview may be incomplete.</p>}
@@ -129,7 +132,6 @@ export default function DeskTodaySurface() {
         />
       </section>
 
-      <PaymentsPanel summary />
       <SignupQueue />
 
       <section aria-label="Assign student work" className="border border-black/12 bg-white/25 px-4 py-3.5">
