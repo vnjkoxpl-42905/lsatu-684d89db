@@ -1,66 +1,16 @@
 import * as React from "react";
-import { Check, KeyRound, Loader2, Pencil, RefreshCw, X } from "lucide-react";
+import { Check, KeyRound, Loader2, Pencil, X } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUserSettings } from "@/contexts/UserSettingsContext";
 import { supabase } from "@/integrations/supabase/client";
-import { QuestionPoolService } from "@/lib/questionPoolService";
 import { useClassroomLayout } from "@/components/classroom/shell/ClassroomLayout";
 import PrepSection from "@/components/classroom/account/PrepSection";
+import StudySettingsSection from "@/components/classroom/account/StudySettingsSection";
 
 // The Profile tab: identity (editable name, password) plus study preferences.
 // Everything is styled with classroom tokens — no shadcn primitives, so dark
 // mode inherits the classroom palette instead of the broken global .dark vars.
-
-function Toggle({
-  checked,
-  onChange,
-  disabled,
-  label,
-}: {
-  checked: boolean;
-  onChange: (v: boolean) => void;
-  disabled?: boolean;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-label={label}
-      disabled={disabled}
-      className={`classroom-toggle${checked ? " classroom-toggle-on" : ""}`}
-      onClick={() => onChange(!checked)}
-    >
-      <i aria-hidden="true" />
-    </button>
-  );
-}
-
-function PrefRow({
-  label,
-  description,
-  children,
-  indent,
-}: {
-  label: string;
-  description?: string;
-  children: React.ReactNode;
-  indent?: boolean;
-}) {
-  return (
-    <div
-      className={`classroom-account-pref-row${indent ? " classroom-account-pref-indent" : ""}`}
-    >
-      <div className="classroom-account-pref-copy">
-        <span>{label}</span>
-        {description ? <small>{description}</small> : null}
-      </div>
-      {children}
-    </div>
-  );
-}
+// Study settings (timing, question pool) live in StudySettingsSection.
 
 interface ProfileStats {
   overall_answered?: number;
@@ -69,7 +19,6 @@ interface ProfileStats {
 
 export default function ProfileSection() {
   const { user } = useAuth();
-  const { settings, updateSettings } = useUserSettings();
   const { displayName, setDisplayName } = useClassroomLayout();
 
   const [stats, setStats] = React.useState<ProfileStats | null>(null);
@@ -84,10 +33,6 @@ export default function ProfileSection() {
   const [pw1, setPw1] = React.useState("");
   const [pw2, setPw2] = React.useState("");
   const [savingPw, setSavingPw] = React.useState(false);
-
-  // ── Reset pool confirm ────────────────────────────────────────────────────
-  const [confirmReset, setConfirmReset] = React.useState(false);
-  const [resetting, setResetting] = React.useState(false);
 
   React.useEffect(() => {
     if (!user) return;
@@ -183,20 +128,6 @@ export default function ProfileSection() {
       );
     } finally {
       setSavingPw(false);
-    }
-  };
-
-  const resetPool = async () => {
-    if (!user) return;
-    setResetting(true);
-    try {
-      await QuestionPoolService.resetPool(user.id);
-      toast.success("Question pool reset");
-    } catch {
-      toast.error("Failed to reset question pool");
-    } finally {
-      setResetting(false);
-      setConfirmReset(false);
     }
   };
 
@@ -337,199 +268,9 @@ export default function ProfileSection() {
         {/* ── Your prep (the orientation card's answers, editable) ──────── */}
         <PrepSection />
 
-        {/* ── Practice ──────────────────────────────────────────────────── */}
-        <section className="classroom-account-card">
-          <header className="classroom-account-card-head">
-            <h2>Practice</h2>
-          </header>
-          <PrefRow
-            label="Default timing mode"
-            description="Applied when starting Full Section mode with Standard timing."
-          >
-            <select
-              className="classroom-account-select"
-              value={settings.defaultTimingMode}
-              onChange={(e) =>
-                updateSettings({
-                  defaultTimingMode: e.target.value as
-                    | "35"
-                    | "52.5"
-                    | "70"
-                    | "unlimited",
-                })
-              }
-              aria-label="Default timing mode"
-            >
-              <option value="35">35:00 — Standard</option>
-              <option value="52.5">52:30 — 1.5× time</option>
-              <option value="70">70:00 — 2× time</option>
-              <option value="unlimited">Stopwatch — no timer</option>
-            </select>
-          </PrefRow>
-        </section>
-
-        {/* ── Question pool ─────────────────────────────────────────────── */}
-        <section className="classroom-account-card">
-          <header className="classroom-account-card-head">
-            <h2>Question pool</h2>
-          </header>
-          <PrefRow
-            label="Allow repeats"
-            description="Practice the same questions across sessions."
-          >
-            <Toggle
-              checked={settings.allowRepeats}
-              onChange={(v) => updateSettings({ allowRepeats: v })}
-              label="Allow repeats"
-            />
-          </PrefRow>
-          <PrefRow
-            label="Prefer unseen"
-            description="Prioritize questions you haven't met yet."
-            indent={!settings.allowRepeats}
-          >
-            <Toggle
-              checked={settings.preferUnseen}
-              onChange={(v) => updateSettings({ preferUnseen: v })}
-              disabled={!settings.allowRepeats}
-              label="Prefer unseen"
-            />
-          </PrefRow>
-          <PrefRow
-            label="Recycle after days"
-            description="Questions re-enter the pool after this many days."
-          >
-            <input
-              type="number"
-              min={1}
-              max={365}
-              className="classroom-account-number"
-              value={settings.recycleAfterDays}
-              onChange={(e) =>
-                updateSettings({
-                  recycleAfterDays: parseInt(e.target.value) || 30,
-                })
-              }
-              aria-label="Recycle after days"
-            />
-          </PrefRow>
-          <div className="classroom-account-card-foot">
-            <button
-              type="button"
-              className="classroom-account-ghost-button"
-              onClick={() => setConfirmReset(true)}
-            >
-              <RefreshCw size={12} aria-hidden="true" />
-              Reset question pool
-            </button>
-          </div>
-        </section>
-
-        {/* ── AI features ───────────────────────────────────────────────── */}
-        <section className="classroom-account-card">
-          <header className="classroom-account-card-head">
-            <h2>AI features</h2>
-          </header>
-          <PrefRow
-            label="AI tutor"
-            description="Real-time reasoning help during practice."
-          >
-            <Toggle
-              checked={settings.tutorEnabled}
-              onChange={(v) => updateSettings({ tutorEnabled: v })}
-              label="AI tutor"
-            />
-          </PrefRow>
-          <PrefRow
-            label="Voice coach"
-            description="Speak your reasoning aloud for targeted feedback."
-          >
-            <Toggle
-              checked={settings.voiceCoachEnabled}
-              onChange={(v) => updateSettings({ voiceCoachEnabled: v })}
-              label="Voice coach"
-            />
-          </PrefRow>
-          {settings.voiceCoachEnabled ? (
-            <div className="classroom-account-subgroup">
-              <PrefRow label="Show answer contrast" indent>
-                <Toggle
-                  checked={settings.showContrast}
-                  onChange={(v) => updateSettings({ showContrast: v })}
-                  label="Show answer contrast"
-                />
-              </PrefRow>
-              <PrefRow label="Teach-back on correct" indent>
-                <Toggle
-                  checked={settings.teachBackOnCorrect}
-                  onChange={(v) => updateSettings({ teachBackOnCorrect: v })}
-                  label="Teach-back on correct"
-                />
-              </PrefRow>
-              <PrefRow label="Section debrief" indent>
-                <Toggle
-                  checked={settings.sectionDebriefEnabled}
-                  onChange={(v) => updateSettings({ sectionDebriefEnabled: v })}
-                  label="Section debrief"
-                />
-              </PrefRow>
-              <PrefRow label="Store full transcripts" indent>
-                <Toggle
-                  checked={settings.storeFullTranscript}
-                  onChange={(v) => updateSettings({ storeFullTranscript: v })}
-                  label="Store full transcripts"
-                />
-              </PrefRow>
-            </div>
-          ) : null}
-        </section>
+        {/* ── Section timing and question pool ──────────────────────────── */}
+        <StudySettingsSection />
       </div>
-
-      {/* Reset-pool confirm, rendered in-tree so it stays on classroom tokens */}
-      {confirmReset ? (
-        <div
-          className="classroom-account-dialog-veil"
-          role="presentation"
-          onClick={() => {
-            if (!resetting) setConfirmReset(false);
-          }}
-        >
-          <div
-            className="classroom-account-dialog"
-            role="alertdialog"
-            aria-modal="true"
-            aria-labelledby="reset-pool-title"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 id="reset-pool-title">Reset your question pool?</h3>
-            <p>
-              Every question becomes available again, including ones you've
-              already practiced. This can't be undone.
-            </p>
-            <div className="classroom-account-dialog-actions">
-              <button
-                type="button"
-                className="classroom-account-ghost-button"
-                onClick={() => setConfirmReset(false)}
-                disabled={resetting}
-              >
-                Keep my pool
-              </button>
-              <button
-                type="button"
-                className="classroom-account-primary-button"
-                onClick={() => void resetPool()}
-                disabled={resetting}
-              >
-                {resetting ? (
-                  <Loader2 size={13} className="classroom-spin" aria-hidden="true" />
-                ) : null}
-                Reset pool
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 }

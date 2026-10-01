@@ -1,6 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { localDayISO } from '@/lib/localDate';
+import type { PlanRelation } from '@/lib/weeklyPlanWeek';
+import { loadPlanItems, loadPrescribedPlan, type PlanDb } from '@/lib/weeklyPlanRead';
 
 export interface WeeklyPlan {
   id: string;
@@ -34,33 +37,35 @@ export interface WeeklyPlanItem {
 }
 
 /**
- * Returns the current published weekly plan for the signed-in student,
- * plus its items grouped by date. RLS restricts students to published.
+ * Returns the signed-in student's prescribed week: the published plan whose
+ * dates contain today, else the next upcoming one, else the latest past one.
+ * The student's own to-do plan (`__personal__`) is never picked, and the read
+ * is scoped to the student's own rows even for an account RLS lets see more.
+ * See loadPrescribedPlan for why far-future plans cannot crowd this week out.
  */
 export function useCurrentWeeklyPlan() {
   const { user } = useAuth();
-  return useQuery<{ plan: WeeklyPlan | null; items: WeeklyPlanItem[] }>({
-    queryKey: ['current-weekly-plan', user?.id],
-    enabled: !!user,
-    queryFn: async () => {
-      const { data: plans, error: pErr } = await supabase
-        .from('weekly_plans')
-        .select('*')
-        .eq('status', 'published')
-        .order('week_start', { ascending: false })
-        .limit(1);
-      if (pErr) throw pErr;
-      const plan = (plans?.[0] ?? null) as WeeklyPlan | null;
-      if (!plan) return { plan: null, items: [] };
-      const { data: items, error: iErr } = await supabase
-        .from('weekly_plan_items')
-        .select('*')
-        .eq('weekly_plan_id', plan.id)
-        .order('day_date', { ascending: true })
-        .order('sort_order', { ascending: true });
-      if (iErr) throw iErr;
-      return { plan, items: (items ?? []) as WeeklyPlanItem[] };
-    },
+  const userId = user?.id;
+  return useQuery<{ plan: WeeklyPlan | null; items: WeeklyPlanItem[]; relation: PlanRelation | null }>({
+    queryKey: ['current-weekly-plan', userId],
+    enabled: !!userId,
+    // The query captures the user id it was started for; a late answer for a
+    // previous account lands under that account's key, never this one.
+    queryFn: () => loadPrescribedPlan(supabase as unknown as PlanDb, userId as string, localDayISO()),
+  });
+}
+
+/**
+ * Admin: the items of one plan with their stored status, so the teacher sees
+ * the same week the student scans. Keyed and scoped by the selected student;
+ * a plan that is not that student's is never read.
+ */
+export function useWeeklyPlanItems(plan: Pick<WeeklyPlan, 'id' | 'student_id'> | null, studentId: string | null) {
+  const matches = !!plan && !!studentId && plan.student_id === studentId;
+  return useQuery<WeeklyPlanItem[]>({
+    queryKey: ['weekly-plan-items', studentId, plan?.id ?? null],
+    enabled: matches,
+    queryFn: () => loadPlanItems(supabase as unknown as PlanDb, plan as WeeklyPlan, studentId as string),
   });
 }
 

@@ -37,6 +37,8 @@ vi.mock('@/integrations/supabase/client', () => ({
     }),
   },
 }));
+// The prescribed week reads its own query and has its own tests.
+vi.mock('@/components/classroom/PrescribedWeek', () => ({ default: () => null }));
 vi.mock('@/lib/guidedDrills', () => ({ listAssignmentsForStudent: async () => evidenceState.broken ? [{ id: 'guided-1', assigned_at: '2026-09-30T00:00:00Z', status: 'assigned', completed_at: null, guided_drill: { title: 'Saved reasoning drill', question_count: 5 } }] : [] }));
 vi.mock('@/features/activity-centre/api/activitiesClient', () => ({ listStudentAssignments: async () => [] }));
 vi.mock('@/lib/studentWorkEvidence', async importOriginal => ({

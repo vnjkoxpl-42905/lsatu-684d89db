@@ -1,7 +1,20 @@
 import { Link, useLocation } from "react-router-dom";
 import { routeWithReturnTo, useAssignedTodoFeed } from "@/hooks/useAssignedTodoFeed";
+import PrescribedWeek from "@/components/classroom/PrescribedWeek";
 
 export default function MyWorkPage({ completed }: { completed: boolean }) {
+  // The prescribed week sits above the to-do list so a student can scan the
+  // whole week Joshua set before working down the list. It reads its own
+  // query, so a failed plan read never hides assignments and vice versa.
+  return (
+    <>
+      {completed ? null : <PrescribedWeek />}
+      <MyWorkList completed={completed} />
+    </>
+  );
+}
+
+function MyWorkList({ completed }: { completed: boolean }) {
   const { pathname } = useLocation();
   const { rows, loading, failed, retry, evidenceWarnings = [] } = useAssignedTodoFeed();
   const visible = rows.filter((row) => (row.status === "completed") === completed);

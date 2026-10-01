@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Loader2, CalendarDays, Plus, Send, Save, FolderOpen, X, Sparkles, Trash2, ClipboardList } from 'lucide-react';
-import { addDays, endOfDay, format, parseISO, startOfDay, startOfWeek } from 'date-fns';
+import { Loader2, CalendarDays, Plus, Send, Save, FolderOpen, X, Sparkles, Trash2, ClipboardList, ArrowUp, ArrowDown, ChevronDown, ChevronRight } from 'lucide-react';
+import { addDays, format, parseISO, startOfDay, startOfWeek } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,13 +10,25 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useStudentWeeklyPlans } from '@/hooks/useWeeklyPlan';
+import { useStudentWeeklyPlans, useWeeklyPlanItems, type WeeklyPlan } from '@/hooks/useWeeklyPlan';
+import { PrescribedWeekView } from '@/components/classroom/PrescribedWeek';
+import { localDayISO } from '@/lib/localDate';
+import { buildPrescribedWeek, isPersonalPlan } from '@/lib/weeklyPlanWeek';
+import { moveWithinDay, replaceNeedsConfirm } from '@/lib/weeklyPlanBuilder';
 import HubStudentList from '@/components/hub/HubStudentList';
-import { createClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import type { TodoAction } from '@/lib/todoActions';
-import { assignWorkBundle } from '@/lib/assignWork';
 import { loadCurriculumWeek } from '@/lib/curriculumSchedule';
+import {
+  newPublishJob,
+  matchesPublishedBuilder,
+  publishedTitle,
+  stoppedPublishNote,
+  unlinkedCurriculum,
+  unlinkedCurriculumMessage,
+  type PublishJob,
+} from '@/lib/weeklyPlanPublish';
+import { supabasePublishDeps, useWeeklyPlanPublisher } from '@/hooks/useWeeklyPlanPublisher';
 import type { StudentLevel } from '@/lib/studentLevel';
 import {
   parseScheduleTemplateText,
@@ -33,7 +45,7 @@ interface ItemDraft {
   action?: TodoAction;
   /**
    * Set when this item came from the curriculum and the drill is not yet
-   * assigned. Publish turns it into a real assignment and then an `action`.
+   * assigned. Publication waits until an existing assignment is linked.
    */
   curriculumDrillId?: string;
   /** Band to assign that drill at. Undefined uses the student's profile level. */
@@ -67,12 +79,70 @@ export default function TeacherWeeklyPlans() {
   const [weekStart, setWeekStart] = useState(format(defaultStart, 'yyyy-MM-dd'));
   const [title, setTitle] = useState('Weekly plan');
   const [items, setItems] = useState<ItemDraft[]>([]);
-  const [creating, setCreating] = useState(false);
   const [templateTitle, setTemplateTitle] = useState('');
   const [templateDescription, setTemplateDescription] = useState('');
   const [pastedSchedule, setPastedSchedule] = useState('');
   const [savingTemplate, setSavingTemplate] = useState(false);
   const [deletingTemplateId, setDeletingTemplateId] = useState<string | null>(null);
+  const [openPlanId, setOpenPlanId] = useState<string | null>(null);
+
+  // Publishing ─────────────────────────────────────────────────────────
+  // Every write is staged and acknowledged before the plan is marked
+  // published (see weeklyPlanPublish). The student is notified only after
+  // that, and only the builder the job came from is ever cleared.
+  const publishDeps = useMemo(() => supabasePublishDeps(), []);
+  const onPublished = useCallback(
+    (job: PublishJob, { sameView, sameActor }: { sameView: boolean; sameActor: boolean }) => {
+      qc.invalidateQueries({ queryKey: ['weekly-plans-admin', job.studentId] });
+      qc.invalidateQueries({ queryKey: ['weekly-plan-items', job.studentId] });
+      qc.invalidateQueries({ queryKey: ['current-weekly-plan'] });
+      qc.invalidateQueries({ queryKey: ['classroom-items'] });
+      qc.invalidateQueries({ queryKey: ['classroom-items-admin', job.studentId] });
+      if (sameView && matchesPublishedBuilder({ title, weekStart, items }, job)) setItems([]);
+
+      const planTitle = publishedTitle(job);
+      // The account changed while the last write was in flight. That write
+      // landed under the old account; sending a notification now would go out
+      // under the new session with the old account's name on it.
+      if (!sameActor) {
+        toast.warning(
+          `"${planTitle}" was published by the account that started it. The student was not notified because the signed-in account changed during publication.`,
+        );
+        return;
+      }
+      // One summary notification per published plan (not one per item;
+      // flooding the bell with seven entries on a weekly plan is bad UX).
+      void notifyStudentOfClassroomItem({
+        adminUserId: job.teacherId,
+        studentId: job.studentId,
+        title: `Weekly plan: ${planTitle}`,
+        description: `${job.drafts.length} item${job.drafts.length === 1 ? '' : 's'} this week. Open My Work to see the week.`,
+        route: '/my-work/to-do',
+        assignmentType: 'weekly_plan',
+      }).then((notify) => {
+        const summary = `Published "${planTitle}". ${summarizeNotifyResult(notify)}`;
+        if (notify.inbox_ok && notify.bell_ok && notify.email_ok) {
+          toast.success(summary);
+        } else {
+          toast.warning(summary, {
+            description: notify.email_error ?? notify.inbox_error ?? notify.bell_error,
+          });
+        }
+      }).catch(() => {
+        toast.warning(`Published "${planTitle}", but the student was not notified.`);
+      });
+    },
+    [qc, title, weekStart, items],
+  );
+  const publisher = useWeeklyPlanPublisher({
+    currentTeacherId: user?.id ?? null,
+    currentStudentId: studentId,
+    deps: publishDeps,
+    onPublished,
+  });
+  const stopped = publisher.stoppedFor(studentId);
+  const publishing = publisher.busyFor(studentId);
+  const unlinked = unlinkedCurriculum(items);
 
   // Templates ─────────────────────────────────────────────────────────
   const { data: templates = [], refetch: refetchTemplates } = useQuery<TemplateRow[]>({
@@ -136,7 +206,9 @@ export default function TeacherWeeklyPlans() {
   const addItem = (day: Date) => {
     setItems((prev) => [
       ...prev,
-      { day: format(day, 'yyyy-MM-dd'), title: '', estimatedMinutes: 30 },
+      // No default estimate: a number here is shown to the student as the
+      // time this task takes, so it has to be one Joshua actually chose.
+      { day: format(day, 'yyyy-MM-dd'), title: '' },
     ]);
   };
 
@@ -146,6 +218,20 @@ export default function TeacherWeeklyPlans() {
 
   const removeItem = (idx: number) =>
     setItems((prev) => prev.filter((_, i) => i !== idx));
+
+  const moveItem = (idx: number, direction: -1 | 1) =>
+    setItems((prev) => moveWithinDay(prev, idx, direction));
+
+  /**
+   * Loading a stored or pasted schedule replaces the builder. When Joshua has
+   * already laid out tasks, that replacement must be his decision, not a
+   * side effect of a click in the library.
+   */
+  const confirmReplace = (incoming: number) =>
+    !replaceNeedsConfirm(items.length) ||
+    window.confirm(
+      `Replace the ${items.length} task${items.length === 1 ? '' : 's'} in the builder with ${incoming} from this schedule?`,
+    );
 
   /**
    * Populate the builder from where the student actually is in their
@@ -196,202 +282,30 @@ export default function TeacherWeeklyPlans() {
       toast.error('Every item needs a title');
       return;
     }
-    setCreating(true);
-    try {
-      const start = parseISO(weekStart);
-      const end = addDays(start, 6);
+    if (publishing) return;
+    if (stopped) {
+      toast.error('Finish or set aside the stopped publish for this student first.');
+      return;
+    }
+    // Publishing never assigns curriculum drills itself. Refuse before any
+    // write until each suggestion is linked to a saved assignment.
+    if (unlinked.length > 0) {
+      toast.error(unlinkedCurriculumMessage(unlinked.length));
+      return;
+    }
+    // The job snapshots this builder now. Later edits, or switching students,
+    // cannot change what is being published.
+    void runJob(
+      newPublishJob({ teacherId: user.id, studentId, title, weekStart, drafts: items }),
+    );
+  };
 
-      // 1) Create the weekly_plans row.
-      const { data: plan, error: pErr } = await (supabase as unknown as {
-        from: (t: string) => {
-          insert: (v: unknown) => {
-            select: () => {
-              single: () => Promise<{ data: { id: string } | null; error: { message: string } | null }>;
-            };
-          };
-        };
-      })
-        .from('weekly_plans')
-        .insert({
-          student_id: studentId,
-          created_by: user.id,
-          title: title.trim() || 'Weekly plan',
-          week_start: format(start, 'yyyy-MM-dd'),
-          week_end: format(end, 'yyyy-MM-dd'),
-          status: 'published',
-          published_at: new Date().toISOString(),
-        })
-        .select()
-        .single();
-      if (pErr || !plan) throw pErr ?? new Error('Failed to create plan');
-      const planId = plan.id;
-
-      // 1b) Curriculum-sourced items name a drill the student does not have
-      //     yet. Assign those now so each becomes a real guided_drill_assignment
-      //     -- which is what carries the level, and what the task link needs to
-      //     point at. notify:false because this plan sends its own single
-      //     summary below; seven bell entries for one week is the exact UX
-      //     step 4 already avoids.
-      const toAssign = items
-        .map((it, idx) => ({ it, idx }))
-        .filter(({ it }) => it.curriculumDrillId && !it.action);
-
-      const assignedActions = new Map<number, TodoAction>();
-      if (toAssign.length > 0) {
-        // Grouped by band so each group carries its own level override.
-        const byLevel = new Map<string, typeof toAssign>();
-        for (const row of toAssign) {
-          const key = row.it.curriculumLevel ?? '__profile__';
-          byLevel.set(key, [...(byLevel.get(key) ?? []), row]);
-        }
-
-        for (const [key, group] of byLevel) {
-          const result = await assignWorkBundle({
-            teacherId: user.id,
-            studentIds: [studentId],
-            items: group.map(({ it }) => ({
-              kind: 'guided_drill' as const,
-              drillId: it.curriculumDrillId as string,
-            })),
-            levelOverrides:
-              key === '__profile__'
-                ? undefined
-                : { [studentId]: key as StudentLevel },
-            notify: false,
-          });
-
-          if (result.ok.length === 0) {
-            throw new Error(
-              result.failed[0]?.error ?? 'Could not assign the curriculum drills for this plan',
-            );
-          }
-          const assignmentIds = result.ok[0].assignmentIds ?? [];
-          group.forEach(({ idx }, i) => {
-            const assignmentId = assignmentIds[i];
-            if (!assignmentId) return;
-            assignedActions.set(idx, {
-              kind: 'drill',
-              ref_id: assignmentId,
-              route: `/guided/${assignmentId}`,
-            });
-          });
-        }
-      }
-
-      // 2) Insert weekly_plan_items first so each row has an id we can
-      //    reference from a classroom_items row.
-      const itemRows = items.map((it, idx) => {
-        const dayDate = parseISO(it.day);
-        const unlockAt = startOfDay(dayDate).toISOString();
-        const dueAt = it.deadline ? new Date(it.deadline).toISOString() : endOfDay(dayDate).toISOString();
-        return {
-          weekly_plan_id: planId,
-          student_id: studentId,
-          day_date: it.day,
-          title: it.title.trim(),
-          estimated_minutes: it.estimatedMinutes ?? null,
-          sort_order: idx,
-          status: 'assigned',
-          unlock_at: unlockAt,
-          due_at: dueAt,
-          metadata_json: (() => {
-            const action = it.action ?? assignedActions.get(idx);
-            return action ? { action } : {};
-          })(),
-        };
+  const runJob = async (job: PublishJob) => {
+    const outcome = await publisher.run(job);
+    if (outcome && !outcome.ok) {
+      toast.error(`Publishing "${publishedTitle(outcome.job)}" stopped: ${outcome.message}`, {
+        description: stoppedPublishNote(outcome),
       });
-
-      const { data: insertedItems, error: iErr } = await (supabase as unknown as {
-        from: (t: string) => {
-          insert: (v: unknown) => {
-            select: (s: string) => Promise<{ data: { id: string; day_date: string; title: string; unlock_at: string; due_at: string; estimated_minutes: number | null }[] | null; error: { message: string } | null }>;
-          };
-        };
-      })
-        .from('weekly_plan_items')
-        .insert(itemRows)
-        .select('id,day_date,title,unlock_at,due_at,estimated_minutes');
-      if (iErr) throw iErr;
-      if (!insertedItems) throw new Error('Failed to create plan items');
-
-      // 3) For each weekly_plan_item, create a real classroom_items row
-      //    visible to the student. Back-link via classroom_item_id.
-      const failed: string[] = [];
-      for (const wpi of insertedItems) {
-        try {
-          const ci = await createClassroomItem({
-            studentId,
-            createdBy: user.id,
-            type: 'weekly_plan_task',
-            title: wpi.title,
-            description:
-              (title.trim() ? `${title.trim()}` : 'Weekly plan') +
-              (wpi.estimated_minutes ? ` · ~${wpi.estimated_minutes} min` : ''),
-            unlockAt: wpi.unlock_at,
-            dueAt: wpi.due_at,
-            sourceTable: 'weekly_plan_items',
-            sourceId: wpi.id,
-            visibleToStudent: true,
-            status: 'assigned',
-            metadata: {
-              weekly_plan_id: planId,
-              day_date: wpi.day_date,
-              estimated_minutes: wpi.estimated_minutes,
-            },
-          });
-          // Back-link weekly_plan_item -> classroom_items.id
-          await (supabase as unknown as {
-            from: (t: string) => {
-              update: (v: unknown) => {
-                eq: (k: string, v: string) => Promise<{ error: { message: string } | null }>;
-              };
-            };
-          })
-            .from('weekly_plan_items')
-            .update({ classroom_item_id: ci.id })
-            .eq('id', wpi.id);
-        } catch (e) {
-          console.error('[weekly-plan] classroom_items create failed', { wpi, error: e });
-          failed.push(wpi.title);
-        }
-      }
-
-      if (failed.length > 0) {
-        toast.error(
-          `Plan published but ${failed.length} item(s) did not become Classroom items: ${failed.join(', ')}`,
-        );
-      }
-
-      // 4) One summary notification per published plan (not one per item —
-      //    flooding the bell with seven entries on a weekly plan is bad UX).
-      const notify = await notifyStudentOfClassroomItem({
-        adminUserId: user.id,
-        studentId,
-        title: `Weekly plan: ${title.trim() || 'Weekly plan'}`,
-        description: `${items.length} item${items.length === 1 ? '' : 's'} this week. Open Classroom to see them.`,
-        route: '/classroom',
-        assignmentType: 'weekly_plan',
-      });
-
-      qc.invalidateQueries({ queryKey: ['weekly-plans-admin', studentId] });
-      qc.invalidateQueries({ queryKey: ['current-weekly-plan'] });
-      qc.invalidateQueries({ queryKey: ['classroom-items'] });
-      qc.invalidateQueries({ queryKey: ['classroom-items-admin', studentId] });
-      setItems([]);
-
-      const summary = summarizeNotifyResult(notify);
-      if (notify.inbox_ok && notify.bell_ok && notify.email_ok) {
-        toast.success(summary);
-      } else {
-        toast.warning(summary, {
-          description: notify.email_error ?? notify.inbox_error ?? notify.bell_error,
-        });
-      }
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Failed to publish';
-      toast.error(msg);
-    } finally {
-      setCreating(false);
     }
   };
 
@@ -498,12 +412,14 @@ export default function TeacherWeeklyPlans() {
       toast.error('No schedule items found. Use day headings like Monday, Tuesday, or inline labels like Monday: task.');
       return;
     }
+    if (!confirmReplace(parsed.length)) return;
     setItems(templateItemsToDrafts(parsed));
     if (templateTitle.trim()) setTitle(templateTitle.trim());
     toast.success(`Loaded ${parsed.length} item${parsed.length === 1 ? '' : 's'} into the builder`);
   };
 
   const loadTemplate = (tpl: TemplateRow) => {
+    if (!confirmReplace(tpl.items_json?.length ?? 0)) return;
     setItems(templateItemsToDrafts(tpl.items_json ?? []));
     if (tpl.title) setTitle(tpl.title);
     toast.success(`Loaded "${tpl.title}"`);
@@ -536,6 +452,7 @@ export default function TeacherWeeklyPlans() {
   // wrong student.
   useEffect(() => {
     setItems([]);
+    setOpenPlanId(null);
   }, [studentId]);
 
   return (
@@ -586,8 +503,10 @@ export default function TeacherWeeklyPlans() {
                   Fill from curriculum
                 </Button>
                 <span className="text-xs text-zinc-500">
-                  Picks up where this student left off, at their level. Nothing is
-                  assigned until you publish.
+                  Suggests drills from where this student left off, at their level.
+                  Publishing does not assign them: assign each one through the usual
+                  assignment workflow, then pick its saved assignment in the task's Link
+                  menu.
                 </span>
               </div>
             </div>
@@ -762,31 +681,64 @@ export default function TeacherWeeklyPlans() {
                     {items
                       .map((it, i) => ({ it, i }))
                       .filter(({ it }) => it.day === format(d, 'yyyy-MM-dd'))
-                      .map(({ it, i }) => (
+                      .map(({ it, i }, position, dayItems) => (
                         <li key={i} className="rounded-md bg-zinc-950 border border-zinc-800 p-1.5 space-y-1">
+                          {it.curriculumDrillId ? (
+                            <div className="text-[10px] uppercase tracking-wider text-amber-400/80">
+                              Suggested from curriculum
+                              {it.action ? null : (
+                                <span className="block normal-case tracking-normal text-amber-300">
+                                  Not assigned yet. Link its saved assignment below.
+                                </span>
+                              )}
+                            </div>
+                          ) : null}
                           <Input
                             value={it.title}
                             onChange={(e) => updateItem(i, { title: e.target.value })}
                             placeholder="Task"
+                            aria-label={`Task ${position + 1} title, ${format(d, 'EEEE')}`}
                             className="h-7 text-xs"
                           />
                           <div className="flex items-center gap-1">
                             <Input
                               type="number"
-                              min={0}
-                              value={it.estimatedMinutes ?? 0}
-                              onChange={(e) =>
-                                updateItem(i, {
-                                  estimatedMinutes: parseInt(e.target.value, 10) || 0,
-                                })
-                              }
+                              min={1}
+                              value={it.estimatedMinutes ?? ''}
+                              placeholder="?"
+                              aria-label={`Task ${position + 1} estimated minutes`}
+                              onChange={(e) => {
+                                const n = parseInt(e.target.value, 10);
+                                // Blank or zero means no estimate; the student
+                                // sees "No time estimate", not a made-up number.
+                                updateItem(i, { estimatedMinutes: n > 0 ? n : undefined });
+                              }}
                               className="h-6 text-xs w-16"
                             />
                             <span className="text-[10px] text-zinc-500">min</span>
                             <button
                               type="button"
+                              onClick={() => moveItem(i, -1)}
+                              disabled={position === 0}
+                              className="ml-auto text-zinc-500 hover:text-zinc-100 disabled:opacity-30"
+                              aria-label={`Move task ${position + 1} earlier`}
+                            >
+                              <ArrowUp className="w-3 h-3" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => moveItem(i, 1)}
+                              disabled={position === dayItems.length - 1}
+                              className="text-zinc-500 hover:text-zinc-100 disabled:opacity-30"
+                              aria-label={`Move task ${position + 1} later`}
+                            >
+                              <ArrowDown className="w-3 h-3" />
+                            </button>
+                            <button
+                              type="button"
                               onClick={() => removeItem(i)}
-                              className="ml-auto text-[10px] text-zinc-500 hover:text-zinc-100"
+                              className="text-[10px] text-zinc-500 hover:text-zinc-100"
+                              aria-label={`Remove task ${position + 1}`}
                             >
                               <X className="w-3 h-3" />
                             </button>
@@ -829,9 +781,50 @@ export default function TeacherWeeklyPlans() {
               ))}
             </div>
 
+            {stopped ? (
+              <section
+                role="alert"
+                className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-100 space-y-2"
+              >
+                <p>
+                  Publishing "{publishedTitle(stopped.job)}" stopped: {stopped.message}
+                </p>
+                <p className="text-xs text-amber-200/80">
+                  {stoppedPublishNote(stopped)} These saves are separate steps, not one
+                  transaction. Trying again looks for what was already saved before writing again,
+                  and it only runs while you are signed in as the account that started it. If this
+                  page reloads, this retry is lost; anything saved stays in Existing plans. The
+                  student is notified only once the week is confirmed published.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Button size="sm" onClick={() => void runJob(stopped.job)} disabled={publishing}>
+                    {publishing ? <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" /> : null}
+                    Try publishing again
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={publishing}
+                    onClick={() => studentId && publisher.dismiss(studentId)}
+                  >
+                    Leave it as a draft
+                  </Button>
+                </div>
+              </section>
+            ) : null}
+
+            {unlinked.length > 0 ? (
+              <p role="status" className="text-xs text-amber-300 text-right">
+                {unlinkedCurriculumMessage(unlinked.length)}
+              </p>
+            ) : null}
+
             <div className="flex justify-end">
-              <Button onClick={publish} disabled={creating || items.length === 0}>
-                {creating ? (
+              <Button
+                onClick={publish}
+                disabled={publishing || !!stopped || items.length === 0 || unlinked.length > 0}
+              >
+                {publishing ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     Publishing…
@@ -867,18 +860,13 @@ export default function TeacherWeeklyPlans() {
               ) : (
                 <ul className="space-y-1.5">
                   {plans.map((p) => (
-                    <li
+                    <ExistingPlanRow
                       key={p.id}
-                      className="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-zinc-800 bg-zinc-900/40"
-                    >
-                      <div className="text-[11px] uppercase tracking-wider text-zinc-500 w-24">
-                        {p.status}
-                      </div>
-                      <div className="text-sm text-zinc-100 flex-1 truncate">{p.title}</div>
-                      <div className="text-[11px] text-zinc-500 shrink-0">
-                        {p.week_start} – {p.week_end}
-                      </div>
-                    </li>
+                      plan={p}
+                      studentId={studentId}
+                      open={openPlanId === p.id}
+                      onToggle={() => setOpenPlanId((cur) => (cur === p.id ? null : p.id))}
+                    />
                   ))}
                 </ul>
               )}
@@ -887,5 +875,79 @@ export default function TeacherWeeklyPlans() {
         )}
       </section>
     </div>
+  );
+}
+
+/**
+ * One published (or draft) plan in the list. Expanding it shows the week the
+ * student scans: same order, same stored status, same counts and estimates,
+ * built by the same model.
+ */
+function ExistingPlanRow({
+  plan,
+  studentId,
+  open,
+  onToggle,
+}: {
+  plan: WeeklyPlan;
+  studentId: string;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  const personal = isPersonalPlan(plan);
+  // Scoped to the selected student; a plan that is not theirs is never read.
+  const itemsQuery = useWeeklyPlanItems(open ? plan : null, studentId);
+  const week = useMemo(
+    () => (itemsQuery.data ? buildPrescribedWeek(plan, itemsQuery.data, new Date(), localDayISO()) : null),
+    [itemsQuery.data, plan],
+  );
+  const panelId = `plan-items-${plan.id}`;
+
+  return (
+    <li className="rounded-lg border border-zinc-800 bg-zinc-900/40">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className="w-full flex items-center gap-3 px-4 py-2.5 text-left"
+      >
+        {open ? (
+          <ChevronDown className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+        ) : (
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+        )}
+        <div className="text-[11px] uppercase tracking-wider text-zinc-500 w-24">
+          {personal ? 'student' : plan.status}
+        </div>
+        <div className="text-sm text-zinc-100 flex-1 truncate">
+          {personal ? "Student's own to-do tasks" : plan.title}
+        </div>
+        <div className="text-[11px] text-zinc-500 shrink-0">
+          {personal ? 'Ongoing' : `${plan.week_start} – ${plan.week_end}`}
+        </div>
+      </button>
+      {open ? (
+        <div id={panelId} className="border-t border-zinc-800 px-4 py-3">
+          {itemsQuery.isLoading ? (
+            <div className="text-sm text-zinc-500">Loading tasks…</div>
+          ) : itemsQuery.isError ? (
+            <div className="flex items-center gap-3 text-sm text-red-300" role="alert">
+              Could not load this plan's tasks.
+              <Button variant="outline" size="sm" onClick={() => void itemsQuery.refetch()}>
+                Try again
+              </Button>
+            </div>
+          ) : personal ? (
+            <div className="text-sm text-zinc-400">
+              Tasks the student added for themselves. This is not a prescribed week, so it is not shown
+              as one.
+            </div>
+          ) : week ? (
+            <PrescribedWeekView week={week} audience="teacher" />
+          ) : null}
+        </div>
+      ) : null}
+    </li>
   );
 }
