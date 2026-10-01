@@ -2,6 +2,8 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   BarChart3,
+  CreditCard,
+  Users,
   LayoutGrid,
   Library,
   MessageSquare,
@@ -21,9 +23,7 @@ type Room = {
 };
 
 /**
- * The four rooms in the teacher workspace. Students live in the classroom
- * side rail because roster access is a teacher-level destination, not a room
- * beside the teacher's daily work. This list is the only top navigation in
+ * The rooms in the teacher workspace. This list is the only top navigation in
  * the teacher workspace: no `?ws=` switching, no second rail,
  * no per-surface tab bars pretending to be nav.
  *
@@ -34,6 +34,8 @@ type Room = {
 const ROOMS: Room[] = [
   { to: '/teacher/today', label: 'Today', Icon: LayoutGrid, end: true },
   { to: '/teacher/inbox', label: 'Inbox', Icon: MessageSquare },
+  { to: '/teacher/payments', label: 'Payments', Icon: CreditCard },
+  { to: '/teacher/students', label: 'Students', Icon: Users },
   { to: '/teacher/library', label: 'Library', Icon: Library },
   { to: '/teacher/assistant', label: 'Teaching Assistant', Icon: Sparkles },
   { to: '/teacher/insights', label: 'Insights', Icon: BarChart3 },

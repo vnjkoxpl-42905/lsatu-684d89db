@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { RefreshCw } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { listManagedUsers } from '@/lib/accessTierClient';
@@ -30,6 +32,23 @@ export interface StripePayment {
 const PAYMENTS_KEY = ['stripe-payments'] as const;
 const SYNC_KEY = ['stripe-sync-last'] as const;
 const PAGE = 25;
+
+export async function loadRecordedPayments(): Promise<StripePayment[]> {
+  const rows: StripePayment[] = [];
+  const batchSize = 500;
+  for (let offset = 0; ; offset += batchSize) {
+    const { data, error } = await supabase
+      .from('stripe_payments' as any)
+      .select('*')
+      .order('paid_at', { ascending: false })
+      .order('id', { ascending: false })
+      .range(offset, offset + batchSize - 1);
+    if (error) throw error;
+    const batch = (data ?? []) as unknown as StripePayment[];
+    rows.push(...batch);
+    if (batch.length < batchSize) return rows;
+  }
+}
 
 export function money(cents: number, currency: string) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.toUpperCase() || 'USD' }).format(cents / 100);
@@ -62,11 +81,11 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 /**
- * Every Stripe charge from the last three months, newest first, plus the two
+ * Every recorded Stripe charge, newest first, plus the two
  * things a payment can ask of Joshua: grant a package's passes, or say who paid.
  * Nothing here happens by itself (decisions/log.md, 2026-09-27).
  */
-export function PaymentsPanel() {
+export function PaymentsPanel({ summary = false }: { summary?: boolean }) {
   const queryClient = useQueryClient();
   const [query, setQuery] = useState('');
   const [shown, setShown] = useState(PAGE);
@@ -76,17 +95,7 @@ export function PaymentsPanel() {
 
   const payments = useQuery<StripePayment[]>({
     queryKey: PAYMENTS_KEY,
-    queryFn: async () => {
-      const since = new Date(Date.now() - 92 * 86400_000).toISOString();
-      const { data, error } = await supabase
-        .from('stripe_payments' as any)
-        .select('*')
-        .gte('paid_at', since)
-        .order('paid_at', { ascending: false })
-        .limit(2000);
-      if (error) throw error;
-      return (data ?? []) as unknown as StripePayment[];
-    },
+    queryFn: loadRecordedPayments,
     staleTime: 30_000,
   });
 
@@ -134,9 +143,13 @@ export function PaymentsPanel() {
   const rows = payments.data ?? [];
   const attention = rows.filter(needsAttention);
   const filtered = rows.filter((p) => matchesSearch(p, query.trim(), studentName));
-  const paidTotal = rows
-    .filter((p) => p.status === 'succeeded' || p.status === 'partially_refunded')
-    .reduce((sum, p) => sum + p.amount_cents - p.amount_refunded_cents, 0);
+  const totals = new Map<string, number>();
+  for (const p of rows) {
+    if (p.status !== 'succeeded' && p.status !== 'partially_refunded') continue;
+    const currency = p.currency.toLowerCase();
+    totals.set(currency, (totals.get(currency) ?? 0) + p.amount_cents - p.amount_refunded_cents);
+  }
+  const netTotal = Array.from(totals, ([currency, cents]) => money(cents, currency)).join(' + ') || 'No paid charges';
 
   const refresh = () => {
     queryClient.invalidateQueries({ queryKey: PAYMENTS_KEY });
@@ -184,16 +197,40 @@ export function PaymentsPanel() {
 
   const who = (p: StripePayment) => studentName(p.student_id) || p.payer_name || p.email || 'Unknown payer';
 
+  if (summary) {
+    return (
+      <section aria-label="Payment overview" className="border border-black/12 bg-white/25 px-4 py-3.5">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-[10px] font-medium uppercase tracking-[0.2em] text-black/50">Payments</h2>
+          <Link to="/teacher/payments" className="text-[13px] underline underline-offset-4">View all payments</Link>
+        </div>
+        {payments.isLoading ? <p className="mt-3 text-[13px] text-black/50">Loading payments</p> : (
+          <>
+            <p className="mt-3 text-[13px]">{attention.length} needing attention · {rows.length} recorded charges</p>
+            <ul className="mt-2 divide-y divide-black/10">
+              {rows.slice(0, 3).map((p) => (
+                <li key={p.id} className="flex items-baseline justify-between gap-3 py-2 text-[13px]">
+                  <span className="min-w-0 truncate">{who(p)} <span className="text-black/50">{STATUS_LABEL[p.status] ?? p.status}</span></span>
+                  <span className="shrink-0 tabular-nums">{money(p.amount_cents, p.currency)}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </section>
+    );
+  }
+
   return (
     <section aria-label="Payments" className="border border-black/12 bg-white/25 px-4 py-3.5">
       <div className="mb-2.5 flex flex-wrap items-baseline justify-between gap-3">
         <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-black/40">
-          Payments &middot; last 90 days
+          Payments &middot; all recorded history
         </div>
-        <div className="flex items-center gap-3 text-[11px] text-black/45">
-          {!payments.isLoading && <span className="tabular-nums">{rows.length} charges &middot; {money(paidTotal, rows[0]?.currency ?? 'usd')} net</span>}
+        <div className="flex flex-wrap items-center gap-3 text-[11px] text-black/45">
+          {!payments.isLoading && <span className="tabular-nums">{rows.length} charges &middot; {netTotal} net</span>}
           <span>
-            {lastSync.data?.error
+            {lastSync.isError ? 'Sync status unavailable' : lastSync.isLoading ? 'Loading sync status' : lastSync.data?.error
               ? 'Last sync failed'
               : lastSync.data?.finished_at
                 ? `Synced ${new Date(lastSync.data.finished_at).toLocaleString()}`
@@ -279,6 +316,7 @@ export function PaymentsPanel() {
         </div>
       )}
 
+      <p className="mb-3 text-[12px] text-black/50">All payments in the ledger are shown here. Sync from Stripe imports the latest 90 days.</p>
       <input
         type="search"
         value={query}
@@ -298,9 +336,9 @@ export function PaymentsPanel() {
         <>
           <ul className="divide-y divide-black/10">
             {filtered.slice(0, shown).map((p) => (
-              <li key={p.id} className="flex items-baseline gap-3 py-1.5 text-[13px]">
-                <span className="w-[76px] shrink-0 tabular-nums text-black/50">
-                  {new Date(p.paid_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+              <li key={p.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-2 text-[13px]">
+                <span className="w-[86px] shrink-0 tabular-nums text-black/50">
+                  {format(new Date(p.paid_at), 'yyyy-MM-dd')}
                 </span>
                 <span className="min-w-0 flex-1 truncate">
                   {who(p)}

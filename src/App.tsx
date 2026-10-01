@@ -120,6 +120,7 @@ const ActivityRunner = safeLazy(() => import("./features/activity-centre/compone
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const TeacherWorkspaceShell = safeLazy(() => import("./pages/teacher/shell/TeacherWorkspaceShell"));
 const DeskTodaySurface = safeLazy(() => import("./pages/teacher/shell/DeskTodaySurface"));
+const TeacherPayments = safeLazy(() => import("./pages/teacher/shell/TeacherPayments"));
 const TeacherDevIndex = safeLazy(() => import("./pages/teacher/shell/TeacherDevIndex"));
 const DeskPeopleSurface = safeLazy(() => import("./pages/teacher/desk/DeskPeopleSurface"));
 const DeskLibrarySurface = safeLazy(() => import("./pages/teacher/desk/DeskLibrarySurface"));
@@ -741,6 +742,11 @@ const App = () => {
                       <Route path="today" element={
                         <React.Suspense fallback={<div />}>
                           <DeskTodaySurface />
+                        </React.Suspense>
+                      } />
+                      <Route path="payments" element={
+                        <React.Suspense fallback={<div />}>
+                          <TeacherPayments />
                         </React.Suspense>
                       } />
                       <Route path="students" element={
