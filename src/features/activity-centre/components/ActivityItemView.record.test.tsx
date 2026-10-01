@@ -11,9 +11,10 @@ import type { ActivityItem } from "../api/types";
 const invoke = vi.fn();
 
 vi.mock("@/integrations/supabase/client", () => ({
-  supabase: { functions: { invoke: (...args: unknown[]) => invoke(...args) } },
+  supabase: { auth: { getUser: async () => ({ data: { user: { id: "actor" } }, error: null }) }, functions: { invoke: (...args: unknown[]) => invoke(...args) } },
 }));
 
+vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "actor" } }) }));
 vi.mock("@/hooks/use-toast", () => ({ toast: vi.fn() }));
 
 const item: ActivityItem = {
@@ -28,6 +29,7 @@ function renderItem(props: Partial<React.ComponentProps<typeof ActivityItemView>
   const onResolved = vi.fn();
   render(
     <ActivityItemView
+      coachSource={{ sourceKind: "assignment", sourceId: "12345678-1234-4123-8123-123456789012" }}
       item={item}
       format="free-text"
       isLast={false}
@@ -91,37 +93,35 @@ describe("what the item writes to the attempt log", () => {
     expect(onRecord).toHaveBeenCalledWith(expect.objectContaining({ attemptNo: 2 }));
   });
 
-  // A Coach outage used to render as a red "Not yet" over an answer nobody had
-  // read, and then score it as a zero for the rest of time.
-  it("shows a neutral not-checked state rather than a verdict when the Coach fails", async () => {
-    invoke.mockResolvedValue({ data: null, error: { message: "down" } });
-    renderItem();
-    await submit("If it is not refueled, the beacon goes dark.");
-    expect(await screen.findByText("Not checked")).toBeInTheDocument();
-    expect(screen.queryByText("Not yet")).not.toBeInTheDocument();
+  it("retains an uncertain answer without recording or revealing, then retries the exact request", async () => {
+    invoke.mockResolvedValueOnce({ data: null, error: { message: "reply lost" } }).mockResolvedValueOnce({ data: { verdict: "correct", feedback: "Verified." }, error: null });
+    const { onRecord, onResolved } = renderItem();
+    await submit("my exact response");
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveClass("bg-card", "text-card-foreground");
+    expect(screen.getByRole("textbox")).toHaveValue("my exact response");
+    expect(screen.queryByText("Credited answer")).not.toBeInTheDocument();
+    expect(onRecord).not.toHaveBeenCalled();
+    expect(onResolved).not.toHaveBeenCalled();
+    const first = invoke.mock.calls[0][1].body;
+    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+    await waitFor(() => expect(onResolved).toHaveBeenCalledWith(7, "correct"));
+    expect(invoke.mock.calls[1][1].body).toEqual(first);
+    expect(onRecord).toHaveBeenCalledTimes(1);
+    expect(onRecord).toHaveBeenCalledWith(expect.objectContaining({ verdict: "correct", attemptNo: 1 }));
   });
-
-  it("ends the item on an outage rather than offering a retry it cannot judge", async () => {
-    invoke.mockResolvedValue({ data: null, error: { message: "down" } });
-    const { onRecord } = renderItem();
-    await submit("anything");
-    // Resolved and revealed: the student is never stuck waiting on a Coach that
-    // is not answering, and there is nothing left to submit.
-    expect(screen.queryByRole("button", { name: /show answer/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /try again/i })).not.toBeInTheDocument();
-    expect(screen.getByText("Credited answer")).toBeInTheDocument();
-    for (const call of onRecord.mock.calls) {
-      expect(call[0].verdict).toBeNull();
-    }
-  });
-
-  it("records the failed attempt with no verdict when the Coach is unreachable", async () => {
+  it("records one neutral unjudged response only after deliberate continuation", async () => {
     invoke.mockResolvedValue({ data: null, error: { message: "down" } });
     const { onRecord, onResolved } = renderItem();
-    await submit("anything");
-    expect(onRecord).toHaveBeenCalledWith(
-      expect.objectContaining({ verdict: null, attemptNo: 1, judgeSource: "fallback" }),
-    );
+    await submit("my response");
+    await screen.findByRole("alert");
+    expect(onRecord).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: /Continue unjudged/ }));
+    expect(onRecord).toHaveBeenCalledTimes(1);
+    expect(onRecord).toHaveBeenCalledWith(expect.objectContaining({ verdict: null, attemptNo: 1, judgeSource: "fallback", responseText: "my response" }));
     expect(onResolved).toHaveBeenCalledWith(7, null);
+    expect(screen.getByText("Not checked")).toBeInTheDocument();
+    expect(screen.getByText("Credited answer")).toBeInTheDocument();
+    expect(invoke).toHaveBeenCalledTimes(1);
   });
 });

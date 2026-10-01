@@ -1,5 +1,5 @@
+import type { CoachSource } from "../hooks/activityCoachRequest";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "@/hooks/use-toast";
 import { useActivityCoach } from "../hooks/useActivityCoach";
 import type { ActivityCoach, ActivityItem, CoachVerdict, FeedbackState, ItemFormat, JudgeSource, Verdict } from "../api/types";
 import { MAX_ATTEMPTS } from "../api/types";
@@ -14,6 +14,7 @@ interface ActivityItemViewProps {
   isLast: boolean;
   /** This Activity's judging brief, threaded through to the Coach. */
   coach?: ActivityCoach;
+  coachSource?: CoachSource;
   /** Authored per Activity: what this drill asks the student to write. */
   answerLabel?: string;
   answerPlaceholder?: string;
@@ -78,7 +79,7 @@ export function ActivityItemView({
   item,
   format,
   isLast,
-  coach,
+  coachSource,
   answerLabel,
   answerPlaceholder,
   creditedSecondaryLabel,
@@ -118,6 +119,7 @@ export function ActivityItemView({
   }, [draftKey, paperChoices, value]);
   const [attempts, setAttempts] = useState(initialAttempts);
   const [result, setResult] = useState<{ verdict: FeedbackState; feedback: string; covered?: number[] } | null>(null);
+  const [coachError, setCoachError] = useState<string | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [resolved, setResolved] = useState(false);
 
@@ -134,6 +136,7 @@ export function ActivityItemView({
   };
 
   const handleSubmit = async () => {
+    setCoachError(null);
     const attemptNo = attempts + 1;
     const startedAt = performance.now();
     const since = () => Math.round(performance.now() - startedAt);
@@ -211,32 +214,13 @@ export function ActivityItemView({
       return;
     }
 
-    const res = await judge({ item, studentResponse: value, attemptNo, coach });
-    setAttempts(attemptNo);
-
+    const res = await judge({ item, studentResponse: value, attemptNo, source: coachSource });
+    if (res.discarded) return;
     if (!res.ok || !res.verdict) {
-      // Coach failed. The student is never left stuck, so the credited answer is
-      // revealed and the item ends -- but it ends UNJUDGED. It used to end as
-      // "incorrect", which put a red verdict on an answer nobody had read and
-      // then scored it as a zero for the rest of time.
-      toast({
-        title: "Coach unavailable",
-        description: "Showing the credited answer so you can keep moving. This one is not counted.",
-        variant: "destructive",
-      });
-      record({
-        itemOrder: item.order,
-        responseText: value,
-        verdict: null,
-        attemptNo,
-        judgeSource: "fallback",
-        shadowFault: shadowFault?.(item, value) ?? null,
-        latencyMs: since(),
-      });
-      setResult({ verdict: "unchecked", feedback: "" });
-      resolve(null, true);
+      setCoachError("Coach has not confirmed a judgment. Submit again to retry your response, or continue without a judgment.");
       return;
     }
+    setAttempts(attemptNo);
 
     const verdict = res.verdict.verdict;
     setResult(res.verdict);
@@ -295,6 +279,15 @@ export function ActivityItemView({
     resolve(verdict, true);
   };
 
+  const continueUnjudged = () => {
+    if (!coachError || judging || resolved) return;
+    record({ itemOrder: item.order, responseText: value, verdict: null, attemptNo: attempts + 1, judgeSource: "fallback" });
+    setAttempts(attempts + 1);
+    setCoachError(null);
+    setResult({ verdict: "unchecked", feedback: "" });
+    resolve(null, true);
+  };
+
   return (
     <div className="space-y-5">
       <StatementPanel
@@ -302,11 +295,15 @@ export function ActivityItemView({
         showQuestionType={attempts > 0}
         showPrompt={!promptInWorld && !(paperChoices?.length && diagramSeconds && diagramSeconds > 0)}
       />
+      {coachError && !resolved && <div role="alert" className="rounded-xl border border-border bg-card p-4 text-card-foreground">
+        <p>{coachError}</p>
+        <button type="button" disabled={judging} className="mt-3 min-h-11 underline" onClick={continueUnjudged}>Continue unjudged and show answer</button>
+      </div>}
       <ItemPrompt
         format={format}
         item={item}
         value={value}
-        onChange={setValue}
+        onChange={(next) => { setCoachError(null); setValue(next); }}
         onSubmit={handleSubmit}
         answerRef={answerRef}
         onRetry={handleRetry}

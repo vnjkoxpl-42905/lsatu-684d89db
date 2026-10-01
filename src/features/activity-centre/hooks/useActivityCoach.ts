@@ -1,99 +1,42 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import type { ActivityCoach, ActivityItem, CoachVerdict } from "../api/types";
-
-// Calls the activity-coach edge function to judge one free-text response.
-// On any failure the error is surfaced (returned + flagged), never swallowed,
-// so the caller can toast and fall back to revealing the credited answer.
-
-export interface JudgeArgs {
-  item: ActivityItem;
-  studentResponse: string;
-  attemptNo: number;
-  /**
-   * This Activity's judging brief. Omitted for legacy Activities authored
-   * before per-Activity rubrics existed; the edge function then applies its
-   * Negation Station default, which is what those Activities expect.
-   */
-  coach?: ActivityCoach;
-  /**
-   * A numbered checklist to judge coverage against, for drills where WHICH
-   * ideas survived is the feedback (The Press). Omit and no coverage comes
-   * back, which every other drill wants.
-   */
-  ideas?: { n: number; text: string }[];
-}
-
-export interface JudgeResult {
-  ok: boolean;
-  verdict?: CoachVerdict;
-  error?: string;
-}
-
-/**
- * How long a student waits before the Coach is treated as unreachable. Long
- * enough for a slow model call, short enough that nobody sits looking at a
- * spinner wondering whether the page is broken.
- */
+import { useAuth } from "@/contexts/AuthContext";
+import type { ActivityItem, CoachVerdict } from "../api/types";
+import { retainCoachRequest, type CoachSource } from "./activityCoachRequest";
+export interface JudgeArgs { item: ActivityItem; studentResponse: string; attemptNo: number; source?: CoachSource }
+export interface JudgeResult { ok: boolean; verdict?: CoachVerdict; error?: string; discarded?: boolean }
 const COACH_TIMEOUT_MS = 12_000;
-
 export function useActivityCoach() {
-  const [judging, setJudging] = useState(false);
-
-  const judge = useCallback(async ({ item, studentResponse, attemptNo, coach, ideas }: JudgeArgs): Promise<JudgeResult> => {
-    setJudging(true);
-    // A hung gateway used to leave the textarea disabled and the spinner
-    // spinning with no way out: no timeout, no abort, nothing for the student
-    // to do but reload and lose the answer. The item now falls through to the
-    // Coach-unavailable path, which reveals the credited answer and records the
-    // attempt unjudged.
+  const { user } = useAuth();
+  const actor = user?.id;
+  const scope = useRef(actor); scope.current = actor;
+  const mounted = useRef(true);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  const [busyActor, setBusyActor] = useState<string | null>(null);
+  const judge = useCallback(async ({ item, studentResponse, attemptNo, source }: JudgeArgs): Promise<JudgeResult> => {
+    if (!actor || !source) return { ok: false, error: "This Activity grading source is unavailable." };
+    const current = () => mounted.current && scope.current === actor;
+    setBusyActor(actor);
     const abort = new AbortController();
     const timeout = setTimeout(() => abort.abort(), COACH_TIMEOUT_MS);
     try {
-      const { data, error } = await supabase.functions.invoke("activity-coach", {
-        signal: abort.signal,
-        body: {
-          statement: item.prompt,
-          studentResponse,
-          creditedAnswers: item.credited_answers,
-          explanation: item.explanation,
-          attemptNo,
-          coach,
-          category: item.category,
-          ideas,
-        },
-      });
-
-      if (error) {
-        const msg = error.message || "Coach unavailable";
-        console.error("[activity-coach] invoke failed", error);
-        return { ok: false, error: msg };
-      }
-      if (!data || typeof data.verdict !== "string") {
-        console.error("[activity-coach] malformed response", data);
-        return { ok: false, error: (data && data.error) || "Coach returned no verdict" };
-      }
-
-      // Coverage is only ever passed through, and only as an array of numbers.
-      // Anything else stays undefined so the checklist renders unjudged rather
-      // than claiming ticks nobody assigned.
-      const covered = Array.isArray(data.covered)
-        ? data.covered.filter((n: unknown) => typeof n === "number")
-        : undefined;
-
-      return { ok: true, verdict: { verdict: data.verdict, feedback: data.feedback ?? "", covered } };
-    } catch (e) {
-      if (abort.signal.aborted) {
-        console.error("[activity-coach] timed out", { ms: COACH_TIMEOUT_MS });
-        return { ok: false, error: "Coach timed out" };
-      }
-      console.error("[activity-coach] threw", e);
-      return { ok: false, error: e instanceof Error ? e.message : "Coach error" };
-    } finally {
-      clearTimeout(timeout);
-      setJudging(false);
-    }
-  }, []);
-
-  return { judge, judging };
+      const auth = await supabase.auth.getUser();
+      if (!current() || auth.error || auth.data.user?.id !== actor) return { ok: false, discarded: true, error: "The signed-in account changed." };
+      let body;
+      try { body = retainCoachRequest(actor, source, item.order, studentResponse, attemptNo); }
+      catch { return { ok: false, error: "Could not retain this grading request on your device. No Coach call was made." }; }
+      if (!current()) return { ok: false, discarded: true };
+      const { data, error } = await supabase.functions.invoke("activity-coach", { signal: abort.signal, body });
+      const after = await supabase.auth.getUser();
+      if (!current() || after.error || after.data.user?.id !== actor) return { ok: false, discarded: true, error: "The signed-in account changed." };
+      if (error) return { ok: false, error: "Coach could not confirm this request. Its saved identity is kept for retry." };
+      if (!data || !["correct", "partial", "incorrect"].includes(data.verdict) || typeof data.feedback !== "string" || !data.feedback.trim()) return { ok: false, error: "Coach returned no verified judgment." };
+      const covered = Array.isArray(data.covered) ? data.covered.filter((n: unknown) => typeof n === "number" && Number.isFinite(n)) : undefined;
+      return { ok: true, verdict: { verdict: data.verdict, feedback: data.feedback, covered } };
+    } catch {
+      if (!current()) return { ok: false, discarded: true };
+      return { ok: false, error: abort.signal.aborted ? "Coach timed out. Its saved request identity is kept for retry." : "Coach unavailable. Its saved request identity is kept for retry." };
+    } finally { clearTimeout(timeout); if (current()) setBusyActor(null); }
+  }, [actor]);
+  return { judge, judging: Boolean(actor && busyActor === actor) };
 }
