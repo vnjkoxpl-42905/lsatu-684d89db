@@ -24,4 +24,4 @@ Marks do not sync across devices. localStorage updates are not atomic across tab
 
 RC bookmark links deliberately create a new ordinary practice session. Old session-scoped cross-outs are not automatically pruned; storage limits and explicit clear actions are disclosed. No existing records are automatically deleted.
 
-Actual narrow side-pane RC walk and final touch-emulation walk after the last RcChoiceRow change must be recorded before publication. Screenshots and detailed inspection artifacts live in the operator workspace, not the application bundle.
+Final touch emulation after the last RcChoiceRow change passed: hover:none was true, all five cross-out controls had opacity one, and crossing out C produced the labeled restore control. Temporary emulation was cleared. The actual narrow side-pane RC walk remains pending: opening the owned session in the right Codex pane returned queued while this task was hidden. Screenshots and detailed inspection artifacts live in the operator workspace, not the application bundle.
