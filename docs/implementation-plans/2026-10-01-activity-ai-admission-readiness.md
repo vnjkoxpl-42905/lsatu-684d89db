@@ -1,4 +1,4 @@
-# Activity coaching admission is prepared, disabled, and not deployed
+# Activity admission SQL is installed and disabled; Edge rollout remains pending
 
 The additive migration `supabase/migrations/20261001120000_activity_ai_admission_v1.sql` creates private configuration, receipts, request aliases, and budget buckets. It changes no existing source schema or source records. Its configuration starts disabled. No provider calls, Lovable credits, or managed writes occurred in this preparation.
 
@@ -61,6 +61,22 @@ Root reports 19 mocked Edge/SQL integration checks passing, alongside the final 
 
 Coordinated rollout remains gated on a fresh deployed schema/source preflight, additive installation with exact original-record preservation checks, Edge deployment through the confirmed Lovable route, and ordinary-JWT authorization and replay verification. Configuration must remain disabled until the matching Edge and client contract is available and deployed denials have passed. No live backend writes, activation, or paid requests were performed by this final review. Any Lovable action that may spend credits requires Joshua's explicit confirmation immediately before that action; a paid provider acceptance call likewise requires immediate credit confirmation.
 
-Browser failure/retry and account-switch checks remain unchecked for this batch. Live ordinary-JWT concurrency, lost-reply, source-revocation, and completed-cache race checks also remain unchecked. The isolated race suite and transport mocks do not substitute for those deployed acceptance checks. No claim of completed rollout or full AI acceptance is made.
+The production-preview browser failure/retry walk passed with activity-coach blocked before transport reached the server. The answer and first attempt were retained, retry stayed unjudged, and the explicit continuation control was present. Browser inspection caught unreadable alert colors on the dark Activity canvas; a narrow card background/foreground correction passed 13 focused tests and the rebuilt browser screenshot. Temporary network blocking was cleared after the check. No paid grading or unjudged continuation was performed. Actual account-switch browser checks remain unchecked; nine actor/binding tests pass. Live ordinary-JWT concurrency, lost-reply, source-revocation, and completed-cache race checks also remain unchecked. No claim of completed rollout or full AI acceptance is made.
 
 This contract protects admission authority, request identity, bounded quotas, dispatch, and saved grading receipts. The existing client attempt writer is unchanged and excluded from this batch. A client-authored attempt history is not a server-owned assessment ledger, and this release must not be described as completing that broader grading-integrity work.
+
+## Managed SQL installation on 2026-10-01
+
+Lovable project 53b9a6f2-aba7-4ae4-8dd1-fa5b8aab4d76 was verified against imported commit 4474d9f9bdc68036983873f119e044137ab359c1. Its existing Supabase database is enabled. The tested migration was installed through the direct Lovable SQL connector after a read-only schema preflight. No Lovable agent action or credits were used.
+
+Before/after whole-table count and ordered-row digest comparisons were identical:
+
+| Existing table | Records | MD5 of ordered JSON rows |
+| --- | ---: | --- |
+| activities | 21 | 0474e760ce016d471e08960426789e27 |
+| activity_assignments | 102 | 092b321a428d2d25e9e7e7e8181ba3e9 |
+| activity_item_responses | 1657 | f513aa97bf2ed1668d94b15cafceca83 |
+
+All four new tables have RLS enabled, zero permissive policies, and no direct SELECT privilege for authenticated or service_role. Anonymous and authenticated roles cannot execute begin; service_role can. Configuration remains enabled=false with 60/minute, 600/day per actor, 6000/day global and concurrency three. Receipt, alias, and budget tables remain empty. An owned real assignment returns contract_disabled/503; the same source under another actor returns source_unavailable/403. These calls performed no provider requests.
+
+The Edge function is not yet deployed. The matching frontend is not published. Do not enable the configuration or claim the managed AI pipeline is active until deployment, ordinary-JWT checks, and coordinated publication pass.

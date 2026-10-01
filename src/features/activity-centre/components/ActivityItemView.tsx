@@ -295,7 +295,7 @@ export function ActivityItemView({
         showQuestionType={attempts > 0}
         showPrompt={!promptInWorld && !(paperChoices?.length && diagramSeconds && diagramSeconds > 0)}
       />
-      {coachError && !resolved && <div role="alert" className="rounded-xl border border-border p-4">
+      {coachError && !resolved && <div role="alert" className="rounded-xl border border-border bg-card p-4 text-card-foreground">
         <p>{coachError}</p>
         <button type="button" disabled={judging} className="mt-3 min-h-11 underline" onClick={continueUnjudged}>Continue unjudged and show answer</button>
       </div>}

@@ -97,7 +97,8 @@ describe("what the item writes to the attempt log", () => {
     invoke.mockResolvedValueOnce({ data: null, error: { message: "reply lost" } }).mockResolvedValueOnce({ data: { verdict: "correct", feedback: "Verified." }, error: null });
     const { onRecord, onResolved } = renderItem();
     await submit("my exact response");
-    await screen.findByRole("alert");
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveClass("bg-card", "text-card-foreground");
     expect(screen.getByRole("textbox")).toHaveValue("my exact response");
     expect(screen.queryByText("Credited answer")).not.toBeInTheDocument();
     expect(onRecord).not.toHaveBeenCalled();
