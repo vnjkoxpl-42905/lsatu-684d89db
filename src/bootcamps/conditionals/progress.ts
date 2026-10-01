@@ -1,4 +1,5 @@
 import type { ConditionalDifficulty, ConditionalUnit } from './content/types';
+import { getCurriculumDifficulty, getCurriculumUnits } from './curriculumPath';
 
 export interface AnswerDraft {
   working: string;
@@ -62,16 +63,15 @@ export function parseConditionalProgress(value: unknown): ConditionalProgress {
 export function elapsedSeconds(run: ConditionalRun, now = Date.now()): number {
   return run.elapsed + (run.timerStartedAt ? Math.max(0, Math.floor((now - Date.parse(run.timerStartedAt)) / 1000)) : 0);
 }
-export function recommendNext(progress: ConditionalProgress, units: ConditionalUnit[]) {
-  for (const phase of ['conditional', 'quantifier'] as const) {
-    const phaseUnits = units.filter(unit => unit.phase === phase);
-    for (const unit of phaseUnits) {
-      if (!progress.lessons[unit.id]) return { mode: 'learn' as const, unitId: unit.id, label: `Learn: ${unit.title}`, difficulty: 'beginner' as const, phase };
-      if (!progress.attempts.some(attempt => attempt.questionId === unit.guidedExample.id)) return { mode: 'learn' as const, unitId: unit.id, label: `Guided example: ${unit.title}`, difficulty: 'beginner' as const, phase };
-      if (unit.drills.beginner.some(question => !progress.attempts.some(attempt => attempt.questionId === question.id && attempt.difficulty === 'beginner'))) return { mode: 'practice' as const, unitId: unit.id, label: `Beginner practice: ${unit.title}`, difficulty: 'beginner' as const, phase };
-    }
-    for (const difficulty of ['medium', 'advanced'] as const) {
-      if (phaseUnits.some(unit => unit.drills[difficulty].some(question => !progress.attempts.some(attempt => attempt.questionId === question.id && attempt.difficulty === difficulty)))) return { mode: 'practice' as const, unitId: undefined, label: `${difficulty === 'medium' ? 'Medium' : 'Advanced'} ${phase === 'conditional' ? 'conditional' : 'quantifier'} practice`, difficulty, phase };
+export function recommendNext(progress: ConditionalProgress, units: ConditionalUnit[], startingUnitId?: string) {
+  for (const unit of getCurriculumUnits(units, startingUnitId)) {
+    const difficulty = getCurriculumDifficulty(unit);
+    const phase = unit.phase;
+    if (!progress.lessons[unit.id]) return { mode: 'learn' as const, unitId: unit.id, label: `Learn: ${unit.title}`, difficulty, phase };
+    if (!progress.attempts.some(attempt => attempt.questionId === unit.guidedExample.id)) return { mode: 'learn' as const, unitId: unit.id, label: `Guided example: ${unit.title}`, difficulty, phase };
+    if (unit.drills[difficulty].some(question => !progress.attempts.some(attempt => attempt.questionId === question.id && attempt.difficulty === difficulty))) {
+      const level = { beginner: 1, medium: 2, advanced: 3 }[difficulty];
+      return { mode: 'practice' as const, unitId: unit.id, label: `Level ${level} activity: ${unit.title}`, difficulty, phase };
     }
   }
   return null;

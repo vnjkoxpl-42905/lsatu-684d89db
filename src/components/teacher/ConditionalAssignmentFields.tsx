@@ -25,11 +25,11 @@ export function ConditionalAssignmentFields({ value, onChange, disabled = false 
         onChange({ ...value, scope, mode: scope === 'general' ? 'practice' : 'learn',
           unitId: value.unitId ?? units[0]?.id, area: value.area ?? 'translation' });
       }}>
-        <option value="course">Full bootcamp</option><option value="area">One area</option>
+        <option value="course">Full curriculum from the beginning</option><option value="stage">Start at a curriculum stage</option><option value="area">One area</option>
         <option value="skill">One specific skill</option><option value="general">General practice</option>
       </select>
     </label>
-    {value.scope === 'skill' && <label className="block text-xs">Skill
+    {(value.scope === 'skill' || value.scope === 'stage') && <label className="block text-xs">{value.scope === 'stage' ? 'Starting skill' : 'Skill'}
       <select aria-label="Conditional skill" className={selectClass} value={value.unitId ?? ''}
         onChange={event => onChange({ ...value, unitId: event.target.value })}>
         <option value="" disabled>{units.length ? 'Choose a skill' : 'Loading skills…'}</option>
@@ -48,13 +48,13 @@ export function ConditionalAssignmentFields({ value, onChange, disabled = false 
         <option value="learn">Full teaching and practice sequence</option><option value="practice">Practice directly</option>
       </select>
     </label>}
-    {value.scope !== 'course' && <label className="block text-xs">Practice difficulty
-      <select aria-label="Conditional difficulty" className={selectClass} value={value.difficulty}
+    {value.scope !== 'course' && value.scope !== 'stage' && <label className="block text-xs">Assigned activity level
+      <select aria-label="Conditional activity level" className={selectClass} value={value.difficulty}
         onChange={event => onChange({ ...value, difficulty: event.target.value as ConditionalAssignmentTarget['difficulty'] })}>
-        <option value="beginner">Beginner</option><option value="medium">Medium</option><option value="advanced">Advanced</option>
+        <option value="beginner">Level 1</option><option value="medium">Level 2</option><option value="advanced">Level 3</option>
       </select>
     </label>}
-    <p className="text-xs text-muted-foreground">The full path builds foundations first. Targeted work can be assigned at any level. Existing Activities remain available.</p>
+    <p className="text-xs text-muted-foreground">Assign the starting stage or exact work the student needs. The curriculum sets levels activity by activity; students follow your assignment. Existing Activities remain available.</p>
     {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
   </fieldset>;
 }

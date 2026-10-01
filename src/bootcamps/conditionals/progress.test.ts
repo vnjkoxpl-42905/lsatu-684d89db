@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { conditionalUnits } from './content';
+import { curriculumActivityDifficulties, getCurriculumDifficulty, getCurriculumUnits } from './curriculumPath';
 import { elapsedSeconds, emptyDraft, emptyProgress, newRun, parseConditionalProgress, recommendNext, type ConditionalProgress } from './progress';
 import type { ConditionalDifficulty, ConditionalUnit } from './content/types';
 
@@ -50,23 +51,46 @@ describe('progressive recommended path', () => {
     recordQuestion(progress, units[0], 'beginner');
     expect(recommendNext(progress, units)).toMatchObject({ mode: 'learn', unitId: units[1].id });
   });
-  it('recommends medium then advanced conditionals before quantifiers, without requiring correct or unassisted answers', () => {
+  it('continues to quantifiers after each conditional activity, without whole-course difficulty passes', () => {
     const progress = emptyProgress();
     for (const unit of units.filter(unit => unit.phase === 'conditional')) {
       progress.lessons[unit.id] = '2026-10-01T10:00:00.000Z';
       recordQuestion(progress, unit, 'beginner', true);
-      recordQuestion(progress, unit, 'beginner');
+      recordQuestion(progress, unit, getCurriculumDifficulty(unit));
     }
-    expect(recommendNext(progress, units)).toMatchObject({ unitId: undefined, difficulty: 'medium', phase: 'conditional' });
-    for (const unit of units.filter(unit => unit.phase === 'conditional')) recordQuestion(progress, unit, 'medium');
-    expect(recommendNext(progress, units)).toMatchObject({ difficulty: 'advanced', phase: 'conditional' });
-    for (const unit of units.filter(unit => unit.phase === 'conditional')) recordQuestion(progress, unit, 'advanced');
     expect(recommendNext(progress, units)).toMatchObject({ mode: 'learn', unitId: units[2].id, phase: 'quantifier' });
     const quantifier = units[2];
     progress.lessons[quantifier.id] = '2026-10-01T10:00:00.000Z';
     recordQuestion(progress, quantifier, 'beginner', true);
-    for (const level of ['beginner', 'medium', 'advanced'] as const) recordQuestion(progress, quantifier, level);
+    recordQuestion(progress, quantifier, getCurriculumDifficulty(quantifier));
     expect(recommendNext(progress, units)).toBeNull();
     expect(progress.attempts.every(attempt => !attempt.correct && attempt.hint)).toBe(true);
+  });
+  it('assigns activity demands at each skill rather than requiring earlier difficulty passes', () => {
+    const selected = conditionalUnits.filter(unit => ['mixed-translation', 'sufficient-assumption', 'flaw'].includes(unit.id));
+    const progress = emptyProgress();
+    for (const unit of selected) {
+      progress.lessons[unit.id] = '2026-10-01T10:00:00.000Z';
+      recordQuestion(progress, unit, 'beginner', true);
+    }
+    expect(recommendNext(progress, selected)).toMatchObject({ unitId: 'mixed-translation', difficulty: 'medium' });
+    recordQuestion(progress, selected[0], 'medium');
+    expect(recommendNext(progress, selected)).toMatchObject({ unitId: 'sufficient-assumption', difficulty: 'advanced' });
+    recordQuestion(progress, selected[1], 'advanced');
+    expect(recommendNext(progress, selected)).toMatchObject({ unitId: 'flaw', difficulty: 'medium' });
+  });
+  it('respects a teacher starting stage without marking skipped skills complete', () => {
+    const progress = emptyProgress();
+    expect(recommendNext(progress, conditionalUnits, 'direct-linking')).toMatchObject({ mode: 'learn', unitId: 'direct-linking', difficulty: 'medium' });
+    expect(progress.lessons).toEqual({});
+    expect(progress.attempts).toEqual([]);
+    expect(getCurriculumUnits(conditionalUnits, 'quantifier-meaning').every(unit => unit.phase === 'quantifier')).toBe(true);
+    expect(getCurriculumUnits(conditionalUnits, 'missing-stage')).toEqual(conditionalUnits);
+  });
+  it('explicitly maps every authored unit and keeps phase order even when input is reordered', () => {
+    expect(conditionalUnits.every(unit => Object.prototype.hasOwnProperty.call(curriculumActivityDifficulties, unit.id))).toBe(true);
+    const reordered = [units[2], units[0], units[1]];
+    expect(getCurriculumUnits(reordered).map(unit => unit.id)).toEqual(units.map(unit => unit.id));
+    expect(getCurriculumDifficulty('quantifier-meaning')).toBe('beginner');
   });
 });

@@ -1,7 +1,7 @@
 import type { ConditionalArea, ConditionalDifficulty } from '@/bootcamps/conditionals/content/types';
 
 export interface ConditionalAssignmentTarget {
-  scope: 'course' | 'area' | 'skill' | 'general';
+  scope: 'course' | 'stage' | 'area' | 'skill' | 'general';
   mode: 'learn' | 'practice';
   difficulty: ConditionalDifficulty;
   unitId?: string;
@@ -21,11 +21,12 @@ export const CONDITIONAL_AREAS: { id: ConditionalArea; title: string }[] = [
 ];
 export function conditionalTargetKey(target: ConditionalAssignmentTarget = DEFAULT_CONDITIONAL_TARGET): string {
   if (target.scope === 'course') return 'course';
+  if (target.scope === 'stage') return `stage:${target.unitId}`;
   return [target.scope, target.scope === 'skill' ? target.unitId : target.scope === 'area' ? target.area : 'conditional',
     target.scope === 'general' ? 'practice' : target.mode, target.difficulty].join(':');
 }
 export async function resolveConditionalAssignment(target: ConditionalAssignmentTarget = DEFAULT_CONDITIONAL_TARGET) {
-  if (!['course', 'area', 'skill', 'general'].includes(target.scope) ||
+  if (!['course', 'stage', 'area', 'skill', 'general'].includes(target.scope) ||
       !['learn', 'practice'].includes(target.mode) ||
       !['beginner', 'medium', 'advanced'].includes(target.difficulty)) {
     throw new Error('Choose a valid conditional scope, learning mode and difficulty.');
@@ -33,9 +34,21 @@ export async function resolveConditionalAssignment(target: ConditionalAssignment
   const base = '/bootcamp/conditionals';
   if (target.scope === 'course') return {
     route: base, title: 'Conditional Logic Bootcamp',
-    description: 'The foundation path, followed by Medium and Advanced practice. Quantifiers follow conditionals.',
+    description: 'The teaching sequence from the beginning, with activity levels set at each stage. Quantifiers follow conditionals.',
     target: { ...DEFAULT_CONDITIONAL_TARGET }, key: 'course',
   };
+  if (target.scope === 'stage') {
+    const { findConditionalUnit } = await import('@/bootcamps/conditionals/content');
+    const unit = findConditionalUnit(target.unitId);
+    if (!unit) throw new Error('Choose an existing conditional starting stage.');
+    const normalized: ConditionalAssignmentTarget = { scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: unit.id };
+    return {
+      route: `${base}?${new URLSearchParams({ start: unit.id })}`,
+      title: `Conditional curriculum: start with ${unit.title}`,
+      description: 'Start at the assigned skill and continue through the curriculum. Each activity has its own level.',
+      target: normalized, key: conditionalTargetKey(normalized),
+    };
+  }
   const params = new URLSearchParams({ level: target.difficulty });
   let label = 'General conditional practice';
   if (target.scope === 'skill') {
@@ -53,10 +66,10 @@ export async function resolveConditionalAssignment(target: ConditionalAssignment
   const mode = target.scope === 'general' ? 'practice' : target.mode;
   const route = mode === 'practice' ? `${base}/practice?${params}` : target.scope === 'skill'
     ? `${base}/lessons/${encodeURIComponent(target.unitId!)}?${params}` : `${base}?${params}`;
-  const difficultyTitle = target.difficulty[0].toUpperCase() + target.difficulty.slice(1);
+  const difficultyTitle = `Level ${['beginner', 'medium', 'advanced'].indexOf(target.difficulty) + 1}`;
   return {
     route, title: `${label}: ${difficultyTitle} ${mode === 'learn' ? 'learning and practice' : 'practice'}`,
-    description: mode === 'learn' ? `Teaching, worked examples and focused ${target.difficulty} practice. Harder practice names its prerequisites.` : `Focused ${target.difficulty} practice with explanations and optional hints.`,
+    description: mode === 'learn' ? `Teaching, guided activities and assigned ${difficultyTitle.toLowerCase()} practice.` : `Assigned ${difficultyTitle.toLowerCase()} practice with explanations and optional hints.`,
     target: { scope: target.scope, mode, difficulty: target.difficulty,
       ...(target.scope === 'skill' ? { unitId: target.unitId } : {}), ...(target.scope === 'area' ? { area: target.area } : {}) } as ConditionalAssignmentTarget,
     key: conditionalTargetKey({ ...target, mode }),

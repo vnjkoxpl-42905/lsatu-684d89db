@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { conditionalUnits } from './content';
@@ -92,4 +92,46 @@ it('does not advance recommendations using completion that is still waiting to s
   expect(url.pathname).toBe(`${base}/practice`);
   expect(url.searchParams.get('unit')).toBe('orientation');
   expect(screen.getByText('Your recommendation updates after your latest work is saved.')).toBeTruthy();
+});
+
+it('starts at the teacher assigned stage and preserves that stage through actions', () => {
+  mount(`${base}?start=group-3`);
+  expect(forwardUrl().pathname).toBe(`${base}/lessons/group-3`);
+  expect(forwardUrl().searchParams.get('start')).toBe('group-3');
+  expect(screen.queryAllByRole('combobox')).toHaveLength(0);
+  const guided = screen.getAllByRole('link', { name: '2. Guided activity' })[0];
+  expect(guided.getAttribute('href')).toContain('start=group-3');
+});
+
+it('keeps an assigned Level 3 skill scoped through the guided activity', () => {
+  const unit = conditionalUnits.find(item => item.id === 'group-3')!;
+  state.progress!.runs['guided:group-3'] = newRun([unit.guidedExample.id]);
+  mount(`${base}/activities/group-3?unit=group-3&level=advanced&path=skill`);
+  const drill = screen.getByRole('link', { name: /Next action: Level 3 skill drill/ });
+  const url = new URL(drill.getAttribute('href')!, 'https://example.test');
+  expect(url.searchParams.get('unit')).toBe('group-3');
+  expect(url.searchParams.get('level')).toBe('advanced');
+  expect(url.searchParams.get('path')).toBe('skill');
+  expect(screen.getByRole('heading', { name: 'Build your response in these steps' })).toBeTruthy();
+  expect(screen.queryAllByRole('combobox')).toHaveLength(0);
+});
+
+it('uses the curriculum activity demand despite a legacy global Beginner course link', () => {
+  reviewed('sufficient-assumption');
+  mount(`${base}/lessons/sufficient-assumption?path=course&start=sufficient-assumption&level=beginner`);
+  expect(forwardUrl().pathname).toBe(`${base}/practice`);
+  expect(forwardUrl().searchParams.get('level')).toBeNull();
+  expect(screen.getAllByRole('link', { name: /3. Skill drill · Level 3/ }).length).toBeGreaterThan(0);
+});
+
+it('keeps the stage when opening review from the persistent navigation', () => {
+  mount(`${base}/lessons/group-3?start=group-3&path=course`);
+  expect(screen.getByRole('link', { name: 'Review attempts' }).getAttribute('href')).toContain('start=group-3');
+});
+
+it('opens the current skill reference with an accessible dialog', () => {
+  mount(`${base}/lessons/group-3?start=group-3&path=course`);
+  fireEvent.click(screen.getByRole('button', { name: 'Open reference' }));
+  expect(screen.getByRole('dialog')).toBeTruthy();
+  expect(screen.getByRole('link', { name: 'Complete reference' }).getAttribute('href')).toContain('start=group-3');
 });

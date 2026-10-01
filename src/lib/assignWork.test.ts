@@ -260,6 +260,17 @@ describe('assignWork', () => {
     expect(mockCreateClassroomItem).not.toHaveBeenCalled();
     expect(mockNotify).not.toHaveBeenCalled();
   });
+  it('persists a curriculum starting stage without imposing one level on the course', async () => {
+    const conditionalTarget = { scope: 'stage', mode: 'learn', unitId: 'direct-linking', difficulty: 'beginner' } as const;
+    const result = await assignWork({ teacherId: TEACHER, studentIds: ['student-a'],
+      item: { kind: 'bootcamp', topicId: 'conditionals', conditionalTarget }, notify: false });
+    expect(result.failed).toEqual([]);
+    expect(mockCreateClassroomItem).toHaveBeenCalledWith(expect.objectContaining({
+      sourceId: '/bootcamp/conditionals?start=direct-linking',
+      metadata: expect.objectContaining({ conditional_target: conditionalTarget, conditional_target_key: 'stage:direct-linking' }),
+    }));
+    expect(mockNotify).not.toHaveBeenCalled();
+  });
 });
 
 describe('assignWorkBundle', () => {

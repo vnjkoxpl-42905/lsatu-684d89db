@@ -12,11 +12,20 @@ describe('conditional bootcamp contract', () => {
   it('routes full-course assignment to the progressive path', async () => {
     expect(await resolveConditionalAssignment()).toMatchObject({ route: '/bootcamp/conditionals', key: 'course', target: DEFAULT_CONDITIONAL_TARGET });
   });
+  it('assigns a curriculum starting stage without a global activity level', async () => {
+    const assigned = await resolveConditionalAssignment({ scope: 'stage', unitId: 'group-3', mode: 'practice', difficulty: 'advanced' });
+    expect(assigned.route).toBe('/bootcamp/conditionals?start=group-3');
+    expect(assigned.key).toBe('stage:group-3');
+    expect(assigned.target).toEqual({ scope: 'stage', unitId: 'group-3', mode: 'learn', difficulty: 'beginner' });
+    expect(conditionalTargetKey({ scope: 'stage', unitId: 'group-3', mode: 'learn', difficulty: 'medium' })).toBe(assigned.key);
+    await expect(resolveConditionalAssignment({ scope: 'stage', unitId: 'missing', mode: 'learn', difficulty: 'beginner' })).rejects.toThrow('existing conditional starting stage');
+  });
   it('routes a skill to learning or selected-level practice without changing the unit identity', async () => {
     const target = { scope: 'skill', unitId: 'group-3', mode: 'practice', difficulty: 'advanced' } as const;
     const assigned = await resolveConditionalAssignment(target);
     expect(assigned.route).toBe('/bootcamp/conditionals/practice?level=advanced&unit=group-3');
     expect(assigned.target).toEqual(target);
+    expect(assigned.title).toContain('Level 3');
     expect((await resolveConditionalAssignment({ ...target, mode: 'learn' })).route).toContain('/lessons/group-3?level=advanced');
   });
   it('keeps general work conditional and permits independent quantifier area assignment', async () => {
