@@ -1,3 +1,4 @@
+import { parseCoachResponse } from "./response.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.75.0';
 const LSATU_GEMINI_PROXY_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/gemini-proxy`;
@@ -13,12 +14,6 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
-
-type Verdict = "correct" | "partial" | "incorrect";
-
-function clampVerdict(v: unknown): Verdict {
-  return v === "correct" || v === "partial" || v === "incorrect" ? v : "incorrect";
-}
 
 /** One numbered thing the caller wants judged for coverage, not just credit. */
 interface Idea {
@@ -41,19 +36,6 @@ function readIdeas(raw: unknown): Idea[] | null {
     ideas.push({ n, text: text.trim() });
   }
   return ideas;
-}
-
-/**
- * Which checklist numbers the model says survived. Only numbers it was actually
- * given count: an invented number would tick an idea that does not exist, and a
- * non-array means the model ignored the instruction, which is not the same as
- * "nothing survived" and must stay undefined so the caller renders unjudged.
- */
-function readCovered(raw: unknown, ideas: Idea[]): number[] | undefined {
-  if (!Array.isArray(raw)) return undefined;
-  const known = new Set(ideas.map((i) => i.n));
-  const covered = [...new Set(raw.map(Number).filter((n) => known.has(n)))];
-  return covered.sort((a, b) => a - b);
 }
 
 serve(async (req) => {
@@ -182,35 +164,24 @@ serve(async (req) => {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      const t = await response.text();
-      console.error("AI gateway error:", response.status, t);
+      console.error("activity-coach upstream request failed", { status: response.status });
       return new Response(JSON.stringify({ error: "AI analysis failed" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const data = await response.json();
-    const raw = data.choices?.[0]?.message?.content ?? "";
-
-    let verdict: Verdict = "incorrect";
-    let feedback = "";
-    let covered: number[] | undefined;
+    let result: ReturnType<typeof parseCoachResponse>;
     try {
-      const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
-      verdict = clampVerdict(parsed?.verdict);
-      feedback = typeof parsed?.feedback === "string" ? parsed.feedback : "";
-      if (checklist) covered = readCovered(parsed?.covered, checklist);
-    } catch (parseErr) {
-      console.error("activity-coach: could not parse model JSON", parseErr, raw);
-      // Surface the failure to the caller rather than guessing a verdict.
+      result = parseCoachResponse(await response.json(), checklist);
+    } catch {
+      console.error("activity-coach malformed model response");
       return new Response(JSON.stringify({ error: "Coach response was malformed" }), {
         status: 502,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-
-    if (!feedback) feedback = "Thanks, response received.";
+    const { verdict, feedback, covered } = result;
 
     // `covered` is omitted rather than sent empty when nobody asked for it or
     // the model did not answer, so the caller can tell "none survived" from
@@ -218,9 +189,9 @@ serve(async (req) => {
     return new Response(JSON.stringify(covered ? { verdict, feedback, covered } : { verdict, feedback }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
-  } catch (e) {
-    console.error("activity-coach error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
+  } catch {
+    console.error("activity-coach request failed");
+    return new Response(JSON.stringify({ error: "Coach unavailable. Please try again." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
