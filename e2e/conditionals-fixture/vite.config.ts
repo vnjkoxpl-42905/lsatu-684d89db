@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react()],
   server: { host: '127.0.0.1', port: 8097, fs: { allow: [app] } },
   resolve: { alias: [
+    { find: '@/hooks/useUserPermissions', replacement: path.resolve(__dirname, 'mockPermissions.tsx') },
     { find: '@/integrations/supabase/client', replacement: path.resolve(__dirname, 'mockCloud.ts') },
     { find: '@/contexts/AuthContext', replacement: path.resolve(__dirname, 'mockAuth.tsx') },
     { find: '@', replacement: path.resolve(app, 'src') },

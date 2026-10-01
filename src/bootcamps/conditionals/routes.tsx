@@ -1,41 +1,38 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Link, NavLink, Navigate, Outlet, Route, Routes, useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, BookOpen, Check, Clock, RotateCcw } from 'lucide-react';
-import { conditionalUnits, conditionalResources, findConditionalUnit, getConditionalQuestions } from './content';
+import { ArrowLeft, ArrowRight, BookOpen, Clock, RotateCcw } from 'lucide-react';
+import { conditionalUnits, findConditionalUnit, getConditionalQuestions } from './content';
 import { DIFFICULTIES, type ConditionalArea, type ConditionalDifficulty, type ConditionalQuestion, type ConditionalUnit } from './content/types';
 import { attemptSummary, elapsedSeconds, emptyDraft, newRun, type AnswerDraft, type ConditionalProgress, type ConditionalRun } from './progress';
 import { useConditionalProgress } from './useConditionalProgress';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { getCurriculumDifficulty, getCurriculumUnits } from './curriculumPath';
+import { conditionalAssignmentAllowsAction, type ResolvedConditionalAssignment as ConditionalAssignment } from './assignments';
+import { ConditionalLessonNote } from './components/ConditionalLessonNote';
 
 const BASE = '/bootcamp/conditionals';
 const names: Record<ConditionalArea, string> = { understanding: 'Understand the rule', translation: 'Translate the language', linking: 'Link the rules', inference: 'Draw conclusions', complex: 'Handle complex rules', application: 'Apply to LR', quantifiers: 'Some, most, and all' };
 const levelLabel = (value: ConditionalDifficulty) => `Level ${DIFFICULTIES.indexOf(value) + 1}`;
-const indicatorStages: Record<string, string> = {
-  'group-1': 'Group 1: Sufficient-condition indicators',
-  'group-2': 'Group 2: Necessary-condition indicators',
-  'group-3': 'Group 3: Negate the sufficient condition',
-  'group-4': 'Group 4: Negate the necessary condition',
-};
-/** Presentation groups follow the authored sequence, including repeated areas. */
-function teachingStages(units: ConditionalUnit[]) {
-  const stages: { key: string; title: string; units: ConditionalUnit[] }[] = [];
-  for (const unit of units) {
-    const key = indicatorStages[unit.id] ? unit.id : unit.area;
-    const previous = stages[stages.length - 1];
-    if (previous?.key === key) previous.units.push(unit);
-    else stages.push({ key, title: indicatorStages[unit.id] ?? names[unit.area], units: [unit] });
-  }
-  return stages;
-}
 
 const Context = createContext<ReturnType<typeof useConditionalProgress> | null>(null);
 function useCourse() { const value = useContext(Context); if (!value) throw new Error('Conditional course provider is missing'); return value; }
-function practiceUrl(unit?: string, difficulty: ConditionalDifficulty = 'beginner', area?: string) { const params = new URLSearchParams({ level: difficulty }); if (unit) params.set('unit', unit); if (area) params.set('area', area); return `${BASE}/practice?${params}`; }
 
 type NextStep = { mode: 'learn' | 'practice'; unitId?: string; label: string; difficulty: ConditionalDifficulty; phase: ConditionalUnit['phase'] };
-type PathSelection = { scope: 'course' | 'area' | 'skill' | 'practice'; area?: ConditionalArea; unitId?: string; start?: string; assignedLevel?: boolean; difficulty: ConditionalDifficulty; phase?: ConditionalUnit['phase'] };
+type PathSelection = { allowedUnits?: string[]; assignmentId?: string; practiceOnly?: boolean; scope: 'course' | 'area' | 'skill' | 'practice'; area?: ConditionalArea; unitId?: string; start?: string; assignedLevel?: boolean; difficulty: ConditionalDifficulty; phase?: ConditionalUnit['phase'] };
+const WorkContext = createContext<{ selection: PathSelection; assignments: ConditionalAssignment[]; active?: ConditionalAssignment; isAdmin: boolean } | null>(null);
+function useWork() { const value = useContext(WorkContext); if (!value) throw new Error('Conditional work provider missing'); return value; }
+function useSelection() { return useWork().selection; }
+function selectedUnits(selection: PathSelection) {
+  return getCurriculumUnits(conditionalUnits, selection.start).filter(unit => (!selection.allowedUnits || selection.allowedUnits.includes(unit.id)) && (!selection.area || unit.area === selection.area) && (!(selection.scope === 'skill' || selection.scope === 'practice') || !selection.unitId || unit.id === selection.unitId));
+}
+function assignmentSelection(assignment: ConditionalAssignment): PathSelection {
+  const target = assignment.target;
+  return { allowedUnits: assignment.unitIds, assignmentId: assignment.id, practiceOnly: assignment.mode === 'practice',
+    scope: target.scope === 'skill' ? 'skill' : target.scope === 'area' ? 'area' : target.scope === 'general' ? 'practice' : 'course',
+    unitId: target.scope === 'skill' ? target.unitId : undefined, start: target.scope === 'stage' ? target.unitId : undefined,
+    area: target.area, phase: target.area === 'quantifiers' ? 'quantifier' : 'conditional', assignedLevel: !!assignment.difficulty, difficulty: assignment.difficulty ?? 'beginner' };
+}
 function difficultyFrom(params: URLSearchParams): ConditionalDifficulty {
   const value = params.get('pathLevel') ?? params.get('level');
   return DIFFICULTIES.includes(value as ConditionalDifficulty) ? value as ConditionalDifficulty : 'beginner';
@@ -49,11 +46,11 @@ function pathSelection(params: URLSearchParams, practiceOnly = false): PathSelec
     area: area ?? undefined, unitId, start: params.get('start') ?? undefined, assignedLevel: explicitPath !== 'course' && (params.has('level') || params.has('pathLevel')), difficulty: difficultyFrom(params), phase };
 }
 function nextSelectedStep(progress: ConditionalProgress, units: ConditionalUnit[], selection: PathSelection): NextStep | null {
-  const selectedUnits = getCurriculumUnits(units, selection.start).filter(unit => (!(selection.scope === 'skill' || selection.scope === 'practice') || !selection.unitId || unit.id === selection.unitId) && (!selection.area || unit.area === selection.area) &&
+  const selectedUnits = getCurriculumUnits(units, selection.start).filter(unit => (!selection.allowedUnits || selection.allowedUnits.includes(unit.id)) && (!(selection.scope === 'skill' || selection.scope === 'practice') || !selection.unitId || unit.id === selection.unitId) && (!selection.area || unit.area === selection.area) &&
     (selection.scope !== 'practice' || selection.unitId || selection.area || unit.phase === selection.phase));
   for (const unit of selectedUnits) {
     const difficulty = selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit);
-    if (selection.scope !== 'practice') {
+    if (selection.scope !== 'practice' && !selection.practiceOnly) {
       if (!progress.lessons[unit.id]) return { mode: 'learn', unitId: unit.id, label: `Learn: ${unit.title}`, difficulty, phase: unit.phase };
       if (!progress.attempts.some(attempt => attempt.questionId === unit.guidedExample.id)) return { mode: 'learn', unitId: unit.id, label: `Guided activity: ${unit.title}`, difficulty, phase: unit.phase };
     }
@@ -65,10 +62,11 @@ function nextSelectedStep(progress: ConditionalProgress, units: ConditionalUnit[
 }
 function nextStepUrl(next: NextStep, selection: PathSelection) {
   const params = new URLSearchParams({ phase: next.phase });
+  if (selection.assignmentId) params.set('assignment', selection.assignmentId);
   if (selection.assignedLevel) params.set('level', next.difficulty);
   if (selection.start) params.set('start', selection.start);
   if (selection.scope === 'course') params.set('path', 'course');
-  else if (selection.scope !== 'practice') { params.set('path', selection.scope); if (selection.assignedLevel) params.set('pathLevel', selection.difficulty); }
+  else if (selection.scope !== 'practice' && !selection.practiceOnly) { params.set('path', selection.scope); if (selection.assignedLevel) params.set('pathLevel', selection.difficulty); }
   if (selection.area) params.set('area', selection.area);
   if (next.unitId) params.set('unit', next.unitId);
   const route = next.mode === 'learn' ? `${BASE}/${next.label.startsWith('Guided activity:') ? 'activities' : 'lessons'}/${next.unitId}` : `${BASE}/practice`;
@@ -76,6 +74,7 @@ function nextStepUrl(next: NextStep, selection: PathSelection) {
 }
 function pathUrl(selection: PathSelection) {
   const params = new URLSearchParams();
+  if (selection.assignmentId) params.set('assignment', selection.assignmentId);
   if (selection.scope === 'skill' && selection.unitId) { params.set('path', 'skill'); params.set('unit', selection.unitId); }
   if (selection.start) params.set('start', selection.start);
   if (selection.area) params.set('area', selection.area);
@@ -84,44 +83,64 @@ function pathUrl(selection: PathSelection) {
 }
 function RecommendedForward({ selection }: { selection?: PathSelection }) {
   const { savedProgress, status } = useCourse();
-  const [params] = useSearchParams();
-  const location = useLocation();
-  const target = selection ?? pathSelection(params, /\/(practice|simulator|hard-sentences)$/.test(location.pathname));
+  const currentSelection = useSelection();
+  const target = selection ?? currentSelection;
   const next = savedProgress ? nextSelectedStep(savedProgress, conditionalUnits, target) : null;
   return <div className="cb-card"><span className="cb-label">Recommended next step</span>
     <h2>{next ? next.label : 'You have worked through the selected steps.'}</h2>
-    {status !== 'saved' && <p className="cb-muted">Your recommendation updates after your latest work is saved.</p>}
+    {status !== 'saved' && <p className="cb-muted">Your next step updates after your latest work is saved.</p>}
     {next ? <Link className="cb-button cb-primary" to={nextStepUrl(next, target)}>Continue: {next.label} <ArrowRight size={16} /></Link>
-      : <Link className="cb-button" to={pathUrl(target)}>Return to your curriculum</Link>}
+      : <Link className="cb-button" to={pathUrl(target)}>Return to your work</Link>}
   </div>;
 }
 
-export function ConditionalBootcampRoutes({ userId }: { userId: string }) {
+export function ConditionalBootcampRoutes({ userId, isAdmin = false, assignments = [] }: { userId: string; isAdmin?: boolean; assignments?: ConditionalAssignment[] }) {
   const course = useConditionalProgress(userId);
-  return <Context.Provider value={course}><Routes><Route element={<Shell />}>
+  const [params] = useSearchParams();
+  const location = useLocation();
+  const pathUnit = location.pathname.match(/\/(?:lessons|activities)\/([^/]+)/)?.[1];
+  const requestedUnit = pathUnit ?? params.get('unit');
+  const requestedAction = location.pathname.includes('/lessons/') ? 'lesson' : location.pathname.includes('/activities/') ? 'guided' : 'practice';
+  const matching = requestedUnit ? assignments.find(item => conditionalAssignmentAllowsAction(item, { unitId: requestedUnit, action: requestedAction, difficulty: params.has('level') ? difficultyFrom(params) : item.difficulty ?? getCurriculumDifficulty(requestedUnit) })) : undefined;
+  const active = params.has('assignment') ? assignments.find(item => item.id === params.get('assignment')) : matching ?? assignments[0];
+  const selection = isAdmin ? pathSelection(params, /\/(practice|simulator|hard-sentences)$/.test(location.pathname)) : active ? assignmentSelection(active) : { scope: 'course' as const, allowedUnits: [], difficulty: 'beginner' as const };
+  return <Context.Provider value={course}><WorkContext.Provider value={{ selection, assignments, active, isAdmin }}><Routes><Route element={<Shell />}>
     <Route index element={<LearningPath />} />
-    <Route path="lessons/:unitId" element={<Lesson />} />
-    <Route path="activities/:unitId" element={<GuidedActivity />} />
-    <Route path="practice" element={<Practice />} />
-    <Route path="simulator" element={<Practice simulator />} />
-    <Route path="hard-sentences" element={<Practice hardLanguage />} />
+    <Route path="lessons/:unitId" element={<ActionGate action="lesson"><Lesson /></ActionGate>} />
+    <Route path="activities/:unitId" element={<ActionGate action="guided"><GuidedActivity /></ActionGate>} />
+    <Route path="practice" element={<ActionGate action="practice"><Practice /></ActionGate>} />
+    <Route path="simulator" element={<ActionGate action="practice"><Practice simulator /></ActionGate>} />
+    <Route path="hard-sentences" element={<ActionGate action="practice"><Practice hardLanguage /></ActionGate>} />
     <Route path="reference" element={<Reference />} />
     <Route path="indicators" element={<Reference indicators />} />
-    <Route path="flashcards" element={<Flashcards />} />
+    <Route path="flashcards" element={<ActionGate action="practice"><Flashcards /></ActionGate>} />
     <Route path="diagnostics" element={<Diagnostics />} />
     <Route path="review" element={<Diagnostics review />} />
     <Route path="journal" element={<Journal />} />
     <Route path="settings" element={<Settings />} />
     <Route path="*" element={<Navigate to={BASE} replace />} />
-  </Route></Routes></Context.Provider>;
+  </Route></Routes></WorkContext.Provider></Context.Provider>;
+}
+function ActionGate({ action, children }: { action: 'lesson' | 'guided' | 'practice'; children: React.ReactNode }) {
+  const { isAdmin, active, selection } = useWork();
+  const { unitId } = useParams();
+  const [params] = useSearchParams();
+  const requestedUnit = unitId ?? params.get('unit');
+  const explicitLevel = params.get('level');
+  const location = useLocation();
+  const requestedDifficulty = location.pathname.endsWith('/hard-sentences') ? 'advanced' : explicitLevel ? difficultyFrom(params) : active?.difficulty ?? getCurriculumDifficulty(requestedUnit ?? '');
+  const permitted = !!active && (requestedUnit
+    ? conditionalAssignmentAllowsAction(active, { unitId: requestedUnit, action, difficulty: requestedDifficulty })
+    : action === 'practice' && active.mode === 'practice' && (active.target.scope === 'skill' || active.target.scope === 'area' || active.target.scope === 'general') &&
+      (!params.get('area') || params.get('area') === active.target.area) && (!explicitLevel || explicitLevel === active.difficulty) &&
+      (!location.pathname.endsWith('/hard-sentences') || active.difficulty === 'advanced'));
+
+  return isAdmin || permitted ? <>{children}</> : <div className="cb-card"><h1>This activity is not available here.</h1><Link className="cb-button" to={pathUrl(selection)}>Return to your work</Link></div>;
 }
 
-function unitSelection(params: URLSearchParams, unit: ConditionalUnit): PathSelection {
-  const selection = pathSelection(params);
-  return { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit) };
-}
 function actionUrl(unit: ConditionalUnit, action: 'lesson' | 'guided' | 'practice' | 'repair', selection: PathSelection) {
   const params = new URLSearchParams();
+  if (selection.assignmentId) params.set('assignment', selection.assignmentId);
   if (selection.assignedLevel) params.set('level', selection.difficulty);
   if (selection.start) params.set('start', selection.start);
   if (selection.area) params.set('area', selection.area);
@@ -132,70 +151,65 @@ function actionUrl(unit: ConditionalUnit, action: 'lesson' | 'guided' | 'practic
   return `${BASE}/${route}?${params}${action === 'repair' ? '#repair' : ''}`;
 }
 function UnitActions({ unit, selection }: { unit: ConditionalUnit; selection: PathSelection }) {
+  if (selection.practiceOnly) return null;
   return <nav className="cb-unit-actions" aria-label={`${unit.title} actions`}>
     {([['lesson', '1. Learn'], ['guided', '2. Guided activity'], ['practice', `3. Skill drill · ${levelLabel(selection.difficulty)}`], ['repair', '4. Review the move']] as const).map(([action, label]) => <Link key={action} to={actionUrl(unit, action, selection)}>{label}</Link>)}
   </nav>;
 }
 function Shell() {
   const { status, error, retry, progress } = useCourse();
-  const [params] = useSearchParams();
+  const selection = useSelection();
   const location = useLocation();
-  const [referenceOpen, setReferenceOpen] = useState(false);
-  const [railOpen, setRailOpen] = useState(() => window.matchMedia ? window.matchMedia('(min-width: 641px)').matches : true);
-  const currentId = location.pathname.match(/\/(?:lessons|activities)\/([^/]+)/)?.[1] ?? params.get('unit');
-  const current = findConditionalUnit(currentId ?? '');
-  const selection = pathSelection(params);
-  const units = getCurriculumUnits(conditionalUnits, selection.start).filter(unit => (!selection.area || unit.area === selection.area) && (selection.scope !== 'skill' || !selection.unitId || unit.id === selection.unitId));
-  const navigation = [['', 'Curriculum'], ['/review', 'Review attempts'], ['/diagnostics', 'Your progress'], ['/journal', 'Journal'], ['/settings', 'Settings']];
-  return <div className="cb-shell"><aside className="cb-rail"><Link to="/classroom"><ArrowLeft size={14} style={{ display: 'inline' }} /> Classroom</Link><div className="cb-brand">Conditionals</div><p className="cb-muted">Understand each rule. Check what follows.</p><nav aria-label="Conditional bootcamp" className="cb-nav">{navigation.map(([route, label]) => <NavLink key={route} end={route === ''} to={route ? `${BASE}${route}${location.search}` : pathUrl(selection)}>{label}</NavLink>)}</nav><details className="cb-curriculum-rail" open={railOpen} onToggle={event => setRailOpen(event.currentTarget.open)}><summary>Teaching sequence</summary>{teachingStages(units).map((stage, stageIndex) => <section key={`${stage.key}:${stageIndex}`}><h3>{stage.title}</h3>{stage.units.map(unit => <div key={unit.id}><Link aria-current={currentId === unit.id ? 'step' : undefined} to={actionUrl(unit, 'lesson', unitSelection(params, unit))}>{progress?.lessons[unit.id] ? <Check size={12} /> : <span>{conditionalUnits.indexOf(unit) + 1}</span>}{unit.title}</Link>{currentId === unit.id && <UnitActions unit={unit} selection={unitSelection(params, unit)} />}</div>)}</section>)}</details></aside><main className="cb-main" id="conditional-main"><header className="cb-workspace-bar"><span className="cb-label">Conditional reasoning workspace</span><button onClick={() => setReferenceOpen(true)}><BookOpen size={16} /> Open reference</button><div className="cb-save" role="status">{status === 'saved' ? 'Saved to your account' : status === 'loading' ? 'Loading your saved work...' : status === 'saving' ? 'Saving your changes...' : status === 'unsaved' ? 'Changes waiting to save' : 'Changes are not saved'}</div></header>{error && <div className="cb-error" role="alert"><p>{error}</p>{progress ? <button onClick={() => void retry()}>Retry save</button> : <button onClick={() => window.location.reload()}>Reload saved work</button>}</div>}{progress ? <Outlet /> : !error && <p>Loading your learning path...</p>}</main><Dialog open={referenceOpen} onOpenChange={setReferenceOpen}><DialogContent className="mc-bootcamp conditional-bootcamp cb-reference-dialog" aria-describedby={undefined}><DialogTitle>{current?.title ?? 'Keep the reasoning close'}</DialogTitle>{current ? <><ol>{current.method.map(step => <li key={step}>{step}</li>)}</ol><p>{current.commonMistake.repair}</p><div className="cb-result">{current.workedExample.conclusion}</div></> : <p>Open a skill to keep its method and common mistake beside your work.</p>}<Link to={`${BASE}/reference${location.search}`} onClick={() => setReferenceOpen(false)}>Complete reference</Link><p><Link to={`${BASE}/indicators${location.search}`} onClick={() => setReferenceOpen(false)}>Groups 1–4 indicator reference</Link></p></DialogContent></Dialog></div>;
-}
-function LearningPath() {
   const [params] = useSearchParams();
-  const { progress } = useCourse();
-  const selection = pathSelection(params);
-  const units = getCurriculumUnits(conditionalUnits, selection.start).filter(unit => (!selection.area || unit.area === selection.area) && (selection.scope !== 'skill' || !selection.unitId || unit.id === selection.unitId));
-  return <><PageHeader className="cb-page-header" eyebrow="Your conditional curriculum" title="Conditional Logic" description="A conditional tells you what follows if a condition is met. Learn to translate that relationship, take its contrapositive, and link it with other rules." /><RecommendedForward selection={selection} /><p className="cb-muted">Learn the move, try it with guidance, complete its skill drill, then review how it works. Saved reviews and checked attempts record work completed. They do not certify mastery.</p>{(['conditional', 'quantifier'] as const).map(phase => {
-    const phaseUnits = units.filter(unit => unit.phase === phase);
-    if (!phaseUnits.length) return null;
-    return <section key={phase}><h2>{phase === 'conditional' ? 'First, handle conditionals' : 'Next, work with quantities'}</h2>{phase === 'quantifier' && <p>After conditional rules, examine what some, most, and all establish and which conclusions they support.</p>}<div className="cb-sequence">{teachingStages(phaseUnits).map((stage, stageIndex) => <section key={`${stage.key}:${stageIndex}`} aria-label={stage.title}><h3>{stage.title}</h3>{stage.units.map(unit => { const target = unitSelection(params, unit); return <article key={unit.id} className="cb-card cb-path-step"><span className="cb-step-number">{conditionalUnits.indexOf(unit) + 1}</span><div><span className="cb-label">{names[unit.area]} · {levelLabel(target.difficulty)} activity</span><h3>{unit.title}</h3><p>{unit.goal}</p>{progress.lessons[unit.id] && <p className="cb-muted"><Check size={14} style={{ display: 'inline' }} /> Lesson reviewed</p>}<UnitActions unit={unit} selection={target} /></div></article>; })}</section>)}</div></section>;
-  })}</>;
+  const [referenceOpen, setReferenceOpen] = useState(false);
+  const currentId = location.pathname.match(/\/(?:lessons|activities)\/([^/]+)/)?.[1] ?? params.get('unit');
+  const current = selectedUnits(selection).find(unit => unit.id === currentId);
+  return <div className="cb-shell"><aside className="cb-rail"><Link to="/classroom"><ArrowLeft size={14} /> Classroom</Link><div className="cb-brand">Conditionals</div><nav aria-label="Conditional work" className="cb-nav"><NavLink end to={pathUrl(selection)}>Current work</NavLink><NavLink to={`${BASE}/review${location.search}`}>Review attempts</NavLink><NavLink to={`${BASE}/journal${location.search}`}>Journal</NavLink></nav></aside><main className="cb-main" id="conditional-main"><header className="cb-workspace-bar"><button onClick={() => setReferenceOpen(true)}><BookOpen size={16} /> Open reference</button><div className="cb-save" role="status">{status === 'saved' ? 'Saved to your account' : status === 'loading' ? 'Loading your saved work...' : status === 'saving' ? 'Saving your changes...' : status === 'unsaved' ? 'Changes waiting to save' : 'Changes are not saved'}</div></header>{error && <div className="cb-error" role="alert"><p>{error}</p>{progress ? <button onClick={() => void retry()}>Retry save</button> : <button onClick={() => window.location.reload()}>Reload saved work</button>}</div>}{progress ? <Outlet /> : !error && <p>Loading your work...</p>}</main><Dialog open={referenceOpen} onOpenChange={setReferenceOpen}><DialogContent className="mc-bootcamp conditional-bootcamp cb-reference-dialog" aria-describedby={undefined}><DialogTitle>{current?.title ?? 'Keep the reasoning close'}</DialogTitle>{current ? <><ol>{current.method.map(step => <li key={step}>{step}</li>)}</ol><p>{current.commonMistake.repair}</p><div className="cb-result">{current.workedExample.conclusion}</div></> : <p>Open a skill to keep its method and common mistake beside your work.</p>}<Link to={`${BASE}/reference${location.search}`} onClick={() => setReferenceOpen(false)}>Complete reference</Link></DialogContent></Dialog></div>;
 }
-function StageResources({ unit }: { unit: ConditionalUnit }) {
-  const resources = conditionalResources.filter(resource => unit.area === 'translation' ? /indicator|practice worlds/i.test(resource.title) : unit.area === 'application' ? /medium|advanced|practice worlds/i.test(resource.title) : unit.area === 'linking' ? /introductory|practice worlds/i.test(resource.title) : false);
-  return resources.length ? <section className="cb-card"><h2>Put this move to work</h2><p>Use the existing Activity Center and guided drills for additional application. These resources cover broader conditional work.</p>{resources.map(resource => <p key={resource.route}><Link className="cb-button" to={resource.route}>{resource.title}</Link></p>)}</section> : null;
+
+function LearningPath() {
+  const { selection, active, assignments, isAdmin } = useWork();
+  const { savedProgress } = useCourse();
+  const next = savedProgress ? nextSelectedStep(savedProgress, conditionalUnits, selection) : null;
+  if (!isAdmin && !active) return <div className="cb-card"><h1>No conditional work is available yet.</h1><Link to="/classroom">Back to Classroom</Link></div>;
+  const unit = next?.unitId ? findConditionalUnit(next.unitId) : undefined;
+  return <><section className="cb-current-work"><span className="cb-label">Conditional Logic</span><h1>{unit?.title ?? 'You finished this work.'}</h1><p>{unit?.goal ?? 'Return to your attempts to review the reasoning, or revisit this work.'}</p>{next && <Link className="cb-button cb-primary" to={nextStepUrl(next, selection)}>{next.mode === 'practice' ? 'Continue practice' : next.label.startsWith('Guided') ? 'Continue activity' : 'Begin lesson'} <ArrowRight size={16} /></Link>}{!next && <Link className="cb-button" to={`${BASE}/review${selection.assignmentId ? `?assignment=${selection.assignmentId}` : ''}`}>Review your attempts</Link>}</section>{assignments.length > 1 && !isAdmin && <section className="cb-other-work"><h2>Your other work</h2>{assignments.filter(item => item.id !== active?.id).map(item => <p key={item.id}><Link to={`${BASE}?assignment=${encodeURIComponent(item.id)}`}>{item.title}</Link></p>)}</section>}</>;
 }
+
 function Lesson() {
   const { unitId } = useParams();
-  const [params] = useSearchParams();
+  const { selection } = useWork();
   const unit = findConditionalUnit(unitId ?? '');
   const { progress, update } = useCourse();
-  if (!unit) return <><h1>Lesson not found</h1><Link to={BASE}>Return to the learning path</Link></>;
-  const selection = unitSelection(params, unit);
-  const index = conditionalUnits.indexOf(unit);
-  const previous = conditionalUnits[index - 1];
-  const canGoBack = previous && (!selection.start || index > conditionalUnits.findIndex(item => item.id === selection.start));
-  return <><Link to={pathUrl(selection)}>Curriculum</Link><PageHeader className="cb-page-header" eyebrow={`${indicatorStages[unit.id] ?? names[unit.area]} · Lesson ${index + 1}`} title={unit.title} description={unit.goal} /><UnitActions unit={unit} selection={selection} /><nav className="cb-toc" aria-label="In this lesson"><a href="#understand">Understand the move</a><a href="#worked-reasoning">Watch the reasoning</a><a href="#repair">Repair the mistake</a></nav>{unit.prerequisites.length > 0 && <p className="cb-muted">Helpful first: {unit.prerequisites.map((id, n) => <span key={id}>{n > 0 && ', '}<Link to={actionUrl(findConditionalUnit(id)!, 'lesson', selection)}>{findConditionalUnit(id)?.title ?? id}</Link></span>)}.</p>}<section id="understand" className="cb-card"><h2>Understand the move</h2>{unit.teaching.map((paragraph, n) => <p key={n}>{paragraph}</p>)}{progress.settings.showMethod && <><h3>Your method</h3><ol>{unit.method.map((step, n) => <li key={n}>{step}</li>)}</ol></>}</section><section id="worked-reasoning" className="cb-card"><h2>Watch the reasoning</h2><h3>Given</h3><ul>{unit.workedExample.statements.map((text, n) => <li key={n}>{text}</li>)}</ul><h3>Work through it</h3><ol>{unit.workedExample.reasoning.map((text, n) => <li key={n}>{text}</li>)}</ol><div className="cb-result"><strong>Result: </strong>{unit.workedExample.conclusion}</div></section><section id="repair" className="cb-card"><h2>Repair this mistake</h2><p>{unit.commonMistake.mistake}</p><div className="cb-reason">{unit.commonMistake.repair}</div></section><div className="cb-actions"><button onClick={() => update(prior => ({ ...prior, lessons: { ...prior.lessons, [unit.id]: new Date().toISOString() } }))}>{progress.lessons[unit.id] ? 'Lesson reviewed' : 'Mark lesson reviewed'}</button><Link className="cb-button cb-primary" to={actionUrl(unit, 'guided', selection)}>Next action: guided activity <ArrowRight size={16} /></Link>{canGoBack && <Link className="cb-button" to={actionUrl(previous, 'lesson', { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(previous) })}>Previous lesson: {previous.title}</Link>}</div><p className="cb-muted">Reviewing a lesson records that you read it. Practice results are recorded separately.</p><StageResources unit={unit} /><RecommendedForward selection={selection} /></>;
+  if (!unit) return <h1>Lesson not found</h1>;
+  const target = { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit) };
+  const units = selectedUnits(selection);
+  const previous = units[units.indexOf(unit) - 1];
+  return <ConditionalLessonNote unit={unit} reviewed={!!progress.lessons[unit.id]} onComplete={() => update(prior => ({ ...prior, lessons: { ...prior.lessons, [unit.id]: new Date().toISOString() } }))} continueHref={actionUrl(unit, 'guided', target)} previousHref={previous ? actionUrl(previous, 'lesson', target) : undefined} />;
 }
+
 function GuidedActivity() {
   const { unitId } = useParams();
-  const [params] = useSearchParams();
   const unit = findConditionalUnit(unitId ?? '');
-  if (!unit) return <><h1>Activity not found</h1><Link to={BASE}>Return to your curriculum</Link></>;
-  const selection = unitSelection(params, unit);
+  const activeSelection = useSelection();
+  if (!unit) return <><h1>Activity not found</h1><Link to={BASE}>Return to your work</Link></>;
+  const selection = { ...activeSelection, difficulty: activeSelection.assignedLevel ? activeSelection.difficulty : getCurriculumDifficulty(unit) };
   return <><PageHeader className="cb-page-header" eyebrow="Guided reasoning activity" title={`${unit.title}: make the move yourself.`} description={unit.goal} /><UnitActions unit={unit} selection={selection} /><div className="cb-card"><h2>Identify. Build. Test. Repair.</h2><p>Use the method to produce your reasoning before judging an answer. Keep the reference open when you need it.</p><QuestionRunner guidedMethod={unit.method} forwardSelection={selection} runKey={`guided:${unit.id}`} questions={[{ ...unit.guidedExample, unitId: unit.id, unitTitle: unit.title, difficulty: 'beginner' }]} /></div><Link className="cb-button" to={actionUrl(unit, 'lesson', selection)}><ArrowLeft size={16} /> Previous action: lesson</Link><Link className="cb-button cb-primary" to={actionUrl(unit, 'practice', selection)}>Next action: {levelLabel(selection.difficulty)} skill drill <ArrowRight size={16} /></Link></>;
 }
 
 type PracticeQuestion = ConditionalQuestion & { unitId: string; unitTitle: string; difficulty: ConditionalDifficulty };
 function Practice({ simulator = false, hardLanguage = false }: { simulator?: boolean; hardLanguage?: boolean }) {
   const [params] = useSearchParams();
-  const unitId = params.get('unit') ?? undefined;
+  const activeWork = useSelection();
+  const unitId = params.get('unit') ?? activeWork.unitId;
   const unit = findConditionalUnit(unitId ?? '');
-  const selection = unit ? unitSelection(params, unit) : pathSelection(params, true);
+  const activeSelection = useSelection();
+  const selection = unit ? { ...activeSelection, difficulty: activeSelection.assignedLevel ? activeSelection.difficulty : getCurriculumDifficulty(unit) } : activeSelection;
   const difficulty = hardLanguage ? 'advanced' : selection.difficulty;
-  const area = hardLanguage ? 'translation' : params.get('area') ?? undefined;
-  const phase = params.get('phase') === 'quantifier' ? 'quantifier' : 'conditional';
-  const questions = getConditionalQuestions({ difficulty, ...(unitId ? { unitId } : {}), ...(area ? { area: area as ConditionalArea } : {}), ...(!unitId && !area ? { phase } : {}) });
-  return <><span className="cb-label">{levelLabel(difficulty)} · {simulator ? 'Mixed application' : 'Skill drill'}</span><h1>{unit ? unit.title : area ? names[area as ConditionalArea] : 'Put your conditional reasoning to work.'}</h1><p>Write or diagram first. Then check the answer and repair your reasoning. Use a hint or worked explanation when you need help.</p>{unit && <UnitActions unit={unit} selection={selection} />}{questions.length ? <div className="cb-card"><QuestionRunner key={`${difficulty}:${unitId ?? area ?? phase}`} runKey={`practice:${difficulty}:${unitId ?? area ?? phase}`} questions={questions} hideSkill={simulator} forwardSelection={{ ...selection, difficulty, area: area as ConditionalArea | undefined, unitId, phase }} /></div> : <div className="cb-card"><p>This practice set is unavailable. Return to the curriculum to open the lesson or activity.</p><Link to={pathUrl(selection)}>Return to your curriculum</Link></div>}</>;
+  const area = selection.area ?? (hardLanguage ? 'translation' : undefined);
+  const phase = selection.phase ?? 'conditional';
+  const questions = getConditionalQuestions({ difficulty, ...(unitId ? { unitId } : {}), ...(area ? { area: area as ConditionalArea } : {}), ...(!unitId && !area ? { phase } : {}) }).filter(question => !selection.allowedUnits || selection.allowedUnits.includes(question.unitId));
+  return <><span className="cb-label">{levelLabel(difficulty)} · {simulator ? 'Mixed application' : 'Skill drill'}</span><h1>{unit ? unit.title : area ? names[area as ConditionalArea] : 'Put your conditional reasoning to work.'}</h1><p>Write or diagram first. Then check the answer and repair your reasoning. Use a hint or worked explanation when you need help.</p>{unit && <UnitActions unit={unit} selection={selection} />}{questions.length ? <div className="cb-card"><QuestionRunner key={`${difficulty}:${unitId ?? area ?? phase}`} runKey={`practice:${difficulty}:${unitId ?? area ?? phase}`} questions={questions} hideSkill={simulator} forwardSelection={{ ...selection, difficulty, area: area as ConditionalArea | undefined, unitId, phase }} /></div> : <div className="cb-card"><p>This practice set is unavailable. Return to your work to open the lesson or activity.</p><Link to={pathUrl(selection)}>Return to your work</Link></div>}</>;
 }
 
 function QuestionRunner({ runKey, questions, hideSkill = false, forwardSelection, guidedMethod }: { runKey: string; questions: PracticeQuestion[]; hideSkill?: boolean; forwardSelection?: PathSelection; guidedMethod?: string[] }) {
@@ -233,30 +247,31 @@ function QuestionRunner({ runKey, questions, hideSkill = false, forwardSelection
 }
 
 function Reference({ indicators = false }: { indicators?: boolean }) {
-  const [params] = useSearchParams();
-  const units = indicators ? conditionalUnits.filter(unit => /group [1-4]/i.test(unit.title)) : conditionalUnits;
-  return <><span className="cb-label">Keep the reasoning close</span><h1>{indicators ? 'Four language groups. One direction to preserve.' : 'Your conditional reference.'}</h1><p>{indicators ? 'An indicator helps identify the relation. Preserve the complete condition and check what the sentence actually says.' : 'Review the method, a worked example, and the mistake to avoid. Open the lesson or practice the exact skill.'}</p>{units.map(unit => <section className="cb-card" key={unit.id}><h2>{unit.title}</h2><p>{unit.goal}</p><ol>{unit.method.map((step, index) => <li key={index}>{step}</li>)}</ol><div className="cb-reason"><p>{unit.workedExample.statements.join(' ')}</p><strong>{unit.workedExample.conclusion}</strong></div><p><strong>Watch for: </strong>{unit.commonMistake.mistake}</p><p>{unit.commonMistake.repair}</p><div className="cb-actions"><Link className="cb-button" to={actionUrl(unit, 'lesson', unitSelection(params, unit))}>Full lesson</Link><Link className="cb-button" to={actionUrl(unit, 'practice', unitSelection(params, unit))}>Practice this skill</Link></div></section>)}</>;
+  const selection = useSelection();
+  const scoped = selectedUnits(selection);
+  const units = indicators ? scoped.filter(unit => /group [1-4]/i.test(unit.title)) : scoped;
+  return <><span className="cb-label">Keep the reasoning close</span><h1>{indicators ? 'Four language groups. One direction to preserve.' : 'Your conditional reference.'}</h1><p>{indicators ? 'An indicator helps identify the relation. Preserve the complete condition and check what the sentence actually says.' : 'Review the method, a worked example, and the mistake to avoid. Open the lesson or practice the exact skill.'}</p>{units.map(unit => <section className="cb-card" key={unit.id}><h2>{unit.title}</h2><p>{unit.goal}</p><ol>{unit.method.map((step, index) => <li key={index}>{step}</li>)}</ol><div className="cb-reason"><p>{unit.workedExample.statements.join(' ')}</p><strong>{unit.workedExample.conclusion}</strong></div><p><strong>Watch for: </strong>{unit.commonMistake.mistake}</p><p>{unit.commonMistake.repair}</p><div className="cb-actions">{!selection.practiceOnly && <Link className="cb-button" to={actionUrl(unit, 'lesson', { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit) })}>Full lesson</Link>}<Link className="cb-button" to={actionUrl(unit, 'practice', { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit) })}>Practice this skill</Link></div></section>)}</>;
 }
 
 function Flashcards() {
-  const [params] = useSearchParams();
-  const selection = pathSelection(params, true);
+  const selection = useSelection();
   const area = selection.area;
   const level = selection.difficulty;
-  const questions = getConditionalQuestions({ difficulty: level, ...(selection.unitId ? { unitId: selection.unitId } : {}), ...(area ? { area } : { phase: 'conditional' as const }) });
+  const questions = getConditionalQuestions({ difficulty: level, ...(selection.unitId ? { unitId: selection.unitId } : {}), ...(area ? { area } : { phase: 'conditional' as const }) }).filter(question => !selection.allowedUnits || selection.allowedUnits.includes(question.unitId));
   return <><span className="cb-label">Recall before reveal · {levelLabel(level)}</span><h1>Produce the rule before you recognize it.</h1><p>Write your answer, then reveal the explanation and compare. Hints and early reveals are recorded separately from correctness.</p><div className="cb-card"><QuestionRunner key={`${area}:${level}`} runKey={`flashcards:${selection.unitId ?? area ?? 'conditional'}:${level}`} questions={questions} forwardSelection={selection} /></div></>;
 }
 
 function Diagnostics({ review = false }: { review?: boolean }) {
   const { savedProgress } = useCourse();
-  const progress = savedProgress;
+  const selection = useSelection();
+  const progress = savedProgress ? { ...savedProgress, lessons: Object.fromEntries(Object.entries(savedProgress.lessons).filter(([id]) => !selection.allowedUnits || selection.allowedUnits.includes(id))), attempts: savedProgress.attempts.filter(attempt => (!selection.allowedUnits || selection.allowedUnits.includes(attempt.unitId)) && (!selection.assignedLevel || attempt.difficulty === selection.difficulty)) } : null;
   if (!progress) return <p>Loading your recorded attempts...</p>;
   const summary = attemptSummary(progress.attempts);
   const misses = progress.attempts.filter(attempt => !attempt.correct || attempt.hint || attempt.explanationBeforeCheck);
-  return <><span className="cb-label">Based on your saved work</span><h1>{review ? 'Return to the reasoning.' : 'See what your practice shows.'}</h1><p>Correctness, assistance, and lesson review tell different stories. These are your recorded attempts, not a placement score or an automatic mastery label.</p><div className="cb-card cb-summary"><div><strong>{summary.total}</strong>Checked answers</div><div><strong>{summary.correct}</strong>Correct choices</div><div><strong>{summary.assisted}</strong>Assisted answers</div><div><strong>{Object.keys(progress.lessons).length}</strong>Lessons reviewed</div></div>{!review && <div className="cb-scroll"><table className="cb-table"><thead><tr><th>Skill</th><th>Checked</th><th>Correct</th><th>Assisted</th><th>Work on it</th></tr></thead><tbody>{conditionalUnits.map(unit => { const stats = attemptSummary(progress.attempts.filter(item => item.unitId === unit.id)); return <tr key={unit.id}><td>{unit.title}</td><td>{stats.total}</td><td>{stats.correct}</td><td>{stats.assisted}</td><td><Link to={practiceUrl(unit.id)}>Practice</Link></td></tr>; })}</tbody></table></div>}{review && (misses.length ? [...misses].reverse().map(attempt => {
+  return <><span className="cb-label">Based on your saved work</span><h1>{review ? 'Return to the reasoning.' : 'See what your practice shows.'}</h1><p>Correctness, assistance, and lesson review tell different stories. These are your recorded attempts, not a placement score or an automatic mastery label.</p><div className="cb-card cb-summary"><div><strong>{summary.total}</strong>Checked answers</div><div><strong>{summary.correct}</strong>Correct choices</div><div><strong>{summary.assisted}</strong>Assisted answers</div><div><strong>{Object.keys(progress.lessons).length}</strong>Lessons reviewed</div></div>{!review && <div className="cb-scroll"><table className="cb-table"><thead><tr><th>Skill</th><th>Checked</th><th>Correct</th><th>Assisted</th><th>Work on it</th></tr></thead><tbody>{selectedUnits(selection).map(unit => { const stats = attemptSummary(progress.attempts.filter(item => item.unitId === unit.id)); return <tr key={unit.id}><td>{unit.title}</td><td>{stats.total}</td><td>{stats.correct}</td><td>{stats.assisted}</td><td><Link to={actionUrl(unit, 'practice', { ...selection, difficulty: selection.assignedLevel ? selection.difficulty : getCurriculumDifficulty(unit) })}>Practice</Link></td></tr>; })}</tbody></table></div>}{review && (misses.length ? [...misses].reverse().map(attempt => {
     const unit = findConditionalUnit(attempt.unitId);
     const question = unit?.guidedExample.id === attempt.questionId ? unit.guidedExample : unit?.drills[attempt.difficulty].find(item => item.id === attempt.questionId);
-    return <article className="cb-card" key={attempt.id}><span className="cb-label">{levelLabel(attempt.difficulty)} · {attempt.correct ? 'Correct with assistance' : 'Missed choice'}</span><h2>{unit?.title ?? attempt.unitId}</h2>{question ? <><p>{question.prompt}</p><p><strong>Your answer: </strong>{attempt.choice === null ? 'No choice' : question.options[attempt.choice]}</p><p><strong>Your working: </strong>{attempt.working || 'No written work saved'}</p><div className="cb-result"><strong>Answer: </strong>{question.options[question.answerIndex]}<ol>{question.reasoningSteps.map((step, index) => <li key={index}>{step}</li>)}</ol><p>{question.explanation}</p></div></> : <p>The authored question is unavailable. Your attempt remains recorded.</p>}<Link className="cb-button" to={practiceUrl(attempt.unitId, attempt.difficulty)}>Practice the skill again</Link></article>;
+    return <article className="cb-card" key={attempt.id}><span className="cb-label">{levelLabel(attempt.difficulty)} · {attempt.correct ? 'Correct with assistance' : 'Missed choice'}</span><h2>{unit?.title ?? attempt.unitId}</h2>{question ? <><p>{question.prompt}</p><p><strong>Your answer: </strong>{attempt.choice === null ? 'No choice' : question.options[attempt.choice]}</p><p><strong>Your working: </strong>{attempt.working || 'No written work saved'}</p><div className="cb-result"><strong>Answer: </strong>{question.options[question.answerIndex]}<ol>{question.reasoningSteps.map((step, index) => <li key={index}>{step}</li>)}</ol><p>{question.explanation}</p></div></> : <p>The authored question is unavailable. Your attempt remains recorded.</p>}<Link className="cb-button" to={unit ? actionUrl(unit, 'practice', { ...selection, difficulty: attempt.difficulty }) : pathUrl(selection)}>Practice the skill again</Link></article>;
   }) : <div className="cb-card"><p>No missed or assisted attempts yet. Work through a guided example or a practice set to start your review record.</p><Link to={BASE}>Open the learning path</Link></div>)}</>;
 }
 

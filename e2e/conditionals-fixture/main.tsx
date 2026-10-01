@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import ConditionalBootcamp from '@/pages/ConditionalBootcamp';
@@ -7,6 +8,7 @@ import { DEFAULT_CONDITIONAL_TARGET, type ConditionalAssignmentTarget, resolveCo
 import { FixtureActor } from './mockAuth';
 import { setFailSaves } from './mockCloud';
 import '@/index.css';
+const queryClient = new QueryClient();
 function Fixture() {
   const [actor, setActor] = useState('fixture-a');
   const [failed, setFailed] = useState(false);
@@ -14,7 +16,7 @@ function Fixture() {
   const [resolved, setResolved] = useState('');
   return <FixtureActor.Provider value={actor}><BrowserRouter>
     <aside style={{ padding: 8, background: '#eff5ee', color: '#173622', display: 'flex', flexWrap: 'wrap', gap: 12 }} aria-label="Verification controls">
-      <strong>Local test accounts only</strong><button onClick={() => setActor(actor === 'fixture-a' ? 'fixture-b' : 'fixture-a')}>Switch account ({actor})</button>
+      <strong>Local test accounts only</strong><select aria-label="Test account" value={actor} onChange={event => setActor(event.target.value)}>{['fixture-a', 'fixture-b', 'fixture-c', 'fixture-none', 'fixture-admin'].map(value => <option key={value}>{value}</option>)}</select>
       <button onClick={() => { setFailSaves(!failed); setFailed(!failed); }}>{failed ? 'Restore cloud' : 'Fail cloud saves'}</button>
       <Link to="/fixture/assign">Teacher assignment controls</Link><Link to="/fixture/inline">Inline preview</Link><Link to="/bootcamp/conditionals">Full course</Link>
     </aside>
@@ -24,4 +26,4 @@ function Fixture() {
     </Routes>
   </BrowserRouter></FixtureActor.Provider>;
 }
-createRoot(document.getElementById('root')!).render(<Fixture />);
+createRoot(document.getElementById('root')!).render(<QueryClientProvider client={queryClient}><Fixture /></QueryClientProvider>);
