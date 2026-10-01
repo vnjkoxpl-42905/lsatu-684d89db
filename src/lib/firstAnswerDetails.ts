@@ -6,6 +6,7 @@ export interface TopicAccuracy {
   correct: number;
   denominator: number;
   percent: number | null;
+  evidenceAttemptIds: string[];
 }
 
 export function inProgressWindow(date: string, window: ProgressWindow, asOf: string): boolean {
@@ -41,8 +42,9 @@ export function firstAnswerDetails(answers: GradedQuestionAnswer[], window: Prog
       untypedFirstAnswers++;
       continue;
     }
-    const row = byTopic.get(answer.topic) ?? { topic: answer.topic, correct: 0, denominator: 0, percent: null };
+    const row = byTopic.get(answer.topic) ?? { topic: answer.topic, correct: 0, denominator: 0, percent: null, evidenceAttemptIds: [] };
     row.denominator++;
+    row.evidenceAttemptIds.push(answer.attemptId);
     if (answer.correct) row.correct++;
     byTopic.set(answer.topic, row);
   }

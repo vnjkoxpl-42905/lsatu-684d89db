@@ -1,10 +1,11 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 import FirstAnswerHistoryPanel from './FirstAnswerHistoryPanel';
+import { useFirstAnswerProgress } from '@/hooks/useFirstAnswerProgress';
 
 vi.mock('@/hooks/useFirstAnswerProgress', () => ({
-  useFirstAnswerProgress: () => ({
+  useFirstAnswerProgress: vi.fn(() => ({
     ledger: {
       answers: [
         { attemptId: 'first', questionKey: 'PT1:Q1', area: 'LR', source: 'question_attempts', mode: 'drill', correct: true, gradedAt: '2026-09-27T14:00:00Z' },
@@ -17,10 +18,40 @@ vi.mock('@/hooks/useFirstAnswerProgress', () => ({
     error: null,
     resolution: { state: 'ready' },
     refresh: vi.fn(),
-  }),
+  })),
 }));
 
 describe('Saved answer history date groups', () => {
+  it('keeps URL filters in the detailed table and exposes saved source IDs', () => {
+    render(<MemoryRouter initialEntries={['/progress/history?historyAnswer=repeat&historySort=oldest']}><FirstAnswerHistoryPanel window="all" /></MemoryRouter>);
+    expect(screen.getByRole('combobox', { name: 'History answer' })).toHaveValue('repeat');
+    fireEvent.click(screen.getByRole('button', { name: 'Detailed table' }));
+    const table = screen.getByRole('table');
+    expect(within(table).getByText('repeat')).toBeInTheDocument();
+    expect(within(table).queryByText('first')).not.toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: 'History mode' }), { target: { value: 'rc-drill' } });
+    expect(screen.getByText('0 saved answers match these filters.')).toBeInTheDocument();
+  });
+  it('passes the selected student scope and returns to that dossier Review', () => {
+    render(<MemoryRouter initialEntries={['/teacher/students/student-2/progress']}><Routes><Route path="teacher/students/:studentId"><Route path="progress" element={<FirstAnswerHistoryPanel window={14} studentId="student-2" />} /></Route></Routes></MemoryRouter>);
+    expect(useFirstAnswerProgress).toHaveBeenCalledWith(14, 'student-2');
+    expect(screen.getByRole('link', { name: 'Open Review' })).toHaveAttribute('href', '/teacher/students/student-2/review');
+    expect(screen.queryByRole('link', { name: 'Practice questions' })).not.toBeInTheDocument();
+  });
+  it('shows stale URL filters visibly so they can be cleared', () => {
+    render(<MemoryRouter initialEntries={['/progress/history?historyTopic=Flaw']}><FirstAnswerHistoryPanel window="all" /></MemoryRouter>);
+    expect(screen.getByRole('combobox', { name: 'History topic' })).toHaveValue('Flaw');
+    expect(screen.getByRole('option', { name: 'Flaw (no rows in this window)' })).toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: 'History topic' }), { target: { value: 'all' } });
+    expect(screen.getByText('3 saved answers match these filters.')).toBeInTheDocument();
+  });
+  it('uses the table for global question sorting and restores date order for grouping', () => {
+    render(<MemoryRouter initialEntries={['/progress/history?historySort=question']}><FirstAnswerHistoryPanel window="all" /></MemoryRouter>);
+    expect(screen.getByRole('table')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Grouped list' }));
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: 'History order' })).toHaveValue('newest');
+  });
   it('groups same-day answers under one heading and preserves filter counts', () => {
     render(<MemoryRouter><FirstAnswerHistoryPanel window="all" /></MemoryRouter>);
 
