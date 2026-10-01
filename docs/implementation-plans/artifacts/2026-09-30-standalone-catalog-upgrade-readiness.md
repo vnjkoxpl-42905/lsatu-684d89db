@@ -33,3 +33,7 @@ The parent's browser verification completed a newly supported LR PT118 S3 sittin
 ## Root expanded RC browser acceptance
 
 The owned tester completed new RC 101 S4 sitting `bae082d4-5e88-45c6-bb93-2179c27ea658` on selected manifest 714. Prepare acknowledged 27 questions before starting the clock. Blocking commit hid questions and retained the command; after restoring the request, Retry acknowledged question 2. Pause/reload preserved 34:10. Atomic closeout saved 1 answered/correct plus 26 unanswered, total 27, time 93,005ms. Exact report `/rc/results/686a6ebc-218f-4a1c-85f8-1e2536ee03b9` showed 1/27, four passages, 1:33 section elapsed and 0:03 average recorded question time. These are local frontend checks against the managed backend. Expanded frontend publication remains pending; screenshots and IDs are recorded in the activation evidence JSON. No old or QA records were deleted.
+
+## Published expanded roster checkpoint
+
+Frontend `6b69bc75f88e8d8c0987c702f0c7b9a60db50e46` reached exact GitHub main and Lovable import through guarded push. Free deployment `5784d95b-ac01-4bed-83f6-2d88d78b18eb` was followed by fresh production owned LR/RC report checks. A new ordinary-student live LR 118 S3 sitting `f2be0976-abc2-4a2f-afe6-fce99abeef43` prepared 24 questions without starting the clock, rendered the actual question after Start, and completed through the browser with one answer plus 23 blanks. This supersedes earlier pending-publication statements. No credit spend. All functional tickets remain open for their wider acceptance lists.

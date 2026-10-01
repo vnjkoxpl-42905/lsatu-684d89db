@@ -37,7 +37,7 @@
   },
   "existingFullPrepTestUnchanged": true,
   "creditSpend": false,
-  "frontendExpandedRosterPublished": false,
+  "frontendExpandedRosterPublished": true,
   "independentReview": {
     "result": "no high-priority blocker",
     "focusedTests": 12,
@@ -98,6 +98,15 @@
     "differentAccountProtectedLrDenied": true,
     "studentOwnerCompletedLrReport": "1 / 24, one answered",
     "expandedRcReport": "1 / 27, 26 unanswered,1:33 account clock",
-    "expandedRosterLaunchPending": true
+    "expandedRosterLaunchPending": false,
+    "freshStudentLaunch": {
+      "sittingId": "f2be0976-abc2-4a2f-afe6-fce99abeef43",
+      "pt": 118,
+      "section": 3,
+      "questionCount": 24,
+      "prepareBeforeClock": true,
+      "actualQuestionsRendered": true,
+      "actualBrowserCompletion": true
+    }
   }
 }
