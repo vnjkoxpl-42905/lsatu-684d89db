@@ -10,6 +10,7 @@
 
 export type TeacherRoom =
   | 'today'
+  | 'payments'
   | 'students'
   | 'inbox'
   | 'library'
@@ -29,6 +30,7 @@ export interface WorkspaceContext {
 
 const ROOMS: TeacherRoom[] = [
   'today',
+  'payments',
   'students',
   'inbox',
   'library',

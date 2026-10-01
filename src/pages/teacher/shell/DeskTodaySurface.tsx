@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { format, isSameDay, parseISO } from 'date-fns';
 import { DeskChatPanel, type DeskChatInsert } from '../desk/DeskChatPanel';
 import { DeskTodoRail } from '../desk/DeskTodoRail';
@@ -64,9 +64,19 @@ export default function DeskTodaySurface() {
   // list and painted its cards over the section below it.
   return (
     <div className="flex flex-col gap-6 px-5 py-6 sm:px-6">
-      <SignupQueue />
-
-      <PaymentsPanel />
+      <section aria-label="Today overview">
+        <h2 className="font-display text-2xl">Today</h2>
+        <p className="mt-1 text-sm text-black/55">Messages, sessions, payments, and student work needing your attention.</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {[
+            { to: '/teacher/students', label: 'Open student list' },
+            { to: '/teacher/inbox', label: 'Open inbox' },
+            { to: '/teacher/payments', label: 'All payments' },
+          ].map(({ to, label }) => (
+            <Link key={to} to={to} className="border border-black/20 bg-white/30 px-3 py-2 text-[13px] hover:bg-white/60">{label}</Link>
+          ))}
+        </div>
+      </section>
 
       <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
         <div className="border border-black/12 bg-white/25 px-4 py-3.5">
@@ -108,6 +118,8 @@ export default function DeskTodaySurface() {
         </div>
       </section>
 
+      {todoQueue.error && <p role="alert" className="text-sm text-red-900">Some sources could not load. The overview may be incomplete.</p>}
+
       <section>
         <DeskTodoRail
           items={items}
@@ -115,6 +127,24 @@ export default function DeskTodaySurface() {
           onOpen={(path) => navigate(teacherRoomPathForSource(path))}
           onInsertInChat={(text) => setChatInsert({ id: Date.now(), text })}
         />
+      </section>
+
+      <PaymentsPanel summary />
+      <SignupQueue />
+
+      <section aria-label="Assign student work" className="border border-black/12 bg-white/25 px-4 py-3.5">
+        <h2 className="text-[10px] font-medium uppercase tracking-[0.2em] text-black/50">Assign student work</h2>
+        <p className="mt-2 text-[13px] text-black/55">Choose specific content, then select the student to assign it to.</p>
+        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {[
+            { path: 'guided-drills', label: 'Guided drills' },
+            { path: 'homework', label: 'Homework' },
+            { path: 'activities', label: 'Activities' },
+            { path: 'bootcamps', label: 'Bootcamps' },
+          ].map(({ path, label }) => (
+            <Link key={path} to={`/teacher/library/${path}`} className="border border-black/15 px-3 py-2 text-[13px] hover:bg-white/50">{label}</Link>
+          ))}
+        </div>
       </section>
 
       {/* Interim home for the assistant. It moves into the shell's AI panel in
