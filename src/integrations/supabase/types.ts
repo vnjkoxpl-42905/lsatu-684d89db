@@ -258,6 +258,8 @@ export type Database = {
           item_format: string
           items: Json
           mode: string | null
+          revoked_at: string | null
+          revoked_by: string | null
           score: number | null
           score_judged: number | null
           score_numerator: number | null
@@ -283,6 +285,8 @@ export type Database = {
           item_format?: string
           items?: Json
           mode?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
           score?: number | null
           score_judged?: number | null
           score_numerator?: number | null
@@ -308,6 +312,8 @@ export type Database = {
           item_format?: string
           items?: Json
           mode?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
           score?: number | null
           score_judged?: number | null
           score_numerator?: number | null
@@ -617,6 +623,9 @@ export type Database = {
           selected_answer: string | null
           set_id: string | null
           time_ms: number
+          timed_pt_leg: number | null
+          timed_pt_run_id: string | null
+          timed_section_sitting_id: string | null
           timestamp_iso: string | null
           user_id: string | null
         }
@@ -645,6 +654,9 @@ export type Database = {
           selected_answer?: string | null
           set_id?: string | null
           time_ms: number
+          timed_pt_leg?: number | null
+          timed_pt_run_id?: string | null
+          timed_section_sitting_id?: string | null
           timestamp_iso?: string | null
           user_id?: string | null
         }
@@ -673,10 +685,28 @@ export type Database = {
           selected_answer?: string | null
           set_id?: string | null
           time_ms?: number
+          timed_pt_leg?: number | null
+          timed_pt_run_id?: string | null
+          timed_section_sitting_id?: string | null
           timestamp_iso?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "timed_lr_attempt_parent_v1"
+            columns: ["timed_pt_run_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "practice_test_runs"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "timed_section_attempt_owner_v1"
+            columns: ["timed_section_sitting_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "timed_section_sittings_v1"
+            referencedColumns: ["id", "owner_id"]
+          },
+        ]
       }
       blind_review_sessions: {
         Row: {
@@ -3353,6 +3383,17 @@ export type Database = {
           score_source: string | null
           section_seconds: number | null
           status: string
+          timed_clock_leg: number | null
+          timed_contract_version: number | null
+          timed_elapsed_ms: number | null
+          timed_frozen_legs: Json | null
+          timed_lease_expires_at: string | null
+          timed_lease_ms: number | null
+          timed_manifest: Json | null
+          timed_manifest_sha256: string | null
+          timed_phase: string | null
+          timed_running_anchor: string | null
+          timed_writer_epoch: number | null
           updated_at: string
           user_id: string
         }
@@ -3375,6 +3416,17 @@ export type Database = {
           score_source?: string | null
           section_seconds?: number | null
           status: string
+          timed_clock_leg?: number | null
+          timed_contract_version?: number | null
+          timed_elapsed_ms?: number | null
+          timed_frozen_legs?: Json | null
+          timed_lease_expires_at?: string | null
+          timed_lease_ms?: number | null
+          timed_manifest?: Json | null
+          timed_manifest_sha256?: string | null
+          timed_phase?: string | null
+          timed_running_anchor?: string | null
+          timed_writer_epoch?: number | null
           updated_at?: string
           user_id?: string
         }
@@ -3397,6 +3449,17 @@ export type Database = {
           score_source?: string | null
           section_seconds?: number | null
           status?: string
+          timed_clock_leg?: number | null
+          timed_contract_version?: number | null
+          timed_elapsed_ms?: number | null
+          timed_frozen_legs?: Json | null
+          timed_lease_expires_at?: string | null
+          timed_lease_ms?: number | null
+          timed_manifest?: Json | null
+          timed_manifest_sha256?: string | null
+          timed_phase?: string | null
+          timed_running_anchor?: string | null
+          timed_writer_epoch?: number | null
           updated_at?: string
           user_id?: string
         }
@@ -3790,6 +3853,7 @@ export type Database = {
           practice_test_run_id: string | null
           started_at: string
           status: string
+          timed_section_sitting_id: string | null
           user_id: string
         }
         Insert: {
@@ -3802,6 +3866,7 @@ export type Database = {
           practice_test_run_id?: string | null
           started_at?: string
           status?: string
+          timed_section_sitting_id?: string | null
           user_id: string
         }
         Update: {
@@ -3814,6 +3879,7 @@ export type Database = {
           practice_test_run_id?: string | null
           started_at?: string
           status?: string
+          timed_section_sitting_id?: string | null
           user_id?: string
         }
         Relationships: [
@@ -3823,6 +3889,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "practice_test_runs"
             referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "timed_section_rc_owner_v1"
+            columns: ["timed_section_sitting_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "timed_section_sittings_v1"
+            referencedColumns: ["id", "owner_id"]
           },
         ]
       }
@@ -4092,6 +4165,77 @@ export type Database = {
         }
         Relationships: []
       }
+      review_episode_events_v1: {
+        Row: {
+          actor_id: string
+          created_at: string
+          episode_id: string
+          id: string
+          kind: string
+          payload: Json
+        }
+        Insert: {
+          actor_id: string
+          created_at?: string
+          episode_id: string
+          id: string
+          kind: string
+          payload: Json
+        }
+        Update: {
+          actor_id?: string
+          created_at?: string
+          episode_id?: string
+          id?: string
+          kind?: string
+          payload?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_episode_events_v1_episode_id_fkey"
+            columns: ["episode_id"]
+            isOneToOne: false
+            referencedRelation: "review_episodes_v1"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      review_episodes_v1: {
+        Row: {
+          actor_id: string
+          created_at: string
+          id: string
+          question_id: string
+          reason: string
+          selection_reason: string | null
+          source_id: string
+          source_kind: string
+          student_id: string
+        }
+        Insert: {
+          actor_id: string
+          created_at?: string
+          id?: string
+          question_id: string
+          reason: string
+          selection_reason?: string | null
+          source_id: string
+          source_kind: string
+          student_id: string
+        }
+        Update: {
+          actor_id?: string
+          created_at?: string
+          id?: string
+          question_id?: string
+          reason?: string
+          selection_reason?: string | null
+          source_id?: string
+          source_kind?: string
+          student_id?: string
+        }
+        Relationships: []
+      }
       schedule_events: {
         Row: {
           all_day: boolean
@@ -4226,6 +4370,7 @@ export type Database = {
           report_emailed_at: string | null
           section: number
           time_taken_ms: number
+          timed_section_sitting_id: string | null
           total_questions: number
           total_time_ms: number | null
           unanswered_count: number | null
@@ -4259,6 +4404,7 @@ export type Database = {
           report_emailed_at?: string | null
           section: number
           time_taken_ms?: number
+          timed_section_sitting_id?: string | null
           total_questions?: number
           total_time_ms?: number | null
           unanswered_count?: number | null
@@ -4292,6 +4438,7 @@ export type Database = {
           report_emailed_at?: string | null
           section?: number
           time_taken_ms?: number
+          timed_section_sitting_id?: string | null
           total_questions?: number
           total_time_ms?: number | null
           unanswered_count?: number | null
@@ -4304,6 +4451,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "practice_test_runs"
             referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "timed_section_history_owner_v1"
+            columns: ["timed_section_sitting_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "timed_section_sittings_v1"
+            referencedColumns: ["id", "owner_id"]
           },
         ]
       }
@@ -5566,6 +5720,357 @@ export type Database = {
         }
         Relationships: []
       }
+      timed_content_manifests_v1: {
+        Row: {
+          blueprint: Json
+          manifest_sha256: string
+          pt: number
+        }
+        Insert: {
+          blueprint: Json
+          manifest_sha256: string
+          pt: number
+        }
+        Update: {
+          blueprint?: Json
+          manifest_sha256?: string
+          pt?: number
+        }
+        Relationships: []
+      }
+      timed_pt_configuration_v1: {
+        Row: {
+          enabled: boolean
+          lease_ms: number | null
+          manifest_sha256: string | null
+          singleton: boolean
+        }
+        Insert: {
+          enabled?: boolean
+          lease_ms?: number | null
+          manifest_sha256?: string | null
+          singleton?: boolean
+        }
+        Update: {
+          enabled?: boolean
+          lease_ms?: number | null
+          manifest_sha256?: string | null
+          singleton?: boolean
+        }
+        Relationships: []
+      }
+      timed_pt_lr_bindings_v1: {
+        Row: {
+          created_at: string
+          frozen_qids: string[]
+          leg_index: number
+          namespace: string
+          owner_id: string
+          record_id: string
+          run_id: string
+          source_key: string
+        }
+        Insert: {
+          created_at?: string
+          frozen_qids: string[]
+          leg_index: number
+          namespace: string
+          owner_id: string
+          record_id: string
+          run_id: string
+          source_key: string
+        }
+        Update: {
+          created_at?: string
+          frozen_qids?: string[]
+          leg_index?: number
+          namespace?: string
+          owner_id?: string
+          record_id?: string
+          run_id?: string
+          source_key?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "timed_pt_lr_bindings_v1_run_id_owner_id_fkey"
+            columns: ["run_id", "owner_id"]
+            isOneToOne: false
+            referencedRelation: "practice_test_runs"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
+      timed_pt_receipts_v1: {
+        Row: {
+          canonical_command: Json
+          command_hash: string
+          command_id: string
+          committed_at: string
+          committed_result: Json
+          committed_revision: number
+          owner_id: string
+          work_id: string
+          work_kind: string
+        }
+        Insert: {
+          canonical_command: Json
+          command_hash: string
+          command_id: string
+          committed_at?: string
+          committed_result: Json
+          committed_revision: number
+          owner_id: string
+          work_id: string
+          work_kind: string
+        }
+        Update: {
+          canonical_command?: Json
+          command_hash?: string
+          command_id?: string
+          committed_at?: string
+          committed_result?: Json
+          committed_revision?: number
+          owner_id?: string
+          work_id?: string
+          work_kind?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "timed_pt_receipts_v1_work_id_owner_id_fkey"
+            columns: ["work_id", "owner_id"]
+            isOneToOne: false
+            referencedRelation: "practice_test_runs"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
+      timed_section_configuration_v1: {
+        Row: {
+          enabled: boolean
+          lease_ms: number
+          manifest_sha256: string | null
+          singleton: boolean
+        }
+        Insert: {
+          enabled?: boolean
+          lease_ms?: number
+          manifest_sha256?: string | null
+          singleton?: boolean
+        }
+        Update: {
+          enabled?: boolean
+          lease_ms?: number
+          manifest_sha256?: string | null
+          singleton?: boolean
+        }
+        Relationships: []
+      }
+      timed_section_content_manifests_v1: {
+        Row: {
+          definition: Json
+          kind: string
+          manifest_sha256: string
+          pt: number
+          section: number
+        }
+        Insert: {
+          definition: Json
+          kind: string
+          manifest_sha256: string
+          pt: number
+          section: number
+        }
+        Update: {
+          definition?: Json
+          kind?: string
+          manifest_sha256?: string
+          pt?: number
+          section?: number
+        }
+        Relationships: []
+      }
+      timed_section_receipts_v1: {
+        Row: {
+          canonical_command: Json
+          command_id: string
+          committed_at: string
+          committed_revision: number
+          owner_id: string
+          result: Json
+          sitting_id: string
+        }
+        Insert: {
+          canonical_command: Json
+          command_id: string
+          committed_at?: string
+          committed_revision: number
+          owner_id: string
+          result: Json
+          sitting_id: string
+        }
+        Update: {
+          canonical_command?: Json
+          command_id?: string
+          committed_at?: string
+          committed_revision?: number
+          owner_id?: string
+          result?: Json
+          sitting_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "timed_section_receipts_v1_sitting_id_owner_id_fkey"
+            columns: ["sitting_id", "owner_id"]
+            isOneToOne: false
+            referencedRelation: "timed_section_sittings_v1"
+            referencedColumns: ["id", "owner_id"]
+          },
+        ]
+      }
+      timed_section_sittings_v1: {
+        Row: {
+          budget_ms: number | null
+          clock_anchor_at: string | null
+          completed_at: string | null
+          created_at: string
+          current_index: number
+          device_id: string
+          elapsed_ms: number
+          frozen_qids: string[]
+          frozen_source: Json
+          id: string
+          kind: string
+          lease_expires_at: string | null
+          lease_ms: number
+          manifest_sha256: string
+          owner_id: string
+          pace: string
+          phase: string
+          pt: number
+          result: Json | null
+          revision: number
+          section: number
+          snapshot: Json
+          source_key: string
+          source_kind: string
+          updated_at: string
+          writer_epoch: number
+        }
+        Insert: {
+          budget_ms?: number | null
+          clock_anchor_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          current_index?: number
+          device_id: string
+          elapsed_ms?: number
+          frozen_qids: string[]
+          frozen_source: Json
+          id: string
+          kind: string
+          lease_expires_at?: string | null
+          lease_ms: number
+          manifest_sha256: string
+          owner_id: string
+          pace: string
+          phase?: string
+          pt: number
+          result?: Json | null
+          revision?: number
+          section: number
+          snapshot?: Json
+          source_key: string
+          source_kind: string
+          updated_at?: string
+          writer_epoch?: number
+        }
+        Update: {
+          budget_ms?: number | null
+          clock_anchor_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          current_index?: number
+          device_id?: string
+          elapsed_ms?: number
+          frozen_qids?: string[]
+          frozen_source?: Json
+          id?: string
+          kind?: string
+          lease_expires_at?: string | null
+          lease_ms?: number
+          manifest_sha256?: string
+          owner_id?: string
+          pace?: string
+          phase?: string
+          pt?: number
+          result?: Json | null
+          revision?: number
+          section?: number
+          snapshot?: Json
+          source_key?: string
+          source_kind?: string
+          updated_at?: string
+          writer_epoch?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "timed_section_catalog_source_v1"
+            columns: ["manifest_sha256", "pt", "kind", "section"]
+            isOneToOne: false
+            referencedRelation: "timed_section_content_manifests_v1"
+            referencedColumns: ["manifest_sha256", "pt", "kind", "section"]
+          },
+        ]
+      }
+      timed_section_source_bindings_v1: {
+        Row: {
+          kind: string
+          namespace: string | null
+          owner_id: string
+          rc_session_id: string | null
+          record_id: string | null
+          sitting_id: string
+        }
+        Insert: {
+          kind: string
+          namespace?: string | null
+          owner_id: string
+          rc_session_id?: string | null
+          record_id?: string | null
+          sitting_id: string
+        }
+        Update: {
+          kind?: string
+          namespace?: string | null
+          owner_id?: string
+          rc_session_id?: string | null
+          record_id?: string | null
+          sitting_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "section_lr_binding_owner_v1"
+            columns: ["owner_id", "namespace", "record_id"]
+            isOneToOne: true
+            referencedRelation: "bootcamp_kv"
+            referencedColumns: ["user_id", "table_name", "record_id"]
+          },
+          {
+            foreignKeyName: "section_rc_binding_owner_v1"
+            columns: ["rc_session_id", "owner_id"]
+            isOneToOne: false
+            referencedRelation: "rc_drill_sessions"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "timed_section_source_bindings_v1_sitting_id_owner_id_fkey"
+            columns: ["sitting_id", "owner_id"]
+            isOneToOne: false
+            referencedRelation: "timed_section_sittings_v1"
+            referencedColumns: ["id", "owner_id"]
+          },
+        ]
+      }
       tutor_conversations: {
         Row: {
           action_status: string | null
@@ -6086,6 +6591,7 @@ export type Database = {
         Args: { exclude_ids?: string[] }
         Returns: string[]
       }
+      activity_revocation_capability: { Args: never; Returns: Json }
       admin_dismiss_stripe_payment: {
         Args: { _payment_id: string }
         Returns: {
@@ -6196,6 +6702,15 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      append_review_event_v1: {
+        Args: {
+          p_episode: string
+          p_event: string
+          p_kind: string
+          p_payload: Json
+        }
+        Returns: Json
       }
       append_waj_correct: {
         Args: { p_class_id: string; p_item: Json; p_qid: string }
@@ -6694,6 +7209,8 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      commit_timed_section_v1: { Args: { p_command: Json }; Returns: Json }
+      commit_timed_work_v1: { Args: { p_command: Json }; Returns: Json }
       complete_single_session_outbox: {
         Args: {
           _job_id: string
@@ -6745,6 +7262,11 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      create_timed_practice_test_v1: {
+        Args: { p_command: Json }
+        Returns: Json
+      }
+      create_timed_section_v1: { Args: { p_command: Json }; Returns: Json }
       enqueue_single_session_outbox: {
         Args: {
           _action: string
@@ -7060,6 +7582,10 @@ export type Database = {
       }
       get_student_booking: { Args: { _auth_user_id: string }; Returns: Json }
       get_student_email: { Args: { _student_id: string }; Returns: string }
+      get_student_progress_user_id: {
+        Args: { p_class_id: string }
+        Returns: string
+      }
       grant_booking_access: {
         Args: {
           _booking_slug: string
@@ -7254,6 +7780,16 @@ export type Database = {
         Returns: Json
       }
       mcp_require_admin: { Args: never; Returns: string }
+      open_review_episode_v1: {
+        Args: {
+          p_reason: string
+          p_selection_reason?: string
+          p_source: string
+          p_source_id: string
+          p_student: string
+        }
+        Returns: Json
+      }
       persist_single_session_checkout_fingerprint: {
         Args: {
           _booking_id: string
@@ -7321,6 +7857,12 @@ export type Database = {
         Args: { p_class_id: string }
         Returns: undefined
       }
+      read_review_episodes_v1: { Args: { p_student: string }; Returns: Json }
+      read_timed_practice_test_v1: {
+        Args: { p_work_id: string }
+        Returns: Json
+      }
+      read_timed_section_v1: { Args: { p_work_id: string }; Returns: Json }
       reconcile_booking_calendar_event: {
         Args: {
           _deleted?: boolean
@@ -7588,6 +8130,10 @@ export type Database = {
           vector_similarity: number
         }[]
       }
+      revoke_activity_assignment: {
+        Args: { p_assignment_id: string; p_student_id: string }
+        Returns: Json
+      }
       rotate_weak_booking_slugs: {
         Args: { _apply?: boolean }
         Returns: {
@@ -7699,6 +8245,86 @@ export type Database = {
           id: string
           storage_path: string
         }[]
+      }
+      timed_practice_test_capability_v1: { Args: never; Returns: Json }
+      timed_pt_actor_v1: { Args: never; Returns: string }
+      timed_pt_check_keys_v1: {
+        Args: { p_keys: string[]; p_value: Json }
+        Returns: undefined
+      }
+      timed_pt_checkpoint_v1: {
+        Args: {
+          p_run: Database["public"]["Tables"]["practice_test_runs"]["Row"]
+        }
+        Returns: Json
+      }
+      timed_pt_close_leg_v1: {
+        Args: {
+          p_now: string
+          p_payload: Json
+          p_run: Database["public"]["Tables"]["practice_test_runs"]["Row"]
+        }
+        Returns: Json
+      }
+      timed_pt_estimated_score_v1: {
+        Args: { p_raw: number; p_total: number }
+        Returns: number
+      }
+      timed_pt_leg_definitions_v1: { Args: { p_legs: Json }; Returns: Json }
+      timed_pt_parent_protected_v1: { Args: { p_id: string }; Returns: boolean }
+      timed_pt_require_access_v1: {
+        Args: { p_owner: string; p_pt: number }
+        Returns: undefined
+      }
+      timed_pt_response_v1: {
+        Args: {
+          p_receipt: Database["public"]["Tables"]["timed_pt_receipts_v1"]["Row"]
+          p_replayed: boolean
+          p_run: Database["public"]["Tables"]["practice_test_runs"]["Row"]
+        }
+        Returns: Json
+      }
+      timed_pt_save_checkpoint_v1: {
+        Args: {
+          p_now: string
+          p_payload: Json
+          p_run: Database["public"]["Tables"]["practice_test_runs"]["Row"]
+        }
+        Returns: undefined
+      }
+      timed_section_capability_v1: { Args: never; Returns: Json }
+      timed_section_close_v1: {
+        Args: {
+          p_now: string
+          p_payload: Json
+          p_run: Database["public"]["Tables"]["timed_section_sittings_v1"]["Row"]
+        }
+        Returns: Json
+      }
+      timed_section_protected_v1: { Args: { p_id: string }; Returns: boolean }
+      timed_section_require_access_v1: {
+        Args: { p_owner: string }
+        Returns: undefined
+      }
+      timed_section_response_v1: {
+        Args: {
+          p_receipt: Database["public"]["Tables"]["timed_section_receipts_v1"]["Row"]
+          p_replayed: boolean
+          p_sitting: Database["public"]["Tables"]["timed_section_sittings_v1"]["Row"]
+        }
+        Returns: Json
+      }
+      timed_section_save_checkpoint_v1: {
+        Args: {
+          p_now: string
+          p_payload: Json
+          p_run: Database["public"]["Tables"]["timed_section_sittings_v1"]["Row"]
+        }
+        Returns: undefined
+      }
+      timed_section_validate_command_v1: {
+        Args: { p_command: Json; p_creation: boolean }
+        Returns: undefined
       }
     }
     Enums: {
