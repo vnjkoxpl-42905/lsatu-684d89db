@@ -15,6 +15,7 @@ const choice: RcChoice = {
 };
 
 interface Overrides {
+  selected?: boolean;
   highlightMode?: RcHighlightMode;
   eliminated?: boolean;
   disabled?: boolean;
@@ -24,6 +25,7 @@ interface Overrides {
 
 function renderRow(overrides: Overrides = {}) {
   const onSelect = vi.fn();
+  const onToggleElimination = vi.fn();
   const onAnchor = vi.fn();
   const paneRef = React.createRef<HTMLUListElement>();
   render(
@@ -31,12 +33,12 @@ function renderRow(overrides: Overrides = {}) {
       <RcChoiceRow
         choice={choice}
         questionId={42}
-        selected={false}
+        selected={overrides.selected ?? false}
         eliminated={overrides.eliminated ?? false}
         revealed={overrides.revealed ?? false}
         disabled={overrides.disabled}
         onSelect={onSelect}
-        onToggleElimination={vi.fn()}
+        onToggleElimination={onToggleElimination}
         highlights={overrides.highlights ?? []}
         color="yellow"
         highlightMode={overrides.highlightMode ?? 'none'}
@@ -49,7 +51,7 @@ function renderRow(overrides: Overrides = {}) {
     </ul>,
   );
   const text = screen.getByText(/regards the theory/);
-  return { onSelect, onAnchor, text };
+  return { onSelect, onToggleElimination, onAnchor, text };
 }
 
 /** A drag across the choice text, as the browser leaves it behind on click. */
@@ -75,6 +77,27 @@ beforeAll(() => {
 afterEach(() => window.getSelection()?.removeAllRanges());
 
 describe('RcChoiceRow text surface', () => {
+  it('a saved selected cross-out stays visible, unstruck and selectable with crossing out disabled', () => {
+    const { onSelect, onToggleElimination, text } = renderRow({ selected: true, eliminated: true });
+    const surface = text.closest('[data-rc-mark-surface]')!;
+    expect(surface).not.toHaveClass('line-through');
+    expect(text).toBeVisible();
+    expect(text.closest('li')).not.toHaveClass('opacity-55');
+    const crossOut = screen.getByRole('button', { name: 'Choice B is your answer and cannot be crossed out' });
+    expect(crossOut).toBeDisabled();
+    fireEvent.click(crossOut);
+    expect(onToggleElimination).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+    const badge = screen.getByRole('button', { name: 'Choice B' });
+    expect(badge).toBeEnabled();
+    fireEvent.click(badge);
+    expect(onSelect).toHaveBeenCalledWith('B');
+  });
+
+  it('cross-out controls have an explicit visible touch affordance', () => {
+    renderRow();
+    expect(screen.getByRole('button', { name: 'Cross out choice B' })).toHaveClass('[@media(hover:none)]:opacity-100');
+  });
   it('a plain click on the text answers', () => {
     const { onSelect, text } = renderRow();
     fireEvent.mouseUp(text);

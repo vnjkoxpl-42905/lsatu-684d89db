@@ -325,7 +325,7 @@ export default function OfficialQuestionPane({
             <ul className="mt-3 space-y-1">
               {answerEntries.map(([key, text]) => {
                 const isSelected = selectedAnswer === key;
-                const isEliminated = eliminatedAnswers.has(key);
+                const isEliminated = !isSelected && eliminatedAnswers.has(key);
                 // Correctness is a fact; colouring is a state. The Choice Note
                 // needs the fact (its tag chip goes green for the right letter
                 // whether or not Answer is on); the card needs the state.
@@ -347,6 +347,11 @@ export default function OfficialQuestionPane({
                 // back: Restore moves to the extra column as a real button.
                 const showRestoreBeside = showVerdict && isEliminated && choicesStayLive;
                 const choiceTextId = `choice-${question.qid}-${key}`;
+                // Crossing out is a reading aid, never an answer change: the
+                // chosen letter cannot be crossed out (and so hidden or
+                // cleared) by it. A saved cross-out on the chosen letter is
+                // ignored for display; other crossed-out choices can be restored.
+                const crossOutBlocked = isSelected;
 
                 return (
                   <li
@@ -461,19 +466,25 @@ export default function OfficialQuestionPane({
                       type="button"
                       onClick={(event) => {
                         event.stopPropagation();
-                        if (!revealLocks && !interactionLocked) onEliminate(key);
+                        if (!revealLocks && !interactionLocked && !crossOutBlocked) onEliminate(key);
                       }}
-                      disabled={revealLocks || interactionLocked}
+                      disabled={revealLocks || interactionLocked || crossOutBlocked}
                       // A screen reader announced this as an unlabelled button.
                       // RC's equivalent has carried both of these since it was
                       // written; this is LR catching up to it.
                       aria-label={
-                        isEliminated ? `Restore choice ${key}` : `Cross out choice ${key}`
+                        isEliminated
+                          ? `Restore choice ${key}`
+                          : crossOutBlocked
+                          ? `Choice ${key} is your answer and cannot be crossed out`
+                          : `Cross out choice ${key}`
                       }
-                      title={isEliminated ? "Restore" : "Cross out"}
+                      title={isEliminated ? "Restore" : crossOutBlocked ? "Your answer" : "Cross out"}
                       className={cn(
                         "mt-0.5 p-1 transition-opacity",
-                        isEliminated ? "text-slate-700" : "text-slate-400 opacity-0 group-hover:opacity-100 hover:text-slate-800",
+                        isEliminated
+                          ? "text-slate-700"
+                          : "text-slate-400 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 [@media(hover:none)]:opacity-100 hover:text-slate-800 disabled:hover:text-slate-400",
                       )}
                     >
                       {isEliminated ? <EyeOff size={16} /> : <Eye size={16} />}

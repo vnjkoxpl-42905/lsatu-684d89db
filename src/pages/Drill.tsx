@@ -75,6 +75,24 @@ import { useAdaptiveEngine } from '@/contexts/AdaptiveEngineContext';
 import { normalizeText } from '@/lib/utils';
 import type { HighlightMode, HighlightRegion } from '@/lib/highlightUtils';
 import { useQuestionHighlights } from '@/hooks/useQuestionHighlights';
+import { useQuestionStudyTools } from '@/hooks/useQuestionStudyTools';
+import {
+  bookmarkHref,
+  clearQuestionMarks,
+  eliminationsFor as studyEliminationsFor,
+  highlightsFor as studyHighlightsFor,
+  isBookmarked as isStudyBookmarked,
+  listBookmarks,
+  removeBookmark,
+  setEliminations as setStudyEliminations,
+  setHighlights as setStudyHighlights,
+  studyQuestionKey,
+  toggleBookmark,
+  type StudyQuestionRef,
+} from '@/lib/questionStudyTools';
+import { launchDrill } from '@/lib/drillLaunch';
+import StudyAidsControls from '@/components/drill/official/StudyAidsControls';
+import DrillActorScope from '@/components/drill/DrillActorScope';
 import { Switch } from '@/components/ui/switch';
 import { setActiveDrillQid } from '@/lib/drillNotepadBus';
 import { officialLeadCrumbLabel } from '@/lib/officialBreadcrumbs';
@@ -414,15 +432,41 @@ function DrillContent() {
   // Kept current for the visit closer, which must not re-subscribe on every
   // cross-off just to read the latest set.
   eliminatedRef.current = eliminatedByQid;
+  // Study aids (bookmark, saved cross-outs, saved highlights) on ordinary
+  // practice only. A section, a sealed run, or a practice-test leg keeps the
+  // exam screen as it was: nothing is restored into it and nothing saved
+  // from it. Filed under the signed-in account, never a shared bucket.
+  const studyAidsEnabled = !!userId && state.mode !== 'full-section' && !revealSealed && !ptRun;
+  const studyTools = useQuestionStudyTools(studyAidsEnabled ? userId : null);
+  const studyRef = React.useMemo<StudyQuestionRef | null>(
+    () => (studyAidsEnabled && currentQuestion?.qid ? { family: 'lr', id: currentQuestion.qid } : null),
+    [studyAidsEnabled, currentQuestion?.qid],
+  );
   // Derived: eliminations for the displayed question only (read-only proxy).
   // Adaptive Smart Drill can render a currentQuestion outside the queued index.
   // Shaped so we can later promote into session.attempts.get(qid).eliminated.
+  // A question this run has not touched shows its saved cross-outs, read
+  // straight from the study store; they join the run's own record only once
+  // the student changes them here, so loading never alters an attempt.
   const eliminatedAnswers = React.useMemo<Set<string>>(() => {
     const qid = currentQuestion?.qid;
-    return qid ? eliminatedByQid.get(qid) ?? new Set<string>() : new Set<string>();
-  }, [eliminatedByQid, currentQuestion?.qid]);
+    if (!qid) return new Set<string>();
+    const live = eliminatedByQid.get(qid);
+    if (live) return live;
+    return studyRef ? new Set(studyEliminationsFor(studyTools.state, studyRef)) : new Set<string>();
+  }, [eliminatedByQid, currentQuestion?.qid, studyRef, studyTools.state]);
   const [highlightMode, setHighlightMode] = React.useState<HighlightMode>('none');
-  const questionHighlights = useQuestionHighlights();
+  const questionHighlights = useQuestionHighlights({
+    onChange: studyAidsEnabled
+      ? (qid, next) => studyTools.update((s) => setStudyHighlights(s, { family: 'lr', id: qid }, next))
+      : undefined,
+  });
+  const seedHighlights = questionHighlights.seed;
+  React.useEffect(() => {
+    if (studyRef) seedHighlights(studyRef.id, studyHighlightsFor(studyTools.state, studyRef));
+    // Seed once per question; later store changes come from this surface.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [studyRef, seedHighlights]);
   const [isFlagged, setIsFlagged] = React.useState(false);
   const [showExitDialog, setShowExitDialog] = React.useState(false);
   /**
@@ -1727,25 +1771,29 @@ function DrillContent() {
     if (guidedSessionKey && guidedCloseoutAttemptsRef.current) return;
     if (!currentQuestion) return;
     const qid = currentQuestion.qid;
-    setEliminatedByQid(prev => {
-      const next = new Map(prev);
-      const current = new Set(prev.get(qid) ?? []);
-      if (current.has(key)) {
-        current.delete(key);
-      } else {
-        current.add(key);
-        if (selectedAnswer === key) {
-          setSelectedAnswer('');
-          if ((session?.mode === 'full-section' || isPracticeSetMode) && session) {
-            const newAttempts = new Map(session.attempts);
-            newAttempts.delete(qid);
-            setSession({ ...session, attempts: newAttempts });
-          }
-        }
-      }
-      next.set(qid, current);
-      return next;
-    });
+    const current = new Set(eliminatedAnswers);
+    if (current.has(key)) {
+      current.delete(key);
+    } else {
+      // A cross-out is a reading aid, never an answer change. It used to
+      // clear the pick (and drop a section's attempt) when aimed at the
+      // chosen letter; the pane now disables that control instead.
+      if (selectedAnswer === key) return;
+      current.add(key);
+    }
+    setEliminatedByQid(prev => new Map(prev).set(qid, current));
+    if (studyRef?.id === qid) {
+      studyTools.update((s) => setStudyEliminations(s, studyRef, current));
+    }
+  };
+
+  /** Clear this question's cross-outs and highlights; nothing else. */
+  const handleClearStudyMarks = () => {
+    if (!currentQuestion || !studyRef) return;
+    const qid = currentQuestion.qid;
+    setEliminatedByQid(prev => new Map(prev).set(qid, new Set()));
+    questionHighlights.clearQuestion(qid);
+    studyTools.update((s) => clearQuestionMarks(s, studyRef));
   };
 
   const handleLongPressStart = (key: string) => {
@@ -4954,6 +5002,38 @@ function DrillContent() {
             notesOpen={notesOpen}
             onToggleNotes={toggleNotesPanel}
             onOpenDirections={isFullSection ? () => setDirectionsViewOpen(true) : undefined}
+            studyTools={
+              studyRef ? (
+                <StudyAidsControls
+                  bookmarked={isStudyBookmarked(studyTools.state, studyRef)}
+                  onToggleBookmark={() =>
+                    studyTools.update((s) =>
+                      toggleBookmark(s, {
+                        ...studyRef,
+                        label: `PT${currentQuestion.pt} · S${currentQuestion.section} · Q${currentQuestion.qnum}`,
+                      }),
+                    )
+                  }
+                  bookmarks={listBookmarks(studyTools.state, 'lr').map((b) => ({
+                    key: studyQuestionKey(b),
+                    label: b.label,
+                    href: bookmarkHref(b, (qid) => `/drill?${launchDrill({ kind: 'questions', qids: [qid] })}`),
+                    isCurrent: b.id === currentQuestion.qid,
+                  }))}
+                  onRemoveBookmark={(key) => {
+                    const b = studyTools.state.bookmarks[key];
+                    if (b) studyTools.update((s) => removeBookmark(s, b));
+                  }}
+                  onClearMarks={handleClearStudyMarks}
+                  hasMarks={
+                    eliminatedAnswers.size > 0 ||
+                    questionHighlights.highlightsFor(currentQuestion.qid).length > 0
+                  }
+                  deviceSaved={studyTools.deviceSaved}
+                  notice={studyTools.notice}
+                />
+              ) : undefined
+            }
           />
           <OfficialQuestionPane
             question={{
@@ -5596,14 +5676,21 @@ function DrillContent() {
 export default function Drill() {
   const state = useDrillRunSpec();
   const timerConfig = React.useMemo(() => timerConfigForRunSpec(state), [state]);
+  const { user } = useAuth();
 
   if (timerConfig) {
     return (
       <TimerProvider mode={timerConfig.mode} durationMs={timerConfig.durationMs}>
-        <DrillContent />
+        <DrillActorScope actorId={user?.id}>
+          <DrillContent />
+        </DrillActorScope>
       </TimerProvider>
     );
   }
 
-  return <DrillContent />;
+  return (
+    <DrillActorScope actorId={user?.id}>
+      <DrillContent />
+    </DrillActorScope>
+  );
 }

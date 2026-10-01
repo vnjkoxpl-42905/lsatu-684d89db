@@ -26,6 +26,19 @@ import { readActiveRcAnswerBackup, readRcAnswerBackup, writeRcAnswerBackup, clea
 import { completedRcDestination, rcReviewRedirect } from '../lib/rcSessionDestination';
 import { useRcA11y } from '../hooks/useRcA11y';
 import { useRcHighlights } from '../hooks/useRcHighlights';
+import StudyAidsControls from '@/components/drill/official/StudyAidsControls';
+import DrillActorScope from '@/components/drill/DrillActorScope';
+import { useQuestionStudyTools } from '@/hooks/useQuestionStudyTools';
+import {
+  bookmarkHref,
+  eliminationsFor as studyEliminationsFor,
+  setEliminations as setStudyEliminations,
+  isBookmarked as isStudyBookmarked,
+  listBookmarks,
+  removeBookmark,
+  studyQuestionKey,
+  toggleBookmark,
+} from '@/lib/questionStudyTools';
 import { loadPassage, loadPassages } from '../lib/rcBank';
 import { hydrateFromAttempts } from '../lib/rcHydration';
 import {
@@ -82,7 +95,22 @@ function writeClockBackup(sessionId: string, seconds: number): void {
   }
 }
 
+/**
+ * The player is remounted whenever the signed-in actor changes. Its reducer
+ * holds answers, cross-outs, flags and session ids for one account; a fresh
+ * mount drops them, and the old mount's in-flight loads are cancelled by
+ * their own effect cleanups, so nothing of account A paints or saves under B.
+ */
 export default function RcPlayer() {
+  const { user } = useAuth();
+  return (
+    <DrillActorScope actorId={user?.id}>
+      <RcPlayerRunner />
+    </DrillActorScope>
+  );
+}
+
+function RcPlayerRunner() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -120,6 +148,27 @@ export default function RcPlayer() {
   const reviewOnly = params.get('review') === '1';
   const protectedReview = reviewOnly && (!!config.timedSectionSittingId || !!config.practiceTestRunId);
   const targetQuestionId = Number(params.get('q')) || null;
+  // Study aids. RC highlights keep their own store (useRcHighlights), and
+  // answered cross-outs travel on the attempt row. This adds bookmarks, and
+  // keeps an unanswered question's cross-outs on this device for this
+  // session so a reload does not lose them. A timed or practice-test
+  // section, and its protected review, get none of it.
+  const studyAidsEnabled =
+    !!user?.id && !config.timedSectionSittingId && !config.practiceTestRunId && !protectedReview;
+  const studyTools = useQuestionStudyTools(studyAidsEnabled ? user?.id : null);
+  /** Session-scoped, so a later drill of the same question starts clean. */
+  const rcCrossOutRef = (sid: string, questionId: number) => ({ family: 'rc' as const, id: `${sid}:${questionId}` });
+  const changedCrossOuts = React.useRef(new Set<number>());
+
+  React.useEffect(() => {
+    if (!changedCrossOuts.current.size || loadingAnswers || answerLoadError || !studyAidsEnabled || reviewOnly || !sessionId || sessionOwnerId !== user?.id || sessionStatus !== 'in_progress') return;
+    const changed = [...changedCrossOuts.current];
+    changedCrossOuts.current.clear();
+    studyTools.update((saved) => changed.reduce((next, q) =>
+      state.recorded.has(q) ? next : setStudyEliminations(next, rcCrossOutRef(sessionId, q), state.eliminations.get(q) ?? []), saved));
+    // Persist the reducer's committed set, never the event handler's stale state.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.eliminations, state.recorded, loadingAnswers, answerLoadError, studyAidsEnabled, reviewOnly, sessionId, sessionOwnerId, sessionStatus, user?.id]);
 
   /* ------------------------------------------------------------ boot */
 
@@ -130,6 +179,7 @@ export default function RcPlayer() {
     // across a search-param change, so without this the previous sitting's
     // re-attempts, clock, scroll positions and open modal ride into the next one.
     setError(null);
+    changedCrossOuts.current.clear();
     setPassages(null);
     setSessionId(null);
     setSessionOwnerId(null);
@@ -306,6 +356,18 @@ export default function RcPlayer() {
           revealMode: config.reveal,
           reviewOnly,
         });
+        // An unanswered question has no attempt row to carry its cross-outs,
+        // so bring them back from this device's session-scoped copy. Never
+        // in review, never over cross-outs an attempt already holds.
+        const liveEliminations = new Map(hydrated.eliminations);
+        if (!reviewOnly && studyAidsEnabled) {
+          for (const entry of seeded.items) {
+            const q = entry.question.questionId;
+            if (hydrated.recorded.has(q) || (hydrated.eliminations.get(q)?.length ?? 0) > 0) continue;
+            const saved = studyEliminationsFor(studyTools.state, rcCrossOutRef(sessionId, q));
+            if (saved.length) liveEliminations.set(q, saved as RcLetter[]);
+          }
+        }
         const savedIndex = config.currentQuestionIndex;
         const resumeIndex = !reviewOnly && Number.isSafeInteger(savedIndex) && savedIndex >= 0 && savedIndex < seeded.items.length
           ? savedIndex : hydrated.firstUnansweredIndex === -1 ? 0 : hydrated.firstUnansweredIndex;
@@ -321,7 +383,7 @@ export default function RcPlayer() {
             // goes to `firstAttemptEliminations`, for display only. Resuming a
             // live drill is the opposite case — there they are still the
             // student's working set, so they come straight back.
-            eliminations: reviewOnly ? new Map() : hydrated.eliminations,
+            eliminations: reviewOnly ? new Map() : liveEliminations,
             flagged: hydrated.flagged,
             recorded: hydrated.recorded,
             revealed: hydrated.revealed,
@@ -805,9 +867,10 @@ export default function RcPlayer() {
           failAccountSave('A device backup could not be saved. Keep this page open and save your answer to your account.');
         }
       }
+      if (studyAidsEnabled && !reviewOnly && !state.recorded.has(id)) changedCrossOuts.current.add(id);
       dispatch({ type: 'select', questionId: id, letter });
     },
-    [item, awaitingReattempt, revealed, sessionId, sessionOwnerId, reviewOnly, protectedReview, state.currentIndex, state.flagged, state.eliminations, state.paused, submitting, writeAttempt, failAccountSave],
+    [item, awaitingReattempt, revealed, sessionId, sessionOwnerId, reviewOnly, protectedReview, studyAidsEnabled, state.currentIndex, state.flagged, state.eliminations, state.recorded, state.paused, submitting, writeAttempt, failAccountSave],
   );
 
   /* -------------------------------------------------------- keyboard */
@@ -1064,6 +1127,43 @@ export default function RcPlayer() {
               {passageOnly ? 'Passage + Question' : 'Passage Only'}
             </RcToolbarButton>
           }
+          studyTools={
+            studyAidsEnabled ? (
+              <StudyAidsControls
+                bookmarked={isStudyBookmarked(studyTools.state, { family: 'rc', id: String(questionId) })}
+                onToggleBookmark={() =>
+                  studyTools.update((s) =>
+                    toggleBookmark(s, {
+                      family: 'rc',
+                      id: String(questionId),
+                      passageId: item.passage.passageId,
+                      label: `PT${item.passage.preptest} · S${item.passage.section} · P${item.passage.setNumber} · Q${item.number}`,
+                    }),
+                  )
+                }
+                bookmarks={listBookmarks(studyTools.state, 'rc').map((b) => ({
+                  key: studyQuestionKey(b),
+                  label: b.label,
+                  href: bookmarkHref(b, () => ''),
+                  isCurrent: b.id === String(questionId),
+                }))}
+                onRemoveBookmark={(key) => {
+                  const b = studyTools.state.bookmarks[key];
+                  if (b) studyTools.update((s) => removeBookmark(s, b));
+                }}
+                onClearMarks={!reviewOnly && !state.recorded.has(questionId) ? () => {
+                  if (navigationInFlightRef.current || submitting || state.paused) return;
+                  changedCrossOuts.current.add(questionId);
+                  for (const letter of state.eliminations.get(questionId) ?? []) dispatch({ type: 'toggleElimination', questionId, letter });
+                } : undefined}
+                clearMarksLabel="Clear cross-outs on this question"
+                bookmarkNavigationNotice="Bookmarks open a new practice session in another tab."
+                hasMarks={(state.eliminations.get(questionId)?.length ?? 0) > 0}
+                deviceSaved={studyTools.deviceSaved}
+                notice={studyTools.notice}
+              />
+            ) : undefined
+          }
         />
 
         <RcExamPane
@@ -1123,11 +1223,12 @@ export default function RcPlayer() {
               type={type}
               onSelect={selectLetter}
               interactionDisabled={protectedReview || state.paused || savingNavigation || submitting}
-              onToggleElimination={(letter) =>
-                !protectedReview && !navigationInFlightRef.current && !submitting && !state.paused
-                  ? dispatch({ type: 'toggleElimination', questionId, letter })
-                  : undefined
-              }
+              onToggleElimination={(letter) => {
+                if (protectedReview || navigationInFlightRef.current || submitting || state.paused) return;
+                if (!reviewOnly && state.answers.get(questionId) === letter) return;
+                if (studyAidsEnabled && !reviewOnly && !state.recorded.has(questionId)) changedCrossOuts.current.add(questionId);
+                dispatch({ type: 'toggleElimination', questionId, letter });
+              }}
               onSkipToAnswer={() => setSkippedReattempt((prev) => new Set(prev).add(questionId))}
               highlights={highlights.forPassage(item.passage.passageId)}
               color={highlights.color}

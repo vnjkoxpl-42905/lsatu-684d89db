@@ -23,8 +23,8 @@ import {
  *
  * Two deliberate departures from LR, both taken from the official RC interface:
  * the letter badge is a circle with a visible outline rather than a rounded
- * square with a transparent border, and the eliminate control is always visible
- * rather than appearing on row hover.
+ * square with a transparent border, and the eliminate control stays visible
+ * on touch screens while desktop users can reveal it by hover or focus.
  *
  * Like LR, a revealed question greens the credited answer and leaves the
  * student's pick in the selected slate — there is no red row. The verdict line
@@ -111,8 +111,9 @@ export function RcChoiceRow({
   paneRef,
 }: Props) {
   const isCorrect = revealed && choice.correct;
-  const noCrossOut = disabled || eliminationDisabled;
-  const pickable = !disabled && !eliminated;
+  const effectiveEliminated = eliminated && !selected;
+  const noCrossOut = disabled || eliminationDisabled || selected;
+  const pickable = !disabled && !effectiveEliminated;
   const pick = () => {
     if (pickable) onSelect(choice.letter);
   };
@@ -178,7 +179,7 @@ export function RcChoiceRow({
           ? 'rc-choice-correct'
           : selected
             ? 'border-slate-500 bg-slate-100 shadow-sm'
-            : eliminated
+            : effectiveEliminated
               ? 'border-transparent opacity-55 grayscale-[0.5]'
               : 'border-transparent hover:border-slate-200 hover:bg-slate-50',
       )}
@@ -186,7 +187,7 @@ export function RcChoiceRow({
       <button
         type="button"
         onClick={pick}
-        disabled={disabled || eliminated}
+        disabled={disabled || effectiveEliminated}
         aria-label={`Choice ${choice.letter}`}
         aria-describedby={textId}
         className={cn(
@@ -215,7 +216,7 @@ export function RcChoiceRow({
         className={cn(
           'rc-choice-text relative text-left leading-relaxed transition-colors',
           pickable ? 'cursor-pointer' : 'cursor-text',
-          eliminated && 'line-through',
+          effectiveEliminated && 'line-through',
         )}
         style={textStyle}
       >
@@ -232,17 +233,17 @@ export function RcChoiceRow({
         }}
         disabled={noCrossOut}
         aria-label={
-          eliminated ? `Restore choice ${choice.letter}` : `Cross out choice ${choice.letter}`
+          selected ? `Choice ${choice.letter} is your answer and cannot be crossed out` : effectiveEliminated ? `Restore choice ${choice.letter}` : `Cross out choice ${choice.letter}`
         }
-        title={eliminated ? 'Restore' : 'Cross out'}
+        title={selected ? 'Your answer' : effectiveEliminated ? 'Restore' : 'Cross out'}
         className={cn(
           'mt-0.5 p-1 transition-opacity',
-          eliminated
+          effectiveEliminated
             ? 'text-slate-700'
-            : 'text-slate-400 opacity-0 hover:text-slate-800 focus-visible:opacity-100 group-hover:opacity-100',
+            : 'text-slate-400 opacity-0 [@media(hover:none)]:opacity-100 hover:text-slate-800 focus-visible:opacity-100 group-hover:opacity-100',
         )}
       >
-        {eliminated ? <EyeOff size={16} /> : <Eye size={16} />}
+        {effectiveEliminated ? <EyeOff size={16} /> : <Eye size={16} />}
       </button>
 
       {children && <div className="col-start-2 col-end-4">{children}</div>}

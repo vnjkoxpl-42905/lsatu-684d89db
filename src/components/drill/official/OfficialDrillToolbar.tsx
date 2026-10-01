@@ -126,6 +126,11 @@ interface Props {
     active: "lr" | "rc";
     onSelect: (section: "lr" | "rc") => void;
   };
+  /**
+   * Bookmark and study-mark controls, rendered at the end of the right
+   * cluster. Omit on protected timed canvases.
+   */
+  studyTools?: React.ReactNode;
 }
 
 export default function OfficialDrillToolbar({
@@ -150,6 +155,7 @@ export default function OfficialDrillToolbar({
   fontScaleOptions = FONT_SCALES,
   a11yExtraSections,
   sectionToggle,
+  studyTools,
 }: Props) {
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
   const [aaOpen, setAaOpen] = React.useState(false);
@@ -397,6 +403,13 @@ export default function OfficialDrillToolbar({
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
+              </>
+            )}
+
+            {studyTools && (
+              <>
+                <PipeSeparator />
+                {studyTools}
               </>
             )}
           </div>
