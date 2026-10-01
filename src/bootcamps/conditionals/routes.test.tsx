@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { conditionalUnits } from './content';
@@ -134,4 +134,39 @@ it('opens the current skill reference with an accessible dialog', () => {
   fireEvent.click(screen.getByRole('button', { name: 'Open reference' }));
   expect(screen.getByRole('dialog')).toBeTruthy();
   expect(screen.getByRole('link', { name: 'Complete reference' }).getAttribute('href')).toContain('start=group-3');
+});
+
+
+it('presents all four indicator stages with their own lesson, guided activity, and drill', () => {
+  mount(base);
+  const titles = [
+    'Group 1: Sufficient-condition indicators',
+    'Group 2: Necessary-condition indicators',
+    'Group 3: Negate the sufficient condition',
+    'Group 4: Negate the necessary condition',
+  ];
+  titles.forEach((title, index) => {
+    const stage = screen.getByRole('region', { name: title });
+    const links = within(stage).getAllByRole('link');
+    expect(links.find(link => link.textContent === '1. Learn')?.getAttribute('href')).toContain(`/lessons/group-${index + 1}`);
+    expect(links.find(link => link.textContent === '2. Guided activity')?.getAttribute('href')).toContain(`/activities/group-${index + 1}`);
+    expect(links.find(link => link.textContent?.startsWith('3. Skill drill'))?.getAttribute('href')).toContain(`unit=group-${index + 1}`);
+    expect(screen.getAllByRole('heading', { name: title })).toHaveLength(2);
+  });
+});
+
+it('keeps the authored unit order in both curriculum cards and the teaching rail', () => {
+  mount(base);
+  const main = document.getElementById('conditional-main')!;
+  const lessonLinks = within(main).getAllByRole('link', { name: '1. Learn' });
+  expect(lessonLinks.map(link => new URL(link.getAttribute('href')!, 'https://example.test').pathname.split('/').pop())).toEqual(conditionalUnits.map(unit => unit.id));
+  const rail = document.querySelector('.cb-curriculum-rail')!;
+  const railLessons = within(rail as HTMLElement).getAllByRole('link').filter(link => link.getAttribute('href')?.includes('/lessons/'));
+  expect(railLessons.map(link => new URL(link.getAttribute('href')!, 'https://example.test').pathname.split('/').pop())).toEqual(conditionalUnits.map(unit => unit.id));
+});
+
+
+it('names the exact indicator stage when its lesson is assigned directly', () => {
+  mount(`${base}/lessons/group-2?unit=group-2&path=skill`);
+  expect(screen.getByText(/Group 2: Necessary-condition indicators.*Lesson 8/)).toBeTruthy();
 });

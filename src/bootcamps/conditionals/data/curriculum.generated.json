@@ -213,7 +213,10 @@
     "teaching": [
       "A fact tells you something about a case. A rule connects conditions. Every digitized map is searchable is a rule. Map R is digitized is a fact. Match the fact to the rule's starting condition to conclude that Map R is searchable.",
       "For digitized → searchable, digitized establishes searchable. Not searchable rules out digitized: a digitized map would have to be searchable. Searchable alone leaves digitization unknown. Not digitized alone leaves searchability unknown.",
-      "Two rules can create a new rule. Digitized → searchable and searchable → indexed give digitized → indexed. They do not establish that an indexed map exists. Add a digitized case as a separate fact to establish an indexed case."
+      "Two rules can create a new rule. Digitized → searchable and searchable → indexed give digitized → indexed. They do not establish that an indexed map exists. Add a digitized case as a separate fact to establish an indexed case.",
+      "Make the reasoning visible: Fact: Map R is digitized. Rule: every digitized map is searchable. Match: the fact meets the complete digitized-map condition for R. Conclusion: R is searchable. Why: the rule covers that same map. Contrast this with two rules alone: digitized → searchable → indexed proves a new rule, without proving a fact about R.",
+      "Keep one rule unchanged and vary only the fact: translated notice → archived notice. Notice H is translated: H is archived. H is not archived: H is not translated. H is archived: translation remains unknown. H is not translated: archiving remains unknown. In the last two cases, give an allowed example rather than forcing a conclusion.",
+      "Requires approval does not mean has received approval. A late submission may require approval while it is still waiting for review. If the next rule begins with received approval, the requirement does not activate it. Preserve the whole condition before comparing the fact and rule."
     ],
     "method": [
       "List rules separately from case facts.",
@@ -234,14 +237,14 @@
     },
     "guidedExample": {
       "id": "rules-facts-guide",
-      "prompt": "Every translated notice is archived. Notice H is archived. What follows about translation?",
+      "prompt": "Every translated notice is archived. Notice H is archived. Before choosing, identify the fact, rule, and match. State your conclusion and explain why it follows or remains open. What follows about translation?",
       "options": [
         "H is translated.",
         "H is not translated.",
         "Translation is unknown."
       ],
       "answerIndex": 2,
-      "hint": "Archiving is the required result, not the trigger.",
+      "hint": "Archiving is the required result, not the trigger. An untranslated archived notice would fit the rule.",
       "reasoningSteps": [
         "Translated notices must be archived.",
         "Other notices may also be archived, so the fact settles neither translation nor its absence."
@@ -417,13 +420,15 @@
     "teaching": [
       "If a window is impact-rated, it has reinforced glass. Impact-rated is sufficient for reinforced glass: it is enough to guarantee it. Reinforced glass is necessary for impact-rated status: the rating cannot occur without it under this descriptive rule.",
       "Sufficient and necessary name roles in a particular relationship. Reinforced glass may be the sufficient condition of a different rule. It is not permanently a necessary condition.",
-      "The single forbidden combination is impact-rated with no reinforced glass. The other three combinations fit the rule. Reinforced glass alone does not prove the rating. No rating does not prove no reinforced glass."
+      "The single forbidden combination is impact-rated with no reinforced glass. The other three combinations fit the rule. Reinforced glass alone does not prove the rating. No rating does not prove no reinforced glass.",
+      "Use the Personalized If/Then when the direction feels unclear. First understand the ordinary meaning. Guess which complete idea is sufficient. Put yourself in that situation and ask what the sentence forces you to know. Test that guess against the wording: if nothing forces the other idea, your proposed direction is not justified.",
+      "A recovery code is required for a verified account. Imagine that I have a verified account. Under this rule, I must have a recovery code. Now imagine that I merely have a recovery code. The sentence does not force me to be verified. Personalizing checks the relationship; it does not add facts or make a guess true."
     ],
     "method": [
-      "Read the rule as if this starting condition holds, that result must hold.",
-      "Name the sufficient condition and necessary condition completely.",
-      "Look for a trigger paired with an absent required result.",
-      "Distinguish consistency with the rule from a fact established by the rule."
+      "Read the ordinary meaning before guessing the sufficient condition.",
+      "Use a Personalized If/Then: imagine meeting that condition and ask what the wording forces you to know.",
+      "Name the sufficient and necessary conditions completely; test rather than assume your guessed direction.",
+      "Look for a trigger paired with an absent required result, and distinguish an allowed case from an established fact."
     ],
     "workedExample": {
       "statements": [
@@ -438,14 +443,14 @@
     },
     "guidedExample": {
       "id": "sufficient-necessary-guide",
-      "prompt": "Every verified account has a recovery code. Which combination violates the rule?",
+      "prompt": "Every verified account has a recovery code. Before choosing, use a Personalized If/Then: imagine that your account is verified and state what you must know about it. Which combination violates the rule?",
       "options": [
         "Verified, with a recovery code.",
         "Verified, without a recovery code.",
         "Unverified, with a recovery code."
       ],
       "answerIndex": 1,
-      "hint": "Look for the trigger without its required result.",
+      "hint": "If my account is verified, the rule forces it to have a recovery code.",
       "reasoningSteps": [
         "Verification is sufficient for a recovery code.",
         "A verified account without one breaks that guarantee."
@@ -1030,7 +1035,9 @@
     "teaching": [
       "Every verified invoice is recorded. If an invoice were verified, it would have to be recorded. An invoice that is not recorded therefore cannot be verified. Verified → recorded and not recorded → not verified make the same guarantee.",
       "To form a contrapositive, reverse the two complete conditions and negate both. Reversing alone gives an unsupported converse. Negating both without reversing gives an unsupported inverse.",
-      "Keep existing negatives and cancel double negatives. If a sensor is active, it is not silent becomes if it is silent, it is not active. Keep the same device and time throughout. A normative requirement establishes what must be done, not automatic factual compliance."
+      "Keep existing negatives and cancel double negatives. If a sensor is active, it is not silent becomes if it is silent, it is not active. Keep the same device and time throughout. A normative requirement establishes what must be done, not automatic factual compliance.",
+      "The six-step process finishes by translating back to English. Do not stop at symbols. For listed → not discontinued, its contrapositive is discontinued → not listed. Say it plainly: if this product is discontinued, it is not listed. That sentence checks both the negative and the direction.",
+      "Use the six steps to learn and check translation. They are a training scaffold, not six extra tasks you must write on every LSAT question forever. Apply an obvious forward match directly. Write the contrapositive when the fact denies a result or when it exposes a hidden connection. Use notation when it makes the relationship easier to track."
     ],
     "method": [
       "Write both complete conditions.",
@@ -1233,13 +1240,19 @@
     "teaching": [
       "Group 1 includes if, when, where, all, the only, every and any in their conditional uses. If a probe restarts, its log resets gives probe restarts → its log resets. The sufficient idea can appear second: its log resets whenever a probe restarts has the same direction.",
       "Preserve the whole subject. Every permit renewed through the regional office receives a new number starts with permit renewed through the regional office, not permit. The modifier limits which permits receive the guarantee.",
-      "An indicator list is a starting aid. We asked if the gate was open is an indirect question, not an if-then rule. When I arrived, the gate was open reports an event. The only paintings exhibited are restored paintings means exhibited painting → restored painting. Read the whole grammatical claim rather than attaching an arrow to an isolated noun."
+      "An indicator list is a starting aid. We asked if the gate was open is an indirect question, not an if-then rule. When I arrived, the gate was open reports an event. The only paintings exhibited are restored paintings means exhibited painting → restored painting. Read the whole grammatical claim rather than attaching an arrow to an isolated noun.",
+      "Use the What Test to identify an indicator target: ask if what, when what, or every what. In A report appears when a rover crosses the ridge, when what points to the rover crossing the ridge. Identify the complete idea, not just the nearest noun. Then check whether the sentence actually promises a result.",
+      "Recall and Rephrase practice: put the indicator list aside, recall the Group 1 role, and write the sentence as an if/then. Add its contrapositive in ordinary English. Compare with the original wording and explain any correction before trying another sentence.",
+      "Recognize related trigger phrasing: whenever, wherever, anytime, in the event that, and the moment that can introduce the triggering event. Each, everyone who, and everything that can specify a whole group. In the event that a sensor restarts, a new log begins means sensor restarts → new log begins. Preserve the complete event and group restrictions.",
+      "Provided that needs the whole promise: The archive will open provided that power is restored states restored power → archive opens. Guarantees and ensures can also connect a sufficient idea to its result. Leads to, produces, and results in express that direction only when the sentence makes an exceptionless claim; a usual tendency or mere causal possibility is weaker."
     ],
     "method": [
-      "Find the guarantee in the complete sentence.",
-      "Write the complete sufficient condition, including modifiers and negatives.",
-      "Write the required result about the same subject.",
-      "Read the arrow as if-then and compare its scope with the original."
+      "Identify the conditional indicator and Group 1; use the What Test to find its target.",
+      "Identify the two complete ideas, including subjects, modifiers and existing negatives.",
+      "Assign symbols to those complete ideas.",
+      "Apply the Group 1 translation rule and check the guarantee against the sentence.",
+      "Find the contrapositive by reversing and negating both complete conditions.",
+      "Translate both forms back to English and compare their meaning with the original."
     ],
     "workedExample": {
       "statements": [
@@ -1253,14 +1266,14 @@
     },
     "guidedExample": {
       "id": "group-1-guide",
-      "prompt": "A checkpoint report appears when a rover crosses the ridge. Which translates the rule?",
+      "prompt": "A checkpoint report appears when a rover crosses the ridge. Before choosing, run the six steps: identify the indicator and group, name both complete ideas, assign symbols, translate, contrapose, and rephrase both forms in English. Which translates the rule?",
       "options": [
         "Report appears → rover crosses ridge.",
         "Rover crosses ridge → checkpoint report appears.",
         "Rover does not cross ridge → no report appears."
       ],
       "answerIndex": 1,
-      "hint": "When introduces the sufficient event here, despite appearing second.",
+      "hint": "Ask when what: when a rover crosses the ridge. That is the sufficient event even though it appears second.",
       "reasoningSteps": [
         "Crossing the ridge triggers the report.",
         "The sentence does not establish that reports occur only for crossings."
@@ -1436,13 +1449,19 @@
     "teaching": [
       "Group 2 includes only, only if, only when, only where, always, requires and must in their relevant uses. The vault opens only if its code is verified gives vault opens → code verified. Verification is required for opening, but may not be enough to open it.",
       "Only members receive this newsletter restricts recipients to members: receives newsletter → member. Compare the only recipients are members, a Group 1 grammatical form with the same result. Meaning decides the direction.",
-      "Read requires and must carefully. Certification requires an exam pass states a requirement for certification. A staff member must wear a badge states an obligation; a person can violate it. Do not turn must wear into actually wears unless compliance is separately assumed. Always can describe a universal pattern; its placement and scope still matter."
+      "Read requires and must carefully. Certification requires an exam pass states a requirement for certification. A staff member must wear a badge states an obligation; a person can violate it. Do not turn must wear into actually wears unless compliance is separately assumed. Always can describe a universal pattern; its placement and scope still matter.",
+      "The What Test matters when the target is not immediately after the indicator. A charged battery is required for activation: what is required? A charged battery. Activation requires a charged battery: requires what? A charged battery. Both express activation → charged battery. Word position changes; the requirement does not.",
+      "Use a Personalized If/Then to check your translation. Imagine the display has activated. This rule forces you to know that its battery is charged. Imagine only a charged battery instead: activation is not forced. Keep the original scope and do not fill in an unstated guarantee.",
+      "Recognize required, prerequisite, necessary, essential, needs, and depends on as requirement phrasing when that is their meaning. A seal is essential for pressure retention gives pressure retained → seal present. Pressure retention depends on a seal gives the same direction. Ask what is required even when the requirement appears first.",
+      "An expression can name the result without belonging to one fixed word group. Activation implies a recorded event means activation → recorded event, as does Activation means a recorded event under an explicit catalogue convention. Then and will can introduce the result of an if clause. Signals may describe evidence rather than certainty. Identify the guarantee in the full sentence instead of assigning direction from one word alone."
     ],
     "method": [
-      "Identify the event, status or permission being restricted.",
-      "Write what that event requires as the necessary condition.",
-      "Place the restricted event left and its requirement right.",
-      "Check that meeting the requirement alone is not being treated as success."
+      "Identify the conditional indicator and Group 2; ask what it requires or restricts using the What Test.",
+      "Identify the two complete ideas, preserving permission, obligation, qualifiers and negatives.",
+      "Assign symbols to those complete ideas.",
+      "Translate the restricted event on the left and its requirement on the right; verify with a Personalized If/Then.",
+      "Find the contrapositive by reversing and negating both complete conditions.",
+      "Translate both forms back to English without turning a requirement into a guarantee of success."
     ],
     "workedExample": {
       "statements": [
@@ -1456,14 +1475,14 @@
     },
     "guidedExample": {
       "id": "group-2-guide",
-      "prompt": "Only subscribers can access the recording. Which follows?",
+      "prompt": "Only subscribers can access the recording. Before choosing, identify what only restricts, run the six steps, and check your direction with a Personalized If/Then about having access permission. Which follows?",
       "options": [
         "Subscriber → can access recording.",
         "Can access recording → subscriber.",
         "Subscriber → has accessed recording."
       ],
       "answerIndex": 1,
-      "hint": "Only restricts who can have the permission.",
+      "hint": "If I can access the recording, what must be true of me? I must be a subscriber. Being a subscriber alone does not guarantee access.",
       "reasoningSteps": [
         "Access permission is restricted to subscribers.",
         "The claim guarantees neither permission for every subscriber nor an actual access event."
@@ -1640,13 +1659,17 @@
     "teaching": [
       "The Refresher calls Group 3 negate sufficient. It includes unless, until and without in their conditional uses. The audit proceeds unless its authorization is withdrawn means not withdrawn → proceeds. Its contrapositive is not proceeds → withdrawn.",
       "You can choose either complete idea, negate it and make it sufficient, while keeping the other unchanged. For proceeds unless authorization withdrawn, negating proceeds gives not proceeds → authorization withdrawn. The two forms are contrapositives, not competing interpretations.",
-      "Preserve negatives already in the sentence. The gate does not open without a clearance means no clearance → no opening, equivalent to opening → clearance. Until also sets a time boundary: it does not promise that the withheld action happens immediately after the boundary. Without can merely describe circumstances, so first verify what the sentence actually guarantees."
+      "Preserve negatives already in the sentence. The gate does not open without a clearance means no clearance → no opening, equivalent to opening → clearance. Until also sets a time boundary: it does not promise that the withheld action happens immediately after the boundary. Without can merely describe circumstances, so first verify what the sentence actually guarantees.",
+      "Except needs the full claim too. Every crate is retained except damaged crates guarantees not damaged → retained. It does not, by that wording alone, prove what happens to a damaged crate. If the sentence explicitly says damaged crates are discarded, that supplies a separate rule. Keep permission, prohibition, and actual events distinct when an exception concerns who may act.",
+      "Otherwise or if not can introduce the other case without making a biconditional. If a sensor resets, its log clears; otherwise its log does not clear states both cases and supports a two-way relationship between resetting and clearing. Its log clears, otherwise an alert appears supplies only not clear → alert. Translate each stated case rather than assuming both directions."
     ],
     "method": [
-      "Write the two complete ideas with any existing negatives.",
-      "Choose one idea, negate it and put it on the left.",
-      "Keep the other idea unchanged on the right.",
-      "Check the equivalent contrapositive and preserve any time boundary."
+      "Identify the conditional indicator and Group 3, checking its meaning and target.",
+      "Identify the two complete ideas, including existing negatives, subjects and any time boundary.",
+      "Assign symbols to the complete ideas without dropping their qualifiers.",
+      "Apply the Group 3 rule: negate one idea on the left and keep the other unchanged on the right; cancel any resulting double negative.",
+      "Find the equivalent contrapositive by reversing and negating both complete conditions.",
+      "Translate both forms back to English and check that neither invents a guarantee from the exception."
     ],
     "workedExample": {
       "statements": [
@@ -1844,13 +1867,16 @@
     "teaching": [
       "Group 4 in the Refresher is negate necessary: no, none, not both, never and cannot in their relevant uses. No archived sample is disposable gives archived sample → not disposable. Choosing disposable as the trigger gives disposable → not archived sample.",
       "Not both says two conditions cannot occur together. The west hatch and the east hatch are not both open gives west open → east not open and east open → west not open. It permits both to be closed. It does not require exactly one to be open.",
-      "Never and cannot need context. A descriptive rule that the device never runs uncooled excludes that combination. An instruction that a visitor cannot enter means entry is forbidden; it does not physically prevent an unauthorized entry. Keep the claim's modal meaning rather than changing permission into behavior."
+      "Never and cannot need context. A descriptive rule that the device never runs uncooled excludes that combination. An instruction that a visitor cannot enter means entry is forbidden; it does not physically prevent an unauthorized entry. Keep the claim's modal meaning rather than changing permission into behavior.",
+      "Not can negate a result inside a universal rule: Paper forms are not accepted means paper form → not accepted. The word not alone does not create a universal rule. This form was not accepted is a case fact, and not all paper forms are accepted says at least one is unaccepted. Read the whole scope before applying the exclusion procedure."
     ],
     "method": [
-      "Identify the two complete conditions that cannot coexist.",
-      "Keep one unchanged as sufficient.",
-      "Negate the other as the required result.",
-      "Check that the rule excludes coexistence without inventing existence or exactly-one requirements."
+      "Identify the exclusion indicator and Group 4, checking exactly what coexistence is forbidden.",
+      "Identify the two complete conditions that cannot coexist, preserving subjects, qualifiers and existing negatives.",
+      "Assign symbols to those complete conditions.",
+      "Apply the Group 4 rule: keep one unchanged on the left and negate the other on the right; cancel any resulting double negative.",
+      "Find the equivalent contrapositive by reversing and negating both complete conditions.",
+      "Translate both forms back to English and check that the rule excludes coexistence without inventing existence or an exactly-one requirement."
     ],
     "workedExample": {
       "statements": [
@@ -2050,10 +2076,12 @@
       "Keep full predicates before abbreviating. Approved for trial use differs from approved for routine use. A word such as only or without is evidence about structure, not permission to discard modifiers, existing negatives or obligations."
     ],
     "method": [
-      "Identify whether the sentence gives a guarantee, a requirement or an exclusion.",
-      "Write both complete conditions.",
-      "Apply the matching group procedure and preserve existing negatives.",
-      "Read the result back and test the forbidden combination."
+      "Identify the indicator and group, using the What Test when its target is unclear.",
+      "Identify both complete ideas, preserving subjects, scope and existing negatives.",
+      "Assign symbols to the complete ideas.",
+      "Apply the matching group translation rule; use a Personalized If/Then to check the meaning.",
+      "Find the contrapositive, reversing and negating each complete condition.",
+      "Recall and Rephrase: put the guide aside, write both forms in English, then compare with the original and explain any correction."
     ],
     "workedExample": {
       "statements": [
@@ -2454,7 +2482,10 @@
       "Every calibrated meter is registered. Every registered meter is listed. A calibrated meter must therefore be listed: calibrated → registered → listed. The middle condition matches exactly and the arrows continue in the same direction.",
       "That chain creates a rule, not an existing calibrated meter. Meter D is calibrated adds the fact needed to conclude that D is listed. A listed meter alone does not prove calibration.",
       "Match complete meanings, not shared words. Registered for field use differs from registered for laboratory use. Keep the same subject through the chain. Rules concerning an object's owner or maker do not automatically transfer that property back to the object.",
-      "A link can be hidden until you take a contrapositive. Every tagged specimen is retained. Every discarded specimen is not retained. The second rule is equivalent to retained → not discarded. Now tagged → retained → not discarded is a forward chain. Write the equivalent rule first; do not simply reverse an arrow. If both sides already contain negatives, cancel the double negatives when contraposing."
+      "A link can be hidden until you take a contrapositive. Every tagged specimen is retained. Every discarded specimen is not retained. The second rule is equivalent to retained → not discarded. Now tagged → retained → not discarded is a forward chain. Write the equivalent rule first; do not simply reverse an arrow. If both sides already contain negatives, cancel the double negatives when contraposing.",
+      "Build the chain visibly before compressing it. Write calibrated → registered and registered → listed on separate lines. Align the repeated registered condition so that the first arrow arrives where the next arrow begins. Follow the path to calibrated → listed. Keep branches in the available space; a shared result with two incoming arrows is not a forward bridge.",
+      "A longer chain supports intermediate connections too. For calibrated → registered → listed → indexed, calibrated → listed, registered → indexed, and calibrated → indexed all follow. An answer need not connect the first and last ideas. Start with the proposed answer's trigger and check whether a forward path reaches its exact result.",
+      "Compare these complete middle conditions: late submission → requires approval; received approval → issued a reference number. They do not link. Requires approval and received approval differ, even though approval appears in both. A late submission still awaiting approval fits both rules without a reference number, so that proposed conclusion is not guaranteed."
     ],
     "method": [
       "Translate each rule into complete conditions.",
@@ -2659,7 +2690,8 @@
     "teaching": [
       "Every trained guide is insured. Every licensed guide is insured. Both rules end at insured. They do not establish that trained guides are licensed or licensed guides are trained. Insurance can be shared by different groups.",
       "A shared trigger produces two results, not a new relationship between those results. Every approved item is tagged and every approved item is boxed establish both results for an approved item. They do not establish tagged → boxed for all items.",
-      "An apparent mismatch may be real or may be resolved by a valid contrapositive. Check exact scope and subjects before declaring no link. The preceding linking lesson showed how contraposition exposes hidden connections. Use that procedure before deciding that a shared word supplies no valid path."
+      "An apparent mismatch may be real or may be resolved by a valid contrapositive. Check exact scope and subjects before declaring no link. The preceding linking lesson showed how contraposition exposes hidden connections. Use that procedure before deciding that a shared word supplies no valid path.",
+      "Check the requirement-versus-completion distinction explicitly. Late application → requires approval does not meet received approval → has a signature. A late application awaiting approval is a counterexample to the claim that it must have a signature. Nothing in the two rules says its requirement has been fulfilled."
     ],
     "method": [
       "Write the direction of each rule.",
