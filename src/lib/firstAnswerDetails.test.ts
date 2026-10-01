@@ -19,7 +19,7 @@ describe('first-answer History and Topics', () => {
       answer('new', 'LR:q2', '2026-09-27', true, 'Weaken'),
     ], 7, '2026-09-28');
     expect(details.history.map((row) => [row.attemptId, row.isFirst])).toEqual([['repeat', false], ['new', true]]);
-    expect(details.topics).toEqual([{ topic: 'Weaken', correct: 1, denominator: 1, percent: null }]);
+    expect(details.topics).toEqual([{ topic: 'Weaken', correct: 1, denominator: 1, percent: null, evidenceAttemptIds: ['new'] }]);
   });
 
   it('only groups persisted LR topics and discloses untyped first answers', () => {
@@ -29,6 +29,6 @@ describe('first-answer History and Topics', () => {
       ...[1, 2, 3].map((n) => answer(`w${n}`, `LR:w${n}`, '2026-09-27', n !== 1, 'Weaken')),
     ], 'all', '2026-09-28');
     expect(details.untypedFirstAnswers).toBe(1);
-    expect(details.topics).toEqual([{ topic: 'Weaken', correct: 2, denominator: 3, percent: 67 }]);
+    expect(details.topics).toEqual([{ topic: 'Weaken', correct: 2, denominator: 3, percent: 67, evidenceAttemptIds: ['w3', 'w2', 'w1'] }]);
   });
 });

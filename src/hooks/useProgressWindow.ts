@@ -16,16 +16,16 @@ function storedWindow(): ProgressWindow | null {
 }
 
 /** URL wins when present; the account's last choice follows destination tabs. */
-export function useProgressWindow(): [ProgressWindow, (value: ProgressWindow) => void] {
+export function useProgressWindow(persist = true): [ProgressWindow, (value: ProgressWindow) => void] {
   const [params, setParams] = useSearchParams();
-  const window = parseProgressWindow(params.get('window')) ?? storedWindow() ?? 30;
+  const window = parseProgressWindow(params.get('window')) ?? (persist ? storedWindow() : null) ?? 30;
   const setWindow = useCallback((value: ProgressWindow) => {
-    try { globalThis.window.localStorage.setItem(STORAGE_KEY, String(value)); } catch { /* URL remains authoritative. */ }
+    if (persist) try { globalThis.window.localStorage.setItem(STORAGE_KEY, String(value)); } catch { /* URL remains authoritative. */ }
     setParams((current) => {
       const next = new URLSearchParams(current);
       next.set('window', String(value));
       return next;
     }, { replace: true });
-  }, [setParams]);
+  }, [setParams, persist]);
   return [window, setWindow];
 }

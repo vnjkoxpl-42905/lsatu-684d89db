@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import FirstAnswerProgressPanel from '@/components/analytics/FirstAnswerProgressPanel';
 import { useDossier } from './StudentDossier';
+import FirstAnswerHistoryPanel from '@/components/analytics/FirstAnswerHistoryPanel';
+import ProgressTopics from '@/pages/ProgressTopics';
+import { useProgressWindow } from '@/hooks/useProgressWindow';
+import ProgressWindowControl from '@/components/analytics/ProgressWindowControl';
 
 export default function DossierProgress() {
   const { studentId, studentName } = useDossier();
+  const [window, setWindow] = useProgressWindow(false);
 
   return (
     <div className="space-y-4 p-5">
@@ -14,7 +19,10 @@ export default function DossierProgress() {
         </div>
         <Link to="../review" className="inline-flex min-h-11 items-center border border-black/15 px-3 py-2 text-xs font-semibold text-black/70 hover:bg-white/30">Review missed questions</Link>
       </div>
-      <FirstAnswerProgressPanel studentId={studentId} />
+      <ProgressWindowControl value={window} onChange={setWindow} />
+      <FirstAnswerProgressPanel studentId={studentId} hideWindowControl />
+      <FirstAnswerHistoryPanel window={window} studentId={studentId} />
+      <ProgressTopics studentId={studentId} hideWindowControl />
     </div>
   );
 }
