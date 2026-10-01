@@ -22,6 +22,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
 import { BOOTCAMP_INLINE } from '@/lib/bootcampInline';
 import { useHubStudents } from '@/hooks/useHubStudents';
+import { ConditionalAssignmentFields } from '@/components/teacher/ConditionalAssignmentFields';
+import { DEFAULT_CONDITIONAL_TARGET, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
   'conditional-indicators-refresher': 1,
@@ -59,8 +61,10 @@ export function DeskLibraryBootcampsSurface({ view }: { view: LibraryView }) {
   const [assignStart, setAssignStart] = useState<Date | undefined>(undefined);
   const [assignEnd, setAssignEnd] = useState<Date | undefined>(undefined);
   const [assigning, setAssigning] = useState(false);
+  const [conditionalTarget, setConditionalTarget] = useState<ConditionalAssignmentTarget>(DEFAULT_CONDITIONAL_TARGET);
 
   const openAssign = (b: BootcampDef) => {
+    setConditionalTarget(DEFAULT_CONDITIONAL_TARGET);
     const start = new Date();
     setAssignBootcamp(b);
     setAssignStart(start);
@@ -85,7 +89,7 @@ export function DeskLibraryBootcampsSurface({ view }: { view: LibraryView }) {
       const result = await assignWork({
         teacherId: user.id,
         studentIds: [...selected],
-        item: { kind: 'bootcamp', topicId: b.id },
+        item: { kind: 'bootcamp', topicId: b.id, ...(b.id === 'conditionals' ? { conditionalTarget } : {}) },
         scheduledForLocalDate: localDayISO(start),
       });
 
@@ -193,6 +197,7 @@ export function DeskLibraryBootcampsSurface({ view }: { view: LibraryView }) {
             <SheetTitle>Assign: {assignBootcamp?.title}</SheetTitle>
           </SheetHeader>
           <div className="mt-4 space-y-4">
+            {assignBootcamp?.id === 'conditionals' && <ConditionalAssignmentFields value={conditionalTarget} onChange={setConditionalTarget} disabled={assigning} />}
             <div className="flex flex-wrap items-center gap-2">
               <AssignmentDateField
                 label="Start"

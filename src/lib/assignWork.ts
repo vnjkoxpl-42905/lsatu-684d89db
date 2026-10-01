@@ -5,6 +5,7 @@ import type { ClassroomItemType } from '@/hooks/useClassroomItems';
 import { notifyStudentOfClassroomItem, type NotifyResult } from '@/lib/classroomNotify';
 import { parseLocalDay } from '@/lib/localDate';
 import { coerceStudentLevel, type StudentLevel } from '@/lib/studentLevel';
+import { resolveConditionalAssignment, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
 
 /**
  * The one thing a teacher can hand a student. Every assign surface in the
@@ -15,7 +16,7 @@ export type AssignableItem =
   | { kind: 'homework_set'; setId: string }
   | { kind: 'guided_drill'; drillId: string }
   | { kind: 'activity'; activityId: string }
-  | { kind: 'bootcamp'; topicId: string };
+  | { kind: 'bootcamp'; topicId: string; conditionalTarget?: ConditionalAssignmentTarget };
 
 export interface StudentResult {
   studentId: string;
@@ -319,21 +320,24 @@ async function planFor(
     case 'bootcamp': {
       const bootcamp = BOOTCAMPS.find((b) => b.id === item.topicId);
       if (!bootcamp) throw new Error(`Unknown bootcamp: ${item.topicId}`);
+      if (item.conditionalTarget && item.topicId !== 'conditionals') throw new Error('Conditional targets apply only to Conditional Logic Bootcamp.');
+      const conditional = item.topicId === 'conditionals' ? await resolveConditionalAssignment(item.conditionalTarget) : null;
+      const assignedRoute = conditional?.route ?? bootcamp.route;
 
       return {
         type: 'bootcamp_module',
-        title: bootcamp.title,
-        description: bootcamp.description,
+        title: conditional?.title ?? bootcamp.title,
+        description: conditional?.description ?? bootcamp.description,
         assignmentType: 'bootcamp',
         // A bootcamp has no per-student row: the classroom item IS the
         // assignment, and source_id is the bootcamp's own route.
         sourceTable: 'bootcamps',
         insertRow: async () => null,
-        sourceId: () => bootcamp.route,
-        route: () => bootcamp.route,
+        sourceId: () => assignedRoute,
+        route: () => assignedRoute,
         unlockAt,
         dueAt: null,
-        metadata: { bootcamp_id: bootcamp.id },
+        metadata: { bootcamp_id: bootcamp.id, ...(conditional ? { conditional_target: conditional.target, conditional_target_key: conditional.key } : {}) },
       };
     }
   }

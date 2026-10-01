@@ -24,6 +24,8 @@ import { useStudentClassroomItems, type ClassroomItem } from '@/hooks/useClassro
 import { AssignmentDateField } from '@/components/teacher/AssignmentDateField';
 import { bootcampDays } from '@/lib/bootcampDays';
 import { cn } from '@/lib/utils';
+import { ConditionalAssignmentFields } from '@/components/teacher/ConditionalAssignmentFields';
+import { conditionalTargetKey, DEFAULT_CONDITIONAL_TARGET, resolveConditionalAssignment, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
 
 interface Props {
   studentId: string;
@@ -78,6 +80,8 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
   const [dueAt, setDueAt] = useState<Date | undefined>(undefined);
   const [homeworkSetId, setHomeworkSetId] = useState<string>('');
   const [bootcampId, setBootcampId] = useState<string>(BOOTCAMPS[0].id);
+  const [conditionalTarget, setConditionalTarget] = useState<ConditionalAssignmentTarget>(DEFAULT_CONDITIONAL_TARGET);
+  const [conditionalTargetError, setConditionalTargetError] = useState<string | null>(null);
   // Item B — null = "all days" (default). Empty array = explicitly none
   // (UI guards against this). number[] = explicit subset.
   const [assignedDayIds, setAssignedDayIds] = useState<number[] | null>(null);
@@ -96,6 +100,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
     setHomeworkSetId('');
     setUnlockAt(undefined);
     setDueAt(undefined);
+    setConditionalTarget(DEFAULT_CONDITIONAL_TARGET);
   }, [studentId]);
 
   useEffect(() => {
@@ -132,12 +137,23 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
     setDaysExpanded(false);
   }, [type, bootcampId]);
 
+  useEffect(() => {
+    if (type !== 'bootcamp_module' || bootcampId !== 'conditionals') return;
+    let alive = true;
+    setConditionalTargetError(null);
+    resolveConditionalAssignment(conditionalTarget).then(target => {
+      if (alive) { setTitle(target.title); setDescription(target.description); }
+    }).catch(error => { if (alive) setConditionalTargetError(error instanceof Error ? error.message : 'The selected conditional work could not load.'); });
+    return () => { alive = false; };
+  }, [type, bootcampId, conditionalTarget]);
+
   const duplicate = useMemo(() => {
     if (type === 'bootcamp_module') {
       return existingItems.some(
         (i) =>
           i.type === 'bootcamp_module' &&
           i.metadata_json?.bootcamp_id === bootcampId &&
+          (bootcampId !== 'conditionals' || (i.metadata_json?.conditional_target_key ?? 'course') === conditionalTargetKey(conditionalTarget)) &&
           i.status !== 'archived' &&
           i.status !== 'completed',
       );
@@ -152,7 +168,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
       );
     }
     return false;
-  }, [type, bootcampId, homeworkSetId, existingItems]);
+  }, [type, bootcampId, homeworkSetId, existingItems, conditionalTarget]);
 
   const resetForm = () => {
     setTitle('');
@@ -162,6 +178,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
     setDueAt(undefined);
     setAssignedDayIds(null);
     setDaysExpanded(false);
+    setConditionalTarget(DEFAULT_CONDITIONAL_TARGET);
   };
 
   const submit = async () => {
@@ -188,7 +205,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
         type === 'homework' && homeworkSetId
           ? { kind: 'homework_set', setId: homeworkSetId }
           : type === 'bootcamp_module' && bootcampId
-            ? { kind: 'bootcamp', topicId: bootcampId }
+            ? { kind: 'bootcamp', topicId: bootcampId, ...(bootcampId === 'conditionals' ? { conditionalTarget } : {}) }
             : null;
 
       let item: ClassroomItem;
@@ -372,13 +389,13 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
               </select>
             </div>
 
-            <DayPicker
+            {bootcampId === 'conditionals' ? <><ConditionalAssignmentFields value={conditionalTarget} onChange={setConditionalTarget} disabled={submitting} />{conditionalTargetError && <p role="alert" className="text-sm text-destructive">{conditionalTargetError}</p>}</> : <DayPicker
               bootcampId={bootcampId}
               value={assignedDayIds}
               onChange={setAssignedDayIds}
               expanded={daysExpanded}
               onExpandedChange={setDaysExpanded}
-            />
+            />}
           </div>
         )}
 

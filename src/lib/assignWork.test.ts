@@ -234,6 +234,32 @@ describe('assignWork', () => {
       expect.objectContaining({ sourceTable: 'bootcamps', type: 'bootcamp_module' }),
     );
   });
+
+  it('persists the exact conditional skill and level in the classroom item', async () => {
+    const conditionalTarget = { scope: 'skill', mode: 'practice', unitId: 'group-3', difficulty: 'advanced' } as const;
+    const result = await assignWork({ teacherId: TEACHER, studentIds: ['student-a'],
+      item: { kind: 'bootcamp', topicId: 'conditionals', conditionalTarget }, notify: false });
+    expect(result.failed).toEqual([]);
+    expect(mockCreateClassroomItem).toHaveBeenCalledWith(expect.objectContaining({
+      sourceId: '/bootcamp/conditionals/practice?level=advanced&unit=group-3',
+      metadata: expect.objectContaining({ bootcamp_id: 'conditionals', conditional_target: conditionalTarget,
+        conditional_target_key: 'skill:group-3:practice:advanced' }),
+    }));
+    expect(inserted).toEqual({});
+    expect(mockNotify).not.toHaveBeenCalled();
+  });
+
+  it('rejects an unknown conditional skill before writing or notifying', async () => {
+    const result = await assignWork({ teacherId: TEACHER, studentIds: ['student-a'], item: {
+      kind: 'bootcamp', topicId: 'conditionals', conditionalTarget: {
+        scope: 'skill', mode: 'practice', unitId: 'missing-skill', difficulty: 'medium',
+      },
+    } });
+    expect(result.ok).toEqual([]);
+    expect(result.failed).toEqual([{ studentId: 'student-a', error: 'Choose an existing conditional skill.' }]);
+    expect(mockCreateClassroomItem).not.toHaveBeenCalled();
+    expect(mockNotify).not.toHaveBeenCalled();
+  });
 });
 
 describe('assignWorkBundle', () => {
