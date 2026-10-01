@@ -580,7 +580,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 24,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

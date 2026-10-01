@@ -159,7 +159,7 @@
     "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Fortune-teller: Admittedly, the claims of some selfproclaimed “psychics” have been shown to be fraudulent, but the exposure of a few charlatans cannot alter the fundamental fact that it has not been scientifically proven that there is no such thing as extrasensory perception (ESP). Furthermore, since the failed attempts to produce such a proof have been so numerous, one must conclude that some individuals do possess ESP.",
+    "stimulus": "Fortune-teller: Admittedly, the claims of some self-proclaimed “psychics” have been shown to be fraudulent, but the exposure of a few charlatans cannot alter the fundamental fact that it has not been scientifically proven that there is no such thing as extrasensory perception (ESP). Furthermore, since the failed attempts to produce such a proof have been so numerous, one must conclude that some individuals do possess ESP.",
     "questionStem": "The reasoning in the fortune-teller’s argument is most vulnerable to criticism on the grounds that the argument",
     "answerChoices": {
       "A": "takes for granted that proof that many people lack a characteristic does not establish that everyone lacks that characteristic",
