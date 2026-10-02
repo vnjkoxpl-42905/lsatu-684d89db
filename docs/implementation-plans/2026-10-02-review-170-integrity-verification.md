@@ -4,7 +4,7 @@ Date: 2026-10-02
 Ticket: #170, remains open.
 Base: `0f48e65`, current main when this isolated checkout was created.
 Branch: `codex/review-170-finish`.
-Status: source and local browser verification passed; publication evidence follows separately.
+Status: source, local browser checks and the scoped live publication checks passed. Whole #170 remains open.
 
 ## Scope
 
@@ -51,3 +51,11 @@ A targeted local network block on Activity assignment/response reads showed a fr
 Whole #170 remains open. Positive ordinary-student Activity-miss detail, broader source task walks, review completion/flag independence in a real account, later-miss episodes, first/blind/reveal behavior across all supported families, and teacher/student queue agreement still require acceptance. This pass did not manufacture new misses or mutate student work to provide them. Full runtime detail coverage is not inferred from mocked tests.
 
 The separate #176 backend deployment still requires its outstanding route confirmation and immediate credit approval for a paid Lovable agent turn. This frontend slice needs no backend change.
+
+## Published frontend checkpoint
+
+Functional commit `cc294c7227281a5db4ee38c1ada595fd20ed2a02` reached GitHub main through `.claude/safe-push.sh`, including its typecheck gate. Lovable imported that exact SHA. Free deployment `592d5dad-5f50-4e93-9b89-aec7a6c80f9a` completed with the editor showing Your website was updated. The initial fresh production check served the previous UI; after the deployment transition, a reload rendered the new area/source controls.
+
+Authenticated production `lsatprep.study/review/to-review` displayed the same owned journal row. Its exact journal route and Back to review queue retained source, LR area, search, table view and selected identity; the link had `aria-current=true` and the row displayed Last opened. Screenshot: `artifacts/review-170/production-filter-return.png`. Production entry was `/assets/index-Bntll0hI.js`; runtime build SHA was not exposed, so exact runtime-SHA identity is not claimed.
+
+The detailed table also passed the four measured widths above without horizontal page overflow. An initial browser-global measurement did not change the targeted frame width and was discarded; target-tab emulation produced the stated actual widths. All overrides were reset. No answer, note, completion, database or paid AI action was performed. Temporary verification tabs were closed, the production Review tab retained, and the owned port8184 server stopped. The separate port8080 session-link server was not stopped.
