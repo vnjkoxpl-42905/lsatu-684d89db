@@ -214,6 +214,141 @@ This is not authenticated or live evidence. A temporary Vite config aliased `@/i
 - A harness artifact was found and fixed in the harness: an unstable fake `useAuth` object caused a render loop the real `AuthContext` cannot produce. As a precaution, `useBootcampProgress` now depends on `user.id` rather than the user object.
 - Not covered: the real auth/session stack, production RLS, the app shell and routing in `App.tsx`, and real Supabase data.
 
+## Pass 2: independent assessment of the b729407 review, and server contract
+
+PR head at the start of this pass: `b729407d3515cb2eabb3681617aa7e25f24f9124` (unchanged since the review). This pass is the next commit on the same branch.
+
+### Assessment of the review's conclusions
+
+Evidence types: **S** = source read, **T** = automated test in this repo (mocked), **M** = mocked browser run, **R** = real account, **D** = deployed. Nothing in this pass is R or D.
+
+| Review statement | Verdict | Evidence |
+|---|---|---|
+| Note-read and bootcamp-progress saves preserve links (fresh read, CAS on `updated_at`, bounded retries, real writers tested) | **Agree** | S: `mergeClassroomItemMetadata` in `src/lib/classroomItems.ts`, `markNoteRead`, `useBootcampProgress`. T: `src/lib/sessionChainWriters.test.tsx`. Limit: CAS on the client is only as strong as `updated_at`; the server guard below makes link loss impossible regardless. A mark-read that gives up after 3 conflicts leaves the note unread (the caller swallows it); that is the intended failure. |
+| Notes shows loading, failure, stale and retry | **Agree** | S: `SessionLinkedNotes`. T: `MyWorkNotesPage.sessionLinks.test.tsx`. M only for layout. |
+| Past and canceled sessions are discoverable | **Agree in part.** The path existed, but `SessionHistory` also listed abandoned checkout holds (`draft`, `checkout_open`, `expired`, `abandoned`) and `failed` redemptions as past sessions, and the teacher list did the same. **Fixed in this pass** (see below). | S: `toSessionBooking`, `isAppointmentStatus`. T: new `sessionChain` and `Schedule.sessionChain` cases. |
+| Teacher state includes actor and student | **Agree** | S: `teacherBookingsKey`, `teacherItemsKey`, `useSessionLinkWriter`, the `TeacherSessionWork` key. T: `useSessionChain` › actor binding. |
+| Add/move/remove disabled until secure backend | **Agree** | S: `SESSION_LINK_WRITES_ENABLED = false`; `SessionChainPanel` drops `writer`. T: the gate tests. |
+| Stored associations visibly labelled unverified | **Agree, with a defect to fix before enabling.** The label is tied to the gate (`teacher && !writer`), not to the data. Flipping the flag would hide it even for legacy links. Before enabling, the label must come from data: verified only when `session_chain.linked_by` is present **and** the item is not in `classroom_item_session_link_legacy`. Students see their own links without a caveat; only their own account could have forged those, so this is acceptable. | S: `SessionChainPanel` render. |
+| "The existing booking query returns only the latest 30 bookings" | **Disagree in scope.** Only the student's **single sessions** are capped (`student-booking` `info` → `single_session_bookings ... .limit(30)`). Redemptions (`get_student_booking`) and every teacher read (`booking_pass_redemptions` via admin RLS; `booking-pass-admin` `get_for_student`) are uncapped. | S: `supabase/functions/student-booking/index.ts`, `supabase/migrations/20260720190000_booking_phase5_student_state.sql`. |
+| Independent checks (143 tests, typecheck, build, lint, whitespace) | **Agree, and re-run** on the new head (numbers below). | T. |
+
+### Additional findings, by practical impact
+
+1. **Client link writer would break once the guard ships** (pre-enable blocker, not a live defect). `commitSessionLink` writes `metadata_json` directly. After the contract is applied the guard rejects that with `42501`. It is unreachable today (gated), but it must be switched to `set_classroom_item_session_link` before the flag is flipped.
+2. **Checkout holds and failed bookings shown as sessions** (UX truthfulness; fixed). Unpaid holds would have appeared in "Past and canceled sessions" with a raw status such as "draft", and as teacher appointment rows. `toSessionBooking` now accepts only appointment statuses (`booked`, `cancelled`/`canceled`, `no_show`, `refund_pending`, `refunded`, `refund_failed`). Refund states read as Canceled and `no_show` reads as Missed.
+3. **Silent omission beyond the 30-single-session cap** (truthfulness; fixed in UI, root cause open). A deep link or Notes link to an older single session read as "not available in your schedule". Now, when the student has 30 or more single-session rows, the unavailable state, the history list and Notes each say the coverage may be incomplete. Complete history needs `student-booking` to page (for example a `before` cursor) or to resolve specific linked ids. That is an edge-function change and is not done here.
+4. **Verification label depends on the gate** (see the table). Must change before enabling.
+5. **Pre-existing 10 px overflow** at 390 px with doubled text in the Schedule stage tabs and calendar header. Retained as an **unresolved acceptance item**: it is in existing Schedule chrome, appears with or without this feature, and fixing it means restyling navigation outside this ticket's surface.
+
+### Server contract (implemented as a proposal artifact, tested, not applied)
+
+Files:
+
+- `docs/implementation-plans/artifacts/2026-10-02-session-chain-server-contract.sql`. It sits deliberately outside `supabase/migrations`, so merging this PR cannot apply it.
+- `docs/implementation-plans/artifacts/2026-10-02-session-chain-server-contract-rollback.sql`.
+- `scripts/verification/session-chain-server-contract.mjs`, a PGlite harness following the repo's existing `scripts/verification/*` convention (external `--pglite-module`; no app dependency added).
+
+Design:
+
+- **Actor** is `auth.uid()` from the request JWT, never a parameter. **Authority** is `has_role(auth.uid(), 'admin')`. The schema has only `admin` and `user` roles and no teacher-to-student roster, so "teacher" is the admin, exactly as `classroom_items_admin_all` already treats it.
+- **Ownership:** the item's `student_id` must equal the intended `_student_id` (catches a stale UI selection). The booking must belong to that same student: a redemption via `booking_passes.student_id`; a single session via `single_session_bookings.user_id`, so email-only matches are rejected.
+- **Eligibility:** the phase must fit the item type (Recap needs `session_recap`/`smartboard_recap`); archived items are refused; new links need booking status `booked`. Removal skips booking checks, so links on canceled appointments can still be removed.
+- **Concurrency:** `SELECT … FOR UPDATE`, then compare `_expected_updated_at`. A mismatch returns `{status:'conflict', session_chain:<current>}` and writes nothing. A request for the state already stored returns `{status:'unchanged'}` with no write, so a retried lost reply is safe. A success returns `{status:'saved', updated_at, session_chain}` as the acknowledgment.
+- **Preservation:** only `metadata_json -> 'session_chain'` changes (`jsonb_set` or `-`); `linked_by` and `linked_at` are stamped.
+- **All mutation paths:** a `BEFORE INSERT OR UPDATE` trigger rejects any change to that member unless it comes from inside the function. The function sets a transaction-local flag; PostgREST clients cannot set arbitrary settings. This covers student updates, admin direct updates, inserts and service-role writes. Writes that carry the member through unchanged pass: the note-read and bootcamp merges, status syncs, column-only admin edits.
+- **No destructive cleanup:** existing members are copied into `classroom_item_session_link_legacy` (admin-read-only), and no row is rewritten. A legacy link becomes verified only when Joshua re-saves it through the function, which clears its legacy record.
+- **Rollback:** drops the function, trigger and guard function. It leaves every row and, by default, the legacy record. Turn the frontend flag off first.
+- **Known bypass, documented:** direct SQL as `postgres` (dashboard or migrations) can set the flag. That is outside the app's threat model.
+
+PGlite result: `PASS session_chain server contract: 52 checks`. Coverage:
+
+- the forge works before install; install rewrites no row and records the legacy member; install is re-runnable;
+- student add, move and remove are rejected; student merge and status writes still work; a student calling the function, or a call with no JWT, is rejected;
+- admin direct update and insert-with-member are rejected; admin column edits still work;
+- rejected: another student's booking, the wrong intended student, a cross-student item, an email-match-only single session, a canceled booking for a new link, drill-as-recap, an unknown source, an unknown phase;
+- a missing item returns `not_found`;
+- save stamps `linked_by` from the JWT and preserves other metadata;
+- an idempotent repeat makes no write; a stale `updated_at` returns a conflict with the current link and changes nothing;
+- move and remove keep other keys; removal works from a canceled booking;
+- legacy re-save verifies the link and clears the legacy record; the legacy table is admin-only;
+- rollback leaves rows untouched and restores pre-contract behavior; the preconditions fail closed on the wrong baseline.
+
+PGlite is real Postgres compiled to WASM. It proves the SQL and trigger semantics, not Supabase's role and grant setup or PostgREST behavior.
+
+Deployment prerequisite, in order (none of this has been done):
+
+1. Joshua approves applying the SQL through the approved Lovable route, with **explicit confirmation immediately before any step that may spend Lovable credits**.
+2. Pre-apply probe: `select count(*) from classroom_items where metadata_json ? 'session_chain';`. Expect 0, since writes were never enabled. Any non-zero count is recorded as legacy, not deleted.
+3. Apply. Post-apply probe:
+   - `to_regprocedure('public.set_classroom_item_session_link(uuid,uuid,timestamptz,text,uuid,text)')` is not null;
+   - the trigger `classroom_items_session_chain_guard` exists;
+   - a student-JWT `update … metadata_json || '{"session_chain":{}}'` on an owned fixture returns `42501`.
+4. Frontend change, as a separate reviewed commit:
+   - switch `commitSessionLink` to the RPC and map `saved`/`unchanged`/`conflict`/`not_found` onto the existing outcomes;
+   - derive "verified" from `linked_by` plus the legacy table;
+   - regenerate Supabase types;
+   - then flip `SESSION_LINK_WRITES_ENABLED`.
+5. Real-account acceptance (below).
+
+### Pass 2 changed files
+
+`src/lib/sessionChain.ts` (appointment-status filter, refund and no-show labels), `src/components/schedule/SessionChainPanel.tsx` (history filter, cap notes), `src/hooks/useSessionChain.ts` (`olderSingleSessionsOmitted`, `STUDENT_SINGLE_SESSION_CAP`), `src/pages/MyWorkNotesPage.tsx` (cap note). Tests: `src/lib/sessionChain.test.ts`, `src/pages/Schedule.sessionChain.test.tsx`, `src/components/schedule/SessionChainPanel.test.tsx` (fixture field). New: the two SQL artifacts and `scripts/verification/session-chain-server-contract.mjs`. This document.
+
+### Pass 2 proof
+
+| Check | Result |
+|---|---|
+| Required 11-file suite plus `sessionChainWriters` and `MyWorkNotesPage.sessionLinks` (13 files), `TZ=America/New_York` | 157/157 |
+| Same under container UTC | 156/157; the one failure is the pre-existing `scheduleEntries` TZ test, which fails identically on the base |
+| Full `npx vitest run` | Failing-file set identical to the base (19 pre-existing) |
+| `node scripts/verification/session-chain-server-contract.mjs --pglite-module <external pglite>` | PASS, 52 checks |
+| `npm run typecheck` | Pass |
+| `npm run build` | Pass (generated bank churn restored, not committed) |
+| Scoped ESLint on changed `.ts/.tsx/.mjs` | 0 errors; 1 pre-existing warning (`MyWorkNotesPage.tsx:49`) |
+| `git diff --check 124fee3a4f14952c5b05abcf3bedd18dd22d1f18 HEAD` | Pass |
+
+No new browser run was made for pass 2. Its UI changes are copy and filtering, covered by component and route tests (T). The pass-1 mocked full-page evidence (M) still stands for layout.
+
+## Status
+
+**Implemented and tested** (S, T, M; PGlite for SQL):
+
+- read-only Session work panel on Schedule, the dossier and Notes;
+- metadata-preserving writers;
+- failure, stale and retry states;
+- history with appointment-status filtering and honest cap notes;
+- actor-bound teacher state;
+- the gated teacher controls;
+- the server contract and its rollback, as proposal artifacts.
+
+**Deployed and verified:** nothing. No SQL was applied, nothing was published, and no real account was used.
+
+**Blocked or outstanding:**
+
+- applying the server contract (needs approval through the Lovable route);
+- the frontend switch to the RPC with data-based verification, then enabling the controls;
+- complete single-session history past 30 (needs a `student-booking` pagination or by-id change);
+- the 390 px / 200% text overflow in existing Schedule chrome;
+- all real-account acceptance below.
+
 ## Real-account acceptance still required
 
-Blocked on the server prerequisite above for every step that creates, moves or removes a link. After it lands: one verified student-owned appointment; Joshua links real preparation, recap and follow-up records through the new function; student Schedule and Notes resolve the same links; the dossier agrees; reload persists; hidden and foreign access is rejected; timezone and date are correct; a student account cannot change `session_chain` (expect a guard error); bootcamp progress and note opening still save and keep links. No live data was read or written, no notification was sent, nothing was deployed.
+Not started. It needs the server contract applied and the frontend switched to the RPC. Use owned, narrowly authorized fixtures: one admin (Joshua) and two student accounts, A and B. Record each run as:
+
+`environment (preview or production URL) · commit SHA · account role (admin / student A / student B; no credentials) · check · expected · actual · pass/fail · date`.
+
+| # | Check | Expected |
+|---|---|---|
+| 1 | Admin links existing preparation, recap and follow-up records to a booked appointment of student A | Each save acknowledged; panel updates |
+| 2 | Student A Schedule, student A Notes, and the admin dossier | Same booking and the same records in the same phases |
+| 3 | Reload each view | Associations retained |
+| 4 | Admin moves one link to another appointment, then removes another | Persist across reload; removed record still in My Work |
+| 5 | Student B views | None of A's records or appointments; deep link to A's appointment shows "unavailable" |
+| 6 | Hidden, draft or locked item linked by admin | Absent for student A; labelled teacher-only for admin |
+| 7 | Student A attempts to change `session_chain` (crafted request) | Server rejects with `42501` |
+| 8 | Student A opens a linked note; works a linked bootcamp day | Read state and progress saved; links intact |
+| 9 | Appointment near midnight, or across a DST change | Date and time correct in the displayed timezone |
+| 10 | Throttle or block a request, then Retry | Clear failure state; previously shown valid data retained |
+
+#176 stays open until this table is filled with passing results. No live data was read or written, no notification was sent, and nothing was deployed in any pass so far.

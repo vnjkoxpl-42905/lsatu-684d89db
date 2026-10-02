@@ -40,6 +40,12 @@ export interface SessionChainState {
   itemsFailed: boolean;
   /** A background refresh failed; the rows shown are from an earlier read. */
   stale: boolean;
+  /**
+   * The student booking source returns at most the latest 30 single sessions,
+   * so older ones (and links to them) may be missing. Always false for the
+   * teacher, whose reads are not capped.
+   */
+  olderSingleSessionsOmitted: boolean;
   retry: () => void;
 }
 
@@ -76,6 +82,7 @@ export function deriveSessionChainState(input: {
     bookingsFailed: bookingQuery.isError && bookingQuery.data === undefined,
     itemsFailed: itemQuery.isError && itemQuery.data === undefined,
     stale: (bookingQuery.isError && bookingQuery.data !== undefined) || (itemQuery.isError && itemQuery.data !== undefined),
+    olderSingleSessionsOmitted: false,
     retry: () => {
       void bookingQuery.refetch();
       void itemQuery.refetch();
@@ -93,13 +100,19 @@ export function useStudentSessionChain(): SessionChainState {
     () => (booking.data ? (booking.data.bookings ?? []).map(toSessionBooking).filter((b): b is SessionBooking => !!b) : undefined),
     [booking.data],
   );
-  return deriveSessionChainState({
+  const state = deriveSessionChainState({
     audience: 'student',
     subjectId,
     bookingQuery: { data: bookingData, isLoading: booking.isLoading, isError: booking.isError, refetch: booking.refetch },
     itemQuery: { data: items.data, isLoading: items.isLoading, isError: items.isError, refetch: items.refetch },
   });
+  // Counted on the raw rows: the cap applies before status filtering.
+  const singleRows = (booking.data?.bookings ?? []).filter((b) => b.source === 'single_session').length;
+  return { ...state, olderSingleSessionsOmitted: !!subjectId && singleRows >= STUDENT_SINGLE_SESSION_CAP };
 }
+
+/** `student-booking` `info` selects single sessions with `.limit(30)`. */
+export const STUDENT_SINGLE_SESSION_CAP = 30;
 
 type AdminSingleSession = {
   source?: string;

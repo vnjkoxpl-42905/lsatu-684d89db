@@ -142,4 +142,25 @@ describe('Schedule session work', () => {
     expect(screen.getByText('Canceled-day drill')).toBeInTheDocument();
     expect(screen.getAllByText('Canceled').length).toBeGreaterThan(0);
   });
+
+  it('never lists checkout holds or failed bookings as sessions', () => {
+    state.bookings = [
+      raw(BOOKING_A),
+      raw('66666666-6666-4666-8666-666666666666', { source: 'single_session', status: 'draft', start_at: '2026-09-10T15:00:00Z' }),
+      raw('77777777-7777-4777-8777-777777777777', { source: 'single_session', status: 'expired', start_at: '2026-09-11T15:00:00Z' }),
+      raw('88888888-8888-4888-8888-888888888888', { status: 'failed', start_at: '2026-09-12T15:00:00Z' }),
+    ];
+    renderAt('/schedule');
+    expect(screen.queryByRole('region', { name: 'Past and canceled sessions' })).not.toBeInTheDocument();
+  });
+
+  it('says single-session history may be incomplete at the 30-row cap instead of claiming a session does not exist', () => {
+    state.bookings = Array.from({ length: 30 }, (_, i) => raw(`99999999-0000-4000-8000-${String(i).padStart(12, '0')}`, {
+      source: 'single_session', status: 'booked', start_at: `2026-08-${String((i % 28) + 1).padStart(2, '0')}T15:00:00Z`, end_at: `2026-08-${String((i % 28) + 1).padStart(2, '0')}T16:00:00Z`,
+    }));
+    renderAt('/schedule?session=v1.single_session.aaaaaaaa-1111-4111-8111-111111111111');
+    expect(screen.getByRole('heading', { name: 'Appointment unavailable' })).toBeInTheDocument();
+    expect(screen.getByText(/may be older than the latest 30 single sessions/)).toBeInTheDocument();
+    expect(screen.getByText(/Only your latest 30 single sessions can be listed here/)).toBeInTheDocument();
+  });
 });

@@ -79,6 +79,19 @@ describe('booking identity', () => {
   });
 });
 
+describe('appointment statuses', () => {
+  it.each(['draft', 'checkout_open', 'expired', 'abandoned', 'failed', 'open', 'unknown'])('drops %s rows: they were never appointments', (status) => {
+    expect(toSessionBooking({ source: 'single_session', id: BOOKING_A, start_at: '2026-10-05T15:00:00Z', status })).toBeNull();
+  });
+
+  it.each([['refunded', 'Canceled'], ['refund_pending', 'Canceled'], ['refund_failed', 'Canceled'], ['cancelled', 'Canceled'], ['no_show', 'Missed']])('keeps %s as an appointment labelled %s', (status, label) => {
+    const b = toSessionBooking({ source: 'single_session', id: BOOKING_A, start_at: '2026-10-05T15:00:00Z', status });
+    expect(b).not.toBeNull();
+    expect(bookingStateLabel(b!, NOW)).toBe(label);
+    expect(canLinkToBooking(b!)).toBe(false);
+  });
+});
+
 describe('booking state', () => {
   it('describes an elapsed appointment as calendar time only, never completed work', () => {
     const label = bookingStateLabel(booking({ startAt: '2026-09-01T15:00:00Z', endAt: '2026-09-01T16:00:00Z' }), NOW);

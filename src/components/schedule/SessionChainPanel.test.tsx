@@ -30,6 +30,7 @@ function makeState(opts: {
     bookingsFailed: false,
     itemsFailed: false,
     stale: false,
+    olderSingleSessionsOmitted: false,
     retry: vi.fn(),
     ...opts.partial,
   };

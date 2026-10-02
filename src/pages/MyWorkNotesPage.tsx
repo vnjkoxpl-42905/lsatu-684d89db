@@ -147,12 +147,16 @@ function SessionLinkedNotes() {
       .filter((record) => NOTE_TYPES.has(record.item.type))
       .map((record) => ({ booking, record }));
   });
-  if (rows.length === 0 && !chain.stale) return null;
+  const capNote = chain.olderSingleSessionsOmitted
+    ? <p className="student-destination-message">Notes linked to single sessions older than your latest 30 are not listed here.</p>
+    : null;
+  if (rows.length === 0 && !chain.stale) return capNote ? <section className="my-work-session-notes" aria-labelledby="session-notes-heading"><h2 id="session-notes-heading">From your sessions</h2>{capNote}</section> : null;
   return (
     <section className="my-work-session-notes" aria-labelledby="session-notes-heading">
       <h2 id="session-notes-heading">From your sessions</h2>
       {chain.stale ? <div role="status" className="student-destination-message"><p>Could not refresh. Showing what loaded earlier.</p><button type="button" className="classroom-button" onClick={chain.retry}>Try again</button></div> : null}
       {rows.length === 0 ? <p>No notes are linked to your sessions in what loaded earlier.</p> : null}
+      {capNote}
       <ul>
         {rows.map(({ booking, record }) => (
           <li key={`${booking.source}:${booking.id}:${record.item.id}`}>

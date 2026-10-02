@@ -98,8 +98,30 @@ export interface SessionBooking extends BookingIdentity {
   meetUrl: string | null;
 }
 
+/**
+ * Statuses that mean an appointment really existed. Single-session rows also
+ * hold checkout holds (`draft`, `checkout_open`) and their dead ends
+ * (`expired`, `abandoned`), and redemptions can be `failed`; none of those was
+ * ever an appointment, so they are not shown as sessions or accepted as link
+ * targets.
+ */
+const APPOINTMENT_STATUSES = new Set([
+  'booked',
+  'cancelled',
+  'canceled',
+  'no_show',
+  'refund_pending',
+  'refunded',
+  'refund_failed',
+]);
+const CANCELED_STATUSES = new Set(['cancelled', 'canceled', 'refund_pending', 'refunded', 'refund_failed']);
+
+export function isAppointmentStatus(status: string): boolean {
+  return APPOINTMENT_STATUSES.has(status);
+}
+
 export function isCanceledBooking(booking: Pick<SessionBooking, 'status'>): boolean {
-  return booking.status === 'cancelled' || booking.status === 'canceled';
+  return CANCELED_STATUSES.has(booking.status);
 }
 
 /**
@@ -108,6 +130,7 @@ export function isCanceledBooking(booking: Pick<SessionBooking, 'status'>): bool
  */
 export function bookingStateLabel(booking: SessionBooking, now = new Date()): string {
   if (isCanceledBooking(booking)) return 'Canceled';
+  if (booking.status === 'no_show') return 'Missed';
   if (booking.status !== 'booked') return booking.status.replace(/_/g, ' ');
   const end = new Date(booking.endAt ?? booking.startAt);
   return end.getTime() < now.getTime() ? 'Session time has passed' : 'Booked';
@@ -129,12 +152,13 @@ export function toSessionBooking(raw: {
 }): SessionBooking | null {
   if (!isBookingSource(raw.source) || !isValidBookingId(raw.source, raw.id)) return null;
   if (typeof raw.start_at !== 'string' || Number.isNaN(new Date(raw.start_at).getTime())) return null;
+  if (typeof raw.status !== 'string' || !isAppointmentStatus(raw.status)) return null;
   return {
     source: raw.source,
     id: raw.id,
     startAt: raw.start_at,
     endAt: typeof raw.end_at === 'string' ? raw.end_at : null,
-    status: typeof raw.status === 'string' ? raw.status : 'unknown',
+    status: raw.status,
     meetUrl: typeof raw.meet_url === 'string' ? raw.meet_url : null,
   };
 }

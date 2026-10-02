@@ -361,7 +361,7 @@ export default function SessionChainPanel({
     return shell(<><h2 id={headingId} className="text-base font-semibold">Session work</h2><div role="alert" className="mt-2 flex flex-wrap items-center gap-2 text-sm text-destructive"><CircleAlert className="h-4 w-4" />Appointments could not load.<Button size="sm" variant="outline" onClick={state.retry}><RefreshCw className="mr-1 h-3.5 w-3.5" />Retry</Button></div><div className="mt-3">{back}</div></>);
   }
   if (!booking) {
-    return shell(<><h2 id={headingId} className="text-base font-semibold">Appointment unavailable</h2><p className="mt-1 text-sm text-muted-foreground">This appointment is not available in {teacher ? 'this student’s' : 'your'} schedule.</p><div className="mt-3">{back}</div></>);
+    return shell(<><h2 id={headingId} className="text-base font-semibold">Appointment unavailable</h2><p className="mt-1 text-sm text-muted-foreground">This appointment is not available in {teacher ? 'this student’s' : 'your'} schedule.{selected.source === 'single_session' && state.olderSingleSessionsOmitted ? ' It may be older than the latest 30 single sessions this page can load.' : ''}</p><div className="mt-3">{back}</div></>);
   }
 
   const canceled = isCanceledBooking(booking);
@@ -579,7 +579,7 @@ export function SessionHistory({
 }) {
   if (state.bookingsLoading || state.bookingsFailed) return null;
   const history = state.bookings
-    .filter((b) => isCanceledBooking(b) || b.status !== 'booked' || new Date(b.endAt ?? b.startAt).getTime() < now.getTime())
+    .filter((b) => b.status !== 'booked' || new Date(b.endAt ?? b.startAt).getTime() < now.getTime())
     .sort((a, b) => Date.parse(b.startAt) - Date.parse(a.startAt));
   if (history.length === 0) return null;
   return (
@@ -609,6 +609,7 @@ export function SessionHistory({
           );
         })}
       </ul>
+      {state.olderSingleSessionsOmitted ? <p className="mt-2 text-xs text-muted-foreground">Only your latest 30 single sessions can be listed here. Older single sessions, and anything linked to them, are not shown.</p> : null}
     </section>
   );
 }
