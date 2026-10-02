@@ -360,7 +360,7 @@
     "questionType": "Method",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Legislator: The recently released crime statistics clearly show that the new laws requiring stiffer punishments for violators have reduced the crime rate. In the areas covered by those laws, the incidence of crime has decreased by one- fourth over the four years since the legislation was enacted.Analyst: The statistics are welcome news, but they do not provide strong evidence that the new laws caused the drop in crime. Many comparable areas that lack such legislation have reported a similar drop in the crime rate during the same period.",
+    "stimulus": "Legislator: The recently released crime statistics clearly show that the new laws requiring stiffer punishments for violators have reduced the crime rate. In the areas covered by those laws, the incidence of crime has decreased by one-fourth over the four years since the legislation was enacted.Analyst: The statistics are welcome news, but they do not provide strong evidence that the new laws caused the drop in crime. Many comparable areas that lack such legislation have reported a similar drop in the crime rate during the same period.",
     "questionStem": "Which one of the following most accurately describes the strategy used by the analyst to call into question the legislator's argument?",
     "answerChoices": {
       "A": "pointing out that the legislator has provided no evidence of the reliability of the statistics on which the legislator's conclusion is based",

@@ -29,7 +29,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Council president: Councilmember Smith has proposed\n a new city ordinance prohibiting the use of the\n “bait-and-switch” sales tactic. Smith must have\n amnesia. Four years ago he owned an appliance\n store that was famous for its use of bait-and-\n switch. Clearly, Smith’s proposed ordinance does\n not even merit consideration.",
+    "stimulus": "Council president: Councilmember Smith has proposed\n a new city ordinance prohibiting the use of the\n “bait-and-switch” sales tactic. Smith must have\n amnesia. Four years ago he owned an appliance\n store that was famous for its use of bait-and-switch. Clearly, Smith’s proposed ordinance does\n not even merit consideration.",
     "questionStem": "The council president’s reasoning is most vulnerable to\n criticism on the grounds that the president",
     "answerChoices": {
       "A": "dismisses the proposed ordinance because of its source rather than because of its content",
@@ -78,7 +78,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Cerrato: Economists argue both that the higher turnover\n rate of part-time workers shows them to be\n much more likely to be dissatisfied with their\n jobs than full-time workers are and that lower-\n paid, part-time workers threaten to take jobs\n from full-time employees. But because job\n efficiency is positively correlated with job\n satisfaction, companies are unlikely to replace\n satisfied employees with dissatisfied ones.\n Therefore, _______.",
+    "stimulus": "Cerrato: Economists argue both that the higher turnover\n rate of part-time workers shows them to be\n much more likely to be dissatisfied with their\n jobs than full-time workers are and that lower-paid, part-time workers threaten to take jobs\n from full-time employees. But because job\n efficiency is positively correlated with job\n satisfaction, companies are unlikely to replace\n satisfied employees with dissatisfied ones.\n Therefore, _______.",
     "questionStem": "Which one of the following most logically completes\n Cerrato’s argument?",
     "answerChoices": {
       "A": "full-time workers are likely to lose jobs to part-time workers",
@@ -345,7 +345,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Psychologist: We measured the “cognitive plasticity,” or\n the willingness to accept new ideas, of a group of\n people of both genders and of all ages. The first-\n born children in the study consistently exhibited\n less cognitive plasticity than did their siblings.\n It is reasonable to think that those who are open\n to new ideas will be adventurous in other ways.\n Hence, our study suggests that siblings of first-\n born children will tend to be more adventurous\n than will the first-borns.",
+    "stimulus": "Psychologist: We measured the “cognitive plasticity,” or\n the willingness to accept new ideas, of a group of\n people of both genders and of all ages. The first-born children in the study consistently exhibited\n less cognitive plasticity than did their siblings.\n It is reasonable to think that those who are open\n to new ideas will be adventurous in other ways.\n Hence, our study suggests that siblings of first-born children will tend to be more adventurous\n than will the first-borns.",
     "questionStem": "Which one of the following, if true, most strengthens the\n psychologist’s argument?",
     "answerChoices": {
       "A": "Some of the great creative geniuses in history were first-born children.",

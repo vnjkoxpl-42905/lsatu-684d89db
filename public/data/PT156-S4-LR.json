@@ -508,7 +508,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Company policy: Eligible employees will be granted up\n to six weeks of paid parental leave following\n the birth or adoption of a child. To be eligible,\n an employee must apply for the benefit at least\n three months prior to the beginning of the leave\n period and must have at least one year of full-\n time employment with the company at the time of\n application.",
+    "stimulus": "Company policy: Eligible employees will be granted up\n to six weeks of paid parental leave following\n the birth or adoption of a child. To be eligible,\n an employee must apply for the benefit at least\n three months prior to the beginning of the leave\n period and must have at least one year of full-time employment with the company at the time of\n application.",
     "questionStem": "Which one of the following judgments most closely\n conforms to the company policy?",
     "answerChoices": {
       "A": "Mac is a full-time employee who has been with the company for exactly one year. He just adopted a child, and he applied for parental leave three months ago, so Mac should be granted the leave.",

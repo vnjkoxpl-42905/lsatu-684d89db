@@ -581,7 +581,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Consumer advocate: Some agricultural crops are\n now being genetically engineered to produce\n important pharmaceuticals. However, this\n development raises the possibility that the drugs\n will end up in the general food supply, since if\n pollen from a drug-producing crop drifts into\n a nearby field in which an ordinary, non-drug-\n producing crop of the same species is being\n grown, the pollen could fertilize that crop and\n turn it into a drug-producing crop as well.",
+    "stimulus": "Consumer advocate: Some agricultural crops are\n now being genetically engineered to produce\n important pharmaceuticals. However, this\n development raises the possibility that the drugs\n will end up in the general food supply, since if\n pollen from a drug-producing crop drifts into\n a nearby field in which an ordinary, non-drug-producing crop of the same species is being\n grown, the pollen could fertilize that crop and\n turn it into a drug-producing crop as well.",
     "questionStem": "Which one of the following, if true, would most weaken\n the consumer advocate’s argument?",
     "answerChoices": {
       "A": "As far as scientists know, none of the pharmaceuticals produced by genetically engineered crops would present any danger to public health if they were present in the general food supply.",
@@ -631,7 +631,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Every Labrador retriever in my neighborhood is a well-\n behaved dog. However, no pet would be well behaved\n if it were not trained. Thus it is training, not the genetic\n makeup of the breed, that accounts for these Labrador\n retrievers’ good behavior.",
+    "stimulus": "Every Labrador retriever in my neighborhood is a well-behaved dog. However, no pet would be well behaved\n if it were not trained. Thus it is training, not the genetic\n makeup of the breed, that accounts for these Labrador\n retrievers’ good behavior.",
     "questionStem": "The flawed reasoning in which one of the following is\n most closely parallel to the flawed reasoning in the\n argument above?",
     "answerChoices": {
       "A": "All the students at Bryker School excel in their studies. However, students at Bryker School would not excel if they did not have good teachers. Thus, all schools should hire good teachers if they want their students to excel.",
