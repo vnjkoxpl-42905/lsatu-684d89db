@@ -424,7 +424,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 2,
     "questionNumber": 18,
-    "questionType": "Must Be True",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -608,7 +608,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 2,
     "questionNumber": 25,
-    "questionType": "Must Be True",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
