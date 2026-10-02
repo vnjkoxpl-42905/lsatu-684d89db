@@ -369,7 +369,10 @@ function ClassroomSidebar({
               );
             })}
             {!permissions.loading && (!canAccess({ flags: ["has_chat_access"] }) || !canAccess({ flags: ["has_drill_access"] })) ? (
-              <p className="classroom-rail-shortcut-note">Locked shortcuts aren't available to your account. Ask Joshua about access.</p>
+              <p className="classroom-rail-shortcut-note">
+                Locked shortcuts aren't available to your account.
+                {permissions.has_chat_access || permissions.is_admin ? " Message Joshua about access." : null}
+              </p>
             ) : null}
           </div>
 

@@ -47,7 +47,7 @@ export const DESTINATIONS: Record<Destination, DestinationConfig> = {
     path: "/practice",
     tabs: [
       { label: "Drills", path: "/practice/drills", flags: ["has_drill_access"] },
-      { label: "Practice Exams", path: "/practice/exams", routeDeterminesAccess: true },
+      { label: "Practice Exams", path: "/practice/exams", allowSignedIn: true },
     ],
   },
   review: {
@@ -104,7 +104,9 @@ export type TabAccess = "checking" | "open" | "locked";
 export function tabAccess(tab: DestinationTab, permissions: AccessView): TabAccess {
   if (permissions.loading) return "checking";
   if (tab.admin) return permissions.is_admin ? "open" : "locked";
-  if (permissions.is_admin || tab.allowSignedIn || tab.routeDeterminesAccess) return "open";
+  if (permissions.is_admin || tab.allowSignedIn) return "open";
+  // AssignmentGate queries ownership only when Classroom access is enabled.
+  if (tab.routeDeterminesAccess) return permissions.has_practice_access || permissions.has_classroom_access ? "open" : "locked";
   return tab.flags?.some((flag) => permissions[flag]) ? "open" : "locked";
 }
 
@@ -117,7 +119,12 @@ export function tabAccess(tab: DestinationTab, permissions: AccessView): TabAcce
 export function destinationLandingPath(destination: Destination, permissions: AccessView): string {
   const { tabs } = DESTINATIONS[destination];
   const path = (tabs.find((tab) => tabAccess(tab, permissions) === "open") ?? tabs[0]).path;
-  return path;
+  return path === "/practice/exams" ? practiceExamLandingPath(permissions) : path;
+}
+
+/** Keep assigned-only accounts eligible for the route gate; others can still see Attempts. */
+export function practiceExamLandingPath(permissions: AccessView): string {
+  return tabAccess(EXAM_TABS[0], permissions) === "open" ? "/practice/exams" : "/practice/exams/attempts";
 }
 
 export type DestinationLock = "checking" | "open" | "partial" | "locked";

@@ -101,10 +101,16 @@ describe("classroom rail access", () => {
       expect(shortcut).toHaveAttribute("aria-disabled", "true");
       expect(shortcut).toHaveTextContent("locked for your account");
     }
+    expect(screen.getByText(/Locked shortcuts aren.t available/)).not.toHaveTextContent(/message Joshua/i);
     messages.focus();
     expect(messages).toHaveFocus();
     fireEvent.click(messages);
     expect(screen.getByTestId("where")).toHaveTextContent("/classroom");
+  });
+
+  it("suggests messaging about a locked shortcut only when Messages is available", async () => {
+    await renderShell("/classroom");
+    expect(screen.getByText(/Locked shortcuts aren.t available/)).toHaveTextContent("Message Joshua about access.");
   });
 
   it("opens Messages and Find a question for an entitled account", async () => {

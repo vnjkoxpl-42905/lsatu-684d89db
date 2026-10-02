@@ -5,6 +5,7 @@ import {
   DESTINATIONS,
   EXAM_TABS,
   destinationLandingPath,
+  practiceExamLandingPath,
   isTabActive,
   tabAccess,
   type Destination,
@@ -29,7 +30,7 @@ export function StudentDestination({ destination }: { destination: Destination }
       return (
         <Link
           key={tab.path}
-          to={tab.path}
+          to={row === "primary" && tab.path === "/practice/exams" ? practiceExamLandingPath(permissions) : tab.path}
           className={active ? "student-destination-tab student-destination-tab-active" : "student-destination-tab"}
           aria-current={active ? "page" : undefined}
         >
@@ -74,7 +75,8 @@ export function StudentDestination({ destination }: { destination: Destination }
       {hasPlanLock ? (
         <p id={noteId} className="student-destination-locked-note">
           <Lock size={13} aria-hidden="true" />
-          Sections with a lock aren't in your plan right now. If that looks wrong, message Joshua.
+          Sections with a lock aren't available to your account.
+          {permissions.has_chat_access || permissions.is_admin ? " If that looks wrong, message Joshua." : null}
         </p>
       ) : null}
       <div className="student-destination-content">

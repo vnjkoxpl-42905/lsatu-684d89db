@@ -75,6 +75,15 @@ describe("tab access", () => {
     expect(tabAccess(admissions, ADMIN)).toBe("open");
   });
 
+  it("keeps exam assignment doors reachable only for assignment-eligible accounts", () => {
+    for (const tab of EXAM_TABS.slice(0, 2)) {
+      expect(tabAccess(tab, TIER_3)).toBe("locked");
+      expect(tabAccess(tab, TIER_2)).toBe("open");
+      expect(tabAccess(tab, { ...TIER_3, has_practice_access: true })).toBe("open");
+      expect(tabAccess(tab, ADMIN)).toBe("open");
+    }
+  });
+
   it("opens everything for an admin", () => {
     for (const destination of Object.keys(DESTINATIONS) as Destination[]) {
       expect(destinationLock(destination, ADMIN)).toBe("open");
@@ -109,6 +118,7 @@ describe("destination landing", () => {
     ["practice", TIER_1, "/practice/drills"],
     ["practice", { ...NONE, has_practice_access: true }, "/practice/exams"],
     ["practice", TIER_2, "/practice/exams"],
+    ["practice", TIER_3, "/practice/exams/attempts"],
     ["library", TIER_2, "/library/activities"],
     ["library", TIER_1, "/library/lessons"],
     ["review", TIER_3, "/review/to-review"],

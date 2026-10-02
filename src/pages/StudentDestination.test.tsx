@@ -2,8 +2,8 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
-const BASE = { loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false };
-const permissions = vi.hoisted(() => ({ loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false }));
+const BASE = { loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false, has_chat_access: false };
+const permissions = vi.hoisted(() => ({ loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false, has_chat_access: false }));
 vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => permissions }));
 import { DestinationIndex, StudentDestination } from "./StudentDestination";
 afterEach(() => {
@@ -36,7 +36,7 @@ describe("visible locked destination sections", () => {
     expect(screen.getByRole("navigation")).toHaveAttribute("aria-busy", "true");
     expect(screen.getByText("Overview")).toHaveAttribute("title", "Checking access");
     // Unknown is not denied: no padlock and no plan explanation yet.
-    expect(screen.queryByText(/aren't in your plan/)).toBeNull();
+    expect(screen.queryByText(/Sections with a lock aren't available/)).toBeNull();
     expect(screen.queryByText("(locked)")).toBeNull();
   });
   it("restores real links for an authorized account", () => {
@@ -44,16 +44,24 @@ describe("visible locked destination sections", () => {
     render(<MemoryRouter initialEntries={["/progress/overview"]}><StudentDestination destination="progress" /></MemoryRouter>);
     expect(screen.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
     expect(screen.getByRole("link", { name: "History" })).toHaveAttribute("href", "/progress/history");
-    expect(screen.queryByText(/aren't in your plan/)).toBeNull();
+    expect(screen.queryByText(/Sections with a lock aren't available/)).toBeNull();
   });
   it("explains a locked section in visible text tied to the tab", () => {
+    permissions.has_chat_access = true;
     render(<MemoryRouter initialEntries={["/progress/overview"]}><StudentDestination destination="progress" /></MemoryRouter>);
-    const note = screen.getByText(/aren't in your plan right now/);
+    const note = screen.getByText(/Sections with a lock aren't available/);
     expect(note).toHaveTextContent("message Joshua");
     expect(screen.getByText("History")).toHaveAttribute("aria-describedby", note.id);
     // The open-but-locked current tab still reads as the current page.
     expect(screen.getByText("Overview")).toHaveAttribute("aria-current", "page");
   });
+  it("does not suggest an inaccessible messaging shortcut or infer a plan cause", () => {
+    render(<MemoryRouter initialEntries={["/progress/overview"]}><StudentDestination destination="progress" /></MemoryRouter>);
+    const note = screen.getByText(/Sections with a lock aren't available/);
+    expect(note).not.toHaveTextContent(/message Joshua/i);
+    expect(note).not.toHaveTextContent(/plan/i);
+  });
+
 });
 
 describe("Admissions", () => {
@@ -62,7 +70,7 @@ describe("Admissions", () => {
     render(<MemoryRouter initialEntries={["/library/lessons"]}><StudentDestination destination="library" /></MemoryRouter>);
     expect(screen.queryByRole("link", { name: "Admissions" })).toBeNull();
     expect(screen.getByText("Admissions")).toHaveAttribute("title", "Admissions is open to Joshua only");
-    expect(screen.queryByText(/aren't in your plan/)).toBeNull();
+    expect(screen.queryByText(/Sections with a lock aren't available/)).toBeNull();
   });
   it("opens for Joshua and admins", () => {
     permissions.is_admin = true;
@@ -109,7 +117,8 @@ describe("bare destination URLs", () => {
 
 
 describe("Practice Exams primary landing", () => {
-  it("keeps the assignment-aware exam gate reachable without general practice access", () => {
+  it("keeps the assignment-aware exam gate reachable with Classroom access", () => {
+    permissions.has_classroom_access = true;
     render(<MemoryRouter initialEntries={["/practice/drills"]}><StudentDestination destination="practice" /></MemoryRouter>);
     expect(screen.getByRole("link", { name: "Practice Exams" })).toHaveAttribute("href", "/practice/exams");
   });

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import ProtectedRoute from "./ProtectedRoute";
@@ -106,6 +106,17 @@ function renderGatedRoute(initialEntry = "/rc/drill?passage=1188") {
           )}
         />
         <Route path="/auth" element={<AuthLocationProbe />} />
+      </Routes>
+    </MemoryRouter>,
+  );
+}
+
+function renderLockedExam() {
+  return render(
+    <MemoryRouter initialEntries={["/practice/exams"]}>
+      <Routes>
+        <Route path="/practice/exams" element={<ProtectedRoute flag="has_practice_access"><div>exam overview</div></ProtectedRoute>} />
+        <Route path="/practice/exams/attempts" element={<ProtectedRoute allowSignedIn><div>exam attempts</div></ProtectedRoute>} />
       </Routes>
     </MemoryRouter>,
   );
@@ -439,5 +450,14 @@ describe("ProtectedRoute", () => {
     // "Back to your classroom" would land them on this same screen, because
     // Revoke All Access turns the classroom flag off too.
     expect(screen.queryByText("Back to your classroom")).not.toBeInTheDocument();
+  });
+
+  it("offers an accessible Attempts route when an exam gate denies access", async () => {
+    mockUseAuth.mockReturnValue({ user: { id: "student" }, authReady: true });
+    mockUseUserPermissions.mockReturnValue(NO_FLAGS);
+    renderLockedExam();
+    expect(screen.queryByText("exam overview")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "View exam attempts" }));
+    expect(await screen.findByText("exam attempts")).toBeInTheDocument();
   });
 });

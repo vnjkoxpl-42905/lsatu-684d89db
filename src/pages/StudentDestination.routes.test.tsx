@@ -60,6 +60,7 @@ function renderAt(path: string) {
         <Route path="/practice" element={<ProtectedRoute allowSignedIn><StudentDestination destination="practice" /></ProtectedRoute>}>
           <Route index element={<DestinationIndex destination="practice" />} />
           <Route path="exams" element={<TestingCentreGate><div>assigned exams overview</div></TestingCentreGate>} />
+          <Route path="exams/attempts" element={<ProtectedRoute allowSignedIn><div>own exam attempts</div></ProtectedRoute>} />
           <Route path="exams/:examId" element={<TestingCentreGate><div>assigned exam detail</div></TestingCentreGate>} />
         </Route>
         <Route path="/auth" element={<Where />} />
@@ -107,7 +108,7 @@ describe("destination routes across auth and permission states", () => {
     expect(screen.queryByText("history content")).toBeNull();
     expect(screen.getByRole("heading", { name: "Progress" })).toBeInTheDocument();
     expect(screen.getByText("Not open yet")).toBeInTheDocument();
-    expect(screen.getByText(/aren't in your plan right now/)).toBeInTheDocument();
+    expect(screen.getByText(/Sections with a lock aren't available/)).toBeInTheDocument();
   });
 
   it("opens an entitled direct URL on reload", () => {
@@ -178,6 +179,16 @@ describe("destination routes across auth and permission states", () => {
     vi.stubEnv("VITE_DEV_BYPASS_GATES", "1");
     renderAt("/progress/history");
     expect(screen.getByText("history content")).toBeInTheDocument();
+  });
+
+  it("lands a chat/schedule-only student on Attempts without an impossible assignment check", () => {
+    permissions.has_chat_access = true;
+    permissions.has_schedule_access = true;
+    renderAt("/practice");
+    expect(screen.getByText("own exam attempts")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Practice Exams" })).toHaveAttribute("href", "/practice/exams/attempts");
+    expect(screen.getByText("Overview")).toHaveAttribute("aria-disabled", "true");
+    expect(assignment.requestedOwner).toBe("");
   });
 
 });

@@ -1,5 +1,5 @@
 import { Lock } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 
@@ -20,9 +20,11 @@ import { useUserPermissions } from "@/hooks/useUserPermissions";
  */
 export default function LockedModule({ staffOnly = false }: { staffOnly?: boolean }) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const permissions = useUserPermissions();
   const canReachClassroom = permissions.has_classroom_access || permissions.is_admin;
   const canMessage = permissions.has_chat_access || permissions.is_admin;
+  const canReachAttempts = pathname.startsWith("/practice/exams") && pathname !== "/practice/exams/attempts";
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-6 py-16">
@@ -37,10 +39,15 @@ export default function LockedModule({ staffOnly = false }: { staffOnly?: boolea
         <p className="text-sm leading-relaxed text-muted-foreground">
           {staffOnly
             ? "This section is available to Joshua and administrators only."
-            : "This section isn't available to your account. If that looks wrong, message Joshua."}
+            : `This section isn't available to your account.${canMessage ? " If that looks wrong, message Joshua." : ""}`}
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          {canReachAttempts ? (
+            <Button onClick={() => navigate("/practice/exams/attempts")}>
+              View exam attempts
+            </Button>
+          ) : null}
           {canReachClassroom ? (
             <Button onClick={() => navigate("/classroom")}>
               Back to your classroom
