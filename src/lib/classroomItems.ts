@@ -203,3 +203,32 @@ export function resolveItemRoute(item: ClassroomItem): string | null {
       return `/classroom/item/${encodeURIComponent(item.id)}`;
   }
 }
+
+/**
+ * Compare-and-swap write of `metadata_json` on one item.
+ *
+ * Applies only when the row still has the `updated_at` the caller just read.
+ * The `classroom_items_touch` trigger stamps `updated_at` on every update, so
+ * any write in between (a status sync, a note marked read, another tab) makes
+ * this match zero rows instead of overwriting it. Returns the updated row on
+ * success and null on a conflict. `student_id` narrows the target so a stale
+ * id from a previous selection cannot touch another student's row; RLS still
+ * decides whether the caller may write at all.
+ */
+export async function updateClassroomItemMetadataIfUnchanged(input: {
+  id: string;
+  studentId: string;
+  expectedUpdatedAt: string;
+  metadata: Record<string, unknown>;
+}): Promise<ClassroomItem | null> {
+  const { data, error } = await supabase
+    .from('classroom_items')
+    .update({ metadata_json: input.metadata as Json })
+    .eq('id', input.id)
+    .eq('student_id', input.studentId)
+    .eq('updated_at', input.expectedUpdatedAt)
+    .select()
+    .maybeSingle();
+  if (error) throw error;
+  return data ? (data as ClassroomItem) : null;
+}

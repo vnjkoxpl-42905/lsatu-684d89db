@@ -27,3 +27,12 @@
 .classroom-root .my-work-teacher-notes > h2 { margin-bottom: 18px; }
 .classroom-root .my-work-notes-page button:focus-visible, .classroom-root .my-work-notes-page input:focus-visible, .classroom-root .my-work-notes-page textarea:focus-visible { outline: 2px solid var(--classroom-accent); outline-offset: 3px; }
 @media (max-width: 700px) { .classroom-root .my-work-notes-workspace { grid-template-columns: 1fr; } .classroom-root .my-work-notes-list { border-bottom: 1px solid var(--classroom-line); border-right: 0; max-height: 220px; overflow-y: auto; } .classroom-root .my-work-notes-heading { flex-direction: column; } }
+.classroom-root .my-work-session-notes { border-top: 1px solid var(--classroom-line); margin-top: 44px; padding-top: 32px; }
+.classroom-root .my-work-session-notes > h2 { font-family: Georgia, serif; font-size: 25px; font-weight: 400; margin: 0 0 18px; }
+.classroom-root .my-work-session-notes ul { list-style: none; margin: 0; padding: 0; }
+.classroom-root .my-work-session-notes li { border: 1px solid var(--classroom-line); border-radius: 12px; display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 14px 16px; }
+.classroom-root .my-work-session-notes li + li { margin-top: 10px; }
+.classroom-root .my-work-session-notes strong { font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+.classroom-root .my-work-session-notes li > span { color: var(--classroom-meta-text); font-size: 13px; }
+.classroom-root .my-work-session-notes .my-work-session-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.classroom-root .my-work-session-notes a:focus-visible { outline: 2px solid var(--classroom-accent); outline-offset: 3px; }

@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { ClassroomRecapsView } from "@/components/classroom/ClassroomRouteViews";
 import { createPage, listPages, updateMyNotePage, type JournalPage } from "@/lib/journalService";
 import { noteBodyToText, textToNoteBody } from "@/components/my-work/studentNoteText";
+import { useStudentSessionChain } from "@/hooks/useSessionChain";
+import { NOTE_TYPES } from "@/components/classroom/classroomData";
+import { formatAppointment, groupsFor, itemTypeLabel, PHASE_ACTION, PHASE_LABEL, scheduleHrefFor, SESSION_PHASES } from "@/lib/sessionChain";
 import "./myWorkNotes.css";
 
 function updatedDate(value: string): string {
@@ -112,6 +115,44 @@ function StudentNotesSection() {
   );
 }
 
+/**
+ * Notes and recaps Joshua explicitly linked to one of the student's
+ * appointments, each with a way into that appointment on Schedule. Unlinked
+ * notes are never placed under a guessed session.
+ */
+function SessionLinkedNotes() {
+  const chain = useStudentSessionChain();
+  if (chain.bookingsLoading || chain.itemsLoading || chain.itemsFailed) return null;
+  if (chain.bookingsFailed) {
+    return <div role="alert" className="student-destination-message"><p>Session links for your notes could not be loaded.</p><button type="button" className="classroom-button" onClick={chain.retry}>Try again</button></div>;
+  }
+  const rows = chain.bookings.flatMap((booking) => {
+    const groups = groupsFor(chain.projection, booking);
+    return SESSION_PHASES.flatMap((phase) => groups[phase])
+      .filter((record) => NOTE_TYPES.has(record.item.type))
+      .map((record) => ({ booking, record }));
+  });
+  if (rows.length === 0) return null;
+  return (
+    <section className="my-work-session-notes" aria-labelledby="session-notes-heading">
+      <h2 id="session-notes-heading">From your sessions</h2>
+      {chain.stale ? <p role="status">Could not refresh. Showing what loaded earlier.</p> : null}
+      <ul>
+        {rows.map(({ booking, record }) => (
+          <li key={`${booking.source}:${booking.id}:${record.item.id}`}>
+            <strong>{record.item.title}</strong>
+            <span>{itemTypeLabel(record.item.type)} · {PHASE_LABEL[record.phase]}</span>
+            <span className="my-work-session-actions">
+              {record.route ? <Link className="classroom-button" to={record.route} aria-label={`${PHASE_ACTION[record.phase]}: ${record.item.title}`}>{PHASE_ACTION[record.phase]}</Link> : null}
+              <Link className="classroom-button" to={scheduleHrefFor(booking)}>Session {formatAppointment(booking)}</Link>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 export default function MyWorkNotesPage() {
-  return <div className="my-work-notes-page"><StudentNotesSection /><section className="my-work-teacher-notes" aria-label="Notes and recaps from Joshua"><h2>From Joshua</h2><ClassroomRecapsView /></section></div>;
+  return <div className="my-work-notes-page"><StudentNotesSection /><SessionLinkedNotes /><section className="my-work-teacher-notes" aria-label="Notes and recaps from Joshua"><h2>From Joshua</h2><ClassroomRecapsView /></section></div>;
 }
