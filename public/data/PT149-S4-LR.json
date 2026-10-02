@@ -360,7 +360,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Economist: Currently, many countries rely primarily on taxing income to fund government expenditures. But taxing income does nothing to promote savings and investment. Taxing consumption, on the other hand, would encourage savings. The most important challenge facing these countries is improving their economies, and the only way to accomplish this is to increase their savings rates.",
+    "stimulus": "Economist: Currently, many countries rely primarily on taxing income to fund government expenditures. But taxing income does nothing to promote savings and investment. Taxing consumption, on the other hand, would encourage savings. The most important challenge facing these countries is improving their economies, and the only way to accomplish this is to increase their savings rates. Hence, _______.",
     "questionStem": "Which one of the following most logically completes the economist’s argument?",
     "answerChoices": {
       "A": "most governments should stop taxing savings and investment",
