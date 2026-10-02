@@ -555,7 +555,7 @@
     "questionType": "Most Strongly Supported",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Zachary: The term “fresco” refers to paint that has been applied to wet plaster. Once dried, a fresco indelibly preserves the paint that a painter has applied in this way. Unfortunately, additions known to have been made by later painters have obscured the original fresco work done by Michelangelo in the Sistine Chapel. Therefore, in order to restore Michaelangelo’s Sistine Chapel paintings to the appearance that Michelangelo intended them to have, everything except the original fresco work must be stripped away.Stephen: But it was extremely common for painters of Michelangelo’s era to add painted details to their own fresco work after the frescos had dried.",
+    "stimulus": "Zachary: The term “fresco” refers to paint that has been applied to wet plaster. Once dried, a fresco indelibly preserves the paint that a painter has applied in this way. Unfortunately, additions known to have been made by later painters have obscured the original fresco work done by Michelangelo in the Sistine Chapel. Therefore, in order to restore Michaelangelo’s Sistine Chapel paintings to the appearance that Michelangelo intended them to have, everything except the original fresco work must be stripped away.\nStephen: But it was extremely common for painters of Michelangelo’s era to add painted details to their own fresco work after the frescos had dried.",
     "questionStem": "Stephen’s response to Zachary, if true, most strongly supports which one of the following?",
     "answerChoices": {
       "A": "It is impossible to distinguish the later painted additions made to Michelangelo’s Sistine Chapel paintings from the original fresco work.",

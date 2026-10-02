@@ -152,8 +152,8 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Mr. Xu: The arctic squirrel gets so cold while hibernating\n that its blood temperature falls well below the\n temperature at which water freezes. Although\n the squirrel’s blood is about 70 percent water,\n the blood never freezes while the squirrel is\n hibernating. The squirrel’s blood, therefore,\n must contain a substance that prevents the blood\n from freezing at the temperature at which water\n freezes. Ms. Yerky: The blood contains no such substance. Laboratory experiments involving a number of\n animals, including the arctic squirrel, have shown\n that a vial of blood from any of the animals\n freezes at just the same temperature as does a vial\n of water. Ms.",
-    "questionStem": "Yerky’s response proceeds by",
+    "stimulus": "Mr. Xu: The arctic squirrel gets so cold while hibernating\n that its blood temperature falls well below the\n temperature at which water freezes. Although\n the squirrel’s blood is about 70 percent water,\n the blood never freezes while the squirrel is\n hibernating. The squirrel’s blood, therefore,\n must contain a substance that prevents the blood\n from freezing at the temperature at which water\n freezes. Ms. Yerky: The blood contains no such substance. Laboratory experiments involving a number of\n animals, including the arctic squirrel, have shown\n that a vial of blood from any of the animals\n freezes at just the same temperature as does a vial\n of water.",
+    "questionStem": "Ms. Yerky’s response proceeds by",
     "answerChoices": {
       "A": "presenting evidence that supports a conclusion inconsistent with Mr. Xu’s conclusion",
       "B": "showing that the evidence offered by Mr. Xu was collected by means of unreliable methods",
