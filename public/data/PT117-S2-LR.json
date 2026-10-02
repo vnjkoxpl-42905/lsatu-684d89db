@@ -131,7 +131,7 @@
     "questionType": "Agree/Disagree",
     "reasoningType": [],
     "questionDifficulty": 1,
-    "stimulus": "Chai: The use of the word “tree” to denote both deciduous and coniferous plant forms, while acceptable as a lay term, is scientifically inadequate; it masks the fact that the two plant types have utterly different lineages.Dodd: But the common name highlights the crucial fact that both are composed of the same material and have very similar structures; so it is acceptable as a scientific term.",
+    "stimulus": "Chai: The use of the word “tree” to denote both deciduous and coniferous plant forms, while acceptable as a lay term, is scientifically inadequate; it masks the fact that the two plant types have utterly different lineages.\nDodd: But the common name highlights the crucial fact that both are composed of the same material and have very similar structures; so it is acceptable as a scientific term.",
     "questionStem": "The conversation provides the strongest grounds for holding that Chai and Dodd disagree over whether",
     "answerChoices": {
       "A": "it is advisable to use ordinary terms as names for biological forms in scientific discourse",
