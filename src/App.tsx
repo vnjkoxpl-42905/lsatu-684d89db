@@ -60,7 +60,7 @@ import ClassroomAccountView from "./components/classroom/AccountView";
 import Classroom from "./pages/Classroom";
 import AdmissionsPage from "./pages/classroom/AdmissionsPage";
 import ClassroomLayout, { ReviewIndexList } from "./components/classroom/shell/ClassroomLayout";
-import { DestinationLinks, StudentDestination } from "./pages/StudentDestination";
+import { DestinationIndex, DestinationLinks, StudentDestination } from "./pages/StudentDestination";
 import StudentLibraryLessons from "./pages/StudentLibraryLessons";
 import MyWorkPage from "./pages/MyWorkPage";
 import MyWorkNotesPage from "./pages/MyWorkNotesPage";
@@ -312,7 +312,7 @@ const App = () => {
             <Route path="/onboarding" element={<Navigate to="/classroom" replace />} />
 
             {/* Legacy redirect: /foyer was the original route; preserve deep links from older emails / bookmarks. */}
-            <Route path="/foyer" element={<Navigate to="/classroom" replace />} />
+            <Route path="/foyer" element={<RedirectWithSearch to="/classroom" />} />
 
             {/* Legacy Admin Dashboard entry now lives inside Teacher Workspace. */}
             <Route path="/admin" element={<RedirectWithSearch to="/teacher/students" />} />
@@ -505,8 +505,10 @@ const App = () => {
                   <Route path="/rc/search" element={
                     <ProtectedRoute flag="has_drill_access"><RcSearch /></ProtectedRoute>
                   } />
-                  {/* Legacy path — the Wrong Answer Journal is now the Wrong Answers section of the Journal. */}
-                  <Route path="/waj" element={<Navigate to="/journal" replace />} />
+                  {/* Legacy path — the Wrong Answer Journal is now Review's Wrong answers tab.
+                      One hop, carrying the query and hash; it used to bounce through
+                      /journal and drop both. */}
+                  <Route path="/waj" element={<RedirectWithSearch to="/review/wrong" />} />
                   {/* Dev-only harness for the Activity Centre worlds. The runner
                       is behind auth + a feature flag, which makes a world
                       impossible to look at while building it; this renders one
@@ -603,14 +605,14 @@ const App = () => {
                     </Route>
 
                     <Route path="/my-work" element={<ProtectedRoute allowSignedIn><StudentDestination destination="my-work" /></ProtectedRoute>}>
-                      <Route index element={<RedirectWithSearch to="/my-work/to-do" />} />
+                      <Route index element={<DestinationIndex destination="my-work" />} />
                       <Route path="to-do" element={<ProtectedRoute flag="has_classroom_access"><MyWorkPage completed={false} /></ProtectedRoute>} />
                       <Route path="completed" element={<ProtectedRoute flag="has_classroom_access"><MyWorkPage completed /></ProtectedRoute>} />
                       <Route path="notes" element={<ProtectedRoute flag="has_classroom_access"><MyWorkNotesPage /></ProtectedRoute>} />
                     </Route>
 
                     <Route path="/practice" element={<ProtectedRoute allowSignedIn><StudentDestination destination="practice" /></ProtectedRoute>}>
-                      <Route index element={<RedirectWithSearch to="/practice/drills" />} />
+                      <Route index element={<DestinationIndex destination="practice" />} />
                       <Route path="drills" element={<ProtectedRoute flag="has_drill_access"><AcademyMainhub /></ProtectedRoute>} />
                       <Route path="drills/runs/:runId" element={<ProtectedRoute flag="has_drill_access"><DrillRuns /></ProtectedRoute>} />
                       <Route path="drills/saved" element={<ProtectedRoute flag="has_drill_access"><SavedSets /></ProtectedRoute>} />
@@ -621,7 +623,7 @@ const App = () => {
                     </Route>
 
                     <Route path="/review" element={<ProtectedRoute allowSignedIn><StudentDestination destination="review" /></ProtectedRoute>}>
-                      <Route index element={<RedirectWithSearch to="/review/to-review" />} />
+                      <Route index element={<DestinationIndex destination="review" />} />
                       <Route path="to-review" element={<ProtectedRoute allowSignedIn><ReviewQueuePage /></ProtectedRoute>} />
                       <Route path="activity/:assignmentId/:itemOrder" element={<ActivityAssignmentGate><ActivityReviewDetail /></ActivityAssignmentGate>} />
                       <Route path="section/:historyId/:qid" element={<OwnedWorkReviewGate kind="section"><SectionReviewDetail /></OwnedWorkReviewGate>} />
@@ -633,14 +635,14 @@ const App = () => {
                     </Route>
 
                     <Route path="/progress" element={<ProtectedRoute allowSignedIn><StudentDestination destination="progress" /></ProtectedRoute>}>
-                      <Route index element={<RedirectWithSearch to="/progress/overview" />} />
+                      <Route index element={<DestinationIndex destination="progress" />} />
                       <Route path="overview" element={<ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>} />
                       <Route path="history" element={<ProtectedRoute flag="has_analytics_access"><DrillHistory /></ProtectedRoute>} />
                       <Route path="topics" element={<ProtectedRoute flag="has_analytics_access"><ProgressTopics /></ProtectedRoute>} />
                     </Route>
 
                     <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>
-                      <Route index element={<RedirectWithSearch to="/library/lessons" />} />
+                      <Route index element={<DestinationIndex destination="library" />} />
                       <Route path="lessons" element={<ProtectedRoute flag={["has_activity_access", "has_bootcamp_access", "has_drill_access", "has_analytics_access"]}><StudentLibraryLessons /></ProtectedRoute>} />
                       <Route path="activities" element={<ProtectedRoute flag="has_classroom_access"><ActivityCentre /></ProtectedRoute>} />
                       <Route path="bootcamps" element={<ProtectedRoute flag="has_classroom_access"><Bootcamps /></ProtectedRoute>} />
@@ -892,15 +894,15 @@ const App = () => {
                       whatever frame the destination uses is the frame you get.
                       /mainhub was the old *home*, so it goes to the classroom,
                       not to the drill hub. */}
-                  <Route path="/mainhub" element={<Navigate to="/classroom" replace />} />
+                  <Route path="/mainhub" element={<RedirectWithSearch to="/classroom" />} />
                   {/* The /practice hub was removed; its Full Section and
                       Build a Set launchers now live on the drill hub as
                       ?stage= panels. Redirects keep old links alive. */}
                   <Route path="/practice/sets" element={<RedirectWithSearch to="/practice/drills/saved" />} />
                   {/* Old standalone pages now live inside the classroom
                       Account stage; redirects keep bookmarks alive. */}
-                  <Route path="/profile" element={<Navigate to="/classroom/account" replace />} />
-                  <Route path="/settings/layout" element={<Navigate to="/classroom/account?section=layout" replace />} />
+                  <Route path="/profile" element={<RedirectWithSearch to="/classroom/account" />} />
+                  <Route path="/settings/layout" element={<RedirectWithSearch to="/classroom/account?section=layout" />} />
 
 
                   {/* Admin-only Bootcamp Reference Library. Never exposed to students. Moved outside nesting to fix 404. */}
@@ -956,10 +958,10 @@ const App = () => {
                   } />
                   {/* Retired bootcamp slugs. Bounce back to the bootcamp index so the
                       old "Structure" name can never be confused with the active bootcamp. */}
-                  <Route path="/bootcamp/structure" element={<Navigate to="/bootcamps" replace />} />
-                  <Route path="/bootcamp/structure/*" element={<Navigate to="/bootcamps" replace />} />
-                  <Route path="/bootcamp/structure-v2" element={<Navigate to="/bootcamps" replace />} />
-                  <Route path="/bootcamp/structure-v2/*" element={<Navigate to="/bootcamps" replace />} />
+                  <Route path="/bootcamp/structure" element={<RedirectWithSearch to="/library/bootcamps" />} />
+                  <Route path="/bootcamp/structure/*" element={<RedirectWithSearch to="/library/bootcamps" />} />
+                  <Route path="/bootcamp/structure-v2" element={<RedirectWithSearch to="/library/bootcamps" />} />
+                  <Route path="/bootcamp/structure-v2/*" element={<RedirectWithSearch to="/library/bootcamps" />} />
                   {/* Retired legacy Abstraction slug. New v2 topic lives at /topics/abstract. */}
                   <Route path="/bootcamp/abstraction" element={<Navigate to="/topics/abstract" replace />} />
                   <Route path="/bootcamp/abstraction/*" element={<Navigate to="/topics/abstract" replace />} />

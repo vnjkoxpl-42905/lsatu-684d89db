@@ -1,0 +1,141 @@
+import React from "react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+const { permissions } = vi.hoisted(() => ({ permissions: {} as Record<string, boolean> }));
+
+vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "student", email: "s@example.com" }, authReady: true, signOut: vi.fn() }) }));
+vi.mock("@/contexts/ThemeContext", () => ({ useTheme: () => ({ theme: "light", setTheme: vi.fn() }) }));
+vi.mock("@/integrations/supabase/client", () => ({
+  supabase: { from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: { display_name: "Sam" } }) }) }) }) },
+}));
+vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => permissions }));
+vi.mock("@/hooks/useRailPrefs", () => ({ useRailPrefs: () => ({ prefs: { order: {}, hidden: [] } }) }));
+vi.mock("@/hooks/useUnreadMessageCount", () => ({ useUnreadMessageCount: () => 0 }));
+vi.mock("@/hooks/useNotifications", () => ({ useNotifications: () => ({ notifications: [], markSignupNotificationsRead: vi.fn() }) }));
+vi.mock("@/hooks/useClassroomItems", () => ({ useClassroomItems: () => ({ items: [], loading: false }) }));
+vi.mock("@/hooks/useFlagged", () => ({ useFlagged: () => ({ flagged: [], loading: false }) }));
+vi.mock("@/hooks/useJournalEntries", () => ({ useJournalEntries: () => ({ entries: [], loading: false }) }));
+vi.mock("@/hooks/useStudentAssignments", () => ({ useStudentAssignments: () => ({ data: [] }), useStudentTAAssignments: () => ({ data: [] }) }));
+vi.mock("@/hooks/useAssignedTodoFeed", () => ({ useAssignedTodoFeed: () => ({ items: [] }), routeWithReturnTo: (route: string) => route }));
+vi.mock("@/lib/routePreload", () => ({ preloadDrillHub: vi.fn() }));
+
+import ClassroomLayout from "./ClassroomLayout";
+
+const NONE = {
+  loading: false, is_admin: false, has_bootcamp_access: false, has_classroom_access: false,
+  has_analytics_access: false, has_schedule_access: false, has_practice_access: false,
+  has_drill_access: false, has_waj_access: false, has_journal_access: false,
+  has_flagged_access: false, has_chat_access: false, has_export_access: false,
+  has_ta_access: false, has_activity_access: false,
+};
+
+function Where() {
+  const { pathname } = useLocation();
+  return <output data-testid="where">{pathname}</output>;
+}
+
+async function renderShell(path: string) {
+  render(
+    <MemoryRouter initialEntries={[path]}>
+      <Routes>
+        <Route element={<ClassroomLayout />}>
+          <Route path="*" element={<Where />} />
+        </Route>
+      </Routes>
+    </MemoryRouter>,
+  );
+  await screen.findByTestId("where");
+}
+
+const rail = () => screen.getAllByRole("navigation", { name: "Classroom navigation" })[0];
+const railButton = (name: RegExp) => Array.from(rail().querySelectorAll("button")).find((b) => name.test(b.textContent ?? ""))!;
+
+beforeEach(() => {
+  Object.assign(permissions, NONE, { has_chat_access: true, has_schedule_access: true });
+  window.matchMedia = window.matchMedia ?? ((() => ({ matches: false, addEventListener() {}, removeEventListener() {} })) as never);
+});
+afterEach(cleanup);
+
+describe("classroom rail access", () => {
+  it("keeps a fully locked destination reachable so its page can explain the lock", async () => {
+    await renderShell("/classroom");
+    const progress = railButton(/^Progress/);
+    expect(progress).not.toBeDisabled();
+    expect(progress).toHaveTextContent("(locked)");
+    expect(progress).toHaveAttribute("title", "Progress is locked for your account");
+    fireEvent.click(progress);
+    expect(screen.getByTestId("where")).toHaveTextContent("/progress/overview");
+  });
+
+  it("opens a partly locked destination on a tab the account can use", async () => {
+    permissions.has_classroom_access = true;
+    await renderShell("/classroom");
+    const library = railButton(/^Library/);
+    expect(library).not.toHaveTextContent("(locked)");
+    fireEvent.click(library);
+    expect(screen.getByTestId("where")).toHaveTextContent("/library/activities");
+  });
+
+  it("draws no padlock while permissions are still loading", async () => {
+    Object.assign(permissions, { loading: true });
+    await renderShell("/classroom");
+    expect(rail()).not.toHaveTextContent("(locked)");
+  });
+
+  it("marks the current destination for assistive tech", async () => {
+    permissions.has_analytics_access = true;
+    await renderShell("/progress/history");
+    expect(railButton(/^Progress/)).toHaveAttribute("aria-current", "page");
+    expect(railButton(/^Review/)).not.toHaveAttribute("aria-current");
+  });
+
+  it("keeps a locked shortcut focusable with its explanation, but inert", async () => {
+    permissions.has_chat_access = false;
+    await renderShell("/classroom");
+    const messages = railButton(/^Messages/);
+    const find = railButton(/^Find a question/);
+    for (const shortcut of [messages, find]) {
+      expect(shortcut).not.toBeDisabled();
+      expect(shortcut).toHaveAttribute("aria-disabled", "true");
+      expect(shortcut).toHaveTextContent("locked for your account");
+    }
+    messages.focus();
+    expect(messages).toHaveFocus();
+    fireEvent.click(messages);
+    expect(screen.getByTestId("where")).toHaveTextContent("/classroom");
+  });
+
+  it("opens Messages and Find a question for an entitled account", async () => {
+    permissions.has_drill_access = true;
+    await renderShell("/classroom");
+    fireEvent.click(railButton(/^Find a question/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills");
+    fireEvent.click(railButton(/^Messages/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/inbox");
+  });
+});
+
+describe("mobile menu", () => {
+  it("dismisses on Escape and returns focus to the menu button", async () => {
+    await renderShell("/classroom");
+    const trigger = screen.getByRole("button", { name: "Open classroom menu" });
+    trigger.focus();
+    fireEvent.click(trigger);
+    expect(await screen.findByRole("dialog", { name: "Classroom menu" })).toBeInTheDocument();
+    await act(async () => { fireEvent.keyDown(document, { key: "Escape" }); });
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Classroom menu" })).toBeNull());
+    expect(trigger).toHaveFocus();
+  });
+
+  it("closes after a rail navigation", async () => {
+    await renderShell("/classroom");
+    fireEvent.click(screen.getByRole("button", { name: "Open classroom menu" }));
+    const dialog = await screen.findByRole("dialog", { name: "Classroom menu" });
+    const review = Array.from(dialog.querySelectorAll("button")).find((b) => /^Review/.test(b.textContent ?? ""))!;
+    fireEvent.click(review);
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Classroom menu" })).toBeNull());
+    expect(screen.getByTestId("where")).toHaveTextContent("/review/to-review");
+  });
+});

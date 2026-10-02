@@ -1,11 +1,21 @@
 import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
-const permissions = vi.hoisted(() => ({ loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false }));
+const BASE = { loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false };
+const permissions = vi.hoisted(() => ({ loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false }));
 vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => permissions }));
-import { StudentDestination } from "./StudentDestination";
-afterEach(cleanup);
+import { DestinationIndex, StudentDestination } from "./StudentDestination";
+afterEach(() => {
+  cleanup();
+  Object.assign(permissions, BASE);
+});
+
+function Where() {
+  const { pathname, search, hash } = useLocation();
+  return <output data-testid="where">{`${pathname}${search}${hash}`}</output>;
+}
+
 describe("visible locked destination sections", () => {
   it.each([
     ["my-work", "/my-work/to-do", "My Work sections", ["To do", "Completed", "Notes & recaps"]],
@@ -18,20 +28,99 @@ describe("visible locked destination sections", () => {
       expect(nav).toContainElement(item);
       expect(item).toHaveAttribute("aria-disabled", "true");
     }
-    expect(screen.queryByRole("link")).toBeNull();
+    expect(screen.getByRole("navigation").querySelector("a")).toBeNull();
   });
   it("distinguishes checking access from a confirmed lock", () => {
     permissions.loading = true;
     render(<MemoryRouter initialEntries={["/progress/overview"]}><StudentDestination destination="progress" /></MemoryRouter>);
     expect(screen.getByRole("navigation")).toHaveAttribute("aria-busy", "true");
     expect(screen.getByText("Overview")).toHaveAttribute("title", "Checking access");
-    permissions.loading = false;
+    // Unknown is not denied: no padlock and no plan explanation yet.
+    expect(screen.queryByText(/aren't in your plan/)).toBeNull();
+    expect(screen.queryByText("(locked)")).toBeNull();
   });
   it("restores real links for an authorized account", () => {
     permissions.has_analytics_access = true;
     render(<MemoryRouter initialEntries={["/progress/overview"]}><StudentDestination destination="progress" /></MemoryRouter>);
     expect(screen.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
     expect(screen.getByRole("link", { name: "History" })).toHaveAttribute("href", "/progress/history");
-    permissions.has_analytics_access = false;
+    expect(screen.queryByText(/aren't in your plan/)).toBeNull();
+  });
+  it("explains a locked section in visible text tied to the tab", () => {
+    render(<MemoryRouter initialEntries={["/progress/overview"]}><StudentDestination destination="progress" /></MemoryRouter>);
+    const note = screen.getByText(/aren't in your plan right now/);
+    expect(note).toHaveTextContent("message Joshua");
+    expect(screen.getByText("History")).toHaveAttribute("aria-describedby", note.id);
+    // The open-but-locked current tab still reads as the current page.
+    expect(screen.getByText("Overview")).toHaveAttribute("aria-current", "page");
+  });
+});
+
+describe("Admissions", () => {
+  it("is visible but closed to a fully entitled student, without blaming their plan", () => {
+    Object.assign(permissions, { has_classroom_access: true, has_drill_access: true, has_analytics_access: true });
+    render(<MemoryRouter initialEntries={["/library/lessons"]}><StudentDestination destination="library" /></MemoryRouter>);
+    expect(screen.queryByRole("link", { name: "Admissions" })).toBeNull();
+    expect(screen.getByText("Admissions")).toHaveAttribute("title", "Admissions is open to Joshua only");
+    expect(screen.queryByText(/aren't in your plan/)).toBeNull();
+  });
+  it("opens for Joshua and admins", () => {
+    permissions.is_admin = true;
+    render(<MemoryRouter initialEntries={["/library/admissions"]}><StudentDestination destination="library" /></MemoryRouter>);
+    expect(screen.getByRole("link", { name: "Admissions" })).toHaveAttribute("aria-current", "page");
+  });
+});
+
+describe("Practice Exams sub-row", () => {
+  it("marks All Exams on an exam detail page and keeps Attempts open without practice access", () => {
+    render(<MemoryRouter initialEntries={["/practice/exams/pt101"]}><StudentDestination destination="practice" /></MemoryRouter>);
+    const sub = screen.getByRole("navigation", { name: "Practice Exams pages" });
+    expect(sub).toHaveTextContent("All Exams");
+    expect(screen.getByText("All Exams")).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "Attempts" })).toHaveAttribute("href", "/practice/exams/attempts");
+  });
+});
+
+describe("bare destination URLs", () => {
+  const renderIndex = (path: string, destination: "library" | "practice") => render(
+    <MemoryRouter initialEntries={[path]}>
+      <Routes>
+        <Route path={`/${destination}`} element={<DestinationIndex destination={destination} />} />
+        <Route path="*" element={<Where />} />
+      </Routes>
+    </MemoryRouter>,
+  );
+  it("open the first tab the account can use, keeping query and hash", () => {
+    permissions.has_classroom_access = true;
+    renderIndex("/library?from=email#top", "library");
+    expect(screen.getByTestId("where")).toHaveTextContent("/library/activities?from=email#top");
+  });
+  it("let the assignment-aware gate decide access for a practice-free account", () => {
+    permissions.has_classroom_access = true;
+    renderIndex("/practice", "practice");
+    expect(screen.getByTestId("where")).toHaveTextContent("/practice/exams");
+  });
+  it("hold while permissions are unresolved instead of guessing", () => {
+    permissions.loading = true;
+    renderIndex("/practice", "practice");
+    expect(screen.queryByTestId("where")).toBeNull();
+  });
+});
+
+
+describe("Practice Exams primary landing", () => {
+  it("keeps the assignment-aware exam gate reachable without general practice access", () => {
+    render(<MemoryRouter initialEntries={["/practice/drills"]}><StudentDestination destination="practice" /></MemoryRouter>);
+    expect(screen.getByRole("link", { name: "Practice Exams" })).toHaveAttribute("href", "/practice/exams");
+  });
+  it("keeps Overview for an entitled student", () => {
+    permissions.has_practice_access = true;
+    render(<MemoryRouter initialEntries={["/practice/drills"]}><StudentDestination destination="practice" /></MemoryRouter>);
+    expect(screen.getByRole("link", { name: "Practice Exams" })).toHaveAttribute("href", "/practice/exams");
+  });
+  it("keeps Overview for an administrator", () => {
+    permissions.is_admin = true;
+    render(<MemoryRouter initialEntries={["/practice/drills"]}><StudentDestination destination="practice" /></MemoryRouter>);
+    expect(screen.getByRole("link", { name: "Practice Exams" })).toHaveAttribute("href", "/practice/exams");
   });
 });

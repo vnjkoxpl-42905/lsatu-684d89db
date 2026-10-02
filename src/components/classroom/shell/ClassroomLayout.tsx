@@ -28,6 +28,7 @@ import { useNotifications } from "@/hooks/useNotifications";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useRailPrefs } from "@/hooks/useRailPrefs";
 import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
+import { destinationLandingPath, railItemLocked } from "@/lib/destinationAccess";
 import { preloadDrillHub } from "@/lib/routePreload";
 import { flagLabel } from "@/lib/flaggedService";
 import { reviewReturnTo } from "@/components/review/ReviewReturnLink";
@@ -109,6 +110,7 @@ function sectionFromPath(pathname: string): ClassroomSection | null {
       pathname !== "/classroom/drill" &&
       pathname !== "/classroom/uploads" &&
       pathname !== "/classroom/account" &&
+      pathname !== "/classroom/admissions" &&
       pathname !== "/classroom/recaps")
   ) {
     return "work";
@@ -215,6 +217,9 @@ function ClassroomSidebar({
   // `loading` is "unknown", never "denied": every flag reads false until the
   // permission fetch lands, so treating that as denial padlocks the whole rail
   // for a beat on every cold load.
+  //
+  // Rail destinations do not use this: their routes admit any signed-in
+  // account and explain locked sections themselves (see railItemLocked).
   const canAccess = (item: Pick<RailItem, "flags" | "allowSignedIn" | "requireAdmin">) =>
     item.requireAdmin
       ? permissions.is_admin
@@ -224,21 +229,9 @@ function ClassroomSidebar({
         (item.allowSignedIn && !!user) ||
         item.flags.some((flag) => permissions[flag]);
 
-  // `onPrefetch` fires on hover and keyboard focus, not on click: the point is
-  // to have the route's chunk parsed before the click lands, so the student
-  // never sees the stage fallback at all.
-  const navProps = (
-    active: boolean,
-    unlocked: boolean,
-    onClick: () => void,
-    onPrefetch?: () => void,
-  ) => ({
-    className: `${navClass(active && unlocked)}${unlocked ? "" : " classroom-nav-locked"}`,
-    disabled: !unlocked,
-    onClick: unlocked ? onClick : undefined,
-    onMouseEnter: unlocked ? onPrefetch : undefined,
-    onFocus: unlocked ? onPrefetch : undefined,
-  });
+  // `onPrefetch` (below) fires on hover and keyboard focus, not on click: the
+  // point is to have the route's chunk parsed before the click lands, so the
+  // student never sees the stage fallback at all.
 
   const railGroups = resolveRailGroups(railPrefs);
 
@@ -259,28 +252,28 @@ function ClassroomSidebar({
       case "my-work":
         return {
           active: location.pathname.startsWith("/my-work") || activeSection === "notes" || activeSection === "work",
-          onClick: () => go("/my-work/to-do"),
+          onClick: () => go(permissions.loading ? "/my-work" : destinationLandingPath("my-work", permissions)),
         };
       case "practice":
         return {
           active: location.pathname.startsWith("/practice") || location.pathname === "/classroom/drill" || location.pathname.startsWith("/testing") || location.pathname === "/sets",
-          onClick: () => go(permissions.is_admin || permissions.has_drill_access || permissions.loading ? "/practice/drills" : "/practice/exams/attempts"),
+          onClick: () => go(permissions.loading ? "/practice" : destinationLandingPath("practice", permissions)),
           onPrefetch: preloadDrillHub,
         };
       case "review":
         return {
           active: location.pathname.startsWith("/review") || activeSection === "journal" || activeSection === "flagged",
-          onClick: () => go("/review/to-review"),
+          onClick: () => go(permissions.loading ? "/review" : destinationLandingPath("review", permissions)),
         };
       case "progress":
         return {
           active: location.pathname.startsWith("/progress") || location.pathname.startsWith("/analytics") || location.pathname.startsWith("/history"),
-          onClick: () => go("/progress/overview"),
+          onClick: () => go(permissions.loading ? "/progress" : destinationLandingPath("progress", permissions)),
         };
       case "library":
         return {
           active: location.pathname.startsWith("/library") || location.pathname.startsWith("/bootcamps") || location.pathname.startsWith("/activities") || location.pathname === "/classroom/admissions",
-          onClick: () => go("/library/lessons"),
+          onClick: () => go(permissions.loading ? "/library" : destinationLandingPath("library", permissions)),
         };
       case "schedule":
         // One entry, two stage tabs. /booking is the same shell with the Book
@@ -315,16 +308,28 @@ function ClassroomSidebar({
               <b>{group.title}</b>
               {group.items.map((item) => {
                 const { active, onClick, onPrefetch } = railBehavior(item);
-                const unlocked = canAccess(item);
+                // Every destination route admits a signed-in account and
+                // explains its own locked sections, so the rail never disables
+                // one. A padlock marks a destination with nothing open yet;
+                // clicking it still leads to the page that says why.
+                const locked = railItemLocked(item.id, permissions);
                 return (
                   <button
                     key={item.id}
                     type="button"
-                    {...navProps(active, unlocked, onClick, onPrefetch)}
+                    className={`${navClass(active)}${locked ? " classroom-nav-dimmed" : ""}`}
+                    onClick={onClick}
+                    onMouseEnter={onPrefetch}
+                    onFocus={onPrefetch}
+                    aria-current={active ? "page" : undefined}
+                    title={locked ? `${item.label} is locked for your account` : undefined}
                   >
                     {item.label}
-                    {!unlocked ? (
-                      <Lock className="classroom-nav-lock" aria-hidden="true" />
+                    {locked ? (
+                      <>
+                        <Lock className="classroom-nav-lock" aria-hidden="true" />
+                        <span className="sr-only"> (locked)</span>
+                      </>
                     ) : null}
                   </button>
                 );
@@ -334,12 +339,38 @@ function ClassroomSidebar({
 
           <div className="classroom-nav-group classroom-nav-shortcuts">
             <b>Quick access</b>
-            <button type="button" className={`${navClass(location.pathname.startsWith("/inbox"))}${canAccess({ flags: ["has_chat_access"] }) ? "" : " classroom-nav-locked"}`} disabled={!canAccess({ flags: ["has_chat_access"] })} title={canAccess({ flags: ["has_chat_access"] }) ? undefined : "Messages is locked for your account"} onClick={() => go("/inbox")}>
-              Messages
-              {unreadMessages > 0 ? <span className="classroom-nav-badge">{unreadMessages > 9 ? "9+" : unreadMessages}<span className="sr-only"> unread messages</span></span> : null}
-              {!canAccess({ flags: ["has_chat_access"] }) ? <Lock className="classroom-nav-lock" aria-hidden="true" /> : null}
-            </button>
-            <button type="button" className={`classroom-nav${canAccess({ flags: ["has_drill_access"] }) ? "" : " classroom-nav-locked"}`} disabled={!canAccess({ flags: ["has_drill_access"] })} title={canAccess({ flags: ["has_drill_access"] }) ? undefined : "Find a question is locked for your account"} onClick={() => go("/practice/drills")}>Find a question{!canAccess({ flags: ["has_drill_access"] }) ? <Lock className="classroom-nav-lock" aria-hidden="true" /> : null}</button>
+            {/* aria-disabled rather than disabled: a disabled button drops out
+                of the tab order, so a keyboard student never reaches the
+                explanation of why it is locked. */}
+            {[
+              { label: "Messages", path: "/inbox", flag: "has_chat_access" as const, active: location.pathname.startsWith("/inbox"), badge: unreadMessages },
+              { label: "Find a question", path: "/practice/drills", flag: "has_drill_access" as const, active: false, badge: 0 },
+            ].map((shortcut) => {
+              const open = canAccess({ flags: [shortcut.flag] });
+              return (
+                <button
+                  key={shortcut.path}
+                  type="button"
+                  className={`${navClass(shortcut.active && open)}${open ? "" : " classroom-nav-locked"}`}
+                  aria-disabled={open ? undefined : true}
+                  aria-current={shortcut.active && open ? "page" : undefined}
+                  title={open ? undefined : `${shortcut.label} is locked for your account`}
+                  onClick={open ? () => go(shortcut.path) : undefined}
+                >
+                  {shortcut.label}
+                  {open && shortcut.badge > 0 ? <span className="classroom-nav-badge">{shortcut.badge > 9 ? "9+" : shortcut.badge}<span className="sr-only"> unread messages</span></span> : null}
+                  {!open ? (
+                    <>
+                      <Lock className="classroom-nav-lock" aria-hidden="true" />
+                      <span className="sr-only"> (locked for your account)</span>
+                    </>
+                  ) : null}
+                </button>
+              );
+            })}
+            {!permissions.loading && (!canAccess({ flags: ["has_chat_access"] }) || !canAccess({ flags: ["has_drill_access"] })) ? (
+              <p className="classroom-rail-shortcut-note">Locked shortcuts aren't available to your account. Ask Joshua about access.</p>
+            ) : null}
           </div>
 
           {permissions.is_admin ? (

@@ -17,10 +17,8 @@ import {
   type RailItem,
   type RailPrefs,
 } from "@/lib/railCatalog";
-import {
-  useUserPermissions,
-  type PermissionFlag,
-} from "@/hooks/useUserPermissions";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { railItemLocked } from "@/lib/destinationAccess";
 
 // The sidebar layout editor. Changes save as they are made — rail order is a
 // low-stakes preference, so there is no draft/Save/Discard state to lose.
@@ -59,10 +57,9 @@ export default function RailLayoutEditor() {
     }
   };
 
-  const unlocked = (item: RailItem) =>
-    permissions.is_admin ||
-    item.flags.length === 0 ||
-    item.flags.some((flag) => permissions[flag as PermissionFlag]);
+  // Same predicate as the live rail, so the preview never padlocks a
+  // destination the sidebar draws open (or the reverse).
+  const unlocked = (item: RailItem) => !railItemLocked(item.id, permissions);
 
   const groups = resolveRailGroups(prefs, { includeHidden: true });
   const hiddenSet = new Set(prefs.hidden);

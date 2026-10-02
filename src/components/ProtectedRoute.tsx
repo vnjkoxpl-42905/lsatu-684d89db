@@ -92,7 +92,7 @@ export default function ProtectedRoute({ flag, requireAdmin, allowSignedIn, chil
   }
 
   if (requireAdmin) {
-    return permissions.is_admin ? <>{children}</> : <LockedModule />;
+    return permissions.is_admin ? <>{children}</> : <LockedModule staffOnly />;
   }
 
   if (allowSignedIn) {

@@ -194,6 +194,7 @@ describe("ProtectedRoute", () => {
     mockUseUserPermissions.mockReturnValue({ ...NO_FLAGS, has_classroom_access: true, has_activity_access: true, has_bootcamp_access: true });
     renderDestinationChild("/library/admissions");
     expect(screen.queryByText("admissions page")).not.toBeInTheDocument();
+    expect(screen.getByText("This section is available to Joshua and administrators only.")).toBeInTheDocument();
     expect(screen.getByText("Not open yet")).toBeInTheDocument();
   });
 
@@ -427,13 +428,14 @@ describe("ProtectedRoute", () => {
     expect(screen.queryByTestId("auth-location")).not.toBeInTheDocument();
   });
 
-  it("tells a fully revoked student their access is paused, with no loop back to the classroom", () => {
+  it("does not infer a pause from missing feature flags", () => {
     mockUseAuth.mockReturnValue({ user: { id: "student-1" }, authReady: true });
     mockUseUserPermissions.mockReturnValue(NO_FLAGS);
 
     renderGatedRoute();
 
-    expect(screen.getByText("Your access is paused")).toBeInTheDocument();
+    expect(screen.getByText("Not open yet")).toBeInTheDocument();
+    expect(screen.queryByText(/paused/i)).not.toBeInTheDocument();
     // "Back to your classroom" would land them on this same screen, because
     // Revoke All Access turns the classroom flag off too.
     expect(screen.queryByText("Back to your classroom")).not.toBeInTheDocument();

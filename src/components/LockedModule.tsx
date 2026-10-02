@@ -15,12 +15,10 @@ import { useUserPermissions } from "@/hooks/useUserPermissions";
  * The old copy ("Premium Content Locked ... contact administration") named no
  * one and led nowhere. A locked door has to say who opens it.
  *
- * Two states, because "Revoke All Access" now turns off the classroom flag too.
- * One locked feature on an otherwise open account sends the student back to
- * their classroom. A revoked account has no classroom to go back to, so
- * offering the button would loop them straight onto this same screen.
+ * A missing feature flag does not establish that the account was paused.
+ * Keep the explanation neutral and offer only reachable next steps.
  */
-export default function LockedModule() {
+export default function LockedModule({ staffOnly = false }: { staffOnly?: boolean }) {
   const navigate = useNavigate();
   const permissions = useUserPermissions();
   const canReachClassroom = permissions.has_classroom_access || permissions.is_admin;
@@ -34,12 +32,12 @@ export default function LockedModule() {
         </div>
 
         <h1 className="mb-2 text-xl font-semibold tracking-tight text-foreground">
-          {canReachClassroom ? "Not open yet" : "Your access is paused"}
+          Not open yet
         </h1>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          {canReachClassroom
-            ? "This part of the classroom isn't in your plan right now. If that looks wrong, send Joshua a message and he'll sort it out."
-            : "Your account is still here and so is your work. Joshua has paused access for now. Reach out to him and he'll turn it back on."}
+          {staffOnly
+            ? "This section is available to Joshua and administrators only."
+            : "This section isn't available to your account. If that looks wrong, message Joshua."}
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">

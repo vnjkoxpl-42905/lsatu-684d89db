@@ -21,7 +21,7 @@ describe("seven destination rail", () => {
   });
 
   it("registers every URL-backed tab", () => {
-    const tabs = readFileSync(resolve(process.cwd(), "src/pages/StudentDestination.tsx"), "utf8");
+    const tabs = readFileSync(resolve(process.cwd(), "src/lib/destinationAccess.ts"), "utf8");
     for (const path of [
       "/my-work/to-do", "/my-work/completed", "/my-work/notes",
       "/practice/drills", "/practice/exams", "/practice/exams/all", "/practice/exams/attempts",
@@ -36,7 +36,9 @@ describe("seven destination rail", () => {
     expect(app).toContain('path="admissions" element={<ProtectedRoute requireAdmin><AdmissionsPage />');
     expect(app).toContain('path="flagged" element={<ProtectedRoute flag="has_flagged_access">');
     expect(app).toContain('path="wrong" element={<ProtectedRoute flag="has_journal_access">');
-    expect(app).toContain('path="activities" element={<ProtectedRoute flag="has_activity_access">');
+    // Activities and Bootcamps are assignment-only under Classroom access
+    // (student tier defaults, 5b5d5b0); the retired category flag no longer gates them.
+    expect(app).toContain('path="activities" element={<ProtectedRoute flag="has_classroom_access">');
   });
 });
 

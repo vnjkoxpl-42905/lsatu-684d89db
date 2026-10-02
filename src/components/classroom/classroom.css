@@ -303,6 +303,12 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   opacity: 0.7;
 }
 
+/* A destination with nothing open yet. Still a link: the page it opens says
+   which sections are locked and why. */
+.classroom-root .classroom-nav-dimmed:not(.classroom-nav-active) {
+  color: var(--classroom-meta-text);
+}
+
 .classroom-root .classroom-nav-lock {
   flex: 0 0 auto;
   height: 13px;
@@ -5594,6 +5600,20 @@ html.dark .classroom-root.classroom-root-drill {
   opacity: 0.68;
 }
 
+.classroom-root .student-destination-locked-note {
+  align-items: center;
+  color: var(--classroom-meta-text);
+  display: flex;
+  font-size: 13px;
+  gap: 6px;
+  margin: -20px 0 24px;
+  overflow-wrap: anywhere;
+}
+
+.classroom-root .student-destination-locked-note svg {
+  flex: 0 0 auto;
+}
+
 /* The retained Review lists include their old two-tab heading for legacy
    question URLs. Canonical Review already has its full tab row above them. */
 .classroom-root .student-destination-content .classroom-review-heading {
@@ -5674,4 +5694,12 @@ html.dark .classroom-root.classroom-root-drill {
 
 @media (max-width: 1023px) {
   .classroom-root.classroom-root-destination .classroom-column { padding-top: 24px; }
+}
+
+.classroom-root .classroom-rail-shortcut-note {
+  color: var(--classroom-meta-text);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
 }

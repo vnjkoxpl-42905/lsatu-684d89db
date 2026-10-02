@@ -61,12 +61,30 @@ export function useRailPrefs() {
       const row = await readLayout(userId!);
       const raw = layoutObject(row.layout_prefs);
       if (raw[RAIL_PREFS_KEY]) return normalizeRailPrefs(raw[RAIL_PREFS_KEY]);
-      return writeLayout(userId!, row, migrateLegacyRailPrefs(raw.classroom_rail));
+      try {
+        return await writeLayout(userId!, row, migrateLegacyRailPrefs(raw.classroom_rail));
+      } catch (error) {
+        // A second tab or device can migrate (or save) between this read and
+        // the guarded write, which then matches no row. Its layout is the newer
+        // one: adopt it instead of failing or migrating a second time.
+        const latest = layoutObject((await readLayout(userId!)).layout_prefs)[RAIL_PREFS_KEY];
+        if (latest) return normalizeRailPrefs(latest);
+        throw error;
+      }
     },
   });
   const save = useMutation({
-    mutationFn: async ({ ownerId, next }: { ownerId: string; next: RailPrefs }) =>
-      writeLayout(ownerId, await readLayout(ownerId), next),
+    mutationFn: async ({ ownerId, next, base }: { ownerId: string; next: RailPrefs; base: RailPrefs }) => {
+      const row = await readLayout(ownerId);
+      // `next` was built from the layout on screen. If another device saved
+      // since, writing it would silently undo that newer choice; refuse, and
+      // onError reloads what is actually stored.
+      const stored = layoutObject(row.layout_prefs)[RAIL_PREFS_KEY];
+      if (stored && JSON.stringify(normalizeRailPrefs(stored)) !== JSON.stringify(normalizeRailPrefs(base))) {
+        throw new Error("Your sidebar layout changed on another device. Review it and try again.");
+      }
+      return writeLayout(ownerId, row, next);
+    },
     onSuccess: (acknowledged, { ownerId }) => qc.setQueryData(["rail-prefs", ownerId], acknowledged),
     onError: (_error, { ownerId }) => {
       void qc.invalidateQueries({ queryKey: ["rail-prefs", ownerId] });
@@ -83,7 +101,7 @@ export function useRailPrefs() {
     canSave,
     save: async (next: RailPrefs) => {
       if (!canSave || !userId) throw new Error("Load your saved sidebar layout before editing it.");
-      return save.mutateAsync({ ownerId: userId, next });
+      return save.mutateAsync({ ownerId: userId, next, base: prefs });
     },
     saving: save.isPending,
   };
