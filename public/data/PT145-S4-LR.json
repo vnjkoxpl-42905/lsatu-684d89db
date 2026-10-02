@@ -52,7 +52,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 3,
-    "questionType": "Resolve reconcile or explain",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -96,7 +96,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 5,
-    "questionType": "Miscellaneous",
+    "questionType": "Strengthen",
     "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Some scientific issues are so complex and counterintuitive that they cannot be well understood by readers of popular magazines. Nonetheless, stories about these difficult scientific issues are frequently the ones that these readers would find most fascinating. Unfortunately, this means that some of the scientific stories that would be most interesting to readers are usually not covered in popular magazines since _______.",
@@ -140,7 +140,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 7,
-    "questionType": "Argument part",
+    "questionType": "Role",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -166,7 +166,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 8,
-    "questionType": "Miscellaneous",
+    "questionType": "Main Conclusion",
     "reasoningType": [
       "Causation"
     ],

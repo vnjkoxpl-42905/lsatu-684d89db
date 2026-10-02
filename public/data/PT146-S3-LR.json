@@ -51,7 +51,7 @@
     "practiceTest": "PT146",
     "sectionNumber": 3,
     "questionNumber": 3,
-    "questionType": "Complete the Argument",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -430,7 +430,7 @@
     "practiceTest": "PT146",
     "sectionNumber": 3,
     "questionNumber": 19,
-    "questionType": "Role in Argument",
+    "questionType": "Role",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
