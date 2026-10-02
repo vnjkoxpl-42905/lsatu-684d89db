@@ -401,6 +401,100 @@
   text-align: center;
 }
 
+/* ------------------------------------------------- builder: launch truth */
+
+.rc-stepper button[disabled] { opacity: 0.4; cursor: not-allowed; }
+
+/* The builder's controls inherit no visible focus from the observatory layer,
+   so keyboard users get one ring here. Builder only; the player keeps its own. */
+.rc-page .rc-button:focus-visible,
+.rc-page .rc-chip:focus-visible,
+.rc-page .rc-segment:focus-visible,
+.rc-page .rc-stepper button:focus-visible,
+.rc-page .rc-shortfall input:focus-visible,
+.rc-page details > summary:focus-visible {
+  outline: 2px solid var(--observatory-focus);
+  outline-offset: 2px;
+}
+
+/* An error is said in words first; the red edge only repeats it. */
+.rc-page .rc-input-invalid { border-color: var(--rc-wrong); }
+
+.rc-field-error {
+  font-size: var(--observatory-text-meta);
+  color: var(--observatory-ink-85);
+  border-left: 2px solid var(--rc-wrong);
+  padding-left: var(--observatory-space-3);
+  margin-top: var(--observatory-space-2);
+}
+
+.rc-builder-alert {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--observatory-space-3);
+  border-left: 2px solid var(--observatory-amber);
+  padding: var(--observatory-space-2) var(--observatory-space-3);
+  margin-bottom: var(--observatory-space-4);
+  color: var(--observatory-ink-85);
+  font-size: var(--observatory-text-body);
+}
+
+.rc-launch-summary {
+  border-top: 1px solid var(--observatory-hairline);
+  padding-top: var(--observatory-space-4);
+  margin-bottom: var(--observatory-space-4);
+}
+
+.rc-launch-summary dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--observatory-space-2);
+  margin: 0;
+}
+
+.rc-launch-summary dl > div {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: var(--observatory-space-3);
+  align-items: baseline;
+}
+
+.rc-launch-summary dt {
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label);
+  letter-spacing: var(--observatory-track-label);
+  text-transform: uppercase;
+  color: var(--observatory-ink-50);
+}
+
+.rc-launch-summary dd {
+  margin: 0;
+  color: var(--observatory-ink-85);
+  font-size: var(--observatory-text-body);
+  overflow-wrap: anywhere;
+}
+
+/* Phone width: labels stack over values instead of squeezing them. */
+@media (max-width: 480px) {
+  .rc-launch-summary dl > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+
+.rc-shortfall {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--observatory-space-3);
+  margin-top: var(--observatory-space-3);
+  padding: var(--observatory-space-3);
+  border-left: 2px solid var(--observatory-amber);
+  color: var(--observatory-ink-85);
+  font-size: var(--observatory-text-body);
+  cursor: pointer;
+}
+
+.rc-shortfall input { margin-top: 3px; width: 18px; height: 18px; flex: none; }
+
 .rc-table { width: 100%; border-collapse: collapse; font-size: var(--observatory-text-meta); }
 
 .rc-table th,

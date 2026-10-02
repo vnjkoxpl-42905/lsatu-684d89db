@@ -7,13 +7,22 @@ export interface LRDrillSetAvailability {
   exceedsSize: boolean;
 }
 
+function uniqueByQid(questions: readonly LRQuestion[]): LRQuestion[] {
+  const seen = new Set<string>();
+  return questions.filter((question) => {
+    if (seen.has(question.qid)) return false;
+    seen.add(question.qid);
+    return true;
+  });
+}
+
 /** Exact picks keep their order and the remaining places come from the filtered pool. */
 export function getLRDrillSetAvailability(
   selectedQids: ReadonlySet<string>,
   filteredQuestions: readonly LRQuestion[],
   setSize: number,
 ): LRDrillSetAvailability {
-  const availableCount = filteredQuestions.filter((question) => !selectedQids.has(question.qid)).length;
+  const availableCount = uniqueByQid(filteredQuestions.filter((question) => !selectedQids.has(question.qid))).length;
   return {
     selectedCount: selectedQids.size,
     availableCount,
@@ -36,6 +45,8 @@ export function composeLRDrillSet(
   const selected = Array.from(selectedQids).map((qid) => byQid.get(qid));
   if (selected.some((question) => !question)) return null;
 
-  const remaining = filteredQuestions.filter((question) => !selectedQids.has(question.qid));
+  // One place per canonical ID: an exact pick never comes back through the
+  // sampled pool, and a pool that lists a question twice cannot fill two places.
+  const remaining = uniqueByQid(filteredQuestions.filter((question) => !selectedQids.has(question.qid)));
   return [...(selected as LRQuestion[]), ...shuffle(remaining).slice(0, setSize - selected.length)];
 }

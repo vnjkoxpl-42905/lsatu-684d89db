@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useSearchParams } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -222,7 +222,7 @@ describe('RcHubSurface autostart', () => {
     const bank = await import('../lib/rcBank');
     vi.mocked(bank.loadAllIndexPassages).mockRejectedValueOnce(new Error('offline'));
     mount('/classroom/drill?section=rc&stage=type-drill&count=1&start=1');
-    expect(await screen.findByText('The passage list could not be loaded.')).toBeInTheDocument();
+    expect(await screen.findByText(/The passage list could not be loaded\./)).toBeInTheDocument();
     expect(createSession).not.toHaveBeenCalled();
   });
 
@@ -249,5 +249,213 @@ describe('RcHubSurface autostart', () => {
     fireEvent.click(screen.getByRole('button', { name: 'More passages' }));
     expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
     expect(createSession).not.toHaveBeenCalled();
+  });
+});
+
+describe('RcHubSurface launch truth (#171)', () => {
+  beforeEach(async () => {
+    navigate.mockClear();
+    createSession.mockReset();
+    createSession.mockImplementation(async () => ({ id: 'session-1' }));
+    loadPassages.mockClear();
+    adoption.enabled = false;
+    adoption.sessions = [];
+    const progress = await import('../api/rcProgress');
+    vi.mocked(progress.listSessions).mockClear();
+    vi.mocked(progress.deleteSession).mockClear();
+  });
+
+  const primary = () => screen.getAllByRole('button', { name: /^(Inspect set|Start this drill|Loading set…|Starting…)$/ })[0];
+  const launchSummary = () => screen.getByRole('region', { name: 'Launch summary' });
+
+  it('times the hand-picked passages, not the stepper, and says the count is in passages', async () => {
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201&timing=standard');
+    await screen.findByText(/2 passages ·/);
+    expect(screen.getByText('8:45 per passage · 17:30 for 2 passages')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'More passages' })).toBeDisabled();
+    expect(screen.getByText(/Using your 2 hand-picked passages/)).toBeInTheDocument();
+    expect(within(launchSummary()).getByText('2 hand-picked passages')).toBeInTheDocument();
+    expect(within(launchSummary()).getByText('Timed, 8:45 per passage (17:30 in all)')).toBeInTheDocument();
+  });
+
+  it('keeps an invalid custom time editable, explains it, and blocks Inspect until it is valid', async () => {
+    mount('/classroom/drill?section=rc&stage=type-drill&count=1');
+    await screen.findByRole('button', { name: 'Inspect set' });
+    fireEvent.click(screen.getByRole('button', { name: 'Custom' }));
+    const field = screen.getByRole('textbox', { name: 'Minutes and seconds per passage' });
+    fireEvent.change(field, { target: { value: '8:75' } });
+    expect(field).toHaveValue('8:75');
+    expect(field).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByRole('alert')).toHaveTextContent('Seconds must be between 00 and 59.');
+    expect(primary()).toBeDisabled();
+
+    fireEvent.change(field, { target: { value: '10' } });
+    fireEvent.blur(field);
+    expect(field).toHaveValue('10:00');
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    fireEvent.click(primary());
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    // The validated pace is what the session is created with.
+    expect(createSession.mock.calls[0][0]).toMatchObject({
+      source: 'adaptive',
+      reveal: 'per_passage',
+      timing: { mode: 'per_passage_budget', secondsPerPassage: 600 },
+    });
+  });
+
+  it('counts launched questions from loaded content and launches exactly the inspected passages', async () => {
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201&reveal=end_of_set');
+    await screen.findByText(/2 passages ·/);
+    // The index says five questions each; nothing is promised before loading.
+    expect(within(launchSummary()).getByText('Inspect the set to see its exact passages and question count')).toBeInTheDocument();
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    // The loaded passages carry one question each, and that is what is shown.
+    expect(within(launchSummary()).getByText('2 passages · 2 questions')).toBeInTheDocument();
+    fireEvent.click(primary());
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual([1188, 1201]);
+    expect(createSession.mock.calls[0][0]).toMatchObject({ source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' } });
+  });
+
+  it('requires acknowledging a smaller adaptive set before Start, and never claims the requested size', async () => {
+    mount('/classroom/drill?section=rc&stage=type-drill&count=4');
+    await screen.findByRole('button', { name: 'Inspect set' });
+    expect(screen.getByText(/Only 3 passages match/)).toBeInTheDocument();
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    expect(within(launchSummary()).getByText('3 passages · 3 questions')).toBeInTheDocument();
+    expect(primary()).toBeDisabled();
+    fireEvent.click(primary());
+    expect(createSession).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('checkbox', { name: /Only 3 passages of the 4 you asked for/ }));
+    expect(primary()).toBeEnabled();
+    fireEvent.click(primary());
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toHaveLength(3);
+  });
+
+  it('drops an inspection that resolves after a setting changed, and says the set was cleared', async () => {
+    let release: () => void = () => {};
+    loadPassages.mockImplementationOnce(async (ids: number[]) => {
+      await new Promise<void>((resolve) => { release = resolve; });
+      return ids.map((passageId) => ({ passageId, questions: [{ questionId: 1, position: 1, prompt: 'Q', choices: [] }] })) as never;
+    });
+    mount('/classroom/drill?section=rc&stage=type-drill&count=1');
+    fireEvent.click(await screen.findByRole('button', { name: 'Inspect set' }));
+    fireEvent.click(screen.getByRole('button', { name: 'More passages' }));
+    release();
+    await waitFor(() => expect(primary()).toHaveTextContent('Inspect set'));
+    expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('marks an inspected set stale when a setting changes', async () => {
+    mount('/classroom/drill?section=rc&stage=type-drill&count=1');
+    fireEvent.click(await screen.findByRole('button', { name: 'Inspect set' }));
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    fireEvent.click(screen.getByRole('button', { name: /At the end/ }));
+    expect(screen.getByText(/settings changed, so the inspected set was cleared/)).toBeInTheDocument();
+    expect(primary()).toHaveTextContent('Inspect set');
+  });
+
+  it('will not pass inspection when a passage loads without questions', async () => {
+    loadPassages.mockImplementationOnce(async (ids: number[]) =>
+      ids.map((passageId) => ({ passageId, preptest: 140, title: 'Empty', setNumber: 1, text: 'x', questions: [] })) as never);
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
+    await screen.findByText(/1 passage ·/);
+    fireEvent.click(primary());
+    expect(await screen.findByText(/loaded without its questions/)).toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
+  });
+
+  it('shows no pool count on a failed first read, then Retry restores the builder', async () => {
+    const bank = await import('../lib/rcBank');
+    vi.mocked(bank.loadAllIndexPassages).mockRejectedValueOnce(new Error('offline'));
+    mount('/classroom/drill?section=rc&stage=type-drill&count=1');
+    expect(await screen.findByText(/The passage list could not be loaded\./)).toBeInTheDocument();
+    expect(screen.getByText('Passage list unavailable')).toBeInTheDocument();
+    expect(screen.queryByText(/Choosing from 0 of 0/)).not.toBeInTheDocument();
+    expect(within(launchSummary()).getByText('Not known until the passage list loads')).toBeInTheDocument();
+    expect(primary()).toBeDisabled();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+    expect(await screen.findByText('Choosing from 3 of 3 passages')).toBeInTheDocument();
+    expect(primary()).toBeEnabled();
+  });
+
+  it('keeps hand-picks but blocks launch when a refresh fails', async () => {
+    const bank = await import('../lib/rcBank');
+    const progress = await import('../api/rcProgress');
+    // History fails first, so the builder offers Retry; the retry then loses
+    // the passage list after the hand-picks were already applied.
+    vi.mocked(progress.getQuestionHistory).mockRejectedValueOnce(new Error('offline'));
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201');
+    await screen.findByText(/2 passages ·/);
+    expect(screen.getByText(/answer history could not be loaded/)).toBeInTheDocument();
+
+    vi.mocked(bank.loadAllIndexPassages).mockRejectedValueOnce(new Error('offline'));
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+    expect(await screen.findByText(/Your choices are kept/)).toBeInTheDocument();
+    expect(screen.getByText(/2 passages ·/)).toBeInTheDocument();
+    for (const button of screen.getAllByRole('button', { name: 'Inspect set' })) expect(button).toBeDisabled();
+    expect(loadPassages).not.toHaveBeenCalled();
+  });
+
+  it('starts once when Start is pressed twice before the create call returns', async () => {
+    let finish: (value: { id: string }) => void = () => {};
+    createSession.mockImplementationOnce(() => new Promise((resolve) => { finish = resolve; }));
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
+    await screen.findByText(/1 passage ·/);
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    const startButton = primary();
+    // Both clicks land in one batch, before React re-renders the button as
+    // disabled, which is the window a double-click or a key repeat hits.
+    act(() => {
+      startButton.click();
+      startButton.click();
+    });
+    finish({ id: 'session-once' });
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith(expect.stringContaining('sessionId=session-once'), { replace: undefined }));
+    expect(createSession).toHaveBeenCalledTimes(1);
+  });
+
+  it('recovers the session a failed create actually saved instead of making a second one', async () => {
+    const progress = await import('../api/rcProgress');
+    createSession.mockRejectedValueOnce(new Error('network reset'));
+    vi.mocked(progress.listSessions)
+      .mockRejectedValueOnce(new Error('still offline'))
+      .mockResolvedValueOnce([{
+        id: 'saved-before-reset', status: 'in_progress', passageIds: [1188],
+        startedAt: new Date().toISOString(), config: { reveal: 'per_passage', timing: { mode: 'unlimited' } },
+      }] as never);
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
+    await screen.findByText(/1 passage ·/);
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+
+    fireEvent.click(primary());
+    expect(await screen.findByText('network reset We could not confirm whether the drill was created. Press Start again and we will check before making a new one.')).toBeInTheDocument();
+    expect(navigate).not.toHaveBeenCalled();
+
+    fireEvent.click(primary());
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith(expect.stringContaining('sessionId=saved-before-reset'), { replace: undefined }));
+    expect(createSession).toHaveBeenCalledTimes(1);
+  });
+
+  it('inspects without creating, deleting, or listing sessions', async () => {
+    const progress = await import('../api/rcProgress');
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201');
+    await screen.findByText(/2 passages ·/);
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    expect(createSession).not.toHaveBeenCalled();
+    expect(progress.deleteSession).not.toHaveBeenCalled();
+    expect(progress.listSessions).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
   });
 });

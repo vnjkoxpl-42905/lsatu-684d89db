@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { QuestionManifest } from '@/lib/questionLoader';
 import { QuestionPicker } from './QuestionPicker';
@@ -325,5 +325,72 @@ describe('QuestionPicker LR drill setup', () => {
     pasteReferences('PT101.S1.Q1, PT101.S9.Q99');
     expect(screen.getByRole('alert')).toHaveTextContent('Nothing was added');
     expect(screen.getByText('0 added to set')).toBeInTheDocument();
+  });
+
+  it('places an exact pick that is also in the pool exactly once', () => {
+    const { onStartDrill } = setup();
+    pasteReferences('PT101.S1.Q2');
+    previewSet();
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill (5)' }));
+    const launched: string[] = onStartDrill.mock.calls[0][0].selectedQids;
+    expect(launched).toHaveLength(5);
+    expect(launched[0]).toBe('PT101-S1-Q2');
+    expect(launched.filter((qid) => qid === 'PT101-S1-Q2')).toHaveLength(1);
+    expect(new Set(launched).size).toBe(5);
+  });
+
+  it('blocks a set with more exact picks than places and says how to fix it', () => {
+    const { onStartDrill } = setup();
+    pasteReferences('PT101.S1.Q1, PT101.S1.Q2, PT101.S2.Q3, PT101.S2.Q4, PT101.S1.Q5, PT102.S2.Q6');
+    expect(screen.getByText('6 added to set')).toBeInTheDocument();
+    expect(screen.getAllByText(/You selected 6 questions\. Increase the set size or remove some\./)).not.toHaveLength(0);
+    for (const button of screen.getAllByRole('button', { name: 'Create set preview (5)' })) expect(button).toBeDisabled();
+    expect(onStartDrill).not.toHaveBeenCalled();
+  });
+
+  it('clears a preview visibly when the composition changes, then launches only the new preview', () => {
+    const { onStartDrill } = setup();
+    previewSet();
+    expect(screen.getAllByRole('button', { name: 'Start this drill (5)' })).not.toHaveLength(0);
+    pasteReferences('PT102.S2.Q6');
+    expect(screen.queryByRole('button', { name: 'Start this drill (5)' })).not.toBeInTheDocument();
+    expect(screen.getAllByText(/Your set changed, so the earlier preview was cleared/)).not.toHaveLength(0);
+
+    previewSet();
+    expect(screen.queryByText(/Your set changed/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill (5)' }));
+    expect(onStartDrill.mock.calls[0][0].selectedQids[0]).toBe('PT102-S2-Q6');
+  });
+
+  it('keeps the preview when only the discovery search changes', () => {
+    setup();
+    previewSet();
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Find questions by text or PrepTest reference' }), {
+      target: { value: 'botanical' },
+    });
+    expect(screen.getByRole('button', { name: 'Start this drill (5)' })).toBeInTheDocument();
+    expect(screen.queryByText(/Your set changed/)).not.toBeInTheDocument();
+  });
+
+  it('launches once when Start is pressed twice in one batch', () => {
+    const { onStartDrill } = setup();
+    previewSet();
+    const start = screen.getByRole('button', { name: 'Start this drill (5)' });
+    act(() => {
+      start.click();
+      start.click();
+    });
+    expect(onStartDrill).toHaveBeenCalledTimes(1);
+    expect(mockRecordExposures).not.toHaveBeenCalled(); // no signed-in user in this harness
+  });
+
+  it('states the actual training mode before Start without offering a timed choice', () => {
+    setup();
+    const mode = screen.getByTestId('lr-set-mode');
+    expect(mode).toHaveTextContent('Training set, not a timed test');
+    expect(mode).toHaveTextContent('Answers stay hidden unless you choose Show Answer');
+    previewSet();
+    fireEvent.click(screen.getAllByRole('button', { name: 'Inspect all 5 questions' })[0]);
+    expect(screen.getByRole('dialog', { name: 'Your set: 5 questions' })).toHaveTextContent('Training set, not a timed test');
   });
 });

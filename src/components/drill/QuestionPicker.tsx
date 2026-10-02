@@ -137,6 +137,15 @@ const TABLE_MIN_WIDTH = FIXED_COLS_WIDTH + STEM_MIN_WIDTH; // 644
  */
 const reasoningTypeLabel = (value: string): string => REASONING_TYPE_LABELS[value] ?? value;
 
+/**
+ * What a custom LR set actually does once started, traced from the runner's
+ * practice-set path (fixed queue, stopwatch, optional Show Answer, results at
+ * the end). The builder has no Test or timed choice, so it claims none.
+ */
+const LR_SET_MODE_LABEL = 'Training set, not a timed test';
+const LR_SET_MODE_DETAIL =
+  'No time limit; a clock records your time. Answers stay hidden unless you choose Show Answer, and results come at the end.';
+
 function getSearchMode(value: string): 'text' | 'exact' | 'range' {
   const text = value.trim();
   if (/\.s\d+\.q\d+/i.test(text)) return 'exact';
@@ -150,6 +159,7 @@ interface QuestionRow extends LRQuestion {
 
 export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPickerProps) {
   const { user } = useAuth();
+  const userId = user?.id;
   const { toast } = useToast();
   
   // Filter state
@@ -174,10 +184,15 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   const [setSize, setSetSize] = useState<number>(manifest.totalQuestions >= 10 ? 10 : 5);
   const setSizeOptions = [5, 10, 15, 25];
 
-  // Materialized preview of a generated set (exact qids that would launch).
-  // null = no active preview.
-  const [previewedQids, setPreviewedQids] = useState<string[] | null>(null);
+  // Materialized preview of a generated set (exact qids that would launch),
+  // stamped with the composition it was drawn from. It is the active preview
+  // only while that composition is unchanged, so a stale preview can never
+  // launch even in the render before an effect would have cleared it.
+  const [previewSnapshot, setPreviewSnapshot] = useState<{ key: string; qids: string[] } | null>(null);
   const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
+  /* Set synchronously on launch: a double click lands before the parent
+     navigates away, and each call would start its own run. */
+  const launchingRef = useRef(false);
 
   // Drawer state — single qid open at a time
   const [drawerQid, setDrawerQid] = useState<string | null>(null);
@@ -328,14 +343,18 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   
   // Load attempt counts
   useEffect(() => {
+    // Counts belong to one account. A late reply for a previous account must
+    // not paint its history onto the next one's table.
+    let cancelled = false;
+    setAttemptCounts(new Map());
     async function loadAttempts() {
-      if (!user) return;
+      if (!userId) return;
       
       try {
         const { data: student } = await supabase
           .from('students')
           .select('class_id')
-          .eq('user_id', user.id)
+          .eq('user_id', userId)
           .maybeSingle();
         
         if (!student?.class_id) return;
@@ -345,7 +364,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           .select('qid')
           .eq('class_id', student.class_id);
         
-        if (attempts) {
+        if (attempts && !cancelled) {
           const counts = new Map<string, number>();
           attempts.forEach(a => {
             counts.set(a.qid, (counts.get(a.qid) || 0) + 1);
@@ -358,7 +377,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     }
     
     loadAttempts();
-  }, [user]);
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
   
   // Filter and paginate questions
   const filteredQuestions = useMemo(() => filterLRQuestions(allQuestions, filters), [allQuestions, filters]);
@@ -466,6 +488,12 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     discoverySearch.trim() !== '' ||
     filters.questionNumbers.length > 0;
 
+  // Everything that decides which questions a preview may contain. Search is
+  // discovery only and is deliberately absent.
+  const compositionKey = JSON.stringify({ filters, setSize, picks: Array.from(selectedQids) });
+  const previewedQids = previewSnapshot?.key === compositionKey ? previewSnapshot.qids : null;
+  const previewIsStale = previewSnapshot !== null && previewedQids === null;
+
   // Materialize exact picks plus the remaining places from the filtered pool.
   const handleGeneratePreview = () => {
     const sample = composeLRDrillSet(
@@ -483,25 +511,33 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       });
       return;
     }
-    setPreviewedQids(sample.map((q) => q.qid));
+    launchingRef.current = false;
+    setPreviewSnapshot({ key: compositionKey, qids: sample.map((q) => q.qid) });
   };
 
   // Convert the current preview into an editable selection (qids land in selectedQids)
   const handleEditPreview = () => {
     if (!previewedQids || previewedQids.length === 0) return;
     setSelectedQids(new Set(previewedQids));
-    setPreviewedQids(null);
+    setPreviewSnapshot(null);
   };
 
   // The displayed preview is the launch contract. A filter or selection change
   // invalidates it, so nothing can silently resample after review.
   const handleLaunch = () => {
+    if (launchingRef.current) return;
     const previewQuestions = previewedQids?.map((qid) => questionBank.getQuestion(qid)) ?? [];
-    if (!canGenerate || previewQuestions.length !== setSize || previewQuestions.some((question) => !question)) {
+    if (
+      !canGenerate ||
+      previewQuestions.length !== setSize ||
+      previewQuestions.some((question) => !question) ||
+      new Set(previewedQids).size !== previewQuestions.length
+    ) {
       toast({ title: 'Preview the set first', description: 'Create a set preview before starting.', variant: 'destructive' });
       return;
     }
     const questionsToUse = previewQuestions as LRQuestion[];
+    launchingRef.current = true;
     
     const qtypes = Array.from(new Set(questionsToUse.map(q => q.qtype)));
     const difficulties = Array.from(new Set(questionsToUse.map(q => q.difficulty)));
@@ -535,11 +571,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     onStartDrill(config);
   };
   
-  // Invalidate preview when filters, size, or selection change
+  // A changed composition closes the inspect dialog; the stale preview itself
+  // is already inactive through `compositionKey`, and says so in the summary.
   useEffect(() => {
-    setPreviewedQids(null);
     setPreviewDialogOpen(false);
-  }, [filters, setSize, selectedQids]);
+  }, [compositionKey]);
 
   // Reset reveal toggle whenever a different drawer opens
   useEffect(() => {
@@ -1438,6 +1474,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     {availability.availableCount} available from filters for {remainingPlaces} remaining {remainingPlaces === 1 ? 'place' : 'places'}.
                     {selectedOutsideFilters > 0 && ` ${selectedOutsideFilters} chosen ${selectedOutsideFilters === 1 ? 'question stays' : 'questions stay'} in the set outside these filters.`}
                   </div>
+                  {previewIsStale && (
+                    <p className="text-xs text-foreground" role="status">
+                      Your set changed, so the earlier preview was cleared. Create a new preview to see the exact questions.
+                    </p>
+                  )}
 
                   {/* Tier 2: type + difficulty */}
                   <div className="space-y-2 text-xs">
@@ -1498,6 +1539,11 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   </Button>
                 </div>
               )}
+
+              <div className="pt-2 border-t space-y-1" data-testid="lr-set-mode">
+                <div className="text-xs font-semibold text-foreground">{LR_SET_MODE_LABEL}</div>
+                <p className="text-xs text-muted-foreground">{LR_SET_MODE_DETAIL}</p>
+              </div>
 
               <div className="pt-2 border-t space-y-2">
                 <div className="flex items-center justify-between gap-2">
@@ -1611,6 +1657,16 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             {availability.availableCount} available from filters for {remainingPlaces} remaining {remainingPlaces === 1 ? 'place' : 'places'}.
             {selectedOutsideFilters > 0 && ` ${selectedOutsideFilters} chosen ${selectedOutsideFilters === 1 ? 'question stays' : 'questions stay'} outside the filters.`}
           </p>
+          {previewIsStale && (
+            <p className="text-xs text-foreground" role="status">
+              Your set changed, so the earlier preview was cleared. Create a new preview.
+            </p>
+          )}
+          {hasPreview && (
+            <p className="text-xs text-muted-foreground">
+              <span className="font-semibold text-foreground">{LR_SET_MODE_LABEL}.</span> No time limit; answers stay hidden unless you choose Show Answer.
+            </p>
+          )}
           {hasPreview ? (
             <div className="space-y-2">
               <Button type="button" variant="outline" onClick={() => setPreviewDialogOpen(true)} className="w-full">
@@ -1751,14 +1807,20 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       </Sheet>
 
       <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
-        <DialogContent className="drill-observatory-launcher-panel max-w-3xl max-h-[85vh] overflow-hidden flex flex-col [&>button]:right-1 [&>button]:top-1 [&>button]:flex [&>button]:h-11 [&>button]:w-11 [&>button]:items-center [&>button]:justify-center">
+        <DialogContent className="drill-observatory-launcher-panel max-w-3xl max-h-[85vh] overflow-y-auto flex flex-col [&>button]:right-1 [&>button]:top-1 [&>button]:flex [&>button]:h-11 [&>button]:w-11 [&>button]:items-center [&>button]:justify-center">
           <DialogHeader>
             <DialogTitle>Your set: {previewedQids?.length ?? 0} questions</DialogTitle>
             <DialogDescription>
               These are the exact questions that will appear when you start this drill. Chosen questions are guaranteed; the other places come from your filters. Inspecting does not record practice.
+              <span className="mt-2 block"><span className="font-semibold text-foreground">{LR_SET_MODE_LABEL}.</span> {LR_SET_MODE_DETAIL}</span>
             </DialogDescription>
           </DialogHeader>
-          <LrQuestionInspectList qids={previewedQids ?? []} chosenQids={selectedQids} />
+          {/* The list keeps a floor so large text or a short screen cannot
+              squeeze it to nothing behind the header and footer; past that
+              floor the dialog itself scrolls. */}
+          <div className="flex min-h-[10rem] flex-1 flex-col">
+            <LrQuestionInspectList qids={previewedQids ?? []} chosenQids={selectedQids} />
+          </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setPreviewDialogOpen(false)}>Back to setup</Button>
             <Button type="button" onClick={handleLaunch}>Start this drill ({previewedQids?.length ?? 0})</Button>

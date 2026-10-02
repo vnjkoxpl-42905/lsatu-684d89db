@@ -31,11 +31,16 @@ import {
   type RcRevealMode,
   type RcPassage,
 } from '../lib/rcTypes';
+import {
+  formatPace,
+  parseCustomPace,
+  plural,
+  summarizeRcBuild,
+} from '../lib/rcBuilderSummary';
 import '../rc.css';
 import { canonicalRcSection, manualSectionsEnabled, newManualSectionHref, timedSectionResumeHref } from '@/lib/timedSectionAdoption';
 
-const mmss = (seconds: number) =>
-  `${Math.floor(seconds / 60)}:${String(Math.round(seconds % 60)).padStart(2, '0')}`;
+const mmss = formatPace;
 
 const REVEAL_OPTIONS: { id: RcRevealMode; label: string; caption: string }[] = [
   {
@@ -110,11 +115,17 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
     new Map(),
   );
   const [loadError, setLoadError] = React.useState<string | null>(null);
+  const [historyError, setHistoryError] = React.useState(false);
+  const [indexStatus, setIndexStatus] = React.useState<'loading' | 'ready' | 'failed'>('loading');
+  const [loadAttempt, retryLoad] = React.useReducer((n: number) => n + 1, 0);
   const [notice, setNotice] = React.useState<string | null>(null);
 
   const [count, setCount] = React.useState(1);
   const [timing, setTiming] = React.useState<'untimed' | 'standard' | 'custom'>('untimed');
   const [customSeconds, setCustomSeconds] = React.useState(RC_STANDARD_SECONDS_PER_PASSAGE);
+  /* The custom field is controlled text so an invalid entry stays on screen,
+     explained, instead of being dropped on blur while the old value launches. */
+  const [customText, setCustomText] = React.useState(() => mmss(RC_STANDARD_SECONDS_PER_PASSAGE));
   const [reveal, setReveal] = React.useState<RcRevealMode>('per_passage');
   const [filters, setFilters] = React.useState<RcSelectionFilters>(DEFAULT_FILTERS);
   const [customizeOpen, setCustomizeOpen] = React.useState(false);
@@ -130,30 +141,60 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
     passages: RcPassage[];
   } | null>(null);
   const inspectRequest = React.useRef(0);
+  /* Synchronous: a second click lands before React re-renders the disabled
+     button, and two Starts would create two sessions for one drill. */
+  const startingRef = React.useRef(false);
+  /**
+   * A Start whose create call failed without saying whether the row landed.
+   * The next Start reads the account's sessions first, so one click can never
+   * become two drills.
+   */
+  const uncertainStart = React.useRef<{ ids: number[]; since: number } | null>(null);
+  /** The inspected-set key whose smaller-than-requested size was accepted. */
+  const [acceptedShortfall, setAcceptedShortfall] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     let cancelled = false;
+    setLoadError(null);
+    setHistoryError(false);
+    setIndexStatus('loading');
     (async () => {
       try {
         const all = await loadAllIndexPassages();
-        if (!cancelled) setPassages(all as RcIndexPassageWithPt[]);
-      } catch {
-        if (!cancelled) setLoadError('The passage list could not be loaded.');
-      }
-      try {
-        /* Question history drives the adaptive filters and is always needed.
-           The session list is only for the history block, which the embedded
-           builder does not draw — and the RC practice bay mounts
-           RcSessionHistory for it anyway, so loading it here would fetch the
-           same rows twice plus one attempts query per completed drill. */
-        const [h, s] = await Promise.all([
-          getQuestionHistory(),
-          showHistory ? listSessions() : Promise.resolve([] as RcDrillSession[]),
-        ]);
         if (!cancelled) {
-          setHistory(h);
-          setSessions(s);
+          setPassages(all as RcIndexPassageWithPt[]);
+          setIndexStatus('ready');
         }
+      } catch {
+        // A retry that fails keeps whatever list an earlier read produced, so
+        // hand-picks stay editable; only a first failure leaves it empty.
+        if (!cancelled) {
+          setLoadError('The passage list could not be loaded.');
+          setIndexStatus('failed');
+        }
+      }
+      /* Question history drives the adaptive filters and is always needed.
+         The session list is only for the history block, which the embedded
+         builder does not draw — and the RC practice bay mounts
+         RcSessionHistory for it anyway, so loading it here would fetch the
+         same rows twice plus one attempts query per completed drill. */
+      const [historyRead, sessionsRead] = await Promise.allSettled([
+        getQuestionHistory(),
+        showHistory ? listSessions() : Promise.resolve([] as RcDrillSession[]),
+      ]);
+      if (cancelled) return;
+      if (historyRead.status === 'fulfilled') {
+        setHistory(historyRead.value);
+      } else {
+        /* A student with no history gets an empty map, not a throw, so a
+           throw is a failed read. Fresh and Incorrect would silently treat
+           every passage as unseen; say so instead. */
+        setHistoryError(true);
+      }
+      if (sessionsRead.status !== 'fulfilled') return;
+      const s = sessionsRead.value;
+      setSessions(s);
+      try {
         // Scores for the completed drills, counting first attempts only so the
         // history row and the results page can never disagree.
         const done = showHistory ? s.filter((x) => x.status === 'completed') : [];
@@ -168,13 +209,14 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
         );
         if (!cancelled) setScores(new Map(pairs));
       } catch {
-        // A student with no history yet is the normal first-run case.
+        // Scores are decoration on the history rows; the rows still render.
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadAttempt]);
 
   /* --------------------------------------------------- assignment deep link */
 
@@ -209,6 +251,7 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
     if (Number.isFinite(secondsParam) && secondsParam >= 60 && secondsParam <= 3600) {
       setTiming('custom');
       setCustomSeconds(Math.round(secondsParam));
+      setCustomText(mmss(Math.round(secondsParam)));
     } else {
       setTiming(timingParam === 'standard' ? 'standard' : 'untimed');
     }
@@ -273,12 +316,18 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
 
   const drillablePassages = passages.filter((p) => p.questionCount > 0);
 
+  const customPace = parseCustomPace(customText);
+  const customPaceError = timing === 'custom' && 'message' in customPace ? customPace.message : null;
+  const customInvalid = customPaceError !== null;
   const secondsPerPassage =
     timing === 'standard'
       ? RC_STANDARD_SECONDS_PER_PASSAGE
       : timing === 'custom'
         ? customSeconds
         : 0;
+  /* Inspect and Start both act on what is on screen. They wait for a passage
+     list that loaded on this attempt and a custom pace that parses. */
+  const builderReady = indexStatus === 'ready' && !customInvalid;
 
   const ptRun = params.get('ptRun');
   const ptLeg = params.get('ptLeg');
@@ -298,15 +347,33 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
 
   // A change to any launch setting makes an inspected set stale. The same IDs
   // are used for both the read-only inspection and the eventual session.
-  const selectionKey = JSON.stringify({ count, timing, customSeconds, reveal, filters, handPicked, query: params.toString() });
+  const selectionKey = JSON.stringify({ count, timing, customSeconds, customInvalid, reveal, filters, handPicked, query: params.toString() });
   const selectionKeyRef = React.useRef(selectionKey);
   selectionKeyRef.current = selectionKey;
   const activeSet = selectedSet?.key === selectionKey ? selectedSet : null;
+  /** An inspected set that a later change made stale, so the student is told. */
+  const staleSet = selectedSet !== null && activeSet === null;
+
+  const summary = summarizeRcBuild({
+    requestedPassages: count,
+    handPickedIds: handPicked,
+    poolPassages: preview.poolSize,
+    inspected: activeSet
+      ? { passageIds: activeSet.ids, questionCounts: activeSet.passages.map((p) => p.questions.length) }
+      : null,
+    secondsPerPassage,
+  });
+  const activeSetKey = activeSet ? activeSet.key + '|' + activeSet.ids.join(',') : null;
+  const shortfallAccepted = activeSetKey !== null && acceptedShortfall === activeSetKey;
+  const needsShortfallAck = activeSet !== null && summary.shortfall > 0 && !shortfallAccepted;
+  const canStart = activeSet !== null && builderReady && !needsShortfallAck;
 
   const inspectSet = async () => {
+    if (!builderReady) return;
     const request = ++inspectRequest.current;
     const key = selectionKey;
     setSelectedSet(null);
+    setAcceptedShortfall(null);
     setInspecting(true);
     setNotice(null);
     try {
@@ -330,6 +397,12 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
         setNotice('Some passages could not be loaded. Try inspecting the set again.');
         return;
       }
+      // A passage that loads without questions would start as an empty
+      // reading set, so it cannot pass inspection either.
+      if (full.some((passage) => passage.questions.length === 0)) {
+        setNotice('A passage in this set loaded without its questions. Choose another set.');
+        return;
+      }
       setSelectedSet({ key, ids, passages: full });
     } catch {
       if (request === inspectRequest.current && key === selectionKeyRef.current) {
@@ -347,6 +420,12 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
    * SECOND session. Replacing the entry takes that URL off the stack.
    */
   const start = async (options?: { replace?: boolean }) => {
+    if (startingRef.current) return;
+    if (!options?.replace && !canStart) {
+      setNotice(activeSet ? 'Confirm the set below before starting it.' : 'Inspect a set before starting it.');
+      return;
+    }
+    startingRef.current = true;
     setStarting(true);
     try {
       const chosen = options?.replace
@@ -362,14 +441,9 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
             }).selected.map((p) => p.passageId)
         : activeSet?.ids ?? [];
 
-      if (!options?.replace && !activeSet) {
-        setNotice('Inspect a set before starting it.');
-        setStarting(false);
-        return;
-      }
-
       if (chosen.length === 0) {
         setNotice('No passages match those filters. Loosen one and try again.');
+        startingRef.current = false;
         setStarting(false);
         return;
       }
@@ -381,23 +455,83 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
         navigate(newManualSectionHref('rc', canonical.pt, canonical.section, protectedPace), { replace: options?.replace });
         return;
       }
-      const session = await createSession(config, chosen);
-      // A link that said where to go afterwards keeps saying it: the practice
-      // test hands off its RC leg this way and needs the student back.
-      const back = safeReturnTo(params.get('returnTo'));
-      const testLeg = config.practiceTestRunId && config.practiceTestLegIndex !== undefined
-        ? '&ptRun=' + encodeURIComponent(config.practiceTestRunId) +
-          '&ptLeg=' + encodeURIComponent(String(config.practiceTestLegIndex))
-        : '';
-      navigate(
-        '/rc/drill?sessionId=' + session.id + testLeg +
-          (back ? '&returnTo=' + encodeURIComponent(back) : ''),
-        { replace: options?.replace },
-      );
+      const pending = uncertainStart.current;
+      if (pending && pending.ids.join(',') === chosen.join(',')) {
+        const recovered = await findStartedSession(chosen, pending.since);
+        if (recovered === 'unknown') {
+          setNotice('We still cannot confirm whether this drill was created. Check your connection and press Start again.');
+          startingRef.current = false;
+          setStarting(false);
+          return;
+        }
+        uncertainStart.current = null;
+        if (recovered) {
+          openSession(recovered.id, options?.replace);
+          return;
+        }
+      }
+      const since = Date.now();
+      let session: RcDrillSession;
+      try {
+        session = await createSession(config, chosen);
+      } catch (err) {
+        const recovered = await findStartedSession(chosen, since);
+        if (recovered && recovered !== 'unknown') {
+          openSession(recovered.id, options?.replace);
+          return;
+        }
+        if (recovered === 'unknown') {
+          uncertainStart.current = { ids: [...chosen], since };
+          const reason = err instanceof Error && err.message ? err.message + ' ' : '';
+          throw new Error(reason + 'We could not confirm whether the drill was created. Press Start again and we will check before making a new one.');
+        }
+        throw err;
+      }
+      openSession(session.id, options?.replace);
     } catch (err) {
       setNotice(err instanceof Error ? err.message : 'The drill could not be started.');
+      startingRef.current = false;
       setStarting(false);
     }
+  };
+
+  /**
+   * Reads back an in-progress session for exactly these passages that started
+   * at or after this click (with two minutes for clock skew). `null` means the
+   * read worked and found none; `'unknown'` means the read itself failed.
+   */
+  const findStartedSession = async (
+    ids: number[],
+    since: number,
+  ): Promise<RcDrillSession | null | 'unknown'> => {
+    try {
+      const rows = await listSessions();
+      return rows.find((row) =>
+        row.status === 'in_progress' &&
+        row.passageIds.join(',') === ids.join(',') &&
+        row.config.reveal === config.reveal &&
+        (row.config.practiceTestRunId ?? null) === (config.practiceTestRunId ?? null) &&
+        JSON.stringify(row.config.timing) === JSON.stringify(config.timing) &&
+        Date.parse(row.startedAt) >= since - 120_000,
+      ) ?? null;
+    } catch {
+      return 'unknown';
+    }
+  };
+
+  const openSession = (sessionId: string, replace?: boolean) => {
+    // A link that said where to go afterwards keeps saying it: the practice
+    // test hands off its RC leg this way and needs the student back.
+    const back = safeReturnTo(params.get('returnTo'));
+    const testLeg = config.practiceTestRunId && config.practiceTestLegIndex !== undefined
+      ? '&ptRun=' + encodeURIComponent(config.practiceTestRunId) +
+        '&ptLeg=' + encodeURIComponent(String(config.practiceTestLegIndex))
+      : '';
+    navigate(
+      '/rc/drill?sessionId=' + sessionId + testLeg +
+        (back ? '&returnTo=' + encodeURIComponent(back) : ''),
+      { replace },
+    );
   };
 
   // Runs a tick after the link has been applied, so it starts on the count and
@@ -485,8 +619,31 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
         </div>
       )}
 
-      {loadError && <p className="rc-page-sub">{loadError}</p>}
-      {notice && <p className="rc-page-sub">{notice}</p>}
+      {loadError && (
+        <div className="rc-builder-alert" role="alert">
+          <span>
+            {loadError}{' '}
+            {passages.length > 0
+              ? 'Your choices are kept, but Inspect and Start wait until it loads.'
+              : 'No passage counts are shown until it loads.'}
+          </span>
+          <button type="button" className="rc-chip" onClick={retryLoad} disabled={indexStatus === 'loading'}>
+            {indexStatus === 'loading' ? 'Retrying…' : 'Retry'}
+          </button>
+        </div>
+      )}
+      {historyError && !loadError && (
+        <div className="rc-builder-alert" role="status">
+          <span>
+            Your answer history could not be loaded, so the Fresh and Incorrect filters cannot tell
+            which passages you have already done.
+          </span>
+          <button type="button" className="rc-chip" onClick={retryLoad} disabled={indexStatus === 'loading'}>
+            Retry
+          </button>
+        </div>
+      )}
+      {notice && <p className="rc-page-sub" role="status">{notice}</p>}
 
       {/* ------------------------------------------------------- build card */}
       <div className="rc-card">
@@ -496,15 +653,30 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
         {!embedded && <h2>Build a drill</h2>}
 
         <div className="rc-field">
-          <div className="rc-field-label">Passages</div>
-          <div className="rc-stepper">
-            <button type="button" aria-label="Fewer passages" onClick={() => setCount((c) => Math.max(1, c - 1))}>
+          <div className="rc-field-label" id="rc-passage-count-label">Passages</div>
+          <div className="rc-stepper" role="group" aria-labelledby="rc-passage-count-label">
+            <button
+              type="button"
+              aria-label="Fewer passages"
+              disabled={handPicked.length > 0}
+              onClick={() => setCount((c) => Math.max(1, c - 1))}
+            >
               −
             </button>
-            <span className="rc-stepper-value">{count}</span>
-            <button type="button" aria-label="More passages" onClick={() => setCount((c) => Math.min(8, c + 1))}>
+            <span className="rc-stepper-value">{handPicked.length > 0 ? handPicked.length : count}</span>
+            <button
+              type="button"
+              aria-label="More passages"
+              disabled={handPicked.length > 0}
+              onClick={() => setCount((c) => Math.min(8, c + 1))}
+            >
               +
             </button>
+          </div>
+          <div className="rc-field-hint">
+            {handPicked.length > 0
+              ? `Using your ${plural(handPicked.length, 'hand-picked passage')}. Clear them to choose a count instead.`
+              : 'Size is counted in passages. Each passage comes with all of its questions.'}
           </div>
         </div>
 
@@ -536,19 +708,34 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
             {timing === 'custom' && (
               <input
                 type="text"
+                inputMode="numeric"
                 aria-label="Minutes and seconds per passage"
-                className="rc-segment"
-                defaultValue={mmss(customSeconds)}
-                onBlur={(e) => {
-                  const [m, s] = e.target.value.split(':').map((n) => Number(n));
-                  if (Number.isFinite(m)) setCustomSeconds(m * 60 + (Number.isFinite(s) ? s : 0));
+                aria-invalid={customInvalid}
+                aria-describedby={customInvalid ? 'rc-custom-pace-error' : undefined}
+                className={`rc-segment${customInvalid ? ' rc-input-invalid' : ''}`}
+                value={customText}
+                onChange={(e) => {
+                  setCustomText(e.target.value);
+                  const parsed = parseCustomPace(e.target.value);
+                  if (parsed.ok) setCustomSeconds(parsed.seconds);
+                }}
+                onBlur={() => {
+                  // Same normalised m:ss the link parameter produces.
+                  if ('seconds' in customPace) setCustomText(mmss(customPace.seconds));
                 }}
               />
             )}
           </div>
-          {timing !== 'untimed' && (
+          {customPaceError && (
+            <div className="rc-field-error" id="rc-custom-pace-error" role="alert">
+              {customPaceError} Inspect and Start wait for a valid time.
+            </div>
+          )}
+          {timing !== 'untimed' && !customInvalid && (
             <div className="rc-field-hint">
-              ≈ {mmss(secondsPerPassage * count)} for {count} passage{count === 1 ? '' : 's'}
+              {mmss(secondsPerPassage)} per passage · {summary.totalSeconds !== null && summary.plannedPassages > 0
+                ? `${mmss(summary.totalSeconds)} for ${plural(summary.plannedPassages, 'passage')}`
+                : 'no passages to time yet'}
             </div>
           )}
         </div>
@@ -572,10 +759,18 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
 
         <div className="rc-field">
           <div className="rc-field-label">
-            Choosing from {preview.poolSize} of {drillablePassages.length} passages
+            {indexStatus === 'ready' || passages.length > 0
+              ? `Choosing from ${preview.poolSize} of ${drillablePassages.length} passages`
+              : indexStatus === 'loading'
+                ? 'Loading passages…'
+                : 'Passage list unavailable'}
           </div>
-          <div className="rc-field-hint">{RC_ADAPTIVE_LABEL}</div>
-          {preview.shortfallMessage && (
+          <div className="rc-field-hint">
+            {handPicked.length > 0
+              ? 'Hand-picked passages replace the count and filters. They are not topped up from the pool.'
+              : RC_ADAPTIVE_LABEL}
+          </div>
+          {handPicked.length === 0 && preview.shortfallMessage && passages.length > 0 && (
             <div className="rc-field-hint">{preview.shortfallMessage}</div>
           )}
           <div className="rc-chip-row" style={{ marginTop: 10 }}>
@@ -667,16 +862,98 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
           </div>
         )}
 
+        <section className="rc-launch-summary" aria-label="Launch summary">
+          <dl>
+            <div>
+              <dt>Requested</dt>
+              <dd>
+                {summary.source === 'hand-picked'
+                  ? plural(summary.requestedPassages, 'hand-picked passage')
+                  : plural(summary.requestedPassages, 'passage')}
+              </dd>
+            </div>
+            <div>
+              <dt>Available</dt>
+              <dd>
+                {summary.source === 'hand-picked'
+                  ? 'The pool is not used for hand-picked passages'
+                  : indexStatus === 'ready' || passages.length > 0
+                    ? `${plural(summary.poolPassages, 'passage')} match your filters`
+                    : 'Not known until the passage list loads'}
+              </dd>
+            </div>
+            <div>
+              <dt>This drill</dt>
+              <dd>
+                {activeSet && summary.inspectedQuestions !== null
+                  ? `${plural(summary.plannedPassages, 'passage')} · ${plural(summary.inspectedQuestions, 'question')}`
+                  : 'Inspect the set to see its exact passages and question count'}
+              </dd>
+            </div>
+            <div>
+              <dt>Timing</dt>
+              <dd>
+                {timing === 'untimed'
+                  ? 'Untimed practice, no time limit'
+                  : customInvalid
+                    ? 'Waiting for a valid custom time'
+                    : `Timed, ${mmss(secondsPerPassage)} per passage` +
+                      (summary.totalSeconds !== null && summary.plannedPassages > 0
+                        ? ` (${mmss(summary.totalSeconds)} in all)`
+                        : '')}
+              </dd>
+            </div>
+            <div>
+              <dt>Answers</dt>
+              <dd>
+                {REVEAL_OPTIONS.find((o) => o.id === reveal)?.label}.{' '}
+                {REVEAL_OPTIONS.find((o) => o.id === reveal)?.caption}.
+              </dd>
+            </div>
+          </dl>
+          {staleSet && (
+            <p className="rc-field-hint" role="status">
+              Your settings changed, so the inspected set was cleared. Inspect again to see the exact set.
+            </p>
+          )}
+          {activeSet && summary.shortfall > 0 && (
+            <label className="rc-shortfall">
+              <input
+                type="checkbox"
+                checked={shortfallAccepted}
+                onChange={(e) => setAcceptedShortfall(e.target.checked ? activeSetKey : null)}
+              />
+              <span>
+                Only {plural(summary.plannedPassages, 'passage')} of the {summary.requestedPassages} you asked
+                for match these filters. Start with {plural(summary.plannedPassages, 'passage')}.
+              </span>
+            </label>
+          )}
+          <p className="rc-field-hint">
+            Inspect set shows passages and questions without answers and records nothing. Start this
+            drill begins a saved, scored drill.
+          </p>
+        </section>
+
         <div className="rc-actions" style={{ flexWrap: 'wrap' }}>
           <button
             type="button"
             className="rc-button rc-button-primary"
-            disabled={starting || inspecting || (activeSet === null && passages.length === 0)}
+            disabled={starting || inspecting || !builderReady || (activeSet !== null && needsShortfallAck)}
             onClick={() => void (activeSet ? start() : inspectSet())}
           >
             {starting ? 'Starting…' : inspecting ? 'Loading set…' : activeSet ? 'Start this drill' : 'Inspect set'}
           </button>
-          {activeSet && <button type="button" className="rc-button" onClick={() => void inspectSet()}>Choose another set</button>}
+          {activeSet && (
+            <button
+              type="button"
+              className="rc-button"
+              disabled={starting || inspecting || !builderReady}
+              onClick={() => void inspectSet()}
+            >
+              Choose another set
+            </button>
+          )}
         </div>
       </div>
 
@@ -786,7 +1063,7 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
             <button
               type="button"
               className="rc-button rc-button-primary"
-              disabled={handPicked.length === 0 || starting || inspecting}
+              disabled={handPicked.length === 0 || starting || inspecting || !builderReady}
               onClick={() => void (activeSet ? start() : inspectSet())}
             >
               {activeSet ? 'Start this drill' : 'Inspect set'}
