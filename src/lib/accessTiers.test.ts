@@ -1,13 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { CONFIGURABLE_FLAG_KEYS, FLOOR_FLAG_KEYS, tierFlags, type ManagedUser } from '@/lib/adminUsers';
+import { CONFIGURABLE_FLAG_KEYS, FLOOR_FLAG_KEYS, tierFlags, withDerivedAccess, type ManagedUser } from '@/lib/adminUsers';
 import { signupQueueRows } from '@/components/teacher/SignupQueue';
 import { drillAuthorisation, isActivePracticeTestLrLeg, isActivePracticeTestRcLeg } from '@/components/AssignmentGate';
 
 describe('tierFlags', () => {
-  it('Tier 1 turns all twelve switches on', () => {
+  it('Tier 1 opens all five independent doors and their review bundle', () => {
     const flags = tierFlags('tier_1')!;
-    expect(Object.keys(flags)).toHaveLength(12);
-    expect(Object.values(flags).every(Boolean)).toBe(true);
+    expect(CONFIGURABLE_FLAG_KEYS).toHaveLength(5);
+    expect(CONFIGURABLE_FLAG_KEYS.every((key) => flags[key])).toBe(true);
+    expect(flags).toMatchObject({ has_journal_access: true, has_flagged_access: true, has_analytics_access: true,
+      has_activity_access: false, has_bootcamp_access: false, has_ta_access: false, has_export_access: false });
   });
 
   it('Tier 3 keeps only the floor', () => {
@@ -17,14 +19,24 @@ describe('tierFlags', () => {
     }
   });
 
-  it('Tier 2 writes nothing', () => {
-    expect(tierFlags('tier_2')).toBeNull();
+  it('Tier 2 resets independent practice and keeps classroom communication', () => {
+    expect(tierFlags('tier_2')).toMatchObject({ has_drill_access: false, has_practice_access: false,
+      has_classroom_access: true, has_chat_access: true, has_schedule_access: true, has_analytics_access: false });
   });
 
   it('the retired Wrong answer journal switch is not one of the twelve', () => {
     expect(CONFIGURABLE_FLAG_KEYS).not.toContain('has_waj_access');
-    expect(CONFIGURABLE_FLAG_KEYS).toHaveLength(12);
+    expect(CONFIGURABLE_FLAG_KEYS).toHaveLength(5);
   });
+  it.each([[false, false, false], [true, false, true], [false, true, true], [true, true, true]])(
+    'review is derived from Drill=%s OR Practice tests=%s', (drill, tests, review) => {
+      const flags = withDerivedAccess({ has_drill_access: drill, has_practice_access: tests,
+        has_journal_access: !review, has_activity_access: true });
+      expect(flags.has_journal_access).toBe(review);
+      expect(flags.has_flagged_access).toBe(review);
+      expect(flags.has_analytics_access).toBe(review);
+      expect(flags.has_activity_access).toBe(false);
+    });
 });
 
 describe('assigned PrepTest LR leg gate', () => {

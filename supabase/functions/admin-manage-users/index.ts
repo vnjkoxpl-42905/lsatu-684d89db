@@ -26,7 +26,7 @@ const TIER_FLAGS = [
   "has_schedule_access",
   "has_ta_access",
 ];
-const FLOOR_FLAGS = ["has_classroom_access", "has_chat_access", "has_schedule_access"];
+const FLOOR_FLAGS = ["has_chat_access", "has_schedule_access"];
 const TIERS = ["tier_1", "tier_2", "tier_3"];
 
 const ALL_FLAGS = [
@@ -285,9 +285,7 @@ Deno.serve(async (req) => {
         };
         if (lock) {
           for (const flag of ALL_FLAGS) updates[flag] = false;
-          // The three a locked account still needs: somewhere to stand, a way
-          // to reach Joshua, and a way to book.
-          updates.has_classroom_access = true;
+          // Communication and booking remain open on an undecided account.
           updates.has_chat_access = true;
           updates.has_schedule_access = true;
           updates.access_tier = null;
@@ -316,11 +314,13 @@ Deno.serve(async (req) => {
           return jsonRes({ error: "Invalid params" }, 400);
         }
         const updates: Record<string, unknown> = { access_tier: tier };
-        if (tier !== "tier_2") {
-          for (const flag of TIER_FLAGS) {
-            updates[flag] = tier === "tier_1" || FLOOR_FLAGS.includes(flag);
-          }
-          updates.has_waj_access = false;
+        for (const flag of ALL_FLAGS) updates[flag] = false;
+        for (const flag of ["has_drill_access", "has_practice_access", "has_classroom_access", ...FLOOR_FLAGS]) {
+          updates[flag] = tier === "tier_1" || FLOOR_FLAGS.includes(flag) ||
+            (tier === "tier_2" && flag === "has_classroom_access");
+        }
+        for (const flag of ["has_journal_access", "has_flagged_access", "has_analytics_access"]) {
+          updates[flag] = tier === "tier_1";
         }
         const { data: updated, error } = await admin
           .from("profiles")

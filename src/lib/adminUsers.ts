@@ -41,32 +41,13 @@ export interface AdminAnalytics {
   week_attempts: number;
 }
 
-// Every door a student can be given, grouped the way the classroom rail groups
-// them, and labelled in the words the rail uses. This list is the admin UI: a
-// flag that is missing here has no toggle anywhere, which is how
-// `has_journal_access` and `has_activity_access` came to be ungrantable while
-// the rail happily padlocked Wrong answers and Activities against them.
-//
-// Keep it in step with `ALL_FLAGS` in supabase/functions/admin-manage-users.
-// The server writes what it is told; if the client cannot name a flag, no
-// amount of pressing "grant all" will turn it on where Joshua can see it.
+// Five independent doors. Review is derived; activities and bootcamps are assigned.
 export const FLAG_GROUPS = [
   {
     label: 'Practice',
     flags: [
       { key: 'has_drill_access', label: 'Drill' },
       { key: 'has_practice_access', label: 'Practice tests' },
-      { key: 'has_activity_access', label: 'Activities' },
-      { key: 'has_bootcamp_access', label: 'Bootcamps' },
-    ],
-  },
-  {
-    label: 'Review',
-    flags: [
-      { key: 'has_journal_access', label: 'Wrong answers' },
-      { key: 'has_flagged_access', label: 'Flagged questions' },
-      { key: 'has_analytics_access', label: 'Progress and history' },
-      { key: 'has_export_access', label: 'Export' },
     ],
   },
   {
@@ -75,17 +56,12 @@ export const FLAG_GROUPS = [
       { key: 'has_classroom_access', label: 'Classroom' },
       { key: 'has_chat_access', label: 'Messages' },
       { key: 'has_schedule_access', label: 'Schedule and booking' },
-      { key: 'has_ta_access', label: 'TA worksheets' },
     ],
   },
 ] as const;
 
 export const CONFIGURABLE_FLAG_KEYS = FLAG_GROUPS.flatMap((group) => group.flags.map((flag) => flag.key));
-/**
- * What a paying student gets regardless of which template is applied. Templates
- * force these back on after the explicit list, so "Trial" can narrow practice
- * without taking away the room the student stands in.
- */
+/** Legacy stored flags retained for whole-account revocation and analytics. */
 export const DEFAULT_ON_FLAG_KEYS = [
   'has_practice_access',
   'has_bootcamp_access',
@@ -100,7 +76,7 @@ export const DEFAULT_ON_FLAG_KEYS = [
   'has_ta_access',
   'has_activity_access',
 ] as const;
-/** Deduped: every configurable flag is now also a default-on candidate. */
+/** All stored flags, including retired ones, must be cleared on revocation. */
 export const ALL_FLAG_KEYS = [...new Set<string>([...CONFIGURABLE_FLAG_KEYS, ...DEFAULT_ON_FLAG_KEYS])];
 
 export const ALL_FLAG_LABELS: Record<string, string> = {};
@@ -111,8 +87,7 @@ FLAG_GROUPS.forEach((group) => group.flags.forEach((flag) => {
 export function accessTemplate(enabled: string[]): Record<string, boolean> {
   const out: Record<string, boolean> = {};
   for (const key of CONFIGURABLE_FLAG_KEYS) out[key] = enabled.includes(key);
-  for (const key of DEFAULT_ON_FLAG_KEYS) out[key] = true;
-  return out;
+  return withDerivedAccess(out);
 }
 
 export const ROLE_TEMPLATES: { id: string; label: string; description: string; flags: Record<string, boolean> }[] = [
@@ -167,20 +142,18 @@ export function computeAdminAnalytics(users: ManagedUser[], analytics: AdminAnal
 }
 
 // ── Access tiers ────────────────────────────────────────────────────────────
-// A tier is a template: it sets the twelve switches above, and the switches
-// stay what the app checks. The tier column only names the template the
-// switches currently match; the database relabels Tier 1 or Tier 3 as Tier 2
-// the moment a switch moves away from its template.
+// Selecting a tier reapplies its five defaults. Deviations from Tier 1 or
+// Tier 3 become custom Tier 2; derived flags are never independent switches.
 
 export type AccessTier = 'tier_1' | 'tier_2' | 'tier_3';
 
-/** Classroom home, Messages, Schedule: what every account keeps. */
-export const FLOOR_FLAG_KEYS = ['has_classroom_access', 'has_chat_access', 'has_schedule_access'] as const;
+/** The Tier 3 preset. Existing accounts are not bulk migrated. */
+export const FLOOR_FLAG_KEYS = ['has_chat_access', 'has_schedule_access'] as const;
 
 export const ACCESS_TIERS: { id: AccessTier; label: string; description: string }[] = [
-  { id: 'tier_1', label: 'Tier 1', description: 'Everything on.' },
-  { id: 'tier_2', label: 'Tier 2', description: 'You choose each feature.' },
-  { id: 'tier_3', label: 'Tier 3', description: 'Classroom, Messages and Schedule, plus what you assign.' },
+  { id: 'tier_1', label: 'Tier 1', description: 'Drill, Practice tests, Classroom, Messages and Schedule.' },
+  { id: 'tier_2', label: 'Tier 2', description: 'Classroom, Messages and Schedule. Practice only what you assign.' },
+  { id: 'tier_3', label: 'Tier 3', description: 'Messages and Schedule only.' },
 ];
 
 export const TIER_LABELS: Record<AccessTier, string> = {
@@ -189,12 +162,28 @@ export const TIER_LABELS: Record<AccessTier, string> = {
   tier_3: 'Tier 3',
 };
 
-/** The switches a tier writes. Tier 2 writes nothing: it keeps what is there. */
-export function tierFlags(tier: AccessTier): Record<string, boolean> | null {
-  if (tier === 'tier_2') return null;
+/** One authoritative update containing both independent and derived flags. */
+export function tierFlags(tier: AccessTier): Record<string, boolean> {
   const out: Record<string, boolean> = {};
   for (const key of CONFIGURABLE_FLAG_KEYS) {
-    out[key] = tier === 'tier_1' || (FLOOR_FLAG_KEYS as readonly string[]).includes(key);
+    out[key] = tier === 'tier_1' || (FLOOR_FLAG_KEYS as readonly string[]).includes(key) ||
+      (tier === 'tier_2' && key === 'has_classroom_access');
   }
-  return out;
+  return withDerivedAccess(out);
+}
+
+/** Review follows general practice access; assigned work never opens the bank. */
+export function withDerivedAccess(flags: Record<string, boolean>): Record<string, boolean> {
+  const practice = Boolean(flags.has_drill_access || flags.has_practice_access);
+  return {
+    ...flags,
+    has_journal_access: practice,
+    has_flagged_access: practice,
+    has_analytics_access: practice,
+    has_waj_access: false,
+    has_activity_access: false,
+    has_bootcamp_access: false,
+    has_ta_access: false,
+    has_export_access: false,
+  };
 }

@@ -8,7 +8,7 @@ import { M5_CAPSTONE } from '@/bootcamps/main-conclusion/content/m5-capstone.sou
 import type { ReviewEpisode, ReviewEpisodeEvent } from '@/lib/reviewEpisodes';
 
 const fixture = vi.hoisted(() => ({
-  owner: 'student-a', bootcampAccess: true, failedCluster: false, failedCapstone: false,
+  owner: 'student-a', classroomAccess: true, failedCluster: false, failedCapstone: false,
   clusters: {} as Record<string, unknown[]>, capstones: {} as Record<string, unknown[]>,
   reads: [] as { table: string; owner: string }[],
   pendingOwner: null as string | null,
@@ -19,7 +19,7 @@ vi.mock('@/lib/reviewEpisodes', async importOriginal => ({ ...await importOrigin
   if (fixture.episodeFailed) throw new Error('episode read failed'); return fixture.episodeRecords[student] ?? { episodes: [], events: [] };
 } }) }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: fixture.owner } }) }));
-vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: false, is_admin: false, has_bootcamp_access: fixture.bootcampAccess }) }));
+vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: false, is_admin: false, has_classroom_access: fixture.classroomAccess }) }));
 vi.mock('@/hooks/useFlagged', () => ({ useFlagged: () => ({ data: [], isLoading: false, isError: false }) }));
 vi.mock('@/hooks/useJournalEntries', () => ({ useJournalEntries: () => ({ data: [], isLoading: false, isError: false }) }));
 vi.mock('@/components/review/rcReviewSource', () => ({ loadRcReviewQueue: async () => [] }));
@@ -61,7 +61,7 @@ function seed(owner = 'student-a') {
   } }];
 }
 beforeEach(() => {
-  Object.assign(fixture, { owner: 'student-a', bootcampAccess: true, failedCluster: false, failedCapstone: false,
+  Object.assign(fixture, { owner: 'student-a', classroomAccess: true, failedCluster: false, failedCapstone: false,
     clusters: {}, capstones: {}, reads: [], pendingOwner: null, releases: [], episodeRecords: {}, episodeFailed: false });
   seed();
 });
@@ -134,8 +134,8 @@ describe('Hard Sentences in the rendered Review queue', () => {
     expect(screen.queryByRole('link', { name: /student-a/ })).not.toBeInTheDocument();
     expect(fixture.reads.filter(read => read.owner === 'student-b')).toHaveLength(2);
   });
-  it('does not read or show bootcamp misses when that access is locked', async () => {
-    fixture.bootcampAccess = false;
+  it('does not read or show assigned-work misses with Classroom and practice off', async () => {
+    fixture.classroomAccess = false;
     mount();
     expect(await screen.findByText('No saved work here yet')).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /Hard Sentences ·/ })).not.toBeInTheDocument();

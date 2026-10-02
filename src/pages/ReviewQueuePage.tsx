@@ -46,11 +46,13 @@ export default function ReviewQueuePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const canJournal = !permissions.loading && (permissions.is_admin || permissions.has_journal_access);
   const canFlag = !permissions.loading && (permissions.is_admin || permissions.has_flagged_access);
-  const canRc = !permissions.loading && (permissions.is_admin || permissions.has_drill_access);
-  const canActivity = !permissions.loading && (permissions.is_admin || permissions.has_activity_access);
-  const canSection = !permissions.loading && (permissions.is_admin || permissions.has_drill_access);
-  const canPracticeTest = !permissions.loading && !!user;
-  const canIntroLr = !permissions.loading && (permissions.is_admin || permissions.has_bootcamp_access);
+  const canOwnedWork = !permissions.loading && !!user && Boolean(permissions.is_admin ||
+    permissions.has_classroom_access || permissions.has_drill_access || permissions.has_practice_access);
+  const canRc = canOwnedWork;
+  const canActivity = canOwnedWork;
+  const canSection = canOwnedWork;
+  const canPracticeTest = canOwnedWork;
+  const canIntroLr = canOwnedWork;
   const journal = useJournalEntries(canJournal);
   const flagged = useFlagged();
   const rcReview = useQuery({

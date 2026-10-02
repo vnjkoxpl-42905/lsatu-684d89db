@@ -36,6 +36,7 @@ import {
   computeAdminAnalytics,
   isPrimaryAdmin,
   tierFlags,
+  withDerivedAccess,
   type AccessTier,
   type AdminAnalytics,
   type ManagedUser,
@@ -43,7 +44,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { SIGNUP_QUEUE_KEY, SignupQueue, setStudentTier } from '@/components/teacher/SignupQueue';
 import { AssignPracticeTest } from '@/components/teacher/AssignPracticeTest';
-import { withAccessTiers } from '@/lib/accessTierClient';
+import { withAccessTiers, setStudentAccess } from '@/lib/accessTierClient';
 import { formatLastActiveLabel, isUserOnline } from '@/lib/presence';
 import { cn } from '@/lib/utils';
 
@@ -154,30 +155,21 @@ export function DeskPeopleSurface() {
   }, [people, roleFilter, search]);
 
   const toggleAccess = async (classId: string, field: string, value: boolean) => {
-    setUsers((prev) => prev.map((user) => (user.class_id === classId ? { ...user, [field]: value } : user)));
+    const person = users.find((user) => user.class_id === classId);
+    if (!person) return;
+    const flags = withDerivedAccess({ ...Object.fromEntries(CONFIGURABLE_FLAG_KEYS.map((key) => [key, Boolean(person[key])])), [field]: value });
+    setUsers((prev) => prev.map((user) => (user.class_id === classId ? { ...user, ...flags } : user)));
     try {
-      const res = await supabase.functions.invoke('admin-manage-users', {
-        method: 'POST',
-        body: { class_id: classId, field, value },
-      });
-      if (res.error) throw res.error;
-      // Trust the row the server wrote back rather than the optimistic guess,
-      // so a toggle that never landed can't look like it worked.
-      const written = (res.data as { profile?: Record<string, unknown> } | null)?.profile;
-      if (!written || written[field] !== value) throw new Error('Permission was not saved');
-      // One switch off a Tier 1 or Tier 3 template relabels the student Tier 2
-      // in the database. Re-read so the label on screen matches.
+      await setStudentAccess(person, field, value);
       void fetchData();
     } catch (error) {
-      setUsers((prev) => prev.map((user) => (user.class_id === classId ? { ...user, [field]: !value } : user)));
+      setUsers((prev) => prev.map((user) => (user.class_id === classId ? person : user)));
       console.error('toggleAccess failed', { classId, field, value, error });
       toast.error('Failed to update permission');
     }
   };
 
-  // Apply a tier. Tier 1 and Tier 3 rewrite the switches; Tier 2 keeps them
-  // and only changes the label. The server returns the row it wrote, so the
-  // list shows what landed rather than what was hoped for.
+  // Every selection reapplies the preset, including a student's current tier.
   const queryClient = useQueryClient();
   const setTier = async (person: PeopleRow, tier: AccessTier) => {
     const who = person.display_name || person.email;
@@ -215,7 +207,7 @@ export function DeskPeopleSurface() {
     )) return;
 
     const flags: Record<string, boolean> = {};
-    for (const key of ALL_FLAG_KEYS) flags[key] = grant;
+    Object.assign(flags, grant ? tierFlags('tier_1') : Object.fromEntries(ALL_FLAG_KEYS.map((key) => [key, false])));
 
     const previous = users;
     setUsers((prev) => prev.map((user) => (user.class_id === person.class_id ? { ...user, ...flags } : user)));
@@ -821,12 +813,9 @@ function TierBadge({ tier }: { tier: AccessTier | null | undefined }) {
 }
 
 /**
- * The tier picker and, under it, the twelve switches. Picking Tier 1 or Tier 3
- * rewrites the switches to that template; Tier 2 keeps them. Any switch can be
- * flipped at any tier, and flipping one away from a Tier 1 or Tier 3 template
- * makes the student Tier 2: the database relabels, never the reverse.
+ * Five switches with explicit presets and persistent individual overrides.
  */
-function AccessTierControl({
+export function AccessTierControl({
   person,
   toggleAccess,
   setTier,
@@ -838,12 +827,6 @@ function AccessTierControl({
   const who = person.display_name || person.email;
   const current = person.access_tier ?? null;
   const pick = (tier: AccessTier) => {
-    if (tier === current) return;
-    if (tier === 'tier_3' && !window.confirm(
-      `Put ${who} on Tier 3?\n\n` +
-      'They keep Classroom, Messages and Schedule, plus anything you assign. ' +
-      'Every other feature is turned off.',
-    )) return;
     setTier(person, tier);
   };
 
@@ -876,11 +859,16 @@ function AccessTierControl({
       <p className="mt-2 text-xs leading-relaxed text-black/45">
         {current
           ? ACCESS_TIERS.find((t) => t.id === current)?.description
-          : 'No tier yet. They have Classroom, Messages and Schedule until you choose.'}{' '}
+          : 'No tier yet. Choose a preset or set their access below.'}{' '}
         Changes reach an open tab straight away.
       </p>
+      <p className="mt-2 text-xs leading-relaxed text-black/45">
+        Drill or Practice tests includes Wrong answers, Flagged questions, and Progress and history.
+        Activities and Bootcamps open only when assigned. Downloads are included with accessible work.
+        Select a tier again to restore its defaults.
+      </p>
 
-      <div className="mt-3 grid gap-3 sm:grid-cols-3">
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
         {FLAG_GROUPS.map((group) => (
           <fieldset key={group.label} className="min-w-0">
             <legend className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-black/35">

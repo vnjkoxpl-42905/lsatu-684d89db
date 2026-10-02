@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { authUrlWithReturnTo } from "@/lib/authRedirect";
+import { CONFIGURABLE_FLAG_KEYS, withDerivedAccess } from "@/lib/adminUsers";
 
 export interface UserPermissions {
   has_bootcamp_access: boolean;
@@ -47,10 +48,11 @@ export type PermissionFlag = (typeof ACCESS_FLAGS)[number];
 //  3. Error message mentioning JWT / token-expired / invalid_token explicitly
 // Everything else (including RLS 403s and null profile rows) is legitimate
 // permission-denied and must fall through to the normal LockedModule path.
-function isSessionDeadError(err: any): boolean {
-  if (!err) return false;
-  if (err.status === 401) return true;
-  const msg = String(err.message || "").toLowerCase();
+function isSessionDeadError(err: unknown): boolean {
+  if (!err || typeof err !== 'object') return false;
+  const details = err as { status?: unknown; message?: unknown };
+  if (details.status === 401) return true;
+  const msg = String(details.message || "").toLowerCase();
   return (
     msg.includes("jwt") ||
     msg.includes("token is expired") ||
@@ -151,7 +153,7 @@ export function useUserPermissions(): UserPermissions {
         const cached = queryClient.getQueryData<PermissionFlags>(["user-permissions", userId]);
         if (cached) {
           const archivedNow = "archived_at" in row && !!row.archived_at;
-          const changed = ACCESS_FLAGS.some(
+          const changed = CONFIGURABLE_FLAG_KEYS.some(
             (flag) => flag in row && !!row[flag] !== !!cached[flag],
           );
           if (!changed && !archivedNow) return;
@@ -216,6 +218,7 @@ export function useUserPermissions(): UserPermissions {
       for (const flag of ACCESS_FLAGS) {
         flagValues[flag] = Boolean(profileRow?.[flag]);
       }
+      Object.assign(flagValues, withDerivedAccess(flagValues));
       flagValues.is_admin = !!roleData;
 
       // Presence is owned by usePresenceHeartbeat; this read stays read-only.

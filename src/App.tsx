@@ -160,6 +160,8 @@ import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import {
   ActivityAssignmentGate,
+  ActivityLibraryGate,
+  OwnedWorkReviewGate,
   DrillAssignmentGate,
   PracticeTestRunGate,
   TAAssignmentGate,
@@ -538,11 +540,11 @@ const App = () => {
                       a student can pick a section without having been assigned
                       the library. Must sit before :assignmentId. */}
                   <Route path="/activities/sections" element={
-                    <ProtectedRoute flag="has_activity_access">
+                    <ActivityLibraryGate mode="section-library">
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                         <ActivitySections />
                       </React.Suspense>
-                    </ProtectedRoute>
+                    </ActivityLibraryGate>
                   } />
                   <Route path="/activities/:assignmentId" element={
                     <ActivityAssignmentGate>
@@ -552,11 +554,11 @@ const App = () => {
                     </ActivityAssignmentGate>
                   } />
                   <Route path="/activities/conditionals" element={
-                    <ProtectedRoute flag="has_activity_access">
+                    <ActivityLibraryGate activityId="7946f46b-e7f8-4c60-b405-4ece9c409deb">
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
                         <ConditionalPractice />
                       </React.Suspense>
-                    </ProtectedRoute>
+                    </ActivityLibraryGate>
                   } />
 
                   {/* The Classroom frame. Every route drawn by it hangs off
@@ -621,11 +623,11 @@ const App = () => {
                     <Route path="/review" element={<ProtectedRoute allowSignedIn><StudentDestination destination="review" /></ProtectedRoute>}>
                       <Route index element={<RedirectWithSearch to="/review/to-review" />} />
                       <Route path="to-review" element={<ProtectedRoute allowSignedIn><ReviewQueuePage /></ProtectedRoute>} />
-                      <Route path="activity/:assignmentId/:itemOrder" element={<ProtectedRoute flag="has_activity_access"><ActivityReviewDetail /></ProtectedRoute>} />
-                      <Route path="section/:historyId/:qid" element={<ProtectedRoute flag="has_drill_access"><SectionReviewDetail /></ProtectedRoute>} />
-                      <Route path="intro-lr/:attemptId" element={<ProtectedRoute flag="has_bootcamp_access"><IntroLrReviewDetail /></ProtectedRoute>} />
-                      <Route path="hard-sentences/:sourceKind/:attemptKey" element={<ProtectedRoute flag="has_bootcamp_access"><HardSentencesReviewDetail /></ProtectedRoute>} />
-                      <Route path="native-lab/:attemptId" element={<ProtectedRoute flag="has_bootcamp_access"><NativeLabReviewDetail /></ProtectedRoute>} />
+                      <Route path="activity/:assignmentId/:itemOrder" element={<ActivityAssignmentGate><ActivityReviewDetail /></ActivityAssignmentGate>} />
+                      <Route path="section/:historyId/:qid" element={<OwnedWorkReviewGate kind="section"><SectionReviewDetail /></OwnedWorkReviewGate>} />
+                      <Route path="intro-lr/:attemptId" element={<OwnedWorkReviewGate kind="intro-lr"><IntroLrReviewDetail /></OwnedWorkReviewGate>} />
+                      <Route path="hard-sentences/:sourceKind/:attemptKey" element={<OwnedWorkReviewGate kind="hard-sentences"><HardSentencesReviewDetail /></OwnedWorkReviewGate>} />
+                      <Route path="native-lab/:attemptId" element={<OwnedWorkReviewGate kind="native-lab"><NativeLabReviewDetail /></OwnedWorkReviewGate>} />
                       <Route path="wrong" element={<ProtectedRoute flag="has_journal_access"><ReviewIndexList section="journal" /></ProtectedRoute>} />
                       <Route path="flagged" element={<ProtectedRoute flag="has_flagged_access"><ReviewIndexList section="flagged" /></ProtectedRoute>} />
                     </Route>
@@ -640,8 +642,8 @@ const App = () => {
                     <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>
                       <Route index element={<RedirectWithSearch to="/library/lessons" />} />
                       <Route path="lessons" element={<ProtectedRoute flag={["has_activity_access", "has_bootcamp_access", "has_drill_access", "has_analytics_access"]}><StudentLibraryLessons /></ProtectedRoute>} />
-                      <Route path="activities" element={<ProtectedRoute flag="has_activity_access"><ActivityCentre /></ProtectedRoute>} />
-                      <Route path="bootcamps" element={<ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>} />
+                      <Route path="activities" element={<ProtectedRoute flag="has_classroom_access"><ActivityCentre /></ProtectedRoute>} />
+                      <Route path="bootcamps" element={<ProtectedRoute flag="has_classroom_access"><Bootcamps /></ProtectedRoute>} />
                       <Route path="admissions" element={<ProtectedRoute requireAdmin><AdmissionsPage /></ProtectedRoute>} />
                     </Route>
 

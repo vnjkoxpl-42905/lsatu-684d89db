@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
-import { tierFlags, type AccessTier, type ManagedUser } from '@/lib/adminUsers';
+import { CONFIGURABLE_FLAG_KEYS, tierFlags, type AccessTier, type ManagedUser } from '@/lib/adminUsers';
 
 /**
  * Tier reads and writes that work whether or not the new admin-manage-users
@@ -37,28 +37,44 @@ export async function listManagedUsers(): Promise<ManagedUser[]> {
 }
 
 /**
- * Apply a tier: Tier 1 and Tier 3 rewrite the switches, Tier 2 keeps them and
- * changes the label. Tries the function first; on an older function, writes
- * the same single update to profiles. Throws unless the saved row shows the tier.
+ * Apply and verify every preset flag. An older function can acknowledge a tier
+ * while applying obsolete defaults, so its tier label alone is not proof.
  */
 export async function setStudentTier(classId: string, tier: AccessTier): Promise<void> {
+  const expected = tierFlags(tier);
   const res = await supabase.functions.invoke('admin-manage-users', {
     method: 'POST',
     body: { action: 'set_tier', class_id: classId, tier },
   });
-  const written = (res.data as { profile?: { access_tier?: string } } | null)?.profile;
-  if (!res.error && written?.access_tier === tier) return;
+  const written = (res.data as { profile?: Record<string, unknown> } | null)?.profile;
+  const matches = (row: Record<string, unknown> | undefined) => row?.access_tier === tier &&
+    Object.entries(expected).every(([key, value]) => row[key] === value);
+  if (!res.error && matches(written)) return;
 
-  const updates: Record<string, unknown> = { access_tier: tier, ...(tierFlags(tier) ?? {}) };
-  if (tier !== 'tier_2') updates.has_waj_access = false;
+  const updates: Record<string, unknown> = { access_tier: tier, ...expected };
   const { data, error } = await supabase
     .from('profiles')
     .update(updates as never)
     .eq('class_id', classId)
-    .select('class_id, access_tier' as never);
+    .select('*');
   if (error) throw error;
-  const row = (data ?? [])[0] as unknown as { access_tier?: string } | undefined;
-  if (row?.access_tier !== tier) throw new Error('Tier was not saved');
+  const row = (data ?? [])[0] as unknown as Record<string, unknown> | undefined;
+  if (!matches(row)) throw new Error('Tier defaults were not saved. The access policy migration must be applied.');
+}
+
+/** Write only the selected door; the database derives review atomically. */
+export async function setStudentAccess(person: ManagedUser, field: string, value: boolean): Promise<void> {
+  if (!(CONFIGURABLE_FLAG_KEYS as readonly string[]).includes(field)) throw new Error('Unknown access control');
+  const updates = { [field]: value };
+  const { data, error } = await supabase.from('profiles').update(updates as never)
+    .eq('class_id', person.class_id).select('*');
+  if (error) throw error;
+  const row = (data ?? [])[0] as unknown as Record<string, unknown> | undefined;
+  const practice = Boolean(row?.has_drill_access || row?.has_practice_access);
+  if (!row || row[field] !== value ||
+    ['has_journal_access', 'has_flagged_access', 'has_analytics_access'].some((key) => row[key] !== practice)) {
+    throw new Error('Access override was not saved');
+  }
 }
 
 /** Assign or unassign one PrepTest sitting, from either function version. */

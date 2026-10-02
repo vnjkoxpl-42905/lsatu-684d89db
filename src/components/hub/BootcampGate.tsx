@@ -54,7 +54,7 @@ export default function BootcampGate({
   children,
 }: Props) {
   const { user, authReady } = useAuth();
-  const { is_admin, loading: permsLoading } = useUserPermissions();
+  const { is_admin, has_classroom_access, loading: permsLoading } = useUserPermissions();
   const navigate = useNavigate();
   const bootcampId =
     bootcampIdOverride ??
@@ -63,7 +63,7 @@ export default function BootcampGate({
 
   const { data: assigned, isLoading } = useQuery<boolean>({
     queryKey: ['bootcamp-gate', user?.id, routePath, bootcampId],
-    enabled: !!user && !is_admin && !permsLoading,
+    enabled: !!user && !is_admin && !permsLoading && has_classroom_access,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('classroom_items')
@@ -90,11 +90,11 @@ export default function BootcampGate({
     return <div className="min-h-screen bg-zinc-950" />;
   }
 
-  if (is_admin || assigned) {
+  if (is_admin || (has_classroom_access && assigned)) {
     return <>{children}</>;
   }
 
-  if (isLoading) {
+  if (has_classroom_access && isLoading) {
     return <div className="min-h-screen bg-zinc-950" />;
   }
 

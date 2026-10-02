@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { DeskPeopleSurface } from './DeskPeopleSurface';
+import { tierFlags, type AccessTier } from '@/lib/adminUsers';
 
 const { invokeMock, getSessionMock, toastErrorMock } = vi.hoisted(() => ({
   invokeMock: vi.fn(),
@@ -157,7 +158,7 @@ describe('DeskPeopleSurface', () => {
       if (options?.method === 'POST' && (options.body as Record<string, unknown>)?.action === 'set_tier') {
         const { class_id, tier } = options.body as Record<string, unknown>;
         return Promise.resolve({
-          data: { success: true, profile: { class_id, access_tier: tier } },
+          data: { success: true, profile: { class_id, access_tier: tier, ...tierFlags(tier as AccessTier) } },
           error: null,
         });
       }
@@ -249,9 +250,11 @@ describe('DeskPeopleSurface', () => {
       const call = invokeMock.mock.calls.find(([, options]) => options?.body?.action === 'set_tier');
       expect(call![1].body).toMatchObject({ class_id: 'student-1', tier: 'tier_1' });
     });
-    // The twelve switches are there, labelled by what they open.
-    expect(screen.getByLabelText('TA worksheets for Meghan Mullins')).toBeInTheDocument();
-    expect(screen.getByLabelText('Progress and history for Meghan Mullins')).toBeInTheDocument();
+    expect(screen.getByLabelText('Drill for Meghan Mullins')).toBeInTheDocument();
+    expect(screen.getByLabelText('Practice tests for Meghan Mullins')).toBeInTheDocument();
+    expect(screen.queryByLabelText('TA worksheets for Meghan Mullins')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Progress and history for Meghan Mullins')).not.toBeInTheDocument();
+    expect(screen.getAllByRole('checkbox')).toHaveLength(5);
   });
 
   it('shows one whole-account access control per student', async () => {

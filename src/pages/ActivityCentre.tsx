@@ -86,7 +86,7 @@ export default function ActivityCentre() {
           </p>
         </header>
 
-        <section className="mt-8" aria-labelledby="conditional-reasoning-title">
+        {is_admin && <section className="mt-8" aria-labelledby="conditional-reasoning-title">
           <button
             type="button"
             onClick={() => navigate("/activities/conditionals")}
@@ -103,7 +103,7 @@ export default function ActivityCentre() {
               Choose a drill <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </span>
           </button>
-        </section>
+        </section>}
 
         <div className="mt-8">
           {loading && (
@@ -152,7 +152,7 @@ export default function ActivityCentre() {
           * behind an assignment only hid a drill she was already allowed to
           * run. It stays visible whether or not the library was assigned.
           */}
-        {!hasDoorAssignment && (
+        {is_admin && !hasDoorAssignment && (
         <section className="mt-10">
           <button
             type="button"

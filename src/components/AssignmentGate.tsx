@@ -5,7 +5,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { supabase } from "@/integrations/supabase/client";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import LockedModule from "@/components/LockedModule";
 import { loadPracticeTestRun } from "@/lib/practiceTest";
+import { classroomItemMatchesBootcamp } from '@/lib/bootcamps';
+import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import {
   launchFromRouteState,
   parseDrillLaunch,
@@ -33,28 +36,30 @@ export function AssignmentGate({
   flag,
   authKey,
   authorize,
+  assignmentOnly = false,
   children,
 }: {
   flag: PermissionFlag | readonly PermissionFlag[];
   /** Stable name for the thing being authorised, for caching. null = nothing to authorise. */
   authKey: string | null;
   authorize: (userId: string) => Promise<boolean>;
+  assignmentOnly?: boolean;
   children: ReactNode;
 }) {
   const { user, authReady } = useAuth();
   const permissions = useUserPermissions();
   const flags = (Array.isArray(flag) ? flag : [flag]) as PermissionFlag[];
-  const flagOpen = permissions.is_admin || flags.some((f) => Boolean(permissions[f]));
+  const flagOpen = permissions.is_admin || (!assignmentOnly && flags.some((f) => Boolean(permissions[f])));
 
   const { data: assigned, isLoading } = useQuery<boolean>({
     queryKey: ["assignment-gate", user?.id, authKey],
-    enabled: authReady && !!user && !permissions.loading && !flagOpen && !!authKey,
+    enabled: authReady && !!user && !permissions.loading && !flagOpen && !!authKey && permissions.has_classroom_access,
     queryFn: () => authorize(user!.id),
     staleTime: 60_000,
   });
 
   const waiting =
-    authReady && !!user && !permissions.loading && !flagOpen && !!authKey && isLoading;
+    authReady && !!user && !permissions.loading && !flagOpen && !!authKey && permissions.has_classroom_access && isLoading;
   if (waiting) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -63,8 +68,8 @@ export function AssignmentGate({
     );
   }
 
-  if (!flagOpen && assigned) return <>{children}</>;
-  return <ProtectedRoute flag={flag}>{children}</ProtectedRoute>;
+  if (!flagOpen && permissions.has_classroom_access && assigned) return <>{children}</>;
+  return <ProtectedRoute flag={assignmentOnly ? [] : flag}>{!flagOpen && assignmentOnly ? <LockedModule /> : children}</ProtectedRoute>;
 }
 
 // ── What each runner accepts as proof ──────────────────────────────────────
@@ -93,16 +98,16 @@ export async function hasPracticeTestAssignment(userId: string, pt?: number): Pr
   return (data ?? []).length > 0;
 }
 
-async function hasAssignedBootcamp(userId: string): Promise<boolean> {
+async function hasAssignedBootcamp(userId: string, bootcampId: string): Promise<boolean> {
   const { data, error } = await supabase
     .from("classroom_items")
-    .select("id")
+    .select("id,source_id,metadata_json")
     .eq("student_id", userId)
     .eq("type", "bootcamp_module")
     .neq("status", "archived")
-    .limit(1);
+    ;
   if (error) return false;
-  return (data ?? []).length > 0;
+  return (data ?? []).some((row) => classroomItemMatchesBootcamp(row as never, bootcampId));
 }
 
 /** The PrepTest a sitting leg belongs to, read from the run on this device. */
@@ -119,6 +124,7 @@ export function ActivityAssignmentGate({ children }: { children: ReactNode }) {
   return (
     <AssignmentGate
       flag="has_activity_access"
+      assignmentOnly
       authKey={assignmentId ? `activity:${assignmentId}` : null}
       authorize={(uid) => ownsRow("activity_assignments", assignmentId!, uid)}
     >
@@ -133,12 +139,46 @@ export function TAAssignmentGate({ children }: { children: ReactNode }) {
   return (
     <AssignmentGate
       flag="has_ta_access"
+      assignmentOnly
       authKey={assignmentId ? `ta:${assignmentId}` : null}
       authorize={(uid) => ownsRow("ta_assignments", assignmentId!, uid)}
     >
       {children}
     </AssignmentGate>
   );
+}
+
+/** Permanent activity doors require that exact library assignment. */
+export function ActivityLibraryGate({ activityId, mode, children }: {
+  activityId?: string; mode?: string; children: ReactNode;
+}) {
+  return <AssignmentGate flag="has_activity_access" assignmentOnly
+    authKey={`activity-library:${activityId ?? mode}`}
+    authorize={async (uid) => {
+      let query = supabase.from('activity_assignments').select('id').eq('student_id', uid);
+      if (activityId) query = query.eq('activity_id', activityId);
+      if (mode) query = query.eq('mode', mode as never);
+      const { data, error } = await query.limit(1);
+      return !error && !!data?.length;
+    }}>{children}</AssignmentGate>;
+}
+
+/** Saved work authorizes only its own review page, never a feature catalogue. */
+export function OwnedWorkReviewGate({ kind, children }: {
+  kind: 'section' | 'intro-lr' | 'hard-sentences' | 'native-lab'; children: ReactNode;
+}) {
+  const params = useParams();
+  const id = params.attemptId ?? params.historyId ?? params.attemptKey;
+  return <AssignmentGate flag="has_analytics_access" authKey={id ? `review:${kind}:${params.sourceKind ?? ''}:${id}` : null}
+    authorize={async (uid) => {
+      if (!id) return false;
+      switch (kind) {
+        case 'section': return !!await (await import('@/lib/sectionHistory')).fetchOwnedSectionHistoryItem(uid, id);
+        case 'intro-lr': return !!await (await import('@/components/review/introLrReviewSource')).fetchOwnedIntroLrAttempt(uid, id);
+        case 'hard-sentences': return !!await (await import('@/components/review/hardSentencesReviewSource')).fetchOwnedHardSentencesAttempt(uid, params.sourceKind ?? '', id);
+        case 'native-lab': return !!await (await import('@/components/review/nativeLabReviewSource')).fetchOwnedNativeLabAttempt(uid, id);
+      }
+    }}>{children}</AssignmentGate>;
 }
 
 /** /testing: the Testing Centre lists only assigned PrepTests without the switch. */
@@ -191,7 +231,7 @@ export type DrillAuthorisation =
   | { kind: "homework"; id: string }
   | { kind: "guided"; id: string }
   | { kind: "practice-test"; pt: number }
-  | { kind: "bootcamp" }
+  | { kind: "bootcamp"; id: string }
   | null;
 
 export function drillAuthorisation(
@@ -221,8 +261,9 @@ export function drillAuthorisation(
     case "guided-drill":
       return launch.assignmentId ? { kind: "guided", id: launch.assignmentId } : null;
     case "bootcamp-day":
+      return { kind: "bootcamp", id: "intro-to-lr" };
     case "practice-set":
-      return { kind: "bootcamp" };
+      return getPracticePool(launch.slug) ? { kind: "bootcamp", id: "intro-to-lr" } : null;
     case "section":
       if (launch.ptLeg?.runId) {
         const pt = ptOf(launch.ptLeg.runId);
@@ -234,16 +275,39 @@ export function drillAuthorisation(
   }
 }
 
-async function authoriseDrill(auth: NonNullable<DrillAuthorisation>, uid: string): Promise<boolean> {
+/** A carried question list may narrow the assigned snapshot, never widen it. */
+export function assignedQuestionScope(launch: DrillLaunch | null, assignedQids: readonly string[]): boolean {
+  if (launch?.kind !== 'questions') return true;
+  const allowed = new Set(assignedQids);
+  return launch.qids.length > 0 && launch.qids.every((qid) => allowed.has(qid));
+}
+
+async function authoriseDrill(auth: NonNullable<DrillAuthorisation>, uid: string, launch: DrillLaunch | null): Promise<boolean> {
   switch (auth.kind) {
     case "homework":
-      return ownsRow("homework_assignments", auth.id, uid);
-    case "guided":
-      return ownsRow("guided_drill_assignments", auth.id, uid);
+      {
+        const { data, error } = await supabase.from('homework_assignments').select('question_qids')
+          .eq('id', auth.id).eq('student_id', uid).maybeSingle();
+        return !error && !!data && assignedQuestionScope(launch, data.question_qids ?? []);
+      }
+    case "guided": {
+      const { data, error } = await supabase.from('guided_drill_assignments').select('*')
+        .eq('id', auth.id).eq('student_id', uid).maybeSingle();
+      if (error || !data) return false;
+      if (launch?.kind === 'guided-drill') return !launch.drillId || launch.drillId === data.guided_drill_id;
+      if (launch?.kind !== 'questions') return false;
+      const { getGuidedDrill, resolveGuidedDrillPool } = await import('@/lib/guidedDrills');
+      const drill = await getGuidedDrill(data.guided_drill_id);
+      if (!drill) return false;
+      const assignmentQids = (data as unknown as { question_qids?: string[] }).question_qids;
+      const exact = assignmentQids?.length ? assignmentQids : drill.question_qids;
+      const qids = exact?.length ? exact : resolveGuidedDrillPool(drill.bank_filter).map((q) => q.qid);
+      return assignedQuestionScope(launch, qids);
+    }
     case "practice-test":
       return hasPracticeTestAssignment(uid, auth.pt);
     case "bootcamp":
-      return hasAssignedBootcamp(uid);
+      return hasAssignedBootcamp(uid, auth.id);
   }
 }
 
@@ -286,7 +350,7 @@ function authKeyOf(auth: DrillAuthorisation): string | null {
     case "practice-test":
       return `pt:${auth.pt}`;
     case "bootcamp":
-      return "bootcamp:any";
+      return `bootcamp:${auth.id}`;
   }
 }
 
@@ -318,7 +382,7 @@ export function DrillAssignmentGate({ children }: { children: ReactNode }) {
   return (
     <AssignmentGate
       flag="has_drill_access"
-      authKey={ptRunId ? `practice-leg:${ptRunId}:${launch?.kind === 'section' ? `${launch.ptLeg?.legIndex}:${launch.pt}:${launch.section}` : rcSessionId ? `rc:${rcSessionId}:${rcLegIndex}` : 'invalid'}` : authKeyOf(auth)}
+      authKey={ptRunId ? `practice-leg:${ptRunId}:${launch?.kind === 'section' ? `${launch.ptLeg?.legIndex}:${launch.pt}:${launch.section}` : rcSessionId ? `rc:${rcSessionId}:${rcLegIndex}` : 'invalid'}` : auth ? `${authKeyOf(auth)}:${JSON.stringify(launch)}` : null}
       authorize={async (uid) => {
         if (ptRunId) {
           const { data, error } = await supabase.from("practice_test_runs" as never)
@@ -342,7 +406,7 @@ export function DrillAssignmentGate({ children }: { children: ReactNode }) {
           if (sessionError || !session || !isActivePracticeTestRcLeg(run, session, uid, ptRunId, rcLegIndex)) return false;
           return hasPracticeTestAssignment(uid, run.pt);
         }
-        return auth ? authoriseDrill(auth, uid) : false;
+        return auth ? authoriseDrill(auth, uid, launch) : false;
       }}
     >
       {children}

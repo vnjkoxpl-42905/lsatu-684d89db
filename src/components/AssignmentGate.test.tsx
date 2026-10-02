@@ -2,18 +2,20 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { DrillAssignmentGate } from './AssignmentGate';
+import { DrillAssignmentGate, assignedQuestionScope } from './AssignmentGate';
+import { launchDrill } from '@/lib/drillLaunch';
 
 const state = vi.hoisted(() => ({
   runStatus: 'in-progress', sessionStatus: 'in_progress', sessionOwner: 'student-1',
   sessionRun: 'run-1', sessionLeg: 0,
+  classroom: true,
 }));
 
 vi.mock('@/contexts/AuthContext', () => ({
   useAuth: () => ({ user: { id: 'student-1' }, authReady: true }),
 }));
 vi.mock('@/hooks/useUserPermissions', () => ({
-  useUserPermissions: () => ({ loading: false, is_admin: false, has_drill_access: false }),
+  useUserPermissions: () => ({ loading: false, is_admin: false, has_drill_access: false, has_classroom_access: state.classroom }),
 }));
 vi.mock('@/components/ProtectedRoute', () => ({
   default: () => <div>Access locked</div>,
@@ -43,6 +45,11 @@ vi.mock('@/integrations/supabase/client', () => ({
               : null,
             error: null,
           };
+          if (table === 'homework_assignments') return {
+            data: filters.id === 'homework-1' && filters.student_id === 'student-1'
+              ? { question_qids: ['PT140-S2-Q1', 'PT140-S2-Q2'] } : null,
+            error: null,
+          };
           return { data: null, error: null };
         },
       };
@@ -57,6 +64,7 @@ function renderRoute(path: string) {
     <MemoryRouter initialEntries={[path]}>
       <Routes>
         <Route path="/rc/drill" element={<DrillAssignmentGate><div>RC player opened</div></DrillAssignmentGate>} />
+        <Route path="/drill" element={<DrillAssignmentGate><div>Assigned drill opened</div></DrillAssignmentGate>} />
       </Routes>
     </MemoryRouter>
   </QueryClientProvider>);
@@ -69,6 +77,7 @@ describe('assigned-only PrepTest RC route', () => {
     state.sessionOwner = 'student-1';
     state.sessionRun = 'run-1';
     state.sessionLeg = 0;
+    state.classroom = true;
   });
 
   it('resumes only its own active session', async () => {
@@ -91,5 +100,27 @@ describe('assigned-only PrepTest RC route', () => {
   it('locks a mismatched leg', async () => {
     renderRoute('/rc/drill?sessionId=session-1&ptRun=run-1&ptLeg=1');
     expect(await screen.findByText('Access locked')).toBeTruthy();
+  });
+});
+
+describe('Tier 2 assigned drill scope', () => {
+  beforeEach(() => { state.classroom = true; });
+  it('opens its canonical homework runner without general Drill access', async () => {
+    renderRoute(`/drill?${launchDrill({ kind: 'assignment', assignmentId: 'homework-1' })}`);
+    expect(await screen.findByText('Assigned drill opened')).toBeTruthy();
+  });
+  it('does not open a different student assignment or free-standing bank drill', async () => {
+    renderRoute(`/drill?${launchDrill({ kind: 'assignment', assignmentId: 'other-homework' })}`);
+    expect(await screen.findByText('Access locked')).toBeTruthy();
+  });
+  it('Tier 3 cannot use an old assignment to bypass Classroom being off', async () => {
+    state.classroom = false;
+    renderRoute(`/drill?${launchDrill({ kind: 'assignment', assignmentId: 'homework-1' })}`);
+    expect(await screen.findByText('Access locked')).toBeTruthy();
+  });
+  it('an assignment ID cannot authorize unrelated carried question IDs', () => {
+    expect(assignedQuestionScope({ kind: 'questions', qids: ['assigned'] }, ['assigned', 'assigned-2'])).toBe(true);
+    expect(assignedQuestionScope({ kind: 'questions', qids: ['assigned', 'unassigned'] }, ['assigned'])).toBe(false);
+    expect(assignedQuestionScope({ kind: 'questions', qids: [] }, ['assigned'])).toBe(false);
   });
 });
