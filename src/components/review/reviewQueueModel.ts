@@ -94,6 +94,22 @@ export function buildReviewQueue(
   return [...items.values()].sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt));
 }
 
+/** Only persisted, attributable attempts can supply review answers. */
+export function isActivityReviewResponse(response: ActivityItemResponse, assignment: ActivityAssignment): boolean {
+  return response.assignment_id === assignment.id && response.student_id === assignment.student_id
+    && Number.isSafeInteger(response.item_order) && response.item_order > 0
+    && Number.isSafeInteger(response.attempt_no) && response.attempt_no > 0
+    && typeof response.response_text === "string"
+    && typeof response.created_at === "string" && Number.isFinite(Date.parse(response.created_at))
+    && ["correct", "incorrect", "partial"].includes(response.verdict ?? "");
+}
+
+export function isCompletedActivityReview(assignment: ActivityAssignment): boolean {
+  return assignment.status === "completed" && typeof assignment.completed_at === "string"
+    && Number.isFinite(Date.parse(assignment.completed_at))
+    && assignment.mode !== "section" && assignment.item_format !== "spoken-recall";
+}
+
 /** One row per missed item in each assigned Activity sitting. Never merge repeat assignments. */
 export function buildActivityReviewQueue(
   assignments: ActivityAssignment[],
@@ -109,11 +125,11 @@ export function buildActivityReviewQueue(
 
   const result: ReviewQueueItem[] = [];
   for (const assignment of assignments) {
-    if (assignment.status !== "completed" || assignment.mode === "section" || assignment.item_format === "spoken-recall") continue;
+    if (!isCompletedActivityReview(assignment)) continue;
     for (const item of assignment.items) {
       const attempts = attemptsByItem.get(`${assignment.id}:${item.order}`);
       if (!attempts?.length) continue;
-      const ordered = [...attempts].sort((a, b) => a.attempt_no - b.attempt_no || a.created_at.localeCompare(b.created_at));
+      const ordered = attempts.filter((response) => isActivityReviewResponse(response, assignment)).sort((a, b) => a.attempt_no - b.attempt_no || a.created_at.localeCompare(b.created_at));
       const judged = ordered.filter((attempt) => attempt.verdict != null);
       const firstMiss = judged.find((attempt) => attempt.verdict === "incorrect" || attempt.verdict === "partial");
       if (!firstMiss) continue;

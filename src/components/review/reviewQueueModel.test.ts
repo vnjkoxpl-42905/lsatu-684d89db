@@ -115,6 +115,21 @@ describe("buildActivityReviewQueue", () => {
   });
 });
 
+describe("Activity response integrity", () => {
+  it.each([null, "", "invalid"])("requires a real completion timestamp (%s)", completed_at => {
+    expect(buildActivityReviewQueue([activityAssignment("run", { completed_at })], [activityResponse("run", 1, "incorrect")])).toEqual([]);
+  });
+  it("does not import foreign student or malformed attempts into a completed sitting", () => {
+    const response = activityResponse("run", 1, "incorrect");
+    expect(buildActivityReviewQueue([activityAssignment("run")], [
+      { ...response, student_id: "other" }, { ...response, attempt_no: 0 },
+      { ...response, created_at: "invalid" }, { ...response, verdict: "bogus" as never },
+    ])).toEqual([]);
+    const [item] = buildActivityReviewQueue([activityAssignment("run")], [response, { ...response, student_id: "other", response_text: "foreign", attempt_no: 2 }]);
+    expect(item.latestAnswer).toBe(response.response_text);
+  });
+});
+
 function sectionRow(id: string, overrides: Partial<SectionHistoryRow> = {}): SectionHistoryRow {
   return {
     id, pt: 80, section: 2, mode: "full-section", practiceTestRunId: null,

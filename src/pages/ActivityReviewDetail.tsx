@@ -4,6 +4,8 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { getStudentAssignment, listResponsesForAssignment } from "@/features/activity-centre/api/activitiesClient";
+import { reviewReturnTo } from "@/components/review/ReviewReturnLink";
+import { isActivityReviewResponse, isCompletedActivityReview } from "@/components/review/reviewQueueModel";
 import type { ActivityAssignment, ActivityItemResponse } from "@/features/activity-centre/api/types";
 
 export default function ActivityReviewDetail() {
@@ -12,15 +14,19 @@ export default function ActivityReviewDetail() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const requestedReturn = searchParams.get("returnTo");
-  const returnTo = requestedReturn?.split("?")[0] === "/review/to-review"
-    ? requestedReturn : "/review/to-review?reason=missed";
+  const returnTo = reviewReturnTo(searchParams.toString()) ?? "/review/to-review?reason=missed";
+  const requestKey = `${user?.id ?? ""}:${assignmentId ?? ""}:${order}`;
+  const [loadedKey, setLoadedKey] = React.useState<string | null>(null);
+  const [retry, setRetry] = React.useState(0);
   const [assignment, setAssignment] = React.useState<ActivityAssignment | null>(null);
   const [responses, setResponses] = React.useState<ActivityItemResponse[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
+    setAssignment(null);
+    setResponses([]);
+    setLoadedKey(null);
     if (!user?.id || !assignmentId || !Number.isSafeInteger(order) || order < 1) {
       setLoading(false);
       setError("This Activity review link is invalid.");
@@ -34,30 +40,31 @@ export default function ActivityReviewDetail() {
       listResponsesForAssignment(assignmentId),
     ]).then(([owned, allResponses]) => {
       if (!active) return;
-      setAssignment(owned);
-      setResponses(allResponses.filter((response) => response.student_id === user.id && response.item_order === order));
+      if (owned?.id === assignmentId && owned.student_id === user.id) {
+        setAssignment(owned);
+        setResponses(allResponses.filter((response) => isActivityReviewResponse(response, owned) && response.item_order === order));
+      }
+      setLoadedKey(requestKey);
     }).catch((failure: unknown) => {
       if (active) setError(failure instanceof Error ? failure.message : "This Activity review could not be loaded.");
     }).finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
-  }, [assignmentId, order, user?.id]);
+  }, [assignmentId, order, user?.id, requestKey, retry]);
 
   const item = assignment?.items.find((candidate) => candidate.order === order);
   const judged = responses
     .filter((response) => response.verdict != null)
     .sort((a, b) => a.attempt_no - b.attempt_no || a.created_at.localeCompare(b.created_at));
   const missed = judged.some((response) => response.verdict === "incorrect" || response.verdict === "partial");
-  const available = assignment?.status === "completed"
-    && assignment.mode !== "section"
-    && assignment.item_format !== "spoken-recall"
+  const available = loadedKey === requestKey && assignment && isCompletedActivityReview(assignment)
     && !!item && missed;
 
   return <div className="mx-auto w-full max-w-3xl px-4 py-7 sm:px-6">
     <Button variant="ghost" type="button" onClick={() => navigate(returnTo)} className="mb-5">
       <ArrowLeft className="mr-2 h-4 w-4" aria-hidden /> Back to Review
     </Button>
-    {loading ? <p role="status">Loading Activity review…</p>
-      : error ? <p role="alert" className="text-destructive">{error}</p>
+    {loading || (!error && loadedKey !== requestKey) ? <p role="status">Loading Activity review…</p>
+      : error ? <div className="space-y-3"><p role="alert" className="text-destructive">{error}</p><Button type="button" onClick={() => setRetry((value) => value + 1)}>Retry Activity review</Button></div>
       : !available || !assignment || !item ? <p role="status">This completed Activity item is not available for review in your account.</p>
       : <article className="space-y-7">
         <header>

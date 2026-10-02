@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { HS_DRILL_ID, HS_DRILL_ITEMS } from '@/bootcamps/main-conclusion/content/hard-sentences-drill.source';
 import { M5_CAPSTONE } from '@/bootcamps/main-conclusion/content/m5-capstone.source';
 import type { ReviewEpisode, ReviewEpisodeEvent } from '@/lib/reviewEpisodes';
+import type { FlaggedQuestionRow } from '@/lib/flaggedService';
 
 const fixture = vi.hoisted(() => ({
   owner: 'student-a', classroomAccess: true, failedCluster: false, failedCapstone: false,
@@ -14,13 +15,14 @@ const fixture = vi.hoisted(() => ({
   pendingOwner: null as string | null,
   releases: [] as (() => void)[],
   episodeRecords: {} as Record<string, { episodes: ReviewEpisode[]; events: ReviewEpisodeEvent[] }>, episodeFailed: false,
+  flags: [] as FlaggedQuestionRow[], flagAccess: false,
 }));
 vi.mock('@/lib/reviewEpisodes', async importOriginal => ({ ...await importOriginal<typeof import('@/lib/reviewEpisodes')>(), createReviewEpisodeService: () => ({ list: async (_actor: string, student: string) => {
   if (fixture.episodeFailed) throw new Error('episode read failed'); return fixture.episodeRecords[student] ?? { episodes: [], events: [] };
 } }) }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: fixture.owner } }) }));
-vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: false, is_admin: false, has_classroom_access: fixture.classroomAccess }) }));
-vi.mock('@/hooks/useFlagged', () => ({ useFlagged: () => ({ data: [], isLoading: false, isError: false }) }));
+vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: false, is_admin: false, has_classroom_access: fixture.classroomAccess, has_flagged_access: fixture.flagAccess }) }));
+vi.mock('@/hooks/useFlagged', () => ({ useFlagged: () => ({ data: fixture.flags, isLoading: false, isError: false }) }));
 vi.mock('@/hooks/useJournalEntries', () => ({ useJournalEntries: () => ({ data: [], isLoading: false, isError: false }) }));
 vi.mock('@/components/review/rcReviewSource', () => ({ loadRcReviewQueue: async () => [] }));
 vi.mock('@/components/review/ptReviewSource', () => ({ loadPracticeTestReviewQueue: async () => [] }));
@@ -62,7 +64,7 @@ function seed(owner = 'student-a') {
 }
 beforeEach(() => {
   Object.assign(fixture, { owner: 'student-a', classroomAccess: true, failedCluster: false, failedCapstone: false,
-    clusters: {}, capstones: {}, reads: [], pendingOwner: null, releases: [], episodeRecords: {}, episodeFailed: false });
+    clusters: {}, capstones: {}, reads: [], pendingOwner: null, releases: [], episodeRecords: {}, episodeFailed: false, flags: [], flagAccess: false });
   seed();
 });
 afterEach(cleanup);
@@ -72,7 +74,7 @@ describe('Hard Sentences in the rendered Review queue', () => {
     fixture.episodeRecords['student-a'] = { episodes: [{ id: 'teacher-task', student_id: 'student-a', actor_id: 'teacher', source_kind: 'hs_capstone', source_id: 'student-a-envelope', question_id: M5_CAPSTONE[0].id, reason: 'teacher_selected', selection_reason: 'Compare which details bear the weight.', created_at: '2026-09-30T13:00:00Z' }], events: [] };
     const view = mount('/review/to-review?reason=teacher_selected');
     const link = await screen.findByRole('link', { name: /Compare which details bear the weight/ });
-    expect(link).toHaveAttribute('href', `/review/hard-sentences/capstone/student-a-envelope?episode=teacher-task&returnTo=${encodeURIComponent('/review/to-review?reason=teacher_selected')}`);
+    expect(link).toHaveAttribute('href', `/review/hard-sentences/capstone/student-a-envelope?episode=teacher-task&returnTo=${encodeURIComponent('/review/to-review?reason=teacher_selected&selected=review-episode%3Ateacher-task')}`);
     view.unmount();
     fixture.episodeRecords['student-a'].events = [{ id: 'done', episode_id: 'teacher-task', actor_id: 'student-a', kind: 'complete', payload: {}, created_at: '2026-09-30T14:00:00Z' }];
     mount('/review/to-review?reason=teacher_selected');
@@ -88,9 +90,9 @@ describe('Hard Sentences in the rendered Review queue', () => {
     mount('/review/to-review?reason=missed&q=Hard+Sentences');
     const capstone = await screen.findByRole('link', { name: /Hard Sentences · Capstone/ });
     const cluster = screen.getByRole('link', { name: /Hard Sentences · Cluster drill/ });
-    const expectedReturn = '/review/to-review?reason=missed&q=Hard+Sentences';
-    expect(capstone).toHaveAttribute('href', `/review/hard-sentences/capstone/student-a-envelope?returnTo=${encodeURIComponent(expectedReturn)}`);
-    expect(cluster).toHaveAttribute('href', `/review/hard-sentences/cluster/student-a-cluster?returnTo=${encodeURIComponent(expectedReturn)}`);
+    const expectedReturn = '/review/to-review?reason=missed&q=Hard+Sentences&selected=';
+    expect(capstone).toHaveAttribute('href', `/review/hard-sentences/capstone/student-a-envelope?returnTo=${encodeURIComponent(expectedReturn + 'hard-sentences%3Acapstone%3Astudent-a-envelope')}`);
+    expect(cluster).toHaveAttribute('href', `/review/hard-sentences/cluster/student-a-cluster?returnTo=${encodeURIComponent(expectedReturn + 'hard-sentences%3Acluster%3Astudent-a-cluster')}`);
     expect(capstone).toHaveTextContent('Hard Sentences saved submission');
     expect(cluster).toHaveTextContent('Missed answer');
     expect(await screen.findByText('2 items')).toBeInTheDocument();
@@ -148,5 +150,29 @@ describe('Hard Sentences in the rendered Review queue', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Hard Sentences cluster attempts, Hard Sentences capstone attempts');
     expect(screen.getByText('No items from the loaded source')).toBeInTheDocument();
     expect(screen.queryByText('No saved work here yet')).not.toBeInTheDocument();
+  });
+  it('keeps source, area, table and last-opened identity in the detail return route', async () => {
+    mount('/review/to-review?reason=missed&source=hard_sentences&area=lr&view=table&show=60&selected=hard-sentences%3Acapstone%3Astudent-a-envelope');
+    const link = await screen.findByRole('link', { name: /Hard Sentences · Capstone/ });
+    expect(link).toHaveAttribute('aria-current', 'true');
+    expect(within(link.closest('tr')!).getByText('Last opened')).toBeInTheDocument();
+    const target = new URL(link.getAttribute('href')!, 'https://example.test').searchParams.get('returnTo')!;
+    const retained = new URL(target, 'https://example.test').searchParams;
+    expect(Object.fromEntries(retained)).toMatchObject({ source: 'hard_sentences', area: 'lr', view: 'table', show: '60', selected: 'hard-sentences:capstone:student-a-envelope' });
+    fireEvent.change(screen.getByRole('combobox', { name: 'Review area' }), { target: { value: 'rc' } });
+    expect(await screen.findByText('No items match these filters')).toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: 'Review area' }), { target: { value: 'lr' } });
+    expect(await screen.findByRole('link', { name: /Hard Sentences · Capstone/ })).not.toHaveAttribute('aria-current');
+    const changed = new URL(screen.getByRole('link', { name: /Hard Sentences · Capstone/ }).getAttribute('href')!, 'https://example.test').searchParams.get('returnTo')!;
+    expect(new URL(changed, 'https://example.test').searchParams.has('show')).toBe(false);
+  });
+  it('searches saved flag notes and filters multi-source work without relabeling it', async () => {
+    fixture.flagAccess = true;
+    fixture.flags = [{ qid: 'PT101.S2.Q1', pt: 101, section: 2, qnum: 1, note: 'Check the quantifier shift', flagged_at: '2026-10-02T12:00:00Z', qtype: 'Flaw' } as FlaggedQuestionRow];
+    mount('/review/to-review?source=flagged_questions&q=quantifier');
+    const link = await screen.findByRole('link', { name: /Check the quantifier shift/ });
+    expect(link).toHaveAttribute('href', expect.stringContaining('/flagged/PT101.S2.Q1'));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Review source' }), { target: { value: 'hard_sentences' } });
+    expect(await screen.findByText('No items match these filters')).toBeInTheDocument();
   });
 });
