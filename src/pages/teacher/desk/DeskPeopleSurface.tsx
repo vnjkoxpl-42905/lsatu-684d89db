@@ -690,8 +690,8 @@ function PersonAccessPanel({
       )}
 
       <p className="text-xs leading-relaxed text-black/45">
-        The Bootcamps switch opens the bootcamp list. A single bootcamp is opened by assigning it
-        from the Library, whatever the tier.
+        Assign Activities and Bootcamps from the Library. Students with Classroom access can open
+        the specific work you assign.
       </p>
 
       <div className="border-t border-black/10 pt-3">
