@@ -277,7 +277,7 @@
     "questionType": "Role",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Joseph: My encyclopedia says that the mathematician Pierre de Fermat died in 1665 without leaving behind any written proof for a theorem that he claimed nonetheless to have proved. Probably this alleged theorem simply cannot be proved, since as the article points out no one else has been able to prove it. Therefore it is likely that Fermat was either lying or else mistaken when he made his claim.\nLaura: Your encyclopedia is out of date. Recently someone has in fact proved Fermat's theorem. And since the theorem is provable, your claim— that Fermat was lying or mistaken—clearly is wrong.",
+    "stimulus": "Joseph: My encyclopedia says that the mathematician Pierre de Fermat died in 1665 without leaving behind any written proof for a theorem that he claimed nonetheless to have proved. Probably this alleged theorem simply cannot be proved, since—as the article points out—no one else has been able to prove it. Therefore it is likely that Fermat was either lying or else mistaken when he made his claim.\nLaura: Your encyclopedia is out of date. Recently someone has in fact proved Fermat's theorem. And since the theorem is provable, your claim—that Fermat was lying or mistaken—clearly is wrong.",
     "questionStem": "Joseph's statement that \"this alleged theorem simply cannot be proved\" plays which one of the following roles in his argument?",
     "answerChoices": {
       "A": "an assumption for which no support is offered",
@@ -299,7 +299,7 @@
     "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Joseph: My encyclopedia says that the mathematician Pierre de Fermat died in 1665 without leaving behind any written proof for a theorem that he claimed nonetheless to have proved. Probably this alleged theorem simply cannot be proved, since as the article points out no one else has been able to prove it. Therefore it is likely that Fermat was either lying or else mistaken when he made his claim.\nLaura: Your encyclopedia is out of date. Recently someone has in fact proved Fermat's theorem. And since the theorem is provable, your claim— that Fermat was lying or mistaken—clearly is wrong.",
+    "stimulus": "Joseph: My encyclopedia says that the mathematician Pierre de Fermat died in 1665 without leaving behind any written proof for a theorem that he claimed nonetheless to have proved. Probably this alleged theorem simply cannot be proved, since—as the article points out—no one else has been able to prove it. Therefore it is likely that Fermat was either lying or else mistaken when he made his claim.\nLaura: Your encyclopedia is out of date. Recently someone has in fact proved Fermat's theorem. And since the theorem is provable, your claim—that Fermat was lying or mistaken—clearly is wrong.",
     "questionStem": "Which one of the following most accurately describes a reasoning error in Laura's argument?",
     "answerChoices": {
       "A": "It purports to establish its conclusion by making a claim that, if true, would actually contradict that conclusion.",

@@ -541,7 +541,7 @@
     "questionType": "Agree/Disagree",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Claude: Because of the relatively high number of middle-aged people in the workforce, there will be fewer opportunities for promotion into uppermanagement positions. Since this will decrease people’s incentive to work hard, economic productivity and the quality of life will diminish.\nThelma: This glut of middle-aged workers will lead many people to form their own companies. They will work hard and thus increase economic productivity, improving the quality of life even if many of the companies ultimately fail.",
+    "stimulus": "Claude: Because of the relatively high number of middle-aged people in the workforce, there will be fewer opportunities for promotion into upper-management positions. Since this will decrease people’s incentive to work hard, economic productivity and the quality of life will diminish.\nThelma: This glut of middle-aged workers will lead many people to form their own companies. They will work hard and thus increase economic productivity, improving the quality of life even if many of the companies ultimately fail.",
     "questionStem": "On the basis of their statements, Claude and Thelma are committed to agreeing about which one of the following?",
     "answerChoices": {
       "A": "The quality of life in a society affects that society’s economic productivity.",
