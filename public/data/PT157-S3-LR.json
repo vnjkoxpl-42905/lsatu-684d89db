@@ -543,7 +543,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "A smaller number of short documentary films than\n of full-length science-fiction films are commercially\n successful, even though there are more short\n documentary films than there are science-fiction films.\n Therefore, a higher proportion of full-length science-\n fiction films than of short documentary films are\n commercially successful.",
+    "stimulus": "A smaller number of short documentary films than\n of full-length science-fiction films are commercially\n successful, even though there are more short\n documentary films than there are science-fiction films.\n Therefore, a higher proportion of full-length science-fiction films than of short documentary films are\n commercially successful.",
     "questionStem": "Which one of the following arguments is most similar in\n its pattern of reasoning to the argument above?",
     "answerChoices": {
       "A": "A greater number of small modern apartments than of large Victorian apartments have freestanding bathtubs. Hence, a smaller percentage of large Victorian apartments than of small modern apartments have freestanding bathtubs.",

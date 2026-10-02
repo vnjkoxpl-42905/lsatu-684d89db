@@ -122,7 +122,7 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Over the last five years, every new major alternative-\nenergy initiative that initially was promised government\nfunding has since seen that funding severely curtailed.\nIn no such case has the government come even close to\nproviding the level of funds initially earmarked for these\nprojects. Since large corporations have made it a point\nto discourage alternative-energy projects, it is likely that\nthe corporations’ actions influenced the government’s\nfunding decisions.",
+    "stimulus": "Over the last five years, every new major alternative-energy initiative that initially was promised government\nfunding has since seen that funding severely curtailed.\nIn no such case has the government come even close to\nproviding the level of funds initially earmarked for these\nprojects. Since large corporations have made it a point\nto discourage alternative-energy projects, it is likely that\nthe corporations’ actions influenced the government’s\nfunding decisions.",
     "questionStem": "Which one of the following, if true, most strengthens the\nreasoning above?",
     "answerChoices": {
       "A": "For the past two decades, most alternative-energy initiatives have received little or no government funding.",
@@ -356,7 +356,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Engineer: Thermophotovoltaic generators are devices\nthat convert heat into electricity. The process\nof manufacturing steel produces huge amounts\nof heat that currently go to waste. So if steel-\nmanufacturing plants could feed the heat they\nproduce into thermophotovoltaic generators, they\nwould greatly reduce their electric bills, thereby\nsaving money.",
+    "stimulus": "Engineer: Thermophotovoltaic generators are devices\nthat convert heat into electricity. The process\nof manufacturing steel produces huge amounts\nof heat that currently go to waste. So if steel-manufacturing plants could feed the heat they\nproduce into thermophotovoltaic generators, they\nwould greatly reduce their electric bills, thereby\nsaving money.",
     "questionStem": "Which one of the following is an assumption on which\nthe engineer’s argument depends?",
     "answerChoices": {
       "A": "There is no other means of utilizing the heat produced by the steel-manufacturing process that would be more cost effective than installing thermophotovoltaic generators.",
