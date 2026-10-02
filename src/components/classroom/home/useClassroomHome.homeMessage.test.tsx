@@ -16,7 +16,7 @@ import { renderHook, waitFor, act } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const workState = vi.hoisted(() => ({ uncertain: false }));
+const workState = vi.hoisted(() => ({ uncertain: false, classroom: true, activity: false }));
 const USER_ID = "user-1";
 const CONVO_ID = "conv-1";
 const MSG_CREATED_AT = "2026-08-23T12:00:00.000Z";
@@ -31,6 +31,7 @@ vi.mock("@/hooks/useUserPermissions", () => ({
     has_chat_access: true,
     has_schedule_access: false,
     has_activity_access: false,
+    has_classroom_access: workState.classroom,
     has_drill_access: false,
   }),
 }));
@@ -43,6 +44,8 @@ vi.mock("@/lib/completeAssignedWork", () => ({
 vi.mock("@/hooks/useAssignedTodoFeed", () => ({
   useAssignedTodoFeed: () => ({ rows: workState.uncertain ? [
     { key: 'guided', refId: 'issued', kind: 'guided', title: 'Reasoning drill', sourceTable: 'guided_drill_assignments', subtitle: '5 questions', createdAt: '2026-09-30T00:00:00Z', dueAt: null, route: '/guided/issued', status: 'assigned', progressUnverified: true },
+  ] : workState.activity ? [
+    { key: 'activity-issued', refId: 'activity-issued', kind: 'activity', title: 'Assigned reasoning activity', subtitle: '', createdAt: '2026-09-30T00:00:00Z', dueAt: null, route: '/activities/activity-issued', status: 'assigned' },
   ] : [], loading: false, failed: workState.uncertain, evidenceWarnings: workState.uncertain ? ['saved guided sittings'] : [], retry: vi.fn() }),
   routeWithReturnTo: (route: string) => route,
 }));
@@ -58,6 +61,7 @@ vi.mock("@/hooks/useWeeklyPlan", () => ({
 vi.mock("@/features/activity-centre/api/activitiesClient", () => ({
   listStudentAssignments: vi.fn(async () => []),
   listItemResponses: vi.fn(async () => []),
+  listMySectionGrades: vi.fn(async () => []),
 }));
 
 /** One inbound thread, whose read/cleared state each test sets. */
@@ -104,11 +108,27 @@ function wrapper({ children }: { children: React.ReactNode }) {
 
 beforeEach(() => {
   workState.uncertain = false;
+  workState.classroom = true;
+  workState.activity = false;
   thread = { unread: true, home_cleared_at: null, created_at: MSG_CREATED_AT };
   clearConversationFromHome.mockClear();
 });
 
 describe("Home message card visibility", () => {
+  it('shows assigned activities with Classroom on and the retired category flag off', async () => {
+    workState.activity = true;
+    const { result } = renderHook(() => useClassroomHome(), { wrapper });
+    await waitFor(() => expect(result.current.model.hero?.row.title ?? result.current.model.rows.find((row) => row.key === 'activity-issued')?.title).toBe('Assigned reasoning activity'));
+    expect(result.current.model.access.activities).toBe(true);
+  });
+  it('hides assigned activities when Classroom is off', async () => {
+    workState.classroom = false;
+    workState.activity = true;
+    const { result } = renderHook(() => useClassroomHome(), { wrapper });
+    await waitFor(() => expect(result.current.model.access.activities).toBe(false));
+    expect(result.current.model.rows.some((row) => row.key === 'activity-issued')).toBe(false);
+    expect(result.current.model.hero?.row.title).not.toBe('Assigned reasoning activity');
+  });
   it("shows an unread message that has never been cleared", async () => {
     const { result } = renderHook(() => useClassroomHome(), { wrapper });
     await waitFor(() => {

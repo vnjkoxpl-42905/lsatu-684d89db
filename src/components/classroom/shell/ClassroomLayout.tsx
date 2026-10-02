@@ -885,6 +885,7 @@ function StageFallback() {
 
 export default function ClassroomLayout() {
   const { user, authReady } = useAuth();
+  const permissions = useUserPermissions();
   const { theme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -953,8 +954,12 @@ export default function ClassroomLayout() {
   // no reading column, no section list.
   const workspaceStage =
     location.pathname === "/teacher" || location.pathname.startsWith("/teacher/");
-  const activeSection =
+  const requestedSection =
     drillHub || destinationName || messagesStage || workspaceStage ? null : pathSection ?? selectedSection;
+  const activeSection = requestedSection &&
+    (requestedSection !== 'work' && requestedSection !== 'notes' ||
+      (!permissions.loading && (permissions.is_admin || permissions.has_classroom_access)))
+    ? requestedSection : null;
 
   // Modal semantics for the two overlays. Declared after `activeSection`
   // because the section drawer takes its accessible name from it.

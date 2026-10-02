@@ -38,3 +38,11 @@ No real student account was mutated for QA. Assigned-route ownership and launch 
 
 - Final production build/postbuild passed after the source freeze. 7,137 modules transformed; canonical guide content check passed across 769 dist files.
 - Actual app controls verified in browser; assignment behavior verified in eight routed ownership/scope tests. No production learner runner mutation performed.
+
+## Final navigation correction
+
+- Final inspection found and fixed assigned Activity cards still filtered by the retired category flag.
+- Assigned-catalog links now use Classroom access; work/notes shell overlays are unavailable when Classroom is off or loading.
+- 15 additional Home/Library regression tests passed. Total focused verification: 69 tests.
+- Independent targeted re-review found no remaining high-confidence issues.
+- Final three-file targeted lint passed with four non-blocking existing warnings.

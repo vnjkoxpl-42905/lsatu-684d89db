@@ -18,6 +18,7 @@ describe("student written Library topic pilot", () => {
     mocks.permissions.mockReturnValue({
       loading: false, is_admin: false, has_drill_access: true, has_analytics_access: true,
       has_activity_access: true, has_bootcamp_access: false,
+      has_classroom_access: true,
     });
     mocks.progress.mockReturnValue({
       ledger: {
@@ -49,5 +50,20 @@ describe("student written Library topic pilot", () => {
     expect(screen.queryByRole("link", { name: "Practice this topic" })).not.toBeInTheDocument();
     expect(screen.getByText("Topic progress is locked for your account.")).toBeInTheDocument();
     expect(mocks.progress).not.toHaveBeenCalled();
+  });
+  it('opens only assigned catalog links through Classroom with retired flags off', () => {
+    mocks.permissions.mockReturnValue({ loading: false, is_admin: false, has_classroom_access: true,
+      has_activity_access: false, has_bootcamp_access: false });
+    render(<MemoryRouter><StudentLibraryLessons /></MemoryRouter>);
+    expect(screen.getByRole('link', { name: /Activities/ })).toHaveAttribute('href', '/library/activities');
+    expect(screen.getByRole('link', { name: /Bootcamps/ })).toHaveAttribute('href', '/library/bootcamps');
+    expect(screen.queryByRole('link', { name: 'Practice this topic' })).not.toBeInTheDocument();
+  });
+  it('keeps assigned catalog links locked when Classroom is off', () => {
+    mocks.permissions.mockReturnValue({ loading: false, is_admin: false, has_classroom_access: false,
+      has_activity_access: true, has_bootcamp_access: true });
+    render(<MemoryRouter><StudentLibraryLessons /></MemoryRouter>);
+    expect(screen.queryByRole('link', { name: /Activities/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Bootcamps/ })).not.toBeInTheDocument();
   });
 });

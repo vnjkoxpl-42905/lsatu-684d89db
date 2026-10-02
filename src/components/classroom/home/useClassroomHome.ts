@@ -115,7 +115,7 @@ export function useClassroomHome(): {
     () => ({
       messages: canAccess("has_chat_access"),
       schedule: canAccess("has_schedule_access"),
-      activities: canAccess("has_activity_access"),
+      activities: canAccess("has_classroom_access"),
       drill: canAccess("has_drill_access"),
     }),
     [canAccess],
@@ -179,8 +179,8 @@ export function useClassroomHome(): {
     return assigned
       .filter((row) => row.status !== "completed")
 
-      // An activity row leads to /activities/:id, which is gated on
-      // has_activity_access. Showing it to someone without the flag would put a
+      // Assigned activities open through Classroom and their own assignment.
+      // Showing them with Classroom off would put a
       // locked door on the page and, worse, could make it the hero.
       .filter((row) => row.kind !== "activity" || access.activities)
       .map((row) => {

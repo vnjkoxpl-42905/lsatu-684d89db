@@ -51,8 +51,7 @@ export default function StudentLibraryLessons() {
   const permissions = useUserPermissions();
   const canDrill = !permissions.loading && (permissions.is_admin || permissions.has_drill_access);
   const canSeeProgress = !permissions.loading && (permissions.is_admin || permissions.has_analytics_access);
-  const canSeeBootcamp = !permissions.loading && (permissions.is_admin || permissions.has_bootcamp_access);
-  const canSeeActivities = !permissions.loading && (permissions.is_admin || permissions.has_activity_access);
+  const canSeeAssigned = !permissions.loading && (permissions.is_admin || permissions.has_classroom_access);
 
   return (
     <div className="min-w-0 space-y-6">
@@ -96,8 +95,8 @@ export default function StudentLibraryLessons() {
         <h2 id="library-more-title">Keep studying</h2>
         <p>Open the written exercises and programs available to your account.</p>
         <div className="student-destination-link-grid">
-          <LibraryLink to="/library/activities" title="Activities" description="Short exercises assigned to your account." available={canSeeActivities} />
-          <LibraryLink to="/library/bootcamps" title="Bootcamps" description="Focused programs assigned to your account." available={canSeeBootcamp} />
+          <LibraryLink to="/library/activities" title="Activities" description="Short exercises assigned to your account." available={canSeeAssigned} />
+          <LibraryLink to="/library/bootcamps" title="Bootcamps" description="Focused programs assigned to your account." available={canSeeAssigned} />
         </div>
       </section>
     </div>
