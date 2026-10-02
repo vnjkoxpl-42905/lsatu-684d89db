@@ -254,7 +254,7 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
     return json({ received: true });
   }
 
-  if (event.type !== "checkout.session.completed") return json({ received: true });
+  if (event.type !== "checkout.session.completed" && event.type !== "checkout.session.async_payment_succeeded") return json({ received: true });
   const session = event.data.object;
 
   // A payment never changes access. Access is Joshua's decision, made by tier
@@ -350,10 +350,19 @@ async function handleStripe(supabase: any, raw: string, signature: string | null
     if (error) throw error;
     return json({ received: true, match: "pending" });
   }
-  // A package payment never grants passes by itself (decisions/log.md,
-  // 2026-09-27). The ledger row above is marked "awaiting", and the teacher
-  // grants it from Today with one click (admin_grant_stripe_payment).
-  return json({ received: true, student_id: student.id, grant: "awaiting_teacher" });
+  // Package fulfillment is durable and retryable. Re-record after validation so
+  // a failed best-effort ledger write above cannot acknowledge an uncredited
+  // payment. The locked RPC preserves dismissed/granted/history rows.
+  if (!ledgerChargeId) throw new Error("package_charge_missing");
+  await recordCharge(supabase, stripeSecret, ledgerChargeId, "webhook");
+  const { data: payment, error: grantError } = await supabase.rpc("auto_grant_stripe_payment", {
+    _charge_id: ledgerChargeId,
+    _checkout_session_id: session.id,
+    _student_id: student.id,
+    _offer_id: offer.id,
+  });
+  if (grantError) throw grantError;
+  return json({ received: true, student_id: student.id, grant: payment?.grant_state ?? "review" });
 }
 
 Deno.serve(async (req) => {
@@ -467,7 +476,7 @@ async function chargeIdForLedger(event: any, secret: string): Promise<string | n
   if (event.type.startsWith("charge.dispute.")) return typeof obj.charge === "string" ? obj.charge : null;
   if (event.type.startsWith("charge.")) return obj.id ?? null;
   if (event.type.startsWith("refund.")) return typeof obj.charge === "string" ? obj.charge : null;
-  if (event.type === "checkout.session.completed" && obj.payment_status === "paid" && typeof obj.payment_intent === "string") {
+  if ((event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") && obj.payment_status === "paid" && typeof obj.payment_intent === "string") {
     const intent = await stripeGet(secret, `/payment_intents/${obj.payment_intent}`);
     return typeof intent.latest_charge === "string" ? intent.latest_charge : null;
   }

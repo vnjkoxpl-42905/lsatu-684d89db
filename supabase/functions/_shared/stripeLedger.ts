@@ -113,6 +113,8 @@ export function buildPaymentRow(
     offer_id: offer?.id ?? null,
     // Backfilled history never asks for a grant: old packages were handled by hand.
     grant_state: isPackage && studentId && status === "succeeded" && source === "webhook" ? "awaiting" : "none",
+    // Insert-only rollout provenance. Existing/manual history is never opted in.
+    auto_grant_eligible: source === "webhook",
     source,
   };
 }
@@ -124,7 +126,7 @@ export function buildPaymentRow(
  */
 export async function upsertPayment(supabase: any, row: ReturnType<typeof buildPaymentRow>): Promise<boolean> {
   const { data: existing, error } = await supabase.from("stripe_payments")
-    .select("id,match_state,grant_state,student_id,source").eq("stripe_charge_id", row.stripe_charge_id).maybeSingle();
+    .select("id,match_state,grant_state,student_id,source,status,auto_grant_eligible").eq("stripe_charge_id", row.stripe_charge_id).maybeSingle();
   if (error) throw error;
   if (!existing) {
     const { error: insertError } = await supabase.from("stripe_payments").insert(row);
@@ -149,15 +151,23 @@ export async function upsertPayment(supabase: any, row: ReturnType<typeof buildP
     offer_id: row.offer_id ?? undefined,
     updated_at: new Date().toISOString(),
   };
-  if (existing.match_state === "unmatched" && row.student_id) {
-    facts.student_id = row.student_id;
-    facts.match_state = "matched";
-  }
-  // A live event arriving for a row first seen by backfill may still ask for a grant.
-  if (existing.grant_state === "none" && row.grant_state === "awaiting") facts.grant_state = "awaiting";
   for (const k of Object.keys(facts)) if (facts[k] === undefined) delete facts[k];
   const { error: updateError } = await supabase.from("stripe_payments").update(facts).eq("id", existing.id);
   if (updateError) throw updateError;
+  if (existing.match_state === "unmatched" && row.student_id) {
+    const { error: matchError } = await supabase.from("stripe_payments")
+      .update({ student_id: row.student_id, match_state: "matched" }).eq("id", existing.id).eq("match_state", "unmatched");
+    if (matchError) throw matchError;
+  }
+  // Only a live row inserted after rollout can become newly eligible (a charge
+  // can arrive before Checkout facts). History and unmatched payments stay for review; never overwrite a dismissal or
+  // concurrent grant using the earlier (potentially stale) SELECT.
+  if (existing.auto_grant_eligible && existing.source === "webhook" && existing.match_state === "matched" && row.grant_state === "awaiting") {
+    const { error: transitionError } = await supabase.from("stripe_payments")
+      .update({ grant_state: "awaiting" }).eq("id", existing.id).eq("source", "webhook")
+      .eq("auto_grant_eligible", true).eq("grant_state", "none").eq("match_state", "matched").eq("student_id", row.student_id).eq("status", "succeeded");
+    if (transitionError) throw transitionError;
+  }
   return false;
 }
 
