@@ -1,3 +1,4 @@
+import type { RcDrillSession } from '../lib/rcTypes';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useSearchParams } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -5,6 +6,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 /* The surface's own navigate is spied so the autostart's `replace` is
    assertable; the driver below needs the REAL one to change the query. */
 const navigate = vi.fn();
+const auth = vi.hoisted(() => ({ id: 'owner' }));
+vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: auth.id } }) }));
+const getSession = vi.fn(async (_id: string, _actor?: string) => null as RcDrillSession | null);
 const adoption = vi.hoisted(() => ({ enabled: false, sessions: [] as unknown[] }));
 vi.mock('@/lib/timedSectionAdoption', async () => {
   const actual = await vi.importActual<typeof import('@/lib/timedSectionAdoption')>('@/lib/timedSectionAdoption');
@@ -18,9 +22,9 @@ vi.mock('react-router-dom', async () => {
 /* Typed with the real signature. A `(...args: unknown[])` wrapper makes
    TypeScript infer `mock.calls[n]` as a zero-length tuple, so every assertion
    that reads the passage-ids argument is a type error. */
-const createSession = vi.fn(async (_config: RcDrillConfig, _passageIds: number[]) => ({
-  id: 'session-1',
-}));
+const createSession = vi.fn(async (config: RcDrillConfig, passageIds: number[], request?: { id: string; actorId: string }) => ({
+  id: request?.id ?? 'session-1', userId: request?.actorId ?? 'owner', config, passageIds, status: 'in_progress',
+} as RcDrillSession));
 const loadPassages = vi.fn(async (ids: number[]) => ids.map((passageId) => ({
   passageId,
   preptest: 140,
@@ -52,8 +56,9 @@ const loadPassages = vi.fn(async (ids: number[]) => ids.map((passageId) => ({
   }],
 })));
 vi.mock('../api/rcProgress', () => ({
-  createSession: (config: RcDrillConfig, passageIds: number[]) =>
-    createSession(config, passageIds),
+  createSession: (config: RcDrillConfig, passageIds: number[], request?: { id: string; actorId: string }) =>
+    createSession(config, passageIds, request),
+  getSession: (id: string, actor?: string) => getSession(id, actor),
   deleteSession: vi.fn(),
   getQuestionHistory: vi.fn(async () => new Map()),
   getSessionAttempts: vi.fn(async () => []),
@@ -125,6 +130,9 @@ function mount(entry: string, next?: string, showHistory = false) {
 
 describe('RcHubSurface autostart', () => {
   beforeEach(() => {
+    sessionStorage.clear();
+  auth.id = 'owner';
+  getSession.mockReset().mockResolvedValue(null);
     navigate.mockClear();
     createSession.mockClear();
     loadPassages.mockClear();
@@ -139,7 +147,7 @@ describe('RcHubSurface autostart', () => {
     // Without replace, Back from the player re-mounts this builder, re-reads
     // start=1, and creates a second session for the same click.
     expect(navigate).toHaveBeenCalledWith(
-      expect.stringContaining('/rc/drill?sessionId=session-1'),
+      expect.stringContaining('/rc/drill?sessionId='),
       { replace: true },
     );
   });
@@ -177,7 +185,7 @@ describe('RcHubSurface autostart', () => {
       practiceTestLegIndex: 0,
     });
     expect(navigate).toHaveBeenCalledWith(
-      expect.stringContaining('/rc/drill?sessionId=session-1&ptRun=run-1&ptLeg=0'),
+      expect.stringMatching(/sessionId=.*&ptRun=run-1&ptLeg=0/),
       { replace: true },
     );
   });
@@ -254,9 +262,11 @@ describe('RcHubSurface autostart', () => {
 
 describe('RcHubSurface launch truth (#171)', () => {
   beforeEach(async () => {
+    sessionStorage.clear();
     navigate.mockClear();
     createSession.mockReset();
-    createSession.mockImplementation(async () => ({ id: 'session-1' }));
+    auth.id = 'owner'; getSession.mockReset().mockResolvedValue(null);
+    createSession.mockImplementation(async (config, passageIds, request) => ({ id: request!.id, userId: request!.actorId, config, passageIds, status: 'in_progress' } as RcDrillSession));
     loadPassages.mockClear();
     adoption.enabled = false;
     adoption.sessions = [];
@@ -406,7 +416,7 @@ describe('RcHubSurface launch truth (#171)', () => {
   });
 
   it('starts once when Start is pressed twice before the create call returns', async () => {
-    let finish: (value: { id: string }) => void = () => {};
+    let finish: (value: RcDrillSession) => void = () => {};
     createSession.mockImplementationOnce(() => new Promise((resolve) => { finish = resolve; }));
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
     await screen.findByText(/1 passage ·/);
@@ -419,32 +429,94 @@ describe('RcHubSurface launch truth (#171)', () => {
       startButton.click();
       startButton.click();
     });
-    finish({ id: 'session-once' });
-    await waitFor(() => expect(navigate).toHaveBeenCalledWith(expect.stringContaining('sessionId=session-once'), { replace: undefined }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    const [config, passageIds, request] = createSession.mock.calls[0];
+    finish({ id: request!.id, userId: request!.actorId, config, passageIds, status: 'in_progress' } as RcDrillSession);
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith(expect.stringContaining('sessionId=' + request!.id), { replace: undefined }));
     expect(createSession).toHaveBeenCalledTimes(1);
   });
 
-  it('recovers the session a failed create actually saved instead of making a second one', async () => {
-    const progress = await import('../api/rcProgress');
+  it('recovers only the exact UUID after a lost reply, despite changed settings', async () => {
     createSession.mockRejectedValueOnce(new Error('network reset'));
-    vi.mocked(progress.listSessions)
-      .mockRejectedValueOnce(new Error('still offline'))
-      .mockResolvedValueOnce([{
-        id: 'saved-before-reset', status: 'in_progress', passageIds: [1188],
-        startedAt: new Date().toISOString(), config: { reveal: 'per_passage', timing: { mode: 'unlimited' } },
-      }] as never);
+    getSession.mockResolvedValueOnce(null).mockRejectedValueOnce(new Error('offline'));
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
-    await screen.findByText(/1 passage ·/);
+    await screen.findByText(/questions? selected$/);
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
-
     fireEvent.click(primary());
-    expect(await screen.findByText('network reset We could not confirm whether the drill was created. Press Start again and we will check before making a new one.')).toBeInTheDocument();
-    expect(navigate).not.toHaveBeenCalled();
-
-    fireEvent.click(primary());
-    await waitFor(() => expect(navigate).toHaveBeenCalledWith(expect.stringContaining('sessionId=saved-before-reset'), { replace: undefined }));
+    await screen.findByText(/Press Start again to retry this exact launch/);
+    const [config, passageIds, request] = createSession.mock.calls[0];
+    fireEvent.click(screen.getByRole('button', { name: /At the end/ }));
+    getSession.mockResolvedValueOnce({ id: request!.id, userId: request!.actorId, config, passageIds, status: 'in_progress' } as RcDrillSession);
+    fireEvent.click(screen.getByRole('button', { name: 'Retry original launch' }));
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith(expect.stringContaining('sessionId=' + request!.id), { replace: undefined }));
     expect(createSession).toHaveBeenCalledTimes(1);
+    expect(getSession.mock.calls.every(call => call[0] === request!.id && call[1] === 'owner')).toBe(true);
+  });
+  it('retries the same UUID and original passages after another set is inspected', async () => {
+    createSession.mockRejectedValueOnce(new Error('network reset'));
+    getSession.mockResolvedValueOnce(null).mockRejectedValueOnce(new Error('offline'));
+    mount('/classroom/drill?section=rc&stage=type-drill&count=1');
+    fireEvent.click(await screen.findByRole('button', { name: 'Inspect set' }));
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    fireEvent.click(primary());
+    await screen.findByText(/Press Start again to retry this exact launch/);
+    const original = createSession.mock.calls[0];
+    fireEvent.click(screen.getByRole('button', { name: 'More passages' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Retry original launch' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(2));
+    expect(createSession.mock.calls[1]).toEqual(original);
+  });
+  it('cannot create another row while the exact pending lookup still fails', async () => {
+    getSession.mockRejectedValue(new Error('offline'));
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
+    await screen.findByText(/questions? selected$/); fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' }); fireEvent.click(primary());
+    await screen.findByText(/Press Start again to retry this exact launch/);
+    fireEvent.click(screen.getByRole('button', { name: 'Retry original launch' }));
+    await waitFor(() => expect(getSession).toHaveBeenCalledTimes(2));
+    expect(getSession.mock.calls[0]).toEqual(getSession.mock.calls[1]);
+    expect(createSession).not.toHaveBeenCalled();
+  });
+  it('discards a delayed saved launch after the signed-in account changes', async () => {
+    let finish!: (value: RcDrillSession) => void;
+    createSession.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
+    const view = mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
+    await screen.findByText(/questions? selected$/); fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' }); fireEvent.click(primary());
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    const [config, passageIds, request] = createSession.mock.calls[0];
+    auth.id = 'another-owner';
+    view.rerender(<MemoryRouter initialEntries={['/classroom/drill?passages=1188']}><RcHubSurface embedded showHistory={false} /></MemoryRouter>);
+    finish({ id: request!.id, userId: request!.actorId, config, passageIds, status: 'in_progress' } as RcDrillSession);
+    await waitFor(() => expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument());
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it('retains the original UUID across a builder remount and ignores earlier unrelated sessions', async () => {
+    createSession.mockRejectedValueOnce(new Error('network reset'));
+    getSession.mockResolvedValueOnce(null).mockRejectedValueOnce(new Error('offline'));
+    const first = mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
+    await screen.findByText(/questions? selected$/); fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' }); fireEvent.click(primary());
+    await screen.findByText(/Press Start again to retry this exact launch/);
+    const [config, passageIds, request] = createSession.mock.calls[0];
+    first.unmount();
+    adoption.sessions = [{ id: 'unrelated-previous-run', config, passageIds, status: 'in_progress', startedAt: new Date().toISOString() }];
+    mount('/classroom/drill?section=rc&stage=type-drill&count=3');
+    getSession.mockResolvedValueOnce({ id: request!.id, userId: request!.actorId, config, passageIds, status: 'in_progress' } as RcDrillSession);
+    fireEvent.click(await screen.findByRole('button', { name: 'Retry original launch' }));
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith(expect.stringContaining('sessionId=' + request!.id), { replace: undefined }));
+    expect(createSession).toHaveBeenCalledTimes(1);
+    expect(sessionStorage.getItem('lsatu:rc-pending-launch:v1:owner')).toBeNull();
+  });
+  it('blocks creation when restored pending storage cannot be verified', async () => {
+    sessionStorage.setItem('lsatu:rc-pending-launch:v1:owner', '{broken');
+    mount('/classroom/drill?section=rc&stage=type-drill&passages=1188');
+    await screen.findByText(/pending reading drill could not be verified/);
+    await screen.findByText(/questions? selected$/); fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' }); fireEvent.click(primary());
+    expect(createSession).not.toHaveBeenCalled();
   });
 
   it('inspects without creating, deleting, or listing sessions', async () => {

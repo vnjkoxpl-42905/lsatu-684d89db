@@ -5,8 +5,8 @@ const owner = '11111111-1111-4111-8111-111111111111';
 const sessionId = '22222222-2222-4222-8222-222222222222';
 const attemptId = '33333333-3333-4333-8333-333333333333';
 
-const { insert, update, clock } = vi.hoisted(() => ({
-  insert: vi.fn(), update: vi.fn(),
+const { insert, update, clock, getUser } = vi.hoisted(() => ({
+  insert: vi.fn(), update: vi.fn(), getUser: vi.fn(),
   clock: { config: {} as Partial<RcDrillConfig> },
 }));
 
@@ -15,8 +15,8 @@ vi.mock('./rcSupabase.types', () => ({
   RC_ATTEMPTS_TABLE: 'rc_attempts',
   RC_ANNOTATIONS_TABLE: 'rc_annotations',
   rcDb: {
-    auth: { getUser: async () => ({ data: { user: { id: owner } } }) },
-    from: (table: string) => ({
+    auth: { getUser },
+    from: (_table: string) => ({
       select: () => ({
         eq: () => ({
           eq: () => ({ maybeSingle: async () => ({ data: {
@@ -38,9 +38,10 @@ vi.mock('./rcSupabase.types', () => ({
   },
 }));
 
-import { recordAttempt, saveSessionClock } from './rcProgress';
+import { createSession, getSession, recordAttempt, saveSessionClock } from './rcProgress';
 
 beforeEach(() => {
+  getUser.mockReset().mockResolvedValue({ data: { user: { id: owner } } });
   clock.config = { reveal: 'end_of_set', timing: { mode: 'per_passage_budget', secondsPerPassage: 100 }, source: 'manual' };
   insert.mockClear();
   update.mockReset().mockImplementation((changes: { config: RcDrillConfig }) => {
@@ -122,4 +123,27 @@ it('rejects an unacknowledged save and lets the next deliberate retry succeed', 
 it('rejects invalid question positions before writing', async () => {
   await expect(saveSessionClock(sessionId, 19, -1)).rejects.toThrow('question position');
   expect(update).not.toHaveBeenCalled();
+});
+
+it('inserts the stable client launch UUID and verifies its account acknowledgement', async () => {
+  insert.mockImplementationOnce((payload) => ({ select: () => ({ single: async () => ({ data: { ...payload, status: 'in_progress', started_at: '2026-10-02T00:00:00Z' }, error: null }) }) }));
+  const saved = await createSession(clock.config as RcDrillConfig, [3], { id: sessionId, actorId: owner });
+  expect(insert).toHaveBeenCalledWith(expect.objectContaining({ id: sessionId, user_id: owner, passage_ids: [3] }));
+  expect(saved.id).toBe(sessionId);
+});
+it('rejects an actor switch before inserting a launch', async () => {
+  getUser.mockResolvedValueOnce({ data: { user: { id: owner } } }).mockResolvedValueOnce({ data: { user: { id: 'another-owner' } } });
+  await expect(createSession(clock.config as RcDrillConfig, [3], { id: sessionId, actorId: owner })).rejects.toThrow('account changed');
+  expect(insert).not.toHaveBeenCalled();
+});
+it('rejects an actor switch while the insert acknowledgement is pending', async () => {
+  insert.mockImplementationOnce((payload) => ({ select: () => ({ single: async () => {
+    getUser.mockResolvedValue({ data: { user: { id: 'another-owner' } } });
+    return { data: { ...payload, status: 'in_progress' }, error: null };
+  } }) }));
+  await expect(createSession(clock.config as RcDrillConfig, [3], { id: sessionId, actorId: owner })).rejects.toThrow('account changed');
+});
+it('rejects an exact-session lookup after an actor change', async () => {
+  getUser.mockResolvedValueOnce({ data: { user: { id: owner } } }).mockResolvedValueOnce({ data: { user: { id: 'another-owner' } } });
+  await expect(getSession(sessionId, owner)).rejects.toThrow('account changed');
 });

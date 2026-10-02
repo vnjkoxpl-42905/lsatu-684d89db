@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { loadAllIndexPassages, loadPassages } from '../lib/rcBank';
 import { RcMarkdown } from './RcMarkdown';
@@ -14,6 +15,7 @@ import {
   createSession,
   deleteSession,
   getQuestionHistory,
+  getSession,
   getSessionAttempts,
   listSessions,
 } from '../api/rcProgress';
@@ -88,6 +90,28 @@ export interface RcHubSurfaceProps {
   onCancel?: () => void;
 }
 
+interface PendingLaunch { id: string; actorId: string; ids: number[]; config: RcDrillConfig; back?: string; replace?: boolean }
+function pendingKey(actorId: string) { return `lsatu:rc-pending-launch:v1:${actorId}`; }
+function readPending(actorId: string | null): PendingLaunch | null {
+  if (!actorId) return null;
+  const raw = sessionStorage.getItem(pendingKey(actorId));
+  if (!raw) return null;
+  const value = JSON.parse(raw) as PendingLaunch;
+  if (!value || value.actorId !== actorId || typeof value.id !== 'string' || !/^[0-9a-f-]{36}$/i.test(value.id)
+    || !Array.isArray(value.ids) || value.ids.length === 0 || !value.ids.every(id => Number.isSafeInteger(id) && id > 0)
+    || new Set(value.ids).size !== value.ids.length
+    || !value.config || !['manual', 'adaptive', 'assignment'].includes(value.config.source)
+    || !['per_passage', 'per_question', 'end_of_set'].includes(value.config.reveal)
+    || !value.config.timing || !['unlimited', 'per_passage_budget'].includes(value.config.timing.mode)
+    || value.config.timing.mode === 'per_passage_budget' && (!Number.isFinite(value.config.timing.secondsPerPassage) || value.config.timing.secondsPerPassage <= 0)
+    || value.config.practiceTestRunId !== undefined && typeof value.config.practiceTestRunId !== 'string'
+    || value.config.practiceTestLegIndex !== undefined && (!Number.isSafeInteger(value.config.practiceTestLegIndex) || value.config.practiceTestLegIndex < 0)
+    || value.back !== undefined && safeReturnTo(value.back) !== value.back || value.replace !== undefined && typeof value.replace !== 'boolean') {
+    throw new Error('The pending reading drill could not be verified.');
+  }
+  return value;
+}
+
 /**
  * Only same-origin paths are honoured as a return target. A `returnTo` comes
  * off the query string, so an absolute or protocol-relative one would turn an
@@ -105,7 +129,13 @@ function safeReturnTo(value: string | null | undefined): string | undefined {
  * the way RcSearch and the LR picker did.
  */
 export function RcHubSurface({ embedded = false, showHistory = true, onCancel }: RcHubSurfaceProps) {
+  const { user } = useAuth();
+  return <ActorRcHubSurface key={user?.id ?? 'signed-out'} {...{ embedded, showHistory, onCancel }} actorId={user?.id ?? null} />;
+}
+function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, actorId }: RcHubSurfaceProps & { actorId: string | null }) {
   const navigate = useNavigate();
+  const mounted = React.useRef(true);
+  React.useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   const [params] = useSearchParams();
 
   const [passages, setPassages] = React.useState<RcIndexPassageWithPt[]>([]);
@@ -149,7 +179,8 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
    * The next Start reads the account's sessions first, so one click can never
    * become two drills.
    */
-  const uncertainStart = React.useRef<{ ids: number[]; since: number } | null>(null);
+  const [pendingLoad] = React.useState(() => { try { return { request: readPending(actorId), error: null }; } catch { return { request: null, error: 'The pending reading drill could not be verified. Reload before starting another drill.' }; } });
+  const uncertainStart = React.useRef<PendingLaunch | null>(pendingLoad.request);
   /** The inspected-set key whose smaller-than-requested size was accepted. */
   const [acceptedShortfall, setAcceptedShortfall] = React.useState<string | null>(null);
 
@@ -421,14 +452,15 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
    */
   const start = async (options?: { replace?: boolean }) => {
     if (startingRef.current) return;
-    if (!options?.replace && !canStart) {
+    if (pendingLoad.error) { setNotice(pendingLoad.error); return; }
+    if (!uncertainStart.current && !options?.replace && !canStart) {
       setNotice(activeSet ? 'Confirm the set below before starting it.' : 'Inspect a set before starting it.');
       return;
     }
     startingRef.current = true;
     setStarting(true);
     try {
-      const chosen = options?.replace
+      const chosen = uncertainStart.current?.ids ?? (options?.replace
         ? handPicked.length > 0
           ? handPicked
           : selectPassages({
@@ -439,7 +471,7 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
               count,
               seed: Date.now() % 2147483647,
             }).selected.map((p) => p.passageId)
-        : activeSet?.ids ?? [];
+        : activeSet?.ids ?? []);
 
       if (chosen.length === 0) {
         setNotice('No passages match those filters. Loosen one and try again.');
@@ -451,87 +483,54 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
         !ptRun && !params.has('ptLeg') && reveal === 'end_of_set' ? canonicalRcSection(chosen) : null;
       const protectedPace = timing === 'untimed' ? 'untimed' : secondsPerPassage === 525 ? 'standard' :
         secondsPerPassage === 788 ? 'time-and-a-half' : secondsPerPassage === 1050 ? 'double-time' : null;
-      if (canonical && protectedPace && await manualSectionsEnabled()) {
+      if (!uncertainStart.current && canonical && protectedPace && await manualSectionsEnabled()) {
+        if (!mounted.current) return;
         navigate(newManualSectionHref('rc', canonical.pt, canonical.section, protectedPace), { replace: options?.replace });
         return;
       }
-      const pending = uncertainStart.current;
-      if (pending && pending.ids.join(',') === chosen.join(',')) {
-        const recovered = await findStartedSession(chosen, pending.since);
-        if (recovered === 'unknown') {
-          setNotice('We still cannot confirm whether this drill was created. Check your connection and press Start again.');
-          startingRef.current = false;
-          setStarting(false);
-          return;
+      if (!actorId || !mounted.current) throw new Error('You need to be signed in to drill.');
+      // An unresolved save owns its immutable UUID and settings, even if the
+      // student edits or inspects another set while reconnecting.
+      const request = uncertainStart.current ?? {
+        id: crypto.randomUUID(), actorId, ids: [...chosen], config: structuredClone(config),
+        back: safeReturnTo(params.get('returnTo')), replace: options?.replace,
+      };
+      uncertainStart.current = request;
+      // Persist before the write; storage failure prevents an unrepeatable launch.
+      sessionStorage.setItem(pendingKey(request.actorId), JSON.stringify(request));
+      const verify = (saved: RcDrillSession) => {
+        if (saved.id !== request.id || saved.userId !== request.actorId || saved.passageIds.join(',') !== request.ids.join(',')
+          || Object.entries(request.config).some(([key, value]) => JSON.stringify(saved.config[key as keyof RcDrillConfig]) !== JSON.stringify(value))) {
+          throw new Error('The saved drill does not match this launch. Retry before creating another drill.');
         }
-        uncertainStart.current = null;
-        if (recovered) {
-          openSession(recovered.id, options?.replace);
-          return;
+        return saved;
+      };
+      let saved: RcDrillSession | null;
+      try { saved = await getSession(request.id, request.actorId); }
+      catch { throw new Error('We could not confirm whether the drill was created. Press Start again to retry this exact launch.'); }
+      if (!mounted.current) return;
+      if (!saved) {
+        try { saved = await createSession(request.config, request.ids, { id: request.id, actorId: request.actorId }); }
+        catch (err) {
+          if (!mounted.current) return;
+          try { saved = await getSession(request.id, request.actorId); }
+          catch { throw new Error('We could not confirm whether the drill was created. Press Start again to retry this exact launch.'); }
+          if (!saved) throw err;
         }
       }
-      const since = Date.now();
-      let session: RcDrillSession;
-      try {
-        session = await createSession(config, chosen);
-      } catch (err) {
-        const recovered = await findStartedSession(chosen, since);
-        if (recovered && recovered !== 'unknown') {
-          openSession(recovered.id, options?.replace);
-          return;
-        }
-        if (recovered === 'unknown') {
-          uncertainStart.current = { ids: [...chosen], since };
-          const reason = err instanceof Error && err.message ? err.message + ' ' : '';
-          throw new Error(reason + 'We could not confirm whether the drill was created. Press Start again and we will check before making a new one.');
-        }
-        throw err;
-      }
-      openSession(session.id, options?.replace);
+      if (!mounted.current) return;
+      verify(saved);
+      sessionStorage.removeItem(pendingKey(request.actorId));
+      uncertainStart.current = null;
+      const testLeg = request.config.practiceTestRunId && request.config.practiceTestLegIndex !== undefined
+        ? '&ptRun=' + encodeURIComponent(request.config.practiceTestRunId) + '&ptLeg=' + request.config.practiceTestLegIndex : '';
+      navigate('/rc/drill?sessionId=' + saved.id + testLeg + (request.back ? '&returnTo=' + encodeURIComponent(request.back) : ''), { replace: request.replace });
     } catch (err) {
+      if (!mounted.current) return;
       setNotice(err instanceof Error ? err.message : 'The drill could not be started.');
       startingRef.current = false;
       setStarting(false);
     }
-  };
-
-  /**
-   * Reads back an in-progress session for exactly these passages that started
-   * at or after this click (with two minutes for clock skew). `null` means the
-   * read worked and found none; `'unknown'` means the read itself failed.
-   */
-  const findStartedSession = async (
-    ids: number[],
-    since: number,
-  ): Promise<RcDrillSession | null | 'unknown'> => {
-    try {
-      const rows = await listSessions();
-      return rows.find((row) =>
-        row.status === 'in_progress' &&
-        row.passageIds.join(',') === ids.join(',') &&
-        row.config.reveal === config.reveal &&
-        (row.config.practiceTestRunId ?? null) === (config.practiceTestRunId ?? null) &&
-        JSON.stringify(row.config.timing) === JSON.stringify(config.timing) &&
-        Date.parse(row.startedAt) >= since - 120_000,
-      ) ?? null;
-    } catch {
-      return 'unknown';
-    }
-  };
-
-  const openSession = (sessionId: string, replace?: boolean) => {
-    // A link that said where to go afterwards keeps saying it: the practice
-    // test hands off its RC leg this way and needs the student back.
-    const back = safeReturnTo(params.get('returnTo'));
-    const testLeg = config.practiceTestRunId && config.practiceTestLegIndex !== undefined
-      ? '&ptRun=' + encodeURIComponent(config.practiceTestRunId) +
-        '&ptLeg=' + encodeURIComponent(String(config.practiceTestLegIndex))
-      : '';
-    navigate(
-      '/rc/drill?sessionId=' + sessionId + testLeg +
-        (back ? '&returnTo=' + encodeURIComponent(back) : ''),
-      { replace },
-    );
   };
 
   // Runs a tick after the link has been applied, so it starts on the count and
@@ -643,7 +642,12 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
           </button>
         </div>
       )}
+      {pendingLoad.error && <p className="rc-page-sub" role="alert">{pendingLoad.error}</p>}
       {notice && <p className="rc-page-sub" role="status">{notice}</p>}
+      {uncertainStart.current && <div className="rc-builder-alert" role="status">
+        <span>A previous Start is pending for passage IDs {uncertainStart.current.ids.join(', ')}. Retry checks that original saved drill with its original timing and answer settings; your current edits will not start another drill.</span>
+        <button type="button" className="rc-chip" disabled={starting} onClick={() => void start()}>Retry original launch</button>
+      </div>}
 
       {/* ------------------------------------------------------- build card */}
       <div className="rc-card">
@@ -939,7 +943,7 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
           <button
             type="button"
             className="rc-button rc-button-primary"
-            disabled={starting || inspecting || !builderReady || (activeSet !== null && needsShortfallAck)}
+            disabled={starting || inspecting || uncertainStart.current !== null || !builderReady || (activeSet !== null && needsShortfallAck)}
             onClick={() => void (activeSet ? start() : inspectSet())}
           >
             {starting ? 'Starting…' : inspecting ? 'Loading set…' : activeSet ? 'Start this drill' : 'Inspect set'}
@@ -1063,7 +1067,7 @@ export function RcHubSurface({ embedded = false, showHistory = true, onCancel }:
             <button
               type="button"
               className="rc-button rc-button-primary"
-              disabled={handPicked.length === 0 || starting || inspecting || !builderReady}
+              disabled={handPicked.length === 0 || starting || inspecting || uncertainStart.current !== null || !builderReady}
               onClick={() => void (activeSet ? start() : inspectSet())}
             >
               {activeSet ? 'Start this drill' : 'Inspect set'}

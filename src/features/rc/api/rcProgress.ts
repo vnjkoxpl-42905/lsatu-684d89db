@@ -114,14 +114,18 @@ async function assertActivePracticeTestSession(sessionId: string): Promise<void>
 export async function createSession(
   config: RcDrillConfig,
   passageIds: number[],
+  request?: { id: string; actorId: string },
 ): Promise<RcDrillSession> {
   const userId = await requireUserId();
+  if (request && request.actorId !== userId) throw new Error('The signed-in account changed.');
   if (config.practiceTestRunId && !await isActivePracticeTestDevice(userId, config.practiceTestRunId)) {
     throw new Error('This practice test is active on another device.');
   }
+  if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
   const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
     .insert({
+      ...(request ? { id: request.id } : {}),
       user_id: userId,
       config,
       passage_ids: passageIds,
@@ -131,12 +135,17 @@ export async function createSession(
     .select()
     .single();
   raise(error);
-  return toSession(data as RcDrillSessionRow);
+  if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+  const saved = toSession(data as RcDrillSessionRow);
+  if (saved.userId !== userId || request && saved.id !== request.id) throw new Error('The reading drill save could not be verified.');
+  return saved;
 }
 
-export async function getSession(id: string): Promise<RcDrillSession | null> {
+export async function getSession(id: string, expectedActorId?: string): Promise<RcDrillSession | null> {
+  if (expectedActorId && await requireUserId() !== expectedActorId) throw new Error('The signed-in account changed.');
   const { data, error } = await rcDb.from(RC_SESSIONS_TABLE).select().eq('id', id).maybeSingle();
   raise(error);
+  if (expectedActorId && await requireUserId() !== expectedActorId) throw new Error('The signed-in account changed.');
   return data ? toSession(data as RcDrillSessionRow) : null;
 }
 
