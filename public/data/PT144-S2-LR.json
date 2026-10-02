@@ -3,7 +3,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 1,
-    "questionType": "Flaw or descriptive weakening",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation"
     ],
@@ -29,7 +29,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 2,
-    "questionType": "Fill in the blank",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -77,7 +77,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 4,
-    "questionType": "Flaw or descriptive weakening",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],

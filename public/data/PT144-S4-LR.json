@@ -29,7 +29,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 4,
     "questionNumber": 2,
-    "questionType": "Miscellaneous",
+    "questionType": "Principle",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -56,7 +56,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 4,
     "questionNumber": 3,
-    "questionType": "Miscellaneous",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -101,7 +101,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 4,
     "questionNumber": 5,
-    "questionType": "Flaw or descriptive weakening",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -128,7 +128,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 4,
     "questionNumber": 6,
-    "questionType": "Flaw or descriptive weakening",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -318,7 +318,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 4,
     "questionNumber": 14,
-    "questionType": "Miscellaneous",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -343,7 +343,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 4,
     "questionNumber": 15,
-    "questionType": "Flaw or descriptive weakening",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
