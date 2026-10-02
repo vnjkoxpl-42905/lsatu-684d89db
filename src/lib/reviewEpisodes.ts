@@ -24,8 +24,30 @@ function row(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('Review save was not acknowledged.');
   return value as Record<string, unknown>;
 }
+function requiredText(value: unknown): value is string { return typeof value === 'string' && value.trim().length > 0; }
+function timestamp(value: unknown): value is string { return requiredText(value) && Number.isFinite(Date.parse(value)); }
+function verifiedEpisode(value: unknown): ReviewEpisode {
+  const data = row(value);
+  if (![data.id, data.student_id, data.actor_id, data.source_id, data.question_id].every(requiredText)
+    || typeof data.source_kind !== 'string' || !['intro_lr_attempts', 'hs_capstone'].includes(data.source_kind)
+    || typeof data.reason !== 'string' || !['missed', 'teacher_selected'].includes(data.reason) || !timestamp(data.created_at)
+    || (data.reason === 'missed' ? data.selection_reason !== null : !requiredText(data.selection_reason))) {
+    throw new Error('Review episode was not acknowledged.');
+  }
+  return data as unknown as ReviewEpisode;
+}
+function verifiedEvent(value: unknown, episode: ReviewEpisode): ReviewEpisodeEvent {
+  const data = row(value);
+  if (![data.id, data.episode_id, data.actor_id].every(requiredText) || data.episode_id !== episode.id || data.actor_id !== episode.student_id
+    || typeof data.kind !== 'string' || !['blind_answer', 'reveal', 'reflection', 'complete'].includes(data.kind) || !timestamp(data.created_at)) {
+    throw new Error('Review event was not acknowledged.');
+  }
+  validateReviewEvent(data.kind as ReviewEventKind, row(data.payload) as Record<string, string>, episode.reason);
+  return data as unknown as ReviewEpisodeEvent;
+}
 export function validateReviewEvent(kind: ReviewEventKind, payload: Record<string, string>, reason: EpisodeReason): void {
-  if (Object.values(payload).some(value => typeof value !== 'string')) throw new Error('Review fields must be text.');
+  if (!['blind_answer', 'reveal', 'reflection', 'complete'].includes(kind) || !['missed', 'teacher_selected'].includes(reason)) throw new Error('Review event could not be verified.');
+  if (Object.values(row(payload)).some(value => typeof value !== 'string')) throw new Error('Review fields must be text.');
   if (kind === 'blind_answer' && !payload.answer?.trim()) throw new Error('Choose a blind answer before saving.');
   if (kind === 'complete' && reason === 'missed' && (!payload.error_diagnosis?.trim() || !payload.right_answer_diagnosis?.trim())) {
     throw new Error('Explain the error and why the right answer is right before completing this miss.');
@@ -48,7 +70,7 @@ export function createReviewEpisodeService(transport: EpisodeTransport = default
   return {
     async open(input: { actorId: string; studentId: string; source: EpisodeSource; sourceId: string; reason: EpisodeReason; selectionReason?: string }) {
       if (input.reason === 'teacher_selected' && !input.selectionReason?.trim()) throw new Error('Give the student a reason for this review.');
-      const data = row(await call(input.actorId, 'open_review_episode_v1', {
+      const data = verifiedEpisode(await call(input.actorId, 'open_review_episode_v1', {
         p_student: input.studentId, p_source: input.source, p_source_id: input.sourceId, p_reason: input.reason, p_selection_reason: input.selectionReason?.trim() || null,
       }));
       if (data.student_id !== input.studentId || data.actor_id !== input.actorId || data.source_kind !== input.source || data.source_id !== input.sourceId || data.reason !== input.reason || typeof data.id !== 'string'
@@ -57,7 +79,9 @@ export function createReviewEpisodeService(transport: EpisodeTransport = default
     },
     async append(actorId: string, episode: ReviewEpisode, id: string, kind: ReviewEventKind, payload: Record<string, string>) {
       validateReviewEvent(kind, payload, episode.reason);
-      const data = row(await call(actorId, 'append_review_event_v1', { p_episode: episode.id, p_event: id, p_kind: kind, p_payload: payload }));
+      verifiedEpisode(episode);
+      if (!requiredText(id)) throw new Error('Review event identity could not be verified.');
+      const data = verifiedEvent(await call(actorId, 'append_review_event_v1', { p_episode: episode.id, p_event: id, p_kind: kind, p_payload: payload }), episode);
       const returned = row(data.payload);
       if (data.id !== id || data.episode_id !== episode.id || data.actor_id !== actorId || data.kind !== kind
         || Object.keys(returned).length !== Object.keys(payload).length || Object.entries(payload).some(([key, value]) => returned[key] !== value)) throw new Error('Review event was not acknowledged.');
@@ -66,9 +90,22 @@ export function createReviewEpisodeService(transport: EpisodeTransport = default
     async list(actorId: string, studentId: string): Promise<{ episodes: ReviewEpisode[]; events: ReviewEpisodeEvent[] }> {
       const data = row(await call(actorId, 'read_review_episodes_v1', { p_student: studentId }));
       if (!Array.isArray(data.episodes) || !Array.isArray(data.events) || data.episodes.some(item => row(item).student_id !== studentId)) throw new Error('Review records could not be verified.');
-      const episodeIds = new Set(data.episodes.map(item => row(item).id));
-      if (data.events.some(event => !episodeIds.has(row(event).episode_id))) throw new Error('Review event scope could not be verified.');
-      return data as unknown as { episodes: ReviewEpisode[]; events: ReviewEpisodeEvent[] };
+      const episodes = data.episodes.map(verifiedEpisode);
+      const episodeById = new Map(episodes.map(item => [item.id, item]));
+      if (episodeById.size !== episodes.length) throw new Error('Review episode identity could not be verified.');
+      const events = data.events.map(value => {
+        const episode = episodeById.get(row(value).episode_id as string);
+        if (!episode) throw new Error('Review event scope could not be verified.');
+        return verifiedEvent(value, episode);
+      });
+      if (new Set(events.map(event => event.id)).size !== events.length) throw new Error('Review event identity could not be verified.');
+      for (const episode of episodes) {
+        const history = events.filter(event => event.episode_id === episode.id);
+        if (['blind_answer', 'reveal', 'complete'].some(kind => history.filter(event => event.kind === kind).length > 1)) {
+          throw new Error('Review event history could not be verified.');
+        }
+      }
+      return { episodes, events };
     },
   };
 }

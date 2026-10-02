@@ -68,3 +68,19 @@ it('resets fields when the account changes and withholds writes when saved work 
   await screen.findByRole('alert'); expect(screen.queryByDisplayValue('owner A private text')).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Open review task' })).not.toBeInTheDocument(); expect(mocks.append).not.toHaveBeenCalled();
 });
+it('does not carry a pending save or its later acknowledgement into another source', async () => {
+  mocks.list.mockResolvedValue({ episodes: [episode], events: [] });
+  let acknowledge!: (value: unknown) => void;
+  mocks.append.mockImplementationOnce(() => new Promise(resolve => { acknowledge = resolve; }));
+  const view = render(<SavedReviewEpisodePanel {...props} />);
+  await screen.findByRole('button', { name: 'Record Reveal for this task' });
+  fireEvent.click(screen.getByRole('button', { name: 'Record Reveal for this task' }));
+  await waitFor(() => expect(mocks.append).toHaveBeenCalledTimes(1));
+  mocks.list.mockResolvedValue({ episodes: [], events: [] });
+  view.rerender(<SavedReviewEpisodePanel {...props} sourceId="another-attempt" />);
+  await screen.findByRole('button', { name: 'Open review task' });
+  const [actor, ep, id, kind, payload] = mocks.append.mock.calls[0];
+  acknowledge({ actor_id: actor, episode_id: ep.id, id, kind, payload, created_at: '2026-09-30T12:01:00Z' });
+  await waitFor(() => expect(screen.queryByText('Reveal recorded for this review task.')).not.toBeInTheDocument());
+  expect(screen.queryByRole('button', { name: 'Retry save' })).not.toBeInTheDocument();
+});

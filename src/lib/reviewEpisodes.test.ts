@@ -42,4 +42,40 @@ describe('durable review episode contract', () => {
     const service = createReviewEpisodeService({ actor: async () => 'student', rpc: async () => ({ data: { episodes: [episode], events: [{ ...event('reveal'), episode_id: 'foreign' }] }, error: null }) });
     await expect(service.list('student', 'student')).rejects.toThrow('scope');
   });
+  it.each([
+    { ...event('reveal'), created_at: undefined },
+    { ...event('reveal'), kind: 'unknown' },
+    { ...event('reveal'), actor_id: 'other' },
+    { ...event('blind_answer'), payload: { answer: 5 } },
+    event('complete'),
+  ])('rejects malformed saved events before treating them as review state: %j', async malformed => {
+    const service = createReviewEpisodeService({ actor: async () => 'student', rpc: async () => ({ data: { episodes: [episode], events: [malformed] }, error: null }) });
+    await expect(service.list('student', 'student')).rejects.toThrow();
+  });
+  it.each([{ ...episode, id: '' }, { ...episode, source_kind: 'unsupported' }, { ...episode, reason: 'unknown' }, { ...episode, created_at: 'invalid' }])('rejects malformed episode records: %j', async malformed => {
+    const service = createReviewEpisodeService({ actor: async () => 'student', rpc: async () => ({ data: { episodes: [malformed], events: [] }, error: null }) });
+    await expect(service.list('student', 'student')).rejects.toThrow();
+  });
+  it('rejects an incomplete acknowledgement and preserves the exact retry identity', async () => {
+    const rpc = vi.fn().mockResolvedValueOnce({ data: { ...event('reveal'), created_at: '' }, error: null }).mockResolvedValueOnce({ data: event('reveal'), error: null });
+    const service = createReviewEpisodeService({ actor: async () => 'student', rpc });
+    await expect(service.append('student', episode, 'reveal', 'reveal', {})).rejects.toThrow('acknowledged');
+    await expect(service.append('student', episode, 'reveal', 'reveal', {})).resolves.toMatchObject({ id: 'reveal' });
+    expect(rpc.mock.calls[0][1]).toEqual(rpc.mock.calls[1][1]);
+  });
+  it('rejects duplicate episode and event identities in a read', async () => {
+    const rpc = vi.fn().mockResolvedValueOnce({ data: { episodes: [episode, episode], events: [] }, error: null }).mockResolvedValueOnce({ data: { episodes: [episode], events: [event('reveal'), event('reveal')] }, error: null });
+    const service = createReviewEpisodeService({ actor: async () => 'student', rpc });
+    await expect(service.list('student', 'student')).rejects.toThrow('identity');
+    await expect(service.list('student', 'student')).rejects.toThrow('identity');
+  });
+  it('rejects repeated immutable state events even when IDs differ', async () => {
+    const service = createReviewEpisodeService({ actor: async () => 'student', rpc: async () => ({ data: { episodes: [episode], events: [event('reveal'), { ...event('reveal'), id: 'second-reveal' }] }, error: null }) });
+    await expect(service.list('student', 'student')).rejects.toThrow('history');
+  });
+  it.each([{}, { text: '' }])('retains server-valid historical reflection payloads: %j', async payload => {
+    const saved = event('reflection', payload);
+    const service = createReviewEpisodeService({ actor: async () => 'student', rpc: async () => ({ data: { episodes: [episode], events: [saved] }, error: null }) });
+    await expect(service.list('student', 'student')).resolves.toMatchObject({ events: [saved] });
+  });
 });

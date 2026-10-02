@@ -4,13 +4,16 @@
 .classroom-root .review-queue-intro p { color: var(--classroom-meta-text); font-size: 14px; line-height: 1.5; margin: 8px 0 0; max-width: 68ch; }
 .classroom-root .review-queue-count { color: var(--classroom-meta-text); flex: none; font-size: 13px; padding-top: 7px; }
 .classroom-root .review-queue-controls { align-items: center; display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 18px; }
-.classroom-root .review-queue-filters { background: var(--classroom-hover); border: 1px solid var(--classroom-line); border-radius: 999px; display: flex; gap: 2px; padding: 3px; }
+.classroom-root .review-queue-filters { background: var(--classroom-hover); border: 1px solid var(--classroom-line); border-radius: 16px; display: flex; flex-wrap: wrap; gap: 2px; max-width: 100%; padding: 3px; }
 .classroom-root .review-queue-filters button { border-radius: 999px; color: var(--classroom-meta-text); font-size: 13px; min-height: 34px; padding: 5px 13px; }
 .classroom-root .review-queue-filters button[aria-pressed="true"] { background: var(--classroom-active); color: var(--classroom-active-ink); }
 .classroom-root .review-queue-filters button:disabled { opacity: .45; }
 .classroom-root .review-queue-search { flex: 1 1 180px; }
 .classroom-root .review-queue-search input { background: var(--classroom-surface); border: 1px solid var(--classroom-line-strong); border-radius: 8px; color: var(--classroom-ink); font-size: 14px; min-height: 42px; padding: 8px 12px; width: 100%; }
 .classroom-root .review-queue-view { border: 1px solid var(--classroom-line-strong); border-radius: 8px; color: var(--classroom-ink); font-size: 13px; min-height: 42px; padding: 8px 13px; }
+.classroom-root .review-queue-select { color: var(--classroom-meta-text); display: flex; flex: 1 1 180px; flex-direction: column; font-size: 13px; gap: 4px; min-width: 0; }
+.classroom-root .review-queue-select select { background: var(--classroom-surface); border: 1px solid var(--classroom-line-strong); border-radius: 8px; color: var(--classroom-ink); max-width: 100%; min-height: 42px; padding: 8px; width: 100%; }
+.classroom-root .review-queue-selected { background: var(--classroom-hover); box-shadow: inset 3px 0 var(--classroom-accent); }
 .classroom-root .review-queue-list { list-style: none; margin: 0; padding: 0; }
 .classroom-root .review-queue-list li + li { border-top: 1px solid var(--classroom-line); }
 .classroom-root .review-queue-card { align-items: start; color: var(--classroom-ink); display: flex; gap: 18px; justify-content: space-between; min-height: 86px; padding: 18px 8px; text-decoration: none; }
@@ -40,5 +43,5 @@
 .classroom-root .review-queue-return:focus-visible { outline: 2px solid var(--classroom-accent); outline-offset: 3px; }
 .classroom-root.classroom-root-review-return .classroom-section-list { display: none; }
 @media (min-width: 1100px) { .classroom-root.classroom-root-journal-detail.classroom-root-review-return { grid-template-columns: 280px minmax(0, 1fr) 320px; } .classroom-root.classroom-root-journal-detail.classroom-root-review-return .classroom-journal-stage { grid-column: 2; } .classroom-root.classroom-root-journal-detail.classroom-root-review-return .classroom-aside { grid-column: 3; } }
-.classroom-root .review-queue button:focus-visible, .classroom-root .review-queue input:focus-visible, .classroom-root .review-queue a:focus-visible { outline: 2px solid var(--classroom-accent); outline-offset: 3px; }
+.classroom-root .review-queue button:focus-visible, .classroom-root .review-queue input:focus-visible, .classroom-root .review-queue select:focus-visible, .classroom-root .review-queue a:focus-visible { outline: 2px solid var(--classroom-accent); outline-offset: 3px; }
 @media (max-width: 600px) { .classroom-root .review-queue-intro { flex-direction: column; gap: 6px; } .classroom-root .review-queue-count { padding: 0; } .classroom-root .review-queue-card { flex-direction: column; } .classroom-root .review-queue-card-side { align-items: start; flex-direction: row; flex-wrap: wrap; } .classroom-root .review-queue-open { margin: 3px 0 0; width: 100%; } }

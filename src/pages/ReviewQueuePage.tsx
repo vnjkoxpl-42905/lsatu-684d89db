@@ -18,6 +18,7 @@ import { listAssignmentsForStudent, listResponsesForAssignments } from "@/featur
 import "./reviewQueue.css";
 
 type ReasonFilter = "all" | ReviewReason;
+const reviewSources: ReviewSource[] = ["wrong_answer_journal", "flagged_questions", "rc_attempts", "activity_item_responses", "section_history", "practice_test", "intro_lr_attempts", "hard_sentences", "native_lab_attempts", "review_episodes"];
 
 function readableDate(value: string): string {
   const date = new Date(value);
@@ -102,6 +103,11 @@ export default function ReviewQueuePage() {
     staleTime: 0, queryFn: () => createReviewEpisodeService().list(user!.id, user!.id) });
   const reason: ReasonFilter = reasonParam === "missed" || reasonParam === "flagged" || reasonParam === "skipped" || reasonParam === "teacher_selected" ? reasonParam : "all";
   const search = searchParams.get("q") ?? "";
+  const areaParam = searchParams.get("area");
+  const area = areaParam === "lr" || areaParam === "rc" ? areaParam : "all";
+  const sourceParam = searchParams.get("source");
+  const source = reviewSources.find(value => value === sourceParam) ?? "all";
+  const selectedKey = searchParams.get("selected");
   const table = searchParams.get("view") === "table";
   const requestedCount = Number(searchParams.get("show"));
   const shownCount = Number.isSafeInteger(requestedCount) && requestedCount > 30 ? requestedCount : 30;
@@ -118,11 +124,17 @@ export default function ReviewQueuePage() {
   const items = projection.items;
   const visibleItems = useMemo(() => items.filter((item) =>
     (reason === "all" || item.reasons.includes(reason)) &&
-    (!search.trim() || `${item.label} ${item.qid} ${item.qtype ?? ""} ${item.area} ${item.reflection ?? ''}`.toLowerCase().includes(search.trim().toLowerCase())),
-  ), [items, reason, search]);
+    (area === "all" || item.area === area) &&
+    (source === "all" || item.sources.includes(source)) &&
+    (!search.trim() || `${item.label} ${item.qid} ${item.qtype ?? ""} ${item.area} ${item.reflection ?? ''} ${item.flaggedNote ?? ''}`.toLowerCase().includes(search.trim().toLowerCase())),
+  ), [items, reason, area, source, search]);
   const shownItems = visibleItems.slice(0, shownCount);
-  const returnTo = `/review/to-review${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
-  const detailLink = (href: string) => `${href}${href.includes("?") ? "&" : "?"}returnTo=${encodeURIComponent(returnTo)}`;
+  const detailLink = (item: typeof items[number]) => {
+    const returnParams = new URLSearchParams(searchParams);
+    returnParams.set("selected", item.key);
+    const returnTo = `/review/to-review?${returnParams.toString()}`;
+    return `${item.href}${item.href.includes("?") ? "&" : "?"}returnTo=${encodeURIComponent(returnTo)}`;
+  };
   const loading = permissions.loading || (canJournal && journal.isLoading) || (canFlag && flagged.isLoading) || (canRc && rcReview.isLoading) || (canActivity && activityReview.isLoading) || (canSection && sectionReview.isLoading) || (canPracticeTest && practiceTestReview.isLoading) || (canIntroLr && (introLrReview.isLoading || hardSentencesReview.isLoading || nativeLabReview.isLoading || episodeReview.isLoading));
   const journalError = canJournal && journal.isError;
   const flagError = canFlag && flagged.isError;
@@ -142,7 +154,9 @@ export default function ReviewQueuePage() {
     const next = new URLSearchParams(searchParams);
     if (value) next.set(key, value);
     else next.delete(key);
-    if (key === "q" || key === "reason") next.delete("show");
+    if (key === "q" || key === "reason" || key === "area" || key === "source") {
+      next.delete("show"); next.delete("selected");
+    }
     setSearchParams(next, { replace: true });
   };
 
@@ -168,6 +182,16 @@ export default function ReviewQueuePage() {
           <span className="sr-only">Find review work</span>
           <input type="search" value={search} onChange={(event) => setParam("q", event.target.value || null)} placeholder="Find review work" />
         </label>
+        <label className="review-queue-select">Area
+          <select aria-label="Review area" value={area} onChange={event => setParam("area", event.target.value === "all" ? null : event.target.value)}>
+            <option value="all">All areas</option><option value="lr">Logical Reasoning</option><option value="rc">Reading Comprehension</option>
+          </select>
+        </label>
+        <label className="review-queue-select">Source
+          <select aria-label="Review source" value={source} onChange={event => setParam("source", event.target.value === "all" ? null : event.target.value)}>
+            <option value="all">All sources</option>{reviewSources.map(value => <option key={value} value={value}>{sourceLabel(value)}</option>)}
+          </select>
+        </label>
         <button className="review-queue-view" type="button" onClick={() => setParam("view", table ? null : "table")} aria-pressed={table}>
           {table ? "Compact view" : "Detailed table"}
         </button>
@@ -175,7 +199,7 @@ export default function ReviewQueuePage() {
 
       {hasError ? (
         <div className="review-queue-error" role="alert">
-          {`${failedSources} could not be loaded. Showing available sources only.`}
+          {`${failedSources} could not be loaded. Showing available sources only; the item count is partial.`}
           <button type="button" onClick={() => { if (journalError) void journal.refetch(); if (flagError) void flagged.refetch(); if (rcError) void rcReview.refetch(); if (activityError) void activityReview.refetch(); if (sectionError) void sectionReview.refetch(); if (practiceTestError) void practiceTestReview.refetch(); if (introLrError) void introLrReview.refetch(); if (hardSentencesError) void hardSentencesReview.refetch(); if (nativeLabError) void nativeLabReview.refetch(); if (episodeError) void episodeReview.refetch(); }}>Try again</button>
         </div>
       ) : null}
@@ -192,8 +216,8 @@ export default function ReviewQueuePage() {
           <table className="review-queue-table">
             <thead><tr><th>Item</th><th>Area</th><th>Reason</th><th>First answer</th><th>Latest answer</th><th>Source</th><th>Note</th><th>Last activity</th></tr></thead>
             <tbody>{shownItems.map((item) => (
-              <tr key={item.key}>
-                <td><Link to={detailLink(item.href)}>{item.label}</Link><small>{item.qtype || "Item"}</small></td>
+              <tr key={item.key} className={selectedKey === item.key ? "review-queue-selected" : undefined}>
+                <td><Link to={detailLink(item)} aria-current={selectedKey === item.key ? "true" : undefined}>{item.label}</Link>{selectedKey === item.key && <small>Last opened</small>}<small>{item.qtype || "Item"}</small></td>
                 <td>{item.area === "rc" ? "Reading Comprehension" : "Logical Reasoning"}</td>
                 <td>{item.reasons.map(reasonLabel).join(" · ")}</td>
                 <td>{item.firstAnswer ?? "Not recorded"}</td>
@@ -208,9 +232,10 @@ export default function ReviewQueuePage() {
       ) : (
         <ul className="review-queue-list">{shownItems.map((item) => (
           <li key={item.key}>
-            <Link className="review-queue-card" to={detailLink(item.href)}>
+            <Link className={`review-queue-card${selectedKey === item.key ? " review-queue-selected" : ""}`} to={detailLink(item)} aria-current={selectedKey === item.key ? "true" : undefined}>
               <span className="review-queue-card-main">
                 <strong>{item.label}</strong>
+                {selectedKey === item.key && <span>Last opened</span>}
                 <span>{item.area === "rc" ? "Reading Comprehension" : "Logical Reasoning"} · {item.qtype || "Item"} · {item.sources.map(sourceLabel).join(" + ")} · {readableDate(item.lastActivityAt)}</span>
                 {item.reflection || item.flaggedNote ? <span className="review-queue-note">{item.reflection || item.flaggedNote}</span> : null}
               </span>
