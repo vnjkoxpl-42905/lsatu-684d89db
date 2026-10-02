@@ -544,7 +544,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 24,
-    "questionType": "Must be true",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
