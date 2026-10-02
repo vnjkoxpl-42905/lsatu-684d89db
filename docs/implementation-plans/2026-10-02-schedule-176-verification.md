@@ -5,7 +5,38 @@ Date: 2026-10-02. Parent audit #165, decision source #155, ticket #176. Supports
 ## Baseline
 
 - Branch: `claude/focused-hopper-bd82le`, created from `origin/main` at `124fee3a4f14952c5b05abcf3bedd18dd22d1f18` (same as the orientation SHA). Clean working tree at start.
-- Final commit: see the PR head. This document is part of that commit.
+- First delivery: `3d2fb5efd29678a1efd9a04af6b3de1c50734e6c`. Correction pass 1 is the next commit on the same branch (see the PR head). This document is part of each commit.
+
+## Correction pass 1 (review of 3d2fb5e)
+
+The independent review found that 3d2fb5e was not safe to release. Each finding, and what changed:
+
+| # | Finding | Correction or gate |
+|---|---|---|
+| 1a | `useBootcampProgress` replaced `metadata_json` with only `bootcamp_id` and `progress`, deleting `session_chain` on the next autosave. | It now calls the new `mergeClassroomItemMetadata` (`src/lib/classroomItems.ts`). Each attempt re-reads the row, rebuilds the metadata from the stored value plus `bootcamp_id`/`progress`, and writes status/`completed_at` in the same update. The update is conditioned on the `updated_at` just read; a concurrent write makes it match zero rows, so it re-reads and recomputes, up to 3 attempts. After that it throws `ClassroomItemMergeError` (the hook logs it, as before) and never falls back to an unconditional write. The effect now depends on `user.id`, not the `user` object. |
+| 1b | `markNoteRead` spread the caller's cached metadata, so it could erase a link added later or restore one removed later. | It uses the same merge, recomputing `read_at` from the stored row. It skips the write when the stored row is already read. A failed merge rejects, and its only caller already treats that as non-fatal and claims nothing. |
+| 1c | Other writers | All other `classroom_items` updates (`syncClassroomItemStatusBySource`, `completeAssignedWork`, `closeOutAssignedSection`, weekly-plan publish, access tier, `admin-manage-users` practice-test reassign, teacher bootcamp date edits) set named columns only, and Postgres leaves `metadata_json` untouched. The MCP edge function only reads. No other writer replaces metadata on an existing row. |
+| 2 | A student may change `metadata_json` on their own rows (`guard_classroom_items_student_update` permits it; `classroom_items_student_update_status` checks only `student_id`). So `session_chain` can be inserted, moved or removed by the student account, and the teacher view could not prove teacher authorship. | **Gated.** `SESSION_LINK_WRITES_ENABLED = false` in `src/lib/sessionChain.ts`. The dossier panel shows **Link existing work** disabled, with `aria-describedby` pointing at: "Secure session linking is not available yet…". No Move or Remove control and no dialog renders, and `save` is never reached. Teacher-visible links carry "Links below are read from record data the student account can also edit. They are not verified as yours." The appointment list says "(unverified)". Read-only Schedule/Notes views remain; they show only the signed-in student's own rows and bookings, which the server already scopes. The writer (`commitSessionLink`, `useSessionLinkWriter`) stays in code and tests for when the prerequisite below lands. |
+| 3 | `SessionLinkedNotes` returned `null` on item-source failure. | Loading, booking failure, item failure (and both), stale-with-rows and stale-without-rows now render distinctly, inside the "From your sessions" section, with **Try again** wired to both refetches. |
+| 4 | Canceled sessions were reachable only by deep link. | `SessionHistory` on Schedule lists past and canceled sessions from the same verified student booking source (`student-booking` `info`: every redemption status; single sessions = the latest 30). Each row has a "Session work" button that pushes the same `?session=v1.<source>.<id>` selection. Booking management is unchanged. New linking stays disabled for canceled appointments, and in any case while gated. |
+| 5 | Teacher booking keys and writer epochs omitted the actor. | Teacher bookings and items now use feature-owned queries keyed `['session-chain', 'teacher-bookings' or 'teacher-items', actorId, studentId]`. The shared `useStudentClassroomItems` is no longer used by this feature and is unchanged. The writer epoch resets on actor or student change; a result from the old context returns `superseded` and cannot clear the newer operation's pending state. `TeacherSessionWork` remounts on `actorId|studentId`, which drops drafts, dialogs and messages. |
+| 6 | Extra blank line at EOF in `src/hooks/useSessionChain.ts`. | Removed. Whitespace is now checked against the committed diff from the base (below). |
+
+### Server prerequisite for re-enabling link writes (not applied)
+
+The smallest additive change, for the host to apply through the approved Lovable route. No migration file is committed here.
+
+1. In `guard_classroom_items_student_update`, for non-admins also raise when `new.metadata_json -> 'session_chain' IS DISTINCT FROM old.metadata_json -> 'session_chain'`. Student progress and read writes keep working, because both writers now merge from the stored row and so carry the member through unchanged.
+2. Add `set_classroom_item_session_link(_item_id uuid, _expected_updated_at timestamptz, _booking_source text, _booking_id uuid, _phase text)` (a null phase removes the link), `SECURITY DEFINER`, `search_path = public`, executable by `authenticated`, that:
+   - requires `has_role(auth.uid(), 'admin')`;
+   - locks the item `FOR UPDATE` and returns a conflict when `updated_at <> _expected_updated_at`;
+   - verifies booking ownership against the item's `student_id` (`booking_pass_redemptions` → `booking_passes.student_id`; `single_session_bookings.user_id`), and for new links that the booking status is `booked`;
+   - validates the phase against the item type (recap ⇒ `session_recap`/`smartboard_recap`; preparation/follow-up ⇒ drill, homework, activity, bootcamp_module, practice_test, note);
+   - sets only `metadata_json -> 'session_chain'` via `jsonb_set`/`-`, adding `linked_by = auth.uid()` and `linked_at = now()`;
+   - returns the updated row as the acknowledgment.
+3. Then switch `commitSessionLink` to call that function, have the projection require `linked_by` for "verified" display, and flip `SESSION_LINK_WRITES_ENABLED`.
+
+Until then, any `session_chain` already stored is legacy metadata of unproven authorship and is labelled that way.
 
 ## Contract map (written before production code)
 
@@ -134,12 +165,55 @@ Not covered: the full Schedule page and dossier in a real signed-in browser sess
 
 ## Limitations and findings for the host
 
-1. **Student-writable metadata.** `guard_classroom_items_student_update` lets a student update `metadata_json` on their own rows, so a student could write a `session_chain` onto their own item. The projection still requires the booking to be in that student's own list, so this cannot expose another student's data, but a teacher-authored link is not tamper-proof. Making it so needs a backend change, which is out of scope here.
-2. **`markNoteRead` is a blind merge.** It spreads the cached `metadata_json` and writes without CAS. If a student opens a note after Joshua links it but before their cache refreshes, the write can drop `session_chain`. This is a pre-existing writer outside this slice. Fix: route it through `updateClassroomItemMetadataIfUnchanged` or a server-side merge.
+1. **Student-writable metadata** (still true server-side). Teacher link writes are gated until the prerequisite above lands; see correction 2.
+2. **`markNoteRead` / bootcamp progress clobbering:** fixed in correction pass 1 (merge with CAS and bounded retries).
 3. Timezone is the runtime's (the existing Schedule contract). No stored per-user timezone was found.
-4. `bookingRecordsToScheduleItems` hides non-`booked` rows from the calendar, so a canceled appointment is reachable only by deep link (Notes link or saved URL).
+4. The calendar still hides non-`booked` rows (unchanged). Past and canceled sessions are now reachable through "Past and canceled sessions". Single sessions older than the latest 30 are not returned by `student-booking` and so cannot appear.
+6. Pre-existing, not introduced here: at 390 px with `html { font-size: 200% }`, the Schedule stage tabs and calendar header overflow by 10 px with or without a session selected. Not changed, to keep this PR scoped.
 5. Author attribution is not shown: `created_by` is an id, and no display name is available from the existing item contract.
+
+## Correction pass 1: files, tests and proof
+
+Changed in this pass: `src/lib/classroomItems.ts` (adds `mergeClassroomItemMetadata`, `ClassroomItemMergeError`, `ClassroomItemColumnPatch`), `src/lib/markNoteRead.ts`, `src/hooks/useBootcampProgress.ts`, `src/lib/sessionChain.ts` (write gate and copy), `src/hooks/useSessionChain.ts` (actor-keyed teacher queries, actor-bound writer, EOF), `src/components/schedule/SessionChainPanel.tsx` (gate, unverified label, actor remount, `SessionHistory`), `src/pages/Schedule.tsx` (history and `selectSession`), `src/pages/MyWorkNotesPage.tsx` (failure, loading and stale states). Tests: `src/lib/sessionChainWriters.test.tsx` (new), `src/test/fakeClassroomItemsDb.ts` (new), `src/pages/MyWorkNotesPage.sessionLinks.test.tsx` (new), plus updates to `src/hooks/useSessionChain.test.tsx`, `src/components/schedule/SessionChainPanel.test.tsx`, `src/pages/Schedule.sessionChain.test.tsx` and `src/pages/MyWorkNotesPage.test.tsx`. Evidence: `docs/implementation-plans/artifacts/2026-10-02-schedule-176/full-page-mocked/` (10 PNGs).
+
+New regression coverage:
+
+| Requirement | Test |
+|---|---|
+| Link a bootcamp, then save progress: link remains | `sessionChainWriters` › keeps a session link when progress autosaves (real `useBootcampProgress`) |
+| Teacher adds link after student caches note; mark-read keeps it | `sessionChainWriters` › keeps a link the teacher added… (real `markNoteRead`) |
+| Teacher removes link after cache; mark-read does not restore it | `sessionChainWriters` › does not restore a link… |
+| Concurrent updates keep both changes | `sessionChainWriters` › keeps both changes when another write lands… (mark-read and bootcamp) |
+| Conflict or failed save never claims success | `sessionChainWriters` › fails without overwriting when the row keeps changing (throws, zero writes) |
+| These tests catch the original bug | All 7 `sessionChainWriters` tests fail against the 3d2fb5e versions of `markNoteRead.ts`/`useBootcampProgress.ts` and pass after |
+| Gate | `SessionChainPanel` › gates Link, Move and Remove by default and says why; does not present stored links as verified |
+| Notes: initial item failure, booking failure, cached refresh failure, successful retry, account switch during pending read | `MyWorkNotesPage.sessionLinks` (5 tests through the real `useStudentSessionChain`) |
+| Canceled discovery, exact selection, reload, Back | `Schedule.sessionChain` › lists canceled and past sessions… |
+| Actor change: keys, projected rows, superseded save, no unlock of newer op | `useSessionChain` › actor binding (3 tests) |
+
+Proof (this pass, container TZ=UTC unless stated):
+
+| Command | Result |
+|---|---|
+| Required suite (11 files in the brief) + `src/lib/sessionChainWriters.test.tsx` + `src/pages/MyWorkNotesPage.sessionLinks.test.tsx` | `TZ=America/New_York`: 13 files, 143/143 pass. Under UTC: 142/143. The failure is `scheduleEntries.test.ts > indexes and selects entries by local yyyy-MM-dd`, which fails the same way on the untouched base. |
+| Writer tests (`src/lib/sessionChainWriters.test.tsx`) | 7/7 (no earlier tests existed for these writers) |
+| Full `npx vitest run` | Failing-file set identical to the base (19 pre-existing files; none in this diff) |
+| `npm run typecheck` | Pass |
+| `npm run build` | Pass (postbuild canonical check OK). The build-regenerated `public/data/_bank.generated.json` and `public/data/finder-address-index.json` were restored and are not in the diff. |
+| Scoped ESLint on every changed `.ts/.tsx` | 0 errors; 1 pre-existing warning (`MyWorkNotesPage.tsx:49`, untouched line) |
+| `git diff --check 124fee3a4f14952c5b05abcf3bedd18dd22d1f18 HEAD` | Pass after removing EOF blank lines in `src/hooks/useSessionChain.ts` and `src/pages/Schedule.sessionChain.test.tsx` (the second was found by this committed-range check). |
+
+### Browser evidence: mocked, full page
+
+This is not authenticated or live evidence. A temporary Vite config aliased `@/integrations/supabase/client` and `@/contexts/AuthContext` to local fakes (fixed fixtures, no network) and mounted the real `Schedule` page, the real `MyWorkNotesPage` inside `.classroom-root`, and the real teacher `StudentSchedulePanel`. Playwright with system Chromium:
+
+- 6 states (Schedule with selection, canceled selection, item failure; Notes, Notes item failure; teacher dossier with an appointment selected) × 390/820/1024/1280/1440 px: horizontal overflow 0, controls outside the viewport 0, page errors 0 in all 30 combinations.
+- History keyboard path: focus the canceled row's "Session work" and press Enter; the URL gains `session=v1.single_session.<id>` with `ref=x` preserved; the panel shows "Canceled-day drill" and receives focus; reload keeps it; Back returns to `?page=schedule&ref=x` with no panel.
+- Schedule item failure shows "…links for this session are unknown" with Retry; booking failure shows "Appointments could not load."; Notes item failure shows the alert with Try again; Notes success shows "Open recap" plus a session link.
+- Teacher: appointment chosen by keyboard; Link existing work is disabled and described by the gate note; unverified label present; 0 Remove buttons; 0 dialogs; teacher-only label present; overflow at 200% text = 0.
+- A harness artifact was found and fixed in the harness: an unstable fake `useAuth` object caused a render loop the real `AuthContext` cannot produce. As a precaution, `useBootcampProgress` now depends on `user.id` rather than the user object.
+- Not covered: the real auth/session stack, production RLS, the app shell and routing in `App.tsx`, and real Supabase data.
 
 ## Real-account acceptance still required
 
-One verified student-owned appointment; Joshua links real preparation, recap and follow-up records; student Schedule and Notes resolve the same links; the dossier agrees; reload persists; hidden and foreign access is rejected; timezone and date are correct. No live data was read or written, no notification was sent, nothing was deployed.
+Blocked on the server prerequisite above for every step that creates, moves or removes a link. After it lands: one verified student-owned appointment; Joshua links real preparation, recap and follow-up records through the new function; student Schedule and Notes resolve the same links; the dossier agrees; reload persists; hidden and foreign access is rejected; timezone and date are correct; a student account cannot change `session_chain` (expect a guard error); bootcamp progress and note opening still save and keep links. No live data was read or written, no notification was sent, nothing was deployed.

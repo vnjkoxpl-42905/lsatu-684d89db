@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import { CircleAlert, Link2, Loader2, RefreshCw, Unlink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -38,6 +39,9 @@ import {
   PHASE_EMPTY,
   PHASE_LABEL,
   phasesFor,
+  SESSION_LINK_UNVERIFIED,
+  SESSION_LINK_WRITES_BLOCKED,
+  SESSION_LINK_WRITES_ENABLED,
   SESSION_PHASES,
   teacherOnlyReason,
   type BookingIdentity,
@@ -64,6 +68,11 @@ interface Props {
   studentName?: string | null;
   /** Teacher only. Without it the panel is read-only. */
   writer?: SessionLinkWriter;
+  /**
+   * Whether link writes may be offered at all. Defaults to the server-contract
+   * gate; tests pass true to exercise the gated-off controls.
+   */
+  writesEnabled?: boolean;
 }
 
 const ISSUE_COPY = {
@@ -308,10 +317,15 @@ export default function SessionChainPanel({
   onBack,
   backLabel = 'Back to schedule',
   studentName,
-  writer,
+  writer: suppliedWriter,
+  writesEnabled = SESSION_LINK_WRITES_ENABLED,
 }: Props) {
   const navigate = useNavigate();
   const teacher = state.audience === 'teacher';
+  // Controls exist only when the server can enforce who may change a link.
+  const writer = writesEnabled ? suppliedWriter : undefined;
+  const writesGated = teacher && !!suppliedWriter && !writesEnabled;
+  const gateId = React.useId();
   const [linkOpen, setLinkOpen] = React.useState(false);
   const [removing, setRemoving] = React.useState<LinkedRecord | null>(null);
   const [feedback, setFeedback] = React.useState<Feedback>(null);
@@ -376,10 +390,20 @@ export default function SessionChainPanel({
             <Button size="sm" onClick={() => { setFeedback(null); setLinkOpen(true); }} disabled={!linkable || writer.pending} title={canceled ? 'Canceled appointments cannot take new links' : undefined}>
               <Link2 className="mr-1 h-4 w-4" />Link existing work
             </Button>
+          ) : writesGated ? (
+            <Button size="sm" disabled aria-describedby={gateId}>
+              <Link2 className="mr-1 h-4 w-4" />Link existing work
+            </Button>
           ) : null}
           {back}
         </div>
       </div>
+      {writesGated ? (
+        <div id={gateId} role="note" className="mt-3 rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+          <p>{SESSION_LINK_WRITES_BLOCKED}</p>
+        </div>
+      ) : null}
+      {teacher && !writer ? <p className="mt-2 text-xs font-medium text-amber-700 dark:text-amber-300">{SESSION_LINK_UNVERIFIED}</p> : null}
       {writer && canceled ? <p className="mt-2 text-xs text-muted-foreground">This appointment was canceled. Earlier links stay listed; new links are disabled.</p> : null}
 
       {state.stale ? (
@@ -475,6 +499,12 @@ export default function SessionChainPanel({
  * in-flight save are bound to `studentId`; switching students resets them.
  */
 export function TeacherSessionWork({ studentId, studentName }: { studentId: string; studentName: string | null }) {
+  const { user } = useAuth();
+  // Remounting on actor or student drops every draft, dialog and message.
+  return <TeacherSessionWorkInner key={`${user?.id ?? ''}|${studentId}`} studentId={studentId} studentName={studentName} />;
+}
+
+function TeacherSessionWorkInner({ studentId, studentName }: { studentId: string; studentName: string | null }) {
   const state = useTeacherSessionChain(studentId);
   const writer = useSessionLinkWriter(studentId);
   const [selected, setSelected] = React.useState<BookingIdentity | null>(null);
@@ -507,7 +537,7 @@ export function TeacherSessionWork({ studentId, studentName }: { studentId: stri
                     className={cn('flex w-full flex-wrap items-center justify-between gap-2 rounded-lg border px-3 py-2 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', active ? 'border-primary bg-primary/5' : 'border-border hover:bg-accent/40')}
                   >
                     <span className="min-w-0">{formatAppointment(booking)}</span>
-                    <span className="text-xs text-muted-foreground">{bookingStateLabel(booking)}{count ? ` · ${count} linked` : ''}</span>
+                    <span className="text-xs text-muted-foreground">{bookingStateLabel(booking)}{count ? ` · ${count} linked${SESSION_LINK_WRITES_ENABLED ? '' : ' (unverified)'}` : ''}</span>
                   </button>
                 </li>
               );
@@ -526,5 +556,59 @@ export function TeacherSessionWork({ studentId, studentName }: { studentId: stri
         />
       ) : null}
     </div>
+  );
+}
+
+/**
+ * Past and canceled sessions, from the same verified booking source the
+ * panel uses. The calendar shows only upcoming booked sessions, so without
+ * this a canceled appointment's preparation or follow-up could be reached only
+ * by someone who already had its link. Booking management is unchanged: this
+ * list only selects a session for the Session work panel.
+ */
+export function SessionHistory({
+  state,
+  selectedKey,
+  onSelect,
+  now = new Date(),
+}: {
+  state: SessionChainState;
+  selectedKey: string | null;
+  onSelect: (identity: BookingIdentity) => void;
+  now?: Date;
+}) {
+  if (state.bookingsLoading || state.bookingsFailed) return null;
+  const history = state.bookings
+    .filter((b) => isCanceledBooking(b) || b.status !== 'booked' || new Date(b.endAt ?? b.startAt).getTime() < now.getTime())
+    .sort((a, b) => Date.parse(b.startAt) - Date.parse(a.startAt));
+  if (history.length === 0) return null;
+  return (
+    <section aria-labelledby="session-history-heading" className="mt-5 rounded-xl border border-border bg-card p-4">
+      <h2 id="session-history-heading" className="text-base font-semibold">Past and canceled sessions</h2>
+      <p className="mt-0.5 text-xs text-muted-foreground">Open a session to see the preparation, recap and follow-up linked to it.</p>
+      <ul className="mt-3 space-y-1.5">
+        {history.map((b) => {
+          const key = bookingKey(b);
+          const label = bookingStateLabel(b, now);
+          return (
+            <li key={key} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border px-3 py-2">
+              <span className="min-w-0 text-sm">
+                {formatAppointment(b)}
+                <span className={cn('ml-2 text-xs font-medium', isCanceledBooking(b) ? 'text-destructive' : 'text-muted-foreground')}>{label}</span>
+              </span>
+              <Button
+                size="sm"
+                variant="outline"
+                aria-pressed={selectedKey === key}
+                aria-label={`Session work: ${formatAppointment(b)}, ${label}`}
+                onClick={() => onSelect({ source: b.source, id: b.id })}
+              >
+                Session work
+              </Button>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }

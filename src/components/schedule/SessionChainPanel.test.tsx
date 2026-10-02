@@ -120,7 +120,29 @@ describe('SessionChainPanel (student)', () => {
   });
 });
 
-describe('SessionChainPanel (teacher)', () => {
+describe('SessionChainPanel (teacher, server contract missing)', () => {
+  const bookings = [booking()];
+
+  it('gates Link, Move and Remove by default and says why', () => {
+    const w: SessionLinkWriter = { save: vi.fn(), pending: false };
+    renderPanel({ state: makeState({ audience: 'teacher', items: [prep], bookings }), writer: w });
+    const linkButton = screen.getByRole('button', { name: /Link existing work/ });
+    expect(linkButton).toBeDisabled();
+    expect(linkButton).toHaveAccessibleDescription(/Secure session linking is not available yet/);
+    expect(screen.queryByRole('button', { name: /Remove link/ })).not.toBeInTheDocument();
+    fireEvent.click(linkButton);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(w.save).not.toHaveBeenCalled();
+  });
+
+  it('does not present stored links as verified teacher-authored evidence', () => {
+    renderPanel({ state: makeState({ audience: 'teacher', items: [prep], bookings }), writer: { save: vi.fn(), pending: false } });
+    expect(screen.getByText(/not verified as yours/)).toBeInTheDocument();
+    expect(screen.getByText('Flaw drill')).toBeInTheDocument();
+  });
+});
+
+describe('SessionChainPanel (teacher, post-backend controls)', () => {
   const candidate = item({ title: 'Assumption drill', type: 'drill' });
   const elsewhere = item({ title: 'Linked elsewhere', type: 'drill', metadata_json: { session_chain: link({ booking_id: BOOKING_B }) } });
   const hidden = item({ title: 'Hidden prep', visible_to_student: false, metadata_json: { session_chain: link() } });
@@ -137,7 +159,7 @@ describe('SessionChainPanel (teacher)', () => {
 
   it('requires a deliberate phase and record, then claims success only after acknowledgment', async () => {
     const w = writer({ kind: 'saved', item: candidate });
-    renderPanel({ state: makeState({ audience: 'teacher', items: [candidate], bookings }), writer: w, studentName: 'Ada' });
+    renderPanel({ state: makeState({ audience: 'teacher', items: [candidate], bookings }), writer: w, writesEnabled: true, studentName: 'Ada' });
     fireEvent.click(screen.getByRole('button', { name: /Link existing work/ }));
     const dialog = await screen.findByRole('dialog');
     const save = within(dialog).getByRole('button', { name: 'Save link' });
@@ -153,7 +175,7 @@ describe('SessionChainPanel (teacher)', () => {
 
   it('requires explicit Move link confirmation naming both appointments', async () => {
     const w = writer({ kind: 'saved', item: elsewhere });
-    renderPanel({ state: makeState({ audience: 'teacher', items: [elsewhere], bookings }), writer: w });
+    renderPanel({ state: makeState({ audience: 'teacher', items: [elsewhere], bookings }), writer: w, writesEnabled: true });
     fireEvent.click(screen.getByRole('button', { name: /Link existing work/ }));
     const dialog = await screen.findByRole('dialog');
     fireEvent.change(within(dialog).getByLabelText('Phase'), { target: { value: 'preparation' } });
@@ -169,7 +191,7 @@ describe('SessionChainPanel (teacher)', () => {
 
   it('keeps the selection and explains a failed save', async () => {
     const w = writer({ kind: 'not_saved', message: 'permission denied' });
-    renderPanel({ state: makeState({ audience: 'teacher', items: [candidate], bookings }), writer: w });
+    renderPanel({ state: makeState({ audience: 'teacher', items: [candidate], bookings }), writer: w, writesEnabled: true });
     fireEvent.click(screen.getByRole('button', { name: /Link existing work/ }));
     const dialog = await screen.findByRole('dialog');
     fireEvent.change(within(dialog).getByLabelText('Phase'), { target: { value: 'preparation' } });
@@ -181,7 +203,7 @@ describe('SessionChainPanel (teacher)', () => {
 
   it('separates an acknowledged save from a failed refresh', async () => {
     const w = writer({ kind: 'saved', item: candidate, refreshFailed: true });
-    renderPanel({ state: makeState({ audience: 'teacher', items: [candidate], bookings }), writer: w });
+    renderPanel({ state: makeState({ audience: 'teacher', items: [candidate], bookings }), writer: w, writesEnabled: true });
     fireEvent.click(screen.getByRole('button', { name: /Link existing work/ }));
     const dialog = await screen.findByRole('dialog');
     fireEvent.change(within(dialog).getByLabelText('Phase'), { target: { value: 'preparation' } });
@@ -191,7 +213,7 @@ describe('SessionChainPanel (teacher)', () => {
   });
 
   it('does not offer a drill under Recap', async () => {
-    renderPanel({ state: makeState({ audience: 'teacher', items: [candidate], bookings }), writer: writer(null) });
+    renderPanel({ state: makeState({ audience: 'teacher', items: [candidate], bookings }), writer: writer(null), writesEnabled: true });
     fireEvent.click(screen.getByRole('button', { name: /Link existing work/ }));
     const dialog = await screen.findByRole('dialog');
     fireEvent.change(within(dialog).getByLabelText('Phase'), { target: { value: 'recap' } });
@@ -200,7 +222,7 @@ describe('SessionChainPanel (teacher)', () => {
 
   it('removes a link after confirmation that the record stays', async () => {
     const w = writer({ kind: 'saved', item: prep });
-    renderPanel({ state: makeState({ audience: 'teacher', items: [prep], bookings }), writer: w });
+    renderPanel({ state: makeState({ audience: 'teacher', items: [prep], bookings }), writer: w, writesEnabled: true });
     fireEvent.click(screen.getByRole('button', { name: 'Remove link: Flaw drill' }));
     const alert = await screen.findByRole('alertdialog');
     expect(alert).toHaveTextContent('stays available in My Work');
@@ -210,16 +232,16 @@ describe('SessionChainPanel (teacher)', () => {
   });
 
   it('disables new links on a canceled appointment', () => {
-    renderPanel({ state: makeState({ audience: 'teacher', items: [candidate], bookings: [booking({ status: 'cancelled' })] }), writer: writer(null) });
+    renderPanel({ state: makeState({ audience: 'teacher', items: [candidate], bookings: [booking({ status: 'cancelled' })] }), writer: writer(null), writesEnabled: true });
     expect(screen.getByRole('button', { name: /Link existing work/ })).toBeDisabled();
   });
 
   it('closes the dialog when the subject changes', async () => {
     const state = makeState({ audience: 'teacher', items: [candidate], bookings });
-    const view = renderPanel({ state, writer: writer(null) });
+    const view = renderPanel({ state, writer: writer(null), writesEnabled: true });
     fireEvent.click(screen.getByRole('button', { name: /Link existing work/ }));
     await screen.findByRole('dialog');
-    view.rerender(tree({ state: { ...state, subjectId: 'someone-else' }, writer: writer(null) }));
+    view.rerender(tree({ state: { ...state, subjectId: 'someone-else' }, writer: writer(null), writesEnabled: true }));
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   });
 });

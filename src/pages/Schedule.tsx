@@ -10,9 +10,9 @@ import { useClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems
 import { useStudentTodo } from '@/hooks/useStudentTodo';
 import { buildScheduleEntries, groupScheduleEntries, type ScheduleEntry } from '@/lib/scheduleEntries';
 import { cn } from '@/lib/utils';
-import SessionChainPanel from '@/components/schedule/SessionChainPanel';
+import SessionChainPanel, { SessionHistory } from '@/components/schedule/SessionChainPanel';
 import { useStudentSessionChain } from '@/hooks/useSessionChain';
-import { decodeSessionParam, identityFromBookingItem, SESSION_PARAM, withSessionParam } from '@/lib/sessionChain';
+import { bookingKey, decodeSessionParam, identityFromBookingItem, SESSION_PARAM, withSessionParam, type BookingIdentity } from '@/lib/sessionChain';
 
 type CalendarView = 'month' | 'week';
 type MainView = 'today' | 'calendar';
@@ -234,12 +234,14 @@ export default function Schedule({ initialTab = 'schedule' }: { initialTab?: Sta
 
   // The selection is a pushed URL entry, so Back and reload restore it and
   // unrelated query parameters survive.
-  const openSessionWork = React.useCallback((entry: ScheduleEntry) => {
-    const identity = entry.sourceType === 'booking' ? identityFromBookingItem(entry.source as ClassroomItem) : null;
-    if (!identity) return;
+  const selectSession = React.useCallback((identity: BookingIdentity) => {
     setParams(withSessionParam(params, identity));
     requestAnimationFrame(() => sessionPanelRef.current?.focus());
   }, [params, setParams]);
+  const openSessionWork = React.useCallback((entry: ScheduleEntry) => {
+    const identity = entry.sourceType === 'booking' ? identityFromBookingItem(entry.source as ClassroomItem) : null;
+    if (identity) selectSession(identity);
+  }, [selectSession]);
   const closeSessionWork = React.useCallback(() => setParams(withSessionParam(params, null)), [params, setParams]);
 
   // Keep the tab and the URL in step so the surface stays linkable and the
@@ -358,6 +360,7 @@ export default function Schedule({ initialTab = 'schedule' }: { initialTab?: Sta
           ) : null}
         </section>
       )}
+      <SessionHistory state={sessionChain} selectedKey={selectedSession ? bookingKey(selectedSession) : null} onSelect={selectSession} />
       </>
       )}
     </div>

@@ -109,6 +109,6 @@ describe("My Work student notes", () => {
     mocks.chain = () => ({ bookings: [], projection: { byBooking: new Map(), issues: [] }, bookingsLoading: false, itemsLoading: false, bookingsFailed: true, itemsFailed: false, stale: false, retry: () => {} });
     mocks.listPages.mockResolvedValue([]);
     renderPage();
-    expect(await screen.findByText("Session links for your notes could not be loaded.")).toBeInTheDocument();
+    expect(await screen.findByRole("alert")).toHaveTextContent("Your sessions could not be loaded, so session links for your notes are unknown.");
   });
 });

@@ -122,9 +122,24 @@ function StudentNotesSection() {
  */
 function SessionLinkedNotes() {
   const chain = useStudentSessionChain();
-  if (chain.bookingsLoading || chain.itemsLoading || chain.itemsFailed) return null;
-  if (chain.bookingsFailed) {
-    return <div role="alert" className="student-destination-message"><p>Session links for your notes could not be loaded.</p><button type="button" className="classroom-button" onClick={chain.retry}>Try again</button></div>;
+  // Loading, failure and "nothing linked" are three different states. A failed
+  // read is never shown as an empty list.
+  if (chain.bookingsLoading || chain.itemsLoading) {
+    return <section className="my-work-session-notes" aria-labelledby="session-notes-heading"><h2 id="session-notes-heading">From your sessions</h2><p role="status" className="student-destination-message">Checking which notes belong to your sessions…</p></section>;
+  }
+  if (chain.bookingsFailed || chain.itemsFailed) {
+    const what = chain.bookingsFailed && chain.itemsFailed
+      ? "Your sessions and notes"
+      : chain.bookingsFailed ? "Your sessions" : "Your notes and recaps";
+    return (
+      <section className="my-work-session-notes" aria-labelledby="session-notes-heading">
+        <h2 id="session-notes-heading">From your sessions</h2>
+        <div role="alert" className="student-destination-message">
+          <p>{what} could not be loaded, so session links for your notes are unknown.</p>
+          <button type="button" className="classroom-button" onClick={chain.retry}>Try again</button>
+        </div>
+      </section>
+    );
   }
   const rows = chain.bookings.flatMap((booking) => {
     const groups = groupsFor(chain.projection, booking);
@@ -132,11 +147,12 @@ function SessionLinkedNotes() {
       .filter((record) => NOTE_TYPES.has(record.item.type))
       .map((record) => ({ booking, record }));
   });
-  if (rows.length === 0) return null;
+  if (rows.length === 0 && !chain.stale) return null;
   return (
     <section className="my-work-session-notes" aria-labelledby="session-notes-heading">
       <h2 id="session-notes-heading">From your sessions</h2>
-      {chain.stale ? <p role="status">Could not refresh. Showing what loaded earlier.</p> : null}
+      {chain.stale ? <div role="status" className="student-destination-message"><p>Could not refresh. Showing what loaded earlier.</p><button type="button" className="classroom-button" onClick={chain.retry}>Try again</button></div> : null}
+      {rows.length === 0 ? <p>No notes are linked to your sessions in what loaded earlier.</p> : null}
       <ul>
         {rows.map(({ booking, record }) => (
           <li key={`${booking.source}:${booking.id}:${record.item.id}`}>

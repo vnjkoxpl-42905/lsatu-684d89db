@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { updateClassroomItem } from '@/lib/classroomItems';
+import { mergeClassroomItemMetadata, type ClassroomItemColumnPatch } from '@/lib/classroomItems';
 import { classroomItemMatchesBootcamp } from '@/lib/bootcamps';
 
 /**
@@ -23,6 +23,7 @@ export function useBootcampProgress(opts: {
 }) {
   const { bootcampId, completedDays, totalDays } = opts;
   const { user } = useAuth();
+  const userId = user?.id ?? null;
   const lastWriteRef = useRef<string>('');
 
   // Find the active classroom_items row for this student + bootcamp
@@ -53,7 +54,7 @@ export function useBootcampProgress(opts: {
   });
 
   useEffect(() => {
-    if (!itemId || totalDays <= 0) return;
+    if (!itemId || !userId || totalDays <= 0) return;
     const sorted = [...new Set(completedDays)].sort((a, b) => a - b);
     const percent = Math.round((sorted.length / totalDays) * 100);
     const allDone = sorted.length >= totalDays;
@@ -62,24 +63,34 @@ export function useBootcampProgress(opts: {
 
     const t = setTimeout(async () => {
       try {
-        const patch: Parameters<typeof updateClassroomItem>[1] = {
-          metadata_json: {
-            bootcamp_id: bootcampId,
-            progress: {
-              completedDays: sorted,
-              totalDays,
-              percent,
-              lastDayAt: new Date().toISOString(),
-            },
-          },
-        };
+        // Progress is merged into the stored metadata rather than replacing
+        // it, so other members (a session link, read state, assignment ids)
+        // survive every autosave. The merge re-reads the row and writes only
+        // if nothing changed since that read.
+        const columns: ClassroomItemColumnPatch = {};
         if (allDone) {
-          patch.status = 'completed';
-          patch.completed_at = new Date().toISOString();
+          columns.status = 'completed';
+          columns.completed_at = new Date().toISOString();
         } else if (sorted.length > 0) {
-          patch.status = 'in_progress';
+          columns.status = 'in_progress';
         }
-        await updateClassroomItem(itemId, patch);
+        await mergeClassroomItemMetadata({
+          id: itemId,
+          studentId: userId,
+          recompute: (fresh) => ({
+            metadata: {
+              ...(fresh.metadata_json ?? {}),
+              bootcamp_id: bootcampId,
+              progress: {
+                completedDays: sorted,
+                totalDays,
+                percent,
+                lastDayAt: new Date().toISOString(),
+              },
+            },
+            columns,
+          }),
+        });
         lastWriteRef.current = signature;
       } catch (e) {
         console.warn('[useBootcampProgress] save failed', e);
@@ -87,5 +98,5 @@ export function useBootcampProgress(opts: {
     }, 1000);
 
     return () => clearTimeout(t);
-  }, [itemId, bootcampId, completedDays, totalDays]);
+  }, [itemId, bootcampId, completedDays, totalDays, userId]);
 }

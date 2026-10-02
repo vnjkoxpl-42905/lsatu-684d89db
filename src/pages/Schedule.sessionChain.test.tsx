@@ -111,4 +111,35 @@ describe('Schedule session work', () => {
     );
     expect(screen.queryByText('Prep drill')).not.toBeInTheDocument();
   });
+
+  it('lists canceled and past sessions for discovery and selects the exact one, surviving reload and Back', () => {
+    const canceledId = '55555555-5555-4555-8555-555555555555';
+    state.bookings = [
+      raw(BOOKING_A),
+      raw(canceledId, { status: 'cancelled', start_at: '2026-09-20T15:00:00Z', end_at: '2026-09-20T16:10:00Z', can_reschedule: false }),
+    ];
+    const prepOnCanceled = item({ title: 'Canceled-day drill', type: 'drill', metadata_json: { session_chain: link({ booking_id: canceledId }) } });
+    state.items = [prep, prepOnCanceled];
+    const view = renderAt('/schedule?ref=email');
+    const history = screen.getByRole('region', { name: 'Past and canceled sessions' });
+    expect(history).toHaveTextContent('Canceled');
+    // The upcoming booked session stays on the calendar, not in history.
+    expect(history.querySelectorAll('li')).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: /Session work: .*Canceled/ }));
+    const url = screen.getByTestId('where').textContent ?? '';
+    expect(url).toContain(`session=v1.redemption.${canceledId}`);
+    expect(url).toContain('ref=email');
+    expect(screen.getByText('Canceled-day drill')).toBeInTheDocument();
+    expect(screen.queryByText('Prep drill')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Link existing work/ })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Browser back' }));
+    expect(screen.getByTestId('where')).toHaveTextContent(/^\/schedule\?ref=email$/);
+    expect(screen.queryByText('Canceled-day drill')).not.toBeInTheDocument();
+
+    view.unmount();
+    renderAt(url);
+    expect(screen.getByText('Canceled-day drill')).toBeInTheDocument();
+    expect(screen.getAllByText('Canceled').length).toBeGreaterThan(0);
+  });
 });

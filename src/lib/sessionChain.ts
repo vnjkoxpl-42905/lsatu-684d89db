@@ -432,3 +432,21 @@ export function itemStatusLabel(item: ClassroomItem): string | null {
     default: return null;
   }
 }
+
+/**
+ * Teacher link controls are off until the server protects `session_chain`.
+ *
+ * Today `guard_classroom_items_student_update` lets a student account change
+ * `metadata_json` on its own rows, so a link stored there cannot be proven to
+ * be Joshua's, and hiding buttons in this client would not stop a student
+ * from adding, moving or removing one. The prerequisite (a guard on the
+ * member plus an admin-only, ownership- and phase-checked CAS function) is in
+ * docs/implementation-plans/2026-10-02-schedule-176-verification.md.
+ */
+export const SESSION_LINK_WRITES_ENABLED = false;
+
+export const SESSION_LINK_WRITES_BLOCKED =
+  'Secure session linking is not available yet. Links are stored in record data the student account can also edit, so this page cannot verify who made them. Linking, moving and removing stay off until the server protects them.';
+
+export const SESSION_LINK_UNVERIFIED =
+  'Links below are read from record data the student account can also edit. They are not verified as yours.';

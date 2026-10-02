@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useClassroomItems, useStudentClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
+import { useClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
 import { useStudentBooking } from '@/hooks/useStudentBooking';
 import { getClassroomItem, updateClassroomItemMetadataIfUnchanged } from '@/lib/classroomItems';
 import {
@@ -149,20 +149,45 @@ export async function fetchTeacherBookings(studentId: string): Promise<SessionBo
   return rows.sort((a, b) => Date.parse(b.startAt) - Date.parse(a.startAt));
 }
 
-export const teacherBookingsKey = (studentId: string | null) => ['session-chain', 'teacher-bookings', studentId] as const;
+/**
+ * Teacher queries are keyed by the signed-in actor as well as the selected
+ * student, so a different admin session on the same device never starts from
+ * another actor's cached rows.
+ */
+export const teacherBookingsKey = (actorId: string | null, studentId: string | null) =>
+  ['session-chain', 'teacher-bookings', actorId, studentId] as const;
+export const teacherItemsKey = (actorId: string | null, studentId: string | null) =>
+  ['session-chain', 'teacher-items', actorId, studentId] as const;
+
+async function fetchTeacherItems(studentId: string): Promise<ClassroomItem[]> {
+  const { data, error } = await supabase
+    .from('classroom_items')
+    .select('*')
+    .eq('student_id', studentId)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as ClassroomItem[];
+}
 
 /** Teacher dossier: the selected student's verified appointments and all their items. */
 export function useTeacherSessionChain(studentId: string | null): SessionChainState {
+  const { user } = useAuth();
+  const actorId = user?.id ?? null;
+  const ready = !!actorId && !!studentId;
   const bookings = useQuery({
-    queryKey: teacherBookingsKey(studentId),
-    enabled: !!studentId,
+    queryKey: teacherBookingsKey(actorId, studentId),
+    enabled: ready,
     queryFn: () => fetchTeacherBookings(studentId!),
     staleTime: 30_000,
   });
-  const items = useStudentClassroomItems(studentId);
+  const items = useQuery({
+    queryKey: teacherItemsKey(actorId, studentId),
+    enabled: ready,
+    queryFn: () => fetchTeacherItems(studentId!),
+  });
   return deriveSessionChainState({
     audience: 'teacher',
-    subjectId: studentId,
+    subjectId: ready ? studentId : null,
     bookingQuery: bookings,
     itemQuery: items,
   });
@@ -256,6 +281,8 @@ export type WriterResult =
  */
 export function useSessionLinkWriter(studentId: string | null) {
   const qc = useQueryClient();
+  const { user } = useAuth();
+  const actorId = user?.id ?? null;
   const epoch = useRef(0);
   const [pending, setPending] = useState(false);
   const inFlight = useRef(false);
@@ -264,13 +291,14 @@ export function useSessionLinkWriter(studentId: string | null) {
     epoch.current += 1;
     inFlight.current = false;
     setPending(false);
-  }, [studentId]);
+  }, [actorId, studentId]);
 
   const save = useCallback(
     async (itemId: string, expected: ExpectedLink, next: SessionChainLink | null): Promise<WriterResult | null> => {
-      if (!studentId || inFlight.current) return null;
+      if (!studentId || !actorId || inFlight.current) return null;
       const mine = epoch.current;
       const subject = studentId;
+      const actor = actorId;
       inFlight.current = true;
       setPending(true);
       let outcome: CommitOutcome;
@@ -283,7 +311,8 @@ export function useSessionLinkWriter(studentId: string | null) {
       let refreshFailed = false;
       if (outcome.kind !== 'not_saved') {
         try {
-          await qc.refetchQueries({ queryKey: ['classroom-items-admin', subject], exact: true }, { throwOnError: true });
+          await qc.refetchQueries({ queryKey: teacherItemsKey(actor, subject), exact: true }, { throwOnError: true });
+          void qc.invalidateQueries({ queryKey: ['classroom-items-admin', subject] });
         } catch {
           refreshFailed = true;
         }
@@ -293,9 +322,8 @@ export function useSessionLinkWriter(studentId: string | null) {
       setPending(false);
       return { ...outcome, refreshFailed };
     },
-    [qc, studentId],
+    [qc, actorId, studentId],
   );
 
   return { save, pending };
 }
-

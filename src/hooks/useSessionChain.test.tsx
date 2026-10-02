@@ -10,17 +10,18 @@ const mocks = vi.hoisted(() => ({
   updateIfUnchanged: vi.fn(),
   from: vi.fn(),
   invoke: vi.fn(),
+  actor: 'aaaaaaaa-0000-4000-8000-000000000001',
 }));
 
 vi.mock('@/integrations/supabase/client', () => ({ supabase: { from: mocks.from, functions: { invoke: mocks.invoke } } }));
-vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: STUDENT } }) }));
+vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: mocks.actor } }) }));
 vi.mock('@/lib/classroomItems', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/classroomItems')>()),
   getClassroomItem: mocks.getClassroomItem,
   updateClassroomItemMetadataIfUnchanged: mocks.updateIfUnchanged,
 }));
 
-import { commitSessionLink, deriveSessionChainState, fetchTeacherBookings, useSessionLinkWriter } from './useSessionChain';
+import { commitSessionLink, deriveSessionChainState, fetchTeacherBookings, teacherBookingsKey, teacherItemsKey, useSessionLinkWriter, useTeacherSessionChain } from './useSessionChain';
 
 function q<T>(data: T | undefined, flags: { isLoading?: boolean; isError?: boolean } = {}) {
   return { data, isLoading: !!flags.isLoading, isError: !!flags.isError, refetch: vi.fn() };
@@ -176,7 +177,7 @@ describe('commitSessionLink', () => {
 });
 
 describe('useSessionLinkWriter', () => {
-  beforeEach(() => { mocks.getClassroomItem.mockReset(); mocks.updateIfUnchanged.mockReset(); });
+  beforeEach(() => { mocks.getClassroomItem.mockReset(); mocks.updateIfUnchanged.mockReset(); mocks.actor = STUDENT; });
 
   function setup(initial: string) {
     const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -210,5 +211,76 @@ describe('useSessionLinkWriter', () => {
     await vi.waitFor(() => expect(mocks.updateIfUnchanged).toHaveBeenCalled());
     await act(async () => { release(item({ id: 'target' })); await first; });
     expect(mocks.updateIfUnchanged).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('actor binding', () => {
+  const ADMIN_A = 'bbbbbbbb-0000-4000-8000-00000000000a';
+  const ADMIN_B = 'bbbbbbbb-0000-4000-8000-00000000000b';
+  beforeEach(() => {
+    mocks.getClassroomItem.mockReset();
+    mocks.updateIfUnchanged.mockReset();
+    mocks.from.mockReset();
+    mocks.invoke.mockReset();
+    mocks.actor = ADMIN_A;
+  });
+
+  it('keys teacher reads by actor and student', () => {
+    expect(teacherBookingsKey(ADMIN_A, STUDENT)).not.toEqual(teacherBookingsKey(ADMIN_B, STUDENT));
+    expect(teacherItemsKey(ADMIN_A, STUDENT)).toContain(ADMIN_A);
+  });
+
+  it('drops the previous actor\u2019s projected rows when the actor changes', async () => {
+    const linked = item({ metadata_json: { session_chain: link() } });
+    let pendingItems = false;
+    mocks.from.mockImplementation((table: string) => {
+      if (table === 'booking_pass_redemptions') {
+        const chain = { select: () => chain, eq: () => chain, order: async () => ({ data: [{ id: booking().id, start_at: booking().startAt, end_at: booking().endAt, status: 'booked', meet_url: null, booking_passes: { student_id: STUDENT } }], error: null }) };
+        return chain;
+      }
+      const chain = { select: () => chain, eq: () => chain, order: () => (pendingItems ? new Promise(() => {}) : Promise.resolve({ data: [linked], error: null })) };
+      return chain;
+    });
+    mocks.invoke.mockResolvedValue({ data: { single_session_bookings: [] }, error: null });
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const wrapper = ({ children }: { children: React.ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+    const hook = renderHook(() => useTeacherSessionChain(STUDENT), { wrapper });
+    await vi.waitFor(() => expect(hook.result.current.projection.byBooking.size).toBe(1));
+    pendingItems = true;
+    mocks.actor = ADMIN_B;
+    hook.rerender();
+    expect(hook.result.current.projection.byBooking.size).toBe(0);
+    expect(hook.result.current.items).toEqual([]);
+    expect(hook.result.current.itemsLoading).toBe(true);
+  });
+
+  it('reports a save that finishes after an actor change as superseded and does not unlock the new context\u2019s save', async () => {
+    const releases: Array<(v: ClassroomItem | null) => void> = [];
+    mocks.getClassroomItem.mockResolvedValue(item({ id: 'target' }));
+    mocks.updateIfUnchanged.mockImplementation(() => new Promise((resolve) => { releases.push(resolve); }));
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const wrapper = ({ children }: { children: React.ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+    const hook = renderHook(() => useSessionLinkWriter(STUDENT), { wrapper });
+
+    let oldSave!: Promise<unknown>;
+    act(() => { oldSave = hook.result.current.save('target', null, link()); });
+    await vi.waitFor(() => expect(releases).toHaveLength(1));
+
+    mocks.actor = ADMIN_B;
+    hook.rerender();
+    expect(hook.result.current.pending).toBe(false);
+
+    let newSave!: Promise<unknown>;
+    act(() => { newSave = hook.result.current.save('target', null, link()); });
+    await vi.waitFor(() => expect(releases).toHaveLength(2));
+    expect(hook.result.current.pending).toBe(true);
+
+    await act(async () => { releases[0](item({ id: 'target' })); await oldSave; });
+    await expect(oldSave).resolves.toEqual({ kind: 'superseded' });
+    // The old operation finishing must not unlock the newer one.
+    expect(hook.result.current.pending).toBe(true);
+
+    await act(async () => { releases[1](item({ id: 'target' })); await newSave; });
+    expect(hook.result.current.pending).toBe(false);
   });
 });
