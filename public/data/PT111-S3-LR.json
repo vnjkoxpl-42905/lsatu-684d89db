@@ -204,7 +204,7 @@
     "questionType": "Point at Issue (Disagree)",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Goswami: I support the striking workers at Ergon Foods. They are underpaid. The majority of them make less than $20,000 per year. Nordecki: If pay is the issue, I must disagree. The average annual salary of the striking workers at Ergon Foods is over $29,000.",
+    "stimulus": "Goswami: I support the striking workers at Ergon Foods. They are underpaid. The majority of them make less than $20,000 per year.\nNordecki: If pay is the issue, I must disagree. The average annual salary of the striking workers at Ergon Foods is over $29,000.",
     "questionStem": "Goswami and Nordecki disagree over the truth of which one of the following statements?",
     "answerChoices": {
       "A": "The average annual salary at Ergon Foods is over $29,000.",
