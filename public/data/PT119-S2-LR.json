@@ -175,7 +175,7 @@
     "questionType": "Agree/Disagree",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Alice: In democracies, politicians garner support by emphasizing the differences between their opponents and themselves. Because they must rule in accord with their rhetoric, policies in democracies fluctuate wildly as one party succeeds another.Elwell: But despite election rhetoric, to put together majority coalitions in democracies, politicians usually end up softening their stands on individual issues once they are elected.",
+    "stimulus": "Alice: In democracies, politicians garner support by emphasizing the differences between their opponents and themselves. Because they must rule in accord with their rhetoric, policies in democracies fluctuate wildly as one party succeeds another.\n\nElwell: But despite election rhetoric, to put together majority coalitions in democracies, politicians usually end up softening their stands on individual issues once they are elected.",
     "questionStem": "The statements above provide the most support for the claim that Alice and Elwell disagree about whether",
     "answerChoices": {
       "A": "politicians heighten the differences between themselves and their opponents during elections",
@@ -360,7 +360,7 @@
     "questionType": "Method",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Legislator: The recently released crime statistics clearly show that the new laws requiring stiffer punishments for violators have reduced the crime rate. In the areas covered by those laws, the incidence of crime has decreased by one-fourth over the four years since the legislation was enacted.Analyst: The statistics are welcome news, but they do not provide strong evidence that the new laws caused the drop in crime. Many comparable areas that lack such legislation have reported a similar drop in the crime rate during the same period.",
+    "stimulus": "Legislator: The recently released crime statistics clearly show that the new laws requiring stiffer punishments for violators have reduced the crime rate. In the areas covered by those laws, the incidence of crime has decreased by one-fourth over the four years since the legislation was enacted.\n\nAnalyst: The statistics are welcome news, but they do not provide strong evidence that the new laws caused the drop in crime. Many comparable areas that lack such legislation have reported a similar drop in the crime rate during the same period.",
     "questionStem": "Which one of the following most accurately describes the strategy used by the analyst to call into question the legislator's argument?",
     "answerChoices": {
       "A": "pointing out that the legislator has provided no evidence of the reliability of the statistics on which the legislator's conclusion is based",

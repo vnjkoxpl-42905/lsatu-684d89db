@@ -6,7 +6,7 @@
     "questionType": "Role",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Some critics argue that an opera’s stage directions are never reflected in its music. Many comic scenes in Mozart’s operas, however, open with violin phrases that sound like the squeaking of changing scenery. Clearly Mozart intended the music to echo the sounds occurring while stage directions are carried out. Hence, a change of scenery—the most basic and frequent stage direction— can be reflected in the music, which means that other operatic stage directions can be as well.",
+    "stimulus": "Some critics argue that an opera’s stage directions are never reflected in its music. Many comic scenes in Mozart’s operas, however, open with violin phrases that sound like the squeaking of changing scenery. Clearly Mozart intended the music to echo the sounds occurring while stage directions are carried out. Hence, a change of scenery—the most basic and frequent stage direction—can be reflected in the music, which means that other operatic stage directions can be as well.",
     "questionStem": "In the argument, the statement that many comic scenes in Mozart’s operas open with violin phrases that sound like the squeaking of changing scenery is offered in support of the claim that",
     "answerChoices": {
       "A": "a change of scenery is the stage direction most frequently reflected in an opera’s music",
@@ -216,7 +216,7 @@
       "Causation"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Researcher: The rate of psychological problems is higher among children of divorced parents than among other children. But it would be a mistake to conclude that these problems are caused by the difficulty the children have adjusting to divorce. It is just as reasonable to infer that certain behaviors that increase the likelihood of divorce—hostility, distrust, lack of empathy— are learned by children from their parents, and that it is these learned behaviors, rather than the difficulty of adjusting to divorce, that cause the children’s psychological problems.",
+    "stimulus": "Researcher: The rate of psychological problems is higher among children of divorced parents than among other children. But it would be a mistake to conclude that these problems are caused by the difficulty the children have adjusting to divorce. It is just as reasonable to infer that certain behaviors that increase the likelihood of divorce—hostility, distrust, lack of empathy—are learned by children from their parents, and that it is these learned behaviors, rather than the difficulty of adjusting to divorce, that cause the children’s psychological problems.",
     "questionStem": "The assertion that children of divorced parents have a higher rate of psychological problems than other children figures in the argument in which one of the following ways?",
     "answerChoices": {
       "A": "It is the conclusion of the argument.",

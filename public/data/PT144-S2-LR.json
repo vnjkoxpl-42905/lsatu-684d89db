@@ -266,7 +266,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "In an experiment, two groups of mice—one whose diet included ginkgo extract and one that had a normal diet— were taught to navigate a maze. The mice whose diet included ginkgo were more likely to remember how to navigate the maze the next day than were the other mice. However, the ginkgo may not have directly enhanced memory. Other studies have found that ginkgo reduces stress in mice, and lowering very high stress levels is known to improve recall.",
+    "stimulus": "In an experiment, two groups of mice—one whose diet included ginkgo extract and one that had a normal diet—were taught to navigate a maze. The mice whose diet included ginkgo were more likely to remember how to navigate the maze the next day than were the other mice. However, the ginkgo may not have directly enhanced memory. Other studies have found that ginkgo reduces stress in mice, and lowering very high stress levels is known to improve recall.",
     "questionStem": "Which one of the following, if true, would most weaken the argument?",
     "answerChoices": {
       "A": "The doses of ginkgo in the diet of the mice in the experiment were significantly higher than the doses that have been shown to reduce stress in mice.",

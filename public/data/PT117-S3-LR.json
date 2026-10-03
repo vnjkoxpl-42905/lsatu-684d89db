@@ -82,7 +82,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Maria: Thomas Edison was one of the most productive inventors of his time, perhaps of all time. His contributions significantly shaped the development of modern lighting and communication systems. Yet he had only a few months of formal schooling. Therefore, you do not need a formal education to make crucial contributions to technological advancement.Frank: That is definitely not true anymore. Since Edison’s day there have been many new developments in technology; to make crucial contributions today you need much more extensive technical knowledge than was needed then.",
+    "stimulus": "Maria: Thomas Edison was one of the most productive inventors of his time, perhaps of all time. His contributions significantly shaped the development of modern lighting and communication systems. Yet he had only a few months of formal schooling. Therefore, you do not need a formal education to make crucial contributions to technological advancement.\n\nFrank: That is definitely not true anymore. Since Edison’s day there have been many new developments in technology; to make crucial contributions today you need much more extensive technical knowledge than was needed then.",
     "questionStem": "Frank's reasoning in his response to Maria is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
       "A": "fails to address the possibility that technical knowledge may be acquired without formal education",

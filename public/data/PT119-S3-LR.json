@@ -27,7 +27,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Benson: In order to maintain the quality of life in our city, we need to restrict growth. That is why I support the new zoning regulations.Willett: I had heard such arguments ten years ago, and again five years ago. Each time the city council was justified in deciding not to restrict growth. Since there is nothing new in this idea of restricting growth, I oppose the regulations.",
+    "stimulus": "Benson: In order to maintain the quality of life in our city, we need to restrict growth. That is why I support the new zoning regulations.\n\nWillett: I had heard such arguments ten years ago, and again five years ago. Each time the city council was justified in deciding not to restrict growth. Since there is nothing new in this idea of restricting growth, I oppose the regulations.",
     "questionStem": "Which one of the following most accurately describes a way in which Willett's reasoning is questionable?",
     "answerChoices": {
       "A": "It presumes that growth is necessarily good without offering support for that position.",

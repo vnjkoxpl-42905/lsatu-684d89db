@@ -509,7 +509,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Psychologist: Some astrologers claim that our horoscopes completely determine our personalities, but this claim is false. I concede that identical twins— who are, of course, born at practically the same time—often do have similar personalities. However, birth records were examined to find two individuals who were born 40 years ago on the same day and at exactly the same time—one in a hospital in Toronto and one in a hospital in New York. Personality tests revealed that the personalities of these two individuals are in fact different.",
+    "stimulus": "Psychologist: Some astrologers claim that our horoscopes completely determine our personalities, but this claim is false. I concede that identical twins—who are, of course, born at practically the same time—often do have similar personalities. However, birth records were examined to find two individuals who were born 40 years ago on the same day and at exactly the same time—one in a hospital in Toronto and one in a hospital in New York. Personality tests revealed that the personalities of these two individuals are in fact different.",
     "questionStem": "Which one of the following is an assumption on which the psychologist’s argument depends?",
     "answerChoices": {
       "A": "Astrologers have not subjected their claims to rigorous experimentation.",
