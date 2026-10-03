@@ -262,7 +262,7 @@
     "practiceTest": "PT147",
     "sectionNumber": 1,
     "questionNumber": 12,
-    "questionType": "Complete the Argument",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation"
     ],
@@ -456,7 +456,7 @@
     "practiceTest": "PT147",
     "sectionNumber": 1,
     "questionNumber": 20,
-    "questionType": "Must Be True",
+    "questionType": "Must Be False",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -472,7 +472,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Refute a Conditional"
+      "Refute a Conditional",
+      "EXCEPT"
     ]
   },
   {
@@ -602,7 +603,7 @@
     "practiceTest": "PT147",
     "sectionNumber": 1,
     "questionNumber": 26,
-    "questionType": "Flawed Reasoning",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

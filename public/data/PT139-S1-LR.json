@@ -220,7 +220,7 @@
     "practiceTest": "PT139",
     "sectionNumber": 1,
     "questionNumber": 10,
-    "questionType": "Must Be True",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -263,7 +263,7 @@
     "practiceTest": "PT139",
     "sectionNumber": 1,
     "questionNumber": 12,
-    "questionType": "Must Be True",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -355,7 +355,7 @@
     "practiceTest": "PT139",
     "sectionNumber": 1,
     "questionNumber": 16,
-    "questionType": "Parallel Reasoning: Complete Argument",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"

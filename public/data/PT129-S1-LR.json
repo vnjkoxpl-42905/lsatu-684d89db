@@ -114,7 +114,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Medical",
-      "Timeframes"
+      "Timeframes",
+      "EXCEPT"
     ]
   },
   {

@@ -54,7 +54,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 3,
     "questionNumber": 3,
-    "questionType": "Most Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -301,7 +301,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 3,
     "questionNumber": 14,
-    "questionType": "Method of Reasoning",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -373,7 +373,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 3,
     "questionNumber": 17,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -497,7 +497,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "questionType": "Principle Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -521,7 +521,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 3,
     "questionNumber": 23,
-    "questionType": "Principle Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -545,7 +545,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 3,
     "questionNumber": 24,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"

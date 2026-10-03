@@ -3,7 +3,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 1,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -93,7 +93,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 5,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -255,7 +255,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 12,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -351,7 +351,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 16,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -378,7 +378,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 17,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -402,7 +402,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 18,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation"
     ],
@@ -426,7 +426,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -473,7 +473,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 21,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -496,7 +496,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 22,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -520,7 +520,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 23,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -569,7 +569,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 2,
     "questionNumber": 25,
-    "questionType": "Strengthen",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation"
     ],

@@ -330,7 +330,7 @@
     "practiceTest": "PT109",
     "sectionNumber": 1,
     "questionNumber": 16,
-    "questionType": "Must be True",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],

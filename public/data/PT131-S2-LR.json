@@ -359,7 +359,7 @@
     "practiceTest": "PT131",
     "sectionNumber": 2,
     "questionNumber": 17,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],

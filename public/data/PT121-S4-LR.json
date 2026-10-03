@@ -3,7 +3,7 @@
     "practiceTest": "PT121",
     "sectionNumber": 4,
     "questionNumber": 1,
-    "questionType": "Paradox",
+    "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "While 65 percent of the eligible voters who were recently polled favor Perkins over Samuels in the coming election, the results of that poll are dubious because it was not based on a representative sample. Given that Perkins predominantly advocates the interests of the upper-middle class and that the survey was conducted at high-priced shopping malls, it is quite probable that Perkins's supporters were overrepresented.",
@@ -162,7 +162,7 @@
     "practiceTest": "PT121",
     "sectionNumber": 4,
     "questionNumber": 8,
-    "questionType": "Main Conclusion",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "This stamp is probably highly valuable, since it exhibits a printing error. The most important factors in determining a stamp's value, assuming it is in good condition, are its rarity and age. This is clearly a fine specimen, and it is quite old as well.",
@@ -350,7 +350,7 @@
     "practiceTest": "PT121",
     "sectionNumber": 4,
     "questionNumber": 16,
-    "questionType": "Most Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -506,7 +506,10 @@
       "D": "Most managers who are already efficient do not need to improve their productivity.",
       "E": "Most managers who are efficient have never attended a time management seminar."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT121",

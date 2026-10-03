@@ -3,7 +3,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 1,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -101,7 +101,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 5,
-    "questionType": "Unknown",
+    "questionType": "Agree/Disagree",
     "reasoningType": [
       "Causation"
     ],
@@ -124,7 +124,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 6,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation",
       "Conditional Reasoning"
@@ -152,7 +152,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 7,
-    "questionType": "Unknown",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -314,7 +314,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 14,
-    "questionType": "Unknown",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Causation"
     ],
@@ -334,7 +334,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 15,
-    "questionType": "Strengthen",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -357,7 +357,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 16,
-    "questionType": "Unknown",
+    "questionType": "Main Conclusion",
     "reasoningType": [
       "Causation"
     ],
@@ -449,7 +449,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 20,
-    "questionType": "Paradox",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -500,7 +500,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 22,
-    "questionType": "Unknown",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -523,7 +523,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 23,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -572,7 +572,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 2,
     "questionNumber": 25,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],

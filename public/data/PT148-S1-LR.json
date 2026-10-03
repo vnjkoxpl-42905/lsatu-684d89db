@@ -497,7 +497,7 @@
     "practiceTest": "PT148",
     "sectionNumber": 1,
     "questionNumber": 21,
-    "questionType": "Principle Justify",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -570,7 +570,7 @@
     "practiceTest": "PT148",
     "sectionNumber": 1,
     "questionNumber": 24,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

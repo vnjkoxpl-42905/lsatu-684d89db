@@ -81,7 +81,10 @@
       "D": "Because modular furniture pieces are custom ordered, they are never put on sale.",
       "E": "Modular sofas, on average, have a greater area of upholstered surfaces than do standard sofas."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -534,7 +537,7 @@
     "practiceTest": "PT137",
     "sectionNumber": 2,
     "questionNumber": 24,
-    "questionType": "Parallel Reasoning",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Causation"
     ],
@@ -558,7 +561,7 @@
     "practiceTest": "PT137",
     "sectionNumber": 2,
     "questionNumber": 25,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],

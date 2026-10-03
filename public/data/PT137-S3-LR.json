@@ -48,7 +48,7 @@
     "practiceTest": "PT137",
     "sectionNumber": 3,
     "questionNumber": 3,
-    "questionType": "Must Be True",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -314,7 +314,7 @@
     "practiceTest": "PT137",
     "sectionNumber": 3,
     "questionNumber": 14,
-    "questionType": "Parallel Reasoning",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -453,7 +453,7 @@
     "practiceTest": "PT137",
     "sectionNumber": 3,
     "questionNumber": 20,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],

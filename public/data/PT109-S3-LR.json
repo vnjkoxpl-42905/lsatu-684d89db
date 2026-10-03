@@ -23,7 +23,7 @@
     "practiceTest": "PT109",
     "sectionNumber": 3,
     "questionNumber": 2,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Brewer: All children should be given the opportunity to participate in competitive sports; these activities provide an unsurpassed opportunity to engage children’s emotions and so stimulate them to put maximum effort into attaining high athletic standards. Polanski: I disagree. Competitive athletics does, over time, produce a handful of highly motivated children with a desire to excel at an activity, but many children have no taste for competition, and to make them participate would only cause them to develop an antipathy toward athletics.",
@@ -115,7 +115,7 @@
     "practiceTest": "PT109",
     "sectionNumber": 3,
     "questionNumber": 6,
-    "questionType": "Principle",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -187,7 +187,7 @@
     "practiceTest": "PT109",
     "sectionNumber": 3,
     "questionNumber": 9,
-    "questionType": "Principle",
+    "questionType": "Strengthen",
     "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "At some point in any discussion of societal justice, the only possible doctrinal defense seems to be “That is the way we do things here.” Different communities that each recognize the dignity and equality of all citizens will, for example, nevertheless settle on somewhat different provisions for the elderly. So we can see that general principles of justice are never sufficient to determine the details of social policies fixed within a particular state.",

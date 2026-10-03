@@ -145,7 +145,7 @@
     "practiceTest": "PT113",
     "sectionNumber": 3,
     "questionNumber": 7,
-    "questionType": "Flaw",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Causation"
     ],
@@ -288,7 +288,9 @@
       "E": "Middle-aged people have a more acute sense of their own mortality than do people of any other age group."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -475,7 +477,7 @@
     "practiceTest": "PT113",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "questionType": "Principle-Strengthen",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],

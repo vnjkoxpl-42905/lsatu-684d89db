@@ -56,7 +56,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 1,
     "questionNumber": 3,
-    "questionType": "Weaken",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -82,7 +82,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 1,
     "questionNumber": 4,
-    "questionType": "Most Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -311,7 +311,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 1,
     "questionNumber": 13,
-    "questionType": "Paradox",
+    "questionType": "Main Conclusion",
     "reasoningType": [
       "Causation",
       "Conditional Reasoning"
@@ -388,7 +388,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 1,
     "questionNumber": 16,
-    "questionType": "Sufficient Assumption",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -540,7 +540,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 1,
     "questionNumber": 22,
-    "questionType": "Flaw",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"

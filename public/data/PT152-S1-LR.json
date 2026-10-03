@@ -127,7 +127,7 @@
     "practiceTest": "PT152",
     "sectionNumber": 1,
     "questionNumber": 6,
-    "questionType": "Except",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -248,7 +248,7 @@
     "practiceTest": "PT152",
     "sectionNumber": 1,
     "questionNumber": 11,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -273,7 +273,7 @@
     "practiceTest": "PT152",
     "sectionNumber": 1,
     "questionNumber": 12,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -464,7 +464,7 @@
     "practiceTest": "PT152",
     "sectionNumber": 1,
     "questionNumber": 20,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],

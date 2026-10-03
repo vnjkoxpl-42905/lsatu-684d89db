@@ -521,7 +521,7 @@
     "practiceTest": "PT104",
     "sectionNumber": 4,
     "questionNumber": 22,
-    "questionType": "Must be True",
+    "questionType": "Method of Reasoning",
     "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Words like “employee,” “payee,” and “detainee” support the generalization, crudely stated, that words with the ending -ee designate the person affected in the specified way by an action performed by someone else. The word “absentee” seems to be a direct counterexample: it ends in -ee, yet, if it makes sense here to speak of an action at all—that of absenting oneself, perhaps—the word can refer to the person who actually performs that action. Clearly, however, putting forward the following resolves the impasse: if a word with the ending -ee refers to one party in a two-party transaction, it refers to the party at which the other party’s action is directed.",

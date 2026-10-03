@@ -145,7 +145,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 7,
-    "questionType": "Miscellaneous",
+    "questionType": "Paradox",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -166,7 +166,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 8,
-    "questionType": "Miscellaneous",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -215,7 +215,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 10,
-    "questionType": "Must be true",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -260,7 +260,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 12,
-    "questionType": "Except",
+    "questionType": "Weaken",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -284,7 +284,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 13,
-    "questionType": "Miscellaneous",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -307,7 +307,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 14,
-    "questionType": "Principle",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -378,7 +378,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 17,
-    "questionType": "Except",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -499,7 +499,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 22,
-    "questionType": "Except",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -523,7 +523,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 2,
     "questionNumber": 23,
-    "questionType": "Miscellaneous",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],

@@ -52,7 +52,7 @@
     "practiceTest": "PT126",
     "sectionNumber": 3,
     "questionNumber": 3,
-    "questionType": "Most Supported",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -77,7 +77,7 @@
     "practiceTest": "PT126",
     "sectionNumber": 3,
     "questionNumber": 4,
-    "questionType": "Strengthen",
+    "questionType": "Weaken",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -128,7 +128,7 @@
     "practiceTest": "PT126",
     "sectionNumber": 3,
     "questionNumber": 6,
-    "questionType": "Weaken",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation"
     ],
@@ -358,7 +358,7 @@
     "practiceTest": "PT126",
     "sectionNumber": 3,
     "questionNumber": 15,
-    "questionType": "Parallel Flaw",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],

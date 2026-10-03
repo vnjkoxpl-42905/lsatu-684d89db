@@ -24,7 +24,7 @@
     "practiceTest": "PT119",
     "sectionNumber": 2,
     "questionNumber": 2,
-    "questionType": "Most Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -443,7 +443,7 @@
     "practiceTest": "PT119",
     "sectionNumber": 2,
     "questionNumber": 21,
-    "questionType": "Principle-Strengthen",
+    "questionType": "Principle-Conform",
     "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Ethicist: As a function of one's job and societal role, one has various duties. There are situations where acting in accord with one of these duties has disastrous consequences, and thus the duties are not absolute. However, it is a principle of morality that if one does not have overwhelming evidence that fulfilling such a duty will have disastrous consequences, one ought to fulfill it.",

@@ -3,7 +3,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 3,
     "questionNumber": 1,
-    "questionType": "Miscellaneous",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -99,7 +99,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 3,
     "questionNumber": 5,
-    "questionType": "Miscellaneous",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -144,7 +144,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 3,
     "questionNumber": 7,
-    "questionType": "Miscellaneous",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -240,7 +240,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 3,
     "questionNumber": 11,
-    "questionType": "Except",
+    "questionType": "Evaluate",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -406,7 +406,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 3,
     "questionNumber": 18,
-    "questionType": "Except",
+    "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Field studies, which have long been a staple of anthropological research, involve the researcher living within the community being studied. However, the usefulness of field studies tends to be overrated by anthropologists. Although most anthropologists do realize that living within the community one is studying affects that community, they generally underestimate the extent of such effects.",
@@ -525,7 +525,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 3,
     "questionNumber": 23,
-    "questionType": "Principle",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -550,7 +550,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 3,
     "questionNumber": 24,
-    "questionType": "Most strongly supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -573,7 +573,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 3,
     "questionNumber": 25,
-    "questionType": "Miscellaneous",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"

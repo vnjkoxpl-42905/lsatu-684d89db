@@ -214,7 +214,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 3,
     "questionNumber": 10,
-    "questionType": "Unknown",
+    "questionType": "Role",
     "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "People often admonish us to learn the lessons of history, but, even if it were easy to discover what the past was really like, it is nearly impossible to discover its lessons. We are supposed, for example, to learn the lessons of World War I. But what are they? And were we ever to discover what they are, it is not clear that we could ever apply them, for we shall never again have a situation just like World War I.",
@@ -255,7 +255,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 3,
     "questionNumber": 12,
-    "questionType": "Flaw",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -399,7 +399,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 3,
     "questionNumber": 18,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -423,7 +423,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 3,
     "questionNumber": 19,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -521,7 +521,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 3,
     "questionNumber": 23,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -593,7 +593,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 3,
     "questionNumber": 26,
-    "questionType": "Must Be True",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],

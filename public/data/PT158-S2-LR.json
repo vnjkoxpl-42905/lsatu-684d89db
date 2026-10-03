@@ -97,7 +97,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 2,
     "questionNumber": 5,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -191,7 +191,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 2,
     "questionNumber": 9,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Scholar: The purpose of a law is to deter certain actions\n by threatening to punish those performing the\n actions. This threat works only if potential\n violators believe that they are likely to be\n punished. But the likelihood that someone will\n be apprehended and punished for committing a\n prohibited act decreases as the number of types\n of prohibited actions increases. Therefore, a\n successful legal system prohibits only those few\n behaviors that citizens find absolutely intolerable.",
@@ -264,7 +264,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 2,
     "questionNumber": 12,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -364,7 +364,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 2,
     "questionNumber": 16,
-    "questionType": "Method of Reasoning",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -468,7 +468,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 2,
     "questionNumber": 20,
-    "questionType": "Strengthen",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -518,7 +518,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 2,
     "questionNumber": 22,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -569,7 +569,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 2,
     "questionNumber": 24,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -593,7 +593,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 2,
     "questionNumber": 25,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],

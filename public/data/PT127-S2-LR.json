@@ -30,7 +30,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 2,
-    "questionType": "Unknown",
+    "questionType": "Agree/Disagree",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -81,7 +81,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 4,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -133,7 +133,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 6,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -161,7 +161,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 7,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Causation"
     ],
@@ -209,7 +209,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 9,
-    "questionType": "Unknown",
+    "questionType": "Role",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -235,7 +235,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 10,
-    "questionType": "Unknown",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -259,7 +259,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 11,
-    "questionType": "Unknown",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -335,7 +335,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 14,
-    "questionType": "Unknown",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -385,7 +385,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 16,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Causation",
       "Conditional Reasoning"
@@ -437,7 +437,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 18,
-    "questionType": "Parallel Reasoning",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -464,7 +464,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Unknown",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -488,7 +488,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 20,
-    "questionType": "Must Be True",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],

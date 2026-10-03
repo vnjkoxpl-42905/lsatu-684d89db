@@ -134,7 +134,7 @@
     "practiceTest": "PT115",
     "sectionNumber": 2,
     "questionNumber": 7,
-    "questionType": "Must be True",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -468,7 +468,7 @@
     "practiceTest": "PT115",
     "sectionNumber": 2,
     "questionNumber": 21,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -552,7 +552,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "EXCEPT"
     ]
   }
 ]

@@ -53,7 +53,7 @@
     "practiceTest": "PT118",
     "sectionNumber": 3,
     "questionNumber": 3,
-    "questionType": "Principle-PSA",
+    "questionType": "Principle-Conform",
     "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "John: It was wrong of you to blame me for that traffic accident. You know full well that the accident was due to my poor vision, and I certainly cannot be held responsible for the fact that my vision has deteriorated. Michiko: But I can hold you responsible for your hazardous driving, because you know how poor your vision is. People are responsible for the consequences of actions that they voluntarily undertake, if they know that those actions risk such consequences.",
@@ -297,7 +297,7 @@
     "practiceTest": "PT118",
     "sectionNumber": 3,
     "questionNumber": 14,
-    "questionType": "Must Be True",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -397,7 +397,7 @@
     "practiceTest": "PT118",
     "sectionNumber": 3,
     "questionNumber": 18,
-    "questionType": "Principle-PSA",
+    "questionType": "Principle-Conform",
     "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "The tendency toward overspecialization in the study of artifacts is unfortunate. Scholars can enhance their understanding of a certain artistic period by studying art from earlier periods that had a significant influence on it. For instance, because of its influence on Spanish artisans, a proper understanding of Arabic porcelain is indispensable for a proper understanding of Spanish porcelain.",
@@ -540,7 +540,7 @@
     "practiceTest": "PT118",
     "sectionNumber": 3,
     "questionNumber": 25,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation"
     ],

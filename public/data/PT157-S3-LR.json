@@ -26,7 +26,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 2,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Main Conclusion",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -73,7 +73,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 4,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Principle: It is unethical for someone who has bought an\n item to return it to the store after getting all the\n use from it that he or she ever intended to get.\n Application: James purchased a video camera and\n returned it to the store two weeks later. This\n return was unethical.",
@@ -95,7 +95,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 5,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation"
     ],
@@ -143,7 +143,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 7,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -166,7 +166,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 8,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [
       "Causation"
     ],
@@ -239,7 +239,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 11,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Biologist: The evolutionary advantage of sexual\n reproduction is that it increases the range of\n genetic variation in a species, which is an\n advantage for the species as a whole. However,\n an increased range of genetic variation in a\n species is not advantageous for any individual\n member of the species. It follows that the sole\n reason that sexual reproduction has become the\n rule among both animals and plants is that natural\n selection has favored some entire species over\n others.",
@@ -306,7 +306,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 14,
-    "questionType": "Necessary Assumption",
+    "questionType": "Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -329,7 +329,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 15,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Weaken",
     "reasoningType": [
       "Causation"
     ],
@@ -376,7 +376,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 17,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -400,7 +400,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 18,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -414,13 +414,16 @@
       "D": "Many retail stores have low prices on personal computers in order to bring in customers who might buy software and accessories.",
       "E": "An increase in the number of discount retail outlets selling personal computers has intensified the competition for customers."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 19,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -496,7 +499,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "questionType": "Main Conclusion",
+    "questionType": "Role",
     "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Philosopher: Philosophers usually treat emotions as\n nonrational. But emotion is not nonrational: it\n only seems that way because language lacks\n the ability to convey adequate conceptions\n of emotion. The words we use to refer to\n emotions name only very general kinds of inner\n experience—excitement, calm, joy, and so on.\n Thus, for example, there is no language for\n describing just how one joy differs from another.",
@@ -538,7 +541,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 3,
     "questionNumber": 24,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],

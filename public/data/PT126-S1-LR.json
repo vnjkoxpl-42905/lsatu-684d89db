@@ -615,7 +615,7 @@
     "practiceTest": "PT126",
     "sectionNumber": 1,
     "questionNumber": 25,
-    "questionType": "Must Be False",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],

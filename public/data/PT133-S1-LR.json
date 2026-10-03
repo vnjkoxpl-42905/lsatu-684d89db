@@ -76,7 +76,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 1,
     "questionNumber": 4,
-    "questionType": "Strengthen",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -243,7 +243,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 1,
     "questionNumber": 11,
-    "questionType": "Principle Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -335,7 +335,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 1,
     "questionNumber": 15,
-    "questionType": "Principle Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -407,7 +407,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 1,
     "questionNumber": 18,
-    "questionType": "Principle Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -507,7 +507,7 @@
     "practiceTest": "PT133",
     "sectionNumber": 1,
     "questionNumber": 22,
-    "questionType": "Principle Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],

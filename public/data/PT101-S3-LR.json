@@ -416,7 +416,7 @@
     "practiceTest": "PT101",
     "sectionNumber": 3,
     "questionNumber": 19,
-    "questionType": "Weaken",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -442,7 +442,7 @@
     "practiceTest": "PT101",
     "sectionNumber": 3,
     "questionNumber": 20,
-    "questionType": "Weaken",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],

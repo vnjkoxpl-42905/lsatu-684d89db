@@ -3,7 +3,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 1,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -30,7 +30,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 2,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Evaluate",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -193,7 +193,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 9,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -241,7 +241,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 11,
-    "questionType": "Must Be True",
+    "questionType": "Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -311,7 +311,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 14,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -360,7 +360,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 16,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Main Conclusion",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -384,7 +384,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 17,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -407,7 +407,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 18,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Agree/Disagree",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -430,7 +430,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 19,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -504,7 +504,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 22,
-    "questionType": "Main Conclusion",
+    "questionType": "Role",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -524,7 +524,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 23,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -591,7 +591,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 26,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

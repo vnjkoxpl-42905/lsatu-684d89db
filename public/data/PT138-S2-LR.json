@@ -3,7 +3,7 @@
     "practiceTest": "PT138",
     "sectionNumber": 2,
     "questionNumber": 1,
-    "questionType": "Most Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -183,7 +183,7 @@
     "practiceTest": "PT138",
     "sectionNumber": 2,
     "questionNumber": 9,
-    "questionType": "Parallel Flaw",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"

@@ -135,7 +135,7 @@
     "practiceTest": "PT120",
     "sectionNumber": 1,
     "questionNumber": 7,
-    "questionType": "Must be False",
+    "questionType": "Principle-Conform",
     "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Terry: Months ago, I submitted a claim for my stolen bicycle to my insurance company. After hearing nothing for several weeks, I contacted the firm and found they had no record of my claim. Since then, I have resubmitted the claim twice and called the firm repeatedly, but I have yet to receive a settlement. Anyone can make mistakes, of course, but the persistence of the error makes me conclude that the company is deliberately avoiding paying up.",

@@ -320,7 +320,7 @@
     "practiceTest": "PT112",
     "sectionNumber": 4,
     "questionNumber": 15,
-    "questionType": "Principle-Strengthen",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -552,7 +552,7 @@
     "practiceTest": "PT112",
     "sectionNumber": 4,
     "questionNumber": 25,
-    "questionType": "Parallel",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

@@ -26,7 +26,7 @@
     "practiceTest": "PT103",
     "sectionNumber": 2,
     "questionNumber": 2,
-    "questionType": "Most Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Once a child's imagination becomes developed, a host of imaginary creatures may torment the child. But this newly developed cognitive capacity may also be used to render these creatures harmless. For instance, a child's new toy may be imagined as an ally, powerful enough to ward off any imaginary threats.",
@@ -417,7 +417,7 @@
     "practiceTest": "PT103",
     "sectionNumber": 2,
     "questionNumber": 18,
-    "questionType": "Most Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -481,7 +481,7 @@
     "practiceTest": "PT103",
     "sectionNumber": 2,
     "questionNumber": 21,
-    "questionType": "Necessary Assumption",
+    "questionType": "Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -529,7 +529,7 @@
     "practiceTest": "PT103",
     "sectionNumber": 2,
     "questionNumber": 23,
-    "questionType": "Must be True",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -577,7 +577,7 @@
     "practiceTest": "PT103",
     "sectionNumber": 2,
     "questionNumber": 25,
-    "questionType": "Strengthen",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],

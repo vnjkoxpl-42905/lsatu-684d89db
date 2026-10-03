@@ -27,7 +27,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 1,
     "questionNumber": 2,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -51,7 +51,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 1,
     "questionNumber": 3,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -123,7 +123,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 1,
     "questionNumber": 6,
-    "questionType": "Strengthen",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -212,7 +212,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 1,
     "questionNumber": 10,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -303,7 +303,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 1,
     "questionNumber": 14,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -348,7 +348,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 1,
     "questionNumber": 16,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -414,7 +414,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 1,
     "questionNumber": 19,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -482,7 +482,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 1,
     "questionNumber": 22,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -554,7 +554,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 1,
     "questionNumber": 25,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"

@@ -3,7 +3,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 2,
     "questionNumber": 1,
-    "questionType": "Unknown",
+    "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Certain companies require their managers to rank workers in the groups they supervise from best to worst, giving each worker a unique ranking based on job performance. The top 10 percent of the workers in each group are rewarded and the bottom 10 percent are penalized or fired. But this system is unfair to workers. Good workers could receive low rankings merely because they belong to groups of exceptionally good workers. Furthermore, managers often give the highest rankings to workers who share the manager’s interests outside of work.",
@@ -148,7 +148,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 2,
     "questionNumber": 7,
-    "questionType": "Unknown",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -173,7 +173,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 2,
     "questionNumber": 8,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -200,7 +200,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 2,
     "questionNumber": 9,
-    "questionType": "Unknown",
+    "questionType": "Weaken",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -256,7 +256,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 2,
     "questionNumber": 11,
-    "questionType": "Unknown",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -384,7 +384,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 2,
     "questionNumber": 16,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -433,7 +433,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 2,
     "questionNumber": 18,
-    "questionType": "Unknown",
+    "questionType": "Must Be False",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -447,13 +447,16 @@
       "D": "A regular smoker who, immediately after smoking a cigarette, exhibits short-term memory skills no better than those typically exhibited by a nonsmoker is nevertheless likely to exhibit superior short-term memory skills in the hours following a period of heavy smoking.",
       "E": "The short-term memory skills exhibited by a regular smoker who last smoked a cigarette five hours ago are typically superior to those exhibited by a regular smoker who has just smoked a cigarette."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT134",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -479,7 +482,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 2,
     "questionNumber": 20,
-    "questionType": "Unknown",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Comparative Reasoning",
       "Causation"
@@ -581,7 +584,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 2,
     "questionNumber": 24,
-    "questionType": "Unknown",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Comparative Reasoning"
     ],

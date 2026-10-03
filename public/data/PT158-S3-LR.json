@@ -128,7 +128,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 3,
     "questionNumber": 6,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -276,7 +276,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 3,
     "questionNumber": 12,
-    "questionType": "Main Conclusion",
+    "questionType": "Role",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -327,7 +327,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 3,
     "questionNumber": 14,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -399,7 +399,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 3,
     "questionNumber": 17,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation"
     ],
@@ -424,7 +424,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 3,
     "questionNumber": 18,
-    "questionType": "Main Conclusion",
+    "questionType": "Role",
     "reasoningType": [
       "Comparative Reasoning",
       "Conditional Reasoning"
@@ -450,7 +450,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 3,
     "questionNumber": 19,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -475,7 +475,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 3,
     "questionNumber": 20,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -521,7 +521,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "questionType": "Necessary Assumption",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -545,7 +545,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 3,
     "questionNumber": 23,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Causation"
     ],

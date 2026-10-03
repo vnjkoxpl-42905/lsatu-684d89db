@@ -165,7 +165,7 @@
     "practiceTest": "PT137",
     "sectionNumber": 4,
     "questionNumber": 8,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -451,7 +451,7 @@
     "practiceTest": "PT137",
     "sectionNumber": 4,
     "questionNumber": 20,
-    "questionType": "Parallel Reasoning",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Comparative Reasoning"
     ],

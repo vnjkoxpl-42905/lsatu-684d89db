@@ -339,7 +339,7 @@
     "practiceTest": "PT123",
     "sectionNumber": 2,
     "questionNumber": 15,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -438,7 +438,7 @@
     "practiceTest": "PT123",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Weaken",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation"
     ],

@@ -29,7 +29,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 2,
     "questionNumber": 2,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -129,7 +129,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 2,
     "questionNumber": 6,
-    "questionType": "Method of Reasoning",
+    "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Michaela: I think doctors who complain about patients\ndoing medical research on the Internet are being\na little unfair. It seems only natural that a patient\nwould want to know as much as possible about\nhis or her condition. Sam: It is not unfair. Doctors have undergone years of\ntraining. How can you maintain that a doctor’s\nopinion is not worth more than something an\nuntrained person comes up with after searching\nthe Internet?",
@@ -150,7 +150,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 2,
     "questionNumber": 7,
-    "questionType": "Principle-Conform",
+    "questionType": "Strengthen",
     "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Principle: People should not feed wild animals because it\nmakes them dependent on humans and less likely\nto survive on their own.\nSituation: Bird lovers commonly feed wild birds to attract\nthem to their yards and gardens.",
@@ -243,7 +243,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 2,
     "questionNumber": 11,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -286,7 +286,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 2,
     "questionNumber": 13,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -427,7 +427,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -522,7 +522,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 2,
     "questionNumber": 23,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -574,7 +574,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 2,
     "questionNumber": 25,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [
       "Comparative Reasoning"
     ],

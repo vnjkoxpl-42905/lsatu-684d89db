@@ -30,7 +30,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 2,
     "questionNumber": 2,
-    "questionType": "Unknown",
+    "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Dietitian: Many diet-conscious consumers are excited about new “fake fat” products designed to give food the flavor and consistency of fatty foods, yet without fat’s harmful effects. Consumers who expect the new fat substitute to help them lose weight are likely to be disappointed, however. Research has shown that when people knowingly or unknowingly eat foods containing “fake fat,” they tend to take in at least as many additional calories as are saved by eating “fake fat.”",
@@ -106,7 +106,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 2,
     "questionNumber": 5,
-    "questionType": "Unknown",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -156,7 +156,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 2,
     "questionNumber": 7,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation",
       "Conditional Reasoning"
@@ -366,7 +366,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 2,
     "questionNumber": 15,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -444,7 +444,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 2,
     "questionNumber": 18,
-    "questionType": "Unknown",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Causation"
     ],
@@ -468,7 +468,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Paradox",
+    "questionType": "Weaken",
     "reasoningType": [
       "Causation"
     ],
@@ -493,7 +493,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 2,
     "questionNumber": 20,
-    "questionType": "Unknown",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -545,7 +545,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 2,
     "questionNumber": 22,
-    "questionType": "Unknown",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -594,7 +594,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 2,
     "questionNumber": 24,
-    "questionType": "Parallel Reasoning",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

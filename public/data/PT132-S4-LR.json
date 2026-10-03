@@ -28,7 +28,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 4,
     "questionNumber": 2,
-    "questionType": "Must Be True",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -174,7 +174,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 4,
     "questionNumber": 8,
-    "questionType": "Must Be True",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -329,7 +329,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 4,
     "questionNumber": 15,
-    "questionType": "Principle Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -373,7 +373,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 4,
     "questionNumber": 17,
-    "questionType": "Strengthen/Explain EXCEPT",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -546,7 +546,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 4,
     "questionNumber": 24,
-    "questionType": "Evaluate",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Causation"
     ],
@@ -593,7 +593,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 4,
     "questionNumber": 26,
-    "questionType": "Strengthen/Explain EXCEPT",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],

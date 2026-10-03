@@ -123,7 +123,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 2,
     "questionNumber": 6,
-    "questionType": "Main Conclusion",
+    "questionType": "Weaken",
     "reasoningType": [
       "Causation"
     ],
@@ -226,7 +226,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 2,
     "questionNumber": 10,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -351,7 +351,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 2,
     "questionNumber": 15,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -376,7 +376,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 2,
     "questionNumber": 16,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -478,7 +478,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 2,
     "questionNumber": 20,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -554,7 +554,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 2,
     "questionNumber": 23,
-    "questionType": "Must Be True",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -581,7 +581,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 2,
     "questionNumber": 24,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Weaken",
     "reasoningType": [
       "Causation"
     ],
