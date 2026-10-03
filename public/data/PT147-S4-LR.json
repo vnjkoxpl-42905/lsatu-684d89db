@@ -296,7 +296,7 @@
     "practiceTest": "PT147",
     "sectionNumber": 4,
     "questionNumber": 13,
-    "questionType": "Principle Justify",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -394,7 +394,7 @@
     "practiceTest": "PT147",
     "sectionNumber": 4,
     "questionNumber": 17,
-    "questionType": "Identify The Conclusion",
+    "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "It is pointless to debate the truth of the law of noncontradiction, a fundamental logical principle according to which two statements that contradict each other cannot both be true. For a debate to be productive, participants must hold some basic principles in common. But the principles held in common in a debate over the law of noncontradiction would be much less certain than that law, so it matters little whether the law of noncontradiction can be defended on the basis of those principles.",

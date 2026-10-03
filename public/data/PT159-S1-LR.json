@@ -173,7 +173,7 @@
     "practiceTest": "PT159",
     "sectionNumber": 1,
     "questionNumber": 8,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation"
     ],
@@ -313,7 +313,7 @@
     "practiceTest": "PT159",
     "sectionNumber": 1,
     "questionNumber": 14,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
