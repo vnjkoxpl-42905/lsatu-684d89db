@@ -48,7 +48,7 @@
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 3,
-    "questionType": "Weaken",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -113,7 +113,7 @@
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 6,
-    "questionType": "Flaw",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -475,7 +475,7 @@
     "practiceTest": "PT131",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "questionType": "Parallel Flaw",
+    "questionType": "Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

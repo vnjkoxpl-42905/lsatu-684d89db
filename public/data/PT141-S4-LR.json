@@ -150,7 +150,7 @@
     "practiceTest": "PT141",
     "sectionNumber": 4,
     "questionNumber": 7,
-    "questionType": "PSA - Find the rule (Principle)",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -544,7 +544,7 @@
     "practiceTest": "PT141",
     "sectionNumber": 4,
     "questionNumber": 23,
-    "questionType": "PSA - Find or complete the application (Principle)",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],

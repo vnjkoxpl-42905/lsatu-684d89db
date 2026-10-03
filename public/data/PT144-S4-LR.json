@@ -199,7 +199,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 4,
     "questionNumber": 9,
-    "questionType": "Argument part",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation"
     ],
@@ -444,7 +444,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 4,
     "questionNumber": 19,
-    "questionType": "Miscellaneous",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -495,7 +495,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 4,
     "questionNumber": 21,
-    "questionType": "Except",
+    "questionType": "Weaken",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -592,7 +592,7 @@
     "practiceTest": "PT144",
     "sectionNumber": 4,
     "questionNumber": 25,
-    "questionType": "Miscellaneous",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation"
     ],

@@ -53,7 +53,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 3,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -131,7 +131,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 6,
-    "questionType": "Unknown",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -261,7 +261,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 11,
-    "questionType": "Unknown",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -285,7 +285,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 12,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -310,7 +310,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 13,
-    "questionType": "Unknown",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -335,7 +335,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 14,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -359,7 +359,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 15,
-    "questionType": "Parallel Reasoning",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -540,7 +540,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "questionType": "Unknown",
+    "questionType": "Must Be False",
     "reasoningType": [
       "Causation",
       "Conditional Reasoning",
@@ -590,7 +590,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 24,
-    "questionType": "Unknown",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -616,7 +616,7 @@
     "practiceTest": "PT127",
     "sectionNumber": 3,
     "questionNumber": 25,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],

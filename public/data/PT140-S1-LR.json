@@ -3,7 +3,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 1,
     "questionNumber": 1,
-    "questionType": "Strengthen",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -27,7 +27,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 1,
     "questionNumber": 2,
-    "questionType": "Paradox",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Causation"
     ],
@@ -104,7 +104,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 1,
     "questionNumber": 5,
-    "questionType": "Unknown",
+    "questionType": "Main Conclusion",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -153,7 +153,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 1,
     "questionNumber": 7,
-    "questionType": "Unknown",
+    "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Ethicist: Robert Gillette has argued that because a thorough knowledge of genetics would enable us to cure the over 3,000 inherited disorders that affect humanity, deciphering the human genetic code will certainly benefit humanity despite its enormous cost. Gillette’s argument is not persuasive, however, because he fails to consider that such knowledge might ultimately harm human beings more than it would benefit them.",
@@ -200,7 +200,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 1,
     "questionNumber": 9,
-    "questionType": "Necessary Assumption",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -325,7 +325,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 1,
     "questionNumber": 14,
-    "questionType": "Paradox",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -542,7 +542,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 1,
     "questionNumber": 23,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -565,7 +565,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 1,
     "questionNumber": 24,
-    "questionType": "Unknown",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation"
     ],

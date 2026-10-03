@@ -535,7 +535,7 @@
     "practiceTest": "PT102",
     "sectionNumber": 3,
     "questionNumber": 24,
-    "questionType": "Must be True",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"

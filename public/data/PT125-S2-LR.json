@@ -157,7 +157,7 @@
     "practiceTest": "PT125",
     "sectionNumber": 2,
     "questionNumber": 7,
-    "questionType": "Flaw",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -182,7 +182,7 @@
     "practiceTest": "PT125",
     "sectionNumber": 2,
     "questionNumber": 8,
-    "questionType": "Most Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -288,7 +288,7 @@
     "practiceTest": "PT125",
     "sectionNumber": 2,
     "questionNumber": 12,
-    "questionType": "Strengthen",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Comparative Reasoning"
     ],

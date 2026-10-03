@@ -3,7 +3,7 @@ import {readFileSync,writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-const expectedHash='714b27008d5c301c660d830d59562cc69814d06baae9d1e767240bece48b0c95';
+const expectedHash='17067cd16911ce25d7ebad1c503b9720804387cddeedfa07cd60ffa33d4e478c';
 function canonical(value){if(Array.isArray(value))return `[${value.map(canonical).join(',')}]`;if(value&&typeof value==='object')return `{${Object.keys(value).sort().map(key=>`${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}`;return JSON.stringify(value);}
 export function coverageOutput(root=process.cwd()) {
  const manifest=JSON.parse(readFileSync(resolve(root,'docs/implementation-plans/artifacts/timed-section-all-sections-v2.generated.json'),'utf8'));

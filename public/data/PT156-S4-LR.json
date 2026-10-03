@@ -3,7 +3,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 1,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Weaken",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -179,7 +179,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 8,
-    "questionType": "Main Conclusion",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -204,7 +204,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 9,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [
       "Causation"
     ],
@@ -229,7 +229,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 10,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -279,7 +279,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 12,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Weaken",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -306,7 +306,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 13,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -360,7 +360,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 15,
-    "questionType": "Necessary Assumption",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -405,7 +405,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 17,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],

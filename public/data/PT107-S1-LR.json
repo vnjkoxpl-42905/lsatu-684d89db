@@ -120,7 +120,7 @@
     "practiceTest": "PT107",
     "sectionNumber": 1,
     "questionNumber": 6,
-    "questionType": "Most Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Causation"
     ],

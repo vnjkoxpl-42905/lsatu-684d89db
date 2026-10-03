@@ -50,7 +50,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 2,
     "questionNumber": 3,
-    "questionType": "Necessary Assumption",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -191,7 +191,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 2,
     "questionNumber": 9,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -381,7 +381,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 2,
     "questionNumber": 17,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -408,7 +408,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 2,
     "questionNumber": 18,
-    "questionType": "Must Be True EXCEPT",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -457,7 +457,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 2,
     "questionNumber": 20,
-    "questionType": "Strengthen/Explain",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -480,7 +480,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 2,
     "questionNumber": 21,
-    "questionType": "Must Be True",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -526,7 +526,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 2,
     "questionNumber": 23,
-    "questionType": "Principle Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -551,7 +551,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 2,
     "questionNumber": 24,
-    "questionType": "Must Be True",
+    "questionType": "Must Be False",
     "reasoningType": [
       "Causation"
     ],
@@ -597,7 +597,7 @@
     "practiceTest": "PT132",
     "sectionNumber": 2,
     "questionNumber": 26,
-    "questionType": "Principle Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],

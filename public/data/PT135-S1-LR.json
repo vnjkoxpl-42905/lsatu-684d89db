@@ -28,7 +28,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 1,
     "questionNumber": 2,
-    "questionType": "Unknown",
+    "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Florist: Some people like to have green carnations on St. Patrick’s Day. But flowers that are naturally green are extremely rare. Thus, it is very difficult for plant breeders to produce green carnations. Before St. Patrick’s Day, then, it is wise for florists to stock up on white carnations, which are fairly inexpensive and quite easy to dye green.",
@@ -191,7 +191,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 1,
     "questionNumber": 9,
-    "questionType": "Unknown",
+    "questionType": "Main Conclusion",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -240,7 +240,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 1,
     "questionNumber": 11,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Causation"
     ],
@@ -309,7 +309,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 1,
     "questionNumber": 14,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -360,7 +360,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 1,
     "questionNumber": 16,
-    "questionType": "Unknown",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -558,7 +558,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 1,
     "questionNumber": 24,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],

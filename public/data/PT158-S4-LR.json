@@ -55,7 +55,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 3,
-    "questionType": "Main Conclusion",
+    "questionType": "Role",
     "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Physician: We are constantly bombarded by warnings,\n based on initial studies’ tentative conclusions,\n about this or that food having adverse health\n effects. If the medical establishment wants people\n to pay attention to health warnings, it should\n announce only conclusive results, the kind that\n can come only from definitive studies. After all,\n people who are constantly subjected to fire drills\n eventually come to ignore the fire alarm.",
@@ -77,7 +77,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 4,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation"
     ],
@@ -102,7 +102,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 5,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -271,7 +271,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 12,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -347,7 +347,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 15,
-    "questionType": "Necessary Assumption",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -398,7 +398,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 17,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -447,7 +447,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 19,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -496,7 +496,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 21,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -520,7 +520,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 22,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Weaken",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -600,7 +600,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 25,
-    "questionType": "Must Be True",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -625,7 +625,7 @@
     "practiceTest": "PT158",
     "sectionNumber": 4,
     "questionNumber": 26,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Causation",
       "Conditional Reasoning"

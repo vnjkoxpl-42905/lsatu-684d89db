@@ -70,7 +70,7 @@
     "practiceTest": "PT114",
     "sectionNumber": 4,
     "questionNumber": 4,
-    "questionType": "Principle",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -147,7 +147,7 @@
     "practiceTest": "PT114",
     "sectionNumber": 4,
     "questionNumber": 7,
-    "questionType": "Principle-PSA EXCEPT",
+    "questionType": "Principle-Conform",
     "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "When drivers are deprived of sleep there are definite behavioral changes, such as slower responses to stimuli and a reduced ability to concentrate, but people’s self-awareness of these changes is poor. Most drivers think they can tell when they are about to fall asleep, but they cannot.",
@@ -497,7 +497,7 @@
     "practiceTest": "PT114",
     "sectionNumber": 4,
     "questionNumber": 23,
-    "questionType": "Principle-PSA",
+    "questionType": "Principle-Conform",
     "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "If an act of civil disobedience—willfully breaking a specific law in order to bring about legal reform—is done out of self-interest alone and not out of a concern for others, it cannot be justified. But one is justified in performing an act of civil disobedience if one’s conscience requires one to do so.",

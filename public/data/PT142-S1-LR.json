@@ -171,7 +171,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 1,
     "questionNumber": 8,
-    "questionType": "Flaw",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -219,7 +219,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 1,
     "questionNumber": 10,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -306,7 +306,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 1,
     "questionNumber": 14,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -331,7 +331,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 1,
     "questionNumber": 15,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -429,7 +429,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 1,
     "questionNumber": 19,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -570,7 +570,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 1,
     "questionNumber": 25,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

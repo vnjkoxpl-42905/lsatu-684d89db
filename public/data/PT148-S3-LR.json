@@ -175,7 +175,7 @@
     "practiceTest": "PT148",
     "sectionNumber": 3,
     "questionNumber": 8,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -397,7 +397,7 @@
     "practiceTest": "PT148",
     "sectionNumber": 3,
     "questionNumber": 17,
-    "questionType": "Must Be True",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning"
     ],

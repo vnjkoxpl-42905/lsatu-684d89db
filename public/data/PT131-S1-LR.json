@@ -511,7 +511,7 @@
     "practiceTest": "PT131",
     "sectionNumber": 1,
     "questionNumber": 21,
-    "questionType": "Strengthen",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -584,7 +584,7 @@
     "practiceTest": "PT131",
     "sectionNumber": 1,
     "questionNumber": 24,
-    "questionType": "Weaken",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"

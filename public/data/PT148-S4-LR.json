@@ -308,7 +308,7 @@
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 14,
-    "questionType": "Necessary Assumption",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -548,7 +548,7 @@
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 24,
-    "questionType": "Principle Justify",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],

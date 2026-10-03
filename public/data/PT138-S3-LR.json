@@ -3,7 +3,7 @@
     "practiceTest": "PT138",
     "sectionNumber": 3,
     "questionNumber": 1,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -262,7 +262,7 @@
     "practiceTest": "PT138",
     "sectionNumber": 3,
     "questionNumber": 12,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -288,7 +288,7 @@
     "practiceTest": "PT138",
     "sectionNumber": 3,
     "questionNumber": 13,
-    "questionType": "Unknown",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -336,7 +336,7 @@
     "practiceTest": "PT138",
     "sectionNumber": 3,
     "questionNumber": 15,
-    "questionType": "Unknown",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -382,7 +382,7 @@
     "practiceTest": "PT138",
     "sectionNumber": 3,
     "questionNumber": 17,
-    "questionType": "Unknown",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -549,7 +549,7 @@
     "practiceTest": "PT138",
     "sectionNumber": 3,
     "questionNumber": 24,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

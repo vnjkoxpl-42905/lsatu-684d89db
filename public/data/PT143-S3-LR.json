@@ -100,7 +100,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 3,
     "questionNumber": 5,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -189,7 +189,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 3,
     "questionNumber": 9,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -235,7 +235,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 3,
     "questionNumber": 11,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -255,7 +255,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 3,
     "questionNumber": 12,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -304,7 +304,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 3,
     "questionNumber": 14,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -371,7 +371,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 3,
     "questionNumber": 17,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -421,7 +421,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 3,
     "questionNumber": 19,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -448,7 +448,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 3,
     "questionNumber": 20,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -495,7 +495,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Weaken",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -567,7 +567,7 @@
     "practiceTest": "PT143",
     "sectionNumber": 3,
     "questionNumber": 25,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"

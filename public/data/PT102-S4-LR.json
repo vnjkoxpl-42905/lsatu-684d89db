@@ -349,7 +349,10 @@
       "D": "No one is either wise or intelligent.",
       "E": "Many people are intelligent and yet lack wisdom."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT102",

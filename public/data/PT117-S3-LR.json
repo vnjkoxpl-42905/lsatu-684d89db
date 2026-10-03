@@ -170,7 +170,7 @@
     "practiceTest": "PT117",
     "sectionNumber": 3,
     "questionNumber": 8,
-    "questionType": "Weaken",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -432,7 +432,7 @@
     "practiceTest": "PT117",
     "sectionNumber": 3,
     "questionNumber": 20,
-    "questionType": "Weaken",
+    "questionType": "Strengthen",
     "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Current maps showing the North American regions where different types of garden plants will flourish are based on weather data gathered 60 years ago from a few hundred primitive weather stations. New maps are now being compiled using computerized data from several thousand modern weather stations and input from home gardeners across North America. These maps will be far more useful.",

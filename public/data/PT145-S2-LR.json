@@ -27,7 +27,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 2,
-    "questionType": "Necessary assumption",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -180,7 +180,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 8,
-    "questionType": "Principle",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -205,7 +205,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 9,
-    "questionType": "Miscellaneous",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -229,7 +229,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 10,
-    "questionType": "Miscellaneous",
+    "questionType": "Evaluate",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -253,7 +253,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 11,
-    "questionType": "Miscellaneous",
+    "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Farmers who use genetically engineered plants on a large scale are at great financial risk because at any time a study could be published that would undermine what little confidence consumers have in genetically engineered foods. It is unwise for farmers to grow such crops. They do not fetch a high enough price to compensate for the risk.",
@@ -275,7 +275,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 12,
-    "questionType": "Miscellaneous",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation"
     ],
@@ -324,7 +324,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 14,
-    "questionType": "Miscellaneous",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation"
     ],
@@ -350,7 +350,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 15,
-    "questionType": "Must be true",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -375,7 +375,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 16,
-    "questionType": "Principle",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -399,7 +399,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 17,
-    "questionType": "Flaw or descriptive weakening",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -490,7 +490,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 21,
-    "questionType": "Miscellaneous",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -589,7 +589,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 2,
     "questionNumber": 25,
-    "questionType": "Except",
+    "questionType": "Must Be False",
     "reasoningType": [
       "Comparative Reasoning"
     ],

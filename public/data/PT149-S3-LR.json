@@ -343,7 +343,7 @@
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 15,
-    "questionType": "Necessary Assumption",
+    "questionType": "Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -369,7 +369,7 @@
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 16,
-    "questionType": "Flawed Reasoning",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation"
     ],
@@ -394,7 +394,7 @@
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 17,
-    "questionType": "Must Be True",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Comparative Reasoning",
       "Causation"
@@ -419,7 +419,7 @@
     "practiceTest": "PT149",
     "sectionNumber": 3,
     "questionNumber": 18,
-    "questionType": "Flawed Reasoning",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"

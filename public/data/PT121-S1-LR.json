@@ -245,7 +245,7 @@
     "practiceTest": "PT121",
     "sectionNumber": 1,
     "questionNumber": 11,
-    "questionType": "Most Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -361,7 +361,7 @@
     "practiceTest": "PT121",
     "sectionNumber": 1,
     "questionNumber": 16,
-    "questionType": "Most Supported",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],

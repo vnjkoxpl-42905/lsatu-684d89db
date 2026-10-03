@@ -72,7 +72,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 4,
-    "questionType": "Miscellaneous",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation"
     ],
@@ -117,7 +117,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 6,
-    "questionType": "Miscellaneous",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -213,7 +213,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 10,
-    "questionType": "Necessary assumption",
+    "questionType": "Must Be False",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -283,7 +283,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 13,
-    "questionType": "Miscellaneous",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -377,7 +377,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 17,
-    "questionType": "Principle",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -400,7 +400,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 18,
-    "questionType": "Most strongly supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -423,7 +423,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 19,
-    "questionType": "Argument part",
+    "questionType": "Weaken",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -448,7 +448,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 20,
-    "questionType": "Must be true",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -473,7 +473,7 @@
     "practiceTest": "PT145",
     "sectionNumber": 4,
     "questionNumber": 21,
-    "questionType": "Except",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"

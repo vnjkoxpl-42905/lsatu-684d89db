@@ -230,7 +230,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 2,
     "questionNumber": 10,
-    "questionType": "Most Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation"
     ],
@@ -303,7 +303,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 2,
     "questionNumber": 13,
-    "questionType": "Flaw",
+    "questionType": "Role",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -561,7 +561,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 2,
     "questionNumber": 23,
-    "questionType": "Parallel",
+    "questionType": "Must Be False",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -637,7 +637,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 2,
     "questionNumber": 26,
-    "questionType": "Weaken",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],

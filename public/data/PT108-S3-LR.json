@@ -126,7 +126,9 @@
       "E": "The discharged wastewater created turbulence that disrupted the vegetation of the river downstream, destroying some of the bass's natural habitat."
     },
     "correctAnswer": "C",
-    "questionFeatures": []
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT108",

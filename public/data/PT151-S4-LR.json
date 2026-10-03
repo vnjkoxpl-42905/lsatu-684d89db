@@ -26,7 +26,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 4,
     "questionNumber": 2,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -120,7 +120,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 4,
     "questionNumber": 6,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -223,7 +223,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 4,
     "questionNumber": 11,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -363,7 +363,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 4,
     "questionNumber": 17,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Role",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -540,7 +540,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 4,
     "questionNumber": 25,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],

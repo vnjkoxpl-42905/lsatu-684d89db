@@ -195,7 +195,7 @@
     "practiceTest": "PT155",
     "sectionNumber": 1,
     "questionNumber": 9,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -485,7 +485,7 @@
     "practiceTest": "PT155",
     "sectionNumber": 1,
     "questionNumber": 21,
-    "questionType": "Most Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],

@@ -389,7 +389,7 @@
     "practiceTest": "PT117",
     "sectionNumber": 2,
     "questionNumber": 17,
-    "questionType": "Most Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -438,7 +438,7 @@
     "practiceTest": "PT117",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Main Conclusion",
+    "questionType": "Role",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -509,7 +509,7 @@
     "practiceTest": "PT117",
     "sectionNumber": 2,
     "questionNumber": 22,
-    "questionType": "Parallel",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

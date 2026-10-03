@@ -3,7 +3,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 1,
-    "questionType": "Unknown",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -121,7 +121,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 6,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -195,7 +195,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 9,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -242,7 +242,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 11,
-    "questionType": "Must Be True",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -266,7 +266,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 12,
-    "questionType": "Unknown",
+    "questionType": "Main Conclusion",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -289,7 +289,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 13,
-    "questionType": "Unknown",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation"
     ],
@@ -313,7 +313,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 14,
-    "questionType": "Unknown",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -338,7 +338,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 15,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -364,7 +364,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 16,
-    "questionType": "Paradox",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation"
     ],
@@ -390,7 +390,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 17,
-    "questionType": "Necessary Assumption",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -438,7 +438,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 19,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -514,7 +514,7 @@
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 22,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],

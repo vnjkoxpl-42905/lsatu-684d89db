@@ -244,7 +244,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 4,
     "questionNumber": 11,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation"
     ],
@@ -270,7 +270,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 4,
     "questionNumber": 12,
-    "questionType": "Necessary Assumption",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -363,7 +363,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 4,
     "questionNumber": 16,
-    "questionType": "Unknown",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -387,7 +387,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 4,
     "questionNumber": 17,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -438,7 +438,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 4,
     "questionNumber": 19,
-    "questionType": "Unknown",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -464,7 +464,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 4,
     "questionNumber": 20,
-    "questionType": "Unknown",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -514,7 +514,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 4,
     "questionNumber": 22,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -566,7 +566,7 @@
     "practiceTest": "PT130",
     "sectionNumber": 4,
     "questionNumber": 24,
-    "questionType": "Unknown",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],

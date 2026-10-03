@@ -121,7 +121,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 3,
     "questionNumber": 6,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -173,7 +173,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 3,
     "questionNumber": 8,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -220,7 +220,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 3,
     "questionNumber": 10,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -245,7 +245,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 3,
     "questionNumber": 11,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -537,7 +537,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 3,
     "questionNumber": 23,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -580,7 +580,7 @@
     "practiceTest": "PT151",
     "sectionNumber": 3,
     "questionNumber": 25,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Causation"
     ],

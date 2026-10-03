@@ -3,7 +3,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 1,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -127,7 +127,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 6,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -178,7 +178,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 8,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -202,7 +202,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 9,
-    "questionType": "Necessary Assumption",
+    "questionType": "Flaw",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -253,7 +253,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 11,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -277,7 +277,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 12,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -301,7 +301,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 13,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation"
     ],
@@ -328,7 +328,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 14,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -379,7 +379,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 16,
-    "questionType": "Must Be True",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -404,7 +404,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 17,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Causation"
     ],
@@ -428,7 +428,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 18,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -452,7 +452,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -495,7 +495,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 21,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -520,7 +520,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 22,
-    "questionType": "Must Be True",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -545,7 +545,7 @@
     "practiceTest": "PT157",
     "sectionNumber": 2,
     "questionNumber": 23,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],

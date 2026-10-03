@@ -338,7 +338,7 @@
     "practiceTest": "PT124",
     "sectionNumber": 2,
     "questionNumber": 15,
-    "questionType": "Weaken",
+    "questionType": "Strengthen",
     "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Midlevel managers at large corporations are unlikely to suggest reductions in staff in their own departments even when these departments are obviously overstaffed.",
@@ -359,7 +359,7 @@
     "practiceTest": "PT124",
     "sectionNumber": 2,
     "questionNumber": 16,
-    "questionType": "Strengthen",
+    "questionType": "Weaken",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -434,7 +434,7 @@
     "practiceTest": "PT124",
     "sectionNumber": 2,
     "questionNumber": 19,
-    "questionType": "Weaken",
+    "questionType": "Strengthen",
     "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Renting cars from dealerships is less expensive than renting cars from national rental firms. But to take advantage of dealership rates, tourists must determine which local dealerships offer rentals, and then pay for long taxi rides between the airport and those dealerships. So renting from dealerships rather than national rental firms is generally more worthwhile for local residents than for tourists.",

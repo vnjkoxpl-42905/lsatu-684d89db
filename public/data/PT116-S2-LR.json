@@ -72,7 +72,7 @@
     "practiceTest": "PT116",
     "sectionNumber": 2,
     "questionNumber": 4,
-    "questionType": "Flaw",
+    "questionType": "Most Strongly Supported",
     "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "A study claims that the average temperature on Earth has permanently increased, because the average temperature each year for the last five years has been higher than any previous yearly average on record. However, periods of up to ten years of average temperatures that have consistently been record highs are often merely part of the random fluctuations in temperature that are always occurring.",
@@ -161,7 +161,7 @@
     "practiceTest": "PT116",
     "sectionNumber": 2,
     "questionNumber": 8,
-    "questionType": "Weaken",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation"
     ],
@@ -178,14 +178,15 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Predictions",
-      "Anti-Causal"
+      "Anti-Causal",
+      "EXCEPT"
     ]
   },
   {
     "practiceTest": "PT116",
     "sectionNumber": 2,
     "questionNumber": 9,
-    "questionType": "Weaken",
+    "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Activist: As electronic monitoring of employees grows more commonplace and invasive, we hear more and more attempted justifications of this practice by employers. Surveillance, they explain, keeps employees honest, efficient, and polite to customers. Such explanations are obviously self-serving, and so should not be taken to justify these unwarranted invasions of privacy.",
@@ -299,7 +300,7 @@
     "practiceTest": "PT116",
     "sectionNumber": 2,
     "questionNumber": 14,
-    "questionType": "Paradox",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -394,7 +395,7 @@
     "practiceTest": "PT116",
     "sectionNumber": 2,
     "questionNumber": 18,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],

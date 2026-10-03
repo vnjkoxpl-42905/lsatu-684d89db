@@ -3,7 +3,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 1,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Ming: Since trans fat is particularly unhealthy, it’s\nfortunate for the consumer that so many cookie\nmanufacturers have completely eliminated it\nfrom their products. Carol: Why do you say that? Even without trans fat,\ndesserts do not make for healthy eating.",
@@ -98,7 +98,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 5,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -171,7 +171,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 8,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation"
     ],
@@ -191,7 +191,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 9,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -251,7 +251,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 12,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning",
       "Comparative Reasoning"
@@ -272,7 +272,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 13,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -292,7 +292,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 14,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -362,7 +362,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 17,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -409,7 +409,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 19,
-    "questionType": "Method of Reasoning",
+    "questionType": "Parallel Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -429,7 +429,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 20,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -493,7 +493,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 23,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -533,7 +533,7 @@
     "practiceTest": "PT142",
     "sectionNumber": 4,
     "questionNumber": 25,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

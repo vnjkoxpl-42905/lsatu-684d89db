@@ -46,7 +46,7 @@
     "practiceTest": "PT152",
     "sectionNumber": 2,
     "questionNumber": 3,
-    "questionType": "Sufficient Assumption",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Causation",
       "Conditional Reasoning"
@@ -70,7 +70,7 @@
     "practiceTest": "PT152",
     "sectionNumber": 2,
     "questionNumber": 4,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -93,7 +93,7 @@
     "practiceTest": "PT152",
     "sectionNumber": 2,
     "questionNumber": 5,
-    "questionType": "Except",
+    "questionType": "Weaken",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"

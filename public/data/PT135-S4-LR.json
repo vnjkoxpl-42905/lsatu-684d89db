@@ -24,7 +24,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 2,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Causation"
     ],
@@ -98,7 +98,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 5,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -238,7 +238,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 11,
-    "questionType": "Unknown",
+    "questionType": "Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -285,7 +285,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 13,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -311,7 +311,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 14,
-    "questionType": "Unknown",
+    "questionType": "Main Conclusion",
     "reasoningType": [
       "Causation"
     ],
@@ -338,7 +338,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 15,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -363,7 +363,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 16,
-    "questionType": "Unknown",
+    "questionType": "Method of Reasoning",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -410,7 +410,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 18,
-    "questionType": "Unknown",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -459,7 +459,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 20,
-    "questionType": "Unknown",
+    "questionType": "Necessary Assumption",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -486,7 +486,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 21,
-    "questionType": "Paradox",
+    "questionType": "Role",
     "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Philosopher: To explain the causes of cultural phenomena, a social scientist needs data about several societies: one cannot be sure, for example, that a given political structure is brought about only by certain ecological or climatic factors unless one knows that there are no similarly structured societies not subject to those factors, and no societies that, though subject to those factors, are not so structured.",
@@ -508,7 +508,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 22,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -564,7 +564,7 @@
     "practiceTest": "PT135",
     "sectionNumber": 4,
     "questionNumber": 24,
-    "questionType": "Flaw",
+    "questionType": "Parallel Flaw",
     "reasoningType": [
       "Conditional Reasoning"
     ],

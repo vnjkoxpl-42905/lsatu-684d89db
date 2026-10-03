@@ -132,7 +132,7 @@
     "practiceTest": "PT113",
     "sectionNumber": 2,
     "questionNumber": 7,
-    "questionType": "Most Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Comparative Reasoning"
     ],

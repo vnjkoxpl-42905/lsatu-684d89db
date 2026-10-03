@@ -231,7 +231,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 1,
     "questionNumber": 11,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -254,7 +254,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 1,
     "questionNumber": 12,
-    "questionType": "Principle Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -367,7 +367,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 1,
     "questionNumber": 17,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -391,7 +391,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 1,
     "questionNumber": 18,
-    "questionType": "Most Supported",
+    "questionType": "Must Be True",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -509,7 +509,7 @@
     "practiceTest": "PT134",
     "sectionNumber": 1,
     "questionNumber": 23,
-    "questionType": "Necessary Assumption",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],

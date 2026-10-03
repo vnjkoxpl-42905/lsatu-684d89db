@@ -49,7 +49,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 3,
-    "questionType": "Parallel",
+    "questionType": "Main Conclusion",
     "reasoningType": [
       "Causation"
     ],
@@ -74,7 +74,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 4,
-    "questionType": "Agree/Disagree",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -146,7 +146,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 7,
-    "questionType": "Weaken",
+    "questionType": "Paradox",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -170,7 +170,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 8,
-    "questionType": "Method",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation"
     ],
@@ -222,7 +222,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 10,
-    "questionType": "Role",
+    "questionType": "Flaw",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
@@ -324,7 +324,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 14,
-    "questionType": "Must be False",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -374,7 +374,7 @@
     "practiceTest": "PT129",
     "sectionNumber": 3,
     "questionNumber": 16,
-    "questionType": "Main Conclusion",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Causation",
       "Comparative Reasoning"
