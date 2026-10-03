@@ -10,6 +10,24 @@ const load = vi.hoisted(() => vi.fn());
 vi.mock("@/lib/drillRunLedger", () => ({ loadStandaloneDrillRun: load }));
 
 describe("completed drill details", () => {
+  it('shows saved feedback settings in Results and Review', async () => {
+    load.mockResolvedValue({ id: 'manual-1', source_key: 'drill::type-drill::set-x', mode: 'type-drill', label: 'Manual set',
+      updated_at: '2026-10-02T12:00:00Z', session: { status: 'completed', question_queue: ['q-1'], attempts: [] },
+      provenance: { feedback: 'manual_answer_and_explanation' },
+    });
+    render(<MemoryRouter initialEntries={['/practice/drills/runs/manual-1']}><Routes><Route path='/practice/drills/runs/:runId' element={<DrillRuns />} /></Routes></MemoryRouter>);
+    expect(await screen.findByText('Training · Answers and explanations appear when you choose to reveal them.')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Review answers' }));
+    expect(screen.getByText('Training · Answers and explanations appear when you choose to reveal them.')).toBeInTheDocument();
+  });
+  it('discloses missing historical settings without making a Test or Training claim', async () => {
+    load.mockResolvedValue({ id: 'legacy-1', source_key: 'drill::type-drill::old', mode: 'type-drill', label: 'Old set',
+      updated_at: '2026-10-02T12:00:00Z', session: { status: 'completed', question_queue: ['q-1'], attempts: [] },
+    });
+    render(<MemoryRouter initialEntries={['/practice/drills/runs/legacy-1']}><Routes><Route path='/practice/drills/runs/:runId' element={<DrillRuns />} /></Routes></MemoryRouter>);
+    expect(await screen.findByText('Feedback settings were not saved for this older sitting.')).toBeInTheDocument();
+    expect(screen.queryByText(/^Training/)).not.toBeInTheDocument();
+  });
   it("keeps an assigned guided sitting on its own Results and Review route", async () => {
     load.mockResolvedValue({
       id: "guided-1", user_id: "student-1", source_key: "guided::assignment-1", mode: "type-drill", label: "Spot the Relationship",

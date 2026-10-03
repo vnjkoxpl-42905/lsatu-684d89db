@@ -5,6 +5,7 @@
  */
 
 import { z } from 'zod';
+import { LrRunProvenanceSchema } from '@/lib/lrRunProvenance';
 import { UuidV4Schema, IsoDateSchema } from '@/bootcamps/main-conclusion/lib/ids';
 
 const TrapTraitId = z.enum(['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']);
@@ -204,6 +205,7 @@ export const PracticeSessionAttempt = z.object({
    * seeing the answer from a clean one. Optional: older rows read as false.
    */
   answer_revealed: z.boolean().optional(),
+  provenance: LrRunProvenanceSchema.optional(),
 });
 export type PracticeSessionAttempt = z.infer<typeof PracticeSessionAttempt>;
 

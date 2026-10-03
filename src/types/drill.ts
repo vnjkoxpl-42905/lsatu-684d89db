@@ -42,6 +42,7 @@ export interface DrillSession {
   currentIndex: number;
   attempts: Map<string, {
     selectedAnswer: string;
+    provenance?: import('@/lib/lrRunProvenance').LrRunProvenance;
     correct: boolean;
     timeMs: number;
     timestamp: number;

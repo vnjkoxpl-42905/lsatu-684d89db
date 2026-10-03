@@ -455,6 +455,32 @@ describe('Drill review controls — guided drill (fixed + list)', () => {
 });
 
 describe('Drill review controls — filter drill (fixed + commit)', () => {
+  it('resumes saved manual conditions despite a changed layout URL and keeps old answers unknown', async () => {
+    const sourceKey = 'drill::type-drill::original-filter';
+    const saved = {
+      id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', user_id: '11111111-1111-4111-8111-111111111111',
+      source_key: sourceKey, mode: 'type-drill', label: 'Original filter',
+      provenance: { version: 1, study_mode: 'training', feedback: 'manual_answer_and_explanation',
+        source_key: sourceKey, launch_kind: 'filter', pick_model: 'commit', layout: 'official' },
+      session: { status: 'in_progress', question_queue: [Q1.qid, Q2.qid], current_index: 1,
+        attempts: [{ qid: Q1.qid, selected_answer: 'A', correct: false, time_ms: 1200 }] },
+    } as unknown as import('@/lib/drillRunLedger').StandaloneDrillRun;
+    renderDrill({ ...filterSpec, savedStandaloneRun: saved }, '?run=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa&layout=classic');
+    await waitForQuestion(19);
+    expect(screen.getByRole('note')).toHaveTextContent('Training · Answers and explanations appear when you choose to reveal them.');
+    expect(screen.getByRole('button', { name: 'Answer' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^Submit$/ })).not.toBeInTheDocument();
+    fireEvent.click(choiceButton('C'));
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    const { saveStandaloneDrillRun, completeStandaloneDrillRun } = await import('@/lib/drillRunLedger');
+    await waitFor(() => expect(completeStandaloneDrillRun).toHaveBeenCalled());
+    const calls = vi.mocked(saveStandaloneDrillRun).mock.calls;
+    const snapshot = calls.at(-1)?.[2];
+    expect(snapshot?.attempts.find(a => a.qid === Q1.qid)?.provenance).toBeUndefined();
+    expect(snapshot?.attempts.find(a => a.qid === Q2.qid)?.provenance).toMatchObject({ source_key: sourceKey, feedback: 'manual_answer_and_explanation' });
+    expect(ledgerSave.created).toBe(0);
+  });
+
   it('keeps the picked question in place when its account run cannot be created', async () => {
     ledgerSave.fail = true;
     renderDrill(filterSpec);

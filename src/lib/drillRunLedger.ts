@@ -6,6 +6,7 @@ import {
   type PracticeSessionSnapshot,
 } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { supabase } from '@/integrations/supabase/client';
+import { LrRunProvenanceSchema, type LrRunProvenance } from '@/lib/lrRunProvenance';
 
 /** Each LR or guided drill sitting has its own account row, even when its source repeats. */
 const StandaloneDrillRunSchema = z.object({
@@ -14,16 +15,30 @@ const StandaloneDrillRunSchema = z.object({
   source_key: z.string().min(1),
   mode: z.string(),
   label: z.string(),
+  provenance: LrRunProvenanceSchema.optional(),
   session: PracticeSession,
   // The answer sent to analytics on closeout. Once acknowledged, a retry must
   // finish with this exact answer even if the final status write fails.
   closeout_attempts: z.array(PracticeSessionAttempt).optional(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
+}).superRefine((row, context) => {
+  const check = (value: LrRunProvenance | undefined) => {
+    if (!value) return;
+    if (value.source_key !== row.source_key || (value.launch_kind === 'smart-drill' ? row.mode !== 'adaptive' : row.mode !== 'type-drill')) {
+      context.addIssue({ code: z.ZodIssueCode.custom, message: 'Saved LR conditions do not match this sitting.' });
+    }
+    if (row.provenance && Object.keys(row.provenance).some(key => row.provenance![key as keyof LrRunProvenance] !== value[key as keyof LrRunProvenance])) {
+      context.addIssue({ code: z.ZodIssueCode.custom, message: 'Saved attempt conditions do not match this sitting.' });
+    }
+  };
+  check(row.provenance);
+  row.session.attempts.forEach(attempt => check(attempt.provenance));
+  row.closeout_attempts?.forEach(attempt => check(attempt.provenance));
 });
 
 export type StandaloneDrillRun = z.infer<typeof StandaloneDrillRunSchema>;
-export type StandaloneDrillRunMeta = { mode?: string; label?: string };
+export type StandaloneDrillRunMeta = { mode?: string; label?: string; provenance?: LrRunProvenance };
 
 const runWriteChains = new Map<string, Promise<unknown>>();
 
@@ -62,6 +77,7 @@ function sessionFromSnapshot(
   updatedAt: string,
   status: 'in_progress' | 'completed',
   previous?: PracticeSession,
+  provenance?: LrRunProvenance,
 ): PracticeSession {
   if (!snapshot.questionQueue.length && !previous?.question_queue.length) {
     throw new Error('A drill needs questions before its run can be saved.');
@@ -75,7 +91,13 @@ function sessionFromSnapshot(
     data_version: PRACTICE_SESSION_DATA_VERSION,
     question_queue: queue,
     current_index: Math.min(Math.max(snapshot.currentIndex, 0), queue.length - 1),
-    attempts: snapshot.attempts,
+    attempts: snapshot.attempts.map(attempt => {
+      const saved = previous?.attempts.find(item => item.qid === attempt.qid);
+      // A new policy must never become an assertion about a historical answer.
+      const { provenance: incoming, ...answer } = attempt;
+      const conditions = saved ? saved.provenance : provenance ?? incoming;
+      return conditions ? { ...answer, provenance: conditions } : answer;
+    }),
     status,
     elapsed_ms: snapshot.elapsedMs ?? previous?.elapsed_ms,
     timer_mode: snapshot.timerMode ?? previous?.timer_mode,
@@ -121,7 +143,8 @@ export async function createStandaloneDrillRun(
     source_key: sourceKey,
     mode: meta.mode ?? '',
     label: meta.label ?? '',
-    session: sessionFromSnapshot(userId, id, sourceKey, snapshot, time, time, 'in_progress'),
+    provenance: meta.provenance,
+    session: sessionFromSnapshot(userId, id, sourceKey, snapshot, time, time, 'in_progress', undefined, meta.provenance),
     created_at: time,
     updated_at: time,
   });
@@ -182,7 +205,7 @@ async function updateRun(
         current.source_key.startsWith('guided::') && current.closeout_attempts
           ? { ...snapshot, attempts: current.closeout_attempts }
           : snapshot,
-        current.created_at, time, status, current.session,
+        current.created_at, time, status, current.session, current.provenance,
       ),
       updated_at: time,
     });
@@ -207,7 +230,7 @@ export async function beginGuidedDrillCloseout(
     const row = StandaloneDrillRunSchema.parse({
       ...current,
       session: sessionFromSnapshot(userId, runId, current.source_key, snapshot,
-        current.created_at, time, 'in_progress', current.session),
+        current.created_at, time, 'in_progress', current.session, current.provenance),
       closeout_attempts: snapshot.attempts,
       updated_at: time,
     });

@@ -15,6 +15,8 @@ const resolveDrillLaunch = vi.fn();
 const recordExposures = vi.fn();
 const questionBankState = vi.hoisted(() => ({ isLoading: false }));
 const adoptionState = vi.hoisted(() => ({ enabled: false }));
+const loadRun = vi.hoisted(() => vi.fn());
+vi.mock('@/lib/drillRunLedger', () => ({ loadStandaloneDrillRun: loadRun }));
 vi.mock('@/lib/timedSectionAdoption', async () => {
   const actual = await vi.importActual<typeof import('@/lib/timedSectionAdoption')>('@/lib/timedSectionAdoption');
   return { ...actual, manualSectionsEnabled: vi.fn(async () => adoptionState.enabled) };
@@ -87,6 +89,7 @@ describe('the gate', () => {
     recordExposures.mockResolvedValue(undefined);
     questionBankState.isLoading = false;
     adoptionState.enabled = false;
+    loadRun.mockReset();
   });
 
   it('runs an older link without touching the URL', async () => {
@@ -250,6 +253,29 @@ describe('the gate', () => {
       expect.objectContaining({ kind: 'guided-drill', drillId: 'gd_7' }), 'user_1', 'run_1',
     );
     expect(searchOf().get('run')).toBe('run_1');
+  });
+
+  it('loads the exact account sitting and ignores replacement questions, label and initial index', async () => {
+    loadRun.mockResolvedValue({ id: 'run_1', source_key: 'drill::type-drill::filter-id', mode: 'type-drill', label: 'Saved label',
+      session: { question_queue: ['frozen-q'] },
+      provenance: { version: 1, study_mode: 'training', feedback: 'manual_answer_and_explanation',
+        source_key: 'drill::type-drill::filter-id', launch_kind: 'filter', pick_model: 'commit', layout: 'official' },
+    });
+    renderAt({ pathname: '/drill', search: '?drill=questions&qids=other-q&run=run_1&label=Changed&initialIndex=99&layout=classic' });
+    await screen.findByTestId('runner');
+    expect(loadRun).toHaveBeenCalledWith('user_1', 'run_1');
+    expect(specOf().savedStandaloneRun.source_key).toBe('drill::type-drill::filter-id');
+    expect(specOf().practicingLabel).toBe('Saved label');
+    expect(specOf().initialIndex).toBeUndefined();
+    expect(specOf().config).not.toHaveProperty('selectedQids');
+    expect(resolveDrillLaunch).not.toHaveBeenCalled();
+  });
+
+  it('blocks the runner when the requested sitting cannot be verified', async () => {
+    loadRun.mockResolvedValue(null);
+    renderAt({ pathname: '/drill', search: '?drill=questions&qids=other-q&run=missing' });
+    expect(await screen.findByText('This saved drill was not found in your account.')).toBeInTheDocument();
+    expect(screen.queryByTestId('runner')).not.toBeInTheDocument();
   });
 
   it('does not resolve a generated link before the question bank is ready', async () => {

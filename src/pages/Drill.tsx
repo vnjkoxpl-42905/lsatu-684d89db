@@ -35,6 +35,7 @@ import { TutorChatModal } from '@/components/drill/TutorChatModal';
 import { resolveTutorLaunch, resolveTutorMode, type TutorMode } from '@/components/drill/tutorBehavior';
 import { AI_TUTOR_ENABLED } from '@/components/drill/aiTutorFlag';
 import { reviewPolicyForRun } from '@/lib/drillReviewPolicy';
+import { lrRunProvenanceForSpec, lrRunProvenanceLabel } from '@/lib/lrRunProvenance';
 import ArgumentBreakdown from '@/components/drill/official/ArgumentBreakdown';
 import { ReviewModal } from '@/components/drill/ReviewModal';
 import { VoiceCoachChip } from '@/components/drill/VoiceCoachChip';
@@ -298,11 +299,13 @@ function DrillContent() {
   const genericResumeIdentity = state.resumeIdentity;
   const standaloneSourceKey = React.useMemo(() => {
     if ((state.mode !== 'type-drill' && state.mode !== 'adaptive') || isMcPractice || state.isGuidedDrill || guidedSetId || guidedSessionKey || assignmentId || ptRun || genericResumeIdentity) return null;
+    if (state.savedStandaloneRun) return state.savedStandaloneRun.source_key;
     return drillResumeKey({ mode: state.mode, config: state.config });
-  }, [state.mode, state.config, state.isGuidedDrill, guidedSetId, isMcPractice, guidedSessionKey, assignmentId, ptRun, genericResumeIdentity]);
+  }, [state.mode, state.config, state.isGuidedDrill, state.savedStandaloneRun, guidedSetId, isMcPractice, guidedSessionKey, assignmentId, ptRun, genericResumeIdentity]);
   const standaloneRunIdRef = React.useRef<string | null>(requestedStandaloneRunId);
   const standaloneWriteRef = React.useRef<Promise<unknown>>(Promise.resolve());
   const legacyStandaloneResumeRef = React.useRef(false);
+  const historicalStandaloneQidsRef = React.useRef<Set<string>>(new Set());
   // Every remaining drill surface gets the same durable resume row, so closing the browser or
   // signing out mid-drill is never a loss. Null while the guided/practice-set
   // surfaces own the run, so the three can never write over each other.
@@ -572,7 +575,13 @@ function DrillContent() {
   // ?layout=classic to opt out. Read here, above the handlers, because the
   // review policy depends on it.
   const layoutParam = searchParams.get('layout');
-  const isOfficialLayout = layoutParam !== 'classic';
+  const isOfficialLayout = state.savedStandaloneRun?.provenance
+    ? state.savedStandaloneRun.provenance.layout === 'official' : layoutParam !== 'classic';
+  const runtimeStandaloneProvenance = React.useMemo(() =>
+    lrRunProvenanceForSpec(state, standaloneSourceKey, isOfficialLayout ? 'official' : 'classic'),
+    [standaloneSourceKey, state, isOfficialLayout]);
+  const standaloneProvenance = state.savedStandaloneRun
+    ? state.savedStandaloneRun.provenance : runtimeStandaloneProvenance;
   // Which review controls this run gets, classified by Drill Launch kind (a
   // pure function of the spec, so no frame can misclassify it). The pick model
   // (`pickModelForRun`: `list` writes attempts in memory, `commit` persists per
@@ -674,7 +683,17 @@ function DrillContent() {
       let questionQueue: string[] = [];
       let rawQuestions: LRQuestion[] = [];
 
-      if (mode === 'adaptive') {
+      if (state.savedStandaloneRun && mode === 'type-drill') {
+        const frozen = state.savedStandaloneRun.session.question_queue;
+        rawQuestions = frozen.map(qid => questionBank.getQuestion(qid)).filter((q): q is LRQuestion => !!q);
+        if (rawQuestions.length !== frozen.length) {
+          setBootError('A question in this saved drill is unavailable. Your saved answers have been kept.');
+          return;
+        }
+        const list = !state.savedStandaloneRun.provenance || state.savedStandaloneRun.provenance.pick_model === 'list';
+        setIsPracticeSetMode(list);
+        setHasTimer(list);
+      } else if (mode === 'adaptive') {
         rawQuestions = questionBank.getAllQuestions();
       } else if (mode === 'full-section' && state.config) {
         const config = state.config as FullSectionConfig;
@@ -740,7 +759,7 @@ function DrillContent() {
         state.config as { selectedQids?: string[] } | null,
       );
 
-      if (classId && !fixedQueue) {
+      if (classId && !fixedQueue && !state.savedStandaloneRun) {
         // Dedupe read can fail (RLS/transport). Don't block the drill: fall back
         // to an empty usage map (repeats possible) but tell the student why.
         let usage: Map<string, QuestionUsage> = new Map();
@@ -795,7 +814,7 @@ function DrillContent() {
         const config = state.config as TypeDrillConfig;
         
         // Skip pool filtering if questions were pre-selected
-        if (config.selectedQids && config.selectedQids.length > 0) {
+        if (state.savedStandaloneRun || config.selectedQids && config.selectedQids.length > 0) {
           finalQuestions = available; // Use them directly
         } else {
           // Balanced mix: group by type × level, round-robin select
@@ -970,16 +989,23 @@ function DrillContent() {
       if (standaloneSourceKey && user && !initialIndexParam) {
         standaloneRunIdRef.current = requestedStandaloneRunId;
         legacyStandaloneResumeRef.current = false;
-        const ownedRun = requestedStandaloneRunId
+        historicalStandaloneQidsRef.current = new Set();
+        const ownedRun = state.savedStandaloneRun ?? (requestedStandaloneRunId
           ? await loadStandaloneDrillRun(user.id, requestedStandaloneRunId)
           : mode === 'adaptive'
             ? (await listStandaloneDrillRuns(user.id)).find((run) => run.source_key === standaloneSourceKey && run.session.status === 'in_progress') ?? null
-            : null;
+            : null);
         if ((requestedStandaloneRunId && !ownedRun) || (ownedRun && ownedRun.source_key !== standaloneSourceKey)) {
           setBootError('This saved drill run could not be found in your account.');
           return;
         }
         if (ownedRun) standaloneRunIdRef.current = ownedRun.id;
+        if (ownedRun && !requestedStandaloneRunId) {
+          const params = new URLSearchParams(searchParams);
+          params.set('run', ownedRun.id);
+          navigate(`/drill?${params.toString()}`, { replace: true });
+          return;
+        }
         if (ownedRun?.session.status === 'completed') {
           navigate(`/practice/drills/runs/${ownedRun.id}?view=results`, { replace: true });
           return;
@@ -989,11 +1015,13 @@ function DrillContent() {
           : null);
         if (isResumableDrillSession(stored)) {
           legacyStandaloneResumeRef.current = !ownedRun;
+          historicalStandaloneQidsRef.current = new Set(stored.attempts.filter(attempt => !attempt.provenance).map(attempt => attempt.qid));
           questionQueue = stored.question_queue;
           initialIndex = guidedResumeIndex(questionQueue, stored.current_index, stored.attempts.map((a) => a.qid));
           for (const attempt of stored.attempts) {
             restoredAttempts.set(attempt.qid, {
               selectedAnswer: attempt.selected_answer,
+              provenance: attempt.provenance,
               correct: attempt.correct,
               timeMs: attempt.time_ms,
               timestamp: Date.now(),
@@ -1144,6 +1172,8 @@ function DrillContent() {
           .map(([qid, attempt]) => ({
             qid,
             selected_answer: attempt.selectedAnswer,
+            ...(attempt.provenance || !historicalStandaloneQidsRef.current.has(qid) && runtimeStandaloneProvenance
+              ? { provenance: attempt.provenance ?? runtimeStandaloneProvenance } : {}),
             correct: !!attempt.correct,
             time_ms: Number.isFinite(attempt.timeMs) ? Math.max(0, Math.round(attempt.timeMs)) : 0,
             switch_count: attempt.switchCount ?? 0,
@@ -1162,7 +1192,7 @@ function DrillContent() {
         regulationAnsweredQids: source.regulationMark?.answeredQids,
       };
     },
-    [sectionElapsedMs],
+    [sectionElapsedMs, runtimeStandaloneProvenance],
   );
 
   const persistStandaloneSession = React.useCallback((source: DrillSession, finish = false): Promise<void> => {
@@ -1175,6 +1205,7 @@ function DrillContent() {
         const run = await createStandaloneDrillRun(user.id, standaloneSourceKey, snapshot, {
           mode: source.mode,
           label: practicingLabel || 'Custom drill',
+          provenance: legacyStandaloneResumeRef.current ? undefined : standaloneProvenance,
         });
         runId = run.id;
         standaloneRunIdRef.current = runId;
@@ -1191,7 +1222,7 @@ function DrillContent() {
     });
     standaloneWriteRef.current = task;
     return task.then(() => undefined);
-  }, [standaloneSourceKey, user, drillResumeSnapshot, practicingLabel]);
+  }, [standaloneSourceKey, user, drillResumeSnapshot, practicingLabel, standaloneProvenance]);
 
   const persistGuidedSession = React.useCallback((source: DrillSession, finish = false): Promise<void> => {
     if (!guidedSessionKey || !user) return Promise.resolve();
@@ -4913,7 +4944,8 @@ function DrillContent() {
               setTutorChatOpen(false);
             }
           }}
-          header={
+          header={<>
+            {standaloneSourceKey && <p className="px-4 py-2 text-xs text-slate-600" role="note">{lrRunProvenanceLabel(legacyStandaloneResumeRef.current ? undefined : standaloneProvenance)}</p>}
             <OfficialSessionStrip
               breadcrumbs={officialBreadcrumbs}
               isPaused={officialIsPaused}
@@ -4971,7 +5003,7 @@ function DrillContent() {
               }
               onOpenHelp={() => setHelpOpen(true)}
             />
-          }
+          </>}
         >
           {isFullSection && directionsViewOpen ? (
             // LawHub does not pop the directions over the question; it turns
@@ -5239,6 +5271,7 @@ function DrillContent() {
         "min-h-screen flex flex-col relative bg-white",
         session.mode === 'full-section' && "pb-20"
       )}>
+        {standaloneSourceKey && <p className="px-4 py-2 text-xs text-slate-600" role="note">{lrRunProvenanceLabel(legacyStandaloneResumeRef.current ? undefined : standaloneProvenance)}</p>}
         {/* Pause Overlay */}
         {timer?.isPaused && (
           <div className="absolute inset-0 bg-zinc-900/90 backdrop-blur-md z-50 flex items-center justify-center animate-fade-in">

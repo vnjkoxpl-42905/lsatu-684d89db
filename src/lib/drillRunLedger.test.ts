@@ -47,7 +47,9 @@ import {
   listStandaloneDrillRuns,
   loadStandaloneDrillRun,
   saveStandaloneDrillRun,
+  parseOwnedDrillRun,
 } from './drillRunLedger';
+import { lrRunProvenanceForSpec } from './lrRunProvenance';
 
 const snapshot = {
   questionQueue: ['PT150-S1-Q1', 'PT150-S1-Q2'],
@@ -62,6 +64,39 @@ beforeEach(() => {
 });
 
 describe('standalone drill run ledger', () => {
+  it('retains saved LR policy and source across updates, reload and completion', async () => {
+    const key = 'drill::type-drill::abc';
+    const provenance = lrRunProvenanceForSpec({ mode: 'type-drill', launchKind: 'questions' }, key, 'official')!;
+    const run = await createStandaloneDrillRun(account.userId, key, snapshot, { mode: 'type-drill', provenance });
+    expect(run.session.attempts[0].provenance).toEqual(provenance);
+    const wrong = { ...provenance, source_key: 'drill::type-drill::other' };
+    await saveStandaloneDrillRun(account.userId, run.id, { ...snapshot, attempts: [{ ...snapshot.attempts[0], provenance: wrong }, { ...snapshot.attempts[0], qid: snapshot.questionQueue[1] }] });
+    const loaded = await loadStandaloneDrillRun(account.userId, run.id);
+    expect(loaded?.provenance).toEqual(provenance);
+    expect(loaded?.session.attempts.map(attempt => attempt.provenance)).toEqual([provenance, provenance]);
+    const completed = await completeStandaloneDrillRun(account.userId, run.id, { ...snapshot, attempts: loaded!.session.attempts });
+    expect(completed.provenance).toEqual(provenance);
+    expect(completed.session.status).toBe('completed');
+  });
+
+  it('does not infer historical provenance when an old sitting resumes', async () => {
+    const key = 'drill::type-drill::abc';
+    const run = await createStandaloneDrillRun(account.userId, key, snapshot, { mode: 'type-drill' });
+    const provenance = lrRunProvenanceForSpec({ mode: 'type-drill', launchKind: 'questions' }, key, 'official')!;
+    const updated = await saveStandaloneDrillRun(account.userId, run.id, { ...snapshot, attempts: [{ ...snapshot.attempts[0], provenance }, { ...snapshot.attempts[0], qid: snapshot.questionQueue[1], provenance }] });
+    expect(updated.provenance).toBeUndefined();
+    expect(updated.session.attempts[0].provenance).toBeUndefined();
+    expect(updated.session.attempts[1].provenance).toEqual(provenance);
+  });
+
+  it('refuses malformed or mismatched saved policy without reinterpreting the source', async () => {
+    const key = 'drill::type-drill::abc';
+    const provenance = lrRunProvenanceForSpec({ mode: 'type-drill', launchKind: 'questions' }, key, 'official')!;
+    const run = await createStandaloneDrillRun(account.userId, key, snapshot, { mode: 'type-drill', provenance });
+    for (const changed of [{ provenance: { ...provenance, version: 2 } }, { source_key: 'drill::type-drill::other' }, { mode: 'adaptive' }, { session: { ...run.session, attempts: [{ ...run.session.attempts[0], provenance: { ...provenance, source_key: 'drill::type-drill::other' } }] } }]) {
+      expect(parseOwnedDrillRun(account.userId, run.id, { ...run, ...changed })).toBeNull();
+    }
+  });
   it('keeps repeated assigned guided drill sittings separate, even after one is completed', async () => {
     const key = 'guided::33333333-3333-4333-8333-333333333333';
     const first = await createStandaloneDrillRun(account.userId, key, snapshot, { mode: 'type-drill', label: 'Reasoning drill' });

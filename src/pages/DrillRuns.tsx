@@ -7,6 +7,7 @@ import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { loadStandaloneDrillRun, type StandaloneDrillRun } from "@/lib/drillRunLedger";
 import { launchDrill } from "@/lib/drillLaunch";
 import { questionBank } from "@/lib/questionLoader";
+import { lrRunProvenanceLabel } from "@/lib/lrRunProvenance";
 
 export default function DrillRuns() {
   const { runId } = useParams();
@@ -26,6 +27,7 @@ export default function DrillRuns() {
       return;
     }
     let active = true;
+    setRun(null);
     setLoading(true);
     setError(null);
     void loadStandaloneDrillRun(user.id, runId).then(
@@ -64,6 +66,7 @@ export default function DrillRuns() {
       {loading ? <p role="status">Loading your drill…</p> : error ? <p role="alert" className="text-destructive">{error}</p> : !run ? <p role="status">This drill was not found in your account.</p> : !completed ? (
         <section className="rounded-xl border border-border bg-card p-6">
           <h1 className="text-xl font-semibold">{adaptive ? "Smart Drill" : run.label || (guided ? "Guided drill" : "LR drill")}</h1>
+          {!guided && <p className="mt-2 text-sm text-muted-foreground">{lrRunProvenanceLabel(run.provenance)}</p>}
           <p className="mt-2 text-muted-foreground">This drill is still in progress. Finish it to see results and answer review.</p>
           <Button className="mt-5" onClick={() => navigate(continueTo!)}>Continue drill</Button>
         </section>
@@ -72,6 +75,7 @@ export default function DrillRuns() {
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Completed drill</p>
           <h1 className="mt-2 text-2xl font-semibold">{adaptive ? "Smart Drill" : run.label || (guided ? "Guided drill" : "LR drill")}</h1>
           <p className="mt-2 text-sm text-muted-foreground">Completed {new Date(run.updated_at).toLocaleDateString()} · {reviewQids.length} question{reviewQids.length === 1 ? "" : "s"}</p>
+          {!guided && <p className="mt-2 text-sm text-muted-foreground">{lrRunProvenanceLabel(run.provenance)}</p>}
           <div className="mt-5 flex flex-wrap gap-2" aria-label="Drill details">
             <Button type="button" variant={view === "results" ? "default" : "outline"} aria-current={view === "results" ? "page" : undefined} onClick={() => changeView("results")}>Results</Button>
             <Button type="button" variant={view === "review" ? "default" : "outline"} aria-current={view === "review" ? "page" : undefined} onClick={() => changeView("review")}>Review</Button>

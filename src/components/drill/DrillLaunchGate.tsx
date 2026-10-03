@@ -33,6 +33,8 @@ import {
   type PtLegRef,
 } from '@/lib/drillLaunch';
 import { resolveDrillLaunch } from '@/lib/drillLaunchResolve';
+import { loadStandaloneDrillRun } from '@/lib/drillRunLedger';
+import { standaloneDrillResumeSpec } from '@/lib/standaloneDrillResumeSpec';
 import { drillRunSpecFromLaunch, type DrillRunSpec } from '@/lib/drillRunSpec';
 import { recordExposures } from '@/lib/questionExposure';
 import { Button } from '@/components/ui/button';
@@ -108,7 +110,9 @@ export default function DrillLaunchGate({ children }: Props) {
   // what stops the effect from resolving the same launch a second time.
   const launchKey = React.useMemo(() => (launch ? launchDrill(launch) : null), [launch]);
   const requestedGuidedRunId = launch?.kind === 'guided-drill' ? searchParams.get('run') : null;
-  const resolutionKey = `${user?.id ?? ''}:${launchKey ?? ''}:${requestedGuidedRunId ?? ''}`;
+  const requestedStandaloneRunId = launch && ['questions', 'filter', 'smart-drill', 'saved-set'].includes(launch.kind)
+    ? searchParams.get('run') : null;
+  const resolutionKey = `${user?.id ?? ''}:${launchKey ?? ''}:${requestedGuidedRunId ?? requestedStandaloneRunId ?? ''}`;
   const protectedResume = searchParams.get('timedSectionSittingId');
   const eligible = launch?.kind === 'section' && !launch.ptLeg && !launch.sealed &&
     !searchParams.has('assignment') && !searchParams.has('assignmentId') && !searchParams.has('legacySectionResume') &&
@@ -133,7 +137,7 @@ export default function DrillLaunchGate({ children }: Props) {
     return () => { cancelled = true; };
   }, [eligible, pace, launch, protectedResume, resolutionKey, user?.id, navigate]);
 
-  const needsResolution = !!launch && launchNeedsResolution(launch);
+  const needsResolution = !!launch && (launchNeedsResolution(launch) || !!requestedStandaloneRunId);
   const waitsForQuestionBank =
     needsResolution && (launch.kind === 'bootcamp-day' || launch.kind === 'guided-drill');
 
@@ -154,6 +158,14 @@ export default function DrillLaunchGate({ children }: Props) {
 
     const run = async () => {
       try {
+        if (requestedStandaloneRunId) {
+          if (!user?.id) throw new DrillLaunchError('Sign in to open your saved drill.');
+          const run = await loadStandaloneDrillRun(user.id, requestedStandaloneRunId);
+          if (!run) throw new DrillLaunchError('This saved drill was not found in your account.');
+          const spec = standaloneDrillResumeSpec(run);
+          if (!cancelled) setResolved({ key: resolutionKey, spec });
+          return;
+        }
         const qids = requestedGuidedRunId
           ? await resolveDrillLaunch(launch, user?.id, requestedGuidedRunId)
           : await resolveDrillLaunch(launch, user?.id);
@@ -185,6 +197,7 @@ export default function DrillLaunchGate({ children }: Props) {
     launchKey,
     resolutionKey,
     requestedGuidedRunId,
+    requestedStandaloneRunId,
     needsResolution,
     resolved?.key,
     waitsForQuestionBank,

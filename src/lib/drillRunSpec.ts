@@ -22,8 +22,11 @@ import type {
 } from '@/types/drill';
 import { DrillLaunchError, type DrillLaunch, type DrillLaunchBody, type PtLegRef } from '@/lib/drillLaunch';
 import type { DrillResumeIdentity } from '@/lib/drillResumeSession';
+import type { StandaloneDrillRun } from '@/lib/drillRunLedger';
 
 export interface DrillRunSpec {
+  /** Account-owned frozen sitting, resolved before the runner opens. */
+  savedStandaloneRun?: StandaloneDrillRun;
   /**
    * The Drill Launch kind this run came from. `mode` is not the run kind (ADR
    * 0016: six kinds share `type-drill`), so anything that must tell a guided
