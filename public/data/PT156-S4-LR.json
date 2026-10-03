@@ -130,7 +130,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 6,
-    "questionType": "Main Conclusion",
+    "questionType": "Role",
     "reasoningType": [
       "Comparative Reasoning"
     ],
@@ -455,7 +455,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 19,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Sufficient Assumption",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -503,7 +503,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 21,
-    "questionType": "Most Strongly Supported",
+    "questionType": "Principle-Conform",
     "reasoningType": [
       "Conditional Reasoning"
     ],
@@ -630,7 +630,7 @@
     "practiceTest": "PT156",
     "sectionNumber": 4,
     "questionNumber": 26,
-    "questionType": "Principle-Conform",
+    "questionType": "Principle-Strengthen",
     "reasoningType": [
       "Conditional Reasoning"
     ],
