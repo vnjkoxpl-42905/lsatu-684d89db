@@ -5084,6 +5084,7 @@ export type Database = {
         Row: {
           amount_cents: number
           amount_refunded_cents: number
+          auto_grant_eligible: boolean
           checkout_session_id: string | null
           created_at: string
           currency: string
@@ -5112,6 +5113,7 @@ export type Database = {
         Insert: {
           amount_cents: number
           amount_refunded_cents?: number
+          auto_grant_eligible?: boolean
           checkout_session_id?: string | null
           created_at?: string
           currency: string
@@ -5140,6 +5142,7 @@ export type Database = {
         Update: {
           amount_cents?: number
           amount_refunded_cents?: number
+          auto_grant_eligible?: boolean
           checkout_session_id?: string | null
           created_at?: string
           currency?: string
@@ -6758,6 +6761,7 @@ export type Database = {
         Returns: {
           amount_cents: number
           amount_refunded_cents: number
+          auto_grant_eligible: boolean
           checkout_session_id: string | null
           created_at: string
           currency: string
@@ -6795,6 +6799,7 @@ export type Database = {
         Returns: {
           amount_cents: number
           amount_refunded_cents: number
+          auto_grant_eligible: boolean
           checkout_session_id: string | null
           created_at: string
           currency: string
@@ -6832,6 +6837,7 @@ export type Database = {
         Returns: {
           amount_cents: number
           amount_refunded_cents: number
+          auto_grant_eligible: boolean
           checkout_session_id: string | null
           created_at: string
           currency: string
@@ -6998,6 +7004,49 @@ export type Database = {
           correct: number
           total: number
         }[]
+      }
+      auto_grant_stripe_payment: {
+        Args: {
+          _charge_id: string
+          _checkout_session_id: string
+          _offer_id: string
+          _student_id: string
+        }
+        Returns: {
+          amount_cents: number
+          amount_refunded_cents: number
+          auto_grant_eligible: boolean
+          checkout_session_id: string | null
+          created_at: string
+          currency: string
+          customer_id: string | null
+          description: string | null
+          email: string | null
+          grant_state: string
+          granted_at: string | null
+          granted_by: string | null
+          granted_credits: number | null
+          id: string
+          livemode: boolean
+          match_state: string
+          offer_id: string | null
+          paid_at: string
+          payer_name: string | null
+          payment_intent_id: string | null
+          payment_link_id: string | null
+          product: string | null
+          source: string
+          status: string
+          stripe_charge_id: string
+          student_id: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "stripe_payments"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       begin_activity_ai_request_v1: {
         Args: {
@@ -7806,6 +7855,44 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "booking_passes"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      grant_stripe_package_locked: {
+        Args: { _actor: string; _payment_id: string }
+        Returns: {
+          amount_cents: number
+          amount_refunded_cents: number
+          auto_grant_eligible: boolean
+          checkout_session_id: string | null
+          created_at: string
+          currency: string
+          customer_id: string | null
+          description: string | null
+          email: string | null
+          grant_state: string
+          granted_at: string | null
+          granted_by: string | null
+          granted_credits: number | null
+          id: string
+          livemode: boolean
+          match_state: string
+          offer_id: string | null
+          paid_at: string
+          payer_name: string | null
+          payment_intent_id: string | null
+          payment_link_id: string | null
+          product: string | null
+          source: string
+          status: string
+          stripe_charge_id: string
+          student_id: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "stripe_payments"
           isOneToOne: true
           isSetofReturn: false
         }
