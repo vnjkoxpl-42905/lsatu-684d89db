@@ -207,6 +207,7 @@ export default function DrillLaunchGate({ children }: Props) {
     waitsForQuestionBank,
     questionBankLoading,
     user?.id,
+    authReady,
   ]);
 
   // A handover with nothing in the address bar gets one written for it, so the
