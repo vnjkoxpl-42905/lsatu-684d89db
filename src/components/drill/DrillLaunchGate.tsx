@@ -60,7 +60,7 @@ export default function DrillLaunchGate({ children }: Props) {
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, authReady } = useAuth();
   const { isLoading: questionBankLoading } = useQuestionBank();
   const [failure, setFailure] = React.useState<string | null>(null);
   const [resolved, setResolved] = React.useState<{ key: string; spec: DrillRunSpec } | null>(
@@ -153,6 +153,10 @@ export default function DrillLaunchGate({ children }: Props) {
     if (!needsResolution) return;
     if (resolved?.key === resolutionKey) return;
     if (waitsForQuestionBank && questionBankLoading) return;
+    // A saved-drill link proves itself against the account, so it must wait
+    // for sign-in to finish restoring. Treating a still-loading session as
+    // signed out flashes "This drill isn't available" on every cold open.
+    if (requestedStandaloneRunId && !authReady) return;
     let cancelled = false;
     setFailure(null);
 

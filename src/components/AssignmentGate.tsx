@@ -107,6 +107,11 @@ async function hasAssignedBootcamp(userId: string, bootcampId: string): Promise<
     .neq("status", "archived")
     ;
   if (error) return false;
+  // A bootcamp-day link names only a day and a part, not which bootcamp it
+  // came from — the student arrived from inside one, so any live bootcamp
+  // assignment is the proof. Named bootcamps (practice sets) still match
+  // their own id.
+  if (bootcampId === "any") return (data ?? []).length > 0;
   return (data ?? []).some((row) => classroomItemMatchesBootcamp(row as never, bootcampId));
 }
 
@@ -261,7 +266,7 @@ export function drillAuthorisation(
     case "guided-drill":
       return launch.assignmentId ? { kind: "guided", id: launch.assignmentId } : null;
     case "bootcamp-day":
-      return { kind: "bootcamp", id: "intro-to-lr" };
+      return { kind: "bootcamp", id: "any" };
     case "practice-set":
       return getPracticePool(launch.slug) ? { kind: "bootcamp", id: "intro-to-lr" } : null;
     case "section":
