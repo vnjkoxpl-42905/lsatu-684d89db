@@ -1,3 +1,4 @@
+import { findGuidedDrillHtmlByDrill } from '@/data/guidedDrillHtmlManifest';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Play, Plus, Send } from 'lucide-react';
 import { toast } from 'sonner';
@@ -110,9 +111,10 @@ export function DeskLibraryGuidedDrillsSurface({
           <LibraryViews
             view={view}
             items={filtered.map((d): LibraryItem => {
-              const ps = poolSize(d);
+              const interactive = findGuidedDrillHtmlByDrill(d)?.mode === 'interactive';
+              const ps = interactive ? null : poolSize(d);
               const need = d.question_count ?? 0;
-              const poolBad = ps != null && need > 0 && ps < need;
+              const poolBad = !interactive && ps != null && need > 0 && ps < need;
               return {
                 id: d.id,
                 eyebrow: `W${d.week}.${d.order_in_week}`,
@@ -121,7 +123,7 @@ export function DeskLibraryGuidedDrillsSurface({
                 badges: [...d.reasoning_types, ...d.question_types],
                 meta: (
                   <span className={cn('tabular-nums', poolBad ? 'text-teacher-accent-strong' : 'text-black/45')}>
-                    pool {ps ?? '…'}{need ? `/${need}` : ''}
+                    {interactive ? `${need || 12} interactive questions` : <>pool {ps ?? '…'}{need ? `/${need}` : ''}</>}
                   </span>
                 ),
                 renderPreview: () => (
