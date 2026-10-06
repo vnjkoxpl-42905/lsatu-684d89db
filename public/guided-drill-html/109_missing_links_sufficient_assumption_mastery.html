@@ -105,15 +105,8 @@
  function announce(s){$('announcement').textContent='';setTimeout(()=>$('announcement').textContent=s,20);}
  function scrollHeading(id){requestAnimationFrame(()=>{const el=$(id);el?.focus({preventScroll:true});el?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});}
  const instructions=`
-  <p class="intro-lead">Here's what I want you to focus on: the premises already give you part of the path. Your job is to add <strong>the missing link that gets you all the way to the conclusion.</strong></p>
-  <p class="intro-text">Start with the conclusion. Where are we starting, and where do we need to end? Then look at what the premises already connect. You don't need to rebuild the whole argument. You need to find the gap.</p>
-  <div class="instruction-steps">
-   <div class="instruction-step"><span class="step-index">01</span><div><h3>Read the premises and conclusion separately.</h3><p>The premises sit above the line. The conclusion sits below it. Keep the two separate: what you've been given is not the same as what you still need to prove.</p></div></div>
-   <div class="instruction-step"><span class="step-index">02</span><div><h3>Choose what goes on each side of the missing link.</h3><p>Pick the left side first, then the right side. The boxes show the link you're building. Tap either box to change it before you check your answer.</p></div></div>
-   <div class="instruction-step"><span class="step-index">03</span><div><h3>Commit to an answer, then work through the explanation.</h3><p>Once both sides are filled, select <strong>Check my answer.</strong> You'll see whether you're right, the correct link, and the full path that makes the conclusion follow. Your first submitted answer is the one that counts.</p></div></div>
-  </div>
-  <div class="rule-box"><strong>One important instruction:</strong> use every premise shown. Supply the missing connection between the pieces, rather than just repeating the conclusion or skipping part of the chain. The link and its contrapositive both count.</div>
-  <p class="intro-outro">Take your time on this first pass. I want you to see the connection, not guess at it.</p>`;
+  <p class="intro-lead">Find the missing link that makes the conclusion follow.</p>
+  <p class="intro-text">Choose the left side, choose the right side, then check your answer.</p>`;
  $('introCopy').innerHTML=instructions;
  $('dialogInstructions').innerHTML=instructions;
  function stats(){
