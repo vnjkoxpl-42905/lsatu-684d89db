@@ -9,7 +9,7 @@ import { MAIN_CONCLUSION_PRACTICE_POOLS } from '@/bootcamps/main-conclusion/data
 
 describe('guidedDrillHtmlManifest', () => {
   it('contains one entry for each approved guided drill HTML file', () => {
-    expect(guidedDrillHtmlManifest).toHaveLength(108);
+    expect(guidedDrillHtmlManifest).toHaveLength(109);
     expect(guidedDrillHtmlManifest[0]).toMatchObject({
       order: 1,
       title: 'First Sentence Conclusions',
@@ -19,12 +19,10 @@ describe('guidedDrillHtmlManifest', () => {
       time: '30 min',
       questions: 6,
     });
-    expect(guidedDrillHtmlManifest[107]).toMatchObject({
-      order: 108,
-      title: 'Speedwalking LR Drill Two',
-      slug: 'speedwalking-lr-drill-two',
-      htmlPath: '/guided-drill-html/108_speedwalking_lr_drill_two.html',
-      sourceFile: '108_speedwalking_lr_drill_two.html',
+    expect(guidedDrillHtmlManifest[108]).toMatchObject({
+      order: 109,
+      slug: 'missing-links-sufficient-assumption-mastery',
+      mode: 'interactive',
     });
   });
 
@@ -43,9 +41,9 @@ describe('guidedDrillHtmlManifest', () => {
       );
     }
 
-    expect(orders.size).toBe(108);
-    expect(slugs.size).toBe(108);
-    expect(sourceFiles.size).toBe(108);
+    expect(orders.size).toBe(109);
+    expect(slugs.size).toBe(109);
+    expect(sourceFiles.size).toBe(109);
   });
 
   it('can resolve live guided drill records by slug, title, or source filename', () => {

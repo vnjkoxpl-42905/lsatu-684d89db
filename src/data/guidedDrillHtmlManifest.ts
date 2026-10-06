@@ -6,6 +6,12 @@ export interface GuidedDrillHtmlManifestEntry {
   sourceFile: string;
   time: string | null;
   questions: number | null;
+  /**
+   * 'interactive' = the HTML is the entire drill (questions, grading, results)
+   * and must never hand off to the question-bank runner. Omitted = curated
+   * launch page that starts the native runner.
+   */
+  mode?: 'launch' | 'interactive';
 }
 
 export const guidedDrillHtmlManifest: GuidedDrillHtmlManifestEntry[] = [
@@ -980,6 +986,16 @@ export const guidedDrillHtmlManifest: GuidedDrillHtmlManifestEntry[] = [
     sourceFile: "108_speedwalking_lr_drill_two.html",
     time: "60 min",
     questions: 15,
+  },
+  {
+    order: 109,
+    title: "Missing Links: Sufficient Assumption Mastery",
+    slug: "missing-links-sufficient-assumption-mastery",
+    htmlPath: "/guided-drill-html/109_missing_links_sufficient_assumption_mastery.html",
+    sourceFile: "109_missing_links_sufficient_assumption_mastery.html",
+    time: "20 min",
+    questions: 12,
+    mode: "interactive",
   },
 ];
 

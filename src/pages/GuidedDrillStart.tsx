@@ -17,6 +17,8 @@ import {
   findGuidedDrillHtmlBySlug,
 } from '@/data/guidedDrillHtmlManifest';
 import { GuidedDrillLaunchFrame } from '@/components/drill/GuidedDrillLaunchFrame';
+import { InteractiveGuidedDrillFrame } from '@/components/drill/InteractiveGuidedDrillFrame';
+import { guidedDrillRunnerMode } from '@/lib/interactiveGuidedDrill';
 import { buildGuidedDrillLaunchHtml } from '@/lib/guidedDrillLaunch';
 import { toast } from 'sonner';
 import {
@@ -409,6 +411,20 @@ export default function GuidedDrillStart({
 
   if (!drill && !bootcampOverride) {
     return <div className="min-h-screen bg-background text-foreground p-8">Guided drill not found.</div>;
+  }
+
+  // Full-interactive drills: the HTML is the whole drill. Never route to /drill.
+  // Without an assignment (admin Open/Preview) nothing is written.
+  if (launchPage && guidedDrillRunnerMode(launchPage) === 'interactive') {
+    return (
+      <InteractiveGuidedDrillFrame
+        src={launchPage.htmlPath}
+        title={launchPage.title}
+        assignmentId={assignment?.id ?? null}
+        assignmentStatus={assignment?.status ?? null}
+        onReturn={handleReturn}
+      />
+    );
   }
 
   // Reopening a drill they already finished: show what they did. The question
