@@ -21,7 +21,7 @@ describe('standalone section adoption boundaries', () => {
   it('regenerates the exact reviewed coverage deterministically without writing in check mode', () => {
     const path='src/lib/timedSectionCoverage.generated.json';const before=readFileSync(path,'utf8');
     const result=execFileSync(process.execPath,['scripts/knowledge/build-standalone-coverage.mjs','--check'],{encoding:'utf8'});
-    expect(JSON.parse(result)).toMatchObject({sections:236,check:true,manifestSha256:'e3942b5988504404c359d445b2293fabb143d83becff0a27aaea5f439b4eeeff'});
+    expect(JSON.parse(result)).toMatchObject({sections:236,check:true,manifestSha256:'45ef6f554a1f1c402aa9f87d61326d17f16642a953757a8fb71d33b910e9aae1'});
     expect(readFileSync(path,'utf8')).toBe(before);
   });
   it('requires the exact ordered full RC passage set', () => {

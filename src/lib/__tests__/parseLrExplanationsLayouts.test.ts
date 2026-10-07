@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-// @ts-expect-error - plain .mjs script, no types
 import { parseExplanationFile } from '../../../scripts/knowledge/parse-lr-explanations.mjs';
 
 const file = (breakdown: string) => `# PrepTest 999 explanations
