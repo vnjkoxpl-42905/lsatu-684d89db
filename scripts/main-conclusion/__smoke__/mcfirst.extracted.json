@@ -1,0 +1,41 @@
+{
+  "$comment": "Smoke-test artifact from Gate 4 Step 1.5 (autonomous Rule 16). Captures the Read-tool native PDF extraction of Notes/MCFIRST SENTENCE : REBUTTAL.pdf at 2026-04-30. MCFIRST is authoritative for the canonical 20; spec.html L2493-2507 listing had drift in 5 titles. Step 2 wires pdfjs-dist to reproduce this output programmatically.",
+  "target_file": "/Users/joshuaf/Documents/Claude/02_PROJECTS/lsat-u/Curriculum/Main Conclusion/Notes/MCFIRST SENTENCE : REBUTTAL.pdf",
+  "extracted_at": "2026-04-30",
+  "extractor": "Read-tool native PDF text extraction (text-based PDF; no OCR required)",
+  "page_count": 8,
+  "family_key": {
+    "first_sentence": [1, 2, 3, 4, 5, 6, 7, 19, 20],
+    "rebuttal": [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+  },
+  "questions": [
+    {"question_id": "MC-SIM-Q1", "title": "Vision test for driver's licenses", "structure_family": "First-sentence", "page": 1},
+    {"question_id": "MC-SIM-Q2", "title": "Freedom of speech / Policy Adviser", "structure_family": "First-sentence", "page": 1},
+    {"question_id": "MC-SIM-Q3", "title": "Trade Europe-East Asia / yeti analogy", "structure_family": "First-sentence", "page": 2},
+    {"question_id": "MC-SIM-Q4", "title": "No computer / human minds / mechanical rules", "structure_family": "First-sentence", "page": 2},
+    {"question_id": "MC-SIM-Q5", "title": "Toy-labeling law / Consumer advocate", "structure_family": "First-sentence", "page": 2},
+    {"question_id": "MC-SIM-Q6", "title": "Diet refined sugar / adult-onset diabetes", "structure_family": "First-sentence", "page": 3},
+    {"question_id": "MC-SIM-Q7", "title": "Legal theorist / incarceration / serious threat", "structure_family": "First-sentence", "page": 3},
+    {"question_id": "MC-SIM-Q8", "title": "Nylon industry spokesperson / cotton vs nylon natural", "structure_family": "Rebuttal", "page": 3},
+    {"question_id": "MC-SIM-Q9", "title": "Mayor McKinney / wealthy residents / property taxes", "structure_family": "Rebuttal", "page": 4},
+    {"question_id": "MC-SIM-Q10", "title": "Some legislators / public funds for scientific research / molds & antibiotics", "structure_family": "Rebuttal", "page": 4, "anomaly_resolved": "Spec L2503 said 'Apatosaurus / galloping' — that stimulus lives in Netlify/index (6).html paraphrased, not MCFIRST. MCFIRST Q10 is the legislators / molds stimulus."},
+    {"question_id": "MC-SIM-Q11", "title": "Letter to the editor / Judge Mosston", "structure_family": "Rebuttal", "page": 4, "title_resolved": "Q11 was untitled in spec; MCFIRST extraction supplies title."},
+    {"question_id": "MC-SIM-Q12", "title": "Witnessing violence in movies / rhetorical-question rebuttal", "structure_family": "Rebuttal", "page": 5, "title_resolved": "Q12 was untitled in spec; MCFIRST extraction supplies title. Note: 2-sentence stimulus ending in rhetorical question."},
+    {"question_id": "MC-SIM-Q13", "title": "Computers replacing teachers / understanding vs facts-and-rules", "structure_family": "Rebuttal", "page": 5, "title_resolved": true},
+    {"question_id": "MC-SIM-Q14", "title": "Golden Lake Development / so-called environmentalists / bird migration", "structure_family": "Rebuttal", "page": 5, "title_resolved": true},
+    {"question_id": "MC-SIM-Q15", "title": "Long-term cigarette smoking / tobacco companies / candy-cavities analogy", "structure_family": "Rebuttal", "page": 6, "title_resolved": true},
+    {"question_id": "MC-SIM-Q16", "title": "Pharmacists / doctors selling medicine / monopoly objection", "structure_family": "Rebuttal", "page": 6, "title_resolved": true},
+    {"question_id": "MC-SIM-Q17", "title": "Broadcaster / private lives of local celebrities / public interest", "structure_family": "Rebuttal", "page": 7, "title_resolved": true},
+    {"question_id": "MC-SIM-Q18", "title": "Thomas / Municipal Building fire / must-have-seen-it", "structure_family": "Rebuttal", "page": 7, "title_resolved": true},
+    {"question_id": "MC-SIM-Q19", "title": "Figurative painting revival / late 1970s", "structure_family": "First-sentence", "page": 7, "anomaly_resolved": "Spec L2505 said 'Implementing recycling program' — that stimulus lives in spec.html L1733-1740 as MC-REF-2.B verification example, not MCFIRST. MCFIRST Q19 is figurative painting."},
+    {"question_id": "MC-SIM-Q20", "title": "Multinational grain companies / food-distribution / since-clause leading", "structure_family": "First-sentence", "page": 8, "anomaly_resolved": "Spec L2506 said 'Mr. Tannisch / fingerprints / gloves' AND 'Rebuttal' — both wrong. MCFIRST Q20 is multinational grain companies AND First-sentence (since-clause is support; main clause is conclusion). Mr. Tannisch stimulus not present in MCFIRST; orphaned — will surface to Joshua at Module 4 build start if intended for v1 simulator."}
+  ],
+  "totals": {
+    "questions_present": 20,
+    "first_sentence_count": 9,
+    "rebuttal_count": 11,
+    "title_corrections_from_spec": 5,
+    "title_resolutions_for_q11_q18": 8,
+    "orphaned_stimuli_from_spec_listing": ["Apatosaurus / galloping (lives in Netlify prototype)", "Implementing recycling program (lives in spec MC-REF-2.B)", "Mr. Tannisch / fingerprints / gloves (NOT FOUND in any source file — parked open question for Module 4)"]
+  }
+}
