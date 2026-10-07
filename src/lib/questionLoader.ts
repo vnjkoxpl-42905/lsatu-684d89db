@@ -37,37 +37,6 @@ export interface LRQuestion {
     D: { verdict: 'correct' | 'incorrect'; whyCorrect?: string; whyIncorrect?: string };
     E: { verdict: 'correct' | 'incorrect'; whyCorrect?: string; whyIncorrect?: string };
   };
-  /**
-   * Raw LSAT Lab explanation payload (per-question review content) ingested
-   * from `public/data/explanations/PT<n>-explanations.json`. Optional — only
-   * populated for preptests we have authored explanations for.
-   */
-  explanations?: LRExplanation;
-}
-
-export interface LRExplanationChoice {
-  text: string | null;
-  tag: string | null;
-  pct: number | null;
-  explanation: string;
-}
-
-export interface LRExplanationStyle {
-  breakdownMd: string;
-  choices: Partial<Record<'A' | 'B' | 'C' | 'D' | 'E', LRExplanationChoice>>;
-}
-
-export interface LRExplanation {
-  pt: string;
-  section: number;
-  qnum: number;
-  qtypeLabel?: string;
-  correctChoice: 'A' | 'B' | 'C' | 'D' | 'E' | null;
-  styles: {
-    standard?: LRExplanationStyle;
-    brief?: LRExplanationStyle;
-    anotherWay?: LRExplanationStyle;
-  };
 }
 
 type RenderableLRQuestionInput = {
@@ -956,83 +925,6 @@ export class QuestionBank {
     );
   }
 
-  /**
-   * Which PTs have an authored sidecar, from the generated manifest.
-   *
-   * Returns null when the manifest is absent or unreadable, which means "ask
-   * for all of them" — the pre-manifest behaviour. A missing manifest must not
-   * be able to hide explanations that are actually there.
-   */
-  private async fetchExplanationManifest(): Promise<Set<number> | null> {
-    try {
-      const res = await fetch('/data/explanations/index.json');
-      if (!res.ok) return null;
-      const json = await res.json();
-      if (!json || !Array.isArray(json.pts)) return null;
-      const pts = json.pts.filter((n: unknown): n is number => typeof n === 'number');
-      return pts.length > 0 ? new Set<number>(pts) : null;
-    } catch {
-      return null;
-    }
-  }
-
-  private async mergeExplanationSidecars(): Promise<void> {
-    const pts = new Set<number>();
-    for (const q of this.questions.values()) pts.add(q.pt);
-
-    // Only 21 of the bank's 59 PTs have an authored sidecar. Without the
-    // manifest this asked for all 59 and ate 38 x 404 on every cold load.
-    const authored = await this.fetchExplanationManifest();
-    const wanted = authored ? Array.from(pts).filter((pt) => authored.has(pt)) : Array.from(pts);
-
-    const results = await Promise.all(
-      wanted.map(async (pt) => {
-        try {
-          const res = await fetch(`/data/explanations/PT${pt}-explanations.json`);
-          if (!res.ok) return null;
-          const json = await res.json();
-          return json && typeof json === 'object' ? (json as Record<string, LRExplanation>) : null;
-        } catch {
-          return null;
-        }
-      }),
-    );
-    let attached = 0;
-    for (const sidecar of results) {
-      if (!sidecar) continue;
-      for (const [qid, expl] of Object.entries(sidecar)) {
-        const q = this.questions.get(qid);
-        if (!q) continue;
-        q.explanations = expl;
-        if (!q.answerChoiceExplanations) {
-          q.answerChoiceExplanations = this.deriveTypedExplanations(expl, q.correctAnswer);
-        }
-        attached += 1;
-      }
-    }
-    if (attached > 0) {
-      console.log(`Question bank: attached LSAT Lab explanations to ${attached} question(s).`);
-    }
-  }
-
-  private deriveTypedExplanations(
-    expl: LRExplanation,
-    correctAnswer: LRQuestion['correctAnswer'],
-  ): LRQuestion['answerChoiceExplanations'] | undefined {
-    const style = expl.styles?.standard ?? expl.styles?.brief ?? expl.styles?.anotherWay;
-    if (!style) return undefined;
-    const out: any = {};
-    for (const L of ['A', 'B', 'C', 'D', 'E'] as const) {
-      const c = style.choices?.[L];
-      const isCorrect = L === (expl.correctChoice ?? correctAnswer);
-      const text = (c?.explanation || c?.text || '').trim();
-      out[L] = isCorrect
-        ? { verdict: 'correct', whyCorrect: text }
-        : { verdict: 'incorrect', whyIncorrect: text };
-    }
-    return out;
-  }
-
   private async doLoad(): Promise<void> {
     const merged = await this.fetchMergedBank();
     const results = merged ?? (await this.fetchSectionsPerFile());
@@ -1099,12 +991,6 @@ export class QuestionBank {
         this.manifest.sections.push({ pt, section, count, filename, removedPositions });
       }
     }
-
-    // Merge per-question LSAT Lab explanations from
-    // /data/explanations/PT<n>-explanations.json (one file per preptest).
-    // index.json says which ones exist, so unauthored PTs are not requested;
-    // a miss is still non-fatal if the manifest is stale.
-    await this.mergeExplanationSidecars();
 
     // Build manifest
     this.manifest.totalQuestions = this.questions.size;

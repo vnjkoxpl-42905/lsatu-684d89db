@@ -34,7 +34,7 @@ const CANONICAL_FEATURES = [
   "Famous Flaws",
   "First Sentence Conclusion",
   "Focused on Evidence",
-  "Games-y LR",
+  "Rule Puzzle",
   "Implicit Principles",
   "Implied Conclusion",
   "Important Pivot",

@@ -108,7 +108,7 @@ export const FEATURE_FAMILIES: FeatureFamily[] = [
   {
     id: "quirks",
     label: "Quirks & Topics",
-    features: ["Belief / Knowledge / Intent", "EXCEPT", "Games-y LR", "Medical", "Science"],
+    features: ["Belief / Knowledge / Intent", "EXCEPT", "Rule Puzzle", "Medical", "Science"],
   },
 ];
 

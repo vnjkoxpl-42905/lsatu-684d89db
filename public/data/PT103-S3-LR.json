@@ -499,7 +499,7 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Games-y LR"
+      "Rule Puzzle"
     ]
   },
   {
@@ -521,7 +521,7 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Binaries",
-      "Games-y LR",
+      "Rule Puzzle",
       "Principles in Stimulus"
     ]
   },
