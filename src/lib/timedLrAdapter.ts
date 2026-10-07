@@ -24,6 +24,11 @@ const object = (value: unknown): value is TimedObject => Boolean(value) && typeo
 const integer = (value: unknown): value is number => Number.isSafeInteger(value) && Number(value) >= 0;
 const letter = (value: unknown): value is TimedLetter => typeof value === 'string' && /^[A-E]$/.test(value);
 function invalid(message: string): never { throw new TimedWorkError('contract', message); }
+/** A sealed sitting keeps the qtype and level it was frozen with; only their shape is checked. */
+export function frozenClassification(expected: TimedObject): boolean {
+  return typeof expected.qtype === 'string' && expected.qtype.trim().length > 0
+    && Number.isSafeInteger(expected.level) && Number(expected.level) >= 1 && Number(expected.level) <= 5;
+}
 // PostgreSQL JSON timestamps include an offset and microseconds; the legacy
 // PracticeSession schema requires UTC Z timestamps. Normalize this transport
 // representation only, without relaxing source or legacy-session validation.
@@ -63,13 +68,15 @@ export class TimedLrAdapter {
         || expected.contentSha256 !== await hash({ stimulus: row.stimulus ?? '', stem: row.questionStem, choices: row.answerChoices })) invalid('LR question content differs from its frozen version.');
     }
     const normalized = normalizeQuestionTextFields(this.rawSection).filter(row => row.status !== 'removed').sort((a, b) => a.questionNumber - b.questionNumber);
-    const questions: LRQuestion[] = normalized.map(row => ({ qid: qid(row), pt: p.pt, section: leg.section as number, qnum: row.questionNumber,
+    const bankQuestions: LRQuestion[] = normalized.map(row => ({ qid: qid(row), pt: p.pt, section: leg.section as number, qnum: row.questionNumber,
       qtype: normalizeQType(row.questionType || '', row.questionStem), difficulty: row.questionDifficulty || row.Question_Difficulty || 3,
       stimulus: row.stimulus, questionStem: row.questionStem, answerChoices: { ...row.answerChoices }, correctAnswer: row.correctAnswer }));
-    for (const [index, question] of questions.entries()) {
+    // A later bank relabel must never lock a student out of a sealed sitting.
+    const questions = bankQuestions.map((question, index) => {
       const expected = leg.questions[index];
-      if (!object(expected) || expected.qtype !== question.qtype || expected.level !== question.difficulty) invalid('LR classification differs from the frozen manifest.');
-    }
+      if (!object(expected) || !frozenClassification(expected)) invalid('LR classification in the frozen manifest is invalid.');
+      return { ...question, qtype: expected.qtype as string, difficulty: expected.level as number };
+    });
     if (this.loadedQuestions) {
       const fields = (question: LRQuestion) => ({ qid: question.qid, pt: question.pt, section: question.section, qnum: question.qnum,
         stimulus: question.stimulus ?? '', stem: question.questionStem, choices: question.answerChoices, correctAnswer: question.correctAnswer,
