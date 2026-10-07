@@ -7,6 +7,7 @@ import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { fetchOwnedSectionHistoryItem, sectionLabel, type SectionHistoryRow } from "@/lib/sectionHistory";
 import { UNANSWERED } from "@/lib/sectionAnswer";
 import { questionBank } from "@/lib/questionLoader";
+import { LrChoiceNote } from "@/components/drill/shared/LrChoiceNote";
 
 export default function SectionReviewDetail() {
   const { historyId, qid } = useParams();
@@ -64,7 +65,7 @@ export default function SectionReviewDetail() {
               <ol className="space-y-2" aria-label="Answer choices">{(["A", "B", "C", "D", "E"] as const).map((letter) => <li key={letter} className="rounded-lg border border-border p-3" data-correct={stat.correctAnswer === letter || undefined}>
                 <span className="font-semibold">{letter}. </span>{question.answerChoices[letter]}
                 {stat.correctAnswer === letter && <span className="ml-2 font-semibold">Credited answer at completion</span>}
-                {question.answerChoiceExplanations?.[letter] && <p className="mt-2 text-sm text-muted-foreground">{question.answerChoiceExplanations[letter].whyCorrect || question.answerChoiceExplanations[letter].whyIncorrect}</p>}
+                <LrChoiceNote pt={question.pt} section={question.section} qnum={question.qnum} letter={letter} className="mt-2 text-sm text-muted-foreground" />
               </li>)}</ol>
             </section>
           : <p className="rounded-xl border border-border bg-card p-5">This question is no longer available in the question bank.</p>}

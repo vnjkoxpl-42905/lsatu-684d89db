@@ -7,6 +7,7 @@ import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { loadStandaloneDrillRun, type StandaloneDrillRun } from "@/lib/drillRunLedger";
 import { launchDrill } from "@/lib/drillLaunch";
 import { questionBank } from "@/lib/questionLoader";
+import { LrChoiceNote } from "@/components/drill/shared/LrChoiceNote";
 import { lrRunProvenanceLabel } from "@/lib/lrRunProvenance";
 
 export default function DrillRuns() {
@@ -104,7 +105,7 @@ export default function DrillRuns() {
                           <span className="font-semibold">{letter}. </span>{question.answerChoices[letter]}
                           {attempt?.selected_answer === letter && <span className="ml-2 text-muted-foreground">Your answer</span>}
                           {question.correctAnswer === letter && <span className="ml-2 font-semibold">Correct answer</span>}
-                          {question.answerChoiceExplanations?.[letter] && <p className="mt-2 text-muted-foreground">{question.answerChoiceExplanations[letter].whyCorrect || question.answerChoiceExplanations[letter].whyIncorrect}</p>}
+                          <LrChoiceNote pt={question.pt} section={question.section} qnum={question.qnum} letter={letter} className="mt-2 text-muted-foreground" />
                         </li>
                       ))}</ol>
                     </div> : <p className="mt-3 text-sm text-muted-foreground">This question is no longer available in the question bank.</p>}

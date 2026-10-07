@@ -112,7 +112,8 @@ export default function LRQuestionModal(props: Props) {
   }, [inline, bankQuestion]);
 
   const correctAnswer = inline?.correctAnswer ?? bankQuestion?.correctAnswer ?? "";
-  const explanations = inline?.explanations ?? bankQuestion?.answerChoiceExplanations;
+  // Bootcamp copy passed inline is Joshua's own; every other note comes from the database.
+  const explanations = inline?.explanations;
 
   const [selected, setSelected] = React.useState("");
   const [eliminated, setEliminated] = React.useState<Set<string>>(new Set());
