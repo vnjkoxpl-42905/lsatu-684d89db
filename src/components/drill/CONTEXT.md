@@ -13,7 +13,7 @@ The drill-level teaching panel shown *before* a student starts a guided drill �
 _Avoid_: info card (that's LSAT Lab's name), intro, launch card, explanation.
 
 **Question Type**:
-The LSAT task a question asks — *Main Conclusion, Flaw, Necessary Assumption, Strengthen, Paradox, Must Be True*, etc. Stored as `questionType` on a question (and `question_types[]` on a guided drill). The bank's raw values are messy (110 variants, casing dupes, 67 "Unknown") and need a canonical set (~25 types).
+The LSAT task a question asks — *Main Conclusion, Flaw, Necessary Assumption, Strengthen, Paradox, Must Be True*, etc. Stored as `questionType` on a question (and `question_types[]` on a guided drill). The canonical set is the 18 `CANONICAL_QTYPES` in `questionLoader.ts`; raw values resolve to it through `normalizeQType`, and EXCEPT is a Question Feature, not part of the type (decided 2026-10-03, PR #199).
 _Avoid_: qtype in prose (fine in code), category (that's Patterns/Process), question kind.
 
 **Question Feature**:

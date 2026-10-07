@@ -14,6 +14,9 @@ vi.mock("@/lib/sectionHistory", async (importOriginal) => ({
   fetchOwnedSectionHistoryItem,
 }));
 vi.mock("@/lib/questionLoader", () => ({ questionBank: { getQuestion } }));
+vi.mock("@/hooks/useLrExplanation", () => ({
+  useLrExplanation: () => ({ data: { styles: [{ notesByLetter: { C: "Database note for C." } }] } }),
+}));
 
 const row = {
   id: "section-1", practiceTestRunId: null, pt: 80, section: 2, mode: "full-section",
@@ -41,6 +44,7 @@ describe("Section Review detail", () => {
     expect(await screen.findByText("The city council changed the rule.")).toBeInTheDocument();
     expect(screen.getByText(/You opened this question but left it blank/)).toBeInTheDocument();
     expect(screen.getByText("What is the flaw?")).toBeInTheDocument();
+    expect(screen.getByText("Database note for C.")).toBeInTheDocument();
     expect(fetchOwnedSectionHistoryItem).toHaveBeenCalledWith("student-1", "section-1");
   });
 
