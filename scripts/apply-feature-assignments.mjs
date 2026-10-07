@@ -49,7 +49,7 @@ const ALLOWED = new Set([
   'Plans / Recommendations', 'Plausibility', 'Predictions',
   'Proposition/Generalization', 'Ruling Out Options', 'Timeframes',
   'Weighing Tradeoffs',
-  'EXCEPT', 'Games-y LR', 'Medical', 'Science',
+  'EXCEPT', 'Rule Puzzle', 'Medical', 'Science',
   'Belief / Knowledge / Intent',
 ]);
 

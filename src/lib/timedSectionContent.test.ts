@@ -49,6 +49,14 @@ describe('standalone canonical frozen content', () => {
     const rows = lr(blueprint.pt, source.section); rows.find(row => row.status !== 'removed')!.questionStem += ' changed';
     await expect(verifyStandaloneLrContent(sitting(blueprint.pt, source), rows)).rejects.toMatchObject({ kind: 'contract' });
   });
+  it('keeps the frozen LR classification after a bank relabel and rejects a malformed frozen label', async () => {
+    const blueprint = manifest.blueprints[0]; const source = blueprint.legs.find((value: TimedObject) => value.kind === 'lr');
+    const rows = lr(blueprint.pt, source.section).map(row => ({ ...row, questionType: 'Evaluate', questionDifficulty: 1 }));
+    const questions = await verifyStandaloneLrContent(sitting(blueprint.pt, source), rows);
+    expect(questions.map(q => [q.qtype, q.difficulty])).toEqual(source.questions.map((q: TimedObject) => [q.qtype, q.level]));
+    const wrong = structuredClone(source); wrong.questions[0].level = 0;
+    await expect(verifyStandaloneLrContent(sitting(blueprint.pt, wrong), rows)).rejects.toMatchObject({ kind: 'contract' });
+  });
   it('denies wrong LR section and duplicate removed rows', async () => {
     const blueprint = manifest.blueprints[0]; const source = blueprint.legs.find((value: TimedObject) => value.kind === 'lr');
     const rows = lr(blueprint.pt, source.section);

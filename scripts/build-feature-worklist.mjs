@@ -56,7 +56,7 @@ const CANONICAL_FEATURES = new Set([
   'Proposition/Generalization', 'Ruling Out Options', 'Timeframes',
   'Weighing Tradeoffs',
   // Quirks & Topics
-  'EXCEPT', 'Games-y LR', 'Medical', 'Science',
+  'EXCEPT', 'Rule Puzzle', 'Medical', 'Science',
   // Glossary #34 — present in the data bank (59 questions) and in the glossary
   // rubric, but MISSING from src/lib/questionFeatureFamilies.ts. Included here so
   // clear-fit cases can still be tagged. (Taxonomy-file gap flagged separately.)
