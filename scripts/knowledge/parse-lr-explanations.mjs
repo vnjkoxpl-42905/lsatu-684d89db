@@ -143,6 +143,10 @@ function parseChoiceBlock(lines) {
 function parseBreakdown(lines) {
   const steps = [];
   let inBreakdown = false;
+  // Which layout this breakdown uses, fixed by its first step. Italic labels
+  // are only steps in an italic-layout breakdown; in a bold-layout one they
+  // are cues inside a step ("*rephrase:*", "*Given that*").
+  let layout = null;
   for (const raw of lines) {
     const line = raw.trimEnd();
     if (/^\*\*Argument breakdown\*\*\s*$/.test(line)) {
@@ -153,6 +157,7 @@ function parseBreakdown(lines) {
     const m = STEP_RE.exec(line);
     if (m && (inBreakdown || true)) {
       inBreakdown = true;
+      layout ??= 'bold';
       steps.push({ label: m[1].trim(), text: m[2].trim() });
       continue;
     }
@@ -161,7 +166,24 @@ function parseBreakdown(lines) {
     const h = /^\*\*(.+?)\*\*\s*$/.exec(line);
     if (h) {
       inBreakdown = true;
+      layout ??= 'bold';
       steps.push({ label: h[1].replace(/\s*\.\.\.\s*$/, '').trim(), text: '' });
+      continue;
+    }
+    // Italic-label shape (PT154): "*Evaluate:* text" opens a step inline, and
+    // a bare "*Rhett's Claims*" line opens one whose text is the list below.
+    // Only inside the breakdown and only in the italic layout.
+    const italicOk = inBreakdown && layout !== 'bold';
+    const it = italicOk && /^\*([^*]+?):\*\s*(.*)$/.exec(line);
+    if (it) {
+      layout = 'italic';
+      steps.push({ label: it[1].trim(), text: it[2].trim() });
+      continue;
+    }
+    const ih = italicOk && /^\*([^*]+)\*\s*$/.exec(line);
+    if (ih) {
+      layout = 'italic';
+      steps.push({ label: ih[1].trim(), text: '' });
       continue;
     }
     if (!inBreakdown) continue;
