@@ -1,0 +1,121 @@
+/* Booking product theme: light Calendly-style base with a deep burgundy
+   holographic accent. Scoped under .booking-holo so it can wrap both the
+   admin workspace and the student-facing booking pages without touching
+   the rest of the app. Overrides the shadcn HSL tokens locally. */
+
+.booking-holo {
+  --background: 350 20% 99%;
+  --foreground: 345 30% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 345 30% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 345 30% 12%;
+  --primary: 347 70% 27%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 348 30% 96%;
+  --secondary-foreground: 347 55% 25%;
+  --muted: 347 20% 96%;
+  --muted-foreground: 345 12% 44%;
+  --accent: 348 45% 94%;
+  --accent-foreground: 347 60% 24%;
+  --destructive: 0 72% 45%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 345 18% 90%;
+  --input: 345 18% 87%;
+  --ring: 347 70% 35%;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+}
+
+.holo-text {
+  color: hsl(var(--primary));
+}
+
+.holo-surface {
+  /* Static rich burgundy gradient — deliberately NOT animated. The shadcn
+     Button base applies `transition-all` and swaps background-color on hover,
+     which fights any background keyframe animation frame-by-frame and reads
+     as flicker. Buttons stay still; only the wordmark carries the sheen. */
+  background: linear-gradient(120deg, #4f0d1c, #6e1423 45%, #8e1d3a) !important;
+  color: #fff !important;
+}
+
+.holo-surface:hover { filter: brightness(1.12); }
+
+.holo-ring { box-shadow: 0 0 0 1px hsl(347 70% 35% / 0.35), 0 8px 30px hsl(347 70% 25% / 0.12); }
+
+/* Soft burgundy-tinted elevation, the Calendly modal-shadow trick re-tinted. */
+.booking-shadow { box-shadow: 0 24px 72px hsl(345 60% 20% / 0.09), 0 0 20px hsl(345 60% 20% / 0.06); }
+
+@media (prefers-reduced-motion: reduce) {
+  .holo-surface { animation: none; }
+  .single-session-page *,
+  .single-session-page *::before,
+  .single-session-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* The booking theme is deliberately light, which is right on the public
+   booking page a prospect lands on cold. Inside the dark classroom shell it
+   rendered as a 688x647 pure-white slab in a black page — the most jarring
+   thing a student meets on their first click into dark mode.
+
+   This re-voices the same burgundy palette dark, and is scoped to the
+   classroom so /book/* stays light for prospects. It cannot live in the app's
+   `.dark` class: that class is a deliberate alias that mirrors `.light`
+   (see index.css), so every shadcn token in the app stays light by design and
+   the classroom draws its own dark theme separately. */
+html.dark .classroom-root .booking-holo {
+  color-scheme: dark;
+  --background: 345 12% 9%;
+  --foreground: 345 15% 95%;
+  --card: 345 12% 13%;
+  --card-foreground: 345 15% 95%;
+  --popover: 345 12% 13%;
+  --popover-foreground: 345 15% 95%;
+  /* Lightness is set by contrast, not by matching the light theme's 27%: the
+     accent is used as text on the card, and 58% measured 4.13:1 against it. */
+  --primary: 347 68% 68%;
+  --primary-foreground: 345 30% 10%;
+  --secondary: 345 12% 19%;
+  --secondary-foreground: 345 15% 93%;
+  --muted: 345 10% 18%;
+  --muted-foreground: 345 10% 70%;
+  --accent: 345 15% 23%;
+  --accent-foreground: 345 15% 94%;
+  --destructive: 0 65% 58%;
+  --destructive-foreground: 345 30% 10%;
+  --border: 345 10% 25%;
+  --input: 345 10% 27%;
+  --ring: 347 62% 52%;
+}
+
+/* DialogContent is portaled outside `.classroom-root`, so carry the same
+   classroom-dark tokens on the booking dialog itself. Public booking remains
+   light because only the dialog opts into this selector. */
+html.dark .booking-dialog.booking-holo {
+  color-scheme: dark;
+  --background: 345 12% 9%;
+  --foreground: 345 15% 95%;
+  --card: 345 12% 13%;
+  --card-foreground: 345 15% 95%;
+  --popover: 345 12% 13%;
+  --popover-foreground: 345 15% 95%;
+  --primary: 347 68% 68%;
+  --primary-foreground: 345 30% 10%;
+  --secondary: 345 12% 19%;
+  --secondary-foreground: 345 15% 93%;
+  --muted: 345 10% 18%;
+  --muted-foreground: 345 10% 70%;
+  --accent: 345 15% 23%;
+  --accent-foreground: 345 15% 94%;
+  --destructive: 0 65% 58%;
+  --destructive-foreground: 345 30% 10%;
+  --border: 345 10% 25%;
+  --input: 345 10% 27%;
+  --ring: 347 62% 52%;
+}

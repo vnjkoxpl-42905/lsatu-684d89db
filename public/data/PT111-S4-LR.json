@@ -1,0 +1,573 @@
+[
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Most Strongly Supported EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "The graphical illustrations mathematics teachers use enable students to learn geometry more easily by providing them with an intuitive understanding of geometric concepts, which makes it easier to acquire the ability to manipulate symbols for the purpose of calculation. Illustrating algebraic concepts graphically would be equally effective pedagogically, even though the deepest mathematical understanding is abstract, not imagistic.",
+    "questionStem": "The statements above provide some support for each of the following except:",
+    "answerChoices": {
+      "A": "Pictorial understanding is not the final stage of mathematical understanding.",
+      "B": "People who are very good at manipulating symbols do not necessarily have any mathematical understanding.",
+      "C": "Illustrating geometric concepts graphically is an effective teaching method.",
+      "D": "Acquiring the ability to manipulate symbols is part of the process of learning geometry.",
+      "E": "There are strategies that can be effectively employed in the teaching both of algebra and of geometry."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Argument Part",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Bureaucratic mechanisms are engineered to resist change. Thus, despite growing dissatisfaction with complex bureaucratic systems, it is unlikely that bureaucracies will be simplified.",
+    "questionStem": "The claim that bureaucratic mechanisms are engineered to resist change plays which one of the following roles in the argument?",
+    "answerChoices": {
+      "A": "It is a premise offered in support of the claim that it is unlikely that bureaucracies will be simplified.",
+      "B": "It is a conclusion for which the only support offered is the claim that dissatisfaction with complex bureaucratic systems is growing.",
+      "C": "It is cited as evidence that bureaucratic systems are becoming more and more complex.",
+      "D": "It is used to weaken the claim that bureaucracies should be simplified.",
+      "E": "It is a conclusion for which the claim that bureaucracies are unlikely to be simplified is offered as support."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In speech, when words or sentences are ambiguous, gesture and tone of voice are used to indicate the intended meaning. Writers, of course, cannot use gesture or tone of voice and must rely instead on style; the reader detects the writer’s intention from the arrangement of words and sentences.",
+    "questionStem": "Which one of the following statements is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "The primary function of style in writing is to augment the literal meanings of the words and sentences used.",
+      "B": "The intended meaning of a piece of writing is indicated in part by the writer’s arrangement of words and sentences.",
+      "C": "It is easier for a listener to detect the tone of a speaker than for a reader to detect the style of a writer.",
+      "D": "A writer’s intention will always be interpreted differently by different readers.",
+      "E": "The writer’s arrangement of words and sentences completely determines the aesthetic value of his or her writing."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Paradox",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Last year a large firm set a goal of decreasing its workforce by 25 percent. Three divisions, totaling 25 percent of its workforce at that time, were to be eliminated and no new people hired. These divisions have since been eliminated and no new people have joined the firm, but its workforce has decreased by only 15 percent.",
+    "questionStem": "Which one of the following, if true, contributes most to an explanation of the difference in the planned versus the actual reduction in the workforce?",
+    "answerChoices": {
+      "A": "The three divisions that were eliminated were well run and had the potential to earn profits.",
+      "B": "Normal attrition in the retained divisions continued to reduce staff because no new people were added to the firm.",
+      "C": "Some of the employees in the eliminated divisions were eligible for early retirement and chose that option.",
+      "D": "As the divisions were being eliminated some of their employees were assigned to other divisions.",
+      "E": "Employees in the retained divisions were forced to work faster to offset the loss of the eliminated divisions."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "One of the advantages of Bacillus thuringiensis (B.t.) toxins over chemical insecticides results from their specificity for pest insects. The toxins have no known detrimental effects on mammals or birds. In addition, the limited range of activity of the toxins toward insects means that often a particular toxin will kill pest species but not affect insects that prey upon the species. This advantage makes B.t. toxins preferable to chemical insecticides for use as components of insect pest management programs.",
+    "questionStem": "Which one of the following statements, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Chemical insecticides cause harm to a greater number of insect species than do B.t. toxins.",
+      "B": "No particular B.t. toxin is effective against all insects.",
+      "C": "B.t. toxins do not harm weeds that do damage to farm crops.",
+      "D": "Insects build up resistance more readily to B.t. toxins than to chemical insecticides.",
+      "E": "Birds and rodents often do greater damage to farm crops than do insects."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Many people are alarmed about the population explosion. They fail to appreciate that the present rise in population has in fact been followed by equally potent economic growth. Because of this connection between an increase in population and an increase in economic activity, population control measures should not be taken.",
+    "questionStem": "The questionable pattern of reasoning in the argument above is most similar to that in which one of the following?",
+    "answerChoices": {
+      "A": "Subscribers to newsmagazines are concerned that increased postage costs will be passed on to them in the form of higher subscription rates. But that is a price they have to pay for having the magazines delivered. No group of users of the postal system should be subsidized at the expense of others.",
+      "B": "Most of the salespeople are concerned with complaints about the sales manager’s aggressive behavior. They need to consider that sales are currently increasing. Due to this success, no action should be taken to address the manager’s behavior.",
+      "C": "Parents are concerned about their children spending too much time watching television. Those parents should consider television time as time they could spend with their children. Let the children watch television, but watch it with them.",
+      "D": "Nutritionists warn people not to eat unhealthy foods. Those foods have been in people’s diets for years. Before cutting all those foods out of diets it would be wise to remember that people enjoy culinary variety.",
+      "E": "Some consumers become concerned when the price of a product increases for several years in a row, thinking that the price will continue to increase. But these consumers are mistaken since a long-term trend of price increases indicates that the price will probably decline in the future."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Attorney: I ask you to find Mr. Smith guilty of assaulting Mr. Jackson. Regrettably, there were no eyewitnesses to the crime, but Mr. Smith has a violent character: Ms. Lopez testified earlier that Mr. Smith, shouting loudly, had threatened her. Smith never refuted this testimony.",
+    "questionStem": "The attorney’s argument is fallacious because it reasons that",
+    "answerChoices": {
+      "A": "aggressive behavior is not a sure indicator of a violent character",
+      "B": "Smith’s testimony is unreliable since he is loud and aggressive",
+      "C": "since Smith never disproved the claim that he threatened Lopez, he did in fact threaten her",
+      "D": "Lopez’s testimony is reliable since she is neither loud nor aggressive",
+      "E": "having a violent character is not necessarily associated with the commission of violent crimes"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "It is widely believed that by age 80, perception and memory are each significantly reduced from their functioning levels at age 30. However, a recent study showed no difference in the abilities of 80-year-olds and 30-year-olds to play a card game devised to test perception and memory. Therefore, the belief that perception and memory are significantly reduced by age 80 is false.",
+    "questionStem": "The reasoning above is most vulnerable to criticism on the grounds that it fails to consider the possibility that",
+    "answerChoices": {
+      "A": "the study’s card game does not test cognitive abilities other than perception and memory",
+      "B": "card games are among the most difficult cognitive tasks one can attempt to perform",
+      "C": "perception and memory are interrelated in ways of which we are not currently aware",
+      "D": "the belief that 80-year-olds’ perception and memory are reduced results from prejudice against senior citizens",
+      "E": "playing the study’s card game perfectly requires fairly low levels of perception and memory"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Alternatives",
+      "Anti-Causal",
+      "Focused on Evidence",
+      "Rebuttals",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Moralist: Humans have a natural disposition to altruism—that is, to behavior that serves the needs of others regardless of one’s own needs—but that very disposition prevents some acts of altruism from counting as moral. Reason plays an essential role in any moral behavior. Only behavior that is intended to be in accordance with a formal set of rules, or moral code, can be considered moral behavior.",
+    "questionStem": "Which one of the following most accurately states the main conclusion of the moralist’s argument?",
+    "answerChoices": {
+      "A": "All moral codes prohibit selfishness.",
+      "B": "All moral behavior is motivated by altruism.",
+      "C": "Behavior must serve the needs of others in order to be moral behavior.",
+      "D": "Not all altruistic acts are moral behavior.",
+      "E": "Altruism develops through the use of reason."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "A recent study suggests that Alzheimer’s disease, which attacks the human brain, may be caused by a virus. In the study, blood from 11 volunteers, each of whom had the disease, was injected into rats. The rats eventually exhibited symptoms of another degenerative neurological disorder, Creutzfeldt-Jakob disease, which is caused by a virus. This led the scientist who conducted the study to conclude that Alzheimer’s disease might be caused by a virus.",
+    "questionStem": "Which one of the following statements, if true, would most strengthen the scientist’s hypothesis that Alzheimer’s disease is caused by a virus?",
+    "answerChoices": {
+      "A": "Alzheimer’s disease in rats is not caused by a virus.",
+      "B": "Creutzfeldt-Jakob disease affects only motor nerves in rats’ limbs, not their brains.",
+      "C": "The virus that causes Creutzfeldt-Jakob disease in rats has no effect on humans.",
+      "D": "The symptoms known, respectively, as Creutzfeldt-Jakob disease and Alzheimer’s disease are different manifestations of the same disease.",
+      "E": "Blood from rats with Creutzfeldt-Jakob disease produced no symptoms of the disease when injected into other experimental rats."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "One approach to the question of which objects discussed by a science are real is to designate as real all and only those entities posited by the most explanatorily powerful theory of the science. But since most scientific theories contain entities posited solely on theoretical grounds, this approach is flawed.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning above?",
+    "answerChoices": {
+      "A": "Any object that is posited by a scientific theory and that enhances the explanatory power of that theory should be designated as real.",
+      "B": "Objects posited for theoretical reasons only should never be designated as real.",
+      "C": "A scientific theory should not posit any entity that does not enhance the explanatory power of the theory.",
+      "D": "A scientific theory should sometimes posit entities on grounds other than theoretical ones.",
+      "E": "Only objects posited by explanatorily powerful theories should be designated as real."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Paradox",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Most doctors recommend that pregnant women eat a nutritious diet to promote the health of their babies. However, most babies who are born to women who ate nutritious diets while pregnant still develop at least one medical problem in their first year.",
+    "questionStem": "Which one of the following, if true, does most to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "Women who regularly eat a nutritious diet while pregnant tend to eat a nutritious diet while breast-feeding.",
+      "B": "Most of the babies born to women who did not eat nutritious diets while pregnant develop no serious medical problems later in childhood.",
+      "C": "Babies of women who did not eat nutritious diets while pregnant tend to have more medical problems in their first year than do other babies.",
+      "D": "Medical problems that develop in the first year of life tend to be more serious than those that develop later in childhood.",
+      "E": "Many of the physicians who initially recommended that pregnant women consume nutritious diets have only recently reaffirmed their recommendation."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Mayor: The law prohibiting pedestrians from crossing against red lights serves no useful purpose. After all, in order to serve a useful purpose, a law must deter the kind of behavior it prohibits. But pedestrians who invariably violate this law are clearly not dissuaded by it; and those who comply with the law do not need it, since they would never cross against red lights even if there were no law prohibiting pedestrians from crossing against red lights.",
+    "questionStem": "The mayor’s argument is flawed because it",
+    "answerChoices": {
+      "A": "takes for granted that most automobile drivers will obey the law that prohibits them from driving through red lights",
+      "B": "uses the word “law” in one sense in the premises and in another sense in the conclusion",
+      "C": "ignores the possibility that a law might not serve a useful purpose even if it does deter the kind of behavior it prohibits",
+      "D": "fails to consider whether the law ever dissuades people who sometimes but not always cross against red lights",
+      "E": "provides no evidence that crossing against red lights is more dangerous than crossing on green lights"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Binaries",
+      "Intermediate Conclusions",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Marian Anderson, the famous contralto, did not take success for granted. We know this because Anderson had to struggle early in life, and anyone who has to struggle early in life is able to keep a good perspective on the world.",
+    "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Anyone who succeeds takes success for granted.",
+      "B": "Anyone who is able to keep a good perspective on the world does not take success for granted.",
+      "C": "Anyone who is able to keep a good perspective on the world has to struggle early in life.",
+      "D": "Anyone who does not take success for granted has to struggle early in life.",
+      "E": "Anyone who does not take success for granted is able to keep a good perspective on the world."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Argument Part",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Geneticist: Ethicists have fears, many of them reasonable, about the prospect of cloning human beings, that is, producing exact genetic duplicates. But the horror-movie image of a wealthy person creating an army of exact duplicates is completely unrealistic. Clones must be raised and educated, a long-term process that could never produce adults identical to the original in terms of outlook, personality, or goals. More realistic is the possibility that wealthy individuals might use clones as living “organ banks.”",
+    "questionStem": "The claim that cloning will not produce adults with identical personalities plays which one of the following roles in the geneticist’s argument?",
+    "answerChoices": {
+      "A": "It is a reason for dismissing the various fears raised by ethicists regarding the cloning of human beings.",
+      "B": "It is evidence that genetic clones will never be produced successfully.",
+      "C": "It illustrates the claim that only wealthy people would be able to have genetic duplicates made of themselves.",
+      "D": "It is evidence for the claim that wealthy people might use genetic duplicates of themselves as sources of compatible organs for transplantation.",
+      "E": "It is a reason for discounting one possible fear concerning the cloning of human beings."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Publicity campaigns for endangered species are unlikely to have much impact on the most important environmental problems, for while the ease of attributing feelings to large mammals facilitates evoking sympathy for them, it is more difficult to elicit sympathy for other kinds of organisms, such as the soil microorganisms on which large ecosystems and agriculture depend.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "The most important environmental problems involve endangered species other than large mammals.",
+      "B": "Microorganisms cannot experience pain or have other feelings.",
+      "C": "Publicity campaigns for the environment are the most effective when they elicit sympathy for some organism.",
+      "D": "People ignore environmental problems unless they believe the problems will affect creatures with which they sympathize.",
+      "E": "An organism can be environmentally significant only if it affects large ecosystems or agriculture."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Assumes Difference",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Weaken EXCEPT",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Politician: All nations that place a high tax on income produce thereby a negative incentive for technological innovation, and all nations in which technological innovation is hampered inevitably fall behind in the international arms race. Those nations that, through historical accident or the foolishness of their political leadership, wind up in a strategically disadvantageous position are destined to lose their voice in world affairs. So if a nation wants to maintain its value system and way of life, it must not allow its highest tax bracket to exceed 30 percent of income.",
+    "questionStem": "Each of the following, if true, weakens the politician’s argument except:",
+    "answerChoices": {
+      "A": "The top level of taxation must reach 45 percent before taxation begins to deter inventors and industrialists from introducing new technologies and industries.",
+      "B": "Making a great deal of money is an insignificant factor in driving technological innovation.",
+      "C": "Falling behind in the international arms race does not necessarily lead to a strategically less advantageous position.",
+      "D": "Those nations that lose influence in the world community do not necessarily suffer from a threat to their value system or way of life.",
+      "E": "Allowing one’s country to lose its technological edge, especially as concerns weaponry, would be foolish rather than merely a historical accident."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Philosopher: Scientists talk about the pursuit of truth, but, like most people, they are self-interested. Accordingly, the professional activities of most scientists are directed toward personal career enhancement, and only incidentally toward the pursuit of truth. Hence, the activities of the scientific community are largely directed toward enhancing the status of that community as a whole, and only incidentally toward the pursuit of truth.",
+    "questionStem": "The reasoning in the philosopher’s argument is flawed because the argument",
+    "answerChoices": {
+      "A": "improperly infers that each and every scientist has a certain characteristic from the premise that most scientists have that characteristic",
+      "B": "improperly draws an inference about the scientific community as a whole from a premise about individual scientists",
+      "C": "presumes, without giving justification, that the aim of personal career enhancement never advances the pursuit of truth",
+      "D": "illicitly takes advantage of an ambiguity in the meaning of “self-interested”",
+      "E": "improperly draws an inference about a cause from premises about its effects"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Part vs. Whole"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Several critics have claimed that any contemporary poet who writes formal poetry—poetry that is rhymed and metered—is performing a politically conservative act. This is plainly false. Consider Molly Peacock and Marilyn Hacker, two contemporary poets whose poetry is almost exclusively formal and yet who are themselves politically progressive feminists.",
+    "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "No one who is a feminist is also politically conservative.",
+      "B": "No poet who writes unrhymed or unmetered poetry is politically conservative.",
+      "C": "No one who is politically progressive is capable of performing a politically conservative act.",
+      "D": "Anyone who sometimes writes poetry that is not politically conservative never writes poetry that is politically conservative.",
+      "E": "The content of a poet’s work, not the work’s form, is the most decisive factor in determining what political consequences, if any, the work will have."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Refute a Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Archaeologist: A skeleton of a North American mastodon that became extinct at the peak of the Ice Age was recently discovered. It contains a human-made projectile dissimilar to any found in that part of Eurasia closest to North America. Thus, since Eurasians did not settle in North America until shortly before the peak of the Ice Age, the first Eurasian settlers in North America probably came from a more distant part of Eurasia.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the archaeologist’s argument?",
+    "answerChoices": {
+      "A": "The projectile found in the mastodon does not resemble any that were used in Eurasia before or during the Ice Age.",
+      "B": "The people who occupied the Eurasian area closest to North America remained nomadic throughout the Ice Age.",
+      "C": "The skeleton of a bear from the same place and time as the mastodon skeleton contains a similar projectile.",
+      "D": "Other North American artifacts from the peak of the Ice Age are similar to ones from the same time found in more distant parts of Eurasia.",
+      "E": "Climatic conditions in North America just before the Ice Age were more conducive to human habitation than were those in the part of Eurasia closest to North America at that time."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Assumes Difference"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "All social systems are based upon a division of economic roles. The values of a social system are embodied in the prestige accorded persons who fill various economic roles. It is therefore unsurprising that, for any social system, the introduction of labor-saving technology that makes certain economic roles obsolete will tend to undermine the values in that social system.",
+    "questionStem": "Which one of the following can most reasonably be concluded on the basis of the information above?",
+    "answerChoices": {
+      "A": "Social systems will have unchanging values if they are shielded from technological advancement.",
+      "B": "No type of technology will fail to undermine the values in a social system.",
+      "C": "A social system whose values are not susceptible to change would not be one in which technology can eliminate economic roles.",
+      "D": "A technologically advanced society will place little value on the prestige associated with an economic role.",
+      "E": "A technological innovation that is implemented in a social system foreign to the one in which it was developed will tend to undermine the foreign social system."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Must Be False",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Multiple sclerosis is an autoimmune disease: white blood cells attack the myelin sheath that protects nerve fibers in the spinal cord and brain. Medical science now has a drug that can be used to successfully treat multiple sclerosis, but the path that led medical researchers to this drug was hardly straightforward. Initially, some scientists believed attacks characteristic of multiple sclerosis might be triggered by chronic viral infections. So in 1984 they began testing gamma interferon, one of the body’s own antiviral weapons. To their horror, all the multiple sclerosis patients tested became dramatically worse. The false step proved to be instructive however.",
+    "questionStem": "Which one of the following is least compatible with the results of the gamma interferon experiment?",
+    "answerChoices": {
+      "A": "Gamma interferon stops white blood cells from producing myelin-destroying compounds.",
+      "B": "Administering gamma interferon to those without multiple sclerosis causes an increase in the number of white blood cells.",
+      "C": "Medical researchers have discovered that the gamma interferon level in the cerebrospinal fluid skyrockets just before and during multiple sclerosis attacks.",
+      "D": "It has now been established that most multiple sclerosis sufferers do not have chronic viral infections.",
+      "E": "The drug now used to treat multiple sclerosis is known to inhibit the activity of gamma interferon."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Parallel Method of Reasoning",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "The higher the altitude, the thinner the air. Since Mexico City’s altitude is higher than that of Panama City, the air must be thinner in Mexico City than in Panama City.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "As one gets older one gets wiser. Since Henrietta is older than her daughter, Henrietta must be wiser than her daughter.",
+      "B": "The more egg whites used and the longer they are beaten, the fluffier the meringue. Since Lydia used more egg whites in her meringue than Joseph used in his, Lydia’s meringue must be fluffier than Joseph’s.",
+      "C": "The people who run the fastest marathons these days are faster than the people who ran the fastest marathons ten years ago. Charles is a marathon runner. So Charles must run faster marathons these days than he did ten years ago.",
+      "D": "The older a tree, the more rings it has. The tree in Lou’s yard is older than the tree in Theresa’s yard. Therefore, the tree in Lou’s yard must have more rings than does the tree in Theresa’s yard.",
+      "E": "The bigger the vocabulary a language has, the harder it is to learn. English is harder to learn than Italian. Therefore, English must have a bigger vocabulary than Italian."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "A recent study of 6,403 people showed that those treated with the drug pravastatin, one of the effects of which is to reduce cholesterol, had about one-third fewer nonfatal heart attacks and one-third fewer deaths from coronary disease than did those not taking the drug. This result is consistent with other studies, which show that those who have heart disease often have higher than average cholesterol levels. This shows that lowering cholesterol levels reduces the risk of heart disease.",
+    "questionStem": "The argument’s reasoning is flawed because the argument",
+    "answerChoices": {
+      "A": "neglects the possibility that pravastatin may have severe side effects",
+      "B": "fails to consider that pravastatin may reduce the risk of heart disease but not as a consequence of its lowering cholesterol levels",
+      "C": "relies on past findings, rather than drawing its principal conclusion from the data found in the specific study cited",
+      "D": "draws a conclusion regarding the effects of lowering cholesterol levels on heart disease, when in fact the conclusion should focus on the relation between pravastatin and cholesterol levels",
+      "E": "fails to consider what percentage of the general population might be taking pravastatin"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Zachary: The term “fresco” refers to paint that has been applied to wet plaster. Once dried, a fresco indelibly preserves the paint that a painter has applied in this way. Unfortunately, additions known to have been made by later painters have obscured the original fresco work done by Michelangelo in the Sistine Chapel. Therefore, in order to restore Michelangelo’s Sistine Chapel paintings to the appearance that Michelangelo intended them to have, everything except the original fresco work must be stripped away. Stephen: But it was extremely common for painters of Michelangelo’s era to add painted details to their own fresco work after the frescos had dried.",
+    "questionStem": "Stephen’s response to Zachary proceeds by",
+    "answerChoices": {
+      "A": "calling into question an assumption on which Zachary’s conclusion depends",
+      "B": "challenging the definition of a key term in Zachary’s argument",
+      "C": "drawing a conclusion other than the one that Zachary reaches",
+      "D": "denying the truth of one of the stated premises of Zachary’s argument",
+      "E": "demonstrating that Zachary’s conclusion is not consistent with the premises he uses to support it"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers",
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT111",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Zachary: The term “fresco” refers to paint that has been applied to wet plaster. Once dried, a fresco indelibly preserves the paint that a painter has applied in this way. Unfortunately, additions known to have been made by later painters have obscured the original fresco work done by Michelangelo in the Sistine Chapel. Therefore, in order to restore Michaelangelo’s Sistine Chapel paintings to the appearance that Michelangelo intended them to have, everything except the original fresco work must be stripped away.\nStephen: But it was extremely common for painters of Michelangelo’s era to add painted details to their own fresco work after the frescos had dried.",
+    "questionStem": "Stephen’s response to Zachary, if true, most strongly supports which one of the following?",
+    "answerChoices": {
+      "A": "It is impossible to distinguish the later painted additions made to Michelangelo’s Sistine Chapel paintings from the original fresco work.",
+      "B": "Stripping away everything except Michelangelo’s original fresco work from the Sistine Chapel paintings would be unlikely to restore them to the appearance Michelangelo intended them to have.",
+      "C": "The painted details that painters of Michelangelo’s era added to their own fresco work were not an integral part of the completed paintings’ overall design.",
+      "D": "None of the painters of Michelangelo’s era who made additions to the Sistine Chapel paintings was an important artist in his or her own right.",
+      "E": "Michelangelo was rarely satisfied with the appearance of his finished works."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  }
+]

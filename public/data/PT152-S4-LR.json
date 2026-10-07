@@ -1,0 +1,604 @@
+[
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Researcher: It is widely believed that, given its northerly latitude, England’s mild winters must be due to the Gulf Stream, which brings warm water flowing northeastward across the Atlantic Ocean. But this belief is mistaken. While it is true that the Gulf Stream brings tropical water to England, in the Pacific Ocean the analogous Kuroshio Current brings tropical water only as far north as Oregon. Yet North America’s west coast has mild winters well north of that point.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the researcher’s argument?",
+    "answerChoices": {
+      "A": "It is widely believed that England’s mild winters must be due to the Gulf Stream.",
+      "B": "The belief that England’s mild winters must be due to the Gulf Stream is mistaken.",
+      "C": "It is true that the Gulf Stream brings tropical water to England.",
+      "D": "In the Pacific Ocean, the Kuroshio Current brings tropical water only as far north as Oregon.",
+      "E": "North America’s west coast has mild winters well north of Oregon."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Important Pivot",
+      "Analogies",
+      "Plausibility",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Edgar: Nurses who have been specially trained in administering anesthetics should be allowed to anesthetize patients without having to do so under a doctor’s supervision. After all, anesthesia has gotten remarkably safe in recent decades. Janet: Although it’s true that nurse anesthetists receive excellent training, only doctors have the broader medical training to handle the rare emergencies that can arise.",
+    "questionStem": "The dialogue provides the most support for the claim that Edgar and Janet disagree over whether",
+    "answerChoices": {
+      "A": "nurses should ever be allowed to anesthetize patients",
+      "B": "emergencies that can develop from anesthesia are rare",
+      "C": "nurses should be given more training in administering anesthetics",
+      "D": "the safety of anesthesia has improved in recent decades",
+      "E": "the administration of anesthetics by a nurse should always be supervised by a doctor"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Consumer: A new law requires all cigarette packaging to display health warnings, disturbing pictures of smoking-related diseases, and no logos. This law will not affect the smoking habits of most people who smoke cigarettes regularly, since most of these people rarely look at the packaging when they take out a cigarette.",
+    "questionStem": "The conclusion of the consumer’s argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "If implementing certain regulations on the packaging of cigarettes would affect the smoking habits of those who smoke cigarettes regularly, those regulations should be implemented.",
+      "B": "If those who regularly smoke cigarettes look at disturbing pictures of smoking-related diseases frequently, it is likely to affect their smoking habits.",
+      "C": "Almost all people who regularly smoke cigarettes are already familiar with the risks that smoking poses to their health.",
+      "D": "The new packaging cannot affect the smoking habits of people who regularly smoke cigarettes unless they frequently look at the packaging when taking out cigarettes.",
+      "E": "Most people who regularly smoke cigarettes would be unable to describe the logo of their usual brand of cigarettes if asked to do so."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Warner: Until recently, most competitive swimmers were high school or university students. Now, more and more competitive swimmers are continuing well beyond their university years. Clearly, better training regimens have allowed today’s competitive swimmers to stay fitter longer than swimmers of the past. Young: Not necessarily. No one has the time to both be a competitive swimmer and hold an outside job. But unlike in the past, today’s competitive swimmers can make a living at their sport.",
+    "questionStem": "Young responds to Warner’s argument by",
+    "answerChoices": {
+      "A": "attempting to demonstrate that the evidence Warner advances actually undermines Warner’s conclusion",
+      "B": "presenting a counterexample in order to weaken the evidence offered in support of Warner’s conclusion",
+      "C": "arguing that a condition that Warner takes to be sufficient to account for a phenomenon is necessary but not sufficient",
+      "D": "maintaining that the evidence presented in support of Warner’s conclusion presupposes the truth of that conclusion",
+      "E": "offering an alternative to Warner’s explanation of a certain phenomenon"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Businessperson: Brenner and Chen are the only applicants who have the qualifications we require. But Brenner has a history of not getting along with coworkers, so we should hire Chen.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the businessperson’s argument?",
+    "answerChoices": {
+      "A": "Jennifer has long been interested in visiting the historical sites in Mexico and Peru. The cost of traveling to these countries is currently very low. So she should book a trip now rather than continue to put it off.",
+      "B": "Jennifer has been planning to visit the historical sites in either Mexico or Peru. Floods have made it difficult to get to the historical sites in Peru. So she should visit the sites in Mexico.",
+      "C": "Jennifer would like to visit historical sites in either Mexico or Peru on her next vacation. This might be her only opportunity to take this sort of vacation. So Jennifer should choose the destination that she finds most interesting, regardless of cost.",
+      "D": "Jennifer has been planning to visit historical sites in either Mexico or Peru. Travel to Mexico and Peru is currently inexpensive. So she should instead plan to visit both.",
+      "E": "Jennifer would like to visit historical sites in Mexico and Peru. Travel to Mexico is currently cheaper than to Peru. So she should visit the historical sites in Mexico now and visit the sites in Peru at a later date."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Repetitive Answers",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Role",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Psychologist: Thinking can occur without language. Researchers have demonstrated that three-month-old infants, who obviously have no knowledge of language, can detect anomalies in pictures—in a picture displaying a human face with three eyes, for example. The infants probably compare this picture with an internal representation of a typical human face. Thus, a thought of a typical human face must exist in the infants’ minds.",
+    "questionStem": "The statement that a thought of a typical human face must exist in the infants’ minds plays which one of the following roles in the psychologist’s argument?",
+    "answerChoices": {
+      "A": "It is a conclusion drawn and used in turn as a premise to support a more general conclusion.",
+      "B": "It is attributed to certain researchers as the main conclusion of their reasoning.",
+      "C": "It is the main point of the psychologist’s argument.",
+      "D": "It is used to refute the claim that infants have no knowledge of language.",
+      "E": "It states the hypothesis to be explained by the psychologist’s argument."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Nutritionist: Contrary to popular belief, a high-calcium diet does not prevent osteoporosis (decrease in bone density). Rather, a low-protein diet with an abundance of fruits and vegetables and a minimum quantity of meat and dairy products is essential for the prevention of the condition. Weight-bearing exercise, such as walking or climbing stairs, is also essential, since bones thicken when they withstand regular resistance.",
+    "questionStem": "Each of the following, if true, would support the nutritionist’s view except:",
+    "answerChoices": {
+      "A": "Astronauts who have lived in the weightless environment of space have exhibited decreases in bone density despite vigorous physical activity.",
+      "B": "Certain medical therapies that do not involve special diets can be effective means of preventing osteoporosis.",
+      "C": "Populations in countries with the lowest per capita rates of protein consumption have some of the lowest incidences of osteoporosis.",
+      "D": "Arctic peoples, who consume large amounts of calcium, exhibit one of the highest rates of osteoporosis in the world.",
+      "E": "The incidence of osteoporosis is unusually low among strict vegetarians with low-protein diets."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "EXCEPT",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Quartzbrook Farms wanted to test all of its cattle for a rare disease so it could export beef to a country that requires such testing. However, the government of Quartzbrook’s country prohibited it from testing its cattle, on the grounds that there is no scientific evidence that the risk posed by the disease justifies such testing and that the public could be misled into thinking that the testing was scientifically warranted if Quartzbrook performed the tests.",
+    "questionStem": "The government’s prohibition of testing is most at odds with which one of the following principles?",
+    "answerChoices": {
+      "A": "Governments can rightfully require product testing deemed necessary to protect public safety but cannot rightfully prohibit testing even if such testing is not justified by the risk involved.",
+      "B": "Governments should seek to determine when product safety testing is justified by the risk posed and should provide this information to companies that are considering such testing.",
+      "C": "A government should not allow a company to perform unnecessary product safety tests if that company’s doing so will give consumers the impression that such tests should be performed.",
+      "D": "A government should not spend taxpayers’ money performing product safety tests if the risk posed by the products does not justify the expense of the tests.",
+      "E": "It is fair for a country’s government to require foreign companies to test the products they export to that country as long as it requires domestic companies to perform the same tests."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Office manager: Every vacation an office worker takes significantly reduces the psychological exhaustion experienced on the job. Therefore, to reduce the amount of psychological exhaustion as much as possible over the course of a year, office workers should divide their vacation time into several short vacations spaced throughout the year, rather than into one or two long vacations.",
+    "questionStem": "The office manager’s argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It takes for granted that each short vacation taken by an office worker during a year reduces the psychological exhaustion experienced on the job by an equal amount.",
+      "B": "It overlooks the possibility that there are methods office workers can employ to reduce the amount of psychological exhaustion experienced on the job that are as effective as taking vacations.",
+      "C": "It overlooks the possibility that individual office workers may differ substantially in the extent to which taking vacations reduces the amount of psychological exhaustion they experience on the job.",
+      "D": "It fails to consider that for office workers the total amount of vacation time taken over the course of a year may have a much greater effect on the amount of psychological exhaustion experienced on the job than does the number of vacations taken during the year.",
+      "E": "It fails to consider that a long vacation may reduce the psychological exhaustion an office worker experiences on the job much more than a short vacation does."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A traditional view of Neanderthals is that they lacked the ability to think symbolically. However, recent evidence suggests this view is mistaken. Using an innovative new technique, researchers established that a cave painting in northern Spain was created at least 40,800 years ago. It is therefore likely the painting was made by a Neanderthal.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Neanderthals are known to have possessed the manual dexterity required to create cave paintings like the one in northern Spain.",
+      "B": "No species of hominid other than Neanderthals inhabited any part of Europe 40,800 years ago.",
+      "C": "The ability to create cave paintings like the one in northern Spain indicates the ability to think symbolically.",
+      "D": "The recent evidence regarding the cave painting in northern Spain is the first evidence to suggest that Neanderthals possessed the ability to think symbolically.",
+      "E": "Any species of hominid that cannot create cave paintings must lack the ability to think symbolically."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "To be considered for this year’s Gillespie Grant, applications must be received in Gillespie City by October 1. It can take up to ten days for regular mail from Greendale to reach Gillespie City. So if Mary is sending an application by regular mail from Greendale, she will be considered for the grant only if her application is mailed ten days before the due date.",
+    "questionStem": "The reasoning in the argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "does not establish that Mary is applying for the Gillespie Grant or mailing anything from Greendale",
+      "B": "does not determine how long it takes express mail to reach Gillespie City from Greendale",
+      "C": "does not consider the minimum amount of time it takes regular mail from Greendale to reach Gillespie City",
+      "D": "presumes, without providing justification, that if Mary’s application is received in Gillespie City by October 1, she will satisfy all of the other requirements of the Gillespie Grant application",
+      "E": "overlooks the possibility that Mary cannot be certain that her application will arrive in Gillespie City unless she sends it by express mail"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The Amazon River flows eastward into the Atlantic Ocean from its source in the western part of South America. The land through which the Amazon flows is now cut off from the Pacific Ocean to the west by the Andes Mountains. Yet certain freshwater fish that inhabit the Amazon are descended from now-extinct saltwater fish known to have inhabited the Pacific Ocean but not the Atlantic. For this reason, some scientists hypothesize that the Amazon River once flowed into the Pacific Ocean.",
+    "questionStem": "Which one of the following, if true, provides additional evidence in support of the hypothesis that the Amazon River once flowed into the Pacific Ocean?",
+    "answerChoices": {
+      "A": "In many cases, species of freshwater and saltwater fish that share certain characteristics do not in fact share a common ancestor.",
+      "B": "Most of the fossilized remains of the now-extinct saltwater fish from the Pacific Ocean date to a period prior to the formation of the Andes Mountains.",
+      "C": "Many species of fish that inhabit the Atlantic Ocean are related to fish species that are known to inhabit the Pacific Ocean.",
+      "D": "The Andes Mountains extend from the northernmost to the southernmost extremes of the South American continent.",
+      "E": "There are very few fish species that are known to be able to survive in both fresh and salt water."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Dense Stimulus",
+      "Plausibility",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Columnist: Banning performance enhancing drugs (PEDs) from sports will not stop their use. They provide too big a competitive advantage. And top athletes will do whatever it takes to gain a big competitive advantage. So PEDs should be allowed, but only if administered under a doctor’s care to make sure they are taken only in safe doses. When handled in this fashion the health risks from PEDs disappear.",
+    "questionStem": "Which one of the following is an assumption required by the columnist’s argument?",
+    "answerChoices": {
+      "A": "Spectators would not lose respect for athletes who they know are taking PEDs.",
+      "B": "PEDs would not improve the performance of some athletes more than others.",
+      "C": "Athletes do not take PEDs thinking they help performance in cases in which they do not help.",
+      "D": "Athletes currently using PEDs cannot find doctors willing to prescribe them.",
+      "E": "Using PEDs at unsafe levels does not create a big competitive advantage over using them at safe levels."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Intermediate Conclusions",
+      "Plans / Recommendations",
+      "Predictions",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Max: As evidence mounts showing the terrible changes wrought on the environment by technology, the conclusion that humans must return to a natural way of living becomes irrefutable. Cora: It is natural for humans to use technology to effect changes on the environment—humans have used technology in that way for many thousands of years. Therefore, your criticism is misguided.",
+    "questionStem": "Cora’s claim that it is natural for humans to use technology to effect changes on the environment plays which one of the following roles in her response to Max?",
+    "answerChoices": {
+      "A": "It is used to suggest that the alleged cause of terrible changes to the environment cannot be correctly described as unnatural.",
+      "B": "It is used to suggest that humans have benefited from many of the changes that they have wrought on the environment.",
+      "C": "It is used to suggest that Max’s conclusion that technology has wrought terrible changes on the environment has not been supported.",
+      "D": "It is used to suggest that the conveniences of modern life will make it difficult for humans to return to a natural way of living.",
+      "E": "It is used to suggest that it is a mistake to take the environmental changes caused by technology to be a moral issue."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Commentator: The reported epidemic of childhood obesity in our country is a myth. Over the last 8 years, there was only a 1 pound (0.45 kilogram) increase in children’s average weight. This is not a substantial increase, so the proportion of children who are obese cannot have increased substantially.",
+    "questionStem": "Which one of the following contains flawed reasoning most similar to the flawed reasoning contained in the argument above?",
+    "answerChoices": {
+      "A": "The average summer temperature over the past five years must have increased, since most people believe that summers are getting hotter.",
+      "B": "The proportion of employees who earn very high salaries must not have increased more than slightly over the last year, since the average salary has increased only slightly over that time.",
+      "C": "The proportion of apartment buildings in the downtown area must have increased substantially in recent years, since a substantial number of office buildings have been converted to apartment buildings during that time.",
+      "D": "The average weight of adults must have increased in the last few years, since restaurants have increased the proportion of high-calorie dishes on their menus in recent years.",
+      "E": "The average price of a house must be increasing, since the proportion of household income spent on housing has increased over the last eight years."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Editorial: The main contention of Kramer’s book is that coal companies are to blame for our region’s economic difficulties. Kramer bases this contention primarily on allegations made by disgruntled coal company employees that the companies made no significant investments in other industries in our region. Yet the companies invested heavily—albeit sometimes indirectly—in road building and manufacturing in the region. Thus, the book’s main contention is simply false.",
+    "questionStem": "The reasoning in the editorial’s argument is flawed in that this argument",
+    "answerChoices": {
+      "A": "concludes that one party is not to blame for a particular outcome merely on the grounds that another party is to blame for that outcome",
+      "B": "concludes that a person’s statement is false merely on the grounds that, if accepted as true, it would impugn the reputation of an important industry",
+      "C": "rejects an argument merely on the grounds that the person offering the argument has an ulterior motive for doing so",
+      "D": "takes a sufficient condition for the coal companies’ having made significant investments in other industries in the region to be a necessary condition for their having done so",
+      "E": "concludes that a person’s statement is false merely on the grounds that an inadequate argument has been given for it"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Abstract Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Health-care facilities have a duty to protect their patients from unnecessary harm. So, since influenza viruses pose substantial risks to patients, and since vaccines can significantly reduce the spread of these viruses, health-care facilities must institute policies that make influenza vaccinations mandatory for all employees.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Health-care facility employees do not regard mandatory vaccination policies as violating their rights.",
+      "B": "Influenza viruses are the most harmful airborne pathogens to which patients risk exposure when entering a health-care facility.",
+      "C": "Most patients in health-care facilities are not vaccinated against influenza.",
+      "D": "Voluntary vaccination policies at health-care facilities would not adequately protect patients from the risks posed by influenza viruses.",
+      "E": "Society has already accepted the idea of mandatory vaccination in other contexts."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Alternatives",
+      "Defender",
+      "Plans / Recommendations",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Etiquette helps people to get along with each other. For example, it prevents people from inadvertently offending one another. While many people criticize etiquette because they believe it has no beneficial effects for society, these same people think that kindness and social harmony are good.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Many people who criticize etiquette have contradictory views about etiquette.",
+      "B": "Many people have respect for etiquette even though they criticize it.",
+      "C": "Many people who criticize etiquette are mistaken about its beneficial effects for society.",
+      "D": "If people were more considerate there would be no need for etiquette.",
+      "E": "Kindness and social harmony are highly beneficial to society."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Evaluate",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "European wood ants incorporate large quantities of solidified conifer resin into their nests. Conifer resin is a natural disinfectant that has been shown to kill strains of bacteria that can cause disease in wood ants. Thus, the wood ants’ use of conifer resin probably came about as a disease-protection measure.",
+    "questionStem": "Which one of the following would be most useful to know in order to evaluate the strength of the argument?",
+    "answerChoices": {
+      "A": "whether conifer resin retains its disinfectant properties over very long periods of time",
+      "B": "whether the nests of European wood ants generally contain more conifer resin at some times of the year than at others",
+      "C": "whether any ant species other than European wood ants use conifer resin in their nests",
+      "D": "whether the use of conifer resin affords structural benefits to European wood ants’ nests",
+      "E": "whether the disinfectant properties of conifer resin evolved as a disease-protection measure for conifer trees"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Coming up with secure passwords for confidential computer files is difficult. Users prefer passwords that are easy to remember, such as birth dates or relatives’ names. Unfortunately, these are the easiest to guess for an outsider who wants to gain access to valuable information. Random configurations of letters and numbers are the hardest to guess, but these are also the easiest for legitimate users to forget. Users who forget their passwords use up the system administrator’s time; furthermore, passwords that are very difficult to remember are generally written down by users, and hence pose the greatest security threat of all.",
+    "questionStem": "If the statements above are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Computer users should not write down their passwords even if the passwords are hard to remember.",
+      "B": "It is expensive to have system administrators constantly resetting forgetful users’ passwords.",
+      "C": "Passwords that are very easy to guess pose less of a security threat than passwords that are very difficult to remember.",
+      "D": "Passwords that are random configurations of letters and numbers are the least likely to result in security breaches.",
+      "E": "The easier a password is to remember, the more secure the computer account."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "If you use a wood stove to heat your home, you should use a wood-pellet stove rather than a regular wood stove. Because wood pellets are made from by-products of manufacturing processes that would otherwise go to landfills, heating a home with a wood-pellet stove will not cause more trees to be felled. The same cannot be said for regular wood stoves. So wood-pellet stoves are better for the environment than are regular wood stoves.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Wood pellets are made from waste products of manufacturing processes that would otherwise not be recycled.",
+      "B": "Heating a home with a wood-pellet stove is better for the environment than is heating a home with a regular wood stove.",
+      "C": "Using a wood-pellet stove to heat one’s home does not cause trees to be felled.",
+      "D": "Using a regular wood stove to heat one’s home causes trees to be felled.",
+      "E": "People who use wood stoves to heat their homes should use wood-pellet stoves instead of regular wood stoves."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Economist: Gifts of cash or gift cards, which allow the recipient to choose the actual gift, are more highly valued by recipients than are gifts chosen for them by others. In a study, when people were asked how much they would have been willing to pay for gifts chosen for them by others, they responded by citing amounts that were on average only about two-thirds of the actual price of the gifts.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the economist’s argument?",
+    "answerChoices": {
+      "A": "The rate at which gifts are returned to retailers has been steadily increasing since the rate was first measured.",
+      "B": "Gifts of cash and gift cards currently represent only about 14 percent of all gift giving.",
+      "C": "People in the study would have been willing to pay more for gifts chosen for them by close friends and relatives than for gifts chosen for them by others.",
+      "D": "People are unwilling to sell gifts chosen for them by others unless offered about one and a half times the gift’s actual price.",
+      "E": "Most retailers require receipts before people can return gifts for refund or exchange."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "An antitheft device involving an electronic homing beacon has been developed for use in tracking stolen automobiles. Although its presence is undetectable to a car thief and so does not directly deter theft, its use greatly increases the odds of apprehending even the most experienced car thieves. The device is not yet used by a large percentage of car owners, but in cities where only a small percentage of car owners have the device installed, auto thefts have dropped dramatically.",
+    "questionStem": "Which one of the following, if true, would most help to explain the dramatic impact of the antitheft device?",
+    "answerChoices": {
+      "A": "Car thieves will tend to be less cautious if they are unaware that a car they have stolen contains a homing beacon.",
+      "B": "Typically, the number of cars stolen in cities where the homing beacons are in use was below average before the device was used.",
+      "C": "Before the invention of the homing beacon, automobile thieves who stole cars containing antitheft devices were rarely apprehended.",
+      "D": "A large proportion of stolen cars are stolen from people who do not live in the cities where they are stolen.",
+      "E": "In most cities the majority of car thefts are committed by a few very experienced car thieves."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Taken as a whole, the computers that constitute the Internet form a complex, densely interconnected collection that transmits information like the neurons that form the human brain. And like a developing human brain, the Internet is growing at millions of points. So we can expect that the Internet itself will someday gain a humanlike intelligence.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "equates the complexity of an entity with the intelligence of that entity",
+      "B": "fails to consider the possibility that other technologies may simulate human intelligence before the Internet does so",
+      "C": "draws a dubious analogy between the information that is processed by the human brain and the information that is transmitted on the Internet",
+      "D": "fails to give an indication of why the characteristics it focuses on are sufficient for the eventual development of humanlike intelligence",
+      "E": "presumes, without providing justification, that the people administering the Internet are interested in developing a system with humanlike intelligence"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT152",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Editorial: Any democratic society is endangered by segmentation into classes of widely differing incomes between which there is little mobility. Such class divisions strengthen divisive political factions that stand in the way of good governance. Since economic expansion gives people more opportunities to improve their economic standing, democratic societies should adopt policies that ensure constant economic expansion.",
+    "questionStem": "Which one of the following, if true, would most strengthen the reasoning in the editorial?",
+    "answerChoices": {
+      "A": "Discord within a society tends to increase inequities in the distribution of wealth.",
+      "B": "Political factions are sometimes willing to overlook their differences to back policies that are conducive to economic expansion.",
+      "C": "Economic expansion results in a proportionally greater increase in earnings for people at low income levels than for people at other income levels.",
+      "D": "Economic expansion cannot occur unless there is significant financial investment in the economy by people at the highest income levels.",
+      "E": "The presence of divisive political factions can be an obstacle to economic expansion."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  }
+]

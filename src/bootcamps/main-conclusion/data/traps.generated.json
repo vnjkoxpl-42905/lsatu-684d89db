@@ -1,0 +1,70 @@
+[
+  {
+    "id": "T1",
+    "name": "Trap statement that sounds like the conclusion but has no support",
+    "what": "The wrong answer choice repeats a claim from the stimulus that *sounds* conclusion-y. It's broad. It's confident. It feels like a verdict. The catch: nothing in the stimulus actually supports it.",
+    "why_trap": "Confident-sounding sentences feel like main points. Students grab them on autopilot, skipping the support test.",
+    "fingerprint": "The trap answer paraphrases an opening framing sentence — usually a generalization or a definition — that the rest of the stimulus doesn't actually defend. The argument is somewhere else.",
+    "defense": "Run the 2-Part Conclusion Check. If a candidate sentence sounds confident but you can't point to another sentence that supports it, it's not the conclusion. Confidence ≠ conclusion.",
+    "pt_example_label": "PT58 S1 Q13 — intriguing person",
+    "source": "Notes/_scan_Main conclusion part 1.pdf (S, masterclass)"
+  },
+  {
+    "id": "T2",
+    "name": "Main conclusion not explicitly stated in the stimulus",
+    "what": "The conclusion the author is driving at is implied rather than written out as a single sentence. The student has to assemble it from referential language (\"this is misguided\"), pivots (\"but they are wrong\"), or implicit logic.",
+    "why_trap": "Students hunt for a sentence that perfectly says the answer. When no such sentence exists, they pick whichever sentence is closest in surface text — often a premise.",
+    "fingerprint": "The conclusion uses pronouns and pointer-words (\"they are wrong\", \"such laws\", \"this position is misguided\") without restating the full claim. The correct answer choice does the unpacking the stimulus didn't.",
+    "defense": "Use the Pronoun & Reference Library (Reference §2.H) and the Pre-Phrase Goal. Replace \"they are wrong\" / \"this is misguided\" / \"such laws\" with the actual reference language before going to answer choices.",
+    "pt_example_label": "Tomato example",
+    "source": "Notes/_scan_Main conclusion part 1.pdf (S)"
+  },
+  {
+    "id": "T3",
+    "name": "Correct answer doesn't match the conclusion word for word",
+    "what": "The right answer is a paraphrase. Synonyms. Inverted syntax. Restructured grammar. Same meaning, different shape. The student waiting for verbatim repetition picks the closer-looking trap and skips the actual answer.",
+    "why_trap": "Surface-level matching is faster than meaning-level matching. Under time pressure, students default to scanning for word overlap.",
+    "fingerprint": "The correct answer reads a little different from the stimulus. A trap answer reads more familiar but slips on a key word. Common syntax flips include \"not all X should Y\" → \"some X should not Y\", \"X is essential for Y\" → \"Y requires X\", \"most A are B\" → \"it is not the case that all A fail to be B\".",
+    "defense": "Match by meaning, not words. Read each answer choice and ask: does this say the same thing as my pre-phrased conclusion? Don't penalize an answer for using different words. Don't reward one for using familiar ones.",
+    "pt_example_label": "Tornado syntax-equivalence (from the Recap)",
+    "source": "Notes/_scan_Main conclusion part 1.pdf (S) + Notes/Main conclusion (recap)_dup1.pdf (S)"
+  },
+  {
+    "id": "T4",
+    "name": "Subtle shift in scope",
+    "what": "The trap answer is almost the conclusion, except one word changes the scope. \"All\" becomes \"most.\" \"Should\" becomes \"could.\" \"Will\" becomes \"may.\" The shift is small enough to miss on a first read, large enough to make the answer wrong.",
+    "why_trap": "Scope shifts feel like reasonable softenings or strengthenings. Students under time pressure read past them.",
+    "fingerprint": "Compare each answer to the conclusion word by word for these specific shifts: quantifier (all / most / some / many / few / no), modal (will / may / could / must / should / might), subject (\"this policy\" → \"all policies of this type\"), domain (the stimulus argued about X; the answer claims about X-and-Y).",
+    "defense": "When two answers look close, find the word that's different and ask: does the stimulus support that word, or a different one? The right answer doesn't go beyond what the stimulus actually said.",
+    "source": "Notes/_scan_Main conclusion part 1.pdf (S)"
+  },
+  {
+    "id": "T5",
+    "name": "Wrong answer expresses something the author would agree with — but isn't the conclusion",
+    "what": "The trap answer is plausible. The author likely *does* believe it. It's consistent with the stimulus's evidence. But it's not the main point being argued for. Often this is a Must-Be-True or Most-Strongly-Supported answer in disguise.",
+    "why_trap": "Students focus on 'is this true given the stimulus?' instead of 'is this *the conclusion*?' Many true things are not conclusions.",
+    "fingerprint": "The trap answer reads as a sensible policy recommendation, a bigger-picture belief, or a takeaway lesson. It could be defended from the stimulus. But the stimulus didn't argue *for* it. The conclusion is narrower.",
+    "defense": "Stay narrow. The conclusion is what the author argued *for*, not what they would say if asked a related question. Match against the supported claim only.",
+    "pt_example_label": "PT24 S2 Q12 — extraterrestrial life",
+    "source": "Notes/_scan_Main conclusion part 2 .pdf (S)"
+  },
+  {
+    "id": "T6",
+    "name": "Correct answer vaguely worded, placed next to an attractive wrong answer",
+    "what": "The right answer is technically correct but written in a way that feels weak — vaguer, less confident, less committal than its neighbors. Right next to it sits a wrong answer that *sounds* stronger and reads as more \"main-point-y.\"",
+    "why_trap": "Students associate strong language with conclusions and vague language with weak claims. They reward confidence over correctness.",
+    "fingerprint": "Two answers that say overlapping things, one with stronger / more confident language, the other with hedged / qualified language. The hedged one is often correct because the stimulus's actual conclusion was hedged.",
+    "defense": "Don't rank answers by strength of language. Rank by faithfulness to the stimulus. If the stimulus said 'may,' the right answer says 'may.' Confidence is not correctness.",
+    "source": "Notes/_scan_Main conclusion part 2 .pdf (S)"
+  },
+  {
+    "id": "T7",
+    "name": "Intermediate Conclusion traps and Cause/Effect traps",
+    "what": "The trap answer is a claim that has support, so it passes Part 2 of the 2-Part Check. But the claim is itself supporting a bigger claim. It's an intermediate conclusion, not the main one. Or: the trap answer states a cause-effect relationship the stimulus described, when the actual conclusion was the broader recommendation that depended on it.",
+    "why_trap": "Intermediate conclusions look exactly like main conclusions on the 2-Part Check. They have support. They sound like opinions. The only way to tell them apart is to ask \"what's supporting what?\"",
+    "fingerprint": "The trap answer is supported by some claims in the stimulus and itself supports a larger claim. The main conclusion is the largest claim — the one supported by everything (and supporting nothing).",
+    "defense": "Map the chain. Ask of every supported claim: \"and what does this claim, in turn, support?\" If something else relies on it, it's an intermediate conclusion, not the main one.",
+    "pt_example_label": "EV chain (from LOGICAL CHAIN)",
+    "source": "Notes/_scan_Main conclusion part 2 .pdf (S) + Notes/LOGICAL CHAIN.pdf (S)"
+  }
+]
