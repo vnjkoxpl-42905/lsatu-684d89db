@@ -425,13 +425,13 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       const full = await loadPassages(ids);
       if (request !== inspectRequest.current || key !== selectionKeyRef.current) return;
       if (full.length !== ids.length || full.some((passage, index) => passage.passageId !== ids[index])) {
-        setNotice('Some passages could not be loaded. Try inspecting the set again.');
+        setNotice('Some passages could not be loaded. Try previewing the drill again.');
         return;
       }
       // A passage that loads without questions would start as an empty
       // reading set, so it cannot pass inspection either.
       if (full.some((passage) => passage.questions.length === 0)) {
-        setNotice('A passage in this set loaded without its questions. Choose another set.');
+        setNotice('A passage in this set loaded without its questions. Choose different passages.');
         return;
       }
       setSelectedSet({ key, ids, passages: full });
@@ -557,7 +557,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     }));
 
   const handPickRows = drillablePassages.filter((p) => {
-    if (search.trim() && !(p.title ?? '').toLowerCase().includes(search.trim().toLowerCase()))
+    const searchable = `${p.title ?? ''} ${p.firstWords ?? ''} PrepTest ${p.preptest} PT ${p.preptest} Section ${p.section} Passage ${p.setNumber}`;
+    if (search.trim() && !searchable.toLowerCase().includes(search.trim().toLowerCase()))
       return false;
     return matches(p);
   });
@@ -623,7 +624,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           <span>
             {loadError}{' '}
             {passages.length > 0
-              ? 'Your choices are kept, but Inspect and Start wait until it loads.'
+              ? 'Your choices are kept. Preview and Start will be available once it loads.'
               : 'No passage counts are shown until it loads.'}
           </span>
           <button type="button" className="rc-chip" onClick={retryLoad} disabled={indexStatus === 'loading'}>
@@ -650,145 +651,158 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       </div>}
 
       {/* ------------------------------------------------------- build card */}
-      <div className="rc-card">
+      <div className="rc-card rc-builder">
         {/* Embedded, the launcher header above is the title. Two headings, one
             saying "Build a reading drill" and one saying "Build a drill", read
             as a nesting mistake. */}
         {!embedded && <h2>Build a drill</h2>}
 
+        <div className="rc-builder-settings">
+          <div className="rc-field rc-builder-count">
+            <div className="rc-field-label" id="rc-passage-count-label">Passages</div>
+            <div className="rc-stepper" role="group" aria-labelledby="rc-passage-count-label">
+              <button
+                type="button"
+                aria-label="Fewer passages"
+                disabled={handPickOpen}
+                onClick={() => setCount((c) => Math.max(1, c - 1))}
+              >
+                −
+              </button>
+              <span className="rc-stepper-value">{handPickOpen ? handPicked.length : count}</span>
+              <button
+                type="button"
+                aria-label="More passages"
+                disabled={handPickOpen}
+                onClick={() => setCount((c) => Math.min(8, c + 1))}
+              >
+                +
+              </button>
+            </div>
+            <div className="rc-field-hint">
+              {handPicked.length > 0
+                ? `Using your ${plural(handPicked.length, 'hand-picked passage')}. Choose for me lets you set a passage count instead.`
+                : handPickOpen ? 'Add passages from the list below.' : 'Each passage includes all its questions.'}
+            </div>
+          </div>
+
+          <div className="rc-field">
+            <div className="rc-field-label">Timing</div>
+            <div className="rc-segmented">
+              <button
+                type="button"
+                aria-pressed={timing === 'untimed'}
+                className={`rc-segment${timing === 'untimed' ? ' rc-active' : ''}`}
+                onClick={() => setTiming('untimed')}
+              >
+                Untimed
+              </button>
+              <button
+                type="button"
+                aria-pressed={timing === 'standard'}
+                className={`rc-segment${timing === 'standard' ? ' rc-active' : ''}`}
+                onClick={() => setTiming('standard')}
+              >
+                Standard pace
+                <span className="rc-segment-caption">8:45 per passage</span>
+              </button>
+              <button
+                type="button"
+                aria-pressed={timing === 'custom'}
+                className={`rc-segment${timing === 'custom' ? ' rc-active' : ''}`}
+                onClick={() => setTiming('custom')}
+              >
+                Custom
+              </button>
+              {timing === 'custom' && (
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  aria-label="Minutes and seconds per passage"
+                  aria-invalid={customInvalid}
+                  aria-describedby={customInvalid ? 'rc-custom-pace-error' : undefined}
+                  className={`rc-segment${customInvalid ? ' rc-input-invalid' : ''}`}
+                  value={customText}
+                  onChange={(e) => {
+                    setCustomText(e.target.value);
+                    const parsed = parseCustomPace(e.target.value);
+                    if (parsed.ok) setCustomSeconds(parsed.seconds);
+                  }}
+                  onBlur={() => {
+                    // Same normalised m:ss the link parameter produces.
+                    if ('seconds' in customPace) setCustomText(mmss(customPace.seconds));
+                  }}
+                />
+              )}
+            </div>
+            {customPaceError && (
+              <div className="rc-field-error" id="rc-custom-pace-error" role="alert">
+                {customPaceError} Enter a valid time to continue.
+              </div>
+            )}
+            {timing !== 'untimed' && !customInvalid && (
+              <div className="rc-field-hint">
+                {mmss(secondsPerPassage)} per passage · {summary.totalSeconds !== null && summary.plannedPassages > 0
+                  ? `${mmss(summary.totalSeconds)} for ${plural(summary.plannedPassages, 'passage')}`
+                  : 'no passages to time yet'}
+              </div>
+            )}
+          </div>
+
+          <div className="rc-field">
+            <div className="rc-field-label">Reveal answers</div>
+            <div className="rc-segmented">
+              {REVEAL_OPTIONS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  aria-pressed={reveal === option.id}
+                  className={`rc-segment${reveal === option.id ? ' rc-active' : ''}`}
+                  onClick={() => setReveal(option.id)}
+                >
+                  {option.label}
+                  <span className="rc-segment-caption">{option.caption}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
         <div className="rc-field">
-          <div className="rc-field-label" id="rc-passage-count-label">Passages</div>
-          <div className="rc-stepper" role="group" aria-labelledby="rc-passage-count-label">
-            <button
-              type="button"
-              aria-label="Fewer passages"
-              disabled={handPicked.length > 0}
-              onClick={() => setCount((c) => Math.max(1, c - 1))}
-            >
-              −
+          <div className="rc-field-label">Passage selection</div>
+          <div className="rc-segmented" role="group" aria-label="Passage selection">
+            <button type="button" className={`rc-segment${!handPickOpen ? ' rc-active' : ''}`} aria-pressed={!handPickOpen}
+              onClick={() => { setHandPickOpen(false); setHandPicked([]); }}>
+              Choose for me
             </button>
-            <span className="rc-stepper-value">{handPicked.length > 0 ? handPicked.length : count}</span>
-            <button
-              type="button"
-              aria-label="More passages"
-              disabled={handPicked.length > 0}
-              onClick={() => setCount((c) => Math.min(8, c + 1))}
-            >
-              +
+            <button type="button" className={`rc-segment${handPickOpen ? ' rc-active' : ''}`} aria-pressed={handPickOpen}
+              onClick={() => setHandPickOpen(true)}>
+              Choose passages
             </button>
           </div>
           <div className="rc-field-hint">
-            {handPicked.length > 0
-              ? `Using your ${plural(handPicked.length, 'hand-picked passage')}. Clear them to choose a count instead.`
-              : 'Size is counted in passages. Each passage comes with all of its questions.'}
-          </div>
-        </div>
-
-        <div className="rc-field">
-          <div className="rc-field-label">Timing</div>
-          <div className="rc-segmented">
-            <button
-              type="button"
-              className={`rc-segment${timing === 'untimed' ? ' rc-active' : ''}`}
-              onClick={() => setTiming('untimed')}
-            >
-              Untimed
-            </button>
-            <button
-              type="button"
-              className={`rc-segment${timing === 'standard' ? ' rc-active' : ''}`}
-              onClick={() => setTiming('standard')}
-            >
-              Standard pace
-              <span className="rc-segment-caption">8:45 per passage</span>
-            </button>
-            <button
-              type="button"
-              className={`rc-segment${timing === 'custom' ? ' rc-active' : ''}`}
-              onClick={() => setTiming('custom')}
-            >
-              Custom
-            </button>
-            {timing === 'custom' && (
-              <input
-                type="text"
-                inputMode="numeric"
-                aria-label="Minutes and seconds per passage"
-                aria-invalid={customInvalid}
-                aria-describedby={customInvalid ? 'rc-custom-pace-error' : undefined}
-                className={`rc-segment${customInvalid ? ' rc-input-invalid' : ''}`}
-                value={customText}
-                onChange={(e) => {
-                  setCustomText(e.target.value);
-                  const parsed = parseCustomPace(e.target.value);
-                  if (parsed.ok) setCustomSeconds(parsed.seconds);
-                }}
-                onBlur={() => {
-                  // Same normalised m:ss the link parameter produces.
-                  if ('seconds' in customPace) setCustomText(mmss(customPace.seconds));
-                }}
-              />
-            )}
-          </div>
-          {customPaceError && (
-            <div className="rc-field-error" id="rc-custom-pace-error" role="alert">
-              {customPaceError} Inspect and Start wait for a valid time.
-            </div>
-          )}
-          {timing !== 'untimed' && !customInvalid && (
-            <div className="rc-field-hint">
-              {mmss(secondsPerPassage)} per passage · {summary.totalSeconds !== null && summary.plannedPassages > 0
-                ? `${mmss(summary.totalSeconds)} for ${plural(summary.plannedPassages, 'passage')}`
-                : 'no passages to time yet'}
-            </div>
-          )}
-        </div>
-
-        <div className="rc-field">
-          <div className="rc-field-label">Reveal answers</div>
-          <div className="rc-segmented">
-            {REVEAL_OPTIONS.map((option) => (
-              <button
-                key={option.id}
-                type="button"
-                className={`rc-segment${reveal === option.id ? ' rc-active' : ''}`}
-                onClick={() => setReveal(option.id)}
-              >
-                {option.label}
-                <span className="rc-segment-caption">{option.caption}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="rc-field">
-          <div className="rc-field-label">
             {indexStatus === 'ready' || passages.length > 0
-              ? `Choosing from ${preview.poolSize} of ${drillablePassages.length} passages`
+              ? `${plural(preview.poolSize, 'passage')} match your filters`
               : indexStatus === 'loading'
                 ? 'Loading passages…'
                 : 'Passage list unavailable'}
           </div>
           <div className="rc-field-hint">
-            {handPicked.length > 0
-              ? 'Hand-picked passages replace the count and filters. They are not topped up from the pool.'
-              : RC_ADAPTIVE_LABEL}
+            {!handPickOpen && RC_ADAPTIVE_LABEL}
           </div>
-          {handPicked.length === 0 && preview.shortfallMessage && passages.length > 0 && (
+          {!handPickOpen && preview.shortfallMessage && passages.length > 0 && (
             <div className="rc-field-hint">{preview.shortfallMessage}</div>
           )}
           <div className="rc-chip-row" style={{ marginTop: 10 }}>
-            <button type="button" className="rc-chip" onClick={() => setCustomizeOpen((v) => !v)}>
-              {customizeOpen ? 'Hide options' : 'Customize'}
-            </button>
-            <button type="button" className="rc-chip" onClick={() => setHandPickOpen((v) => !v)}>
-              {handPickOpen ? 'Hide passage list' : 'Hand-pick passages'}
+            <button type="button" className="rc-chip" aria-expanded={customizeOpen} aria-controls="rc-passage-filters" onClick={() => setCustomizeOpen((v) => !v)}>
+              {customizeOpen ? 'Hide filters' : 'Filter passages'}
             </button>
           </div>
         </div>
 
         {customizeOpen && (
-          <div className="rc-field">
+          <div className="rc-field rc-builder-filters" id="rc-passage-filters">
             <FilterGroup label="Topic" values={[...RC_TOPICS]} active={filters.topics} onToggle={(v) => toggle('topics', v)} />
             <FilterGroup label="Format" values={[...RC_FORMATS]} active={filters.formats} onToggle={(v) => toggle('formats', v)} />
             <FilterGroup label="Framework" values={[...RC_FRAMEWORKS]} active={filters.frameworks} onToggle={(v) => toggle('frameworks', v)} />
@@ -866,24 +880,93 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           </div>
         )}
 
+        {handPickOpen && (
+          <section className="rc-passage-picker" aria-label="Choose your passages">
+            <label className="rc-field-label" htmlFor="rc-passage-search">Find a passage</label>
+            <input id="rc-passage-search" type="search" className="rc-segment rc-passage-search"
+              placeholder="Search title, opening words or PrepTest" value={search}
+              onChange={(e) => setSearch(e.target.value)} />
+            {handPicked.length > 0 && (
+              <div className="rc-picked-passages" aria-label="Selected passages">
+                {handPicked.map(id => {
+                  const p = passages.find(passage => passage.passageId === id);
+                  return <button key={id} type="button" className="rc-chip rc-active"
+                    aria-label={`Remove ${p?.title || `passage ${id}`}`}
+                    onClick={() => setHandPicked(prev => prev.filter(value => value !== id))}>
+                    {p?.title || `Passage ${id}`} <span aria-hidden="true">×</span>
+                  </button>;
+                })}
+                <button type="button" className="rc-chip" onClick={() => setHandPicked([])}>Clear selection</button>
+              </div>
+            )}
+            <p className="rc-field-hint" role="status">
+              {handPicked.length} passage{handPicked.length === 1 ? '' : 's'} · {pickedQuestionCount} question{pickedQuestionCount === 1 ? '' : 's'} selected
+            </p>
+            <ul className="rc-passage-list" aria-label="Available passages">
+              {handPickRows.map(p => {
+                const status = statusOf(p);
+                const picked = handPicked.includes(p.passageId);
+                return (
+                  <li key={p.passageId} className={`rc-passage-option${picked ? ' rc-passage-picked' : ''}`}>
+                    <div className="rc-passage-option-copy">
+                      <div className="rc-passage-location">PrepTest {p.preptest} · Section {p.section} · Passage {p.setNumber}</div>
+                      <h3>{p.title || `Passage ${p.setNumber}`}</h3>
+                      {p.firstWords && <p className="rc-passage-opening">{p.firstWords}</p>}
+                      <div className="rc-passage-metadata">
+                        {p.topic && <span>{p.topic}</span>}
+                        {p.format && <span>{p.format.startsWith('Standard') ? 'Single passage' : p.format.startsWith('Comparative') ? 'Comparative' : p.format}</span>}
+                        <span>{plural(p.questionCount, 'question')}</span>
+                        {p.difficulty != null && <span>Difficulty {p.difficulty}/5</span>}
+                        <span>{!status.attempted ? 'Not attempted' : status.missed > 0 ? `${status.missed} missed` : 'Completed'}</span>
+                      </div>
+                    </div>
+                    <button type="button" className={`rc-chip${picked ? ' rc-active' : ''}`}
+                      aria-label={`${picked ? 'Remove' : 'Add'} ${p.title || `passage ${p.passageId}`}`} aria-pressed={picked}
+                      onClick={() => setHandPicked(prev => prev.includes(p.passageId) ? prev.filter(id => id !== p.passageId) : [...prev, p.passageId])}>
+                      {picked ? 'Remove' : 'Add'}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+            {handPickRows.length === 0 && <p className="rc-empty">No passages match. Change your search or filters.</p>}
+          </section>
+        )}
+
+        {activeSet && (
+          <section className="rc-drill-preview" aria-label="Selected reading set">
+            <h2>Drill preview</h2>
+            <p className="rc-field-hint">These exact passages and questions will appear in your drill. Answers and explanations are hidden.</p>
+            {activeSet.passages.map((passage, index) => (
+              <details key={passage.passageId} style={{ marginTop: 16 }}>
+                <summary style={{ cursor: 'pointer' }}>
+                  {index + 1}. PT {passage.preptest} · {passage.title || `Passage ${passage.setNumber}`} · {passage.questions.length} questions
+                </summary>
+                <div style={{ maxHeight: 560, overflowY: 'auto', padding: '12px 4px' }}>
+                  <RcMarkdown>{passage.text}</RcMarkdown>
+                  {passage.questions.map((question) => (
+                    <div key={question.questionId} style={{ marginTop: 24 }}>
+                      <strong>Question {question.position}</strong>
+                      <RcMarkdown>{question.prompt}</RcMarkdown>
+                      <div>
+                        {question.choices.map((choice) => <div key={choice.letter} style={{ display: 'flex', gap: 8, marginTop: 8 }}><strong>{choice.letter}.</strong><RcMarkdown>{choice.text}</RcMarkdown></div>)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </details>
+            ))}
+          </section>
+        )}
+
         <section className="rc-launch-summary" aria-label="Launch summary">
           <dl>
             <div>
               <dt>Requested</dt>
               <dd>
-                {summary.source === 'hand-picked'
+                {handPickOpen && handPicked.length === 0 ? 'No passages selected' : summary.source === 'hand-picked'
                   ? plural(summary.requestedPassages, 'hand-picked passage')
                   : plural(summary.requestedPassages, 'passage')}
-              </dd>
-            </div>
-            <div>
-              <dt>Available</dt>
-              <dd>
-                {summary.source === 'hand-picked'
-                  ? 'The pool is not used for hand-picked passages'
-                  : indexStatus === 'ready' || passages.length > 0
-                    ? `${plural(summary.poolPassages, 'passage')} match your filters`
-                    : 'Not known until the passage list loads'}
               </dd>
             </div>
             <div>
@@ -891,7 +974,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
               <dd>
                 {activeSet && summary.inspectedQuestions !== null
                   ? `${plural(summary.plannedPassages, 'passage')} · ${plural(summary.inspectedQuestions, 'question')}`
-                  : 'Inspect the set to see its exact passages and question count'}
+                  : handPickOpen && handPicked.length === 0 ? 'Choose at least one passage above' : 'Preview to see the passages and exact question count'}
               </dd>
             </div>
             <div>
@@ -907,17 +990,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
                         : '')}
               </dd>
             </div>
-            <div>
-              <dt>Answers</dt>
-              <dd>
-                {REVEAL_OPTIONS.find((o) => o.id === reveal)?.label}.{' '}
-                {REVEAL_OPTIONS.find((o) => o.id === reveal)?.caption}.
-              </dd>
-            </div>
           </dl>
           {staleSet && (
             <p className="rc-field-hint" role="status">
-              Your settings changed, so the inspected set was cleared. Inspect again to see the exact set.
+              Your settings changed. Preview the drill again before starting.
             </p>
           )}
           {activeSet && summary.shortfall > 0 && (
@@ -934,8 +1010,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
             </label>
           )}
           <p className="rc-field-hint">
-            Inspect set shows passages and questions without answers and records nothing. Start this
-            drill begins a saved, scored drill.
+            Previewing does not save an attempt or show answers. Your work is saved when you start the drill.
           </p>
         </section>
 
@@ -943,143 +1018,23 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
           <button
             type="button"
             className="rc-button rc-button-primary"
-            disabled={starting || inspecting || uncertainStart.current !== null || !builderReady || (activeSet !== null && needsShortfallAck)}
+            disabled={starting || inspecting || uncertainStart.current !== null || !builderReady || (handPickOpen && handPicked.length === 0) || (activeSet !== null && needsShortfallAck)}
             onClick={() => void (activeSet ? start() : inspectSet())}
           >
-            {starting ? 'Starting…' : inspecting ? 'Loading set…' : activeSet ? 'Start this drill' : 'Inspect set'}
+            {starting ? 'Starting…' : inspecting ? 'Loading preview…' : activeSet ? 'Start this drill' : 'Preview drill'}
           </button>
-          {activeSet && (
+          {activeSet && !handPickOpen && (
             <button
               type="button"
               className="rc-button"
               disabled={starting || inspecting || !builderReady}
               onClick={() => void inspectSet()}
             >
-              Choose another set
+              Choose different passages
             </button>
           )}
         </div>
       </div>
-
-      {activeSet && (
-        <section className="rc-card" aria-label="Selected reading set">
-          <h2>Selected reading set</h2>
-          <p className="rc-field-hint">These exact passages and questions will appear in your drill. Answers and explanations are hidden.</p>
-          {activeSet.passages.map((passage, index) => (
-            <details key={passage.passageId} style={{ marginTop: 16 }}>
-              <summary style={{ cursor: 'pointer' }}>
-                {index + 1}. PT {passage.preptest} · {passage.title || `Passage ${passage.setNumber}`} · {passage.questions.length} questions
-              </summary>
-              <div style={{ maxHeight: 560, overflowY: 'auto', padding: '12px 4px' }}>
-                <RcMarkdown>{passage.text}</RcMarkdown>
-                {passage.questions.map((question) => (
-                  <div key={question.questionId} style={{ marginTop: 24 }}>
-                    <strong>Question {question.position}</strong>
-                    <RcMarkdown>{question.prompt}</RcMarkdown>
-                    <div>
-                      {question.choices.map((choice) => <div key={choice.letter} style={{ display: 'flex', gap: 8, marginTop: 8 }}><strong>{choice.letter}.</strong><RcMarkdown>{choice.text}</RcMarkdown></div>)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </details>
-          ))}
-        </section>
-      )}
-
-      {/* -------------------------------------------------------- hand-pick */}
-      {handPickOpen && (
-        <div className="rc-card">
-          <h2>Choose your passages</h2>
-          <input
-            type="text"
-            className="rc-segment"
-            style={{ width: '100%', marginBottom: 12 }}
-            placeholder="Search titles"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <div style={{ maxHeight: 420, overflowX: 'auto', overflowY: 'auto' }}>
-            <table className="rc-table">
-              <thead>
-                <tr>
-                  <th>PT</th>
-                  <th>S</th>
-                  <th>P</th>
-                  <th>Title</th>
-                  <th>Opening</th>
-                  <th>Topic</th>
-                  <th>Format</th>
-                  <th>Qs</th>
-                  <th>Difficulty</th>
-                  <th>Your status</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {handPickRows.slice(0, 200).map((p) => {
-                  const status = statusOf(p);
-                  const picked = handPicked.includes(p.passageId);
-                  return (
-                    <tr key={p.passageId}>
-                      <td>{p.preptest}</td>
-                      <td>{p.section}</td>
-                      <td>{p.setNumber}</td>
-                      <td>{p.title}</td>
-                      <td style={{ opacity: 0.55, maxWidth: 220 }}>{p.firstWords}</td>
-                      <td>{p.topic && <span className="rc-status-chip">{p.topic}</span>}</td>
-                      <td>{p.format && <span className="rc-status-chip">{p.format}</span>}</td>
-                      <td>{p.questionCount}</td>
-                      <td>{'•'.repeat(p.difficulty ?? 0)}</td>
-                      <td>
-                        {!status.attempted
-                          ? '—'
-                          : status.missed > 0
-                            ? `${status.missed} missed`
-                            : 'done'}
-                      </td>
-                      <td>
-                        <button
-                          type="button"
-                          className={`rc-chip${picked ? ' rc-active' : ''}`}
-                          onClick={() =>
-                            setHandPicked((prev) =>
-                              prev.includes(p.passageId)
-                                ? prev.filter((id) => id !== p.passageId)
-                                : [...prev, p.passageId],
-                            )
-                          }
-                        >
-                          {picked ? 'Remove' : 'Add'}
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <div className="rc-actions">
-            <span className="rc-hero-meta">
-              {handPicked.length} passage{handPicked.length === 1 ? '' : 's'} ·{' '}
-              {pickedQuestionCount} question{pickedQuestionCount === 1 ? '' : 's'} selected
-            </span>
-            <button
-              type="button"
-              className="rc-button rc-button-primary"
-              disabled={handPicked.length === 0 || starting || inspecting || uncertainStart.current !== null || !builderReady}
-              onClick={() => void (activeSet ? start() : inspectSet())}
-            >
-              {activeSet ? 'Start this drill' : 'Inspect set'}
-            </button>
-            {handPicked.length > 0 && (
-              <button type="button" className="rc-button" onClick={() => setHandPicked([])}>
-                Clear
-              </button>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* ---------------------------------------------------------- history */}
       {showHistory && <h2 style={{ marginTop: 32 }}>Your drills</h2>}

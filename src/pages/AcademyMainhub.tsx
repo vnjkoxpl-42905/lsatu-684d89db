@@ -489,25 +489,7 @@ export default function AcademyMainhub({
             />
           </section>
         ) : (
-          /* A launcher swaps out ONLY the practice bay. Today (assignments,
-             notes, notification items) is live status and stays visible while
-             the student sets a drill up — replacing the whole deck made it look
-             like the card had been deleted.
-
-             Build a Set is the exception: its picker is a dense two-column
-             panel that got its Set Summary column clipped outright inside the
-             ~600px bay. For that stage the deck stacks — the picker takes the
-             full canvas width and Today drops beneath it, still in sight.
-
-             `items-stretch` (the default), not `items-start`: the two cards are
-             halves of one deck row and must share its height, or the shorter one
-             stops short and the row's bottom edge reads as ragged.
-
-             1.2:1, not the old 1.72:1. The wide column was holding the sparse
-             content (two tools, two links, one insight row) while Today —
-             headline, three assignment rows, status badges — was squeezed into
-             382px and wrapping. The split was feeding space to the column that
-             needed it least. */
+          /* Drill setup takes the full workspace. Assigned work returns with the hub. */
           <section
             className={cn(
               "drill-observatory-deck grid grid-cols-1 items-start",
@@ -545,9 +527,9 @@ export default function AcademyMainhub({
               )}
             </section>
 
-            <section className="drill-observatory-today-bay">
+            {!isLauncherStage && <section className="drill-observatory-today-bay">
               <AssignedWorkPanel drillReturnTo={drillReturnTo} />
-            </section>
+            </section>}
           </section>
         )}
         </>}

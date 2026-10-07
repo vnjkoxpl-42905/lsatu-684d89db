@@ -53,6 +53,8 @@ interface Props {
    * Pass false only for a surface whose content cannot scroll inside the card.
    */
   fillViewport?: boolean;
+  /** Override the paper width when a reading surface needs the full canvas. */
+  maxWidthClassName?: string;
 }
 
 /**
@@ -79,6 +81,7 @@ export default function OfficialDrillFrame({
   notesPanelSimilar,
   notepadEnabled = true,
   fillViewport = true,
+  maxWidthClassName = 'max-w-[1400px]',
 }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
@@ -138,7 +141,8 @@ export default function OfficialDrillFrame({
         <div className="flex-1 flex min-w-0">
           <div
             className={cn(
-              "mx-auto w-full max-w-[1400px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col transition-[filter,opacity]",
+              "mx-auto w-full bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col transition-[filter,opacity]",
+              maxWidthClassName,
               fillViewport ? "h-full" : "min-h-[700px]",
               isPaused && "blur-[3px] opacity-60 pointer-events-none select-none",
             )}

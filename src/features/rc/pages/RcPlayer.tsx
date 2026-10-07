@@ -16,7 +16,6 @@ import { RcPassagePane } from '../components/RcPassagePane';
 import { RcQuestionPane } from '../components/RcQuestionPane';
 import { RcPassageSummary } from '../components/RcPassageSummary';
 import {
-  RcOverflowMenu,
   RcQuestionDetails,
   RcSubmitConfirm,
   RcTextSettings,
@@ -433,7 +432,7 @@ function RcPlayerRunner() {
   const [findIndex, setFindIndex] = React.useState(0);
   const [findCount, setFindCount] = React.useState(0);
   const [highlightMode, setHighlightMode] = React.useState<RcHighlightMode>('none');
-  const [modal, setModal] = React.useState<'details' | 'menu' | 'submit' | null>(null);
+  const [modal, setModal] = React.useState<'details' | 'submit' | null>(null);
   const [scrollTops, setScrollTops] = React.useState<Map<number, number>>(new Map());
   const [reattemptPicks, setReattemptPicks] = React.useState<Map<number, RcLetter>>(new Map());
   const [skippedReattempt, setSkippedReattempt] = React.useState<Set<number>>(new Set());
@@ -1050,6 +1049,7 @@ function RcPlayerRunner() {
       {protectedReview && <p role="status" className="border-b bg-muted px-4 py-3 text-sm">This protected section keeps its saved answers and flags unchanged. Review is read-only. Use Drill your misses from the report for a new attempt.</p>}
       <OfficialDrillFrame
         fillViewport
+        maxWidthClassName={passageOnly ? 'max-w-none' : undefined}
         notepadEnabled={false}
         isPaused={state.paused}
         onResume={saveError ? () => { void retryAccountSave(); } : () => dispatch({ type: 'setPaused', paused: false })}
@@ -1123,8 +1123,8 @@ function RcPlayerRunner() {
              section's tools live, and the breadcrumb plus the absent clock
              already say what this is. LR carries no such badge in any mode. */
           leftTools={
-            <RcToolbarButton onClick={() => setPassageOnly((v) => !v)}>
-              {passageOnly ? 'Passage + Question' : 'Passage Only'}
+            <RcToolbarButton aria-pressed={passageOnly} onClick={() => setPassageOnly((v) => !v)}>
+              Passage only
             </RcToolbarButton>
           }
           studyTools={
@@ -1269,9 +1269,10 @@ function RcPlayerRunner() {
           primaryDisabled={primary?.disabled || submitting}
           onSubmit={() => primary?.onClick()}
           onNext={() => undefined}
-          endLabel={reviewOnly ? 'Exit' : undefined}
+          endLabel={reviewOnly ? 'Exit review' : 'Save and exit'}
           onEnd={() => { void handleSaveExit(); }}
-          onOpenMenu={() => setModal('menu')}
+          menuLabel="Question details"
+          onOpenMenu={() => setModal('details')}
           disabled={state.paused || submitting}
           pager={
             <RcPager
@@ -1318,30 +1319,6 @@ function RcPlayerRunner() {
           passage={item.passage}
           number={item.number}
           onClose={() => setModal(null)}
-        />
-      )}
-
-      {modal === 'menu' && (
-        <RcOverflowMenu
-          onClose={() => setModal(null)}
-          onQuestionDetails={() => setModal('details')}
-          /* Review has no clock and nothing to pause, which is why the header
-             strip dropped Pause. The menu kept offering it, so the one place
-             the student could still put a scrim over their own answers was in
-             here. Same rule, both places now. */
-          onPause={
-            reviewOnly
-              ? undefined
-              : () => {
-                  dispatch({ type: 'setPaused', paused: true });
-                  setModal(null);
-                }
-          }
-          onSaveExit={() => { void handleSaveExit(); }}
-          saveExitLabel={reviewOnly ? 'Exit review' : 'Save and exit'}
-          onSubmit={
-            config.reveal === 'end_of_set' && !reviewOnly ? () => setModal('submit') : undefined
-          }
         />
       )}
 

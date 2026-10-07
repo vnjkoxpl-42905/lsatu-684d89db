@@ -159,6 +159,8 @@ export default function OfficialDrillToolbar({
 }: Props) {
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
   const [aaOpen, setAaOpen] = React.useState(false);
+  const currentFontLabel = fontScaleOptions.find(option => Math.abs(fontScale - option.value) < 0.001)?.label
+    ?? `${Math.round(fontScale * 100)}%`;
 
   const tools: { mode: HighlightMode; label: string; icon: React.ReactNode }[] = [
     { mode: "underline", label: "Underline", icon: <UnderlineIcon /> },
@@ -294,7 +296,7 @@ export default function OfficialDrillToolbar({
                 <button
                   type="button"
                   aria-label="Text size"
-                  title="Text size"
+                  title={`Text size: ${currentFontLabel}`}
                   className={cn(
                     "px-2 py-1 rounded-sm text-slate-900 flex items-baseline transition-colors",
                     aaOpen
@@ -306,13 +308,18 @@ export default function OfficialDrillToolbar({
                   <span aria-hidden className="text-[13px] font-bold leading-none">a</span>
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" sideOffset={6} className="w-60 p-2 bg-white border border-slate-200 shadow-lg rounded-md max-h-[70vh] overflow-y-auto">
+              <PopoverContent aria-label="Reading preferences" align="end" sideOffset={6} collisionPadding={12}
+                className="w-64 max-w-[calc(100vw-24px)] p-2 bg-white border border-slate-200 shadow-lg rounded-md overflow-y-auto"
+                style={{ maxHeight: 'min(70dvh, var(--radix-popover-content-available-height))' }}>
+                <div className="px-3 pt-1 pb-2 text-sm font-semibold text-slate-900">Text size</div>
+                <div role="group" aria-label="Text size options">
                 {fontScaleOptions.map((opt) => {
                   const selected = Math.abs(fontScale - opt.value) < 0.001;
                   return (
                     <button
                       key={opt.key}
                       type="button"
+                      aria-pressed={selected}
                       onClick={() => {
                         setFontScale(opt.value);
                         setAaOpen(false);
@@ -334,6 +341,8 @@ export default function OfficialDrillToolbar({
                     </button>
                   );
                 })}
+                </div>
+                <p className="px-3 pt-2 text-xs text-slate-600">Current size: {currentFontLabel}</p>
                 {a11yExtraSections}
               </PopoverContent>
             </Popover>

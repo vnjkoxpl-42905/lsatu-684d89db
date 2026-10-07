@@ -42,7 +42,7 @@ export interface RcTypeStyles {
 }
 
 /**
- * The LR player's type stack, scaled. Fraunces at 17/1.7 for the reading
+ * The LR player's type stack, scaled. Fraunces at 18/1.6 for the reading
  * surface and Helvetica Neue at 16/1.6 for stem and choices; `extraLeading` is
  * added on top of both so the accessibility control cannot flatten the
  * difference between them.
@@ -57,8 +57,8 @@ export function rcTypeStyles(fontScale: number, extraLeading: number): RcTypeSty
     passage: {
       color: 'var(--rc-fg)',
       fontFamily: 'Fraunces, ui-serif, Georgia, serif',
-      fontSize: `${17 * fontScale}px`,
-      lineHeight: 1.7 + extraLeading,
+      fontSize: `${18 * fontScale}px`,
+      lineHeight: 1.6 + extraLeading,
       fontWeight: 400,
       fontOpticalSizing: 'none',
       fontVariationSettings: '"opsz" 14',

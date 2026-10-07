@@ -15,18 +15,20 @@ vi.mock('../lib/rcBank', () => ({ loadPassages: async () => [passage], loadPassa
 vi.mock('../hooks/useRcA11y', () => ({ RC_FONT_SIZES: [100], useRcA11y: () => ({ settings: {}, fontScale: 1, update: vi.fn() }) }));
 vi.mock('../hooks/useRcHighlights', () => ({ useRcHighlights: () => ({ forPassage: () => [] }) }));
 vi.mock('@/components/drill/official/OfficialDrillFrame', () => ({
-  default: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+  default: ({ children, header, maxWidthClassName }: { children: ReactNode; header: ReactNode; maxWidthClassName?: string }) => <div data-testid="player-frame" data-width={maxWidthClassName}>{header}{children}</div>,
 }));
-vi.mock('@/components/drill/official/OfficialSessionStrip', () => ({ default: () => null }));
+vi.mock('@/components/drill/official/OfficialSessionStrip', () => ({
+  default: ({ onComplete }: { onComplete?: () => void }) => onComplete ? <button onClick={onComplete}>Complete Drill</button> : null,
+}));
 vi.mock('@/components/drill/official/OfficialDrillToolbar', () => ({
-  default: ({ timerLabel }: { timerLabel: string }) => <output data-testid="clock">{timerLabel}</output>,
+  default: ({ timerLabel, leftTools }: { timerLabel: string; leftTools: ReactNode }) => <div>{leftTools}<output data-testid="clock">{timerLabel}</output></div>,
 }));
 vi.mock('@/components/drill/official/OfficialSmartDrillBar', () => ({
-  default: ({ pager, onOpenMenu }: { pager: ReactNode; onOpenMenu: () => void }) => <div>{pager}<button onClick={onOpenMenu}>Open drill menu</button></div>,
+  default: ({ pager, onOpenMenu, menuLabel, onEnd, endLabel }: { pager: ReactNode; onOpenMenu: () => void; menuLabel: string; onEnd: () => void; endLabel: string }) => <div>{pager}<button onClick={onOpenMenu}>{menuLabel}</button><button onClick={onEnd}>{endLabel}</button></div>,
 }));
 vi.mock('../components/RcExamPane', () => ({
   rcTypeStyles: () => ({}),
-  RcExamPane: ({ question }: { question: ReactNode }) => <div>{question}</div>,
+  RcExamPane: ({ question, passageOnly }: { question: ReactNode; passageOnly: boolean }) => <div>{passageOnly ? <p>Full passage view</p> : question}</div>,
 }));
 vi.mock('../components/RcQuestionPane', () => ({
   RcQuestionPane: ({ item, selected, onSelect, onToggleFlag, interactionDisabled }: {
@@ -39,7 +41,7 @@ vi.mock('../components/RcQuestionPane', () => ({
 }));
 vi.mock('../components/RcChrome', () => ({
   formatClock: (seconds: number) => String(seconds),
-  RcToolbarButton: () => null, RcToolbarIcon: () => null,
+  RcToolbarButton: ({ children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => <button {...props}>{children}</button>, RcToolbarIcon: () => null,
   RcPager: ({ onNext, onPrev, onNavigate }: { onNext: () => void; onPrev: () => void; onNavigate: (index: number) => void }) => <div>
     <button onClick={onNext}>Next question</button>
     <button onClick={onPrev}>Previous question</button>
@@ -49,8 +51,7 @@ vi.mock('../components/RcChrome', () => ({
 vi.mock('../components/RcPassagePane', () => ({ RcPassagePane: () => null }));
 vi.mock('../components/RcPassageSummary', () => ({ RcPassageSummary: () => null }));
 vi.mock('../components/RcModals', () => ({
-  RcOverflowMenu: ({ onSubmit }: { onSubmit: () => void }) => <button onClick={onSubmit}>Submit from menu</button>,
-  RcQuestionDetails: () => null,
+  RcQuestionDetails: () => <div role="dialog" aria-label="Question details">Question metadata</div>,
   RcSubmitConfirm: ({ onConfirm }: { onConfirm: () => void }) => <button onClick={onConfirm}>Confirm submission</button>,
   RcTextSettings: () => null,
 }));
@@ -93,6 +94,40 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
 describe('RC account save safety', () => {
+  it('shows the current passage-only mode and gives reading the full canvas without saving', async () => {
+    mount();
+    await screen.findByText('Question 1: blank');
+    const toggle = screen.getByRole('button', { name: 'Passage only' });
+    expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByTestId('player-frame')).toHaveAttribute('data-width', 'max-w-none');
+    expect(screen.getByText('Full passage view')).toBeInTheDocument();
+    fireEvent.click(toggle);
+    expect(screen.getByText('Question 1: blank')).toBeInTheDocument();
+    expect(api.saveSessionClock).not.toHaveBeenCalled();
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+  });
+
+  it('opens question details directly without changing answers or the session', async () => {
+    mount();
+    await screen.findByText('Question 1: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Question details' }));
+    expect(screen.getByRole('dialog', { name: 'Question details' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Menu' })).not.toBeInTheDocument();
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(api.completeSession).not.toHaveBeenCalled();
+  });
+
+  it('saves and exits without completing the drill', async () => {
+    mount();
+    await screen.findByText('Question 1: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Save and exit' }));
+    await waitFor(() => expect(screen.getByTestId('location').textContent).toBe('/rc'));
+    expect(api.saveSessionClock).toHaveBeenCalled();
+    expect(api.completeSession).not.toHaveBeenCalled();
+  });
+
   it.each([
     { timedSectionSittingId: '10000000-0000-4000-8000-000000000001' },
     { practiceTestRunId: 'full-test', practiceTestLegIndex: 1 },
@@ -122,8 +157,7 @@ describe('RC account save safety', () => {
   it('does not copy the visible question time onto untouched closeout rows', async () => {
     mount();
     expect(await screen.findByText('Question 1: blank')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Open drill menu' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Submit from menu' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Complete Drill' }));
     fireEvent.click(screen.getByRole('button', { name: 'Confirm submission' }));
     await waitFor(() => expect(api.completeSession).toHaveBeenCalledWith('session-one'));
     const writes = api.recordAttempt.mock.calls.map(([value]) => value as RcAttempt);

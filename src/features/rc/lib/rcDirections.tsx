@@ -34,6 +34,6 @@ export const RC_DIRECTIONS: ToolbarDirections = {
  */
 export const RC_FONT_SCALE_OPTIONS = RC_FONT_SIZES.map((size) => ({
   key: String(size),
-  label: size === 100 ? '100% (default)' : `${size}%`,
+  label: `${size === 75 ? 'Small' : size === 100 ? 'Default' : size === 125 ? 'Large' : size === 150 ? 'Extra large' : 'Largest'} (${size}%)`,
   value: size / 100,
 }));

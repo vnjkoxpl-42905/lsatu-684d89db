@@ -192,7 +192,7 @@ describe('RcHubSurface autostart', () => {
 
   it('does not autostart a link that only describes a drill', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=2');
-    await screen.findByRole('button', { name: 'Inspect set' });
+    await screen.findByRole('button', { name: 'Preview drill' });
     expect(createSession).not.toHaveBeenCalled();
   });
 
@@ -217,7 +217,7 @@ describe('RcHubSurface autostart', () => {
     fireEvent.click(screen.getByRole('button', { name: 'next link' }));
     await waitFor(() => expect(screen.queryByText(/2 passages ·/)).not.toBeInTheDocument());
 
-    fireEvent.click(screen.getByRole('button', { name: 'Inspect set' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(createSession).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
@@ -237,7 +237,7 @@ describe('RcHubSurface autostart', () => {
   it('inspects exact passages without exposing answer keys or creating an attempt', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201');
     await screen.findByText(/2 passages ·/);
-    fireEvent.click(screen.getAllByRole('button', { name: 'Inspect set' })[0]);
+    fireEvent.click(screen.getAllByRole('button', { name: 'Preview drill' })[0]);
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(loadPassages).toHaveBeenCalledWith([1188, 1201]);
     expect(createSession).not.toHaveBeenCalled();
@@ -252,11 +252,44 @@ describe('RcHubSurface autostart', () => {
 
   it('requires a new inspection after passage count changes', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
-    fireEvent.click(await screen.findByRole('button', { name: 'Inspect set' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
     await screen.findByRole('region', { name: 'Selected reading set' });
     fireEvent.click(screen.getByRole('button', { name: 'More passages' }));
     expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
     expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('requires a manual selection and previews only the passages added from the searchable list', async () => {
+    mount('/classroom/drill?section=rc&count=3');
+    await screen.findByRole('button', { name: 'Preview drill' });
+    fireEvent.click(screen.getByRole('button', { name: 'Choose passages' }));
+    expect(screen.getByRole('button', { name: 'Preview drill' })).toBeDisabled();
+    expect(screen.getByText('No passages selected')).toBeInTheDocument();
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'PT 141' } });
+    const list = screen.getByRole('list', { name: 'Available passages' });
+    expect(within(list).getAllByRole('listitem')).toHaveLength(1);
+    fireEvent.click(within(list).getByRole('button', { name: 'Add Passage 1201' }));
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Find a passage' }), { target: { value: 'PT 142' } });
+    expect(screen.getByRole('button', { name: 'Remove Passage 1201' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    expect(loadPassages).toHaveBeenLastCalledWith([1201]);
+    expect(screen.getAllByRole('button', { name: 'Start this drill' })).toHaveLength(1);
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('returns to adaptive selection explicitly without keeping manual passages', async () => {
+    mount('/classroom/drill?section=rc&passages=1188,1201');
+    await screen.findByRole('button', { name: 'Choose for me' });
+    await screen.findByText(/2 passages ·/);
+    fireEvent.click(screen.getByRole('button', { name: 'Choose for me' }));
+    expect(screen.queryByRole('region', { name: 'Choose your passages' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'More passages' })).toBeEnabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    fireEvent.click(screen.getByRole('button', { name: 'Start this drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][0].source).toBe('adaptive');
   });
 });
 
@@ -275,7 +308,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     vi.mocked(progress.deleteSession).mockClear();
   });
 
-  const primary = () => screen.getAllByRole('button', { name: /^(Inspect set|Start this drill|Loading set…|Starting…)$/ })[0];
+  const primary = () => screen.getAllByRole('button', { name: /^(Preview drill|Start this drill|Loading preview…|Starting…)$/ })[0];
   const launchSummary = () => screen.getByRole('region', { name: 'Launch summary' });
 
   it('times the hand-picked passages, not the stepper, and says the count is in passages', async () => {
@@ -290,7 +323,7 @@ describe('RcHubSurface launch truth (#171)', () => {
 
   it('keeps an invalid custom time editable, explains it, and blocks Inspect until it is valid', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
-    await screen.findByRole('button', { name: 'Inspect set' });
+    await screen.findByRole('button', { name: 'Preview drill' });
     fireEvent.click(screen.getByRole('button', { name: 'Custom' }));
     const field = screen.getByRole('textbox', { name: 'Minutes and seconds per passage' });
     fireEvent.change(field, { target: { value: '8:75' } });
@@ -319,7 +352,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     mount('/classroom/drill?section=rc&stage=type-drill&passages=1188,1201&reveal=end_of_set');
     await screen.findByText(/2 passages ·/);
     // The index says five questions each; nothing is promised before loading.
-    expect(within(launchSummary()).getByText('Inspect the set to see its exact passages and question count')).toBeInTheDocument();
+    expect(within(launchSummary()).getByText('Preview to see the passages and exact question count')).toBeInTheDocument();
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
     // The loaded passages carry one question each, and that is what is shown.
@@ -332,7 +365,7 @@ describe('RcHubSurface launch truth (#171)', () => {
 
   it('requires acknowledging a smaller adaptive set before Start, and never claims the requested size', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=4');
-    await screen.findByRole('button', { name: 'Inspect set' });
+    await screen.findByRole('button', { name: 'Preview drill' });
     expect(screen.getByText(/Only 3 passages match/)).toBeInTheDocument();
     fireEvent.click(primary());
     await screen.findByRole('region', { name: 'Selected reading set' });
@@ -355,21 +388,21 @@ describe('RcHubSurface launch truth (#171)', () => {
       return ids.map((passageId) => ({ passageId, questions: [{ questionId: 1, position: 1, prompt: 'Q', choices: [] }] })) as never;
     });
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
-    fireEvent.click(await screen.findByRole('button', { name: 'Inspect set' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
     fireEvent.click(screen.getByRole('button', { name: 'More passages' }));
     release();
-    await waitFor(() => expect(primary()).toHaveTextContent('Inspect set'));
+    await waitFor(() => expect(primary()).toHaveTextContent('Preview drill'));
     expect(screen.queryByRole('region', { name: 'Selected reading set' })).not.toBeInTheDocument();
     expect(createSession).not.toHaveBeenCalled();
   });
 
   it('marks an inspected set stale when a setting changes', async () => {
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
-    fireEvent.click(await screen.findByRole('button', { name: 'Inspect set' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
     await screen.findByRole('region', { name: 'Selected reading set' });
     fireEvent.click(screen.getByRole('button', { name: /At the end/ }));
-    expect(screen.getByText(/settings changed, so the inspected set was cleared/)).toBeInTheDocument();
-    expect(primary()).toHaveTextContent('Inspect set');
+    expect(screen.getByText(/settings changed. Preview the drill again/)).toBeInTheDocument();
+    expect(primary()).toHaveTextContent('Preview drill');
   });
 
   it('will not pass inspection when a passage loads without questions', async () => {
@@ -389,11 +422,11 @@ describe('RcHubSurface launch truth (#171)', () => {
     expect(await screen.findByText(/The passage list could not be loaded\./)).toBeInTheDocument();
     expect(screen.getByText('Passage list unavailable')).toBeInTheDocument();
     expect(screen.queryByText(/Choosing from 0 of 0/)).not.toBeInTheDocument();
-    expect(within(launchSummary()).getByText('Not known until the passage list loads')).toBeInTheDocument();
+    expect(within(launchSummary()).getByText('Preview to see the passages and exact question count')).toBeInTheDocument();
     expect(primary()).toBeDisabled();
 
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
-    expect(await screen.findByText('Choosing from 3 of 3 passages')).toBeInTheDocument();
+    expect(await screen.findByText('3 passages match your filters')).toBeInTheDocument();
     expect(primary()).toBeEnabled();
   });
 
@@ -411,7 +444,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
     expect(await screen.findByText(/Your choices are kept/)).toBeInTheDocument();
     expect(screen.getByText(/2 passages ·/)).toBeInTheDocument();
-    for (const button of screen.getAllByRole('button', { name: 'Inspect set' })) expect(button).toBeDisabled();
+    for (const button of screen.getAllByRole('button', { name: 'Preview drill' })) expect(button).toBeDisabled();
     expect(loadPassages).not.toHaveBeenCalled();
   });
 
@@ -457,7 +490,7 @@ describe('RcHubSurface launch truth (#171)', () => {
     createSession.mockRejectedValueOnce(new Error('network reset'));
     getSession.mockResolvedValueOnce(null).mockRejectedValueOnce(new Error('offline'));
     mount('/classroom/drill?section=rc&stage=type-drill&count=1');
-    fireEvent.click(await screen.findByRole('button', { name: 'Inspect set' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Preview drill' }));
     await screen.findByRole('region', { name: 'Selected reading set' });
     fireEvent.click(primary());
     await screen.findByText(/Press Start again to retry this exact launch/);

@@ -14,9 +14,6 @@ const PILL =
   'rounded-full border border-slate-400 bg-white px-5 py-2 text-[14px] font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40';
 const PILL_PRIMARY =
   'rounded-full bg-slate-900 px-7 py-2 text-[14px] font-semibold text-white transition-colors hover:bg-black disabled:cursor-not-allowed disabled:opacity-40';
-const MENU_ROW =
-  'block w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-left text-[14px] text-slate-800 transition-colors hover:bg-slate-50';
-
 function useEscape(onClose: () => void) {
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -196,65 +193,6 @@ export function RcQuestionDetails({
         </tbody>
       </table>
     </Modal>
-  );
-}
-
-/* --------------------------------------------------------- overflow menu */
-
-interface MenuProps {
-  onClose: () => void;
-  onQuestionDetails: () => void;
-  /** Omitted in review, which has no clock and nothing to pause. */
-  onPause?: () => void;
-  onSaveExit: () => void;
-  /** Names the exit for the mode: nothing is being saved in review. */
-  saveExitLabel?: string;
-  onSubmit?: () => void;
-}
-
-export function RcOverflowMenu({
-  onClose,
-  onQuestionDetails,
-  onPause,
-  onSaveExit,
-  saveExitLabel = 'Save and exit',
-  onSubmit,
-}: MenuProps) {
-  useEscape(onClose);
-
-  return (
-    <>
-      <div className="fixed inset-0 z-[70] bg-black/40" onClick={onClose} />
-      <div
-        className="fixed inset-y-0 right-0 z-[75] w-[min(420px,92vw)] overflow-y-auto border-l border-slate-200 bg-white px-6 py-5 shadow-[-8px_0_28px_rgba(15,23,42,0.2)]"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Menu"
-      >
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <h2 className="text-[20px] font-semibold text-slate-900">Menu</h2>
-          <CloseButton onClose={onClose} />
-        </div>
-        <div className="space-y-2">
-          <button type="button" className={MENU_ROW} onClick={onQuestionDetails}>
-            Question details
-          </button>
-          {onPause && (
-            <button type="button" className={MENU_ROW} onClick={onPause}>
-              Pause
-            </button>
-          )}
-          <button type="button" className={MENU_ROW} onClick={onSaveExit}>
-            {saveExitLabel}
-          </button>
-          {onSubmit && (
-            <button type="button" className={MENU_ROW} onClick={onSubmit}>
-              Submit
-            </button>
-          )}
-        </div>
-      </div>
-    </>
   );
 }
 

@@ -30,8 +30,8 @@ interface Props {
   onAdvance?: () => void;
   advanceDisabled?: boolean;
   /**
-   * Rendered as its own row above the pill row. RC puts its per-question pager
-   * here; the official RC interface carries one and LR does not.
+   * RC's per-question pager shares the control row on wide screens and moves
+   * below the controls when the available width is smaller.
    */
   pager?: React.ReactNode;
   /** Overrides the left action's label. Review exits rather than ends. */
@@ -39,6 +39,8 @@ interface Props {
   onEnd: () => void;
   /** Opens the question drawer on Details. Hidden if omitted. */
   onOpenMenu?: () => void;
+  /** Names the optional drawer action for the surface using this bar. */
+  menuLabel?: string;
   /** Whole bar disabled (e.g. while paused). */
   disabled?: boolean;
 }
@@ -67,16 +69,16 @@ export default function OfficialSmartDrillBar({
   endLabel,
   onEnd,
   onOpenMenu,
+  menuLabel = "Menu",
   disabled,
 }: Props) {
   const isNext = primaryAction === "next";
 
   return (
     <div className="border-t-2 border-slate-300 bg-white shadow-[0_-2px_6px_rgba(0,0,0,0.06)] mt-auto">
-      {/* One row. The question ovals used to sit on their own strip above
-          the buttons, which made the bar 123px tall and pushed Next below the
-          fold on a 695px laptop screen; they now take the middle of the row. */}
-      <div className="px-6 py-1.5 flex items-center gap-3">
+      {/* Keep the pager beside the actions on wide screens and let it take
+          its own row when longer labels would squeeze the question buttons. */}
+      <div className={`px-3 sm:px-6 py-1.5 flex items-center gap-3${pager ? " flex-wrap" : ""}`}>
         {/* Left: End */}
         <button
           type="button"
@@ -95,12 +97,12 @@ export default function OfficialSmartDrillBar({
             disabled={disabled}
             className="rounded-full border border-slate-400 bg-white text-slate-700 px-5 py-2 text-[14px] font-medium hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            Menu
+            {menuLabel}
           </button>
         )}
 
         {pager ? (
-          <div className="flex min-w-0 flex-1 items-end self-stretch">{pager}</div>
+          <div className="order-last flex w-full min-w-0 items-end self-stretch lg:order-none lg:w-auto lg:flex-1">{pager}</div>
         ) : null}
 
         {/* Right cluster */}

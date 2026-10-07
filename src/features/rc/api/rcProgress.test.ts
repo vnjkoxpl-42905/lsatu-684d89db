@@ -5,9 +5,10 @@ const owner = '11111111-1111-4111-8111-111111111111';
 const sessionId = '22222222-2222-4222-8222-222222222222';
 const attemptId = '33333333-3333-4333-8333-333333333333';
 
-const { insert, update, clock, getUser } = vi.hoisted(() => ({
+const { insert, update, clock, getUser, personalList } = vi.hoisted(() => ({
   insert: vi.fn(), update: vi.fn(), getUser: vi.fn(),
   clock: { config: {} as Partial<RcDrillConfig> },
+  personalList: { rows: [] as Record<string, unknown>[], filters: vi.fn() },
 }));
 
 vi.mock('./rcSupabase.types', () => ({
@@ -18,7 +19,13 @@ vi.mock('./rcSupabase.types', () => ({
     auth: { getUser },
     from: (_table: string) => ({
       select: () => ({
-        eq: () => ({
+        order: async () => ({ data: personalList.rows, error: null }),
+        eq: (column: string, value: string) => column === 'user_id' ? {
+          order: async () => {
+            personalList.filters(column, value);
+            return { data: personalList.rows.filter(row => row[column] === value), error: null };
+          },
+        } : ({
           eq: () => ({ maybeSingle: async () => ({ data: {
             id: attemptId, session_id: sessionId, user_id: owner, question_id: 7,
             passage_id: 3, selected: 'C', is_correct: true, time_ms: 1000,
@@ -38,12 +45,14 @@ vi.mock('./rcSupabase.types', () => ({
   },
 }));
 
-import { createSession, getSession, recordAttempt, saveSessionClock } from './rcProgress';
+import { createSession, getSession, listSessions, recordAttempt, saveSessionClock } from './rcProgress';
 
 beforeEach(() => {
   getUser.mockReset().mockResolvedValue({ data: { user: { id: owner } } });
   clock.config = { reveal: 'end_of_set', timing: { mode: 'per_passage_budget', secondsPerPassage: 100 }, source: 'manual' };
   insert.mockClear();
+  personalList.filters.mockClear();
+  personalList.rows = [];
   update.mockReset().mockImplementation((changes: { config: RcDrillConfig }) => {
     const query = {
       eq: vi.fn().mockReturnThis(), select: vi.fn().mockReturnThis(),
@@ -54,6 +63,18 @@ beforeEach(() => {
     };
     return query;
   });
+});
+
+it('shows only the signed-in admin own drills when RLS also grants access to student sessions', async () => {
+  const row = {
+    id: sessionId, user_id: owner, config: { ...clock.config }, passage_ids: [3],
+    status: 'completed', excluded_from_analytics: false,
+    started_at: '2026-09-28T00:00:00Z', completed_at: '2026-09-28T01:00:00Z',
+  };
+  personalList.rows = [row, { ...row, id: 'student-drill', user_id: 'student-owner' }];
+  const sessions = await listSessions();
+  expect(sessions.map(session => session.id)).toEqual([sessionId]);
+  expect(personalList.filters).toHaveBeenCalledWith('user_id', owner);
 });
 
 it('acknowledges an attempt already saved under the retry UUID without inserting another row', async () => {

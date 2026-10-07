@@ -61,7 +61,8 @@ function read(): RcA11ySettings {
     const parsed = JSON.parse(raw) as Partial<RcA11ySettings>;
     return {
       scheme: parsed.scheme ?? DEFAULTS.scheme,
-      fontSize: parsed.fontSize ?? DEFAULTS.fontSize,
+      fontSize: typeof parsed.fontSize === 'number' && Number.isFinite(parsed.fontSize)
+        && parsed.fontSize >= 50 && parsed.fontSize <= 300 ? parsed.fontSize : DEFAULTS.fontSize,
       lineHeight: migrateLineHeight(parsed.lineHeight),
     };
   } catch {

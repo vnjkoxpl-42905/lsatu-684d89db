@@ -61,7 +61,7 @@ vi.mock("@/contexts/QuestionBankContext", () => ({
 }));
 
 vi.mock("@/components/drill/QuestionPicker", () => ({
-  QuestionPicker: () => <div role="region" aria-label="Unified LR drill builder" />,
+  QuestionPicker: ({ onCancel }: { onCancel: () => void }) => <div role="region" aria-label="Unified LR drill builder"><button onClick={onCancel}>Back to practice options</button></div>,
 }));
 
 vi.mock("@/lib/questionLoader", () => ({
@@ -258,18 +258,21 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
-  it("drops the launcher stage on the way across — an LR stage has no RC twin", () => {
+  it("returns to the hub before switching from an LR builder to RC", () => {
     renderHub("/classroom/drill?stage=type-drill");
     expect(screen.getByRole("region", { name: "Unified LR drill builder" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Reading Comprehension" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Back to practice options" }));
     fireEvent.click(rcSwitch());
     expect(url().get("stage")).toBeNull();
     expect(screen.queryByRole("region", { name: "Unified LR drill builder" })).not.toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
-  it("switches silently — a half-built LR set is discarded with no prompt", () => {
+  it("leaves the builder and switches sections without a confirmation prompt", () => {
     const confirmSpy = vi.spyOn(window, "confirm").mockReturnValue(true);
     renderHub("/classroom/drill?stage=type-drill");
+    fireEvent.click(screen.getByRole("button", { name: "Back to practice options" }));
     fireEvent.click(rcSwitch());
     expect(confirmSpy).not.toHaveBeenCalled();
     confirmSpy.mockRestore();
@@ -315,10 +318,18 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     fireEvent.click(screen.getByRole("button", { name: "Set up an RC drill" }));
     expect(screen.getByRole("region", { name: "RC drill builder" })).toBeInTheDocument();
     expect(url().get("stage")).toBe("type-drill");
+    expect(screen.queryByRole("region", { name: "Assigned work" })).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Cancel RC" }));
     expect(url().get("stage")).toBeNull();
     expect(url().get("section")).toBe("rc");
+    expect(screen.getByRole("region", { name: "Assigned work" })).toBeInTheDocument();
+  });
+
+  it("keeps unrelated assigned work outside the LR builder", () => {
+    renderHub("/classroom/drill?section=lr&stage=type-drill");
+    expect(screen.getByRole("region", { name: "Unified LR drill builder" })).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Assigned work" })).not.toBeInTheDocument();
   });
 
   it("RC Smart Drill asks the builder for one untimed passage and starts it", () => {

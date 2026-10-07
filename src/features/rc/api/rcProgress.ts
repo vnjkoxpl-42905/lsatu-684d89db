@@ -150,9 +150,12 @@ export async function getSession(id: string, expectedActorId?: string): Promise<
 }
 
 export async function listSessions(): Promise<RcDrillSession[]> {
+  const userId = await requireUserId();
   const { data, error } = await rcDb
     .from(RC_SESSIONS_TABLE)
     .select()
+    // Admin read access includes student work; this list is the personal history.
+    .eq('user_id', userId)
     .order('started_at', { ascending: false });
   raise(error);
   return ((data ?? []) as RcDrillSessionRow[]).map(toSession);

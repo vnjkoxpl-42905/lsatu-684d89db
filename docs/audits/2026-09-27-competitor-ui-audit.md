@@ -1,5 +1,15 @@
 # LSAT platform UI audit: running log
 
+## 2026-10-07: RC setup and reader require a focused quality pass
+
+Joshua requested a complete RC comparison after identifying confusing preview wording, crowded selection, unrelated conditional work in setup, a vague Menu action, poor passage-only reading and font preferences. [RC audit and implementation specification](../specs/2026-10-07-rc-drill-quality.md) contains the side-by-side feature matrix, seventeen prioritized fixes, interaction contracts, code owners and open verification gates.
+
+Direct Codex browser evidence covers signed-in LSAT Lab RC setup/finder/reader, details, similar-question empty state, notes/discussion editors without submitting, answer/explanation reveal, masking, review navigator and text settings; local LSAT U builder, protected completed review, text preferences/search/summary/details and responsive layouts. Code/tests cover deeper save boundaries. This is not certification of every backend outcome or physical-device behavior.
+
+Highest-priority new finding: Lab credits D for PT159 S2 P1 officialQ2 while U's recovered input and generated payload10733 credit B. All548 recovered records lack explicit correctanswer, and the builder ignores recovered explicit keys even when present. Official-key verification, import conflict checks and audited remediation are required; no question keys or saved attempts were changed. Annotation account-switch/lateness/failure handling and official-versus-drill numbering are the next reliability priorities.
+
+The first local slice replaces Inspect set with Preview drill, reorganizes selection into readable rows with one launch action, suppresses unrelated launcher work, clarifies footer actions, widens passage-only reading, raises default text to18px, bounds the font popover, and scopes personal history to the actor. 98 focused tests and production build pass; browser layouts checked390 through1920px. Publication and the remaining acceptance gates are tracked in the specification, not implied complete by these checks.
+
 Started 2026-09-27. This is the working comparison for LSAT U, LSAT Lab, 7Sage, AdeptLR, and LSAT Demon. The competitor findings below come from direct interaction with Joshua's signed-in browser on 2026-09-27. LSAT U comparisons are from its current repository unless marked live. A visible control is evidence of an interface, not proof that its data or outcome is reliable. No student records or competitor question text are reproduced here. The LSAT Demon pass excludes Admissions, Crushing 1L, and Tutor at Joshua's request.
 
 ## Decisions already made for LSAT U

@@ -10,6 +10,15 @@ const base = {
 };
 
 describe("OfficialSmartDrillBar", () => {
+  it("names the RC footer actions and opens question details directly", () => {
+    const onOpenMenu = vi.fn();
+    render(<OfficialSmartDrillBar {...base} endLabel="Save and exit" menuLabel="Question details" onOpenMenu={onOpenMenu} />);
+    fireEvent.click(screen.getByRole("button", { name: "Question details" }));
+    expect(onOpenMenu).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("button", { name: "Save and exit" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Menu" })).not.toBeInTheDocument();
+  });
+
   it("walks a fixed queue both ways instead of only skipping forward", () => {
     const onPrev = vi.fn();
     const onAdvance = vi.fn();

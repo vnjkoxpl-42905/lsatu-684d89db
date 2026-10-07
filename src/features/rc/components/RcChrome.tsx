@@ -19,14 +19,16 @@ export function formatClock(totalSeconds: number): string {
 export function RcToolbarButton({
   children,
   onClick,
+  ...buttonProps
 }: {
   children: React.ReactNode;
   onClick: () => void;
-}) {
+} & Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'aria-pressed'>) {
   return (
     <button
       type="button"
       onClick={onClick}
+      {...buttonProps}
       className="rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-[14px] font-semibold text-slate-900 transition-colors hover:bg-slate-100"
     >
       {children}

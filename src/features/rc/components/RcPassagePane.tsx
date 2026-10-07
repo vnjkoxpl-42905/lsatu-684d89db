@@ -129,8 +129,8 @@ export function RcPassagePane({
         'subpixel-antialiased selection:bg-blue-100',
         passageOnly ? 'rc-passage-only' : 'border-slate-200 lg:border-r',
         // Cap the reading measure. 52ch in Fraunces measures ~68 real
-        // characters, inside the 45-75 readable band. Two-column reflow sets
-        // its own measure, so the cap comes off there.
+        // characters, inside the 45-75 readable band. Passage-only reading
+        // uses its own responsive measure in player.css.
         !passageOnly && '[&>*]:max-w-[52ch]',
       )}
       ref={paneRef}
