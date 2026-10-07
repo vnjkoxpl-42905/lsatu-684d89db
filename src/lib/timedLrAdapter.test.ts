@@ -60,6 +60,17 @@ describe('inactive LR v1 adapter', () => {
     saved.updated_at = '2026-09-30T14:20:06';
     await expect(create().load()).rejects.toMatchObject({ kind: 'contract' });
   });
+  it('keeps the frozen classification after a bank relabel, but still rejects changed content or a malformed frozen label', async () => {
+    const relabeled = raw.map(row => ({ ...row, questionType: 'Weaken', questionDifficulty: 5 }));
+    const view = (await create(relabeled).load())!;
+    expect(view.questions.map(question => [question.qtype, question.difficulty])).toEqual([['Must Be True', 3], ['Must Be True', 3]]);
+    await expect(create(raw.map(row => ({ ...row, questionStem: 'Which one weakens?' }))).load()).rejects.toMatchObject({ kind: 'contract' });
+    const questions = (p.timed_manifest.legs as TimedObject[])[0].questions as TimedObject[];
+    questions[0].qtype = '';
+    await expect(create().load()).rejects.toMatchObject({ kind: 'contract' });
+    questions[0].qtype = 'Must Be True'; questions[0].level = 9;
+    await expect(create().load()).rejects.toMatchObject({ kind: 'contract' });
+  });
   it('restores the exact PracticeSession queue, flags, switch count, regulation mark and lease clock with real loader normalization', async () => {
     const view = (await create().load())!;
     expect(view.session.question_queue).toEqual(qids); expect(view.session.current_index).toBe(1); expect(view.session.elapsed_ms).toBe(6000);

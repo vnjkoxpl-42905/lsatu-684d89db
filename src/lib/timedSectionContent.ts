@@ -1,5 +1,5 @@
 import { normalizeQuestionTextFields, normalizeQType, type LRQuestion } from './questionLoader';
-import type { TimedLrRawQuestion } from './timedLrAdapter';
+import { frozenClassification, type TimedLrRawQuestion } from './timedLrAdapter';
 import { TimedSectionError, type TimedSectionSitting } from './timedSectionClient';
 import type { TimedObject } from './timedWorkClient';
 import type { RcPassage } from '@/features/rc/lib/rcTypes';
@@ -32,11 +32,12 @@ export async function verifyStandaloneLrContent(sitting: TimedSectionSitting, ro
     questionStem: row.questionStem, answerChoices: { ...row.answerChoices }, correctAnswer: row.correctAnswer,
     qtype: normalizeQType(row.questionType || '', row.questionStem), difficulty: row.questionDifficulty || row.Question_Difficulty || 3,
   }));
-  for (const [index, question] of questions.entries()) {
+  // A later bank relabel must never lock a student out of a sealed sitting.
+  return questions.map((question, index) => {
     const expected = source.questions[index];
-    if (!object(expected) || expected.qtype !== question.qtype || expected.level !== question.difficulty) invalid();
-  }
-  return questions;
+    if (!object(expected) || !frozenClassification(expected)) invalid();
+    return { ...question, qtype: expected.qtype as string, difficulty: expected.level as number };
+  });
 }
 export async function verifyStandaloneRcContent(sitting: TimedSectionSitting, bank: RcPassage[]): Promise<RcPassage[]> {
   const source = sitting.frozen_source;
