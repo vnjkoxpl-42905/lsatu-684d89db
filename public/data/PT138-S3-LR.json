@@ -1,0 +1,596 @@
+[
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Curator: Critics have rightly claimed that removing the centuries-old grime from the frescoes of Michelangelo will expose them to acids formed by the combination of water vapor in human breath with pollutants in the air. Notwithstanding this fact, the restoration should continue, for the frescoes in their present condition cannot be seen as they appeared when painted by Michelangelo.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the curator’s reasoning?",
+    "answerChoices": {
+      "A": "The decision as to whether an artwork merits restoration or not should depend on its greatness as judged by aesthetic standards alone.",
+      "B": "An artwork possesses aesthetic value only if there are people who observe and appreciate it.",
+      "C": "It is acceptable to risk future damage to an artwork if the purpose is to enable it to be appreciated in its original form.",
+      "D": "It is right to spend large amounts of money on the restoration of an old artwork if this restoration makes the artwork accessible to large numbers of people.",
+      "E": "A picture that has become encrusted with grime over a long period can no longer be regarded as the same work of art as that painted by the artist."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Forest fragmentation occurs when development severs a continuous area of forest, breaking it down into small patches. Some animals, such as white-footed mice, thrive in conditions of forest fragmentation, reaching their highest population densities in small forest patches. These mice are the main carrier of the bacteria that cause Lyme disease, a debilitating illness that is often transmitted from white-footed mice to humans by deer ticks.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "White-footed mice are very rarely found in unfragmented forests.",
+      "B": "The population density for most species of small animals increases when a continuous area of forest becomes fragmented.",
+      "C": "Forest fragmentation reduces the number and variety of animal species that an area can support.",
+      "D": "Efforts to stop the fragmentation of forests can have a beneficial effect on human health.",
+      "E": "Deer ticks reach their highest population densities in small forest patches."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Statistics reveal that more collisions between bicycles and motor vehicles occur on roads having specifically designated bicycle lanes than on roads having no such lanes. Hence, adding such lanes to existing roads is unlikely to enhance the safety of bicyclists.",
+    "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "overlooks the possibility that injuries sustained by bicyclists in accidents on roads with bicycle lanes are as serious, on average, as those sustained by bicyclists in accidents on roads without such lanes",
+      "B": "fails to address the possibility that there are more bicyclists riding on roads with bicycle lanes than there are riding on roads without such lanes",
+      "C": "takes for granted that any road alteration that enhances the safety of bicyclists also enhances the safety of motorists",
+      "D": "concludes that adding bicycle lanes to roads will fail to enhance the safety of bicyclists on the grounds that only some roads that currently have such lanes are safe",
+      "E": "takes statistical evidence that fails to support a conclusion concerning the safety of bicyclists as evidence that proves the opposite conclusion"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Over the last few decades, public outcries against pollution have brought about stricter regulations of emissions. The cities that had the most polluted air 30 years ago now have greatly improved air quality. This would not have happened without these stricter regulations.",
+    "questionStem": "Which one of the following can be properly inferred from the statements above?",
+    "answerChoices": {
+      "A": "In the city with the worst air pollution today, the air quality is better than it was 30 years ago.",
+      "B": "No city has worse air pollution today than it did 30 years ago.",
+      "C": "Most of the public outcries against pollution came from people in the cities that had the most polluted air.",
+      "D": "The most polluted cities today are not the cities that were the most polluted 30 years ago.",
+      "E": "Public criticism led to an improvement in the air quality of the cities that had the most polluted air 30 years ago."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Editorialist: Many professional musicians claim that unauthorized music-sharing services, which allow listeners to obtain music for free, rob musicians of royalties. While it is true that musicians are deprived of royalties they deserve, music-sharing services are not to blame since record companies, publishers, managers, and other intermediaries take an inequitably large cut of the revenues from music sales.",
+    "questionStem": "The reasoning in the editorialist’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "concludes that one party is not blameworthy merely because another party is blameworthy",
+      "B": "attempts to promote a particular behavior simply by showing that many people engage in that behavior",
+      "C": "attacks a position based solely on the character of the people who hold that position",
+      "D": "tries to show that a position is false simply by pointing out an undesirable consequence of holding that position",
+      "E": "treats a necessary condition for blameworthiness as though it were a sufficient condition for blameworthiness"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Medical columnist: Some doctors recommend taking vitamin C to help maintain overall health because vitamin C is an antioxidant, a substance that protects the body from certain types of oxygen particles that can trigger disease. People suffering from various ailments are encouraged to take vitamin C to guard against developing other health problems. However, doctors are now discouraging some cancer patients from taking vitamin C, even when they are undergoing therapies with side effects that are detrimental to their overall health.",
+    "questionStem": "Which one of the following, if true, most helps to explain why the doctors’ recommendation to some cancer patients differs from the general recommendation regarding vitamin C?",
+    "answerChoices": {
+      "A": "Some kinds of cancer cells absorb large amounts of vitamin C, which interferes with the oxidation mechanism by which many cancer therapies kill cancer cells.",
+      "B": "Vitamin C has not been shown to reduce people’s risk of developing cancer, even at the very high dosage levels recommended by some doctors.",
+      "C": "Cancer cells that are susceptible to certain types of cancer therapies are not likely to be affected by the presence of vitamin C.",
+      "D": "The better the overall health of cancer patients while undergoing therapy, the more likely they are to experience a full recovery.",
+      "E": "Certain side effects of cancer therapies that are detrimental to patients’ overall health are not affected by vitamin C."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Researcher: Accurate readings of air pollution are expensive to obtain. Lichens are complex plantlike organisms that absorb airborne pollutants and so may offer a cheaper way to monitor air quality. To investigate this, I harvested lichens at sites plagued by airborne copper pollution, determined the lichens’ copper concentration, and compared the results with those acquired using mechanical monitoring devices. The lichens were as accurate as the best equipment available. Thus, lichens can effectively replace expensive pollution-monitoring devices without loss of information.",
+    "questionStem": "Which one of the following, if true, most strengthens the researcher’s argument?",
+    "answerChoices": {
+      "A": "Mechanical monitoring devices have not already been installed in areas where air pollution is a serious problem.",
+      "B": "Copper particles are a component of air pollution in several locales.",
+      "C": "Experiments have shown that lichens thrive in areas where air pollution is minimal.",
+      "D": "Lichens can easily be grown in laboratories.",
+      "E": "Lichens absorb all other significant air pollutants in a manner similar to their absorption of copper."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sampling",
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Some claim that migratory birds have an innate homing sense that allows them to return to the same areas year after year. However, there is little evidence to support this belief, since the studies testing whether the accuracy of birds’ migratory patterns is due to such an innate ability are inconclusive. After all, birds may simply navigate using landmarks, just as humans do, and we do not say that humans have an innate sense of direction simply because they find their way home time after time.",
+    "questionStem": "Which one of the following statements most accurately expresses the main conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Neither migratory birds nor humans have an innate homing sense.",
+      "B": "There is as yet little reason to accept that birds have an innate homing sense.",
+      "C": "Studies testing whether the accuracy of birds’ migratory patterns is due to an innate homing sense are inconclusive.",
+      "D": "The ability to use landmarks to find one’s way home is probably not an innate ability in birds.",
+      "E": "It is as false to claim that humans have an innate sense of direction as it is to claim that birds have an innate homing sense."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot",
+      "Analogies",
+      "Anti-Causal",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "All laundry detergents contain surfactants, which can harm aquatic life. However, the environmental effects of most ingredients in laundry detergents, including most of those in so-called “ecologically friendly” detergents, are unknown. Therefore, there is no reason to suppose that laundry detergents advertised as ecologically friendly are less damaging to the environment than other laundry detergents are.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Laundry detergents that are advertised as ecologically friendly contain much lower amounts of surfactants, on average, than do other laundry detergents.",
+      "B": "There is no reason to suppose that most of the ingredients in laundry detergents not advertised as ecologically friendly harm the environment significantly.",
+      "C": "Different kinds of laundry detergents contain different kinds of surfactants, which differ in the degree to which they could potentially harm aquatic life.",
+      "D": "There is reason to suppose that ingredients in laundry detergents other than surfactants harm the environment more than surfactants do.",
+      "E": "Laundry detergents advertised as environmentally friendly are typically less effective than other detergents, so that larger amounts must be used."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Fishery officials are still considering options for eliminating Lake Davis’s population of razor-toothed northern pike, a fierce game fish that could threaten salmon and trout populations if it slips into the adjoining river system. Introducing pike-specific diseases and draining the lake have been ruled out. Four years ago, poison was added to the lake in order to eliminate the pike. This outraged local residents, because the water remained tainted for months and the region’s tourism economy suffered.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Draining the lake would not cause the region’s tourism economy to suffer.",
+      "B": "Four years ago was the only time that poison was used against the pike in the lake.",
+      "C": "The poison added to the lake four years ago was not successful in ridding the lake of the pike.",
+      "D": "Four years ago, fishery officials did not consider any options other than using poison.",
+      "E": "Salmon and trout populations in the Lake Davis area are essential to the region’s economy."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Counselor: Many people assume that personal conflicts are inevitable, but that assumption is just not so. Personal conflicts arise primarily because people are being irrational. For instance, people often find it easier to ascribe bad qualities to a person than good ones-even when there is more evidence of the latter. If someone suspects that a friend is unreliable, for example, a single instance may turn this suspicion into a feeling of certainty, whereas a belief that someone is reliable is normally built up only after many years of personal interaction.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Many people assume that personal conflicts are inevitable.",
+      "B": "Even when there is more evidence of good qualities than of bad ones, people find it easier to ascribe bad qualities than good ones.",
+      "C": "It is irrational to allow a single instance to turn one’s suspicion that a friend is unreliable into a feeling of certainty.",
+      "D": "Personal conflicts are not inevitable.",
+      "E": "Unlike a suspicion that a friend is unreliable, a belief that someone is reliable is normally built up only after many years of personal interaction."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Important Pivot",
+      "Intermediate Conclusions",
+      "Rebuttals",
+      "Refute a Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Dried parsley should never be used in cooking, for it is far less tasty and healthful than fresh parsley is.",
+    "questionStem": "Which one of the following principles, if valid, most clearly helps to justify the argument above?",
+    "answerChoices": {
+      "A": "Fresh ingredients should be used in cooking whenever possible.",
+      "B": "Only the tastiest ingredients should ever be used in cooking.",
+      "C": "Ingredients that should never be used in cooking are generally neither tasty nor healthful.",
+      "D": "Parsley that is not both tasty and healthful should never be used in cooking.",
+      "E": "In cooking, dried ingredients are inferior to fresh ingredients."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Missing Link / Idea",
+      "Principles in Answers",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The size of northern fur seals provides a reliable indication of their population levels-the smaller the average body size of seals in a population, the larger the population. Archaeologists studied seal fossils covering an 800-year period when the seals were hunted for food by Native peoples in North America and found that the average body size of the seals did not vary significantly.",
+    "questionStem": "The statements above, if true, provide the most support for which one of the following?",
+    "answerChoices": {
+      "A": "During the 800-year period studied, seal hunting practices did not vary substantially between different groups of Native peoples in North America.",
+      "B": "The body size of northern fur seals is not strongly correlated with the overall health of the seals.",
+      "C": "Before the 800-year period studied, the average body size of northern fur seals fluctuated dramatically.",
+      "D": "Native peoples in North America made an effort to limit their hunting of northern fur seals in order to prevent depletion of seal populations.",
+      "E": "Hunting by Native peoples in North America did not significantly reduce the northern fur seal population over the 800-year period studied."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Volume Dial"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Mayor: Our city faces a difficult environmental problem caused by the enormous amount of garbage that we must dispose of. Although new recycling projects could greatly reduce this amount, these projects would actually be counterproductive to the goal of minimizing the overall amount of environmental damage.",
+    "questionStem": "Which one of the following, if true, would most help to resolve the apparent inconsistency in the mayor’s claims about new recycling projects?",
+    "answerChoices": {
+      "A": "The vehicles that pick up materials for recycling create less pollution than would be caused by incinerating those materials.",
+      "B": "The great costs of new recycling projects would prevent other pollution-reducing projects from being undertaken.",
+      "C": "The mayor’s city has nearly exhausted its landfill space and therefore must incinerate much of its garbage.",
+      "D": "More recycling would give industries in the mayor’s city a greater incentive to use recycled materials in their manufacturing processes.",
+      "E": "People who recycle feel less justified in consuming more than they need than do people who do not recycle."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Anyone who knows Ellsworth knows that he is bursting with self-righteousness, touting the idealism of his generation over the greed of the previous generation. So no one who knows him will be surprised that Ellsworth is offended by the suggestions in the media that he has engaged in unethical business practices.",
+    "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Everyone suspects self-righteous people of being, in actuality, unethical.",
+      "B": "Ellsworth has been accused of unethical business practices before.",
+      "C": "Hypocrites often hide behind righteous indignation.",
+      "D": "Ellsworth is in fact innocent of all wrongdoing.",
+      "E": "Everyone expects self-righteous people to be easily offended."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Political scientist: People become unenthusiastic about voting if they believe that important problems can be addressed only by large numbers of people drastically changing their attitudes and that such attitudinal changes generally do not result from government action. The decreasing voter turnout is thus entirely due to a growing conviction that politicians cannot solve the most important problems.",
+    "questionStem": "The reasoning in the political scientist’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that there is no cause of decreasing voter turnout other than the belief that few important problems can be solved by government action",
+      "B": "presumes, without providing justification, that there are no political solutions to the most important problems",
+      "C": "infers that important problems can be seriously addressed if people’s attitudes do change from the premise that these problems cannot be addressed if people’s attitudes do not change",
+      "D": "undermines its claim that people no longer believe there are political solutions to important problems by suggesting that people are dissatisfied with politicians",
+      "E": "presumes, without providing justification, that voter apathy prevents the attitudinal changes that result in finding solutions to important problems"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The conventional view is that asteroids strike the earth at random locations, thereby randomly affecting various aspects of the earth’s evolution. One iconoclastic geophysicist claims instead that asteroids have struck the earth through a highly organized natural process. Cited as evidence is the unusual pattern of impact craters that form a halo-like swath across the Northern Hemisphere. There is a consensus that these craters appeared at the end of the Cretaceous period, followed by a mass extinction of much land and ocean life.",
+    "questionStem": "Which one of the following, if true, would most help to support the iconoclastic geophysicist’s claim?",
+    "answerChoices": {
+      "A": "Several asteroid strikes within a short period could produce both volcanic activity that warms the oceans and atmospheric debris that blocks sunlight, and such changes could cause mass extinctions.",
+      "B": "If asteroids repeatedly pummel the same spots, the beating may affect the flow of molten rock inside the earth, which would affect the degree to which continents drift around the earth’s surface.",
+      "C": "The impact craters that form a halo-like swath across the Northern Hemisphere were the result of a single cluster of meteors striking the earth.",
+      "D": "Lumpy masses within the earth cause gravitational interactions with approaching asteroids that force them into specific orbits before impact.",
+      "E": "No similar pattern of impact craters was created during any other period of the earth’s history."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The chairperson of Acme Corporation has decided to move the company from its current location in Milltown to Ocean View. Most Acme employees cannot afford housing within a 30-minute commute of Ocean View. So once the company has moved, most Acme employees will have a commute of more than 30 minutes.",
+    "questionStem": "The argument requires assuming which one of the following?",
+    "answerChoices": {
+      "A": "All Acme employees can afford housing within a 30-minute commute of Milltown.",
+      "B": "The chairperson of Acme has good financial reasons for wanting to move the company to Ocean View.",
+      "C": "None of Acme’s employees except the chairperson are in favor of moving the company to Ocean View.",
+      "D": "Currently, most Acme employees have a commute of less than 30 minutes.",
+      "E": "Acme’s move to Ocean View will not be accompanied by a significant pay raise for Acme employees."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Defender",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Editorial: Painting involves a sequential application of layers, each of which adheres satisfactorily only if the underlying layer has been properly applied. Education is, in this respect, like the craft of painting. Since the most important steps in painting are preparation of the surface to be painted and application of the primer coat, it makes sense to suppose that _______.",
+    "questionStem": "Which one of the following most logically completes the editorial’s argument?",
+    "answerChoices": {
+      "A": "in the educator’s initial contact with a student, the educator should be as undemanding as possible",
+      "B": "students who have a secure grasp of the fundamentals of a subject are likely to make progress in that subject",
+      "C": "educators who are not achieving the goals they intended should revise their teaching methods",
+      "D": "teaching new students is rewarding but much more difficult than teaching more advanced students",
+      "E": "the success of a student’s overall educational experience depends above all upon that student’s initial educational experience"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Analogies",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Scientist: Given the human tendency to explore and colonize new areas, some people believe that the galaxy will eventually be colonized by trillions of humans. If so, the vast majority of humans ever to live would be alive during this period of colonization. Since all of us are humans and we have no reason to think we are unrepresentative, the odds are overwhelming that we would be alive during this period, too. But, because we are not alive during this period, the odds are slim that such colonization will ever happen.",
+    "questionStem": "The scientist’s argument proceeds by",
+    "answerChoices": {
+      "A": "reasoning that because an event has not occurred, that event has a low probability of occurring",
+      "B": "drawing a conclusion that implicitly contradicts one of the premises that the argument accepts",
+      "C": "taking for granted that dependable predictions about the future cannot ever be made simply on the basis of the present facts",
+      "D": "inferring that since an event that is taken to be likely on a given hypothesis has not occurred, the hypothesis is probably false",
+      "E": "making a prediction far into the future based on established human tendencies"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Professor Riley characterized the university president’s speech as inflammatory and argued that it was therefore inappropriate. However, Riley has had a long-standing feud with the president, and so we should not conclude that her speech was inflammatory solely on the basis of Riley’s testimony. Therefore, unless there are independent reasons to deem the president’s speech inflammatory, it is not true that her speech was inappropriate.",
+    "questionStem": "The argument is flawed in that it",
+    "answerChoices": {
+      "A": "takes for granted that the speech could not be inappropriate if it was not inflammatory",
+      "B": "fails to adequately address the possibility that inflammatory speeches may be appropriate for some audiences",
+      "C": "favors the university president’s side in a dispute simply because of the president’s privileged standing",
+      "D": "concludes that Riley’s claim is false merely on the grounds that Riley has something to gain if the claim is accepted as true",
+      "E": "fails to adequately address the possibility that Riley’s animosity toward the university president is well founded"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Radio producer: Our failure to attract new listeners over the past several years has forced us to choose between devoting some airtime to other, more popular genres of music, and sticking with classical music that appeals only to our small but loyal audience. This audience, however loyal, did not generate enough advertising revenue for us to pay our bills, so if we appeal to them alone, our station risks going out of business. We should not take that risk. We should, therefore, devote some airtime to other, more popular genres of music.",
+    "questionStem": "Which one of the following arguments is most similar in its pattern of reasoning to that used by the radio producer?",
+    "answerChoices": {
+      "A": "We should either buy blinds for the windows or make full-length curtains. Blinds would be very expensive to purchase. Thus, if cost is our greatest concern, we should make curtains.",
+      "B": "We should either make curtains for the windows or buy blinds. Since the windows are not standard sizes, if we buy blinds we will have to special order them. Since we do not have time to wait for special orders, we should make the curtains.",
+      "C": "For the living room windows, we can make curtains or valances or both. We want to have privacy; and while curtains provide privacy, valances do not. So we should make curtains but not valances.",
+      "D": "Since we have very little fabric, we will have to either buy more, or make valances instead of curtains. However, if we use this fabric to make valances, then we will have to buy blinds. Since it would be hard to buy fabric that matches what we already have, we should buy blinds.",
+      "E": "We should either buy blinds or make curtains for the windows. If we buy blinds but do not make valances, the windows will look bare. We should not have bare windows. So if we do not make the curtains, we should make the valances."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Binaries",
+      "Plans / Recommendations",
+      "Repetitive Answers",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Art historian: This painting, purportedly by Mary Cassatt, is a forgery. Although the canvas and other materials are consistent with most of Cassatt’s work, and the subject matter is similar to that of Cassatt’s finest paintings, the brush style of this painting is not found in any work known to be Cassatt’s. Hence this painting is definitely not a genuine Cassatt.",
+    "questionStem": "The art historian’s argument depends on assuming which one of the following?",
+    "answerChoices": {
+      "A": "The type of canvas and other materials that Cassatt used in most of her work were readily available to others.",
+      "B": "None of Cassatt’s works is painted using a brush style that is not exhibited in any of her known works.",
+      "C": "Cassatt’s work generally had a characteristic subject matter that distinguished it from the work of other painters of her era.",
+      "D": "The most characteristic feature of Cassatt’s work is her brush style.",
+      "E": "No painter other than Cassatt would be able to match Cassatt’s brush style perfectly."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Complex Conditionals"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "In the Riverview Building, every apartment that has a balcony also has a fireplace. None of the apartments with balconies is a one-bedroom apartment. So none of the one-bedroom apartments has a fireplace.",
+    "questionStem": "The flawed nature of the argument above can most effectively be demonstrated by noting that, by parallel reasoning, we could conclude that",
+    "answerChoices": {
+      "A": "every fish has fur since no cat lacks fur and no cat is a fish",
+      "B": "some cats lack fur since every dog has fur and no cat is a dog",
+      "C": "no dog has fur since every cat has fur and no cat is a dog",
+      "D": "every cat is a fish since no cat is a dog and no dog is a fish",
+      "E": "no fish is a dog since every dog is a mammal and no fish is a mammal"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Alissa: If, as the mayor says, the city can no longer continue to fund both the children’s museum and local children’s television programming, then it should cease funding the television programming. The interactive character of the exhibits at the museum makes for a richer educational experience than watching television, which is largely passive. Greta: We should stop funding the museum, not the television programming, because, as the mayor has also pointed out, the museum reaches a much smaller audience.",
+    "questionStem": "On the basis of their statements, it can be inferred that Alissa and Greta disagree on which one of the following?",
+    "answerChoices": {
+      "A": "whether the city will need to cease funding local children’s television programming if it continues funding the children’s museum",
+      "B": "whether the mayor has spoken truthfully about what will need to happen if the city does not cease funding local children’s television programming",
+      "C": "whether the city should cease funding local children’s television programming if continuing to fund it would mean that the city would have to cease funding the children’s museum",
+      "D": "whether local children’s television programming provides a beneficial educational experience to a greater number of children in the city than does the children’s museum",
+      "E": "whether the children’s museum provides a rich educational experience for those children who visit it"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  }
+]

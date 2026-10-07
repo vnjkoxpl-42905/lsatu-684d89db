@@ -1,0 +1,630 @@
+[
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Advertisement: GreenBank gives all of its customers unlimited free automatic teller machine (ATM) use. TekBank charges 25 cents for each ATM transaction. So, clearly, it costs more to bank at TekBank than at GreenBank.",
+    "questionStem": "The reasoning in the advertisement’s argument is misleading in that the argument",
+    "answerChoices": {
+      "A": "bases a recommendation solely on economic factors without considering whether other factors are more important",
+      "B": "presents claims that are irrelevant to the issue under discussion in order to divert attention away from that issue",
+      "C": "draws a conclusion about the overall cost of a service solely on the basis of a claim about the cost of one component of that service",
+      "D": "concludes that a component of a service must have a property that the service as a whole possesses",
+      "E": "concludes that a claim must be false because of the mere absence of evidence in its favor"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Klein: The fact that the amount of matter that we have found in our galaxy is only one-tenth of what Einstein’s theory predicts gives us good reason for abandoning his view. Brown: Given the great successes of Einstein’s theory, it would be better to conclude that most of the matter in our galaxy has not yet been found.",
+    "questionStem": "On the basis of their statements, Klein and Brown are committed to disagreeing over the truth of which one of the following statements?",
+    "answerChoices": {
+      "A": "Scientists have found only one-tenth of the matter that Einstein’s theory predicts.",
+      "B": "Einstein’s theory has achieved many successes.",
+      "C": "It is possible to determine the amount of matter in our galaxy without relying on Einstein’s theory.",
+      "D": "The failure to find all of the matter predicted by Einstein’s theory should lead us to abandon it.",
+      "E": "Scientists are able to accurately judge the amount of matter that has been found in our galaxy."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "When chimpanzees become angry at other chimpanzees, they often engage in what primatologists call “threat gestures”: grunting, spitting, or making abrupt, upsweeping arm movements. Chimpanzees also sometimes attack other chimpanzees out of anger. However, when they do attack, they almost never take time to make threat gestures first. And, conversely, threat gestures are rarely followed by physical attacks.",
+    "questionStem": "Which one of the following, if true, most helps to explain the information about how often threat gestures are accompanied by physical attacks?",
+    "answerChoices": {
+      "A": "Chimpanzees engage in threat gestures when they are angry in order to preserve or enhance social status.",
+      "B": "Making threat gestures helps chimpanzees vent aggressive feelings and thereby avoid physical aggression.",
+      "C": "Threat gestures and physical attacks are not the only means by which chimpanzees display aggression.",
+      "D": "Chimpanzees often respond to other chimpanzees’ threat gestures with threat gestures of their own.",
+      "E": "The chimpanzees that most often make threat gestures are the ones that least often initiate physical attacks."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The Magno-Blanket is probably able to relieve arthritic pain in older dogs. A hospital study of people suffering from severe joint pain found that 76 percent of those who were treated with magnets reported reduced pain after just 3 weeks. Dogs and humans have similar physiologies and the Magno-Blanket brings magnets into the same proximity to the dog’s joints as they were to patients’ joints in the hospital study.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "The Magno-Blanket is likely to be effective on cats and other pets as well if it is effective at reducing joint pain in arthritic dogs.",
+      "B": "Magnets have been shown to be capable of intensifying the transmission of messages from people’s nerve cells to their brains.",
+      "C": "There are currently fewer means of safely alleviating arthritic pain in dogs than in humans.",
+      "D": "The patients in the hospital study suffering from severe joint pain who, after being treated with magnets, did not report reduced pain tended not to be those suffering from the most severe pain.",
+      "E": "Most of the patients in the hospital study suffering from severe joint pain who received a placebo rather than treatment with magnets did not report reduced pain."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Some people believe that advertising is socially pernicious-it changes consumers’ preferences, thereby manipulating people into wanting things they would not otherwise want. However, classes in music and art appreciation change people’s preferences for various forms of art and music, and there is nothing wrong with these classes. Therefore, _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "consumers would still want most of the things they want even if they were not advertised",
+      "B": "the social perniciousness of advertising is not limited to its effect on people’s preferences",
+      "C": "the fact that advertising changes consumers’ preferences does not establish that it is bad",
+      "D": "if advertising changes consumers’ preferences, it generally does so in a positive way",
+      "E": "it is not completely accurate to say that advertising changes people’s preferences"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot",
+      "Analogies",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Many high school students interested in journalism think of journalism careers as involving glamorous international news gathering. But most journalists cover primarily local news, and the overwhelming majority of reporters work for local newspapers. Thus, high school career counselors should tell students who are interested in journalism what life is like for a typical reporter, that is, a reporter for a local newspaper.",
+    "questionStem": "Which one of the following principles would, if valid, most help to justify the reasoning above?",
+    "answerChoices": {
+      "A": "High school students who have misconceptions about a career should not be encouraged to pursue that career.",
+      "B": "One should not encourage people to seek unattainable goals if one wishes to maximize those people’s chances to lead happy lives.",
+      "C": "Students who are choosing a career should be encouraged to try to reach the top levels of that career.",
+      "D": "A career counselor should try to disabuse students of any unrealistic conceptions they may have about the likely consequences of choosing a particular career.",
+      "E": "Career counselors are not doing their job properly if they encourage people to make career choices that are initially appealing but that those people will later regret."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "More pedestrian injuries occur at crosswalks marked by both striping on the roadway and flashing lights than occur at crosswalks not so marked. Obviously these so-called safety features are a waste of taxpayer money.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism because the argument",
+    "answerChoices": {
+      "A": "fails to consider that crosswalks marked by both striping and flashing lights are marked in this way precisely because they are the most dangerous ones",
+      "B": "takes for granted that safety features that fail to reduce the number of injuries are a waste of taxpayer money",
+      "C": "presumes that there are less expensive features that will reduce the number of pedestrian injuries just as effectively as striping and flashing lights",
+      "D": "takes for granted that crosswalks with both striping and flashing lights have no other safety features",
+      "E": "fails to consider that, in accidents involving pedestrians and cars, the injuries to pedestrians are nearly always more serious than the injuries to occupants of cars"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "John of Worcester, an English monk, recorded the sighting, on December 8, 1128, of two unusually large sunspots. Five days later a brilliant aurora borealis (northern lights) was observed in southern Korea. Sunspot activity is typically followed by the appearance of an aurora borealis, after a span of time that averages five days. Thus, the Korean sighting helps to confirm John of Worcester’s sighting.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "An aurora borealis can sometimes occur even when there has been no significant sunspot activity in the previous week.",
+      "B": "Chinese sources recorded the sighting of sunspots more than 1000 years before John of Worcester did.",
+      "C": "Only heavy sunspot activity could have resulted in an aurora borealis viewable at a latitude as low as that of Korea.",
+      "D": "Because it is impossible to view sunspots with the naked eye under typical daylight conditions, the sighting recorded by John of Worcester would have taken place under unusual weather conditions such as fog or thin clouds.",
+      "E": "John of Worcester’s account included a drawing of the sunspots, which could be the earliest illustration of sunspot activity."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Anyone believing that no individual can have an effect on society’s future will as a result feel too helpless to act to change society for the better. Thus, anyone who wants to improve society should reject the belief that its future will be determined entirely by vast historical forces that individuals are powerless to change.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the argument?",
+    "answerChoices": {
+      "A": "Anyone who believes that individuals can have an effect on society’s future should act to change society for the better.",
+      "B": "No one who rejects the belief that society’s future will be determined by vast historical forces should believe that individuals cannot have an effect on it.",
+      "C": "Anyone who feels too helpless to act to change society for the better should reject the belief that its future will be determined by vast historical forces that individuals are powerless to change.",
+      "D": "No one who wants to improve society should accept any belief that makes him or her feel too helpless to act to change society for the better.",
+      "E": "Each individual should act to improve society if individuals in general feel powerless in the face of vast historical forces."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Company president: Whenever you subcontract the manufacturing of a product, you lose some control over the quality of that product. We do subcontract some manufacturing, but only with companies that maintain complete control over the quality of the products they supply.",
+    "questionStem": "Which one of the following can be properly inferred from the company president’s statements?",
+    "answerChoices": {
+      "A": "When the president’s company subcontracts manufacturing of a product, it does not allow the subcontractor to further subcontract manufacturing of that product.",
+      "B": "Companies that subcontract the manufacturing of products are often disappointed in the quality of those products.",
+      "C": "The company president insists on having as much control as possible over the quality of the company’s products.",
+      "D": "When consumers know that a product has been manufactured by a subcontractor, they are generally dubious about the product’s quality.",
+      "E": "When a company manufactures some products in-house and subcontracts the manufacturing of others, the products made in-house will be of uniformly better quality."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Secondary school students achieve broad mastery of the curriculum if they are taught with methods appropriate to their learning styles and they devote significant effort to their studies. Thus, if such broad mastery is not achieved by the students in a particular secondary school, those students are not being taught with methods appropriate to their learning styles.",
+    "questionStem": "The conclusion can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "As long as secondary school students are taught with methods appropriate to their learning styles, they will devote significant effort to their studies.",
+      "B": "Even if secondary school students are taught with methods appropriate to their learning styles, they will not achieve broad mastery of the curriculum if they do not devote significant effort to their studies.",
+      "C": "Secondary school students do not achieve broad mastery of the curriculum if they are not taught with methods appropriate to their learning styles.",
+      "D": "Teaching secondary school students with methods appropriate to their learning styles does not always result in broad mastery of the curriculum by those students.",
+      "E": "Secondary school students who devote significant effort to their studies do not always achieve broad mastery of the curriculum."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Consumer advocate: Even if one can of fruit or vegetables weighs more than another, the heavier can does not necessarily contain more food. Canned fruits and vegetables are typically packed in water, which can make up more than half the total weight of the can’s contents. And nothing stops unscrupulous canning companies from including more water per can than others include.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the consumer advocate’s argument?",
+    "answerChoices": {
+      "A": "The heavier of two cans of fruit or vegetables does not necessarily contain more food than the lighter of the two cans contains.",
+      "B": "The weight of the water in a can of fruit or vegetables can be more than half the total weight of the can’s contents.",
+      "C": "Nothing stops unscrupulous canning companies from including more water per can than others include.",
+      "D": "Some canning companies include less food in cans of a given weight than others include.",
+      "E": "The heavier of two cans of fruits or vegetables may include more water than the lighter of the two cans contains."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Several three-year-olds who had learned to count to ten were trying to learn their telephone numbers. Although each child was familiar with the names of all the digits, no child could remember his or her phone number. Their teacher then taught each child a song whose lyrics contained his or her phone number. By the end of the day the children could remember their telephone numbers.",
+    "questionStem": "The situation described above best illustrates which one of the following propositions?",
+    "answerChoices": {
+      "A": "There are some things that children cannot learn without the aid of songs.",
+      "B": "Familiarity with a concept is not always sufficient for knowing the words used to express it.",
+      "C": "Mnemonic devices such as songs are better than any other method for memorizing numbers.",
+      "D": "Children can learn to count without understanding the meaning of numbers.",
+      "E": "Songs are useful in helping children remember the order in which familiar words occur."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Some theorists argue that literary critics should strive to be value-neutral in their literary criticism. These theorists maintain that by exposing the meaning of literary works without evaluating them, critics will enable readers to make their own judgments about the works’ merits. But literary criticism cannot be completely value-neutral. Thus, some theorists are mistaken about what is an appropriate goal for literary criticism.",
+    "questionStem": "The argument’s conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Any critic who is able to help readers make their own judgments about literary works’ merits should strive to produce value-neutral criticism.",
+      "B": "If it is impossible to produce completely value-neutral literary criticism, then critics should not even try to be value-neutral.",
+      "C": "Critics are more likely to provide criticisms of the works they like than to provide criticisms of the works they dislike.",
+      "D": "The less readers understand the meaning of a literary work, the less capable they will be of evaluating that work’s merits.",
+      "E": "Critics who try to avoid rendering value judgments about the works they consider tend to influence readers’ judgments less than other critics do."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Amoebas, like human beings, generally withdraw from stimuli that cause them physical damage. Humans do this because such stimuli cause them pain. Thus all microscopic organisms must also be capable of feeling pain.",
+    "questionStem": "Which one of the following exhibits flawed reasoning most similar to that exhibited by the argument above?",
+    "answerChoices": {
+      "A": "Poets, like people under hypnosis, frequently use language in odd, incomprehensible ways. People under hypnosis do this because their inhibitions are lower than those of most people. Thus all artists must have lower inhibitions than most people have.",
+      "B": "Like nonprofit organizations, corporations usually provide some free public services. Nonprofit organizations do this solely because of their members’ desire to make the world a better place. Thus this is probably also the main motive of most corporations.",
+      "C": "Most professional athletes practice regularly for the same reason. Professional boxers spend several hours a day practicing in order to excel in competition. Thus professional skaters probably also practice in order to excel in competition.",
+      "D": "Predatory birds, like many predatory animals, are generally solitary hunters. Some predatory mammals hunt alone because there is not enough food to support a pack of them in one area. Thus hawks, which are predatory birds, probably hunt alone.",
+      "E": "Hiking trails in British Columbia, like those in New Mexico, are concentrated in mountainous regions. In New Mexico this is partly because low-lying areas are too hot and arid for comfortable hiking. Thus hikers must also feel less comfortable hiking in low-lying areas of British Columbia."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Sampling",
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Zoologist: In the Lake Champlain area, as the North American snowshoe hare population grows, so do the populations of its predators. As predator numbers increase, the hares seek food in more heavily forested areas, which contain less food, and so the hare population declines. Predator populations thus decline, the hare population starts to increase, and the cycle begins again. Yet these facts alone cannot explain why populations of snowshoe hares everywhere behave simultaneously in this cyclical way. Since the hare population cycle is well correlated with the regular cycle of sunspot activity, that activity is probably a causal factor as well.",
+    "questionStem": "Each of the following, if true, supports the zoologist’s reasoning except:",
+    "answerChoices": {
+      "A": "Reproduction in predator populations increases when sunspot activity indirectly affects hormonal processes associated with reproduction.",
+      "B": "Local weather patterns that can affect species’ population changes can occur both in the presence of sunspot activity and in its absence.",
+      "C": "Brighter light during sunspot activity subtly but significantly improves the ability of predators to detect and capture hares.",
+      "D": "The variation from cycle to cycle in the magnitude of the highs and lows in snowshoe hare populations is highly correlated with variations from cycle to cycle in the intensity of highs and lows in sunspot activity.",
+      "E": "Sunspot activity is correlated with increases and decreases in the nutritional value of vegetation eaten by the hares."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Breadcrumbs",
+      "Dense Stimulus",
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Science teacher: In any nation, a flourishing national scientific community is essential to a successful economy. For such a community to flourish requires that many young people become excited enough about science that they resolve to become professional scientists. Good communication between scientists and the public is necessary to spark that excitement.",
+    "questionStem": "The science teacher’s statements provide the most support for which one of the following?",
+    "answerChoices": {
+      "A": "If scientists communicate with the public, many young people will become excited enough about science to resolve to become professional scientists.",
+      "B": "The extent to which a national scientific community flourishes depends principally on the number of young people who become excited enough about science to resolve to become professional scientists.",
+      "C": "No nation can have a successful economy unless at some point scientists have communicated well with the public.",
+      "D": "It is essential to any nation’s economy that most of the young people in that nation who are excited about science become professional scientists.",
+      "E": "An essential component of success in any scientific endeavor is good communication between the scientists involved in that endeavor and the public."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A recent magazine article argued that most companies that do not already own videoconferencing equipment would be wasting their money if they purchased it. However, this is clearly not true. In a recent survey of businesses that have purchased such equipment, most of the respondents stated that the videoconferencing equipment was well worth its cost.",
+    "questionStem": "The reasoning in the argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "concludes that something is worth its cost merely on the grounds that many businesses have purchased it",
+      "B": "takes a condition sufficient to justify purchasing costly equipment to be necessary in order for the cost of the purchase to be justified",
+      "C": "rejects a position merely on the grounds that an inadequate argument has been given for it",
+      "D": "relies on a sample that it is reasonable to suppose is unrepresentative of the group about which it draws its conclusion",
+      "E": "confuses the cost of an item with its value to the purchaser"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sampling",
+      "Net Effect",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Auditor: XYZ, a construction company, purchased 20 new trucks 3 years ago, and there is no record of any of those trucks being sold last year. Records indicate, however, that XYZ sold off all of its diesel-powered trucks last year. We can thus conclude that none of the 20 trucks purchased 3 years ago were diesel powered.",
+    "questionStem": "Which one of the following is an assumption required by the auditor’s reasoning?",
+    "answerChoices": {
+      "A": "All of the trucks that XYZ sold last year were diesel powered.",
+      "B": "XYZ did not purchase any used trucks 3 years ago.",
+      "C": "XYZ did not purchase any new trucks since it purchased the 20 trucks 3 years ago.",
+      "D": "None of the 20 trucks was sold before last year.",
+      "E": "XYZ no longer owns any trucks that it purchased more than 3 years ago."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Taylor: From observing close friends and relatives, it is clear to me that telepathy is indeed possible between people with close psychic ties. The amazing frequency with which a good friend or family member knows what one is thinking or feeling cannot be dismissed as mere coincidence.",
+    "questionStem": "Taylor’s reasoning is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "is based on too small a sample to yield a reliable conclusion",
+      "B": "fails to address a highly plausible alternative explanation for all instances of the observed phenomenon",
+      "C": "relies crucially on an illegitimate appeal to emotion",
+      "D": "presumes, without providing justification, that one can never know what a stranger is thinking or feeling",
+      "E": "appeals to a premise one would accept only if one already accepted the truth of the conclusion"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Weaken EXCEPT",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Prolonged exposure to sulfur fumes permanently damages one’s sense of smell. In one important study, 100 workers from sulfur-emitting factories and a control group of 100 workers from other occupations were asked to identify a variety of chemically reproduced scents, including those of foods, spices, and flowers. On average, the factory workers successfully identified 10 percent of the scents compared to 50 percent for the control group.",
+    "questionStem": "Each of the following, if true, weakens the argument except:",
+    "answerChoices": {
+      "A": "The chemicals used in the study closely but not perfectly reproduced the corresponding natural scents.",
+      "B": "The subjects in the study were tested in the environments where they usually work.",
+      "C": "Most members of the control group had participated in several earlier studies that involved the identification of scents.",
+      "D": "Every sulfur-emitting factory with workers participating in the study also emits other noxious fumes.",
+      "E": "Because of the factories’ locations, the factory workers were less likely than those in the control group to have been exposed to many of the scents used in the study."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Explain Curious Fact",
+      "Alternatives",
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Principle: Anyone who has more than one overdue book out on loan from the library at the same time must be fined if some of the overdue books are not children’s books and that person has previously been fined for overdue books. Application: Since three of the books that Kessler currently has out on loan from the library are overdue, Kessler must be fined.",
+    "questionStem": "Which one of the following, if true, justifies the above application of the principle?",
+    "answerChoices": {
+      "A": "Some of the books that Kessler currently has out on loan from the library are not children’s books, and Kessler was fined last year for returning a children’s book late.",
+      "B": "One of the overdue books that Kessler currently has out on loan from the library is a novel for adults, and Kessler was fined last year for returning this book late.",
+      "C": "None of the books that Kessler currently has out on loan from the library is a children’s book and in previous years Kessler has returned various books late.",
+      "D": "Kessler was fined by the library several times in the past for overdue books, but none of the overdue books for which Kessler was fined were children’s books.",
+      "E": "Kessler has never before been fined for overdue books, but the three overdue books that Kessler currently has out on loan from the library are months overdue."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Medical school professor: Most malpractice suits arise out of patients’ perceptions that their doctors are acting negligently or carelessly. Many doctors now regard medicine as a science rather than an art, and are less compassionate as a result. Harried doctors sometimes treat patients rudely, discourage them from asking questions, or patronize them. Lawsuits could be avoided if doctors learned to listen better to patients. Unfortunately, certain economic incentives encourage doctors to treat patients rudely.",
+    "questionStem": "The medical school professor’s statements, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Economic incentives to treat patients rudely are the main cause of doctors being sued for malpractice.",
+      "B": "The economic incentives in the health care system encourage doctors to regard medicine as a science rather than as an art.",
+      "C": "Malpractice suits brought against doctors are, for the most part, unjustified.",
+      "D": "The scientific outlook in medicine should be replaced by an entirely different approach to medicine.",
+      "E": "Doctors foster, by their actions, the perception that they do not really care about their patients."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "If the concrete is poured while the ground is wet, it will not form a solid foundation. If the concrete does not form a solid foundation, it will either settle unevenly or crack. So if the concrete settles evenly, either it was poured while the ground was dry or it will crack.",
+    "questionStem": "Which one of the following arguments is most closely parallel in its reasoning to the reasoning in the argument above?",
+    "answerChoices": {
+      "A": "The film will not be properly exposed if the camera is not working properly. If the film is not properly exposed, then the photograph will be either blurred or dark. So if the photograph is not blurred, either the camera is working properly or the photograph will be dark.",
+      "B": "If the camera is working properly, the photograph will not be blurred. The photograph will be blurred if the film is either not properly exposed or not properly developed. So if the camera is working properly, the film will be both properly exposed and properly developed.",
+      "C": "The photograph will either be blurred or dark if the camera is not working properly. This photograph is not blurred, so if the photograph is not dark, the camera is working properly.",
+      "D": "If the camera is working properly, the film will be properly exposed. If either the film is properly exposed or corrections are made during the developing process, the photograph will not be dark. So if the camera is working properly, the photograph will not be dark.",
+      "E": "The camera will work properly only if the film is properly exposed. But the film cannot be properly exposed if there is either not enough or too much light. So the camera will not work properly if there is either too much or not enough light."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Contrapositive Logic",
+      "Ruling Out Options",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "New evidence indicates that recent property development bordering a national park has not adversely affected the park’s wildlife. On the contrary, a comparison of the most recent survey of the park’s wildlife with one conducted just prior to the development shows that the amount of wildlife has in fact increased over the intervening decade. Moreover, the park’s resources can support its current wildlife populations without strain.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "While both surveys found the same species of animals in the park, the more recent survey found greater numbers of animals belonging to each species.",
+      "B": "The more recent survey was taken in the summer, when the diversity of wildlife in the park is at its greatest.",
+      "C": "Migration of wildlife into the park from the adjacent developing areas has increased animal populations to levels beyond those that the resources of the park could have supported a decade ago.",
+      "D": "The most recent techniques for surveying wildlife are better at locating difficult-to-find animals than were older techniques.",
+      "E": "The more recent survey not only involved counting the animals found in the park but, unlike the earlier survey, also provided an inventory of the plant life found within the park."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 3,
+    "questionNumber": 26,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "As advances in medical research and technology have improved the ability of the medical profession to diagnose and treat a wide variety of illnesses and injuries, life spans have increased and overall health has improved. Yet, over the past few decades there has been a steady and significant increase in the rate of serious infections.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "It remains true that doctors sometimes prescribe ineffective medications due to misdiagnosis.",
+      "B": "Life spans have increased precisely because overall health has improved.",
+      "C": "The vast majority of serious infections are now curable, although many require hospitalization.",
+      "D": "As a population increases in size, there is a directly proportional increase in the number of serious infections.",
+      "E": "Modern treatments for many otherwise fatal illnesses increase the patient’s susceptibility to infection."
+    },
+    "correctAnswer": "E"
+  }
+]

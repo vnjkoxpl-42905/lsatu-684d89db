@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-30",
+  "route": "connected Lovable Cloud database DDL tool",
+  "explicitDeploymentAuthorization": true,
+  "artifactSha256": "9085a12a0f1ce20942475640088789c87ad016da22dc996f0a772b73a069563a",
+  "preservation": [
+    {"table":"activity_assignments","rows":99,"originalColumnDigest":"10aee9a7b36b6359561598c4adbff7f8","preserved":true},
+    {"table":"activity_item_responses","rows":1635,"originalColumnDigest":"e969c6901a48c45bb75491803777ccdc","preserved":true},
+    {"table":"activity_section_grades","rows":42,"originalColumnDigest":"28f742c29d9038334503801d46a20cb5","preserved":true},
+    {"table":"classroom_items","rows":260,"originalColumnDigest":"252d438cd030503746e36a7edf853219","preserved":true}
+  ],
+  "atomicOriginalColumnComparison": true,
+  "preservationFailureAbortsTransaction": true,
+  "isolatedAssertions":35,
+  "realPostgreSqlAssertions":32,
+  "preExistingRecordsRevoked":0,
+  "recordsDeleted":0,
+  "backfill":false,
+  "gradingRequests":0,
+  "lovableAgentPrompts":0
+}

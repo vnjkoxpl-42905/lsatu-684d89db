@@ -1,0 +1,336 @@
+{
+  "baseline": "67230dfae74a1466515d570fcb7b8a96ab5cb9c5",
+  "count": 47,
+  "failed": [],
+  "files": [
+    {
+      "path": "src/bootcamps/conditionals/components/ConditionalOpeningLesson.review.test.tsx",
+      "expected": "68d702ea35b520bf1374a137477a785ff20f28d32a087dbb446dda0504eedb25",
+      "actual": "68d702ea35b520bf1374a137477a785ff20f28d32a087dbb446dda0504eedb25",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/ConditionalOpeningLesson.tsx",
+      "expected": "d8bc3b1d47beda1f183b055ddae196622f125ff2b17ceea09f985829e0cc0cdd",
+      "actual": "d8bc3b1d47beda1f183b055ddae196622f125ff2b17ceea09f985829e0cc0cdd",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/ConditionalOpeningMedia.tsx",
+      "expected": "83f834e4bf3d7520545b287833072cee9b4fb1673bfd6534cc4dc27e36073592",
+      "actual": "83f834e4bf3d7520545b287833072cee9b4fb1673bfd6534cc4dc27e36073592",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/ConditionalReferenceSequence.test.tsx",
+      "expected": "e2004894f3df1e99474e86b4fdadf7b08eab3822727d06488b26ee7294c28e30",
+      "actual": "e2004894f3df1e99474e86b4fdadf7b08eab3822727d06488b26ee7294c28e30",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/CounterexampleLab.tsx",
+      "expected": "7f4dfdc69777b75466b4e95839a0c3eaa2a4b55dc16dfd8539af5f886171161c",
+      "actual": "7f4dfdc69777b75466b4e95839a0c3eaa2a4b55dc16dfd8539af5f886171161c",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/LessonPages.test.tsx",
+      "expected": "f18bc0c578252edcc76be0bd20baf764f510a7971cf28f7170c3e6956fd47867",
+      "actual": "f18bc0c578252edcc76be0bd20baf764f510a7971cf28f7170c3e6956fd47867",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/LessonPages.tsx",
+      "expected": "6e31acd0927990eefecebd69cbf8f9265cc71bd2ca8e658dbe690c1aff341ac0",
+      "actual": "6e31acd0927990eefecebd69cbf8f9265cc71bd2ca8e658dbe690c1aff341ac0",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/OpeningCourse.test.tsx",
+      "expected": "e23ece59330b112debdc0b5dce03c9d16d465393036ed1e408b970daa55b7c65",
+      "actual": "e23ece59330b112debdc0b5dce03c9d16d465393036ed1e408b970daa55b7c65",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/OpeningCourse.tsx",
+      "expected": "0299604947414b6a0f3789ffab9568c3681925f8bfc5f01dd8bdfb95e5985d06",
+      "actual": "0299604947414b6a0f3789ffab9568c3681925f8bfc5f01dd8bdfb95e5985d06",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/StudyDeck.tsx",
+      "expected": "b22fc8f835172832c4099fbe9584b7da341af33a31b29aed1295da739c2fee9b",
+      "actual": "b22fc8f835172832c4099fbe9584b7da341af33a31b29aed1295da739c2fee9b",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/lesson-pages.css",
+      "expected": "0976f408585c6dc1c79d606e00476c2b31a1942e4ba7f7e91073fe0b2b32151d",
+      "actual": "0976f408585c6dc1c79d606e00476c2b31a1942e4ba7f7e91073fe0b2b32151d",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/opening-course.css",
+      "expected": "f28e988f03158c9481e3d5ae5cb28e94d665bb7c2f934f9c4cc723f1b1c59329",
+      "actual": "f28e988f03158c9481e3d5ae5cb28e94d665bb7c2f934f9c4cc723f1b1c59329",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/opening-polish.css",
+      "expected": "781d6c9cd98c88f013029a129b7147bf3780c2998736d2f12f7bcc5592c9f82e",
+      "actual": "781d6c9cd98c88f013029a129b7147bf3780c2998736d2f12f7bcc5592c9f82e",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/opening.css",
+      "expected": "d1c3f838f9337a2682510ecf98f3c32db59be02b123c49fd3d6138d5d4b3d68b",
+      "actual": "d1c3f838f9337a2682510ecf98f3c32db59be02b123c49fd3d6138d5d4b3d68b",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/reference-sequence.css",
+      "expected": "ed0bc7929c0d48a483ffe9f93684bd59b298221eb6fbc9221636a4f5be92e778",
+      "actual": "ed0bc7929c0d48a483ffe9f93684bd59b298221eb6fbc9221636a4f5be92e778",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/content/indicatorFlashcards.ts",
+      "expected": "7771abc878559b26216b2ee7c30ce0c66ade402954504df45fd7e4ba61a0c6c6",
+      "actual": "7771abc878559b26216b2ee7c30ce0c66ade402954504df45fd7e4ba61a0c6c6",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/content/legacyQuestions.ts",
+      "expected": "ad91b8a4a6fd59acd5c5d9b72ab3c9bc00e54d64475a2bcb18891b3ad54b04b9",
+      "actual": "ad91b8a4a6fd59acd5c5d9b72ab3c9bc00e54d64475a2bcb18891b3ad54b04b9",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/content/opening-coverage.test.ts",
+      "expected": "906b68673dbd7d3b8b03adb6f70f2f78881ef194946496edc4e185e9d7bc7732",
+      "actual": "906b68673dbd7d3b8b03adb6f70f2f78881ef194946496edc4e185e9d7bc7732",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/openingCoursePath.ts",
+      "expected": "352f90974b0959ef0b43a0da8922fc563d54388a3df80c7950f3f073f4bb8914",
+      "actual": "352f90974b0959ef0b43a0da8922fc563d54388a3df80c7950f3f073f4bb8914",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/openingRevision.ts",
+      "expected": "4a005ecdca298f1fe1a42319d63eaee51cc9a8679324e8916f981d194de52e92",
+      "actual": "4a005ecdca298f1fe1a42319d63eaee51cc9a8679324e8916f981d194de52e92",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/components/teacher/ConditionalAssignmentFields.test.tsx",
+      "expected": "10c903b7a3533499971e332f577dbd62e0c015bb7300ad51303ad9dcae4a9928",
+      "actual": "10c903b7a3533499971e332f577dbd62e0c015bb7300ad51303ad9dcae4a9928",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/components/ui/dynamic-island-toc.inline.test.tsx",
+      "expected": "fe711dbe2cd606b3efe19d41bdddd0c5243b4ac0bb0068b08c826a7b2ff4f111",
+      "actual": "fe711dbe2cd606b3efe19d41bdddd0c5243b4ac0bb0068b08c826a7b2ff4f111",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/dev/ConditionalOpeningPreview.tsx",
+      "expected": "355cbb1303bfdff890269623ad50c6c09aec05e8215d9cdf2f2d8d7e50f7f671",
+      "actual": "355cbb1303bfdff890269623ad50c6c09aec05e8215d9cdf2f2d8d7e50f7f671",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "public/data/_bank.generated.json",
+      "expected": "69f34f6dc7c1c2772d0fc212851873ca92a6c0a40e15af83e97b56575e004f75",
+      "actual": "69f34f6dc7c1c2772d0fc212851873ca92a6c0a40e15af83e97b56575e004f75",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "public/data/finder-address-index.json",
+      "expected": "3f8216dacc9a968b6e4e19da90472b8591b32204f912dcf97ed87459b5406007",
+      "actual": "3f8216dacc9a968b6e4e19da90472b8591b32204f912dcf97ed87459b5406007",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/App.tsx",
+      "expected": "eef49221a7a4b4f3496c4979abb11355dfd437fd57df109c261c202de3965260",
+      "actual": "eef49221a7a4b4f3496c4979abb11355dfd437fd57df109c261c202de3965260",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/assignments.test.ts",
+      "expected": "ec97ae7e4b36cb39855d048d83a2431d93a7f4e7b2eb2f91a9a5001e5bc1ec2f",
+      "actual": "ec97ae7e4b36cb39855d048d83a2431d93a7f4e7b2eb2f91a9a5001e5bc1ec2f",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/assignments.ts",
+      "expected": "5e1963c6cf4c1a9438164cf3c27215133ed17f0db460570be0882704c88489dd",
+      "actual": "5e1963c6cf4c1a9438164cf3c27215133ed17f0db460570be0882704c88489dd",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/ConditionalLessonNote.test.tsx",
+      "expected": "3d415e9bf1620f08cb76ffa3c5a38ecdc881a3e2244b2444f2aff33573d5f4ab",
+      "actual": "3d415e9bf1620f08cb76ffa3c5a38ecdc881a3e2244b2444f2aff33573d5f4ab",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/ConditionalLessonNote.tsx",
+      "expected": "55c7be469bfef6d60c1e0c90b15d83464967a3604e16d50da058bf2d50a170b2",
+      "actual": "55c7be469bfef6d60c1e0c90b15d83464967a3604e16d50da058bf2d50a170b2",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/content/foundations.source.ts",
+      "expected": "57a1632058109a93871a8852063d06971b91a4144d3340488f607d55383c3098",
+      "actual": "57a1632058109a93871a8852063d06971b91a4144d3340488f607d55383c3098",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/data/curriculum.generated.json",
+      "expected": "65f79dc0d4e8fbae0b5f03e6f299f95601db9daf527e14bb483b8b31533128b5",
+      "actual": "65f79dc0d4e8fbae0b5f03e6f299f95601db9daf527e14bb483b8b31533128b5",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/progress.test.ts",
+      "expected": "e820957bb9e7d423ff7355b81709cb7ad6cf997e3401e8b09cbb2f1660297144",
+      "actual": "e820957bb9e7d423ff7355b81709cb7ad6cf997e3401e8b09cbb2f1660297144",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/progress.ts",
+      "expected": "e438914de88dd3166e0758809b5112856ffe32d67813263ef54285a199c0ad7b",
+      "actual": "e438914de88dd3166e0758809b5112856ffe32d67813263ef54285a199c0ad7b",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/routes.test.tsx",
+      "expected": "86cdc1ac67c71e568e947a1f50c70f860028617ce82b1bce2c3761fea4128eff",
+      "actual": "86cdc1ac67c71e568e947a1f50c70f860028617ce82b1bce2c3761fea4128eff",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/routes.tsx",
+      "expected": "af4cb7f16fc723723177e850e0808e0998f14363f9686410a5c5d96d977d6b96",
+      "actual": "af4cb7f16fc723723177e850e0808e0998f14363f9686410a5c5d96d977d6b96",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/useConditionalAssignments.ts",
+      "expected": "a8988f5701f5f524e3c6373798c3a0bc0c6511ecec5a95183c652f61e308bd74",
+      "actual": "a8988f5701f5f524e3c6373798c3a0bc0c6511ecec5a95183c652f61e308bd74",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/useConditionalProgress.test.tsx",
+      "expected": "e88c4b5021940330559d103990e3336e8f4ce2c2b2d72d135e89a03900331346",
+      "actual": "e88c4b5021940330559d103990e3336e8f4ce2c2b2d72d135e89a03900331346",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/components/teacher/ConditionalAssignmentFields.tsx",
+      "expected": "9975d3cd7bbf3def762ac0acceee66e58579f9923f804829a2ba9a440d6c8e18",
+      "actual": "9975d3cd7bbf3def762ac0acceee66e58579f9923f804829a2ba9a440d6c8e18",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/components/ui/dynamic-island-toc.tsx",
+      "expected": "c3192146db83a500db480512ffa294cc80fe2aed8f637c81225fe3b4cb0fbf3f",
+      "actual": "c3192146db83a500db480512ffa294cc80fe2aed8f637c81225fe3b4cb0fbf3f",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/lib/conditionalBootcampAssignment.test.ts",
+      "expected": "d5e5b20e1c2765a1a32c41edb4458fd971789bcb3bd4d8674c87a1bc4c322ee6",
+      "actual": "d5e5b20e1c2765a1a32c41edb4458fd971789bcb3bd4d8674c87a1bc4c322ee6",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/lib/conditionalBootcampAssignment.ts",
+      "expected": "9b9d909aa12cdbeded57577f499ba0bada38ab82b29c96b27c99c55d4e7d8dc8",
+      "actual": "9b9d909aa12cdbeded57577f499ba0bada38ab82b29c96b27c99c55d4e7d8dc8",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "supabase/functions/mcp/index.ts",
+      "expected": "f731b29c4fcd1517dc99276a998944494a86720e0cd103061e1799d149c7d32c",
+      "actual": "f731b29c4fcd1517dc99276a998944494a86720e0cd103061e1799d149c7d32c",
+      "match": true,
+      "kind": "frozen"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/ConditionalReferenceSequence.tsx",
+      "expected": "d5d52055d3303c6b36973a9a0c23ea755d67d5ff48d99c6e4c7c96590a860494",
+      "actual": "d5d52055d3303c6b36973a9a0c23ea755d67d5ff48d99c6e4c7c96590a860494",
+      "match": true,
+      "kind": "pacing-final"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/MixedFamilyPractice.tsx",
+      "expected": "f5406f7eb7c214a460161a885ddf1b26bc2eb4ce4c992ede43d6ea1c4cf1bc78",
+      "actual": "f5406f7eb7c214a460161a885ddf1b26bc2eb4ce4c992ede43d6ea1c4cf1bc78",
+      "match": true,
+      "kind": "pacing-final"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/OpeningCourseContent.test.tsx",
+      "expected": "6ddd5d115106a7b2b5f8daf1f0ac49f6da48229b525bbad9755f1da14a8020c3",
+      "actual": "6ddd5d115106a7b2b5f8daf1f0ac49f6da48229b525bbad9755f1da14a8020c3",
+      "match": true,
+      "kind": "pacing-final"
+    },
+    {
+      "path": "src/bootcamps/conditionals/components/OpeningCourseContent.tsx",
+      "expected": "b1d7503b92153d0b28cc59b3978ca4994ab3d793f9536a83d049229e2f408ad3",
+      "actual": "b1d7503b92153d0b28cc59b3978ca4994ab3d793f9536a83d049229e2f408ad3",
+      "match": true,
+      "kind": "pacing-final"
+    }
+  ]
+}

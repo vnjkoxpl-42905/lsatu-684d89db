@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-30",
+  "status": "published and fresh production verified",
+  "files": [
+    "src/pages/TimedPracticeTestRun.tsx",
+    "src/pages/TimedPracticeTestRun.test.tsx"
+  ],
+  "problem": "An unsent retained create caused a missing-parent read and misleading unavailable alert",
+  "checks": [
+    "Fresh unsent creation shows ready-to-save with no alert",
+    "Confirmation creates exact246a92e0-d8aa-4362-bd7e-bd1f218a7d90 as ownedPT104 ready",
+    "No questions or clock begin before account acknowledgment",
+    "Missing existing parent still reports unavailable",
+    "Ambiguous reply retries retained command rather than preparing replacement"
+  ],
+  "focusedTests": 72,
+  "typecheckPassed": true,
+  "buildPassed": true,
+  "independentReview": "no blockers",
+  "cssWidths": [
+    390,
+    820,
+    1060,
+    1280,
+    1600
+  ],
+  "horizontalOverflow": false,
+  "viewportReset": true,
+  "normalMeasuredViewport": 1280,
+  "actualSidePaneCheck": "Previously verified parent surface; new confirmation screenshot at normal1280 is not claimed as804px",
+  "proofDirectory": "C:/Users/Joshu/dev/ai-os/research/2026-09-30-lsatu-foundation-evidence",
+  "publishedCommit": "b315ac5ac60792ada4dd96e38305c967c547fe77",
+  "freeDeploymentId": "b0c1359a-ac3b-47c7-97e2-11ddc780de32",
+  "githubMainAndExactImportVerified": true,
+  "publishedControls": "Published, Publish changes disabled",
+  "freshProductionMessage": "Your practice test is ready to save. Confirm it to create or recover this exact sitting in your account.",
+  "freshProductionRunId": "757f339d-774a-4a7a-9bcc-82414c1650db",
+  "falseAlertAbsent": true,
+  "creditSpend": false
+}

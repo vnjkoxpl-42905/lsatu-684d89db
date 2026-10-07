@@ -1,0 +1,532 @@
+--- input/src/bootcamps/conditionals/components/ConditionalReferenceSequence.tsx
++++ final/src/bootcamps/conditionals/components/ConditionalReferenceSequence.tsx
+@@ -113,7 +113,7 @@
+   </div>;
+ }
+ 
+-function RuleDiagram({ left, right, label }: { left: string; right: string; label?: string }) {
++export function RuleDiagram({ left, right, label }: { left: string; right: string; label?: string }) {
+   return <div className="cr-diagram" role="img" aria-label={label || `${left} implies ${right}`}><strong>{left}</strong><span aria-hidden="true">→</span><strong>{right}</strong></div>;
+ }
+ const writingSteps = [
+@@ -122,7 +122,7 @@
+   { button: 'Place the complete target', explanation: 'Win the raffle is the complete sufficient condition. I shorten it to Win and put it on the left. Win means winning this raffle, not any other contest.' },
+   { button: 'Fill the remaining condition', explanation: 'The other condition is that you get a bicycle. I shorten it to Get bicycle and put it on the right. Keep getting a bicycle distinct from merely owning one already.' },
+ ];
+-function IncrementalWriter() {
++export function IncrementalWriter() {
+   const [step, setStep] = useState(0);
+   const resetControl = useRef<HTMLButtonElement>(null);
+   return <div className="cr-writer co-lab"><blockquote>{step > 0 ? <><mark>If</mark> you win the raffle, you get a bicycle.</> : raffleRule}</blockquote>
+@@ -143,12 +143,12 @@
+ }
+ 
+ type TargetExample = { label: string; before: string; target: string; after: string; options: string[]; correct: number; feedback: string[] };
+-const targetExamples: TargetExample[] = [
++export const targetExamples: TargetExample[] = [
+   { label: 'Target after the indicator', before: 'Only ', target: 'reports with editor approval', after: ' are published.', options: ['reports', 'reports with editor approval', 'published'], correct: 1, feedback: ['Reports alone drops with editor approval. The statement restricts publication to that qualified group.', 'Only refers to reports with editor approval. Keep that qualification; it is the required idea.', 'Published is the other condition. Only limits which reports can meet it.'] },
+   { label: 'Target before the indicator', before: '', target: 'Editor approval', after: ' is necessary for publication.', options: ['publication', 'editor approval'], correct: 1, feedback: ['Publication is what has the requirement. Editor approval is what the sentence calls necessary.', 'The target comes before necessary. Editor approval is the requirement for publication.'] },
+   { label: 'The same word can move', before: 'Publication makes it necessary to have ', target: 'editor approval', after: '.', options: ['publication', 'editor approval'], correct: 1, feedback: ['Publication still needs something. Moving necessary earlier has not made publication the requirement.', 'Editor approval is still what publication requires. Here the target comes after necessary; in the previous sentence it came before.'] },
+ ];
+-function TargetReader({ item }: { item: TargetExample }) {
++export function TargetReader({ item }: { item: TargetExample }) {
+   const [choice, setChoice] = useState<number | null>(null);
+   const correct = choice === item.correct;
+   const id = useId();
+--- input/src/bootcamps/conditionals/components/MixedFamilyPractice.tsx
++++ final/src/bootcamps/conditionals/components/MixedFamilyPractice.tsx
+@@ -0,0 +1,131 @@
++import { useId, useRef, useState } from 'react';
++import { RuleDiagram } from './ConditionalReferenceSequence';
++
++type MixedItem = {
++  sentence: string;
++  word: string;
++  family: 'sufficient' | 'necessary';
++  target: string;
++  partial: string;
++  other: string;
++  left: string;
++  right: string;
++  partialFeedback: string;
++  otherFeedback: string;
++  reversed: string;
++  why: string;
++  readback: string;
++};
++
++// Original sentences. The families alternate and no label is shown until the
++// learner has checked a translation, so the word itself has to be read.
++export const mixedFamilyItems: MixedItem[] = [
++  {
++    sentence: 'The match moves indoors if the forecast shows lightning.', word: 'if', family: 'sufficient',
++    target: 'the forecast shows lightning', partial: 'the forecast', other: 'the match moves indoors',
++    left: 'Forecast shows lightning', right: 'Match moves indoors',
++    partialFeedback: "The forecast alone isn't something that can be true or false. If refers to the whole clause: the forecast shows lightning.",
++    otherFeedback: 'Moving indoors is what the rule establishes. If points to the clause after it: the forecast shows lightning.',
++    reversed: 'Your arrow makes every indoor match proof of a lightning forecast. The match could move indoors because the pitch is flooded, and that case still fits the sentence.',
++    why: "The if-clause comes last, but it's still the part that's enough. A lightning forecast establishes the move indoors.",
++    readback: 'If the forecast shows lightning, the match moves indoors.',
++  },
++  {
++    sentence: 'A student joins the choir trip only if a parent signs the consent form.', word: 'only if', family: 'necessary',
++    target: 'a parent signs the consent form', partial: 'a parent', other: 'a student joins the choir trip',
++    left: 'Joins choir trip', right: 'Parent signs consent form',
++    partialFeedback: 'A parent alone drops what the parent has to do. The requirement is the signature: a parent signs the consent form.',
++    otherFeedback: 'Joining the trip is the condition that carries the requirement. Only if points to what joining needs: a signed form.',
++    reversed: "Your arrow promises a place on the trip to every student with a signed form. A student with a signed form who is ill on the day fits the sentence, so the signature isn't enough.",
++    why: 'Only if names a requirement. Any student on the trip has a signed form. A signed form leaves the trip open.',
++    readback: 'If a student joins the choir trip, a parent has signed the consent form.',
++  },
++  {
++    sentence: 'Every bus leaving the depot after midnight stops at the hospital.', word: 'every', family: 'sufficient',
++    target: 'bus leaving the depot after midnight', partial: 'bus', other: 'stops at the hospital',
++    left: 'Bus leaves depot after midnight', right: 'Stops at hospital',
++    partialFeedback: 'Bus alone would cover the daytime buses too. Every refers to buses leaving the depot after midnight, so keep the depot and the time.',
++    otherFeedback: 'Stopping at the hospital is what the rule establishes. Every points to the group it covers: buses leaving the depot after midnight.',
++    reversed: "Your arrow says any bus at the hospital left the depot after midnight. A morning bus stopping there fits the sentence, so the stop doesn't settle when the bus left the depot.",
++    why: 'Every covers each bus leaving the depot after midnight. Pick one, and the rule tells you it stops at the hospital.',
++    readback: 'If a bus leaves the depot after midnight, it stops at the hospital.',
++  },
++  {
++    sentence: 'A booked table is required to eat on the terrace.', word: 'required', family: 'necessary',
++    target: 'a booked table', partial: 'a table', other: 'eat on the terrace',
++    left: 'Eats on terrace', right: 'Has booked table',
++    partialFeedback: "A table drops booked, and booked is the requirement. The sentence doesn't ask for just any table; it asks for a booked one.",
++    otherFeedback: 'Eating on the terrace is what needs the booking. Required refers back to the idea before it: a booked table.',
++    reversed: 'Your arrow sends everyone with a booking to the terrace. A diner could book a table and eat inside, and the sentence allows that.',
++    why: "Here the target comes before required. Eating on the terrace needs a booked table. A booking alone doesn't put you there.",
++    readback: 'If someone eats on the terrace, they have a booked table.',
++  },
++  {
++    sentence: 'The only phones placed in the same-day repair queue are phones that arrived with a cracked screen.', word: 'the only', family: 'sufficient',
++    target: 'phones placed in the same-day repair queue', partial: 'phones', other: 'phones that arrived with a cracked screen',
++    left: 'Phone in same-day repair queue', right: 'Arrived with cracked screen',
++    partialFeedback: 'Phones alone would make a claim about every phone in the shop. The only refers to phones placed in the same-day repair queue.',
++    otherFeedback: 'Arriving with a cracked screen is what every phone in that queue has in common. Ask the only what? Phones placed in the same-day repair queue.',
++    reversed: 'Your arrow puts every phone that arrived with a cracked screen in the same-day repair queue. A phone that arrived cracked and was booked in for next week fits the sentence.',
++    why: "The only introduces the group that's enough. Any phone placed in the same-day repair queue arrived with a cracked screen. Arriving with a cracked screen doesn't put a phone in that queue.",
++    readback: 'If a phone is placed in the same-day repair queue, it arrived with a cracked screen.',
++  },
++  {
++    sentence: 'Only stalls with a permit sell food at the festival.', word: 'only', family: 'necessary',
++    target: 'stalls with a permit', partial: 'stalls', other: 'sell food at the festival',
++    left: 'Stall sells food at festival', right: 'Stall has permit',
++    partialFeedback: 'Stalls alone loses the restriction. Only refers to stalls with a permit.',
++    otherFeedback: 'Selling food is what the restriction limits. Only points to which stalls may do it: stalls with a permit.',
++    reversed: 'Your arrow says every stall with a permit sells food. A permitted stall selling only crafts fits the sentence.',
++    why: "Only limits food sellers to permitted stalls. A stall selling food has a permit. A permit doesn't tell you what the stall sells.",
++    readback: 'If a stall sells food at the festival, it has a permit.',
++  },
++];
++
++const targetOptions = (item: MixedItem, index: number) => {
++  const options = [item.target, item.partial, item.other];
++  return [...options.slice(index % 3), ...options.slice(0, index % 3)];
++};
++const sideOptions = (item: MixedItem, index: number) => index % 2 === 0 ? [item.right, item.left] : [item.left, item.right];
++
++function MixedItemCheck({ item, index, onChecked }: { item: MixedItem; index: number; onChecked: (checked: boolean) => void }) {
++  const [target, setTarget] = useState<string | null>(null);
++  const [left, setLeft] = useState<string | null>(null);
++  const [checked, setChecked] = useState(false);
++  const targetQuestion = useId();
++  const sideQuestion = useId();
++  const firstChoice = useRef<HTMLButtonElement>(null);
++  const change = (update: () => void) => { update(); setChecked(false); onChecked(false); };
++  const reset = () => { firstChoice.current?.focus(); setTarget(null); setLeft(null); setChecked(false); onChecked(false); };
++  const targetCorrect = target === item.target;
++  const sideCorrect = left === item.left;
++  const number = index + 1;
++  return <div className="co-lab co-check" data-mixed-item={number}>
++    <blockquote>{item.sentence}</blockquote>
++    <h3 id={targetQuestion}>What does <strong>{item.word}</strong> refer to? Choose the complete idea.</h3>
++    <div className="co-choices" role="group" aria-labelledby={targetQuestion}>{targetOptions(item, index).map((option, optionIndex) => <button ref={optionIndex === 0 ? firstChoice : undefined} type="button" key={option} aria-pressed={target === option} onClick={() => change(() => setTarget(option))}>{option}</button>)}</div>
++    <h3 id={sideQuestion}>Which complete idea goes on the left of the must arrow?</h3>
++    <div className="co-choices" role="group" aria-labelledby={sideQuestion}>{sideOptions(item, index).map(option => <button type="button" key={option} aria-pressed={left === option} onClick={() => change(() => setLeft(option))}>{option}</button>)}</div>
++    {left && <RuleDiagram left={left} right={left === item.left ? item.right : item.left} label={`Your diagram: ${left} implies ${left === item.left ? item.right : item.left}`}/>}
++    <div className="cr-control-row"><button type="button" className="co-primary" disabled={target === null || left === null} onClick={() => { setChecked(true); onChecked(true); }}>Check sentence {number}</button><button type="button" className="cr-reset" onClick={reset}>Try sentence {number} again</button></div>
++    <div role="status">{checked && <div className={`co-feedback ${targetCorrect && sideCorrect ? 'co-correct' : ''}`}>
++      <strong>{targetCorrect && sideCorrect ? 'Your translation preserves the rule.' : 'Revise the part described below.'}</strong>
++      <p>{targetCorrect ? `You found the complete target: ${item.target}.` : target === item.partial ? item.partialFeedback : item.otherFeedback}</p>
++      <p>{sideCorrect ? 'Your arrow keeps the direction the sentence gives.' : item.reversed}</p>
++      <p>Here, <strong>{item.word}</strong> points to what is {item.family === 'sufficient' ? 'enough, so its target goes on the left' : 'required, so its target goes on the right'}. {item.why}</p>
++      <p>Read it back: {item.readback}</p>
++    </div>}</div>
++  </div>;
++}
++
++export function MixedFamilyPractice() {
++  const [current, setCurrent] = useState(0);
++  const [checked, setChecked] = useState<boolean[]>(() => mixedFamilyItems.map(() => false));
++  return <>
++    <p>These sentences mix both kinds of expression, and nothing tells you which kind is coming. For each one, find the complete idea the expression refers to. Then decide which idea is enough and put it on the left. Check your translation before moving on.</p>
++    <p className="co-kicker" role="status">Sentence {current + 1} of {mixedFamilyItems.length}</p>
++    {mixedFamilyItems.map((item, index) => <div key={item.sentence} hidden={current !== index}><MixedItemCheck item={item} index={index} onChecked={value => setChecked(previous => previous.map((old, itemIndex) => itemIndex === index ? value : old))}/></div>)}
++    <div className="co-choices"><button type="button" disabled={current === 0} onClick={() => setCurrent(current - 1)}>Previous mixed sentence</button><button type="button" disabled={current === mixedFamilyItems.length - 1 || !checked[current]} onClick={() => setCurrent(current + 1)}>Next mixed sentence</button></div>
++    <p>Moving between sentences keeps your choices and feedback.</p>
++  </>;
++}
+--- input/src/bootcamps/conditionals/components/OpeningCourseContent.test.tsx
++++ final/src/bootcamps/conditionals/components/OpeningCourseContent.test.tsx
+@@ -0,0 +1,187 @@
++import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
++import { afterEach, expect, it } from 'vitest';
++import { OpeningCourseContent } from './OpeningCourseContent';
++import { mixedFamilyItems } from './MixedFamilyPractice';
++
++afterEach(cleanup);
++
++const section = (name: string) => screen.getByRole('heading', { level: 2, name }).closest('section') as HTMLElement;
++
++it('alternates sufficient and necessary sentences in the mixed set', () => {
++  expect(mixedFamilyItems.length).toBeGreaterThanOrEqual(6);
++  mixedFamilyItems.forEach((item, index) => expect(item.family).toBe(index % 2 === 0 ? 'sufficient' : 'necessary'));
++  expect(new Set(mixedFamilyItems.map(item => item.sentence)).size).toBe(mixedFamilyItems.length);
++});
++
++it('requires a checked target and arrow before revealing the family in mixed practice', () => {
++  render(<OpeningCourseContent id="mixed-practice"/>);
++  const mixed = section('Mix both families without the label');
++  const first = mixedFamilyItems[0];
++  const item = within(mixed).getByText(first.sentence).closest('[data-mixed-item]') as HTMLElement;
++  expect(within(mixed).queryByText(/points to what is/)).toBeNull();
++  expect(mixed.textContent).not.toMatch(/Group 1|Group 2/);
++  const check = within(item).getByRole('button', { name: 'Check sentence 1' });
++  expect(check).toBeDisabled();
++  expect(within(mixed).getByRole('button', { name: 'Next mixed sentence' })).toBeDisabled();
++
++  // Incomplete target and reversed arrow each receive their own explanation.
++  fireEvent.click(within(item).getByRole('button', { name: first.partial }));
++  fireEvent.click(within(item).getByRole('button', { name: first.right }));
++  expect(check).toBeEnabled();
++  fireEvent.click(check);
++  expect(within(item).getByText('Revise the part described below.')).toBeVisible();
++  expect(within(item).getByText(first.partialFeedback)).toBeVisible();
++  expect(within(item).getByText(first.reversed)).toBeVisible();
++  expect(within(item).getByText(/points to what is enough, so its target goes on the left/)).toBeVisible();
++
++  fireEvent.click(within(item).getByRole('button', { name: 'Try sentence 1 again' }));
++  expect(within(item).queryByText(first.reversed)).toBeNull();
++  fireEvent.click(within(item).getByRole('button', { name: first.target }));
++  fireEvent.click(within(item).getByRole('button', { name: first.left }));
++  fireEvent.click(check);
++  expect(within(item).getByText('Your translation preserves the rule.')).toBeVisible();
++
++  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed sentence' }));
++  expect(within(mixed).getByText(mixedFamilyItems[1].sentence)).toBeVisible();
++  expect(within(mixed).getByText(first.sentence)).not.toBeVisible();
++  fireEvent.click(within(mixed).getByRole('button', { name: 'Previous mixed sentence' }));
++  expect(within(item).getByText('Your translation preserves the rule.')).toBeVisible();
++  expect(screen.getByText('Every envelope in the dispatch tray is stamped.')).toBeInTheDocument();
++});
++
++it('keeps the depot and the intake-time classification in every field of the corrected mixed items', () => {
++  const bus = mixedFamilyItems[2];
++  for (const text of [bus.sentence, bus.target, bus.left, bus.partialFeedback, bus.otherFeedback, bus.reversed, bus.why, bus.readback]) {
++    expect(text).toMatch(/depot/);
++  }
++  const phone = mixedFamilyItems[4];
++  const fields = [phone.sentence, phone.target, phone.other, phone.left, phone.right, phone.partialFeedback, phone.otherFeedback, phone.reversed, phone.why, phone.readback];
++  for (const text of fields) expect(text).not.toMatch(/repaired on the same day|has a cracked screen|has cracked screen/i);
++  for (const text of [phone.sentence, phone.target, phone.left, phone.partialFeedback, phone.otherFeedback, phone.reversed, phone.why, phone.readback]) {
++    expect(text).toMatch(/same-day repair queue/);
++  }
++  for (const text of [phone.sentence, phone.other, phone.right, phone.otherFeedback, phone.reversed, phone.why, phone.readback]) {
++    expect(text).toMatch(/arrived with a cracked screen|arrived with cracked screen|arrived cracked|Arriving with a cracked screen/i);
++  }
++});
++
++it('checks the corrected bus and phone translations through the learner controls', () => {
++  render(<OpeningCourseContent id="mixed-practice"/>);
++  const mixed = section('Mix both families without the label');
++  const solve = (index: number) => {
++    const entry = mixedFamilyItems[index];
++    const item = within(mixed).getByText(entry.sentence).closest('[data-mixed-item]') as HTMLElement;
++    fireEvent.click(within(item).getByRole('button', { name: entry.target }));
++    fireEvent.click(within(item).getByRole('button', { name: entry.left }));
++    fireEvent.click(within(item).getByRole('button', { name: `Check sentence ${index + 1}` }));
++    expect(within(item).getByText('Your translation preserves the rule.')).toBeVisible();
++    return item;
++  };
++  solve(0);
++  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed sentence' }));
++  solve(1);
++  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed sentence' }));
++
++  const bus = mixedFamilyItems[2];
++  const busItem = within(mixed).getByText(bus.sentence).closest('[data-mixed-item]') as HTMLElement;
++  fireEvent.click(within(busItem).getByRole('button', { name: bus.target }));
++  fireEvent.click(within(busItem).getByRole('button', { name: 'Stops at hospital' }));
++  expect(within(busItem).getByRole('img', { name: 'Your diagram: Stops at hospital implies Bus leaves depot after midnight' })).toBeVisible();
++  fireEvent.click(within(busItem).getByRole('button', { name: 'Check sentence 3' }));
++  expect(within(busItem).getByText(bus.reversed)).toBeVisible();
++  fireEvent.click(within(busItem).getByRole('button', { name: 'Bus leaves depot after midnight' }));
++  fireEvent.click(within(busItem).getByRole('button', { name: 'Check sentence 3' }));
++  expect(within(busItem).getByText('Your translation preserves the rule.')).toBeVisible();
++  expect(within(busItem).getByText('Read it back: If a bus leaves the depot after midnight, it stops at the hospital.')).toBeVisible();
++  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed sentence' }));
++  solve(3);
++  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed sentence' }));
++
++  const phone = mixedFamilyItems[4];
++  const phoneItem = within(mixed).getByText(phone.sentence).closest('[data-mixed-item]') as HTMLElement;
++  fireEvent.click(within(phoneItem).getByRole('button', { name: 'phones that arrived with a cracked screen' }));
++  fireEvent.click(within(phoneItem).getByRole('button', { name: 'Arrived with cracked screen' }));
++  fireEvent.click(within(phoneItem).getByRole('button', { name: 'Check sentence 5' }));
++  expect(within(phoneItem).getByText(phone.otherFeedback)).toBeVisible();
++  expect(within(phoneItem).getByText(phone.reversed)).toBeVisible();
++  fireEvent.click(within(phoneItem).getByRole('button', { name: 'phones placed in the same-day repair queue' }));
++  fireEvent.click(within(phoneItem).getByRole('button', { name: 'Phone in same-day repair queue' }));
++  expect(within(phoneItem).getByRole('img', { name: 'Your diagram: Phone in same-day repair queue implies Arrived with cracked screen' })).toBeVisible();
++  fireEvent.click(within(phoneItem).getByRole('button', { name: 'Check sentence 5' }));
++  expect(within(phoneItem).getByText('Your translation preserves the rule.')).toBeVisible();
++  expect(within(phoneItem).getByText('Read it back: If a phone is placed in the same-day repair queue, it arrived with a cracked screen.')).toBeVisible();
++});
++
++it('walks the seven expressions with a next control while keeping manual selection', () => {
++  render(<OpeningCourseContent id="sufficient-words"/>);
++  expect(screen.getByText(/Work through all seven expressions/)).toBeVisible();
++  expect(screen.getByText('Expression 1 of 7 · 1 of 7 opened')).toBeVisible();
++  expect(screen.getByRole('heading', { name: 'Recall the expressions' })).toBeVisible();
++  const ifPanel = screen.getByRole('heading', { level: 2, name: 'If: the starting condition can come last' });
++  fireEvent.click(screen.getByRole('button', { name: 'Next expression: When' }));
++  expect(screen.getByText('Expression 2 of 7 · 2 of 7 opened')).toBeVisible();
++  expect(ifPanel).not.toBeVisible();
++  const whenPanel = screen.getByRole('heading', { level: 2, name: 'When: an occasion can supply enough information' });
++  expect(whenPanel).toBeVisible();
++  expect(whenPanel.closest('[tabindex="-1"]')).toHaveFocus();
++
++  fireEvent.click(screen.getByRole('button', { name: /^Any/ }));
++  expect(screen.getByText('Expression 7 of 7 · 3 of 7 opened')).toBeVisible();
++  expect(screen.queryByRole('button', { name: /Next expression/ })).toBeNull();
++  expect(screen.getByText(/That was the last of the seven expressions/)).toBeVisible();
++  fireEvent.click(screen.getByRole('button', { name: /^If\W+opened$/ }));
++  expect(ifPanel).toBeVisible();
++  expect(screen.getByText('Expression 1 of 7 · 3 of 7 opened')).toBeVisible();
++});
++
++it('bridges with one raffle question, then tests fresh cases with reasoned feedback', () => {
++  render(<OpeningCourseContent id="foundation-practice"/>);
++  expect(screen.getAllByRole('heading', { name: 'Does the rule itself tell us that you actually win the raffle?' })).toHaveLength(1);
++  for (const repeated of ["You don't win the raffle. Could you still get a bicycle?", 'You win the raffle. Do we need another fact to establish that you get a bicycle?', 'Under our rule, what has to follow if you win?']) {
++    expect(screen.queryByRole('heading', { name: repeated })).toBeNull();
++  }
++  const fresh = section('Carry the ideas to new rules');
++  expect(fresh.textContent).not.toContain('→');
++  expect(fresh.textContent).not.toMatch(/raffle|bicycle/);
++  const prompts = within(fresh).getAllByRole('heading', { level: 3 });
++  expect(prompts).toHaveLength(4);
++  for (const prompt of prompts) {
++    const question = prompt.closest('.cr-question') as HTMLElement;
++    const choices = within(within(question).getByRole('group')).getAllByRole('button');
++    const explanations = new Set<string>();
++    for (const choice of choices) {
++      fireEvent.click(choice);
++      explanations.add(within(question).getByRole('status').textContent || '');
++      fireEvent.click(within(question).getByRole('button', { name: 'Try again' }));
++    }
++    expect(explanations.size).toBe(choices.length);
++  }
++  fireEvent.click(screen.getByRole('button', { name: "The rule alone doesn't settle it." }));
++  expect(screen.getByText(/a promise about a possible case, not a report that the case happened/)).toBeVisible();
++});
++
++it('keeps the must-arrow note to roles, the raffle diagram and a moved if-clause', () => {
++  render(<OpeningCourseContent id="must-arrow"/>);
++  expect(screen.getByRole('button', { name: 'Find the indicator' })).toBeVisible();
++  expect(screen.getByRole('heading', { name: 'You get a bicycle if you win the raffle. Which diagram preserves this sentence?' })).toBeVisible();
++  const note = document.querySelector('[data-reference-source="8"]') as HTMLElement;
++  expect(note.textContent).not.toMatch(/only if|requires|Group 1|Group 2/i);
++  cleanup();
++  render(<OpeningCourseContent id="necessary-words"/>);
++  expect(screen.getByRole('heading', { name: 'A person borrows a locker only if they have a key. Which condition goes on the right?' })).toBeInTheDocument();
++});
++
++it('presents whole meaning as one sequence of four checks', () => {
++  render(<OpeningCourseContent id="whole-meaning"/>);
++  const headings = screen.getAllByRole('heading', { level: 2 }).map(heading => heading.textContent);
++  expect(headings).toEqual([
++    'Check a translation four ways',
++    'Check 1: find the whole target, wherever it sits',
++    'Check 2: keep every qualification',
++    'Check 3: only and the only point to different targets',
++    'Check 4: try the sentence from the inside',
++  ]);
++  expect(screen.getByText(/Borrowing a locker/)).toBeInTheDocument();
++  expect(screen.getByRole('heading', { name: 'Any applicant who submits late pays a fee. What goes left?' })).toBeVisible();
++  expect(screen.getByRole('heading', { name: 'Entry requires a current pass. What goes right?' })).toBeVisible();
++});
+--- input/src/bootcamps/conditionals/components/OpeningCourseContent.tsx
++++ final/src/bootcamps/conditionals/components/OpeningCourseContent.tsx
+@@ -1,7 +1,8 @@
+-import { Children, cloneElement, Fragment, isValidElement, useId, useState, type ReactElement, type ReactNode } from 'react';
++import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
+ import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
+-import { conditionalReferenceContent, IntegratedItem, referencePracticeItems, ReferenceQuestion, WordFamily } from './ConditionalReferenceSequence';
++import { conditionalReferenceContent, IncrementalWriter, IntegratedItem, referencePracticeItems, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
+ import { CounterexampleLab, NegativeCaseLab, RuleComparisonLab } from './CounterexampleLab';
++import { MixedFamilyPractice } from './MixedFamilyPractice';
+ import { StudyDeck } from './StudyDeck';
+ 
+ type ContentSection = ReactElement<{ id?: string; number?: number; title?: string; children?: ReactNode; dark?: boolean; 'data-reference-boundary'?: boolean }>;
+@@ -57,29 +58,133 @@
+   </details>;
+ }
+ 
++// Only and only if both mark the requirement, from different places in the sentence.
++function OnlyAndOnlyIf() {
++  return <NoteSection title="Only and only if can mark the same requirement">
++    <div className="cr-language-pair"><p><strong>Only</strong> [people with a key] borrow a locker.</p><p>A person borrows a locker <strong>only if</strong> [they have a key].</p><span>Only and only if identify the necessary condition here.</span></div>
++    <p>Both sentences say locker borrowers have a key. In the first, only is at the beginning. In the second, only if is in the middle. Having a key is required in both, so it goes right. Read only if as the whole expression; the if inside it isn't doing the job if does on its own.</p>
++    <ReferenceQuestion prompt="A person borrows a locker only if they have a key. Which condition goes on the right?" options={['Borrows a locker', 'Has a key']} correct={1} feedback={['Borrowing is what has the requirement. Ask what a locker borrower must have: a key. Borrowing goes left; having a key goes right.', 'Having a key is required for borrowing. Only if appears in the middle, but it still identifies the necessary condition.']}/>
++  </NoteSection>;
++}
++
+ function IndicatorNote({ group }: { group: 'group-1' | 'group-2' }) {
+   const [selected, setSelected] = useState(0);
++  const [opened, setOpened] = useState<number[]>([0]);
++  const [focusPanel, setFocusPanel] = useState(false);
++  const panels = useRef<(HTMLDivElement | null)[]>([]);
+   const id = useId();
+   const content = groupSections(group);
+   const expressions = content.slice(2, 9);
++  const names = expressions.map(section => section.props.title?.split(':')[0]);
++  useEffect(() => {
++    if (!focusPanel) return;
++    panels.current[selected]?.focus();
++    setFocusPanel(false);
++  }, [focusPanel, selected]);
++  const choose = (index: number, moveFocus = false) => {
++    setSelected(index);
++    setOpened(previous => previous.includes(index) ? previous : [...previous, index]);
++    setFocusPanel(moveFocus);
++  };
++  const last = selected === expressions.length - 1;
+   // Two introductions and the seven complete expression explanations belong
+   // together in one concept note, not nine separate navigation destinations.
+   return <>{content.slice(0, 2)}
+-    <div className="co-word-tabs" role="group" aria-label="Choose an expression">{expressions.map((section, index) => <button type="button" key={section.props.title} aria-pressed={selected === index} aria-controls={`${id}-${index}`} onClick={() => setSelected(index)}>{section.props.title?.split(':')[0]}</button>)}</div>
+-    {expressions.map((section, index) => <div key={section.props.title} id={`${id}-${index}`} hidden={selected !== index}>{section}</div>)}
++    <p className="co-word-guide">Work through all seven expressions. Each one does the same job in a different sentence, and each has its own trap to check. Use Next expression to go in order, or choose any expression to read it again.</p>
++    <div className="co-word-tabs" role="group" aria-label="Choose an expression">{expressions.map((section, index) => <button type="button" key={section.props.title} aria-pressed={selected === index} aria-controls={`${id}-${index}`} onClick={() => choose(index)}>{names[index]}{opened.includes(index) && <><span aria-hidden="true"> ✓</span><span className="co-sr-only">, opened</span></>}</button>)}</div>
++    <p className="co-kicker" role="status">Expression {selected + 1} of {expressions.length} · {opened.length} of {expressions.length} opened</p>
++    {expressions.map((section, index) => <div key={section.props.title} id={`${id}-${index}`} hidden={selected !== index} tabIndex={-1} ref={element => { panels.current[index] = element; }}>{section}</div>)}
++    <div className="co-choices">{last
++      ? <p>That was the last of the seven expressions. Choose any of them to read it again, or recall them with the cards below.</p>
++      : <button type="button" className="co-primary" onClick={() => choose(selected + 1, true)}>Next expression: {names[selected + 1]}</button>}</div>
++    {group === 'group-2' && <OnlyAndOnlyIf/>}
+     <FamilySupplement group={group}/>
+-    <NoteSection title="Recall the expressions"><p>Explain the relationship before turning each card. Compare the complete ideas and the direction with your answer.</p><StudyDeck group={group}/></NoteSection>
+-  </>;
+-}
++    <NoteSection title="Recall the expressions"><p>Once you've read the seven examples, use these cards to recall them. Explain the relationship before turning each card, then compare the complete ideas and the direction with your answer.</p><StudyDeck group={group}/></NoteSection>
++  </>;
++}
++
++// The raffle note sits before the families: arrow meaning, sides, one diagram and a moved if-clause.
++function MustArrowNote() {
++  return <section className="co-section cr-course-section" data-reference-source={8}>
++    <div className="co-section-heading"><h2>Give the relationship a shorter form</h2></div>
++    <div className="cr-step-body">
++      <p>Put the sufficient condition on the <strong>left</strong>, the necessary condition on the <strong>right</strong>, and a <strong>must arrow</strong> between them.</p>
++      <RuleDiagram left="Sufficient: enough" right="Necessary: required"/>
++      <p>Read the arrow as <strong>must</strong>: if the left condition is true, the right condition must be true too. It does not mean the left caused the right, or that the right happens later.</p>
++      <p>The diagram holds the <strong>complete conditions</strong>, not the indicator word. An indicator helps you find a condition's job. Once you've found that job, place the whole condition on its side of the arrow.</p>
++      <h3>Build the raffle diagram one step at a time</h3>
++      <p>First find the indicator, then draw the arrow, place the complete idea it refers to, and fill the other side.</p>
++      <IncrementalWriter/>
++      <h3>The sentence can move. The roles stay the same.</h3>
++      <p>Compare these two versions of our raffle rule. The indicator is bold; the complete idea it refers to is in brackets.</p>
++      <div className="cr-language-pair"><p><strong>If</strong> [you win the raffle], you get a bicycle.</p><p>You get a bicycle <strong>if</strong> [you win the raffle].</p><span>If identifies the sufficient condition in both sentences.</span></div>
++      <p>In the second sentence, if appears in the middle. Its condition comes last, but winning is still enough to establish getting a bicycle. Don't let the first phrase in English choose the first side of your diagram.</p>
++      <ReferenceQuestion prompt="You get a bicycle if you win the raffle. Which diagram preserves this sentence?" options={['Get bicycle → Win', 'Win → Get bicycle']} correct={1} feedback={['You let sentence order choose the arrow. The if-clause still makes winning enough for getting a bicycle.', 'The sufficient condition is still winning. Where it appears in the sentence does not change what it establishes.']}/>
++    </div>
++  </section>;
++}
++
++// One translation process, checked four ways, instead of five restarted lessons.
++function WholeMeaningNote() {
++  const onlyComparison = groupSection('group-2', 'Compare only with the only');
++  const insideCheck = Children.toArray(reference(12).props.children);
++  return <>
++    <NoteSection title="Check a translation four ways">
++      <p>A diagram can point the right way and still say the wrong thing. Each check below catches a different slip in the same translation process.</p>
++      <ol>
++        <li><strong>Target:</strong> did you find the whole idea the indicator refers to, wherever it sits?</li>
++        <li><strong>Qualification:</strong> did your short label keep every restriction?</li>
++        <li><strong>Direction:</strong> did a similar-looking expression trick you into the wrong side?</li>
++        <li><strong>Imagined case:</strong> does your arrow promise something the sentence leaves open?</li>
++      </ol>
++    </NoteSection>
++    <NoteSection title="Check 1: find the whole target, wherever it sits">
++      <p>An indicator's <strong>target</strong> is the complete word or phrase it refers to. In “All guests wearing blue badges receive vouchers,” all refers to guests wearing blue badges, not guests alone.</p>
++      <p>The target often comes after its indicator. But often isn't always. Try these sentences in order.</p>
++      {targetExamples.map(item => <TargetReader item={item} key={item.label}/>)}
++      <div className="cr-language-pair"><p>[Having a key] is <strong>required</strong> for borrowing a locker.</p><p>Borrowing a locker <strong>requires</strong> [having a key].</p><span>Having a key is the requirement in both sentences.</span></div>
++      <p>The target comes before required in the first sentence and after requires in the second. Having a key still goes right. Neither the closest noun nor the next word is a reliable target rule. Ask which complete idea the sentence calls required, then give that idea its role.</p>
++    </NoteSection>
++    <NoteSection title="Check 2: keep every qualification">
++      <p>Once you have the target, shorten it without losing what limits it. These two sentences test the same habit from opposite sides of the arrow.</p>
++      <div className="co-word-comparison">
++        <div><blockquote>Any applicant who submits late pays a fee.</blockquote><p>Applicant alone isn't the condition. The sentence is about an applicant who submits late. Drop that restriction and your diagram makes a claim about on-time applicants too.</p></div>
++        <div><blockquote>Entry requires a current pass.</blockquote><p>A current pass is required. Has a pass drops current and would include an expired pass. A shorter label should save writing, not change the requirement.</p></div>
++      </div>
++      <ReferenceQuestion prompt="Any applicant who submits late pays a fee. What goes left?" options={['Applicant', 'Applicant submits late']} correct={1} feedback={['You dropped the late-submission restriction. Applicant alone would cover every applicant, including someone who submits on time. The sufficient idea is applicant submits late.', 'This keeps the complete sufficient idea. The rule covers applicants who submit late, so keep that restriction with the applicant.']}/>
++      <ReferenceQuestion prompt="Entry requires a current pass. What goes right?" options={['Has current pass', 'Has any pass']} correct={0} feedback={['This keeps the full requirement. Entry needs a current pass; an expired pass does not meet that requirement.', 'You dropped current from the requirement. Has any pass would include an expired pass, which is not what the sentence requires.']}/>
++    </NoteSection>
++    <NoteSection title="Check 3: only and the only point to different targets">{onlyComparison.props.children}</NoteSection>
++    <NoteSection title="Check 4: try the sentence from the inside">{insideCheck.slice(0, -1)}</NoteSection>
++  </>;
++}
++
++const freshCases = [
++  { rule: 'If it rains on Saturday, the market moves into the town hall.', questions: [
++    { prompt: "It's Friday. You've read this rule and nothing else. Where will the market be on Saturday?", options: ['In the town hall.', 'Outdoors, as usual.', "The rule alone doesn't settle it."], correct: 2, feedback: ['You treated the rule as a weather report. It tells you what follows if it rains. Nobody has told you that it will rain.', "You assumed it won't rain. The rule hasn't told you that either, so the market's location is still open.", "The rule describes what would happen if it rains. It's a promise about a possible case, not a report that the case happened."] },
++    { prompt: "Saturday arrives, and it's raining. Now where is the market?", options: ['In the town hall.', 'Still not settled.'], correct: 0, feedback: ['Now you have a fact, not just a rule. Rain on Saturday meets the condition, so the rule puts the market in the town hall.', "The fact changes things. The rule covers a rainy Saturday, and that's what we have, so the market's location is settled."] },
++  ] },
++  { rule: 'Every student going on the museum trip has a signed permission slip.', questions: [
++    { prompt: 'Which description matches this rule?', options: ['Going on the trip is enough to know a student has a signed slip.', 'Having a signed slip is enough to know a student is going on the trip.', 'Each one is enough to know the other.'], correct: 0, feedback: ['Pick any student on the trip: the rule says they have a signed slip. Going is enough to establish the slip, and the slip is what every student on the trip is required to have.', "You made the requirement enough. A student could have a signed slip and stay at school with a cold. That student doesn't break the rule.", "The rule gives only one direction. Going on the trip establishes a signed slip. A student with a slip who stays behind fits the rule, so the slip doesn't establish going."] },
++  ] },
++  { rule: 'If the café runs out of bread, it closes early.', questions: [
++    { prompt: 'Today the café did not run out of bread. Did it close early?', options: ['No. It stayed open until the usual time.', 'Yes. It closed early.', 'Not settled. It could stay open or close early for another reason.'], correct: 2, feedback: ['You treated running out of bread as the only reason to close early. The rule gives one reason. A café that closed early because of a power cut would still fit it.', "Nothing here establishes an early closing. The rule tells us what happens when the bread runs out, and today it didn't.", "Given that fact, the rule doesn't settle whether the café closed early. It could have stayed open, or closed early for another reason. Both cases fit the rule."] },
++  ] },
++];
+ 
+ function FoundationPractice() {
+-  const definitionQuestions = [1, 2, 4].flatMap(number => sections(reference(number).props.children).filter(child => child.type === ReferenceQuestion).map((child, index) => cloneElement(child, { key: `${number}-${index}` })));
++  const anchor = sections(reference(1).props.children).find(child => child.type === ReferenceQuestion);
++  if (!anchor) throw new Error('Missing approved raffle retrieval question');
+   const fresh = sections(Fundamentals().props.children).find(section => section.props.title === 'Enough does not mean the only way');
+   if (!fresh) throw new Error('Missing approved fresh sufficient-condition check');
+   const freshContent = Children.toArray(fresh.props.children);
+   const freshCheck = freshContent[freshContent.length - 1];
+   return <>
+-    <NoteSection title="Separate the rule from the fact"><blockquote>If you win the raffle, you get a bicycle.</blockquote><p>Use the rule to decide what each fact establishes. A wrong answer is a reason to inspect the connection and try again.</p>{definitionQuestions}</NoteSection>
++    <NoteSection title="Separate the rule from the fact"><blockquote>If you win the raffle, you get a bicycle.</blockquote><p>Start with the rule you know. Decide what the rule itself establishes before any fact arrives.</p>{anchor}</NoteSection>
++    <NoteSection title="Carry the ideas to new rules">
++      <p>Now the situations change. Take each rule as given and decide what it establishes, what it requires and what it leaves open. A wrong answer is a reason to inspect the connection and try again.</p>
++      {freshCases.map(item => <div key={item.rule} className="co-fresh-case"><blockquote>{item.rule}</blockquote>{item.questions.map(question => <ReferenceQuestion key={question.prompt} {...question}/>)}</div>)}
++    </NoteSection>
+     <NoteSection title="Try a fresh case">{freshCheck}</NoteSection>
+     <NoteSection title="Test the limit with a possible case"><ReferenceQuestion prompt="Someone claims that getting a bicycle proves you won the raffle. Which possible case fits our rule but disproves that claim?" options={['You win and get a bicycle.', 'You do not win, but get a bicycle as a gift.', 'You win and never get a bicycle.']} correct={1} feedback={['This fits both the rule and the claim. It does not show why the claim adds something.', 'The rule promises a bicycle to a winner. It does not exclude a bicycle received as a gift without winning, so this case fits the rule and disproves the claim.', 'Winning without getting a bicycle breaks the original rule. We need a case that keeps the rule true.']}/></NoteSection>
+   </>;
+@@ -119,15 +224,15 @@
+     case 'meaning': return <ReferenceBody number={1} omitTransition/>;
+     case 'sufficient': return <ReferenceBody number={2} omitTransition/>;
+     case 'necessary': return <><ReferenceBody number={4} omitTransition/><ReferenceQuestion prompt="You get a bicycle. Does that establish that you won the raffle?" options={['Yes. Getting a bicycle proves winning.', 'No. You could get a bicycle without winning.']} correct={1} feedback={['You made the required result enough to establish winning. The rule does not say winning is the only way to get a bicycle.', 'You could buy a bicycle or receive one as a gift. Neither possibility breaks the rule, which only tells us what must follow if you win.']}/></>;
+-    case 'must-arrow': return <><ReferenceBody number={8}/><NoteSection title="Recall enough and required"><p>Use these new examples to check the roles and their direction.</p><StudyDeck group="foundation"/></NoteSection></>;
++    case 'must-arrow': return <><MustArrowNote/><NoteSection title="Recall enough and required"><p>Use these new examples to check the roles and their direction.</p><StudyDeck group="foundation"/></NoteSection></>;
+     case 'sufficient-words': return <IndicatorNote group="group-1"/>;
+     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
+-    case 'whole-meaning': return <><ReferenceBody number={11} omitTransition/>{groupSection('group-1', 'Keep the whole condition')}{groupSection('group-2', 'Keep the whole condition')}{groupSection('group-2', 'Compare only with the only')}<ReferenceBody number={12} omitTransition/></>;
++    case 'whole-meaning': return <WholeMeaningNote/>;
+     case 'missing-requirement': return <><ReferenceBody number={6}/><ReferenceBody number={7} omitTransition/></>;
+     case 'contrapositive': return <><ReferenceBody number={9}/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection></>;
+     case 'foundation-practice': return <FoundationPractice/>;
+     case 'sufficient-practice': return <><GroupPractice group="group-1"/><NoteSection title="Build a case that proves the limit"><CounterexampleLab/></NoteSection></>;
+-    case 'mixed-practice': return <><GroupPractice group="group-2"/><NoteSection title="Keep the rule while the wording changes"><RuleComparisonLab/></NoteSection></>;
++    case 'mixed-practice': return <><GroupPractice group="group-2"/><NoteSection title="Mix both families without the label"><MixedFamilyPractice/></NoteSection><NoteSection title="Keep the rule while the wording changes"><RuleComparisonLab/></NoteSection></>;
+     case 'contrapositive-practice': return <ContrapositivePractice/>;
+     default: throw new Error(`Unknown opening course content: ${id}`);
+   }

@@ -1,0 +1,77 @@
+.omd-runner {
+  --omd-ink:var(--co-ink,hsl(var(--foreground)));
+  --omd-muted:var(--co-polish-muted,hsl(var(--muted-foreground)));
+  --omd-panel:var(--co-polish-panel,hsl(var(--background)));
+  --omd-fill:var(--co-polish-fill,hsl(var(--muted)));
+  --omd-selected:var(--co-polish-selected,hsl(var(--secondary)));
+  --omd-line:var(--co-polish-line,hsl(var(--border)));
+  --omd-control-line:var(--co-polish-control-line,hsl(var(--border)));
+  --omd-accent:var(--co-teal,hsl(var(--primary)));
+  --omd-action-ink:var(--co-action-ink,hsl(var(--primary-foreground)));
+  --omd-focus:var(--co-coral,hsl(var(--ring)));
+}
+.omd-runner { max-width:760px; margin:0 auto; padding:28px 0; color:var(--omd-ink); font-size:1rem; }
+/* One exercise surface per question; the course wrapper supplies only the layout. */
+.oc-course-body:has(.omd-runner),
+.opening-course-content:has(.omd-runner) { background:transparent; }
+.omd-progress-heading { display:flex; justify-content:space-between; gap:16px; font-size:0.8125rem; color:var(--omd-muted); }
+.omd-progress { width:100%; height:8px; background:var(--omd-fill); border-radius:999px; overflow:hidden; margin:12px 0 28px; }
+.omd-progress>span { display:block; height:100%; background:var(--omd-accent); border-radius:inherit; }
+.omd-runner h2 { font-family:Georgia,serif; font-size:clamp(1.625rem,3vw,2.125rem); line-height:1.2; font-weight:500; margin:0 0 14px; }
+.omd-runner h2:focus { outline:none; }
+.omd-purpose { color:var(--omd-muted); line-height:1.7; margin-bottom:28px; max-width:62ch; }
+.omd-introduction { max-width:640px; padding:8px 0 24px; }
+.omd-introduction>p { font-size:1.125rem; line-height:1.75; margin:0 0 24px; }
+.omd-introduction blockquote { font:400 clamp(1.5rem,3vw,1.875rem)/1.5 Georgia,serif; margin:32px 0; padding:24px; border:1px solid var(--omd-line); border-radius:8px; background:var(--omd-panel); }
+.omd-introduction .omd-primary { margin-top:8px; }
+.omd-question { background:var(--omd-panel); border:1px solid var(--omd-line); border-radius:16px; padding:28px; }
+.omd-question blockquote,
+.omd-runner [data-mixed-item]>blockquote,
+.omd-diagram .cir-prompt { margin:0 0 28px; font-family:Georgia,serif; font-size:1.75rem; line-height:1.45; }
+.oc-course-body .omd-runner [data-mixed-item] { margin:0; padding:28px; background:var(--omd-panel); border:1px solid var(--omd-line); border-radius:16px; box-shadow:none; }
+.omd-runner [data-mixed-item]>p { margin:0 0 24px; color:var(--omd-muted); font-size:1rem; line-height:1.7; max-width:65ch; }
+.omd-runner [data-mixed-item]>label { display:block; font-size:1rem; line-height:1.5; font-weight:600; }
+.omd-runner [data-mixed-item] .co-attempt-input { margin:12px 0 24px; padding:14px; font-size:1rem; border-color:var(--omd-control-line); background:var(--omd-panel); }
+.omd-runner [data-mixed-item]>h3 { margin:28px 0 16px; font-family:inherit; font-size:1.125rem; font-weight:500; line-height:1.6; }
+.omd-runner [data-mixed-item] .co-choices { gap:12px; margin:0 0 24px; }
+.omd-runner [data-mixed-item] .cr-control-row { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+.omd-runner [data-mixed-item] .co-feedback { margin:24px 0 0; padding:20px 0 0; border-top:1px solid var(--omd-line); border-radius:0; background:transparent; line-height:1.7; }
+.omd-runner [data-mixed-item] .co-feedback p { margin:12px 0 0; }
+.omd-question h3 { font-family:inherit; font-size:1.125rem; line-height:1.6; margin-bottom:18px; }
+.omd-options { display:grid; gap:12px; margin-bottom:24px; }
+.omd-runner button { min-height:44px; padding:12px 18px; border:1px solid var(--omd-control-line); border-radius:8px; color:inherit; font-size:1rem; line-height:1.5; text-align:left; overflow-wrap:anywhere; }
+.omd-options button { background:var(--omd-panel); }
+.omd-options button[aria-pressed=true] { background:var(--omd-selected); border-color:var(--omd-accent); }
+.omd-runner button:focus-visible { outline:3px solid var(--omd-focus); outline-offset:3px; }
+.omd-runner button:disabled { opacity:.5; cursor:not-allowed; }
+.omd-runner .omd-primary { background:var(--omd-accent); color:var(--omd-action-ink); }
+.omd-feedback { margin-top:24px; padding-top:20px; border-top:1px solid var(--omd-line); line-height:1.7; }
+.omd-feedback button { margin-top:18px; }
+.omd-navigation { display:flex; justify-content:space-between; gap:16px; margin-top:28px; }
+.omd-diagram.cir-root { min-height:auto; border-radius:0; background:transparent; --cir-ink-mute:var(--omd-muted); --cir-ink:var(--omd-ink); --cir-ink-soft:var(--omd-muted); --cir-paper:var(--omd-panel); --cir-paper-raised:var(--omd-panel); --cir-rule:var(--omd-line); }
+.omd-diagram>p { margin:0 0 24px; padding:0; font-size:1rem; line-height:1.7; color:var(--omd-muted); }
+.omd-diagram .cir-card { margin:0; padding:28px; border:1px solid var(--omd-line); border-radius:16px; box-shadow:none; }
+.omd-diagram .cir-feedback { margin-top:24px; padding-top:20px; border-top:1px solid var(--omd-line); font-size:1rem; line-height:1.7; }
+.omd-summary p,.omd-summary li { line-height:1.8; margin-bottom:18px; }
+@media(max-width:640px) {
+  .omd-question,.oc-course-body .omd-runner [data-mixed-item],.omd-diagram .cir-card { padding:24px 18px; }
+  .omd-question blockquote,.omd-runner [data-mixed-item]>blockquote,.omd-diagram .cir-prompt { font-size:1.4375rem; }
+  .omd-runner { padding:20px 0; }
+  .omd-progress-heading,.omd-navigation { flex-wrap:wrap; }
+  .omd-progress-heading { font-size:0.875rem; }
+}
+
+.omd-runner button:hover:not(:disabled) { border-color:var(--omd-accent); }
+.omd-options button:hover:not(:disabled) { background:var(--omd-fill); }
+.omd-runner button:disabled { pointer-events:none; }
+.omd-runner .cir-slot { border-color:var(--omd-control-line); font-size:1.125rem; min-width:0; }
+.omd-diagram.cir-root { font-size:1rem; }
+.omd-diagram .cir-side-toggle { flex-wrap:wrap; }
+/* Legacy embedded controls share the runner's semantic palette in both themes. */
+.omd-runner .cir-btn:not(.ghost),.omd-runner .co-primary { background:var(--omd-accent); border-color:var(--omd-accent); color:var(--omd-action-ink); }
+.omd-runner .cir-btn.ghost,.omd-runner .cir-token,.omd-runner [data-mixed-item] .co-choices button { background:var(--omd-panel); border-color:var(--omd-control-line); color:var(--omd-ink); }
+.omd-runner [data-mixed-item] .co-choices button[aria-pressed=true],.omd-runner .cir-side-toggle button[aria-pressed=true] { background:var(--omd-selected); border-color:var(--omd-accent); color:var(--omd-ink); }
+.omd-runner button:disabled,.omd-runner .cir-btn:disabled { opacity:1; background:var(--omd-fill); color:var(--omd-muted); border-color:var(--omd-line); }
+/* Feedback uses a divider inside the single independent-writing exercise surface. */
+:root:not(.light) .oc-workspace .omd-runner [data-mixed-item] .co-feedback { background:transparent; color:var(--omd-ink); }
+@media(prefers-reduced-motion:reduce) { .omd-runner { scroll-behavior:auto; } }

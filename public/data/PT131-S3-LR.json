@@ -1,0 +1,560 @@
+[
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "New technologies that promise to extend life and decrease pain involve innovations that require extensive scientific research. Therefore, investment in such technologies is very risky, because innovations requiring extensive scientific research also require large amounts of capital but are unlikely to provide any financial return. Nonetheless, some people are willing to invest in these new technologies.",
+    "questionStem": "Which one of the following, if true, most helps to explain why some people are willing to invest in new technologies that promise to extend life and decrease pain?",
+    "answerChoices": {
+      "A": "When investments in new technologies that promise to extend life and decrease pain do provide financial return, they generally return many times the original investment, which is much more than the return on safer investments.",
+      "B": "A large variety of new technologies that promise to extend life and decrease pain have been developed in the last decade.",
+      "C": "The development of certain new technologies other than those that promise to extend life and decrease pain is also very risky, because these technologies require large amounts of capital but are unlikely to provide any financial return.",
+      "D": "Some investments that initially seem likely to provide reasonably large financial return ultimately provide no financial return.",
+      "E": "The scientific research necessary to develop new technologies that promise to extend life and decrease pain sometimes leads to no greater understanding of the natural world."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "A university psychology department received a large donation from a textbook company after agreeing to use one of the company's books for a large introductory course. The department chair admitted that the department would not have received the donation if it used another company's textbook, but insisted that the book was chosen solely for academic reasons. As proof, she noted that the department's textbook committee had given that textbook its highest rating.",
+    "questionStem": "Which one of the following, if true, most weakens the case for the department chair's position?",
+    "answerChoices": {
+      "A": "The members of the textbook committee were favorably influenced toward the textbook by the prospect of their department receiving a large donation.",
+      "B": "The department has a long-standing policy of using only textbooks that receive the committee's highest rating.",
+      "C": "In the previous year, a different textbook from the same company was used in the introductory course.",
+      "D": "The department chair is one of the members of the textbook committee.",
+      "E": "The textbook company does not routinely make donations to academic departments that use its books."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Hemoglobin, a substance in human blood, transports oxygen from the lungs to the rest of the body. With each oxygen molecule it picks up, a hemoglobin molecule becomes more effective at picking up additional oxygen molecules until its maximum capacity of four oxygen molecules is reached. Grabbing an oxygen molecule changes the shape of the hemoglobin molecule, each time causing it literally to open itself to receive more oxygen.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "A hemoglobin molecule that has picked up three oxygen molecules will probably acquire a fourth oxygen molecule.",
+      "B": "The only factor determining how effective a hemoglobin molecule is at picking up oxygen molecules is how open the shape of that hemoglobin molecule is.",
+      "C": "A hemoglobin molecule that has picked up three oxygen molecules will be more effective at picking up another oxygen molecule than will a hemoglobin molecule that has picked up only one oxygen molecule.",
+      "D": "A hemoglobin molecule that has picked up four oxygen molecules will have the same shape as a hemoglobin molecule that has not picked up any oxygen molecules.",
+      "E": "Each hemoglobin molecule in human blood picks up between one and four oxygen molecules in or near the lungs and transports them to some other part of the body."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "On a short trip a driver is more likely to have an accident if there is a passenger in the car, presumably because passengers distract drivers. However, on a long trip a driver is more likely to have an accident if the driver is alone.",
+    "questionStem": "Which one of the following, if true, most helps to explain the facts described above?",
+    "answerChoices": {
+      "A": "People are much more likely to drive alone on short trips than on long trips.",
+      "B": "Good drivers tend to take more long trips than bad drivers.",
+      "C": "The longer a car trip is, the more likely a passenger is to help the driver maintain alertness.",
+      "D": "On a long trip the likelihood of an accident does not increase with each additional passenger.",
+      "E": "Most drivers take far more short trips than long trips."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Challenger: The mayor claims she has vindicated those who supported her in the last election by fulfilling her promise to increase employment opportunities in our city, citing the 8 percent increase in the number of jobs in the city since she took office. But during her administration, the national government relocated an office to our city, bringing along nearly the entire staff from the outside. The 8 percent increase merely represents the jobs held by these newcomers. Mayor: Clearly my opponent does not dispute the employment statistics. The unemployed voters in this city want jobs. The 8 percent increase in the number of jobs during my term exceeds that of any of my predecessors.",
+    "questionStem": "As a response to the challenger, the mayor's answer is flawed in that it",
+    "answerChoices": {
+      "A": "takes for granted that those who supported the mayor in the last election believed job availability to be a significant city issue",
+      "B": "does not consider whether the number of unemployed persons within the city represents more than 8 percent of the eligible voters",
+      "C": "fails to address the challenger's objection that the 8 percent increase did not result in an increase in job availability for those who lived in the city at the time of the last election",
+      "D": "ignores the challenger's contention that the influx of newcomers during the mayor's administration has increased the size of the voting public and altered its priorities",
+      "E": "explicitly attributes to the challenger beliefs that the challenger has neither asserted nor implied"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "A recent magazine editorial criticizes psychologists for not attempting to establish the order in which different areas of the brain are activated during a cognitive task such as imagining the face of a friend. However, the editorial is unfair because there is currently no technology that can detect the order of activation of brain areas.",
+    "questionStem": "Which one of the following most closely conforms to the principle to which the reasoning in the passage conforms?",
+    "answerChoices": {
+      "A": "Construction companies have been unfairly criticized for using fewer layers of heating insulation in new houses than the number of layers used in previous years. Recent technology has made insulation more efficient, so fewer layers are required.",
+      "B": "Utility companies have been unfairly criticized for not using nuclear fusion to meet the nation's electricity needs. There is no way to harness fusion that could produce enough electricity to supply even one small town.",
+      "C": "The food industry has been unfairly criticized for attempting to preserve food longer by treating it with radiation. If food remained edible for longer, the cost of food would decrease substantially.",
+      "D": "The school system has been unfairly criticized for not making familiarity with computer technology a requirement. Computer studies could not be added to the curriculum without sacrificing some other subject.",
+      "E": "CEOs of large companies have been unfairly criticized for not always using their knowledge of economic theory to run their companies. Economic theory is sometimes irrelevant to making wise corporate decisions."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Although most people know what their bad habits are and want to rid themselves of them, a majority of these people find it very difficult to do so. This is because cessation of habitual behavior is immediately and vividly painful, while whatever benefit is to be gained by the absence of the habit is perceived only dimly because it is remote.",
+    "questionStem": "The information above most strongly supports the statement that the people who are most successful at ending their bad habits are those who",
+    "answerChoices": {
+      "A": "can vividly imagine remote but attainable benefit",
+      "B": "can vividly imagine their present pain being felt in the future",
+      "C": "have succeeded in the past at modifying their behavior",
+      "D": "are relatively unaware of their own behavioral characteristics",
+      "E": "can vividly remember the pain caused them in the past by their bad habits"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The more modern archaeologists learn about Mayan civilization, the better they understand its intellectual achievements. Not only were numerous scientific observations and predictions made by Mayan astronomers, but the people in general seem to have had a strong grasp of sophisticated mathematical concepts. We know this from the fact that the writings of the Mayan religious scribes exhibit a high degree of mathematical competence.",
+    "questionStem": "The argument's reasoning is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "fails to provide an adequate definition of the term \"intellectual achievement\"",
+      "B": "bases a generalization on a sample that is likely to be unrepresentative",
+      "C": "overlooks the impressive achievements of other past civilizations",
+      "D": "relies on two different senses of the term \"scientific\"",
+      "E": "takes a mere correlation to be evidence of a causal relationship"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Manager: There is no good reason to suppose that promoting creativity is a proper goal of an employee training program. Many jobs require little or no creativity and, in those positions, using creativity is more likely to be disruptive than innovative. Furthermore, even if creativity were in demand, there is no evidence that it can be taught.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in the manager's argument?",
+    "answerChoices": {
+      "A": "Using creativity in jobs that require little or no creativity can be disruptive.",
+      "B": "Employee training programs are not able to teach employees creativity.",
+      "C": "Many jobs require little or no creativity.",
+      "D": "There is no good reason to suppose that employee training programs should promote creativity.",
+      "E": "Creativity is in demand, but there is no evidence that it can be taught."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Producer: It has been argued that, while the government should not censor television shows, the public should boycott the advertisers of shows that promote violence and erode our country's values. But this would be censorship nonetheless, for if the public boycotted the advertisers, then they would cancel their advertisements, causing some shows to go off the air; the result would be a restriction of the shows that the public can watch.",
+    "questionStem": "The producer's conclusion is properly inferred if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "If there is neither government censorship nor boycotting of advertisers, there will be no restriction of the television shows that the public can watch.",
+      "B": "Public boycotts could force some shows off the air even though the shows neither promote violence nor erode values.",
+      "C": "For any television show that promotes violence and erodes values, there will be an audience.",
+      "D": "There is widespread public agreement about which television shows promote violence and erode values.",
+      "E": "Any action that leads to a restriction of what the public can view is censorship."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Predictions that printed books will soon be replaced by books in electronic formats such as CD-ROM are exaggerated. While research libraries may find an electronic format more convenient for scholars and scientists, bookstores and public libraries will stock books in the format desired by the general public, which will be something other than an electronic format.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Scholars and scientists find an electronic format for books the most convenient one for quick searching and cross-referencing.",
+      "B": "Publishers will continue to print books in the format stocked by bookstores and public libraries.",
+      "C": "Scholars and scientists do not usually conduct their research in public libraries.",
+      "D": "At some bookstores and libraries, the popularity of books on tape and of videos is beginning to rival that of printed books.",
+      "E": "Some members of the general public prefer to purchase books in an electronic format rather than borrow them from the library."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "To cut costs, a high school modified its air-conditioning system to increase its efficiency. The modified system, however, caused the humidity in the school air to decrease by 18 percent. Twenty-four hours after the decrease in air humidity, a 25 percent increase in the number of visits to the school nurse was reported. This shows that a decrease in humidity can make people ill.",
+    "questionStem": "The argument depends on assuming which one of the following?",
+    "answerChoices": {
+      "A": "At least some of the visits to the school nurse after the system was modified were due to illness.",
+      "B": "Most of the students at the high school suffered from the decrease in air humidity.",
+      "C": "It takes 24 hours after a person is infected with a virus for that person to exhibit symptoms.",
+      "D": "A decrease of 18 percent in air humidity causes an increase of 25 percent in one's probability of becoming ill.",
+      "E": "Modifying the air-conditioning system proved to be an ineffective way to cut costs."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Defender",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A recent study of 10,000 people who were involved in automobile accidents found that a low percentage of those driving large automobiles at the time of their accidents were injured, but a high percentage of those who were driving small automobiles at the time of their accidents were injured. Thus, one is less likely to be injured in an automobile accident if one drives a large car rather than a small car.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "Most of the accidents analyzed in the study occurred in areas with very high speed limits.",
+      "B": "Most people who own small cars also drive large cars on occasion.",
+      "C": "Half of the study participants drove medium-sized cars at the time of their accidents.",
+      "D": "A large automobile is far more likely to be involved in an accident than is a small automobile.",
+      "E": "Only a small percentage of those people involved in an automobile accident are injured as a result."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Method",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Economist: A country's trade deficit may indicate weakness in its economy, but it does not in itself weaken that economy. So restricting imports to reduce a trade deficit would be like sticking a thermometer into a glass of cold water in the hope of bringing down a patient's feverish temperature.",
+    "questionStem": "The economist's argument employs which one of the following techniques?",
+    "answerChoices": {
+      "A": "claiming that a crucial assumption entails a falsehood",
+      "B": "demonstrating that an analogy explicitly used to establish a certain conclusion is faulty",
+      "C": "appealing to an analogy in order to indicate the futility of a course of action",
+      "D": "calling into question the authority on the basis of which a claim is made",
+      "E": "showing that a recommended course of action would have disastrous consequences"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "There are circumstances in which it is not immoral to make certain threats, and there are circumstances in which it is not immoral to ask for money or some other favor. Therefore, there are circumstances in which it is not immoral to ask for money or a favor while making a threat.",
+    "questionStem": "Which one of the following exhibits a flawed pattern of reasoning most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "There are many business events for which casual dress is appropriate, and there are many social events for which casual dress is appropriate; therefore, if an occasion is neither a business event nor a social event, casual dress is not likely to be appropriate.",
+      "B": "It is usually easy to move a piano after you have convinced five people to help you, provided that you do not need to take it up or down stairs. Therefore, it is usually easy to move a piano.",
+      "C": "It is healthful to take drug A for a headache, and it is healthful to take drug B for a headache; therefore, it is healthful to take drug A together with drug B for a headache.",
+      "D": "Heavy trucks are generally operated in a safe manner, but the ability to drive a truck safely can be impaired by certain prescription drugs. Therefore, heavy trucks cannot be operated safely while the driver is under the effect of a prescription drug.",
+      "E": "The mountain roads are treacherous after it rains, and the mountain streams are full after a rain. So, if the roads in the mountains are treacherous, and the mountain streams are full, it surely has rained recently."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A common genetic mutation that lowers levels of the enzyme cathepsin C severely reduces a person's ability to ward off periodontitis, or gum disease. The enzyme triggers immunological reactions that destroy diseased cells and eliminate infections in the mouth. But researchers are developing ways to restore the enzyme to normal levels. Once that happens, we will be able to eliminate periodontitis.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Restoring cathepsin C to normal levels is the only way to eliminate periodontitis.",
+      "B": "Genetic mutation is the only cause of lowered levels of cathepsin C.",
+      "C": "Researchers will soon succeed in finding means of restoring cathepsin C to normal levels.",
+      "D": "Persons who do not have the genetic mutation that lowers levels of cathepsin C do not get gum disease.",
+      "E": "A person whose cathepsin C level has been restored to normal will not suffer from periodontitis."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science",
+      "Missing Link / Idea",
+      "Alternatives",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A recent study of major motion pictures revealed that the vast majority of their plots were simply variations on plots that had been used many times before. Despite this fact, many people enjoy seeing several new movies each year.",
+    "questionStem": "Each of the following, if true, would contribute to an explanation of the apparent discrepancy in the information above except:",
+    "answerChoices": {
+      "A": "Movies based on standard plots are more likely to be financially successful than are ones based on original plots.",
+      "B": "If the details of their stories are sufficiently different, two movies with the same basic plot will be perceived by moviegoers as having different plots.",
+      "C": "Because of the large number of movies produced each year, the odds of a person seeing two movies with the same general plot structure in a five-year period are fairly low.",
+      "D": "A certain aesthetic pleasure is derived from seeing several movies that develop the same plot in slightly different ways.",
+      "E": "Although most modern movie plots have been used before, most of those previous uses occurred during the 1940s and 1950s."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Those who claim that governments should not continue to devote resources to space exploration are wrong. Although most people's lives are relatively unaffected by the direct consequences of space exploration, many modern technologies that have a tremendous impact on daily life—e.g., fiber optics, computers, and lasers—are unexpected consequences of it. Society might have missed the benefits of these technologies if governments had not devoted resources to space exploration.",
+    "questionStem": "Which one of the following most accurately expresses the principle underlying the argument above?",
+    "answerChoices": {
+      "A": "Governments should not be prevented from allocating resources to projects whose intended consequences do not directly benefit most people.",
+      "B": "One can never underestimate the beneficial consequences of government support of ambitious technological undertakings.",
+      "C": "The less practical the goal of a governmentsupported project, the more unexpected the consequences of that project.",
+      "D": "Governments should continue to support those projects that have, in the past, produced unintended benefits.",
+      "E": "In attempting to advance the welfare of society, governments should continue to dedicate resources to ambitious technological undertakings."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Rebuttals",
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Must be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "If understanding a word always involves knowing its dictionary definition, then understanding a word requires understanding the words that occur in that definition. But clearly there are people—for example, all babies—who do not know the dictionary definitions of some of the words they utter.",
+    "questionStem": "Which one of the following statements follows logically from the statements above?",
+    "answerChoices": {
+      "A": "Some babies utter individual words that they do not understand.",
+      "B": "Any number of people can understand some words without knowing their dictionary definitions.",
+      "C": "If some words can be understood without knowing their dictionary definitions, then babies understand some words.",
+      "D": "If it is possible to understand a word without knowing its dictionary definition, then it is possible to understand a word without having to understand any other word.",
+      "E": "If some babies understand all the words they utter, then understanding a word does not always involve knowing its dictionary definition."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The peppered moth avoids predators by blending into its background, typically the bark of trees. In the late nineteenth century, those peppered moths with the lightest pigmentation had the greatest contrast with their backgrounds, and therefore were the most likely to be seen and eaten by predators. It follows, then, that the darkest peppered moths were the least likely to be seen and eaten.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the reasoning of the argument?",
+    "answerChoices": {
+      "A": "The argument overlooks the possibility that light peppered moths had more predators than dark peppered moths.",
+      "B": "The argument takes for granted that peppered moths are able to control the degree to which they blend into their backgrounds.",
+      "C": "The argument presumes, without providing justification, that all peppered moths with the same coloring had the same likelihood of being seen and eaten by a predator.",
+      "D": "The argument overlooks the possibility that there were peppered moths of intermediate color that contrasted less with their backgrounds than the darkest peppered moths did.",
+      "E": "The argument presumes, without providing justification, that the only defense mechanism available to peppered moths was to blend into their backgrounds."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Historian: The standard \"QWERTY\" configuration of the keys on typewriters and computer keyboards was originally designed to be awkward and limit typing speed. This was because early typewriters would jam frequently if adjacent keys were struck in quick succession. Experiments have shown that keyboard configurations more efficient than QWERTY can double typing speed while tremendously reducing typing effort. However, the expense and inconvenience of switching to a new keyboard configuration prevent any configuration other than QWERTY from attaining widespread use.",
+    "questionStem": "Which one of the following is most strongly supported by the historian's statements?",
+    "answerChoices": {
+      "A": "Most people who have tried typing with nonQWERTY keyboards have typed significantly more quickly using those keyboards than they usually have done using QWERTY keyboards.",
+      "B": "Early QWERTY typewriters were less likely to jam than were at least some more recent typewriters if adjacent keys were struck in quick succession.",
+      "C": "If the designers of early typewriters had foreseen the possibility that technology would make it possible for adjacent keyboard keys to be struck in rapid succession without jamming, then they would not have proposed the QWERTY configuration.",
+      "D": "The benefit to society that would result from switching to a keyboard configuration other than QWERTY is significantly greater than the overall cost of such a switch.",
+      "E": "If the keyboard had been designed for computers, then it would not have been designed to limit typing speed."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Since anyone who makes an agreement has an obligation to fulfill the terms of that agreement, it follows that anyone who is obligated to perform an action has agreed to perform that action. Hence, saying that one has a legal obligation to perform a given action is the same as saying that one is required to fulfill one's agreement to perform that action.",
+    "questionStem": "Which one of the following statements most accurately characterizes the argument's reasoning flaws?",
+    "answerChoices": {
+      "A": "The argument fails to make a crucial distinction between an action one is legally obligated to perform and an action with good consequences, and it takes for granted that everything true of legal obligations is true of obligations generally.",
+      "B": "The argument takes for granted that there are obligations other than those resulting from agreements made, and it fails to consider the possibility that actions that uphold agreements made are sometimes performed for reasons other than to uphold those agreements.",
+      "C": "The argument contains a premise that is logically equivalent to its conclusion, and it takes for granted that there are only certain actions that one should agree to perform.",
+      "D": "The argument treats a condition that is sufficient to make something an obligation as also a requirement for something to be an obligation, and it takes for granted that any obligation to perform an action is a legal obligation.",
+      "E": "The argument rests on an ambiguous use of the term \"action,\" and it fails to consider the possibility that people are sometimes unwilling to perform actions that they have agreed to perform."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Method",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "To predict that a device will be invented, one must develop a conception of the device that includes some details at least about how it will function and the consequences of its use. But clearly, then, the notion of predicting an invention is self-contradictory, for inventing means developing a detailed conception, and one cannot predict what has already taken place.",
+    "questionStem": "Which one of the following most accurately describes the technique of reasoning employed by the argument?",
+    "answerChoices": {
+      "A": "constructing a counterexample to a general hypothesis about the future",
+      "B": "appealing to definitions to infer the impossibility of a kind of occurrence",
+      "C": "countering a hypothesis by indicating the falsehood of the implications of that hypothesis",
+      "D": "pointing out how a problem is widely thought to be scientific yet is really conceptual",
+      "E": "attempting to show that predicting any event implies that it has in fact already taken place"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Eighteenth-century European aesthetics was reasonably successful in providing an understanding of all art, including early abstract art, until the 1960s, when artists self-consciously rebelled against earlier notions of art. Since the work of these rebellious artists is quite beautiful but outside the bounds of the aesthetic theory then current, there can be no complete theory of aesthetics.",
+    "questionStem": "The reasoning above is most vulnerable to criticism in that it",
+    "answerChoices": {
+      "A": "takes for granted that it is more important for a complete aesthetic theory to account for the beauty of traditional art than for it to account for the beauty of self-consciously rebellious art",
+      "B": "presumes, without providing justification, that artists' rebellion in the 1960s against earlier notions of art was not guided by their knowledge of eighteenth-century European aesthetic theory",
+      "C": "presumes, without providing justification, that an aesthetic theory developed in one part of the world cannot be applied in another",
+      "D": "presumes, without providing justification, that art from the 1960s is the only art that cannot be adequately addressed by eighteenth-century European aesthetics",
+      "E": "presumes, without providing justification, that eighteenth-century European aesthetics is as encompassing as an aesthetic theory can be"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT131",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Science writer: All scientists have beliefs and values that might slant their interpretations of the data from which they draw their conclusions. However, serious scientific papers are carefully reviewed by many other scientists before publication. These reviewers are likely to notice and object to biases that they do not share. Thus, any slanted interpretations of scientific data will generally have been removed before publication.",
+    "questionStem": "Which one of the following is an assumption required by the science writer's argument?",
+    "answerChoices": {
+      "A": "The scientists reviewing serious scientific papers for publication do not always have biases likely to slant their interpretations of the data in those papers.",
+      "B": "In general, biases that slant interpretations of data in serious scientific papers being reviewed for publication are not shared among all scientists.",
+      "C": "Biases that are present in published scientific papers and shared by most scientists, including those who review the papers, are unlikely to impair the scientific value of those papers.",
+      "D": "The interpretation of data is the only part of a serious scientific paper that is sometimes slanted by the beliefs and values of scientists.",
+      "E": "Slanted interpretations of data in a scientific paper can be removed only through careful review by scientists who do not share the biases of the author or authors of the paper."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Untriggered Conditional"
+    ]
+  }
+]

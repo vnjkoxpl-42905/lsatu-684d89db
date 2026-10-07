@@ -1,0 +1,605 @@
+[
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 1,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In a recent study of more than 400 North American men and women whose previous heart attack put them at risk for a second heart attack, about half were told to switch to a “Mediterranean-type diet”-one rich in fish, vegetables, olive oil, and grains-while the other half were advised to eat a more traditional “Western” diet but to limit their fat intake. Those following the Mediterranean diet were significantly less likely than those in the other group to have a second heart attack. But the Mediterranean diet includes a fair amount of fat from fish and olive oil, so the research suggests that a diet may not have to be extremely low in fat in order to protect the heart.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Research has shown that eliminating almost all fat from one’s diet can be effective in decreasing the likelihood of a second heart attack.",
+      "B": "Studies suggest that the kinds of oils in the fat included in the Mediterranean diet may protect the heart against potentially fatal disruptions of heart rhythms and other causes of heart attacks.",
+      "C": "The patients who consumed the Mediterranean diet enjoyed the food and continued to follow the diet after the experiment was concluded.",
+      "D": "Many people who have had heart attacks are advised by their cardiologists to begin an exercise regimen in addition to changing their diet.",
+      "E": "Some cardiologists believe that the protection afforded by the Mediterranean diet might be enhanced by drugs that lower blood-cholesterol levels."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 2,
+    "questionType": "Unknown",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Florist: Some people like to have green carnations on St. Patrick’s Day. But flowers that are naturally green are extremely rare. Thus, it is very difficult for plant breeders to produce green carnations. Before St. Patrick’s Day, then, it is wise for florists to stock up on white carnations, which are fairly inexpensive and quite easy to dye green.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion of the florist’s argument?",
+    "answerChoices": {
+      "A": "It is a good idea for florists to stock up on white carnations before St. Patrick’s Day.",
+      "B": "Flowers that are naturally green are very rare.",
+      "C": "There are some people who like to have green carnations on St. Patrick’s Day.",
+      "D": "White carnations are fairly inexpensive and can easily be dyed green.",
+      "E": "It is very difficult to breed green carnations."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 3,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Millions of homes are now using low-energy lighting, but millions more have still to make the switch, a fact that the government and the home lighting industry are eager to change. Although low-wattage bulbs cost more per bulb than normal bulbs, their advantages to the homeowner are enormous, and therefore everyone should use low-wattage bulbs.",
+    "questionStem": "Information about which one of the following would be least useful in evaluating the argument?",
+    "answerChoices": {
+      "A": "the actual cost of burning low-wattage bulbs compared to that of burning normal bulbs",
+      "B": "the profits the home lighting industry expects to make from sales of low-wattage bulbs",
+      "C": "the specific cost of a low-wattage bulb compared with that of a normal bulb",
+      "D": "the opinion of current users of low-wattage bulbs as to their effectiveness",
+      "E": "the average life of a low-wattage bulb compared with that of a normal bulb"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 4,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Swimming pools should be fenced to protect children from drowning, but teaching children to swim is even more important. And there is a principle involved here that applies to childrearing generally. Thus, while we should restrict children’s access to the soft drinks and candies advertised on television shows directed towards children, it is even more important to teach them _______.",
+    "questionStem": "Which one of the following most logically completes the passage?",
+    "answerChoices": {
+      "A": "that television can be a good source of accurate information about many things",
+      "B": "that television advertisements are deceptive and misleading",
+      "C": "how to make nutritional choices that are conducive to their well-being",
+      "D": "the importance of physical activity to health and well-being",
+      "E": "how to creatively entertain themselves without watching television"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 5,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In its coverage of a controversy regarding a proposal to build a new freeway, a television news program showed interviews with several people who would be affected by the proposed freeway. Of the interviews shown, those conducted with people against the new freeway outnumbered those conducted with people for it two to one. The television program is therefore biased against the proposed freeway.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "Most of the people who watched the program were aware of the freeway controversy beforehand.",
+      "B": "Most viewers of television news programs do not expect those programs to be completely free of bias.",
+      "C": "In the interviews, the people against the new freeway expressed their opinions with more emotion than the people for the freeway did.",
+      "D": "Before the program aired, over twice as many people were against building the freeway than were in favor of it.",
+      "E": "The business interests of the television station that produced the program would be harmed by the construction of a new freeway."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 6,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Evan: I am a vegetarian because I believe it is immoral to inflict pain on animals to obtain food. Some vegetarians who share this moral reason nonetheless consume some seafood, on the grounds that it is not known whether certain sea creatures can experience pleasure or pain. But if it is truly wrong to inflict needless suffering, we should extend the benefit of the doubt to sea animals and refrain from eating seafood.",
+    "questionStem": "Which one of the following most closely conforms to the principle illustrated by Evan’s criticism of vegetarians who eat seafood?",
+    "answerChoices": {
+      "A": "I do not know if I have repaid Farah the money she lent me for a movie ticket. She says that she does not remember whether or not I repaid her. In order to be sure that I have repaid her, I will give her the money now.",
+      "B": "It is uncertain whether all owners of the defective vehicles know that their vehicles are being recalled by the manufacturer. Thus, we should expect that some vehicles that have been recalled have not been returned.",
+      "C": "I am opposed to using incentives such as reduced taxes to attract businesses to our region. These incentives would attract businesses interested only in short-term profits. Such businesses would make our region’s economy less stable, because they have no long-term commitment to the community.",
+      "D": "Updating our computer security system could lead to new contracts. The present system has no problems, but we could benefit from emphasizing a state-of-the-art system in new proposals. If we do not get new customers, the new system could be financed through higher fees for current customers.",
+      "E": "Isabel Allende lived through the tragic events of her country’s recent history; no doubt her novels have been inspired by her memories of those events. Yet Allende’s characters are hopeful and full of joy, indicating that Allende’s own view of life has not been negatively marked by her experiences."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 7,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Economist: Government intervention in the free market in pursuit of socially desirable goals can affect supply and demand, thereby distorting prices. The ethics of such intervention is comparable to that of administering medicines. Most medicines have harmful as well as beneficial effects, so the use of a type of medicine is ethically justified only when its nonuse would be significantly more harmful than its use. Similarly, government intervention in the free market is justified only when it _______.",
+    "questionStem": "Which one of the following most logically completes the final sentence above?",
+    "answerChoices": {
+      "A": "would likely be approved of by the majority of the affected participants",
+      "B": "has been shown to have few if any significantly harmful effects",
+      "C": "is believed unlikely to significantly exacerbate any existing problems",
+      "D": "would do less damage than would result from the government’s not intervening",
+      "E": "provides a solution to some otherwise insoluble problem"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The proportion of fat calories in the diets of people who read the nutrition labels on food products is significantly lower than it is in the diets of people who do not read nutrition labels. This shows that reading these labels promotes healthful dietary behavior.",
+    "questionStem": "The reasoning in the argument above is flawed in that the argument",
+    "answerChoices": {
+      "A": "illicitly infers a cause from a correlation",
+      "B": "relies on a sample that is unlikely to be representative of the group as a whole",
+      "C": "confuses a condition that is necessary for a phenomenon to occur with a condition that is sufficient for that phenomenon to occur",
+      "D": "takes for granted that there are only two possible alternative explanations of a phenomenon",
+      "E": "draws a conclusion about the intentions of a group of people based solely on data about the consequences of their behavior"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 9,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Some paleontologists have suggested that Apatosaurus, a huge dinosaur, was able to gallop. This, however, is unlikely, because galloping would probably have broken Apatosaurus’s legs. Experiments with modern bones show how much strain they can withstand before breaking. By taking into account the diameter and density of Apatosaurus leg bones, it is possible to calculate that those bones could not have withstood the strains of galloping.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn by the argument as a whole?",
+    "answerChoices": {
+      "A": "Galloping would probably have broken the legs of Apatosaurus.",
+      "B": "It is possible to calculate that Apatosaurus leg bones could not have withstood the strain of galloping.",
+      "C": "The claim of paleontologists that Apatosaurus was able to gallop is likely to be incorrect.",
+      "D": "If galloping would have broken the legs of Apatosaurus, then Apatosaurus was probably unable to gallop.",
+      "E": "Modern bones are quite similar in structure and physical properties to the bones of Apatosaurus."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Rebuttals",
+      "Important Pivot",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 10,
+    "questionType": "Role",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A new process enables ordinary table salt to be fortified with iron. This advance could help reduce the high incidence of anemia in the world’s population due to a deficiency of iron in the diet. Salt is used as a preservative for food and a flavor enhancer all over the globe, and people consume salt in quantities that would provide iron in significant amounts.",
+    "questionStem": "Which one of the following most accurately describes the role played in the argument by the statement that people consume salt in quantities that would provide iron in significant amounts?",
+    "answerChoices": {
+      "A": "It is the conclusion of the argument.",
+      "B": "It provides support for the conclusion of the argument.",
+      "C": "It is a claim that the argument is directed against.",
+      "D": "It qualifies the conclusion of the argument.",
+      "E": "It illustrates a principle that underlies the argument."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Inspector: The only fingerprints on the premises are those of the owner, Mr. Tannisch. Therefore, whoever now has his guest’s missing diamonds must have worn gloves.",
+    "questionStem": "Which one of the following exhibits a flaw in its reasoning most similar to that in the inspector’s reasoning?",
+    "answerChoices": {
+      "A": "The campers at Big Lake Camp, all of whom became ill this afternoon, have eaten food only from the camp cafeteria. Therefore, the cause of the illness must not have been something they ate.",
+      "B": "The second prototype did not perform as well in inclement weather as did the first prototype. Hence, the production of the second prototype might have deviated from the design followed for the first.",
+      "C": "Each of the swimmers at this meet more often loses than wins. Therefore, it is unlikely that any of them will win.",
+      "D": "All of Marjorie’s cavities are on the left side of her mouth. Hence, she must chew more on the left side than on the right.",
+      "E": "All of these tomato plants are twice as big as they were last year. So if we grow peas, they will probably be twice as big as last year’s peas."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 12,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Populations of a shrimp species at eleven different Indonesian coral reefs show substantial genetic differences from one reef to another. This is surprising because the area’s strong ocean currents probably carry baby shrimp between the different reefs, which would allow the populations to interbreed and become genetically indistinguishable.",
+    "questionStem": "Which one of the following, if true, most helps to explain the substantial genetic differences among the shrimp populations?",
+    "answerChoices": {
+      "A": "The genetic differences between the shrimp populations are much less significant than those between shrimp and any other marine species.",
+      "B": "The individual shrimp within a given population at any given Indonesian coral reef differ from one another genetically, even though there is widespread interbreeding within any such population.",
+      "C": "Before breeding, shrimp of the species examined migrate back to the coral reef at which they were hatched.",
+      "D": "Most shrimp hatched at a given Indonesian coral reef are no longer present at that coral reef upon becoming old enough to breed.",
+      "E": "Ocean currents probably carry many of the baby shrimp hatched at a given Indonesian coral reef out into the open ocean rather than to another coral reef."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 13,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Researchers have studied the cost-effectiveness of growing halophytes-salt-tolerant plant species-for animal forage. Halophytes require more water than conventional crops, but can be irrigated with seawater, and pumping seawater into farms near sea level is much cheaper than pumping freshwater from deep wells. Thus, seawater agriculture near sea level should be cost-effective in desert regions although its yields are smaller than traditional, freshwater agriculture.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument above?",
+    "answerChoices": {
+      "A": "A given volume of halophytes is significantly different in nutritional value for animal forage from the same volume of conventional forage crops.",
+      "B": "Some halophytes not only tolerate seawater but require salt in order to thrive.",
+      "C": "Large research expenditures are needed to develop the strains of halophytes best suited for agricultural purposes.",
+      "D": "Costs other than the costs of irrigation are different for halophytes grown by means of seawater irrigation than for conventional crops.",
+      "E": "Pumping water for irrigation is proportionally one of the largest costs involved in growing, harvesting, and distributing any forage crop for animals."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Principle: If an insurance policy is written in such a way that a reasonable person seeking insurance would not read it thoroughly before signing it, then the reasonable expectations of the policyholder concerning the policy’s coverage should take legal precedence over specific language in the written policy itself. Application: The insurance company should be required to cover the hail damage to Celia’s car, even though specific language in the written policy Celia signed excluded coverage for hail damage.",
+    "questionStem": "Which one of the following, if true, most justifies the above application of the principle?",
+    "answerChoices": {
+      "A": "Celia is a reasonable person, and she expected the insurance policy to cover hail damage to her car.",
+      "B": "Given the way it was written, a reasonable person would not have read Celia’s insurance policy thoroughly before signing it, and Celia reasonably expected the policy to cover hail damage.",
+      "C": "The insurance policy that Celia signed was written in such a way that a reasonable person would not read it thoroughly before signing it, but Celia did read the policy thoroughly before signing it.",
+      "D": "Celia did not read the insurance policy thoroughly before signing it, and a reasonable person in her position would assume that the policy would cover hail damage.",
+      "E": "Celia did not read the written insurance policy thoroughly before signing it, and a reasonable person in her position would not have done so either."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Researcher: Every year approximately the same number of people die of iatrogenic “disease”-that is, as a direct result of medical treatments or hospitalization-as die of all other causes combined. Therefore, if medicine could find ways of preventing all iatrogenic disease, the number of deaths per year would decrease by half.",
+    "questionStem": "The reasoning in the researcher’s argument is flawed because the argument fails to consider that",
+    "answerChoices": {
+      "A": "prevention of noniatrogenic disease will have an effect on the occurrence of iatrogenic disease",
+      "B": "some medical treatments can be replaced by less invasive or damaging alternatives",
+      "C": "people who do not die of one cause may soon die of another cause",
+      "D": "there is no one way to prevent all cases of death from iatrogenic disease",
+      "E": "whenever a noniatrogenic disease occurs, there is a risk of iatrogenic disease"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference",
+      "Conditional Conclusion",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 16,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Activist: Any member of the city council ought either to vote against the proposal or to abstain. But if all the members abstain, the matter will be decided by the city’s voters. So at least one member of the city council should vote against the proposal.",
+    "questionStem": "The conclusion of the activist’s argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "If all the members of the city council abstain in the vote on the proposal, the city’s voters will definitely decide in favor of the proposal.",
+      "B": "The proposal should not be decided by the city’s voters.",
+      "C": "No members of the city council will vote in favor of the proposal.",
+      "D": "If not every member of the city council abstains in the vote on the proposal, the matter will not be decided by the city’s voters.",
+      "E": "If one member of the city council ought to vote against the proposal, the other members should abstain in the vote on the proposal."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 17,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Economist: Some critics of the media have contended that negative news reports on the state of the economy can actually harm the economy because such reports damage people’s confidence in it, and this lack of confidence in turn adversely affects people’s willingness to spend money. But studies show that spending trends correlate very closely with people’s confidence in their own immediate economic situations. Thus these media critics are mistaken.",
+    "questionStem": "The economist’s argument is flawed in that it fails to consider the possibility that",
+    "answerChoices": {
+      "A": "one’s level of confidence in one’s own economic situation affects how one perceives reports about the overall state of the economy",
+      "B": "news reports about the state of the economy are not always accurate",
+      "C": "people who pay no attention to economic reports in the media always judge accurately whether their own economic situation is likely to deteriorate or improve",
+      "D": "people who have little confidence in the overall economy generally take a pessimistic view concerning their own immediate economic situations",
+      "E": "an economic slowdown usually has a greater impact on the economic situations of individuals if it takes people by surprise than if people are forewarned"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Anti-Causal",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Zoologist: Every domesticated large mammal species now in existence was domesticated thousands of years ago. Since those days, people undoubtedly tried innumerable times to domesticate each of the wild large mammal species that seemed worth domesticating. Clearly, therefore, most wild large mammal species in existence today either would be difficult to domesticate or would not be worth domesticating.",
+    "questionStem": "The zoologist’s argument requires the assumption that",
+    "answerChoices": {
+      "A": "in spite of the difficulties encountered, at one time or another people have tried to domesticate each wild large mammal species",
+      "B": "it is not much easier today to domesticate wild large mammal species than it was in the past",
+      "C": "not all of the large mammal species that were domesticated in the past are still in existence",
+      "D": "the easier it is to domesticate a wild large mammal species, the more worthwhile it is to do so",
+      "E": "of all the domesticated large mammal species in existence today, the very first to be domesticated were the easiest to domesticate"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Defender",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 19,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Last winter was mild enough to allow most bird species to forage naturally, which explains why the proportion of birds visiting feeders was much lower than usual. The mild winter also allowed many species to stay in their summer range all winter without migrating south, thereby limiting the usual attrition accompanying migration. Hence, last year’s mild winter is responsible for this year’s larger-than-usual bird population.",
+    "questionStem": "Which one of the following, if true, would most strengthen the reasoning in the argument?",
+    "answerChoices": {
+      "A": "Increases in bird populations sometimes occur following unusual weather patterns.",
+      "B": "When birds do not migrate south, the mating behaviors they exhibit differ from those they exhibit when they do migrate.",
+      "C": "Birds eating at feeders are more vulnerable to predators than are birds foraging naturally.",
+      "D": "Birds that remain in their summer range all winter often exhaust that range’s food supply before spring.",
+      "E": "Birds sometimes visit feeders even when they are able to find sufficient food for survival by foraging naturally."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Breadcrumbs",
+      "Focused on Evidence",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 20,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Journalist: Newspapers generally report on only those scientific studies whose findings sound dramatic. Furthermore, newspaper stories about small observational studies, which are somewhat unreliable, are more frequent than newspaper stories about large randomized trials, which generate stronger scientific evidence. Therefore, a small observational study must be more likely to have dramatic findings than a large randomized trial.",
+    "questionStem": "Which one of the following most accurately expresses a flaw in the journalist’s reasoning?",
+    "answerChoices": {
+      "A": "It casts doubt on the reliability of a study by questioning the motives of those reporting it.",
+      "B": "It fails to consider that even if a study’s findings sound dramatic, the scientific evidence for those findings may be strong.",
+      "C": "It confuses a claim about scientific studies whose findings sound dramatic with a similar claim about small observational studies.",
+      "D": "It overlooks the possibility that small observational studies are far more common than large randomized trials.",
+      "E": "It fails to rule out the possibility that a study’s having findings that sound dramatic is an effect rather than a cause of the study’s being reported on."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Relative vs. Absolute",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 21,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In several countries, to slow global warming, many farmers are planting trees on their land because of government incentives. These incentives arose from research indicating that vegetation absorbs carbon dioxide that might otherwise trap heat in the atmosphere. A recent study, however, indicates that trees absorb and store carbon dioxide less effectively than native grasses. Therefore, these incentives are helping to hasten global warming.",
+    "questionStem": "The argument requires the assumption that",
+    "answerChoices": {
+      "A": "trees not only absorb carbon dioxide but also emit it",
+      "B": "most farmers do not plant any trees on their land unless there is an incentive to do so",
+      "C": "land that has been deforested seldom later sustains native grasses",
+      "D": "some of the trees planted in response to the incentives are planted where native grasses would otherwise be growing",
+      "E": "few if any governments have been interested in promoting the growth of native grasses"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Defender",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 22,
+    "questionType": "Role",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Does the position of a car driver’s seat have a significant impact on driving safety? It probably does. Driving position affects both comfort and the ability to see the road clearly. A driver who is uncomfortable eventually becomes fatigued, which makes it difficult to concentrate on the road. Likewise, the better the visibility from the driver’s seat, the more aware the driver can be of road conditions and other vehicles.",
+    "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that driving position affects both comfort and the ability to see the road clearly?",
+    "answerChoices": {
+      "A": "It is the conclusion drawn in the argument.",
+      "B": "It is a claim that the argument shows to be inconsistent with available evidence.",
+      "C": "It is used to provide a causal explanation for an observed phenomenon.",
+      "D": "It describes evidence that the argument ultimately refutes.",
+      "E": "It is a premise offered in support of the conclusion drawn in the argument."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 23,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Physician: There were approximately 83,400 trampoline-related injuries last year. This suggests that trampolines are quite dangerous and should therefore be used only under professional supervision. Trampoline enthusiast: I disagree. In the past ten years sales of home trampolines have increased much more than trampoline-related injuries have: 260 percent in sales compared with 154 percent in injuries. Every exercise activity carries risks, even when carried out under professional supervision.",
+    "questionStem": "The dialogue provides the most support for the claim that the physician and the trampoline enthusiast disagree over whether",
+    "answerChoices": {
+      "A": "trampolines cause injuries to a significant number of people using them",
+      "B": "home trampolines are the main source of trampoline-related injuries",
+      "C": "the rate of trampoline-related injuries, in terms of the number of injuries per trampoline user, is declining",
+      "D": "professional supervision of trampoline use tends to reduce the number of trampoline-related injuries",
+      "E": "trampoline use is an activity that warrants mandatory professional supervision"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Editorial: One of our local television stations has been criticized for its recent coverage of the personal problems of a local politician’s nephew, but the coverage was in fact good journalism. The information was accurate. Furthermore, the newscast had significantly more viewers than it normally does, because many people are curious about the politician’s nephew’s problems.",
+    "questionStem": "Which one of the following principles, if valid, would most help to justify the reasoning in the editorial?",
+    "answerChoices": {
+      "A": "Journalism deserves to be criticized if it does not provide information that people want.",
+      "B": "Any journalism that intentionally misrepresents the facts of a case deserves to be criticized.",
+      "C": "Any journalism that provides accurate information on a subject about which there is considerable interest is good journalism.",
+      "D": "Good journalism will always provide people with information that they desire or need.",
+      "E": "Journalism that neither satisfies the public’s curiosity nor provides accurate information can never be considered good journalism."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 1,
+    "questionNumber": 25,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Interior decorator: All coffeehouses and restaurants are public places. Most well-designed public places feature artwork. But if a public place is uncomfortable it is not well designed, and all comfortable public places have spacious interiors.",
+    "questionStem": "If all of the interior decorator’s statements are true, then which one of the following must be true?",
+    "answerChoices": {
+      "A": "Any restaurant that has a spacious interior is comfortable.",
+      "B": "Most public places that feature artwork are well designed.",
+      "C": "Most coffeehouses that are well designed feature artwork.",
+      "D": "Any well-designed coffeehouse or restaurant has a spacious interior.",
+      "E": "Any coffeehouse that has a spacious interior is a well-designed public place."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Quantifiers"
+    ]
+  }
+]

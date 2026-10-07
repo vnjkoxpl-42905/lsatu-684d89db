@@ -1,0 +1,643 @@
+[
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In an experiment, ten people were asked to taste samples of coffee and rank them. Five of the people were given chocolate with the coffee, and this group subsequently reported that all the coffee samples tasted pretty much the same as one another. Five others tasted coffee only, and they were able to detect differences. Clearly, then, chocolate interferes with one’s ability to taste coffee.",
+    "questionStem": "Which one of the following, if true, most undermines the conclusion drawn above?",
+    "answerChoices": {
+      "A": "The ten people were randomly assigned to either the group that tasted only coffee or the group that was also given chocolate, although some people had asked to be in the group that received chocolate.",
+      "B": "Similar results were achieved when the experiment was repeated with a different, larger group of people.",
+      "C": "Chocolate is normally consumed as a solid, whereas coffee is normally consumed as a liquid.",
+      "D": "The five people who were originally given chocolate were asked a week later to taste coffee samples without chocolate, and they still detected no differences between the coffee samples.",
+      "E": "Some subjects who tasted just coffee reported only subtle differences between the coffee samples, while others thought the differences were considerable."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "PSA - Find the rule (Principle)",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Residents of a coastal community are resisting the efforts of one family to build a large house on the family’s land. Although the house would not violate any town codes, the land in question is depicted in a painting by a famous and beloved landscape painter who recently died. Residents argue that the house would alter the pristine landscape and hence damage the community’s artistic and historic heritage.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning of the residents opposed to building the house?",
+    "answerChoices": {
+      "A": "Every possible effort should be made to preserve historic buildings that are well known and well loved.",
+      "B": "Communities that seek to preserve undeveloped areas of landscape or historic neighborhoods should purchase those properties for the public trust.",
+      "C": "Artists who choose to represent actual landscapes in their paintings have the right to demand that the owners of the land represented do not significantly alter the landscape.",
+      "D": "The right to build on one’s own property is constrained by the artistic and historical interests of the community at large.",
+      "E": "In historic communities, the building and zoning regulations should prohibit construction that obstructs access to historic sites."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Flaw (Principle)",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Moore: Sunscreen lotions, which are designed to block skin-cancer-causing ultraviolet radiation, do not do so effectively. Many scientific studies have shown that people who have consistently used these lotions develop, on average, as many skin cancers as those who have rarely, if ever, used them.",
+    "questionStem": "The reasoning in Moore’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "takes for granted that there are no other possible health benefits of using sunscreen lotions other than blocking skin-cancer-causing ultraviolet radiation",
+      "B": "fails to distinguish between the relative number of cases of skin cancer and the severity of those cases in measuring effectiveness at skin cancer prevention",
+      "C": "fails to consider the effectiveness of sunscreen lotions that are not specifically designed to block skin-cancer-causing ultraviolet radiation",
+      "D": "relies on evidence regarding the probability of people in different groups developing cancer that, in principle, would be impossible to challenge",
+      "E": "overlooks the possibility that people who consistently use sunscreen lotions spend more time in the sun, on average, than people who do not"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal",
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Method of reasoning or descriptive (Principle)",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Psychologist: Some have argued that Freudian psychotherapy is the most effective kind because it is so difficult and time consuming. But surely this does not follow. Similar reasoning—e.g., concluding that a car-repair chain has the most effective technique for repairing cars because the cars it services receive so much work and spend so much time in the shop—would never be accepted.",
+    "questionStem": "The reasoning technique employed by the psychologist is that of attempting to undermine an argument by",
+    "answerChoices": {
+      "A": "introducing a principle that contradicts the one on which the argument is based",
+      "B": "questioning the truth of its premises",
+      "C": "presenting an analogous argument whose conclusion is thought to be obviously false",
+      "D": "claiming that the argument is based on a false analogy",
+      "E": "suggesting that a supposed cause of a phenomenon is actually an effect of that phenomenon"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Main conclusion or main point",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "While biodiversity is indispensable to the survival of life on Earth, biodiversity does not require the survival of every currently existing species. For there to be life on Earth, various ecological niches must be filled; many niches, however, can be filled by more than one species.",
+    "questionStem": "Which one of the following statements most accurately expresses the conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Biodiversity does not require that all existing species continue to exist.",
+      "B": "There are various ecological niches that must be filled if there is to be life on Earth.",
+      "C": "The survival of life on Earth depends upon biodiversity.",
+      "D": "There are many ecological niches that can be filled by more than one species.",
+      "E": "The species most indispensable for biodiversity fill more than one ecological niche."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Refute a Conditional",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Evaluate",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Clinician: Patients with immune system disorders are usually treated with a class of drugs that, unfortunately, increase the patient’s risk of developing osteoporosis, a bone-loss disease. So these patients take another drug that helps to preserve existing bone. Since a drug that enhances the growth of new bone cells has now become available, these patients should take this new drug in addition to the drug that helps to preserve existing bone.",
+    "questionStem": "Which one of the following would be most useful to know in order to evaluate the clinician’s argument?",
+    "answerChoices": {
+      "A": "How large is the class of drugs that increase the risk of developing osteoporosis?",
+      "B": "Why are immune system disorders treated with drugs that increase the risk of developing osteoporosis?",
+      "C": "Is the new drug more expensive than the drug that helps to preserve existing bone?",
+      "D": "How long has the drug that helps to preserve existing bone been in use?",
+      "E": "To what extent does the new drug retain its efficacy when used in combination with the other drugs?"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "PSA - Find the rule (Principle)",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Critic: The perennial image of the “city on a hill” associates elevated locations with elevated purposes. The city’s concert hall—its newest civic building—is located on a spectacular hilltop site. But because it is far from the center of the city, it cannot fulfill the purpose of a civic building. An example of a successful civic building is the art museum, which is situated in a densely populated downtown area. It encourages social cohesion and makes the city more alive.",
+    "questionStem": "The critic’s reasoning most closely conforms to which one of the following principles?",
+    "answerChoices": {
+      "A": "A civic building that is located in a downtown area should, if possible, be located on an elevated site.",
+      "B": "A city needs to have civic buildings if it is to have social cohesion.",
+      "C": "A civic building with an elevated purpose should be located on a spectacular site.",
+      "D": "The downtown area of a city should be designed in a way that complements the area’s civic buildings.",
+      "E": "The purpose of a civic building is to encourage social cohesion and to make a city more alive."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Most strongly supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Fluoride enters a region’s groundwater when rain dissolves fluoride-bearing minerals in the soil. In a recent study, researchers found that when rainfall, concentrations of fluoride-bearing minerals, and other relevant variables are held constant, fluoride concentrations in groundwater are significantly higher in areas where the groundwater also contains a high concentration of sodium.",
+    "questionStem": "Which one of the following can most reasonably be concluded on the basis of the researchers’ findings?",
+    "answerChoices": {
+      "A": "Fluoride-bearing minerals are not the primary source of fluoride found in groundwater.",
+      "B": "Rainfall does not affect fluoride concentrations in groundwater.",
+      "C": "Sodium-bearing minerals dissolve at a faster rate than fluoride-bearing minerals.",
+      "D": "Sodium in groundwater increases the rate at which fluoride-bearing minerals dissolve.",
+      "E": "Soil that contains high concentrations of sodium-bearing minerals also contains high concentrations of fluoride-bearing minerals."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Argument part",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Fraenger’s assertion that the artist Hieronymus Bosch belonged to the Brethren of the Free Spirit, a nonmainstream religious group, is unlikely to be correct. Fraenger’s hypothesis explains much of Bosch’s unusual subject matter. However, there is evidence that Bosch was a member of a mainstream church, and no evidence that he was a member of the Brethren.",
+    "questionStem": "The statement that there is no evidence that Bosch was a member of the Brethren figures in the argument in which one of the following ways?",
+    "answerChoices": {
+      "A": "It is a premise that, when combined with the other premises, guarantees the falsity of Fraenger’s assertion.",
+      "B": "It is used to support the claim that Bosch was a member of a mainstream church.",
+      "C": "It is used to dispute Fraenger’s hypothesis by questioning Fraenger’s credibility.",
+      "D": "It is intended to cast doubt on Fraenger’s hypothesis by questioning the sufficiency of Fraenger’s evidence.",
+      "E": "It is intended to help show that Bosch’s choice of subject matter remains unexplained."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Vacuum cleaner salesperson: To prove that this Super XL vacuum cleaner is better than your old vacuum cleaner, I ran your old vacuum once over this dirty carpet. Then I ran the Super XL over the same area. All that dirt that the Super XL picked up is dirt your old vacuum left behind, proving the Super XL is the better vacuum.",
+    "questionStem": "The vacuum cleaner salesperson’s argument is most vulnerable to the criticism that it",
+    "answerChoices": {
+      "A": "ignores the possibility that dirt remained in the carpet even after the Super XL had been used in the test",
+      "B": "takes for granted that the Super XL will still perform better than the old vacuum cleaner when it is the same age as the old vacuum cleaner",
+      "C": "takes for granted that because the Super XL outperforms one vacuum cleaner it is the best vacuum cleaner available",
+      "D": "ignores the possibility that the amount of dirt removed in the test by the old vacuum cleaner is greater than the amount of dirt removed by the Super XL",
+      "E": "ignores the possibility that if the Super XL had been used first it would have left behind just as much dirt as did the old vacuum cleaner"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Main conclusion or main point",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Manager: This company’s supply chain will develop significant weaknesses unless we make changes to our vendor contracts now. Some will argue that this problem is so far in the future that there is no need to address it today. But that is an irresponsible approach. Just imagine if a financial planner offered the same counsel to a 30-year-old client: “Don’t worry, Jane, retirement is 35 years away; you don’t need to save anything now.” That planner would be guilty of gross malpractice.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the manager’s argument?",
+    "answerChoices": {
+      "A": "Some people argue that the supply-chain problem is so far in the future that there is no need to address it now.",
+      "B": "It would be irresponsible to postpone changes to the vendor contracts just because the supply chain will not develop weaknesses for a long time.",
+      "C": "If no changes are made to the vendor contracts, the supply chain will eventually develop significant weaknesses.",
+      "D": "In planning to meet its future obligations, a company should follow the same practices that are appropriate for an individual who is planning for retirement.",
+      "E": "Financial planners should advise their clients to save money for retirement only if retirement is many years away."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot",
+      "Analogies",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Most strongly supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Worldwide, more books were sold last year than in any previous year. In particular, there were more cookbooks sold. For the first time ever, most of the cookbooks sold were not intended for beginners. Indeed, more cookbooks than ever were purchased by professional cooks. However, one of the few books available on every continent is a cookbook written for beginners, entitled Problem-Free Cooking.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Last year there were more cookbooks sold that were not intended for beginners than in any previous year.",
+      "B": "The best-selling cookbook last year was a cookbook that was intended for beginners.",
+      "C": "Sales of cookbooks intended for beginners were lower last year than in previous years.",
+      "D": "Most of the cookbooks purchased last year that were not intended for beginners were purchased by professional cooks.",
+      "E": "Problem-Free Cooking sold more copies last year than did any cookbook written for professional cooks."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "In early 2003, scientists detected methane in the atmosphere of Mars. Methane is a fragile compound that falls apart when hit by the ultraviolet radiation in sunlight. So any methane in the Martian atmosphere must have been released into the atmosphere relatively recently.",
+    "questionStem": "The argument relies on the assumption that",
+    "answerChoices": {
+      "A": "Mars had no methane in its atmosphere prior to 2003",
+      "B": "all methane in the Martian atmosphere is eventually exposed to sunlight",
+      "C": "methane cannot be detected until it has started to fall apart",
+      "D": "the methane that the scientists detected had been exposed to ultraviolet radiation",
+      "E": "methane in Earth’s atmosphere does not fall apart as a result of exposure to ultraviolet radiation"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Science",
+      "Timeframes",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Most strongly supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Environmentalist: Pollution from gasoline burned by cars contributes to serious environmental problems. But the cost of these problems is not reflected in gasoline prices, and hence usually does not affect consumers’ decisions about how much to drive. Heavier taxes on gasoline, however, would reflect this cost, and as a result consumers would pollute less.",
+    "questionStem": "The environmentalist’s statements, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "The cost of pollution from driving should not be reflected in the price of gasoline unless the amount of pollution produced would be reduced as a result.",
+      "B": "Heavier taxes on gasoline would increase consumers’ awareness of the kinds of environmental problems to which pollution from driving contributes.",
+      "C": "Consumers would purchase less gasoline, on average, if the cost of the environmental problems to which pollution from driving contributes were fully reflected in the price of gasoline.",
+      "D": "The only cost considered by most consumers when they are deciding how much to drive is the cost of gasoline.",
+      "E": "Pollution from gasoline burned by cars will be reduced only if consumers give more consideration to the cost of that pollution when deciding how much to drive."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot",
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Resolve, reconcile, or explain",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Hine’s emerald dragonflies are an endangered species that live in wetlands. The larvae of these dragonflies can survive only in the water, where they are subject to predation by several species including red devil crayfish. Surprisingly, the dragonfly populations are more likely to remain healthy in areas where red devil crayfish are present than in areas without red devil crayfish.",
+    "questionStem": "Which one of the following, if true, most helps to explain the surprising fact?",
+    "answerChoices": {
+      "A": "Red devil crayfish dig chambers that remain filled with water even when the surrounding wetlands dry up.",
+      "B": "Red devil crayfish present no threat to adult Hine’s emerald dragonflies.",
+      "C": "The varied diet of the red devil crayfish does not include any animal species that prey on dragonfly larvae.",
+      "D": "Red devil crayfish are found in many more locations than Hine’s emerald dragonflies are.",
+      "E": "Populations of red devil crayfish in a wetland do not drop significantly if the local population of Hine’s emerald dragonflies dies out."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Most strongly supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Stress is a common cause of high blood pressure. By calming their minds and thereby reducing stress, some people can lower their blood pressure. And most people can calm their minds, in turn, by engaging in exercise.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "For at least some people, having lower blood pressure has at least some tendency to cause their stress levels to be reduced.",
+      "B": "Most people with high blood pressure can lower their blood pressure by reducing their stress levels.",
+      "C": "Most people who do not exercise regularly have higher stress levels as a result.",
+      "D": "Engaging in exercise can directly lower one’s blood pressure.",
+      "E": "For at least some people, engaging in exercise can cause their stress levels to be reduced."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A positive correlation has been found between the amount of soot in the atmosphere of cities and the frequency of a certain ailment among those cities’ populations. However, the soot itself probably does not cause this ailment, since in cities where there are large amounts of soot in the air, there are usually also high concentrations of many other air pollutants.",
+    "questionStem": "Which one of the following statements, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "In cities where there are high concentrations of many air pollutants but little if any soot in the air, the frequency of the ailment is just as high, on average, as it is in cities where there are large amounts of soot in the air.",
+      "B": "If the ailment rarely occurs except in cities in which there are large amounts of soot in the air, then the soot is probably the cause of the ailment.",
+      "C": "In each of the cities where there are large amounts of soot in the air but little other air pollution, the frequency of the ailment is at least as high as it is anywhere else.",
+      "D": "If high concentrations of many different pollutants in a city’s air are correlated with a high frequency of the ailment among that city’s population, then it is possible that two or more of those pollutants each causally contributes to the ailment.",
+      "E": "In cities in which there are high concentrations of many air pollutants, there are generally also high concentrations of other forms of pollution that are very likely to contribute causally to the ailment."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Parallel flawed method of reasoning (Parallel, Flaw)",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "So far this summer there has been no rain in the valley. But usually a few inches of rain fall there each summer. Since only one week of summer is left, it will probably rain in the valley within the next week.",
+    "questionStem": "The flawed pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
+    "answerChoices": {
+      "A": "Aisha has finished proofreading all but the last two pages of an issue of the journal Periodos and has encountered no errors. However, there are sometimes a few errors in an issue of the journal Periodos. So there may be errors in the pages that Aisha has not yet checked.",
+      "B": "There are generally few errors in an issue of the journal Periodos. Aisha has finished proofreading all but the last two pages of an issue of this journal but has encountered no errors. Hence, there are probably no errors in the pages that Aisha has not yet checked in this issue of the journal.",
+      "C": "On average, there are a few errors in an issue of the journal Periodos. Aisha has finished proofreading all but the last two pages of an issue of this journal but has encountered no errors. So there are probably errors in the pages she has not yet checked in this issue of the journal.",
+      "D": "Aisha has proofread several issues of the journal Periodos and has encountered no errors. But there are seldom any errors in an issue of this journal. So there will probably be no errors in the next issue of the journal Periodos that she proofreads.",
+      "E": "There usually are errors in each issue of the journal Periodos. Since Aisha has finished proofreading the latest issue of this journal and has detected no errors, Aisha has probably made a mistake in her proofreading."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Young people believe efforts to reduce pollution, poverty, and war are doomed to failure. This pessimism is probably harmful to humanity’s future, because people lose motivation to work for goals they think are unrealizable. We must do what we can to prevent this loss of motivation and therefore must enable our children to believe that better futures are possible.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Motivating people to work to solve humanity’s problems will enable them to believe that the future can be better and will cause them to be less pessimistic.",
+      "B": "Enabling people to believe that better futures are possible will help prevent the loss of motivation that results from pessimistic beliefs about the future.",
+      "C": "Optimism about the future is better than pessimism, even if that optimism is based on an illusory vision of what is likely to occur.",
+      "D": "If future generations believe that the future can be better, then pollution, poverty, and war will be eliminated.",
+      "E": "The current prevalence of such problems as pollution and poverty stems from previous generations’ inability to believe that futures can be better."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "In a recent study of stroke patients, those who exhibited continuing deterioration of the nerve cells in the brain after the stroke also exhibited the highest levels of the protein glutamate in their blood. Glutamate, which functions within nerve cells as a neurotransmitter, can kill surrounding nerve cells if it leaks from damaged or oxygen-starved nerve cells. Thus glutamate leaking from damaged or oxygen-starved nerve cells is a cause of long-term brain damage resulting from strokes.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Any neurotransmitter that leaks from a damaged or oxygen-starved nerve cell will damage surrounding nerve cells.",
+      "B": "Stroke patients exhibit a wide variety of abnormal chemical levels in their blood.",
+      "C": "Glutamate is the only neurotransmitter that leaks from oxygen-starved or physically damaged nerve cells.",
+      "D": "Leakage from damaged or oxygen-starved nerve cells is the only possible source of glutamate in the blood.",
+      "E": "Nerve cells can suffer enough damage to leak glutamate without being destroyed themselves."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Defender",
+      "Medical",
+      "Science",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Parallel method of reasoning (Parallel)",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The only songs Amanda has ever written are blues songs and punk rock songs. Most punk rock songs involve no more than three chords. So if the next song Amanda writes is not a blues song, it probably will not involve more than three chords.",
+    "questionStem": "The reasoning in which one of the following arguments is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "The only pets the Gupta family has ever owned are fish and parrots. Most parrots are very noisy. So if the next pet the Gupta family owns is a parrot, it will probably be very noisy.",
+      "B": "Most parrots are very noisy. The Gupta family has never owned any pets other than fish and parrots. So if the Gupta family has ever owned a noisy pet, it was probably a parrot.",
+      "C": "All the pets the Gupta family has ever owned have been fish and parrots. Most parrots are very noisy. So any pet the Gupta family ever owns that is not a fish will probably be very noisy.",
+      "D": "Every pet the Gupta family has ever owned has been a fish or a parrot. Most parrots are very noisy. So if the next pet the Gupta family owns is not a parrot, it will probably not be very noisy.",
+      "E": "The Gupta family has never owned any pets other than fish and parrots. Most parrots are very noisy. So the next pet the Gupta family owns will probably be very noisy if it is not a fish."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Conditional Conclusion",
+      "Repetitive Answers",
+      "Ruling Out Options",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Resolve, reconcile, or explain",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Advertising tends to have a greater influence on consumer preferences regarding brands of yogurt than it does on consumer preferences regarding brands of milk. Yet, since the LargeCo supermarket chain began advertising its store-brand products, sales of its store-brand milk increased more than sales of its store-brand yogurt.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
+    "answerChoices": {
+      "A": "There has recently been increased demand at LargeCo stores for the chain’s own brand of yogurt as well as for other brands of yogurt.",
+      "B": "The typical shopper going to LargeCo for the purpose of buying milk does not go with the intention of also buying yogurt.",
+      "C": "Shoppers at LargeCo tend to purchase the chain’s own brand of dairy products more frequently than other brands of dairy products.",
+      "D": "Supermarkets throughout the entire nation have experienced a sharp decrease in sales of yogurt recently.",
+      "E": "Consumers tend to purchase store brands of yogurt, but purchase whichever brand of milk is least expensive."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "PSA - Find or complete the application (Principle)",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Problem: If Shayna congratulates Daniel on his award, she will misrepresent her true feelings. However, if Shayna does not congratulate Daniel, she will hurt his feelings. Principle: One should never be insincere about one’s feelings, except possibly where one believes that the person with whom one is speaking would prefer kindness to honesty.",
+    "questionStem": "The principle, if valid, most helps to justify the reasoning in which one of the following arguments concerning the problem?",
+    "answerChoices": {
+      "A": "If Shayna congratulates Daniel, she will avoid hurting his feelings, so she should congratulate him.",
+      "B": "Daniel might prefer for Shayna to congratulate him—even if insincerely—rather than for her to express her true feelings, and so Shayna would be doing nothing wrong in insincerely congratulating Daniel.",
+      "C": "Shayna believes that kindness should be preferred to dishonesty when speaking to others, so she should not tell Daniel her true feelings.",
+      "D": "Daniel’s feelings would be hurt if he knew that congratulations from Shayna were insincere, so Shayna should not congratulate him.",
+      "E": "Shayna has no opinion about whether Daniel would prefer kindness to honesty, so she should not congratulate him."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Sufficient assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Clearly, a democracy cannot thrive without effective news media. After all, a democracy cannot thrive without an electorate that is knowledgeable about important political issues, and an electorate can be knowledgeable in this way only if it has access to unbiased information about the government.",
+    "questionStem": "The argument’s conclusion is properly inferred if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "All societies that have effective news media are thriving democracies.",
+      "B": "If an electorate has access to unbiased information about the government, then that electorate will be knowledgeable about important political issues.",
+      "C": "A democracy will thrive if its electorate is knowledgeable about important political issues.",
+      "D": "A democracy cannot thrive if the electorate is exposed to biased information about the government.",
+      "E": "Without effective news media, an electorate will not have access to unbiased information about the government."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "First Sentence Conclusion",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Flaw (Flaw)",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Roberta is irritable only when she is tired, and loses things only when she is tired. Since she has been yawning all day, and has just lost her keys, she is almost certainly irritable.",
+    "questionStem": "The reasoning above is flawed in that it",
+    "answerChoices": {
+      "A": "infers from a correlation between tiredness and yawning that tiredness causes yawning",
+      "B": "assumes the conclusion that it sets out to prove",
+      "C": "generalizes on the basis of a single instance",
+      "D": "takes a necessary condition for Roberta’s losing things to be a sufficient condition",
+      "E": "takes a necessary condition for Roberta’s being irritable to be a sufficient condition"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Farmer: Crops genetically engineered to produce toxins that enable them to resist insect pests do not need to be sprayed with insecticides. Since excessive spraying of insecticides has harmed wildlife populations near croplands, using such genetically engineered crops more widely is likely to help wildlife populations to recover.",
+    "questionStem": "Which one of the following is an assumption the farmer’s argument requires?",
+    "answerChoices": {
+      "A": "Use of the crops that have been genetically engineered to resist insect pests in place of crops that have been sprayed with insecticides will cause less harm to wildlife populations.",
+      "B": "Wildlife populations that have been harmed by the excessive spraying of insecticides on croplands are likely to recover if the amount of insecticides sprayed on those croplands is reduced even slightly.",
+      "C": "Crops that have been genetically engineered to resist insect pests are never sprayed with insecticides that harm wildlife populations.",
+      "D": "Use of crops that have been genetically engineered to resist insect pests is no more costly to farmers than the use of insecticides on crops that are not genetically engineered.",
+      "E": "If a wider use of certain crops that have been genetically engineered to resist insect pests is likely to help at least some wildlife populations to recover, it is likely to have that effect only because its use will prevent excessive and ineffective spraying of insecticides on croplands."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Assumes Difference",
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  }
+]

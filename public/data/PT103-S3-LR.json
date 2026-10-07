@@ -1,0 +1,574 @@
+[
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Paradox Resolve / explain",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "From the tenth century until around the year 1500, there were Norse settlers living in Greenland. During that time, average yearly temperatures fell slightly worldwide, and some people claim that this temperature drop wiped out the Norse settlements by rendering Greenland too cold for human habitation. But this explanation cannot be correct, because Inuit settlers from North America, who were living in Greenland during the time the Norse settlers were there, continued to thrive long after 1500.",
+    "questionStem": "Which one of the following, if true, most helps explain why the Norse settlements in Greenland disappeared while the Inuit settlements survived?",
+    "answerChoices": {
+      "A": "The drop in average yearly temperature was smaller in Greenland than it was in the world as a whole.",
+      "B": "The Norse settlers’ diet, unlike that of the Inuit, was based primarily on livestock and crops that were unable to survive the temperature drop.",
+      "C": "There were settlements in North America during the fifteenth century that were most likely founded by Norse settlers who had come from Greenland.",
+      "D": "The Inuit and the Norse settlements were typically established in coastal areas.",
+      "E": "The Norse community in Norway continued to thrive long after 1500."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Method",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "From the tenth century until around the year 1500, there were Norse settlers living in Greenland. During that time, average yearly temperatures fell slightly worldwide, and some people claim that this temperature drop wiped out the Norse settlements by rendering Greenland too cold for human habitation. But this explanation cannot be correct, because Inuit settlers from North America, who were living in Greenland during the time the Norse settlers were there, continued to thrive long after 1500.",
+    "questionStem": "Which one of the following is a technique of reasoning used in the argument?",
+    "answerChoices": {
+      "A": "denying the relevance of an analogy",
+      "B": "producing evidence that is inconsistent with the claim being opposed",
+      "C": "presenting an alternative explanation that purports to account for more of the known facts",
+      "D": "citing a general rule that undermines the claim being opposed",
+      "E": "redefining a term in a way that is favorable to the argument’s conclusion"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Even though trading in ivory has been outlawed by international agreement, some piano makers still use ivory, often obtained illegally, to cover piano keys. Recently, experts have devised a synthetic ivory that, unlike earlier ivory substitutes, has found favor with concert pianists throughout the world. But because piano makers have never been major consumers of ivory, the development of the synthetic ivory will therefore probably do little to help curb the killing of elephants, from whose tusks most natural ivory is obtained.",
+    "questionStem": "Which one of the following, if true, most helps to strengthen the argument?",
+    "answerChoices": {
+      "A": "Most people who play the piano but are not concert pianists can nonetheless easily distinguish between the new synthetic ivory and inferior ivory substitutes.",
+      "B": "The new synthetic ivory can be manufactured to resemble in color and surface texture any of the various types of natural ivory that have commercial uses.",
+      "C": "Other natural products such as bone or tortoise shell have not proven to be acceptable substitutes for natural ivory in piano keys.",
+      "D": "The most common use for natural ivory is in ornamental carvings, which are prized not only for the quality of their workmanship but also for the authenticity of their materials.",
+      "E": "It costs significantly less to produce the new synthetic ivory than it does to produce any of the ivory substitutes that scientists had developed previously."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Role",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "The government has spent heavily to clean groundwater contaminated by toxic chemical spills. Yet not even one spill site has been completely cleaned, and industrial accidents are spilling more toxic chemicals annually than are being cleaned up. More of the government’s budget should be redirected to preventing spills. Since prevention is far more effective than cleanup, it makes little sense that the entire annual budget for prevention is less than the amount spent annually on one typical cleanup site.",
+    "questionStem": "The proposal about how the government’s budget should be redirected plays which one of the following roles in the argument?",
+    "answerChoices": {
+      "A": "It represents an unsupported speculation.",
+      "B": "It both supports another claim in the argument and is supported by others.",
+      "C": "It is the claim that the argument as a whole is structured to support.",
+      "D": "It is a presupposition on which the argument is explicitly based.",
+      "E": "It presents an objection to another proposal mentioned in the argument."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Consumer: I would like to have the features contained in the latest upgrade to your computer software package, but I am leery of installing the upgrade because a friend has told me he had a problem with it. Company representative: We have distributed nearly 3,000 copies of the upgrade and we have received fewer than 100 calls saying that it has caused problems. So it is very unlikely that you will experience any problems with the upgrade.",
+    "questionStem": "The reasoning in the company representative’s argument is most vulnerable to criticism because it fails to consider the possibility that",
+    "answerChoices": {
+      "A": "the company will issue another upgrade that corrects the problems with the current upgrade",
+      "B": "some of the problems people have experienced with the upgrade have been quite serious",
+      "C": "a significant number of people have experienced problems with the upgrade but have not reported them",
+      "D": "the consumer will experience software problems if the upgrade is not installed",
+      "E": "some of the reported problems were a result of users failing to follow instructions"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Focused on Evidence",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Weaken Counter objection",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "First legislator: Medical research is predominantly done on groups of patients that include only men. For example, the effects of coffee drinking on health are evaluated only for men, and studies are lacking on hormone treatments for older women. Government-sponsored medical research should be required to include studies of women. Second legislator: Considerations of male/female balance such as this are inappropriate with respect to research; they have no place in science.",
+    "questionStem": "Which one of the following rejoinders, if true, most directly counters the second legislator’s objection?",
+    "answerChoices": {
+      "A": "Government-sponsored research is supported by all taxpayers, both male and female.",
+      "B": "Serving as a subject for medical research can provide a patient access to new treatments but also can subject the patient to risks.",
+      "C": "Government-sponsored medical research is often done in military hospitals or prisons that hold only male residents.",
+      "D": "The training of male and female scientists does not differ according to their sex.",
+      "E": "Restriction to males of the patient base on which data are collected results in inadequate science."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Must Be True Fill in the blank",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Lack of exercise produces the same or similar bodily effects as aging. In fact, the physical changes that accompany aging can often be slowed down by appropriate exercise. No drug, however, holds any promise for slowing down the changes associated with aging. Therefore, _______.",
+    "questionStem": "Which one of the following provides a logical completion to the passage above?",
+    "answerChoices": {
+      "A": "taking drugs has the same effect on aging as does a lack of exercise",
+      "B": "people who do not exercise are likely to need drugs to sustain their health",
+      "C": "appropriate exercise can prevent the physical changes associated with aging",
+      "D": "people who do not exercise when they are young will gain few benefits from beginning to exercise at a later age",
+      "E": "if the physical changes of aging are to be slowed, it is more practical to rely on exercise than on drugs"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Grasses and woody plants are planted on dirt embankments to keep the embankments from eroding. The embankments are mowed to keep the grasses from growing too tall; as a result, clippings pile up. These piles of clippings smother the woody plants, causing their roots, which serve to keep the embankments from eroding, to rot; they also attract rodents that burrow into the dirt and damage the woody plants’ roots. Therefore, bringing in predators to eradicate the rodents will prevent erosion of the embankments.",
+    "questionStem": "Which one of the following is an error of reasoning in the argument?",
+    "answerChoices": {
+      "A": "Two events that merely co-occur are treated as if one caused the other.",
+      "B": "A highly general proposal is based only on an unrepresentative set of facts.",
+      "C": "The conclusion is no more than a restatement of one of the pieces of evidence provided to support it.",
+      "D": "One possible solution to a problem is claimed to be the only possible solution to that problem.",
+      "E": "An action that would eliminate one cause of a problem is treated as if it would solve the entire problem."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Scientific and technological discoveries have considerable effects on the development of any society. It follows that predictions of the future condition of societies in which scientific and technological discovery is particularly frequent are particularly untrustworthy.",
+    "questionStem": "The argument depends on assuming which one of the following?",
+    "answerChoices": {
+      "A": "Predictions of scientific and technological discoveries, or predictions of their effects, have harmful consequences in some societies.",
+      "B": "The development of a society requires scientific and technological discoveries.",
+      "C": "Forecasts of scientific and technological discoveries, or forecasts of their effects, are not entirely reliable.",
+      "D": "An advanced scientific and technological society frequently benefits from new discoveries.",
+      "E": "It is not as difficult to predict scientific and technological discoveries in a technologically more advanced society as it is in a technologically less advanced society."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Tires may be either underinflated, overinflated, or neither. We are pretty safe in assuming that underinflation or overinflation of tires harms their tread. After all, no one has been able to show that these do not harm tire tread.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the argument’s reasoning?",
+    "answerChoices": {
+      "A": "The argument assumes what it is attempting to demonstrate.",
+      "B": "The argument overlooks that what is not in principle susceptible to proof might be false.",
+      "C": "The argument fails to specify how it is that underinflation or overinflation harms tire tread.",
+      "D": "The argument rejects the possibility that what has not been proven is nevertheless true.",
+      "E": "The argument fails to precisely define the terms “underinflation” and “overinflation.”"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Lindsey has been judged to be a bad songwriter simply because her lyrics typically are disjointed and subjective. This judgment is ill founded, however, since the writings of many modern novelists typically are disjointed and subjective and yet these novelists are widely held to be good writers.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Disjointed and subjective writing has a comparable effect in modern novels and in songs.",
+      "B": "Some readers do not appreciate the subtleties of the disjointed and subjective style adopted by modern novelists.",
+      "C": "Song lyrics that are disjointed and subjective have at least as much narrative structure as any other song lyrics do.",
+      "D": "A disjointed and subjective style of writing is usually more suitable for novels and song lyrics than it is for any other written works.",
+      "E": "The quality of Lindsey’s songs is better judged by the quality of their lyrics than by the quality of their musical form."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Must Be False",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The Levant—the area that borders the eastern Mediterranean—was heavily populated in prehistoric times. The southern Levant was abandoned about 6,000 years ago, although the northern Levant, which shared the same climate, remained heavily populated. Recently archaeologists have hypothesized that the sudden depopulation in the southern Levant was due to an economic collapse resulting from deforestation.",
+    "questionStem": "If the statements above are true and the archaeologists’ hypothesis is correct, which one of the following cannot be true?",
+    "answerChoices": {
+      "A": "The sheep and goats herded by the peoples of the southern Levant until 6,000 years ago grazed extensively on the seedlings and saplings of indigenous tree species.",
+      "B": "Trees were used in the production of lime plaster, a building material used extensively throughout the southern Levant until 6,000 years ago.",
+      "C": "Organic remains from the northern Levant reliably indicate that tree species flourished there without interruption during the period when the southern Levant was being abandoned.",
+      "D": "Carbon dating of organic remains from the southern Levant reliably demonstrates that there were no forests present in that area prior to 6,000 years ago.",
+      "E": "Since there are few traces of either quarried stone or of mud brick in buildings excavated in the southern Levant, it is likely that the buildings built there prior to 6,000 years ago were made almost entirely of timber."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Using rational argument in advertisements does not persuade people to buy the products being advertised. Therefore, advertisers who replace rational argument with nonrational appeals to emotion in advertisements will persuade people to buy the products being advertised.",
+    "questionStem": "Which one of the following contains flawed reasoning most similar to the flawed reasoning in the argument above?",
+    "answerChoices": {
+      "A": "People who ask others for favors are refused. Therefore, anyone who has not had the experience of being refused has never asked for a favor.",
+      "B": "In the past, people who have tried to solve their problems by discussing them have often failed. Therefore, in the future, people who try to solve their problems by discussing them will often fail.",
+      "C": "Using a computer has not improved students’ writing skills. Thus, students should not try to improve their writing skills by using a computer.",
+      "D": "A person who does not have positive letters of reference cannot get a good job. Therefore, the better the letters of reference a person has, the better the job that person will get.",
+      "E": "People never learn to program a computer by reading poorly written directions. Therefore, if people read well-written directions, they will learn to program a computer."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws",
+      "Conditional Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "A commercial insect trap consists of a small box containing pesticide mixed with glucose, a sweet substance known to attract insect pests. Yet in households where this type of trap has been used regularly for the past several years, recently installed traps are far less effective in eliminating insect pests than were traps of that type installed several years ago. Research scientists have hypothesized that traps in those households decreased in effectiveness because successive generations of the pests developed a resistance to the pesticide in the traps.",
+    "questionStem": "Which one of the following, if true, most seriously undermines the hypothesis?",
+    "answerChoices": {
+      "A": "In households where the traps have been used regularly, the proportion of insect pests that have a natural aversion to eating glucose has increased with each successive generation.",
+      "B": "Even when only a few individuals out of an entire generation of insects survive the effects of a pesticide, the offspring of those individuals are usually resistant to that pesticide.",
+      "C": "After eating glucose mixed with the pesticide, insects that live in households that do not use the trap tend to die in greater numbers than do insects from households where the traps have been used regularly.",
+      "D": "After the manufacturer of the traps increased the concentration of the pesticide used in the traps, the traps were no more effective in eliminating household insect pests than were the original traps.",
+      "E": "The kind of glucose used to bait the traps is one of several different kinds of glucose that occur naturally."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Most Supported",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "A person’s dietary consumption of cholesterol and fat is one of the most important factors determining the level of cholesterol in the person’s blood (serum cholesterol). Serum cholesterol levels rise proportionally to increased cholesterol and fat consumption until that consumption reaches a threshold, but once consumption of these substances exceeds that threshold, serum cholesterol levels rise only gradually, even with dramatic increases in consumption. The threshold is one fourth the consumption level of cholesterol and fat in today’s average North American diet.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "The threshold can be lowered by lowering the dietary consumption of cholesterol and fat.",
+      "B": "People who consume an average North American diet cannot increase their consumption of cholesterol and fat without dramatically increasing their serum cholesterol levels.",
+      "C": "People who consume half as much cholesterol and fat as in the average North American diet will not necessarily have half the average serum cholesterol level.",
+      "D": "Serum cholesterol levels cannot be affected by nondietary modifications in behavior, such as exercising more or smoking less.",
+      "E": "People who consume less cholesterol and fat than the threshold cannot reduce their serum cholesterol levels."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Method",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "The recently negotiated North American Free Trade Agreement among Canada, Mexico, and the United States is misnamed, because it would not result in truly free trade. Adam Smith, the economist who first articulated the principles of free trade, held that any obstacle placed in the way of the free movement of goods, investment, or labor would defeat free trade. So since under the agreement workers would be restricted by national boundaries from seeking the best conditions they could find, the resulting obstruction of the flow of trade would, from a free-trade perspective, be harmful.",
+    "questionStem": "The argument proceeds by",
+    "answerChoices": {
+      "A": "ruling out alternatives",
+      "B": "using a term in two different senses",
+      "C": "citing a nonrepresentative instance",
+      "D": "appealing to a relevant authority",
+      "E": "responding to a different issue from the one posed"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Parents who wish to provide a strong foundation for the musical ability of their children should provide them with a good musical education. Since formal instruction is often a part of a good musical education, parents who wish to provide this strong foundation need to ensure that their children receive formal instruction.",
+    "questionStem": "The reasoning is most vulnerable to criticism on the grounds that it fails to consider that",
+    "answerChoices": {
+      "A": "parents might not be the only source of a child’s musical education",
+      "B": "some children might not be interested in receiving a strong foundation for their musical ability",
+      "C": "there are many examples of people with formal instruction whose musical ability is poor",
+      "D": "formal instruction might not always be a part of a good musical education",
+      "E": "some children might become good musicians even if they have not had good musical educations"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Paradox Resolve / explain discrepancy",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "A stingray without parasites is healthier than it would be if it had parasites. Nevertheless, the lack of parasites in stingrays is an indicator that the ecosystem in which the stingrays live is under environmental stress such as pollution.",
+    "questionStem": "Which one of the following, if true, most helps to reconcile the discrepancy indicated above?",
+    "answerChoices": {
+      "A": "During part of their life cycles, the parasites of stingrays require as hosts shrimp or oysters, which are environmentally vulnerable organisms.",
+      "B": "A stingray is a free-ranging predator that feeds on smaller organisms but has few predators itself.",
+      "C": "A parasite drains part of the vitality of its host by drawing nourishment from the host.",
+      "D": "An ecosystem can be considered stressed if only a few species of very simple organisms can live there.",
+      "E": "Since the life of parasites depends on that of their host, they need to live without killing their host or else not reproduce and infect other individuals before their own host dies."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Over the past 20 years, skiing has become a relatively safe sport due to improvements in ski equipment. There has been a 50 percent drop in the number of ski injuries over the last 20 years. Clearly, however, there have not been decreases in the number of injuries in all categories, as statistical data readily show, for although broken legs and ankle injuries have decreased by an astounding 90 percent, knee injuries now represent 16 percent of all ski injuries, up significantly from the 11 percent of 20 years ago.",
+    "questionStem": "The reasoning in the argument is flawed because the argument does which one of the following?",
+    "answerChoices": {
+      "A": "It fails to allow for there being ski injuries other than broken legs, ankle injuries, and knee injuries.",
+      "B": "It infers disparate effects from the same single cause.",
+      "C": "It ignores the possibility that the number of skiers has increased over the past 20 years.",
+      "D": "It assumes that an increase in the proportion of knee injuries rules out a decrease in the number of knee injuries.",
+      "E": "It proceeds as though there could be a greater decrease in injuries in each category of injury than there is in injuries overall."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Math-y Stuff",
+      "Percentages",
+      "Rebuttals",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Most Supported Least supported / EXCEPT",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Only poetry cannot be translated well, and therefore it is poets who preserve languages, for we would not bother to learn a language if we could get everything written in it from translation. So, since we cannot witness the beauty of poetry except in the language in which it is composed, we have motivation to learn the language.",
+    "questionStem": "The information above provides the least support for which one of the following?",
+    "answerChoices": {
+      "A": "All nonpoetic literature can be translated well.",
+      "B": "One purpose of writing poetry is to preserve the language in which it is written.",
+      "C": "Some translations do not capture all that was expressed in the original language.",
+      "D": "The beauty of poetry is not immediately accessible to people who do not understand the language in which the poetry was written.",
+      "E": "Perfect translation from one language to another is sometimes impossible."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The companies that are the prime purchasers of computer software will not buy a software package if the costs of training staff to use it are high, and we know that it is expensive to teach people a software package that demands the memorization of unfamiliar commands. As a result, to be successful, commercial computer software cannot require users to memorize unfamiliar commands.",
+    "questionStem": "The conclusion above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "If most prime purchasers of computer software buy a software product, that product will be successful.",
+      "B": "Commercial computer software that does not require users to memorize unfamiliar commands is no more expensive than software that does.",
+      "C": "Commercial computer software will not be successful unless prime purchasers buy it.",
+      "D": "If the initial cost of computer software is high, but the cost of training users is low, prime purchasers will still buy that software.",
+      "E": "The more difficult it is to learn how to use a piece of software, the more expensive it is to teach a person to use that software."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Must Be True",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "The following passage is used for Section 3, questions 22 through 23. Whenever she considers voting in an election to select one candidate for a position and there is at least one issue important to her, Kay uses the following principle in choosing which course of action to take: it is acceptable for me to vote for a candidate whose opinions differ from mine on at least one issue important to me whenever I disagree with each of the other candidates on even more such issues; it is otherwise unacceptable to vote for that candidate. In the upcoming mayoral election, the three candidates are Legrand, Medina, and Norton. There is only one issue important to Kay, and only Medina shares her opinion on that issue.",
+    "questionStem": "If the statements in the passage are true, which one of the following must also be true about Kay’s course of action in any election to select one candidate for a position?",
+    "answerChoices": {
+      "A": "If there are no issues important to her, it is unacceptable for her to vote for any candidate in the election.",
+      "B": "If she agrees with each of the candidates on most of the issues important to her, it is unacceptable for her to vote for any candidate in the election.",
+      "C": "If she agrees with a particular candidate on only one issue important to her, it is unacceptable for her to vote for that candidate.",
+      "D": "If she disagrees with each of the candidates on exactly three issues important to her, it is unacceptable for her to vote for any candidate in the election.",
+      "E": "If there are more issues important to her on which she disagrees with a particular candidate than there are such issues on which she agrees with that candidate, it is unacceptable for her to vote for that candidate."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Games-y LR"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Principle Conform Application",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "The following passage is used for Section 3, questions 22 through 23. Whenever she considers voting in an election to select one candidate for a position and there is at least one issue important to her, Kay uses the following principle in choosing which course of action to take: it is acceptable for me to vote for a candidate whose opinions differ from mine on at least one issue important to me whenever I disagree with each of the other candidates on even more such issues; it is otherwise unacceptable to vote for that candidate. In the upcoming mayoral election, the three candidates are Legrand, Medina, and Norton. There is only one issue important to Kay, and only Medina shares her opinion on that issue.",
+    "questionStem": "According to the principle stated in the passage, in the upcoming mayoral election",
+    "answerChoices": {
+      "A": "it is acceptable for Kay to vote for either Medina or Legrand, but it is unacceptable for her to vote for Norton",
+      "B": "the only unacceptable courses of action are for Kay to vote for Norton and for her to vote for Legrand",
+      "C": "it is unacceptable for Kay to vote for any of the candidates",
+      "D": "the only unacceptable course of action is for Kay to vote for Medina",
+      "E": "it is acceptable for Kay to vote for any of the candidates"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Binaries",
+      "Games-y LR",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Over the last 25 years, the average price paid for a new car has steadily increased in relation to average individual income. This increase indicates that individuals who buy new cars today spend, on average, a larger amount relative to their incomes buying a car than their counterparts did 25 years ago.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "There has been a significant increase over the last 25 years in the proportion of individuals in households with more than one wage earner.",
+      "B": "The number of used cars sold annually is the same as it was 25 years ago.",
+      "C": "Allowing for inflation, average individual income has significantly declined over the last 25 years.",
+      "D": "During the last 25 years, annual new-car sales and the population have both increased, but new-car sales have increased by a greater percentage.",
+      "E": "Sales to individuals make up a smaller proportion of all new-car sales than they did 25 years ago."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "New Concept in Conclusion",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT103",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Principle Application / analogous argument",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Credit card companies justify charging cardholders additional fees for late payments by asserting the principle that those who expose other individuals, companies, or institutions to financial risk should pay for that risk, and by pointing out that late-paying cardholders present a greater risk of default than other cardholders. Without late fees, the companies argue, they would have to spread the cost of the risk over all cardholders.",
+    "questionStem": "The principle invoked by the credit card companies would, if established, be most usefully invoked in which one of the following arguments?",
+    "answerChoices": {
+      "A": "School authorities should use student activity funds to pay for student-caused damages to school property since, even though only a few students cause any significant damage, authorities cannot in most instances determine which students caused the damage.",
+      "B": "Insurance companies should demand higher insurance rates of drivers of sports cars than of other drivers, since sports car drivers are more likely to cause accidents and thus are more likely to require the companies to pay out money in claims.",
+      "C": "Libraries should charge high fines for overdue books, since if they did not do so some people would keep books out indefinitely, risking inconvenience to other library users who might want to use the books.",
+      "D": "Cities should impose high fines for littering. The risk of being caught littering is quite low, so the fine for those who are caught must be correspondingly high in order to deter people from littering.",
+      "E": "Municipalities should use tax money to pay for the maintenance of municipal roads, since if individuals paid for only those roads they used, some important roads in remote areas would be inadequately maintained."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
+  }
+]

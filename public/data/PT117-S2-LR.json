@@ -1,0 +1,605 @@
+[
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The tidal range at a particular location is the difference in height between high tide and low tide. Tidal studies have shown that one of the greatest tidal ranges in the world is found in the Bay of Fundy and reaches more than seventeen meters. Since the only forces involved in inducing the tides are the sun’s and moon’s gravity, the magnitudes of tidal ranges also must be explained entirely by gravitational forces.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the reasoning above?",
+    "answerChoices": {
+      "A": "It gives only one example of a tidal range.",
+      "B": "It fails to consider that the size of a tidal range could be affected by the conditions in which gravitational forces act.",
+      "C": "It does not consider the possibility that low tides are measured in a different way than are high tides.",
+      "D": "It presumes, without providing warrant, that most activity within the world's oceans is a result of an interplay of gravitational forces.",
+      "E": "It does not differentiate between the tidal effect of the sun and the tidal effect of the moon."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Cardiologist: Coronary bypass surgery is commonly performed on patients suffering from coronary artery disease when certain other therapies would be as effective. Besides being relatively inexpensive, these other therapies pose less risk to the patient since they are less intrusive. Bypass surgery is especially debatable for single-vessel disease.",
+    "questionStem": "The cardiologist's statements, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Bypass surgery is riskier than all alternative therapies.",
+      "B": "Needless bypass surgery is more common today than previously.",
+      "C": "Bypass surgery should be performed when more than one vessel is diseased.",
+      "D": "Bypass surgery is an especially expensive therapy when used to treat single-vessel disease.",
+      "E": "Sometimes there are equally effective alternatives to bypass surgery that involve less risk."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science",
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In the past, combining children of different ages in one classroom was usually a failure; it resulted in confused younger children, who were given inadequate attention and instruction, and bored older ones, who had to sit through previously learned lessons. Recently, however, the practice has been revived with excellent results. Mixed-age classrooms today are stimulating to older children and enable younger children to learn much more efficiently than in standard classrooms.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the passage?",
+    "answerChoices": {
+      "A": "On average, mixed-age classrooms today are somewhat larger in enrollment than were the ones of the past.",
+      "B": "Mixed-age classrooms of the past were better equipped than are those of today.",
+      "C": "Today's mixed-age classrooms, unlike those of the past, emphasize group projects that are engaging to students of different ages.",
+      "D": "Today's mixed-age classrooms have students of a greater range of ages than did those of the past.",
+      "E": "Few of the teachers who are reviving mixed-age classrooms today were students in mixed-age classrooms when they were young."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The top 50 centimeters of soil on Tiliga Island contain bones from the native birds eaten by the islanders since the first human immigration to the island 3,000 years ago. A comparison of this top layer with the underlying 150 centimeters of soil—accumulated over 80,000 years—reveals that before humans arrived on Tiliga, a much larger and more diverse population of birds lived there. Thus, the arrival of humans dramatically decreased the population and diversity of birds on Tiliga.",
+    "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "The bird species known to have been eaten by the islanders had few natural predators on Tiliga.",
+      "B": "Many of the bird species that disappeared from Tiliga did not disappear from other, similar, uninhabited islands until much later.",
+      "C": "The arrival of a species of microbe, carried by some birds but deadly to many others, immediately preceded the first human immigration to Tiliga.",
+      "D": "Bones from bird species known to have been eaten by the islanders were found in the underlying 150 centimeters of soil.",
+      "E": "The birds that lived on Tiliga prior to the first human immigration generally did not fly well."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science",
+      "Explain Curious Fact",
+      "Timeframes",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The corpus callosum—the thick band of nerve fibers connecting the brain’s two hemispheres—of a musician is on average larger than that of a nonmusician. The differences in the size of corpora callosa are particularly striking when adult musicians who began training around the age of seven are compared to adult nonmusicians. Therefore, musical training, particularly when it begins at a young age, causes certain anatomic brain changes.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "The corpora callosa of musicians, before they started training, do not tend to be larger than those of nonmusicians of the same age.",
+      "B": "Musical training late in life does not cause anatomic changes to the brain.",
+      "C": "For any two musicians whose training began around the age of seven, their corpora callosa are approximately the same size.",
+      "D": "All musicians have larger corpora callosa than do any nonmusicians.",
+      "E": "Adult nonmusicians did not participate in activities when they were children that would have stimulated any growth of the corpus callosum."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science",
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion",
+      "Alternatives",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Chai: The use of the word “tree” to denote both deciduous and coniferous plant forms, while acceptable as a lay term, is scientifically inadequate; it masks the fact that the two plant types have utterly different lineages.Dodd: But the common name highlights the crucial fact that both are composed of the same material and have very similar structures; so it is acceptable as a scientific term.",
+    "questionStem": "The conversation provides the strongest grounds for holding that Chai and Dodd disagree over whether",
+    "answerChoices": {
+      "A": "it is advisable to use ordinary terms as names for biological forms in scientific discourse",
+      "B": "using the same term for two biological forms with different lineages can be scientifically acceptable",
+      "C": "both deciduous and coniferous plant forms evolved from simpler biological forms",
+      "D": "it is important that the lay terms for plant forms reflect the current scientific theories about them",
+      "E": "biological forms with similar structures can have different lineages"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Focused on Evidence",
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Increases in the occurrence of hearing loss among teenagers are due in part to their listening to loud music through stereo headphones. So a group of concerned parents is recommending that headphone manufacturers include in their product lines stereo headphones that automatically turn off when a dangerous level of loudness is reached. It is clear that adoption of this recommendation would not significantly reduce the occurrence of hearing loss in teenagers, however, since almost all stereo headphones that teenagers use are bought by the teenagers themselves.",
+    "questionStem": "Which one of the following, if true, provides the most support for the argument?",
+    "answerChoices": {
+      "A": "Loud music is most dangerous to hearing when it is played through stereo headphones.",
+      "B": "No other cause of hearing loss in teenagers is as damaging as their listening to loud music through stereo headphones.",
+      "C": "Parents of teenagers generally do not themselves listen to loud music through stereo headphones.",
+      "D": "Teenagers who now listen to music at dangerously loud levels choose to do so despite their awareness of the risks involved.",
+      "E": "A few headphone manufacturers already plan to market stereo headphones that automatically turn off when a dangerous level of loudness is reached."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Most plants have developed chemical defenses against parasites. The average plant contains about 40 natural pesticides—chemical compounds toxic to bacteria, fungi, and other parasites. Humans ingest these natural pesticides without harm every day. Therefore, the additional threat posed by synthetic pesticides sprayed on crop plants by humans is minimal.",
+    "questionStem": "Each of the following, if true, weakens the argument EXCEPT:",
+    "answerChoices": {
+      "A": "Humans have been consuming natural plant pesticides for millennia and have had time to adapt to them.",
+      "B": "The concentrations of natural pesticides in plants are typically much lower than the concentrations of synthetic pesticides in sprayed crop plants.",
+      "C": "Natural plant pesticides are typically less potent than synthetic pesticides, whose toxicity is highly concentrated.",
+      "D": "Natural plant pesticides generally serve only as defenses against specific parasites, whereas synthetic pesticides are often harmful to a wide variety of organisms.",
+      "E": "The synthetic pesticides sprayed on crop plants by humans usually have chemical structures similar to those of the natural pesticides produced by the plants."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT",
+      "Science",
+      "Anti-Causal",
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "In addition to the labor and materials used to make wine, the reputation of the vineyard where the grapes originate plays a role in determining the price of the finished wine. Therefore, an expensive wine is not always a good wine.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "The price of a bottle of wine should be a reflection of the wine's quality.",
+      "B": "Price is never an accurate indication of the quality of a bottle of wine.",
+      "C": "The reputation of a vineyard does not always indicate the quality of its wines.",
+      "D": "The reputation of a vineyard generally plays a greater role than the quality of its grapes in determining its wines' prices.",
+      "E": "Wines produced by lesser-known vineyards generally are priced to reflect accurately the wines' quality."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Refute a Conditional",
+      "Missing Link / Idea",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Before their larvae hatch, each parental pair of Nicrophorus beetles buries the carcass of a small vertebrate nearby. For several days after the larvae hatch, both beetles feed their voracious larvae from the carcass, which is entirely consumed within a week. Since both parents help with feeding, larvae should benefit from both parents’ presence; however, removing one parent before the hatching results in larvae that grow both larger and heavier than they otherwise would be.",
+    "questionStem": "Which one of the following, if true, best helps to explain why removing one parent resulted in larger, heavier larvae?",
+    "answerChoices": {
+      "A": "Two beetles can find and bury a larger carcass than can a single beetle.",
+      "B": "Both parents use the carcass as their own food supply for as long as they stay with the larvae.",
+      "C": "Beetle parents usually take turns feeding their larvae, so that there is always one provider available and one at rest.",
+      "D": "After a week, the larvae are capable of finding other sources of food and feeding themselves.",
+      "E": "Two parents can defend the carcass from attack by other insects better than a single parent can."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "For many centuries it was believed that only classical Euclidean geometry could provide a correct way of mathematically representing the universe. Nevertheless, scientists have come to believe that a representation of the universe employing non-Euclidean geometry is much more useful in developing certain areas of scientific theory. In fact, such a representation underlies the cosmological theory that is now most widely accepted by scientists as accurate.",
+    "questionStem": "Which one of the following is most strongly supported by the statements above?",
+    "answerChoices": {
+      "A": "Scientists who use Euclidean geometry are likely to believe that progress in mathematical theory results in progress in natural science.",
+      "B": "Scientists generally do not now believe that classical Euclidean geometry is uniquely capable of giving a correct mathematical representation of the universe.",
+      "C": "Non-Euclidean geometry is a more complete way of representing the universe than is Euclidean geometry.",
+      "D": "An accurate scientific theory cannot be developed without the discovery of a uniquely correct way of mathematically representing the universe.",
+      "E": "The usefulness of a mathematical theory is now considered by scientists to be more important than its mathematical correctness."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science",
+      "Important Pivot",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Experts hired to testify in court need to know how to make convincing presentations. Such experts are evaluated by juries in terms of their ability to present the steps by which they arrived at their conclusions clearly and confidently. As a result, some less expert authorities who are skilled at producing convincing testimony are asked to testify rather than highly knowledgeable but less persuasive experts.",
+    "questionStem": "Which one of the following most closely conforms to the principle illustrated by the passage above?",
+    "answerChoices": {
+      "A": "Successful politicians are not always the ones who best understand how to help their country. Some lack insight into important political issues but are highly skilled at conducting an election campaign.",
+      "B": "Trial lawyers often use the techniques employed by actors to influence the emotions of jurors. Many lawyers have studied drama expressly for the purpose of improving their courtroom skills.",
+      "C": "The opera singer with the best voice is the appropriate choice even for minor roles, despite the fact that an audience may be more affected by a singer with greater dramatic ability but a lesser voice.",
+      "D": "It is often best to try to train children with gentle reinforcement of desired behavior, rather than by simply telling them what to do and what not to do. This results in children who behave because they want to, not because they feel compelled.",
+      "E": "Job applicants are usually hired because their skills and training best meet a recognized set of qualifications. Only rarely is a prospective employer convinced to tailor a position to suit the skills of a particular applicant."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Implicit Principles"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The solution to any environmental problem that is not the result of government mismanagement can only lie in major changes in consumer habits. But major changes in consumer habits will occur only if such changes are economically enticing. As a result, few serious ecological problems will be solved unless the solutions are made economically enticing.",
+    "questionStem": "The conclusion drawn in the argument above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Few serious ecological problems are the result of government mismanagement.",
+      "B": "No environmental problems that stem from government mismanagement have solutions that are economically feasible.",
+      "C": "Major changes in consumer habits can be made economically enticing.",
+      "D": "Most environmental problems that are not the result of government mismanagement are major ecological problems.",
+      "E": "Few serious ecological problems can be solved by major changes in consumer habits."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Quantifiers",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The economy is doing badly. First, the real estate slump has been with us for some time. Second, car sales are at their lowest in years. Of course, had either one or the other phenomenon failed to occur, this would be consistent with the economy as a whole being healthy. But, their occurrence together makes it quite probable that my conclusion is correct.",
+    "questionStem": "Which one of the following inferences is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "If car sales are at their lowest in years, then it is likely that the economy is doing badly.",
+      "B": "If the economy is doing badly, then either the real estate market or the car sales market is not healthy.",
+      "C": "If the real estate market is healthy, then it is likely that the economy as a whole is healthy.",
+      "D": "If the economy is in a healthy state, then it is unlikely that the real estate and car sales markets are both in a slump.",
+      "E": "The bad condition of the economy implies that both the real estate and the car sales markets are doing badly."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "According to current geological theory, the melting of ice at the end of the Ice Age significantly reduced the weight pressing on parts of the earth’s crust. As a result, lasting cracks in the earth’s crust appeared in some of those parts under the stress of pressure from below. At the end of the Ice Age Sweden was racked by severe earthquakes. Therefore, it is likely that the melting of the ice contributed to these earthquakes.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument above?",
+    "answerChoices": {
+      "A": "The earth's crust tends to crack whenever there is a sudden change in the pressures affecting it.",
+      "B": "There are various areas in Northern Europe that show cracks in the earth's crust.",
+      "C": "Evidence of severe earthquakes around the time of the end of the Ice Age can be found in parts of northern Canada.",
+      "D": "Severe earthquakes are generally caused by cracking of the earth's crust near the earthquake site.",
+      "E": "Asteroid impacts, which did occur at the end of the Ice Age, generally cause severe earthquakes."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science",
+      "Missing Link / Idea",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Sociologist: Some economists hold that unregulated markets should accompany democratic sovereignty because they let people vote with their money. But this view ignores the crucial distinction between the private consumer and the public citizen. In the marketplace the question is, \"What do I want?\" At the voting booth the question is always, \"What do we want?\" Hence, supporters of political democracy can also support marketplace regulation.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn by the sociologist?",
+    "answerChoices": {
+      "A": "Voters think of themselves as members of a community, rather than as isolated individuals.",
+      "B": "Unregulated markets are incompatible with democratic sovereignty.",
+      "C": "Where there is democratic sovereignty there should be unregulated markets.",
+      "D": "Private consumers are primarily concerned with their own self-interest.",
+      "E": "Opposition to unregulated markets is consistent with support for democracy."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The tiny hummingbird weighs little, but its egg is 15 percent of the adult hummingbird’s weight. The volume and weight of an adult goose are much greater than those of a hummingbird, but a goose’s egg is only about 4 percent of its own weight. An adult ostrich, much larger and heavier than a goose, lays an egg that is only 1.6 percent of its own weight.",
+    "questionStem": "Which one of the following propositions is best illustrated by the statements above?",
+    "answerChoices": {
+      "A": "The eggs of different bird species vary widely in their ratio of volume to weight.",
+      "B": "The smaller and lighter the average adult members of a bird species are, the larger and heavier the eggs of that species are.",
+      "C": "The ratio of egg weight of a species to body weight of an adult member of that species is smaller for larger birds than for smaller ones.",
+      "D": "The size of birds' eggs varies greatly from species to species but has little effect on the volume and weight of the adult bird.",
+      "E": "Bird species vary more in egg size than they do in average body size and weight."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Proposition/Generalization"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Bram Stoker's 1897 novel Dracula portrayed vampires— the \"undead\" who roam at night to suck the blood of living people—as able to turn into bats. As a result of the pervasive influence of this novel, many people now assume that a vampire's being able to turn into a bat is an essential part of vampire myths. However, this assumption is false, for vampire myths existed in Europe long before Stoker's book.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "At least one of the European vampire myths that predated Stoker's book did not portray vampires as strictly nocturnal.",
+      "B": "Vampire myths in Central and South America, where real vampire bats are found, portray vampires as able to turn into bats.",
+      "C": "Vampire myths did not exist outside Europe before the publication of Stoker's Dracula.",
+      "D": "At least one of the European vampire myths that predated Stoker's book did not portray vampires as able to turn into bats.",
+      "E": "At the time he wrote Dracula, Stoker was familiar with earlier European vampire myths."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Defender",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "It is unlikely that the world will ever be free of disease. Most diseases are caused by very prolific microorganisms whose response to the pressures medicines exert on them is predictable: they quickly evolve immunities to those medicines while maintaining their power to infect and even kill humans.",
+    "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that it is unlikely that the world will ever be free of disease?",
+    "answerChoices": {
+      "A": "It is a conclusion that is claimed to follow from the premise that microorganisms are too numerous for medicines to eliminate entirely.",
+      "B": "It is a conclusion for which a description of the responses of microorganisms to the medicines designed to cure the diseases they cause is offered as support.",
+      "C": "It is a premise offered in support of the claim that most disease-causing microorganisms are able to evolve immunities to medicines while retaining their ability to infect humans.",
+      "D": "It is a generalization used to predict the response of microorganisms to the medicines humans use to kill them.",
+      "E": "It is a conclusion that is claimed to follow from the premise that most microorganisms are immune to medicines designed to kill them."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Predictions",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Scientist: My research indicates that children who engage in impulsive behavior similar to adult thrill-seeking behavior are twice as likely as other children to have a gene variant that increases sensitivity to dopamine. From this, I conclude that there is a causal relationship between this gene variant and an inclination toward thrill-seeking behavior.",
+    "questionStem": "Which one of the following, if true, most calls into question the scientist's argument?",
+    "answerChoices": {
+      "A": "Many impulsive adults are not unusually sensitive to dopamine.",
+      "B": "It is not possible to reliably distinguish impulsive behavior from other behavior.",
+      "C": "Children are often described by adults as engaging in thrill-seeking behavior simply because they act impulsively.",
+      "D": "Many people exhibit behavioral tendencies as adults that they did not exhibit as children.",
+      "E": "The gene variant studied by the scientist is correlated with other types of behavior in addition to thrill-seeking behavior."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Focused on Evidence"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "It is highly likely that Claudette is a classical pianist. Like most classical pianists, Claudette recognizes many of Clara Schumann's works. The vast majority of people who are not classical pianists do not. In fact, many people who are not classical pianists have not even heard of Clara Schumann.",
+    "questionStem": "The reasoning in the argument above is flawed in that it",
+    "answerChoices": {
+      "A": "ignores the possibility that Claudette is more familiar with the works of other composers of music for piano",
+      "B": "presumes, without providing justification, that people who have not heard of Clara Schumann do not recognize her works",
+      "C": "presumes, without providing justification, that classical pianists cannot also play other musical instruments",
+      "D": "relies for its plausibility on the vagueness of the term \"classical\"",
+      "E": "ignores the possibility that the majority of people who recognize many of Clara Schumann's works are not classical pianists"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Parallel",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "All the evidence so far gathered fits both Dr. Grippen's theory and Professor Heissmann's. However, the predictions that these theories make about the result of the planned experiment cannot both be true. Therefore, the result of this experiment will confirm one of these theories at the expense of the other.",
+    "questionStem": "The argument above exhibits an erroneous pattern of reasoning most similar to that exhibited by which one of the following?",
+    "answerChoices": {
+      "A": "David and Jane both think they know how to distinguish beech trees from elms, but when they look at trees together they often disagree. Therefore, at least one of them must have an erroneous method.",
+      "B": "Although David thinks the tree they saw was a beech, Jane thinks it was an elm. Jane's description of the tree's features is consistent with her opinion, so this description must be inconsistent with David's view.",
+      "C": "David and Jane have been equally good at identifying trees so far. But David says this one is an elm, whereas Jane is unsure. Therefore, if this tree turns out to be an elm, we'll know David is better.",
+      "D": "David thinks that there are more beeches than elms in this forest. Jane thinks he is wrong. The section of forest we examined was small, but examination of the whole forest would either confirm David's view or disprove it.",
+      "E": "David thinks this tree is a beech. Jane thinks it is an elm. Maria, unlike David or Jane, is expert at tree identification, so when Maria gives her opinion it will verify either David's or Jane's opinion."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Repetitive Answers",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Columnist: The relief from the drudgery of physical labor that much modern technology affords its users renders them dependent on this technology, and, more importantly, on the elaborate energy systems required to run it. This leads to a loss of self-sufficiency. Clearly, then, in addition to undermining life's charm, much modern technology diminishes the overall well-being of its users.",
+    "questionStem": "Which one of the following is an assumption required by the columnist's argument?",
+    "answerChoices": {
+      "A": "Physical labor is essential to a fulfilling life.",
+      "B": "Self-sufficiency contributes to a person's well-being.",
+      "C": "People are not free if they must depend on anything other than their own capacities.",
+      "D": "Anything causing a loss in life's charm is unjustifiable unless this loss is compensated by some gain.",
+      "E": "Technology inherently limits the well-being of its users."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Role",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Psychologist: Some psychologists mistakenly argue that because dreams result from electrical discharges in the brain, they must be understood purely in terms of their physiological function. They conclude, against Freud, that dreams reveal nothing about the character of the dreamer. But since dream content varies enormously, then even if electrical discharges provide the terms of the physiological explanation of dreams, they cannot completely explain the phenomenon of dreaming.",
+    "questionStem": "The claim that dream content varies enormously plays which one of the following roles in the argument?",
+    "answerChoices": {
+      "A": "It is used to support the anti-Freudian conclusion that some psychologists draw concerning dreams.",
+      "B": "It is used to support the explicitly stated conclusion that a fully satisfactory account of dreams must allow for the possibility of their revealing significant information about the dreamer.",
+      "C": "It is used to suggest that neither Freud's theory nor the theory of anti-Freudian psychologists can completely explain the phenomenon of dreaming.",
+      "D": "It is used to illustrate the difficulty of providing a complete explanation of the phenomenon of dreaming.",
+      "E": "It is used to undermine a claim that some psychologists use to argue against a view of Freud's."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Rebuttals",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT117",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The first bicycle, the Draisienne, was invented in 1817. A brief fad ensued, after which bicycles practically disappeared until the 1860s. Why was this? New technology is accepted only when it coheres with the values of a society. Hence some change in values must have occurred between 1817 and the 1860s.",
+    "questionStem": "The reasoning in the argument is flawed because the argument",
+    "answerChoices": {
+      "A": "presumes, without giving justification, that fads are never indicative of genuine acceptance",
+      "B": "fails to recognize that the reappearance of bicycles in the 1860s may have indicated genuine acceptance of them",
+      "C": "offers no support for the claim that the Draisienne was the first true bicycle",
+      "D": "poses a question that has little relevance to the argument's conclusion",
+      "E": "ignores, without giving justification, alternative possible explanations of the initial failure of bicycles"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact"
+    ]
+  }
+]

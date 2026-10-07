@@ -1,0 +1,636 @@
+[
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "When a forest is subject to acid rain, the calcium level in the soil declines. Spruce, fir, and sugar maple trees all need calcium to survive. However, sugar maples in forests that receive significant acid rain are much more likely to show signs of decline consistent with calcium deficiency than are spruces or firs in such forests.",
+    "questionStem": "Which one of the following, if true, most helps to explain the greater decline among sugar maples?",
+    "answerChoices": {
+      "A": "Soil in which calcium levels are significantly diminished by acid rain is also likely to be damaged in other ways by acid rain.",
+      "B": "Sugar maples that do not receive enough calcium deteriorate less rapidly than spruces or firs that do not receive enough calcium.",
+      "C": "Spruces and firs, unlike sugar maples, can extract calcium from a mineral compound that is common in soil and is not affected by acid rain.",
+      "D": "Sugar maples require more calcium in the spring and summer than they do in the fall and winter.",
+      "E": "Unlike spruces or firs, most sugar maples are native to areas that receive a lot of acid rain."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Syndicated political columnists often use their newspaper columns to try to persuade readers to vote a certain way. However, their efforts to persuade voters rarely succeed, for by the time such a column appears, nearly all who will vote in the election will have already made a decision about which candidate to vote for.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Syndicated columnists influence the votes of most of their readers who have not yet decided which candidate to vote for.",
+      "B": "The attempts of syndicated political columnists to persuade readers to vote a certain way in an election can instead cause them to vote a different way.",
+      "C": "People who regularly read columns by syndicated political columnists mainly read those written by columnists with whom they already largely agree.",
+      "D": "Regular readers of columns by syndicated political columnists are less likely to be persuaded to vote a certain way by such columns than are people who seldom read such columns.",
+      "E": "People rarely can be persuaded to change their minds about which candidate to vote for once they have made a decision."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Travel industry consultant: Several airlines are increasing elbow room and leg room in business class, because surveys show that business travelers value additional space more than, say, better meals. But airlines are overconcerned about the comfort of passengers flying on business; they should instead focus on the comfort of leisure travelers, because those travelers purchase 80 percent of all airline tickets.",
+    "questionStem": "Which one of the following, if true, most weakens the reasoning in the travel industry consultant’s argument?",
+    "answerChoices": {
+      "A": "Business travelers often make travel decisions based on whether they feel a given airline values their business.",
+      "B": "Some airlines have indicated that they will undertake alterations in seating space throughout the entire passenger area of their planes in the near future.",
+      "C": "Sleeping in comfort during long flights is not the primary concern of leisure travelers.",
+      "D": "A far greater proportion of an airline’s revenues is derived from business travelers than from leisure travelers.",
+      "E": "Most leisure travelers buy airline tickets only when fares are discounted."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Gaby: In school, children should be allowed fully to follow their own interests, supported by experienced teachers who offer minimal guidance. This enables them to be most successful in their adult lives. Logan: I disagree. Schoolchildren should acquire the fundamental knowledge necessary for future success, and they learn such fundamentals only through disciplined, systematic instruction from accredited teachers.",
+    "questionStem": "Gaby’s and Logan’s comments provide most support for the claim that they disagree about",
+    "answerChoices": {
+      "A": "the way in which schoolchildren best acquire fundamental knowledge",
+      "B": "the extent to which teachers should direct schoolchildren’s education",
+      "C": "the importance of having qualified teachers involved in schoolchildren’s education",
+      "D": "the sort of school environment that most fosters children’s creativity",
+      "E": "the extent to which schoolchildren are interested in fundamental academic subjects"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Judge: The case before me involves a plaintiff and three codefendants. The plaintiff has applied to the court for an order permitting her to question each defendant without their codefendants or their codefendants’ legal counsel being present. Two of the codefendants, however, share the same legal counsel. The court will not order any codefendant to find new legal counsel. Therefore, the order requested by the plaintiff cannot be granted.",
+    "questionStem": "The conclusion of the judge’s argument is most strongly supported if which one of the following principles is assumed to hold?",
+    "answerChoices": {
+      "A": "A court cannot issue an order that forces legal counsel to disclose information revealed by a client.",
+      "B": "Defendants have the right to have their legal counsel present when being questioned.",
+      "C": "People being questioned in legal proceedings may refuse to answer questions that are self-incriminating.",
+      "D": "A plaintiff in a legal case should never be granted a right that is denied to a defendant.",
+      "E": "A defendant’s legal counsel has the right to question the plaintiff."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Dense Stimulus",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The calm, shallow waters of coastal estuaries are easily polluted by nutrient-rich sewage. When estuary waters become overnutrified as a result, algae proliferate. The abundant algae, in turn, sometimes provide a rich food source for microorganisms that are toxic to fish, thereby killing most of the fish in the estuary.",
+    "questionStem": "Which one of the following can be properly inferred from the information above?",
+    "answerChoices": {
+      "A": "Fish in an estuary that has been polluted by sewage are generally more likely to die from pollution than are fish in an estuary that has been polluted in some other way.",
+      "B": "In estuary waters that contain abundant algae, microorganisms that are toxic to fish reproduce more quickly than other types of microorganisms.",
+      "C": "Nutrients and other components of sewage do not harm fish in coastal estuaries in any way other than through the resulting proliferation of toxic microorganisms.",
+      "D": "Algae will not proliferate in coastal estuaries that are not polluted by nutrient-rich sewage.",
+      "E": "Overnutrifying estuary waters by sewage can result in the death of most of the fish in the estuary."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Evaluate",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The ruins of the prehistoric Bolivian city of Tiwanaku feature green andacite stones weighing up to 40 tons. These stones were quarried at Copacabana, which is across a lake and about 90 kilometers away. Archaeologists hypothesize that the stones were brought to Tiwanaku on reed boats. To show this was possible, experimenters transported a 9-ton stone from Copacabana to Tiwanaku using a reed boat built with locally available materials and techniques traditional to the area.",
+    "questionStem": "Which one of the following would be most useful to know in order to evaluate the support for the archaeologists’ hypothesis?",
+    "answerChoices": {
+      "A": "whether the traditional techniques for building reed boats were in use at the time Tiwanaku was inhabited",
+      "B": "whether green andacite stones quarried at the time Tiwanaku was inhabited were used at any sites near Copacabana",
+      "C": "whether reed boats are commonly used today on the lake",
+      "D": "whether the green andacite stones at Tiwanaku are the largest stones at the site",
+      "E": "whether the reed boat built for the experimenters is durable enough to remain usable for several years"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Union member: Some members of our labor union are calling for an immediate strike. But a strike would cut into our strike fund and would in addition lead to a steep fine, causing us to suffer a major financial loss. Therefore, we must not strike now.",
+    "questionStem": "The union member’s argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "fails to consider that a strike might cause the union to suffer a financial loss even if no fine were imposed",
+      "B": "fails to define adequately what constitutes a major financial loss",
+      "C": "fails to consider that the benefits to be gained from a strike might outweigh the costs",
+      "D": "takes for granted that the most important factor in the labor union’s bargaining position is the union’s financial strength",
+      "E": "fails to establish that there will be a better opportunity to strike at a later time"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Birds and mammals can be infected with West Nile virus only through mosquito bites. Mosquitoes, in turn, become infected with the virus when they bite certain infected birds or mammals. The virus was originally detected in northern Africa and spread to North America in the 1990s. Humans sometimes catch West Nile virus, but the virus never becomes abundant enough in human blood to infect a mosquito.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "West Nile virus will never be a common disease among humans.",
+      "B": "West Nile virus is most common in those parts of North America with the highest density of mosquitoes.",
+      "C": "Some people who become infected with West Nile virus never show symptoms of illness.",
+      "D": "West Nile virus infects more people in northern Africa than it does in North America.",
+      "E": "West Nile virus was not carried to North America via an infected person."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "In trying to reduce the amount of fat in their diet, on average people have decreased their consumption of red meat by one-half in the last two decades. However, on average those who have reduced their consumption of red meat actually consume substantially more fat than those who have not.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
+    "answerChoices": {
+      "A": "Many more people have reduced their consumption of red meat over the last two decades than have not.",
+      "B": "Higher prices over the last two decades have done as much to decrease the consumption of red meat as health concerns have.",
+      "C": "People who reduce their consumption of red meat tend to consume as much of other foods that are high in fat as do those who have not reduced their consumption of red meat.",
+      "D": "People who reduce their consumption of red meat tend to replace it with cheese and baked goods, which are richer in fat than red meat.",
+      "E": "Studies have shown that red meat contains slightly less fat than previously thought."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Rolanda: The house on Oak Avenue has a larger yard than any other house we’ve looked at in Prairieview, so that’s the best one to rent. Tom: No, it isn’t. Its yard isn’t really as big as it looks. Property lines in Prairieview actually start 20 feet from the street. So what looks like part of the yard is really city property. Rolanda: But that’s true of all the other properties we’ve looked at too!",
+    "questionStem": "Rolanda’s response to Tom suggests that Tom commits which one of the following reasoning errors?",
+    "answerChoices": {
+      "A": "He fails to take into account the possibility that there are advantages to having a small yard.",
+      "B": "He presumes, without providing justification, that property that belongs to the city is available for private use.",
+      "C": "He improperly applies a generalization to an instance that it was not intended to cover.",
+      "D": "He fails to apply a general rule to all relevant instances.",
+      "E": "He presumes, without providing justification, that whatever is true of a part of a thing is also true of the whole."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The best jazz singers use their voices much as horn players use their instruments. The great Billie Holiday thought of her singing voice as a horn, reshaping melody and words to increase their impact. Conversely, jazz horn players achieve their distinctive sounds by emulating the spontaneous twists and turns of an impassioned voice. So jazz consists largely of voicelike horns and hornlike voices.",
+    "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that the best jazz singers use their voices much as horn players use their instruments?",
+    "answerChoices": {
+      "A": "It is the argument’s main conclusion and is supported by another statement, which is itself supported by a further statement.",
+      "B": "It is the argument’s only conclusion, and each of the other statements in the argument is used to support it.",
+      "C": "It is a statement for which some evidence is provided and which in turn is used to provide support for the argument’s main conclusion.",
+      "D": "It is a statement for which no evidence is provided but which itself is used to support the argument’s only conclusion.",
+      "E": "It is a statement used to support a conclusion that in turn is used to support the argument’s main conclusion."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Educator: Reducing class sizes in our school district would require hiring more teachers. However, there is already a shortage of qualified teachers in the region. Although students receive more individualized instruction when classes are smaller, education suffers when teachers are underqualified. Therefore, reducing class sizes in our district would probably not improve overall student achievement.",
+    "questionStem": "Which one of the following is an assumption required by the educator’s argument?",
+    "answerChoices": {
+      "A": "Class sizes in the school district should be reduced only if doing so would improve overall student achievement.",
+      "B": "At least some qualified teachers in the school district would be able to improve the overall achievement of students in their classes if class sizes were reduced.",
+      "C": "Students place a greater value on having qualified teachers than on having smaller classes.",
+      "D": "Hiring more teachers would not improve the achievement of any students in the school district if most or all of the teachers hired were underqualified.",
+      "E": "Qualified teachers could not be persuaded to relocate in significant numbers to the educator’s region to take teaching jobs."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Defender",
+      "Plans / Recommendations",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Geographer: Because tropical storms require heat and moisture, they form especially over ocean surfaces of at least 26 degrees Celsius (79 degrees Fahrenheit), ocean temperatures that global warming would encourage. For this reason, many early discussions of global warming predicted that it would cause more frequent and intense tropical storms. But recent research shows that this prediction is unlikely to be borne out. Other factors, such as instabilities in wind flow, are likely to counteract global warming’s effects on tropical storm development.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the geographer’s argument?",
+    "answerChoices": {
+      "A": "Tropical storms are especially likely to form over warm ocean surfaces.",
+      "B": "Contrary to early discussions, global warming is not the only factor affecting the frequency and intensity of tropical storms.",
+      "C": "If global warming were reversed, tropical storms would be less frequent and less intense.",
+      "D": "Instabilities in wind flow will negate the effect of global warming on the formation of tropical storms.",
+      "E": "Global warming probably will not produce more frequent and intense tropical storms."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Net Effect",
+      "Predictions",
+      "Rebuttals",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Copyright was originally the grant of a temporary government-supported monopoly on copying a work. Its sole purpose was to encourage the circulation of ideas by giving authors the opportunity to derive a reasonable financial reward from their works. However, copyright sometimes goes beyond its original purpose since sometimes _______.",
+    "questionStem": "The conclusion of the argument is most strongly supported if which one of the following completes the passage?",
+    "answerChoices": {
+      "A": "publication of copyrighted works is not the only way to circulate ideas",
+      "B": "authors are willing to circulate their works even without any financial reward",
+      "C": "authors are unable to find a publisher for their copyrighted work",
+      "D": "there is no practical way to enforce copyrights",
+      "E": "copyrights hold for many years after an author’s death"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Logical Completion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Critic to economist: In yet another of your bumbling forecasts, last year you predicted that this country’s economy would soon go into recession if current economic policies were not changed. Instead, economic growth is even stronger this year. Economist: There was nothing at all bumbling about my warning. Indeed, it convinced the country’s leaders to change economic policies, which is what prevented a recession.",
+    "questionStem": "The economist responds to the critic by",
+    "answerChoices": {
+      "A": "indicating that the state of affairs on which the economist’s prediction was conditioned did not obtain",
+      "B": "distinguishing between a prediction that has not yet turned out to be correct and one that has turned out to be incorrect",
+      "C": "attempting to show that the critic’s statements are mutually inconsistent",
+      "D": "offering a particular counterexample to a general claim asserted by the critic",
+      "E": "offering evidence against one of the critic’s factual premises"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Watching music videos from the 1970s would give the viewer the impression that the music of the time was dominated by synthesizer pop and punk rock. But this would be a misleading impression. Because music videos were a new art form at the time, they attracted primarily cutting-edge musicians.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to that of the argument above?",
+    "answerChoices": {
+      "A": "Our view of pre-printing-press literature can never be accurate, because the surviving works of ancient authors are those that were deemed by copyists most likely to be of interest to future readers.",
+      "B": "Our memory of 1960s TV shows could hardly be improved, because so many of the television programs of the era are still rerun today.",
+      "C": "Future generations’ understanding of today’s publishing trends will be distorted if they judge by works published in CD-ROM format, since it is primarily publishers interested in computer games that are using CD-ROM.",
+      "D": "Our understanding of silent films is incomplete, because few filmmakers of the time realized that the film stock they were using would disintegrate over time.",
+      "E": "Our notion of fashion trends will probably be accurate if we rely on TV fashion programs, despite the fact that these programs deliberately select the most outrageous outfits in order to get the viewers’ attention."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Hospitals, universities, labor unions, and other institutions may well have public purposes and be quite successful at achieving them even though each of their individual staff members does what he or she does only for selfish reasons.",
+    "questionStem": "Which one of the following generalizations is most clearly illustrated by the passage?",
+    "answerChoices": {
+      "A": "What is true of some social organizations is not necessarily true of all such organizations.",
+      "B": "An organization can have a property that not all of its members possess.",
+      "C": "People often claim altruistic motives for actions that are in fact selfish.",
+      "D": "Many social institutions have social consequences unintended by those who founded them.",
+      "E": "Often an instrument created for one purpose will be found to serve another purpose just as effectively."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot",
+      "Proposition/Generalization"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Weaken EXCEPT",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Consumer advocate: In some countries, certain produce is routinely irradiated with gamma rays in order to extend shelf life. There are, however, good reasons to avoid irradiated foods. First, they are exposed to the radioactive substances that produce the gamma rays. Second, irradiation can reduce the vitamin content of fresh foods, leaving behind harmful chemical residues. Third, irradiation spawns unique radiolytic products that cause serious health problems, including cancer.",
+    "questionStem": "Each of the following, if true, weakens the consumer advocate’s argument except:",
+    "answerChoices": {
+      "A": "Unique radiolytic products have seldom been found in any irradiated food.",
+      "B": "Cancer and other serious health problems have many causes that are unrelated to radioactive substances and gamma rays.",
+      "C": "A study showed that irradiation leaves the vitamin content of virtually all fruits and vegetables unchanged.",
+      "D": "The amount of harmful chemicals found in irradiated foods is less than the amount that occurs naturally in most kinds of foods.",
+      "E": "A study showed that the cancer rate is no higher among people who eat irradiated food than among those who do not."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT",
+      "Focused on Evidence",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "When teaching art students about the use of color, teachers should use colored paper rather than paint in their demonstrations. Colored paper is preferable because it readily permits a repeated use of exactly the same color in different compositions, which allows for a precise comparison of that color’s impact in varying contexts. With paint, however, it is difficult to mix exactly the same color twice, and the varying textures of the applied paint can interfere with the pure effect of the color itself.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Two pieces of paper of exactly the same color will have the same effect in a given context, even if they are of different textures.",
+      "B": "A slight difference in the color of two pieces of paper is more difficult to notice than a similar difference in the color of two samples of paint.",
+      "C": "Changing light conditions have less of an effect on the apparent color of a piece of paper than on the apparent color of a sample of paint.",
+      "D": "Observing the impacts of colors across varying contexts helps students to learn about the use of color.",
+      "E": "It is important that art students understand how the effects of using colored paper in various compositions differ from those of using paint in those compositions."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Missing Link / Idea",
+      "Causal Difference-Maker",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Paradox",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Philosopher: To explain the causes of cultural phenomena, a social scientist needs data about several societies: one cannot be sure, for example, that a given political structure is brought about only by certain ecological or climatic factors unless one knows that there are no similarly structured societies not subject to those factors, and no societies that, though subject to those factors, are not so structured.",
+    "questionStem": "The claim that to explain the causes of cultural phenomena, a social scientist needs data about several societies plays which one of the following roles in the philosopher’s reasoning?",
+    "answerChoices": {
+      "A": "It describes a problem that the philosopher claims is caused by the social scientist’s need for certainty.",
+      "B": "It is a premise used to support a general theoretical claim about the nature of cause and effect relationships.",
+      "C": "It is a general hypothesis that is illustrated with an example showing that there is a causal relationship between political structures and environmental conditions.",
+      "D": "It is a dilemma that, it is argued, is faced by every social scientist because of the difficulty of determining whether a given cultural phenomenon is the cause or the effect of a given factor.",
+      "E": "It is a claim that the philosopher attempts to justify by appeal to the requirements for establishing the existence of one kind of causal relationship."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Dense Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Scientist: Physicists claim that their system of careful peer review prevents scientific fraud in physics effectively. But biologists claimed the same thing for their field 20 years ago, and they turned out to be wrong. Since then, biologists have greatly enhanced their discipline’s safeguards against scientific fraud, thus preventing further major incidents. It would be conducive to progress in physics if physicists were to do the same thing.",
+    "questionStem": "The conclusion of the scientist’s argument is most strongly supported if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Major incidents of scientific fraud in a scientific discipline are deleterious to progress in that discipline.",
+      "B": "Very few incidents of even minor scientific fraud have occurred in biology over the last 20 years.",
+      "C": "No system of careful peer review is completely effective in preventing scientific fraud in any scientific discipline.",
+      "D": "Twenty years ago the system of peer review in biology was less effective in preventing scientific fraud than the system of peer review in physics is today.",
+      "E": "Over the years, there have been relatively few, if any, major incidents of scientific fraud in physics."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Assumes Similarity",
+      "New Concept in Conclusion",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Biologist: Researchers believe that dogs are the descendants of domesticated wolves that were bred to be better companions for humans. It has recently been found that some breeds of dog are much more closely related genetically to wolves than to most other breeds of dog. This shows that some dogs are descended from wolves that were domesticated much more recently than others.",
+    "questionStem": "Which one of the following principles underlies the biologist’s argument?",
+    "answerChoices": {
+      "A": "If one breed of dog is descended from wolves that were domesticated more recently than were the wolves from which most other breeds of dog are descended, the former breed may be more closely related to wolves than those other breeds are.",
+      "B": "If one breed of dog is more closely related to wolves than to another breed of dog, then the former breed of dog has more recent undomesticated wolf ancestors than the latter breed has.",
+      "C": "Any breed of dog descended from wolves that were domesticated is more closely related genetically to at least some other breeds of dog than to wolves.",
+      "D": "If one breed of dog is more closely related to wolves than another breed of dog is, then the former breed of dog is more closely related to wolves than to the latter breed of dog.",
+      "E": "Any two breeds of dog that are more closely related to each other than to wolves are both descended from wolves that were domesticated long ago."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Complex Conditionals",
+      "New Concept in Conclusion",
+      "Principles in Answers",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Paleomycologists, scientists who study ancient forms of fungi, are invariably acquainted with the scholarly publications of all other paleomycologists. Professor Mansour is acquainted with the scholarly publications of Professor DeAngelis, who is a paleomycologist. Therefore, Professor Mansour must also be a paleomycologist.",
+    "questionStem": "The flawed pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
+    "answerChoices": {
+      "A": "When a flight on Global Airlines is delayed, all connecting Global Airlines flights are also delayed so that the passengers can make their connections. Since Frieda’s connecting flight on Global was delayed, her first flight must have also been a delayed Global Airlines flight.",
+      "B": "Any time that one of Global Airlines’ local ticket agents misses a shift, the other agents on that shift need to work harder than usual. Since none of Global’s local ticket agents missed a shift last week, the airline’s local ticket agents did not have to work harder than usual last week.",
+      "C": "Any time the price of fuel decreases, Global Airlines’ expenses decrease and its income is unaffected. The price of fuel decreased several times last year. Therefore, Global Airlines must have made a profit last year.",
+      "D": "All employees of Global Airlines can participate in its retirement plan after they have been with the company a year or more. Gavin has been with Global Airlines for three years. We can therefore be sure that he participates in Global’s retirement plan.",
+      "E": "Whenever a competitor of Global Airlines reduces its fares, Global must follow suit or lose passengers. Global carried more passengers last year than it did the year before. Therefore, Global must have reduced its fares last year to match reductions in its competitors’ fares."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Famous Flaws",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Lutsina: Because futuristic science fiction does not need to represent current social realities, its writers can envisage radically new social arrangements. Thus it has the potential to be a richer source of social criticism than is conventional fiction. Priscilla: That futuristic science fiction writers more skillfully envisage radically new technologies than new social arrangements shows how writers’ imaginations are constrained by current realities. Because of this limitation, the most effective social criticism results from faithfully presenting the current social realities for critical examination, as happens in conventional fiction.",
+    "questionStem": "Lutsina and Priscilla disagree with each other about whether",
+    "answerChoices": {
+      "A": "some science fiction writers have succeeded in envisaging convincing, radically new social arrangements",
+      "B": "writers of conventional fiction are more skillful than are writers of futuristic science fiction",
+      "C": "futuristic science fiction has more promise as a source of social criticism than does conventional fiction",
+      "D": "envisaging radically new technologies rather than radically new social arrangements is a shortcoming of futuristic science fiction",
+      "E": "criticism of current social arrangements is not effective when those arrangements are contrasted with radically different ones"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Because our club recruited the best volleyball players in the city, we will have the best team in the city. Moreover, since the best team in the city will be the team most likely to win the city championship, our club will almost certainly be city champions this year.",
+    "questionStem": "The reasoning in the argument is flawed because the argument",
+    "answerChoices": {
+      "A": "presumes, without presenting relevant evidence, that an entity can be distinguished as the best only on the basis of competition",
+      "B": "predicts the success of an entity on the basis of features that are not relevant to the quality of that entity",
+      "C": "predicts the outcome of a competition merely on the basis of a comparison between the parties in that competition",
+      "D": "presumes, without providing warrant, that if an entity is the best among its competitors, then each individual part of that entity must also be the best",
+      "E": "concludes that because an event is the most likely of a set of possible events, that event is more likely to occur than not"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff",
+      "Predictions"
+    ]
+  }
+]

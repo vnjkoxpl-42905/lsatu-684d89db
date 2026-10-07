@@ -1,0 +1,553 @@
+[
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Most Supported",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Shortly after Isaac Newton circulated some of his theories of light in 1672, his colleague Robert Hooke claimed that most of those theories were based on Hooke’s own work. A modern reader might interpret Newton’s famous comment, “if I have seen further it is by standing on the shoulders of giants,” as a conciliatory gesture acknowledging indebtedness to Hooke and other contemporary scientists for some of his theories. Conciliatory gestures acknowledging indebtedness were uncharacteristic of Newton, however, and in his day such allusions to “giants” typically referred to the ancient Greeks, not to contemporary scientists.",
+    "questionStem": "The statements in the passage, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Newton did not intend the quoted comment to be an acknowledgment that his theories of light were largely derived from Hooke’s.",
+      "B": "Newton did not take credit for any advances that Hooke made in the theory of light.",
+      "C": "Newton did not believe that any of Hooke’s theories of light were based on those of the ancient Greeks.",
+      "D": "Newton intended to credit some contemporary scientists other than Hooke for some of the advances that Newton made in the theory of light.",
+      "E": "Newton was not familiar with Hooke’s work on the theory of light."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Important Pivot",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Paradox EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "The blues is a modern musical form whose lyrics usually address such topics as frustration, anger, oppression, and restlessness. Yet blues musicians claim to find joy in performing, and the musicians and fans alike say that the blues’ overall effect is an affirmation of life, love, and hope.",
+    "questionStem": "Each of the following, if true, helps to resolve the apparent conflict in the passage except:",
+    "answerChoices": {
+      "A": "The sharing of blues music serves to create a cohesive, sympathetic social network.",
+      "B": "Blues musicians who do not draw on their personal tragedies are no more successful than blues musicians who do.",
+      "C": "The irony and wit found in the blues provide a sense of perspective on life’s troubles.",
+      "D": "The realization that other people share one’s plight is helpful in dealing with life’s problems.",
+      "E": "The conversion of personal sorrow into an artistic work can have a cathartic effect on artists and their audiences."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Nutritionist: A study revealed that although most adults estimated their diets to correspond closely with the recommendations of standard nutritional guidelines, most of their diets did not come close to those recommendations. Both women and men underestimated the amount of fat in their diets and overestimated their intake of most other foods. In most food categories, especially fruits and vegetables, women’s diets did not meet the recommendations. Men underestimated their fat intake by half, and though they met the recommendations for breads, they fell short in all other categories.",
+    "questionStem": "Which one of the following is most strongly supported by the information offered by the nutritionist?",
+    "answerChoices": {
+      "A": "Both men and women in the study misjudged their compliance with the nutritional guidelines in every food category.",
+      "B": "In the study, more men than women were aware that in some food categories their diet failed to reflect the recommendations closely.",
+      "C": "Women in the study were more aware than men were of the recommended intake of breads.",
+      "D": "Men in the study estimated their daily intake of fruits and vegetables to be significantly lower than it in fact was.",
+      "E": "Most men in the study did not consume the amounts of fruits and vegetables that the nutritional guidelines recommend."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Maude is incessantly engaging in diatribes against people who are materialistic. But her hypocrisy is evinced by the sentimental treatment of the watch her grandmother gave her. She certainly is very fond of the watch—she worries about damaging it; in fact she always sets it carefully in a special box before going to bed.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Possessions that come from relatives are treated with better care than those that do not.",
+      "B": "Sentimental attachment to a single possession indicates being materialistic.",
+      "C": "People who care about material things in general tend to take special care of all their possessions.",
+      "D": "Maude’s watch is not the only material thing she especially cares for.",
+      "E": "People who are not materialistic tend to have merely sentimental attachments to things."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "The most reliable way to detect the presence of life on a planet would be by determining whether or not its atmosphere contains methane. This is because methane completely disappears from a planet’s atmosphere through various chemical reactions unless it is constantly replenished by the biological processes of living beings.",
+    "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "There are other ways of detecting the presence of life on a planet.",
+      "B": "Not all living beings have the ability to biologically produce methane.",
+      "C": "We are incapable at present of analyzing a planet’s atmosphere for the presence of methane.",
+      "D": "Some living beings biologically produce only very small amounts of methane.",
+      "E": "Earth is the only planet whose atmosphere is known to contain methane."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "The following passage is used for Section 4, questions 6 through 7. Willett: Lopez and Simmons, a married couple, have both been offered jobs at Evritech Corporation. Because Evritech has a rule against hiring more than one member of the same family, Lopez and Simmons have decided to reveal their marriage to Evritech. Their decision is foolish, however, since it will mean that one of them will have a job offer withdrawn. After all, they could easily keep their marriage secret initially and, if they want, later claim to have married after they were hired: Evritech has no policy of terminating one of two employees who marry each other.",
+    "questionStem": "The main conclusion of Willett’s argument is that",
+    "answerChoices": {
+      "A": "Lopez and Simmons should not both have applied for jobs at Evritech Corporation",
+      "B": "Evritech Corporation’s rule against hiring more than one member of the same family is often not enforced",
+      "C": "Lopez and Simmons would be unwise to reveal their marriage to Evritech Corporation without already having started to work there",
+      "D": "Evritech Corporation should be willing to employ two members of the same family if it is willing to retain two of its employees who marry each other",
+      "E": "Evritech Corporation is not likely to discover the marital status of Lopez and Simmons if they do not volunteer the information"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot",
+      "Alternatives",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Principle Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "The following passage is used for Section 4, questions 6 through 7. Willett: Lopez and Simmons, a married couple, have both been offered jobs at Evritech Corporation. Because Evritech has a rule against hiring more than one member of the same family, Lopez and Simmons have decided to reveal their marriage to Evritech. Their decision is foolish, however, since it will mean that one of them will have a job offer withdrawn. After all, they could easily keep their marriage secret initially and, if they want, later claim to have married after they were hired: Evritech has no policy of terminating one of two employees who marry each other.",
+    "questionStem": "Which one of the following principles, if valid, most helps to support the reasoning in Willett’s argument?",
+    "answerChoices": {
+      "A": "Corporations that have rules against hiring more than one member of the same family should also prohibit their employees from marrying one another.",
+      "B": "Corporations should adopt a policy of refusing to hire more than one member of the same family if that policy promotes overall fairness in its hiring practices.",
+      "C": "Job applicants are no more entitled to withhold information that is requested on application forms than they are entitled to lie on such application forms.",
+      "D": "Job candidates should refuse to accept positions in corporations whose personnel policies they cannot adhere to.",
+      "E": "Job candidates have no obligation to reveal to a prospective employer personal information such as marital status, regardless of the employer’s policies."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Linguist: Only if a sentence can be diagrammed is it grammatical. Any grammatical sentence is recognized as grammatical by speakers of its language. Speaker X’s sentence can be diagrammed. So, speaker X’s sentence will be recognized as grammatical by speakers of its language.",
+    "questionStem": "The linguist’s reasoning is flawed because it fails to consider the possibility that",
+    "answerChoices": {
+      "A": "most people are unable to diagram sentences correctly",
+      "B": "some ungrammatical sentences are diagrammable",
+      "C": "all sentences recognized as grammatical can be diagrammed",
+      "D": "all grammatical sentences can be diagrammed",
+      "E": "some ungrammatical sentences are recognized as ungrammatical"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "To allay public concern about chemicals that are leaking into a river from a chemical company's long ­established dump, a company representative said, \"Federal law requires that every new chemical be tested for safety before it is put onto the market. This is analogous to the federal law mandating testing of every pharmaceutical substance for safety.\"",
+    "questionStem": "Which one of the following, if true, most seriously weakens the representative's implied argument that the public need not be concerned about the leak?",
+    "answerChoices": {
+      "A": "When pharmaceutical substances are tested for safety pursuant to federal requirements, a delay is imposed on the entry of potentially lifesaving substances onto the market.",
+      "B": "Leakage from the dump has occurred in noticeable amounts only in the last few months.",
+      "C": "Before the federal law requiring testing of nonpharmaceutical chemicals went into effect recently, there were 40,000 such chemicals being manufactured, many of them dangerous.",
+      "D": "The concentration of the chemicals leaking into the river is diluted, first by rainwater and then by the water in the river.",
+      "E": "The water in the river is murky because of the runoff of silt from a number of nearby construction projects."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Timeframes",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Principle Conform",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "In the course of his reading, George Orwell probably encountered certain storytelling conventions over and over again, and these are the devices he would have most likely used in his work. That is why it does not follow that, even though his 1984 resembles other books of its futuristic genre, Orwell read those books; it is possible that he and the other authors were simply drawing on the same body of literary conventions.",
+    "questionStem": "Which one of the following most closely illustrates the principle that the passage illustrates?",
+    "answerChoices": {
+      "A": "A novel that is directly influenced by Gothic novels is likely to fall into the Gothic genre.",
+      "B": "A mystery novel may not resemble novels from other genres, even though it was directly influenced by such novels.",
+      "C": "To direct an effective movie within the cowboy genre, a director must study previously successful cowboy movies.",
+      "D": "A recent film that involves car chases, explosions, and clever villains is not necessarily directly influenced by other films of the action genre.",
+      "E": "A historical romance novel does not fit into its literary genre unless it employs certain kinds of conventions."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Implicit Principles"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "On the basis of research with young children, a developmental psychologist hypothesized that the skills involved in copying curves must be developed before the skills involved in copying angles can be developed.",
+    "questionStem": "Which one of the following, if true, supports the developmental psychologist’s hypothesis?",
+    "answerChoices": {
+      "A": "All of the children who can copy curves can also copy straight lines.",
+      "B": "All of the children who can copy angles can also copy curves.",
+      "C": "The ability to discriminate angles must be developed before angles can be copied.",
+      "D": "Some of the children who cannot copy curves can copy angles.",
+      "E": "Young children have the cognitive processes involved in copying angles."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Principle Conform",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Nearly everyone has complained of a mistaken utility bill that cannot easily be corrected or of computer files that cannot readily be retrieved. Yet few people today would tolerate waiting in long lines while clerks search for information that can now be found in seconds, and almost no one who has used a word processor would return to a typewriter.",
+    "questionStem": "The information above conforms most closely to which one of the following principles?",
+    "answerChoices": {
+      "A": "The fact that people complain about some consequences of technology cannot be taken as a reliable indication that they would choose to live without it.",
+      "B": "If people do not complain about some technology, then it is probably not a significant factor in their daily lives.",
+      "C": "The degree to which technologies elicit complaints from people is always an accurate measure of the extent to which people have become dependent on them.",
+      "D": "The complaints people make about technological innovations are more reliable evidence of the importance of those innovations than the choices people actually make.",
+      "E": "The less willing people are to do without technology the more likely they are to complain about the effects of technology."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Television allows us to transmit images of ourselves that propagate into space. The earliest of these transmissions have by now reached all of our neighboring star systems. None of these transmissions, so far as we know, has been recognized; we have yet to receive any messages of extraterrestrial origin. We must conclude that there is no extraterrestrial intelligence in any of our neighboring star systems.",
+    "questionStem": "The reasoning in the argument is questionable because the argument",
+    "answerChoices": {
+      "A": "fails to provide an adequate definition of the word “messages”",
+      "B": "infers that there is no extraterrestrial intelligence in neighboring star systems from the lack of proof that there is",
+      "C": "assigns too little importance to the possibility that there is extraterrestrial intelligence beyond our neighboring star systems",
+      "D": "neglects to mention that some governments have sent meticulously prepared messages and recordings on spacecraft",
+      "E": "overlooks the immense probability that most star systems are uninhabited"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Citizen: Our legislators need to act quickly to counter the effects of the recession, especially the present level of unemployment, which is the highest ever. We urgently need a major tax cut for our upper-income citizens. There would then be a correspondingly large increase in investment that would create new jobs. If this measure is not taken, investment will not grow.",
+    "questionStem": "The citizen’s argument depends on the assumption that",
+    "answerChoices": {
+      "A": "the recession in the citizen’s country is the worst one in its history",
+      "B": "the greater the tax cut given to a group of people, the more likely it is that members of that group will invest the money",
+      "C": "upper-income citizens have invested more money in total than have lower-income citizens",
+      "D": "upper-income citizens could use the money gained from the tax cut in ways that increase investment",
+      "E": "in the past, tax cuts for certain groups of people have tended to create new jobs"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Ideally, scientific laws should display the virtues of precision and generality, as do the laws of physics. However, because of the nature of their subject matter, laws of social science often have to use terms that are imprecise; for example, one knows only vaguely what is meant by “republicanism” or “class.” As for generality, laws that apply only in certain social systems are typically the only ones possible for the social sciences.",
+    "questionStem": "Which one of the following statements is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "All else being equal, a precise, general scientific law is to be preferred over one that is not general.",
+      "B": "The social sciences would benefit if they redirected their focus to the subject matter of the physical sciences.",
+      "C": "Terms such as “class” should be more precisely formulated by social scientists.",
+      "D": "Social scientists should make an effort to construct more laws that apply to all societies.",
+      "E": "The laws of social science are invariably not truly scientific."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science",
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "The miscarriage of justice in the Barker case was due to the mistaken views held by some of the forensic scientists involved in the case, who believed that they owed allegiance only to the prosecuting lawyers. Justice was thwarted because these forensic scientists failed to provide evidence impartially to both the defense and the prosecution. Hence it is not forensic science in general that should be condemned for this injustice.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Most forensic scientists acknowledge a professional obligation to provide evidence impartially to both the defense and the prosecution.",
+      "B": "The type of injustice that occurred in the Barker case has occurred in other cases as well.",
+      "C": "Most prosecuting lawyers believe that forensic scientists owe a special allegiance to the prosecution.",
+      "D": "Many instances of injustice in court cases are not of the same type as that which occurred in the Barker case.",
+      "E": "Many forensic scientists do not believe that any miscarriage of justice occurred in the Barker case."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Everyone who is excessively generous is not levelheaded, and no one who is levelheaded is bold.",
+    "questionStem": "Which one of the following is strictly implied by the above?",
+    "answerChoices": {
+      "A": "Everyone who is excessively generous is not bold.",
+      "B": "Everyone who is not bold is excessively generous.",
+      "C": "No one who is not bold lacks excessive generosity.",
+      "D": "If someone is levelheaded, then that person is neither bold nor excessively generous.",
+      "E": "If someone is not levelheaded, then that person is either bold or excessively generous."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "In a study in which secondary school students were asked to identify the teachers they liked the best, the teachers most often identified possessed a personality type that constitutes 20 percent of the general public but only 5 percent of teachers. Thus something must discourage the people who would be the best-liked teachers from entering this profession.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "People with the personality type constitute 5 percent of the medical profession.",
+      "B": "People with the personality type constitute 5 percent of college students pursuing a degree in education.",
+      "C": "Students of teachers with the personality type are intensely recruited for noneducational professions.",
+      "D": "Students with the personality type are more likely to be liked by teachers than those with other personality types.",
+      "E": "Teachers with the personality type are more likely to quit teaching than those with other personality types."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "A successful chess-playing computer would prove either that a machine can think or that chess does not involve thinking. In either case the conception of human intelligence would surely change.",
+    "questionStem": "The reasoning above is most vulnerable to criticism on the grounds that it does not consider the possibility that",
+    "answerChoices": {
+      "A": "the conception of intelligence is inextricably linked to that of thought",
+      "B": "a truly successful chess program may never be invented",
+      "C": "computer programs have been successfully applied to games other than chess",
+      "D": "a successful chess-playing computer would not model a human approach to chess playing",
+      "E": "the inability to play chess has more to do with lack of opportunity than with lack of intelligence"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Method",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "James: Chemists have recently invented a new technique for extracting rhodium, an element necessary for manufacturing catalytic converters for automobiles, from nuclear waste. Catalytic converters function to remove noxious gases from automobile exhaust. The use of nuclear power is therefore contributing in at least one way to creating a cleaner environment. Marta: The technique you mention, though effective, is still at an experimental stage, so there has been no shift in the sources of the rhodium currently used in manufacturing catalytic converters.",
+    "questionStem": "Marta responds to James’s argument by",
+    "answerChoices": {
+      "A": "casting doubt on the accuracy of the claims made by James in support of his conclusion",
+      "B": "questioning the credibility of advocates of nuclear power",
+      "C": "indicating that James is assuming the truth of the conclusion that he intends to establish",
+      "D": "pointing out a fact that James, in drawing his conclusion, did not take into account",
+      "E": "pointing out that James’s premises are no more plausible than is his conclusion"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Must Be False EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Ethicist: A person who treats others well is more worthy of praise if this treatment is at least partially motivated by feelings of compassion than if it is entirely motivated by cold and dispassionate concern for moral obligation. This is so despite the fact that a person can choose to do what is morally right but cannot choose to have feelings.",
+    "questionStem": "If the ethicist’s statements are true, then each of the following could be true except:",
+    "answerChoices": {
+      "A": "Only actions that are at least partially the result of a person’s feelings should be used in measuring the praiseworthiness of that person.",
+      "B": "If a person feels compassion toward the people affected by that person’s actions, yet these actions diminish the welfare of those people, that person does not deserve praise.",
+      "C": "Only what is subject to a person’s choice should be used in measuring the praiseworthiness of that person.",
+      "D": "Someone who acts without feelings of compassion toward those affected by the actions is worthy of praise if those actions enhance the welfare of the people affected.",
+      "E": "If someone wants to have compassion toward others but does not, that person is worthy of praise."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Children fall into three groups—nontasters, regular tasters, and supertasters—depending on how strongly they experience tastes. Supertasters strongly prefer mild cheddar cheese to sharp, regular tasters weakly prefer mild to sharp, and nontasters show no preference. Also, the more bitter a food tastes, the less children like it. Thus, supertasters experience sharp cheddar as tasting more bitter than mild cheddar, but nontasters experience sharp cheddar as tasting no more bitter than mild cheddar.",
+    "questionStem": "Which one of the following, if assumed, enables the conclusion above to be properly inferred?",
+    "answerChoices": {
+      "A": "Supertasters like mild cheddar cheese more than do regular tasters.",
+      "B": "The age of the child is the most important factor in determining whether that child is a nontaster, a regular taster, or a supertaster.",
+      "C": "The sweeter a food tastes, the more children like it.",
+      "D": "Bitterness is the only factor relevant to how strongly children prefer sharp cheddar cheese to mild cheddar cheese.",
+      "E": "Nontasters tend to like a wider variety of foods than do regular tasters, who in turn like a wider variety of foods than do supertasters."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Donna claims to have found the museum’s current exhibition of bronzes from Benin less interesting than many of the other exhibitions recently put on by the museum. According to all the critical reviews, however, the Benin exhibition is more interesting than any other exhibition that the museum has put on in years. Therefore, Donna’s claim must be false.",
+    "questionStem": "Which one of the following arguments contains flawed reasoning that is most similar to the flawed reasoning in the argument above?",
+    "answerChoices": {
+      "A": "Alice claims to have completed her assignment. According to her supervisor, however, the task that Alice was assigned to do has not yet been completed. Alice’s claim, therefore, must be false.",
+      "B": "Morris claims to have seen the famous fire at the Charles Theater. According to all the news reports, however, that fire took place in 1982 and Morris was out of the country during all of 1982. Morris’s claim, therefore, must be false.",
+      "C": "Denise claims to have gone to the party only to please Albert. Albert, however, insists that he went to the party only to please Denise. Denise’s claim, therefore, must be false.",
+      "D": "Loren claims to like the taste of the fish at the Diggin’s Diner. However, since according to everyone who knows anything about food, the fish at the Diggin’s Diner tastes dreadful, Loren’s claim must be false.",
+      "E": "Douglas claims to have climbed the tallest mountain in the country. According to the atlas, however, the country contains two other mountains that are taller than the one Douglas climbed. Douglas’s claim, therefore, must be false."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Battle of Opinions",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Principle Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "If an external force intervenes to give members of a community political self-determination, then that political community will almost surely fail to be truly free, since it is during the people’s struggle to become free by their own efforts that the political virtues necessary for maintaining freedom have the best chance of arising.",
+    "questionStem": "The reasoning above conforms most closely to which one of the following principles?",
+    "answerChoices": {
+      "A": "Political freedom is a virtue that a community can attain through an external force.",
+      "B": "Self-determination is not the first political virtue that the members of a community achieve in their struggle to become free.",
+      "C": "A community cannot remain free without first having developed certain political virtues.",
+      "D": "Political self-determination is required if a community is to remain truly free.",
+      "E": "Real freedom should not be imposed on a community by external forces."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT105",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Some residents of Midville claim that Midville is generally more expensive to live in than nearby towns are, but these people are mistaken. They focus on Midville’s relatively high tax rate while ignoring the services paid for by their taxes. Only Midville provides residents with trash removal, rent- and mortgage-assistance programs, and reasonably priced public transportation. In nearby towns individuals pay for their own trash removal, and housing and transportation costs are high in comparison to Midville.",
+    "questionStem": "Which one of the following is the main point of the argument?",
+    "answerChoices": {
+      "A": "Midville is generally no more expensive to live in than nearby towns are.",
+      "B": "Some of the residents of Midville consider their taxes to be too high.",
+      "C": "Services funded by a municipality are generally less expensive than those services would be if privately funded.",
+      "D": "Some residents of Midville are unaware of many of the services that Midville provides.",
+      "E": "Most of the residents of Midville make use of all of the services the town provides."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot",
+      "Net Effect",
+      "Rebuttals"
+    ]
+  }
+]

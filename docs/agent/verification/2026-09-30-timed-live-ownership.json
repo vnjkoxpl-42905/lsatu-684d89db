@@ -1,0 +1,67 @@
+{
+  "checkedAt": "2026-09-30",
+  "readOnly": true,
+  "containsUserRecords": false,
+  "rows": [
+    {
+      "migration_privileges": true,
+      "owner": "postgres",
+      "server_version": "17.6",
+      "table_name": "attempts"
+    },
+    {
+      "migration_privileges": true,
+      "owner": "postgres",
+      "server_version": "17.6",
+      "table_name": "bootcamp_kv"
+    },
+    {
+      "migration_privileges": true,
+      "owner": "postgres",
+      "server_version": "17.6",
+      "table_name": "practice_test_assignments"
+    },
+    {
+      "migration_privileges": true,
+      "owner": "postgres",
+      "server_version": "17.6",
+      "table_name": "practice_test_runs"
+    },
+    {
+      "migration_privileges": true,
+      "owner": "postgres",
+      "server_version": "17.6",
+      "table_name": "profiles"
+    },
+    {
+      "migration_privileges": true,
+      "owner": "postgres",
+      "server_version": "17.6",
+      "table_name": "rc_attempts"
+    },
+    {
+      "migration_privileges": true,
+      "owner": "postgres",
+      "server_version": "17.6",
+      "table_name": "rc_drill_sessions"
+    },
+    {
+      "migration_privileges": true,
+      "owner": "postgres",
+      "server_version": "17.6",
+      "table_name": "section_history"
+    },
+    {
+      "migration_privileges": true,
+      "owner": "postgres",
+      "server_version": "17.6",
+      "table_name": "user_roles"
+    },
+    {
+      "migration_privileges": true,
+      "owner": "postgres",
+      "server_version": "17.6",
+      "table_name": "wrong_answer_journal"
+    }
+  ]
+}

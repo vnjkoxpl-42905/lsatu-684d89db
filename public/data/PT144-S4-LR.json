@@ -1,0 +1,611 @@
+[
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Must be true",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Aisha: Vadim is going to be laid off. Vadim’s work as a programmer has been exemplary since joining the firm. But management has already made the decision to lay off a programmer. And this firm strictly follows a policy of laying off the most recently hired programmer in such cases.",
+    "questionStem": "Aisha’s conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The firm values experience in its programmers more highly than any other quality.",
+      "B": "When Vadim was hired, the policy of laying off the most recently hired programmer was clearly explained.",
+      "C": "Vadim is the most recently hired programmer at the firm.",
+      "D": "Every other programmer at the firm has done better work than Vadim.",
+      "E": "It is bad policy that the firm always lays off the most recently hired programmer."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Wanda: It is common sense that one cannot create visual art without visual stimuli in one’s work area, just as a writer needs written stimuli. A stark, empty work area would hinder my creativity. This is why there are so many things in my studio. Vernon: But a writer needs to read good writing, not supermarket tabloids. Are you inspired by the piles of laundry and empty soda bottles in your studio?",
+    "questionStem": "Which one of the following most accurately expresses the principle underlying Vernon’s response to Wanda?",
+    "answerChoices": {
+      "A": "It is unhealthy to work in a cluttered work area.",
+      "B": "The quality of the stimuli in an artist’s environment matters.",
+      "C": "Supermarket tabloids should not be considered stimulating.",
+      "D": "Messiness impairs artistic creativity.",
+      "E": "One should be able to be creative even in a stark, empty work area."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies",
+      "Causal Difference-Maker",
+      "Principles in Answers",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "The official listing of an animal species as endangered triggers the enforcement of legal safeguards designed to protect endangered species, such as tighter animal export and trade restrictions and stronger antipoaching laws. Nevertheless, there have been many cases in which the decline in the wild population of a species was more rapid after that species was listed as endangered than before it was so listed.",
+    "questionStem": "Which one of the following, if true, does most to account for the increase in the rate of population decline described above?",
+    "answerChoices": {
+      "A": "The process of officially listing a species as endangered can take many years.",
+      "B": "Public campaigns to save endangered animal species often focus only on those species that garner the public’s affection.",
+      "C": "The number of animal species listed as endangered has recently increased dramatically.",
+      "D": "Animals are more desirable to collectors when they are perceived to be rare.",
+      "E": "Poachers find it progressively more difficult to locate animals of a particular species as that species’ population declines."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Point at issue",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Annette: To persuade the town council to adopt your development plan, you should take them on a trip to visit other towns that have successfully implemented plans like yours. Sefu: But I have a vested interest in their votes. If council members were to accept a trip from me, it would give the appearance of undue influence.",
+    "questionStem": "The dialogue provides the most support for the claim that Annette and Sefu disagree over whether",
+    "answerChoices": {
+      "A": "the council should adopt Sefu’s development plan",
+      "B": "Sefu should take the council on a trip to visit other towns",
+      "C": "Sefu has a vested interest in the council’s votes",
+      "D": "other towns have successfully implemented similar development plans",
+      "E": "the appearance of undue influence should be avoided"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Scholar: Recently, some religions have updated the language of their traditional texts and replaced traditional rituals with more contemporary ones. These changes have been followed by increases in attendance at places of worship affiliated with these religions. This shows that any such modernization will result in increased numbers of worshipers.",
+    "questionStem": "The scholar’s reasoning is flawed because the scholar presumes without giving sufficient justification that",
+    "answerChoices": {
+      "A": "not every religion can update its texts and replace its traditional rituals",
+      "B": "modernization of religious texts and rituals will not involve an alteration of their messages",
+      "C": "the modernization of the texts and rituals of some religions was the cause of their increases in attendance",
+      "D": "making texts and rituals more modern is the only way in which a religion could bring about an increase in attendance at places of worship",
+      "E": "the growth in attendance at places of worship affiliated with religions that made their texts and rituals more modern is irreversible"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact",
+      "Plausibility",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "If one is to participate in the regional band, one must practice very hard or be very talented. Therefore, Lily, who is first trombonist in the regional band and is very talented, does not practice hard.",
+    "questionStem": "The flawed reasoning in which one of the following arguments most closely resembles the flawed reasoning in the argument above?",
+    "answerChoices": {
+      "A": "In order to have a chance to meet its objectives, the army needs good weather as a precondition for retaining its mobility. The weather is good today, so the army will meet its objectives.",
+      "B": "If Lois were on vacation, she would be visiting her brother in Chicago or seeing friends in Toronto. Since she is not on vacation, she is in neither Chicago nor Toronto.",
+      "C": "If Johnson is to win the local election, then neither Horan nor Jacobs can enter the race. Since neither of them plans to run, Johnson will win the race.",
+      "D": "To stay informed about current events, one must read a major newspaper or watch national TV news every day. So Julie, who is informed about current events and reads a major newspaper every day, does not watch TV news.",
+      "E": "If Wayne is to get a ride home from the library, either Yvette or Marty must be there. Yvette is not at the library, so Marty must be there."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Argument part",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Dietitian: Eating fish can lower one’s cholesterol level. In a study of cholesterol levels and diet, two groups were studied. The first group ate a balanced diet including two servings of fish per week. The second group ate a very similar diet, but ate no fish. The first group showed lower cholesterol levels, on average, than the second group. The two groups had displayed similar average cholesterol levels prior to the study.",
+    "questionStem": "Which one of the following most accurately describes the role played in the dietitian’s argument by the claim that the two groups had displayed similar average cholesterol levels prior to the study?",
+    "answerChoices": {
+      "A": "It is offered as an objection to the main conclusion of the argument.",
+      "B": "It expresses the main conclusion of the argument.",
+      "C": "It rules out an alternative explanation of the data collected in the study.",
+      "D": "It provides background information on the purpose of the study.",
+      "E": "It introduces an alternative explanation of the phenomenon described in the main conclusion."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Satellite navigation systems (satnavs) for cars, in which computer voices announce directions as you drive, save fuel and promote safety. Studies show that, when assigned to novel destinations, drivers using satnavs took, on average, 7 percent fewer miles per journey than drivers using paper maps. Fewer miles driven means, on average, less fuel consumed. Also, the drivers who used satnavs drove more carefully in that they were not taking their eyes off the road to check paper maps.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "People who are often required to drive to novel destinations are more likely to use satnavs than people who are rarely required to drive to novel destinations.",
+      "B": "The more fuel a vehicle consumes, the more motivation a driver has to find the shortest route to his or her destination.",
+      "C": "Drivers who do not routinely need to drive to an unfamiliar location are more likely to plan out their route carefully prior to departure.",
+      "D": "Drivers who own satnavs usually prefer to drive to their accustomed destinations by using their customary routes rather than by following the directions given by the satnavs.",
+      "E": "Drivers who are given directions as needed are less likely to change course suddenly or make other risky maneuvers."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Argument part",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A manager cannot extract the best performance from employees by threatening them with termination or offering financial rewards for high productivity. Rather, employees must come to want to do a good job for its own sake. One of the best ways for a manager to achieve this is to delegate responsibility to them, especially for decisions that previously had to be made by the manager.",
+    "questionStem": "Which one of the following propositions is best illustrated by the situation described in the passage?",
+    "answerChoices": {
+      "A": "Increased responsibility can improve a person’s sense of how power should be used.",
+      "B": "It is often the case that the desire for prestige is more powerful than the desire for job security.",
+      "C": "In some cases one’s effectiveness in a particular role can be enhanced by a partial relinquishing of control.",
+      "D": "People who carry out decisions are in the best position to determine what those decisions should be.",
+      "E": "Business works best by harnessing the self-interest of individuals to benefit the company as a whole."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Point at issue",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Richard: Because it fails to meet the fundamental requirement of art—that it represent—abstract art will eventually be seen as an aberration. Jung-Su: Although artists, like musicians, may reject literal representation, makers of abstract art choose to represent the purely formal features of objects, which are discovered only when everyday perspectives are rejected. Thus, whatever others might come to say, abstract art is part of the artistic mainstream.",
+    "questionStem": "Richard and Jung-Su disagree over whether",
+    "answerChoices": {
+      "A": "makers of abstract art reject literal representation",
+      "B": "the fundamental requirement of art is that it represent",
+      "C": "musicians may reject literal representation",
+      "D": "abstract art will be seen as an aberration",
+      "E": "abstract art is representational"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "A person who knowingly brings about misfortune should be blamed for it. However, in some cases a person who unwittingly brings about misfortune should not be blamed for it. For example, a person should never be blamed for unwittingly bringing about misfortune if the person could not reasonably have foreseen it.",
+    "questionStem": "The principles above, if valid, most help to justify the reasoning in which one of the following?",
+    "answerChoices": {
+      "A": "Although he would have realized it if he had thought about it, it did not occur to Riley that parking his car in the center lane of Main Street could lead to a traffic accident. So, if a traffic accident does result from Riley’s parking his car in the center lane of Main Street, he should not be blamed for it.",
+      "B": "Oblicek had no idea that suggesting to her brother that he take out a loan to expand his business was likely to cause the business to go bankrupt, nor could she have reasonably foreseen this. So, if the loan does cause her brother’s business to go bankrupt, Oblicek should not be blamed for it.",
+      "C": "Gougon had no reason to think that serving the hollandaise sauce would make his guests ill, but he was concerned that it might. Thus, if the hollandaise sauce does make Gougon’s guests ill, Gougon should be blamed for it.",
+      "D": "When Dr. Fitzpatrick gave his patient the wrong medicine, he did not know that it would cause the patient to experience greatly increased blood pressure. So, if no one else knowingly did anything that contributed to the patient’s increase in blood pressure, no one other than Dr. Fitzpatrick is to blame for it.",
+      "E": "Any reasonable person could have foreseen that dropping a lit cigarette in dry leaves would start a fire. Thus, even if Kapp did not realize this, she is to blame for starting a fire on Rodriguez’s farm since she dropped a lit cigarette in dry leaves there."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Researcher: Research has shown that inhaling the scent of lavender has measurable physiological effects tending to reduce stress. It is known that intense stress can impair the immune system, making one more susceptible to illness. Therefore, it is likely that the incidence of illness among those who regularly inhale the scent of lavender is reduced by this practice.",
+    "questionStem": "Which one of the following is an assumption that the researcher’s argument requires?",
+    "answerChoices": {
+      "A": "Many, if not all, of the scents that have a tendency to reduce susceptibility to illness do so, at least in part, by reducing stress.",
+      "B": "Some people who regularly inhale the scent of lavender would otherwise be under enough stress to impair their immune systems.",
+      "C": "At least some people who use the scent of lavender to induce relaxation and reduce stress are no more susceptible to illness than average.",
+      "D": "In anyone for whom the scent of lavender reduces susceptibility to illness, it does so primarily by reducing stress.",
+      "E": "Reduced stress diminishes susceptibility to illness only for people who are under enough stress to impair their immune systems to at least some degree."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Government statistics show that the real (adjusted for inflation) average income for families has risen over the last five years. Therefore, since this year the Andersen family’s income is average for families, the family’s real income must have increased over the last five years.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "ambiguously uses the term “average” in two different senses",
+      "B": "fails to take into account inflation with respect to the Andersen family’s income",
+      "C": "overlooks the possibility that most families’ incomes are below average",
+      "D": "fails to consider the possibility that the Andersen family’s real income was above average in the recent past",
+      "E": "presumes, without providing justification, that the government makes no errors in gathering accurate estimates of family income"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Certain methods of creating high-quality counterfeit banknotes involve making accurate measurements of the images printed on genuine banknotes. Hence, if the production of high-quality counterfeit banknotes is to be prevented, some of the images on banknotes must be made very difficult or impossible to measure accurately.",
+    "questionStem": "The argument’s conclusion can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Today’s copying technology is sophisticated enough to replicate almost any paper product with great precision.",
+      "B": "Once the images printed on a banknote have been measured accurately, there is no further impediment to the banknote’s being exactly replicated.",
+      "C": "Governments have better printing technology available to them than counterfeiters do.",
+      "D": "Few countries produce banknotes with images that are difficult for counterfeiters to measure accurately.",
+      "E": "New designs in banknotes generally lead to decreases in the amount of counterfeit currency in circulation."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Armstrong: For the treatment of a particular disease, Dr. Sullivan argues for using nutritional supplements rather than the pharmaceuticals that most doctors prescribe. But this is in his self-interest since he is paid to endorse a line of nutritional supplements. Thus, we should not use nutritional supplements in treating the disease.",
+    "questionStem": "Armstrong’s argument is flawed in that it",
+    "answerChoices": {
+      "A": "relies on two different meanings of the term “supplement” to draw a conclusion",
+      "B": "relies solely on an appeal to an authority whose trustworthiness should not necessarily be taken for granted",
+      "C": "appeals to people’s emotions regarding the treatment of disease rather than to the efficacy of the two approaches to treatment",
+      "D": "criticizes Dr. Sullivan’s motives for holding a position rather than addressing the position itself",
+      "E": "fails to justify its presumption that nutritional supplements cannot be used in conjunction with other treatments"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Economist: If the economy grows stronger, employment will increase, and hence more parents will need to find day care for their young children. Unfortunately, in a stronger economy many day-care workers will quit to take better-paying jobs in other fields. Therefore, a stronger economy is likely to make it much more difficult to find day care.",
+    "questionStem": "Which one of the following is an assumption the economist’s argument requires?",
+    "answerChoices": {
+      "A": "If the economy grows stronger, most of the new jobs that are created will be in fields that pay well.",
+      "B": "If the economy grows stronger, the number of new day-care workers will not be significantly greater than the number of day-care workers who move to better-paying jobs in other fields.",
+      "C": "If the economy grows stronger, the number of workers employed by day-care centers is likely to decrease.",
+      "D": "The shortage of day care for children is unlikely to worsen unless employment increases and many day-care center employees quit to take better-paying jobs in other fields.",
+      "E": "The total number of young children in day-care centers will decrease if the cost of day care increases significantly."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Net Effect",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Most strongly supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Ostrich farming requires far less acreage than cattle ranching requires, and ostriches reproduce much faster than cattle. Starting out in cattle ranching requires a large herd of cows, one bull, and at least two acres per cow. By contrast, two pairs of yearling ostriches and one acre of similar land are enough to begin ostrich farming. The start-up costs for ostrich farming are greater, but it can eventually bring in as much as five times what cattle ranching does.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Two pairs of yearling ostriches are more expensive than a herd of cows and a bull.",
+      "B": "Cattle ranching is not a good source of income.",
+      "C": "A cow consumes no more feed than an ostrich does.",
+      "D": "The average ostrich farm generates almost five times as much profit as the average cattle ranch.",
+      "E": "Ostrich farmers typically lose money during their first year."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "For several centuries there have been hairless dogs in western Mexico and in coastal Peru. It is very unlikely that a trait as rare as hairlessness emerged on two separate occasions. Since the dogs have never existed in the wild, and the vast mountainous jungle separating these two regions would have made overland travel between them extremely difficult centuries ago, the dogs must have been transported from one of these regions to the other by boat, probably during trading expeditions.",
+    "questionStem": "Which one of the following is an assumption that the argument requires?",
+    "answerChoices": {
+      "A": "Hairless dogs have never been found anywhere except in the regions of western Mexico and coastal Peru.",
+      "B": "Most of the trade goods that came into western Mexico centuries ago were transported by boat.",
+      "C": "Centuries ago, no one would have traveled between western Mexico and coastal Peru by boat except for the purposes of carrying out a trading expedition.",
+      "D": "If hairless dogs were at one time transported between western Mexico and coastal Peru by boat, they were traded in exchange for other goods.",
+      "E": "Centuries ago, it was easier to travel by boat between western Mexico and coastal Peru than to travel by an overland route."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Assumes Difference",
+      "Defender",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Researchers working in Western Australia have discovered the oldest fragments of the Earth’s early crust that have yet been identified: microdiamonds. These microscopic crystals measure only 50 microns across and were formed 4.2 billion years ago. This discovery sheds light on how long it took for the Earth’s crust to form, since this date is only 300 million years after the formation of the Earth itself.",
+    "questionStem": "If the statements above are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "The Earth’s crust took no longer than 300 million years to start to form.",
+      "B": "The Earth’s crust first formed in the area that is now Western Australia.",
+      "C": "The Earth’s crust took billions of years to form.",
+      "D": "Microdiamonds were the first components of the Earth’s crust to form.",
+      "E": "All naturally occurring microdiamonds were formed at the time the Earth’s crust was being formed."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The public square was an important tool of democracy in days past because it provided a forum for disparate citizens to discuss the important issues of the day. Today, a person with Internet access can discuss important issues with millions of people across the nation, allowing the Internet to play the role once played by the public square. Hence, we should ensure that Internet users have at least as much freedom of expression as did people speaking in the public square.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "People speaking in the public square of days past had complete freedom of expression.",
+      "B": "All citizens have the same level of access to the Internet.",
+      "C": "A public forum can lose effectiveness as a tool of democracy if participants cannot discuss issues freely.",
+      "D": "The Internet is more often used to discuss important issues than to discuss frivolous issues.",
+      "E": "Other than the Internet, no other public forum today is an important tool of democracy."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Except",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "At a large elementary school researchers studied a small group of children who successfully completed an experimental program in which they learned to play chess. The study found that most of the children who completed the program soon showed a significant increase in achievement levels in all of their schoolwork. Thus, it is likely that the reasoning power and spatial intuition exercised in chess-playing also contribute to achievement in many other areas of intellectual activity.",
+    "questionStem": "Which one of the following, if true, most tends to undermine the argument?",
+    "answerChoices": {
+      "A": "Some students who did not participate in the chess program had learned to play chess at home.",
+      "B": "Those children who began the program but who did not successfully complete it had lower preprogram levels of achievement than did those who eventually did successfully complete the program.",
+      "C": "Many of the children who completed the program subsequently sought membership on a school chess team that required a high grade average for membership.",
+      "D": "Some students who did not participate in the chess program participated instead in after-school study sessions that helped them reach much higher levels of achievement in the year after they attended the sessions.",
+      "E": "At least some of the students who did not successfully complete the program were nevertheless more talented chess players than some of the students who did complete the program."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Parallel method of reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "On Wednesdays, Kate usually buys some guava juice. But the only place she can buy guava juice is the local health food store. It follows that she must sometimes shop at the local health food store on Wednesdays.",
+    "questionStem": "The argument above is most similar in its pattern of reasoning to which one of the following arguments?",
+    "answerChoices": {
+      "A": "Only teachers at the Culinary Institute are allowed to use the institute’s main kitchen. Most dinners at Cafe Delice are prepared in that kitchen. So at least some dinners at Cafe Delice must be prepared by Culinary Institute teachers.",
+      "B": "All dinners at Cafe Delice are prepared in the main kitchen of the Culinary Institute. But only teachers at the institute are allowed to use that kitchen. So the dinners at Cafe Delice must be prepared by Culinary Institute teachers.",
+      "C": "Most dinners at Cafe Delice are prepared in the main kitchen of the Culinary Institute. All the teachers at the institute are allowed to use that kitchen. So at least some dinners at Cafe Delice must be prepared by Culinary Institute teachers.",
+      "D": "Most teachers at the Culinary Institute are allowed to use the institute’s main kitchen. Dinners at Cafe Delice are only prepared in that kitchen. So dinners at Cafe Delice must sometimes be prepared by Culinary Institute teachers.",
+      "E": "Only teachers at the Culinary Institute are allowed to use the main kitchen of the institute. Dinners at Cafe Delice are usually prepared by Culinary Institute teachers. So dinners at Cafe Delice must sometimes be prepared in the main kitchen of the Culinary Institute."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Quantifiers",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Editor: The city’s previous recycling program, which featured pickup of recyclables every other week, was too costly. The city claims that its new program, which features weekly pickup, will be more cost effective, since the greater the volume of recyclables collected per year, the more revenue the city gains from selling the recyclables. But this is absurd. People will put out the same volume of recyclables overall; it will just be spread out over a greater number of pickups.",
+    "questionStem": "Which one of the following, if true, most weakens the editor’s argument?",
+    "answerChoices": {
+      "A": "The cost of collecting and disposing of general trash has been less than the cost of collecting and disposing of recyclables, and this is still likely to be the case under the new recycling program.",
+      "B": "Even if the volume of collected recyclables increases, that increase might not be enough to make the recycling program cost effective.",
+      "C": "Because the volume of recyclables people accumulate during a week is less than what they accumulate during two weeks, the city expects a recyclables pickup to take less time under the new program.",
+      "D": "A weekly schedule for recyclables pickup is substantially easier for people to follow and adhere to than is a schedule of pickups every other week.",
+      "E": "Because of the increase in the number of pickups under the new program, the amount charged by the contractor that collects the city’s recyclables will increase significantly."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Focused on Evidence"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Professor: Many introductory undergraduate science courses are intended to be “proving grounds,” that is, they are designed to be so demanding that only those students most committed to being science majors will receive passing grades in these courses. However, studies show that some of the students in these very demanding introductory courses who are least enthusiastic about science receive passing grades in these courses. Hence, designing introductory science courses to serve as proving grounds has not served its intended purpose.",
+    "questionStem": "Which one of the following is an assumption that the professor’s argument requires?",
+    "answerChoices": {
+      "A": "If some of the students who are most enthusiastic about science do not receive passing grades in introductory science courses, then designing these courses to serve as proving grounds has been unsuccessful.",
+      "B": "Science departments need a way to ensure that only those students most committed to being science majors will receive passing grades in introductory science courses.",
+      "C": "Some of the students in the very demanding introductory science courses who are most enthusiastic about science do not receive passing grades in those courses.",
+      "D": "None of the students in the very demanding introductory science courses who are least enthusiastic about science are among the students most committed to being science majors.",
+      "E": "Introductory science courses should not continue to be designed to serve as proving grounds if doing so has not served its intended purpose."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Many bird and reptile species use hissing as a threat device against potential predators. The way these species produce hissing sounds is similar enough that it is likely that this behavior developed in an early common ancestor. At the time this common ancestor would have lived, however, none of its potential predators would have yet acquired the anatomy necessary to hear hissing sounds.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "Like its potential predators, the common ancestor of bird and reptile species would have lacked the anatomy necessary to hear hissing sounds.",
+      "B": "The common ancestor of bird and reptile species would probably have employed multiple threat devices against potential predators.",
+      "C": "The production of a hissing sound would have increased the apparent body size of the common ancestor of bird and reptile species.",
+      "D": "The use of hissing as a threat device would have been less energetically costly than other threat behaviors available to the common ancestor of bird and reptile species.",
+      "E": "Unlike most modern bird and reptile species, the common ancestor of these species would have had few predators."
+    },
+    "correctAnswer": "C"
+  }
+]

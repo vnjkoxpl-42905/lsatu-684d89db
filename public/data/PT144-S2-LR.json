@@ -1,0 +1,620 @@
+[
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In the bodies of reptiles, some industrial by-products cause elevated hormonal activity. Hormones govern the development of certain body parts, and in reptiles abnormal development of these parts occurs only with elevated hormonal activity. Recently, several alligators with the telltale developmental abnormalities were discovered in a swamp. So, apparently, industrial by-products have entered the swamp’s ecosystem.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "provides no explanation for developmental abnormalities that do not result from elevated hormonal activity",
+      "B": "fails to consider whether elevated hormonal activity can result from factors other than the presence of industrial by-products",
+      "C": "fails to address the possibility that industrial by-products were contained in food the alligators ate",
+      "D": "fails to say whether reptiles other than alligators were examined for the same developmental abnormalities that were discovered in the alligators",
+      "E": "uses evidence drawn from a sample of alligators that is unlikely to be representative of alligators in general"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact",
+      "Alternatives",
+      "Causal Chains"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Fill in the blank",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Government official: Residents who are foreign citizens can serve as public servants at most levels, but not as cabinet secretaries. This is wise, since cabinet secretaries perform some duties that should be performed only by citizens, and no one should be appointed to a position if it involves duties that person should not perform. Moreover, a cabinet undersecretary is expected to serve as cabinet secretary when the actual secretary is unavailable. So, _______.",
+    "questionStem": "Which one of the following most logically completes the government official’s statement?",
+    "answerChoices": {
+      "A": "foreign citizens who serve as public servants should be granted citizenship in the country they serve",
+      "B": "foreign citizens should not be appointed as cabinet undersecretaries",
+      "C": "only former cabinet undersecretaries should be appointed as cabinet secretaries",
+      "D": "foreign citizens should be eligible to serve as cabinet secretaries",
+      "E": "cabinet undersecretaries should not be expected to stand in for cabinet secretaries"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Point at issue",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Doris: I’ve noticed that everyone involved in student government is outspoken. So if we want students to be more outspoken, we should encourage them to become involved in student government. Zack: Those who are in student government became involved precisely because they are outspoken in the first place. Encouraging others to become involved will do nothing to make them more outspoken.",
+    "questionStem": "Doris and Zack disagree over whether",
+    "answerChoices": {
+      "A": "students should be more outspoken",
+      "B": "students should be encouraged to become involved in student government",
+      "C": "becoming involved in student government makes students more outspoken",
+      "D": "all students who are involved in student government are outspoken",
+      "E": "students will not become more outspoken unless they become involved in student government"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Biologist: A careful study of the behavior of six individual chameleons concluded that lizards such as chameleons bask in the sun not only for warmth but also to regulate their production of vitamin D. Critics of the study—although correct in observing that its sample size was very small—are wrong to doubt its results. After all, the study’s author is well regarded professionally and has been doing excellent work for years.",
+    "questionStem": "The reasoning in the biologist’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "takes the behavior of chameleons to be generalizable to lizards as a whole",
+      "B": "fails to explain how chameleons regulate their vitamin D production by basking in the sun",
+      "C": "focuses its attention on the study’s author rather than on the study itself",
+      "D": "fails to demonstrate that the study’s critics have relevant expertise",
+      "E": "holds the study’s author to a higher standard than it holds the study’s critics"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Political scientist: Some analysts point to the government’s acceptance of the recent protest rally as proof that the government supports freedom of popular expression. But the government supports no such thing. Supporting freedom of popular expression means accepting the expression of ideas that the government opposes as well as the expression of ideas that the government supports. The message of the protest rally was one that the government entirely supports.",
+    "questionStem": "Which one of the following is an assumption that is required by the political scientist’s argument?",
+    "answerChoices": {
+      "A": "The government helped to organize the recent protest rally.",
+      "B": "The message of the recent protest rally did not concern any function of the government.",
+      "C": "The government would not have accepted a protest rally whose message it opposed.",
+      "D": "There are groups that are inhibited from staging a protest rally out of a fear of government response.",
+      "E": "The government feared a backlash if it did not show acceptance of the recent protest rally."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Lawyer: In addition to any other penalties, convicted criminals must now pay a “victim surcharge” of $30. The surcharge is used to fund services for victims of violent crimes, but this penalty is unfair to nonviolent criminals since the surcharge applies to all crimes, even nonviolent ones like petty theft.",
+    "questionStem": "Which one of the following principles, if valid, would most help to justify the reasoning in the lawyer’s argument?",
+    "answerChoices": {
+      "A": "The penalties for a crime should be severe enough to deter most people who would commit the crime if there were no penalties.",
+      "B": "The overall penalty for a violent crime should be more severe than the overall penalty for any nonviolent crime.",
+      "C": "A surcharge intended to provide services to victims is justified only if all proceeds of the surcharge are used to provide services.",
+      "D": "A criminal should not be required to pay for services provided to victims of crimes that are more serious than the type of crime the criminal has been convicted of.",
+      "E": "Convicted thieves should be fined an amount at least as great as the value of the property stolen."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Economist: Owing to global economic forces since 1945, our country’s economy is increasingly a service economy, in which manufacturing employs an ever smaller fraction of the workforce. Hence, we have engaged in less and less international trade.",
+    "questionStem": "Which one of the following, if true, would most help to explain the decreasing engagement in international trade by the economist’s country?",
+    "answerChoices": {
+      "A": "International trade agreements have usually covered both trade in manufactured goods and trade in services.",
+      "B": "Employment in the service sector tends to require as many specialized skills as does employment in manufacturing.",
+      "C": "Because services are usually delivered in person, markets for services tend to be local.",
+      "D": "Many manufacturing jobs have been rendered obsolete by advances in factory automation.",
+      "E": "Some services can be procured less expensively from providers in other countries than from providers in the economist’s country."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Merton: A study showed that people who live on very busy streets have higher rates of heart disease than average. I conclude that this elevated rate of heart disease is caused by air pollution from automobile exhaust.\nOrtiz: Are you sure? Do we know whether people living on busy streets have other lifestyle factors that are especially conducive to heart disease?",
+    "questionStem": "Ortiz criticizes Merton's argument by",
+    "answerChoices": {
+      "A": "raising a question about the validity of the study that Merton cites",
+      "B": "contending that Merton needs to take into account other effects of air pollution",
+      "C": "claiming that Merton misunderstands a crucial aspect of the study’s findings",
+      "D": "raising a counterexample to the general conclusion that Merton draws",
+      "E": "suggesting that alternative explanations for the study’s findings need to be ruled out"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Two lakes in the Pawpaw mountains, Quapaw and Highwater, were suffering from serious declines in their fish populations ten years ago. Since that time, there has been a moratorium on fishing at Quapaw Lake, and the fish population there has recovered. At Highwater Lake, no such moratorium has been imposed, and the fish population has continued to decline. Thus, the ban on fishing is probably responsible for the rebound in the fish population at Quapaw Lake.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument above?",
+    "answerChoices": {
+      "A": "Highwater Lake is in an area of the mountains that is highly susceptible to acid rain.",
+      "B": "Prior to the ban, there was practically no fishing at Quapaw Lake.",
+      "C": "Highwater Lake is much larger than Quapaw Lake.",
+      "D": "Several other lakes in the Pawpaw mountains have recently had increases in their fish populations.",
+      "E": "There used to be a greater variety of fish species in Highwater Lake than in Quapaw Lake, but there no longer is."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Must be true",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The Asian elephant walks with at least two, and sometimes three, feet on the ground at all times. Even though it can accelerate, it does so merely by taking quicker and longer steps. So the Asian elephant does not actually run.",
+    "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "If an animal cannot accelerate, then it cannot run.",
+      "B": "To run, an animal must have all of its feet off the ground at once.",
+      "C": "The Asian elephant can walk as quickly as some animals run.",
+      "D": "It is unusual for a four-legged animal to keep three feet on the ground while walking.",
+      "E": "All four-legged animals walk with at least two feet on the ground at all times."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Resolve reconcile or explain",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A hardware store generally sells roughly equal numbers of Maxlast brand hammers and Styron brand hammers. Last week, all of the Maxlast hammers were put on sale and placed in a display case just inside the store entrance while the Styron hammers retained their usual price and location. Surprisingly, the Styron hammers slightly outsold the Maxlast hammers.",
+    "questionStem": "Which one of the following, if true, does most to explain the surprising result?",
+    "answerChoices": {
+      "A": "For the first several seconds after shoppers enter a store, they do not take detailed notice of the store’s merchandise.",
+      "B": "Most of the hardware store’s customers are attracted by quality and service rather than low prices.",
+      "C": "Customers who bought the Maxlast hammers last week commonly mentioned the sale as their reason for buying a hammer at that time.",
+      "D": "The hardware store circulated flyers that publicized the sale prices on Maxlast hammers.",
+      "E": "In general, a single item that is on sale will not motivate shoppers to make a special trip to a store."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Except",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "In an experiment, two groups of mice—one whose diet included ginkgo extract and one that had a normal diet— were taught to navigate a maze. The mice whose diet included ginkgo were more likely to remember how to navigate the maze the next day than were the other mice. However, the ginkgo may not have directly enhanced memory. Other studies have found that ginkgo reduces stress in mice, and lowering very high stress levels is known to improve recall.",
+    "questionStem": "Which one of the following, if true, would most weaken the argument?",
+    "answerChoices": {
+      "A": "The doses of ginkgo in the diet of the mice in the experiment were significantly higher than the doses that have been shown to reduce stress in mice.",
+      "B": "Neither the mice who received the ginkgo nor the other mice in the experiment exhibited physiological signs of higher-than-normal stress.",
+      "C": "Some chemical substances that reduce stress in mice also at least temporarily impair their memory.",
+      "D": "Scientists have not yet determined which substances in ginkgo are responsible for reducing stress in mice.",
+      "E": "The mice who received the ginkgo took just as long as the other mice to learn to navigate the maze."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Some of the politicians who strongly supported free trade among Canada, the United States, and Mexico are now refusing to support publicly the idea that free trade should be extended to other Latin American countries.",
+    "questionStem": "If the statement above is true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Some of the politicians who now publicly support extending free trade to other Latin American countries did not support free trade among Canada, the United States, and Mexico.",
+      "B": "Not all politicians who now publicly support extending free trade to other Latin American countries strongly supported free trade among Canada, the United States, and Mexico.",
+      "C": "Some of the politicians who strongly supported free trade among Canada, the United States, and Mexico have changed their position on free trade.",
+      "D": "Not all politicians who strongly supported free trade among Canada, the United States, and Mexico now publicly support extending free trade to other Latin American countries.",
+      "E": "Some of the politicians who strongly supported free trade among Canada, the United States, and Mexico now publicly oppose extending free trade to other Latin American countries."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Principle: Any person or business knowingly aiding someone’s infringement on a copyright is also guilty of copyright infringement. Application: Grandview Department Store, which features a self-service photo-printing kiosk, is guilty of copyright infringement since a customer using the kiosk infringed on a wedding photographer’s copyright by printing photographs whose copyright is held by the photographer.",
+    "questionStem": "Which one of the following, if assumed, most helps to justify the application of the principle?",
+    "answerChoices": {
+      "A": "The operator of a business has the same legal obligations to customers who use self-service facilities as it has to customers who use full-service facilities.",
+      "B": "The management of a business that is open to the public is obligated to report to the authorities any illegal activity that it witnesses on its property.",
+      "C": "The owner of a self-service printing kiosk should post a notice advising customers that copyrighted material should not be printed at the kiosk without the permission of the copyright holder.",
+      "D": "Owners of self-service facilities should monitor those facilities in order to ensure that they are not used for illegal or unethical purposes.",
+      "E": "A person or business providing a service that can be expected to be used to infringe on a copyright should be considered to knowingly aid any copyright infringer using the service."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Fill in the blank",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Journalism’s purpose is to inform people about matters relevant to the choices they must make. Yet, clearly, people often buy newspapers or watch television news programs precisely because they contain sensationalistic gossip about people whom they will never meet and whose business is of little relevance to their lives. Obviously, then, the sensationalistic gossip contained in newspapers and television news programs _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "is at least sometimes included for nonjournalistic reasons",
+      "B": "prevents those news media from achieving their purpose",
+      "C": "is more relevant to people’s lives now than it used to be",
+      "D": "should not be thought of as a way of keeping an audience entertained",
+      "E": "is of no value to people who are interested in journalism"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "When surveyed about which party they would like to see in the legislature, 40 percent of respondents said Conservative, 20 percent said Moderate, and 40 percent said Liberal. If the survey results are reliable, we can conclude that most citizens would like to see a legislature that is roughly 40 percent Conservative, 20 percent Moderate, and 40 percent Liberal.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the reasoning of the argument?",
+    "answerChoices": {
+      "A": "The argument uses premises about the actual state of affairs to draw a conclusion about how matters should be.",
+      "B": "The argument draws a conclusion that merely restates a premise presented in favor of it.",
+      "C": "The argument takes for granted that the preferences of a group as a whole are the preferences of most individual members of the group.",
+      "D": "The argument fails to consider that the survey results might have been influenced by the political biases of the researchers who conducted the survey.",
+      "E": "The argument uses evidence that supports only rough estimates to draw a precisely quantified conclusion."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Except",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "City leader: If our city adopts the new tourism plan, the amount of money that tourists spend here annually will increase by at least $2 billion, creating as many jobs as a new automobile manufacturing plant would. It would be reasonable for the city to spend the amount of money necessary to convince an automobile manufacturer to build a plant here, but adopting the tourism plan would cost less.",
+    "questionStem": "The city leader’s statements, if true, provide the most support for which one of the following?",
+    "answerChoices": {
+      "A": "The city should implement the least expensive job creation measures available.",
+      "B": "In general, it is reasonable for the city to spend money to try to convince manufacturing companies to build plants in the city.",
+      "C": "The city cannot afford both to spend money to convince an automobile manufacturer to build a plant in the city and to adopt the new tourism plan.",
+      "D": "It would be reasonable for the city to adopt the new tourism plan.",
+      "E": "The only way the city can create jobs is by increasing tourism."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot",
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "An article claims that many medical patients have an instinctual ability to predict sudden changes in their medical status. But the evidence given is anecdotal and should not be trusted. The case is analogous to empirically disproven reports that babies are born in disproportionately high numbers during full moons. Once that rumor became popular, maternity room staff were more likely to remember busy nights with full moons than busy nights without them.",
+    "questionStem": "The argument requires the assumption that",
+    "answerChoices": {
+      "A": "the article claiming that medical patients can instinctually predict sudden changes in their medical status will soon be empirically disproven",
+      "B": "patients’ predictions of sudden changes in their medical status are less likely to be remembered by medical staff if no such change actually occurs",
+      "C": "the patients in the article were not being serious when they predicted sudden changes in their medical status",
+      "D": "babies are less likely to be born during a night with a full moon than during a night without a full moon",
+      "E": "the idea that medical patients have an instinctual ability to predict sudden changes in their medical status is not a widely held belief"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Analogies",
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Politician: Union leaders argue that increases in multinational control of manufacturing have shifted labor to nations without strong worker protections, resulting in a corresponding global decrease in workers’ average wages. Given that these leaders have a vested interest in seeing wages remain high, they would naturally want to convince legislators to oppose multinational control. Thus, legislators should reject this argument.",
+    "questionStem": "The reasoning in the politician’s argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "treats the mere fact that certain people are union members as sufficient to cast doubt on all of the viewpoints expressed by those people",
+      "B": "presumes, without providing justification, that anyone whose political motivations are clearly discernible is an unreliable source of information to legislators",
+      "C": "treats circumstances potentially affecting the union leaders’ argument as sufficient to discredit those leaders’ argument",
+      "D": "presumes, without providing justification, that the argument it cites is the union leaders’ only argument for their view",
+      "E": "presumes, without providing evidence, that leaders of all unions argue against increases in multinational control of manufacturing"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Resolve reconcile or explain",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Professor: The number of new university students who enter as chemistry majors has not changed in the last ten years, and job prospects for graduates with chemistry degrees are better than ever. Despite this, there has been a significant decline over the past decade in the number of people earning chemistry degrees.",
+    "questionStem": "Which one of the following, if true, most helps to explain the decline?",
+    "answerChoices": {
+      "A": "Many students enter universities without the academic background that is necessary for majoring in chemistry.",
+      "B": "There has been a significant decline in the number of undergraduate degrees earned in the natural sciences as a whole.",
+      "C": "Many students are very unsure of their choice when they pick a major upon entering universities.",
+      "D": "Job prospects for graduates with chemistry degrees are no better than prospects for graduates with certain other science degrees.",
+      "E": "Over the years, first-year chemistry has come to be taught in a more routinely methodical fashion, which dampens its intellectual appeal."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Parallel flawed method of reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Although the first humans came to Australia 56,000 years ago and undoubtedly brought new diseases with them, human-borne diseases probably did not cause the mass extinction of large land animals and birds that took place over the following 10,000 years. After all, more than 55 different species disappeared at about the same time, and no one disease, however virulent, could be fatal to animals across that many different species.",
+    "questionStem": "Which one of the following arguments exhibits flawed reasoning that is most parallel to that in the argument above?",
+    "answerChoices": {
+      "A": "Even though high interest rates can lead to an economic downturn, high interest rates probably did not cause the current economic downturn. It is true that rates have been on the rise, but high interest rates are not always economically harmful.",
+      "B": "Even though I can fix some things and you can fix some things, the two of us will be unable to repair our apartment without outside help. The apartment has both a broken window and a broken bedroom door, and neither of us is able to fix both doors and windows.",
+      "C": "Even though Lena, Jen, and Mark would like to go out to dinner together after the movie tonight, they will probably go straight home after the show. Of the five restaurants that are in the immediate vicinity of the theater, there is not a single one that all three of them like.",
+      "D": "Even though this painting is highly regarded by critics, it cannot legitimately be deemed great art. Most art that was produced in the last hundred years is not great art, and this painting, beautiful though it is, was probably painted only 40 years ago.",
+      "E": "Even though the influenza vaccine does not always prevent influenza, it sometimes reduces the severity of its symptoms. Therefore it is incorrect to say that some people who receive the vaccine derive no benefit from it."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Except",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A tax preparation company automatically adds the following disclaimer to every e-mail message sent to its clients: “Any tax advice in this e-mail should not be construed as advocating any violation of the provisions of the tax code.” The only purpose this disclaimer could serve is to provide legal protection for the company. But if the e-mail elsewhere suggests that the client do something illegal, then the disclaimer offers no legal protection. So the disclaimer serves no purpose.",
+    "questionStem": "The argument’s conclusion can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "If the e-mail does not elsewhere suggest that the client do anything illegal, then the company does not need legal protection.",
+      "B": "If e-mail messages sent by the tax preparation company do elsewhere suggest that the recipient do something illegal, then the company could be subject to substantial penalties.",
+      "C": "A disclaimer that is included in every e-mail message sent by a company will tend to be ignored by recipients who have already received many e-mails from that company.",
+      "D": "At least some of the recipients of the company’s e-mails will follow the advice contained in the body of at least some of the e-mails they receive.",
+      "E": "Some of the tax preparation company’s clients would try to illegally evade penalties if they knew how to do so."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Binaries",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Well-intentioned people sometimes attempt to resolve the marital problems of their friends. But these attempts are usually ineffectual and thereby foster resentment among all parties. Thus, even well-intentioned attempts to resolve the marital problems of friends are usually unjustified.",
+    "questionStem": "Which one of the following principles, if valid, most strongly supports the reasoning above?",
+    "answerChoices": {
+      "A": "One should get involved in other people’s problems only with the intention of producing the best overall consequences.",
+      "B": "Interpersonal relations should be conducted in accordance with doing whatever is right, regardless of the consequences.",
+      "C": "Good intentions are the only legitimate grounds on which to attempt to resolve the marital problems of friends.",
+      "D": "The intentions of an action are irrelevant to whether or not that action is justified.",
+      "E": "No actions based on good intentions are justified unless they also result in success."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "It has been said that authors who write in order to give pleasure cannot impart to their readers the truth of their subject matter. That claim cannot be true. If it were, one could determine the truthfulness of a book simply by looking at its sales figures. If the book were very popular, one could reasonably conclude that it gave people pleasure and therefore that at least some of what is written in the book is not true.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "When people choose to read a book, they generally do not already know whether reading it will give them pleasure.",
+      "B": "Even when an author writes with the goal of giving people pleasure, that goal will not necessarily be achieved.",
+      "C": "In many cases, a book’s readers are unconcerned about the truth of the book’s contents.",
+      "D": "A book will not give its readers pleasure unless it was intended by its author to have that effect.",
+      "E": "A book can be popular for reasons other than its ability to give readers pleasure."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Analogies",
+      "Contrapositive Logic",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "It is likely that most of the new television programs Wilke & Wilke produce for this season will be canceled. Most of the new shows they produced last season were canceled due to insufficient viewership. Furthermore, their new shows are all police dramas, and few police dramas have been popular in recent years.",
+    "questionStem": "Which one of the following, if true, most helps to strengthen the argument?",
+    "answerChoices": {
+      "A": "Wilke & Wilke have produced more new shows for this season than they produced last season.",
+      "B": "Most of the shows that Wilke & Wilke produced last year were police dramas.",
+      "C": "None of the shows that Wilke & Wilke produced last year that were not canceled were police dramas.",
+      "D": "All of the new shows that Wilke & Wilke produced last year that were canceled were police dramas.",
+      "E": "None of the most popular television shows last year were police dramas."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Predictions",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT144",
+    "sectionNumber": 2,
+    "questionNumber": 26,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "If a corporation obtains funds fraudulently, then the penalty should take into account the corporation’s use of those funds during the time it held them. In such cases, the penalty should completely offset any profit the corporation made in using the funds.",
+    "questionStem": "Which one of the following conforms most closely to the principle illustrated above?",
+    "answerChoices": {
+      "A": "If a driver causes an accident because the automobile being driven was not properly maintained, that driver should be required from then on to regularly demonstrate that his or her automobile is being properly maintained.",
+      "B": "If a factory is found to have been recklessly violating pollution laws, that factory should be required to make the expenditures necessary to bring it into compliance with those laws to the satisfaction of the regulators.",
+      "C": "If someone is sentenced to perform community service, the court has a responsibility to ensure that the community at large rather than a private group benefits from that service.",
+      "D": "If an athlete is found to have used banned performance-enhancing substances, that athlete should be prohibited from participating in all future athletic competitions.",
+      "E": "If a convicted criminal writes a memoir describing the details of that criminal’s crime, any proceeds of the book should be donated to a charity chosen by a third party."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
+  }
+]

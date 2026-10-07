@@ -1,0 +1,620 @@
+[
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In the previous two years, significantly more rain has\n fallen in Browning in September than in July. Therefore,\n this year in Browning more rain will probably fall in\n September than in July.",
+    "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "contains a premise that presupposes the truth of the conclusion",
+      "B": "draws an inference about a future event on the basis of a very limited number of instances of related past events",
+      "C": "overemphasizes the possibility that average rainfall statistics could be skewed by large rainfall in one year",
+      "D": "concludes that two phenomena are associated merely from the claim that there are many instances in which both phenomena are present",
+      "E": "uses evidence drawn from a source whose reliability cannot readily be verified"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Sampling",
+      "Assumes Similarity",
+      "Predictions",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Educator: Few problems faced in daily life can be\n solved most effectively, if at all, by applying\n knowledge from any single academic discipline\n in isolation. Thus, schools should not require\n students to take courses in individual academic\n disciplines but should instead require them to\n take interdisciplinary courses.",
+    "questionStem": "Which one of the following, if true, most strengthens the\n educator’s argument?",
+    "answerChoices": {
+      "A": "Problems faced in daily life usually can be solved effectively using only common sense.",
+      "B": "Most teachers are able to teach courses in a single academic discipline more effectively than they can teach interdisciplinary courses.",
+      "C": "Students who take only courses in individual academic disciplines are rarely able to combine knowledge from those disciplines.",
+      "D": "Most students who are required to take courses that cover only single disciplines can effectively solve many problems faced in daily life.",
+      "E": "Most interdisciplinary courses are not designed specifically to teach students how to solve problems faced in daily life."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Newspaper columnist: What caused the current recession\n is a hotly debated question. It is a mistake,\n however, to assume that answering this question\n is essential to improving the economy. Corrective\n lenses, after all, were an effective treatment for\n myopia long before the cause was known to be\n genetic.",
+    "questionStem": "Which one of the following most accurately expresses\n the conclusion drawn in the newspaper columnist’s\n argument?",
+    "answerChoices": {
+      "A": "Solving a problem never requires finding the root cause of the problem.",
+      "B": "Knowing the cause of the current recession would not necessarily enable people to find a solution to it.",
+      "C": "The question of what caused the current recession is subject to considerable debate.",
+      "D": "One need not ascertain the cause of the current recession in order to improve the economy.",
+      "E": "Long before the cause of myopia was known to be genetic, corrective lenses were being used as an effective treatment for the disease."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot",
+      "Analogies",
+      "Rebuttals",
+      "Refute a Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Generally, it is important that people practice what\n they preach, yet there are exceptions. For instance, it\n is no more necessary for logicians to be logical in their\n discussions of logic than it is for physicians to have\n healthy lifestyles in order to treat people.",
+    "questionStem": "A questionable aspect of the reasoning above is that it\n fails to take into account that",
+    "answerChoices": {
+      "A": "logicians’ being illogical in their discussions of logic constitutes incompetence, whereas physicians’ having an unhealthy lifestyle does not",
+      "B": "if a physician’s health deteriorates badly, the physician may not be able to treat patients effectively",
+      "C": "physicians who are incompetent to practice medicine can cause more harm than can logicians who discuss logic illogically",
+      "D": "it is more difficult to become logical in one’s discussions of logic than it is to modify an unhealthy lifestyle",
+      "E": "although it is not necessary for logicians to be logical in order to be competent to discuss logic, it is highly desirable"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Domesticated animals, such as dogs, have come into\n existence by the breeding of only the individuals of a\n wild species that are sufficiently tame. For example, if\n when breeding wolves one breeds only those that display\n tameness when young, then after a number of generations\n the offspring will be a species of dog. Therefore, all\n animals can, in principle, be bred for domesticity.",
+    "questionStem": "Which one of the following, if true, most weakens the\n argument?",
+    "answerChoices": {
+      "A": "Domesticated animals cannot be turned into wild species by breeding only those animals that display some wild characteristics.",
+      "B": "In some animal species, wild members mate more frequently than tame members.",
+      "C": "In some animal species, no members ever display tameness.",
+      "D": "In some animal species, tame members are less fertile than wild members.",
+      "E": "In some domesticated animal species, some members are much more tame than other members."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sampling",
+      "Plans / Recommendations",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Surprisingly, a new study has revealed that shortly after a\n heavy rainfall, pollution levels in Crystal Bay reach their\n highest levels. This occurs despite the fact that rainwater\n is almost totally pure and one would therefore expect that\n it would dilute the polluted seawater.",
+    "questionStem": "Which one of the following, if true, most helps to\n explain why pollution levels in Crystal Bay increase\n after a heavy rainfall?",
+    "answerChoices": {
+      "A": "Compared to the total amount of polluted seawater, the amount of rainwater that falls into Crystal Bay is negligible.",
+      "B": "Most of the rainwater that eventually reaches Crystal Bay falls on pesticide-treated fields before being carried into the bay.",
+      "C": "Most rainwater carried by clouds consists of water that has evaporated from oceans around the world.",
+      "D": "The single leading cause of pollution in Crystal Bay is beachgoers’ leaving behind their trash and debris, which then blows into the bay.",
+      "E": "Other nearby ocean areas experience a pattern of pollutant increase and decrease that is extremely similar to that of Crystal Bay."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Ethicist: This hospital’s ethics code states that hospital\n staff must not deceive patients about their\n medical treatment. But we know that Dr. Faris\n administered medication A to a patient and\n informed him that it would help him sleep.\n Medication A has no known sleep-inducing\n properties. So, Dr. Faris is clearly in violation of\n the ethics code, despite the fact that the patient’s\n sleep did improve after taking medication A.",
+    "questionStem": "Which one of the following, if true, most seriously\n weakens the ethicist’s argument?",
+    "answerChoices": {
+      "A": "Dr. Faris was aware that medication A had no known sleep-inducing properties.",
+      "B": "A committee at the hospital is currently considering revisions to the hospital’s ethics code.",
+      "C": "Medication A is a pain reliever that can indirectly lead to sleep due to a reduction in the patient’s discomfort.",
+      "D": "Several other members of the hospital staff prescribed medication A to patients who had trouble sleeping.",
+      "E": "Dr. Faris knew that the patient was not taking any other medications that have sleep-inducing properties."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Student: My paper was not graded in accordance with\n the professor’s stated criteria. The professor said\n that she would give A’s only to papers whose\n conclusions were supported by reliable statistical\n evidence. The professor acknowledges that my\n conclusions were supported by reliable statistical\n evidence, but she gave my paper a B.",
+    "questionStem": "The reasoning in the student’s argument is flawed in that\n the argument",
+    "answerChoices": {
+      "A": "discusses the professor’s stated criteria in order to draw attention away from the shortcomings of the student’s paper",
+      "B": "attempts to draw an evaluative conclusion solely on the basis of factual claims",
+      "C": "takes a condition that is among the requirements for a particular grade to be a condition that is enough to guarantee that grade",
+      "D": "is based on the report of a biased participant in the controversy",
+      "E": "fails to make a necessary distinction between the professor’s grading criteria and the objective criteria of a paper’s quality"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws",
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Consumer advocate: Even relatively minor drug-related\n interactions can still be harmful to patients.\n For example, aspirin taken with fruit juice\n is ineffective. People unaware of this suffer\n unnecessary discomfort or take more aspirin than\n necessary. The government should, therefore,\n require drug companies to notify consumers of all\n known drug-related interactions.",
+    "questionStem": "Which one of the following, if true, most weakens the\n consumer advocate’s argument?",
+    "answerChoices": {
+      "A": "Providing information on minor drug-related interactions would detract from a patient’s attention to serious interactions.",
+      "B": "Many drugs have fewer documented drug-related interactions than does aspirin.",
+      "C": "Providing information about all drug-related interactions would result in only negligible price increases for consumers.",
+      "D": "Current research is such that many drug-related interactions have not yet been identified.",
+      "E": "Pharmacists usually draw patients’ attention to printed warnings that are provided with drugs."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Medical",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Radioactive elements may have been created when\n the universe began. However, even if this occurred,\n these elements are clearly still being created in the\n universe today. Radioactive elements are unstable, so\n most of them decay within at most a few million years\n into other, nonradioactive elements. So, if no new\n radioactive elements had been created after the universe\n began, almost no radioactive elements would be left in\n the universe today, but there is an abundance of such\n elements.",
+    "questionStem": "Which one of the following most accurately expresses\n the main conclusion of the argument?",
+    "answerChoices": {
+      "A": "Any radioactive elements created when the universe began have probably decayed into other, nonradioactive elements.",
+      "B": "Radioactive elements are being created in the universe today.",
+      "C": "If no new radioactive elements had been created after the universe began, almost no radioactive elements would be left in the universe today.",
+      "D": "It is possible that radioactive elements were created when the universe began.",
+      "E": "Due to their instability, most of the universe’s radioactive elements decay within at most a few million years into other, nonradioactive elements."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Science",
+      "Important Pivot",
+      "Intermediate Conclusions",
+      "Conditional Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "There is evidence that a certain ancient society burned\n large areas of land. Some suggest that this indicates the\n beginning of large-scale agriculture in that society—\n that the land was burned to clear ground for planting.\n But there is little evidence of cultivation after the fires.\n Therefore, it is likely that this society was still a hunter-\n gatherer society.",
+    "questionStem": "Which one of the following, if true, most strengthens the\n argument?",
+    "answerChoices": {
+      "A": "Many ancient cultures had agriculture before they began using fire to clear large tracts of land.",
+      "B": "Hunter-gatherer societies used fire for cooking and for heat during cold weather.",
+      "C": "Many plants and trees have inedible seeds that are contained in hard shells and are released only when subjected to the heat of a great fire.",
+      "D": "Hunter-gatherer societies are known to have used fire to move animal populations from one area to another.",
+      "E": "Few early societies were aware that burning organic material can help create nutrients for soil."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Professor Shanaz: People generally notice and are\n concerned about only the most obvious public\n health problems. Although there is indisputable\n evidence that ozone, an air pollutant, can be\n dangerous for severe asthmatics even if found\n in levels much lower than maximum levels\n permitted by law, most people are currently\n well aware that contaminated water presents a\n much more widespread threat to our community.\n Hence, there is unlikely to be a widespread,\n grassroots effort for new, more restrictive air\n pollution controls at this time.",
+    "questionStem": "Which one of the following most accurately describes\n the role played in Professor Shanaz’s argument by the\n claim that people generally notice and are concerned\n about only the most obvious public health problems?",
+    "answerChoices": {
+      "A": "It is a premise offered in support of the claim that contaminated water currently presents a much more widespread threat to the community than does ozone.",
+      "B": "It is a premise offered in support of the claim that there is unlikely to be a widespread, grassroots effort for new, more restrictive air pollution controls at this time.",
+      "C": "It is used to explain the current public awareness of the severity of the problem of contaminated water.",
+      "D": "It is presented as indisputable evidence that ozone can be dangerous for severe asthmatics even if found in levels much lower than maximum levels permitted by law.",
+      "E": "It is the main conclusion drawn in the argument."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Psychotherapist: The troubles from which a patient\n seeks relief through psychotherapy do not have\n purely internal causes; rather, those troubles\n result in part from the patient’s relationships with\n other people. Hence, to help the patient heal,\n the psychotherapist must focus on the need for\n positive change in those relationships.",
+    "questionStem": "Which one of the following is an assumption the\n psychotherapist’s argument requires?",
+    "answerChoices": {
+      "A": "Psychotherapists cannot help change their patients’ relationships unless those patients focus on other people’s troubles.",
+      "B": "At least some psychotherapy patients cannot be healed if a psychotherapist helps them change their relationships with other people.",
+      "C": "Those psychotherapy patients who change their relationships with other people will thereby find relief from at least some of their troubles.",
+      "D": "No psychotherapist can help a patient heal solely by addressing the internal causes of the patient’s troubles.",
+      "E": "If a psychotherapist helps patients focus on troubles that are purely internal, then that psychotherapist thereby provides them the relief they seek."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender",
+      "Medical",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Some freelance journalists sell their work to magazines\n that have lax editorial standards. No self-respecting\n writer sells his or her work to magazines that have lax\n editorial standards. Therefore, some self-respecting\n writers are not freelance journalists.",
+    "questionStem": "Which one of the following displays a flawed pattern of\n reasoning most similar to the one in the argument\n above?",
+    "answerChoices": {
+      "A": "Some high school teachers teach biology. No kindergarten teachers teach biology. Therefore, biology is not taught by all teachers.",
+      "B": "Most school board members were once teachers. No one who was once a teacher prefers administrative work to teaching. Hence, few school board members prefer administrative work to teaching.",
+      "C": "Some students prefer history to mathematics. No member of the Calculus Club prefers history to mathematics. Thus, some members of the Calculus Club are not students.",
+      "D": "Some principals are harsh disciplinarians. No adviser to a debate team is a harsh disciplinarian. Hence, some principals are not advisers to a debate team.",
+      "E": "Some teachers who let their students leave early are popular. No coaches allow their students to leave before three o’clock. Therefore, some popular teachers are not coaches."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers",
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Selling syndicated reruns of a popular network television\n program while the program is still running on the\n network can lead to decreased revenues for that network. The show’s producers do earn a great deal of money from\n the sale of the syndication rights because the stations\n rerunning the program are assured of a successful show. However, a recent study shows that over 80 percent\n of the programs that are made available as reruns and\n as first-run episodes during the same season suffer an\n immediate ratings drop for their first-run episodes.",
+    "questionStem": "The argument depends on assuming which one of the\n following?",
+    "answerChoices": {
+      "A": "Programs that are sold into syndication early tend to be long-running hits that are likely to decline soon.",
+      "B": "A drop in ratings has a negative effect on the network’s revenues.",
+      "C": "The price of syndication rights includes some compensation for the network’s probable losses.",
+      "D": "The audience of a popular program will usually prefer first-run episodes to reruns.",
+      "E": "Most programs are never sold into syndication."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "If a belief is based on information from a reliable source,\n then it is reasonable to maintain that belief. Furthermore,\n some beliefs are based on information from a reliable\n source and yet are neither self-evident nor grounded in\n observable evidence.",
+    "questionStem": "If all the statements above are true, which one of the\n following statements must be true?",
+    "answerChoices": {
+      "A": "Beliefs for which a person does not have observable evidence are unreasonable.",
+      "B": "Beliefs based on information from a reliable source are self-evident.",
+      "C": "All reasonable beliefs for which a person has no observable evidence are based on information from a reliable source.",
+      "D": "If a belief is not grounded in observable evidence, then it is not self-evident either.",
+      "E": "Among reasonable beliefs that are not self-evident, there are some beliefs that are not grounded in observable evidence."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Situation: A physical therapist wants her patients to\n derive more enjoyment from the challenge of\n developing physical skills. She also wants them\n to spend more time practicing those skills. Analysis: Success in meeting the first objective will bring\n about success in meeting the second.",
+    "questionStem": "The analysis provided for the situation above could be\n appropriate for each of the following situations except:",
+    "answerChoices": {
+      "A": "A math teacher wants her students to understand the mathematical principles taught in her course and wants them to apply these principles routinely in everyday life.",
+      "B": "A software manufacturer wants its customers to be more satisfied with its product, and it wants them to place fewer calls to the service representative about how to use the product.",
+      "C": "A librarian wants fewer of the books borrowed from the library to be lost or stolen, and he wants more of the library’s books to be returned on time.",
+      "D": "A hardware retail company wants to construct a new, larger warehouse and wants its employees to help plan how the old warehouse will be expanded to meet any need for more space.",
+      "E": "A concert series director wants to present a more varied repertoire and wants to attract new patrons."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT",
+      "Plans / Recommendations",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Classicist: Our mastery of Latin and Ancient Greek is\n at best imperfect. The best students of a modern\n language may so immerse themselves in a\n country where it is spoken as to attain nearly\n perfect knowledge; but you cannot travel back in\n time to spend a year abroad at Plato’s Academy.",
+    "questionStem": "Which one of the following most accurately describes\n the role played in the classicist’s argument by the claim\n that you cannot travel back in time to spend a year\n abroad at Plato’s Academy?",
+    "answerChoices": {
+      "A": "It is the main conclusion drawn in the argument.",
+      "B": "It points up by example a contrast from which the conclusion is drawn.",
+      "C": "It is a mere rhetorical flourish having no logical relation to the argument’s conclusion.",
+      "D": "It is a premise that guarantees the truth of the argument’s conclusion.",
+      "E": "It is an ancillary conclusion drawn in the argument."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Timeframes",
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "For there to be a thriving population of turtles in a pond,\n conditions at that pond must be beneficial to turtles. The\n water in Wallakim Pond, unlike that in Sosachi Pond, is\n acidic. Thus, there must not be a thriving population of\n turtles at Wallakim Pond.",
+    "questionStem": "Which one of the following, if assumed, enables the\n argument’s conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "If the water in a pond is not acidic, the conditions at that pond are beneficial to turtles.",
+      "B": "The most important factor that determines whether a pond will have a thriving turtle population is the acidity of the water.",
+      "C": "The water conditions at Sosachi Pond are more beneficial to turtles than are the water conditions at Wallakim Pond.",
+      "D": "Wallakim Pond would have a thriving population of turtles if it were not acidic.",
+      "E": "The conditions at a pond are beneficial to turtles only if the water in the pond is not acidic."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Links Between Premises",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The study of primates is interesting for many reasons,\n including the fact that only primates have opposable\n thumbs. The lemurs are lower primates and the only\n primates indigenous to Madagascar, a large island off the\n coast of southeastern Africa. Some species of lemurs are\n the only living lower primates that are diurnal—that is,\n active primarily during the day. All higher primates are\n thought to have evolved from a single diurnal species of\n lower primates.",
+    "questionStem": "Which one of the following can be properly inferred\n from the information above?",
+    "answerChoices": {
+      "A": "The chimpanzee, a higher primate, evolved from the lemur.",
+      "B": "No primates indigenous to Madagascar are diurnal higher primates.",
+      "C": "No higher primate is nocturnal.",
+      "D": "There are some lemurs without opposable thumbs.",
+      "E": "There are no nocturnal lemurs."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Professor: Many scientists hypothesize that there is an\n invisible “light-absorbing medium” in outer\n space. In support, they argue that the medium’s\n existence would explain the low visibility of\n other star systems from Earth. But there is\n actually no reason to believe that the hypothesis\n is correct, since the low visibility in question\n is already completely explained by the general\n theory of relativity.",
+    "questionStem": "Which one of the following is an assumption required by\n the professor’s argument?",
+    "answerChoices": {
+      "A": "The low visibility of other star systems from Earth would not be adequately explained by the existence of an invisible light-absorbing medium in outer space, even if there were such a medium.",
+      "B": "The hypothesis of an invisible light-absorbing medium in outer space is correct only if it adequately explains the low visibility of other star systems from Earth.",
+      "C": "A hypothesis is likely to be correct if there is some phenomenon that it adequately accounts for and that is not adequately accounted for by an existing theory.",
+      "D": "Most scientists who posit the invisible light-absorbing medium accept the general theory of relativity.",
+      "E": "The general theory of relativity does not depend upon the hypothesis that there exists an invisible light-absorbing medium in outer space."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Rebuttals",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Some researchers claim that people tend to gesture less\n when they articulate what would typically be regarded\n as abstract rather than physical concepts. To point out\n that such a correlation is far from universal is insufficient\n reason to reject the researchers’ claim, because some\n people perceive words like “comprehension” as\n expressing a physical action, like grasping something,\n rather than a state of understanding, which is abstract.",
+    "questionStem": "Which one of the following most accurately describes\n the method of reasoning used in the argument?",
+    "answerChoices": {
+      "A": "appealing to the ambiguity of a word in an attempt to show that a correlation is universal",
+      "B": "appealing to a universal psychological generalization in an attempt to support a claim about the use of gestures",
+      "C": "citing a psychological fact to try to reconcile a generalization with apparently disconfirming evidence",
+      "D": "advocating an explanation for a phenomenon by attempting to demonstrate that other possible explanations are implausible",
+      "E": "offering a reason for believing that a widely accepted generalization requires still more supporting evidence"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Rebuttals",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "According to rational-choice theory, popular support for\n various political parties can be explained sufficiently\n in terms of deliberate decisions by individual voters to\n support the party whose policies they believe will yield\n them the greatest economic advantage. This theory is\n opposed by many sociologists on the grounds that a\n complex phenomenon such as the rise of a political\n organization cannot be caused by a simple phenomenon.",
+    "questionStem": "It can be properly inferred from the statements above\n that many sociologists believe that",
+    "answerChoices": {
+      "A": "economically motivated decisions by voters need not constitute a complex phenomenon",
+      "B": "a complex phenomenon generally will have many complex causes",
+      "C": "political phenomena often have religious and cultural causes as well as economic ones",
+      "D": "popular support for political parties is never a complex phenomenon",
+      "E": "the decisions of individual voters are not usually influenced by their beliefs about which policies will yield them the greatest economic advantage"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Anti-Causal",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Scientist: Some consumer groups claim that the\n economic benefits of genetically engineered\n foodstuffs may be offset by hidden health risks to\n humans. However, the risk is minimal. In most\n cases of deliberate alteration of a plant’s genetic\n structure only a single gene in about 750,000 has\n been changed. Since the change in the organism’s\n genetic structure is so slight, it cannot have\n effects significant enough to be worrisome.",
+    "questionStem": "Which one of the following, if true, most weakens the\n scientist’s argument?",
+    "answerChoices": {
+      "A": "The genetically engineered plants that have been developed so far have few advantages over plants that are not genetically engineered.",
+      "B": "Whatever health risks there are in food from genetically altered plants may be somewhat reduced by other factors such as enrichment of the plants’ vitamin and mineral content.",
+      "C": "Scientists have yet to determine, for each characteristic of some plants and animals used for food, the precise location of the genes that determine that characteristic.",
+      "D": "There are plants that are known to be toxic to some animals and whose toxicity is known to be affected by the alteration of a single gene.",
+      "E": "Research has shown that those consumers who are most strongly opposed to genetically altered foods tend to be ill-informed on the issue."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Anti-Causal",
+      "Medical",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT158",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A government is justified in interfering with a person’s\n action if the action would increase the likelihood of\n physical harm to others and the action is not motivated by\n a desire to help others.",
+    "questionStem": "Of the following judgments, which one most closely\n conforms to the principle above?",
+    "answerChoices": {
+      "A": "Jerry’s hobby, making home movies, does not harm anyone, nor does it increase the likelihood of harm to anyone. He does it because he thinks that it will benefit his children by preserving a record of their childhoods. So the government is unjustified in interfering with Jerry’s moviemaking.",
+      "B": "It is well known that a property is aesthetically less pleasing when neighboring properties have unkempt lawns. My neighbor often forgets to mow his lawn for several weeks. The city council, therefore, is justified in fining my neighbor for not mowing his lawn more frequently.",
+      "C": "Because a motorcyclist who is not wearing a helmet is much more likely to suffer a serious head injury in the event of an accident, the government is justified in requiring motorcyclists to wear helmets.",
+      "D": "Because Zabziew Pharmaceutical Corporation’s research is motivated by the desire to make profits and not by the desire to benefit customers, it has been of little help to people suffering from serious illness. So the government is justified in suspending Zabziew’s license to test new drugs.",
+      "E": "To further her own political ambitions, Jill wanted to give a speech advocating the use of violence to achieve political ends. But her speech would most likely have caused a riot and people would have gotten hurt. Hence, the government was justified in preventing her from giving her speech."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Principles in Stimulus"
+    ]
+  }
+]

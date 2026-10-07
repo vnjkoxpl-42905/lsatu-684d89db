@@ -1,0 +1,589 @@
+[
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Sambar deer are physically incapable of digesting meat. Yet sambar deer have been reported feeding on box turtles after killing them.",
+    "questionStem": "Which one of the following, if true, best resolves the discrepancy above?",
+    "answerChoices": {
+      "A": "Sambar deer eat only the bony shells of box turtles.",
+      "B": "Sambar deer often kill box turtles by accident.",
+      "C": "Sambar deer kill box turtles only occasionally.",
+      "D": "Box turtles sometimes compete with sambar deer for food.",
+      "E": "Box turtles are much slower and clumsier than are sambar deer."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Benson: In order to maintain the quality of life in our city, we need to restrict growth. That is why I support the new zoning regulations.Willett: I had heard such arguments ten years ago, and again five years ago. Each time the city council was justified in deciding not to restrict growth. Since there is nothing new in this idea of restricting growth, I oppose the regulations.",
+    "questionStem": "Which one of the following most accurately describes a way in which Willett's reasoning is questionable?",
+    "answerChoices": {
+      "A": "It presumes that growth is necessarily good without offering support for that position.",
+      "B": "It is based on attacking Benson personally rather than responding to Benson's reasoning.",
+      "C": "It ignores the possibility that new reasons for restricting growth have arisen in the past five years.",
+      "D": "It fails to take into account the variety of factors that contribute to the quality of life in a city.",
+      "E": "It overlooks the possibility that the city council of ten years ago was poorly qualified to decide on zoning regulations."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Evaluate",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A recent study involved feeding a high-salt diet to a rat colony. A few months after the experiment began, standard tests of the rats’ blood pressure revealed that about 25 percent of the colony had normal, healthy blood pressure, about 70 percent of the colony had high blood pressure, and 5 percent of the colony had extremely high blood pressure. The conclusion from these results is that high-salt diets are linked to high blood pressure in rats.",
+    "questionStem": "The answer to which one of the following questions is most relevant to evaluating the conclusion drawn above?",
+    "answerChoices": {
+      "A": "How much more salt than is contained in a rat's normal diet was there in the high-salt diet?",
+      "B": "Did the high blood pressure have any adverse health effects on those rats that developed it?",
+      "C": "What percentage of naturally occurring rat colonies feed on high-salt diets?",
+      "D": "How many rats in the colony studied had abnormally high blood pressure before the study began?",
+      "E": "Have other species of rodents been used in experiments of the same kind?"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science",
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Detective: Bill has been accused of committing the burglary at the warehouse last night. But no one saw Bill in the vicinity of the warehouse. So we must conclude that Bill did not commit the burglary.",
+    "questionStem": "The reasoning in the detective's argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "treats evidence that is irrelevant to the burglar's identity as if it were relevant",
+      "B": "merely attacks the character of Bill's accusers",
+      "C": "fails to provide independent evidence for the theory that Bill committed the burglary",
+      "D": "treats a lack of evidence against Bill as if it exonerated Bill",
+      "E": "fails to establish the true identity of the burglar"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Psychologist: Because of a perceived social stigma against psychotherapy, and because of age discrimination on the part of some professionals, some elderly people feel discouraged about trying psychotherapy. They should not be, however, for many younger people have greatly benefited from it, and people in later life have certain advantages over the young—such as breadth of knowledge, emotional maturity, and interpersonal skills—that contribute to the likelihood of a positive outcome.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion of the psychologist's argument?",
+    "answerChoices": {
+      "A": "Certain psychotherapists practice age discrimination.",
+      "B": "Elderly people are better able to benefit from psychotherapy than are younger people.",
+      "C": "Elderly people should not be reluctant to undergo psychotherapy.",
+      "D": "Characteristics associated with maturity are important factors in psychotherapy's success.",
+      "E": "Elderly people are less inclined to try psychotherapy than are younger people."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Heavy salting of Albritten's roads to melt winter ice and snow began about 20 years ago. The area's groundwater now contains approximately 100 milligrams of dissolved salt per liter. Groundwater in a nearby, less highly urbanized area, where little salt is used and where traffic patterns resemble those of Albritten 20 years ago, contains only about 10 milligrams of dissolved salt per liter. Since water that contains 250 or more milligrams of dissolved salt per liter tastes unacceptably salty, continuing the salting of Albritten's roads at its present rate will render Albritten's groundwater unpalatable within the next few decades.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "Even water that contains up to 5,000 milligrams of dissolved salt per liter is safe to drink.",
+      "B": "The concentration of dissolved salt in Albritten's groundwater is expected to reach 400 milligrams per liter within a few decades.",
+      "C": "Salting icy roads is the simplest way to prevent accidents on those roads.",
+      "D": "Albritten's groundwater contained roughly 90 milligrams of dissolved salt per liter 20 years ago.",
+      "E": "Salting of Albritten's roads is likely to decrease over the next few decades."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Science",
+      "Explain Curious Fact",
+      "Timeframes",
+      "Predictions",
+      "Conditional Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Numerous books describe the rules of etiquette. Usually the authors of such books merely codify standards of behavior by classifying various behaviors as polite or rude. However, this suggests that there is a single, objective standard of politeness. Clearly, standards of politeness vary from culture to culture, so it is absurd to label any one set of behaviors as correct and others as incorrect.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "reaches a conclusion about how people actually behave on the basis of assertions regarding how they ought to behave",
+      "B": "bases a generalization about all books of etiquette on the actions of a few authors",
+      "C": "fails to justify its presumption regarding the influence of rules of etiquette on individual behavior",
+      "D": "overlooks the possibility that authors of etiquette books are purporting to state what is correct behavior for one particular culture only",
+      "E": "attempts to lend itself credence by unfairly labeling the position of the authors of etiquette books \"absurd\""
+    },
+    "correctAnswer": "D",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In jazz history, there have been gifted pianists who, because they had no striking musical ideas, led no memorable recording sessions. But precisely because they lacked such ideas, they were able to respond quickly to the ideas of imaginative and difficult leaders. Thus, these pianists are often heard adding masterful touches to some of the greatest jazz recordings.",
+    "questionStem": "Which one of the following principles is best illustrated by the information above?",
+    "answerChoices": {
+      "A": "The success of a group enterprise depends on the ability of the leader to recognize the weaknesses of others in the group.",
+      "B": "The production of any great work requires contributions from those who are unimaginative but technically skilled.",
+      "C": "People without forceful personalities cannot become great leaders in a field.",
+      "D": "A trait that is a weakness in some settings can contribute to greatness in other settings.",
+      "E": "No one can achieve great success without the help of others who are able to bring one's ideas to fruition."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Causal Difference-Maker",
+      "Causal Chains"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Editorial: When legislators discover that some public service is not being adequately provided, their most common response is to boost the funding for that public service. Because of this, the least efficiently run government bureaucracies are the ones that most commonly receive an increase in funds.",
+    "questionStem": "The statements in the editorial, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "The least efficiently run government bureaucracies are the bureaucracies that legislators most commonly discover to be failing to provide some public service adequately.",
+      "B": "When legislators discover that a public service is not being adequately provided, they never respond to the problem by reducing the funding of the government bureaucracy providing that service.",
+      "C": "Throughout the time a government bureaucracy is run inefficiently, legislators repeatedly boost the funding for the public service that this bureaucracy provides.",
+      "D": "If legislators boost funding for a public service, the government bureaucracy providing that service will commonly become less efficient as a result.",
+      "E": "The most inefficiently run government bureaucracy receives the most funding of any government bureaucracy."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Method",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Fred argued that, since Kathleen is a successful film director, she has probably worked with famous actors. But, while Fred is right in supposing that most successful film directors work with famous actors, his conclusion is not warranted. For, as he knows, Kathleen works only on documentary films, and directors of documentaries rarely work with famous actors.",
+    "questionStem": "Which one of the following strategies is used above to criticize Fred's reasoning?",
+    "answerChoices": {
+      "A": "maintaining that too little is known about Kathleen to justify any conclusion",
+      "B": "showing that Kathleen must not have worked with famous actors",
+      "C": "claiming that Fred has failed to take relevant information into account",
+      "D": "showing that Fred has mistakenly assumed that all successful film directors work with famous actors",
+      "E": "demonstrating that Fred has failed to show that most successful film directors work with famous actors"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Must be True",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In early 1990, Queenston instituted a tax increase that gave its school system a larger operating budget. The school system used the larger budget to increase the total number of teachers in the system by 30 percent between 1990 and 1993. Nevertheless, there was no change in the average number of students per teacher between 1990 and 1993.",
+    "questionStem": "If the statements above are true, then on the basis of them which one of the following must also be true?",
+    "answerChoices": {
+      "A": "No classes in Queenston’s school system experienced an increase in enrollment between 1990 and 1993.",
+      "B": "The total number of students enrolled in Queenston’s school system increased between 1990 and 1993.",
+      "C": "The operating budget of Queenston’s school system increased by exactly 30 percent between 1990 and 1993.",
+      "D": "Most teachers who worked for Queenston’s school system in 1990 were still working for the system in 1993.",
+      "E": "The quality of education in Queenston’s school system improved between 1990 and 1993."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Timeframes",
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Principle-Conform",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Our computer experts are asked from time to time to allocate funds for new hardware and software for our company. Unfortunately, these experts favor cutting-edge technologies, because that is what excites them, despite the fact that such experimental technologies are highly expensive, full of undiscovered \"bugs,\" and thus are not the most profitable investments.",
+    "questionStem": "Of the following, which one conforms most closely to the principle illustrated by the situation described above?",
+    "answerChoices": {
+      "A": "When senior executives choose to promote junior executives, they tend to favor those who share their professional interests, not those who have had the most education.",
+      "B": "When supermarkets choose foods, they choose the kinds that can be sold for the most profit, not the kinds of foods that are the most healthful for consumers.",
+      "C": "When librarians choose books for the library, they choose the kinds that they enjoy reading, not the kinds of books that serve the interests of the community.",
+      "D": "When students choose courses, they choose those that require the least amount of work, not those in which they might learn the most.",
+      "E": "When television executives choose programs to air, they choose the ones with the most sex and violence because that is what viewers want, not the shows with the highest artistic merit."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "It is characteristic of great artists generally, and of great writers in particular, to have a discerning view of the basic social and political arrangements of the society in which they live. Therefore, the greater a writer one is, the more astute one will be in perceiving the basic social and political arrangements of one's society.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the reasoning above?",
+    "answerChoices": {
+      "A": "It assumes, without providing justification, that members of a group that is part of a larger group possess all of the characteristics possessed by members of the larger group.",
+      "B": "It assumes, without providing justification, that because something is sometimes the case it must always be the case.",
+      "C": "It assumes, without providing justification, that those artists with political insight do not have insight into matters outside of politics.",
+      "D": "It assumes, without providing justification, that only great individuals can make discerning criticisms of their societies.",
+      "E": "It assumes, without providing justification, that because people who have one quality tend to have a second quality, those who have more of the first quality will have more of the second."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Political scientist: The economies of a number of European countries are currently in severe difficulty. Germany is the only neighboring country that has the resources to resuscitate these economies. Therefore, Germany should begin aiding these economically troubled countries.",
+    "questionStem": "Which one of the following principles most helps to justify the political scientist's reasoning?",
+    "answerChoices": {
+      "A": "Any nation that alone has an obligation to economically resuscitate neighboring countries ought to be the only nation to provide any economic aid.",
+      "B": "Any nation that alone has the capacity to economically resuscitate neighboring countries should exercise that capacity.",
+      "C": "Any nation that can afford to give economic aid to just a few other nations ought to aid just those few.",
+      "D": "Only nations that alone have the capacity to economically resuscitate neighboring countries should exercise that capacity.",
+      "E": "Only nations that can afford to give economic aid to just a few other nations ought to aid just those few."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Critic: Works of literature often present protagonists who scorn allegiance to their society and who advocate detachment rather than civic-mindedness. However, modern literature is distinguished from the literature of earlier eras in part because it more frequently treats such protagonists sympathetically. Sympathetic treatment of such characters suggests to readers that one should be unconcerned about contributing to societal good. Thus, modern literature can damage individuals who appropriate this attitude, as well as damage society at large.",
+    "questionStem": "Which one of the following is an assumption on which the critic's argument relies?",
+    "answerChoices": {
+      "A": "Some individuals in earlier eras were more concerned about contributing to societal good than is any modern individual.",
+      "B": "It is to the advantage of some individuals that they be concerned with contributing to societal good.",
+      "C": "Some individuals must believe that their society is better than most before they can become concerned with benefiting it.",
+      "D": "The aesthetic merit of some literary works cannot be judged in complete independence of their moral effects.",
+      "E": "Modern literature is generally not as conducive to societal good as was the literature of earlier eras."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains",
+      "Missing Link / Idea",
+      "Dense Stimulus",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Role",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Psychologist: Some people contend that children should never be reprimanded. Any criticism, let alone punishment, they say, harms children's self-esteem. This view is laudable in its challenge to the belief that children should be punished whenever they misbehave, yet it gives a dangerous answer to the question of how often punishment should be inflicted. When parents never reprimand their children, they are in effect rewarding them for unacceptable behavior, and rewarded behavior tends to recur.",
+    "questionStem": "The view that children should never be reprimanded functions in the psychologist's argument as a statement of a position that the psychologist's argument",
+    "answerChoices": {
+      "A": "is designed to discredit entirely",
+      "B": "is designed to establish as true",
+      "C": "is designed to establish as well intentioned",
+      "D": "claims has a serious flaw though is not without value",
+      "E": "claims is less reasonable than any other view mentioned"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Traditionally, students at Kelly University have evaluated professors on the last day of class. But some professors at Kelly either do not distribute the paper evaluation forms or do so selectively, and many students cannot attend the last day of class. Soon, students will be able to use school computers to evaluate their professors at any time during the semester. Therefore, evaluations under the new system will accurately reflect the distribution of student opinion about teaching performance.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Professors who distribute the paper evaluation forms selectively distribute them only to students they personally like.",
+      "B": "Students can wisely and insightfully assess a professor's performance before the end of the semester.",
+      "C": "The traditional system for evaluating teaching performance should not be used at any university.",
+      "D": "Nearly all professors who fail to distribute the paper evaluation forms do so because they believe the students will evaluate them unfavorably.",
+      "E": "Dissatisfied students are in general not more likely than satisfied students to submit a computerized evaluation."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Sampling",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Role",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "A seriously maladaptive trait is unlikely to persist in a given animal population for long, since there is enough genetic variation in populations that some members will lack the trait. Those lacking the trait will compete more successfully for the available resources. Hence these members of the population survive and reproduce at a higher rate, crowding out those with the maladaptive trait.",
+    "questionStem": "The proposition that those lacking a maladaptive trait will compete more successfully for the available resources figures in the argument in which one of the following ways?",
+    "answerChoices": {
+      "A": "It expresses a view that the argument as a whole is designed to discredit.",
+      "B": "It is the argument's main conclusion.",
+      "C": "It is a premise of the argument.",
+      "D": "It presents evidence that the argument attempts to undermine.",
+      "E": "It is an intermediate conclusion of the argument."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Tanya would refrain from littering if everyone else refrained from littering. None of her friends litter, and therefore she does not litter either.",
+    "questionStem": "Which one of the following uses flawed reasoning most similar to the flawed reasoning in the argument above?",
+    "answerChoices": {
+      "A": "All residents of the same neighborhood have some goals in common. One group of neighborhood residents wants improvements made to a local park, so some other residents of that neighborhood must share this goal.",
+      "B": "If a talented artist is willing to starve for her career, then her friends should take her choice of profession seriously. Donna's friends take her choice of profession seriously, and she is willing to starve for her career, so she must be a talented artist.",
+      "C": "Herbert will stop selling office supplies in his store if none of his regular customers complains. Some of his regular customers never knew that Herbert sold office supplies, so those customers will not complain.",
+      "D": "If all whales need to surface for air, then whales must be easy to observe. Blue whales are easily observed, so they must surface for air.",
+      "E": "If all of a restaurant's customers like its food, it must be an exceptional restaurant. Everyone whom Sherryl consulted liked the food at Chez Louis, so it must be an exceptional restaurant."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Scientist: Genetic engineering has aided new developments in many different fields. But because these techniques require the manipulation of the genetic codes of organisms, they are said to be unethical. What the critics fail to realize is that this kind of manipulation has been going on for millennia; virtually every farm animal is the result of selective breeding for desired traits. Since selective breeding is genetic engineering of a crude sort, genetic engineering is not unethical.",
+    "questionStem": "Which one of the following is an assumption on which the scientist's argument depends?",
+    "answerChoices": {
+      "A": "The manipulation of the genetic code of organisms is never unethical.",
+      "B": "Anything that is accomplished by nature is not unethical to accomplish with science.",
+      "C": "The manipulation of the genetic code through selective breeding for desired traits is not unethical.",
+      "D": "The manipulation of the genetic code through selective breeding for desired traits is important for human survival.",
+      "E": "Science can accomplish only what is already in some sense natural, and nothing natural is unethical."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science",
+      "Rebuttals",
+      "Analogies",
+      "Assumes Similarity",
+      "Defender",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Baumgartner’s comparison of the environmental hazards of gasoline-powered cars with those of electric cars is misleading. He examines only production of the cars, whereas it is the product’s total life cycle—production, use, and recycling—that matters in determining its environmental impact. A typical gasoline-powered car consumes 3 times more resources and produces 15 to 20 times more air pollution than a typical electric car.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the argument?",
+    "answerChoices": {
+      "A": "Baumgartner makes a deceptive comparison between the environmental hazards of gasolinepowered and electric cars.",
+      "B": "The use of a typical gasoline-powered car results in much greater resource depletion than does the use of a typical electric car.",
+      "C": "Baumgartner uses inaccurate data in his comparison of the environmental hazards of gasoline-powered and electric cars.",
+      "D": "The total life cycle of a product is what matters in assessing its environmental impact.",
+      "E": "The production of gasoline-powered cars creates more environmental hazards than does that of electric cars."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Net Effect",
+      "Rebuttals",
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Over the last 10 years, there has been a dramatic increase in the number of people over the age of 65 living in this region. This is evident from the fact that during this time the average age of people living in this region has increased from approximately 52 to 57 years.",
+    "questionStem": "Which one of the following, if true, would most strengthen the argument?",
+    "answerChoices": {
+      "A": "The number of people in the region under the age of 18 has increased over the last 10 years.",
+      "B": "The birth rate for the region decreased significantly over the last 10 years.",
+      "C": "The total number of people living in the region has decreased over the last 10 years.",
+      "D": "The number of people who moved into the region over the last 10 years is greater than the number of those who moved out.",
+      "E": "The average age for people in the region is higher than that for people in surrounding regions."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Editorial: A recently passed law limits freedom of speech in order to silence dissenters. It has been said that those who are ignorant of history will repeat its patterns. If this is true, then those responsible for passing the law must be ignorant of a great deal of history. Historically, silencing dissenters has tended to promote undemocratic policies and the establishment of authoritarian regimes.",
+    "questionStem": "The editorialist's reasoning is flawed in that it fails to take into account that",
+    "answerChoices": {
+      "A": "the law may have other purposes in addition to silencing dissenters",
+      "B": "certain freedoms might sometimes need to be limited in order to ensure the protection of certain other freedoms",
+      "C": "some historical accounts report that legal restrictions on freedom of speech have occasionally undermined the establishment of authoritarian regimes",
+      "D": "many good laws have been passed by people who are largely ignorant of history",
+      "E": "even those who are not ignorant of history may repeat its patterns"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Sufficient vs. Necessary Flaw"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Editorialist: Despite the importance it seems to have in our lives, money does not really exist. This is evident from the fact that all that would be needed to make money disappear would be a universal loss of belief in it. We witness this phenomenon on a small scale daily in the rises and falls of financial markets, whose fluctuations are often entirely independent of concrete causes and are the results of mere beliefs of investors.",
+    "questionStem": "The conclusion of the editorialist's argument can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Anything that exists would continue to exist even if everyone were to stop believing in it.",
+      "B": "Only if one can have mistaken beliefs about a thing does that thing exist, strictly speaking.",
+      "C": "In order to exist, an entity must have practical consequences for those who believe in it.",
+      "D": "If everyone believes in something, then that thing exists.",
+      "E": "Whatever is true of money is true of financial markets generally."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Must be True",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "False chicory's taproot is always one half as long as the plant is tall. Furthermore, the more rain false chicory receives, the taller it tends to grow. In fact, false chicory plants that receive greater than twice the average rainfall of the species' usual habitat always reach above-average heights for false chicory.",
+    "questionStem": "If the statements above are true, then which one of the following must also be true?",
+    "answerChoices": {
+      "A": "If two false chicory plants differ in height, then it is likely that the one with the shorter taproot has received less than twice the average rainfall of the species' usual habitat.",
+      "B": "If a false chicory plant has a longer-than-average taproot, then it is likely to have received more than twice the average rainfall of the species' usual habitat.",
+      "C": "It is not possible for a false chicory plant to receive only the average amount of rainfall of the species' usual habitat and be of above-average height.",
+      "D": "If the plants in one group of false chicory are not taller than those in another group of false chicory, then the two groups must have received the same amount of rainfall.",
+      "E": "If a false chicory plant receives greater than twice the average rainfall of the species' usual habitat, then it will have a longer taproot than that of an average-sized false chicory plant."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 3,
+    "questionNumber": 26,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Fossilized teeth of an extinct species of herbivorous great ape have on them phytoliths, which are microscopic petrified remains of plants. Since only phytoliths from certain species of plants are found on the teeth, the apes' diet must have consisted only of those plants.",
+    "questionStem": "The argument assumes which one of the following?",
+    "answerChoices": {
+      "A": "None of the plant species that left phytoliths on the apes' teeth has since become extinct.",
+      "B": "Plants of every type eaten by the apes left phytoliths on their teeth.",
+      "C": "Each of the teeth examined had phytoliths of the same plant species on it as all the other teeth.",
+      "D": "Phytoliths have also been found on the fossilized teeth of apes of other extinct species.",
+      "E": "Most species of great ape alive today have diets that consist of a fairly narrow range of plants."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Defender",
+      "Plausibility",
+      "Science",
+      "Timeframes"
+    ]
+  }
+]

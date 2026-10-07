@@ -1,0 +1,589 @@
+[
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Jim’s teacher asked him to determine whether a sample of a substance contained iron. Jim knew that magnets attract iron, so he placed a magnet near the substance. Jim concluded that the substance did contain iron, because the substance became attached to the magnet.",
+    "questionStem": "Jim’s reasoning is questionable in that it fails to consider the possibility that",
+    "answerChoices": {
+      "A": "iron sometimes fails to be attracted to magnets",
+      "B": "iron is attracted to other objects besides magnets",
+      "C": "the magnet needed to be oriented in a certain way",
+      "D": "magnets attract substances other than iron",
+      "E": "some magnets attract iron more strongly than others"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "All the books in the library have their proper shelf locations recorded in the catalog. The book Horatio wants is missing from its place on the library shelves, and no one in the library is using it. Since it is not checked out to a borrower nor awaiting shelving nor part of a special display, it must have been either misplaced or stolen.",
+    "questionStem": "Which one of the following most accurately describes the method of reasoning used in the argument?",
+    "answerChoices": {
+      "A": "An observation about one object is used as a basis for a general conclusion regarding the status of similar objects.",
+      "B": "A deficiency in a system is isolated by arguing that the system failed to control one of the objects that it was intended to control.",
+      "C": "A conclusion about a particular object is rebutted by observing that a generalization that applies to most such objects does not apply to the object in question.",
+      "D": "A generalization is rejected by showing that it fails to hold in one particular instance.",
+      "E": "The conclusion is supported by ruling out other possible explanations of an observed fact."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The level of sulfur dioxide in the atmosphere is slightly higher than it was ten years ago. This increase is troubling because ten years ago the Interior Ministry imposed new, stricter regulations on emissions from coal-burning power plants. If these regulations had been followed, then the level of sulfur dioxide in the atmosphere would have decreased.",
+    "questionStem": "Which one of the following can be properly inferred from the statements above?",
+    "answerChoices": {
+      "A": "If current regulations on emissions from coal-burning power plants are not followed from now on, then the level of sulfur dioxide in the atmosphere will continue to increase.",
+      "B": "There have been violations of the regulations on emissions from coal-burning power plants that were imposed ten years ago.",
+      "C": "If the regulations on emissions from coal-burning power plants are made even stronger, the level of sulfur dioxide in the atmosphere still will not decrease.",
+      "D": "Emissions from coal-burning power plants are one of the main sources of air pollution.",
+      "E": "Government regulations will never reduce the level of sulfur dioxide in the atmosphere."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Ecologist: Landfills are generally designed to hold ten years’ worth of waste. Some people maintain that as the number of active landfills consequently dwindles over the coming decade, there will inevitably be a crisis in landfill availability. However, their prediction obviously relies on the unlikely assumption that no new landfills will open as currently active ones close and is therefore unsound.",
+    "questionStem": "The claim that there will be a crisis in landfill availability plays which one of the following roles in the ecologist’s argument?",
+    "answerChoices": {
+      "A": "It follows from the claim stated in the argument’s first sentence.",
+      "B": "It is the main conclusion of the argument.",
+      "C": "It establishes the truth of the argument’s conclusion.",
+      "D": "It is a claim on which the argument as a whole is designed to cast doubt.",
+      "E": "It is an intermediate conclusion of the argument."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Recent epidemiological studies report that Country X has the lowest incidence of disease P of any country. Nevertheless, residents of Country X who are reported to have contracted disease P are much more likely to die from it than are residents of any other country.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
+    "answerChoices": {
+      "A": "There are several forms of disease P, some of which are more contagious than others.",
+      "B": "Most of the fatal cases of disease P found in Country X involve people who do not reside in Country X.",
+      "C": "In Country X, diagnosis of disease P seldom occurs except in the most severe cases of the disease.",
+      "D": "The number of cases of disease P that occur in any country fluctuates widely from year to year.",
+      "E": "Because of its climate, more potentially fatal illnesses occur in Country X than in many other countries."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "After an oil spill, rehabilitation centers were set up to save sea otters by removing oil from them. The effort was not worthwhile, however, since 357 affected live otters and 900 that had died were counted, but only 222 affected otters, or 18 percent of those counted, were successfully rehabilitated and survived. Further, the percentage of all those affected that were successfully rehabilitated was much lower still, because only a fifth of the otters that died immediately were ever found.",
+    "questionStem": "Which one of the following, as potential challenges, most seriously calls into question evidence offered in support of the conclusion above?",
+    "answerChoices": {
+      "A": "Do sea otters of species other than those represented among the otters counted exist in areas that were not affected by the oil spill?",
+      "B": "How is it possible to estimate, of the sea otters that died, how many were not found?",
+      "C": "Did the process of capturing sea otters unavoidably involve trapping and releasing some otters that were not affected by the spill?",
+      "D": "Were other species of wildlife besides sea otters negatively affected by the oil spill?",
+      "E": "What was the eventual cost, per otter rehabilitated, of the rehabilitation operation?"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Focused on Evidence",
+      "Math-y Stuff",
+      "Percentages"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Psychologist: Research has shown that a weakened immune system increases vulnerability to cancer. So, cancer-patient support groups, though derided by those who believe that disease is a purely biochemical phenomenon, may indeed have genuine therapeutic value, as it is clear that participation in such groups reduces participants’ stress levels.",
+    "questionStem": "Which one of the following is an assumption required by the psychologist’s argument?",
+    "answerChoices": {
+      "A": "Cancer patients can learn to function well under extreme stress.",
+      "B": "Disease is not a biochemical phenomenon at all.",
+      "C": "Stress can weaken the immune system.",
+      "D": "Discussing one’s condition eliminates the stress of being in that condition.",
+      "E": "Stress is a symptom of a weakened immune system."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Causal Chains",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Adobe is an ideal material for building in desert environments. It conducts heat very slowly. As a result, a house built of adobe retains the warmth of the desert sun during the cool evenings and then remains cool during the heat of the day, thereby helping to maintain a pleasant temperature. In contrast, houses built of other commonly used building materials, which conduct heat more rapidly, grow hot during the day and cold at night.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in the argument above?",
+    "answerChoices": {
+      "A": "Adobe is a suitable substitute for other building materials where the heat-conduction properties of the structure are especially important.",
+      "B": "In the desert, adobe buildings remain cool during the heat of the day but retain the warmth of the sun during the cool evenings.",
+      "C": "Because adobe conducts heat very slowly, adobe houses maintain a pleasant, constant temperature.",
+      "D": "Ideally, a material used for building houses in desert environments should enable those houses to maintain a pleasant, constant temperature.",
+      "E": "Adobe is an especially suitable material to use for building houses in desert environments."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "In one study of a particular plant species, 70 percent of the plants studied were reported as having patterned stems. In a second study, which covered approximately the same geographical area, only 40 percent of the plants of that species were reported as having patterned stems.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
+    "answerChoices": {
+      "A": "The first study was carried out at the time of year when plants of the species are at their most populous.",
+      "B": "The first study, but not the second study, also collected information about patterned stems in other plant species.",
+      "C": "The second study included approximately 15 percent more individual plants than the first study did.",
+      "D": "The first study used a broader definition of “patterned.”",
+      "E": "The focus of the second study was patterned stems, while the first study collected information about patterned stems only as a secondary goal."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Letter to the editor: Sites are needed for disposal of contaminated dredge spoils from the local harbor. However, the approach you propose would damage commercial fishing operations. One indication of this is that over 20,000 people have signed petitions opposing your approach and favoring instead the use of sand-capped pits in another area.",
+    "questionStem": "Which one of the following most accurately describes a reasoning flaw in the letter’s argument?",
+    "answerChoices": {
+      "A": "The argument distorts the editor’s view in a manner that makes that view seem more vulnerable to criticism.",
+      "B": "The argument fails to establish that the alternative approach referred to is a viable one.",
+      "C": "The argument attempts to establish a particular conclusion because doing so is in the letter writer’s self-interest rather than because of any genuine concern for the truth of the matter.",
+      "D": "The argument’s conclusion is based on the testimony of people who have not been shown to have appropriate expertise.",
+      "E": "The argument takes for granted that no third option is available that will satisfy all the interested parties."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Most universities today offer students a more in-depth and cosmopolitan education than ever before. Until recently, for example, most university history courses required only the reading of textbooks that hardly mentioned the history of Africa or Asia after the ancient periods, or the history of the Americas’ indigenous cultures. The history courses at most universities no longer display such limitations.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument above?",
+    "answerChoices": {
+      "A": "The history courses that university students find most interesting are comprehensive in their coverage of various periods and cultures.",
+      "B": "Many students at universities whose history courses require the reading of books covering all periods and world cultures participate in innovative study-abroad programs.",
+      "C": "The extent to which the textbooks of university history courses are culturally inclusive is a strong indication of the extent to which students at those universities get an in-depth and cosmopolitan education.",
+      "D": "Universities at which the history courses are quite culturally inclusive do not always have courses in other subject areas that show the same inclusiveness.",
+      "E": "University students who in their history courses are required only to read textbooks covering the history of a single culture will not get an in-depth and cosmopolitan education from these courses alone."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The government has recently adopted a policy of publishing airline statistics, including statistics about each airline’s number of near collisions and its fines for safety violations. However, such disclosure actually undermines the government’s goal of making the public more informed about airline safety, because airlines will be much less likely to give complete reports if such information will be made available to the public.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "fails to consider that, even if the reports are incomplete, they may nevertheless provide the public with important information about airline safety",
+      "B": "presumes, without providing justification, that the public has a right to all information about matters of public safety",
+      "C": "presumes, without providing justification, that information about airline safety is impossible to find in the absence of government disclosures",
+      "D": "presumes, without providing justification, that airlines, rather than the government, should be held responsible for accurate reporting of safety information",
+      "E": "fails to consider whether the publication of airline safety statistics will have an effect on the revenues of airlines"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Net Effect",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Many economists claim that financial rewards provide the strongest incentive for people to choose one job over another. But in many surveys, most people do not name high salary as the most desirable feature of a job. This shows that these economists overestimate the degree to which people are motivated by money in their job choices.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Even high wages do not enable people to obtain all the goods they desire.",
+      "B": "In many surveys, people say that they would prefer a high-wage job to an otherwise identical job with lower wages.",
+      "C": "Jobs that pay the same salary often vary considerably in their other financial benefits.",
+      "D": "Many people enjoy the challenge of a difficult job, as long as they feel that their efforts are appreciated.",
+      "E": "Some people are not aware that jobs with high salaries typically leave very little time for recreation."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Sampling",
+      "Argue the Anti-Conclusion",
+      "New Concept in Conclusion",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Editorial: A proposed new law would limit elementary school class sizes to a maximum of 20 students. Most parents support this measure and argue that making classes smaller allows teachers to devote more time to each student, with the result that students become more engaged in the learning process. However, researchers who conducted a recent study conclude from their results that this reasoning is questionable. The researchers studied schools that had undergone recent reductions in class size, and found that despite an increase in the amount of time teachers spent individually with students, the students’ average grades were unchanged.",
+    "questionStem": "Which one of the following is an assumption required by the researchers’ argument?",
+    "answerChoices": {
+      "A": "The only schools appropriate for study are large elementary schools.",
+      "B": "Teachers generally devote the same amount of individualized attention to each student in a class.",
+      "C": "Reductions in class size would also involve a decrease in the number of teachers.",
+      "D": "Degree of student engagement in the learning process correlates well with students’ average grades.",
+      "E": "Parental support for the proposed law rests solely on expectations of increased student engagement in the learning process."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Dense Stimulus",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Camille: Manufacturers of water-saving faucets exaggerate the amount of money such faucets can save. Because the faucets handle such a low volume of water, people using them often let the water run longer than they would otherwise. Rebecca: It is true that showering now takes longer. Nevertheless, I have had lower water bills since I installed a water-saving faucet. Thus, it is not true that the manufacturers’ claims are exaggerated.",
+    "questionStem": "The reasoning in Rebecca’s argument is questionable in that she takes for granted that",
+    "answerChoices": {
+      "A": "the cost of installing her water-saving faucet was less than her overall savings on her water bill",
+      "B": "she saved as much on her water bills as the manufacturers’ claims suggested she would",
+      "C": "the manufacturers’ claims about the savings expected from the installation of water-saving faucets are consistent with one another",
+      "D": "people who use water-saving faucets are satisfied with the low volume of water handled by such faucets",
+      "E": "installing more water-saving faucets in her house would increase her savings"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "2-Speaker",
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Company spokesperson: In lieu of redesigning our plants, our company recently launched an environmental protection campaign to buy and dispose of old cars, which are generally highly pollutive. Our plants account for just 4 percent of the local air pollution, while automobiles that predate 1980 account for 30 percent. Clearly, we will reduce air pollution more by buying old cars than we would by redesigning our plants.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the company spokesperson’s argument?",
+    "answerChoices": {
+      "A": "Only 1 percent of the automobiles driven in the local area predate 1980.",
+      "B": "It would cost the company over $3 million to reduce its plants’ toxic emissions, while its car-buying campaign will save the company money by providing it with reusable scrap metal.",
+      "C": "Because the company pays only scrap metal prices for used cars, almost none of the cars sold to the company still run.",
+      "D": "Automobiles made after 1980 account for over 30 percent of local air pollution.",
+      "E": "Since the company launched its car-buying campaign, the number of citizen groups filing complaints about pollution from the company’s plants has decreased."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Humankind would not have survived, as it clearly has, if our ancestors had not been motivated by the desire to sacrifice themselves when doing so would ensure the survival of their children or other close relatives. But since even this kind of sacrifice is a form of altruism, it follows that our ancestors were at least partially altruistic.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "Students do not raise their grades if they do not increase the amount of time they spend studying. Increased study time requires good time management. However, some students do raise their grades. So some students manage their time well.",
+      "B": "Organisms are capable of manufacturing their own carbohydrate supply if they do not consume other organisms to obtain it. So plants that consume insects must be incapable of photosynthesis, the means by which most plants produce their carbohydrate supplies.",
+      "C": "If fragile ecosystems are not protected by government action their endemic species will perish, for endemic species are by definition those that exist nowhere else but in those ecosystems.",
+      "D": "The natural resources used by human beings will be depleted if they are not replaced by alternative materials. But since such replacement generally requires more power, the resources used to create that power will become depleted.",
+      "E": "Public buildings do not harmonize with their surroundings if they are not well designed. But any well-designed building is expensive to construct. Thus, either public buildings are expensive to construct or else they do not harmonize with their surroundings."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Bus driver: Had the garbage truck not been exceeding the speed limit, it would not have collided with the bus I was driving. I, on the other hand, was abiding by all traffic regulations-as the police report confirms. Therefore, although I might have been able to avoid the collision had I reacted more quickly, the bus company should not reprimand me for the accident.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the bus driver’s argument?",
+    "answerChoices": {
+      "A": "If a vehicle whose driver is violating a traffic regulation collides with a vehicle whose driver is not, the driver of the first vehicle is solely responsible for the accident.",
+      "B": "A bus company should not reprimand one of its drivers whose bus is involved in a collision if a police report confirms that the collision was completely the fault of the driver of another vehicle.",
+      "C": "Whenever a bus driver causes a collision to occur by violating a traffic regulation, the bus company should reprimand that driver.",
+      "D": "A company that employs bus drivers should reprimand those drivers only when they become involved in collisions that they reasonably could have been expected to avoid.",
+      "E": "When a bus is involved in a collision, the bus driver should not be reprimanded by the bus company if the collision did not result from the bus driver’s violating a traffic regulation."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Historian: Radio drama requires its listeners to think about what they hear, picturing for themselves such dramatic elements as characters’ physical appearances and spatial relationships. Hence, while earlier generations, for whom radio drama was the dominant form of popular entertainment, regularly exercised their imaginations, today’s generation of television viewers do so less frequently.",
+    "questionStem": "Which one of the following is an assumption required by the historian’s argument?",
+    "answerChoices": {
+      "A": "People spend as much time watching television today as people spent listening to radio in radio’s heyday.",
+      "B": "The more familiar a form of popular entertainment becomes, the less likely its consumers are to exercise their imaginations.",
+      "C": "Because it inhibits the development of creativity, television is a particularly undesirable form of popular entertainment.",
+      "D": "For today’s generation of television viewers, nothing fills the gap left by radio as a medium for exercising the imagination.",
+      "E": "Television drama does not require its viewers to think about what they see."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Net Effect",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Each of the candidates in this year’s mayoral election is a small-business owner. Most small-business owners are competent managers. Moreover, no competent manager lacks the skills necessary to be a good mayor. So, most of the candidates in this year’s mayoral election have the skills necessary to be a good mayor.",
+    "questionStem": "The pattern of flawed reasoning in which one of the following is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Anyone who has worked in sales at this company has done so for at least a year. Most of this company’s management has worked in its sales department. So, since no one who has worked in the sales department for more than a year fails to understand marketing, most of this company’s upper management understands marketing.",
+      "B": "Everything on the menu at Maddy’s Shake Shop is fat-free. Most fat-free foods and drinks are sugar-free. And all sugar-free foods and drinks are low in calories. Hence, most items on the menu at Maddy’s are low in calories.",
+      "C": "All the books in Ed’s apartment are hardcover books. Most hardcover books are more than 100 pages long. Ed has never read a book longer than 100 pages in its entirety in less than 3 hours. So, Ed has never read any of his books in its entirety in less than 3 hours.",
+      "D": "Each of the avant-garde films at this year’s film festival is less than an hour long. Most films less than an hour long do not become commercially successful. So, since no movie less than an hour long has an intermission, it follows that most of the movies at this year’s film festival do not have an intermission.",
+      "E": "All of the bicycle helmets sold in this store have some plastic in them. Most of the bicycle helmets sold in this store have some rubber in them. So, since no helmets that have rubber in them do not also have plastic in them, it follows that most of the helmets in this store that have plastic in them have rubber in them."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "One of the most useful social conventions is money, whose universality across societies is matched only by language. Unlike language, which is rooted in an innate ability, money is an artificial, human invention. Hence, it seems probable that the invention of money occurred independently in more than one society.",
+    "questionStem": "The argument’s conclusion is properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Some societies have been geographically isolated enough not to have been influenced by any other society.",
+      "B": "Language emerged independently in different societies at different times in human history.",
+      "C": "Universal features of human society that are not inventions are rooted in innate abilities.",
+      "D": "If money were not useful, it would not be so widespread.",
+      "E": "No human society that adopted the convention of money has since abandoned it."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Libel is defined as damaging the reputation of someone by making false statements. Ironically, strong laws against libel can make it impossible for anyone in the public eye to have a good reputation. For the result of strong libel laws is that, for fear of lawsuits, no one will say anything bad about public figures.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "The absence of laws against libel makes it possible for everyone in the public eye to have a good reputation.",
+      "B": "Even if laws against libel are extremely strong and rigorously enforced, some public figures will acquire bad reputations.",
+      "C": "If one makes statements that one sincerely believes, then those statements should not be considered libelous even if they are in fact false and damaging to the reputation of a public figure.",
+      "D": "In countries with strong libel laws, people make negative statements about public figures only when such statements can be proved.",
+      "E": "Public figures can have good reputations only if there are other public figures who have bad reputations."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Mammals cannot digest cellulose and therefore cannot directly obtain glucose from wood. Mushrooms can, however; and some mushrooms use cellulose to make highly branched polymers, the branches of which are a form of glucose called beta-glucans. Beta-glucan extracts from various types of mushrooms slow, reverse, or prevent the growth of cancerous tumors in mammals, and the antitumor activity of beta-glucans increases as the degree of branching increases. These extracts prevent tumor growth not by killing cancer cells directly but by increasing immune-cell activity.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Mammals obtain no beneficial health effects from eating cellulose.",
+      "B": "If extracts from a type of mushroom slow, reverse, or prevent the growth of cancerous tumors in mammals, then the mushroom is capable of using cellulose to make beta-glucans.",
+      "C": "The greater the degree of branching of beta-glucans, the greater the degree of immune-cell activity it triggers in mammals.",
+      "D": "Immune-cell activity in mammals does not prevent tumor growth by killing cancer cells.",
+      "E": "Any organism capable of obtaining glucose from wood can use cellulose to make beta-glucans."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Science",
+      "Volume Dial"
+    ]
+  },
+  {
+    "practiceTest": "PT138",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A law is successful primarily because the behavior it prescribes has attained the status of custom. Just as manners are observed not because of sanctions attached to them but because, through repetition, contrary behavior becomes unthinkable, so societal laws are obeyed not because the behavior is ethically required or because penalties await those who act otherwise, but because to act otherwise would be uncustomary.",
+    "questionStem": "Which one of the following comparisons is utilized by the argument?",
+    "answerChoices": {
+      "A": "As with manners and other customs, laws vary from society to society.",
+      "B": "As with manners, the primary basis for a society to consider when adopting a law is custom.",
+      "C": "As with manners, the main factor accounting for compliance with laws is custom.",
+      "D": "As with manners, most laws do not prescribe behavior that is ethically required.",
+      "E": "As with manners, most laws do not have strict penalties awaiting those who transgress them."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
+  }
+]

@@ -1,0 +1,5677 @@
+.classroom-root {
+  --classroom-line: #f3e3d6;
+  /* The boundary of a control, not of a surface. --classroom-line is a hairline
+     for separating things that are already identifiable; where the border IS
+     what tells you a region is clickable, WCAG 1.4.11 asks for 3:1 and the
+     hairline measures 1.22:1 against the page. Same warm family, darkened only
+     in value: 3.14:1 on the panel and 3.06:1 on the page. */
+  --classroom-line-strong: #9c8f85;
+  /* --classroom-line-strong is measured against the page and the panel. A control
+     that sits on a tinted ground instead (the toggle knob, on --classroom-hover)
+     reads under 3:1 there, so it takes this one. Same role, darker ground. */
+  --classroom-line-on-tint: #8a7d72;
+  /* The switch's on-track. Light is --classroom-active unchanged; dark is a
+     lighter sibling of it, because --classroom-active over the dark panel left
+     off-vs-on at 1.51:1 and knob position was carrying the state alone. Scoped
+     to the switch so the other 17 --classroom-active rules keep their colour. */
+  --classroom-toggle-on-track: #43403c;
+  --classroom-ink: #43403c;
+  --classroom-ink-body: #43403c;
+  --classroom-meta: 166, 162, 158;
+  --classroom-hover: rgba(246, 235, 225, 0.4);
+  --classroom-dash: rgba(0, 0, 0, 0.15);
+  --classroom-link: #ff8906;
+  /* Text-safe pair. --classroom-link and --classroom-meta are tuned for fills,
+     rules and decorative use, where WCAG 1.4.11's 3:1 does not apply. Against
+     white they measure 2.38:1 and 2.54:1, so they fail 1.4.3 as TEXT.
+     Use these two instead whenever the colour carries words or notation.
+     Same hue (32deg / 30deg), darkened only in value: 5.39:1 and 5.38:1 on
+     white, and >=4.5:1 on every 10% tint used in the classroom. */
+  --classroom-link-text: #a25704;
+  --classroom-meta-text: #6d6a67;
+  /* The unread badge carries a number, so it is text and owes 4.5:1. The
+     orange that works as a fill does not survive white on top of it: white on
+     --classroom-link measures 2.38:1. Each theme therefore picks the pairing
+     its own ground allows rather than sharing one. Light darkens the fill and
+     keeps white on it (5.39:1); dark keeps the bright fill and puts the page's
+     near-black on it (8.06:1). */
+  --classroom-accent: #a25704;
+  --classroom-accent-ink: #ffffff;
+  /* Kept as aliases so the badge rule reads in its own terms. */
+  --classroom-badge-fill: var(--classroom-accent);
+  --classroom-badge-ink: var(--classroom-accent-ink);
+  /* The panel/card ground, so a token that names a surface actually resolves. */
+  --classroom-surface: #ffffff;
+  --classroom-active: #43403c;
+  --classroom-active-ink: #ffffff;
+  --classroom-meta-soft: rgba(67, 64, 60, 0.4);
+  --classroom-panel: #ffffff;
+  --classroom-page: #ffffff;
+  --classroom-drill-page: #fdf8f3;
+  --classroom-trigger: #fefcf7;
+  --classroom-wrong: #9f1239;
+  --classroom-unsure: #b45309;
+  --classroom-correct: #047857;
+  --classroom-radius: 8px;
+  --classroom-transition: 300ms;
+  align-items: flex-start;
+  background: var(--classroom-page);
+  color: var(--classroom-ink);
+  display: flex;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  min-height: 100dvh;
+  transition:
+    background-color var(--classroom-transition) ease,
+    color var(--classroom-transition) ease;
+  width: 100%;
+}
+
+html.dark .classroom-root {
+  --classroom-line: #17161c;
+  /* 3.21:1 on the dark page, 3.31:1 on the dark panel. */
+  --classroom-line-strong: #646176;
+  /* Lighter, not darker: on the dark theme the tinted ground is the lighter one. */
+  --classroom-line-on-tint: #7a7789;
+  --classroom-toggle-on-track: #6f6d80;
+  --classroom-ink: #fffffe;
+  --classroom-ink-body: #e5e5e5;
+  --classroom-meta: 167, 169, 190;
+  --classroom-hover: rgba(68, 64, 60, 0.4);
+  --classroom-dash: rgba(255, 255, 255, 0.15);
+  --classroom-active: #3d3c48;
+  --classroom-active-ink: #e5e5e5;
+  --classroom-meta-soft: #a7a9be;
+  /* On the dark page both base values already clear 8:1, so the text-safe pair
+     is the same colour here. Declared so the token means one thing everywhere. */
+  --classroom-link-text: #ff8906;
+  --classroom-meta-text: #a7a9be;
+  --classroom-accent: #ff8906;
+  --classroom-accent-ink: #0f0e17;
+  --classroom-badge-fill: var(--classroom-accent);
+  --classroom-badge-ink: var(--classroom-accent-ink);
+  --classroom-surface: #0a0913;
+  --classroom-panel: #0a0913;
+  --classroom-page: #0f0e17;
+  --classroom-drill-page: #121019;
+  --classroom-trigger: #0a0913;
+  --classroom-wrong: #fb7185;
+  --classroom-unsure: #fbbf24;
+  --classroom-correct: #34d399;
+}
+
+.classroom-root *,
+.classroom-root *::before,
+.classroom-root *::after {
+  box-sizing: border-box;
+}
+
+/* Split for the same reason the colour reset below is written with :where().
+   `font: inherit` at (0,1,1) outranks every Tailwind font utility (0,1,0), so
+   a button carrying `text-[13px] font-black` inside this frame rendered at the
+   inherited 16px/500 instead — which is what the Messages stage is full of.
+   Family and style stay at reset strength (that is the part a reset is for:
+   form controls otherwise default to Arial); the metrics a component may
+   legitimately state for itself drop to (0,0,1), so a bare control still
+   inherits and a stated size, weight, or leading now wins. */
+.classroom-root button,
+.classroom-root input,
+.classroom-root textarea {
+  font-family: inherit;
+  font-style: inherit;
+  font-variant: inherit;
+}
+
+:where(.classroom-root) :is(button, input, textarea) {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* A reset, so it must carry a reset's specificity. Written plainly as
+   `.classroom-root button` it scores (0,1,1) and outranks every Tailwind text
+   utility (0,1,0), which silently swallowed the colour of any button that set
+   its own: `text-white` on the hero's PrepTest trigger rendered near-black on
+   the near-black console (~1:1 contrast), and `text-primary-foreground` on the
+   launchers' filled CTAs rendered white on white. `:where()` contributes zero
+   specificity, dropping this to (0,0,1): bare buttons still inherit, and any
+   button that states a colour now keeps it. */
+:where(.classroom-root) button {
+  color: inherit;
+}
+
+.classroom-root .classroom-panel-wash {
+  border-radius: inherit;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.classroom-root .classroom-panel-wash i {
+  display: block;
+  inset: 0;
+  position: absolute;
+  transition: opacity var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-panel-wash-light {
+  background-image: linear-gradient(
+    161.15deg,
+    rgba(254, 252, 247, 0.4) 12.73%,
+    rgba(243, 227, 214, 0.4) 72.95%
+  );
+  opacity: 1;
+}
+
+.classroom-root .classroom-panel-wash-dark {
+  background-image: linear-gradient(
+    161.15deg,
+    rgba(41, 37, 36, 0.4) 12.73%,
+    rgba(68, 64, 60, 0.4) 72.95%
+  );
+  opacity: 0;
+}
+
+html.dark .classroom-root .classroom-panel-wash-light {
+  opacity: 0;
+}
+
+html.dark .classroom-root .classroom-panel-wash-dark {
+  opacity: 1;
+}
+
+.classroom-root .classroom-panel-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.classroom-root .classroom-sidebar {
+  flex: 0 0 280px;
+  height: 100dvh;
+  padding: 8px;
+  position: sticky;
+  top: 0;
+  width: 280px;
+  z-index: 20;
+}
+
+.classroom-root .classroom-sidebar-card {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  height: 100%;
+  overflow: auto;
+  padding: 24px;
+  position: relative;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-brand {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  gap: 9px;
+  margin: 0 0 24px;
+  padding: 0;
+  text-align: left;
+}
+
+.classroom-root .classroom-brand i {
+  align-items: center;
+  background: var(--classroom-ink);
+  border-radius: 6px;
+  color: var(--classroom-panel);
+  display: flex;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  height: 22px;
+  justify-content: center;
+  width: 22px;
+}
+
+.classroom-root .classroom-brand span,
+.classroom-root .classroom-nav-group > b,
+.classroom-root .classroom-profile-copy small,
+.classroom-root .classroom-row-status,
+.classroom-root .classroom-section-meta,
+.classroom-root .classroom-message time,
+.classroom-root .classroom-note-meta {
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.classroom-root .classroom-brand span {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-nav-group {
+  margin-bottom: 18px;
+}
+
+.classroom-root .classroom-nav-group > b {
+  color: var(--classroom-meta-text);
+  display: block;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+  padding: 0 8px;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-nav {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  gap: 8px;
+  line-height: 1.45;
+  padding: 7px 8px;
+  text-align: left;
+  text-decoration: none;
+  /* 14px x 1.45 + 7px x 2 came to 34px. The rail is already flex-centred, so a
+     min-height gives a real target rather than one faked with padding. */
+  transition:
+    background-color var(--classroom-transition) ease,
+    color var(--classroom-transition) ease;
+  width: 100%;
+}
+
+.classroom-root .classroom-nav:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-nav-locked,
+.classroom-root .classroom-nav-locked:hover {
+  background: transparent;
+  color: var(--classroom-meta-text);
+  cursor: default;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-nav-lock {
+  flex: 0 0 auto;
+  height: 13px;
+  margin-left: auto;
+  width: 13px;
+}
+
+.classroom-root .classroom-nav-active {
+  background: var(--classroom-active);
+  color: var(--classroom-active-ink);
+}
+
+/* Whiteboard rail button: white pill instead of the rail's usual dark
+   active fill, so it doesn't read as another dark nav item. */
+.classroom-root .classroom-nav-active-white {
+  background: var(--classroom-surface);
+  color: var(--classroom-ink);
+}
+
+/* Unread count on a rail item. Sits where the `em` chevron sits on the section
+   rows, so nav labels stay on one baseline whether an item is counted or not. */
+.classroom-root .classroom-nav-badge {
+  align-items: center;
+  background: var(--classroom-badge-fill);
+  border-radius: 999px;
+  color: var(--classroom-badge-ink);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1;
+  margin-left: auto;
+  min-width: 18px;
+  padding: 3px 5px;
+}
+
+.classroom-root .classroom-nav em {
+  color: var(--classroom-meta-text);
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  font-size: 0.75rem;
+  font-style: normal;
+  margin-left: auto;
+}
+
+.classroom-root .classroom-nav-active em {
+  color: var(--classroom-active-ink);
+  opacity: 0.6;
+}
+
+.classroom-root .classroom-profile {
+  align-items: stretch;
+  border-top: 1px solid var(--classroom-line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.classroom-root .classroom-avatar {
+  align-items: center;
+  background: var(--classroom-hover);
+  border: 1px solid var(--classroom-line);
+  border-radius: 50%;
+  display: flex;
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 600;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+
+.classroom-root .classroom-profile-copy {
+  flex: 1 1 auto;
+  font-size: 13px;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.classroom-root .classroom-profile-copy span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-profile-copy small {
+  color: var(--classroom-meta-text);
+  display: block;
+}
+
+.classroom-root .classroom-icon-button,
+.classroom-root .classroom-overlay-close {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 7px;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  margin-left: auto;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+  width: 28px;
+}
+
+.classroom-root .classroom-icon-button:hover,
+.classroom-root .classroom-overlay-close:hover {
+  background: var(--classroom-hover);
+  border-color: var(--classroom-meta-soft);
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-icon-button:focus-visible,
+.classroom-root .classroom-overlay-close:focus-visible {
+  outline: 2px solid var(--classroom-link-text);
+  outline-offset: 2px;
+}
+
+/* Leaving is a labelled control, not a glyph. An arrow-out icon asks the
+   student to decode it; the words do not. It sits on its own full-width row
+   because the profile row already carries three controls and a name that
+   truncates, and "Log Out" wedged in beside them is what read as cramped. */
+.classroom-root .classroom-signout {
+  align-items: center;
+  background: var(--classroom-trigger);
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 9px;
+  color: var(--classroom-ink);
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  font-weight: 600;
+  justify-content: center;
+  letter-spacing: 0.02em;
+  padding: 9px 12px;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+  width: 100%;
+}
+
+.classroom-root .classroom-signout:hover {
+  background: var(--classroom-hover);
+  border-color: var(--classroom-wrong);
+  color: var(--classroom-wrong);
+}
+
+.classroom-root .classroom-signout:focus-visible {
+  outline: 2px solid var(--classroom-link-text);
+  outline-offset: 2px;
+}
+
+.classroom-root .classroom-profile {
+  position: relative;
+}
+
+.classroom-root .classroom-profile-trigger {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  cursor: pointer;
+  display: flex;
+  flex: 1 1 auto;
+  gap: 9px;
+  margin: -4px 0 -4px -5px;
+  min-width: 0;
+  padding: 4px 5px;
+  text-align: left;
+}
+
+.classroom-root .classroom-profile-trigger:hover,
+.classroom-root .classroom-profile-trigger[aria-expanded="true"] {
+  background: var(--classroom-hover);
+  border-color: var(--classroom-line);
+}
+
+.classroom-root .classroom-profile-chevron {
+  color: var(--classroom-meta-text);
+  flex: 0 0 auto;
+}
+
+.classroom-root .classroom-profile-menu {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-radius: 12px;
+  bottom: calc(100% + 10px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  left: 0;
+  padding: 6px;
+  position: absolute;
+  right: 0;
+  z-index: 40;
+}
+
+.classroom-root .classroom-profile-menu-header {
+  border-bottom: 1px solid var(--classroom-line);
+  margin-bottom: 6px;
+  padding: 6px 8px 9px;
+}
+
+.classroom-root .classroom-profile-menu-header span {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-profile-menu-header small {
+  color: var(--classroom-meta-text);
+  display: block;
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-profile-menu-item {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font-size: 13px;
+  gap: 8px;
+  padding: 7px 8px;
+  text-align: left;
+  width: 100%;
+}
+
+.classroom-root .classroom-profile-menu-item:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-profile-menu-item svg {
+  color: var(--classroom-meta-text);
+}
+
+.classroom-root .classroom-profile-menu-signout {
+  border-top: 1px solid var(--classroom-line);
+  border-radius: 0 0 8px 8px;
+  margin-top: 6px;
+  padding-top: 9px;
+}
+
+.classroom-root .classroom-profile-menu-signout,
+.classroom-root .classroom-profile-menu-signout svg {
+  color: var(--classroom-wrong);
+}
+
+.classroom-root .classroom-profile-menu-signout:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-profile-menu-appearance {
+  align-items: center;
+  border-top: 1px solid var(--classroom-line);
+  display: flex;
+  font-size: 12px;
+  gap: 8px;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding: 9px 8px 4px;
+}
+
+.classroom-root .classroom-profile-menu-appearance > span {
+  color: var(--classroom-meta-text);
+}
+
+.classroom-root .classroom-profile-menu-segment {
+  background: var(--classroom-hover);
+  border: 1px solid var(--classroom-line);
+  border-radius: 8px;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+}
+
+.classroom-root .classroom-profile-menu-segment button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  display: flex;
+  font-size: 11.5px;
+  font-weight: 500;
+  gap: 5px;
+  padding: 4px 8px;
+}
+
+.classroom-root .classroom-profile-menu-segment button.classroom-segment-active {
+  background: var(--classroom-panel);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-account-heading {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.classroom-root .classroom-account-tabs {
+  background: var(--classroom-hover);
+  border: 1px solid var(--classroom-line);
+  border-radius: 9px;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+}
+
+.classroom-root .classroom-account-tabs button {
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 6px 12px;
+}
+
+.classroom-root .classroom-account-tabs button.classroom-account-tab-active {
+  background: var(--classroom-panel);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-section-list {
+  display: block;
+  flex: 0 0 336px;
+  height: 100dvh;
+  margin-left: -16px;
+  padding: 8px 8px 8px 0;
+  position: sticky;
+  top: 0;
+  width: 336px;
+  z-index: 10;
+}
+
+.classroom-root .classroom-section-card {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-left: 0;
+  border-radius: 0 var(--classroom-radius) var(--classroom-radius) 0;
+  height: 100%;
+  overflow: auto;
+  padding: 24px 28px;
+  position: relative;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-section-heading {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.classroom-root .classroom-section-heading h2 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.classroom-root .classroom-section-heading button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  padding: 4px;
+}
+
+.classroom-root .classroom-panel-list {
+  display: grid;
+  gap: 4px;
+  margin: 0 -8px;
+}
+
+.classroom-root .classroom-panel-item {
+  background: transparent;
+  border: 0;
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  padding: 8px;
+  text-align: left;
+  transition: background-color var(--classroom-transition) ease;
+  width: 100%;
+}
+
+.classroom-root .classroom-panel-item:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-panel-item-active {
+  background: var(--classroom-active);
+}
+
+.classroom-root .classroom-panel-item h3 {
+  color: var(--classroom-ink);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  margin: 0 0 4px;
+}
+
+.classroom-root .classroom-panel-item time {
+  color: var(--classroom-meta-text);
+  font-size: 0.75rem;
+}
+
+.classroom-root .classroom-panel-item-active h3,
+.classroom-root .classroom-panel-item-active time {
+  color: var(--classroom-active-ink);
+}
+
+.classroom-root .classroom-panel-item-active time {
+  opacity: 0.6;
+}
+
+.classroom-root .classroom-list-state {
+  display: grid;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.classroom-root .classroom-list-state span,
+.classroom-root .classroom-skeleton {
+  background: var(--classroom-line);
+  border-radius: 4px;
+  display: block;
+  height: 13px;
+  opacity: 0.75;
+}
+
+.classroom-root .classroom-list-state span:nth-child(2) {
+  width: 72%;
+}
+
+.classroom-root .classroom-list-state span:nth-child(3) {
+  width: 84%;
+}
+
+.classroom-root .classroom-list-error {
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  margin-bottom: 12px;
+  padding: 12px;
+}
+
+.classroom-root .classroom-list-error p {
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+
+.classroom-root .classroom-stage {
+  background: var(--classroom-page);
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+  min-height: 100dvh;
+  padding: 0 24px;
+}
+
+.classroom-root .classroom-column {
+  max-width: 720px;
+  padding: 80px 0 120px;
+  width: 100%;
+}
+
+/* Schedule is an operational workspace, not a reading surface. Its calendar
+   needs enough room for seven honest columns plus a selected-day agenda. */
+.classroom-root.classroom-root-schedule .classroom-column {
+  max-width: 1240px;
+  padding: 48px 0 96px;
+}
+
+/* Reserves the stage while a code-split route resolves, so the rail never sits
+   beside a collapsed column. See StageFallback in ClassroomLayout.tsx. */
+.classroom-root .classroom-stage-pending {
+  min-height: 100dvh;
+  width: 100%;
+}
+
+/* Route changes move the stage's geometry: Home is a 1260px dashboard with no
+   stage padding, Drill is full-bleed at 8px, everything else is a 720px reading
+   column. Untransitioned, that swap lands as a jump the moment the new route
+   paints. --classroom-transition is the same 300ms the rail and panel wash
+   already use, so this reads as one motion rather than a new one. */
+@media (prefers-reduced-motion: no-preference) {
+  .classroom-root .classroom-stage {
+    transition:
+      background var(--classroom-transition) ease,
+      padding var(--classroom-transition) ease;
+  }
+
+  .classroom-root .classroom-column {
+    transition:
+      max-width var(--classroom-transition) ease,
+      padding var(--classroom-transition) ease;
+  }
+
+  /* Content arrives on top of that geometry settling. A short opacity/transform
+     lift (compositor-only, no layout) turns the pop into a crossfade. 160ms
+     matches the observatory's own --observatory-motion. */
+  .classroom-root .classroom-stage > .classroom-column > *,
+  .classroom-root .classroom-messages-stage > *,
+  .classroom-root .classroom-workspace-stage > * {
+    animation: classroom-stage-enter 160ms cubic-bezier(0.25, 1, 0.5, 1) both;
+  }
+}
+
+@keyframes classroom-stage-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Home is the student dashboard: a full-width grid rather than a reading
+   column, and the rail's warm paper carried across the whole page instead of
+   stopping at the rail's own edge. */
+.classroom-root.classroom-root-home .classroom-stage {
+  background: linear-gradient(180deg, #fffdfb, #fbf6f0);
+  justify-content: flex-start;
+  padding: 0;
+}
+
+html.dark .classroom-root.classroom-root-home .classroom-stage {
+  background: linear-gradient(180deg, #131219, #0f0e17);
+}
+
+.classroom-root.classroom-root-home .classroom-column {
+  max-width: 1260px;
+  padding: 30px 44px 56px;
+}
+
+@media (max-width: 720px) {
+  .classroom-root.classroom-root-home .classroom-column {
+    padding: 24px 18px 48px;
+  }
+}
+
+.classroom-root.classroom-root-drill .classroom-stage {
+  background: var(--classroom-drill-page);
+  padding: 8px 8px 8px 0;
+}
+
+.classroom-root.classroom-root-drill .classroom-column {
+  max-width: none;
+  padding: 8px;
+}
+
+/* Drill landing workspace: The Reasoning Observatory.
+   Scoped here so the official /drill question surface cannot inherit it.
+
+   2026-08-01 reskin ("hyper-real imagery"): the page is now ivory-on-black with
+   two photographic surfaces (a planet horizon behind the hero, an eclipse behind
+   Today) doing all the accent work. There is no accent colour on this page — no
+   blue, no amber, no gold. Every grid texture, radial wash and gradient tone map
+   the old observatory carried has been removed; what is left is flat tinted
+   black, hairline rings, glass, and the two images. */
+/* .rc-page is the Reading Comprehension hub, which is its own route rather than
+   a classroom stage but belongs to the same visual system. It hosts the ladder
+   here rather than restating the values, so there is still one source. */
+.classroom-root.classroom-root-drill,
+.rc-page,
+.drill-setup-preview {
+  /* Ink. One ivory, stepped by opacity. The ladder is closed — if a value is not
+     on it, it does not belong on this page. */
+  --observatory-ink: #f4f1ea;
+  --observatory-ink-90: rgba(244, 241, 234, 0.9);
+  --observatory-ink-85: rgba(244, 241, 234, 0.85);
+  --observatory-ink-70: rgba(244, 241, 234, 0.7);
+  --observatory-ink-62: rgba(244, 241, 234, 0.62);
+  --observatory-ink-60: rgba(244, 241, 234, 0.6);
+  --observatory-ink-55: rgba(244, 241, 234, 0.55);
+  --observatory-ink-50: rgba(244, 241, 234, 0.5);
+
+  /* Surfaces. Tinted blacks, never #000. */
+  --observatory-surface-card: #08080b;
+  --observatory-surface-image: #050507;
+  --observatory-glass: rgba(6, 6, 9, 0.55);
+  --observatory-glass-soft: rgba(6, 6, 9, 0.5);
+  --observatory-glass-row: rgba(6, 6, 9, 0.45);
+  --observatory-well: rgba(0, 0, 0, 0.35);
+
+  /* Rings and hairlines. The only borders on this page. */
+  --observatory-hairline: rgba(244, 241, 234, 0.09);
+  --observatory-ring: rgba(244, 241, 234, 0.1);
+  --observatory-ring-glass: rgba(244, 241, 234, 0.12);
+  --observatory-ring-quiet: rgba(244, 241, 234, 0.08);
+  --observatory-ring-strong: rgba(244, 241, 234, 0.2);
+  --observatory-ring-chip: rgba(244, 241, 234, 0.25);
+
+  --observatory-shadow-card: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --observatory-shadow-image: 0 12px 32px rgba(0, 0, 0, 0.16);
+  --observatory-shadow-glass: 0 10px 28px rgba(0, 0, 0, 0.22);
+
+  /* Kept for the side rail, which is out of this redesign's scope and still
+     draws its active dot from them. Nothing in the main column uses them. */
+  --observatory-field: #eceae4;
+  --observatory-shell: #08080b;
+  --observatory-light-ink: #f4f1ea;
+  --observatory-muted: rgba(244, 241, 234, 0.55);
+  --observatory-line: rgba(244, 241, 234, 0.09);
+  --observatory-blue: #79c4ff;
+  --observatory-amber: #ff8a3d;
+
+  /* Spacing ladder. Every padding, margin and gap in the observatory resolves to
+     one of these. Before it there were sixteen distinct values — 7, 10, 13, 14,
+     18, 22, 28, 58px and more — which is not a system, it's an accumulation. */
+  --observatory-space-1: 4px;
+  --observatory-space-2: 8px;
+  --observatory-space-3: 12px;
+  --observatory-space-4: 16px;
+  --observatory-space-5: 20px;
+  --observatory-space-6: 28px;
+  --observatory-space-7: 30px;
+
+  /* Four radii, by role: a card, a panel sitting on a card, an inner block, a
+     control. Pills and circles are categorical, not scale values. */
+  --observatory-radius-shell: 20px;
+  --observatory-radius-panel: 18px;
+  --observatory-radius-inner: 16px;
+  --observatory-radius-control: 14px;
+
+  --observatory-text-label: 11px;
+  --observatory-text-label-sm: 10px;
+  --observatory-text-meta: 12px;
+  --observatory-text-body: 13.5px;
+  --observatory-text-control: 15px;
+  --observatory-text-heading: 20px;
+  --observatory-text-display: 44px;
+
+  --observatory-track-label: 0.18em;
+  --observatory-track-route: 0.16em;
+  --observatory-track-chip: 0.14em;
+  --observatory-track-display: -0.01em;
+
+  --observatory-label-font: "JetBrains Mono", ui-monospace, monospace;
+  --observatory-display-font: "Fraunces", ui-serif, Georgia, serif;
+
+  /* Motion: 150-180ms, ease-out, transform and opacity only.
+
+     Ease-out, not the standard ease-in-out. A curve that eases in spends its
+     opening barely moving, which is right for something leaving the screen and
+     wrong for a control answering a pointer. Measured on the two curves: at
+     10% of the duration the old cubic-bezier(0.4, 0, 0.2, 1) has covered 2.6%
+     of the distance and at 25% only 23.7%, so on a 160ms hover nothing visible
+     happens for the first 40ms and the control reads as slow. The quart curve
+     covers 34.7% and 68.9% at those points: it leaves immediately and settles.
+     No bounce or elastic anywhere on this surface. */
+  --observatory-ease: cubic-bezier(0.25, 1, 0.5, 1);
+  --observatory-motion: 160ms var(--observatory-ease);
+
+  /* The stage the cards sit on is cream. The two controls that ride on it
+     directly (the section switch, the jump row) are inked for the stage, not
+     for the cards. Measured on #fbf8f3: ink 12.9:1, muted 5.3:1. */
+  --observatory-stage-well: #fbf8f3;
+  --observatory-stage-ink: #332f2c;
+  --observatory-stage-muted: #6b6662;
+  --observatory-stage-hair: rgba(68, 64, 61, 0.09);
+  --observatory-stage-lit: #f5f1ec;
+
+  /* One focus treatment for every control on the black cards: a solid ivory
+     outline offset from the edge, 15:1 against the card. Inset variant for
+     full-bleed rows whose outline would be clipped by their container. */
+  --observatory-focus: rgba(244, 241, 234, 0.85);
+  --observatory-skeleton: rgba(244, 241, 234, 0.12);
+}
+
+/* Dark theme. ClassroomLayout sets html.dark from the theme, and the stage
+   goes near-black (--classroom-drill-page). The two controls inked for the
+   stage must flip with it: before this rule they stayed cream on the black
+   stage. Values are the jump row's dark tone (questionJump.css) so the
+   utility strip still reads as one system. Measured on the well, which is
+   3% white over #121019 (#191720): ink 15.8:1, muted 5.9:1; the active
+   label on the ivory pill 16.8:1. The cards stay #08080b in both themes.
+   Scoped to the classroom stage: .rc-page at /rc renders outside
+   ClassroomLayout, so html.dark is never set there and it keeps the ladder
+   above. */
+html.dark .classroom-root.classroom-root-drill {
+  --observatory-stage-well: rgba(255, 255, 255, 0.03);
+  --observatory-stage-ink: #f5f1ec;
+  --observatory-stage-muted: #9a938c;
+  --observatory-stage-hair: rgba(255, 255, 255, 0.1);
+  --observatory-stage-lit: #121019;
+}
+
+.classroom-root.classroom-root-drill .classroom-stage {
+  padding: 24px 24px 32px 16px;
+}
+
+.classroom-root.classroom-root-drill .classroom-column {
+  padding: 0;
+}
+
+.classroom-root.classroom-root-drill .classroom-sidebar-card {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 138, 61, 0.045), transparent 32%),
+    var(--classroom-panel);
+}
+
+.classroom-root.classroom-root-drill .classroom-nav-active {
+  position: relative;
+}
+
+.classroom-root.classroom-root-drill .classroom-nav-active::after {
+  background: linear-gradient(180deg, var(--observatory-amber), var(--observatory-blue));
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(121, 196, 255, 0.35);
+  content: "";
+  height: 6px;
+  margin-left: auto;
+  width: 6px;
+}
+
+.drill-observatory-root {
+  color: var(--observatory-ink);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+.drill-observatory-root .drill-observatory-canvas {
+  isolation: isolate;
+}
+
+/* ── Shared micro-typography ─────────────────────────────────────────────── */
+
+/* Tailwind's `font-mono` stack does not include the label face, so anything
+   using it landed on ui-monospace — a different face from the labels beside it.
+   The Today panel's date sat directly next to "TODAY" in two different monos. */
+.drill-observatory-root .font-mono {
+  font-family: var(--observatory-label-font);
+}
+
+/* One treatment for every uppercase micro-label in the observatory. Applied via
+   an explicit class rather than a blanket `.uppercase` selector — the
+   observatory hosts launcher stages whose labels are not part of this set. */
+.drill-observatory-root .drill-observatory-label {
+  color: var(--observatory-ink-50);
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label);
+  font-weight: 500;
+  letter-spacing: var(--observatory-track-label);
+  text-transform: uppercase;
+}
+
+/* The dateline prints twice and CSS picks one, so the first paint is already
+   right. Between 900 and 1099 the greeting column is too narrow for the long
+   month and the date wrapped to two lines. */
+.drill-observatory-root .drill-observatory-date-short {
+  display: none;
+}
+
+@media (min-width: 900px) and (max-width: 1099px) {
+  .drill-observatory-root .drill-observatory-date-long {
+    display: none;
+  }
+
+  /* The short month alone was not enough: at 1024 the greeting column is 201px
+     and the short dateline measured 197px of glyphs plus 47px of tracking, so
+     "2026" still fell to a second line. The tracking is decoration at this
+     size, and tightening it buys back 25px. Declared on the span itself: a
+     value set on the element beats one inherited from the label, so this wins
+     the cascade without any forcing of its own. */
+  .drill-observatory-root .drill-observatory-date-short {
+    display: inline;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+}
+
+.drill-observatory-root .drill-observatory-label-sm {
+  font-size: var(--observatory-text-label-sm);
+}
+
+/* The ink ladder, addressable from JSX. Tailwind arbitrary values would work but
+   would scatter rgba(244,241,234,x) literals across three components and detach
+   them from the token block above; these keep one source for the scale. */
+.drill-observatory-root .drill-observatory-ink-full { color: var(--observatory-ink); }
+.drill-observatory-root .drill-observatory-ink-90 { color: var(--observatory-ink-90); }
+.drill-observatory-root .drill-observatory-ink-85 { color: var(--observatory-ink-85); }
+.drill-observatory-root .drill-observatory-ink-70 { color: var(--observatory-ink-70); }
+.drill-observatory-root .drill-observatory-ink-62 { color: var(--observatory-ink-62); }
+.drill-observatory-root .drill-observatory-ink-60 { color: var(--observatory-ink-60); }
+.drill-observatory-root .drill-observatory-ink-55 { color: var(--observatory-ink-55); }
+.drill-observatory-root .drill-observatory-ink-50 { color: var(--observatory-ink-50); }
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+
+.drill-observatory-root .drill-observatory-hero {
+  background-color: var(--observatory-surface-image);
+  background-image: url("/mainhub/hub-horizon.png");
+  /* WebP is 37KB against the PNG's 384KB; the PNG line above stays as the
+     fallback for anything that cannot parse image-set. */
+  background-image: image-set(
+    url("/mainhub/hub-horizon.webp") type("image/webp"),
+    url("/mainhub/hub-horizon.png") type("image/png")
+  );
+  background-position: center 68%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 0;
+  border-radius: var(--observatory-radius-shell);
+  box-shadow:
+    0 0 0 1px var(--observatory-ring),
+    var(--observatory-shadow-image);
+  color: var(--observatory-ink);
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Scrim. Mandatory, not decorative: the greeting sits over the image's bright
+   terminator at some crops and is unreadable without it.
+
+   The middle stop was 0.35, and that was measured by eye. Sampling the actual
+   webp under each hero text box and compositing scrim, photo and the text's own
+   alpha, the horizon crop reaches rgb(250, 240, 228): the quiet link came out
+   at 1.89:1 and the Next up facts line at 2.76:1, both needing 4.5. The
+   contrast scan could not see it, because it reads the scrim's declared colour
+   rather than the photograph underneath. 0.58 is the measured floor that
+   clears every hero line once the text below is full ivory; the gradient still
+   opens the middle, so the horizon reads. */
+.drill-observatory-root .drill-observatory-hero::before {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 4, 6, 0.82) 0%,
+      rgba(4, 4, 6, 0.58) 45%,
+      rgba(4, 4, 6, 0.7) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(4, 4, 6, 0.5),
+      transparent 30%,
+      transparent 70%,
+      rgba(4, 4, 6, 0.55)
+    );
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+/* The ink ladder does not hold over a photograph. Its steps were measured
+   against the flat card (#08080b), where ink-60 is comfortably legible; over
+   the horizon crop the same step composites to 2.76:1. Inside the hero's
+   greeting column, and only there, text that carries meaning is full ivory and
+   the scrim above does the rest. The ladder is untouched everywhere else.
+
+   This names the column, not the lines in it. The first pass listed four
+   selectors, which covered the four lines that happened to be on screen while
+   it was written and left the rest of the column on the ladder: the assigned
+   hint, the two paragraphs the failed and empty heroes render, and the
+   explainer. Sampling hub-horizon.webp under the hint's own box with both
+   scrim stops composited, it reads 3.24:1 at 375, 2.86:1 at 390 and 3.98:1 at
+   768, each needing 4.5. It passes only from 1024 up, because `cover` at
+   50% 78% drags the bright horizon into the column as the hero narrows — one
+   crop never speaks for the others, which is why this is measured at all six
+   widths. Full ivory clears every one, worst case 4.90:1 at 390.
+
+   The whole ladder is listed, not just the two steps in use, so a later step
+   added to this column cannot reintroduce the same failure. The date spans and
+   the Next up label are covered by ink-60 on their own paragraphs and no longer
+   need naming. The console card beside this column keeps the ladder: it carries
+   its own 0.55 panel and its body text measures 8.81:1 over the same photo. */
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-90,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-85,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-70,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-62,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-60,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-55,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-ink-50,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-smart .drill-observatory-ink-70,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-explainer summary,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-greeting .drill-observatory-explainer p,
+.drill-observatory-root .drill-observatory-hero .drill-observatory-quiet-link {
+  color: var(--observatory-ink);
+}
+
+/* The one explainer on the hub. A disclosure, not a tooltip and not a help
+   page: the student who needs it is the one with nothing assigned, and she is
+   already reading this column. Closed it costs one quiet line. */
+.drill-observatory-root .drill-observatory-explainer {
+  margin-top: var(--observatory-space-3);
+}
+
+.drill-observatory-root .drill-observatory-explainer summary {
+  align-items: center;
+  color: var(--observatory-ink-70);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--observatory-text-body);
+  font-weight: 500;
+  list-style: none;
+  min-height: 44px;
+  text-decoration: underline;
+  text-decoration-color: rgba(244, 241, 234, 0.55);
+  text-underline-offset: 4px;
+  transition: color var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-explainer summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The summary sits in the greeting column, where the rule above holds every
+   line at full ivory, so hover can no longer say anything in colour. It says it
+   in the underline instead: the rule is the affordance, and a dead hover rule
+   would just look like one that still worked. */
+.drill-observatory-root .drill-observatory-explainer summary:hover {
+  text-decoration-color: var(--observatory-ink);
+}
+
+.drill-observatory-root .drill-observatory-explainer summary:focus-visible {
+  border-radius: 999px;
+  outline: 2px solid var(--observatory-focus);
+  outline-offset: 3px;
+}
+
+.drill-observatory-root .drill-observatory-explainer p {
+  color: var(--observatory-ink-70);
+  font-size: var(--observatory-text-body);
+  line-height: 1.55;
+  margin-top: var(--observatory-space-1);
+  max-width: 46ch;
+}
+
+/* The Question jump's band on the Drill landing workspace. Full width, matching
+   Classroom Home: three dropdowns right-aligned against the canvas edge left a
+   ragged gutter beside the hero's left column, and the row is navigation for
+   the whole surface rather than a control belonging to its right side. The
+   canvas gap supplies the spacing below it, so this row contributes nothing but
+   its own height. */
+/* The tools row carries two controls now: QuestionJump on the left, the
+   LR/RC section switch hard right. It was `display: block` while it held only
+   the one. */
+.drill-observatory-root .drill-observatory-tools {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: -4px;
+}
+
+/* The address row takes the space that is left; the search trigger and the
+   switch keep their intrinsic width and stay together on one line, wrapping as
+   a pair rather than one above the other. */
+.drill-observatory-root .drill-observatory-tools > .qj {
+  flex: 1 1 320px;
+  width: auto;
+}
+
+.drill-observatory-root .drill-observatory-tools-aside {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.drill-observatory-root .drill-observatory-tools-aside .drill-observatory-section-toggle {
+  margin-left: 0;
+}
+
+/* ── Section switch (LR | RC) ────────────────────────────────────────────── */
+
+/* Note the surface it sits on: the observatory is dark CARDS on the stage,
+   and the tools row is on the stage, not on a card. So the switch is inked
+   for the stage through the --observatory-stage-* tokens, which follow the
+   theme (cream stage, dark ink in light; near-black stage, ivory ink in dark)
+   and take their values from the Question finder beside it (questionJump.css,
+   the matching tone) — the two are one utility strip and must not read as two
+   different systems. An ivory-on-ivory switch, which the first pass shipped,
+   was invisible here. */
+.drill-observatory-root .drill-observatory-section-toggle {
+  align-items: center;
+  background: var(--observatory-stage-well);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--observatory-stage-hair);
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  margin-left: auto;
+  padding: 0 2px;
+}
+
+.drill-observatory-root .drill-observatory-section-toggle-option {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: var(--observatory-stage-muted);
+  cursor: pointer;
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label);
+  font-weight: 600;
+  letter-spacing: var(--observatory-track-route);
+  line-height: 1;
+  /* 44px by height: the product's touch floor, met by the control itself. */
+  min-height: 44px;
+  padding: 0 16px;
+  position: relative;
+  transition: color 200ms cubic-bezier(0.22, 0.68, 0.24, 1);
+}
+
+.drill-observatory-root .drill-observatory-section-toggle-option:hover {
+  color: var(--observatory-stage-ink);
+}
+
+.drill-observatory-root .drill-observatory-section-toggle-option.is-active {
+  color: var(--observatory-stage-lit);
+}
+
+.drill-observatory-root .drill-observatory-section-toggle-option:focus-visible {
+  outline: 2px solid var(--observatory-stage-ink);
+  outline-offset: 2px;
+}
+
+/* The travelling lit slot. Sits behind the label — the label carries
+   `position: relative` and a z-index of its own so it is never covered. */
+.drill-observatory-root .drill-observatory-section-toggle-indicator {
+  background: var(--observatory-stage-ink);
+  border-radius: 999px;
+  inset: 4px 0;
+  position: absolute;
+  z-index: 0;
+}
+
+@media (max-width: 719px) {
+  /* Narrow: the switch drops under QuestionJump at full width rather than
+     shrinking into two unreadable slots. It is never hidden — unlike the route
+     label's trailing span, which is decoration. */
+  .drill-observatory-root .drill-observatory-section-toggle {
+    justify-content: center;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* Except when it is riding in the aside beside the search trigger, where
+     100% is 100% of a box that already holds the trigger — the switch grew
+     past its own container and off the right edge of the screen. In the
+     cluster it takes its natural width; the trigger has collapsed to its icon
+     by here, so the pair fits on one line. */
+  .drill-observatory-root .drill-observatory-tools-aside .drill-observatory-section-toggle {
+    width: auto;
+  }
+
+  .drill-observatory-root .drill-observatory-section-toggle-option {
+    flex: 1 1 0;
+  }
+}
+
+.drill-observatory-root .drill-observatory-hero-grid {
+  align-items: center;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) 392px;
+  /* Was 280px. The hero ate a third of a laptop screen and pushed Your
+     practice and Assigned work below the fold. */
+  min-height: 200px;
+  padding: var(--observatory-space-3) var(--observatory-space-6) var(--observatory-space-4);
+  position: relative;
+  z-index: 2;
+}
+
+.drill-observatory-root .drill-observatory-greeting {
+  align-self: end;
+  gap: var(--observatory-space-5);
+  max-width: 440px;
+  min-height: 0;
+  padding: 0 0 6px;
+}
+
+.drill-observatory-root .drill-observatory-smart {
+  align-self: center;
+  max-width: 440px;
+  min-height: 0;
+  padding: 0 0 6px;
+}
+
+.drill-observatory-root .drill-observatory-smart h1 {
+  color: var(--observatory-ink);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.35rem, 3cqi, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.drill-observatory-root .drill-observatory-smart p {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.drill-observatory-root .drill-observatory-greeting h1 {
+  color: var(--observatory-ink);
+  font-family: var(--observatory-display-font);
+  font-size: clamp(1.9rem, 3.4vw, var(--observatory-text-display));
+  font-variation-settings: "opsz" 60;
+  font-weight: 400;
+  letter-spacing: var(--observatory-track-display);
+  line-height: 1.08;
+  /* The scrim under the hero is what makes this text readable. A 24px shadow
+     at 60% was doing the scrim's job a second time, and on a serif at this
+     size it reads as a smudge rather than as contrast. */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.drill-observatory-root .drill-observatory-greeting[data-next="true"] h1 {
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+}
+
+.drill-observatory-root .drill-observatory-greeting h1 em {
+  font-style: italic;
+}
+
+.drill-observatory-root .drill-observatory-greeting p {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.drill-observatory-root .drill-observatory-cta {
+  background: var(--observatory-ink);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  color: #0c0c0e;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  gap: 9px;
+  height: 46px;
+  padding: 0 26px;
+  /* background-color is in this list because :hover changes it. It used to be
+     animated only by accident, through the Button utility that outranked this
+     rule; now that the rule wins on specificity the list has to be honest or
+     the hover would snap. */
+  transition: background-color var(--observatory-motion), filter var(--observatory-motion),
+    transform var(--observatory-motion);
+}
+
+/* A breath, not a blink: the button swells slightly while a soft ring of its
+   own colour rises off it and fades. The old 5px outline at 16% opacity was
+   too faint to read as motion on the dark hero. */
+@keyframes drill-observatory-smart-drill-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(244, 241, 234, 0.55);
+  }
+  50% {
+    transform: scale(1.045);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35), 0 0 0 10px rgba(244, 241, 234, 0.12);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 0 18px rgba(244, 241, 234, 0);
+  }
+}
+
+.drill-observatory-root .drill-observatory-smart-drill-pulse {
+  animation: drill-observatory-smart-drill-pulse 2s ease-in-out infinite;
+}
+
+/* The one Smart Drill button is the hero's main action, so it is a size up
+   from the other pill buttons. */
+.drill-observatory-root .drill-observatory-smart .drill-observatory-cta {
+  font-size: 16px;
+  height: 54px;
+  padding: 0 34px;
+}
+
+/* Keep hover color changes smooth while the Smart Drill animation runs. */
+.drill-observatory-root .drill-observatory-cta:hover {
+  background: var(--observatory-ink);
+  filter: brightness(1.06);
+}
+
+.drill-observatory-root .drill-observatory-cta:active {
+  transform: translateY(0.5px);
+}
+
+/* The primary CTA had no focus indicator at all: border 0 plus a shadow, and
+   the shared Button ring never reached it through the overrides. One rule for
+   every pill-shaped control on the cards. */
+.drill-observatory-root .drill-observatory-cta:focus-visible,
+.drill-observatory-root .drill-observatory-console-start:focus-visible,
+.drill-observatory-root .drill-observatory-secondary-link:focus-visible,
+.drill-observatory-root .drill-observatory-insight-action:focus-visible,
+.drill-observatory-root .drill-observatory-quiet-link:focus-visible,
+.drill-observatory-root .drill-observatory-rc-chip:focus-visible,
+.drill-observatory-root .drill-observatory-practice-tile:focus-visible {
+  box-shadow: none;
+  outline: 2px solid var(--observatory-focus);
+  outline-offset: 3px;
+}
+
+.drill-observatory-root .drill-observatory-focus-inset {
+  outline: none;
+}
+
+.drill-observatory-root .drill-observatory-focus-inset:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--observatory-focus);
+}
+
+.drill-observatory-root .drill-observatory-skeleton-bar {
+  background: var(--observatory-skeleton);
+  border-radius: 999px;
+}
+
+/* ── Next up, in the hero ─────────────────────────────────────────────── */
+
+.drill-observatory-root .drill-observatory-next {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.drill-observatory-root .drill-observatory-next-title {
+  color: var(--observatory-ink);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.drill-observatory-root .drill-observatory-cta-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 20px;
+}
+
+/* The second option, when the first is assigned work. A link, not a second
+   button: two buttons of equal weight is the grid the page is trying not to be. */
+.drill-observatory-root .drill-observatory-quiet-link {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: var(--observatory-ink-70);
+  cursor: pointer;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  min-height: 44px;
+  padding: 0 4px;
+  text-decoration: underline;
+  /* The underline is the only thing marking this as a link, so it carries the
+     affordance and 0.35 was too faint against the photograph. */
+  text-decoration-color: rgba(244, 241, 234, 0.55);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-underline-offset: 4px;
+  transition: color var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-quiet-link:hover {
+  color: var(--observatory-ink);
+}
+
+/* Secondary insight actions: a link, on the card, no text shadow. */
+.drill-observatory-root .drill-observatory-insight-link {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: var(--observatory-ink-70);
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 500;
+  min-height: 44px;
+  padding: 0 4px;
+  text-decoration: underline;
+  text-decoration-color: rgba(244, 241, 234, 0.3);
+  text-underline-offset: 4px;
+  transition: color var(--observatory-motion);
+  white-space: nowrap;
+}
+
+.drill-observatory-root .drill-observatory-insight-link:hover {
+  color: var(--observatory-ink);
+}
+
+.drill-observatory-root .drill-observatory-deck[data-queue="true"] {
+  align-items: start;
+}
+
+.drill-observatory-root .drill-observatory-deck[data-queue="true"] .drill-observatory-today,
+.drill-observatory-root .drill-observatory-deck[data-queue="true"] .drill-observatory-today-inner {
+  height: auto;
+}
+
+/* ── Finder console ──────────────────────────────────────────────────────── */
+
+.drill-observatory-root .drill-observatory-console {
+  align-self: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: var(--observatory-glass);
+  border: 0;
+  border-radius: var(--observatory-radius-panel);
+  box-shadow:
+    0 0 0 1px var(--observatory-ring-glass),
+    var(--observatory-shadow-glass);
+  display: flex;
+  flex-direction: column;
+  gap: var(--observatory-space-3);
+  margin: 0;
+  max-width: none;
+  padding: var(--observatory-space-5);
+  position: relative;
+  z-index: 3;
+}
+
+.drill-observatory-root .drill-observatory-console input[type="search"] {
+  background: var(--observatory-well);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong);
+  color: var(--observatory-ink);
+  font-size: var(--observatory-text-body);
+  font-weight: 400;
+  height: 46px;
+}
+
+.drill-observatory-root .drill-observatory-console button[role="combobox"] {
+  background: var(--observatory-well);
+  border: 0;
+  border-radius: var(--observatory-radius-control);
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong);
+  color: var(--observatory-ink);
+  font-size: var(--observatory-text-body);
+  font-weight: 500;
+  height: 46px;
+  padding: 0 var(--observatory-space-4);
+}
+
+/* Radix puts data-placeholder on the TRIGGER, not on the value span — the
+   obvious selector (span[data-placeholder]) matches nothing and every select
+   renders at full ivory whether or not it holds a value. */
+.drill-observatory-root .drill-observatory-console button[role="combobox"][data-placeholder] {
+  color: var(--observatory-ink-70);
+}
+
+.drill-observatory-root .drill-observatory-console input[type="search"]::placeholder {
+  color: var(--observatory-ink-70);
+}
+
+.drill-observatory-root .drill-observatory-console input[type="search"]:focus-visible,
+.drill-observatory-root .drill-observatory-console button[role="combobox"]:focus-visible {
+  box-shadow:
+    0 0 0 1px var(--observatory-ring-strong),
+    0 0 0 3px rgba(244, 241, 234, 0.14);
+  outline: none;
+}
+
+.drill-observatory-root .drill-observatory-console button[role="combobox"] svg {
+  color: var(--observatory-ink-70);
+  opacity: 1;
+  stroke-width: 1.8;
+}
+
+.drill-observatory-root .drill-observatory-console button[role="combobox"]:disabled {
+  color: var(--observatory-ink-50);
+  opacity: 1;
+}
+
+/* Start. Ghost until a question is actually selected — the design's one piece of
+   state signalling, and the reason it is not a filled button. */
+.drill-observatory-root .drill-observatory-console-start {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong);
+  color: var(--observatory-ink-60);
+  font-size: var(--observatory-text-body);
+  font-weight: 600;
+  height: 46px;
+  transition: color var(--observatory-motion), box-shadow var(--observatory-motion),
+    transform var(--observatory-motion);
+  width: 100%;
+}
+
+.drill-observatory-root .drill-observatory-console-start:not(:disabled) {
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.42);
+  color: var(--observatory-ink);
+}
+
+.drill-observatory-root .drill-observatory-console-start:not(:disabled):hover {
+  box-shadow: 0 0 0 1px var(--observatory-ink);
+}
+
+.drill-observatory-root .drill-observatory-console-start:not(:disabled):active {
+  transform: translateY(0.5px);
+}
+
+.drill-observatory-root .drill-observatory-console-start:disabled {
+  opacity: 1;
+}
+
+/* Advanced filters and search results sit IN FLOW inside the console — the
+   console grows rather than dropping an overlay. An overlay over a
+   backdrop-filtered surface needs its own stacking and dismiss handling for no
+   gain: this panel is only ever open because the student opened it. */
+.drill-observatory-root .drill-observatory-advanced,
+.drill-observatory-root .drill-observatory-search-results {
+  background: rgba(0, 0, 0, 0.28);
+  border: 0;
+  border-radius: var(--observatory-radius-control);
+  box-shadow: 0 0 0 1px var(--observatory-ring-quiet);
+  padding: var(--observatory-space-3);
+  position: static;
+}
+
+.drill-observatory-root .drill-observatory-advanced {
+  display: grid;
+  gap: var(--observatory-space-2);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.drill-observatory-root .drill-observatory-search-results {
+  max-height: 208px;
+  overflow-y: auto;
+}
+
+.drill-observatory-root .drill-observatory-advanced button[role="combobox"] {
+  height: 40px;
+}
+
+.drill-observatory-root .drill-observatory-disclosure {
+  align-items: center;
+  color: var(--observatory-ink-70);
+  display: inline-flex;
+  gap: var(--observatory-space-2);
+  transition: color var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-disclosure:hover {
+  color: var(--observatory-ink-85);
+}
+
+/* ── Lower deck ──────────────────────────────────────────────────────────── */
+
+/* Two separate cards with a real gap, not one shell split by a divider. The
+   practice card is flat black; Today carries the eclipse. */
+.drill-observatory-root .drill-observatory-deck {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  gap: var(--observatory-space-5);
+  overflow: visible;
+}
+
+.drill-observatory-root .drill-observatory-practice-bay,
+.drill-observatory-root .drill-observatory-today-bay {
+  min-width: 0;
+}
+
+.drill-observatory-root .drill-observatory-practice,
+.drill-observatory-root .drill-observatory-launcher {
+  background: var(--observatory-surface-card);
+  border: 0;
+  border-radius: var(--observatory-radius-shell);
+  box-shadow:
+    0 0 0 1px var(--observatory-hairline),
+    var(--observatory-shadow-card);
+  height: auto;
+  padding: var(--observatory-space-5) 22px;
+}
+
+.drill-observatory-root .drill-observatory-practice {
+  gap: var(--observatory-space-6);
+}
+
+/* Tools are a hairline split, not two boxed cards. */
+/* One column per tool. This was 1fr 1fr and stayed that way when Reading
+   Comprehension made it three, which wrapped the third tile onto its own row
+   under a hole. auto-fit keeps it honest as tools are added or removed. */
+.drill-observatory-root .drill-observatory-practice-tools {
+  border: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+}
+
+.drill-observatory-root .drill-observatory-practice-tile {
+  background: transparent;
+  border: 0;
+  border-radius: var(--observatory-radius-control);
+  gap: 10px;
+  padding: 2px 24px 2px 2px;
+  transition: background-color var(--observatory-motion), opacity var(--observatory-motion),
+    transform var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-practice-tile + .drill-observatory-practice-tile {
+  border-left: 1px solid var(--observatory-hairline);
+  padding: 2px 2px 2px 24px;
+}
+
+.drill-observatory-root .drill-observatory-practice-tile:hover {
+  background: transparent;
+  transform: translateY(-2px);
+}
+
+.drill-observatory-root .drill-observatory-practice-tile:active {
+  transform: translateY(0.5px);
+}
+
+/* Reading Comprehension turns the tool row over instead of navigating away.
+   The faces are absolutely stacked and the deck's height is set from JS, so
+   the container has to be positioned and its height transitioned here. */
+.drill-observatory-root .drill-observatory-flip {
+  perspective: 1400px;
+  position: relative;
+  /* Height is set from JS and snaps. It was transitioned, which animates a
+     layout property; the faces' rotation carries the motion on its own. */
+}
+
+.drill-observatory-root .drill-observatory-flip-face {
+  backface-visibility: hidden;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transition: transform 520ms cubic-bezier(0.22, 0.68, 0.24, 1),
+    visibility 0s linear 260ms;
+  width: 100%;
+}
+
+.drill-observatory-root .drill-observatory-flip-front {
+  transform: rotateY(0deg);
+}
+
+.drill-observatory-root .drill-observatory-flip-back {
+  transform: rotateY(-180deg);
+}
+
+/* visibility (not opacity) so the hidden face leaves the tab order — a
+   backface-hidden element is still focusable. */
+.drill-observatory-root .drill-observatory-flip-face[aria-hidden="true"] {
+  visibility: hidden;
+}
+
+.drill-observatory-root .drill-observatory-flip.is-flipped .drill-observatory-flip-front {
+  transform: rotateY(180deg);
+}
+
+.drill-observatory-root .drill-observatory-flip.is-flipped .drill-observatory-flip-back {
+  transform: rotateY(0deg);
+}
+
+.drill-observatory-root .drill-observatory-rc-build {
+  display: grid;
+  gap: 16px;
+  padding: 2px;
+}
+
+.drill-observatory-root .drill-observatory-rc-build-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+/* The Start control is the console's, sized down to sit in a row rather than
+   span a column. */
+.drill-observatory-root .drill-observatory-rc-build-actions .drill-observatory-console-start {
+  height: 40px;
+  padding: 0 20px;
+  width: auto;
+}
+
+.drill-observatory-root .drill-observatory-rc-chip {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--observatory-ring-glass);
+  color: var(--observatory-ink-70);
+  font-size: var(--observatory-text-meta);
+  font-weight: 500;
+  min-height: 32px;
+  padding: 7px 14px;
+  transition: box-shadow var(--observatory-motion), color var(--observatory-motion),
+    background-color var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-rc-chip:hover {
+  box-shadow: 0 0 0 1px var(--observatory-ring-strong);
+  color: rgba(244, 241, 234, 0.95);
+}
+
+.drill-observatory-root .drill-observatory-rc-chip.is-active {
+  background: rgba(244, 241, 234, 0.1);
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.45);
+  color: var(--observatory-ink);
+}
+
+.drill-observatory-root .drill-observatory-secondary-link {
+  background: transparent;
+  border: 1px solid var(--observatory-ring-glass);
+  border-radius: 999px;
+  color: var(--observatory-ink-70);
+  font-size: var(--observatory-text-meta);
+  font-weight: 500;
+  gap: 7px;
+  min-height: 44px;
+  padding: 0 16px;
+  transition: border-color var(--observatory-motion), color var(--observatory-motion),
+    transform var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-secondary-link:hover {
+  border-color: var(--observatory-ring-strong);
+  color: rgba(244, 241, 234, 0.95);
+}
+
+.drill-observatory-root .drill-observatory-secondary-link:active {
+  transform: translateY(0.5px);
+}
+
+/* Insights are rows under hairlines, not a carousel and not nested cards.
+   Every real signal is on the page at once; nothing rotates. */
+.drill-observatory-root .drill-observatory-insights {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.drill-observatory-root .drill-observatory-insight {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  justify-content: space-between;
+  padding: 18px 0;
+}
+
+.drill-observatory-root .drill-observatory-insight:first-child {
+  padding-top: 0;
+}
+
+.drill-observatory-root .drill-observatory-insight:last-child {
+  padding-bottom: 0;
+}
+
+.drill-observatory-root .drill-observatory-insight + .drill-observatory-insight {
+  border-top: 1px solid var(--observatory-ring-quiet);
+}
+
+/* Analytics and Journal are records, not tools; they sit under their own
+   hairline at the foot of the card. */
+.drill-observatory-root .drill-observatory-records {
+  border-top: 1px solid var(--observatory-ring-quiet);
+}
+
+.drill-observatory-root .drill-observatory-insight-value {
+  color: var(--observatory-ink-90);
+  font-family: var(--observatory-display-font);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.drill-observatory-root .drill-observatory-insight-action {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.16);
+  color: var(--observatory-ink-90);
+  font-size: 12.5px;
+  font-weight: 500;
+  min-height: 44px;
+  padding: 0 18px;
+  transition: background-color var(--observatory-motion), box-shadow var(--observatory-motion),
+    transform var(--observatory-motion);
+  white-space: nowrap;
+}
+
+.drill-observatory-root .drill-observatory-insight-action:hover {
+  background: transparent;
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, 0.3);
+}
+
+.drill-observatory-root .drill-observatory-insight-action:active {
+  transform: translateY(0.5px);
+}
+
+/* ── Today ───────────────────────────────────────────────────────────────── */
+
+.drill-observatory-root .drill-observatory-today {
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  height: auto;
+  padding: 0;
+}
+
+.drill-observatory-root .drill-observatory-today-inner {
+  background: var(--observatory-surface-card);
+  border-radius: var(--observatory-radius-shell);
+  box-shadow:
+    0 0 0 1px var(--observatory-ring),
+    var(--observatory-shadow-card);
+  gap: var(--observatory-space-3);
+  height: auto;
+  overflow: hidden;
+  padding: var(--observatory-space-5);
+  position: relative;
+}
+
+.drill-observatory-root .drill-observatory-today-primary {
+  background: rgba(244, 241, 234, 0.04);
+  border-radius: var(--observatory-radius-inner);
+  box-shadow: 0 0 0 1px var(--observatory-ring);
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.drill-observatory-root .drill-observatory-today-primary > div {
+  background: none;
+  border-radius: var(--observatory-radius-inner);
+  min-height: 0;
+}
+
+.drill-observatory-root .drill-observatory-today-title {
+  color: var(--observatory-ink);
+  font-family: var(--observatory-display-font);
+  font-size: var(--observatory-text-heading);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.drill-observatory-root .drill-observatory-today-chip {
+  border: 1px solid var(--observatory-ring-chip);
+  border-radius: 999px;
+  color: var(--observatory-ink-85);
+  font-family: var(--observatory-label-font);
+  font-size: var(--observatory-text-label-sm);
+  font-weight: 600;
+  letter-spacing: var(--observatory-track-chip);
+  padding: 5px 10px;
+  text-transform: uppercase;
+}
+
+.drill-observatory-root .drill-observatory-today-action {
+  border-top: 1px solid var(--observatory-ring);
+  transition: background-color var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-today-action:hover:not(:disabled) {
+  background-color: rgba(244, 241, 234, 0.05);
+}
+
+.drill-observatory-root .drill-observatory-today-rail {
+  background: rgba(244, 241, 234, 0.035);
+  border-radius: var(--observatory-radius-control);
+  box-shadow: 0 0 0 1px var(--observatory-ring-quiet);
+  padding: var(--observatory-space-3) var(--observatory-space-4);
+  transition: transform var(--observatory-motion), box-shadow var(--observatory-motion),
+    background-color var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-today-rail:hover {
+  background: rgba(244, 241, 234, 0.06);
+  box-shadow: 0 0 0 1px var(--observatory-ring-glass);
+  transform: translateY(-2px);
+}
+
+.drill-observatory-root .drill-observatory-today-rail:active {
+  transform: translateY(0.5px);
+}
+
+.drill-observatory-root .drill-observatory-resume-row {
+  background: rgba(244, 241, 234, 0.035);
+  border: 1px solid var(--observatory-ring-glass);
+  border-radius: var(--observatory-radius-control);
+  color: inherit;
+  cursor: pointer;
+  min-height: 58px;
+  padding: 12px 14px;
+  transition: background-color var(--observatory-motion);
+}
+
+.drill-observatory-root .drill-observatory-resume-row:hover {
+  background: rgba(244, 241, 234, 0.06);
+}
+
+.drill-observatory-root .drill-observatory-today-quiet {
+  background: rgba(244, 241, 234, 0.035);
+  border-radius: var(--observatory-radius-control);
+  box-shadow: 0 0 0 1px var(--observatory-ring-quiet);
+  color: var(--observatory-ink-50);
+  font-size: var(--observatory-text-meta);
+  padding: var(--observatory-space-3) var(--observatory-space-4);
+}
+
+/* ── Analytics stage ─────────────────────────────────────────────────────── */
+
+/* AnalyticsStage is written against the app's light-only shadcn tokens; dropped
+   on this surface it renders grey-on-black. Re-map it rather than fork it. */
+.drill-observatory-root .drill-observatory-analytics {
+  background: var(--observatory-surface-card);
+  border: 0;
+  border-radius: var(--observatory-radius-shell);
+  box-shadow:
+    0 0 0 1px var(--observatory-hairline),
+    var(--observatory-shadow-card);
+  color: var(--observatory-ink);
+  overflow: hidden;
+  padding: 26px 28px;
+}
+
+.drill-observatory-root .drill-observatory-analytics .bg-white,
+.drill-observatory-root .drill-observatory-analytics .bg-slate-100 {
+  background-color: rgba(244, 241, 234, 0.035);
+}
+
+.drill-observatory-root .drill-observatory-analytics .border-slate-200,
+.drill-observatory-root .drill-observatory-analytics .border-slate-300,
+.drill-observatory-root .drill-observatory-analytics .border-slate-100 {
+  border-color: var(--observatory-hairline);
+}
+
+.drill-observatory-root .drill-observatory-analytics .text-slate-900,
+.drill-observatory-root .drill-observatory-analytics .text-slate-800,
+.drill-observatory-root .drill-observatory-analytics .text-slate-700,
+.drill-observatory-root .drill-observatory-analytics .text-slate-600 {
+  color: var(--observatory-ink);
+}
+
+.drill-observatory-root .drill-observatory-analytics .text-slate-500,
+.drill-observatory-root .drill-observatory-analytics .text-slate-400 {
+  color: var(--observatory-ink-55);
+}
+
+.drill-observatory-root .drill-observatory-analytics .shadow-sm,
+.drill-observatory-root .drill-observatory-analytics .shadow {
+  box-shadow: none;
+}
+
+.drill-observatory-root .drill-observatory-analytics .rounded-xl,
+.drill-observatory-root .drill-observatory-analytics .rounded-2xl {
+  border-radius: var(--observatory-radius-control);
+}
+
+.drill-observatory-root .drill-observatory-analytics table tr {
+  border-color: var(--observatory-hairline);
+}
+
+.drill-observatory-root .drill-observatory-analytics .bg-slate-900 {
+  background-color: var(--observatory-ink);
+  color: #0c0c0e;
+}
+
+.drill-observatory-root .drill-observatory-analytics .bg-rose-50 {
+  background-color: rgba(240, 106, 118, 0.12);
+}
+
+.drill-observatory-root .drill-observatory-analytics .text-rose-600 {
+  color: #ff97a1;
+}
+
+/* ── Fit to the screen ─────────────────────────────────────────────────── */
+
+/* The Drill page sizes itself from the window, continuously, so a laptop at
+   Windows' default 125% scaling (1536x695 of page) shows the finder, both hero
+   actions, Resume, Top priority and two assigned items without scrolling, and
+   a large monitor gets a wider, roomier page instead of a small island.
+   Every value is a clamp: a floor for small laptops, a cap for big monitors,
+   and the window's height or width in between. No step changes. */
+.drill-observatory-root {
+  --fit-gap: clamp(12px, 2.4vh, 24px);
+  --fit-pad: clamp(14px, 2.6vh, 28px);
+  --fit-hero-min: clamp(160px, 25vh, 300px);
+  --fit-title: clamp(1.35rem, min(3cqi, 4.4vh), 2.5rem);
+  --fit-console: clamp(340px, 30cqi, 460px);
+}
+
+.drill-observatory-root .drill-observatory-canvas {
+  gap: var(--fit-gap);
+  max-width: clamp(71.25rem, 82cqi, 96rem);
+}
+
+.drill-observatory-root .drill-observatory-deck {
+  gap: var(--fit-gap);
+}
+
+.drill-observatory-root .drill-observatory-hero-grid {
+  grid-template-columns: minmax(0, 1fr) var(--fit-console);
+  min-height: var(--fit-hero-min);
+  padding: calc(var(--fit-pad) * 0.8) var(--fit-pad);
+}
+
+.drill-observatory-root .drill-observatory-smart h1,
+.drill-observatory-root .drill-observatory-console h2 {
+  font-size: var(--fit-title);
+}
+
+.drill-observatory-root .drill-observatory-console {
+  gap: calc(var(--fit-gap) * 0.6);
+  padding: var(--fit-pad);
+}
+
+.drill-observatory-root .drill-observatory-practice,
+.drill-observatory-root .drill-observatory-today-inner {
+  padding: var(--fit-pad) clamp(18px, 1.6cqi, 28px);
+}
+
+.drill-observatory-root .drill-observatory-practice {
+  gap: var(--fit-gap);
+}
+
+.drill-observatory-root .drill-observatory-insight {
+  padding: clamp(10px, 2vh, 18px) 0;
+}
+
+.drill-observatory-root .drill-observatory-resume-row {
+  min-height: clamp(50px, 7.5vh, 62px);
+  padding: clamp(8px, 1.4vh, 12px) 14px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+/* The console is a fixed 392px by design. Below ~1080px of canvas the hero's
+   left column starts losing the greeting, so the console narrows before the
+   layout stacks. */
+@media (max-width: 1199px) {
+  .drill-observatory-root .drill-observatory-hero-grid {
+    gap: var(--observatory-space-5);
+  }
+
+}
+
+@media (max-width: 1023px) {
+  /* The menu button lives in the sticky bar above this stage now, so the top
+     inset is the hub's own spacing rather than clearance for a floating
+     button. */
+  .classroom-root.classroom-root-drill .classroom-stage {
+    padding: var(--observatory-space-4) var(--observatory-space-5)
+      var(--observatory-space-5);
+  }
+
+}
+
+@media (max-width: 899px) {
+  .drill-observatory-root .drill-observatory-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    min-height: 0;
+    padding-top: var(--observatory-space-5);
+  }
+
+  .drill-observatory-root .drill-observatory-hero {
+    background-position: center 78%;
+  }
+
+  .drill-observatory-root .drill-observatory-greeting,
+  .drill-observatory-root .drill-observatory-smart {
+    align-self: start;
+    max-width: none;
+  }
+
+  .drill-observatory-root .drill-observatory-console {
+    align-self: stretch;
+    max-width: 460px;
+  }
+}
+
+@media (max-width: 759px) {
+  .classroom-root.classroom-root-drill .classroom-stage {
+    padding: var(--observatory-space-4) var(--observatory-space-4)
+      var(--observatory-space-5);
+  }
+
+  .drill-observatory-root .drill-observatory-hero-grid {
+    gap: var(--observatory-space-5);
+    padding: var(--observatory-space-4);
+  }
+
+  .drill-observatory-root .drill-observatory-console {
+    max-width: none;
+  }
+
+  .drill-observatory-root .drill-observatory-practice,
+  .drill-observatory-root .drill-observatory-launcher,
+  .drill-observatory-root .drill-observatory-today-inner,
+  .drill-observatory-root .drill-observatory-analytics {
+    padding: var(--observatory-space-5);
+  }
+
+  .drill-observatory-root .drill-observatory-practice-tools {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .drill-observatory-root .drill-observatory-practice-tile {
+    padding: 2px 2px 14px;
+  }
+
+  .drill-observatory-root .drill-observatory-practice-tile + .drill-observatory-practice-tile {
+    border-left: 0;
+    border-top: 1px solid var(--observatory-hairline);
+    padding: 14px 2px 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drill-observatory-root .drill-observatory-smart-drill-pulse {
+    animation: none;
+  }
+  .drill-observatory-root *:not(.drill-observatory-smart-drill-pulse),
+  .drill-observatory-root *:not(.drill-observatory-smart-drill-pulse)::before,
+  .drill-observatory-root *:not(.drill-observatory-smart-drill-pulse)::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .drill-observatory-root .drill-observatory-practice-tile:hover,
+  .drill-observatory-root .drill-observatory-today-rail:hover {
+    transform: none;
+  }
+
+}
+
+/* end observatory */
+
+.classroom-root .classroom-dateline {
+  align-items: center;
+  color: var(--classroom-meta-text);
+  display: flex;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.classroom-root .classroom-title {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 24px;
+}
+
+.classroom-root .classroom-message {
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  margin-bottom: 48px;
+  padding: 20px;
+  transition: border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-message header {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.classroom-root .classroom-message header .classroom-avatar {
+  height: 32px;
+  width: 32px;
+}
+
+.classroom-root .classroom-message header strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-message time {
+  color: var(--classroom-meta-text);
+  margin-left: auto;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-message-body {
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.classroom-root .classroom-message-link {
+  color: var(--classroom-link-text);
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 14px 0 0;
+  text-decoration: none;
+  transition: color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-message-link:hover {
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-message-clamped {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+.classroom-root .classroom-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.classroom-root .classroom-button {
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  font-family: "Outfit", ui-sans-serif, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  /* DESIGN.md: every button size clears 44px by being that height, never by a
+     padding accident. This computed to 38px. */
+  min-height: 44px;
+  padding: 8px 14px;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-button:hover {
+  background: var(--classroom-hover);
+}
+
+/* The fill has to carry a label, so it uses the accent pair rather than
+   --classroom-link. White on --classroom-link measured 2.38:1; the accent pair
+   is 5.38:1 in light and 8.06:1 in the dark alternate. */
+.classroom-root .classroom-button-primary {
+  background: var(--classroom-accent);
+  border-color: var(--classroom-accent);
+  color: var(--classroom-accent-ink);
+}
+
+.classroom-root .classroom-button-primary:hover {
+  background: var(--classroom-accent-hover, var(--classroom-accent));
+}
+
+.classroom-root .classroom-content-section {
+  margin-bottom: 48px;
+}
+
+.classroom-root .classroom-section-header {
+  align-items: baseline;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.classroom-root .classroom-section-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.classroom-root .classroom-section-meta {
+  color: var(--classroom-meta-text);
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-leader-row {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px 0;
+  position: relative;
+}
+
+.classroom-root .classroom-leader-row + .classroom-leader-row {
+  border-top: 1px solid var(--classroom-line);
+}
+
+.classroom-root .classroom-leader-row p {
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-dotted-leader {
+  align-self: center;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--classroom-dash) 0 4px,
+    transparent 4px 8px
+  );
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 16px;
+}
+
+.classroom-root .classroom-row-status {
+  color: var(--classroom-meta-text);
+  opacity: 0.7;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-row-status-strong {
+  color: var(--classroom-ink);
+  opacity: 1;
+}
+
+.classroom-root .classroom-covering-link {
+  border: 0;
+  cursor: pointer;
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.classroom-root .classroom-inline-error {
+  align-items: center;
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+}
+
+.classroom-root .classroom-inline-error p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.classroom-root .classroom-inline-error .classroom-button {
+  margin-left: auto;
+}
+
+.classroom-root .classroom-skeleton-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.classroom-root .classroom-skeleton-stack .classroom-skeleton:nth-child(2) {
+  width: 62%;
+}
+
+.classroom-root .classroom-skeleton-stack .classroom-skeleton:nth-child(3) {
+  width: 78%;
+}
+
+.classroom-root .classroom-note-meta {
+  border: 1px dashed var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-meta-text);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  padding: 12px 14px;
+}
+
+/* DESIGN.md's Reading Measure Rule: a surface carrying a passage, stimulus or
+   explanation constrains its own line length; the container's maximum is a
+   ceiling for layout, never a licence for prose. This ran the full 720px column
+   at 16px, about 90 characters a line, against the 65-75ch the rule asks for.
+   Applied to the prose block rather than each child so an authored note's own
+   elements inherit it too. Figures and tables opt out below, because a wide
+   table is easier to read than a wrapped one.
+
+   56ch, not the 68ch you would reach for. The `ch` unit is the width of "0",
+   and in Outfit that is 9.71px against a 7.58px average character, so 68ch
+   renders about 87 characters a line. 56ch measures ~72, which is inside the
+   65-75 the rule actually asks for. Measured in the browser, not assumed. */
+.classroom-root .classroom-prose {
+  color: var(--classroom-ink-body);
+  max-width: 56ch;
+}
+
+.classroom-root .classroom-prose figure,
+.classroom-root .classroom-prose table,
+.classroom-root .classroom-prose pre {
+  max-width: none;
+}
+
+.classroom-root .classroom-prose p {
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0 0 20px;
+}
+
+/* A link inside a note is orange that carries words, so it resolves from
+   --classroom-link-text. It was on --classroom-link, which this file already
+   records as measuring 2.38:1 on the page: the same text/fill split that put
+   every date below the floor, still live in the one place a student reads what
+   their coach wrote. --classroom-link-text measures 5.38:1 light; dark is
+   #ff8906 in both tokens, so dark is unchanged.
+
+   The underline is not decoration either. The rule set text-decoration: none
+   and then moved the colour to --classroom-ink on hover, so a link in a note
+   was identifiable by colour alone and stopped being identifiable at all under
+   the cursor (WCAG 1.4.1). Underlined in both states; hover moves the colour
+   toward the ink without giving up the underline. */
+.classroom-root .classroom-prose a {
+  color: var(--classroom-link-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-prose a:hover {
+  color: var(--classroom-ink);
+  text-decoration: underline;
+}
+
+.classroom-root .classroom-prose h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 36px 0 14px;
+}
+
+.classroom-root .classroom-prose h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 28px 0 12px;
+}
+
+/* The markers have to be asked for. Tailwind's preflight sets
+   `ol, ul, menu { list-style: none }` globally and this rule only restored the
+   indent, so every list in every note rendered as unmarked indented lines —
+   and a numbered list lost its numbers, which is a change of meaning, not of
+   style: "1, 2, 3" became three lines that no longer say they are in order.
+   Measured in the browser against the live sheet: list-style-type computed
+   `none` on a note's <ul>. */
+.classroom-root .classroom-prose ol,
+.classroom-root .classroom-prose ul {
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0 0 20px;
+  padding-left: 22px;
+}
+
+.classroom-root .classroom-prose ul {
+  list-style-type: disc;
+}
+
+.classroom-root .classroom-prose ol {
+  list-style-type: decimal;
+}
+
+.classroom-root .classroom-prose ul ul {
+  list-style-type: circle;
+}
+
+.classroom-root .classroom-prose li::marker {
+  color: var(--classroom-meta-text);
+}
+
+.classroom-root .classroom-prose li {
+  margin-bottom: 10px;
+}
+
+/* A homework part from a session bundle arrives as `- [ ] item`. Rendering the
+   marker as a box says "this is a thing to do" without pretending to be
+   interactive: nothing here writes back, so a real checkbox would be a control
+   that does nothing. The box is aria-hidden and the state is carried in text
+   for a screen reader. */
+.classroom-root .classroom-prose li.classroom-prose-task {
+  align-items: flex-start;
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin-left: -22px;
+}
+
+.classroom-root .classroom-prose-task-box {
+  align-items: center;
+  border: 1.5px solid var(--classroom-line-strong);
+  border-radius: 3px;
+  color: var(--classroom-ink);
+  display: flex;
+  flex: 0 0 auto;
+  font-size: 12px;
+  height: 17px;
+  justify-content: center;
+  line-height: 1;
+  margin-top: 5px;
+  width: 17px;
+}
+
+.classroom-root .classroom-prose-task[data-done] .classroom-prose-task-text {
+  color: var(--classroom-meta-text);
+}
+
+.classroom-root .classroom-prose blockquote {
+  border-left: 4px solid var(--classroom-ink);
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0 0 22px;
+  padding: 2px 0 2px 18px;
+}
+
+.classroom-root .classroom-prose figure {
+  margin: 0 0 24px;
+}
+
+.classroom-root .classroom-prose figure img,
+.classroom-root .classroom-prose > img {
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: block;
+  height: auto;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  max-width: min(100vw, 720px);
+  position: relative;
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%);
+  width: min(100vw, 720px);
+}
+
+.classroom-root .classroom-prose figure figcaption {
+  color: var(--classroom-meta-text);
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  font-size: 0.75rem;
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-prose .callout,
+.classroom-root .classroom-callout {
+  background: var(--classroom-hover);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: flex;
+  font-size: 15px;
+  gap: 12px;
+  line-height: 1.65;
+  margin: 0 0 24px;
+  padding: 14px 16px;
+}
+
+.classroom-root .classroom-prose iframe,
+.classroom-root .classroom-prose embed {
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: block;
+  max-width: 100%;
+  min-height: 360px;
+  width: 100%;
+}
+
+.classroom-root .classroom-detail-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+/* The menu button sits in this bar below 1024px. The bar is sticky, so it
+   holds the top of the viewport while the student scrolls, but it takes its
+   own 56px in the flow instead of floating over the page the way the fixed
+   button did. Above 1024px the sidebar is visible and the bar is not drawn. */
+.classroom-root .classroom-mobile-bar {
+  display: none;
+}
+
+.classroom-root .classroom-mobile-menu-button {
+  align-items: center;
+  background: var(--classroom-trigger);
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  display: none;
+  flex: none;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+/* The shell's own label voice, not the hub's mono micro-label: this bar is
+   part of the classroom chrome and appears on every section. */
+/* The bar's section name, promoted to the control that opens that section's
+   list. It replaces a 48px full-width trigger that sat inside the reading
+   column above the note's own dateline and h1, costing 23% of a 390px screen
+   before a word the coach wrote. Three things about the bar make it the better
+   home: it already prints the section's real name, so the control no longer has
+   to say "Open the list" and leave the object unnamed; it is sticky, so it
+   survives a long note instead of scrolling away; and it puts the room control
+   and the section control in one row where the difference between them reads.
+
+   It carries the rail’s own chevron glyph, which already means "this opens a list"
+   everywhere else in this shell, rather than an icon the student has to decode.
+   No border: the words carry the affordance, the same reasoning the sign-out
+   control is built on. */
+.classroom-root .classroom-mobile-bar-trigger {
+  align-items: center;
+  align-self: stretch;
+  background: transparent;
+  border: 0;
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink);
+  cursor: pointer;
+  display: flex;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  gap: 5px;
+  margin-left: -8px;
+  min-width: 0;
+  padding: 0 8px;
+}
+
+.classroom-root .classroom-mobile-bar-trigger > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-mobile-bar-trigger > em {
+  color: var(--classroom-meta-text);
+  flex: none;
+  font-size: 15px;
+  font-style: normal;
+  line-height: 1;
+}
+
+.classroom-root .classroom-mobile-bar-trigger:hover {
+  background: var(--classroom-hover);
+}
+
+/* --classroom-link is the decorative orange and measures 2.38:1 on the light
+   ground, under the 3:1 a focus indicator owes. --classroom-link-text is the
+   themed pair that carries meaning: 5.38:1 light, and the same #ff8906 in dark
+   where the ground is near-black. */
+.classroom-root .classroom-mobile-bar-trigger:focus-visible {
+  outline: 2px solid var(--classroom-link-text);
+  outline-offset: -2px;
+}
+
+.classroom-root .classroom-mobile-bar-label {
+  color: var(--classroom-meta-text);
+  font-size: 13px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-mobile-menu,
+.classroom-root .classroom-section-overlay {
+  inset: 0;
+  position: fixed;
+  z-index: 80;
+}
+
+.classroom-root .classroom-overlay-backdrop {
+  background: rgba(15, 14, 23, 0.42);
+  border: 0;
+  cursor: pointer;
+  inset: 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.classroom-root .classroom-mobile-menu > aside {
+  bottom: 0;
+  left: 0;
+  max-width: 336px;
+  position: absolute;
+  top: 0;
+  width: calc(100% - 32px);
+}
+
+.classroom-root .classroom-mobile-menu .classroom-sidebar-card {
+  border-left: 0;
+  border-radius: 0 var(--classroom-radius) var(--classroom-radius) 0;
+}
+
+.classroom-root .classroom-mobile-menu .classroom-overlay-close {
+  margin: 0;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 4;
+}
+
+.classroom-root .classroom-section-overlay > aside {
+  bottom: 0;
+  max-width: 420px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: min(100%, 420px);
+}
+
+.classroom-root .classroom-section-overlay .classroom-section-card {
+  border-left: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius) 0 0 var(--classroom-radius);
+}
+
+.classroom-root .classroom-empty-copy {
+  color: var(--classroom-meta-text);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ---- Flagged ---- */
+
+.classroom-root .classroom-panel-search {
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink);
+  font-family: inherit;
+  font-size: 13px;
+  margin-bottom: 12px;
+  padding: 7px 10px;
+  width: 100%;
+}
+
+.classroom-root .classroom-panel-search::placeholder {
+  color: var(--classroom-meta-text);
+}
+
+/* A border-colour change is not a focus indicator. DESIGN.md names this exact
+   substitution as too quiet to be the only signal, and `outline: none` here was
+   also overriding the zero-specificity focus floor in index.css. Keyboard focus
+   now draws the same ink outline every other control in the Workroom uses;
+   :focus-visible so a mouse click on the field does not draw a ring. */
+.classroom-root .classroom-panel-search:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 2px;
+}
+
+.classroom-root .classroom-panel-empty {
+  color: var(--classroom-meta-text);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+
+.classroom-root .classroom-question {
+  margin: 28px 0 0;
+}
+
+.classroom-root .classroom-question-stimulus,
+.classroom-root .classroom-question-stem {
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0 0 18px;
+  white-space: pre-wrap;
+}
+
+.classroom-root .classroom-question-stem {
+  font-weight: 600;
+}
+
+.classroom-root .classroom-choices {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+.classroom-root .classroom-choice {
+  align-items: baseline;
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink-body);
+  display: flex;
+  font-size: 15px;
+  gap: 12px;
+  line-height: 1.65;
+  padding: 12px 14px;
+  transition: border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-choice i {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.classroom-root .classroom-choice-correct {
+  border-color: var(--classroom-active);
+}
+
+.classroom-root .classroom-choice-correct i {
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-question-answer {
+  color: var(--classroom-ink);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-flag-note,
+.classroom-root .classroom-ask {
+  display: grid;
+  gap: 8px;
+  margin: 28px 0 0;
+}
+
+.classroom-root .classroom-flag-note label,
+.classroom-root .classroom-ask label {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-textarea {
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink-body);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 12px 14px;
+  resize: vertical;
+  width: 100%;
+}
+
+.classroom-root .classroom-textarea::placeholder {
+  color: var(--classroom-meta-text);
+}
+
+.classroom-root .classroom-textarea:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 2px;
+}
+
+/* ---- Wrong answers ---- */
+
+.classroom-root.classroom-root-journal {
+  overflow-x: hidden;
+}
+
+.classroom-root.classroom-root-journal-detail {
+  display: grid;
+  grid-template-columns: 280px 320px minmax(0, 1fr) 320px;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.classroom-root.classroom-root-journal-detail .classroom-sidebar {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.classroom-root.classroom-root-journal-detail .classroom-section-list {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.classroom-root.classroom-root-journal-detail .classroom-journal-stage {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.classroom-root .classroom-journal-stage {
+  height: 100dvh;
+  justify-content: stretch;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.classroom-root .classroom-journal-stage-inner {
+  min-width: 0;
+  padding: 48px 28px 100px;
+  width: 100%;
+}
+
+.classroom-root .classroom-journal-entry-heading {
+  align-items: flex-start;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.classroom-root .classroom-journal-entry-heading > div {
+  min-width: 0;
+}
+
+.classroom-root .classroom-journal-entry-heading .classroom-note-meta {
+  margin-bottom: 24px;
+}
+
+.classroom-root .classroom-annotate-button {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 7px;
+}
+
+.classroom-root .classroom-annotate-button-active {
+  border-color: var(--classroom-link);
+  color: var(--classroom-link-text);
+}
+
+.classroom-root .classroom-journal-question-scroll {
+  min-width: 0;
+}
+
+.classroom-root .classroom-journal-question-content {
+  min-height: 100%;
+  padding: 4px 0 24px;
+  position: relative;
+}
+
+.classroom-root .classroom-journal-stimulus {
+  color: var(--classroom-ink-body);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+
+.classroom-root .classroom-journal-summary {
+  background: color-mix(in srgb, var(--classroom-link) 8%, transparent);
+  border-left: 2px solid var(--classroom-link);
+  margin: 24px 0 0;
+  padding: 10px 12px;
+}
+
+.classroom-root .classroom-journal-summary b,
+.classroom-root .classroom-journal-reasoning b {
+  color: var(--classroom-meta-text);
+  display: block;
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-journal-summary p,
+.classroom-root .classroom-journal-reasoning p {
+  color: var(--classroom-ink-body);
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 5px 0 0;
+  white-space: pre-wrap;
+}
+
+.classroom-root .classroom-journal-stem {
+  align-items: flex-start;
+  color: var(--classroom-ink-body);
+  display: flex;
+  font-size: 15px;
+  gap: 10px;
+  line-height: 1.7;
+  margin-top: 34px;
+}
+
+.classroom-root .classroom-journal-stem > b {
+  flex: 0 0 auto;
+}
+
+.classroom-root .classroom-journal-stem p {
+  font-weight: 600;
+  margin: 0;
+}
+
+.classroom-root .classroom-journal-answer-nudge {
+  background: color-mix(in srgb, var(--classroom-unsure) 9%, transparent);
+  border-left: 2px solid var(--classroom-unsure);
+  color: var(--classroom-ink-body);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 14px 0 0 28px;
+  padding: 9px 12px;
+}
+
+.classroom-root .classroom-journal-choices {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+}
+
+.classroom-root .classroom-journal-choice {
+  align-items: flex-start;
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  line-height: 1.65;
+  padding: 12px 14px;
+  text-align: left;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease;
+  width: 100%;
+}
+
+.classroom-root .classroom-journal-choice:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-journal-choice i {
+  align-items: center;
+  background: var(--classroom-hover);
+  border-radius: 50%;
+  display: flex;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  height: 26px;
+  justify-content: center;
+  width: 26px;
+}
+
+.classroom-root .classroom-journal-choice span {
+  color: var(--classroom-ink-body);
+  font-size: 14px;
+}
+
+.classroom-root .classroom-journal-choice em {
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-journal-choice-correct {
+  background: color-mix(in srgb, var(--classroom-correct) 7%, transparent);
+  border-color: var(--classroom-correct);
+  cursor: default;
+  opacity: 1;
+}
+
+.classroom-root .classroom-journal-choice-correct i,
+.classroom-root .classroom-journal-choice-correct em {
+  color: var(--classroom-correct);
+}
+
+.classroom-root .classroom-journal-choice-wrong {
+  background: color-mix(in srgb, var(--classroom-wrong) 7%, transparent);
+  border-color: var(--classroom-wrong);
+}
+
+.classroom-root .classroom-journal-choice-wrong i,
+.classroom-root .classroom-journal-choice-wrong em {
+  color: var(--classroom-wrong);
+}
+
+.classroom-root .classroom-journal-reasoning {
+  border-left: 2px solid;
+  margin: 8px 0 0 38px;
+  padding: 8px 12px;
+}
+
+.classroom-root .classroom-journal-reasoning-wrong {
+  background: color-mix(in srgb, var(--classroom-wrong) 7%, transparent);
+  border-color: var(--classroom-wrong);
+}
+
+.classroom-root .classroom-journal-reasoning-correct {
+  background: color-mix(in srgb, var(--classroom-correct) 7%, transparent);
+  border-color: var(--classroom-correct);
+}
+
+.classroom-root .classroom-aside {
+  background: var(--classroom-panel);
+  border-left: 1px solid var(--classroom-line);
+  grid-column: 4;
+  grid-row: 1;
+  height: 100dvh;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.classroom-root .classroom-aside-inner {
+  padding: 34px 24px 80px;
+}
+
+.classroom-root .classroom-aside-inner > h2 {
+  font-size: 20px;
+  margin: 0 0 24px;
+}
+
+.classroom-root .classroom-review-form {
+  display: grid;
+  gap: 22px;
+}
+
+.classroom-root .classroom-review-field {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-review-field > span {
+  color: var(--classroom-meta-text);
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-review-ratings {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.classroom-root .classroom-review-rating {
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 7px 4px;
+}
+
+.classroom-root .classroom-review-rating-wrong.classroom-review-rating-active {
+  background: color-mix(in srgb, var(--classroom-wrong) 10%, transparent);
+  border-color: var(--classroom-wrong);
+  color: var(--classroom-wrong);
+}
+
+.classroom-root .classroom-review-rating-unsure.classroom-review-rating-active {
+  background: color-mix(in srgb, var(--classroom-unsure) 10%, transparent);
+  border-color: var(--classroom-unsure);
+  color: var(--classroom-unsure);
+}
+
+.classroom-root .classroom-review-rating-correct.classroom-review-rating-active {
+  background: color-mix(in srgb, var(--classroom-correct) 10%, transparent);
+  border-color: var(--classroom-correct);
+  color: var(--classroom-correct);
+}
+
+.classroom-root .classroom-review-correct-answer {
+  background: transparent;
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink-body);
+  font-family: inherit;
+  font-size: 13px;
+  min-height: 38px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.classroom-root .classroom-review-control {
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-ink-body);
+  font-family: inherit;
+  font-size: 13px;
+  min-height: 38px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.classroom-root .classroom-review-control:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 2px;
+}
+
+.classroom-root .classroom-review-correct-answer {
+  border-color: var(--classroom-correct);
+  color: var(--classroom-correct);
+  display: block;
+  font-weight: 700;
+}
+
+.classroom-root .classroom-review-answer-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.classroom-root .classroom-aside-inner > .classroom-button {
+  margin-top: 28px;
+}
+
+/* Platform announcements: one strip above the list, present only when there is
+   something to say. Tinted so it reads as news, not as another task. */
+.classroom-root .classroom-announcement {
+  align-items: flex-start;
+  background: var(--classroom-hover);
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  text-align: left;
+  transition: border-color var(--classroom-transition) ease;
+  width: 100%;
+}
+
+.classroom-root .classroom-announcement:hover {
+  border-color: var(--classroom-link);
+}
+
+.classroom-root .classroom-announcement-icon {
+  align-items: center;
+  color: var(--classroom-link);
+  display: flex;
+  flex: 0 0 auto;
+  padding-top: 1px;
+}
+
+.classroom-root .classroom-announcement-text {
+  display: grid;
+  flex: 1 1 auto;
+  gap: 2px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-announcement-title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.classroom-root .classroom-announcement-body {
+  color: var(--classroom-meta-text);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-announcement-date {
+  color: var(--classroom-meta-text);
+  flex: 0 0 auto;
+  font-size: 12px;
+  opacity: 0.8;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1024px) {
+  .classroom-root .classroom-title {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 1399px) {
+  .classroom-root.classroom-root-journal .classroom-section-list {
+    display: none;
+  }
+
+  .classroom-root.classroom-root-journal-detail {
+    grid-template-columns: 280px minmax(0, 1fr) 320px;
+  }
+
+  .classroom-root.classroom-root-journal-detail .classroom-journal-stage {
+    grid-column: 2;
+  }
+
+  .classroom-root.classroom-root-journal-detail .classroom-aside {
+    grid-column: 3;
+  }
+}
+
+@media (max-width: 1279px) {
+  .classroom-root .classroom-section-list {
+    display: none;
+  }
+
+}
+
+@media (max-width: 1099px) {
+  .classroom-root.classroom-root-journal-detail {
+    grid-template-columns: 280px minmax(0, 1fr);
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+    overflow-x: hidden;
+  }
+
+  .classroom-root.classroom-root-journal-detail .classroom-sidebar {
+    grid-row: 1 / span 2;
+  }
+
+  .classroom-root.classroom-root-journal-detail .classroom-journal-stage {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .classroom-root .classroom-journal-stage {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .classroom-root.classroom-root-journal-detail .classroom-aside {
+    border-left: 0;
+    border-top: 1px solid var(--classroom-line);
+    grid-column: 2;
+    grid-row: 2;
+    height: auto;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 1023px) {
+  /* The root is a flex ROW: sidebar beside stage. The bar is a third child, so
+     in a row it claimed a column of its own and squeezed the stage (271px of
+     375 on a phone). Below the sidebar breakpoint the room stacks instead, and
+     the bar is a full-width band above the stage. */
+  .classroom-root {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .classroom-root .classroom-sidebar {
+    display: none;
+  }
+
+  /* The bar takes 56px of the flow, so a full-height stage would push every
+     short page 56px past the viewport. */
+  .classroom-root .classroom-stage,
+  .classroom-root .classroom-stage-pending {
+    min-height: calc(100dvh - 56px);
+  }
+
+  .classroom-root .classroom-mobile-bar {
+    align-items: center;
+    background: var(--classroom-page);
+    border-bottom: 1px solid var(--classroom-line);
+    display: flex;
+    /* A column flex item shrinks when its siblings ask for the full height, and
+       Messages did exactly that: the bar came out 52px instead of 56. */
+    flex: none;
+    gap: 12px;
+    height: 56px;
+    padding: 0 12px;
+    position: sticky;
+    top: 0;
+    z-index: 70;
+  }
+
+  .classroom-root.classroom-root-drill .classroom-mobile-bar {
+    background: var(--classroom-drill-page);
+  }
+
+  .classroom-root .classroom-mobile-menu-button {
+    display: flex;
+  }
+
+  /* Was 72px, the clearance the fixed button needed. The bar has its own
+     space now, so the column only needs its ordinary inset. */
+  .classroom-root .classroom-column {
+    padding: 16px 0 90px;
+  }
+
+  .classroom-root.classroom-root-schedule .classroom-column {
+    padding: 16px 0 72px;
+  }
+
+  .classroom-root .classroom-leader-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .classroom-root .classroom-dotted-leader {
+    display: none;
+  }
+
+  .classroom-root .classroom-covering-link {
+    min-height: 100%;
+  }
+
+  .classroom-root.classroom-root-journal-detail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .classroom-root.classroom-root-journal-detail .classroom-journal-stage,
+  .classroom-root.classroom-root-journal-detail .classroom-aside {
+    grid-column: 1;
+  }
+
+  .classroom-root .classroom-journal-stage-inner {
+    padding-top: 16px;
+  }
+}
+
+@media (max-width: 639px) {
+  .classroom-root .classroom-stage {
+    padding: 0 18px;
+  }
+
+  .classroom-root .classroom-message {
+    padding: 16px;
+  }
+
+  .classroom-root .classroom-message header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .classroom-root .classroom-message time {
+    flex-basis: 100%;
+    margin-left: 42px;
+  }
+
+  .classroom-root .classroom-journal-stage-inner,
+  .classroom-root .classroom-aside-inner {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .classroom-root .classroom-journal-entry-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .classroom-root .classroom-annotate-button {
+    align-self: flex-start;
+  }
+
+  .classroom-root .classroom-review-answer-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Drill launcher panels (Full Section / Build a Set)
+
+   These moved onto the drill hub when the /practice hub was removed. The
+   panels themselves (SectionSelector, QuestionPicker) are written entirely
+   against shadcn tokens, and this app's token set is light-only — dropping
+   them onto the hub's dark observatory surface would render near-invisible
+   grey-on-black. Rather than fork the shared components, re-declare the
+   tokens to true-dark values for this subtree only, so the panels inherit a
+   dark palette that matches the hero and practice bay above them.
+   ───────────────────────────────────────────────────────────────────────── */
+.drill-observatory-launcher-panel {
+  --background: 240 6% 7%;
+  --foreground: 40 20% 96%;
+  --card: 240 6% 10%;
+  --card-foreground: 40 20% 96%;
+  --popover: 240 6% 9%;
+  --popover-foreground: 40 20% 96%;
+  --primary: 40 20% 96%;
+  --primary-foreground: 240 6% 7%;
+  --secondary: 240 5% 16%;
+  --secondary-foreground: 40 20% 96%;
+  --muted: 240 5% 15%;
+  --muted-foreground: 40 8% 68%;
+  --accent: 240 5% 18%;
+  --accent-foreground: 40 20% 96%;
+  --border: 0 0% 100% / 0.12;
+  --input: 0 0% 100% / 0.14;
+  --ring: 40 20% 80%;
+
+  color: hsl(var(--foreground));
+}
+
+.drill-observatory-launcher-panel .drill-setup-search {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--input));
+  border-radius: 999px;
+  color: hsl(var(--foreground));
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+.drill-observatory-launcher-panel .drill-setup-search::placeholder {
+  color: hsl(var(--muted-foreground));
+  opacity: 1;
+}
+
+.drill-observatory-launcher-panel .drill-setup-search::-webkit-search-cancel-button {
+  display: none;
+}
+
+.drill-observatory-launcher-panel .drill-setup-search:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Messages stage
+
+   Messages is reached from the rail's Support group and must stay inside this
+   frame — routing it out swapped the whole rail mid-navigation. Unlike the
+   reading surfaces it is a chat: it needs the full height beside the rail, not
+   the 720px centred column, so it gets its own stage and no section list.
+   ───────────────────────────────────────────────────────────────────────── */
+.classroom-root.classroom-root-messages {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.classroom-root .classroom-messages-stage {
+  flex: 1 1 auto;
+  height: 100dvh;
+  min-width: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 1023px) {
+  /* Clear the fixed menu button, the same way .classroom-column does. */
+  .classroom-root .classroom-messages-stage {
+    padding-top: 62px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Teacher workspace stage
+
+   The rail opens the workspace INTO this stage rather than navigating away
+   from the classroom frame. The workspace draws its own room rail and header,
+   so it needs the full height beside the classroom rail with no reading
+   column and no section list — the same shape Messages uses.
+   ───────────────────────────────────────────────────────────────────────── */
+.classroom-root.classroom-root-workspace {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.classroom-root .classroom-workspace-stage {
+  flex: 1 1 auto;
+  height: 100dvh;
+  min-width: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 1023px) {
+  /* Clear the fixed menu button, the same way .classroom-column does. */
+  .classroom-root .classroom-workspace-stage {
+    padding-top: 62px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Account stage
+
+   Native classroom surfaces for the Profile and Customize-layout tabs. All
+   controls are hand-styled on classroom tokens (no shadcn) so dark mode
+   follows the classroom palette, not the broken global .dark variables.
+   ───────────────────────────────────────────────────────────────────────── */
+.classroom-root .classroom-account-grid {
+  align-items: flex-start;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) 240px;
+}
+
+@media (max-width: 1023px) {
+  .classroom-root .classroom-account-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .classroom-root .classroom-account-side {
+    display: none;
+  }
+}
+
+.classroom-root .classroom-account-main {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-account-card {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  padding: 16px;
+}
+
+.classroom-root .classroom-account-card-head {
+  margin-bottom: 10px;
+}
+
+.classroom-root .classroom-account-card-head h2 {
+  color: var(--classroom-meta-text);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-account-card-foot {
+  border-top: 1px solid var(--classroom-line);
+  margin-top: 12px;
+  padding-top: 12px;
+}
+
+/* Identity */
+.classroom-root .classroom-account-identity {
+  align-items: flex-start;
+  display: flex;
+  gap: 14px;
+}
+
+.classroom-root .classroom-account-avatar {
+  flex: 0 0 auto;
+  font-size: 16px;
+  height: 44px;
+  width: 44px;
+}
+
+.classroom-root .classroom-account-identity-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-account-name {
+  align-items: center;
+  color: var(--classroom-ink);
+  display: flex;
+  font-size: 16px;
+  font-weight: 600;
+  gap: 6px;
+}
+
+.classroom-root .classroom-account-identity-copy > small {
+  color: var(--classroom-meta-text);
+  font-size: 12.5px;
+}
+
+.classroom-root .classroom-account-identity-meta {
+  color: var(--classroom-meta-text);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 11.5px;
+  gap: 4px 14px;
+  margin-top: 8px;
+}
+
+.classroom-root .classroom-account-name-edit {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.classroom-root .classroom-account-name-edit input {
+  background: var(--classroom-trigger);
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 7px;
+  color: var(--classroom-ink);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 5px 9px;
+  width: 220px;
+}
+
+.classroom-root .classroom-account-icon-button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  padding: 4px;
+}
+
+.classroom-root .classroom-account-icon-button:hover {
+  background: var(--classroom-hover);
+  color: var(--classroom-ink);
+}
+
+/* Password */
+.classroom-root .classroom-account-password {
+  border-top: 1px solid var(--classroom-line);
+  margin-top: 14px;
+  padding-top: 12px;
+}
+
+.classroom-root .classroom-account-password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 320px;
+}
+
+.classroom-root .classroom-account-password-form input {
+  background: var(--classroom-trigger);
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 7px;
+  color: var(--classroom-ink);
+  font-size: 13px;
+  padding: 7px 10px;
+}
+
+.classroom-root .classroom-account-password-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Buttons */
+.classroom-root .classroom-account-ghost-button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 7px;
+  color: var(--classroom-ink);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 500;
+  gap: 6px;
+  padding: 6px 11px;
+}
+
+.classroom-root .classroom-account-ghost-button:hover:not(:disabled) {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-account-ghost-button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.classroom-root .classroom-account-primary-button {
+  align-items: center;
+  background: var(--classroom-active);
+  border: 1px solid var(--classroom-active);
+  border-radius: 7px;
+  color: var(--classroom-active-ink);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 600;
+  gap: 6px;
+  padding: 6px 12px;
+}
+
+.classroom-root .classroom-account-primary-button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* Preference rows */
+.classroom-root .classroom-account-pref-row {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  padding: 9px 0;
+}
+
+.classroom-root .classroom-account-pref-row + .classroom-account-pref-row {
+  border-top: 1px solid var(--classroom-line);
+}
+
+.classroom-root .classroom-account-pref-indent {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.classroom-root .classroom-account-subgroup {
+  border-left: 2px solid var(--classroom-line);
+  margin-top: 2px;
+  padding-left: 12px;
+}
+
+.classroom-root .classroom-account-subgroup .classroom-account-pref-indent {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.classroom-root .classroom-account-pref-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-account-pref-copy span {
+  color: var(--classroom-ink);
+  font-size: 13px;
+}
+
+.classroom-root .classroom-account-pref-copy small {
+  color: var(--classroom-meta-text);
+  font-size: 11.5px;
+}
+
+/* Toggle */
+.classroom-root .classroom-toggle {
+  background: var(--classroom-hover);
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 999px;
+  cursor: pointer;
+  flex: 0 0 auto;
+  height: 22px;
+  padding: 2px;
+  transition: background var(--classroom-transition) ease;
+  width: 38px;
+}
+
+/* The knob is how the switch shows its state, which 1.4.11 covers as well as
+   the control edge. Off, it is a white knob on a near-white track, so the
+   border was the only thing locating it and the old hairline measured 1.25:1.
+   The on state overrides this with --classroom-active and is unaffected. */
+.classroom-root .classroom-toggle i {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line-on-tint);
+  border-radius: 999px;
+  display: block;
+  height: 16px;
+  transform: translateX(0);
+  transition: transform 200ms ease;
+  width: 16px;
+}
+
+.classroom-root .classroom-toggle-on {
+  background: var(--classroom-toggle-on-track);
+  border-color: var(--classroom-toggle-on-track);
+}
+
+.classroom-root .classroom-toggle-on i {
+  border-color: var(--classroom-toggle-on-track);
+  transform: translateX(16px);
+}
+
+.classroom-root .classroom-toggle:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* Select + number input */
+.classroom-root .classroom-account-select,
+.classroom-root .classroom-account-number {
+  background: var(--classroom-trigger);
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 7px;
+  color: var(--classroom-ink);
+  flex: 0 0 auto;
+  font-size: 12.5px;
+  padding: 6px 9px;
+}
+
+.classroom-root .classroom-account-number {
+  text-align: right;
+  width: 76px;
+}
+
+/* Layout editor */
+.classroom-root .classroom-account-toolbar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  justify-content: space-between;
+}
+
+.classroom-root .classroom-account-toolbar p {
+  color: var(--classroom-meta-text);
+  font-size: 12.5px;
+  margin: 0;
+}
+
+.classroom-root .classroom-account-toolbar-actions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.classroom-root .classroom-account-savestate {
+  align-items: center;
+  color: var(--classroom-meta-text);
+  display: inline-flex;
+  font-size: 11.5px;
+  gap: 5px;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.classroom-root .classroom-account-savestate-visible {
+  opacity: 1;
+}
+
+.classroom-root .classroom-account-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.classroom-root .classroom-account-row {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  padding: 7px 0;
+}
+
+.classroom-root .classroom-account-row + .classroom-account-row {
+  border-top: 1px solid var(--classroom-line);
+}
+
+.classroom-root .classroom-account-row-arrows {
+  display: flex;
+  flex-direction: column;
+}
+
+.classroom-root .classroom-account-row-arrows button {
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  display: flex;
+  padding: 0 2px;
+}
+
+.classroom-root .classroom-account-row-arrows button:hover:not(:disabled) {
+  color: var(--classroom-ink);
+}
+
+.classroom-root .classroom-account-row-arrows button:disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+
+.classroom-root .classroom-account-row-label {
+  align-items: center;
+  color: var(--classroom-ink);
+  display: flex;
+  flex: 1 1 auto;
+  font-size: 13px;
+  gap: 7px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-account-row-hidden {
+  opacity: 0.45;
+  text-decoration: line-through;
+  text-decoration-color: var(--classroom-dash);
+}
+
+.classroom-root .classroom-account-row-lock {
+  color: var(--classroom-meta-text);
+  flex: 0 0 auto;
+}
+
+.classroom-root .classroom-account-row-note {
+  color: var(--classroom-meta-text);
+  font-size: 11px;
+}
+
+.classroom-root .classroom-account-eye {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  display: inline-flex;
+  padding: 5px;
+}
+
+.classroom-root .classroom-account-eye:hover:not(:disabled) {
+  background: var(--classroom-hover);
+  color: var(--classroom-ink);
+}
+
+/* Preview rail */
+.classroom-root .classroom-account-preview-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.classroom-root .classroom-account-preview-rail .classroom-nav {
+  cursor: default;
+}
+
+.classroom-root .classroom-account-preview-note {
+  border-top: 1px solid var(--classroom-line);
+  color: var(--classroom-meta-text);
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 12px 0 0;
+  padding-top: 10px;
+}
+
+/* Confirm dialog (in-tree, classroom tokens) */
+.classroom-root .classroom-account-dialog-veil {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 60;
+}
+
+.classroom-root .classroom-account-dialog {
+  background: var(--classroom-panel);
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+  max-width: 380px;
+  padding: 18px;
+  width: 100%;
+}
+
+.classroom-root .classroom-account-dialog h3 {
+  color: var(--classroom-ink);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.classroom-root .classroom-account-dialog p {
+  color: var(--classroom-meta-text);
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+
+.classroom-root .classroom-account-dialog-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* Spinner */
+.classroom-root .classroom-spin {
+  animation: classroom-spin 0.9s linear infinite;
+}
+
+@keyframes classroom-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.classroom-root .classroom-account-single {
+  max-width: 640px;
+}
+
+/* ── Orientation card ───────────────────────────────────────────────────────
+   The setup walkthrough, first thing on Home until it is finished. It stays a
+   card the student has to open: the steps expand in place, they never take
+   over the screen, and the card is gone once the gate is set. */
+
+.classroom-root .classroom-orientation {
+  border: 1px solid var(--classroom-line);
+  border-radius: 14px;
+  margin-bottom: 16px;
+  padding: 18px;
+}
+
+.classroom-root .classroom-orientation .classroom-button {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* A required step with no answer yet: Continue has to look as dead as it is. */
+.classroom-root .classroom-orientation .classroom-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* Collapsed: the invitation */
+.classroom-root .classroom-orientation-intro {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.classroom-root .classroom-orientation-intro-text {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.classroom-root .classroom-orientation-eyebrow {
+  color: var(--classroom-link-text);
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-orientation h2 {
+  font-family: "Fraunces", Georgia, ui-serif, serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+}
+
+.classroom-root .classroom-orientation-intro-text p {
+  color: var(--classroom-meta-text);
+  font-size: 13.5px;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 46ch;
+}
+
+.classroom-root .classroom-orientation-intro-action {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.classroom-root .classroom-orientation-tally {
+  color: var(--classroom-meta-text);
+  font-size: 12.5px;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+/* Open: header, progress, one step */
+.classroom-root .classroom-orientation-header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.classroom-root .classroom-orientation-header .classroom-orientation-tally {
+  margin-left: auto;
+}
+
+.classroom-root .classroom-orientation-progress {
+  background: var(--classroom-hover);
+  border-radius: 999px;
+  height: 3px;
+  margin: 12px 0 20px;
+  overflow: hidden;
+}
+
+.classroom-root .classroom-orientation-progress span {
+  background: var(--classroom-link);
+  display: block;
+  height: 100%;
+  transition: width var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-orientation-step h3 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+
+.classroom-root .classroom-orientation-sub {
+  color: var(--classroom-meta-text);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 16px;
+  max-width: 52ch;
+}
+
+.classroom-root .classroom-orientation-hint {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  margin: 8px 0 10px;
+}
+
+/* Inputs */
+.classroom-root .classroom-orientation-input {
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: var(--classroom-radius);
+  color: inherit;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.classroom-root .classroom-orientation-input:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 2px;
+}
+
+.classroom-root .classroom-orientation-textarea {
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.classroom-root .classroom-orientation-date {
+  max-width: 220px;
+}
+
+.classroom-root .classroom-orientation-search {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.classroom-root .classroom-orientation-search svg {
+  color: var(--classroom-meta-text);
+  flex: 0 0 auto;
+}
+
+/* The visible way to add. Sits with the field so the pair reads as one
+   control: type a name, press Add. */
+.classroom-root .classroom-orientation-add {
+  align-items: center;
+  background: var(--classroom-active);
+  border: 1px solid var(--classroom-active);
+  border-radius: 8px;
+  color: var(--classroom-active-ink);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 5px;
+  padding: 9px 14px;
+  transition: opacity var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-orientation-add:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+/* Chips */
+.classroom-root .classroom-orientation-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.classroom-root .classroom-orientation-chip {
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 999px;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-orientation-chip:hover {
+  background: var(--classroom-hover);
+}
+
+/* A sitting chip carries its window under the month, so "November 2026" and
+   "Nov 11-14" read as one choice rather than two lines of chrome. */
+.classroom-root .classroom-orientation-chip:has(.classroom-orientation-chip-note) {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.25;
+  padding: 8px 16px;
+  text-align: center;
+}
+
+.classroom-root .classroom-orientation-chip-note {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+/* School typeahead: the matches sit directly under the field as a short list
+   the student picks from, rather than a dropdown that covers the step. */
+.classroom-root .classroom-orientation-suggestions {
+  border: 1px solid var(--classroom-line);
+  border-radius: 10px;
+  list-style: none;
+  margin: 8px 0 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.classroom-root .classroom-orientation-suggestions li + li {
+  border-top: 1px solid var(--classroom-line);
+}
+
+.classroom-root .classroom-orientation-suggestions button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font-family: inherit;
+  font-size: 13.5px;
+  gap: 10px;
+  padding: 9px 12px;
+  text-align: left;
+  width: 100%;
+}
+
+.classroom-root .classroom-orientation-suggestions button:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-orientation-suggestion-name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.classroom-root .classroom-orientation-suggestion-region {
+  color: var(--classroom-meta-text);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+/* Selected has to outrank hover, or the chip under the cursor reads unpicked. */
+.classroom-root .classroom-orientation-chip-on,
+.classroom-root .classroom-orientation-chip-on:hover {
+  background: var(--classroom-active);
+  border-color: var(--classroom-active);
+  color: var(--classroom-active-ink);
+}
+
+/* Added-school rows */
+.classroom-root .classroom-orientation-list {
+  display: grid;
+  gap: 6px;
+}
+
+.classroom-root .classroom-orientation-list-row {
+  align-items: center;
+  border: 1px solid var(--classroom-line);
+  border-radius: var(--classroom-radius);
+  display: flex;
+  gap: 10px;
+  padding: 8px 12px;
+}
+
+.classroom-root .classroom-orientation-list-index {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+}
+
+.classroom-root .classroom-orientation-list-label {
+  flex: 1 1 auto;
+  font-size: 13.5px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-orientation-list-row button {
+  background: none;
+  border: none;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  display: flex;
+  padding: 2px;
+}
+
+.classroom-root .classroom-orientation-list-row button:hover {
+  color: var(--classroom-ink);
+}
+
+/* Life-stage cards */
+.classroom-root .classroom-orientation-cards {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.classroom-root .classroom-orientation-choice {
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 12px;
+  cursor: pointer;
+  display: grid;
+  gap: 3px;
+  padding: 14px;
+  text-align: left;
+  transition: border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-orientation-choice:hover {
+  border-color: var(--classroom-link);
+}
+
+.classroom-root .classroom-orientation-choice-on,
+.classroom-root .classroom-orientation-choice-on:hover {
+  border-color: var(--classroom-active);
+  box-shadow: inset 0 0 0 1px var(--classroom-active);
+}
+
+.classroom-root .classroom-orientation-choice-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-orientation-choice-desc {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* Weekly study time */
+.classroom-root .classroom-availability {
+  margin-top: 16px;
+}
+
+.classroom-root .classroom-availability-note {
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--classroom-link) 7%, transparent);
+  border-radius: 12px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 11px 13px;
+}
+
+.classroom-root .classroom-availability-note svg {
+  color: var(--classroom-link);
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.classroom-root .classroom-availability-note div {
+  display: grid;
+  gap: 2px;
+}
+
+.classroom-root .classroom-availability-note strong {
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.classroom-root .classroom-availability-note span {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.classroom-root .classroom-orientation-week {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 58px repeat(7, minmax(0, 1fr));
+}
+
+/* Reads against the bar segments, so a filled height has units. */
+.classroom-root .classroom-orientation-scale {
+  color: var(--classroom-ink);
+  display: flex;
+  flex-direction: column;
+  font-size: 11.5px;
+  font-weight: 650;
+  gap: 3px;
+  height: 104px;
+  letter-spacing: -0.01em;
+  text-align: right;
+}
+
+.classroom-root .classroom-orientation-scale span {
+  align-items: center;
+  display: flex;
+  flex: 1 1 0;
+  justify-content: flex-end;
+}
+
+/* "No time" is the floor of the chart, matching the short segment it labels. */
+.classroom-root .classroom-orientation-scale span:last-child {
+  flex: 0 0 16px;
+}
+
+.classroom-root .classroom-orientation-day {
+  border: 1px solid var(--classroom-line);
+  border-radius: 12px;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 11px 8px 8px;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease,
+    transform var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-orientation-day-on {
+  background: color-mix(in srgb, var(--classroom-link) 6%, transparent);
+  border-color: color-mix(in srgb, var(--classroom-link) 55%, var(--classroom-line));
+  transform: translateY(-2px);
+}
+
+.classroom-root .classroom-orientation-day-head {
+  display: grid;
+  gap: 2px;
+  text-align: center;
+}
+
+.classroom-root .classroom-orientation-day-label {
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.classroom-root .classroom-orientation-day-value {
+  color: var(--classroom-meta-text);
+  font-size: 10.5px;
+  min-height: 16px;
+}
+
+/* The clickable bar. Four segments per day, tallest at the top: the student
+   clicks the height they can protect, and the filled part is the answer. The
+   picture and the control are the same object. */
+.classroom-root .classroom-orientation-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  height: 104px;
+}
+
+.classroom-root .classroom-orientation-segment {
+  align-items: center;
+  background: var(--classroom-hover);
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex: 1 1 0;
+  justify-content: center;
+  min-height: 0;
+  padding: 0;
+  transition:
+    background-color var(--classroom-transition) ease,
+    border-color var(--classroom-transition) ease;
+}
+
+.classroom-root .classroom-orientation-segment:hover {
+  border-color: color-mix(in srgb, var(--classroom-link) 60%, transparent);
+}
+
+/* "No time" is a floor, not a quantity: it stays a thin base the student can
+   press deliberately rather than a quarter of the bar they seem to have filled. */
+.classroom-root .classroom-orientation-segment-off {
+  flex: 0 0 16px;
+}
+
+/* The bar has to read as a bar across the room, so the fill carries the
+   classroom accent at real strength rather than a tint that disappears
+   against the warm ground. */
+.classroom-root .classroom-orientation-segment-filled {
+  background: color-mix(in srgb, var(--classroom-link) 55%, transparent);
+}
+
+/* The chosen height is the top of the bar: full accent, so the eye lands on
+   where the week actually stops. */
+.classroom-root .classroom-orientation-segment-on {
+  background: var(--classroom-link);
+  border-color: var(--classroom-link);
+  color: #ffffff;
+}
+
+/* A day marked as no time is a deliberate answer, not an empty one, but it is
+   not study time either: it reads as a dark floor rather than more bar. */
+.classroom-root .classroom-orientation-segment-off.classroom-orientation-segment-on {
+  background: var(--classroom-active);
+  border-color: var(--classroom-active);
+}
+
+.classroom-root .classroom-availability-summary {
+  color: var(--classroom-ink);
+  font-size: 12.5px;
+  margin: 12px 0 0;
+  text-align: right;
+}
+
+.classroom-root .classroom-availability-summary strong {
+  font-size: 15px;
+}
+
+.classroom-root .classroom-availability-summary-empty {
+  color: var(--classroom-meta-text);
+}
+
+/* Nav row */
+.classroom-root .classroom-orientation-nav {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.classroom-root .classroom-orientation-nav-spacer {
+  flex: 1 1 auto;
+}
+
+.classroom-root .classroom-orientation-back {
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: 12.5px;
+  gap: 6px;
+  padding: 8px 2px;
+}
+
+.classroom-root .classroom-orientation-back:hover {
+  color: var(--classroom-ink);
+}
+
+/* Finished, for the rest of the session */
+.classroom-root .classroom-orientation-done {
+  align-items: flex-start;
+  display: flex;
+  gap: 12px;
+}
+
+.classroom-root .classroom-orientation-done-mark {
+  align-items: center;
+  background: var(--classroom-active);
+  border-radius: 999px;
+  color: var(--classroom-active-ink);
+  display: flex;
+  flex: 0 0 auto;
+  height: 26px;
+  justify-content: center;
+  width: 26px;
+}
+
+.classroom-root .classroom-orientation-done p {
+  color: var(--classroom-meta-text);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 46ch;
+}
+
+@media (max-width: 640px) {
+  .classroom-root .classroom-orientation-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .classroom-root .classroom-orientation-intro-action {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .classroom-root .classroom-orientation-day {
+    grid-template-columns: 58px 1fr;
+    padding: 10px;
+  }
+
+  .classroom-root .classroom-orientation-week {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .classroom-root .classroom-orientation-day-head {
+    align-self: center;
+    text-align: left;
+  }
+
+  /* One day per row on a phone: the label leads and the bar lies on its side,
+     so the same four targets stay thumb-sized instead of a stack seven tall. */
+  .classroom-root .classroom-orientation-scale {
+    display: none;
+  }
+
+  .classroom-root .classroom-orientation-day-head {
+    order: 0;
+  }
+
+  .classroom-root .classroom-orientation-bar {
+    flex-direction: row-reverse;
+    height: 44px;
+    order: 1;
+  }
+
+  .classroom-root .classroom-orientation-segment-off {
+    flex: 0 0 34px;
+  }
+
+  .classroom-root .classroom-availability-summary {
+    text-align: left;
+  }
+}
+
+/* ── Account: "Your prep" (the orientation card's answers, editable) ────────
+   One row per answer, reading back what the student told us, expanding into
+   the card's own input when they change it. */
+
+.classroom-root .classroom-account-card-note {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: -4px 0 10px;
+  max-width: 52ch;
+}
+
+.classroom-root .classroom-account-prep-row {
+  padding: 9px 0;
+}
+
+.classroom-root .classroom-account-prep-row + .classroom-account-prep-row {
+  border-top: 1px solid var(--classroom-line);
+}
+
+.classroom-root .classroom-account-prep-head {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+/* A long free-text answer or a school list must not stretch the row. */
+.classroom-root .classroom-account-prep-head .classroom-account-pref-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-account-prep-empty {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-account-prep-edit {
+  padding: 12px 0 4px;
+}
+
+.classroom-root .classroom-account-prep-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Stage-side index list (H5)
+
+   The section list column is hidden below 1280px, and below 1400px for Wrong
+   answers, where it collapses behind a trigger. At those widths the index
+   routes were telling the student to choose from a list that was not on
+   screen. Both copies render; these rules show exactly one.
+   -------------------------------------------------------------------------- */
+
+.classroom-root .classroom-stage-index {
+  display: none;
+  gap: 4px;
+  margin: 0 -8px;
+}
+
+@media (max-width: 1279px) {
+  .classroom-root .classroom-stage-index {
+    display: grid;
+  }
+
+  .classroom-root .classroom-stage-index-hint {
+    display: none;
+  }
+}
+
+/* Wrong answers keeps its column 120px longer than the rest, so it swaps over
+   at its own breakpoint rather than the shared one. */
+@media (max-width: 1399px) {
+  .classroom-root.classroom-root-journal .classroom-stage-index {
+    display: grid;
+  }
+
+  .classroom-root.classroom-root-journal .classroom-stage-index-hint {
+    display: none;
+  }
+}
+
+/* ---- Unread notes -------------------------------------------------------
+   A note is unread until it is opened (classroom_items.status === 'assigned').
+   Two markers, both quiet: a dot on the row, and a count beside the panel
+   title. Colour alone never carries the state — the dot has a size and a
+   position, the count has a number, and both rows also carry an sr-only
+   "(unread)" so this is not a colour-only signal. */
+
+.classroom-unread-dot {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  background: var(--classroom-accent, currentColor);
+  vertical-align: middle;
+  flex: 0 0 auto;
+}
+
+.classroom-unread-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.5rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--classroom-accent, currentColor);
+  color: var(--classroom-surface, #fff);
+  font-size: 0.6875rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  vertical-align: middle;
+}
+
+/* Group label above a list, used when Notes and recaps splits unread from
+   read. Only rendered when there is more than one list on the page. */
+.classroom-stage-index-heading {
+  margin: 1.4rem 0 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.classroom-stage-index-heading:first-child {
+  margin-top: 0;
+}
+
+
+/* ── Admissions ─────────────────────────────────────────────────────────────
+   The 509 numbers for every accredited school, and where the student's own
+   score sits against each class. A table, deliberately: the student is
+   comparing rows, and anything prettier would make that harder. */
+
+.classroom-root .classroom-admissions-head {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.classroom-root .classroom-admissions-head h1 {
+  font-family: "Fraunces", Georgia, ui-serif, serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+}
+
+.classroom-root .classroom-admissions-head p {
+  color: var(--classroom-meta-text);
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 68ch;
+}
+
+.classroom-root .classroom-admissions-score {
+  white-space: nowrap;
+}
+
+.classroom-root .classroom-admissions-score strong {
+  color: var(--classroom-ink);
+  font-size: 17px;
+}
+
+.classroom-root .classroom-admissions-section {
+  align-items: center;
+  display: flex;
+  font-size: 11px;
+  font-weight: 650;
+  gap: 6px;
+  letter-spacing: 0.12em;
+  margin: 22px 0 8px;
+  text-transform: uppercase;
+}
+
+/* The table scrolls inside its own box: seven columns will not fit a phone,
+   and the page itself must never scroll sideways. */
+.classroom-root .classroom-admissions-scroll {
+  border: 1px solid var(--classroom-line);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.classroom-root .classroom-admissions-table {
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 620px;
+  width: 100%;
+}
+
+.classroom-root .classroom-admissions-table th,
+.classroom-root .classroom-admissions-table td {
+  padding: 9px 12px;
+  text-align: left;
+}
+
+.classroom-root .classroom-admissions-table thead th {
+  border-bottom: 1px solid var(--classroom-line);
+  color: var(--classroom-meta-text);
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  position: sticky;
+  text-transform: uppercase;
+  top: 0;
+}
+
+.classroom-root .classroom-admissions-table tbody tr + tr th,
+.classroom-root .classroom-admissions-table tbody tr + tr td {
+  border-top: 1px solid color-mix(in srgb, var(--classroom-line) 60%, transparent);
+}
+
+.classroom-root .classroom-admissions-table tbody tr:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-admissions-name {
+  display: block;
+  font-weight: 600;
+}
+
+.classroom-root .classroom-admissions-state {
+  color: var(--classroom-meta-text);
+  font-size: 11.5px;
+}
+
+.classroom-root .classroom-admissions-num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.classroom-root .classroom-admissions-median {
+  font-weight: 700;
+}
+
+.classroom-root .classroom-admissions-band {
+  border-radius: 999px;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+.classroom-root .admissions-band-strong {
+  background: color-mix(in srgb, #2f7d4f 14%, transparent);
+  color: #24623d;
+}
+
+.classroom-root .admissions-band-mid {
+  background: color-mix(in srgb, var(--classroom-link) 16%, transparent);
+  color: #9a4f04;
+}
+
+.classroom-root .admissions-band-low {
+  background: var(--classroom-hover);
+  color: var(--classroom-meta-text);
+}
+
+.classroom-root .classroom-admissions-empty {
+  color: var(--classroom-meta-text);
+  font-size: 13.5px;
+}
+
+
+/* The finish line offers the session first and the classroom second. */
+.classroom-root .classroom-orientation-done-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.classroom-root .classroom-orientation-continue-quiet {
+  background: transparent;
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 999px;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+}
+
+.classroom-root .classroom-orientation-continue-quiet:hover {
+  background: var(--classroom-hover);
+  color: var(--classroom-ink);
+}
+
+
+/* "Start my setup again" sits below the editable rows, quiet and separated:
+   it is a real reset, not another row to tweak. */
+.classroom-root .classroom-account-prep-reset {
+  border-top: 1px solid var(--classroom-line);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 14px;
+}
+
+.classroom-root .classroom-account-prep-reset button {
+  align-self: flex-start;
+}
+
+.classroom-root .classroom-account-prep-reset small {
+  color: var(--classroom-meta-text);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+/* ── Section briefing ──────────────────────────────────────────────────────
+   The screen between Home and a timed section. It covers the stage instead of
+   navigating, so Home is still underneath and "Not now" costs nothing.
+   Everything here reads off the classroom tokens, so it follows the theme. */
+.section-briefing {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: clamp(1.5rem, 6vw, 5rem) clamp(1.25rem, 6vw, 4rem);
+  background: var(--classroom-page);
+  animation: section-briefing-in 320ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.section-briefing-inner {
+  width: 100%;
+  max-width: 46rem;
+  margin: auto;
+}
+
+.section-briefing-eyebrow {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--classroom-link-text);
+}
+
+.section-briefing-head h1 {
+  margin: 0.9rem 0 0;
+  font-size: clamp(2.25rem, 7vw, 3.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.022em;
+  color: var(--classroom-ink);
+}
+
+.section-briefing-lede {
+  margin: 1rem 0 0;
+  max-width: 34rem;
+  font-size: clamp(1rem, 2.4vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--classroom-meta-text);
+}
+
+.section-briefing-cols {
+  display: grid;
+  gap: clamp(1.75rem, 5vw, 3rem);
+  margin-top: clamp(2.25rem, 6vw, 3.25rem);
+  padding-top: clamp(2.25rem, 6vw, 3.25rem);
+  border-top: 1px solid var(--classroom-line);
+}
+
+@media (min-width: 46rem) {
+  .section-briefing-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.section-briefing-cols h2 {
+  margin: 0 0 1rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--classroom-meta-text);
+}
+
+.section-briefing-cols ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.section-briefing-cols li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--classroom-ink-body);
+}
+
+.section-briefing-cols li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 1px;
+  background: var(--classroom-link-text);
+}
+
+.section-briefing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: clamp(2.25rem, 6vw, 3.25rem);
+}
+
+.section-briefing-start {
+  padding: 0.95rem 2.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--classroom-link-text);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.section-briefing-start:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.section-briefing-start:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 3px;
+}
+
+.section-briefing-later {
+  border: 0;
+  background: none;
+  padding: 0;
+  font-size: 0.875rem;
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  text-underline-offset: 4px;
+}
+
+.section-briefing-later:hover {
+  color: var(--classroom-ink);
+  text-decoration: underline;
+}
+
+@keyframes section-briefing-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-briefing { animation-duration: 1ms; }
+  .section-briefing-start { transition: none; }
+}
+
+/* ── Touch targets ─────────────────────────────────────────────────────────
+   `.classroom-nav` computes to 34px, and the same class draws the mobile
+   drawer, where it is a genuine touch target rather than a mouse one. So the
+   44px floor is applied where a finger is doing the pointing.
+
+   This is not a deviation, despite an earlier note here that said it was.
+   PRODUCT.md's binding floor is WCAG 2.1 AA. The 44x44 figure is 2.5.5, which
+   is Level AAA; the AA target-size rule is 2.2's 2.5.8, and it asks 24x24. A
+   34px row clears the binding floor by ten pixels. Applying 44px globally would
+   add ~170px of height to a 17-row rail to satisfy a criterion the product has
+   not adopted.
+
+   PRODUCT.md line 104 lists the AAA number inside its AA section. That is worth
+   correcting in the doc; it is not a defect in this file. */
+@media (pointer: coarse) {
+  .classroom-root .classroom-nav,
+  .classroom-root .classroom-profile-menu-item {
+    min-height: 44px;
+  }
+}
+
+.classroom-root .classroom-mobile-menu .classroom-nav {
+  min-height: 44px;
+}
+
+/* ── The Notes and recaps landing ──────────────────────────────────────────
+   The stage carried a dateline, an <h1> and a one-line count into a 720px
+   column, so the widest region of the page held the least information. These
+   rules dress the lede and the featured note that now fill it.
+
+   No card. The stage has no container around it, and wrapping the only content
+   on the page in a border would be a box for its own sake. Hierarchy comes from
+   size, weight and space, and separation from a single hairline. */
+.classroom-root .classroom-surface-lede {
+  color: var(--classroom-meta-text);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: -8px 0 32px;
+  max-width: 52ch;
+}
+
+.classroom-root .classroom-featured-note {
+  border-top: 1px solid var(--classroom-line);
+  margin-bottom: 40px;
+  padding-top: 24px;
+}
+
+.classroom-root .classroom-featured-note-meta {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-featured-note-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  margin: 0 0 12px;
+  max-width: 34ch;
+}
+
+.classroom-root .classroom-featured-note-excerpt {
+  color: var(--classroom-ink-body);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0 0 20px;
+  max-width: 56ch;
+}
+
+/* A note's own standfirst is authored content. It used to inherit
+   .classroom-empty-copy, the class that means "there is nothing here". */
+.classroom-root .classroom-note-standfirst {
+  color: var(--classroom-ink-body);
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+  max-width: 56ch;
+}
+
+/* One roomy stage serves the seven destination pages. The rail remains narrow
+   while the tab row wraps cleanly at phone and sidecar widths. */
+.classroom-root.classroom-root-destination .classroom-column {
+  max-width: 1160px;
+  padding-top: 48px;
+}
+
+.classroom-root .student-destination-heading h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.classroom-root .student-destination-heading p,
+.classroom-root .student-destination-links > p {
+  color: var(--classroom-meta-text);
+  font-size: 14px;
+  margin: 10px 0 0;
+}
+
+.classroom-root .student-destination-tabs {
+  border-bottom: 1px solid var(--classroom-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin: 30px 0 32px;
+}
+
+.classroom-root .student-destination-tabs:has(+ .student-destination-subtabs) {
+  margin-bottom: 0;
+}
+
+.classroom-root .student-destination-subtabs {
+  background: var(--classroom-hover);
+  border-bottom: 1px solid var(--classroom-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin-bottom: 32px;
+  padding: 0 14px;
+}
+
+.classroom-root .student-destination-tab {
+  align-items: center;
+  border-bottom: 2px solid transparent;
+  color: var(--classroom-meta-text);
+  display: inline-flex;
+  font-size: 14px;
+  gap: 6px;
+  min-height: 44px;
+  padding: 10px 2px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.classroom-root .student-destination-tab:hover,
+.classroom-root .student-destination-tab-active {
+  border-bottom-color: var(--classroom-accent);
+  color: var(--classroom-ink);
+}
+
+.classroom-root .student-destination-tab:focus-visible,
+.classroom-root .student-destination-link-card:focus-visible,
+.classroom-root .student-work-row:focus-visible {
+  outline: 2px solid var(--classroom-accent);
+  outline-offset: 3px;
+}
+
+.classroom-root .student-destination-tab-locked {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+/* The retained Review lists include their old two-tab heading for legacy
+   question URLs. Canonical Review already has its full tab row above them. */
+.classroom-root .student-destination-content .classroom-review-heading {
+  display: none;
+}
+
+.classroom-root .student-destination-content .practice-exams-nav {
+  display: none;
+}
+
+.classroom-root .student-destination-review-list .classroom-section-card {
+  border: 1px solid var(--classroom-line);
+  border-radius: 12px;
+  height: auto;
+  max-height: 70dvh;
+  padding: 24px;
+}
+
+.classroom-root .student-destination-links h2 {
+  font-family: Georgia, serif;
+  font-size: 25px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.classroom-root .student-destination-link-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  margin-top: 24px;
+}
+
+.classroom-root .student-destination-link-card {
+  border: 1px solid var(--classroom-line-strong);
+  border-radius: 12px;
+  color: var(--classroom-ink);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 150px;
+  padding: 22px;
+  text-decoration: none;
+}
+
+.classroom-root .student-destination-link-card span {
+  color: var(--classroom-meta-text);
+  font-size: 13px;
+}
+
+.classroom-root .student-destination-link-card span:last-child {
+  color: var(--classroom-link-text);
+  margin-top: auto;
+}
+
+.classroom-root .student-work-count {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.classroom-root .student-work-list ul { list-style: none; margin: 0; padding: 0; }
+.classroom-root .student-work-list li + li { border-top: 1px solid var(--classroom-line); }
+.classroom-root .student-work-row {
+  align-items: center;
+  color: var(--classroom-ink);
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 14px 4px;
+  text-decoration: none;
+}
+.classroom-root .student-work-row:hover { background: var(--classroom-hover); }
+.classroom-root .student-work-row span:first-child { display: grid; gap: 4px; }
+.classroom-root .student-work-row small,
+.classroom-root .student-work-status,
+.classroom-root .student-destination-message { color: var(--classroom-meta-text); font-size: 13px; }
+
+@media (max-width: 1023px) {
+  .classroom-root.classroom-root-destination .classroom-column { padding-top: 24px; }
+}

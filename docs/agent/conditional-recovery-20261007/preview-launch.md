@@ -1,0 +1,15 @@
+# Check the app before opening the Conditional preview
+
+The recovered build was restored from its frozen source bundle. During the later Activity integration, the composition referenced OpeningActivityPractice before that module was ready. Vite returned a failed module request. The development preview used plain React.lazy, so that rejected import could leave the page blank. Suspense supplies a loading screen; it does not recover failed imports.
+
+Run `npm run dev:conditional` from this checkout. The launcher checks the required preview and Activity files, runs the complete app typecheck, and only then starts Vite at http://127.0.0.1:8097 with a strict port. It does not open a browser automatically or switch to another port. `npm run dev:conditional -- --check` runs only the preflight.
+
+The preview route now uses the existing safeLazy import recovery. After an import fails while files are being edited, finish the change and reload the page. This recovery cannot make an incomplete module valid; the startup check prevents presenting that incomplete state on a fresh launch.
+
+The local lesson harness is http://127.0.0.1:8097/dev/conditional-opening-preview. It deliberately omits assignment and account persistence. The proper local LSAT U course is http://127.0.0.1:8097/bootcamp/conditionals/lessons and uses the normal sign-in, teacher assignment gates and saved progress. Local source changes are not published to lsatprep.study by starting either route.
+
+The recovered BootcampGate initially showed “Not assigned yet” even when signed out. The corrected gate redirects signed-out visitors to sign-in and preserves the requested route through `returnTo`. Signed-in students still need their teacher-controlled bootcamp assignment; admins retain their existing access. No access grants or student assignments were changed to make the preview work.
+
+Verification on 2026-10-07: Node syntax check and scoped diff whitespace check passed. An unknown launch argument failed immediately. The initial real preflight caught seven TypeScript errors in the in-progress Activity test file and exited 1 without starting Vite. After correction, the final launcher preflight completed the full app typecheck with exit 0. The historical failed preflight demonstrates that incomplete changes do not start this launcher.
+
+Final checks passed: 237 tests across 19 files, plus 11 isolated library assignment tests, totaling 248 tests across 20 files. After the last summary-copy refinement, eight overlapping mixed-runner tests passed again and the direct Vite build was regenerated with 7,160 modules in 48.53s. Canonical-content exclusion again checked 770 files with zero matches. Scoped lint reported zero errors and ten existing Fast Refresh warnings. A prior concurrent aggregate run had one 30-second timeout amid build/typecheck contention and elevated RPC latency; the same full modules passed in the serial rerun without weakening assertions or timeouts. The final source overlay and separately hashed evidence are preserved in the vault's 2026-10-07-opening-final-overlay folder.

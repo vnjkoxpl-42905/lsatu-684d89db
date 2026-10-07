@@ -1,0 +1,556 @@
+[
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Cox: The consumer council did not provide sufficient justification for its action when it required that Derma-35 be recalled from the market.\nCrockett: I disagree. Derma-35 in fact causes inflammation, but in citing only the side effect of blemishes as the justification for its decision, the council rightly acknowledged that blemishes are a legitimate health concern.",
+    "questionStem": "Cox and Crockett disagree over whether",
+    "answerChoices": {
+      "A": "Derma-35 should remain on the market",
+      "B": "blemishes are sometimes caused by inflammation",
+      "C": "the council based its decision on the threat of inflammation or on the threat of blemishes",
+      "D": "the council gave an adequate reason for its decision to recall Derma-35",
+      "E": "inflammation is a serious health threat"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Literary historian: William Shakespeare, a humble actor, could have written the love poetry attributed to him. But the dramas attributed to him evince such insight into the minds of powerful rulers that they could only have been written by one who had spent much time among them; Francis Bacon associated with rulers, but Shakespeare did not.",
+    "questionStem": "Which one of the following logically follows from the literary historian's claims?",
+    "answerChoices": {
+      "A": "Bacon wrote the dramas attributed to Shakespeare, but could not have written the love poetry.",
+      "B": "Bacon wrote both the love poetry and the dramas attributed to Shakespeare.",
+      "C": "Shakespeare wrote neither the love poetry nor the dramas attributed to him.",
+      "D": "One person could not have written both the love poetry and the dramas attributed to Shakespeare.",
+      "E": "Shakespeare may have written the love poetry but did not write the dramas attributed to him."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Principle-Conform",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Philosopher: Effective tests have recently been developed to predict fatal diseases having a largely genetic basis. Now, for the first time, a person can be warned well in advance of the possibility of such life-threatening conditions. However, medicine is not yet able to prevent most such conditions. Simply being informed that one will get a disease that is both fatal and incurable can itself be quite harmful to some people. This raises the question of whether such \"early warning\" tests should be made available at all.",
+    "questionStem": "Which one of the following statements is best illustrated by the state of affairs described by the philosopher?",
+    "answerChoices": {
+      "A": "The advance of medicine fails to provide solutions to every problem.",
+      "B": "The advance of medicine creates new contexts in which ethical dilemmas can arise.",
+      "C": "Medical technologies continue to advance, increasing our knowledge and understanding of disease.",
+      "D": "The more we come to learn, the more we realize how little we know.",
+      "E": "The advance of technology is of questionable value."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Proposition/Generalization",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Chapin: Commentators have noted with concern the recent electoral success by extremist parties in several democratic countries. But these successes pose no threat to democracy in those countries. The extremists have won pluralities, not majorities. Furthermore, they have won only when the moderate parties were preoccupied with arguing among themselves.",
+    "questionStem": "Which one of the following, if assumed, enables Chapin's conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "Parties that win pluralities but not majorities never directly or indirectly effect changes in their country's political arrangements.",
+      "B": "Multiparty political systems are always more democratic than two-party political systems are.",
+      "C": "Countries in which extremist parties win pluralities sometimes have democratic governments as strong as those in countries that lack extremist parties.",
+      "D": "Members of moderate parties who consider extremist parties to be a serious threat to democracy will sometimes put aside their differences with each other to oppose them.",
+      "E": "People are not always supporting a move toward an extremist government when they vote for extremist parties in democratic elections."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Futurist: Artists in the next century will be supported largely by private patrons. Because these patrons will almost invariably be supporters of the social order—whatever it happens to be at the time—art in the next century will rarely express social and political doctrines that are perceived to be subversive of that social order.",
+    "questionStem": "Which one of the following principles, if valid, provides the most support for the futurist's inference?",
+    "answerChoices": {
+      "A": "Art patrons tend not to support artists whose art expresses social and political views that are in opposition to their own.",
+      "B": "Art patrons tend to be more interested in formal artistic problems than in the social and political issues of their time.",
+      "C": "Artists are as prone to attack the contemporary social and political order in their work as they are to defend it.",
+      "D": "Artists tend to become more critical of contemporary social and political arrangements after they are freed of their dependency on private patrons.",
+      "E": "Art patrons tend to oppose all social change except that initiated by artists."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "University budget committee: Athletes experience fewer injuries on artificial-turf athletic fields than on natural-grass fields. Additionally, natural-grass fields are more expensive to maintain than fields made of artificial turf. Nevertheless, this committee recommends replacing the university's current artificial-turf field with a natural-grass field.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the committee's position?",
+    "answerChoices": {
+      "A": "The university's current artificial-turf athletic field has required extensive maintenance since its original installation.",
+      "B": "Most injuries sustained on artificial-turf fields take longer to heal and require more expensive physical therapy than do injuries sustained on natural-grass fields.",
+      "C": "It is difficult for spectators at athletic events to determine whether an athletic field is artificial turf or natural grass.",
+      "D": "Maintaining artificial-turf fields involves the occasional replacement of damaged sections of turf, whereas natural-grass fields require daily watering and periodic fertilization.",
+      "E": "Athletes who have spent most of their playing time on natural-grass fields generally prefer not to play on artificial-turf fields."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Must be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Although instinct enables organisms to make complex responses to stimuli, instinctual behavior involves no reasoning and requires far fewer nerve cells than does noninstinctual (also called flexible) behavior. A brain mechanism capable of flexible behavior must have a large number of neurons, and no insect brain has yet reached a size capable of providing a sufficiently large number of neurons.",
+    "questionStem": "Which one of the following can be properly inferred from the statements above?",
+    "answerChoices": {
+      "A": "The behavior of organisms with elaborate brain mechanisms is usually not instinctual.",
+      "B": "Insect behavior is exclusively instinctual.",
+      "C": "All organisms with brains larger than insects' brains are capable of some measure of flexible behavior.",
+      "D": "All organisms with large brains are biologically equipped for flexible behavior.",
+      "E": "Only organisms with brains of insect size or smaller engage in purely instinctual behavior."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science",
+      "Contrapositive Logic",
+      "Binaries"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "The laboratory experiment, the most effective method for teaching science, is disappearing from most secondary school curricula, and students are now simulating experiments with computers. This trend should be stopped. It results in many students’ completing secondary school and going on to a university without knowing how to work with laboratory equipment.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Scientific knowledge is changing so rapidly it is difficult for secondary schools to keep up without using computers.",
+      "B": "In some secondary schools, teachers conduct laboratory experiments while students observe.",
+      "C": "Computers have proven to be a valuable tool for teaching secondary school students scientific terminology.",
+      "D": "Secondary schools and universities across the nation have put a great deal of money into purchasing computers.",
+      "E": "University students can learn science effectively without having had experience in working with laboratory equipment."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Alice: In democracies, politicians garner support by emphasizing the differences between their opponents and themselves. Because they must rule in accord with their rhetoric, policies in democracies fluctuate wildly as one party succeeds another.Elwell: But despite election rhetoric, to put together majority coalitions in democracies, politicians usually end up softening their stands on individual issues once they are elected.",
+    "questionStem": "The statements above provide the most support for the claim that Alice and Elwell disagree about whether",
+    "answerChoices": {
+      "A": "politicians heighten the differences between themselves and their opponents during elections",
+      "B": "basic policies change drastically when one party succeeds another in a democracy",
+      "C": "in a democracy the best way of ensuring continuity in policies is to form a coalition government",
+      "D": "most voters stay loyal to a particular political party even as it changes its stand on particular issues",
+      "E": "the desire of parties to build majority coalitions tends to support democratic systems"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Air traffic controllers and nuclear power plant operators are not allowed to work exceptionally long hours, because to do so would jeopardize lives. Yet physicians in residency training are typically required to work 80-hour weeks. The aforementioned restrictions on working exceptionally long hours should also be applied to resident physicians, since they too are engaged in work of a life-or-death nature.",
+    "questionStem": "Which one of the following is an assumption the argument depends on?",
+    "answerChoices": {
+      "A": "There is no indispensable aspect of residency training that requires resident physicians to work exceptionally long hours.",
+      "B": "Resident physicians have a more direct effect on the lives of others than do air traffic controllers and nuclear power plant operators.",
+      "C": "The more hours one works in a week, the less satisfactorily one performs one's work.",
+      "D": "Those who are not engaged in work that has lifeor-death consequences should only sometimes be allowed to work exceptionally long hours.",
+      "E": "Some resident physicians would like to complete their residency training without working exceptionally long hours."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity",
+      "Argue the Anti-Conclusion",
+      "Analogies",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Career consultant: The most popular career advice suggests emphasizing one’s strengths to employers and downplaying one’s weaknesses. Research shows this advice to be incorrect. A study of 314 managers shows that those who use self-deprecating humor in front of their employees are more likely to be seen by them as even-handed, thoughtful, and concerned than are those who do not.",
+    "questionStem": "The career consultant's reasoning is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "bases a conclusion about how one group will respond to self-deprecation on information about how a different group responds to it",
+      "B": "ignores the possibility that what was viewed positively in the managers' self-deprecating humor was the self-deprecation and not its humor",
+      "C": "ignores the possibility that non-self-deprecating humor might have been viewed even more positively than self-deprecating humor",
+      "D": "infers from the fact that self-deprecating humor was viewed positively that nonhumorous self-deprecation would not be viewed positively",
+      "E": "bases a conclusion about certain popular career advice on a critique of only one part of that advice"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Rebuttals",
+      "Sampling",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Researcher: We studied two groups of subjects over a period of six months. Over this period, one of the groups had a daily routine of afternoon exercise. The other group, the control group, engaged in little or no exercise during the study. It was found that those in the exercise group got 33 percent more deep-sleep at night than did the control group. Exercising in the afternoon tends to raise body temperature slightly until after bedtime, and this extra heat induces deeper sleep.",
+    "questionStem": "The researcher's statements, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Regular afternoon exercise is one of the things required for adequate deep-sleep.",
+      "B": "Exercise in the morning is almost as likely to have as many beneficial effects on sleep as is exercise in the afternoon.",
+      "C": "The best way to get increased deep-sleep is to induce a slight increase in body temperature just before bedtime.",
+      "D": "No one in the control group experienced a rise in body temperature just before bedtime.",
+      "E": "Raising body temperature slightly by taking a warm bath just before bedtime will likely result in increased deep-sleep."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Companies wishing to boost sales of merchandise should use in-store displays to catch customers’ attention. According to a marketing study, today’s busy shoppers have less time for coupon-clipping and pay little attention to direct-mail advertising; instead, they make two-thirds of their buying decisions on the spot at the store.",
+    "questionStem": "Which one of the following is an assumption that the argument requires?",
+    "answerChoices": {
+      "A": "Companies are increasingly using in-store displays to catch customers' attention.",
+      "B": "Coupons and direct-mail advertising were at one time more effective means of boosting sales of merchandise than they are now.",
+      "C": "In-store displays are more likely to influence buying decisions made on the spot at the store than to influence other buying decisions.",
+      "D": "In-store displays that catch customers' attention increase the likelihood that customers will decide on the spot to buy the company's merchandise.",
+      "E": "Many of today's shoppers are too busy to pay careful attention to in-store displays."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Roger Bacon, the thirteenth-century scientist, is said to have made important discoveries in optics. He was an early advocate of hands-on experimentation, and as a teacher warned his students against relying uncritically on the opinions of authorities. Nevertheless, this did not stop Bacon himself from appealing to authority when it was expedient for his own argumentation. Thus, Bacon’s work on optics should be generally disregarded, in view of the contradiction between his statements and his own behavior.",
+    "questionStem": "The reasoning in the argument is flawed because the argument",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that authority opinion is often incorrect",
+      "B": "attacks Bacon's uncritical reliance on authority opinion",
+      "C": "uses Bacon's remarks to his students as evidence of his opinions",
+      "D": "ignores the fact that thirteenth-century science may not hold up well today",
+      "E": "criticizes Bacon's character in order to question his scientific findings"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Principle-Conform",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "One’s palate is to a great extent socially determined: that is, if we notice that a lot of people enjoy consuming a certain type of food, we will eventually come to like the food as well, once we have become accustomed to the food.",
+    "questionStem": "Which one of the following most closely conforms to the principle above?",
+    "answerChoices": {
+      "A": "Maxine spoke to her neighbor about the many different ways he prepared pasta, and after trying some of his recipes found out that she loves to eat pasta.",
+      "B": "Mike dislikes lima beans, due to his having parents who dislike them and few family members who enjoy them.",
+      "C": "All of George's Ukrainian relatives love to eat pierogis, and by staying with them for several summers, George has become very fond of pierogis as well.",
+      "D": "Yolanda dislikes pickles because she has observed that many of her relatives wince when eating pickles.",
+      "E": "Sally found jalape�o peppers to be too hot when she first tried them, but now she can eat them without discomfort, because her family members use them frequently in their cooking."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The ability to access information via computer is a tremendous resource for visually impaired people. Only a limited amount of printed information is accessible in braille, large type, or audiotape. But a person with the right hardware and software can access a large quantity of information from libraries and museums around the world, and can have the computer read the information aloud, display it in large type, or produce a braille version. Thus, visually impaired people can now access information from computers more easily than they can from most traditional sources.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "A computerized speech synthesizer is often less expensive than a complete library of audiotapes.",
+      "B": "Relatively easy-to-use computer systems that can read information aloud, display it in large type, or produce a braille version of it are widely available.",
+      "C": "Many visually impaired people prefer traditional sources of information to computers that can read information aloud, display it in large type, or produce a braille version of it.",
+      "D": "Most visually impaired people who have access to information via computer also have access to this same information via more traditional sources.",
+      "E": "The rate at which printed information is converted into formats easily accessible to visually impaired people will increase."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Method",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Legislator: The recently released crime statistics clearly show that the new laws requiring stiffer punishments for violators have reduced the crime rate. In the areas covered by those laws, the incidence of crime has decreased by one- fourth over the four years since the legislation was enacted.Analyst: The statistics are welcome news, but they do not provide strong evidence that the new laws caused the drop in crime. Many comparable areas that lack such legislation have reported a similar drop in the crime rate during the same period.",
+    "questionStem": "Which one of the following most accurately describes the strategy used by the analyst to call into question the legislator's argument?",
+    "answerChoices": {
+      "A": "pointing out that the legislator has provided no evidence of the reliability of the statistics on which the legislator's conclusion is based",
+      "B": "arguing that the legislator has unreasonably concluded that one event has caused another without ruling out the possibility that both events are effects of a common cause",
+      "C": "objecting that the statistics on which the legislator is basing his conclusion are drawn from a time period that is too short to yield a meaningful data sample",
+      "D": "claiming that the legislator has attempted to establish a particular conclusion because doing so is in the legislator's self-interest rather than because of any genuine concern for the truth of the matter",
+      "E": "implying that the legislator has drawn a conclusion about cause and effect without considering how often the alleged effect has occurred in the absence of the alleged cause"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Parallel",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Many physicists claim that quantum mechanics may ultimately be able to explain all fundamental phenomena, and that, therefore, physical theory will soon be complete. However, every theory in the history of physics that was thought to be final eventually had to be rejected for failure to explain some new observation. For this reason, we can expect that quantum mechanics will not be the final theory.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "Only a few species of plants now grow in very dry climates; therefore, few species of animals can live in those climates.",
+      "B": "Four companies have marketed a new food processing product; therefore, a fifth company will not be able to market a similar product.",
+      "C": "Your sister is a very good chess player but she has never won a chess tournament; therefore, she will not win this chess tournament.",
+      "D": "A rare virus infected a group of people a decade ago; therefore, it will not reinfect the same population now.",
+      "E": "Each team member has failed to live up to people's expectations; therefore, the team will not live up to people's expectations."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "In an experiment, researchers played a series of musical intervals—two-note sequences—to a large, diverse group of six-month-old babies. They found that the babies paid significantly more attention when the intervals were perfect octaves, fifths, or fourths than otherwise. These intervals are prevalent in the musical systems of most cultures around the world. Thus, humans probably have a biological predisposition to pay more attention to those intervals than to others.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Several similar experiments using older children and adults found that these subjects, too, had a general tendency to pay more attention to octaves, fifths, and fourths than to other musical intervals.",
+      "B": "None of the babies in the experiment had previous exposure to music from any culture.",
+      "C": "All of the babies in the experiment had been exposed to music drawn equally from a wide variety of cultures around the world.",
+      "D": "In a second experiment, these same babies showed no clear tendency to notice primary colors more than other colors.",
+      "E": "Octaves, fifths, and fourths were played more frequently during the experiment than other musical intervals were."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": []
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Professor Donnelly's exams are always more difficult than Professor Curtis's exams. The question about dinosaurs was on Professor Donnelly's last exam. Therefore, the question must be difficult.",
+    "questionStem": "Which one of the following exhibits both of the logical flaws exhibited in the argument above?",
+    "answerChoices": {
+      "A": "Lewis is a better baker than Stockman. Lewis made this cake. Therefore, it must be better than most of Stockman's cakes.",
+      "B": "Porter's new book of poetry is better than any of her other books of poetry. This poem is from Porter's new book, so it must be good.",
+      "C": "Professor Whitburn is teaching English this year and always assigns a lot of reading. Therefore, this year's English class will have to do more reading than last year's class.",
+      "D": "Shield's first novel has a more complicated plot than any other that she has written. Hence, that plot must be very complex.",
+      "E": "Mathematics is more difficult than history. Therefore, my calculus test will be more difficult than my history test."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Ethicist: As a function of one's job and societal role, one has various duties. There are situations where acting in accord with one of these duties has disastrous consequences, and thus the duties are not absolute. However, it is a principle of morality that if one does not have overwhelming evidence that fulfilling such a duty will have disastrous consequences, one ought to fulfill it.",
+    "questionStem": "Which one of the following most closely conforms to the principle of morality cited by the ethicist?",
+    "answerChoices": {
+      "A": "A teacher thinks that a certain student has received the course grade merited by the quality of his work. The teacher should fulfill her duty not to raise the student's grade, even though the lower grade might harm the student's chance of obtaining an internship.",
+      "B": "A person should not fulfill his duty to tell his friend the truth about the friend's new haircut, because lying will make the friend happier than the truth would.",
+      "C": "A police investigator discovers that a contractor has slightly overcharged wealthy customers in order to lower rates for a charity. The investigator should not fulfill his duty to report the contractor provided that the contractor stops the practice.",
+      "D": "A psychiatrist's patient tells her about his recurring nightmares of having committed a terrible crime. The psychiatrist should fulfill her duty to report this to the authorities because the patient may have broken the law, even though the psychiatrist also has a duty of confidentiality to her patients.",
+      "E": "A journalist thinks there is a slight chance that a story about a developing crisis will endanger innocent lives. Therefore, the journalist should await further developments before fulfilling his duty to file the story."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Detective: Laser-printer drums are easily damaged, and any nick in a drum will produce a blemish of similar dimensions on each page produced by that printer. So in matching a blemish on a page with a nick on a drum, we can reliably trace a suspicious laser-printed document to the precise printer on which it was produced.",
+    "questionStem": "Which one of the following, if true, most weakens the detective's argument?",
+    "answerChoices": {
+      "A": "Criminals are unlikely to use their own laser printers to produce suspicious documents.",
+      "B": "Drum nicks are usually so small that it requires skill to accurately determine their size and shape.",
+      "C": "The manufacturing process often produces the same nick on several drums.",
+      "D": "Blemishes on documents are sometimes totally concealed by characters that are printed over them.",
+      "E": "Most suspicious documents are not produced on laser printers."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Whoever is kind is loved by somebody or other, and whoever loves anyone is happy. It follows that whoever is kind is happy.",
+    "questionStem": "The conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Whoever loves someone loves everyone.",
+      "B": "Whoever loves everyone loves someone.",
+      "C": "Whoever is happy loves everyone.",
+      "D": "Whoever loves no one is loved by no one.",
+      "E": "Whoever loves everyone is kind."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "It is now clear that the ancient Egyptians were the first society to produce alcoholic beverages. It had been thought that the ancient Babylonians were the first; they had mastered the process of fermentation for making wine as early as 1500 B.C. However, archaeologists have discovered an Egyptian cup dating from 2000 B.C. whose sides depict what appears to be an Egyptian brewery, and whose chemical residue reveals that it contained a form of alcoholic beer.",
+    "questionStem": "The reasoning above is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It makes a generalization about Egyptian society based on a sample so small that it is likely to be unrepresentative.",
+      "B": "It uses the term \"alcoholic beverage\" in a different sense in the premises than in the conclusion.",
+      "C": "It presumes, without providing justification, that because one society developed a technology before another, the development in the latter was dependent on the development in the former.",
+      "D": "It ignores the possibility that the first known instance of a kind is not the first instance of that kind.",
+      "E": "It provides no evidence for the claim that the Babylonians produced wine as early as 1500 B.C."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT119",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Studies have shown that specialty sports foods contain exactly the same nutrients in the same quantities as do common foods from the grocery store. Moreover, sports foods cost from two to three times more than regular foods. So very few athletes would buy sports foods were it not for expensive advertising campaigns.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Sports foods are occasionally used by world-famous athletes.",
+      "B": "Many grocery stores carry sports foods alongside traditional inventories.",
+      "C": "Sports foods are easier than regular foods to carry and consume during training and competition.",
+      "D": "Regular foods contain vitamins and minerals that are essential to developing strength and endurance.",
+      "E": "Sports foods can nutritionally substitute for regular meals."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Assumes Similarity",
+      "Net Effect"
+    ]
+  }
+]

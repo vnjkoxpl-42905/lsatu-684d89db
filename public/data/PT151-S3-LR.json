@@ -1,0 +1,604 @@
+[
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Researchers put two electrodes in a pool that a dolphin\nswam in. When the dolphin swam near the electrodes, the\nresearchers would sometimes create a weak electric field\nby activating the electrodes. The dolphin would swim\naway if the electrodes were activated; otherwise it acted\nnormally. The researchers then placed a plastic shield\nover small organs called vibrissal crypts located on the\ndolphin’s snout. With the crypts covered, the dolphin no\nlonger swam away when the electrodes were activated.",
+    "questionStem": "The statements above, if true, most strongly support\nwhich one of the following?",
+    "answerChoices": {
+      "A": "In the wild, dolphins sometimes encounter strong electric fields.",
+      "B": "Vibrissal crypts enable dolphins to sense electric fields.",
+      "C": "Dolphins do not instinctually avoid electric fields, but they can be trained to do so.",
+      "D": "Electric fields interfere with the normal functioning of dolphins’ vibrissal crypts.",
+      "E": "Under normal circumstances, dolphins are unable to sense electric fields."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Evaluate",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In a study of honesty conducted in various retail stores,\ncustomers who paid in cash and received change were\ngiven an extra dollar with their change. Few people who\nreceived an extra dollar returned it. So, among those who\nreceived an extra dollar, most behaved dishonestly.",
+    "questionStem": "The answer to which one of the following questions\nwould most help in evaluating the argument?",
+    "answerChoices": {
+      "A": "Did those who received an extra dollar count their change?",
+      "B": "What percentage of the retail transactions studied were cash transactions?",
+      "C": "Would the people who returned the extra dollar describe themselves as honest?",
+      "D": "Did the people who returned the extra dollar suspect that it was given to them intentionally?",
+      "E": "Does increasing the extra change to five dollars have an effect on people’s behavior?"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Dario: The government should continue to grant patents\nfor all new drug compounds. Patents promote\ninnovation by rewarding pharmaceutical\ncompanies for undertaking the costly research\nneeded to develop new drugs. Cynthia: Promoting innovation is certainly important. For this reason, patents should be granted only\nfor truly innovative drugs, not for minor variants\nof previously existing drugs. Since it is much\nless expensive to tweak an existing drug than\nto develop a wholly new one, pharmaceutical\ncompanies tend to focus primarily on the cheaper\nalternative.",
+    "questionStem": "Dario and Cynthia disagree over whether",
+    "answerChoices": {
+      "A": "pharmaceutical companies should be rewarded for pursuing innovation",
+      "B": "patents should be granted for all drug compounds",
+      "C": "developing truly innovative drugs is costly",
+      "D": "pharmaceutical companies have an incentive to create minor variants of existing drugs",
+      "E": "drug patents can promote innovation"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "There are only two possible reasons that it would be\nwrong to engage in an activity that causes pollution:\nbecause pollution harms ecosystems, which are valuable\nin themselves; or, ecosystems aside, because pollution\nharms human populations. Either way, it would not be\nwrong to perform mining operations on Mars. Although\ndoing so would pollute Mars, the small human presence\nneeded to run the mining operation would be completely\nprotected from the Martian environment and would suffer\nno harm.",
+    "questionStem": "The conclusion drawn above follows logically if which\none of the following is assumed?",
+    "answerChoices": {
+      "A": "Mining creates less pollution than many other human activities.",
+      "B": "There are no ecosystems on Mars.",
+      "C": "The economic benefits of mining on Mars would outweigh its costs.",
+      "D": "It is technologically feasible to perform mining operations on Mars.",
+      "E": "The more complex an ecosystem is, the more valuable it is."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A person with low self-esteem will be treated\ndisrespectfully more often than will a person with high\nself-esteem. Moreover, a recent experiment found that,\nwhen people with low self-esteem and those with high\nself-esteem are both confronted with the same treatment\nby others, people with low self-esteem are much more\nlikely to feel that they have been treated disrespectfully.\nThus, _______.",
+    "questionStem": "Which one of the following most logically completes the\nargument?",
+    "answerChoices": {
+      "A": "people with low self-esteem are usually right when they think they have been treated disrespectfully",
+      "B": "being treated disrespectfully tends to cause a person to develop lower self-esteem",
+      "C": "if an individual has been treated disrespectfully, it is probably because the individual was perceived to have low self-esteem",
+      "D": "people with low self-esteem more frequently think that they are being treated disrespectfully than do people with high self-esteem",
+      "E": "a person with low self-esteem will be more inclined to treat others disrespectfully than will a person with high self-esteem"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Watanabe: To protect the native kokanee salmon in the\nlake, we must allow fishing of native trout. Each\nmature trout eats about 250 mature kokanee\nannually.\nLopez: The real problem is mysis shrimp, which were\noriginally introduced into the lake as food for\nmature kokanee; but mysis eat plankton—young\nkokanees’ food. The young kokanee are starving\nto death. So eradicating the shrimp is preferable\nto allowing trout fishing.",
+    "questionStem": "Which one of the following principles, if valid, most\nstrongly supports Lopez’s conclusion?",
+    "answerChoices": {
+      "A": "Eliminating a non-native species from a habitat in which it threatens a native species is preferable to any other method of protecting the threatened native species.",
+      "B": "When trying to protect the food supply of a particular species, it is best to encourage the method that will have the quickest results, all else being equal.",
+      "C": "The number of species in a given habitat should not be reduced if at all possible.",
+      "D": "No non-native species should be introduced into a habitat unless all the potential effects of that introduction have been considered.",
+      "E": "When seeking to increase the population of a given species, it is most important that one preserve the members of the species who are in the prime reproductive stage of their lives."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "If rational-choice theory is correct, then people act only\nin ways that they expect will benefit themselves. But\nthis means that rational-choice theory cannot be correct,\nbecause plenty of examples exist of people acting in\nways that result in no personal benefit whatsoever.",
+    "questionStem": "The argument above is most vulnerable to criticism on\nthe grounds that it",
+    "answerChoices": {
+      "A": "assumes as a premise the contention the argument purports to establish",
+      "B": "concludes that a theory is false merely on the grounds that the evidence for it is hypothetical",
+      "C": "takes for granted that people who are acting in ways that are personally beneficial expected that their actions would be personally beneficial",
+      "D": "presumes, without justification, that examples of people acting in ways that are not personally beneficial greatly outnumber examples of people acting in ways that are personally beneficial",
+      "E": "fails to consider that people acting in ways that result in no personal benefit may nonetheless have expected that acting in those ways would produce personal benefit"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Famous Flaws",
+      "Refute a Conditional",
+      "Rebuttals",
+      "Missing Link / Idea",
+      "Belief / Knowledge / Intent"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Winds, the movement of gases in the atmosphere of a\nplanet, are ultimately due to differences in atmospheric\ntemperature. Winds on Earth are the result of heat from\nthe Sun, but the Sun is much too far away from Jupiter\nto have any significant impact on the temperature of\nJupiter’s atmosphere. Nevertheless, on Jupiter winds\nreach speeds many times those of winds found on Earth.",
+    "questionStem": "Which one of the following, if true, most helps to\nexplain the facts cited above about Jupiter and its winds?",
+    "answerChoices": {
+      "A": "Unlike Earth, Jupiter’s atmosphere is warmed by the planet’s internal heat source.",
+      "B": "Jupiter’s atmosphere is composed of several gases that are found in Earth’s atmosphere only in trace amounts.",
+      "C": "Gaseous planets such as Jupiter sometimes have stronger winds than do rocky planets such as Earth.",
+      "D": "There are more planets that have winds stronger than Earth’s than there are planets that have winds weaker than Earth’s.",
+      "E": "Planets even farther from the Sun than Jupiter are known to have atmospheric winds."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Until recently it was widely believed that only a\nlimited number of species could reproduce through\nparthenogenesis, reproduction by a female alone.\nBut lately, as interest in the topic has increased,\nparthenogenesis has been found in a variety of\nunexpected cases, including sharks and Komodo dragons.\nSo the number of species that can reproduce through\nparthenogenesis must be increasing.",
+    "questionStem": "The reasoning in the argument is most vulnerable to\ncriticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "equates mere interest in a subject with real understanding of that subject",
+      "B": "takes for granted that because one thing follows another, the one must have been caused by the other",
+      "C": "takes ignorance of the occurrence of something as conclusive evidence that it did not occur",
+      "D": "overlooks a crucial difference between two situations that the argument presents as being similar",
+      "E": "presumes that because research is new it is, on that basis alone, better than older research"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Physician: Clinical psychologists who are not also\ndoctors with medical degrees should not be\nallowed to prescribe psychiatric medications.\nTraining in clinical psychology includes at most a\nfew hundred hours of education in neuroscience,\nphysiology, and pharmacology. In contrast,\ndoctors with medical degrees must receive years\nof training in these fields before they are allowed\nto prescribe psychiatric medications.",
+    "questionStem": "Which one of the following principles, if valid, would\nmost help to justify the reasoning in the physician’s\nargument?",
+    "answerChoices": {
+      "A": "Clinical psychologists who are also doctors with medical degrees should be allowed to prescribe psychiatric medications.",
+      "B": "Doctors without training in clinical psychology should not be allowed to prescribe psychiatric medications.",
+      "C": "No one without years of training in neuroscience, physiology, and pharmacology should be allowed to prescribe psychiatric medications.",
+      "D": "The training in neuroscience, physiology, and pharmacology required for a medical degree is sufficient for a doctor to be allowed to prescribe psychiatric medications.",
+      "E": "Clinical psychologists should receive years of training in neuroscience, physiology, and pharmacology."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Lobbyist: Those who claim that automobile exhaust\nemissions are a risk to public health are mistaken. During the last century, as automobile exhaust\nemissions increased, every relevant indicator of\npublic health improved dramatically rather than\ndeteriorated.",
+    "questionStem": "The flaw in the lobbyist’s reasoning can most effectively\nbe demonstrated by noting that, by parallel reasoning,\nwe could conclude that",
+    "answerChoices": {
+      "A": "inspecting commercial airplanes for safety is unnecessary because the number of commercial airplane crashes has decreased over the last decade",
+      "B": "smoking cigarettes is not bad for one’s health because not all cigarette smokers get smoking-related illnesses",
+      "C": "using a cell phone while driving is not dangerous because the number of traffic accidents has decreased since the invention of the cell phone",
+      "D": "skydiving is not dangerous because the number of injuries to skydivers has decreased in recent years",
+      "E": "people with insurance do not need to lock their doors because if anything is stolen the insurance company will pay to replace it"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "A recently discovered fossil, which is believed by some\nto come from Archaeoraptor liaoningensis, a species of\ndinosaur, can serve as evidence that birds evolved from\ndinosaurs only if the entire fossil is from a single animal.\nHowever, the fossil is a composite of bones collected\nfrom various parts of the discovery site, so it does not\nprovide evidence that birds evolved from dinosaurs.",
+    "questionStem": "The conclusion drawn in the argument follows logically\nif which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The only paleontologists who believe that the entire fossil is from a single animal are those who were already convinced that birds evolved from dinosaurs.",
+      "B": "If the fossil is a composite, then it has pieces of more than one animal.",
+      "C": "There are other fossils that provide evidence that birds evolved from dinosaurs.",
+      "D": "If the entire fossil is from a single animal, then it is a well-preserved specimen.",
+      "E": "The fossil was stolen from the discovery site and sold by someone who cared much more about personal profit than about the accuracy of the fossil record."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A new screening test has been developed for syndrome\nQ. Research has shown that the test yields a positive\nfor syndrome Q whenever the person tested has that\nsyndrome. So, since Justine shows positive on the test,\nshe must have syndrome Q.",
+    "questionStem": "Which one of the following most accurately describes a\nflaw in the reasoning in the argument?",
+    "answerChoices": {
+      "A": "It confuses the claim that a subject will test positive when the syndrome is present with the claim that any subject who tests positive has the syndrome.",
+      "B": "It makes a general claim regarding the accuracy of the test for syndrome Q without providing adequate scientific justification for that claim.",
+      "C": "It fails to adequately distinguish between a person’s not having syndrome Q and that person’s not testing positive for syndrome Q.",
+      "D": "It confuses a claim about the accuracy of a test for syndrome Q in an arbitrary group of individuals with a similar claim about the accuracy of the test for a single individual.",
+      "E": "It confuses the test’s having no reliable results for the presence of syndrome Q with its having no reliable results for the absence of syndrome Q."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws",
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Music historian: In the past, radio stations would not play\nrock songs that were more than three minutes\nin length. Rock musicians claimed that such\ncommercial barriers limited their creativity, and\nsome critics argue that only since those barriers\nhave been lifted has rock music become artistic.\nIn fact, however, when these barriers were lifted,\nthe standards for song structures broke down and\nthe music became aimless, because the styles\nfrom which rock derived were not well suited to\nsongs of extended length.",
+    "questionStem": "Which one of the following is most strongly supported\nby the music historian’s claims?",
+    "answerChoices": {
+      "A": "Rock music is not a good outlet for creative musicians who have a great many ideas.",
+      "B": "Rock music must borrow from styles more conducive to songs of extended length if it is to become artistic.",
+      "C": "Rock music requires more discipline than some other forms of music.",
+      "D": "Rock music can sometimes benefit from the existence of commercial barriers rather than being harmed by them.",
+      "E": "Rock music is best when it is made by musicians who do not think of themselves as being self-conscious artists."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot",
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Some food historians conclude that recipes compiled by\nan ancient Roman named Apicius are a reliable indicator\nof how wealthy Romans prepared and spiced their\nfood. Since few other recipes from ancient Rome have\nsurvived, this conclusion is far too hasty. After all, the\nrecipes of Apicius may have been highly atypical, just\nlike the recipes of many notable modern chefs.",
+    "questionStem": "The argument does which one of the following?",
+    "answerChoices": {
+      "A": "It rejects a view held by some food historians solely on the grounds that there is insufficient evidence to support it.",
+      "B": "It offers support for a view held by some food historians by providing a modern analogue to that view.",
+      "C": "It takes issue with the view of some food historians by providing a modern analogue that purportedly undercuts their view.",
+      "D": "It uses a conclusion drawn by some food historians as the basis for a conclusion about a modern analogue.",
+      "E": "It tries to bolster a conclusion about the similarity of historical times to modern times by comparing a conclusion drawn by some food historians to a modern analogue."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Wood that is waterlogged or desiccated can be preserved\nfor a significant period, but, under normal conditions,\nwood usually disintegrates within a century or two. For\nthis reason, archaeologists have been unable to find many\nremains of early wheeled vehicles to examine. However,\narchaeologists have found small ceramic models of\nwheeled vehicles made at approximately the same time\nas those early vehicles. Since these models have been\nmuch less susceptible to disintegration than the vehicles\nthemselves, the main evidence regarding early wheeled\nvehicles has come from these models.",
+    "questionStem": "Which one of the following is most strongly supported\nby the information above?",
+    "answerChoices": {
+      "A": "Most of the small ceramic models of early wheeled vehicles were made by the very individuals who made the vehicles upon which the ceramic vehicles were modeled.",
+      "B": "Few, if any, small models of early wheeled vehicles were made of wood or other materials equally susceptible to disintegration under normal conditions.",
+      "C": "The individuals who made the early wheeled vehicles were not always aware that wood can be preserved through waterlogging or desiccation.",
+      "D": "An artifact will be more difficult for archaeologists to find if it has been preserved through waterlogging or desiccation than if it has been preserved under more normal conditions.",
+      "E": "Of the early wheeled vehicles not preserved, more were made of wood than were made of materials no more susceptible to disintegration than are ceramic items."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Traditional hatcheries raise fish in featureless\nenvironments and subject them to dull routines, whereas\nnew, experimental hatcheries raise fish in visually\nstimulating environments with varied routines. When\nreleased into the wild, fish from the experimental\nhatcheries are bolder than those from traditional\nhatcheries in exploring new environments and trying new\ntypes of food. Fish raised in the experimental hatcheries,\ntherefore, are more likely to survive after their release.",
+    "questionStem": "Which one of the following is an assumption required by\nthe argument?",
+    "answerChoices": {
+      "A": "It is economically feasible for hatchery operators to expose fish to greater visual stimulation and to more varied routines.",
+      "B": "The quality of the environments into which hatchery-raised fish are released has little effect on the fish’s survival rate.",
+      "C": "Some fish raised in traditional hatcheries die because they are too timid in their foraging for food.",
+      "D": "Hatchery-raised fish that are released into the wild need to eat many different types of food to survive.",
+      "E": "Fish in the wild always live in visually stimulating environments."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "An analysis of the language in social media messages\nposted via the Internet determined that, on average, the\nuse of words associated with positive moods is common\nin the morning, decreases gradually to a low point\nmidafternoon, and then increases sharply throughout the\nevening. This shows that a person’s mood typically starts\nout happy in the morning, declines during the day, and\nimproves in the evening.",
+    "questionStem": "The reasoning in the argument is most vulnerable to\ncriticism on the grounds that the argument overlooks the\npossibility that",
+    "answerChoices": {
+      "A": "people’s overall moods are lowest at the beginning of the workweek and rise later, peaking on the weekend",
+      "B": "many people who post social media messages use neither words associated with positive moods nor words associated with negative moods",
+      "C": "the frequency in the use of words in social media is not necessarily indicative of the frequency of the use of those words in other forms of communication",
+      "D": "the number of social media messages posted in the morning is not significantly different from the number posted in the evening",
+      "E": "most of the social media messages posted in the evening are posted by people who rarely post such messages in the morning"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Economist: The wages of many of the lowest-paid\ncorporate employees in this country would be\nprotected from cuts by enacting a maximum\nwage law that prohibits executives at any\ncorporation from earning more than, say, 50 times\nwhat the corporation’s lowest-paid employees\nin this country earn. Currently, some executives\ntry to increase corporate profits—and their own\nsalaries—by cutting the pay and benefits of their\ncorporations’ employees. A maximum wage law\nwould remove this incentive for these executives\nto cut the wages of their lowest-paid employees.",
+    "questionStem": "Which one of the following is an assumption the\neconomist’s argument requires?",
+    "answerChoices": {
+      "A": "All of the lowest-paid corporate employees in the economist’s country are employed at corporations at which the executives earn more than 50 times what the corporations’ lowest-paid employees in the economist’s country earn.",
+      "B": "Some corporate executives who cut the pay of their corporations’ lowest-paid employees in the economist’s country in order to increase their own salaries already earn less than 50 times what their corporations’ lowest-paid employees in the economist’s country earn.",
+      "C": "No corporate executives in the economist’s country would raise the wages of their corporations’ lowest-paid employees in the economist’s country unless such a maximum wage law linked executive wages to those of their corporations’ lowest-paid employees in the economist’s country.",
+      "D": "If corporate executives could not increase their own salaries by cutting the pay and benefits of their corporations’ lowest-paid employees in the economist’s country, they would never change the wages of those employees.",
+      "E": "If such a maximum wage law were enacted in the economist’s country, one or more corporate executives would not cut the pay and benefits of their corporations’ lowest-paid employees in the economist’s country."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Defender",
+      "Plans / Recommendations",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The level of triglycerides in the blood rises when\ntriglycerides are inadequately metabolized. Research\nshows that patients with blood triglyceride levels above\n1 milligram per milliliter are twice as prone to heart\nattacks as others. Thus, it is likely that consuming large\namounts of fat, processed sugar, or alcohol, each known\nto increase triglyceride levels in the blood, is a factor\ncausing heart disease.",
+    "questionStem": "Which one of the following, if true, most weakens the\nargument?",
+    "answerChoices": {
+      "A": "People with a high-fat diet who engage in regular, vigorous physical activity are much less likely to develop heart disease than are sedentary people with a low-fat diet.",
+      "B": "Triglyceride levels above 2 milligrams per milliliter increase the risk of some serious illnesses not related to heart disease.",
+      "C": "Shortly after a person ceases to regularly consume alcohol and processed sugar, that person’s triglyceride levels drop dramatically.",
+      "D": "Heart disease interferes with the body’s ability to metabolize triglycerides.",
+      "E": "People who maintain strict regimens for their health tend to adopt low-fat diets and to avoid alcohol and processed sugar."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "In an experiment, some volunteers were assigned to\ntake aerobics classes and others to take weight-training\nclasses. After three months, each performed an arduous\nmathematical calculation. Just after that challenge, the\nmeasurable stress symptoms of the volunteers in the\naerobics classes were less than those of the volunteers in\nthe weight-training classes. This provides good evidence\nthat aerobic exercise helps the body handle psychological\nstress.",
+    "questionStem": "Which one of the following is an assumption the\nargument requires?",
+    "answerChoices": {
+      "A": "Three months is enough time for the body to fully benefit from aerobic exercise.",
+      "B": "The volunteers who were assigned to the aerobics classes did not also lift weights outside the classes.",
+      "C": "On average, the volunteers who were assigned to the aerobics classes got more exercise in the months in which they took those classes than they had been getting before beginning the experiment.",
+      "D": "On average, the volunteers assigned to the aerobics classes found it less difficult to perform the mathematical calculation than did the volunteers assigned to the weight-training classes.",
+      "E": "On average, the volunteers assigned to the aerobics classes got a greater amount of aerobic exercise overall during the experiment, including any exercise outside the classes, than did the volunteers assigned to the weight-training classes."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Assumes Difference",
+      "Plausibility",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Insurers and doctors are well aware that the incidence\nof lower-back injuries among office workers who spend\nlong hours sitting is higher than that among people who\nregularly do physical work of a type known to place\nheavy stresses on the lower back. This shows that office\nequipment and furniture are not properly designed to\npromote workers’ health.",
+    "questionStem": "Which one of the following, if true, most undermines the\nreasoning above?",
+    "answerChoices": {
+      "A": "When they are at home, laborers and office workers tend to spend similar amounts of time sitting.",
+      "B": "Insurance companies tend to dislike selling policies to companies whose workers often claim to have back pain.",
+      "C": "People who regularly do physical work of a type known to place heavy stress on the lower back are encouraged to use techniques that reduce the degree of stress involved.",
+      "D": "Most of the lower-back injuries that office workers suffer occur while they are on the job.",
+      "E": "Consistent physical exercise is one of the most effective ways to prevent or recover from lower-back injuries."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Researchers have found that some unprotected areas\noutside of a national park that was designed to protect\nbirds have substantially higher numbers of certain bird\nspecies than comparable areas inside the park.",
+    "questionStem": "Which one of the following, if true, most helps to\nexplain the researchers’ finding?",
+    "answerChoices": {
+      "A": "Moose are much more prevalent inside the park, where hunting is prohibited, than outside the park, and moose eat much of the food that the birds need to survive.",
+      "B": "The researchers also found that some unprotected areas outside of the park have substantially higher numbers of certain reptile species than comparable areas inside the park.",
+      "C": "Researchers tagged a large number of birds inside the park; three months later some of these birds were recaptured outside the park.",
+      "D": "Both inside the park and just outside of it, there are riverside areas containing willows and other waterside growth that the bird species thrive on.",
+      "E": "The park was designed to protect endangered bird species, but some of the bird species that are present in higher numbers in the unprotected areas are also endangered."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A recent poll of a large number of households found that\n47 percent of those with a cat had at least one person\nwith a university degree, while 38 percent of households\nwith a dog had at least one person with a university\ndegree. Clearly, people who hold university degrees are\nmore likely to live in a household with a cat than one\nwith a dog.",
+    "questionStem": "The reasoning in the argument is flawed in that the\nargument",
+    "answerChoices": {
+      "A": "ignores the possibility that a significant number of households might have both a cat and a dog",
+      "B": "takes for granted that there are not significantly more households with a dog than ones with a cat",
+      "C": "fails to consider how many of the households have at least one person without a university degree",
+      "D": "fails to consider to what extent people with university degrees participate in decisions about whether their households have a cat or dog",
+      "E": "ignores the possibility that two things can be correlated without being causally connected"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Keeler wanted the institute to receive bad publicity.\nHe and Greene were the only ones in a position to tell\nthe press about the institute’s potentially embarrassing\naffiliations, but Greene had no reason to do so. Therefore,\nit must have been Keeler who notified the press.",
+    "questionStem": "Which one of the following arguments is most closely\nparallel in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "The only people who had any reason to write the anonymous letter were Johnson and Ringwold. Johnson and Ringwold both deny doing so. Ringwold, however, admits that she has written anonymous letters in the past. Thus, it must have been Ringwold who wrote the letter.",
+      "B": "Carter and Whitequill were the only ones who had any motive to bribe the public official. But Whitequill would have been too fearful that the bribery might somehow be made public. Carter, therefore, must be the person who bribed the public official.",
+      "C": "Other than Helms and Lapinski, no one had access to the equipment on Thursday, the day it was tampered with. Thus, since Helms had reason to tamper with the equipment and Lapinski did not, it must have been Helms who did it.",
+      "D": "When the bridge was designed, Fleming and Solano were the only ones capable of creating such a design. Fleming, however, had a strong reason to take credit for the design if it were his. Thus, since no one took credit for the design, it must have been the work of Solano.",
+      "E": "Cutter and Rengo are the only serious candidates for designing the new monument. Rengo has designed several beautiful monuments and has connections to the selection committee. Therefore, it will probably be Rengo who is awarded the job of designing the monument."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Ruling Out Options"
+    ]
+  }
+]

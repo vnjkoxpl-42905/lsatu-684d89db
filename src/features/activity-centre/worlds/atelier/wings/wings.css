@@ -1,0 +1,91 @@
+/*
+ * The atelier's two wings. Same table, different work, so they inherit the
+ * palette from `.atelier` and add only what the main table does not have.
+ */
+
+.at-wing {
+  overflow-y: auto;
+}
+
+/* The argument shown back after a call, at reading weight rather than as glass. */
+.at-context {
+  border: 1px solid hsl(var(--at-edge) / 0.4);
+  background: hsl(var(--at-glass) / 0.45);
+  color: hsl(var(--at-ink-dim));
+}
+
+/* ---------- The light table ---------- */
+
+/* Strips, not panes: the argument is lying flat here, so no depth and no glass
+   shadow. Tapping is the whole interaction, so the target is the full width. */
+.at-strip {
+  width: 100%;
+  border: 1px solid hsl(var(--at-edge) / 0.55);
+  background: hsl(var(--at-glass) / 0.7);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    opacity 160ms ease;
+}
+
+.at-strip:hover:not(:disabled) {
+  border-color: hsl(var(--at-ink) / 0.4);
+  background: hsl(var(--at-glass));
+}
+
+.at-strip:disabled {
+  opacity: 0.7;
+}
+
+/* A missed strip stays visible and marked, rather than disappearing: the
+   student should be able to see what they ruled out. */
+.at-strip[data-wrong="true"] {
+  border-style: dashed;
+  opacity: 0.5;
+}
+
+.at-strip[data-truth="true"] {
+  border-color: hsl(var(--at-lamp));
+  background: hsl(var(--at-glass));
+  box-shadow: inset 2px 0 0 hsl(var(--at-lamp));
+  opacity: 1;
+}
+
+/* ---------- The Logic HUD ---------- */
+
+/* Held in the air above the strips: lit, floating, deliberately not part of the
+   table's surface. */
+.at-hud {
+  border: 1px solid hsl(var(--at-lamp) / 0.35);
+  background: hsl(var(--at-lamp) / 0.06);
+  box-shadow: 0 8px 24px hsl(var(--at-table-deep) / 0.7);
+  animation: at-hud-lift 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes at-hud-lift {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.at-hud-word {
+  border: 1px solid hsl(var(--at-lamp) / 0.45);
+  color: hsl(var(--at-lamp));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .at-hud {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .at-strip {
+    transition-duration: 1ms !important;
+  }
+}

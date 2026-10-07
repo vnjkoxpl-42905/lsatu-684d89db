@@ -1,0 +1,643 @@
+[
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Anna: Did you know that rainbows always occur opposite the sun, appearing high in the sky when the sun is low, and low in the sky when the sun is high? The Roman scholar Pliny the Elder claimed that this was so, in the first century A.D. William: His claim cannot be correct. After all, Pliny the Elder wrote that there are tribes of dog-headed people and beings with no heads or necks but with eyes on their shoulders, and said that smearing snails on your forehead cures headaches!",
+    "questionStem": "William’s argument against Anna’s claims about rainbows is most vulnerable to criticism because it",
+    "answerChoices": {
+      "A": "inappropriately distorts Anna’s conclusion, making it appear more extreme than it really is",
+      "B": "takes for granted that Pliny the Elder was in bad faith when he reported about unheard-of creatures",
+      "C": "illicitly infers that, because Pliny the Elder made some incorrect assertions, Pliny the Elder’s assertions about rainbows are also incorrect",
+      "D": "accepts the assertions of an ancient scholar without presenting contemporary verification of that scholar’s views",
+      "E": "implies that Pliny the Elder’s writings are too outdated to be of any value"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "2-Speaker",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Shareholder: The company’s current operations are time-proven successes. The move into food services may siphon off funds needed by these other operations. Also, the food service industry is volatile, with a higher inherent risk than with, for instance, pharmaceuticals, another area into which the company has considered expanding.",
+    "questionStem": "If the shareholder’s statements are true, which one of the following is most strongly supported by them?",
+    "answerChoices": {
+      "A": "The company’s present operations require increased funding.",
+      "B": "Investment into pharmaceuticals would not siphon off money from other operations.",
+      "C": "The company will lose money as it expands into the food service industry.",
+      "D": "Only if the company expands its operations into pharmaceuticals are increased profits possible.",
+      "E": "The company has a greater chance of losing money in food services than in pharmaceuticals."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Mariah: Joanna has argued that Adam should not judge the essay contest because several of his classmates have entered the contest. However, the essays are not identified by author to the judge and, moreover, none of Adam’s friends are classmates of his. Still, Adam has no experience in critiquing essays. Therefore, I agree with Joanna that Adam should not judge the contest.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify Mariah’s argument?",
+    "answerChoices": {
+      "A": "A suspicion of bias is insufficient grounds on which to disqualify someone from judging a contest.",
+      "B": "Expertise should be the primary prerequisite for serving as a contest judge.",
+      "C": "The ability of a judge to make objective decisions is more important than that judge’s content expertise.",
+      "D": "In selecting a contest judge, fairness concerns should override concern for the appropriate expertise.",
+      "E": "A contest judge, no matter how well qualified, cannot judge properly if the possibility of bias exists."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Important Pivot",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The manufacturers of NoSmoke claim that their product reduces smokers’ cravings for cigarettes. However, in a recent study, smokers given the main ingredient in NoSmoke reported no decrease in cravings for cigarettes. Thus, since NoSmoke has only two ingredients, if similar results are found for the second ingredient, we can conclude that NoSmoke does not reduce smokers’ cravings.",
+    "questionStem": "The argument above is flawed in that it",
+    "answerChoices": {
+      "A": "illicitly presumes that a whole must lack a certain quality if all of its parts lack that quality",
+      "B": "confuses a mere correlation with a cause",
+      "C": "relies on a sample that is likely to be unrepresentative",
+      "D": "overlooks the possibility that NoSmoke helps people to quit smoking in ways other than by reducing smokers’ cravings for cigarettes",
+      "E": "illicitly presumes that a claim must be false because the people making the claim are biased"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Part vs. Whole",
+      "Anti-Causal",
+      "Conditional Conclusion",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Gardener: Researchers encourage us to allow certain kinds of weeds to grow among garden vegetables because they can repel caterpillars from the garden. While it is wise to avoid unnecessary use of insecticides, the researchers’ advice is premature. For all we know, those kinds of weeds can deplete the soil of nutrients and moisture that garden crops depend on, and might even attract other kinds of damaging pests.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion of the gardener’s argument?",
+    "answerChoices": {
+      "A": "To the extent that it is possible to do so, we should eliminate the use of insecticides in gardening.",
+      "B": "Allowing certain kinds of weeds to grow in vegetable gardens may contribute to a net increase in unwanted garden pests.",
+      "C": "Allowing the right kinds of weeds to grow in vegetable gardens can help toward controlling caterpillars without the use of insecticides.",
+      "D": "We should be cautious about the practice of allowing certain kinds of weeds to grow among garden vegetables.",
+      "E": "We should be skeptical about the extent to which certain kinds of weeds can reduce the presence of caterpillars in gardens."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Executive: We recently ran a set of advertisements in the print version of a travel magazine and on that magazine’s website. We were unable to get any direct information about consumer response to the print ads. However, we found that consumer response to the ads on the website was much more limited than is typical for website ads. We concluded that consumer response to the print ads was probably below par as well.",
+    "questionStem": "The executive’s reasoning does which one of the following?",
+    "answerChoices": {
+      "A": "bases a prediction of the intensity of a phenomenon on information about the intensity of that phenomenon’s cause",
+      "B": "uses information about the typical frequency of events of a general kind to draw a conclusion about the probability of a particular event of that kind",
+      "C": "infers a statistical generalization from claims about a large number of specific instances",
+      "D": "uses a case in which direct evidence is available to draw a conclusion about an analogous case in which direct evidence is unavailable",
+      "E": "bases a prediction about future events on facts about recent comparable events"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Conservation officers justified their decision to remove a pack of ten coyotes from a small island by claiming that the coyotes, which preyed on wild cats and plover, were decimating the plover population and would soon wipe it out. After the coyotes were removed, however, the plover population plummeted dramatically, and within two years plover could no longer be found on the island.",
+    "questionStem": "Which one of the following would, if true, most help explain the phenomenon described above?",
+    "answerChoices": {
+      "A": "Plover are ground-nesting birds, which makes them easy prey for coyotes.",
+      "B": "Wild cat and plover populations tend to fluctuate together.",
+      "C": "Coyotes are not susceptible to any of the diseases that commonly infect plover or wild cats.",
+      "D": "The wild cat population on the island was once significantly larger than it is currently.",
+      "E": "The coyotes preyed mainly on wild cats, and wild cats prey on plover."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Economist: During a recession, a company can cut personnel costs either by laying off some employees without reducing the wages of remaining employees or by reducing the wages of all employees without laying off anyone. Both damage morale, but layoffs damage it less, since the aggrieved have, after all, left. Thus, when companies must reduce personnel costs during recessions, they are likely to lay off employees.",
+    "questionStem": "Which one of the following, if true, most strengthens the economist’s reasoning?",
+    "answerChoices": {
+      "A": "Employee morale is usually the primary concern driving companies’ decisions about whether to lay off employees or to reduce their wages.",
+      "B": "In general, companies increase wages only when they are unable to find enough qualified employees.",
+      "C": "Some companies will be unable to make a profit during recessions no matter how much they reduce personnel costs.",
+      "D": "When companies cut personnel costs during recessions by reducing wages, some employees usually resign.",
+      "E": "Some companies that have laid off employees during recessions have had difficulty finding enough qualified employees once economic growth resumed."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Predictions",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "There are far fewer independent bookstores than there were 20 years ago, largely because chain bookstores prospered and multiplied during that time. Thus, chain bookstores’ success has been to the detriment of book consumers, for the shortage of independent bookstores has prevented the variety of readily available books from growing as much as it otherwise would have.",
+    "questionStem": "Which one of the following is an assumption on which the argument relies?",
+    "answerChoices": {
+      "A": "Book consumers would be better off if there were a greater variety of readily available books than there currently is.",
+      "B": "Independent bookstores typically do not sell the kinds of books that are available in chain bookstores.",
+      "C": "The average bookstore today is larger than the average bookstore of 20 years ago.",
+      "D": "The average bookstore today is smaller than the average bookstore of 20 years ago.",
+      "E": "Some book consumers value low prices more highly than wide selection."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Net Effect",
+      "New Concept in Conclusion",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Concert promoter: Some critics claim that our concert series lacks popular appeal. But our income from the sales of t-shirts and other memorabilia at the concerts is equal to or greater than that for similar sales at comparable series. So those critics are mistaken.",
+    "questionStem": "The concert promoter’s argument is flawed in that it",
+    "answerChoices": {
+      "A": "attacks the critics on the basis of emotional considerations rather than factual ones",
+      "B": "takes for granted that income from sales of memorabilia is the sole indicator of popular appeal",
+      "C": "takes for granted that the comparable series possess popular appeal",
+      "D": "draws a conclusion about the popularity of a series based on a comparison with other, dissimilar events",
+      "E": "fails to adequately distinguish the series as a whole from individual concerts in it"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Analogies",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The sun emits two types of ultraviolet radiation that damage skin: UV-A, which causes premature wrinkles, and UV-B, which causes sunburn. Until about ten years ago, sunscreens protected against UV-B radiation but not against UV-A radiation.",
+    "questionStem": "Which one of the following is best supported by the information above?",
+    "answerChoices": {
+      "A": "Since about ten years ago, the percentage of people who wear sunscreen every time they spend time in the sun has increased.",
+      "B": "Most people whose skin is prematurely wrinkled have spent a large amount of time in the sun without wearing sunscreen.",
+      "C": "The specific cause of premature skin wrinkling was not known until about ten years ago.",
+      "D": "People who wear sunscreen now are less likely to become sunburned than were people who spent the same amount of time in the sun wearing sunscreen ten years ago.",
+      "E": "Until about ten years ago, people who wore sunscreen were no less likely to have premature wrinkles than were people who spent the same amount of time in the sun without wearing sunscreen."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Advice columnist: Several scientific studies have shown that, when participating in competitive sports, those people who have recently been experiencing major stress in their lives are several times more likely to suffer serious injuries than are other participants in competitive sports. Since risking serious injury is unwise, no sports activity should be used as a method for coping with stress.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the advice columnist’s argument?",
+    "answerChoices": {
+      "A": "If people recently under stress should avoid a subset of activities of a certain type, they should avoid all activities of that type.",
+      "B": "A method for coping with stress should be used only if it has been subjected to scientific study.",
+      "C": "People who have not been experiencing major stress in their lives should participate in competitive sports.",
+      "D": "When people have been under considerable stress, they should engage in competitive activities in order to relieve the stress.",
+      "E": "People with a history of sports injuries should not engage in sports activities if they have recently been under stress."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sampling",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Tent caterpillars’ routes between their nests and potential food sources are marked with chemical traces called pheromones that the caterpillars leave behind. Moreover, routes from food sources back to the nest are marked more heavily than are merely exploratory routes that have failed to turn up a food source. Thus, tent caterpillars are apparently among the insect species that engage in communal foraging, which consists in the conveying of information concerning the location of food to other members of the colony, nest, or hive.",
+    "questionStem": "Which one of the following, if true, adds the most support to the argument?",
+    "answerChoices": {
+      "A": "A hungry tent caterpillar is more likely to follow heavily marked routes than lightly marked routes.",
+      "B": "Tent caterpillars can detect the presence but not the concentration of pheromones.",
+      "C": "Sometimes individual tent caterpillars will not return to the nest until a food source is located.",
+      "D": "The pheromones left by tent caterpillars are different from the pheromones left by other animals.",
+      "E": "The pheromones that tent caterpillars leave behind are detectable by certain other species of caterpillars."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Many movies starring top actors will do well at the box office because the actors are already well known and have a loyal following. Movies starring unknown actors are therefore unlikely to do well.",
+    "questionStem": "The flawed reasoning in the argument above is most similar to that in which one of the following?",
+    "answerChoices": {
+      "A": "Many animals must devote most of their energy to locating food, or they will not get enough food to maintain optimal energy levels. Thus, if immediate survival requires such an animal to devote most of its energy to some other purpose, optimal energy levels generally will not be maintained.",
+      "B": "Often the presence of the flower bee balm in a garden will attract bumblebees that pollinate the plants and enable the garden to produce an abundant crop. So, gardens that lack bee balm usually do not produce abundant crops.",
+      "C": "A person’s ability to keep confidences is a large part of being a friend, since frequently such an ability enables a high degree of openness in communication. Thus, a high degree of openness in communication is an essential feature of friendship.",
+      "D": "Visual aids can be very useful in effectively teaching math skills, because they generally allow vivid conceptualization of math principles. If such visual aids were never employed, therefore, teaching math skills might sometimes be more difficult.",
+      "E": "An understanding of the rules of perspective is necessary for achieving success as a painter, since it is the understanding of these most basic rules that allows the painter to paint realistically. Thus, painters with an understanding of the rules of perspective will achieve success."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "As part of a new trend in the writing of history, an emphasis on the details of historical events and motivations has replaced the previous emphasis on overarching historical trends and movements, with the result that the latter are often overlooked. In consequence, the ominous parallels that may exist between historical trends and current trends are also overlooked, which lessens our ability to learn from history.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Studying the details of historical events and motivations lessens our ability to learn from history.",
+      "B": "Overarching historical trends and movements can be discerned only when details of historical events and motivations are not emphasized.",
+      "C": "Those who attend to overall trends and movements in history and not to details are the best able to learn from history.",
+      "D": "A change in emphasis in the interpretation of history has lessened our ability to learn from history.",
+      "E": "History should be interpreted in a way that gives equal emphasis to overarching historical trends and movements and to the details of historical events and motivations."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Therapist: The ability to trust other people is essential to happiness, for without trust there can be no meaningful emotional connection to another human being, and without meaningful emotional connections to others we feel isolated.",
+    "questionStem": "Which one of the following, if assumed, allows the conclusion of the therapist’s argument to be properly inferred?",
+    "answerChoices": {
+      "A": "No one who is feeling isolated can feel happy.",
+      "B": "Anyone who has a meaningful emotional connection to another human being can be happy.",
+      "C": "To avoid feeling isolated, it is essential to trust other people.",
+      "D": "At least some people who do not feel isolated are happy.",
+      "E": "Anyone who is able to trust other people has a meaningful emotional connection to at least one other human being."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "First Sentence Conclusion",
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Of all the Arabic epic poems that have been popular at various times, only Sirat Bani Hilal is still publicly performed. Furthermore, while most other epics were only recited, Sirat Bani Hilal has usually been sung. The musical character of the performance, therefore, is the main reason for its longevity.",
+    "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "relies on evidence that is in principle impossible to corroborate",
+      "B": "relies on a source of evidence that may be biased",
+      "C": "takes for granted that a particular correlation is causal",
+      "D": "takes what may be mere popular opinion to be an established fact",
+      "E": "takes a sufficient condition to be a necessary condition"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Abstract Answers",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Fund-raiser: A charitable organization rarely gives its donors the right to vote on its policies. The inability to directly influence how charities spend contributions makes potential donors feel less of an emotional connection to the charity. Thus, most charities could probably increase the amount of money they raise through donations by giving donors the right to vote.",
+    "questionStem": "Which one of the following is an assumption that the fund-raiser’s argument depends on?",
+    "answerChoices": {
+      "A": "The most effective way for a charity to give potential donors the ability to directly influence what that charity does is by giving donors the right to vote on the charity’s policies.",
+      "B": "Most charities that have increased the amount of money they raise through donations have done so by making potential donors feel a greater emotional connection to the charity.",
+      "C": "Every charity that has given donors the right to vote on its policies has seen a marked increase in the emotional connection donors have to that charity.",
+      "D": "Most potential donors to a charity are unwilling to give that charity any money if there is no possible way for them to have any influence on that charity’s policies.",
+      "E": "The emotional connection potential donors feel to a charity can affect the amount of money that charity raises through donations."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Leslie: I’ll show you that your quest for the treasure is irrational. Suppose you found a tablet inscribed, “Whoever touches this tablet will lose a hand, yet will possess the world.” Would you touch it? Erich: Certainly not. Leslie: Just as I expected! It is clear from your answer that your hands are more important to you than possessing the world. But your entire body is necessarily more important to you than your hands. Yet you are ruining your health and harming your body in your quest for a treasure that is much less valuable than the whole world. I rest my case.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in Leslie’s argument?",
+    "answerChoices": {
+      "A": "Erich would not sacrifice one of his hands in order to possess the world.",
+      "B": "Erich should not risk his physical well-being regardless of the possible gains that such risks might bring.",
+      "C": "Erich is irrationally risking something that is precious to him for something that is of no value.",
+      "D": "Erich can be convinced that his quest for the treasure is irrational.",
+      "E": "Erich is engaging in irrational behavior by pursuing his quest for the treasure."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "2-Speaker",
+      "Analogies",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Newspaper article: People who take vitamin C supplements tend to be healthier than average. This was shown by a study investigating the relationship between high doses of vitamin C and heart disease, which showed that people who regularly consume high doses of vitamin C supplements have a significantly lower than average risk of heart disease.",
+    "questionStem": "Which one of the following, if true, would most weaken the argument in the newspaper article?",
+    "answerChoices": {
+      "A": "Vitamin C taken in the form of supplements has a different effect on the body than does vitamin C taken in food.",
+      "B": "The reduction in risk of heart disease due to the consumption of vitamin C is no greater than the reduction due to certain other dietary changes.",
+      "C": "Taking both vitamin C supplements and vitamin E supplements lowers one’s risk of heart disease far more than does taking either one alone.",
+      "D": "High doses of vitamin C supplements tend to reduce slightly one’s resistance to certain common infectious diseases.",
+      "E": "Taking vitamin C supplements has been found to lower one’s risk of developing cancer."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "First Sentence Conclusion",
+      "Argue the Anti-Conclusion",
+      "Medical",
+      "Net Effect",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "George: Throughout the 1980s and early 1990s, hardly anyone learned ballroom dancing. Why is it that a large number of people now take ballroom dancing lessons? Boris: It's because, beginning in 1995, many people learned the merengue and several related ballroom dances. Because these dances are so popular, other ballroom dances are now catching on.",
+    "questionStem": "Boris's response to George is most vulnerable to criticism because it fails to",
+    "answerChoices": {
+      "A": "show that the people who learned the merengue are the same people who are now interested in other ballroom dances",
+      "B": "explain why ballroom dancing was so unpopular before 1995",
+      "C": "relate the merengue to the forms of dancing that were more prevalent before 1995",
+      "D": "account for the beginning of the revival of interest in ballroom dancing",
+      "E": "demonstrate that all types of ballroom dancing are currently popular"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "On the basis of relatively minor morphological differences, some scientists suggest that Neanderthals should be considered a species distinct from Cro-Magnons, the forerunners of modern humans. Yet the fact that the tools used by these two groups of hominids living in different environments were of exactly the same type indicates uncanny behavioral similarities, for only if they faced the same daily challenges and met them in the same way would they have used such similar tools. This suggests that they were members of the same species, and that the morphological differences are due merely to their having lived in different environments.",
+    "questionStem": "If the statements above are true, then each of the following could be true except:",
+    "answerChoices": {
+      "A": "Morphological differences between the members of two populations do not guarantee that the two populations do not belong to the same species.",
+      "B": "The daily challenges with which an environment confronts its inhabitants are unique to that environment.",
+      "C": "There are greater morphological differences between Cro-Magnons and modern humans than there are between Cro-Magnons and Neanderthals.",
+      "D": "Use of similar tools is required if members of two distinct groups of tool-making hominids are to be considered members of the same species.",
+      "E": "Through much of their coexistence, Cro-Magnons and Neanderthals were geographically isolated from one another."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Dense Stimulus",
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A summer day is “pleasant” if there are intermittent periods of wind and the temperature stays below 84°F (29°C) all afternoon. A summer day with high humidity levels is “oppressive” either if the temperature stays above 84°F (29°C) all afternoon or if there is no wind.",
+    "questionStem": "Which one of the following summer weather reports most closely conforms to the principles stated above?",
+    "answerChoices": {
+      "A": "The temperature on Friday stayed below 82°F (28°C) all day, and there was no wind at all. It was a day of low humidity, and it was a pleasant day.",
+      "B": "On Monday, the temperature ranged from 85°F to 90°F (30°C to 32°C) from early morning until night. It was an oppressive day even though the humidity levels were low.",
+      "C": "On Tuesday, the temperature neither rose above nor fell below 84°F (29°C) throughout late morning and all afternoon. It was a pleasant day because there were occasional periods of wind.",
+      "D": "On Wednesday, a refreshing breeze in the early morning became intermittent by late morning, and the day’s humidity levels were constantly high. It was an oppressive day, even though the temperature did not rise above 84°F (29°C) all day.",
+      "E": "On Thursday morning, the air was very still, and it remained windless for the whole day. Humidity levels for the day were high, and even though the temperature fell below 84°F (29°C) between early and late afternoon, it was an oppressive day."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The local radio station will not win the regional ratings race this year. In the past ten years the station has never finished better than fifth place in the ratings. The station’s manager has not responded to its dismal ratings by changing its musical format or any key personnel, while the competition has often sought to respond to changing tastes in music and has aggressively recruited the region’s top radio personalities.",
+    "questionStem": "The reasoning in which one of the following is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Every swan I have seen was white. Therefore all swans are probably white.",
+      "B": "A fair coin was fairly flipped six times and was heads every time. The next flip will probably be heads too.",
+      "C": "All lions are mammals. Therefore Leo, the local zoo’s oldest lion, is a mammal too.",
+      "D": "Recently stock prices have always been lower on Mondays. Therefore they will be lower this coming Monday too.",
+      "E": "Only trained swimmers are lifeguards, so it follows that the next lifeguard at the local pool will be a trained swimmer."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Assumes Similarity",
+      "Predictions",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT127",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Unknown",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Chef: This mussel recipe’s first step is to sprinkle the live mussels with cornmeal. The cornmeal is used to clean them out: they take the cornmeal in and eject the sand that they contain. But I can skip this step, because the mussels available at seafood markets are farm raised and therefore do not contain sand.",
+    "questionStem": "Which one of the following is an assumption required by the chef’s argument?",
+    "answerChoices": {
+      "A": "Cornmeal is not used to clean out farm-raised mussels before they reach seafood markets.",
+      "B": "Mussels contain no contaminants other than sand.",
+      "C": "Sprinkling the mussels with cornmeal does not affect their taste.",
+      "D": "The chef’s mussel recipe was written before farm-raised mussels became available.",
+      "E": "The mussels the chef is using for the mussel recipe came from a seafood market."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Defender",
+      "Intermediate Conclusions",
+      "New Concept in Conclusion",
+      "Rebuttals",
+      "Untriggered Conditional"
+    ]
+  }
+]

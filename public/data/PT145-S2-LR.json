@@ -1,0 +1,612 @@
+[
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "An electric utility has determined that a new power plant is needed and has decided to build either a natural gas-fired plant or a waste-to-energy plant that would serve as both a trash incinerator and a power plant. Surprisingly, although the waste-to-energy plant would produce roughly three times as much air pollution as the gas-fired plant, environmentalists have come out in unanimous support of this option.",
+    "questionStem": "Which one of the following, if true, most helps to justify the environmentalists’ position?",
+    "answerChoices": {
+      "A": "Modern gas-fired power plants produce significantly less pollution than gas-fired power plants that were built several decades ago.",
+      "B": "In the area where the utility operates, both energy use and the volume of trash produced have increased substantially over the last several years.",
+      "C": "The waste-to-energy plant would replace an existing trash incinerator that produces much more air pollution than the waste-to-energy plant would.",
+      "D": "Most of the environmentalists believe that air pollution is the area’s most serious environmental problem.",
+      "E": "The vast majority of the air pollution in the area where the utility operates is produced by trucks and automobiles."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Anthropologist: One of the distinctive traits of humans is the ability to support a large brain with a small gut, which requires getting more calories from less food. It was likely the development of cooking that made this possible. After all, our ancestors developed large brains around the time that they began to control fire. And even today, people who choose to eat only raw food have difficulty getting enough calories.",
+    "questionStem": "Which one of the following, if true, most strengthens the anthropologist’s argument?",
+    "answerChoices": {
+      "A": "Cooked foods contain the same number of calories as raw foods.",
+      "B": "Raw meat contains more calories than a similar quantity of raw vegetables.",
+      "C": "The human body is able to extract a similar number of calories from cooked food and raw food.",
+      "D": "The human body uses more calories to process raw food than it uses to process cooked food.",
+      "E": "Domesticated plants and animals are richer in calories than their wild counterparts are."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Focused on Evidence",
+      "Net Effect",
+      "Plausibility",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The current sharp decline in commercial honeybee populations has been attributed to the same viral and bacterial infections, pesticide poisonings, and mite infestations that devastated bees in the past. Whichever of these adverse conditions is the immediate cause, it is highly likely that there is also a long-ignored underlying condition, and that is inbreeding. Decades of breeding practices meant to maximize pollinating efficiency have limited honeybees’ genetic diversity.",
+    "questionStem": "Which one of the following is an assumption that is required by the argument?",
+    "answerChoices": {
+      "A": "Commercial honeybees are more vulnerable to problems with inbreeding than wild honeybees are.",
+      "B": "The results of decades of breeding practices cannot be quickly undone.",
+      "C": "The genetic diversity of the honeybee population continues to decline.",
+      "D": "In the past, viral infections and mites have devastated genetically diverse honeybee populations.",
+      "E": "Lack of genetic diversity can make honeybees more vulnerable to adverse conditions."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Causal Chains"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The northern cardinal, a nonmigratory songbird, was rare in Nova Scotia in 1980; the province was considered to be beyond that bird’s usual northern range. By 2000, however, field observations indicated that northern cardinals were quite common there. The average winter temperature rose slightly over that period, so warmer winters are probably responsible for the northern cardinal’s proliferation in Nova Scotia.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Bird feeders, an important source of nutrition to wintering birds, became far more common in Nova Scotia after 1980.",
+      "B": "Because of their red plumage, northern cardinals are easier to spot than most other songbird species are.",
+      "C": "Some songbird species other than the northern cardinal also became more common between 1980 and 2000.",
+      "D": "According to field observations, the populations of migratory birds fluctuated less during the period from 1980 to 2000 than the populations of nonmigratory birds.",
+      "E": "Birds that prey on songbirds became more common in Nova Scotia between 1980 and 2000."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Parallel flawed method of reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A person’s personality is linked to that person’s genes. And since a person’s genes do not ordinarily change over time, it follows that a person’s personality remains unchanged with the passing of time.",
+    "questionStem": "Which one of the following is most closely parallel in its reasoning to the flawed reasoning in the argument above?",
+    "answerChoices": {
+      "A": "The way historians understand the First World War is related to what happened in that war. But what actually happened in that war cannot change. Therefore, historians’ understanding of the war cannot change.",
+      "B": "Market forces are to some degree influenced by governmental actions. Hence, a change in the government’s policies could result in a change in the economy.",
+      "C": "It is well known that some diseases have genetic causes. Therefore, it should be possible to prevent such diseases by manipulating the genes that cause them.",
+      "D": "Getting regular exercise over a long period contributes to the prevention of heart disease. Therefore, getting regular exercise over a short period contributes slightly to the prevention of heart disease.",
+      "E": "The levels of certain hormones control body temperature. Therefore, if one has a high fever, the levels of one’s hormones must be elevated as well."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Political analyst: Several years ago, McFarlane, the military dictator, had Brooks, the former prime minister, arrested on charges of corruption. After years of negotiation, McFarlane has pardoned Brooks, and she has agreed to join his government. Almost all of McFarlane’s supporters believe that Brooks is guilty of corruption. Moreover, almost all of McFarlane’s opponents will oppose anyone who agrees to join his government. So Brooks will have few supporters in this country.",
+    "questionStem": "The political analyst’s argument depends on the assumption that",
+    "answerChoices": {
+      "A": "Brooks’s joining McFarlane’s government inappropriately gives that government a semblance of legitimacy",
+      "B": "there is less corruption in the country’s government now than when Brooks was prime minister",
+      "C": "Brooks’s political positions do not overlap with those of McFarlane",
+      "D": "most people in the country are either supporters or opponents of McFarlane",
+      "E": "the charges on which Brooks was arrested were unfounded"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Binaries",
+      "Defender",
+      "Math-y Stuff",
+      "Predictions",
+      "Quantifiers",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Amber—fossilized tree resin sold as a gemstone—is particularly valuable when it contains fossilized life forms. Forgers can create fake amber and, in an attempt to improve its value, often embed small, normal-appearing insects in it. Therefore, pieces that are sold as amber are far more likely to be fake if they contain normal-appearing insects than if they do not.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Amber is often sold by small shops and street vendors that take few precautions to ensure authenticity.",
+      "B": "Pieces of amber that contain fossilized life forms are generally larger than plain pieces of amber.",
+      "C": "Amber that contains insects usually demands a higher price than does amber that contains small plants.",
+      "D": "It is very difficult to distinguish between genuine and fake amber without destroying some of it.",
+      "E": "Insects struggling to free themselves from tree resin are usually fossilized in awkward or grotesque positions."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Widespread use of the Internet has led to an increase in certain crimes such as information theft and to new crimes like hacking. This seems due, at least in part, to the impersonal nature of the Internet. People seem to feel more free to harm others through the Internet than in person, suggesting that people feel less morally constrained when they use the Internet. For this reason, steps should be taken to educate people about the ethical use of the Internet.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "Education about the ethical use of a tool increases one’s sense of moral responsibility regarding its use.",
+      "B": "When new technologies emerge, society needs to formulate new ethical guidelines to cover the use of those technologies.",
+      "C": "The more educated that people are about the ethical usage of the Internet, the greater the amount of harm that they can do to others.",
+      "D": "People feel morally constrained from doing an action only if that action causes harm to others.",
+      "E": "People who harm others through impersonal means are no less culpable for their actions than are people who harm others in person."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Columnist: Video games are not works of art. No matter how rich the aesthetic experience produced by a video game might be, it is interactive: players make choices that affect the outcome of the game. For something to be a work of art, it must produce an aesthetic experience that is controlled by the artist or artists who created the work.",
+    "questionStem": "The conclusion of the columnist’s argument can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Most video game creators do not intend their video games to be works of art.",
+      "B": "An aesthetic experience cannot be both interactive and controlled by the artist or artists who created the work.",
+      "C": "For something to be a work of art, it must produce a rich aesthetic experience.",
+      "D": "Typically, video game players do not themselves create video games.",
+      "E": "Players’ choices that have no effect on the outcome of a video game are irrelevant to the aesthetic experience produced by that game."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "One year ago, a municipality banned dishwasher detergents containing phosphates. Anecdotal evidence indicates that many residents continued to use detergents containing phosphates; they just purchased them from out-of-town stores. However, it is clear that some residents did switch to phosphate-free detergents, since phosphate pollution from the municipal wastewater treatment plant decreased significantly in the past year.",
+    "questionStem": "The answer to which one of the following questions would most help in evaluating the argument above?",
+    "answerChoices": {
+      "A": "Why did many residents continue to use detergents containing phosphates?",
+      "B": "What pollutants, if any, are present in phosphate-free dishwashing detergents?",
+      "C": "Were any changes made in the past year to the way the municipality’s wastewater treatment plant treats phosphates?",
+      "D": "Does most of the phosphate pollution in the municipality’s waterways come from treated wastewater from the municipal treatment plant?",
+      "E": "Did municipal officials try to stop people from bringing detergents containing phosphates into the municipality?"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Miscellaneous",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Farmers who use genetically engineered plants on a large scale are at great financial risk because at any time a study could be published that would undermine what little confidence consumers have in genetically engineered foods. It is unwise for farmers to grow such crops. They do not fetch a high enough price to compensate for the risk.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the argument as a whole?",
+    "answerChoices": {
+      "A": "A farmer who grows genetically engineered crops on a large scale is taking a financial risk.",
+      "B": "It is not prudent for a farmer to grow genetically engineered crops.",
+      "C": "The price paid for genetically engineered crops does not compensate for the financial risk farmers incur by growing them.",
+      "D": "A study could come out at any time that would greatly undermine public confidence in genetically engineered foods.",
+      "E": "Consumers have very little confidence in genetically engineered foods."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "When doctors vaccinate a patient, their intention is to expose him or her to a weakened form of a disease-causing pathogen and thus to make the patient better able to resist the pathogen and less likely to develop a severe form of that disease later.",
+    "questionStem": "Which one of the following best illustrates the principle that the passage illustrates?",
+    "answerChoices": {
+      "A": "Some directors instruct actors not to rehearse their lines in the several days preceding the opening night of a play, so that the actors will not become so confident that they forget their lines out of inattentiveness.",
+      "B": "Some parents read their children fairy tales containing allegorical treatments of treachery and cruelty, with the intention of making them less emotionally vulnerable to these phenomena when they encounter them later in life.",
+      "C": "In some circumstances, firefighters use fire to fight fire by creating an intense explosion very close to an uncontrollable blaze that they wish to extinguish, thus momentarily depriving it of the oxygen it needs to continue burning.",
+      "D": "In some cases, a business will close down some of its operations, its intention being to position the company to be more profitable later even though this involves expenses in the current period.",
+      "E": "Some police departments energetically pursue those who commit minor crimes; in doing so they intend to provide examples to deter people who might be tempted to commit more-serious crimes."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Implicit Principles",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Fill in the blank",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Nations that have little interaction with one another have little knowledge of one another’s needs and problems. Because both sympathy and justice depend largely on understanding the needs and problems of others, it follows that _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "nations that have knowledge of one another’s needs and problems will treat each other with sympathy and justice",
+      "B": "without some interaction, nations are bound to find it difficult to extend sympathy and justice to one another",
+      "C": "almost all problems between nations stem from lack of sympathy and justice",
+      "D": "there is no way to eliminate conflict among nations",
+      "E": "only nations that have some interaction with one another have knowledge of one another’s needs and problems"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Causal Chains",
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Activist: Medical conditions such as cancer and birth defects have been linked to pollutants in water. Organic pollutants such as dioxins, and inorganic pollutants such as mercury, are ingested by fish and move up the food chain to people, where they accumulate in tissue. Since most cancers and birth defects are incurable, we need to aim at their prevention. Clearly, the only effective way to reduce significantly their overall incidence is to halt industries known to produce these pollutants, given that such industries are unlikely to comply adequately with strict environmental regulations.",
+    "questionStem": "A flaw in the activist’s reasoning is that it",
+    "answerChoices": {
+      "A": "fails to consider the possibility that a significant number of occurrences of cancer and birth defects may be caused by preventable factors other than industrial pollutants",
+      "B": "does not consider the possibility that pollutants can cause harm to nonhuman species as well as to human beings",
+      "C": "takes for granted that certain effects can be produced independently by several different causes",
+      "D": "fails to consider whether industries may voluntarily decrease their output of pollutants",
+      "E": "fails to consider the possibility that chemicals now classified as pollutants have some beneficial effects not yet discovered"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Must be true",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Political leader: In this political dispute, our side will benefit from showing a desire to compromise with the opposition. If the opposition responds positively, then a compromise will be reached. If they do not, then they will be held responsible for the failure to reach a compromise and our side will benefit.",
+    "questionStem": "The conclusion of the political leader’s argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The political leader’s side has a desire to compromise with the opposition.",
+      "B": "The opposition is rarely willing to compromise with the political leader’s side.",
+      "C": "The political leader’s side will benefit if a compromise is reached.",
+      "D": "The opposition would benefit from showing a desire to compromise.",
+      "E": "The opposition will compromise if the political leader’s side shows a desire to compromise."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Binaries",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Principle",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Some people see no harm in promoting a folk remedy that in fact has no effect. But there is indeed harm: many people who are convinced to use an ineffective remedy continue with it for years rather than pursuing conventional treatments that would almost certainly help them.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "One should not promote a remedy if one believes that using that remedy will cause harm.",
+      "B": "It is harmful to interfere with someone doing something that is likely to benefit that person.",
+      "C": "To convince people of something for which one knows there is no evidence is to be dishonest.",
+      "D": "A person is responsible for harm he or she does to someone even if the harm was done unintentionally.",
+      "E": "A person who convinces someone to take a course of action is in part responsible for the consequences of that action."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The radio station claims that its new format is popular with listeners because more than three-quarters of the listeners who call in requests to the station say they are pleased with the format. This, however, is hardly conclusive. It would be like trying to determine whether a political candidate is popular with voters by interviewing only those people who have already decided to vote for the candidate.",
+    "questionStem": "The argument proceeds by",
+    "answerChoices": {
+      "A": "concluding that an inference is flawed on the grounds that it is based on a survey conducted by a biased party",
+      "B": "referring to an inference that is clearly flawed in order to undermine an analogous inference",
+      "C": "questioning the legitimacy of an inference by proposing a more reasonable inference that could be drawn from the evidence",
+      "D": "providing a direct counterexample to a conclusion in order to show that the conclusion is false",
+      "E": "claiming that an inference leads to a contradiction in order to show that the inference is unreasonable"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Historian: Those who claim that Shakespeare did not write the plays commonly attributed to him are motivated purely by snobbery. Shakespeare was the son of a glove maker, whereas every other person proposed as the true author of the plays was an aristocrat, and many of those who argue that one or another of these aristocrats wrote the plays are the aristocrats’ descendants.",
+    "questionStem": "The reasoning in the historian’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that a claim cannot be true if those who advance it are motivated by snobbery",
+      "B": "takes for granted that anyone who is motivated purely by snobbery cannot also be motivated by legitimate historical evidence",
+      "C": "fails to consider adequately the possible motives of those who claim that Shakespeare did write the plays commonly attributed to him",
+      "D": "fails to exclude the possibility that there might be legitimate evidence motivating those who reject Shakespeare’s authorship",
+      "E": "makes use of an assumption that one would accept only if one has already accepted the truth of the conclusion"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Resolve reconcile or explain",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A recent study examined the daytime and nighttime activity patterns of two populations of tree-dwelling lemurs—the first living in a rain forest, where tree canopy cover is consistent year-round, and the second living in a deciduous forest, where many trees lose their leaves during the winter months. Both groups of lemurs were found to be more nocturnal during winter months than they were the rest of the year. However, the winter increase in nocturnal activity was significantly more pronounced for the population living in the deciduous forest than it was for the population living in the rain forest.",
+    "questionStem": "Which one of the following, if true, most helps to explain the difference between the two lemur populations with respect to winter activity patterns?",
+    "answerChoices": {
+      "A": "For both lemur populations, the primary competitors for food resources are species active during daylight.",
+      "B": "The primary predators for both lemur populations are high-flying birds that rely on their eyesight to hunt prey during daylight.",
+      "C": "In both habitats, species of predatory snakes active during daylight are most active during winter months.",
+      "D": "The lemur population in the rain forest is twice the size of the population in the deciduous forest.",
+      "E": "The lemur population in the rain forest eats both plants and insects whereas the population in the deciduous forest eats only plants."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Argument part",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Critic: It is common to argue that there is a distinction between “literary” and “genre” fiction. The first should be interpreted, so this argument goes, while the second is merely a source of easy pleasure. But this is a specious distinction—not because every work should be interpreted, but because no work should be. When we evaluate a work principally for its themes and ideas, we cut ourselves off from the work’s emotional impact.",
+    "questionStem": "Which one of the following most accurately describes the role played in the critic’s argument by the claim that when we evaluate a work principally for its themes and ideas, we cut ourselves off from the work’s emotional impact?",
+    "answerChoices": {
+      "A": "It states the conclusion.",
+      "B": "It is offered as support for the conclusion.",
+      "C": "It attempts to spell out the practical implications of the critic’s conclusion.",
+      "D": "It attempts to explain the nature of the distinction that the critic considers.",
+      "E": "It attempts to anticipate an objection to the critic’s conclusion."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Miscellaneous",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Principle: If one does not criticize a form of behavior in oneself or vow to stop it, then one should not criticize that form of behavior in another. Application: If Shimada does not vow to stop being tardy himself, he should not criticize McFeney for tardiness.",
+    "questionStem": "Which one of the following, if true, justifies the above application of the principle?",
+    "answerChoices": {
+      "A": "Both McFeney and Shimada are regularly tardy, but Shimada criticizes McFeney’s tardiness without criticizing his own.",
+      "B": "McFeney is regularly tardy, but Shimada is almost never tardy.",
+      "C": "McFeney often criticizes Shimada for being tardy, but neither Shimada nor McFeney ever vows to cease being tardy.",
+      "D": "Shimada criticizes McFeney for regularly being tardy, but also criticizes himself for occasional tardiness.",
+      "E": "Neither McFeney nor Shimada is regularly tardy, but Shimada criticizes McFeney for tardiness nonetheless."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Flaw or descriptive weakening",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Everyone should have access to more than one newspaper, for there are at least two sides to every story. Since all sides of an important story should be covered, and no newspaper adequately covers all sides of every one of its stories, some important stories would not be adequately covered if there were only one newspaper.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the reasoning of the argument?",
+    "answerChoices": {
+      "A": "The argument confuses the inability to cover all sides of every story with the inability to cover all sides of any important story.",
+      "B": "The argument overlooks the possibility that two newspapers could provide the same incomplete coverage of the same important stories.",
+      "C": "A conclusion about what newspapers should do is inferred solely from statements about what newspapers in fact do.",
+      "D": "The argument takes for granted that everyone has access to all newspapers.",
+      "E": "The argument is concerned only with important stories and not with all stories."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Must be true",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Most of the mines that Moradco operates in the province of Velyena have never violated environmental regulations. Every one of the gold mines that Moradco operates throughout the world has at some time or another violated environmental regulations.",
+    "questionStem": "Which one of the following statements follows logically from the statements above?",
+    "answerChoices": {
+      "A": "Moradco operates more mines in Velyena than any other company operates there.",
+      "B": "The total number of gold mines that Moradco operates is larger than the total number of mines it operates in Velyena.",
+      "C": "Most of the gold mines that Moradco operates are not located in Velyena.",
+      "D": "Most of the mines that Moradco operates in Velyena are not gold mines.",
+      "E": "Most of the mines that Moradco operates throughout the world are not gold mines."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers",
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Tariffs on particular products tend to protect the small percentage of the population that works in industries that make those products while hurting everyone else through higher costs. Polls show that in fact most people oppose such tariffs. So politicians would be more likely to be reelected if they voted against these tariffs.",
+    "questionStem": "Which one of the following is an assumption on which the argument relies?",
+    "answerChoices": {
+      "A": "Supporters of tariffs on particular products are not significantly more likely than opponents to base their vote for a politician on the politician’s stand on this issue.",
+      "B": "Politicians always vote according to what is most likely to get them reelected.",
+      "C": "Politicians should support only general tariffs, since such tariffs would be more widely popular with voters than tariffs on particular products.",
+      "D": "Politicians should never support measures that favor only a small percentage of the population.",
+      "E": "People who would be hurt by tariffs generally know that they would be hurt by them."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT145",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Except",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Among small- to medium-sized marine mammals such as seals and dolphins, the longer an animal can stay submerged during a dive, the greater the depth the animal can reach. Dolphins can dive to greater depths than northern fur seals can, and elephant seals can stay submerged longer than Weddell seals can.",
+    "questionStem": "If the information above is accurate, then each of the following statements could be true except:",
+    "answerChoices": {
+      "A": "Dolphins can dive to greater depths than Weddell seals can, but not to depths as great as elephant seals can.",
+      "B": "Weddell seals can stay submerged longer than northern fur seals can, but dolphins can dive to greater depths than Weddell seals can.",
+      "C": "Weddell seals can dive to greater depths than dolphins can and can stay submerged longer than northern fur seals can.",
+      "D": "Northern fur seals can stay submerged longer than elephant seals can, but Weddell seals can dive to greater depths than dolphins can.",
+      "E": "Northern fur seals can stay submerged longer than Weddell seals can, but elephant seals can dive to greater depths than northern fur seals can."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT",
+      "Math-y Stuff"
+    ]
+  }
+]
