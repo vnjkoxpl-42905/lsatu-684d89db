@@ -1,0 +1,21 @@
+{
+  "name": "LSAT U Writing",
+  "settings": {
+    "workbench.secondarySideBar.defaultVisibility": "visible",
+    "workbench.activityBar.compact": true,
+    "workbench.editor.labelFormat": "medium",
+    "markdown.preview.openMarkdownLinks": "inEditor",
+    "markdown.updateLinksOnFileMove.enabled": "prompt",
+    "peacock.color": "#8a6f2a"
+  },
+  "extensions": [
+    "anthropic.claude-code",
+    "openai.chatgpt",
+    "yzhang.markdown-all-in-one",
+    "gruntfuggly.todo-tree",
+    "johnpapa.vscode-peacock",
+    "eamodio.gitlens"
+  ],
+  "keybindings": "../keybindings/lsatu-cockpit.keybindings.json",
+  "tasks": "../../.vscode/tasks.json"
+}

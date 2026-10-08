@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Main Conclusion Analysis Lab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono&display=swap');
+
+        :root {
+            --bg: #0a0c12;
+            --surface: #161b24;
+            --accent: #3b82f6;
+            --conclusion: #10b981;
+            --premise: #60a5fa;
+            --opposing: #a855f7;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --error: #ef4444;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 550px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .screen { display: none; animation: fadeIn 0.4s ease; }
+        .active { display: flex; flex-direction: column; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* HOME */
+        .card {
+            background: var(--surface);
+            padding: 40px 24px;
+            border-radius: 32px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            margin: 30px 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* DRILL UI */
+        .drill-head {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: 0.4s ease; }
+
+        .paragraph-view {
+            background: var(--surface);
+            padding: 32px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            font-size: 1.15rem;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .sentence {
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: block;
+            width: 100%;
+            padding: 18px 20px;
+            border-radius: 18px;
+            border: 1px solid transparent;
+            background: rgba(255,255,255,0.02);
+            margin-bottom: 14px;
+        }
+
+        .sentence:last-child {
+            margin-bottom: 0;
+        }
+
+        .sentence:hover {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: rgba(59, 130, 246, 0.18);
+        }
+
+        .sentence.selected {
+            border-color: var(--accent);
+            background: rgba(59, 165, 250, 0.14);
+            box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.18);
+        }
+
+        /* Revealed Structural Roles */
+        .sentence.role-conclusion { color: var(--conclusion); font-weight: 700; border-color: rgba(16, 185, 129, 0.45); background: rgba(16, 185, 129, 0.08); box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.16); }
+        .sentence.role-premise { color: var(--premise); font-weight: 500; border-color: rgba(96, 165, 250, 0.24); background: rgba(96, 165, 250, 0.05); }
+        .sentence.role-opposing { color: #c084fc !important; font-weight: 600; border-color: rgba(168, 85, 247, 0.45) !important; background: rgba(168, 85, 247, 0.18); text-decoration: underline; text-decoration-color: var(--opposing); text-underline-offset: 4px; }
+
+        .btn {
+            width: 100%;
+            padding: 22px;
+            border-radius: 18px;
+            border: none;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .btn:disabled { background: #232a35; color: #4b5563; cursor: not-allowed; box-shadow: none; }
+        .btn.btn-success { background: var(--conclusion); }
+
+        /* ANALYSIS BREAKDOWN */
+        .breakdown-card {
+            margin-top: 20px;
+            padding: 24px;
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            display: none;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .legend-item { font-size: 0.7rem; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .legend-item.inactive { opacity: 0.4; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .legend-note {
+            margin-top: -2px;
+            margin-bottom: 15px;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+            display: none;
+        }
+
+        .breakdown-body { font-size: 1rem; color: var(--text-dim); line-height: 1.6; }
+        .breakdown-body b { color: var(--conclusion); }
+        
+        .hint-box { 
+            color: var(--error); 
+            font-size: 0.9rem; 
+            margin-top: 10px; 
+            display: none; 
+            font-family: 'JetBrains Mono', monospace;
+            padding: 10px;
+            border-left: 2px solid var(--error);
+        }
+
+        .success-banner {
+            background: var(--conclusion);
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+    <!-- 1. HOME -->
+    <div id="home" class="screen active">
+        <div class="card">
+            <h1 style="font-size: 1.8rem;">Main Conclusion Drill</h1>
+            <p style="color:var(--text-dim); margin-top: 8px;">Analytical Structure Lab</p>
+            <button class="btn" onclick="initLab()">Begin</button>
+        </div>
+    </div>
+
+    <!-- 2. DRILL -->
+    <div id="drill" class="screen">
+        <div class="drill-head">
+            <span>STRUCTURAL ANALYSIS</span>
+            <span id="counter">01 / 20</span>
+        </div>
+        <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+        
+        <div id="success-banner" class="success-banner">ANALYSIS SUCCESSFUL</div>
+        <div id="instruction-label" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 15px;">
+            > Identify the Main Point
+        </div>
+
+        <div class="paragraph-view" id="para-view"></div>
+
+        <div id="hint-box" class="hint-box"></div>
+
+        <div id="breakdown" class="breakdown-card">
+            <div class="legend">
+                <div id="legend-conclusion" class="legend-item"><div class="dot" style="background:var(--conclusion)"></div> Conclusion</div>
+                <div id="legend-premise" class="legend-item"><div class="dot" style="background:var(--premise)"></div> Support</div>
+                <div id="legend-opposing" class="legend-item"><div class="dot" style="background:var(--opposing)"></div> Opposing</div>
+            </div>
+            <div id="legend-note" class="legend-note"></div>
+            <div id="breakdown-text" class="breakdown-body"></div>
+        </div>
+
+        <button id="actionBtn" class="btn" onclick="handleAction()" disabled>Underline Selection</button>
+    </div>
+
+    <!-- 3. FINISH -->
+    <div id="finish" class="screen">
+        <div class="card">
+            <div style="font-size: 4rem;">🏆</div>
+            <h2 id="congrats" style="margin:20px 0;"></h2>
+            <p style="color:var(--text-dim)">All 20 data sets verified.</p>
+            <div style="background:rgba(16,185,129,0.1); border:1px dashed var(--conclusion); padding:20px; margin:20px 0; font-family:'JetBrains Mono'; color:var(--conclusion); font-size:1.5rem; border-radius:12px;">#MC_EXPERT_2026</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let studentName = "";
+    let currentIdx = 0;
+    let selectedSent = -1;
+    let isAnalyzed = false;
+
+    // Full 20 Question Dataset from DOCX
+    const data = [
+        {
+            sentences: [
+                "Most residents agree that the town’s central square feels underused and uninviting. ",
+                "The local business council has proposed adding outdoor seating and public art installations. ",
+                "Therefore, the town should approve the business council’s plan to renovate the central square."
+            ],
+            ans: 2,
+            roles: ['premise', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> There is a classic conclusion indicator word: <b>therefore</b>. The first two claims are supporting ideas (a problem and a solution). The last sentence is the author’s recommendation.",
+            hint: "Look for a classic indicator word like 'Therefore' at the very end."
+        },
+        {
+            sentences: [
+                "Expanding the university’s counseling center hours would improve access for students with part-time jobs. ",
+                "Thus, the administration ought to allocate additional funding to the counseling center, ",
+                "since student mental health directly affects academic performance and retention."
+            ],
+            ans: 1,
+            roles: ['premise', 'conclusion', 'premise'],
+            breakdown: "<b>Correct.</b> The phrase <b>thus</b> flags the main point. The sentence pattern here is: Support -> Conclusion -> Support.",
+            hint: "Check the middle of the paragraph for a 'Thus' indicator."
+        },
+        {
+            sentences: [
+                "The city should convert at least one major downtown street into a pedestrian-only zone. ",
+                "Local air quality measurements show consistently high levels of exhaust-related pollutants, ",
+                "and studies from comparable cities indicate that pedestrian zones reduce emissions and boost retail sales."
+            ],
+            ans: 0,
+            roles: ['conclusion', 'premise', 'premise'],
+            breakdown: "<b>Correct.</b> This argument puts the <b>Main Point</b> first. The remaining factual claims about pollution and retail sales support the policy recommendation.",
+            hint: "Is the first sentence a fact, or an opinion being proven by the following facts?"
+        },
+        {
+            sentences: [
+                "Some museum donors insist that admission must remain free to preserve public access. ",
+                "However, the museum should introduce modest ticket prices, ",
+                "because its current funding model is unsustainable and several core conservation projects are already underfunded."
+            ],
+            ans: 1,
+            roles: ['opposing', 'conclusion', 'premise'],
+            breakdown: "<b>Correct.</b> The author uses <b>However</b> to pivot away from the donors' view to state their own point, which is then backed by the word 'because'.",
+            hint: "The author uses 'However' to pivot away from other people's views to their own point."
+        },
+        {
+            sentences: [
+                "Critics claim that standardized testing is the only reliable way to compare schools. ",
+                "Yet research shows that such tests correlate strongly with family income rather than instructional quality. ",
+                "Therefore, policymakers should not rely on standardized test scores as the primary measure of school effectiveness."
+            ],
+            ans: 2,
+            roles: ['opposing', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> The author uses a research result to refute the critics. <b>Therefore</b> marks the final point.",
+            hint: "The author's recommendation is at the end, marked by 'Therefore'."
+        },
+        {
+            sentences: [
+                "People often assume that longer meetings are more productive because they allow for 'thorough discussion.' In reality, extended meetings frequently lead to fatigue and distraction, which reduces the quality of decisions. ",
+                "Thus, managers should shorten most routine meetings to preserve participants’ focus, ",
+                "and this, in turn, will improve the overall quality of organizational decision-making."
+            ],
+            ans: 2,
+            roles: ['premise', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> This is a layered argument. Shortening meetings is a step (intermediate point), but the <b>Main Conclusion</b> is the final result: improving organizational decision-making.",
+            hint: "Which claim is the ultimate goal of the entire argument?"
+        },
+        {
+            sentences: [
+                "Many tech executives argue that constant connectivity makes workers more efficient. ",
+                "But surveys consistently show that employees feel pressured to respond to messages at all hours, and reported burnout has increased. ",
+                "Clearly, the expectation of being perpetually reachable is harming workers more than it helps them."
+            ],
+            ans: 2,
+            roles: ['opposing', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> <b>Clearly</b> is a powerful opinion indicator. The surveys provide the support for this final judgment.",
+            hint: "Look for an evaluative word like 'Clearly' at the end."
+        },
+        {
+            sentences: [
+                "City officials should require new office buildings to include secure bicycle storage, because doing so encourages employees to commute by bike. ",
+                "Moreover, if more workers bike to the office, traffic congestion during rush hour will ease, ",
+                "so the city’s long-term transportation strategy must prioritize cycling infrastructure."
+            ],
+            ans: 2,
+            roles: ['premise', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> The narrower bike-storage policy supports a <b>broader</b> overall strategy (prioritizing cycling infrastructure).",
+            hint: "Distinguish between a specific tactic and the broader long-term strategy."
+        },
+        {
+            sentences: [
+                "Nutrition bloggers often insist that any amount of processed food is detrimental to health. ",
+                "Yet large-scale studies find that moderate consumption of certain processed items, such as fortified cereals, is associated with adequate nutrient intake. ",
+                "This reveals that a blanket condemnation of all processed foods oversimplifies the relationship between diet and health."
+            ],
+            ans: 2,
+            roles: ['opposing', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> 'This reveals that' is a conclusion indicator. It signals the lesson the author draws from the studies.",
+            hint: "What does the author believe the study results 'reveal'?"
+        },
+        {
+            sentences: [
+                "Some university administrators contend that expanding online course offerings will inevitably lower academic standards. However, online courses can incorporate rigorous assessments and frequent instructor feedback. ",
+                "Because of this, it is mistaken to assume that increasing online options necessarily undermines educational quality, ",
+                "and universities should instead focus on how to implement online programs responsibly."
+            ],
+            ans: 1,
+            roles: ['opposing', 'conclusion', 'premise'],
+            breakdown: "<b>Correct.</b> The primary point is the <b>refutation</b>—calling the administrators' assumption 'mistaken'. The focus on 'how' is a secondary recommendation.",
+            hint: "The author's core point is that a certain assumption is 'mistaken'."
+        },
+        {
+            sentences: [
+                "Alumni surveys reveal that a substantial portion of graduates feel unprepared. Faculty committees have responded by adding scattered workshops on 'information literacy.' ",
+                "Yet these piecemeal measures leave the core curriculum unchanged and, consequently, do little to align the institution’s practices with its stated ideals."
+            ],
+            ans: 2, // Merged logic in current display
+            roles: ['premise', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> The author evaluates the workshops as failing to meet the institution's ideals. This judgment pulls together all the facts.",
+            hint: "Look for the final evaluative judgment at the end."
+        },
+        {
+            sentences: [
+                "Therefore, law schools should devote less time to memorizing particular precedents and more time to teaching triage and synthesis. ",
+                "After all, graduates will be judged less on their ability to recite rulings and more on their capacity to extract coherent principles. ",
+                "Digital archives have made access easy but produced a deluge of unfiltered material."
+            ],
+            ans: 0,
+            roles: ['conclusion', 'premise', 'premise'],
+            breakdown: "<b>Correct.</b> <b>Therefore</b> marks the main recommendation. <b>After all</b> is a support indicator introducing the reason for that recommendation.",
+            hint: "The main point is the recommendation marked by 'Therefore'."
+        },
+        {
+            sentences: [
+                "Museums should not treat visitor numbers as the chief metric of success, because doing so incentivizes sensationalist exhibits. ",
+                "When curators prioritize spectacle over substance, they gradually erode the public’s trust in the museum. ",
+                "In the long run, therefore, tying institutional prestige primarily to attendance figures undermines the very mission that museums fulfill."
+            ],
+            ans: 2,
+            roles: ['premise', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> The final realization that the mission is being <b>undermined</b> is the logical destination of the argument.",
+            hint: "Look for the final, ultimate danger the author warns about."
+        },
+        {
+            sentences: [
+                "Some ethicists insist that donating to large international charities is always morally preferable to funding local arts programs. ",
+                "Yet local arts initiatives can transform neighborhoods, strengthen social bonds, and cultivate empathy. ",
+                "This shows that the moral worth of supporting local arts cannot be captured solely by crude calculations of immediate lives saved."
+            ],
+            ans: 2,
+            roles: ['opposing', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> 'This shows that' marks the lesson drawn from the counterpoints. This is the author's primary claim.",
+            hint: "What does the author believe the evidence 'shows'?"
+        },
+        {
+            sentences: [
+                "Nonetheless, policymakers who interpret this uncertainty as a reason to postpone mitigation efforts misunderstand the nature of reasoning. ",
+                "The point of these models is not to foretell an exact future but to map a range of scenarios whose worst outcomes are catastrophic enough that inaction becomes the most reckless option. ",
+                "Climate modelers readily admit that their projections contain substantial margins of error regarding precise timing."
+            ],
+            ans: 0,
+            roles: ['conclusion', 'premise', 'premise'],
+            breakdown: "<b>Correct.</b> The author's critical judgment of the policymakers is the point. Treating uncertainty as a reason for delay is a <b>misunderstanding</b>.",
+            hint: "The author is criticizing the way policymakers interpret model uncertainty."
+        },
+        {
+            sentences: [
+                "Philosophers who claim moral responsibility is impossible in a deterministic universe assume responsibility requires the ability to have acted otherwise. ",
+                "But this demand for an uncaused freedom sets the bar so high that no conceivable agent could ever satisfy it. ",
+                "Thus, their skeptical conclusion tells us more about the implausibility of their starting assumptions than about actual conditions."
+            ],
+            ans: 2,
+            roles: ['opposing', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> <b>Thus</b> marks the author's <b>meta-claim</b>. It concludes that the philosophers' assumptions are the real problem.",
+            hint: "Look for the author's final verdict on the philosophers' logic."
+        },
+        {
+            sentences: [
+                "Urban planners often argue that widening congested highways is the most practical way to improve traffic flow. Yet empirical studies document 'induced demand.' ",
+                "As a result, city governments should stop treating highway expansion as the default solution ",
+                "and instead reallocate a substantial portion of transportation funds toward high-capacity public transit."
+            ],
+            ans: 1,
+            roles: ['opposing', 'conclusion', 'premise'],
+            breakdown: "<b>Correct.</b> <b>As a result</b> identifies the core policy change being recommended by the author.",
+            hint: "Identify the main shift in government policy the author is advocating."
+        },
+        {
+            sentences: [
+                "Because metrics reward short-term gains, corporate executives have a powerful incentive to prioritize quarterly earnings. ",
+                "Consequently, boards that adopt such metrics virtually guarantee that management will underinvest. ",
+                "It follows that any board genuinely committed to the firm’s long-term health must substantially revise the criteria it uses."
+            ],
+            ans: 2,
+            roles: ['premise', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> <b>It follows that</b> is the final indicator. The 'consequently' point about underinvestment is an intermediate step.",
+            hint: "What is the final 'logical destination' of this chain of consequences?"
+        },
+        {
+            sentences: [
+                "Historians frequently portray scientific revolutions as abrupt breaks with the past. ",
+                "Yet archival research reveals extensive continuity: experimental techniques and agendas persist across shifts. ",
+                "Focusing solely on dramatic theoretical disputes, then, obscures the slower, less visible forms of stability."
+            ],
+            ans: 2,
+            roles: ['opposing', 'premise', 'conclusion'],
+            breakdown: "<b>Correct.</b> The last sentence is the author's diagnosis: that focusing on theoretical disputes <b>obscures</b> the real stability.",
+            hint: "The author is pointing out what historians are missing or 'obscuring'."
+        },
+        {
+            sentences: [
+                "Some critics maintain that requiring scientists to communicate research dilutes rigor. However, explaining complex ideas clearly often forces researchers to confront ambiguities, which can sharpen their work. ",
+                "Because of this, it is mistaken to treat public communication as a distraction from 'real' science; ",
+                "instead, institutions should regard it as an integral component of scientific responsibility."
+            ],
+            ans: 1,
+            roles: ['opposing', 'conclusion', 'premise'],
+            breakdown: "<b>Correct.</b> The primary point is the refutation: 'it is <b>mistaken to treat</b> public communication as a distraction.'",
+            hint: "The core point is to call the critics' view 'mistaken'."
+        }
+    ];
+
+    function initLab() {
+        document.getElementById('home').classList.remove('active');
+        document.getElementById('drill').classList.add('active');
+        loadQ();
+    }
+
+    function loadQ() {
+        const q = data[currentIdx];
+        selectedSent = -1;
+        isAnalyzed = false;
+
+        document.getElementById('counter').innerText = `${currentIdx + 1 < 10 ? '0' : ''}${currentIdx + 1} / 20`;
+        document.getElementById('progress').style.width = `${(currentIdx / 20) * 100}%`;
+        
+        const view = document.getElementById('para-view');
+        view.innerHTML = "";
+        
+        q.sentences.forEach((text, i) => {
+            const sentence = document.createElement('button');
+            sentence.type = 'button';
+            sentence.className = 'sentence';
+            sentence.innerText = text;
+            sentence.onclick = () => select(i);
+            view.appendChild(sentence);
+        });
+
+        document.getElementById('breakdown').style.display = 'none';
+        document.getElementById('hint-box').style.display = 'none';
+        document.getElementById('success-banner').style.display = 'none';
+        document.getElementById('instruction-label').style.display = 'block';
+        
+        const btn = document.getElementById('actionBtn');
+        btn.innerText = "Underline Selection";
+        btn.classList.remove('btn-success');
+        btn.disabled = true;
+    }
+
+    function select(idx) {
+        if(isAnalyzed) return;
+        selectedSent = idx;
+        const spans = document.querySelectorAll('.sentence');
+        spans.forEach((s, i) => s.classList.toggle('selected', i === idx));
+        document.getElementById('actionBtn').disabled = false;
+        document.getElementById('hint-box').style.display = 'none';
+    }
+
+    function handleAction() {
+        if(!isAnalyzed) {
+            analyze();
+        } else {
+            next();
+        }
+    }
+
+    function analyze() {
+        const q = data[currentIdx];
+        if(selectedSent === q.ans) {
+            isAnalyzed = true;
+            
+            // Visual Reveal
+            revealStructure();
+            document.getElementById('success-banner').style.display = 'inline-block';
+            document.getElementById('instruction-label').style.display = 'none';
+            document.getElementById('breakdown').style.display = 'block';
+            document.getElementById('breakdown-text').innerHTML = q.breakdown;
+            
+            const btn = document.getElementById('actionBtn');
+            btn.innerText = currentIdx === 19 ? "View Certification" : "Load Next Node";
+            btn.classList.add('btn-success');
+        } else {
+            // Failure Hint
+            document.getElementById('hint-box').innerText = `> LOGIC MISMATCH: ${q.hint}`;
+            document.getElementById('hint-box').style.display = 'block';
+            document.querySelectorAll('.sentence').forEach(s => s.classList.remove('selected'));
+            document.getElementById('actionBtn').disabled = true;
+            selectedSent = -1;
+        }
+    }
+
+    function revealStructure() {
+        const q = data[currentIdx];
+        const spans = document.querySelectorAll('.sentence');
+        spans.forEach((span, i) => {
+            span.classList.remove('selected');
+            const role = q.roles[i] || 'premise';
+            span.classList.add(`role-${role}`);
+        });
+        syncLegend(q.roles);
+    }
+
+    function syncLegend(roles) {
+        const roleSet = new Set(roles || []);
+        const legendMap = {
+            conclusion: document.getElementById('legend-conclusion'),
+            premise: document.getElementById('legend-premise'),
+            opposing: document.getElementById('legend-opposing'),
+        };
+
+        Object.entries(legendMap).forEach(([role, el]) => {
+            if (!el) return;
+            el.classList.toggle('inactive', !roleSet.has(role));
+        });
+
+        const note = document.getElementById('legend-note');
+        if (!note) return;
+
+        if (roleSet.has('opposing')) {
+            note.style.display = 'none';
+            note.innerText = '';
+            return;
+        }
+
+        note.style.display = 'block';
+        note.innerText = '> This node has no opposing view. Purple appears only on rebuttal-style nodes.';
+    }
+
+    function next() {
+        currentIdx++;
+        if(currentIdx < 20) {
+            loadQ();
+        } else {
+            finish();
+        }
+    }
+
+    function finish() {
+        document.getElementById('drill').classList.remove('active');
+        document.getElementById('finish').classList.add('active');
+        document.getElementById('congrats').innerText = studentName
+            ? `EXCELLENT WORK, ${studentName.toUpperCase()}`
+            : 'EXCELLENT WORK';
+    }
+</script>
+</body>
+</html>
