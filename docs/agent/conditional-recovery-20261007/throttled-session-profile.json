@@ -1,0 +1,214 @@
+{
+  "cpuRate": 6,
+  "environment": "Codex IAB local Vite dev server; cumulative multi-action samples, not INP or physical-device metrics",
+  "samples": [
+    {
+      "pair": [
+        "trains",
+        "qualifies"
+      ],
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 21.217
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 48.61
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 146.804
+        }
+      ]
+    },
+    {
+      "pair": [
+        "dancer",
+        "stretch"
+      ],
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 20.917
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 30.351
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 124.743
+        }
+      ]
+    },
+    {
+      "pair": [
+        "admitted",
+        "senior"
+      ],
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 16.98
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 46.713
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 88.312
+        }
+      ]
+    },
+    {
+      "pair": [
+        "vote",
+        "member"
+      ],
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 13.124
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 27.273
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 87.1
+        }
+      ]
+    },
+    {
+      "pair": [
+        "opens",
+        "inspected"
+      ],
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 16.974
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 29.258
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 108.235
+        }
+      ]
+    },
+    {
+      "pair": [
+        "funding",
+        "approval"
+      ],
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 13.34
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 31.756
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 97.285
+        }
+      ]
+    },
+    {
+      "pair": [
+        "hiker",
+        "map"
+      ],
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 16.55
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 29.98
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 112.738
+        }
+      ]
+    },
+    {
+      "answer": "Timer reaches six → Heater runs",
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 15.442
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 7.926
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 48.899
+        }
+      ]
+    },
+    {
+      "answer": "Trainee certified for night work → Receives shift badge",
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 4.877
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 6.914
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 40.808
+        }
+      ]
+    },
+    {
+      "answer": "Its permission remains open.",
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 6.318
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 6.486
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 34.928
+        }
+      ]
+    },
+    {
+      "answer": "No. The rewrite reports attendance instead of an obligation.",
+      "ms": [
+        {
+          "name": "LayoutDuration",
+          "value": 8.732
+        },
+        {
+          "name": "RecalcStyleDuration",
+          "value": 8.585
+        },
+        {
+          "name": "ScriptDuration",
+          "value": 40.782
+        }
+      ]
+    }
+  ]
+}

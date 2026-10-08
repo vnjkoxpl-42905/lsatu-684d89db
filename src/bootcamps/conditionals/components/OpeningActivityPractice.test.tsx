@@ -33,7 +33,7 @@ it('gates feedback, explains reversal and retry, and keeps original-only practic
   const write = vi.spyOn(Storage.prototype, 'setItem');
   const { rerender } = render(<div><OpeningActivityPractice /></div>);
   expect(screen.getByRole('button', { name: 'Check' })).toBeDisabled();
-  expect(screen.queryByRole('status')).toBeNull();
+  expect(screen.getByRole('status')).toBeEmptyDOMElement();
   expect(screen.queryByText(openingActivityExplanations.d1)).toBeNull();
   expect(screen.queryByText(/Contrapositive/i)).toBeNull();
   expect(screen.queryByRole('button', { name: /^Not / })).toBeNull();
@@ -46,12 +46,12 @@ it('gates feedback, explains reversal and retry, and keeps original-only practic
   rerender(<div><OpeningActivityPractice /></div>);
   expect(screen.getByText('Not quite.')).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
-  expect(screen.queryByRole('status')).toBeNull();
+  expect(screen.getByRole('status')).toBeEmptyDOMElement();
   build('trains', 'qualifies');
   expect(screen.getByText('Right.')).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Next' }));
   expect(screen.getByText('All dancers stretch.')).toBeVisible();
-  expect(screen.queryByRole('status')).toBeNull();
+  expect(screen.getByRole('status')).toBeEmptyDOMElement();
   expect(read).not.toHaveBeenCalled();
   expect(write).not.toHaveBeenCalled();
   expect({ ...localStorage }).toEqual(before);

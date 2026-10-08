@@ -189,3 +189,14 @@ it('offers review directly when no first-attempt errors need a fresh case', () =
   expect(screen.getByRole('heading', { name: 'Review your practice' })).toBeVisible();
   expect(screen.queryByRole('heading', { name: 'How the new sentences went' })).toBeNull();
 }, 30000);
+
+it('returns focus to the first answer when an incorrect choice is retried', () => {
+  renderPractice();
+  choose(completeConditionItems[0].options[0]);
+  const retry = active().getByRole('button', { name: 'Try this question again' });
+  retry.focus();
+  fireEvent.click(retry);
+  expect(active().getByRole('button', { name: completeConditionItems[0].options[0] })).toHaveFocus();
+  expect(active().queryByRole('button', { name: 'Try this question again' })).toBeNull();
+  expect(active().getByRole('button', { name: 'Check answer' })).toBeDisabled();
+});

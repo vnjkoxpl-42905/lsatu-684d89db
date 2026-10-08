@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { RuleDiagram } from './ConditionalReferenceSequence';
 
 type MixedItem = {
@@ -107,6 +107,8 @@ export function MixedItemCheck({ item, index, onChecked, onResult, embedded = fa
   const [left, setLeft] = useState<string | null>(null);
   const [checked, setChecked] = useState(false);
   const targetQuestion = useId();
+  const comparisonHeading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => { if (comparing) comparisonHeading.current?.focus(); }, [comparing]);
   const sideQuestion = useId();
   const change = (update: () => void) => { update(); setChecked(false); onChecked(false); onResult?.(null); };
   const reset = () => { draftInput.current?.focus(); setComparing(false); setTarget(null); setLeft(null); setChecked(false); onChecked(false); onResult?.(null); };
@@ -123,7 +125,7 @@ export function MixedItemCheck({ item, index, onChecked, onResult, embedded = fa
     {!comparing && <button type="button" className="co-primary" disabled={!draftDiagram.trim() || !draftReadback.trim()} onClick={() => setComparing(true)}>{embedded ? 'Compare with the choices' : `Compare my translation for sentence ${number}`}</button>}
     {comparing && <>
     <p>{embedded ? "Compare your diagram with the choices. Keep every detail that limits who or what the rule covers, and check which way the arrow points." : 'Your written answer stays here while you compare. The choices below check who or what the rule covers and the arrow direction; your written answer is not graded automatically.'}</p>
-    <h3 id={targetQuestion}>{item.targetPrompt}</h3>
+    <h3 ref={comparisonHeading} tabIndex={-1} id={targetQuestion}>{item.targetPrompt}</h3>
     <div className="co-choices" role="group" aria-labelledby={targetQuestion}>{targetOptions(item, index).map(option => <button type="button" key={option} aria-pressed={target === option} onClick={() => change(() => setTarget(option))}>{option}</button>)}</div>
     <h3 id={sideQuestion}>Which condition gives you enough to establish the other?</h3>
     <div className="co-choices" role="group" aria-labelledby={sideQuestion}>{sideOptions(item, index).map(option => <button type="button" key={option} aria-pressed={left === option} onClick={() => change(() => setLeft(option))}>{option}</button>)}</div>

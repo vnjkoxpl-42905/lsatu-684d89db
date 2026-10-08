@@ -71,3 +71,7 @@ Implemented the original six findings, then ran Impeccable polish and a fresh au
 ### Remaining audit implemented and independently reassessed
 
 [New report](impeccable-audit-implementation-20261007.md): 18/20 Excellent, no confirmed P0-P3 findings in the scoped pass. Fixed secondary metadata and text-enlargement overflow, implemented scoped light/dark support, memoized retained questions and kept atomic feedback present. 28 affected tests, full app typecheck, changed TSX lint and final build pass. Codex browser verified both themes, actual viewport matrix and root-font 200% enlargement. Physical screen-reader/device profiling remain unverified; 20/20 is not claimed. Four-file source delta and 65-file inventory preserved; local/unpublished, task ledger unchanged.
+
+## 2026-10-07: Remaining keyboard defects fixed
+
+Fixed Compare/retry/diagram focus loss and persistent atomic diagram feedback. 19 affected tests, full app typecheck and direct Vite build passed. Complete Codex browser session plus fresh case and review verified under 6x CPU simulation. Independent review clear. See impeccable-final-keyboard-audit-20261007.md. Score remains18/20 because actual screen-reader/device evidence is unavailable. Seven-file delta, 66-file inventory preserved in keyboard overlay. No release/backend changes.

@@ -316,6 +316,10 @@
     "reason": "excluded file"
   },
   {
+    "path": "docs/agent/conditional-recovery-20261007/final-accessibility-build.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "docs/agent/conditional-recovery-20261007/polish-build.log",
     "reason": "excluded file"
   },

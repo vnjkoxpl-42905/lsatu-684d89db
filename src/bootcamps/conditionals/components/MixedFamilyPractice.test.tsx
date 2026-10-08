@@ -18,7 +18,9 @@ it('requires an independent diagram and readback before exposing complete labels
   expect(compare.disabled).toBe(true);
   fireEvent.change(readback, { target: { value: 'If lightning is forecast, the match moves indoors.' } });
   expect(compare.disabled).toBe(false);
+  compare.focus();
   fireEvent.click(compare);
+  expect(scope.getByRole('heading', { name: mixedFamilyItems[0].targetPrompt })).toHaveFocus();
   expect(item.textContent).toContain('your written answer is not graded automatically');
   const check = scope.getByRole('button', { name: 'Check sentence 1' }) as HTMLButtonElement;
   expect(check.disabled).toBe(true);

@@ -44,13 +44,14 @@ function confirmationQuestions(results: Record<string, Result>): Question[] {
 
 function ChoiceQuestion({ item, onCheck }: { item: MixedDrillChoiceItem; onCheck: Check }) {
   const [picked, setPicked] = useState<number | null>(null);
+  const firstAnswer = useRef<HTMLButtonElement>(null);
   const [checked, setChecked] = useState(false);
   return <div className="omd-question">
     <blockquote>{item.sentence}</blockquote><h3>{item.prompt}</h3>
-    <div className="omd-options" role="group" aria-label="Answer choices">{item.options.map((option, index) => <button type="button" key={option} aria-pressed={picked === index} onClick={() => { setPicked(index); setChecked(false); onCheck(null); }}>{option}</button>)}</div>
+    <div className="omd-options" role="group" aria-label="Answer choices">{item.options.map((option, index) => <button ref={index === 0 ? firstAnswer : undefined} type="button" key={option} aria-pressed={picked === index} onClick={() => { setPicked(index); setChecked(false); onCheck(null); }}>{option}</button>)}</div>
     <button type="button" className="omd-primary" disabled={picked === null} onClick={() => { setChecked(true); onCheck(picked === item.correct, picked === item.correct ? [] : [item.errorByOption?.[picked] ?? item.skill]); }}>Check answer</button>
     <div role="status" aria-atomic="true" className={checked ? 'omd-feedback' : undefined} data-correct={checked ? picked === item.correct : undefined}>{checked && <><p>{item.feedback[picked]}</p>
-      {picked !== item.correct && <button type="button" onClick={() => { setChecked(false); setPicked(null); onCheck(null); }}>Try this question again</button>}
+      {picked !== item.correct && <button type="button" onClick={() => { setChecked(false); setPicked(null); onCheck(null); firstAnswer.current?.focus(); }}>Try this question again</button>}
     </>}</div>
   </div>;
 }

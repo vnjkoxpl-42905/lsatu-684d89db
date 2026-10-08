@@ -257,10 +257,13 @@ export function DiagramDrills({
   const [left, setLeft] = useState<string[]>([]);
   const [right, setRight] = useState<string[]>([]);
   const [checked, setChecked] = useState<null | boolean>(null);
+  const retryButton = useRef<HTMLButtonElement>(null);
+  const leftButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => { if (checked !== null) retryButton.current?.focus(); }, [checked]);
   const item = queue[index];
   const done = index >= queue.length;
 
-  const reset = useCallback(() => { setLeft([]); setRight([]); setSide("left"); setChecked(null); onResult?.(null); }, [onResult]);
+  const reset = useCallback(() => { leftButton.current?.focus(); setLeft([]); setRight([]); setSide("left"); setChecked(null); onResult?.(null); }, [onResult]);
   const push = (token: string) => {
     if (checked !== null) return;
     (side === "left" ? setLeft : setRight)(v => [...v, token]);
@@ -310,7 +313,7 @@ export function DiagramDrills({
       </div>
 
       <div className="cir-side-toggle">
-        <button type="button" aria-pressed={side === "left"} className={`cir-btn ${side === "left" ? "" : "ghost"}`} onClick={() => setSide("left")}>{embedded ? 'Choose the left condition' : 'Building left'}</button>
+        <button ref={leftButton} type="button" aria-pressed={side === "left"} className={`cir-btn ${side === "left" ? "" : "ghost"}`} onClick={() => setSide("left")}>{embedded ? 'Choose the left condition' : 'Building left'}</button>
         <button type="button" aria-pressed={side === "right"} className={`cir-btn ${side === "right" ? "" : "ghost"}`} onClick={() => setSide("right")}>{embedded ? 'Choose the right condition' : 'Building right'}</button>
       </div>
 
@@ -329,21 +332,21 @@ export function DiagramDrills({
           <button type="button" className="cir-btn" disabled={!left.length || !right.length} onClick={check}>{embedded ? 'Check answer' : 'Check'}</button>
         ) : (
           <>
-            <button type="button" className="cir-btn ghost" onClick={reset}>Try again</button>
+            <button ref={retryButton} type="button" className="cir-btn ghost" onClick={reset}>Try again</button>
             {!embedded && <button type="button" className="cir-btn" onClick={() => { setIndex(i => i + 1); reset(); }}>Next</button>}
           </>
         )}
       </div>
 
-      {checked !== null && (
-        <div className="cir-feedback" role="status">
+      <div className={checked !== null ? "cir-feedback" : undefined} role="status" aria-atomic="true">
+        {checked !== null && <>
           {!embedded && <p>{checked ? "Right." : "Not quite."}</p>}
           {feedbackForResult && <p>{feedbackForResult({ left: norm(left.join(' ')), right: norm(right.join(' ')), correct: checked })}</p>}
           <p>Conditional: <Diagram left={item.left} right={item.right} /></p>
           {explanations[item.id] && <p>{explanations[item.id]}</p>}
           {allowContrapositive && <p>Contrapositive: <Diagram left={contra.left} right={contra.right} /></p>}
-        </div>
-      )}
+        </>}
+      </div>
     </section>
   );
 }
