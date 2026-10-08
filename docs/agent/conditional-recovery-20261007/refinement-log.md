@@ -75,3 +75,7 @@ Implemented the original six findings, then ran Impeccable polish and a fresh au
 ## 2026-10-07: Remaining keyboard defects fixed
 
 Fixed Compare/retry/diagram focus loss and persistent atomic diagram feedback. 19 affected tests, full app typecheck and direct Vite build passed. Complete Codex browser session plus fresh case and review verified under 6x CPU simulation. Independent review clear. See impeccable-final-keyboard-audit-20261007.md. Score remains18/20 because actual screen-reader/device evidence is unavailable. Seven-file delta, 66-file inventory preserved in keyboard overlay. No release/backend changes.
+
+## 2026-10-08: Teach the arrow before the foundation drill
+
+Joshua explicitly reordered opening steps4and5. Read the must arrow is now step4; Enough, required, or still open? is step5. The shared path updates the course list and Previous/Next navigation. Existing order regression updated; all19course tests passed. Local recovered checkout only.

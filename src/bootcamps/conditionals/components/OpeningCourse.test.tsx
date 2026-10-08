@@ -14,7 +14,7 @@ it('offers nine dedicated notes and four interleaved drill entries', () => {
   expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(9);
   expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(4);
   expect(document.querySelector('.co-pages')).toBeNull();
-  expect(OPENING_COURSE_PATH.slice(0, 4).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'foundation-practice']);
+  expect(OPENING_COURSE_PATH.slice(0, 5).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'foundation-practice']);
 });
 
 it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an old reader index', async step => {
