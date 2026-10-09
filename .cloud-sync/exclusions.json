@@ -320,6 +320,10 @@
     "reason": "excluded file"
   },
   {
+    "path": "docs/agent/conditional-recovery-20261007/media/condition-first-build.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "docs/agent/conditional-recovery-20261007/media/final-build.log",
     "reason": "excluded file"
   },

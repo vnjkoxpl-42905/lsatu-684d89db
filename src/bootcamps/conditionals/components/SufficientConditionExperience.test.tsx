@@ -5,37 +5,44 @@ import { SufficientConditionFilm } from './SufficientConditionFilm';
 
 afterEach(cleanup);
 
-it('distinguishes a guarantee from two kinds of uncertainty without asserting the reverse', () => {
+it('distinguishes combinations permitted by the sentence from a broken guarantee', () => {
   const { container } = render(<SufficientConditionExperience/>);
   const liveReading = container.querySelector('.sc-case-reading');
-  expect(screen.getByText('Maya is a student.')).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Only student status is known' }));
+  expect(screen.getByText('These conditions belong together.')).toBeVisible();
+  expect(screen.getByRole('img')).toHaveAccessibleName(/entire law-school group is inside the student group/);
+  fireEvent.click(screen.getByRole('button', { name: 'Enrolled in law school but not a student' }));
   expect(container.querySelector('.sc-case-reading')).toBe(liveReading);
   expect(liveReading).toHaveAttribute('aria-live', 'polite');
-  expect(screen.getByText("We don't know whether Maya is enrolled in law school.")).toBeVisible();
-  expect(screen.getByText(/Both fit the rule/)).toBeVisible();
-  expect(container.querySelector('figure')).toHaveAttribute('data-case', 'student');
-  fireEvent.click(screen.getByRole('button', { name: 'Not enrolled in law school' }));
-  expect(screen.getByText("We don't know whether Maya is a student.")).toBeVisible();
-  expect(screen.getByText(/The rule still holds in either case/)).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Enrolled in law school' }));
-  expect(screen.getByText('Maya is a student.')).toBeVisible();
+  expect(screen.getByText('This would break the guarantee.')).toBeVisible();
+  expect(liveReading).toHaveAttribute('data-fits', 'false');
+  expect(container.querySelector('figure')).toHaveAttribute('data-case', 'contradiction');
+  fireEvent.click(screen.getByRole('button', { name: 'A student, but not enrolled in law school' }));
+  expect(screen.getByText('The sentence allows this combination.')).toBeVisible();
+  expect(screen.getByText(/It isn't the only way/)).toBeVisible();
+  expect(liveReading).toHaveAttribute('data-fits', 'true');
+  fireEvent.click(screen.getByRole('button', { name: 'Enrolled in law school and a student' }));
+  expect(screen.getByText('These conditions belong together.')).toBeVisible();
+  expect(container).not.toHaveTextContent('Maya');
 });
 
-it('reveals the fact before the inference and gives focus to Replay when complete', () => {
-  render(<SufficientReasoningWalkthrough/>);
-  expect(screen.queryByText('Maya is enrolled in law school.')).toBeNull();
-  expect(screen.queryByText('Maya is a student.')).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: 'Add the fact' }));
-  expect(screen.getByText('Maya is enrolled in law school.')).toBeVisible();
-  expect(screen.queryByText('Maya is a student.')).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: 'See what follows' }));
-  expect(screen.getByText('Maya is a student.')).toBeVisible();
-  expect(screen.getByRole('button', { name: 'Replay' })).toHaveFocus();
-  expect(screen.getByRole('button', { name: 'Reasoning complete' })).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: 'Replay' }));
-  expect(screen.queryByText('Maya is a student.')).toBeNull();
-  expect(screen.getByRole('button', { name: 'Add the fact' })).toBeEnabled();
+it('explains the sufficient clause, stated outcome, and noncausal guarantee without adding facts', () => {
+  const { container } = render(<SufficientReasoningWalkthrough/>);
+  const liveReading = container.querySelector('.sc-walkthrough-comment');
+  const trigger = screen.getByRole('button', { name: /If you're enrolled in law school/ });
+  expect(trigger).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByText('Enrollment is the condition that guarantees student status.')).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: /Then you're a student/ }));
+  expect(screen.getByText('Being a student is what the sentence guarantees.')).toBeVisible();
+  expect(trigger).toHaveAttribute('aria-pressed', 'false');
+  expect(container.querySelector('.sc-walkthrough-comment')).toBe(liveReading);
+  fireEvent.click(screen.getByRole('button', { name: 'guarantees' }));
+  expect(screen.getByText('The first condition guarantees the second.')).toBeVisible();
+  expect(screen.getByText(/doesn't mean that one event causes another/)).toBeVisible();
+  fireEvent.click(trigger);
+  expect(trigger).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByText('Enrollment is the condition that guarantees student status.')).toBeVisible();
+  expect(container).not.toHaveTextContent('Maya');
+  expect(container).not.toHaveTextContent('Add the fact');
 });
 
 it('provides controlled captioned video and replaces playback when the clip changes', () => {

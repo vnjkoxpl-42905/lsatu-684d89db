@@ -219,39 +219,32 @@ export function conditionalReferenceContent() {
       <p>Now let's take the two conditions one at a time.</p>
     </ReferenceStep>
 
-    <ReferenceStep number={2} label="Sufficient means enough" title="Enough to Guarantee the Other Condition">
+    <ReferenceStep number={2} label="The sufficient condition" title="The Condition That Guarantees the Result">
       <div className="cr-sufficiency">
-        <p className="cr-sufficiency-lead">A <strong>sufficient condition</strong> is a condition that, if true, is <strong>enough to guarantee another condition</strong>. You don't need an additional fact to establish that other condition. The rule already gives you the connection.</p>
-        <blockquote>If you're enrolled in law school, you're a student.</blockquote>
+        <p className="cr-sufficiency-lead">A <strong>sufficient condition</strong> guarantees another condition whenever it is met. In a conditional statement, it is the <strong>trigger</strong>: if that condition holds, the stated outcome must hold too.</p>
 
         <section className="cr-sufficient-explanation" aria-label="What makes a condition sufficient">
-          <h3>Enough for what?</h3>
-          <p>Suppose I tell you that Maya is enrolled in law school. What do you now know about her? She's a student. You don't need to know which law school she attends or what classes she's taking.</p>
-          <p>That's what <strong>enough</strong> means here. Knowing that Maya is enrolled in law school is enough to know that she's a student. Law-school enrollment is a <strong>sufficient condition for being a student</strong>.</p>
           <SufficientReasoningWalkthrough/>
-          <h3>Why is it a guarantee?</h3>
-          <p>Could Maya be enrolled in law school and not be a student? No. That would be an exception to the rule. Once we know she's enrolled, being a student must follow. It isn't just likely.</p>
-          <p>A conditional gives us this relationship: <strong>if the sufficient condition is true, the other condition has to be true too.</strong> Calling a condition sufficient tells us what knowing it lets us conclude.</p>
+          <h3>Why enrollment is sufficient</h3>
+          <p>The word <strong>sufficient</strong> means enough for a particular result. Here, being enrolled in law school is sufficient <strong>for being a student</strong>. The statement connects those two ideas. It does not add a second requirement, such as taking a particular class.</p>
+          <p>Could someone be enrolled in law school without being a student? No. That would contradict the statement. The enrollment condition cannot hold while student status is missing. This is why we call it a guarantee, rather than something that merely makes the outcome likely.</p>
         </section>
 
-        <SufficientConditionFilm/>
         <SufficientConditionExperience/>
 
         <section className="cr-sufficient-explanation" aria-label="The limits of a sufficient condition">
-          <h3>What the rule leaves open</h3>
-          <p>Maya is a student because she's enrolled in law school. But someone studying history at a university is also a student. Law school is one way to belong to the student group. It isn't the only way.</p>
-          <p>If Maya isn't enrolled in law school, she could still be studying history, or she could be out of school. Both fit the rule. That fact doesn't settle whether she's a student.</p>
-          <p>Notice the difference when we know only that someone is a student: we haven't proved they aren't in law school. We simply don't have enough information to say that they are. The larger student group also includes high-school students and university students studying other subjects.</p>
-          <p>And sufficient doesn't have to mean <strong>causes</strong>. Here, we're describing who belongs to a group. Knowing that someone is enrolled in law school tells us they're a student; it isn't a story about one event causing another.</p>
+          <h3>A sufficient condition does not have to cause the outcome</h3>
+          <p>Calling enrollment a <strong>trigger</strong> describes its role in this rule. It doesn't mean enrollment causes a separate event called “becoming a student.” The example describes two things that must be true together: anyone enrolled in law school belongs to the student group.</p>
+          <p>A conditional can describe an action and its result, or a relationship between two ideas. In either case, the sufficient condition guarantees the stated outcome. It does not have to happen first.</p>
         </section>
 
         <aside className="cr-sufficient-bridge"><h3>How necessity fits</h3><p>If you're enrolled in law school, you have to be a student. Being a student is therefore <strong>necessary for law-school enrollment</strong>. Enrollment is enough to establish student status; student status is required for enrollment. We'll work through that required side in the next lesson.</p></aside>
 
         <section className="cr-sufficient-explanation cr-sufficient-checks" aria-label="Check your understanding of sufficiency">
-          <h3>Try the reasoning yourself</h3>
-          <ReferenceQuestion prompt="Maya is enrolled in law school. Is that enough to know she's a student?" options={['Yes. Enrollment guarantees student status under the rule.', 'No. We need to know which classes she takes.']} correct={0} feedback={['The rule covers everyone enrolled in law school. Maya meets that condition, so being a student follows without another fact.', 'Which classes Maya takes is an extra requirement you added. The rule already makes enrollment enough to establish that she is a student.']}/>
-          <ReferenceQuestion prompt="Jordan isn't enrolled in law school. What can this rule tell us about whether Jordan is a student?" options={['Jordan cannot be a student.', 'Jordan could be a student or could be out of school.']} correct={1} feedback={['You treated law school as the only way to be a student. Jordan could study another subject without breaking the rule.', 'Not being enrolled in law school leaves student status open. Both possibilities fit the rule; neither is established by it.']}/>
-          <ReferenceQuestion prompt="Use a new rule: if you are enrolled in medical school, you are a student. Which condition is sufficient for being a student?" options={['Being a student.', 'Being enrolled in medical school.']} correct={1} feedback={['Student status alone does not establish medical-school enrollment. The rule guarantees student status when we know someone is enrolled in medical school.', 'Medical-school enrollment is enough to guarantee student status under this rule. Sufficient names what the condition establishes, rather than a particular word you memorized.']}/>
+          <h3>Identify the sufficient condition</h3>
+          <ReferenceQuestion prompt="In our statement, which condition guarantees being a student?" options={['Being enrolled in law school.', 'Being a student.']} correct={0} feedback={['Enrollment is the sufficient condition for student status. Whenever enrollment holds, the stated outcome must hold too.', 'Being a student is the outcome this statement guarantees. The sufficient condition is being enrolled in law school.']}/>
+          <ReferenceQuestion prompt="Does calling law-school enrollment sufficient mean it is the only way to be a student?" options={['Yes. Every student must be enrolled in law school.', 'No. Other kinds of students also fit the statement.']} correct={1} feedback={['That adds a claim about every student. The statement guarantees student status for law-school enrollment; it does not make enrollment the only route.', 'A history student can belong to the larger student group without being enrolled in law school. Enrollment still guarantees student status.']}/>
+          <ReferenceQuestion prompt="If you are enrolled in medical school, you are a student. Which condition is sufficient for being a student?" options={['Being a student.', 'Being enrolled in medical school.']} correct={1} feedback={['Student status is the outcome. This sentence does not guarantee medical-school enrollment for every student.', 'Medical-school enrollment guarantees student status in this sentence. That relationship makes enrollment the sufficient condition.']}/>
         </section>
       </div>
       <p>Next, we'll examine what the sufficient condition requires.</p>
@@ -293,6 +286,9 @@ export function conditionalReferenceContent() {
     <ReferenceStep number={7} label="The four situations" title="Keep what follows separate from what stays open">
       <p>Change the fact about your outcome while keeping the rule. Treat each fact as settled, not as a report that you are still waiting. Decide what it establishes before comparing the explanation.</p>
       <FourCaseExplorer/>
+      <h3>Apply another rule</h3>
+      <p>The next two clips use a different statement: if you're enrolled in law school, you're a student. Now we add information about Maya and examine what that statement lets us conclude.</p>
+      <div className="cr-sufficiency"><SufficientConditionFilm/></div>
       <p>Starting from getting a bicycle and concluding that you win is the tempting <strong>reverse</strong>. Starting from not winning and concluding that you do not get a bicycle is the tempting <strong>inverse</strong>. Neither follows from this rule alone.</p>
       <p>The contrapositive starts from <strong>not getting a bicycle</strong> and establishes <strong>not winning the raffle</strong>. Its reasoning depends on the missing required result, not on reversing whichever words happen to appear.</p>
       <p>We now understand the relationship in words. Symbols will let us record that understanding without carrying every word of the sentence.</p>

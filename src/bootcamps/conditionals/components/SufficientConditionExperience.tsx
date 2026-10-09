@@ -1,50 +1,113 @@
-import { useId, useRef, useState } from 'react';
+import { useId, useState } from 'react';
 import './sufficient-condition-experience.css';
 
-const examples = [
-  { key: 'enrolled', label: 'Enrolled in law school', fact: 'Maya is enrolled in law school.', result: 'Maya is a student.', explanation: "The law-school group sits entirely inside the student group. Knowing Maya belongs to the smaller group settles whether she belongs to the larger one.", caption: 'One known position. Student status is guaranteed.' },
-  { key: 'student', label: 'Only student status is known', fact: 'Maya is a student.', result: "We don't know whether Maya is enrolled in law school.", explanation: "She could be in law school, or she could be studying another subject. Both fit the rule. Being a student doesn't tell us which group she's in.", caption: 'Two possible positions. Neither is established.' },
-  { key: 'not-enrolled', label: 'Not enrolled in law school', fact: "Maya isn't enrolled in law school.", result: "We don't know whether Maya is a student.", explanation: "She could be studying history, or she could be out of school. The rule still holds in either case. Not meeting the sufficient condition doesn't settle the other condition.", caption: 'Outside law school. Student status remains open.' },
+const relationships = [
+  {
+    key: 'both', label: 'Enrolled in law school and a student', fits: true,
+    result: 'These conditions belong together.',
+    explanation: "The sentence guarantees student status whenever law-school enrollment is true. That's why the entire law-school group belongs inside the student group.",
+    caption: 'Law-school enrollment always comes with student status.',
+  },
+  {
+    key: 'contradiction', label: 'Enrolled in law school but not a student', fits: false,
+    result: 'This would break the guarantee.',
+    explanation: "The sufficient condition would be true, but the condition it guarantees would be false. That combination contradicts the sentence. No part of the law-school group can sit outside the student group.",
+    caption: 'Law-school enrollment without student status is excluded.',
+  },
+  {
+    key: 'other', label: 'A student, but not enrolled in law school', fits: true,
+    result: 'The sentence allows this combination.',
+    explanation: "Law-school enrollment is one way to satisfy the condition of being a student. It isn't the only way. Students studying other subjects can belong to the larger group too.",
+    caption: 'The student group can include students outside law school.',
+  },
 ] as const;
+
+function StudentSymbol({ x, y }: { x: number; y: number }) {
+  return <g transform={`translate(${x} ${y})`}>
+    <circle cy="-10" r="7"/>
+    <path d="M-12 15v-5a12 12 0 0 1 24 0v5Z"/>
+  </g>;
+}
 
 export function SufficientConditionExperience() {
   const [selected, setSelected] = useState(0);
   const titleId = useId();
-  const resultId = useId();
-  const current = examples[selected];
+  const diagramId = useId();
+  const readingId = useId();
+  const current = relationships[selected];
   return <section className="sc-experience" aria-labelledby={titleId}>
-    <header><p className="sc-eyebrow">Keep the rule. Change what you know.</p><h3 id={titleId}>Enough doesn't mean the only way</h3><p>Choose a fact about Maya. Watch what it lets us conclude.</p></header>
-    <div className="sc-case-controls" role="group" aria-label="Choose what is known about Maya">{examples.map((example, index) => <button type="button" key={example.key} aria-pressed={selected === index} aria-controls={resultId} onClick={() => setSelected(index)}>{example.label}</button>)}</div>
+    <header>
+      <p className="sc-eyebrow">Picture the relationship</p>
+      <h3 id={titleId}>Every law-school student is a student.</h3>
+      <p>The smaller group fits entirely inside the larger one. Select a combination to see how it compares with the sentence.</p>
+    </header>
     <figure className="sc-membership" data-case={current.key}>
-      <div className="sc-group-visual" role="img" aria-label={`Everyone enrolled in law school is inside the student group. ${current.caption}`}>
-        <div className="sc-students-area" aria-hidden="true"><span className="sc-group-label">Students</span><div className="sc-group-interior">
-          <div className="sc-law-area"><span>Enrolled in law school</span><div className="sc-position sc-position-law"><b>M</b><span>{selected === 0 ? 'Maya' : 'Possible'}</span></div></div>
-          <div className="sc-other-area"><span>Other students</span><div className="sc-position sc-position-other"><b>M</b><span>Possible</span></div></div>
-        </div></div>
-        <div className="sc-outside-area" aria-hidden="true"><span>Not a student</span><div className="sc-position sc-position-outside"><b>M</b><span>Possible</span></div></div>
+      <div className="sc-group-visual">
+        <div className="sc-group-label"><span>Students</span><span className="sc-group-note">The larger group</span></div>
+        <svg className="sc-group-drawing" viewBox="0 0 600 250" role="img" aria-labelledby={diagramId}>
+          <title id={diagramId}>The entire law-school group is inside the student group. Students in other subjects can be outside the law-school group while still inside Students.</title>
+          <rect className="sc-student-boundary" x="8" y="8" width="584" height="234" rx="30"/>
+          <rect className="sc-law-boundary" x="30" y="30" width="270" height="190" rx="24"/>
+          <g className="sc-law-symbols" aria-hidden="true">
+            <StudentSymbol x={86} y={88}/><StudentSymbol x={165} y={88}/><StudentSymbol x={244} y={88}/>
+            <StudentSymbol x={86} y={162}/><StudentSymbol x={165} y={162}/><StudentSymbol x={244} y={162}/>
+          </g>
+          <g className="sc-other-symbols" aria-hidden="true">
+            <StudentSymbol x={365} y={88}/><StudentSymbol x={445} y={88}/><StudentSymbol x={525} y={88}/>
+            <StudentSymbol x={365} y={162}/><StudentSymbol x={445} y={162}/><StudentSymbol x={525} y={162}/>
+          </g>
+        </svg>
+        <div className="sc-diagram-key" aria-hidden="true"><span><i/>Enrolled in law school</span><span><i/>Other students</span></div>
       </div>
-      <figcaption>{current.caption} {selected !== 0 && 'Each marker shows a different possibility for Maya.'}</figcaption>
+      <figcaption>{current.caption} The groups illustrate the relationship, not how many people are enrolled.</figcaption>
     </figure>
-    <div className="sc-case-reading" id={resultId} aria-live="polite" aria-atomic="true">
-      <p className="sc-eyebrow">Given: {current.fact}</p><strong>{current.result}</strong><p>{current.explanation}</p>
+    <div className="sc-case-controls" role="group" aria-label="Compare combinations with the conditional sentence">
+      {relationships.map((relationship, index) => <button type="button" key={relationship.key} aria-pressed={selected === index} aria-controls={readingId} onClick={() => setSelected(index)}>{relationship.label}</button>)}
+    </div>
+    <div className="sc-case-reading" id={readingId} aria-live="polite" aria-atomic="true" data-fits={current.fits}>
+      <p className="sc-case-verdict"><span aria-hidden="true">{current.fits ? '✓' : '×'}</span>{current.fits ? 'Fits the sentence' : 'Contradicts the sentence'}</p>
+      <strong>{current.result}</strong>
+      <p>{current.explanation}</p>
     </div>
   </section>;
 }
 
-const reasoning = [
-  { label: 'The rule', text: "If you're enrolled in law school, you're a student.", explanation: "This gives us the connection. It doesn't tell us whether Maya is enrolled." },
-  { label: 'The fact', text: 'Maya is enrolled in law school.', explanation: 'Now we know Maya meets the condition the rule describes.' },
-  { label: 'What follows', text: 'Maya is a student.', explanation: "The rule covers Maya. We don't need another fact to establish student status." },
-];
+const explanations = {
+  trigger: {
+    label: 'The sufficient condition',
+    title: 'Enrollment is the condition that guarantees student status.',
+    text: "The if-part names law-school enrollment. Whenever that condition is satisfied, the rule requires student status. That's the job of a sufficient condition. It establishes the other condition under this rule.",
+  },
+  result: {
+    label: 'The stated outcome',
+    title: 'Being a student is what the sentence guarantees.',
+    text: "The outcome is not just a possibility. Whenever you're enrolled in law school, you have to be a student. A person who was enrolled but wasn't a student would be an exception to the sentence.",
+  },
+  connection: {
+    label: 'The connection between them',
+    title: 'The first condition guarantees the second.',
+    text: "The sufficient condition is the trigger for this guarantee: if law-school enrollment is true, student status must be true too. ‘Trigger’ describes the logical connection. It doesn't mean that one event causes another or that the events happen in a particular order.",
+  },
+} as const;
 
 export function SufficientReasoningWalkthrough() {
-  const [step, setStep] = useState(0);
+  const [selected, setSelected] = useState<keyof typeof explanations>('trigger');
   const headingId = useId();
-  const replay = useRef<HTMLButtonElement>(null);
+  const explanationId = useId();
+  const current = explanations[selected];
   return <section className="sc-walkthrough" aria-labelledby={headingId}>
-    <header><p className="sc-eyebrow">Follow the reasoning</p><h3 id={headingId}>A rule becomes useful when we know a fact</h3></header>
-    <ol className="sc-reasoning-lines">{reasoning.map((item, index) => <li key={item.label} data-current={index === step} data-revealed={index <= step}><span>{item.label}</span><p>{index <= step ? item.text : index === 1 ? 'Next, add what we know about Maya.' : 'Then ask what the rule establishes.'}</p></li>)}</ol>
-    <div className="sc-walkthrough-comment" role="status" aria-live="polite"><p key={step}>{reasoning[step].explanation}</p></div>
-    <div className="sc-walkthrough-controls"><button type="button" className="sc-continue" disabled={step === 2} onClick={() => { if (step === 1) replay.current?.focus(); setStep(value => Math.min(value + 1, 2)); }}>{step === 0 ? 'Add the fact' : step === 1 ? 'See what follows' : 'Reasoning complete'}</button><button type="button" ref={replay} onClick={() => { setStep(0); }}>Replay</button><span aria-label={`Explanation step ${step + 1} of 3`} className="sc-step-dots" aria-hidden="true">{reasoning.map((item, index) => <i key={item.label} data-active={index <= step}/>)}</span></div>
+    <header><p className="sc-eyebrow">Take the sentence apart</p><h3 id={headingId}>Which condition guarantees student status?</h3><p>Select either part of the sentence, then look at the connection between them.</p></header>
+    <div className="sc-sentence-map" data-selected={selected} role="group" aria-label="Explore the two conditions and their connection">
+      <button type="button" className="sc-sentence-part sc-trigger" aria-pressed={selected === 'trigger'} aria-controls={explanationId} onClick={() => setSelected('trigger')}>
+        <span className="sc-clause-label">If</span>{' '}<strong>you're enrolled in law school</strong>{' '}<span className="sc-clause-role">Trigger · Sufficient condition</span>
+      </button>
+      <button type="button" className="sc-guarantee" aria-pressed={selected === 'connection'} aria-controls={explanationId} onClick={() => setSelected('connection')}><span>guarantees</span><i aria-hidden="true"/></button>
+      <button type="button" className="sc-sentence-part sc-result" aria-pressed={selected === 'result'} aria-controls={explanationId} onClick={() => setSelected('result')}>
+        <span className="sc-clause-label">Then</span>{' '}<strong>you're a student</strong>{' '}<span className="sc-clause-role">Stated outcome</span>
+      </button>
+    </div>
+    <div id={explanationId} className="sc-walkthrough-comment" aria-live="polite" aria-atomic="true">
+      <p className="sc-eyebrow">{current.label}</p><h4>{current.title}</h4><p>{current.text}</p>
+    </div>
   </section>;
 }

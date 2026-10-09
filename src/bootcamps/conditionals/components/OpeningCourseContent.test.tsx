@@ -8,9 +8,11 @@ afterEach(cleanup);
 it('retains the full sufficient explanation and necessity bridge on the dedicated course page', () => {
   render(<OpeningCourseContent id="sufficient"/>);
   expect(screen.getByRole('heading', { name: 'How necessity fits' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Try the reasoning yourself' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Identify the sufficient condition' })).toBeVisible();
   expect(document.querySelectorAll('.cr-sufficient-checks [role="status"]')).toHaveLength(3);
   expect(screen.queryByText(/raffle|bicycle|100%|breathing/i)).toBeNull();
+  expect(screen.queryByText(/Maya|The fact|Enough for what\?/i)).toBeNull();
+  expect(document.querySelector('video')).toBeNull();
 });
 
 it('explains the sufficiency errors and retains keyboard focus when a learner retries', () => {
@@ -30,6 +32,13 @@ it('explains the sufficiency errors and retains keyboard focus when a learner re
     expect(answers[0]).toHaveFocus();
     expect(area.getByRole('status').textContent).toBe('');
   });
+});
+
+it('places narrated case applications after condition roles have been taught', () => {
+  render(<OpeningCourseContent id="missing-requirement"/>);
+  expect(screen.getByRole('heading', { name: 'Apply another rule' })).toBeVisible();
+  expect(document.querySelector('video')).toHaveAttribute('controls');
+  expect(screen.getByRole('button', { name: 'Enough to know' })).toBeVisible();
 });
 
 const section = (name: string) => screen.getByRole('heading', { level: 2, name }).closest('section') as HTMLElement;
