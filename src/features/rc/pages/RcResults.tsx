@@ -230,7 +230,7 @@ export default function RcResults() {
 
   return (
     <div className="min-h-screen bg-background pb-12">
-      <div className="sticky top-0 z-20 border-b bg-card shadow-sm">
+      <div className="border-b bg-card shadow-sm">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="mb-6 flex items-center justify-between">
             <Button variant="ghost" size="sm" onClick={() => navigate('/rc')}>

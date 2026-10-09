@@ -971,7 +971,7 @@ function RcPlayerRunner() {
     if (entry.kind !== 'question' || entry.questionId == null) return 'unanswered';
     // A pill that reads "correct" beside a question the student is being asked
     // to answer again blind has already answered it for them.
-    if (awaitingReattempt(entry.questionId)) return 'unanswered';
+    if (awaitingReattempt(entry.questionId)) return state.answers.has(entry.questionId) ? 'answered' : 'unanswered';
     const target = state.items.find((i) => i.question.questionId === entry.questionId);
     // The pill states the same verdict the review layer does, which reads the
     // latest pick (`secondPick ?? firstPick`). Reading `answers` alone put a

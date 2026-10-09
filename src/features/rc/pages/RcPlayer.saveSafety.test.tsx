@@ -36,12 +36,13 @@ vi.mock('../components/RcExamPane', () => ({
   RcExamPane: ({ question, passageOnly }: { question: ReactNode; passageOnly: boolean }) => <div>{passageOnly ? <p>Full passage view</p> : question}</div>,
 }));
 vi.mock('../components/RcQuestionPane', () => ({
-  RcQuestionPane: ({ item, selected, onSelect, onToggleFlag, interactionDisabled }: {
-    item: { number: number }; selected: string; onSelect: (letter: string) => void; onToggleFlag(): void; interactionDisabled: boolean;
+  RcQuestionPane: ({ item, selected, onSelect, onToggleFlag, interactionDisabled, reattemptMode, onSkipToAnswer }: {
+    item: { number: number }; selected: string; onSelect: (letter: string) => void; onToggleFlag(): void; interactionDisabled: boolean; reattemptMode: boolean; onSkipToAnswer(): void;
   }) => <div>
     <p>Question {item.number}: {selected ?? 'blank'}</p>
     <button disabled={interactionDisabled} onClick={() => onSelect('B')}>Choose B</button>
     <button disabled={interactionDisabled} onClick={onToggleFlag}>Toggle question flag</button>
+    {reattemptMode && <button onClick={onSkipToAnswer}>Show saved answer</button>}
   </div>,
 }));
 vi.mock('../components/RcChrome', () => ({
@@ -103,6 +104,22 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
 describe('RC account save safety', () => {
+  it('reports saved answer status in blind review without exposing correctness until reveal', async () => {
+    api.getSession.mockResolvedValue({ ...session(), status: 'completed' });
+    api.getSessionAttempts.mockResolvedValue([attempt, { ...attempt, id: 'answer-two', questionId: 2, selected: 'A', isCorrect: true }]);
+    mount('&review=1&q=1');
+    await screen.findByRole('button', { name: 'Show saved answer' });
+    const statuses = screen.getByTestId('pager-statuses');
+    expect(statuses).toHaveTextContent('Drill 1: answered');
+    expect(statuses).toHaveTextContent('Drill 2: answered');
+    expect(statuses).toHaveTextContent('Drill 3: unanswered');
+    expect(statuses).not.toHaveTextContent('correct');
+    fireEvent.click(screen.getByRole('button', { name: 'Show saved answer' }));
+    expect(statuses).toHaveTextContent('Drill 1: incorrect');
+    expect(statuses).toHaveTextContent('Drill 2: answered');
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(api.saveSessionClock).not.toHaveBeenCalled();
+  });
   it('pauses and resumes the clock, then counts past the practice budget without silently submitting', async () => {
     mount();
     await screen.findByText('Question 1: blank');
