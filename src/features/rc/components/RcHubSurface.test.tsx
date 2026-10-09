@@ -209,13 +209,15 @@ describe('RcHubSurface autostart', () => {
        into the player, so the stale-state case only exists on a surface that
        is still on screen. */
     mount(
-      '/classroom/drill?section=rc&stage=type-drill&passages=1188,1201',
+      '/classroom/drill?section=rc&stage=type-drill&passages=1188,1201&reveal=end_of_set&secondsPerPassage=60',
       'section=rc&stage=type-drill&count=1',
     );
     expect(await screen.findByText(/2 passages ·/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'next link' }));
     await waitFor(() => expect(screen.queryByText(/2 passages ·/)).not.toBeInTheDocument());
+    expect(screen.getByRole('button', { name: /After each passage/ })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Untimed' })).toHaveAttribute('aria-pressed', 'true');
 
     fireEvent.click(screen.getByRole('button', { name: 'Preview drill' }));
     await screen.findByRole('region', { name: 'Selected reading set' });
@@ -361,6 +363,36 @@ describe('RcHubSurface launch truth (#171)', () => {
     await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
     expect(createSession.mock.calls[0][1]).toEqual([1188, 1201]);
     expect(createSession.mock.calls[0][0]).toMatchObject({ source: 'manual', reveal: 'end_of_set', timing: { mode: 'unlimited' } });
+  });
+
+  it('preserves a manually chosen reveal and passage when switching an inspected set to custom timing', async () => {
+    const bank = await import('../lib/rcBank');
+    const index = await bank.loadAllIndexPassages();
+    let releaseIndex!: () => void;
+    vi.mocked(bank.loadAllIndexPassages).mockImplementationOnce(() => new Promise((resolve) => { releaseIndex = () => resolve(index); }));
+    mount('/classroom/drill?section=rc&stage=type-drill');
+    await screen.findByRole('button', { name: 'Preview drill' });
+    fireEvent.click(screen.getByRole('button', { name: /At the end/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Choose passages' }));
+    await act(async () => releaseIndex());
+    fireEvent.click(screen.getByRole('button', { name: 'Add Passage 1201' }));
+    fireEvent.click(primary());
+    await screen.findByRole('region', { name: 'Selected reading set' });
+    fireEvent.click(screen.getByRole('button', { name: 'Custom' }));
+    expect(primary()).toHaveTextContent('Preview drill');
+    const field = screen.getByRole('textbox', { name: 'Minutes and seconds per passage' });
+    fireEvent.change(field, { target: { value: '0:00' } });
+    expect(primary()).toBeDisabled();
+    fireEvent.change(field, { target: { value: '1:00' } });
+    fireEvent.blur(field);
+    expect(screen.getByRole('button', { name: /At the end/ })).toHaveAttribute('aria-pressed', 'true');
+    expect(within(screen.getByRole('list', { name: 'Available passages' })).getByRole('button', { name: 'Remove Passage 1201' })).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(primary());
+    await waitFor(() => expect(primary()).toHaveTextContent('Start this drill'));
+    fireEvent.click(primary());
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual([1201]);
+    expect(createSession.mock.calls[0][0]).toMatchObject({ source: 'manual', reveal: 'end_of_set', timing: { mode: 'per_passage_budget', secondsPerPassage: 60 } });
   });
 
   it('requires acknowledging a smaller adaptive set before Start, and never claims the requested size', async () => {
