@@ -18,7 +18,7 @@ for (const table of tables) {
   const { data, error } = await client.from(table).select('*').eq('user_id', actor).order(table === 'rc_annotations' ? 'passage_id' : 'id');
   if (error) throw new Error(`${table}: ${error.message}`);
   receipt.tables[table] = { count: data.length, sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex') };
-  if (table === 'rc_drill_sessions') receipt.sessions = data.map(row => ({ id: row.id, passageIds: row.passage_ids, status: row.status }));
+  if (table === 'rc_drill_sessions') receipt.sessions = data.map(row => ({ id: row.id, passageIds: row.passage_ids, status: row.status, reveal: row.config?.reveal, timing: row.config?.timing }));
 }
 const sessionId = process.argv[2];
 if (sessionId) {
