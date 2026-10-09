@@ -21,7 +21,7 @@ describe('read-only RC question lookup', () => {
   it('returns to a retained non-practice origin without mislabelling the destination', async () => {
     mount('passage=10&q=3&returnTo=%2Fmy-work%3Ftab%3Dassigned');
     await screen.findByText('Question stem 3');
-    fireEvent.click(screen.getByRole('button', { name: 'Back', exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: /^Back$/ }));
     expect(mocks.navigate).toHaveBeenCalledWith('/my-work?tab=assigned');
     expect(mocks.create).not.toHaveBeenCalled();
   });
