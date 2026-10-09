@@ -45,6 +45,7 @@ import {
  */
 
 interface Props {
+  annotationsDisabled?: boolean;
   choice: RcChoice;
   /** Scopes this choice's marks: highlights are stored per passage. */
   questionId: number;
@@ -103,6 +104,7 @@ export function RcChoiceRow({
   children,
   highlights,
   color,
+  annotationsDisabled = false,
   highlightMode,
   onAddHighlight,
   onRemoveHighlight,
@@ -132,7 +134,7 @@ export function RcChoiceRow({
   }, [choice.letter, choice.text, choiceHighlights]);
 
   const surface = useRcMarkSurface({
-    textRef,
+    disabled: annotationsDisabled,    textRef,
     paneRef,
     highlightMode,
     color,
@@ -157,8 +159,8 @@ export function RcChoiceRow({
     if (selection && !selection.isCollapsed) return;
     // A click on an existing mark is aimed at the mark (it opens the Remove
     // popover), not at the answer.
-    if ((event.target as HTMLElement).closest?.(`[${RC_HIGHLIGHT_ATTR}]`)) return;
-    if (highlightMode === 'none' || highlightMode === 'erase') {
+    if (!annotationsDisabled && (event.target as HTMLElement).closest?.(`[${RC_HIGHLIGHT_ATTR}]`)) return;
+    if (annotationsDisabled || highlightMode === 'none' || highlightMode === 'erase') {
       pick();
       return;
     }

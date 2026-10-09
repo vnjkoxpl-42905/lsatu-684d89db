@@ -78,7 +78,7 @@ const PILL_STATUS_LABEL: Record<'correct' | 'incorrect' | 'answered' | 'unanswer
   correct: ', correct',
   incorrect: ', incorrect',
   answered: ', answered',
-  unanswered: '',
+  unanswered: ', unanswered',
 };
 
 interface PagerProps {
@@ -119,7 +119,19 @@ export function RcPager({
   canNext,
 }: PagerProps) {
   return (
-    <div className="flex items-center gap-3 pb-3">
+    <div className="flex flex-wrap items-center gap-3 pb-3">
+      <details className="w-full rounded border border-slate-300 bg-white p-2 text-slate-900">
+        <summary className="cursor-pointer text-sm font-medium">Question overview</summary>
+        {Array.from(new Set(entries.filter((entry) => entry.kind === 'question').map((entry) => entry.passageId))).map((passageId) => {
+          const group = entries.filter((entry) => entry.kind === 'question' && entry.passageId === passageId);
+          return <section key={passageId} aria-label={group[0]?.passageLabel ?? `Passage ${passageId}`} className="mt-3 border-t border-slate-300 pt-3">
+            <h3 className="rounded bg-slate-100 p-2 text-sm font-semibold">{group[0]?.passageLabel ?? `Passage ${passageId}`}</h3>
+            <div className="flex flex-wrap gap-2 py-2">{group.map((entry) => <button type="button" key={entry.questionId} onClick={() => onNavigate(entry.index)} aria-current={entry.index === currentIndex ? 'true' : undefined} className={cn('rounded border px-3 py-2 text-sm', entry.index === currentIndex ? 'border-slate-900 bg-slate-900 text-white' : pillState(entry))}>
+              {entry.sourceLabel ?? `Question ${entry.label}`} · Drill {entry.label}{PILL_STATUS_LABEL[pillStatus(entry)]}{isFlagged(entry) ? ', flagged' : ''}
+            </button>)}</div>
+          </section>;
+        })}
+      </details>
       <div className="flex flex-1 flex-wrap items-center justify-center gap-1.5">
         {entries.map((entry, i) => {
           if (entry.kind === 'divider') {
@@ -137,7 +149,7 @@ export function RcPager({
               key={`q-${entry.questionId}`}
               type="button"
               onClick={() => onNavigate(entry.index)}
-              aria-label={`Question ${entry.label}${PILL_STATUS_LABEL[pillStatus(entry)]}${
+              aria-label={`${entry.sourceLabel ?? `Question ${entry.label}`} · Drill ${entry.label}${PILL_STATUS_LABEL[pillStatus(entry)]}${
                 isFlagged(entry) ? ', flagged' : ''
               }`}
               aria-current={isCurrent ? 'true' : undefined}

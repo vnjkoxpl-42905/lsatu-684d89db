@@ -22,7 +22,7 @@ export const RC_FONT_SIZES = [75, 100, 125, 150, 175];
 /**
  * Extra leading added on top of the pane's own line height, rather than an
  * absolute value. The passage and the question column run at different line
- * heights (1.7 and 1.6, matching the LR player), and one absolute number would
+ * heights (1.6 by default), and one absolute number would
  * flatten that difference the moment a student touched the control.
  */
 export const RC_LINE_HEIGHTS = [
@@ -47,10 +47,10 @@ const DEFAULTS: RcA11ySettings = { scheme: 'default', fontSize: 100, lineHeight:
  * forward so a student who already picked one keeps roughly what they chose.
  */
 function migrateLineHeight(stored: number | undefined): number {
-  if (stored == null) return DEFAULTS.lineHeight;
-  if (stored < 1) return stored;
-  if (stored >= 1.8) return 0.45;
-  if (stored >= 1.5) return 0.25;
+  if (typeof stored !== 'number' || !Number.isFinite(stored) || stored < 0) return DEFAULTS.lineHeight;
+  if (stored < 1) return RC_LINE_HEIGHTS.some(option => option.value === stored) ? stored : DEFAULTS.lineHeight;
+  if (stored === 1.85) return 0.45;
+  if (stored === 1.65) return 0.25;
   return 0;
 }
 
@@ -60,7 +60,7 @@ function read(): RcA11ySettings {
     if (!raw) return DEFAULTS;
     const parsed = JSON.parse(raw) as Partial<RcA11ySettings>;
     return {
-      scheme: parsed.scheme ?? DEFAULTS.scheme,
+      scheme: RC_COLOR_SCHEMES.some(option => option.id === parsed.scheme) ? parsed.scheme : DEFAULTS.scheme,
       fontSize: typeof parsed.fontSize === 'number' && Number.isFinite(parsed.fontSize)
         && parsed.fontSize >= 50 && parsed.fontSize <= 300 ? parsed.fontSize : DEFAULTS.fontSize,
       lineHeight: migrateLineHeight(parsed.lineHeight),
@@ -82,7 +82,12 @@ export function useRcA11y() {
   }, [settings]);
 
   const update = React.useCallback((patch: Partial<RcA11ySettings>) => {
-    setSettings((prev) => ({ ...prev, ...patch }));
+    setSettings((prev) => ({
+      scheme: RC_COLOR_SCHEMES.some(option => option.id === patch.scheme) ? patch.scheme : prev.scheme,
+      fontSize: typeof patch.fontSize === 'number' && Number.isFinite(patch.fontSize)
+        && patch.fontSize >= 50 && patch.fontSize <= 300 ? patch.fontSize : prev.fontSize,
+      lineHeight: patch.lineHeight === undefined ? prev.lineHeight : migrateLineHeight(patch.lineHeight),
+    }));
   }, []);
 
   return {

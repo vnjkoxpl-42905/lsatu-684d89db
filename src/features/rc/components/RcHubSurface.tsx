@@ -454,7 +454,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     if (startingRef.current) return;
     if (pendingLoad.error) { setNotice(pendingLoad.error); return; }
     if (!uncertainStart.current && !options?.replace && !canStart) {
-      setNotice(activeSet ? 'Confirm the set below before starting it.' : 'Inspect a set before starting it.');
+      setNotice(activeSet ? 'Confirm the drill below before starting it.' : 'Preview the drill before starting it.');
       return;
     }
     startingRef.current = true;

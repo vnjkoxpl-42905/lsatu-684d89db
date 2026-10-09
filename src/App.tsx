@@ -42,6 +42,7 @@ const HardSentencesReviewDetail = safeLazy(() => import("./pages/HardSentencesRe
 const NativeLabReviewDetail = safeLazy(() => import("./pages/NativeLabReviewDetail"));
 const ProgressTopics = safeLazy(() => import("./pages/ProgressTopics"));
 const RcRedirect = safeLazy(() => import("./features/rc/pages/RcRedirect"));
+const RcQuestionPreview = safeLazy(() => import("./features/rc/pages/RcQuestionPreview"));
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
 const RcResults = safeLazy(() => import("./features/rc/pages/RcResults"));
 const RcSearch = safeLazy(() => import("./features/rc/pages/RcSearch"));
@@ -496,6 +497,7 @@ const App = () => {
                   <Route path="/section/:assignmentId" element={
                     <ProtectedRoute flag="has_classroom_access"><SectionDirectionsPage /></ProtectedRoute>
                   } />
+                  <Route path="/rc/preview" element={<ProtectedRoute flag="has_drill_access"><RcQuestionPreview /></ProtectedRoute>} />
                   <Route path="/rc/drill" element={
                     <DrillAssignmentGate><RcPlayer /></DrillAssignmentGate>
                   } />
