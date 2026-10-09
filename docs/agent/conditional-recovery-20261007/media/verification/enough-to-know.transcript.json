@@ -1,0 +1,33 @@
+{
+  "source": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-bootcamp\\public\\media\\conditionals\\sufficiency\\enough-to-know.mp4",
+  "sha256": "26d24f1d98cc05ed49e966f3ae6c2772e5be1d4764ceab3f6eee3ad5170c7e8f",
+  "model": "base.en",
+  "device": "cpu",
+  "compute_type": "int8",
+  "language": "en",
+  "duration_seconds": 15.0465625,
+  "text": "A sufficient condition is enough to guarantee something else. If Maya is enrolled in law school, she's a student. Knowing she's enrolled is enough. We don't need another fact.",
+  "segments": [
+    {
+      "start": 0.27,
+      "end": 4.77,
+      "text": "A sufficient condition is enough to guarantee something else."
+    },
+    {
+      "start": 4.77,
+      "end": 9.27,
+      "text": "If Maya is enrolled in law school, she's a student."
+    },
+    {
+      "start": 9.27,
+      "end": 13.27,
+      "text": "Knowing she's enrolled is enough."
+    },
+    {
+      "start": 13.27,
+      "end": 15.27,
+      "text": "We don't need another fact."
+    }
+  ],
+  "verification_note": "Automated local transcription; manually check names, logical claims, and wording against intended narration."
+}

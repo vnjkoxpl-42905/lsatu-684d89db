@@ -9,7 +9,7 @@ it('retains the full sufficient explanation and necessity bridge on the dedicate
   render(<OpeningCourseContent id="sufficient"/>);
   expect(screen.getByRole('heading', { name: 'How necessity fits' })).toBeVisible();
   expect(screen.getByRole('heading', { name: 'Try the reasoning yourself' })).toBeVisible();
-  expect(screen.getAllByRole('status')).toHaveLength(3);
+  expect(document.querySelectorAll('.cr-sufficient-checks [role="status"]')).toHaveLength(3);
   expect(screen.queryByText(/raffle|bicycle|100%|breathing/i)).toBeNull();
 });
 

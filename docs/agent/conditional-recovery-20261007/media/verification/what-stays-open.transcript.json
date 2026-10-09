@@ -1,0 +1,38 @@
+{
+  "source": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-bootcamp\\public\\media\\conditionals\\sufficiency\\what-stays-open.mp4",
+  "sha256": "d853afca6554a6dde6e7846670f681399f51479470f25cca62a88588c71bed52",
+  "model": "base.en",
+  "device": "cpu",
+  "compute_type": "int8",
+  "language": "en",
+  "duration_seconds": 15.0465625,
+  "text": "Now, suppose all we know is that Maya is a student. Is she enrolled in law school? We don't know. She could be studying history. Being a student doesn't tell us which subject she studies.",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 4.4,
+      "text": "Now, suppose all we know is that Maya is a student."
+    },
+    {
+      "start": 4.4,
+      "end": 6.48,
+      "text": "Is she enrolled in law school?"
+    },
+    {
+      "start": 6.48,
+      "end": 7.96,
+      "text": "We don't know."
+    },
+    {
+      "start": 7.96,
+      "end": 10.8,
+      "text": "She could be studying history."
+    },
+    {
+      "start": 10.8,
+      "end": 14.8,
+      "text": "Being a student doesn't tell us which subject she studies."
+    }
+  ],
+  "verification_note": "Automated local transcription; manually check names, logical claims, and wording against intended narration."
+}

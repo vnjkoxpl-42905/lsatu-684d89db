@@ -3,6 +3,8 @@ import './reference-sequence.css';
 import { NegativeCaseLab } from './CounterexampleLab';
 import { StudyDeck } from './StudyDeck';
 import type { LessonPage } from './LessonPages';
+import { SufficientConditionExperience, SufficientReasoningWalkthrough } from './SufficientConditionExperience';
+import { SufficientConditionFilm } from './SufficientConditionFilm';
 
 const raffleRule = 'If you win the raffle, you get a bicycle.';
 
@@ -226,28 +228,20 @@ export function conditionalReferenceContent() {
           <h3>Enough for what?</h3>
           <p>Suppose I tell you that Maya is enrolled in law school. What do you now know about her? She's a student. You don't need to know which law school she attends or what classes she's taking.</p>
           <p>That's what <strong>enough</strong> means here. Knowing that Maya is enrolled in law school is enough to know that she's a student. Law-school enrollment is a <strong>sufficient condition for being a student</strong>.</p>
-          <div className="cr-sufficient-proof">
-            <div><span>The rule</span><p>Anyone enrolled in law school is a student.</p></div>
-            <div><span>The fact</span><p>Maya is enrolled in law school.</p></div>
-            <div><span>What we know</span><p>Maya is a student.</p></div>
-          </div>
+          <SufficientReasoningWalkthrough/>
           <h3>Why is it a guarantee?</h3>
           <p>Could Maya be enrolled in law school and not be a student? No. That would be an exception to the rule. Once we know she's enrolled, being a student must follow. It isn't just likely.</p>
           <p>A conditional gives us this relationship: <strong>if the sufficient condition is true, the other condition has to be true too.</strong> Calling a condition sufficient tells us what knowing it lets us conclude.</p>
         </section>
 
-        <figure className="cr-student-groups">
-          <div className="cr-student-group"><span>Students</span><p>Everyone in this group is a student.</p><div className="cr-law-group"><strong>Law-school students</strong><p>Everyone enrolled in law school belongs here, and therefore also belongs in the larger student group.</p></div><p className="cr-other-students">The larger group also includes high-school students and university students studying other subjects.</p></div>
-          <figcaption>Knowing someone is in the law-school group settles whether they're a student. Knowing they're a student doesn't tell us which group they're in.</figcaption>
-        </figure>
+        <SufficientConditionFilm/>
+        <SufficientConditionExperience/>
 
         <section className="cr-sufficient-explanation" aria-label="The limits of a sufficient condition">
-          <h3>Enough doesn't mean the only way</h3>
+          <h3>What the rule leaves open</h3>
           <p>Maya is a student because she's enrolled in law school. But someone studying history at a university is also a student. Law school is one way to belong to the student group. It isn't the only way.</p>
-          <div className="cr-sufficient-contrasts">
-            <section><span>Change the fact</span><h4>You aren't enrolled in law school.</h4><p>Are you still a student? You could be. You might be studying history, or you might not be a student at all. <strong>This fact and rule don't settle it.</strong></p><p>The rule still holds. It just doesn't tell us whether someone outside law school is a student.</p></section>
-            <section><span>Start from the other condition</span><h4>You are a student.</h4><p>Does that mean you're enrolled in law school? No. You could be a high-school student. <strong>Being a student doesn't establish law-school enrollment.</strong></p><p>Notice the difference: we haven't proved you aren't in law school. We simply don't have enough information to say that you are.</p></section>
-          </div>
+          <p>If Maya isn't enrolled in law school, she could still be studying history, or she could be out of school. Both fit the rule. That fact doesn't settle whether she's a student.</p>
+          <p>Notice the difference when we know only that someone is a student: we haven't proved they aren't in law school. We simply don't have enough information to say that they are. The larger student group also includes high-school students and university students studying other subjects.</p>
           <p>And sufficient doesn't have to mean <strong>causes</strong>. Here, we're describing who belongs to a group. Knowing that someone is enrolled in law school tells us they're a student; it isn't a story about one event causing another.</p>
         </section>
 

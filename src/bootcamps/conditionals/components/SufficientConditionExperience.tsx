@@ -16,20 +16,16 @@ export function SufficientConditionExperience() {
     <header><p className="sc-eyebrow">Keep the rule. Change what you know.</p><h3 id={titleId}>Enough doesn't mean the only way</h3><p>Choose a fact about Maya. Watch what it lets us conclude.</p></header>
     <div className="sc-case-controls" role="group" aria-label="Choose what is known about Maya">{examples.map((example, index) => <button type="button" key={example.key} aria-pressed={selected === index} aria-controls={resultId} onClick={() => setSelected(index)}>{example.label}</button>)}</div>
     <figure className="sc-membership" data-case={current.key}>
-      <svg viewBox="0 0 640 340" role="img" aria-label={current.caption}>
-        <rect className="sc-students-area" x="24" y="26" width="592" height="250" rx="22" />
-        <text className="sc-group-label" x="48" y="64">Students</text>
-        <rect className="sc-law-area" x="48" y="94" width="258" height="156" rx="16" />
-        <text className="sc-law-label" x="70" y="126">Enrolled in law school</text>
-        <text className="sc-other-label" x="341" y="125">Other students</text>
-        <text className="sc-outside-label" x="341" y="312">Not a student</text>
-        <g className="sc-position sc-position-law"><circle cx="169" cy="183" r="25"/><text x="169" y="189">M</text><text className="sc-position-label" x="169" y="230">{selected === 0 ? 'Maya' : 'Possible'}</text></g>
-        <g className="sc-position sc-position-other"><circle cx="460" cy="183" r="25"/><text x="460" y="189">M</text><text className="sc-position-label" x="460" y="230">Possible</text></g>
-        <g className="sc-position sc-position-outside"><circle cx="270" cy="309" r="20"/><text x="270" y="315">M</text></g>
-      </svg>
-      <figcaption>{current.caption} {selected !== 0 && 'The markers show alternatives, not two Mayas.'}</figcaption>
+      <div className="sc-group-visual" role="img" aria-label={`Everyone enrolled in law school is inside the student group. ${current.caption}`}>
+        <div className="sc-students-area" aria-hidden="true"><span className="sc-group-label">Students</span><div className="sc-group-interior">
+          <div className="sc-law-area"><span>Enrolled in law school</span><div className="sc-position sc-position-law"><b>M</b><span>{selected === 0 ? 'Maya' : 'Possible'}</span></div></div>
+          <div className="sc-other-area"><span>Other students</span><div className="sc-position sc-position-other"><b>M</b><span>Possible</span></div></div>
+        </div></div>
+        <div className="sc-outside-area" aria-hidden="true"><span>Not a student</span><div className="sc-position sc-position-outside"><b>M</b><span>Possible</span></div></div>
+      </div>
+      <figcaption>{current.caption} {selected !== 0 && 'Each marker shows a different possibility for Maya.'}</figcaption>
     </figure>
-    <div className="sc-case-reading" id={resultId} aria-live="polite" aria-atomic="true" key={current.key}>
+    <div className="sc-case-reading" id={resultId} aria-live="polite" aria-atomic="true">
       <p className="sc-eyebrow">Given: {current.fact}</p><strong>{current.result}</strong><p>{current.explanation}</p>
     </div>
   </section>;

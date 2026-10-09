@@ -90,3 +90,12 @@ Joshua explicitly reordered opening steps4and5. Read the must arrow is now step4
 - Codex IAB: checked all three wrong/correct paths, keyboard correction and retry focus; no recorded console errors. Responsive DOM geometry at actual 320, 400, 960, 1200 and 1600 CSS widths; no document horizontal overflow; narrow comparisons stack. Temporary viewport reset; preview remains open at the lesson beginning.
 - Screenshot: C:/Users/Joshu/.codex/visualizations/2026/10/07/01a117ea-7c95-7813-af3b-866b05ec963a/sufficient-condition-expanded-20261009.jpg.
 - Read-only independent source/integration review found no material issues. Local preview only; no commit, push or publication. Necessary is still next, but its expanded rewrite is not included in this pass.
+
+## 2026-10-09: Kling clips and learner-controlled motion
+
+- Generated and embedded two 15-second 1080p narrated clips; cost 360 credits, confirmed balance 106. Native controls, captions, transcripts and failed-load recovery. Originals preserved and public versions optimized. Final audio transcription matches intended scripts.
+- Ivory/ink/brass scope replaces pale green. Dynamic group membership explains guarantee versus open possibilities; rule/fact/inference reveal is controlled by the learner. Existing approved explanation and three checks preserved.
+- Independent reviewer found remounted live region; fixed persistent region and added regression coverage. Final 32 tests, full typecheck, full production build and postbuild content check pass. Existing app build warnings remain.
+- Codex IAB verifies both videos/caption readiness, keyboard reasoning/replay, three case states and wrong/correct/retry feedback. 320/400/960/1200/1600 widths have no horizontal overflow and all lesson buttons meet 44px targets. Contrast verified; no console errors observed.
+- Impeccable polish followed by provisional 18/20 technical audit; outstanding actual assistive technology, devices and slow-network checks recorded in media/README.md. No perfect release-acceptance claim. No commit/push/deploy.
+- Screenshot: C:/Users/Joshu/.codex/visualizations/2026/10/07/01a117ea-7c95-7813-af3b-866b05ec963a/sufficient-motion-desktop.png

@@ -1,0 +1,32 @@
+[
+  {
+    "name": "enough-to-know.jpg",
+    "bytes": 72668,
+    "sha256": "b92951ce500aeabb3a8e2bc779c433accf79359afb548cac469c01283a28e64a"
+  },
+  {
+    "name": "enough-to-know.mp4",
+    "bytes": 4292012,
+    "sha256": "798f0b7432464d725171e1cb3b9518905b135d8c53359470d7e4965f40ef95fb"
+  },
+  {
+    "name": "enough-to-know.vtt",
+    "bytes": 283,
+    "sha256": "d24bcb9edb9d4b693d8b160b19e096dc7b69577937524131d07a2910394c48df"
+  },
+  {
+    "name": "what-stays-open.jpg",
+    "bytes": 85184,
+    "sha256": "f40dbc49994e83a41ef258606b45fd0b97889f533a2abfabe1386dc3babb9f03"
+  },
+  {
+    "name": "what-stays-open.mp4",
+    "bytes": 5183520,
+    "sha256": "2ede81fe56919679797af3838ede700df1e432698f03716e48792495c329df1d"
+  },
+  {
+    "name": "what-stays-open.vtt",
+    "bytes": 320,
+    "sha256": "06faec9ee3095a5446a5f4d82136408c652a20d3a140b7da6de9f8d7e65ca3e2"
+  }
+]
