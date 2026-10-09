@@ -1,4 +1,5 @@
-import QuestionFinder from "./QuestionFinder";
+import * as React from "react";
+import QuestionFinder, { type QuestionFinderHandle } from "./QuestionFinder";
 import type { QuestionFinderBank } from "./questionFinderSearch";
 
 export interface QuestionJumpProps {
@@ -10,6 +11,8 @@ export interface QuestionJumpProps {
 
 /** Compatibility entry for the Drill landing page. Both lookup entry points
  * render the same finder and therefore share its address selection behavior. */
-export default function QuestionJump({ returnTo, tone = "light", bank }: QuestionJumpProps) {
-  return <QuestionFinder returnTo={returnTo} tone={tone} bank={bank} triggerLabel="Open a question" />;
-}
+const QuestionJump = React.forwardRef<QuestionFinderHandle, QuestionJumpProps>(function QuestionJump({ returnTo, tone = "light", bank }, ref) {
+  return <QuestionFinder ref={ref} returnTo={returnTo} tone={tone} bank={bank} triggerLabel="Open a question" />;
+});
+
+export default QuestionJump;

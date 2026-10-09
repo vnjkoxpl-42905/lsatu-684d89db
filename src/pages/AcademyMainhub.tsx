@@ -22,6 +22,7 @@ import { Card } from "@/components/ui/card";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import QuestionJump from "@/components/questionfinder/QuestionJump";
+import type { QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 import { SectionToggle } from "@/components/drill/SectionToggle";
 import { RcHubSurface } from "@/features/rc/components/RcHubSurface";
 import {
@@ -194,6 +195,7 @@ export default function AcademyMainhub({
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
+  const questionFinderRef = React.useRef<QuestionFinderHandle>(null);
   const navigate = useNavigate();
   const viewParam = searchParams.get("view");
   const view = viewParam === "in-progress" || viewParam === "completed" || viewParam === "saved" ? viewParam : "create";
@@ -201,6 +203,14 @@ export default function AcademyMainhub({
   const [runsLoading, setRunsLoading] = React.useState(false);
   const [runsError, setRunsError] = React.useState<string | null>(null);
   const [runsRevision, refreshRuns] = React.useReducer((value) => value + 1, 0);
+
+  React.useEffect(() => {
+    if (searchParams.get("finder") !== "open") return;
+    questionFinderRef.current?.open();
+    const next = new URLSearchParams(searchParams);
+    next.delete("finder");
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
 
   React.useEffect(() => {
     if (!user?.id || (view !== "in-progress" && view !== "completed")) {
@@ -444,6 +454,7 @@ export default function AcademyMainhub({
             same stage tokens; the finder's trigger is a dark pill either way. */}
         {!isLauncherStage && <div className="drill-observatory-tools">
           <QuestionJump
+            ref={questionFinderRef}
             returnTo={drillReturnTo}
             tone={theme === "dark" ? "dark" : "light"}
             bank={section}

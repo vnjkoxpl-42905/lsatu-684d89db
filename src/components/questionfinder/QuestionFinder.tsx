@@ -17,9 +17,11 @@ import {
   type FinderHit,
   type FinderSnippet,
   type QuestionFinderBank,
+  type QuestionAddress,
 } from "./questionFinderSearch";
 import { useQuestionFinderBanks } from "./useQuestionFinderBanks";
-import { useFinderAddressIndex } from "./useFinderAddressIndex";
+import { useFinderAddressIndex, type FinderAddressTest } from "./useFinderAddressIndex";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select";
 import "./questionFinder.css";
 
 const PER_BANK_LIMIT = 6;
@@ -50,9 +52,9 @@ export interface QuestionFinderProps {
  * The Question finder.
  *
  * A labelled field that opens a panel: type words to search question text, or
- * type a question address (PT90 S1 Q12) to go straight there. It can search
- * both banks or follow the Drill hub's active bank. LR and RC question hits
- * both open the exact question; RC passage matches open the matching passage.
+ * type a question address (PT90 S1 Q12) to locate it. It can search both banks
+ * or follow the Drill hub's active bank. Selecting a result retains its address;
+ * opening remains unavailable until safe preview is implemented.
  * See `docs/adr/0008-question-finder-lands-differently-by-bank.md`.
  *
  * It never builds a set. That is the Drill console's job, and the last row of
@@ -62,7 +64,7 @@ export interface QuestionFinderHandle {
   open: () => void;
 }
 
-const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProps>(function QuestionFinder({ returnTo, tone = "light", bank, triggerLabel = "Find a question" }, ref) {
+const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProps>(function QuestionFinder({ returnTo: _returnTo, tone = "light", bank, triggerLabel = "Find a question" }, ref) {
   const [open, setOpen] = React.useState(false);
   React.useImperativeHandle(ref, () => ({ open: () => setOpen(true) }), []);
 
@@ -122,7 +124,7 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
         </span>
       </button>
 
-      {open && <FinderPanel returnTo={returnTo} tone={tone} bank={bank} onClose={() => setOpen(false)} />}
+      <FinderPanel open={open} tone={tone} bank={bank} onClose={() => setOpen(false)} />
     </div>
   );
 });
@@ -132,12 +134,12 @@ export default QuestionFinder;
 /* ------------------------------------------------------------------ panel */
 
 function FinderPanel({
-  returnTo,
+  open,
   tone,
   bank,
   onClose,
 }: {
-  returnTo: string;
+  open: boolean;
   tone: "light" | "dark";
   bank?: QuestionFinderBank;
   onClose: () => void;
@@ -153,8 +155,9 @@ function FinderPanel({
   const listRef = React.useRef<HTMLDivElement>(null);
 
   // Mounting the panel IS the request for the banks; nothing loads before it.
-  const banks = useQuestionFinderBanks(true);
-  const addressIndex = useFinderAddressIndex(true);
+  const banks = useQuestionFinderBanks(open);
+  const addressIndex = useFinderAddressIndex(open);
+  React.useEffect(() => setView(bank ?? "all"), [bank]);
 
   const results = React.useMemo(
     () =>
@@ -179,6 +182,7 @@ function FinderPanel({
   /* Focus in, focus back out. The trigger must get focus again on close or a
      keyboard student is returned to the top of the document. */
   React.useEffect(() => {
+    if (!open) return;
     const previous = document.activeElement as HTMLElement | null;
     inputRef.current?.focus();
     const { overflow } = document.body.style;
@@ -187,22 +191,12 @@ function FinderPanel({
       document.body.style.overflow = overflow;
       previous?.focus?.();
     };
-  }, []);
+  }, [open]);
 
   const openHit = React.useCallback((hit: FinderHit) => {
+    setView(hit.bank);
     setQuery(hit.bank === "lr" ? `PT${hit.pt} S${hit.section} Q${hit.qnum}` : `PT${hit.preptest} S${hit.section}${hit.qnum ? ` Q${hit.qnum}` : ""}`);
   }, []);
-
-  /* The go arrow is the selectors' Enter. It opens the best hit for whatever
-     address is currently built, so picking a test and pressing it lands on that
-     test's first question rather than telling the student to pick two more
-     things first. It is disabled when the address resolves to nothing, so it
-     never promises a jump it cannot make. */
-  const canGo = results.address !== null && hits.length > 0;
-  const openTop = React.useCallback(() => {
-    const hit = hits[0];
-    if (hit) openHit(hit);
-  }, [hits, openHit]);
 
   const onKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Escape") {
@@ -261,6 +255,7 @@ function FinderPanel({
   const hasQuery = query.trim().length > 0;
   const showNoResults = hasQuery && !banks.loading && hits.length === 0;
 
+  if (!open) return null;
   const panel = (
     <div className="qf" data-tone={tone}>
       <div className="qf-portal">
@@ -308,15 +303,11 @@ function FinderPanel({
                 disclosure. Picking a test is the fastest way in for a student
                 holding a printed section, and it was one click too deep. */}
             <BrowseByTest
-              lr={banks.lr}
-              rcPassages={banks.rcPassages}
-              rcQuestions={banks.rcQuestions}
               bank={view === "all" ? undefined : view}
-      disabled={addressIndex.loading || addressIndex.failed}
+              disabled={addressIndex.loading || addressIndex.failed}
               onPick={setQuery}
-              onGo={openTop}
-      canGo={canGo}
-      tests={addressIndex.tests}
+              tests={addressIndex.tests}
+              selectedAddress={results.address}
             />
             {addressIndex.failed && <p className="qf-warn" role="alert">Question addresses could not be loaded. <button type="button" onClick={addressIndex.retry}>Retry</button></p>}
 
@@ -414,11 +405,9 @@ function FinderPanel({
 
             {results.rc.length > 0 && (
               <div className="qf-group">
-                {/* An RC result always opens its matching passage and targets
-                    the exact question when the result came from question text. */}
                 <p className="qf-grouphead">
                   Reading Comprehension
-                  <span className="qf-grouphead-note">opens the matching passage</span>
+                  <span className="qf-grouphead-note">select to retain this address</span>
                   <i aria-hidden />
                 </p>
                 {results.rc.map((hit, index) => {
@@ -487,7 +476,7 @@ function FinderPanel({
               <kbd>
                 <CornerDownLeft size={9} strokeWidth={2.4} />
               </kbd>{" "}
-              open
+              select
             </span>
             <span>
               <kbd>esc</kbd> {query ? "clear" : "close"}
@@ -533,23 +522,17 @@ function Snippet({
  * available. Either way browsing and typing use the same resolver.
  */
 function BrowseByTest({
-  lr,
-  rcPassages,
-  rcQuestions,
   bank,
   disabled,
   onPick,
-  onGo,
-  canGo,
+  tests,
+  selectedAddress,
 }: {
-  lr: { pt: number; section: number; qnum: number }[];
-  rcPassages: { preptest: number; section: number }[];
-  rcQuestions: { preptest: number; section: number; qnum: number }[];
   bank?: QuestionFinderBank;
   disabled: boolean;
   onPick: (query: string) => void;
-  onGo: () => void;
-  canGo: boolean;
+  tests: FinderAddressTest[];
+  selectedAddress: QuestionAddress | null;
 }) {
   const [pt, setPt] = React.useState("");
   const [section, setSection] = React.useState("");
@@ -559,53 +542,44 @@ function BrowseByTest({
      field below it said Q5. */
   const [qnum, setQnum] = React.useState("");
 
-  const pts = React.useMemo(() => {
-    const all = new Set<number>();
-    if (bank !== "rc") for (const question of lr) all.add(question.pt);
-    if (bank !== "lr") for (const passage of rcPassages) all.add(passage.preptest);
-    return [...all].sort((a, b) => b - a);
-  }, [bank, lr, rcPassages]);
+  const pts = tests.filter((test) => !bank || test.sections.some((entry) => bank === "rc" ? entry.rc.length > 0 : entry.lr.length > 0)).map((test) => test.pt).sort((a, b) => b - a);
 
   const sections = React.useMemo(() => {
     if (!pt) return [] as number[];
-    const target = Number(pt);
-    const all = new Set<number>();
-    if (bank !== "rc") {
-      for (const question of lr) if (question.pt === target) all.add(question.section);
-    }
-    if (bank !== "lr") {
-      for (const passage of rcPassages) if (passage.preptest === target) all.add(passage.section);
-    }
-    return [...all].sort((a, b) => a - b);
-  }, [bank, lr, pt, rcPassages]);
+    const entries = tests.find((test) => test.pt === Number(pt))?.sections ?? [];
+    return entries.filter((entry) => !bank || (bank === "rc" ? entry.rc.length > 0 : entry.lr.length > 0)).map((entry) => entry.section);
+  }, [bank, tests, pt]);
 
   const qnums = React.useMemo(() => {
     if (!pt || !section) return [] as number[];
-    const all = new Set<number>();
-    if (bank !== "rc") {
-      for (const question of lr) {
-        if (question.pt === Number(pt) && question.section === Number(section)) {
-          all.add(question.qnum);
-        }
-      }
-    }
-    if (bank !== "lr") {
-      for (const question of rcQuestions) {
-        if (question.preptest === Number(pt) && question.section === Number(section)) {
-          all.add(question.qnum);
-        }
-      }
-    }
-    return [...all].sort((a, b) => a - b);
-  }, [bank, lr, pt, rcQuestions, section]);
-
-  const pick = (nextPt: string, nextSection: string, nextQnum: string) => {
+    const entry = tests.find((test) => test.pt === Number(pt))?.sections.find((candidate) => candidate.section === Number(section));
+    return entry?.lr.length ? entry.lr : (entry?.rc ?? []).flatMap((passage) => passage.questions.map((question) => question.number));
+  }, [tests, pt, section]);
+  const pick = React.useCallback((nextPt: string, nextSection: string, nextQnum: string) => {
     if (!nextPt) return onPick("");
     let query = `PT${nextPt}`;
     if (nextSection) query += ` S${nextSection}`;
     if (nextSection && nextQnum) query += ` Q${nextQnum}`;
     onPick(query);
-  };
+  }, [onPick]);
+  React.useEffect(() => {
+    if (bank === "rc" && sections.length === 1 && !section) {
+      setSection(String(sections[0]));
+      pick(pt, String(sections[0]), "");
+    }
+  }, [bank, sections, section, pt, pick]);
+  React.useEffect(() => {
+    setPt("");
+    setSection("");
+    setQnum("");
+  }, [bank]);
+  React.useEffect(() => {
+    if (!selectedAddress) return;
+    setPt(String(selectedAddress.pt));
+    setSection(selectedAddress.section ? String(selectedAddress.section) : "");
+    setQnum(selectedAddress.qnum ? String(selectedAddress.qnum) : "");
+  }, [selectedAddress]);
+  const rcGroups = tests.find((test) => test.pt === Number(pt))?.sections.find((entry) => entry.section === Number(section))?.rc ?? [];
 
   return (
     <div className="qf-browse">
@@ -654,28 +628,33 @@ function BrowseByTest({
 
       <label className="qf-field">
         <span className="qf-field-label">Question</span>
-        <select
-          className="qf-select"
+        <Select
           value={qnum}
           disabled={disabled || !section || qnums.length === 0}
-          onChange={(event) => {
-            setQnum(event.target.value);
-            pick(pt, section, event.target.value);
-          }}
+          onValueChange={(value) => { setQnum(value); pick(pt, section, value); }}
         >
-          <option value="">
-            {!section
-              ? "Pick a section"
-              : qnums.length === 0
-                ? "Passages only"
-                : "Question"}
-          </option>
-          {qnums.map((value) => (
-            <option key={value} value={value}>
-              Question {value}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="qf-select-radix" aria-label="Question">
+            <SelectValue placeholder={!section ? "Pick a section" : qnums.length === 0 ? "No questions" : "Question"} />
+          </SelectTrigger>
+          <SelectContent className="qf-question-menu" position="popper" side="bottom" align="start">
+            {rcGroups.length ? rcGroups.map((passage, index) => {
+              const numbers = passage.questions.map((question) => question.number);
+              const range = numbers.length ? `Questions ${numbers[0]}–${numbers[numbers.length - 1]}` : "No questions";
+              return <React.Fragment key={passage.id}>
+                {index > 0 && <SelectSeparator className="qf-passage-separator" />}
+                <SelectGroup>
+                  <SelectLabel className="qf-passage-label">
+                    <span>Passage {passage.position} · {range}</span>
+                    {passage.title && <span className="qf-passage-title">{passage.title}</span>}
+                  </SelectLabel>
+                  {passage.questions.map((question) => <SelectItem key={question.id} value={String(question.number)} aria-label={`PT ${pt} Section ${section} Question ${question.number}, Passage ${passage.position}${passage.title ? `, ${passage.title}` : ""}`}>
+                    Question {question.number}
+                  </SelectItem>)}
+                </SelectGroup>
+              </React.Fragment>;
+            }) : qnums.map((value) => <SelectItem key={value} value={String(value)} aria-label={`PT ${pt} Section ${section} Question ${value}`}>Question {value}</SelectItem>)}
+          </SelectContent>
+        </Select>
       </label>
 
       <button
@@ -685,7 +664,7 @@ function BrowseByTest({
         aria-label="Open question unavailable until preview is ready"
         title="Question preview will be available in the next step."
       >
-        Open question
+        Open question (not available yet)
       </button>
     </div>
   );
