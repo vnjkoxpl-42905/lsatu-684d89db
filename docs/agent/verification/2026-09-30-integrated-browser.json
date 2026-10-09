@@ -1,0 +1,98 @@
+{
+  "date": "2026-09-30",
+  "environment": "local Vite frontend with managed backend and designated tester/admin accounts",
+  "frontendPublished": true,
+  "backendManualSectionsEnabled": true,
+  "backendManifest": "c27b478f2d50f8353a98d4a1a905d2f94f87929ba2ea2179230d4f7a3d51c25c",
+  "leaseMs": 30000,
+  "fullPrepTestConfigurationPreserved": true,
+  "browser": "Codex In-app Browser, user-opened tab 6",
+  "networkBlocksCleared": true,
+  "viewportOverrideReset": true,
+  "evidenceDirectory": "C:/Users/Joshu/dev/ai-os/research/2026-09-30-lsatu-foundation-evidence",
+  "cssWidthsChecked": [
+    390,
+    820,
+    1060,
+    1280,
+    1600
+  ],
+  "actualSidePane": {
+    "cssWidth": 804,
+    "documentScrollWidth": 789,
+    "protectedPrepTestReviewReadOnly": true
+  },
+  "focusedTestRun": {
+    "files": 39,
+    "tests": 319,
+    "passed": true
+  },
+  "additionalDisjointFocusedChecks": {
+    "files": 4,
+    "tests": 20,
+    "passed": true
+  },
+  "checks": [
+    "Hard Sentences exact saved capstone answer and return-filter link",
+    "Native Conclusion Type failed response save retains answer and withholds feedback; retry acknowledges one exact row",
+    "Native Conclusion Type complete 12-question sitting; failed module completion withholds report; retry confirms account completion",
+    "Main Conclusion and First-Sentence/Rebuttal native runners viewed across exact CSS width matrix",
+    "Rail preference failure retains prior order; acknowledged changes and original order restored",
+    "Teacher Work identity failure disclosure and retry clears unavailable identity state",
+    "Review reflection request blocked by exact append_review_event_v1 route; text retained, controls blocked, exact retry acknowledged",
+    "Completed teacher-selected native episode leaves active queue and retains original saved source",
+    "Teacher Hard Sentences selection failure retains reason; retry acknowledges teacher actor and student subject",
+    "Student teacher-selected queue opens exact Hard Sentences episode with teacher reason",
+    "LR explicit preparation leaves clock unstarted; start acknowledged; blocked checkpoint hides questions; retry advances to exact saved question",
+    "LR paused reload retains 34:12 and exact question; closeout opens acknowledged history report with 1 answered of 25",
+    "RC explicit preparation leaves clock unstarted; blocked checkpoint hides questions; retry advances; paused reload retains 34:03",
+    "RC atomic closeout includes 26 unanswered and one correct answer; protected review disables original answer and flag mutations",
+    "Progress access temporarily disabled only on designated tester; destination and locked tabs remain visible, content denied; original true access restored",
+    "Legacy /testing/exams query and fragment preserved at /practice/exams/all",
+    "Completed PrepTest RC review disables original answers, flags and elimination; actual side pane has no horizontal overflow",
+    "RC report shows account section elapsed time 1:07 separately from recorded question-time average",
+    "RC Practice history renders protected rows and explicitly discloses missing historical feedback timing",
+    "Student first-answer History labels new standalone RC as timed section and full PrepTest RC separately",
+    "Selected-student teacher Progress matches owned source counts; blocked canonical identity lookup shows unavailable state instead of zeros",
+    "Teacher Review identity failure prevents saved-source and teacher-selection reads; clearing blocks restores exact saved reasons",
+    "Clean native Conclusion Type report after 12 acknowledged answers says no missed types instead of inventing a weakest type",
+    "Manual LR launch from Practice Exams reaches Prepare section without starting a clock or creating a sitting",
+    "History exact completion gates protect timed LR/RC and full PrepTest outcomes; unanswered RC rows do not count as answers",
+    "Supported native History responses show readable answers and group authored questions across repeated runs",
+    "History responsive width matrix has no horizontal overflow; failed section read is disclosed with an alert rather than an empty list"
+  ],
+  "fixtures": {
+    "nativeWrongAttempt": "d5fd27c6-dec0-47ca-b7fd-32ba008c854e",
+    "nativeCompletedRun": "03a58358-a8a4-4868-90c7-656674f122f1",
+    "nativeInterruptedRunRetained": "44354b91-e8b5-438d-98d0-ddd6aef48730",
+    "lrSitting": "3a5b042c-2e72-464f-b4dd-435e26a67e70",
+    "lrHistory": "15c3b668-7fa3-40d9-8814-beb9c987d132",
+    "rcSitting": "bd764d21-7e54-4fb2-a1e8-e182326d8e4d",
+    "rcSession": "06324cd6-76fe-46de-9689-f4644e7cb124",
+    "teacherCapstoneEpisode": "a15c6f48-35ac-489a-ba91-1a417815bb38"
+  },
+  "limitations": [
+    "Fresh production routes confirm published integrated behavior; browser failure walks were local with the managed backend, not repeated live network outages.",
+    "Physical second-device and committed-but-lost TCP response not induced",
+    "Canonical coverage is 177 reviewed sections; absent, assigned, custom and legacy sources retain separate boundaries",
+    "Review episode workflow is bounded to saved native and Hard Sentences misses; new answer/reveal does not reconstruct historical Blind Review",
+    "Native interrupted run retained without claiming automatic runner resume",
+    "Genuine AI-graded Activity completion requires immediate Lovable-credit confirmation",
+    "All fourteen functional tickets and deferred design ticket remain open"
+  ],
+  "publishedCommit": "a7d416a0fbbf0cb3ae6d747944f2e19d207609d8",
+  "publication": {
+    "deploymentId": "9b5745b6-c340-4b63-8d37-d68eb6c2cb12",
+    "toolResponse": "pending",
+    "freshProductionRoutesVerified": [
+      "/progress/history",
+      "/testing/sections/3a5b042c-2e72-464f-b4dd-435e26a67e70",
+      "/rc/results/06324cd6-76fe-46de-9689-f4644e7cb124",
+      "/review/to-review?reason=teacher_selected",
+      "/review/hard-sentences/capstone/4efc300a-dd57-489d-a5fd-9a0f353a19f1?episode=a15c6f48-35ac-489a-ba91-1a417815bb38",
+      "/teacher/students/d763bfe6-d710-4c4b-90ff-4b3a20929211/review"
+    ],
+    "newPublishedBehaviorObserved": true,
+    "creditSpend": false
+  }
+}

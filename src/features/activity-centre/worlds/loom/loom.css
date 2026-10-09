@@ -1,0 +1,439 @@
+/*
+ * The Loom: Spot the Callback's world.
+ *
+ * An indigo dye-house strung with saffron thread. The room is dyed deep blue;
+ * warp threads hang the full height of it behind two sheets of undyed linen,
+ * and the callback is a thrown thread of saffron light arcing from the phrase
+ * up to the place it lands. The passage becomes a fabric, which is the drill's
+ * whole thesis: nothing in a passage hangs loose.
+ *
+ * SVG and CSS depth only: the sheets are a translate and a shadow, the threads
+ * are SVG arcs, the warp is paint.
+ */
+
+.loom {
+  --lo-room: 236 40% 12%;
+  --lo-room-deep: 238 50% 7%;
+  --lo-paper: 43 40% 89%;
+  --lo-paper-edge: 40 26% 74%;
+  --lo-ink: 236 26% 14%;
+  --lo-ink-dim: 236 14% 40%;
+  --lo-thread: 42 88% 60%;
+  --lo-slack: 232 14% 58%;
+
+  position: relative;
+  color: hsl(var(--lo-paper));
+  background: hsl(var(--lo-room-deep));
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.loom > :not(.lo-room) {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- The dye-house ---------- */
+
+.lo-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* The warp: floor-to-ceiling threads behind everything, swaying a breath. */
+.lo-warp {
+  position: absolute;
+  inset: -4% 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 46px,
+      hsl(var(--lo-thread) / 0.22) 46px 47px,
+      transparent 47px 118px,
+      hsl(224 45% 60% / 0.24) 118px 119px,
+      transparent 119px 194px,
+      hsl(var(--lo-thread) / 0.14) 194px 195px
+    );
+  animation: lo-warp-sway 14s ease-in-out infinite alternate;
+}
+
+@keyframes lo-warp-sway {
+  from {
+    transform: translateX(-3px) skewX(-0.3deg);
+  }
+  to {
+    transform: translateX(3px) skewX(0.3deg);
+  }
+}
+
+/* The indigo vat: a deep blue glow pooling at the floor. */
+.lo-vat {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -8%;
+  height: 44%;
+  background:
+    radial-gradient(60% 70% at 50% 100%, hsl(224 70% 34% / 0.4), transparent 72%),
+    radial-gradient(40% 50% at 24% 100%, hsl(200 65% 40% / 0.16), transparent 70%);
+  filter: blur(10px);
+}
+
+/* Skeins of saffron hanging high in the corners. */
+.lo-skeins {
+  position: absolute;
+  inset: 0 0 60% 0;
+  background:
+    radial-gradient(26px 60px at 7% 12%, hsl(var(--lo-thread) / 0.3), transparent 70%),
+    radial-gradient(20px 48px at 12% 6%, hsl(var(--lo-thread) / 0.22), transparent 70%),
+    radial-gradient(24px 56px at 94% 10%, hsl(var(--lo-thread) / 0.24), transparent 70%);
+  filter: blur(4px);
+}
+
+/* The lamplight over the sheets. */
+.lo-lamplight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(72% 56% at 50% 4%, hsl(var(--lo-paper) / 0.1), transparent 70%);
+}
+
+.lo-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    118% 95% at 50% 36%,
+    transparent 46%,
+    hsl(var(--lo-room-deep) / 0.7) 84%,
+    hsl(var(--lo-room-deep)) 100%
+  );
+}
+
+/* ---------- Type ---------- */
+
+.loom-mono {
+  font-family: var(
+    --ac-mono,
+    "JetBrains Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* The weaver's hand: a humanist face with a calligraphic root. */
+.loom-display {
+  font-family: "Alegreya", var(--ac-serif, Georgia, serif);
+  font-weight: 500;
+}
+
+/* ---------- The sheets ---------- */
+
+.lo-sheet {
+  position: relative;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 3px,
+      hsl(var(--lo-paper-edge) / 0.13) 3px 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 3px,
+      hsl(var(--lo-paper-edge) / 0.09) 3px 4px
+    ),
+    hsl(var(--lo-paper));
+  color: hsl(var(--lo-ink));
+  font-family: "Alegreya", var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  /* Linen: a lit top edge and the shadow it throws into the dye-house. */
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.6),
+    0 18px 36px hsl(var(--lo-room-deep) / 0.9);
+  transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The selvage: a woven band along the sheet's top edge. */
+.lo-sheet::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    hsl(224 45% 40% / 0.55) 0 6px,
+    hsl(var(--lo-thread) / 0.5) 6px 9px,
+    hsl(224 45% 40% / 0.55) 9px 15px
+  );
+  pointer-events: none;
+}
+
+/* The source sheet lifts when the call goes out: an invitation to look up,
+   which is the eye movement this drill exists to train. */
+.lo-sheet[data-lifted="true"] {
+  transform: translateY(-8px);
+}
+
+/* Ambient sway, 1px over 8s. Off under reduced motion, per the spec. */
+@keyframes lo-sway {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(1px);
+  }
+}
+
+.lo-sheet[data-sway="true"] {
+  animation: lo-sway 8s ease-in-out infinite;
+}
+
+/* ---------- The marked phrase ---------- */
+
+/* The bracket of light around the phrase being called. */
+.lo-bracket {
+  position: relative;
+  padding: 0 4px;
+  box-shadow:
+    inset 2px 0 0 hsl(var(--lo-thread)),
+    inset -2px 0 0 hsl(var(--lo-thread));
+  background: hsl(var(--lo-thread) / 0.16);
+}
+
+@keyframes lo-pulse {
+  0%,
+  100% {
+    background-color: hsl(var(--lo-thread) / 0.16);
+  }
+  50% {
+    background-color: hsl(var(--lo-thread) / 0.38);
+  }
+}
+
+.lo-bracket[data-calling="true"] {
+  animation: lo-pulse 900ms ease-in-out 1;
+}
+
+/* A phrase already solved keeps a faint permanent underline. */
+.lo-solved {
+  border-bottom: 1px solid hsl(var(--lo-ink) / 0.35);
+}
+
+/* The span a thread landed on, matched to its phrase. */
+.lo-landed {
+  background: hsl(var(--lo-thread) / 0.24);
+  box-shadow: inset 0 -1px 0 hsl(var(--lo-thread));
+}
+
+/* ---------- The threads ---------- */
+
+.lo-thread {
+  fill: none;
+  stroke: hsl(var(--lo-thread));
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px hsl(var(--lo-thread) / 0.6));
+}
+
+/* The throw: 600ms, drawn from the phrase up to the landing. */
+.lo-thread[data-state="throwing"] {
+  animation: lo-throw 600ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes lo-throw {
+  from {
+    stroke-dashoffset: var(--lo-len, 400);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Woven: it stays for the rest of the run, dimmed into the fabric. */
+.lo-thread[data-state="woven"] {
+  opacity: 0.3;
+  filter: none;
+}
+
+/* Taut: it landed, but it carries no light until the student says what the
+   idea IS. The world's version of "point at it AND say it". */
+.lo-thread[data-state="taut"] {
+  stroke: hsl(var(--lo-slack));
+  stroke-dasharray: 2 3;
+  filter: none;
+}
+
+/* Slack: it hangs a beat, then falls. */
+.lo-thread[data-state="slack"] {
+  stroke: hsl(var(--lo-slack));
+  filter: none;
+  animation: lo-fall 400ms ease-in 400ms both;
+}
+
+@keyframes lo-fall {
+  from {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}
+
+/* ---------- The spools ---------- */
+
+.lo-spool {
+  border: 1px solid hsl(var(--lo-paper) / 0.3);
+  color: hsl(var(--lo-paper) / 0.65);
+}
+
+.lo-spool[data-state="thread"] {
+  border-color: hsl(var(--lo-thread));
+  color: hsl(var(--lo-thread));
+  box-shadow: 0 0 8px hsl(var(--lo-thread) / 0.25);
+}
+
+.lo-spool[data-state="taut"] {
+  border-style: dashed;
+  border-color: hsl(var(--lo-paper) / 0.6);
+  color: hsl(var(--lo-paper));
+}
+
+.lo-spool[data-current="true"] {
+  box-shadow: inset 0 -2px 0 hsl(var(--lo-thread) / 0.8);
+}
+
+/* ---------- Margin decodes ---------- */
+
+/* Vocabulary decodes pinned beside the phrase, kept for the run so they
+   compound into a small glossary of the passage. */
+.lo-decode {
+  box-shadow: inset 2px 0 0 hsl(var(--lo-thread) / 0.6);
+  padding-left: 10px;
+  color: hsl(var(--lo-paper) / 0.75);
+}
+
+/* ---------- Controls (shared by the wings) ---------- */
+
+.lo-button {
+  border: 1px solid hsl(var(--lo-paper) / 0.3);
+  background: hsl(var(--lo-room));
+  color: hsl(var(--lo-paper));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.lo-button:hover:not(:disabled) {
+  border-color: hsl(var(--lo-thread) / 0.7);
+  box-shadow: 0 0 12px hsl(var(--lo-thread) / 0.18);
+}
+
+.lo-button:disabled {
+  opacity: 0.55;
+}
+
+.lo-button[data-picked="true"] {
+  background: hsl(var(--lo-room-deep));
+  opacity: 1;
+}
+
+.lo-button[data-truth="true"] {
+  border-color: hsl(var(--lo-thread));
+  box-shadow: inset 2px 0 0 hsl(var(--lo-thread));
+  opacity: 1;
+}
+
+.lo-input {
+  border: 1px solid hsl(var(--lo-paper) / 0.3);
+  background: hsl(var(--lo-room));
+  color: hsl(var(--lo-paper));
+  max-width: 34rem;
+}
+
+.lo-input::placeholder {
+  color: hsl(var(--lo-paper) / 0.4);
+}
+
+/* ---------- Entrance ---------- */
+
+@keyframes lo-unroll {
+  from {
+    opacity: 0;
+    transform: scaleY(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.lo-entrance-sheet {
+  transform-origin: top center;
+  animation: lo-unroll 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes lo-warp-rise {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.loom[data-testid="loom-entrance"] .lo-warp {
+  animation:
+    lo-warp-rise 700ms ease both,
+    lo-warp-sway 14s ease-in-out 700ms infinite alternate;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .loom *,
+  .loom *::before,
+  .loom *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
+  /* Threads appear instantly, no throw, no sway, per the spec. */
+  .lo-thread[data-state="throwing"] {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .lo-sheet[data-sway="true"],
+  .lo-warp {
+    animation: none !important;
+  }
+
+  /* A fall shortened to nothing would blink; the slack thread just stays faint. */
+  .lo-thread[data-state="slack"] {
+    animation: none !important;
+    opacity: 0.4;
+  }
+
+  .lo-bracket[data-calling="true"] {
+    animation: none !important;
+  }
+
+  .lo-entrance-sheet {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
