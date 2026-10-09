@@ -60,13 +60,17 @@ function load(): Promise<FinderAddressIndex> {
   return cached;
 }
 
-export function useFinderAddressIndex() {
+export function useFinderAddressIndex(enabled = true) {
   const [tests, setTests] = React.useState<FinderAddressTest[]>([]);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(enabled);
   const [failed, setFailed] = React.useState(false);
+  const [attempt, setAttempt] = React.useState(0);
 
   React.useEffect(() => {
+    if (!enabled) return;
     let cancelled = false;
+    setLoading(true);
+    setFailed(false);
     load()
       .then((index) => {
         if (cancelled) return;
@@ -81,7 +85,7 @@ export function useFinderAddressIndex() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [enabled, attempt]);
 
-  return { tests, loading, failed };
+  return { tests, loading, failed, retry: () => setAttempt((value) => value + 1) };
 }

@@ -13,14 +13,13 @@ import {
 } from "lucide-react";
 import {
   formatQuestionAddress,
-  lrHitHref,
-  rcHitHref,
   runFinderSearch,
   type FinderHit,
   type FinderSnippet,
   type QuestionFinderBank,
 } from "./questionFinderSearch";
 import { useQuestionFinderBanks } from "./useQuestionFinderBanks";
+import { useFinderAddressIndex } from "./useFinderAddressIndex";
 import "./questionFinder.css";
 
 const PER_BANK_LIMIT = 6;
@@ -44,6 +43,7 @@ export interface QuestionFinderProps {
   tone?: "light" | "dark";
   /** Restricts results to the active side of the LR/RC hub switch. */
   bank?: QuestionFinderBank;
+  triggerLabel?: string;
 }
 
 /**
@@ -62,7 +62,7 @@ export interface QuestionFinderHandle {
   open: () => void;
 }
 
-const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProps>(function QuestionFinder({ returnTo, tone = "light", bank }, ref) {
+const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProps>(function QuestionFinder({ returnTo, tone = "light", bank, triggerLabel = "Find a question" }, ref) {
   const [open, setOpen] = React.useState(false);
   React.useImperativeHandle(ref, () => ({ open: () => setOpen(true) }), []);
 
@@ -109,7 +109,7 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
         aria-expanded={open}
-        aria-label="Find a question"
+        aria-label={triggerLabel}
         /* The shortcuts are declared, not drawn. Joshua removed the visible
            badge on 2026-09-08; assistive tech and a hover tooltip can still
            carry them. */
@@ -118,7 +118,7 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
       >
         <Search className="qf-trigger-icon" size={15} strokeWidth={1.9} aria-hidden />
         <span className="qf-trigger-label" aria-hidden>
-          Find a question
+          {triggerLabel}
         </span>
       </button>
 
@@ -154,6 +154,7 @@ function FinderPanel({
 
   // Mounting the panel IS the request for the banks; nothing loads before it.
   const banks = useQuestionFinderBanks(true);
+  const addressIndex = useFinderAddressIndex(true);
 
   const results = React.useMemo(
     () =>
@@ -188,13 +189,9 @@ function FinderPanel({
     };
   }, []);
 
-  const openHit = React.useCallback(
-    (hit: FinderHit) => {
-      navigate(hit.bank === "lr" ? lrHitHref(hit, returnTo) : rcHitHref(hit));
-      onClose();
-    },
-    [navigate, onClose, returnTo],
-  );
+  const openHit = React.useCallback((hit: FinderHit) => {
+    setQuery(hit.bank === "lr" ? `PT${hit.pt} S${hit.section} Q${hit.qnum}` : `PT${hit.preptest} S${hit.section}${hit.qnum ? ` Q${hit.qnum}` : ""}`);
+  }, []);
 
   /* The go arrow is the selectors' Enter. It opens the best hit for whatever
      address is currently built, so picking a test and pressing it lands on that
@@ -315,11 +312,13 @@ function FinderPanel({
               rcPassages={banks.rcPassages}
               rcQuestions={banks.rcQuestions}
               bank={view === "all" ? undefined : view}
-              disabled={banks.loading}
+      disabled={addressIndex.loading || addressIndex.failed}
               onPick={setQuery}
               onGo={openTop}
-              canGo={canGo}
+      canGo={canGo}
+      tests={addressIndex.tests}
             />
+            {addressIndex.failed && <p className="qf-warn" role="alert">Question addresses could not be loaded. <button type="button" onClick={addressIndex.retry}>Retry</button></p>}
 
           <div className="qf-inputrow">
             <Search className="qf-inputrow-icon" size={18} strokeWidth={1.9} aria-hidden />
@@ -366,7 +365,7 @@ function FinderPanel({
               </p>
             )}
 
-            {!banks.loading && banks.error && <p className="qf-state">{banks.error}</p>}
+            {!banks.loading && banks.error && <p className="qf-state" role="alert">{banks.error} <button type="button" onClick={banks.retry}>Retry</button></p>}
 
             {!banks.loading && !banks.error && !hasQuery && (
               <div className="qf-hint">
@@ -457,10 +456,10 @@ function FinderPanel({
             {/* One bank down is a real result set minus half. Say which half is
                 missing rather than quietly returning less. */}
             {!banks.loading && !banks.error && banks.lrFailed && (
-              <p className="qf-warn">Logical Reasoning questions could not be loaded.</p>
+              <p className="qf-warn" role="alert">Logical Reasoning questions could not be loaded. <button type="button" onClick={banks.retry}>Retry</button></p>
             )}
             {!banks.loading && !banks.error && banks.rcFailed && (
-              <p className="qf-warn">Reading Comprehension passages could not be loaded.</p>
+              <p className="qf-warn" role="alert">Reading Comprehension passages could not be loaded. <button type="button" onClick={banks.retry}>Retry</button></p>
             )}
           </div>
 
@@ -682,11 +681,11 @@ function BrowseByTest({
       <button
         type="button"
         className="qf-go"
-        onClick={onGo}
-        disabled={!canGo}
-        aria-label="Open the selected question"
+        disabled
+        aria-label="Open question unavailable until preview is ready"
+        title="Question preview will be available in the next step."
       >
-        <ArrowRight size={17} strokeWidth={2.2} aria-hidden />
+        Open question
       </button>
     </div>
   );

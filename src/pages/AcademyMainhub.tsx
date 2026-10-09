@@ -22,7 +22,6 @@ import { Card } from "@/components/ui/card";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import QuestionJump from "@/components/questionfinder/QuestionJump";
-import QuestionFinder from "@/components/questionfinder/QuestionFinder";
 import { SectionToggle } from "@/components/drill/SectionToggle";
 import { RcHubSurface } from "@/features/rc/components/RcHubSurface";
 import {
@@ -456,7 +455,6 @@ export default function AcademyMainhub({
               read as a stack of two unrelated controls. Side by side they read
               as what they are: the two utilities of this band. */}
           <div className="drill-observatory-tools-aside">
-            <QuestionFinder returnTo={drillReturnTo} tone="dark" bank={section} />
             <SectionToggle section={section} onChange={changeSection} />
           </div>
         </div>}

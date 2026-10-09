@@ -20,6 +20,7 @@ export interface FinderBanksState extends FinderBanks {
   /** Named so a partial outage can be said out loud rather than silently halving results. */
   lrFailed: boolean;
   rcFailed: boolean;
+  retry: () => void;
 }
 
 const EMPTY: FinderBanks = { lr: [], rcPassages: [], rcQuestions: [] };
@@ -40,6 +41,7 @@ export function useQuestionFinderBanks(enabled: boolean): FinderBanksState {
   const [loading, setLoading] = React.useState(false);
   const [lrFailed, setLrFailed] = React.useState(false);
   const [rcFailed, setRcFailed] = React.useState(false);
+  const [attempt, setAttempt] = React.useState(0);
 
   React.useEffect(() => {
     if (!enabled) return;
@@ -53,6 +55,8 @@ export function useQuestionFinderBanks(enabled: boolean): FinderBanksState {
        theirs — so simply re-running the effect costs a map, not a fetch. */
     let cancelled = false;
     setLoading(true);
+    setLrFailed(false);
+    setRcFailed(false);
 
     const lrLoad = (async (): Promise<FinderLrSource[]> => {
       if (!questionBank.isReady()) await questionBank.load();
@@ -121,7 +125,7 @@ export function useQuestionFinderBanks(enabled: boolean): FinderBanksState {
     return () => {
       cancelled = true;
     };
-  }, [enabled]);
+  }, [enabled, attempt]);
 
   return {
     ...banks,
@@ -129,5 +133,6 @@ export function useQuestionFinderBanks(enabled: boolean): FinderBanksState {
     lrFailed,
     rcFailed,
     error: lrFailed && rcFailed ? "Questions could not be loaded." : null,
+    retry: () => setAttempt((value) => value + 1),
   };
 }
