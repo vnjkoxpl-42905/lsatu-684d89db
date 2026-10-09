@@ -56,6 +56,12 @@ describe('read-only RC question lookup', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('account changed');
     expect(mocks.navigate).not.toHaveBeenCalled();
     expect(sessionStorage.getItem('lsatu:rc-preview-launch:v1:actor')).toContain(id);
+    mocks.create.mockImplementationOnce(async (_config, _ids, request) => ({ ...session(request.id), userId: request.actorId }));
+    fireEvent.click(screen.getByRole('button', { name: 'Start passage drill' }));
+    await waitFor(() => expect(mocks.navigate).toHaveBeenCalled());
+    expect(mocks.create.mock.calls[1][2].actorId).toBe('other-actor');
+    expect(mocks.create.mock.calls[1][2].id).not.toBe(id);
+    expect(sessionStorage.getItem('lsatu:rc-preview-launch:v1:actor')).toContain(id);
   });
   it('retains the original launch without navigating when the preview address changes during lookup', async () => {
     let resolve!: (value: null) => void;

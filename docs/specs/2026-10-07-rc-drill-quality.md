@@ -119,6 +119,8 @@ Every pending answer, flag, annotation and clock command captures actor and subj
 
 ## Acceptance checks that define completion
 
+Current integrated repair evidence is tracked separately in [the release acceptance ledger](2026-10-09-rc-release-evidence.md). Earlier checkpoints below remain historical evidence and do not certify the current working tree or production.
+
 | Gate | Required checks |
 |---|---|
 | Content authority | Same official addresses render identical prompt/choice order and correct credit against verified authority. Include PT159S2Q2 regression. Provenance and correction affected-scope report exist; no guessed keys. |
@@ -167,3 +169,8 @@ Scope: signed-in production LSAT U Practice RC question-jump row compared with L
 4. Verify the same address in the embedded entry and shared finder; keyboard selection, Escape and focus return; desktop, narrow and docked widths;200% text resize; no obscured submit action or horizontal overflow. Repeat the reported screenshot condition before declaring clipping fixed.
 
 Local browser evidence: `C:/Users/Joshu/.codex/visualizations/2026/10/07/01a11839-ea0a-74f3-8979-f6bda1202b18/rc-selection-lsatu-2026-10-08.png` and `rc-selection-lsatlab-2026-10-08.png` in the same directory. These are machine-local evidence, not portable repository assets. Source-confirmed launch behavior was deliberately not exercised against the live account. No audit finding above is marked fixed.
+# Implemented persistence contract (2026-10-09)
+
+Annotation editing is gated until the signed-in actor's passage marks have loaded successfully. A failed read leaves marks disabled and exposes Retry; answer selection remains available. Pending marks are stored by actor and passage, and flags by actor, session and question. Each pending intent has a unique token. Saves are serialized across hook remounts, and an acknowledgement clears only its exact token, never a newer repeated value. Saved means the returned owner and content match the request. Failed saves retain intent and expose a deliberate retry.
+
+Question lookup uses a dedicated read-only route. Opening, reloading and closing it does not create a drill or mount answer, annotation, timer or preference writers. Starting is a separate disclosed action for the whole passage. Its stable request UUID survives a lost response; actor and preview context are checked before navigation. Official question positions are distinct from drill ordinals throughout the reader and overview.

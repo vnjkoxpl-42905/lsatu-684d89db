@@ -33,7 +33,7 @@ export default function RcQuestionPreview() {
   const busy = React.useRef(false);
   const mounted = React.useRef(true);
   const pending = React.useRef<Pending | null>(null);
-  React.useEffect(() => { pending.current = null; }, [user?.id, passageId, questionId]);
+  React.useEffect(() => { pending.current = null; }, [user?.id, passageId, questionId, back]);
   React.useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   React.useEffect(() => {
     let cancelled = false;

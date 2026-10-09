@@ -261,7 +261,7 @@ export default function OfficialDrillToolbar({
           )}
 
           {/* Right cluster: tools | Aa + line-spacing | timer */}
-          <div className="ml-0 flex w-full max-w-full items-center gap-1.5 overflow-x-auto sm:ml-auto sm:w-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="ml-0 flex w-full max-w-full flex-wrap items-center gap-1.5 sm:ml-auto sm:w-auto">
             {highlightToolsVisible && (
               <>
                 <div className="flex items-center gap-0.5">
@@ -358,13 +358,13 @@ export default function OfficialDrillToolbar({
             )}
 
             {timerLabelPrefix && (
-              <>
+              <div className="flex min-w-0 basis-full items-center sm:basis-auto">
                 <PipeSeparator />
-                <div className="pl-1 min-w-[168px]">
+                <div className="min-w-0 pl-1 sm:min-w-[168px]">
                   <div
                     role="timer"
                     className={cn(
-                      "text-[14px] font-semibold tabular-nums whitespace-nowrap",
+                      "text-[14px] font-semibold tabular-nums whitespace-normal",
                       timerOverBudget ? "text-red-700" : "text-slate-900",
                     )}
                   >
@@ -386,7 +386,7 @@ export default function OfficialDrillToolbar({
                     </div>
                   )}
                 </div>
-              </>
+              </div>
             )}
 
             {notesButtonVisible && onToggleNotes && (

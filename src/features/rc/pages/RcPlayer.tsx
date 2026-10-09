@@ -1053,7 +1053,7 @@ function RcPlayerRunner() {
 
   return (
     <>
-      {protectedReview && <p role="status" className="border-b bg-muted px-4 py-3 text-sm">This protected section keeps its saved answers and flags unchanged. Review is read-only. Use Drill your misses from the report for a new attempt.</p>}
+      {protectedReview && <p role="status" className="border-b bg-muted px-4 py-3 text-sm">This protected section keeps its saved answers and flags unchanged. Personal highlights and reading preferences are separate from the original attempt. Use Drill your misses from the report for a new attempt.</p>}
       <div className="flex flex-wrap gap-3 border-b bg-white px-4 py-2 text-sm text-slate-900">
         {highlights.loadError ? <span role="alert">Passage marks could not be loaded. Editing is unavailable. <button type="button" onClick={highlights.retryLoad}>Retry loading marks</button></span> : !highlights.loaded ? <span role="status">Loading passage marks…</span> : (() => {
           const status = highlights.statusForPassage(item.passage.passageId);

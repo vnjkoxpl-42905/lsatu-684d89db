@@ -6,7 +6,7 @@ function passage(passageId: number, preptest: number, section: number, setNumber
   return { passageId, preptest, section, setNumber, title: 'Passage title', topic: null, format: null, frameworks: [], difficulty: null, text: 'Passage',
     summaries: { standard: null, brief: null, anotherWay: null },
     questions: positions.map((position) => ({ questionId: passageId * 100 + position, position, questionType: null, questionTypeFamily: null, difficulty: null,
-      prompt: 'Question', correctAnswer: 'A', hasWrittenExplanation: false, explanationBlocks: [], totalResponses: null, features: [], choices: [] })) };
+      prompt: 'Question', correctAnswer: 'A' as const, hasWrittenExplanation: false, explanationBlocks: [], totalResponses: null, features: [], choices: [] })) };
 }
 
 describe('RC source identity in mixed drills', () => {

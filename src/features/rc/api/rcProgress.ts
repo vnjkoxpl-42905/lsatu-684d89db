@@ -341,7 +341,7 @@ async function writeAttemptFlag(
   if (expectedActorId && userId !== expectedActorId) throw new Error('The signed-in account changed.');
   const session = await getSession(sessionId, userId);
   if (!session || session.userId !== userId) throw new Error('This section is not available.');
-  if (session.config.practiceTestRunId || session.config.timedSectionSittingId) throw new Error('Flags in this protected source section cannot be changed.');
+  if ((session.config.practiceTestRunId || session.config.timedSectionSittingId) && session.status !== 'in_progress') throw new Error('Flags in this protected source section cannot be changed.');
   await assertActivePracticeTestSession(sessionId);
   if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
   const { data, error } = await rcDb

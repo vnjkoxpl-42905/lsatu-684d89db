@@ -8,12 +8,14 @@ const owner = '11111111-1111-4111-8111-111111111111';
 const sessionId = '22222222-2222-4222-8222-222222222222';
 const attemptId = '33333333-3333-4333-8333-333333333333';
 
-const { insert, update, clock, getUser, personalList, annotations, upsert } = vi.hoisted(() => ({
+const { insert, update, clock, getUser, personalList, annotations, upsert, deviceActive } = vi.hoisted(() => ({
   insert: vi.fn(), update: vi.fn(), getUser: vi.fn(), upsert: vi.fn(),
   annotations: { rows: [] as Record<string, unknown>[], filters: vi.fn(), error: null as { message: string } | null },
-  clock: { config: {} as Partial<RcDrillConfig> },
+  clock: { config: {} as Partial<RcDrillConfig>, status: 'in_progress' },
+  deviceActive: vi.fn(),
   personalList: { rows: [] as Record<string, unknown>[], filters: vi.fn() },
 }));
+vi.mock('@/lib/practiceTestStore', () => ({ isActivePracticeTestDevice: deviceActive }));
 
 vi.mock('./rcSupabase.types', () => ({
   RC_SESSIONS_TABLE: 'rc_drill_sessions',
@@ -44,7 +46,7 @@ vi.mock('./rcSupabase.types', () => ({
           }, error: null }) }),
           maybeSingle: async () => ({ data: {
             id: sessionId, user_id: owner, config: { ...clock.config }, passage_ids: [3],
-            status: 'in_progress', excluded_from_analytics: false,
+            status: clock.status, excluded_from_analytics: false,
             started_at: '2026-09-28T00:00:00Z', completed_at: null,
           }, error: null }),
         }),
@@ -61,6 +63,8 @@ beforeEach(() => {
   localStorage.clear();
   getUser.mockReset().mockResolvedValue({ data: { user: { id: owner } } });
   clock.config = { reveal: 'end_of_set', timing: { mode: 'per_passage_budget', secondsPerPassage: 100 }, source: 'manual' };
+  clock.status = 'in_progress';
+  deviceActive.mockReset().mockResolvedValue(true);
   insert.mockClear();
   personalList.filters.mockClear();
   personalList.rows = [];
@@ -245,7 +249,32 @@ it('rejects a flag save without an acknowledged row', async () => {
 
 it('preserves protected source flags', async () => {
   clock.config.timedSectionSittingId = 'protected';
+  clock.status = 'completed';
   await expect(setAttemptFlag(sessionId, 7, true, owner)).rejects.toThrow('protected source');
+  expect(update).not.toHaveBeenCalled();
+});
+
+it('allows active practice-test flags only on the authorized device', async () => {
+  clock.config.practiceTestRunId = 'active-run';
+  update.mockImplementationOnce((payload: { flagged: boolean }) => ({
+    eq() { return this; }, select: async () => ({ data: [{ id: attemptId, user_id: owner, flagged: payload.flagged }], error: null }),
+  }));
+  await expect(setAttemptFlag(sessionId, 7, true, owner)).resolves.toBeUndefined();
+  expect(deviceActive).toHaveBeenCalledWith(owner, 'active-run');
+  expect(update).toHaveBeenCalledWith({ flagged: true });
+});
+
+it('rejects active practice-test flags after device authorization is revoked', async () => {
+  clock.config.practiceTestRunId = 'active-run';
+  deviceActive.mockResolvedValue(false);
+  await expect(setAttemptFlag(sessionId, 7, true, owner)).rejects.toThrow('active on another device');
+  expect(update).not.toHaveBeenCalled();
+});
+
+it('rejects completed practice-test source flag changes before writing', async () => {
+  clock.config.practiceTestRunId = 'finished-run';
+  clock.status = 'completed';
+  await expect(setAttemptFlag(sessionId, 7, false, owner)).rejects.toThrow('protected source');
   expect(update).not.toHaveBeenCalled();
 });
 

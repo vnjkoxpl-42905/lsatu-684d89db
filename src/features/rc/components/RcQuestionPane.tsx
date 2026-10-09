@@ -170,7 +170,7 @@ export function RcQuestionPane({
 
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-1 items-start gap-2">
-          <span className="min-w-[20px] shrink-0 font-bold tabular-nums">{item.number}.</span>
+          <span className="min-w-[20px] shrink-0 font-bold tabular-nums">{question.position}.</span>
           {/* Unexplained questions carry no authored prompt. The number stands
               in rather than inventing a stem. The mouse-up sits on this div,
               not the row: the flag button beside it is not markable text.

@@ -3,6 +3,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-libra
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { RcAttempt, RcDrillSession, RcPassage } from '../lib/rcTypes';
+import type { RcPagerEntry } from '../lib/rcSession';
 
 const api = vi.hoisted(() => ({
   getSession: vi.fn(), getSessionAttempts: vi.fn(), recordAttempt: vi.fn(),
@@ -11,20 +12,24 @@ const api = vi.hoisted(() => ({
 }));
 vi.mock('../api/rcProgress', () => ({ ...api, createSession: vi.fn() }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'student-one' } }) }));
-vi.mock('../lib/rcBank', () => ({ loadPassages: async () => [passage], loadPassage: vi.fn() }));
+vi.mock('../lib/rcBank', () => ({ loadPassages: async () => loadedPassages, loadPassage: vi.fn() }));
 vi.mock('../hooks/useRcA11y', () => ({ RC_FONT_SIZES: [100], useRcA11y: () => ({ settings: {}, fontScale: 1, update: vi.fn() }) }));
-vi.mock('../hooks/useRcHighlights', () => ({ useRcHighlights: () => ({ forPassage: () => [] }) }));
+vi.mock('../hooks/useRcHighlights', () => ({ useRcHighlights: () => ({ forPassage: () => [], loaded: true, loadError: null, statusForPassage: () => 'idle' }) }));
 vi.mock('@/components/drill/official/OfficialDrillFrame', () => ({
   default: ({ children, header, maxWidthClassName }: { children: ReactNode; header: ReactNode; maxWidthClassName?: string }) => <div data-testid="player-frame" data-width={maxWidthClassName}>{header}{children}</div>,
 }));
 vi.mock('@/components/drill/official/OfficialSessionStrip', () => ({
-  default: ({ onComplete }: { onComplete?: () => void }) => onComplete ? <button onClick={onComplete}>Complete Drill</button> : null,
+  default: ({ onComplete, breadcrumbs, onTogglePause, isPaused }: { onComplete?: () => void; breadcrumbs: { label: string }[]; onTogglePause?: () => void; isPaused: boolean }) => <div>
+    <p data-testid="source-breadcrumb">{breadcrumbs.map((entry) => entry.label).join(' / ')}</p>
+    {onComplete && <button onClick={onComplete}>Complete Drill</button>}
+    {onTogglePause && <button onClick={onTogglePause}>{isPaused ? 'Resume Drill' : 'Pause Drill'}</button>}
+  </div>,
 }));
 vi.mock('@/components/drill/official/OfficialDrillToolbar', () => ({
   default: ({ timerLabel, leftTools }: { timerLabel: string; leftTools: ReactNode }) => <div>{leftTools}<output data-testid="clock">{timerLabel}</output></div>,
 }));
 vi.mock('@/components/drill/official/OfficialSmartDrillBar', () => ({
-  default: ({ pager, onOpenMenu, menuLabel, onEnd, endLabel }: { pager: ReactNode; onOpenMenu: () => void; menuLabel: string; onEnd: () => void; endLabel: string }) => <div>{pager}<button onClick={onOpenMenu}>{menuLabel}</button><button onClick={onEnd}>{endLabel}</button></div>,
+  default: ({ pager, onOpenMenu, menuLabel, onEnd, endLabel, primaryVisible, primaryLabel, primaryDisabled, onSubmit }: { pager: ReactNode; onOpenMenu: () => void; menuLabel: string; onEnd: () => void; endLabel: string; primaryVisible: boolean; primaryLabel: string; primaryDisabled: boolean; onSubmit: () => void }) => <div>{pager}<button onClick={onOpenMenu}>{menuLabel}</button><button onClick={onEnd}>{endLabel}</button>{primaryVisible && <button disabled={primaryDisabled} onClick={onSubmit}>{primaryLabel}</button>}</div>,
 }));
 vi.mock('../components/RcExamPane', () => ({
   rcTypeStyles: () => ({}),
@@ -42,7 +47,8 @@ vi.mock('../components/RcQuestionPane', () => ({
 vi.mock('../components/RcChrome', () => ({
   formatClock: (seconds: number) => String(seconds),
   RcToolbarButton: ({ children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => <button {...props}>{children}</button>, RcToolbarIcon: () => null,
-  RcPager: ({ onNext, onPrev, onNavigate }: { onNext: () => void; onPrev: () => void; onNavigate: (index: number) => void }) => <div>
+  RcPager: ({ onNext, onPrev, onNavigate, entries, pillStatus }: { onNext: () => void; onPrev: () => void; onNavigate: (index: number) => void; entries: RcPagerEntry[]; pillStatus: (entry: RcPagerEntry) => string }) => <div>
+    <output data-testid="pager-statuses">{entries.filter((entry) => entry.kind === 'question').map((entry) => `${entry.sourceLabel} · Drill ${entry.label}: ${pillStatus(entry)}`).join(' / ')}</output>
     <button onClick={onNext}>Next question</button>
     <button onClick={onPrev}>Previous question</button>
     <button onClick={() => onNavigate(1)}>Jump to question 2</button>
@@ -51,7 +57,7 @@ vi.mock('../components/RcChrome', () => ({
 vi.mock('../components/RcPassagePane', () => ({ RcPassagePane: () => null }));
 vi.mock('../components/RcPassageSummary', () => ({ RcPassageSummary: () => null }));
 vi.mock('../components/RcModals', () => ({
-  RcQuestionDetails: () => <div role="dialog" aria-label="Question details">Question metadata</div>,
+  RcQuestionDetails: ({ number, passage: source }: { number: number; passage: RcPassage }) => <div role="dialog" aria-label="Question details">PT {source.preptest} Section {source.section} Passage {source.setNumber} Question {number}</div>,
   RcSubmitConfirm: ({ onConfirm }: { onConfirm: () => void }) => <button onClick={onConfirm}>Confirm submission</button>,
   RcTextSettings: () => null,
 }));
@@ -69,6 +75,7 @@ const passage: RcPassage = {
     explanationBlocks: [], totalResponses: null, features: [], choices: [{ letter: 'B' as const, text: 'Choice B', tag: null, percent: null, responseCount: null, correct: false, explanation: null }],
   })),
 };
+let loadedPassages = [passage];
 const session = (overrides: Partial<RcDrillSession['config']> = {}): RcDrillSession => ({
   id: 'session-one', userId: 'student-one', passageIds: [10], status: 'in_progress',
   excludedFromAnalytics: false, startedAt: '2026-09-01T00:00:00Z', completedAt: null,
@@ -86,14 +93,143 @@ function LocationProbe() { const location = useLocation(); return <output data-t
 beforeEach(() => {
   localStorage.clear();
   vi.clearAllMocks();
+  loadedPassages = [passage];
   api.getSession.mockResolvedValue(session());
   api.getSessionAttempts.mockResolvedValue([]);
   api.saveSessionClock.mockResolvedValue(undefined);
   api.recordAttempt.mockImplementation(async (value: RcAttempt) => value);
+  api.setAttemptFlag.mockResolvedValue(undefined);
 });
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
 describe('RC account save safety', () => {
+  it('pauses and resumes the clock, then counts past the practice budget without silently submitting', async () => {
+    mount();
+    await screen.findByText('Question 1: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Pause Drill' }));
+    expect(screen.getByRole('button', { name: 'Choose B' })).toBeDisabled();
+    vi.useFakeTimers();
+    await act(async () => { vi.advanceTimersByTime(4_000); });
+    expect(screen.getByTestId('clock')).toHaveTextContent('88');
+    fireEvent.click(screen.getByRole('button', { name: 'Resume Drill' }));
+    await act(async () => { vi.advanceTimersByTime(3_000); });
+    expect(screen.getByTestId('clock')).toHaveTextContent('85');
+    fireEvent.click(screen.getByRole('button', { name: 'Pause Drill' }));
+    await act(async () => { vi.advanceTimersByTime(5_000); });
+    expect(screen.getByTestId('clock')).toHaveTextContent('85');
+    fireEvent.click(screen.getByRole('button', { name: 'Resume Drill' }));
+    await act(async () => { vi.advanceTimersByTime(90_000); });
+    expect(screen.getByTestId('clock')).toHaveTextContent('+5');
+    expect(api.completeSession).not.toHaveBeenCalled();
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+  });
+
+  it('reveals a passage only after every answer is selected and Check passage is acknowledged', async () => {
+    api.getSession.mockResolvedValue(session({ reveal: 'per_passage' }));
+    mount();
+    await screen.findByText('Question 1: blank');
+    expect(screen.getByRole('button', { name: 'Check passage' })).toBeDisabled();
+    for (const ordinal of [1, 2, 3]) {
+      fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+      expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('incorrect');
+      if (ordinal < 3) {
+        fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+        await screen.findByText(`Question ${ordinal + 1}: blank`);
+      }
+    }
+    fireEvent.click(screen.getByRole('button', { name: 'Check passage' }));
+    await waitFor(() => expect(screen.getByTestId('pager-statuses').textContent?.match(/incorrect/g)).toHaveLength(3));
+    expect(screen.getByRole('button', { name: 'Finish drill' })).toBeInTheDocument();
+    expect(api.recordAttempt).toHaveBeenCalledTimes(3);
+    expect(api.completeSession).not.toHaveBeenCalled();
+  });
+
+  it('reloads the acknowledged answer and saved position after Save and exit', async () => {
+    const first = mount();
+    await screen.findByText('Question 1: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+    await screen.findByText('Question 2: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Save and exit' }));
+    await waitFor(() => expect(screen.getByTestId('location').textContent).toBe('/rc'));
+    const acknowledgedClock = api.saveSessionClock.mock.calls.filter((call) => call[2] !== undefined).at(-1);
+    expect(acknowledgedClock[2]).toBe(1);
+    first.unmount();
+    api.getSession.mockResolvedValue(session({ clockElapsedSeconds: acknowledgedClock[1], currentQuestionIndex: acknowledgedClock[2] }));
+    api.getSessionAttempts.mockResolvedValue([attempt]);
+    mount();
+    await screen.findByText('Question 2: blank');
+    expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Question 1 · Drill 1: answered');
+    expect(api.recordAttempt).toHaveBeenCalledTimes(1);
+    expect(api.completeSession).not.toHaveBeenCalled();
+  });
+  it('uses official Question 17 in breadcrumb and details while separately showing Drill 1', async () => {
+    loadedPassages = [{ ...passage, preptest: 140, section: 4, setNumber: 3,
+      questions: passage.questions.map((question, index) => ({ ...question, position: index + 17 })) }];
+    mount();
+    await screen.findByText('Question 1: blank');
+    expect(screen.getByTestId('source-breadcrumb')).toHaveTextContent('Section 4 · Passage 3 · Question 17 · Drill 1 of 3');
+    expect(screen.getByTestId('pager-statuses')).toHaveTextContent('PT 140 · Section 4 · Passage 3 · Question 17 · Drill 1: unanswered');
+    fireEvent.click(screen.getByRole('button', { name: 'Question details' }));
+    expect(screen.getByRole('dialog', { name: 'Question details' })).toHaveTextContent('PT 140 Section 4 Passage 3 Question 17');
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(api.saveSessionClock).not.toHaveBeenCalled();
+  });
+
+  it('keeps pager correctness hidden until the configured per-question confirmation', async () => {
+    api.getSession.mockResolvedValue(session({ reveal: 'per_question' }));
+    mount();
+    await screen.findByText('Question 1: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+    expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Question 1 · Drill 1: answered');
+    expect(screen.getByTestId('pager-statuses')).not.toHaveTextContent('incorrect');
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm' }));
+    await waitFor(() => expect(screen.getByTestId('pager-statuses')).toHaveTextContent('Question 1 · Drill 1: incorrect'));
+    expect(api.recordAttempt).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps an unanswered flag pending until the answer is recorded, then announces Saved', async () => {
+    mount();
+    await screen.findByText('Question 1: blank');
+    fireEvent.click(screen.getByRole('button', { name: 'Toggle question flag' }));
+    expect(await screen.findByText(/Flag: Pending until this answer is recorded/)).toBeInTheDocument();
+    expect(api.setAttemptFlag).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Choose B' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+    await screen.findByText('Question 2: blank');
+    expect(api.recordAttempt.mock.calls[0][0].flagged).toBe(true);
+    fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
+    expect(await screen.findByText('Flag: Saved')).toBeInTheDocument();
+    expect(localStorage.getItem('rc:flags:pending:student-one:session-one:1')).toBeNull();
+  });
+
+  it('shows a failed recorded flag save and retries without another answer attempt', async () => {
+    api.getSessionAttempts.mockResolvedValue([attempt]);
+    api.setAttemptFlag.mockRejectedValueOnce(new Error('Offline'));
+    mount('&q=1');
+    await screen.findByText('Question 1: B');
+    fireEvent.click(screen.getByRole('button', { name: 'Toggle question flag' }));
+    expect(await screen.findByText(/Flag: Not saved/)).toBeInTheDocument();
+    expect(localStorage.getItem('rc:flags:pending:student-one:session-one:1')).toContain('true');
+    fireEvent.click(screen.getByRole('button', { name: 'Retry saving flag' }));
+    expect(await screen.findByText('Flag: Saved')).toBeInTheDocument();
+    expect(api.setAttemptFlag).toHaveBeenCalledTimes(2);
+    expect(api.setAttemptFlag).toHaveBeenLastCalledWith('session-one', 1, true, 'student-one');
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+  });
+
+  it('refuses in-progress ordinary review without starting a timer or saving anything', async () => {
+    mount('&review=1');
+    await screen.findByText(/Review has not started, and the clock remains paused/);
+    vi.useFakeTimers();
+    await act(async () => { vi.advanceTimersByTime(10_000); });
+    vi.useRealTimers();
+    expect(screen.queryByRole('button', { name: 'Choose B' })).not.toBeInTheDocument();
+    expect(api.recordAttempt).not.toHaveBeenCalled();
+    expect(api.setAttemptFlag).not.toHaveBeenCalled();
+    expect(api.saveSessionClock).not.toHaveBeenCalled();
+    expect(api.completeSession).not.toHaveBeenCalled();
+  });
   it('shows the current passage-only mode and gives reading the full canvas without saving', async () => {
     mount();
     await screen.findByText('Question 1: blank');
@@ -135,7 +271,7 @@ describe('RC account save safety', () => {
     api.getSession.mockResolvedValue({ ...session(marker), status: 'completed' });
     api.getSessionAttempts.mockResolvedValue([attempt]);
     mount('&review=1&q=1');
-    await screen.findByText(/Review is read-only/);
+    await screen.findByText(/keeps its saved answers and flags unchanged/);
     await screen.findByText('Question 1: B');
     expect(screen.getByRole('button', { name: 'Choose B' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Toggle question flag' })).toBeDisabled();
