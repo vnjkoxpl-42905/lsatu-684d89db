@@ -96,7 +96,7 @@ export default function RcQuestionPreview() {
   const question = passage?.questions.find((q) => q.questionId === questionId);
   const type = rcTypeStyles(1, 0);
   return <main className="mx-auto max-w-7xl p-4 sm:p-6">
-    <button type="button" className="min-h-11 rounded-md border px-4 py-2 focus-visible:outline focus-visible:outline-2" disabled={starting} onClick={() => navigate(back)}>Back to Practice</button>
+    <button type="button" className="min-h-11 rounded-md border px-4 py-2 focus-visible:outline focus-visible:outline-2" disabled={starting} onClick={() => navigate(back)}>{back.startsWith('/practice') ? 'Back to Practice' : 'Back'}</button>
     <h1 className="mt-4 text-2xl font-semibold">Question preview</h1>
     <p>Read-only preview. Answers and explanations are hidden.</p>
     {loading && <p role="status">Loading preview…</p>}

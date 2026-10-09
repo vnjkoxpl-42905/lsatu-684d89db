@@ -32,8 +32,8 @@ const NONE = {
 };
 
 function Where() {
-  const { pathname } = useLocation();
-  return <output data-testid="where">{pathname}</output>;
+  const { pathname, search } = useLocation();
+  return <output data-testid="where">{pathname}{search}</output>;
 }
 
 async function renderShell(path: string) {
@@ -120,6 +120,16 @@ describe("classroom rail access", () => {
     expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills");
     fireEvent.click(railButton(/^Messages/));
     expect(screen.getByTestId("where")).toHaveTextContent("/inbox");
+  });
+
+  it("carries the sidebar's current route and query into question lookup", async () => {
+    permissions.has_drill_access = true;
+    await renderShell("/progress/history?view=completed");
+    fireEvent.click(railButton(/^Find a question/));
+    const destination = new URL(screen.getByTestId("where").textContent ?? "", "https://test.invalid");
+    expect(destination.pathname).toBe("/practice/drills");
+    expect(destination.searchParams.get("finder")).toBe("open");
+    expect(destination.searchParams.get("finderReturnTo")).toBe("/progress/history?view=completed");
   });
 });
 

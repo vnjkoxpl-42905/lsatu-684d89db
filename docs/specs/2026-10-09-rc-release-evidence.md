@@ -1,5 +1,19 @@
 # RC repair evidence and remaining release gates
 
+## Current release checkpoint, 2026-10-09
+
+This section supersedes pending release statements in the historical checkpoints below. Implementation for tickets 03–07 is integrated in `ab5d33dd9c9ded811645a79b3c8920f516867a0e`. Ticket 08 adds the integration tests, independent review, browser verification and this evidence ledger. Physical-device, screen-reader, live fault-injection and scoring-authority checks remain explicitly open; implementation completion does not certify those checks.
+
+The first release was safely pushed and published through Lovable's free Publish changes control. The UI reported Your website was updated. Production changed from `index-BLyVP82A.js` to `index-CWiV2j9w.js`. Signed-in production finder verification showed PT140 S4's four passage groups and all 27 questions, including Q3 and Q17. Keyboard selection of Q17 stayed in the finder; opening it reached the exact read-only preview. Captured network events contained no non-GET RC session, attempt or annotation requests during selection and preview.
+
+That production walk found an additional ticket 03 defect: Practice supplied `/classroom` as the finder return destination. Follow-up `a95d87de` captures the originating pathname/query separately from the scored-drill return contract; sidebar entry carries validated origin context and the open finder retains it across route changes. Independent review approved the follow-up with 64/64 tests. `4e45b86005647c4ad9a5e50949bb3f485c459a06` corrects a TypeScript-only test query error caught by the push gate. The correction passed 10/10 preview tests; the preceding expanded focused slice passed 407/407 (`C:/Users/Joshu/AppData/Local/Temp/rc-resumed-tests.json`). Final typecheck and safe-push passed. HEAD and origin/main matched `4e45b860` at this checkpoint.
+
+The follow-up build passed, verified 2150 unique bank question IDs/owners/official addresses and scanned 751 dist files. Entry asset: `index-B7wxZiit.js`. The built app at 8081 verified Q3 preview exit back to `/practice/drills?section=rc`, and sidebar lookup from Practice Exams back to `/practice/exams`. The final free publication is running; fresh production acceptance of this follow-up is recorded below when complete.
+
+RC source and answer-key files remain unchanged. The unrelated unstaged MCP file retains SHA256 `14A737D3616F07D78983F1A057E5D20C696B01B5267C1FC9E60B322E3ED5C0C9`; it was never staged. No backend functions, migrations or answer-key corrections were deployed.
+
+### Historical checkpoints follow
+
 ## Final integrated build and saved-reader checkpoint
 
 Independent final source review approved the integrated03–08 repair. It identified and corrected a test-observation gap: preview tests now spy on the actual localStorage methods and the actual sessionStorage prototype rather than an unrelated Storage prototype. The preview file passed9/9 on Node26.8.1, including the isolated storage-failure test; the integration owner then reran the complete focused slice with `--no-cache` and observed393/393 passing. No production source behavior was weakened to pass this gate.
