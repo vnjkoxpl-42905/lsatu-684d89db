@@ -128,7 +128,7 @@ describe("QuestionFinder", () => {
     const dialog = openFinder();
     type(dialog, "PT90 S1 Q12");
     await within(dialog).findByRole("button", { name: /PT 90/ });
-    fireEvent.keyDown(dialog, { key: "Enter" });
+    fireEvent.keyDown(within(dialog).getByRole("textbox"), { key: "Enter" });
     expect(within(dialog).getByRole("textbox")).toHaveValue("PT90 S1 Q12");
     expect(navigate).not.toHaveBeenCalled();
   });
@@ -208,6 +208,73 @@ describe("QuestionFinder", () => {
     const go = within(dialog).getByRole("button", { name: /open question unavailable/i });
     expect(go).toBeDisabled();
     expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it("clears an incompatible RC address when switching to LR, including after reopening", async () => {
+    const dialog = openFinder("rc");
+    fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "140" } });
+    await waitFor(() => expect(within(dialog).getByLabelText(/^section$/i)).toHaveValue("4"));
+    fireEvent.click(within(dialog).getByRole("combobox", { name: "Question" }));
+    fireEvent.click(screen.getByText("Question 3"));
+    expect(within(dialog).getByRole("textbox")).toHaveValue("PT140 S4 Q3");
+
+    fireEvent.click(within(dialog).getByRole("button", { name: "LR" }));
+    expect(within(dialog).getByRole("textbox")).toHaveValue("");
+    expect(within(dialog).getByLabelText(/^test$/i)).toHaveValue("");
+    expect(within(dialog).getByLabelText(/^section$/i)).toHaveValue("");
+    expect(within(dialog).getByRole("combobox", { name: "Question" })).toBeDisabled();
+
+    fireEvent.click(within(dialog).getByRole("button", { name: /close the question finder/i }));
+    fireEvent.click(screen.getByRole("button", { name: /find a question/i }));
+    const reopened = screen.getByRole("dialog", { name: /find a question/i });
+    expect(within(reopened).getByRole("textbox")).toHaveValue("");
+    expect(within(reopened).getByLabelText(/^test$/i)).toHaveValue("");
+    expect(within(reopened).getByLabelText(/^section$/i)).toHaveValue("");
+    expect(within(reopened).getByRole("combobox", { name: "Question" })).toBeDisabled();
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it("leaves native Test and Section keyboard events to their own controls", async () => {
+    const dialog = openFinder();
+    fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "90" } });
+    fireEvent.change(within(dialog).getByLabelText(/^section$/i), { target: { value: "1" } });
+    type(dialog, "flaw in the reasoning");
+    await within(dialog).findByRole("button", { name: /PT 90/ });
+    for (const control of [within(dialog).getByLabelText(/^test$/i), within(dialog).getByLabelText(/^section$/i)]) {
+      for (const key of ["ArrowDown", "ArrowUp", "Enter"]) {
+        const event = new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true });
+        fireEvent(control, event);
+        expect(event.defaultPrevented, `${control.tagName} ${key} must not be intercepted by search`).toBe(false);
+        expect(within(dialog).getByRole("textbox")).toHaveValue("flaw in the reasoning");
+      }
+    }
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it("does not auto-select a stale test when changing from All to RC", async () => {
+    const dialog = openFinder();
+    fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "140" } });
+    expect(within(dialog).getByRole("textbox")).toHaveValue("PT140");
+    fireEvent.click(within(dialog).getByRole("button", { name: "RC" }));
+    await waitFor(() => {
+      expect(within(dialog).getByRole("textbox")).toHaveValue("");
+      expect(within(dialog).getByLabelText(/^test$/i)).toHaveValue("");
+      expect(within(dialog).getByLabelText(/^section$/i)).toHaveValue("");
+    });
+    expect(within(dialog).getByRole("combobox", { name: "Question" })).toBeDisabled();
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it("keeps the dark finder token scope on the portaled passage menu", async () => {
+    render(<MemoryRouter><QuestionFinder returnTo="/classroom" bank="rc" tone="dark" /></MemoryRouter>);
+    fireEvent.click(screen.getByRole("button", { name: /find a question/i }));
+    const dialog = screen.getByRole("dialog", { name: /find a question/i });
+    fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "140" } });
+    await waitFor(() => expect(within(dialog).getByLabelText(/^section$/i)).toHaveValue("4"));
+    fireEvent.click(within(dialog).getByRole("combobox", { name: "Question" }));
+    const passageHeading = screen.getByText("Passage 1 · Questions 1–6");
+    expect(dialog.contains(passageHeading)).toBe(false);
+    expect(passageHeading.closest('.qf[data-tone="dark"]')).not.toBeNull();
   });
 
   it("crosses to the other bank from the switch, rather than only following its host", async () => {
