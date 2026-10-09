@@ -157,7 +157,10 @@ function FinderPanel({
   // Mounting the panel IS the request for the banks; nothing loads before it.
   const banks = useQuestionFinderBanks(open);
   const addressIndex = useFinderAddressIndex(open);
-  React.useEffect(() => setView(bank ?? "all"), [bank]);
+  React.useEffect(() => {
+    setView(bank ?? "all");
+    setQuery("");
+  }, [bank]);
 
   const results = React.useMemo(
     () =>
@@ -199,6 +202,10 @@ function FinderPanel({
   }, []);
 
   const onKeyDown = (event: React.KeyboardEvent) => {
+    // Select menus own their keys, including Escape. Portaled Radix events
+    // still bubble through React to this dialog.
+    const target = event.target as HTMLElement;
+    if (event.defaultPrevented || target.closest('select, [role="combobox"], [role="listbox"]')) return;
     if (event.key === "Escape") {
       event.preventDefault();
       // Escape clears a query before it closes the panel — the same two-step the
@@ -207,17 +214,17 @@ function FinderPanel({
       else onClose();
       return;
     }
-    if (event.key === "ArrowDown") {
+    if (event.target === inputRef.current && event.key === "ArrowDown") {
       event.preventDefault();
       setActive((index) => (hits.length ? (index + 1) % hits.length : 0));
       return;
     }
-    if (event.key === "ArrowUp") {
+    if (event.target === inputRef.current && event.key === "ArrowUp") {
       event.preventDefault();
       setActive((index) => (hits.length ? (index - 1 + hits.length) % hits.length : 0));
       return;
     }
-    if (event.key === "Enter") {
+    if (event.target === inputRef.current && event.key === "Enter") {
       const hit = hits[active];
       if (hit) {
         event.preventDefault();
@@ -292,7 +299,12 @@ function FinderPanel({
                   className="qf-bank"
                   data-on={view === tab.value}
                   aria-pressed={view === tab.value}
-                  onClick={() => setView(tab.value)}
+                  onClick={() => {
+                    if (view !== tab.value) {
+                      setView(tab.value);
+                      setQuery("");
+                    }
+                  }}
                 >
                   {tab.label}
                 </button>
@@ -303,6 +315,7 @@ function FinderPanel({
                 disclosure. Picking a test is the fastest way in for a student
                 holding a printed section, and it was one click too deep. */}
             <BrowseByTest
+              tone={tone}
               bank={view === "all" ? undefined : view}
               disabled={addressIndex.loading || addressIndex.failed}
               onPick={setQuery}
@@ -522,12 +535,14 @@ function Snippet({
  * available. Either way browsing and typing use the same resolver.
  */
 function BrowseByTest({
+  tone,
   bank,
   disabled,
   onPick,
   tests,
   selectedAddress,
 }: {
+  tone: "light" | "dark";
   bank?: QuestionFinderBank;
   disabled: boolean;
   onPick: (query: string) => void;
@@ -563,22 +578,26 @@ function BrowseByTest({
     onPick(query);
   }, [onPick]);
   React.useEffect(() => {
-    if (bank === "rc" && sections.length === 1 && !section) {
+    if (bank === "rc" && selectedAddress?.pt === Number(pt) && sections.length === 1 && !section) {
       setSection(String(sections[0]));
       pick(pt, String(sections[0]), "");
     }
-  }, [bank, sections, section, pt, pick]);
+  }, [bank, selectedAddress, sections, section, pt, pick]);
   React.useEffect(() => {
     setPt("");
     setSection("");
     setQnum("");
   }, [bank]);
   React.useEffect(() => {
-    if (!selectedAddress) return;
-    setPt(String(selectedAddress.pt));
-    setSection(selectedAddress.section ? String(selectedAddress.section) : "");
-    setQnum(selectedAddress.qnum ? String(selectedAddress.qnum) : "");
-  }, [selectedAddress]);
+    if (disabled) return;
+    const test = tests.find((entry) => entry.pt === selectedAddress?.pt);
+    const validSections = test?.sections.filter((entry) => !bank || (bank === "rc" ? entry.rc.length > 0 : entry.lr.length > 0)) ?? [];
+    const entry = validSections.find((entry) => entry.section === selectedAddress?.section);
+    const numbers = entry ? (bank === "rc" ? entry.rc.flatMap((passage) => passage.questions.map((question) => question.number)) : bank === "lr" ? entry.lr : [...entry.lr, ...entry.rc.flatMap((passage) => passage.questions.map((question) => question.number))]) : [];
+    setPt(validSections.length ? String(test.pt) : "");
+    setSection(entry ? String(entry.section) : "");
+    setQnum(numbers.includes(selectedAddress?.qnum) ? String(selectedAddress.qnum) : "");
+  }, [selectedAddress, bank, tests, disabled]);
   const rcGroups = tests.find((test) => test.pt === Number(pt))?.sections.find((entry) => entry.section === Number(section))?.rc ?? [];
 
   return (
@@ -636,7 +655,7 @@ function BrowseByTest({
           <SelectTrigger className="qf-select-radix" aria-label="Question">
             <SelectValue placeholder={!section ? "Pick a section" : qnums.length === 0 ? "No questions" : "Question"} />
           </SelectTrigger>
-          <SelectContent className="qf-question-menu" position="popper" side="bottom" align="start">
+          <SelectContent className="qf qf-question-menu" data-tone={tone} position="popper" side="bottom" align="start">
             {rcGroups.length ? rcGroups.map((passage, index) => {
               const numbers = passage.questions.map((question) => question.number);
               const range = numbers.length ? `Questions ${numbers[0]}–${numbers[numbers.length - 1]}` : "No questions";
