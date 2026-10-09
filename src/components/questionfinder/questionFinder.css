@@ -105,6 +105,15 @@ html.dark .qf {
   white-space: nowrap;
 }
 
+.qf-trigger[aria-label="Open a question"] {
+  min-width: 0;
+  width: auto;
+}
+
+.qf-trigger[aria-label="Open a question"] .qf-trigger-label {
+  display: inline;
+}
+
 
 /* Phones: the masthead is already carrying the greeting and the due pill, so
    the label and the shortcut hint fall away and the trigger becomes an icon.
@@ -257,6 +266,7 @@ html.dark .qf-panel,
   display: flex;
   flex: none;
   flex-direction: column;
+  container-type: inline-size;
 }
 
 /* The segmented switch. LSAT Lab's slot holds Modern|Legacy, which splits a
@@ -652,11 +662,14 @@ html.dark .qf-panel,
   cursor: pointer;
   display: flex;
   flex: none;
-  height: 36px;
+  height: 40px;
   justify-content: center;
+  grid-column: 1 / -1;
+  min-width: 0;
+  white-space: nowrap;
   transition: background 160ms var(--qf-ease), opacity 160ms var(--qf-ease),
     transform 160ms var(--qf-ease);
-  width: 44px;
+  width: 100%;
 }
 
 .qf-go:hover:not(:disabled) {
@@ -743,6 +756,74 @@ html.dark .qf-panel,
   outline-offset: 1px;
 }
 
+.qf-select-radix.qf-select-radix {
+  min-height: 44px;
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  border-radius: 9px;
+  background: var(--qf-surface);
+  box-shadow: 0 0 0 1px var(--qf-hair-08);
+  color: var(--qf-ink);
+  font-family: var(--qf-ui);
+  font-size: 13px;
+}
+
+.qf-select-radix:focus-visible {
+  outline: 2px solid var(--qf-accent);
+  outline-offset: 1px;
+}
+
+.qf-question-menu {
+  z-index: 9999 !important;
+  max-height: min(360px, var(--radix-select-content-available-height, 360px));
+  min-width: var(--radix-select-trigger-width);
+  max-width: min(520px, calc(100vw - 24px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.qf-passage-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 2px;
+  padding: 7px 10px 7px 32px;
+  white-space: normal;
+  color: var(--qf-ink-mid);
+  background: var(--qf-sunk);
+  font-family: var(--qf-mono);
+  font-size: 10px;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
+.qf-passage-title {
+  color: var(--qf-soft);
+  font-family: var(--qf-ui);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.qf-passage-separator {
+  height: 1px;
+  margin: 12px 8px 10px;
+  background: var(--qf-hair-12);
+}
+
+.qf-select optgroup {
+  background: var(--qf-sunk);
+  color: var(--qf-ink-mid);
+  font-weight: 700;
+}
+
+.qf-select option[aria-label] {
+  background: var(--qf-surface);
+  color: var(--qf-ink);
+}
+
 /* ── keyboard legend ──────────────────────────────────────────────────── */
 
 .qf-legend {
@@ -806,8 +887,19 @@ html.dark .qf-panel,
     max-height: none;
   }
 
+}
+
+@container (max-width: 520px) {
   .qf-browse {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .qf-go {
+    width: 100%;
+  }
+
+  .qf-trigger[aria-label="Open a question"] {
+    padding-inline: 11px;
   }
 }
 
@@ -829,7 +921,7 @@ html.dark .qf-panel,
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: none;
   }
 }
 
@@ -840,7 +932,7 @@ html.dark .qf-panel,
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 

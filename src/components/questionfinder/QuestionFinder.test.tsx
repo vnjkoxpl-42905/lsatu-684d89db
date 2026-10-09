@@ -43,6 +43,14 @@ vi.mock("./useQuestionFinderBanks", () => ({
     ],
   }),
 }));
+vi.mock("./useFinderAddressIndex", () => ({
+  useFinderAddressIndex: () => ({ tests: [{ pt: 88, sections: [{ section: 3, lr: [], rc: [{ id: 4021, position: 1, title: "Sam Gilliam and the draped canvas", questions: [{ id: 503, number: 3 }] }] }] }, { pt: 90, sections: [{ section: 1, lr: [12], rc: [] }] }, { pt: 140, sections: [{ section: 4, lr: [], rc: [
+    { id: 14, position: 1, title: "Sam Gilliam", questions: Array.from({ length: 6 }, (_, i) => ({ id: 1588 + i, number: i + 1 })) },
+    { id: 15, position: 2, title: "Online Game Currencies", questions: Array.from({ length: 7 }, (_, i) => ({ id: 1594 + i, number: i + 7 })) },
+    { id: 16, position: 3, title: "The Origins of Superior Performance", questions: Array.from({ length: 6 }, (_, i) => ({ id: 1601 + i, number: i + 14 })) },
+    { id: 18, position: 4, title: "Explaining Mirror Images", questions: Array.from({ length: 8 }, (_, i) => ({ id: 1607 + i, number: i + 20 })) },
+  ] }] }], loading: false, failed: false, retry: vi.fn() }),
+}));
 
 const openFinder = (bank?: "lr" | "rc") => {
   render(
@@ -65,28 +73,38 @@ describe("QuestionFinder", () => {
     expect(within(dialog).getByText("PT90 S1 Q12")).toBeInTheDocument();
   });
 
-  it("opens an LR hit as a one-question attempt that returns to where it started", async () => {
+  it("selects an LR hit without navigating or creating an attempt", async () => {
     const dialog = openFinder();
     type(dialog, "flaw in the reasoning");
     const row = await within(dialog).findByRole("button", { name: /PT 90/ });
     fireEvent.click(row);
-    expect(navigate).toHaveBeenCalledWith(
-      "/drill?mode=type-drill&qids=PT90-S1-Q12&present=smart&returnTo=%2Fclassroom",
-    );
+    expect(within(dialog).getByRole("textbox")).toHaveValue("PT90 S1 Q12");
+    expect(navigate).not.toHaveBeenCalled();
   });
 
-  it("says an RC hit opens its matching passage before it is clicked", async () => {
+  it("explains that an RC hit selects its matching passage address", async () => {
     const dialog = openFinder();
     type(dialog, "stretcher frame");
-    expect(await within(dialog).findByText(/opens the matching passage/i)).toBeInTheDocument();
+    expect(await within(dialog).findByText(/select to retain this address/i)).toBeInTheDocument();
     expect(within(dialog).getByText("7 questions")).toBeInTheDocument();
   });
 
-  it("opens an RC hit at the matching question inside its passage", async () => {
+  it("selects an RC hit without navigating or creating a session", async () => {
     const dialog = openFinder();
     type(dialog, "stretcher frame");
     fireEvent.click(await within(dialog).findByRole("button", { name: /PT 88/ }));
-    expect(navigate).toHaveBeenCalledWith("/rc/drill?passage=4021&q=503");
+    expect(within(dialog).getByRole("textbox")).toHaveValue("PT88 S3 Q3");
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it("retains the selected address when the finder closes and opens again", async () => {
+    const dialog = openFinder("rc");
+    type(dialog, "stretcher frame");
+    fireEvent.click(await within(dialog).findByRole("button", { name: /PT 88/ }));
+    fireEvent.click(within(dialog).getByRole("button", { name: /close the question finder/i }));
+    fireEvent.click(await screen.findByRole("button", { name: /find a question/i }));
+    expect(within(await screen.findByRole("dialog", { name: /find a question/i })).getByRole("textbox")).toHaveValue("PT88 S3 Q3");
+    expect(navigate).not.toHaveBeenCalled();
   });
 
   it("uses the active RC side and understands a spoken-style full address", async () => {
@@ -106,12 +124,13 @@ describe("QuestionFinder", () => {
     );
   });
 
-  it("opens the highlighted hit on Enter", async () => {
+  it("selects the highlighted hit on Enter without navigation", async () => {
     const dialog = openFinder();
     type(dialog, "PT90 S1 Q12");
     await within(dialog).findByRole("button", { name: /PT 90/ });
     fireEvent.keyDown(dialog, { key: "Enter" });
-    expect(navigate).toHaveBeenCalledWith(expect.stringContaining("qids=PT90-S1-Q12"));
+    expect(within(dialog).getByRole("textbox")).toHaveValue("PT90 S1 Q12");
+    expect(navigate).not.toHaveBeenCalled();
   });
 
   it("clears the query on the first Escape and closes on the second", async () => {
@@ -162,25 +181,33 @@ describe("QuestionFinder", () => {
     const dialog = openFinder("rc");
     fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "88" } });
     fireEvent.change(within(dialog).getByLabelText(/^section$/i), { target: { value: "3" } });
-    expect(within(dialog).getByRole("option", { name: "Question 3" })).toBeInTheDocument();
+    fireEvent.click(within(dialog).getByRole("combobox", { name: "Question" }));
+    expect(screen.getByText("Question 3")).toBeInTheDocument();
     expect(within(dialog).queryByRole("option", { name: "PT 90" })).toBeNull();
   });
 
-  it("keeps the go arrow disabled until the address resolves to something", () => {
-    const dialog = openFinder();
-    const go = within(dialog).getByRole("button", { name: /open the selected question/i });
-    expect(go).toBeDisabled();
-    fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "90" } });
-    expect(go).toBeEnabled();
+  it("auto-selects PT140's sole RC section and groups all 27 official questions", async () => {
+    const dialog = openFinder("rc");
+    fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "140" } });
+    await waitFor(() => expect(within(dialog).getByLabelText(/^section$/i)).toHaveValue("4"));
+    fireEvent.click(within(dialog).getByRole("combobox", { name: "Question" }));
+    const groups = screen.getAllByRole("group").filter((group) => group.textContent?.includes("Passage"));
+    expect(groups.map((group) => within(group).getByText(/^Passage/).textContent)).toEqual([
+      "Passage 1 · Questions 1–6",
+      "Passage 2 · Questions 7–13",
+      "Passage 3 · Questions 14–19",
+      "Passage 4 · Questions 20–27",
+    ]);
+    expect(screen.getAllByText(/^Question \d+$/)).toHaveLength(27);
+    expect(screen.getByText("Question 3")).toBeInTheDocument();
+    expect(screen.getByText("Question 17")).toBeInTheDocument();
   });
 
-  it("opens the selected question from the go arrow", () => {
+  it("keeps Open question unavailable until safe preview exists", () => {
     const dialog = openFinder();
-    fireEvent.change(within(dialog).getByLabelText(/^test$/i), { target: { value: "90" } });
-    fireEvent.change(within(dialog).getByLabelText(/^section$/i), { target: { value: "1" } });
-    fireEvent.change(within(dialog).getByLabelText(/^question$/i), { target: { value: "12" } });
-    fireEvent.click(within(dialog).getByRole("button", { name: /open the selected question/i }));
-    expect(navigate).toHaveBeenCalledWith(expect.stringContaining("qids=PT90-S1-Q12"));
+    const go = within(dialog).getByRole("button", { name: /open question unavailable/i });
+    expect(go).toBeDisabled();
+    expect(navigate).not.toHaveBeenCalled();
   });
 
   it("crosses to the other bank from the switch, rather than only following its host", async () => {
