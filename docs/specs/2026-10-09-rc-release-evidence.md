@@ -1,5 +1,17 @@
 # RC repair evidence and remaining release gates
 
+## Final integrated build and saved-reader checkpoint
+
+Independent final source review approved the integrated03–08 repair. It identified and corrected a test-observation gap: preview tests now spy on the actual localStorage methods and the actual sessionStorage prototype rather than an unrelated Storage prototype. The preview file passed9/9 on Node26.8.1, including the isolated storage-failure test; the integration owner then reran the complete focused slice with `--no-cache` and observed393/393 passing. No production source behavior was weakened to pass this gate.
+
+The final reader was rechecked with explicit per-tab developer viewport emulation:390x844,700x900,1024x768,1366x768,1920x900. All popup rectangles fit the viewport and document widths stayed below viewport width. At200% actual text enlargement, passage text measured36px, the official-address header wrapped, and document scrollWidth1265 stayed below1280. This is text-resize evidence, not browser-zoom or physical-device evidence. Temporary developer overrides were cleared/reloaded. The resized screenshot is `C:/Users/Joshu/.codex/visualizations/2026/10/07/01a11839-ea0a-74f3-8979-f6bda1202b18/rc-final-text-200.png`.
+
+The final focused receipt at `C:/Users/Joshu/AppData/Local/Temp/rc-final-tests.json` reports393/393 passing assertions across41 files, including the added blind-review status regression. The final build completed with exit0 on2026-10-09, verifies2150 exact bank/index identities and scans751 built files with no canonical guide content. Its entry asset is `index-CRPSJXRu.js`. Typecheck and relevant lint passed; safe-push will run typecheck again before publication. The repository-wide baseline failures below remain failures.
+
+The final production build served at `http://127.0.0.1:8081` reproduces the dedicated student's completed session `13dcde0e-0c2e-4174-ba11-ba174e47093b`. At the previous short-window checkpoint, the large sticky results summary covered the Review all button. Making that summary scroll normally restored the real button action: clicking Review all reached `/rc/drill?sessionId=13dcde0e-0c2e-4174-ba11-ba174e47093b&review=1`. The ordinary blind-review pager now says answered for recorded choices while hiding correctness until explicit reveal.
+
+A normal highlighter gesture on passage14 showed Passage marks: Saved. The backend receipt confirmed16 owned sessions,148 attempts and2 annotations, with this session completed and exactly six first attempts. Reopening the final built review and reloading restored the same passage mark. No existing records were deleted. A local reader screenshot is `C:/Users/Joshu/.codex/visualizations/2026/10/07/01a11839-ea0a-74f3-8979-f6bda1202b18/rc-final-local-reader.png`. These are local-build/live-backend receipts; publication and fresh production checks remain separate below.
+
 This ledger separates automated checks, signed-in local browser acceptance, and production acceptance. The owning design remains [RC drill quality](2026-10-07-rc-drill-quality.md). Ticket08 does not adjudicate answer keys.
 
 ## Automated checkpoints have limited scope

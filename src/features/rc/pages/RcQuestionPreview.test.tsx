@@ -20,14 +20,15 @@ afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 describe('read-only RC question lookup', () => {
   it('loads, refreshes and closes without backend or device writes or answer leakage', async () => {
     localStorage.setItem('existing-marks', 'unchanged'); sessionStorage.setItem('existing-backup', 'unchanged');
-    const set = vi.spyOn(Storage.prototype, 'setItem'); const remove = vi.spyOn(Storage.prototype, 'removeItem');
+    const localSet = vi.spyOn(localStorage, 'setItem'); const localRemove = vi.spyOn(localStorage, 'removeItem');
+    const sessionSet = vi.spyOn(Object.getPrototypeOf(sessionStorage), 'setItem'); const sessionRemove = vi.spyOn(Object.getPrototypeOf(sessionStorage), 'removeItem');
     const view = mount(); await screen.findByText('Question stem 3');
     expect(screen.queryByText(/Hidden/)).not.toBeInTheDocument();
     expect(screen.getByText(/PT 140.*Question 3/)).toBeInTheDocument();
     view.unmount(); mount(); await screen.findByText('Question stem 3');
     fireEvent.click(screen.getByRole('button', { name: 'Back to Practice' }));
     expect(mocks.navigate).toHaveBeenCalledWith('/practice/drills?section=rc');
-    expect(set).not.toHaveBeenCalled(); expect(remove).not.toHaveBeenCalled(); expect(mocks.create).not.toHaveBeenCalled(); expect(mocks.get).not.toHaveBeenCalled();
+    expect(localSet).not.toHaveBeenCalled(); expect(localRemove).not.toHaveBeenCalled(); expect(sessionSet).not.toHaveBeenCalled(); expect(sessionRemove).not.toHaveBeenCalled(); expect(mocks.create).not.toHaveBeenCalled(); expect(mocks.get).not.toHaveBeenCalled();
     expect(localStorage.getItem('existing-marks')).toBe('unchanged'); expect(sessionStorage.getItem('existing-backup')).toBe('unchanged');
   });
   it('rejects a mismatched question instead of showing another', async () => { mount('passage=10&q=99'); expect(await screen.findByRole('alert')).toHaveTextContent('not in this passage'); expect(screen.queryByRole('button', { name: 'Start passage drill' })).toBeNull(); });
@@ -43,7 +44,7 @@ describe('read-only RC question lookup', () => {
     mount(); fireEvent.click(await screen.findByRole('button', { name: 'Start passage drill' })); await waitFor(() => expect(mocks.navigate).toHaveBeenCalled()); expect(mocks.create).toHaveBeenCalledTimes(1);
     expect(mocks.get.mock.calls[0][0]).toBe(mocks.get.mock.calls[1][0]);
   });
-  it('cannot create when pending launch storage fails', async () => { mount(); const start = await screen.findByRole('button', { name: 'Start passage drill' }); vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('Storage unavailable'); }); fireEvent.click(start); expect(await screen.findByRole('alert')).toHaveTextContent('Storage unavailable'); expect(mocks.create).not.toHaveBeenCalled(); });
+  it('cannot create when pending launch storage fails', async () => { mount(); const start = await screen.findByRole('button', { name: 'Start passage drill' }); vi.spyOn(Object.getPrototypeOf(sessionStorage), 'setItem').mockImplementation(() => { throw new Error('Storage unavailable'); }); fireEvent.click(start); expect(await screen.findByRole('alert')).toHaveTextContent('Storage unavailable'); expect(mocks.create).not.toHaveBeenCalled(); });
   it('does not navigate or clear actor A recovery when the account changes during creation', async () => {
     let resolve!: (value: unknown) => void;
     mocks.create.mockImplementation(() => new Promise((done) => { resolve = done; }));
