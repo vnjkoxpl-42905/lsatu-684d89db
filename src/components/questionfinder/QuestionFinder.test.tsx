@@ -203,11 +203,25 @@ describe("QuestionFinder", () => {
     expect(screen.getByText("Question 17")).toBeInTheDocument();
   });
 
-  it("keeps Open question unavailable until safe preview exists", () => {
+  it("keeps Open question unavailable without an exact RC address", () => {
     const dialog = openFinder();
-    const go = within(dialog).getByRole("button", { name: /open question unavailable/i });
+    const go = within(dialog).getByRole("button", { name: /^open question$/i });
     expect(go).toBeDisabled();
     expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it("opens only an explicit exact RC question as a read-only preview", async () => {
+    const dialog = openFinder("rc");
+    type(dialog, "PT88 S3 Q3");
+    const open = within(dialog).getByRole("button", { name: "Open question" });
+    await waitFor(() => expect(open).toBeEnabled());
+    expect(navigate).not.toHaveBeenCalled();
+    fireEvent.click(open);
+    expect(navigate).toHaveBeenCalledWith("/rc/preview?passage=4021&q=503&returnTo=%2Fclassroom");
+  });
+  it("keeps LR preview disabled truthfully", () => {
+    const dialog = openFinder("lr"); type(dialog, "PT90 S1 Q12");
+    expect(within(dialog).getByRole("button", { name: "Open question" })).toBeDisabled();
   });
 
   it("clears an incompatible RC address when switching to LR, including after reopening", async () => {

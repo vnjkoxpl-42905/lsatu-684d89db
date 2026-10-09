@@ -146,11 +146,12 @@ describe('RC account save safety', () => {
     expect(api.saveSessionClock).not.toHaveBeenCalled();
     expect(api.completeSession).not.toHaveBeenCalled();
   });
-  it('redirects direct protected in-progress legacy links to their exact dedicated sitting', async () => {
+  it('does not resume an in-progress protected sitting through a review link', async () => {
     const sitting = '10000000-0000-4000-8000-000000000001';
     api.getSession.mockResolvedValue(session({ timedSectionSittingId: sitting }));
     mount('&review=1');
-    await waitFor(() => expect(screen.getByTestId('location')).toHaveTextContent(`/testing/sections/${sitting}`));
+    await screen.findByText(/clock remains paused/);
+    expect(screen.getByTestId('location')).toHaveTextContent('/rc/drill');
     expect(api.recordAttempt).not.toHaveBeenCalled();
     expect(api.saveSessionClock).not.toHaveBeenCalled();
   });

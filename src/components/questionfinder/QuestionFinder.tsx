@@ -23,6 +23,7 @@ import { useQuestionFinderBanks } from "./useQuestionFinderBanks";
 import { useFinderAddressIndex, type FinderAddressTest } from "./useFinderAddressIndex";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select";
 import "./questionFinder.css";
+import { safeRcReturnTo } from "@/features/rc/lib/rcReturnTo";
 
 const PER_BANK_LIMIT = 6;
 
@@ -64,7 +65,7 @@ export interface QuestionFinderHandle {
   open: () => void;
 }
 
-const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProps>(function QuestionFinder({ returnTo: _returnTo, tone = "light", bank, triggerLabel = "Find a question" }, ref) {
+const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProps>(function QuestionFinder({ returnTo, tone = "light", bank, triggerLabel = "Find a question" }, ref) {
   const [open, setOpen] = React.useState(false);
   React.useImperativeHandle(ref, () => ({ open: () => setOpen(true) }), []);
 
@@ -124,7 +125,7 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
         </span>
       </button>
 
-      <FinderPanel open={open} tone={tone} bank={bank} onClose={() => setOpen(false)} />
+      <FinderPanel returnTo={returnTo} open={open} tone={tone} bank={bank} onClose={() => setOpen(false)} />
     </div>
   );
 });
@@ -134,11 +135,13 @@ export default QuestionFinder;
 /* ------------------------------------------------------------------ panel */
 
 function FinderPanel({
+  returnTo,
   open,
   tone,
   bank,
   onClose,
 }: {
+  returnTo: string;
   open: boolean;
   tone: "light" | "dark";
   bank?: QuestionFinderBank;
@@ -195,6 +198,20 @@ function FinderPanel({
       previous?.focus?.();
     };
   }, [open]);
+
+  const selectedTarget = React.useMemo(() => {
+    const address = results.address;
+    if (!address?.qnum || !address.section || view === "lr") return null;
+    const section = addressIndex.tests.find((test) => test.pt === address.pt)?.sections.find((entry) => entry.section === address.section);
+    const matches = (section?.rc ?? []).flatMap((passage) => passage.questions.filter((q) => q.number === address.qnum).map((q) => ({ passageId: passage.id, questionId: q.id })));
+    return matches.length === 1 ? matches[0] : null;
+  }, [results.address, addressIndex.tests, view]);
+  const openSelected = () => {
+    if (!selectedTarget || addressIndex.loading || addressIndex.failed) return;
+    const params = new URLSearchParams({ passage: String(selectedTarget.passageId), q: String(selectedTarget.questionId), returnTo: safeRcReturnTo(returnTo) ?? "/practice/drills?section=rc" });
+    onClose();
+    navigate(`/rc/preview?${params}`);
+  };
 
   const openHit = React.useCallback((hit: FinderHit) => {
     setView(hit.bank);
@@ -321,6 +338,8 @@ function FinderPanel({
               onPick={setQuery}
               tests={addressIndex.tests}
               selectedAddress={results.address}
+              canOpen={!!selectedTarget}
+              onOpen={openSelected}
             />
             {addressIndex.failed && <p className="qf-warn" role="alert">Question addresses could not be loaded. <button type="button" onClick={addressIndex.retry}>Retry</button></p>}
 
@@ -541,6 +560,8 @@ function BrowseByTest({
   onPick,
   tests,
   selectedAddress,
+  canOpen,
+  onOpen,
 }: {
   tone: "light" | "dark";
   bank?: QuestionFinderBank;
@@ -548,6 +569,8 @@ function BrowseByTest({
   onPick: (query: string) => void;
   tests: FinderAddressTest[];
   selectedAddress: QuestionAddress | null;
+  canOpen: boolean;
+  onOpen: () => void;
 }) {
   const [pt, setPt] = React.useState("");
   const [section, setSection] = React.useState("");
@@ -679,11 +702,11 @@ function BrowseByTest({
       <button
         type="button"
         className="qf-go"
-        disabled
-        aria-label="Open question unavailable until preview is ready"
-        title="Question preview will be available in the next step."
+        disabled={disabled || !canOpen}
+        onClick={onOpen}
+        title={canOpen ? "Open a read-only question preview" : "Choose an exact RC question. LR preview is not available yet."}
       >
-        Open question (not available yet)
+        Open question
       </button>
     </div>
   );

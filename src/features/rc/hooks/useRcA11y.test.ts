@@ -17,3 +17,20 @@ it.each([0, -100, '125', 9999])('recovers a usable default from an invalid saved
   const { result } = renderHook(() => useRcA11y());
   expect(result.current.fontScale).toBe(1);
 });
+
+it.each([-1, 9999, '0.25', null])('recovers defaults from malformed spacing and scheme %s', lineHeight => {
+  localStorage.setItem('rc-player-a11y', JSON.stringify({ scheme: 'unknown', lineHeight }));
+  const { result } = renderHook(() => useRcA11y());
+  expect(result.current.settings.scheme).toBe('default');
+  expect(result.current.extraLeading).toBe(0);
+});
+
+it('retains spacing and color across reload and migrates legacy spacing', () => {
+  localStorage.setItem('rc-player-a11y', JSON.stringify({ lineHeight: 1.65 }));
+  const first = renderHook(() => useRcA11y());
+  expect(first.result.current.extraLeading).toBe(0.25);
+  act(() => first.result.current.update({ lineHeight: 0.45, scheme: 'navy' }));
+  first.unmount();
+  const restored = renderHook(() => useRcA11y());
+  expect(restored.result.current.settings).toEqual({ fontSize: 100, lineHeight: 0.45, scheme: 'navy' });
+});

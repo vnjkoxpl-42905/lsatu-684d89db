@@ -15,6 +15,7 @@ const choice: RcChoice = {
 };
 
 interface Overrides {
+  annotationsDisabled?: boolean;
   selected?: boolean;
   highlightMode?: RcHighlightMode;
   eliminated?: boolean;
@@ -37,6 +38,7 @@ function renderRow(overrides: Overrides = {}) {
         eliminated={overrides.eliminated ?? false}
         revealed={overrides.revealed ?? false}
         disabled={overrides.disabled}
+        annotationsDisabled={overrides.annotationsDisabled}
         onSelect={onSelect}
         onToggleElimination={onToggleElimination}
         highlights={overrides.highlights ?? []}
@@ -77,6 +79,12 @@ beforeAll(() => {
 afterEach(() => window.getSelection()?.removeAllRanges());
 
 describe('RcChoiceRow text surface', () => {
+  it('keeps answer choices usable when annotation hydration disables marking', () => {
+    const { onSelect, onAnchor, text } = renderRow({ annotationsDisabled: true, highlightMode: 'yellow' });
+    fireEvent.mouseUp(text); fireEvent.click(text);
+    expect(onSelect).toHaveBeenCalledWith('B');
+    expect(onAnchor.mock.calls.every(([anchor]) => anchor === null)).toBe(true);
+  });
   it('a saved selected cross-out stays visible, unstruck and selectable with crossing out disabled', () => {
     const { onSelect, onToggleElimination, text } = renderRow({ selected: true, eliminated: true });
     const surface = text.closest('[data-rc-mark-surface]')!;

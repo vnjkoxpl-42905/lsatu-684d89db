@@ -316,18 +316,44 @@ export async function getSessionAttempts(sessionId: string): Promise<RcAttempt[]
 }
 
 /** Sets the flag on every stored attempt for a question in a session. */
-export async function setAttemptFlag(
+const aidWriteChains = new Map<string, Promise<void>>();
+
+function serialAidWrite(key: string, write: () => Promise<void>): Promise<void> {
+  const previous = aidWriteChains.get(key) ?? Promise.resolve();
+  const next = previous.catch(() => undefined).then(write);
+  aidWriteChains.set(key, next);
+  void next.finally(() => { if (aidWriteChains.get(key) === next) aidWriteChains.delete(key); }).catch(() => undefined);
+  return next;
+}
+
+export function setAttemptFlag(sessionId: string, questionId: number, flagged: boolean, expectedActorId?: string): Promise<void> {
+  const queue = (actor: string) => serialAidWrite(`flag:${actor}:${sessionId}:${questionId}`, () => writeAttemptFlag(sessionId, questionId, flagged, actor));
+  return expectedActorId ? queue(expectedActorId) : requireUserId().then(queue);
+}
+
+async function writeAttemptFlag(
   sessionId: string,
   questionId: number,
   flagged: boolean,
+  expectedActorId?: string,
 ): Promise<void> {
+  const userId = await requireUserId();
+  if (expectedActorId && userId !== expectedActorId) throw new Error('The signed-in account changed.');
+  const session = await getSession(sessionId, userId);
+  if (!session || session.userId !== userId) throw new Error('This section is not available.');
+  if (session.config.practiceTestRunId || session.config.timedSectionSittingId) throw new Error('Flags in this protected source section cannot be changed.');
   await assertActivePracticeTestSession(sessionId);
-  const { error } = await rcDb
+  if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+  const { data, error } = await rcDb
     .from(RC_ATTEMPTS_TABLE)
     .update({ flagged })
     .eq('session_id', sessionId)
-    .eq('question_id', questionId);
+    .eq('question_id', questionId)
+    .eq('user_id', userId)
+    .select('id, user_id, flagged');
   raise(error);
+  if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+  if (!data?.length || data.some((row: { user_id: string; flagged: boolean }) => row.user_id !== userId || row.flagged !== flagged)) throw new Error('The flag save could not be acknowledged.');
 }
 
 /**
@@ -372,45 +398,52 @@ export async function getQuestionHistory(userId?: string): Promise<RcQuestionHis
 
 /* -------------------------------------------------------------- annotations */
 
+function sameHighlights(value: unknown, expected: RcHighlight[]): boolean {
+  // JSONB can return object properties in a different order than the client.
+  return Array.isArray(value) && value.length === expected.length && value.every((mark, index) => {
+    const wanted = expected[index];
+    return mark && mark.target === wanted.target && mark.start === wanted.start && mark.end === wanted.end
+      && mark.color === wanted.color && (mark.kind ?? 'highlight') === (wanted.kind ?? 'highlight');
+  });
+}
+
 export async function loadAnnotations(
   passageIds: number[],
+  expectedActorId?: string,
 ): Promise<Map<number, RcHighlight[]>> {
   const result = new Map<number, RcHighlight[]>();
   if (passageIds.length === 0) return result;
+  const userId = await requireUserId();
+  if (expectedActorId && userId !== expectedActorId) throw new Error('The signed-in account changed.');
 
   const { data, error } = await rcDb
     .from(RC_ANNOTATIONS_TABLE)
-    .select('passage_id, highlights')
+    .select('user_id, passage_id, highlights')
+    .eq('user_id', userId)
     .in('passage_id', passageIds);
   raise(error);
+  if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
 
-  for (const row of (data ?? []) as { passage_id: number; highlights: unknown }[]) {
+  for (const row of (data ?? []) as { user_id: string; passage_id: number; highlights: unknown }[]) {
+    if (row.user_id !== userId || !passageIds.includes(row.passage_id)) continue;
     result.set(row.passage_id, (row.highlights ?? []) as RcHighlight[]);
   }
   return result;
 }
 
-const saveTimers = new Map<number, ReturnType<typeof setTimeout>>();
-
-/** Debounced by one second per passage, so dragging out a highlight writes once. */
-export function saveAnnotations(passageId: number, highlights: RcHighlight[]): void {
-  const pending = saveTimers.get(passageId);
-  if (pending) clearTimeout(pending);
-  saveTimers.set(
-    passageId,
-    setTimeout(() => {
-      saveTimers.delete(passageId);
-      void saveAnnotationsNow(passageId, highlights);
-    }, 1000),
-  );
+export function saveAnnotationsNow(passageId: number, highlights: RcHighlight[], expectedActorId?: string): Promise<void> {
+  const queue = (actor: string) => serialAidWrite(`annotation:${actor}:${passageId}`, () => writeAnnotations(passageId, highlights, actor));
+  return expectedActorId ? queue(expectedActorId) : requireUserId().then(queue);
 }
 
-export async function saveAnnotationsNow(
+async function writeAnnotations(
   passageId: number,
   highlights: RcHighlight[],
+  expectedActorId?: string,
 ): Promise<void> {
   const userId = await requireUserId();
-  const { error } = await rcDb.from(RC_ANNOTATIONS_TABLE).upsert(
+  if (expectedActorId && userId !== expectedActorId) throw new Error('The signed-in account changed.');
+  const { data, error } = await rcDb.from(RC_ANNOTATIONS_TABLE).upsert(
     {
       user_id: userId,
       passage_id: passageId,
@@ -418,6 +451,8 @@ export async function saveAnnotationsNow(
       updated_at: new Date().toISOString(),
     },
     { onConflict: 'user_id,passage_id' },
-  );
+  ).select('user_id, passage_id, highlights').single();
   raise(error);
+  if (await requireUserId() !== userId) throw new Error('The signed-in account changed.');
+  if (!data || data.user_id !== userId || data.passage_id !== passageId || !sameHighlights(data.highlights, highlights)) throw new Error('The passage marks save could not be acknowledged.');
 }

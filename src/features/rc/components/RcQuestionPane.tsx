@@ -22,6 +22,7 @@ import {
 } from '../lib/rcTypes';
 
 interface Props {
+  annotationsDisabled?: boolean;
   item: RcSessionItem;
   selected: RcLetter | null;
   eliminations: RcLetter[];
@@ -80,6 +81,7 @@ export function RcQuestionPane({
   highlights,
   color,
   onColorChange,
+  annotationsDisabled = false,
   highlightMode,
   onAddHighlight,
   onRemoveHighlight,
@@ -125,7 +127,7 @@ export function RcQuestionPane({
   }, [question.questionId, question.prompt, stemHighlights]);
 
   useRcMarkSurface({
-    textRef: stemRef,
+    disabled: annotationsDisabled,    textRef: stemRef,
     paneRef,
     highlightMode,
     color,
@@ -245,6 +247,7 @@ export function RcQuestionPane({
               badgeStyle={type.choiceBadge}
               highlights={highlights}
               color={color}
+              annotationsDisabled={annotationsDisabled}
               highlightMode={highlightMode}
               onAddHighlight={onAddHighlight}
               onRemoveHighlight={onRemoveHighlight}
@@ -273,7 +276,7 @@ export function RcQuestionPane({
       </ul>
 
       <RcSelectionPopover
-        anchor={popover?.anchor ?? null}
+        anchor={annotationsDisabled ? null : popover?.anchor ?? null}
         color={color}
         onColorChange={onColorChange}
         onApply={(chosen) => popover?.surfaces.forEach((s) => s.applyPending(chosen))}

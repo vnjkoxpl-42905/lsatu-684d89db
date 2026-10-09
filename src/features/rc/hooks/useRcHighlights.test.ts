@@ -1,11 +1,10 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const saveAnnotations = vi.fn();
+const { saveAnnotations, loadAnnotations } = vi.hoisted(() => ({ saveAnnotations: vi.fn(), loadAnnotations: vi.fn() }));
 vi.mock('../api/rcProgress', () => ({
-  loadAnnotations: vi.fn(async () => new Map()),
-  saveAnnotations: (passageId: number, highlights: unknown) =>
-    saveAnnotations(passageId, highlights),
+  loadAnnotations,
+  saveAnnotationsNow: saveAnnotations,
 }));
 
 import { useRcHighlights } from './useRcHighlights';
@@ -16,7 +15,7 @@ const Q1 = 11880;
 const Q2 = 11881;
 
 async function setup() {
-  const view = renderHook(() => useRcHighlights([PASSAGE]));
+  const view = renderHook(() => useRcHighlights([PASSAGE], 'actor-a'));
   await waitFor(() => expect(view.result.current.loaded).toBe(true));
   return view;
 }
@@ -24,7 +23,11 @@ async function setup() {
 const targetsOf = (rows: RcHighlight[]) => rows.map((h) => `${h.target}:${h.start}-${h.end}`);
 
 describe('useRcHighlights with question-scoped targets', () => {
-  beforeEach(() => saveAnnotations.mockClear());
+  beforeEach(() => {
+    localStorage.clear();
+    saveAnnotations.mockReset().mockResolvedValue(undefined);
+    loadAnnotations.mockReset().mockResolvedValue(new Map());
+  });
 
   it('keeps passage, stem and choice marks as separate layers', async () => {
     const view = await setup();
@@ -88,8 +91,89 @@ describe('useRcHighlights with question-scoped targets', () => {
     act(() => {
       view.result.current.add(PASSAGE, questionTarget(Q1, 'C'), 2, 6, 'pink');
     });
-    expect(saveAnnotations).toHaveBeenLastCalledWith(PASSAGE, [
+    await waitFor(() => expect(saveAnnotations).toHaveBeenLastCalledWith(PASSAGE, [
       { target: `q${Q1}:C`, start: 2, end: 6, color: 'pink', kind: 'highlight' },
-    ]);
+    ], 'actor-a'), { timeout: 2000 });
+  });
+
+  it('gates editing until hydration succeeds and rejects a failed read', async () => {
+    let reject!: (error: Error) => void;
+    loadAnnotations.mockImplementationOnce(() => new Promise((_resolve, rejectLoad) => { reject = rejectLoad; }));
+    const view = renderHook(() => useRcHighlights([PASSAGE], 'actor-a'));
+    act(() => view.result.current.add(PASSAGE, 'passage', 0, 10));
+    expect(view.result.current.forPassage(PASSAGE)).toEqual([]);
+    await act(async () => reject(new Error('offline')));
+    expect(view.result.current.loaded).toBe(false);
+    expect(view.result.current.loadStatus).toBe('error');
+    act(() => view.result.current.add(PASSAGE, 'passage', 0, 10));
+    expect(saveAnnotations).not.toHaveBeenCalled();
+    act(() => view.result.current.retryLoad());
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+  });
+
+  it('preserves the final debounced edit for its original owner on account switch', async () => {
+    const view = renderHook(({ actor }) => useRcHighlights([PASSAGE], actor), { initialProps: { actor: 'actor-a' } });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    act(() => view.result.current.add(PASSAGE, 'passage', 0, 10));
+    view.rerender({ actor: 'actor-b' });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    expect(loadAnnotations).toHaveBeenLastCalledWith([PASSAGE], 'actor-b');
+    expect(view.result.current.forPassage(PASSAGE)).toEqual([]);
+    expect(saveAnnotations).not.toHaveBeenCalled();
+    view.rerender({ actor: 'actor-a' });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    expect(view.result.current.forPassage(PASSAGE)).toHaveLength(1);
+    expect(view.result.current.statusForPassage(PASSAGE)).toBe('recovered');
+  });
+
+  it('keeps a failed save pending and acknowledges only a successful Retry', async () => {
+    const view = await setup();
+    saveAnnotations.mockRejectedValueOnce(new Error('offline'));
+    act(() => view.result.current.add(PASSAGE, 'passage', 0, 10));
+    await waitFor(() => expect(view.result.current.statusForPassage(PASSAGE)).toBe('error'), { timeout: 2000 });
+    expect(view.result.current.errorForPassage(PASSAGE)).toBe('offline');
+    act(() => view.result.current.retrySave(PASSAGE));
+    await waitFor(() => expect(view.result.current.statusForPassage(PASSAGE)).toBe('saved'));
+    expect(saveAnnotations).toHaveBeenCalledTimes(2);
+    expect(localStorage.length).toBe(0);
+  });
+
+  it('does not let an older acknowledgement clear a newer edit', async () => {
+    const view = await setup();
+    let acknowledge!: () => void;
+    saveAnnotations.mockImplementationOnce(() => new Promise<void>((resolve) => { acknowledge = resolve; }));
+    act(() => view.result.current.add(PASSAGE, 'passage', 0, 10));
+    await waitFor(() => expect(saveAnnotations).toHaveBeenCalledTimes(1), { timeout: 2000 });
+    act(() => view.result.current.add(PASSAGE, 'passage', 20, 30));
+    await act(async () => acknowledge());
+    expect(view.result.current.statusForPassage(PASSAGE)).toBe('saving');
+    expect(localStorage.length).toBe(1);
+    await waitFor(() => expect(view.result.current.statusForPassage(PASSAGE)).toBe('saved'), { timeout: 2000 });
+    expect(saveAnnotations.mock.calls[1][1]).toHaveLength(2);
+  });
+
+  it('teardown retains pending marks and a later mount restores only that owner', async () => {
+    const view = await setup();
+    act(() => view.result.current.add(PASSAGE, 'passage', 0, 10));
+    view.unmount();
+    expect(saveAnnotations).not.toHaveBeenCalled();
+    const other = renderHook(() => useRcHighlights([PASSAGE], 'actor-b'));
+    await waitFor(() => expect(other.result.current.loaded).toBe(true));
+    expect(other.result.current.forPassage(PASSAGE)).toEqual([]);
+    other.unmount();
+    const restored = await setup();
+    expect(restored.result.current.forPassage(PASSAGE)).toHaveLength(1);
+    expect(restored.result.current.statusForPassage(PASSAGE)).toBe('recovered');
+  });
+
+  it('ignores late actor hydration after a same-passage account change', async () => {
+    let oldRead!: (map: Map<number, RcHighlight[]>) => void;
+    loadAnnotations.mockImplementationOnce(() => new Promise((resolve) => { oldRead = resolve; }));
+    const view = renderHook(({ actor }) => useRcHighlights([PASSAGE], actor), { initialProps: { actor: 'actor-a' } });
+    view.rerender({ actor: 'actor-b' });
+    await waitFor(() => expect(view.result.current.loaded).toBe(true));
+    act(() => view.result.current.add(PASSAGE, 'passage', 20, 30));
+    await act(async () => oldRead(new Map([[PASSAGE, [{ target: 'passage', start: 0, end: 10, color: 'yellow' }]]])));
+    expect(targetsOf(view.result.current.forPassage(PASSAGE))).toEqual(['passage:20-30']);
   });
 });

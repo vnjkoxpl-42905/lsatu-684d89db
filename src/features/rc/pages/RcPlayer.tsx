@@ -23,8 +23,10 @@ import {
 import { RC_DIRECTIONS, RC_FONT_SCALE_OPTIONS } from '../lib/rcDirections';
 import { readActiveRcAnswerBackup, readRcAnswerBackup, writeRcAnswerBackup, clearRcAnswerBackup } from '../lib/rcAnswerBackup';
 import { completedRcDestination, rcReviewRedirect } from '../lib/rcSessionDestination';
+import { safeRcReturnTo } from '../lib/rcReturnTo';
 import { useRcA11y } from '../hooks/useRcA11y';
 import { useRcHighlights } from '../hooks/useRcHighlights';
+import { useRcFlagPersistence } from '../hooks/useRcFlagPersistence';
 import StudyAidsControls from '@/components/drill/official/StudyAidsControls';
 import DrillActorScope from '@/components/drill/DrillActorScope';
 import { useQuestionStudyTools } from '@/hooks/useQuestionStudyTools';
@@ -60,7 +62,6 @@ import {
   getSessionAttempts,
   recordAttempt,
   saveSessionClock,
-  setAttemptFlag,
 } from '../api/rcProgress';
 import type { RcDrillConfig, RcHighlightMode, RcLetter, RcPassage } from '../lib/rcTypes';
 // The player owns player.css; rc.css carries the review layer, which mounts
@@ -119,10 +120,7 @@ function RcPlayerRunner() {
    * on the query string, so anything else would be an open redirect.
    */
   const returnToParam = params.get('returnTo');
-  const returnTo =
-    returnToParam && returnToParam.startsWith('/') && !returnToParam.startsWith('//')
-      ? returnToParam
-      : null;
+  const returnTo = safeRcReturnTo(returnToParam) ?? null;
   /**
    * The way out of the player. A leg of a practice test says where it came
    * from; anything else lands on the RC hub. The LR/RC toggle is a different
@@ -158,6 +156,16 @@ function RcPlayerRunner() {
   /** Session-scoped, so a later drill of the same question starts clean. */
   const rcCrossOutRef = (sid: string, questionId: number) => ({ family: 'rc' as const, id: `${sid}:${questionId}` });
   const changedCrossOuts = React.useRef(new Set<number>());
+  const flagPersistence = useRcFlagPersistence({
+    actorId: user?.id, sessionId,
+    enabled: !!sessionId && sessionOwnerId === user?.id && !loadingAnswers && !answerLoadError && !protectedReview,
+    recordedQuestionIds: [...state.recorded],
+  });
+  React.useEffect(() => {
+    for (const [questionId, flagged] of flagPersistence.pendingFlags) {
+      if (state.flagged.has(questionId) !== flagged) dispatch({ type: 'toggleFlag', questionId });
+    }
+  }, [flagPersistence.pendingFlags, state.flagged]);
 
   React.useEffect(() => {
     if (!changedCrossOuts.current.size || loadingAnswers || answerLoadError || !studyAidsEnabled || reviewOnly || !sessionId || sessionOwnerId !== user?.id || sessionStatus !== 'in_progress') return;
@@ -215,7 +223,7 @@ function RcPlayerRunner() {
           const session = await getSession(existingId);
           if (!session) throw new Error('That drill could not be found.');
           if (!user || session.userId !== user.id) throw new Error('This drill belongs to another account.');
-          if (session.config.timedSectionSittingId && (!reviewOnly || session.status !== 'completed')) {
+          if (session.config.timedSectionSittingId && !reviewOnly) {
             if (!cancelled) navigate(timedSectionResumeHref(session.config.timedSectionSittingId), { replace: true });
             return;
           }
@@ -267,7 +275,7 @@ function RcPlayerRunner() {
           if (cancelled) return;
           if (!session) throw new Error('That drill could not be found.');
           if (session && (!user || session.userId !== user.id)) throw new Error('This drill belongs to another account.');
-          if (session.config.timedSectionSittingId && (!reviewOnly || session.status !== 'completed')) {
+          if (session.config.timedSectionSittingId && !reviewOnly) {
             navigate(timedSectionResumeHref(session.config.timedSectionSittingId), { replace: true });
             return;
           }
@@ -425,7 +433,7 @@ function RcPlayerRunner() {
 
   const a11y = useRcA11y();
   const passageIds = React.useMemo(() => (passages ?? []).map((p) => p.passageId), [passages]);
-  const highlights = useRcHighlights(passageIds);
+  const highlights = useRcHighlights(passageIds, user?.id);
 
   const [passageOnly, setPassageOnly] = React.useState(false);
   const [findQuery, setFindQuery] = React.useState('');
@@ -591,6 +599,7 @@ function RcPlayerRunner() {
           isFirstAttempt: true,
         });
         dispatch({ type: 'markRecorded', questionIds: [questionId] });
+        flagPersistence.acknowledgeRecordedFlag(questionId, state.flagged.has(questionId));
         if (sessionOwnerId && readRcAnswerBackup(sessionOwnerId, sessionId)?.questionId === questionId) {
           clearRcAnswerBackup(sessionOwnerId, sessionId);
         }
@@ -627,7 +636,7 @@ function RcPlayerRunner() {
         return false;
       }
     },
-    [sessionId, sessionOwnerId, state.flagged, state.eliminations, state.recorded, state.currentIndex, state.items, failAccountSave],
+    [sessionId, sessionOwnerId, state.flagged, state.eliminations, state.recorded, state.currentIndex, state.items, failAccountSave, flagPersistence],
   );
 
   const recordPassage = React.useCallback(
@@ -778,11 +787,9 @@ function RcPlayerRunner() {
     (questionId: number) => {
       if (protectedReview || state.paused || navigationInFlightRef.current || submitting) return;
       dispatch({ type: 'toggleFlag', questionId });
-      if (sessionId) {
-        void setAttemptFlag(sessionId, questionId, !state.flagged.has(questionId));
-      }
+      flagPersistence.setFlag(questionId, !state.flagged.has(questionId));
     },
-    [sessionId, state.flagged, state.paused, submitting, protectedReview],
+    [flagPersistence, state.flagged, state.paused, submitting, protectedReview],
   );
 
   /* ------------------------------------------------- selection, guarded */
@@ -1040,13 +1047,24 @@ function RcPlayerRunner() {
     { label: 'Reading Comprehension', onClick: () => navigate(exitPath) },
     { label: `The Official LSAT PrepTest ${item.passage.preptest}` },
     {
-      label: `Section ${item.passage.section} · Passage ${item.passage.setNumber} · Question ${item.number}`,
+      label: `Section ${item.passage.section} · Passage ${item.passage.setNumber} · Question ${item.question.position} · Drill ${item.number} of ${state.items.length}`,
     },
   ];
 
   return (
     <>
       {protectedReview && <p role="status" className="border-b bg-muted px-4 py-3 text-sm">This protected section keeps its saved answers and flags unchanged. Review is read-only. Use Drill your misses from the report for a new attempt.</p>}
+      <div className="flex flex-wrap gap-3 border-b bg-white px-4 py-2 text-sm text-slate-900">
+        {highlights.loadError ? <span role="alert">Passage marks could not be loaded. Editing is unavailable. <button type="button" onClick={highlights.retryLoad}>Retry loading marks</button></span> : !highlights.loaded ? <span role="status">Loading passage marks…</span> : (() => {
+          const status = highlights.statusForPassage(item.passage.passageId);
+          return status === 'idle' ? null : <span role="status">Passage marks: {status === 'saving' ? 'Saving…' : status === 'saved' ? 'Saved' : status === 'recovered' ? 'Recovered, not saved' : 'Not saved'}{(status === 'error' || status === 'recovered') && <button type="button" className="ml-2 underline" onClick={() => highlights.retrySave(item.passage.passageId)}>Retry saving marks</button>}</span>;
+        })()}
+        {(() => {
+          const status = flagPersistence.statusForQuestion(questionId);
+          return status === 'idle' ? null : <span role="status">Flag: {status === 'saved' ? 'Saved' : status === 'saving' ? 'Saving…' : status === 'recovered' && !state.recorded.has(questionId) ? 'Pending until this answer is recorded' : 'Not saved'}{(status === 'error' || status === 'recovered') && state.recorded.has(questionId) && <button type="button" className="ml-2 underline" onClick={() => flagPersistence.retry(questionId)}>Retry saving flag</button>}</span>;
+        })()}
+        {flagPersistence.recoveryError && <span role="alert">{flagPersistence.recoveryError}</span>}
+      </div>
       <OfficialDrillFrame
         fillViewport
         maxWidthClassName={passageOnly ? 'max-w-none' : undefined}
@@ -1137,7 +1155,7 @@ function RcPlayerRunner() {
                       family: 'rc',
                       id: String(questionId),
                       passageId: item.passage.passageId,
-                      label: `PT${item.passage.preptest} · S${item.passage.section} · P${item.passage.setNumber} · Q${item.number}`,
+                      label: `PT${item.passage.preptest} · S${item.passage.section} · P${item.passage.setNumber} · Q${item.question.position}`,
                     }),
                   )
                 }
@@ -1171,6 +1189,7 @@ function RcPlayerRunner() {
           passageOnly={passageOnly}
           passage={
             <RcPassagePane
+              annotationsDisabled={!highlights.loaded}
               passage={item.passage}
               highlights={highlights.forPassage(item.passage.passageId)}
               color={highlights.color}
@@ -1205,6 +1224,7 @@ function RcPlayerRunner() {
           }
           question={
             <RcQuestionPane
+              annotationsDisabled={!highlights.loaded}
               item={item}
               selected={selected}
               eliminations={
@@ -1317,7 +1337,7 @@ function RcPlayerRunner() {
         <RcQuestionDetails
           question={item.question}
           passage={item.passage}
-          number={item.number}
+          number={item.question.position}
           onClose={() => setModal(null)}
         />
       )}

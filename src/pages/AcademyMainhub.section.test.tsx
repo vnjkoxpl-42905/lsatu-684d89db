@@ -204,16 +204,16 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   it("opens on RC when the link says so", () => {
     renderHub("/classroom/drill?section=rc");
     expect(screen.queryByText("DRILL / READING COMPREHENSION")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Smart Drill" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Build the reading set you need." })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Set up an RC drill" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Smart Drill" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Create an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Create RC drill" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
     expect(rcSwitch()).toHaveAttribute("aria-pressed", "true");
   });
 
   it("keeps the console as the one door to the RC builder, and does not offer a section to sit", () => {
     renderHub("/classroom/drill?section=rc");
-    expect(screen.getByRole("button", { name: "Set up an RC drill" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Create RC drill" })).toBeInTheDocument();
     expect(screen.queryByText("Build a Set")).not.toBeInTheDocument();
     // Sitting a real section lives in the Testing Centre, in RC as in LR.
     expect(screen.queryByText("Full Section")).not.toBeInTheDocument();
@@ -292,11 +292,12 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
-  it("keeps Assigned work mounted across the toggle because assignments span sections", () => {
+  it("keeps RC assignments secondary and collapsed until requested", () => {
     renderHub("/classroom/drill");
-    const before = screen.getByRole("region", { name: "Assigned work" });
     fireEvent.click(rcSwitch());
-    expect(screen.getByRole("region", { name: "Assigned work" })).toBe(before);
+    const assigned = screen.getByText("View homework from My Work").closest("details");
+    expect(assigned).not.toHaveAttribute("open");
+    expect(screen.getByRole("region", { name: "Assigned work" })).not.toBeVisible();
   });
 
   it("switches LR and RC in place without remounting or animating the surfaces", () => {
@@ -309,13 +310,13 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
 
     fireEvent.click(rcSwitch());
 
-    expect(screen.getByText("Build the reading set you need.").closest(".drill-observatory-hero")).toBe(hero);
+    expect(screen.getByRole("heading", { name: "Create an RC drill" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBe(practiceBay);
   });
 
   it("opens the RC builder from the console, and Cancel returns to the RC section", () => {
     renderHub("/classroom/drill?section=rc");
-    fireEvent.click(screen.getByRole("button", { name: "Set up an RC drill" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create RC drill" }));
     expect(screen.getByRole("region", { name: "RC drill builder" })).toBeInTheDocument();
     expect(url().get("stage")).toBe("type-drill");
     expect(screen.queryByRole("region", { name: "Assigned work" })).not.toBeInTheDocument();
@@ -323,7 +324,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     fireEvent.click(screen.getByRole("button", { name: "Cancel RC" }));
     expect(url().get("stage")).toBeNull();
     expect(url().get("section")).toBe("rc");
-    expect(screen.getByRole("region", { name: "Assigned work" })).toBeInTheDocument();
+    expect(screen.getByText("View homework from My Work").closest("details")).not.toHaveAttribute("open");
   });
 
   it("keeps unrelated assigned work outside the LR builder", () => {
@@ -332,16 +333,13 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.queryByRole("region", { name: "Assigned work" })).not.toBeInTheDocument();
   });
 
-  it("RC Smart Drill asks the builder for one untimed passage and starts it", () => {
+  it("RC creation opens the builder without automatically starting a drill", () => {
     renderHub("/classroom/drill?section=rc");
-    fireEvent.click(screen.getByRole("button", { name: "Smart Drill" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create RC drill" }));
     const q = url();
     expect(q.get("section")).toBe("rc");
     expect(q.get("stage")).toBe("type-drill");
-    expect(q.get("count")).toBe("1");
-    expect(q.get("timing")).toBe("untimed");
-    expect(q.get("reveal")).toBe("per_passage");
-    expect(q.get("start")).toBe("1");
+    expect(q.get("start")).toBeNull();
   });
 
   it("moves between the two options on the arrow keys", () => {

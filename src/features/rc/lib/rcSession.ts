@@ -130,6 +130,8 @@ export interface RcPagerEntry {
   index: number;
   label: string;
   questionId?: number;
+  sourceLabel?: string;
+  passageLabel?: string;
 }
 
 export function pagerEntries(s: RcSessionState): RcPagerEntry[] {
@@ -155,6 +157,8 @@ export function pagerEntries(s: RcSessionState): RcPagerEntry[] {
         index: s.items.indexOf(item),
         label: String(item.number),
         questionId: item.question.questionId,
+        sourceLabel: `PT ${passage.preptest} · Section ${passage.section} · Passage ${passage.setNumber} · Question ${item.question.position}`,
+        passageLabel: `PT ${passage.preptest} · Section ${passage.section} · Passage ${passage.setNumber}${passage.title ? ` · ${passage.title}` : ''}`,
       });
     }
   }
