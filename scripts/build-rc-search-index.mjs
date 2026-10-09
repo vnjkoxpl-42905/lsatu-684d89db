@@ -11,9 +11,12 @@
  * Usage: node scripts/build-rc-search-index.mjs
  */
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const RC_DIR = new URL('../public/data/rc/', import.meta.url).pathname;
+// URL.pathname is percent-encoded and begins with `/C:/` on Windows. Convert
+// the module URL to a native filesystem path before joining input/output paths.
+const RC_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'data', 'rc');
 
 const index = JSON.parse(readFileSync(join(RC_DIR, 'rc-index.json'), 'utf8'));
 
@@ -66,7 +69,10 @@ for (const file of files) {
 // so the hub and the search page can never disagree about what is drillable.
 const indexIds = new Set();
 for (const { questionIds } of passageMeta.values()) {
-  for (const id of questionIds) indexIds.add(id);
+  for (const id of questionIds) {
+    if (indexIds.has(id)) throw new Error(`rc-index.json: duplicate questionId ${id}`);
+    indexIds.add(id);
+  }
 }
 const missing = [...indexIds].filter((id) => !seen.has(id));
 const extra = [...seen].filter((id) => !indexIds.has(id));
