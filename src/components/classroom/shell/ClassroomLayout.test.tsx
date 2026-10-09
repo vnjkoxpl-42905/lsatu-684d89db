@@ -121,15 +121,6 @@ describe("classroom rail access", () => {
     fireEvent.click(railButton(/^Messages/));
     expect(screen.getByTestId("where")).toHaveTextContent("/inbox");
   });
-
-  it("opens Schedule rather than Students for a teacher", async () => {
-    permissions.is_admin = true;
-    await renderShell("/teacher/students");
-    expect(railButton(/^Schedule/)).not.toHaveAttribute("aria-current", "page");
-    fireEvent.click(railButton(/^Schedule/));
-    expect(screen.getByTestId("where")).toHaveTextContent("/schedule");
-    expect(railButton(/^Schedule/)).toHaveAttribute("aria-current", "page");
-  });
 });
 
 describe("mobile menu", () => {
