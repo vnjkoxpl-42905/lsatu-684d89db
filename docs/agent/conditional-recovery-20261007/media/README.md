@@ -51,3 +51,13 @@ No verified P0 or P1 defect remains in this scoped pass. Outstanding validation 
 - Pause controls: https://www.w3.org/WAI/WCAG20/Understanding/pause-stop-hide.html
 
 The local preview server was restarted as a hidden detached process after the temporary tool session stopped. The preview harness has no account persistence. Production access and deployment remain separate acceptance steps.
+
+## Follow-up: condition-first scope, 2026-10-09
+
+Joshua corrected the teaching order after inspecting the page. The prior fact cases and rule/fact/inference walkthrough described above are historical. The sufficient page now explains the conditional relationship itself: complete-clause trigger/outcome exploration, original learner-controlled SVG group illustration and three relationship combinations. No Maya, Enough for what? or video player remains on that definition page. Necessary is still next, with only a brief bridge here.
+
+Both reviewed clips and all assets are preserved. The player now sits in reference7, on the missing-requirement destination, after role teaching and with explicit new-rule/application context. Browser confirmed readyState4 and caption readyState2 there. No additional generation spend.
+
+New source review used the complete ingested LSAT Lab video transcript (ai-os/raw/sources/lsat-lab-lectures/16784/source.en-US.vtt:48-94), all three saved Demon sources and Joshua's voice standard. The complete Lab transcript exists in raw/research; the lecture index does not yet contain a finished conditionals package. Source boards informed the method; the new SVG is original.
+
+Final52 tests across four suites, full typecheck, npm production build and postbuild check pass. Independent code review found no material defects. Codex verifies trigger/outcome/connection controls, all three group comparisons, incorrect/correct/retry feedback, five actual CSS widths (320/400/960/1200/1600), default docked layout and absence of early case facts. No horizontal overflow or lesson button below44px observed. Reduced-motion handling remains implemented; real devices and assistive technology remain unverified. No fresh audit score or production acceptance claim is made. Screenshot: C:/Users/Joshu/.codex/visualizations/2026/10/07/01a117ea-7c95-7813-af3b-866b05ec963a/sufficient-condition-concept-visual.png.

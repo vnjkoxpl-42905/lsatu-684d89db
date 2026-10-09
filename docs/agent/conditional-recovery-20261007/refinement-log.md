@@ -99,3 +99,10 @@ Joshua explicitly reordered opening steps4and5. Read the must arrow is now step4
 - Codex IAB verifies both videos/caption readiness, keyboard reasoning/replay, three case states and wrong/correct/retry feedback. 320/400/960/1200/1600 widths have no horizontal overflow and all lesson buttons meet 44px targets. Contrast verified; no console errors observed.
 - Impeccable polish followed by provisional 18/20 technical audit; outstanding actual assistive technology, devices and slow-network checks recorded in media/README.md. No perfect release-acceptance claim. No commit/push/deploy.
 - Screenshot: C:/Users/Joshu/.codex/visualizations/2026/10/07/01a117ea-7c95-7813-af3b-866b05ec963a/sufficient-motion-desktop.png
+
+## 2026-10-09: Define sufficiency before applying a case fact
+
+- Latest Joshua correction removes Enough for what? and fact-first Maya teaching from sufficient. The page now explains trigger, guaranteed outcome and complete conditions through sentence-part exploration and an original interactive SVG group illustration. Three conceptual checks replace individual-case checks; brief necessity bridge preserved.
+- Full ingested LSAT Lab Conditional Logic transcript located at ai-os/raw/sources/lsat-lab-lectures/16784/source.en-US.vtt. Opening role explanation, saved Demon sources and selected voice standard guide the revision. Trigger remains a logical metaphor, without causal or temporal claim.
+- Both existing Kling clips are preserved and relocated to reference7/missing-requirement with explicit application context. No new spend. Actual player and captions load there.
+- Final52 tests, full typecheck, npm build/postbuild pass; independent review found no material defect. Live Codex selection/feedback/retry and actual320/400/960/1200/1600CSS widths pass with no overflow or undersized lesson buttons. Default docked view inspected. Viewport reset, sufficient page retained. Local only; real-device, screen-reader and production checks remain open.
