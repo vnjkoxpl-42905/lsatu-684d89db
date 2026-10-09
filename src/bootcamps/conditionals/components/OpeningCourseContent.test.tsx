@@ -5,6 +5,33 @@ import { MixedFamilyPractice, mixedFamilyItems } from './MixedFamilyPractice';
 
 afterEach(cleanup);
 
+it('retains the full sufficient explanation and necessity bridge on the dedicated course page', () => {
+  render(<OpeningCourseContent id="sufficient"/>);
+  expect(screen.getByRole('heading', { name: 'How necessity fits' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Try the reasoning yourself' })).toBeVisible();
+  expect(screen.getAllByRole('status')).toHaveLength(3);
+  expect(screen.queryByText(/raffle|bicycle|100%|breathing/i)).toBeNull();
+});
+
+it('explains the sufficiency errors and retains keyboard focus when a learner retries', () => {
+  const { container } = render(<OpeningCourseContent id="sufficient"/>);
+  const questions = [...container.querySelectorAll<HTMLElement>('.cr-question')];
+  const correctAnswers = [0, 1, 1];
+  questions.forEach((question, index) => {
+    const area = within(question);
+    const answers = area.getAllByRole('button');
+    fireEvent.click(answers[1 - correctAnswers[index]]);
+    expect(area.getByRole('status').textContent).toMatch(/Not quite/);
+    fireEvent.click(answers[correctAnswers[index]]);
+    expect(area.getByRole('status').textContent).toMatch(/Correct/);
+    const retry = area.getByRole('button', { name: 'Try again' });
+    retry.focus();
+    fireEvent.click(retry);
+    expect(answers[0]).toHaveFocus();
+    expect(area.getByRole('status').textContent).toBe('');
+  });
+});
+
 const section = (name: string) => screen.getByRole('heading', { level: 2, name }).closest('section') as HTMLElement;
 
 function attemptTranslation(item: HTMLElement, number: number) {

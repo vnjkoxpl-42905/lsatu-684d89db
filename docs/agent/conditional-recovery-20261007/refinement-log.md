@@ -79,3 +79,14 @@ Fixed Compare/retry/diagram focus loss and persistent atomic diagram feedback. 1
 ## 2026-10-08: Teach the arrow before the foundation drill
 
 Joshua explicitly reordered opening steps4and5. Read the must arrow is now step4; Enough, required, or still open? is step5. The shared path updates the course list and Previous/Next navigation. Existing order regression updated; all19course tests passed. Local recovered checkout only.
+
+## 2026-10-09: Explain sufficiency through law-school enrollment
+
+- Replaced only the sufficient reference section with the user-approved law-school enrollment/student relationship. Shared raffle teaching elsewhere remains existing content.
+- Added definition, enough-for explanation, rule/fact/conclusion breakdown, guarantee reasoning, a nested student-group figure, absent/reversed-fact comparisons, noncausal distinction, a short necessity bridge, and three feedback checks including medical-school near transfer.
+- Capitalized the dedicated sufficient page title and updated its summary. Scoped lesson styles use existing theme tokens and stack on narrow layouts.
+- Source basis: three archived Demon sources; Loophole method library; saved 7Sage research; selected teaching-voice standard. Interview/source ledger: C:/Users/Joshu/dev/ai-os/brainstorms/2026-10-09-sufficient-condition-lesson.md.
+- Validation: 46 tests across ReferenceSequence, OpeningCourseContent and OpeningCourse; full typecheck; npm build including content checks and postbuild verification. All passed. Existing build warnings remain.
+- Codex IAB: checked all three wrong/correct paths, keyboard correction and retry focus; no recorded console errors. Responsive DOM geometry at actual 320, 400, 960, 1200 and 1600 CSS widths; no document horizontal overflow; narrow comparisons stack. Temporary viewport reset; preview remains open at the lesson beginning.
+- Screenshot: C:/Users/Joshu/.codex/visualizations/2026/10/07/01a117ea-7c95-7813-af3b-866b05ec963a/sufficient-condition-expanded-20261009.jpg.
+- Read-only independent source/integration review found no material issues. Local preview only; no commit, push or publication. Necessary is still next, but its expanded rewrite is not included in this pass.

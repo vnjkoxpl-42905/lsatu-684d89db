@@ -1,4 +1,29 @@
 .cr-sequence{--cr-ink:#173b38;--cr-teal:#176b5b;--cr-paper:#fbf7ed;--cr-line:#d8dfd7;counter-reset:reference;max-width:100%;min-width:0}
+.cr-sufficiency{min-width:0;color:var(--co-ink,var(--cr-ink))}
+.cr-sufficiency p{line-height:1.8;margin:.85rem 0;max-width:66ch}
+.cr-sufficiency .cr-sufficiency-lead{font-size:1.15rem;line-height:1.85;margin:0 0 1.6rem}
+.cr-sufficiency>blockquote{margin:0 0 2.1rem;padding:1.5rem 1.7rem;border-inline-start:3px solid var(--co-polish-control-line);border-radius:0 .7rem .7rem 0;background:var(--co-exhibit-sufficient);font-family:Georgia,serif;font-size:clamp(1.35rem,2.5vw,1.85rem);line-height:1.45}
+.cr-sufficient-explanation{margin-block:2.4rem}
+.cr-sufficiency h3{font-family:Georgia,serif;font-size:clamp(1.4rem,2.3vw,1.85rem);line-height:1.3;margin:0 0 .9rem;letter-spacing:-.02em}
+.cr-sufficient-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--co-polish-line);border-radius:.9rem;overflow:hidden;margin:1.5rem 0 2.1rem;background:var(--co-polish-panel)}
+.cr-sufficient-proof>div{padding:1.2rem;min-width:0}
+.cr-sufficient-proof>div+div{border-inline-start:1px solid var(--co-polish-line)}
+.cr-sufficient-proof>div:last-child{background:var(--co-exhibit-sufficient)}
+.cr-sufficient-proof span,.cr-sufficient-contrasts section>span{display:block;font-size:.78rem;font-weight:650;color:var(--co-polish-muted);line-height:1.5}
+.cr-sufficient-proof p{margin:.6rem 0 0;line-height:1.65}
+.cr-student-groups{margin:2.4rem 0;padding:1.5rem;border:1px solid var(--co-polish-line);border-radius:1rem;background:var(--co-polish-panel)}
+.cr-student-group>span{font-family:Georgia,serif;font-size:1.5rem;font-weight:600}
+.cr-law-group{padding:1.25rem 1.5rem;margin:1.3rem 0;border:1px solid var(--co-polish-control-line);border-radius:.75rem;background:var(--co-exhibit-sufficient)}
+.cr-law-group strong{font-size:1.05rem}.cr-law-group p{margin-bottom:0}
+.cr-sufficiency .cr-other-students{font-size:.94rem;color:var(--co-polish-muted)}
+.cr-student-groups figcaption{border-top:1px solid var(--co-polish-line);margin-top:1.3rem;padding-top:1.1rem;font-size:.9rem;line-height:1.7;color:var(--co-polish-muted)}
+.cr-sufficient-contrasts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.5rem 0}
+.cr-sufficient-contrasts>section{padding:1.5rem;border:1px solid var(--co-polish-line);border-radius:.9rem;background:var(--co-polish-panel);min-width:0}
+.cr-sufficient-contrasts h4{font-family:Georgia,serif;font-size:1.3rem;line-height:1.4;margin:.65rem 0 .9rem;font-weight:500}
+.cr-sufficient-bridge{padding:1.3rem 1.5rem;margin:2.4rem 0;border-inline-start:3px solid var(--co-polish-control-line);background:var(--co-polish-fill);border-radius:0 .7rem .7rem 0}
+.cr-sufficient-bridge h3{font-family:inherit;font-size:1rem;font-weight:650;letter-spacing:0}.cr-sufficient-bridge p{font-size:.96rem;margin-bottom:0}
+.cr-sufficient-checks{border-top:1px solid var(--co-polish-line);padding-top:2.2rem}.cr-sufficiency .cr-question h3{font-family:inherit;font-size:1.05rem;letter-spacing:0}
+@media(max-width:680px){.cr-sufficient-proof,.cr-sufficient-contrasts{grid-template-columns:minmax(0,1fr)}.cr-sufficient-proof>div+div{border-inline-start:0;border-top:1px solid var(--co-polish-line)}.cr-student-groups{padding:1.2rem}.cr-law-group{padding:1rem}.cr-sufficient-contrasts>section{padding:1.2rem}.cr-sufficiency>blockquote{padding:1.2rem}.cr-sufficient-bridge{padding:1.2rem}}
 .cr-sequence .cr-step{position:relative;margin-block:2.5rem;padding:clamp(1.4rem,4vw,3.2rem);background:var(--cr-paper);border:1px solid #dedfd3;border-radius:1.5rem;box-shadow:0 12px 35px -28px #234e4380;overflow:visible;color:var(--cr-ink)}
 .cr-step-heading{display:flex;align-items:flex-start;gap:1.25rem;margin-bottom:2rem;padding-bottom:1.4rem;border-bottom:1px solid var(--cr-line)}
 .cr-number{font-family:Georgia,serif;font-size:clamp(2.3rem,5vw,3.7rem);line-height:1;color:#527b6b;min-width:1.3em;letter-spacing:-.07em}
