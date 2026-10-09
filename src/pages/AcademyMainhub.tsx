@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { listStandaloneDrillRuns } from "@/lib/drillRunLedger";
 import { getSessionAttempts, listSessions } from "@/features/rc/api/rcProgress";
@@ -34,6 +34,7 @@ import {
 import { launchDrill } from "@/lib/drillLaunch";
 import { cn } from "@/lib/utils";
 import type { TypeDrillConfig } from "@/types/drill";
+import { safeRcReturnTo } from "@/features/rc/lib/rcReturnTo";
 
 function MainhubHero({
   section,
@@ -201,6 +202,13 @@ export default function AcademyMainhub({
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const lookupParams = new URLSearchParams(location.search);
+  lookupParams.delete("finder");
+  lookupParams.delete("finderReturnTo");
+  const lookupSearch = lookupParams.toString();
+  const lookupReturnTo = safeRcReturnTo(searchParams.get("finderReturnTo"))
+    ?? `${location.pathname}${lookupSearch ? `?${lookupSearch}` : ""}`;
   const questionFinderRef = React.useRef<QuestionFinderHandle>(null);
   const navigate = useNavigate();
   const viewParam = searchParams.get("view");
@@ -215,6 +223,7 @@ export default function AcademyMainhub({
     questionFinderRef.current?.open();
     const next = new URLSearchParams(searchParams);
     next.delete("finder");
+    next.delete("finderReturnTo");
     setSearchParams(next, { replace: true });
   }, [searchParams, setSearchParams]);
 
@@ -441,7 +450,7 @@ export default function AcademyMainhub({
         {!isLauncherStage && <div className="drill-observatory-tools">
           <QuestionJump
             ref={questionFinderRef}
-            returnTo={drillReturnTo}
+            returnTo={lookupReturnTo}
             tone={theme === "dark" ? "dark" : "light"}
             bank={section}
             withSearch={false}

@@ -1,8 +1,15 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation, useNavigate } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import AcademyMainhub from "./AcademyMainhub";
+
+vi.mock("@/components/questionfinder/useQuestionFinderBanks", () => ({
+  useQuestionFinderBanks: () => ({ lr: [], rcPassages: [], rcQuestions: [], loading: false, error: null, lrFailed: false, rcFailed: false }),
+}));
+vi.mock("@/components/questionfinder/useFinderAddressIndex", () => ({
+  useFinderAddressIndex: () => ({ tests: [{ pt: 140, sections: [{ section: 4, lr: [], rc: [{ id: 16, position: 3, title: "Origins", questions: [{ id: 1604, number: 17 }] }] }] }], loading: false, failed: false, retry: vi.fn() }),
+}));
 
 vi.mock("@/contexts/AuthContext", () => ({
   useAuth: () => ({
@@ -191,6 +198,26 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   beforeEach(() => {
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
     window.localStorage.clear();
+  });
+
+  it("returns a question preview to its Practice route instead of the scored drill destination", () => {
+    renderHub("/practice/drills?section=rc");
+    fireEvent.click(screen.getByRole("button", { name: "Open a question" }));
+    const dialog = screen.getByRole("dialog", { name: "Find a question" });
+    fireEvent.change(within(dialog).getByRole("textbox"), { target: { value: "PT140 S4 Q17" } });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Open question" }));
+    expect(url().get("returnTo")).toBe("/practice/drills?section=rc");
+    expect(url().get("q")).toBe("1604");
+  });
+
+  it("retains the sidebar origin after removing the finder launch parameters", () => {
+    renderHub("/practice/drills?section=rc&finder=open&finderReturnTo=%2Fprogress%2Fhistory%3Fview%3Dcompleted");
+    const dialog = screen.getByRole("dialog", { name: "Find a question" });
+    expect(url().get("finder")).toBeNull();
+    expect(url().get("finderReturnTo")).toBeNull();
+    fireEvent.change(within(dialog).getByRole("textbox"), { target: { value: "PT140 S4 Q17" } });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Open question" }));
+    expect(url().get("returnTo")).toBe("/progress/history?view=completed");
   });
 
   it("opens on LR when nothing says otherwise", () => {

@@ -67,7 +67,12 @@ export interface QuestionFinderHandle {
 
 const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProps>(function QuestionFinder({ returnTo, tone = "light", bank, triggerLabel = "Find a question" }, ref) {
   const [open, setOpen] = React.useState(false);
-  React.useImperativeHandle(ref, () => ({ open: () => setOpen(true) }), []);
+  const [openedReturnTo, setOpenedReturnTo] = React.useState(returnTo);
+  const openFinder = React.useCallback(() => {
+    if (!open) setOpenedReturnTo(returnTo);
+    setOpen(true);
+  }, [open, returnTo]);
+  React.useImperativeHandle(ref, () => ({ open: openFinder }), [openFinder]);
 
   /* Cmd/Ctrl+K is an accelerator on top of a visible, labelled control — never
      the only way in. It is ignored while the student is typing somewhere else,
@@ -85,18 +90,19 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
       if (event.key === "/" && !event.metaKey && !event.ctrlKey && !event.altKey) {
         if (open || typing) return;
         event.preventDefault();
-        setOpen(true);
+        openFinder();
         return;
       }
 
       if (event.key.toLowerCase() !== "k" || !(event.metaKey || event.ctrlKey)) return;
       if (!open && typing) return;
       event.preventDefault();
-      setOpen((value) => !value);
+      if (open) setOpen(false);
+      else openFinder();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open, openFinder]);
 
   return (
     <div className="qf" data-tone={tone}>
@@ -109,7 +115,7 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
       <button
         type="button"
         className="qf-trigger"
-        onClick={() => setOpen(true)}
+        onClick={openFinder}
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-label={triggerLabel}
@@ -125,7 +131,7 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
         </span>
       </button>
 
-      <FinderPanel returnTo={returnTo} open={open} tone={tone} bank={bank} onClose={() => setOpen(false)} />
+      <FinderPanel returnTo={openedReturnTo} open={open} tone={tone} bank={bank} onClose={() => setOpen(false)} />
     </div>
   );
 });

@@ -18,6 +18,13 @@ const session = (id: string) => ({ id, userId: 'actor', passageIds: [10], config
 beforeEach(() => { vi.clearAllMocks(); localStorage.clear(); sessionStorage.clear(); mocks.user = { id: 'actor' }; mocks.query = null; mocks.load.mockResolvedValue(passage); mocks.get.mockResolvedValue(null); mocks.create.mockImplementation(async (_c, _ids, req) => session(req.id)); });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 describe('read-only RC question lookup', () => {
+  it('returns to a retained non-practice origin without mislabelling the destination', async () => {
+    mount('passage=10&q=3&returnTo=%2Fmy-work%3Ftab%3Dassigned');
+    await screen.findByText('Question stem 3');
+    fireEvent.click(screen.getByRole('button', { name: 'Back', exact: true }));
+    expect(mocks.navigate).toHaveBeenCalledWith('/my-work?tab=assigned');
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
   it('loads, refreshes and closes without backend or device writes or answer leakage', async () => {
     localStorage.setItem('existing-marks', 'unchanged'); sessionStorage.setItem('existing-backup', 'unchanged');
     const localSet = vi.spyOn(localStorage, 'setItem'); const localRemove = vi.spyOn(localStorage, 'removeItem');

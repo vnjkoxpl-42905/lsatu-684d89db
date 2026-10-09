@@ -219,6 +219,16 @@ describe("QuestionFinder", () => {
     fireEvent.click(open);
     expect(navigate).toHaveBeenCalledWith("/rc/preview?passage=4021&q=503&returnTo=%2Fclassroom");
   });
+  it("keeps the opening origin when its host route changes while lookup remains open", () => {
+    const view = render(<MemoryRouter><QuestionFinder returnTo="/practice/drills?section=rc" bank="rc" /></MemoryRouter>);
+    fireEvent.click(screen.getByRole("button", { name: "Find a question" }));
+    const dialog = screen.getByRole("dialog", { name: "Find a question" });
+    type(dialog, "PT140 S4 Q17");
+    view.rerender(<MemoryRouter><QuestionFinder returnTo="/rc/preview?passage=16&q=1604" bank="rc" /></MemoryRouter>);
+    fireEvent.click(within(dialog).getByRole("button", { name: "Open question" }));
+    expect(navigate).toHaveBeenCalledWith("/rc/preview?passage=16&q=1604&returnTo=%2Fpractice%2Fdrills%3Fsection%3Drc");
+  });
+
   it("keeps LR preview disabled truthfully", () => {
     const dialog = openFinder("lr"); type(dialog, "PT90 S1 Q12");
     expect(within(dialog).getByRole("button", { name: "Open question" })).toBeDisabled();

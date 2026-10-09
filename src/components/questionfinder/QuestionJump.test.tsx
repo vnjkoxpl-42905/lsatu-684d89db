@@ -15,6 +15,6 @@ describe("QuestionJump shared finder entry", () => {
     render(<MemoryRouter><QuestionJump returnTo="/classroom" bank="rc" /></MemoryRouter>);
     fireEvent.click(screen.getByRole("button", { name: "Open a question" }));
     expect(screen.getByRole("dialog", { name: "Find a question" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /open question unavailable/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Open question" })).toBeDisabled();
   });
 });
