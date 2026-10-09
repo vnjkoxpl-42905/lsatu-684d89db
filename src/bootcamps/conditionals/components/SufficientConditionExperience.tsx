@@ -3,21 +3,21 @@ import './sufficient-condition-experience.css';
 
 const relationships = [
   {
-    key: 'both', label: 'Enrolled in law school and a student', fits: true,
-    result: 'These conditions belong together.',
-    explanation: "The sentence guarantees student status whenever law-school enrollment is true. That's why the entire law-school group belongs inside the student group.",
-    caption: 'Law-school enrollment always comes with student status.',
+    key: 'both', label: 'Enrolled and a student', fits: true,
+    result: 'This is the relationship the sentence guarantees.',
+    explanation: "Anyone enrolled in law school is a student. That's why the whole law-school group sits inside the student group.",
+    caption: 'Everyone enrolled in law school belongs inside Students.',
   },
   {
-    key: 'contradiction', label: 'Enrolled in law school but not a student', fits: false,
-    result: 'This would break the guarantee.',
-    explanation: "The sufficient condition would be true, but the condition it guarantees would be false. That combination contradicts the sentence. No part of the law-school group can sit outside the student group.",
-    caption: 'Law-school enrollment without student status is excluded.',
+    key: 'contradiction', label: 'Enrolled, but not a student', fits: false,
+    result: 'The guarantee does not allow this.',
+    explanation: "The sentence says anyone enrolled in law school is a student. A person who was enrolled but wasn't a student would contradict it.",
+    caption: 'An enrolled person outside Students would break the rule.',
   },
   {
-    key: 'other', label: 'A student, but not enrolled in law school', fits: true,
-    result: 'The sentence allows this combination.',
-    explanation: "Law-school enrollment is one way to satisfy the condition of being a student. It isn't the only way. Students studying other subjects can belong to the larger group too.",
+    key: 'other', label: 'A student outside law school', fits: true,
+    result: 'You can be a student without being in law school.',
+    explanation: "The sentence tells us about people enrolled in law school. It doesn't say every student is enrolled there. Someone studying history could be a student too.",
     caption: 'The student group can include students outside law school.',
   },
 ] as const;
@@ -38,14 +38,14 @@ export function SufficientConditionExperience() {
   return <section className="sc-experience" aria-labelledby={titleId}>
     <header>
       <p className="sc-eyebrow">Picture the relationship</p>
-      <h3 id={titleId}>Every law-school student is a student.</h3>
-      <p>The smaller group fits entirely inside the larger one. Select a combination to see how it compares with the sentence.</p>
+      <h3 id={titleId}>Law-school students belong inside the student group.</h3>
+      <p>Everyone enrolled in law school has to fit inside Students. Try the combinations below and see which ones the sentence allows.</p>
     </header>
     <figure className="sc-membership" data-case={current.key}>
       <div className="sc-group-visual">
         <div className="sc-group-label"><span>Students</span><span className="sc-group-note">The larger group</span></div>
-        <svg className="sc-group-drawing" viewBox="0 0 600 250" role="img" aria-labelledby={diagramId}>
-          <title id={diagramId}>The entire law-school group is inside the student group. Students in other subjects can be outside the law-school group while still inside Students.</title>
+        <svg className="sc-group-drawing" viewBox="0 0 600 310" role="img" aria-labelledby={diagramId}>
+          <title id={diagramId}>{current.key === 'contradiction' ? 'An enrolled person outside the student group is crossed out: the sentence excludes this combination.' : current.key === 'other' ? 'Students outside law school are highlighted inside the student group. The sentence allows this.' : 'The entire law-school group is highlighted inside the student group.'}</title>
           <rect className="sc-student-boundary" x="8" y="8" width="584" height="234" rx="30"/>
           <rect className="sc-law-boundary" x="30" y="30" width="270" height="190" rx="24"/>
           <g className="sc-law-symbols" aria-hidden="true">
@@ -56,10 +56,21 @@ export function SufficientConditionExperience() {
             <StudentSymbol x={365} y={88}/><StudentSymbol x={445} y={88}/><StudentSymbol x={525} y={88}/>
             <StudentSymbol x={365} y={162}/><StudentSymbol x={445} y={162}/><StudentSymbol x={525} y={162}/>
           </g>
+          {current.key === 'contradiction' && <g className="sc-excluded-person" aria-hidden="true">
+            <path d="M165 220v42h165" className="sc-exclusion-guide"/>
+            <StudentSymbol x={370} y={275}/>
+            <circle cx="370" cy="275" r="29"/>
+            <path d="m350 255 40 40"/>
+            <text x="415" y="279">Excluded</text>
+          </g>}
+          {current.key !== 'contradiction' && <g className="sc-diagram-annotation" aria-hidden="true">
+            <path d={current.key === 'other' ? 'M445 190v63' : 'M165 190v63'}/>
+            <text x={current.key === 'other' ? 445 : 165} y="279" textAnchor="middle">{current.key === 'other' ? 'Allowed too' : 'Always inside'}</text>
+          </g>}
         </svg>
         <div className="sc-diagram-key" aria-hidden="true"><span><i/>Enrolled in law school</span><span><i/>Other students</span></div>
       </div>
-      <figcaption>{current.caption} The groups illustrate the relationship, not how many people are enrolled.</figcaption>
+      <figcaption>{current.caption} The number of figures is illustrative.</figcaption>
     </figure>
     <div className="sc-case-controls" role="group" aria-label="Compare combinations with the conditional sentence">
       {relationships.map((relationship, index) => <button type="button" key={relationship.key} aria-pressed={selected === index} aria-controls={readingId} onClick={() => setSelected(index)}>{relationship.label}</button>)}
@@ -74,19 +85,19 @@ export function SufficientConditionExperience() {
 
 const explanations = {
   trigger: {
-    label: 'The sufficient condition',
-    title: 'Enrollment is the condition that guarantees student status.',
-    text: "The if-part names law-school enrollment. Whenever that condition is satisfied, the rule requires student status. That's the job of a sufficient condition. It establishes the other condition under this rule.",
+    label: 'Sufficient condition',
+    title: 'Being enrolled in law school is enough to guarantee being a student.',
+    text: 'The word “if” introduces being enrolled in law school. That whole idea is the sufficient condition. “If” helps us recognize it; the word itself isn’t the condition.',
   },
   result: {
-    label: 'The stated outcome',
-    title: 'Being a student is what the sentence guarantees.',
-    text: "The outcome is not just a possibility. Whenever you're enrolled in law school, you have to be a student. A person who was enrolled but wasn't a student would be an exception to the sentence.",
+    label: 'What must be true',
+    title: 'Anyone enrolled in law school has to be a student.',
+    text: 'This is what the first part guarantees. The sentence doesn’t say you’re probably a student. It says you’re a student.',
   },
   connection: {
-    label: 'The connection between them',
-    title: 'The first condition guarantees the second.',
-    text: "The sufficient condition is the trigger for this guarantee: if law-school enrollment is true, student status must be true too. ‘Trigger’ describes the logical connection. It doesn't mean that one event causes another or that the events happen in a particular order.",
+    label: 'The guarantee',
+    title: 'You cannot have the first condition without the second.',
+    text: "If you're enrolled in law school, you have to be a student too. That's the connection the sentence gives us.",
   },
 } as const;
 
@@ -96,7 +107,7 @@ export function SufficientReasoningWalkthrough() {
   const explanationId = useId();
   const current = explanations[selected];
   return <section className="sc-walkthrough" aria-labelledby={headingId}>
-    <header><p className="sc-eyebrow">Take the sentence apart</p><h3 id={headingId}>Which condition guarantees student status?</h3><p>Select either part of the sentence, then look at the connection between them.</p></header>
+    <header><p className="sc-eyebrow">Look at the sentence</p><h3 id={headingId}>Look at the two parts of the sentence.</h3><p>Select a part of the sentence to see what it contributes.</p></header>
     <div className="sc-sentence-map" data-selected={selected} role="group" aria-label="Explore the two conditions and their connection">
       <button type="button" className="sc-sentence-part sc-trigger" aria-pressed={selected === 'trigger'} aria-controls={explanationId} onClick={() => setSelected('trigger')}>
         <span className="sc-clause-label">If</span>{' '}<strong>you're enrolled in law school</strong>{' '}<span className="sc-clause-role">Trigger · Sufficient condition</span>

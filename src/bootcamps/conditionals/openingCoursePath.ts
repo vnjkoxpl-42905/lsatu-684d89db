@@ -10,7 +10,7 @@ export type OpeningCourseStep = {
 // Reading destinations are not legacy completion IDs. Visiting one records no completion.
 export const OPENING_COURSE_PATH: OpeningCourseStep[] = [
   { id: 'meaning', type: 'note', title: 'What conditionals are', description: 'Separate a rule from a fact, and see what a conditional actually promises.', unitId: 'orientation' },
-  { id: 'sufficient', type: 'note', title: 'The Sufficient Condition', description: 'Understand the condition that triggers a guarantee, and the outcome that must hold with it.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
+  { id: 'sufficient', type: 'note', title: 'The Sufficient Condition', description: 'What makes one condition enough to guarantee another?', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'necessary', type: 'note', title: 'The necessary condition', description: 'Find what the rule requires, without turning that requirement into a guarantee.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'must-arrow', type: 'note', title: 'Read the must arrow', description: 'Put sufficient on the left and necessary on the right, wherever they appear in the sentence.', unitId: 'orientation' },
   { id: 'foundation-practice', type: 'drill', title: 'Enough, required, or still open?', description: 'Use fresh facts and build a case that exposes a reversed rule.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },

@@ -7,18 +7,21 @@ afterEach(cleanup);
 
 it('retains the full sufficient explanation and necessity bridge on the dedicated course page', () => {
   render(<OpeningCourseContent id="sufficient"/>);
-  expect(screen.getByRole('heading', { name: 'How necessity fits' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Identify the sufficient condition' })).toBeVisible();
-  expect(document.querySelectorAll('.cr-sufficient-checks [role="status"]')).toHaveLength(3);
+  expect(screen.getByRole('heading', { name: 'The other condition has to be there' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Try the idea in another sentence' })).toBeVisible();
+  expect(document.querySelectorAll('.cr-sufficient-checks [role="status"]')).toHaveLength(2);
   expect(screen.queryByText(/raffle|bicycle|100%|breathing/i)).toBeNull();
   expect(screen.queryByText(/Maya|The fact|Enough for what\?/i)).toBeNull();
   expect(document.querySelector('video')).toBeNull();
+  const guaranteeExplanation = screen.getByText(/Could someone be enrolled in law school without being a student/);
+  const firstControl = document.querySelector('.sc-sentence-map button')!;
+  expect(guaranteeExplanation.compareDocumentPosition(firstControl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });
 
 it('explains the sufficiency errors and retains keyboard focus when a learner retries', () => {
   const { container } = render(<OpeningCourseContent id="sufficient"/>);
   const questions = [...container.querySelectorAll<HTMLElement>('.cr-question')];
-  const correctAnswers = [0, 1, 1];
+  const correctAnswers = [0, 1];
   questions.forEach((question, index) => {
     const area = within(question);
     const answers = area.getAllByRole('button');

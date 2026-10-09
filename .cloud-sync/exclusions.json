@@ -336,6 +336,10 @@
     "reason": "excluded file"
   },
   {
+    "path": "docs/agent/conditional-recovery-20261007/media/voice-first-build.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "docs/agent/conditional-recovery-20261007/polish-build.log",
     "reason": "excluded file"
   },
