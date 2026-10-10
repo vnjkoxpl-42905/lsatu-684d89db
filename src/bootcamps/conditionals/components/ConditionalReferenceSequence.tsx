@@ -242,17 +242,20 @@ export function conditionalReferenceContent() {
 
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 1 indicator words">
           <h3>Group 1: Sufficient-condition indicators</h3>
-          <p>If isn't the only expression that can help you find the sufficient condition. Look for these too:</p>
+          <p>You've seen how <strong>if</strong> points to the sufficient condition. These indicator words and phrases can help you recognize it too:</p>
           <ul>{sufficientFamily.map(entry => <li key={entry.word}>{entry.word}</li>)}</ul>
-          <p>The expression helps you find the condition. Read the whole statement to see which idea guarantees the other.</p>
+          <p>An <strong>indicator</strong> is a word or phrase that helps you recognize the relationship. In our example, <strong>if</strong> is the indicator; <strong>being enrolled in law school</strong> is the condition that guarantees being a student. Look for the words, then ask what they tell you about the two conditions.</p>
         </section>
 
         <section className="cr-sufficient-explanation cr-sufficient-checks" aria-label="Check your understanding of sufficiency">
-          <h3>Try another conditional</h3>
-          <ReferenceQuestion prompt="“Being enrolled in medical school is sufficient for being a student.” What does being enrolled guarantee?" options={['Anyone enrolled in medical school has to be a student.', 'Anyone who is a student has to be enrolled in medical school.']} correct={0} feedback={['Being enrolled in medical school is enough to guarantee being a student. Being a student does not guarantee being enrolled in medical school.', 'That turns the relationship around. Being enrolled in medical school guarantees being a student, not the other way around.']}/>
-          <ReferenceQuestion prompt="If you aren't enrolled in law school, what does our conditional tell us about whether you're a student?" options={["You can't be a student.", "You could be a student, or you might not be. It doesn't tell us."]} correct={1} feedback={["Being enrolled is one way to guarantee you're a student. Not being enrolled doesn't rule out other ways of being a student.", "Right. The sufficient condition isn't met, so this conditional doesn't settle whether you're a student. Both possibilities remain open."]}/>
+          <h3>Use an indicator to find the guarantee</h3>
+          <p>Let's use <strong>every</strong> in a new example:</p>
+          <blockquote><strong>Every</strong> applicant invited to an interview receives an email.</blockquote>
+          <ReferenceQuestion prompt="Which condition guarantees receiving an email?" options={['Being an applicant invited to an interview.', 'Being an applicant.']} correct={0} feedback={['Every covers the applicants invited to an interview. For anyone in that group, receiving an email is guaranteed.', 'The rule covers applicants invited to an interview, not all applicants. Keep invited to an interview with applicant; that is what guarantees the email.']}/>
+          <h3>What does the rule leave open?</h3>
+          <ReferenceQuestion prompt="Does this rule tell us whether applicants who aren't invited receive an email?" options={['Yes. They cannot receive an email.', 'No. They could receive an email, or they might not.']} correct={1} feedback={['The rule guarantees an email for invited applicants. It does not say that only invited applicants receive emails. Others could receive a different email, or no email at all.', 'The rule tells us what invited applicants receive. It says nothing about emails to other applicants, so either possibility fits.']}/>
         </section>
-        <aside className="cr-sufficient-bridge"><h3>The other condition has to be there</h3><p>Being a student is required whenever you're enrolled in law school. We call that the <strong>necessary condition</strong>. We'll look at that required side in the next lesson.</p></aside>
+        <aside className="cr-sufficient-bridge"><h3>Next: The Necessary Condition</h3><p>We've focused on what guarantees being a student: enrollment in law school. Now look at the relationship from the other side. You can't be enrolled in law school without being a student. Being a student is the <strong>necessary condition</strong>, the part that must be true. That's what we'll examine next.</p></aside>
       </div>
       <p>Next, we'll examine what the sufficient condition requires.</p>
     </ReferenceStep>

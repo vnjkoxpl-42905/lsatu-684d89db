@@ -7,8 +7,8 @@ afterEach(cleanup);
 
 it('retains the full sufficient explanation and necessity bridge on the dedicated course page', () => {
   render(<OpeningCourseContent id="sufficient"/>);
-  expect(screen.getByRole('heading', { name: 'The other condition has to be there' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Try another conditional' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Next: The Necessary Condition' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Use an indicator to find the guarantee' })).toBeVisible();
   expect(document.querySelectorAll('.cr-sufficient-checks [role="status"]')).toHaveLength(2);
   expect(screen.queryByText(/raffle|bicycle|100%|breathing/i)).toBeNull();
   expect(screen.queryByText(/Maya|The fact|Enough for what\?/i)).toBeNull();
