@@ -9,6 +9,8 @@
   --sc-white: oklch(96% .012 82);
   color: var(--sc-ink);
 }
+.sc-indicator-list ul { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr)); gap:0 2rem; list-style:none!important; padding:0!important; margin:1.2rem 0!important; }
+.sc-indicator-list li { padding:.75rem 0!important; margin:0!important; border-bottom:1px solid var(--sc-line); font-weight:600; font-size:1rem; }
 .oc-course-screen:has(.oc-course-body:not([hidden]) [data-reference-source="2"]) {
   --co-polish-control-line: oklch(54% .035 252);
   --co-polish-fill: oklch(94% .014 82);

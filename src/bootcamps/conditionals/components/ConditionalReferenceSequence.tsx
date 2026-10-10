@@ -240,6 +240,13 @@ export function conditionalReferenceContent() {
 
         <SufficientConditionExperience/>
 
+        <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 1 indicator words">
+          <h3>Group 1: Sufficient-condition indicators</h3>
+          <p>If isn't the only expression that can help you find the sufficient condition. Look for these too:</p>
+          <ul>{sufficientFamily.map(entry => <li key={entry.word}>{entry.word}</li>)}</ul>
+          <p>The expression helps you find the condition. Read the whole statement to see which idea guarantees the other.</p>
+        </section>
+
         <section className="cr-sufficient-explanation cr-sufficient-checks" aria-label="Check your understanding of sufficiency">
           <h3>Try another conditional</h3>
           <ReferenceQuestion prompt="“Being enrolled in medical school is sufficient for being a student.” What does being enrolled guarantee?" options={['Anyone enrolled in medical school has to be a student.', 'Anyone who is a student has to be enrolled in medical school.']} correct={0} feedback={['Being enrolled in medical school is enough to guarantee being a student. Being a student does not guarantee being enrolled in medical school.', 'That turns the relationship around. Being enrolled in medical school guarantees being a student, not the other way around.']}/>
