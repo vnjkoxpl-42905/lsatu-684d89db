@@ -5,6 +5,28 @@ import { MixedFamilyPractice, mixedFamilyItems } from './MixedFamilyPractice';
 
 afterEach(cleanup);
 
+it('teaches necessity before the visual and distinguishes a requirement from a guarantee in fresh practice', () => {
+  const { container } = render(<OpeningCourseContent id="necessary"/>);
+  expect(screen.queryByText(/raffle|bicycle|breathing/i)).toBeNull();
+  const explanation = container.querySelector('.nc-lesson .cr-sufficiency-lead')!;
+  expect(explanation).toHaveTextContent("You can't have that other condition without it.");
+  const firstControl = container.querySelector('.nc-controls button')!;
+  expect(explanation.compareDocumentPosition(firstControl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  const questions = [...container.querySelectorAll<HTMLElement>('.nc-checks .cr-question')];
+  const correctAnswers = [0, 1];
+  questions.forEach((question, index) => {
+    const area = within(question);
+    const answers = area.getAllByRole('button');
+    fireEvent.click(answers[1 - correctAnswers[index]]);
+    expect(area.getByRole('status')).toHaveTextContent('Not quite.');
+    fireEvent.click(answers[correctAnswers[index]]);
+    expect(area.getByRole('status')).toHaveTextContent('Correct.');
+    fireEvent.click(area.getByRole('button', { name: 'Try again' }));
+    expect(answers[0]).toHaveFocus();
+    expect(area.getByRole('status')).toBeEmptyDOMElement();
+  });
+});
+
 it('retains the full sufficient explanation and necessity bridge on the dedicated course page', () => {
   render(<OpeningCourseContent id="sufficient"/>);
   expect(screen.getByRole('heading', { name: 'Next: The Necessary Condition' })).toBeVisible();

@@ -274,20 +274,20 @@ export function conditionalReferenceContent() {
     <ReferenceStep number={4} label="The necessary condition" title="Necessary means required">
       <div className="cr-sufficiency nc-lesson">
         <p className="cr-sufficiency-lead"><strong>Necessary means required.</strong> A <strong>necessary condition</strong> must be true for another condition to be true. You can't have that other condition without it.</p>
-        <p>But meeting a requirement doesn't necessarily guarantee anything else. It tells you what cannot be missing, not that you've done enough.</p>
+        <p>Knowing that a condition is required doesn't, by itself, tell you whether it's enough. Let's see why in our example.</p>
         <p>Let's return to the relationship from the last lesson:</p>
         <blockquote>If you're enrolled in law school, you're <strong>a student</strong>.</blockquote>
         <p>You can't be enrolled in law school without being a student. That's why <strong>being a student is necessary for law-school enrollment</strong>. Someone enrolled who wasn't a student would break this relationship.</p>
         <section className="cr-sufficient-explanation" aria-label="Why a requirement is not necessarily enough">
           <h3>Required doesn't mean enough</h3>
-          <p>A history student meets the condition of being a student, but isn't enrolled in law school. So being a student is required for law-school enrollment without guaranteeing it.</p>
+          <p>Someone could be a history student without being enrolled in law school. So being a student is required for law-school enrollment without guaranteeing it.</p>
           <p>The two conditions have different jobs: <strong>enrollment guarantees being a student; being a student is what enrollment requires.</strong> Knowing only that someone is a student doesn't tell you which subject they study.</p>
         </section>
         <NecessaryConditionExperience/>
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 2 indicator words">
           <h3>Group 2: Necessary-condition indicators</h3>
           <p>These words and phrases can help you recognize a requirement:</p>
-          <ul>{necessaryFamily.map(entry => <li key={entry.word}>{entry.word}</li>)}</ul>
+          <ul>{['only', 'only if', 'only when', 'only where', 'always', 'requires', 'must'].map(word => <li key={word}>{word}</li>)}</ul>
           <p>For example, “Law-school enrollment <strong>requires</strong> being a student.” Requires points to <strong>being a student</strong>, the condition that cannot be missing. Read the full relationship; a familiar word alone doesn't tell you what is required.</p>
         </section>
         <section className="cr-sufficient-explanation nc-checks" aria-label="Apply the necessary condition to a new rule">

@@ -11,7 +11,7 @@
 }
 .sc-indicator-list ul { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr)); gap:0 2rem; list-style:none!important; padding:0!important; margin:1.2rem 0!important; }
 .sc-indicator-list li { padding:.75rem 0!important; margin:0!important; border-bottom:1px solid var(--sc-line); font-weight:600; font-size:1rem; }
-.oc-course-screen:has(.oc-course-body:not([hidden]) [data-reference-source="2"]) {
+.oc-course-screen:has(.oc-course-body:not([hidden]) :is([data-reference-source="2"],[data-reference-source="4"])) {
   --co-polish-control-line: oklch(54% .035 252);
   --co-polish-fill: oklch(94% .014 82);
   --co-polish-panel: oklch(99% .006 82);
@@ -20,8 +20,8 @@
   --co-polish-muted: oklch(46% .03 252);
   background: oklch(97% .012 82);
 }
-.oc-course-screen:has(.oc-course-body:not([hidden]) [data-reference-source="2"]) [data-course-heading] h1 { font-size:clamp(2.15rem,4vw,3.5rem); }
-.oc-course-screen .oc-course-body:not([hidden]) [data-reference-source="2"].cr-course-section { background:transparent; padding-inline:0; }
+.oc-course-screen:has(.oc-course-body:not([hidden]) :is([data-reference-source="2"],[data-reference-source="4"])) [data-course-heading] h1 { font-size:clamp(2.15rem,4vw,3.5rem); }
+.oc-course-screen .oc-course-body:not([hidden]) :is([data-reference-source="2"],[data-reference-source="4"]).cr-course-section { background:transparent; padding-inline:0; }
 .cr-sufficiency>blockquote { background:transparent; border:0; border-block:1px solid var(--sc-line); border-radius:0; padding:1.5rem 0; color:var(--sc-ink); }
 .cr-sufficiency .sc-eyebrow { font-family:inherit; font-size:.78rem; line-height:1.5; letter-spacing:.04em; font-weight:600; margin:0 0 .6rem; }
 .sc-experience { background:var(--sc-ink); color:var(--sc-white); border-radius:1.25rem; padding:clamp(1.15rem,4vw,2.4rem); margin-block:2.4rem; box-shadow:0 18px 42px -26px oklch(20% .035 252 / .5),inset 0 1px 0 oklch(100% 0 0 / .12); }
@@ -129,3 +129,24 @@
 @media(prefers-reduced-motion:reduce) {
   .sc-revealed-relationship:not([hidden]) :is(.sc-guarantee,.sc-result) { animation:none!important; transform:none!important; }
 }
+
+.nc-experience { margin-block:2.4rem; padding:clamp(1.2rem,4vw,2.4rem); border-radius:1.25rem; background:var(--sc-ink); color:var(--sc-white); box-shadow:0 18px 42px -26px oklch(20% .035 252 / .5); }
+.cr-sufficiency .nc-experience h3 { color:var(--sc-white); font-size:clamp(1.45rem,3vw,2rem); margin:0 0 .8rem; }
+.nc-experience header p { color:oklch(87% .018 252); }
+.nc-controls { display:flex; flex-wrap:wrap; gap:.6rem; margin:1.4rem 0; }
+#root .nc-lesson .nc-controls button { min-height:48px; padding:.8rem 1.15rem; border:1px solid var(--sc-dark-line); border-radius:.5rem; background:transparent; color:var(--sc-white); }
+#root .nc-lesson .nc-controls button[aria-pressed="true"] { background:var(--sc-brass); color:var(--sc-ink); border-color:var(--sc-brass); font-weight:600; }
+#root .nc-lesson .nc-controls button:hover:not([aria-pressed="true"]) { background:oklch(33% .04 252); }
+#root .nc-lesson .nc-controls button:focus-visible { outline:2px solid var(--sc-brass); outline-offset:4px; }
+.nc-relationship { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; margin-block:1.4rem; }
+.nc-relationship>div { border:1px solid var(--sc-dark-line); border-radius:.75rem; padding:1.2rem; display:flex; flex-direction:column; gap:.7rem; min-width:0; transition:background 180ms,border-color 180ms; }
+.nc-relationship span { font-size:.8rem; }
+.nc-relationship strong { font-family:Georgia,serif; font-size:clamp(1.4rem,3vw,1.9rem); line-height:1.3; color:var(--sc-white); }
+.nc-relationship small { font-size:.85rem; color:oklch(87% .018 252); }
+.nc-relationship[data-required-present="false"] .nc-enrollment { background:oklch(31% .055 30); border-color:oklch(84% .09 30); }
+.nc-relationship[data-required-present="false"] .nc-enrollment strong { color:oklch(84% .09 30); }
+.nc-reading { border-top:1px solid var(--sc-dark-line); padding-top:1.25rem; }
+.cr-sufficiency .nc-reading h4 { font-family:Georgia,serif; font-size:clamp(1.3rem,2.6vw,1.7rem); font-weight:400; line-height:1.4; color:var(--sc-white); margin:0 0 .8rem; }
+.nc-reading p { color:oklch(87% .018 252); margin-bottom:0; }
+@media(max-width:640px) { .nc-relationship { grid-template-columns:minmax(0,1fr); } }
+@media(prefers-reduced-motion:reduce) { .nc-relationship>div { transition:none; } }
