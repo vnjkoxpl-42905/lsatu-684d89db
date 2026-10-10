@@ -13,7 +13,7 @@ it('retains the full sufficient explanation and necessity bridge on the dedicate
   expect(screen.queryByText(/raffle|bicycle|100%|breathing/i)).toBeNull();
   expect(screen.queryByText(/Maya|The fact|Enough for what\?/i)).toBeNull();
   expect(document.querySelector('video')).toBeNull();
-  const guaranteeExplanation = screen.getByText(/Could you be enrolled in law school without being a student/);
+  const guaranteeExplanation = screen.getByText(/Enrollment already guarantees it/);
   const firstControl = document.querySelector('.sc-sentence-map button')!;
   expect(guaranteeExplanation.compareDocumentPosition(firstControl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });

@@ -4,21 +4,21 @@ import './sufficient-condition-experience.css';
 const relationships = [
   {
     key: 'both', label: 'Enrolled and a student', fits: true,
-    result: 'Being enrolled in law school guarantees being a student.',
-    explanation: "Anyone enrolled in law school is a student. That's why the whole law-school group sits inside the student group.",
+    result: 'The whole law-school group stays inside Students.',
+    explanation: "Pick any person in the smaller group. Being enrolled in law school is enough to know they're in the larger group too.",
     caption: 'Everyone enrolled in law school belongs inside Students.',
   },
   {
     key: 'contradiction', label: 'Enrolled, but not a student', fits: false,
-    result: 'The guarantee does not allow this.',
-    explanation: "This conditional guarantees that anyone enrolled in law school is a student. A person who was enrolled but wasn't a student would contradict it.",
+    result: 'An enrolled person cannot be outside Students.',
+    explanation: "Here enrollment is true, but being a student is false. That is the combination this guarantee rules out.",
     caption: 'An enrolled person outside Students would break the rule.',
   },
   {
     key: 'other', label: 'A student outside law school', fits: true,
-    result: 'You can be a student without being in law school.',
-    explanation: "This conditional tells us about people enrolled in law school. It doesn't say every student is enrolled there. Someone studying history could be a student too.",
-    caption: 'The student group can include students outside law school.',
+    result: 'Without law-school enrollment, you might be a student or you might not.',
+    explanation: "Someone not enrolled in law school could be a student or not a student. A history student belongs in the highlighted area; someone who isn't a student belongs outside both groups. The highlight shows one allowed possibility.",
+    caption: 'Highlighted: one possible case, a student outside law school.',
   },
 ] as const;
 
@@ -39,13 +39,13 @@ export function SufficientConditionExperience() {
     <header>
       <p className="sc-eyebrow">Picture the relationship</p>
       <h3 id={titleId}>Law-school students belong inside the student group.</h3>
-      <p>Everyone enrolled in law school has to fit inside Students. Try the combinations below and see which ones this conditional allows.</p>
+      <p>Choose a combination and compare it with the groups. Does it fit the guarantee?</p>
     </header>
     <figure className="sc-membership" data-case={current.key}>
       <div className="sc-group-visual">
         <div className="sc-group-label"><span>Students</span><span className="sc-group-note">The larger group</span></div>
         <svg className="sc-group-drawing" viewBox="0 0 600 310" role="img" aria-labelledby={diagramId}>
-          <title id={diagramId}>{current.key === 'contradiction' ? 'An enrolled person outside the student group is crossed out: this combination breaks the guarantee.' : current.key === 'other' ? 'Students outside law school are highlighted inside the student group. This conditional allows this.' : 'The entire law-school group is highlighted inside the student group.'}</title>
+          <title id={diagramId}>{current.key === 'contradiction' ? 'An enrolled person outside the student group is crossed out: this combination breaks the guarantee.' : current.key === 'other' ? 'Students outside law school are highlighted inside the student group: one allowed possibility. Someone outside law school could also be outside both groups.' : 'The entire law-school group is highlighted inside the student group.'}</title>
           <rect className="sc-student-boundary" x="8" y="8" width="584" height="234" rx="30"/>
           <rect className="sc-law-boundary" x="30" y="30" width="270" height="190" rx="24"/>
           <g className="sc-law-symbols" aria-hidden="true">
@@ -86,18 +86,18 @@ export function SufficientConditionExperience() {
 const explanations = {
   trigger: {
     label: 'Sufficient condition',
-    title: 'Being enrolled in law school is enough to guarantee being a student.',
-    text: 'The word “if” introduces being enrolled in law school. That whole idea is the sufficient condition. “If” helps us recognize it; the word itself isn’t the condition.',
+    title: 'Enrollment is enough on its own.',
+    text: "Knowing that someone is enrolled in law school is enough to know they're a student. You don't need another fact about them.",
   },
   result: {
     label: 'What must be true',
-    title: 'Anyone enrolled in law school has to be a student.',
-    text: 'This is what the first part guarantees. This conditional doesn’t say you’re probably a student. It says you’re a student.',
+    title: 'Being a student is guaranteed.',
+    text: 'Once enrollment is established, being a student is certain. It is more than a possibility or a likely outcome.',
   },
   connection: {
     label: 'The guarantee',
-    title: 'You cannot have the first condition without the second.',
-    text: "If you're enrolled in law school, you have to be a student too. That's the relationship this conditional guarantees.",
+    title: 'The guarantee runs in one direction.',
+    text: "Follow it from being enrolled in law school to being a student. Starting with being a student doesn't tell you whether someone is enrolled in law school; they could study history instead.",
   },
 } as const;
 

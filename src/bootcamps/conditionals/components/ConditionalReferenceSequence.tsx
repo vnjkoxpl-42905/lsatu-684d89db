@@ -221,33 +221,31 @@ export function conditionalReferenceContent() {
 
     <ReferenceStep number={2} label="The sufficient condition" title="Sufficient means enough">
       <div className="cr-sufficiency">
-        <p className="cr-sufficiency-lead"><strong>Sufficient means enough.</strong> In a conditional relationship, the <strong>sufficient condition</strong> is the condition that guarantees the outcome. If that condition is met, the outcome has to follow.</p>
-        <p>What makes it enough? You don't need to meet an additional condition to guarantee that outcome. The sufficient condition is enough on its own.</p>
-        <p>And <strong>guaranteed</strong> means certain, not just likely. You can't have the sufficient condition without the outcome it guarantees. Both have to be true together whenever the sufficient condition is met.</p>
+        <p className="cr-sufficiency-lead"><strong>Sufficient means enough.</strong> When one condition guarantees another, knowing the first is true tells you the second has to be true too. The first is the <strong>sufficient condition</strong>: it's enough to establish the second.</p>
+        <p>You don't need to meet an additional condition to get that guarantee. And we're talking about certainty, not likelihood: the first condition can't be true while the condition it guarantees is false.</p>
         <p>Let's look at what that means:</p>
-        <blockquote>If you're enrolled in law school, you're a student.</blockquote>
-        <p>Being enrolled in law school is sufficient <strong>for being a student</strong>. You don't have to be taking a particular class or attending a particular law school. Being enrolled is already enough: you have to be a student.</p>
-        <p>Could you be enrolled in law school without being a student? No. That's why enrollment is sufficient. It doesn't just make being a student likely. It guarantees it.</p>
-        <p>We can call the sufficient condition the <strong>trigger</strong>: whenever it is true, the guarantee applies.</p>
+        <blockquote><strong>If</strong> you're enrolled in law school, you're a student.</blockquote>
+        <p>Being enrolled in law school is enough to know you're <strong>a student</strong>. You don't need to know which classes you're taking. Enrollment already guarantees it. That's why being enrolled is the sufficient condition in this relationship.</p>
+        <p>Here, <strong>if</strong> introduces <strong>being enrolled in law school</strong>. That whole idea is the sufficient condition. If is the word that helps you find it. We haven't said you're actually enrolled; we're explaining what follows if you are.</p>
 
         <section className="cr-sufficient-explanation" aria-label="What makes a condition sufficient">
           <SufficientReasoningWalkthrough/>
         </section>
 
-        <SufficientConditionExperience/>
+        <section className="cr-sufficient-explanation" aria-label="When the sufficient condition is not met">
+          <h3>What if you aren't enrolled in law school?</h3>
+          <p>You could be studying something else. Or you might not be a student at all. Both are possible. Without law-school enrollment, this conditional doesn't tell us whether you're a student.</p>
+          <p>That's the difference: <strong>being enrolled guarantees being a student; not being enrolled leaves the question open.</strong></p>
+        </section>
 
-        <aside className="cr-sufficient-explanation sc-cause-note" aria-label="What being enrolled tells you">
-          <h3>What does being enrolled tell you?</h3>
-          <p>If you're enrolled in law school, we know you're <strong>a student</strong>. We don't need to know your grades or which classes you're taking to know that.</p>
-          <p>But being enrolled doesn't tell us you've graduated or become a lawyer. It guarantees one thing here: you're a student. Keep that connection in mind when you ask what one condition tells you about another.</p>
-        </aside>
+        <SufficientConditionExperience/>
 
         <section className="cr-sufficient-explanation cr-sufficient-checks" aria-label="Check your understanding of sufficiency">
           <h3>Try another conditional</h3>
           <ReferenceQuestion prompt="“Being enrolled in medical school is sufficient for being a student.” What does being enrolled guarantee?" options={['Anyone enrolled in medical school has to be a student.', 'Anyone who is a student has to be enrolled in medical school.']} correct={0} feedback={['Being enrolled in medical school is enough to guarantee being a student. Being a student does not guarantee being enrolled in medical school.', 'That turns the relationship around. Being enrolled in medical school guarantees being a student, not the other way around.']}/>
-          <ReferenceQuestion prompt="Does being a student require being enrolled in law school?" options={['Yes. Every student has to be enrolled in law school.', 'No. Being enrolled in law school is one way to be a student.']} correct={1} feedback={['Being enrolled in law school guarantees being a student. Being a student does not guarantee being enrolled in law school. You turned the relationship around.', 'Someone studying history could be a student without being enrolled in law school. Enrollment is sufficient for being a student, but it is not the only way.']}/>
+          <ReferenceQuestion prompt="If you aren't enrolled in law school, what does our conditional tell us about whether you're a student?" options={["You can't be a student.", "You could be a student, or you might not be. It doesn't tell us."]} correct={1} feedback={["Being enrolled is one way to guarantee you're a student. Not being enrolled doesn't rule out other ways of being a student.", "Right. The sufficient condition isn't met, so this conditional doesn't settle whether you're a student. Both possibilities remain open."]}/>
         </section>
-        <aside className="cr-sufficient-bridge"><h3>The other condition has to be there</h3><p>If you're enrolled in law school, you have to be a student. Being a student is therefore <strong>necessary</strong> for being enrolled in law school. Sufficient means enough; necessary means required. We'll look more closely at that required side next.</p></aside>
+        <aside className="cr-sufficient-bridge"><h3>The other condition has to be there</h3><p>Being a student is required whenever you're enrolled in law school. We call that the <strong>necessary condition</strong>. We'll look at that required side in the next lesson.</p></aside>
       </div>
       <p>Next, we'll examine what the sufficient condition requires.</p>
     </ReferenceStep>
