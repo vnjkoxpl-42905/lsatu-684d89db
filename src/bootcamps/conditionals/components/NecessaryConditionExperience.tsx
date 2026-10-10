@@ -17,8 +17,8 @@ export function NecessaryConditionExperience() {
       <div className="nc-enrollment"><span>Law-school enrollment</span><strong>{isStudent ? 'Possible' : 'Ruled out'}</strong><small>{isStudent ? 'Still needs to be established' : 'Cannot hold without being a student'}</small></div>
     </div>
     <div className="nc-reading" id={`${id}-reading`} role="status" aria-live="polite" aria-atomic="true">
-      <h4>{isStudent ? "Being a student doesn't tell us whether you're enrolled in law school." : "Without being a student, you can't be enrolled in law school."}</h4>
-      <p>{isStudent ? "You could be enrolled in law school, or you could study something else. Either way, you're a student. Meeting this requirement alone doesn't establish enrollment." : "Anyone enrolled in law school has to be a student. You can't have enrollment while being a student is missing. That's why being a student is necessary."}</p>
+      <h4>{isStudent ? "Being a student doesn't tell us whether you are enrolled in law school." : "Without being a student, you can't be enrolled in law school."}</h4>
+      <p>{isStudent ? "You could be enrolled in law school, or you could study something else. Either way, you are a student. Meeting this requirement alone doesn't establish enrollment." : "Anyone enrolled in law school has to be a student. You can't have enrollment while being a student is missing. That's why being a student is necessary."}</p>
     </div>
   </section>;
 }

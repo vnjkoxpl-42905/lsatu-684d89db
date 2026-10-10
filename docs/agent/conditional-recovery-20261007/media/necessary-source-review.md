@@ -33,6 +33,8 @@ No source named Savim surfaced in the routed inventory. The 7Sage source was loc
 
 ## Each part has a teaching job
 
+Joshua's wording follow-up on 2026-10-10 makes the opening link explicit: whenever the sufficient condition is true, the necessary condition must be true too. The example now includes then, identifies being a student as its required part and uses you are rather than you're. The limit on what a requirement establishes follows the definition and worked example. The Alan Scott mention was a dictation error; Joshua clarified that he meant LSAT sources. The copy follow-up passed 15 relevant tests and was verified in Codex Browser; the full build receipt below covers the preceding implementation.
+
 1. Define required and distinguish that label from enough.
 2. Revisit enrollment/studenthood, keeping the required relationship explicit.
 3. Use a possible history student to show why studenthood alone does not establish enrollment.

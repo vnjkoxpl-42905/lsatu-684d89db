@@ -273,13 +273,13 @@ export function conditionalReferenceContent() {
 
     <ReferenceStep number={4} label="The necessary condition" title="Necessary means required">
       <div className="cr-sufficiency nc-lesson">
-        <p className="cr-sufficiency-lead"><strong>Necessary means required.</strong> A <strong>necessary condition</strong> must be true for another condition to be true. You can't have that other condition without it.</p>
-        <p>Knowing that a condition is required doesn't, by itself, tell you whether it's enough. Let's see why in our example.</p>
+        <p className="cr-sufficiency-lead"><strong>Necessary means required.</strong> In a conditional relationship, the <strong>necessary condition</strong> is what the sufficient condition requires. Whenever the sufficient condition is true, the necessary condition must be true too. It cannot be missing.</p>
         <p>Let's return to the relationship from the last lesson:</p>
-        <blockquote>If you're enrolled in law school, you're <strong>a student</strong>.</blockquote>
-        <p>You can't be enrolled in law school without being a student. That's why <strong>being a student is necessary for law-school enrollment</strong>. Someone enrolled who wasn't a student would break this relationship.</p>
+        <blockquote>If you are enrolled in law school, then you are <strong>a student</strong>.</blockquote>
+        <p><strong>Being a student</strong> is the required part, introduced here by <strong>then</strong>. If you are enrolled in law school, being a student is certain. You cannot be enrolled without being a student. That is why <strong>being a student is necessary for law-school enrollment</strong>.</p>
         <section className="cr-sufficient-explanation" aria-label="Why a requirement is not necessarily enough">
           <h3>Required doesn't mean enough</h3>
+          <p>Knowing that a condition is required doesn't, by itself, tell you whether it's enough.</p>
           <p>Someone could be a history student without being enrolled in law school. So being a student is required for law-school enrollment without guaranteeing it.</p>
           <p>The two conditions have different jobs: <strong>enrollment guarantees being a student; being a student is what enrollment requires.</strong> Knowing only that someone is a student doesn't tell you which subject they study.</p>
         </section>

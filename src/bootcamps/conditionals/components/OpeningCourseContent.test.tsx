@@ -9,7 +9,7 @@ it('teaches necessity before the visual and distinguishes a requirement from a g
   const { container } = render(<OpeningCourseContent id="necessary"/>);
   expect(screen.queryByText(/raffle|bicycle|breathing/i)).toBeNull();
   const explanation = container.querySelector('.nc-lesson .cr-sufficiency-lead')!;
-  expect(explanation).toHaveTextContent("You can't have that other condition without it.");
+  expect(explanation).toHaveTextContent('Whenever the sufficient condition is true, the necessary condition must be true too.');
   const firstControl = container.querySelector('.nc-controls button')!;
   expect(explanation.compareDocumentPosition(firstControl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   const questions = [...container.querySelectorAll<HTMLElement>('.nc-checks .cr-question')];

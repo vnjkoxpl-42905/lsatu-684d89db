@@ -7,7 +7,7 @@ afterEach(cleanup);
 it('rules out enrollment only when the required student condition is missing', () => {
   render(<NecessaryConditionExperience/>);
   const reading = screen.getByRole('status');
-  expect(reading).toHaveTextContent("Being a student doesn't tell us whether you're enrolled");
+  expect(reading).toHaveTextContent("Being a student doesn't tell us whether you are enrolled");
   expect(screen.getByText('Possible')).toBeVisible();
   const absent = screen.getByRole('button', { name: 'Not a student' });
   absent.focus();
