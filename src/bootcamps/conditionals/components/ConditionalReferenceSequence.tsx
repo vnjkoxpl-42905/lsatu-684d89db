@@ -236,10 +236,10 @@ export function conditionalReferenceContent() {
 
         <SufficientConditionExperience/>
 
-        <aside className="cr-sufficient-explanation sc-cause-note" aria-label="Sufficient for a particular outcome">
-          <h3>A condition is sufficient for a particular outcome</h3>
-          <p>Being enrolled in law school is sufficient for <strong>being a student</strong>. It isn't sufficient for having graduated or becoming a lawyer. Those are different outcomes.</p>
-          <p>So keep the two conditions connected when you explain sufficiency: being enrolled in law school is enough to guarantee being a student. That's the specific guarantee we're working with.</p>
+        <aside className="cr-sufficient-explanation sc-cause-note" aria-label="What being enrolled tells you">
+          <h3>What does being enrolled tell you?</h3>
+          <p>If you're enrolled in law school, we know you're <strong>a student</strong>. We don't need to know your grades or which classes you're taking to know that.</p>
+          <p>But being enrolled doesn't tell us you've graduated or become a lawyer. It guarantees one thing here: you're a student. Keep that connection in mind when you ask what one condition tells you about another.</p>
         </aside>
 
         <section className="cr-sufficient-explanation cr-sufficient-checks" aria-label="Check your understanding of sufficiency">
