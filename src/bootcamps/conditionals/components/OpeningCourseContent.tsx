@@ -258,7 +258,7 @@ function Content({ id }: { id: string }) {
   switch (id) {
     case 'meaning': return <ReferenceBody number={1} omitTransition/>;
     case 'sufficient': return <ReferenceBody number={2} omitTransition/>;
-    case 'necessary': return <><ReferenceBody number={4} omitTransition/><ReferenceQuestion prompt="You get a bicycle. Does that establish that you won the raffle?" options={['Yes. Getting a bicycle proves winning.', 'No. You could get a bicycle without winning.']} correct={1} feedback={['You made the required result enough to establish winning. The rule does not say winning is the only way to get a bicycle.', 'You could buy a bicycle or receive one as a gift. Neither possibility breaks the rule, which only tells us what must follow if you win.']}/></>;
+    case 'necessary': return <ReferenceBody number={4} omitTransition/>;
     case 'must-arrow': return <><MustArrowNote/><NoteSection title="Recall enough and required"><p>Use these new examples to check the roles and their direction.</p><StudyDeck group="foundation"/></NoteSection></>;
     case 'sufficient-words': return <IndicatorNote group="group-1"/>;
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;

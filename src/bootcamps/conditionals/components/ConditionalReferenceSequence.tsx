@@ -5,6 +5,7 @@ import { StudyDeck } from './StudyDeck';
 import type { LessonPage } from './LessonPages';
 import { SufficientConditionExperience, SufficientReasoningWalkthrough } from './SufficientConditionExperience';
 import { SufficientConditionFilm } from './SufficientConditionFilm';
+import { NecessaryConditionExperience } from './NecessaryConditionExperience';
 
 const raffleRule = 'If you win the raffle, you get a bicycle.';
 
@@ -270,14 +271,35 @@ export function conditionalReferenceContent() {
       <p>We have seen what can be enough. Now let's name what that condition requires.</p>
     </ReferenceStep>
 
-    <ReferenceStep number={4} label="Necessary means required" title="The other condition has to be there">
-      <blockquote>{raffleRule}</blockquote><p>The <strong>then-part</strong> is the <strong>necessary condition</strong>. Necessary means required. Under this rule, if you win, getting a bicycle has to follow.</p>
-      <div className="cr-role-exhibit cr-required"><span>Necessary</span><strong>Get a bicycle</strong><p>Required whenever you win the raffle</p></div>
-      <p>Ask “required for what?” Here, a required result of winning under this rule. It is not a requirement you must satisfy before entering. The word necessary describes the relationship, not when the events occur.</p>
-      <p>We're looking at the same rule from its other side. Winning is enough to establish getting a bicycle. Getting a bicycle is the result the rule requires whenever you win.</p>
-      <ReferenceQuestion prompt="Under our rule, what has to follow if you win?" options={['You get a bicycle.', 'You ride the bicycle home.']} correct={0} feedback={['Getting a bicycle is the stated result. Winning without getting one would violate the rule.', 'Riding is not part of this rule. The sentence establishes that you get a bicycle, not what you do with it.']}/>
-      <p>Necessary does not mean “the next event.” It means required by this relationship. A conditional need not tell you which event caused another, or when either happened.</p>
-      <p>As with sufficient language, the wording can vary while the relationship stays the same.</p>
+    <ReferenceStep number={4} label="The necessary condition" title="Necessary means required">
+      <div className="cr-sufficiency nc-lesson">
+        <p className="cr-sufficiency-lead"><strong>Necessary means required.</strong> A <strong>necessary condition</strong> must be true for another condition to be true. You can't have that other condition without it.</p>
+        <p>But meeting a requirement doesn't necessarily guarantee anything else. It tells you what cannot be missing, not that you've done enough.</p>
+        <p>Let's return to the relationship from the last lesson:</p>
+        <blockquote>If you're enrolled in law school, you're <strong>a student</strong>.</blockquote>
+        <p>You can't be enrolled in law school without being a student. That's why <strong>being a student is necessary for law-school enrollment</strong>. Someone enrolled who wasn't a student would break this relationship.</p>
+        <section className="cr-sufficient-explanation" aria-label="Why a requirement is not necessarily enough">
+          <h3>Required doesn't mean enough</h3>
+          <p>A history student meets the condition of being a student, but isn't enrolled in law school. So being a student is required for law-school enrollment without guaranteeing it.</p>
+          <p>The two conditions have different jobs: <strong>enrollment guarantees being a student; being a student is what enrollment requires.</strong> Knowing only that someone is a student doesn't tell you which subject they study.</p>
+        </section>
+        <NecessaryConditionExperience/>
+        <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 2 indicator words">
+          <h3>Group 2: Necessary-condition indicators</h3>
+          <p>These words and phrases can help you recognize a requirement:</p>
+          <ul>{necessaryFamily.map(entry => <li key={entry.word}>{entry.word}</li>)}</ul>
+          <p>For example, “Law-school enrollment <strong>requires</strong> being a student.” Requires points to <strong>being a student</strong>, the condition that cannot be missing. Read the full relationship; a familiar word alone doesn't tell you what is required.</p>
+        </section>
+        <section className="cr-sufficient-explanation nc-checks" aria-label="Apply the necessary condition to a new rule">
+          <h3>Find the requirement in a new rule</h3>
+          <blockquote>An application is accepted for review only if it includes a current reference letter.</blockquote>
+          <ReferenceQuestion prompt="What is required for an application to be accepted for review?" options={['Including a current reference letter.', 'Including any reference letter, even an outdated one.']} correct={0} feedback={['Only if identifies including a current reference letter as required. An application accepted for review cannot be missing that current letter.', 'Current matters. An outdated letter does not meet the requirement in this rule. Keep that word when you identify what is required.']}/>
+          <h3>Does meeting the requirement guarantee acceptance?</h3>
+          <ReferenceQuestion prompt="Does including a current reference letter guarantee that the application is accepted for review?" options={['Yes. The letter is all the application needs.', 'No. The letter is required, but the rule does not say it is enough.']} correct={1} feedback={['You turned a requirement into a guarantee. The rule tells us that accepted applications include a current letter, not that every application with one is accepted.', 'An application with a current letter could be accepted or not accepted. Both fit the rule. Having the required letter alone does not establish acceptance.']}/>
+        </section>
+        <aside className="cr-sufficient-bridge"><h3>Next: Put the relationship into a diagram</h3><p>We now have both roles: the condition that guarantees, and the condition it requires. Next, we'll use an arrow to record that connection.</p></aside>
+      </div>
+      <p>Next, record the relationship with the must arrow.</p>
     </ReferenceStep>
 
     <ReferenceStep number={5} label="The necessary family" title="Listen for what the sentence needs">
