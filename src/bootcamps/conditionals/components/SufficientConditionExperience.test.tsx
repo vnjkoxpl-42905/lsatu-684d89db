@@ -1,14 +1,15 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, expect, it } from 'vitest';
 import { SufficientConditionExperience, SufficientReasoningWalkthrough } from './SufficientConditionExperience';
+import { readFileSync } from 'node:fs';
 import { SufficientConditionFilm } from './SufficientConditionFilm';
 
 afterEach(cleanup);
 
-it('distinguishes combinations permitted by the sentence from a broken guarantee', () => {
+it('distinguishes combinations allowed by the conditional from a broken guarantee', () => {
   const { container } = render(<SufficientConditionExperience/>);
   const liveReading = container.querySelector('.sc-case-reading');
-  expect(screen.getByText('This is the relationship the sentence guarantees.')).toBeVisible();
+  expect(screen.getByText('Being enrolled in law school guarantees being a student.')).toBeVisible();
   expect(screen.getByRole('img')).toHaveAccessibleName(/entire law-school group is highlighted inside the student group/);
   fireEvent.click(screen.getByRole('button', { name: 'Enrolled, but not a student' }));
   expect(container.querySelector('.sc-case-reading')).toBe(liveReading);
@@ -24,28 +25,52 @@ it('distinguishes combinations permitted by the sentence from a broken guarantee
   expect(screen.getByRole('img')).toHaveAccessibleName(/Students outside law school are highlighted/);
   expect(liveReading).toHaveAttribute('data-fits', 'true');
   fireEvent.click(screen.getByRole('button', { name: 'Enrolled and a student' }));
-  expect(screen.getByText('This is the relationship the sentence guarantees.')).toBeVisible();
+  expect(screen.getByText('Being enrolled in law school guarantees being a student.')).toBeVisible();
   expect(container).not.toHaveTextContent('Maya');
 });
 
-it('explains the sufficient clause, stated outcome, and one-way guarantee without adding facts', () => {
+it('reveals the guarantee only after activating the sufficient condition and lets the learner replay it', () => {
   const { container } = render(<SufficientReasoningWalkthrough/>);
-  const liveReading = container.querySelector('.sc-walkthrough-comment');
-  const trigger = screen.getByRole('button', { name: /If you're enrolled in law school/ });
-  expect(trigger).toHaveAttribute('aria-pressed', 'true');
-  expect(screen.getByText('Being enrolled in law school is enough to guarantee being a student.')).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: /Then you're a student/ }));
-  expect(screen.getByText('Anyone enrolled in law school has to be a student.')).toBeVisible();
-  expect(trigger).toHaveAttribute('aria-pressed', 'false');
-  expect(container.querySelector('.sc-walkthrough-comment')).toBe(liveReading);
-  fireEvent.click(screen.getByRole('button', { name: 'guarantees' }));
-  expect(screen.getByText('You cannot have the first condition without the second.')).toBeVisible();
-  expect(screen.getByText(/That's the connection the sentence gives us/)).toBeVisible();
+  const trigger = screen.getByRole('button', { name: /Being enrolled in law school/ });
+  const explanationId = trigger.getAttribute('aria-controls')!.split(' ')[1];
+  const liveReading = document.getElementById(explanationId);
+  expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  expect(liveReading).toBeEmptyDOMElement();
+  expect(liveReading).toHaveAttribute('aria-live', 'polite');
+  expect(liveReading).toHaveAttribute('aria-atomic', 'true');
+  expect(screen.queryByRole('button', { name: 'guarantees' })).toBeNull();
+  expect(screen.queryByRole('button', { name: /Being a student/ })).toBeNull();
+  expect(container.querySelector('.sc-revealed-relationship')).not.toBeVisible();
+  trigger.focus();
   fireEvent.click(trigger);
-  expect(trigger).toHaveAttribute('aria-pressed', 'true');
-  expect(screen.getByText('Being enrolled in law school is enough to guarantee being a student.')).toBeVisible();
-  expect(container).not.toHaveTextContent('Maya');
-  expect(container).not.toHaveTextContent('Add the fact');
+  expect(trigger).toHaveFocus();
+  expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  expect(container.querySelector('.sc-revealed-relationship')).toBeVisible();
+  expect(screen.getByRole('button', { name: 'guarantees' })).toBeVisible();
+  expect(screen.getByRole('button', { name: /Being a student/ })).toBeVisible();
+  expect(document.getElementById(explanationId)).toBe(liveReading);
+  expect(liveReading).toHaveTextContent('You cannot have the first condition without the second.');
+  fireEvent.click(screen.getByRole('button', { name: /Being a student/ }));
+  expect(liveReading).toHaveTextContent('Anyone enrolled in law school has to be a student.');
+  fireEvent.click(trigger);
+  expect(liveReading).toHaveTextContent('Being enrolled in law school is enough to guarantee being a student.');
+  const restart = screen.getByRole('button', { name: 'Start again' });
+  restart.focus();
+  fireEvent.click(restart);
+  expect(trigger).toHaveFocus();
+  expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  expect(screen.queryByRole('button', { name: 'guarantees' })).toBeNull();
+  expect(screen.queryByRole('button', { name: /Being a student/ })).toBeNull();
+  expect(document.getElementById(explanationId)).toBe(liveReading);
+  expect(liveReading).toBeEmptyDOMElement();
+  fireEvent.click(trigger);
+  expect(screen.getByRole('button', { name: 'guarantees' })).toBeVisible();
+  expect(container).not.toHaveTextContent('sentence');
+});
+
+it('disables reveal motion for the reduced-motion preference', () => {
+  const experienceStyles = readFileSync('src/bootcamps/conditionals/components/sufficient-condition-experience.css', 'utf8');
+  expect(experienceStyles).toMatch(/@media\(prefers-reduced-motion:reduce\)\s*\{\s*\.sc-revealed-relationship[^}]+animation:none!important;\s*transform:none!important;/);
 });
 
 it('provides controlled captioned video and replaces playback when the clip changes', () => {

@@ -9,7 +9,7 @@
   --sc-white: oklch(96% .012 82);
   color: var(--sc-ink);
 }
-.oc-course-screen:has([data-reference-source="2"]) {
+.oc-course-screen:has(.oc-course-body:not([hidden]) [data-reference-source="2"]) {
   --co-polish-control-line: oklch(54% .035 252);
   --co-polish-fill: oklch(94% .014 82);
   --co-polish-panel: oklch(99% .006 82);
@@ -18,8 +18,8 @@
   --co-polish-muted: oklch(46% .03 252);
   background: oklch(97% .012 82);
 }
-.oc-course-screen:has([data-reference-source="2"]) [data-course-heading] h1 { font-size:clamp(2.15rem,4vw,3.5rem); }
-.oc-course-screen:has([data-reference-source="2"]) .cr-course-section { background:transparent; padding-inline:0; }
+.oc-course-screen:has(.oc-course-body:not([hidden]) [data-reference-source="2"]) [data-course-heading] h1 { font-size:clamp(2.15rem,4vw,3.5rem); }
+.oc-course-screen .oc-course-body:not([hidden]) [data-reference-source="2"].cr-course-section { background:transparent; padding-inline:0; }
 .cr-sufficiency>blockquote { background:transparent; border:0; border-block:1px solid var(--sc-line); border-radius:0; padding:1.5rem 0; color:var(--sc-ink); }
 .cr-sufficiency .sc-eyebrow { font-family:inherit; font-size:.78rem; line-height:1.5; letter-spacing:.04em; font-weight:600; margin:0 0 .6rem; }
 .sc-experience { background:var(--sc-ink); color:var(--sc-white); border-radius:1.25rem; padding:clamp(1.15rem,4vw,2.4rem); margin-block:2.4rem; box-shadow:0 18px 42px -26px oklch(20% .035 252 / .5),inset 0 1px 0 oklch(100% 0 0 / .12); }
@@ -116,3 +116,14 @@
   .sc-case-controls button { padding:.75rem; }
 }
 @media(prefers-reduced-motion:reduce) { .sc-experience *,.sc-walkthrough * { animation:none!important; transition:none!important; } }
+
+.sc-revealed-relationship { display:contents; }
+.sc-revealed-relationship[hidden] { display:none!important; }
+.sc-revealed-relationship:not([hidden]) .sc-guarantee { animation:sc-guarantee-reveal 220ms ease-out; }
+.sc-revealed-relationship:not([hidden]) .sc-result { animation:sc-outcome-reveal 280ms ease-out; }
+@keyframes sc-guarantee-reveal { from { opacity:0; transform:scaleX(.75); } to { opacity:1; transform:scaleX(1); } }
+@keyframes sc-outcome-reveal { from { opacity:0; transform:translateX(-.5rem); } to { opacity:1; transform:translateX(0); } }
+#root .cr-sufficiency .sc-restart { min-height:44px; padding:.7rem 1rem; margin-top:1rem; color:var(--sc-ink); background:transparent; border:1px solid var(--sc-control-line); border-radius:.5rem; }
+@media(prefers-reduced-motion:reduce) {
+  .sc-revealed-relationship:not([hidden]) :is(.sc-guarantee,.sc-result) { animation:none!important; transform:none!important; }
+}

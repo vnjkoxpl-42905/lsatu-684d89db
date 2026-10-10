@@ -328,11 +328,35 @@
     "reason": "excluded file"
   },
   {
+    "path": "docs/agent/conditional-recovery-20261007/media/preview-direct-error.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/agent/conditional-recovery-20261007/media/preview-direct.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/agent/conditional-recovery-20261007/media/preview-reopen-error.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/agent/conditional-recovery-20261007/media/preview-reopen.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "docs/agent/conditional-recovery-20261007/media/preview-server-error.log",
     "reason": "excluded file"
   },
   {
     "path": "docs/agent/conditional-recovery-20261007/media/preview-server.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/agent/conditional-recovery-20261007/media/trigger-reveal-build.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": "docs/agent/conditional-recovery-20261007/media/trigger-reveal-final-build.log",
     "reason": "excluded file"
   },
   {
