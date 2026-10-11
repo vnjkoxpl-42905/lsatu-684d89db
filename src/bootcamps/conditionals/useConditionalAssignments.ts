@@ -11,7 +11,7 @@ export function useConditionalAssignments(userId: string | undefined, isAdmin: b
     queryFn: async () => {
       if (isAdmin) return [await conditionalTeacherPreview()];
       const { data, error } = await supabase.from('classroom_items')
-        .select('id,student_id,type,title,source_id,metadata_json,status,visible_to_student,unlock_at')
+        .select('id,student_id,type,title,description,source_id,metadata_json,status,visible_to_student,unlock_at')
         .eq('student_id', userId!).eq('type', 'bootcamp_module').eq('visible_to_student', true)
         .in('status', ['assigned', 'in_progress', 'completed'])
         .order('priority', { ascending: false }).order('created_at', { ascending: false });

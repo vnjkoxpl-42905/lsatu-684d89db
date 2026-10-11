@@ -1,6 +1,7 @@
 import { act, cleanup, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { emptyDraft, emptyProgress, newRun, type ConditionalProgress } from './progress';
+import { emptyDraft, emptyProgress, markConditionalLessonRead, newRun, reviewedConditionalLessonCount, type ConditionalProgress } from './progress';
+import { conditionalOpeningEditionKey, needsExpandedConditionalLessonReview } from './openingRevision';
 
 type Response = { data: unknown; error: unknown };
 const state = vi.hoisted(() => ({
@@ -85,6 +86,51 @@ it('keeps failed changes visibly dirty and retries the same work with exact acco
   expect(result.current.status).toBe('saved');
   expect(result.current.savedProgress?.journal).toBe('unsaved correction');
   expect(state.writes.every(write => write.operation === 'update')).toBe(true);
+});
+
+it('preserves the opening edition and unknown lesson keys through acknowledged saves and reload without an automatic write', async () => {
+  const original = record('preserved journal');
+  original.lessons = { 'group-1': '2026-12-01T12:00:00.000Z', 'historical-unit': '2026-10-01T12:00:00.000Z' };
+  original.runs.run = newRun(['group-1-b1']);
+  state.rows.set('A', { data: original, updated_at: '2026-10-01T11:00:00.000Z' });
+  const first = renderHook(() => useConditionalProgress('A'));
+  await waitFor(() => expect(first.result.current.status).toBe('saved'));
+  expect(first.result.current.progress!.lessons).toEqual(original.lessons);
+  expect(needsExpandedConditionalLessonReview(first.result.current.progress!.lessons, 'group-1')).toBe(true);
+  expect(state.writes).toEqual([]);
+
+  const readAt = '2026-12-02T12:00:00.000Z';
+  const editionKey = conditionalOpeningEditionKey('group-1')!;
+  state.failWrite = true;
+  act(() => first.result.current.update(previous => markConditionalLessonRead(previous, 'group-1', readAt)));
+  await act(async () => { await first.result.current.retry(); });
+  expect(first.result.current.status).toBe('error');
+  expect(first.result.current.savedProgress!.lessons).toEqual(original.lessons);
+  expect(first.result.current.progress!.lessons[editionKey]).toBe(readAt);
+  expect(JSON.parse(localStorage.getItem('student:A:conditional_draft_state:conditionals-v1')!).lessons[editionKey]).toBe(readAt);
+
+  state.failWrite = false;
+  await act(async () => { await first.result.current.retry(); });
+  const acknowledged = first.result.current.savedProgress!;
+  expect(first.result.current.status).toBe('saved');
+  expect(acknowledged.lessons).toEqual({ ...original.lessons, 'group-1': readAt, [editionKey]: readAt });
+  expect(acknowledged.runs).toEqual(original.runs);
+  expect(acknowledged.attempts).toEqual(original.attempts);
+  expect(acknowledged.journal).toBe(original.journal);
+  expect(Object.keys(acknowledged)).toEqual(Object.keys(original));
+  expect(reviewedConditionalLessonCount(acknowledged.lessons)).toBe(2);
+  expect((state.rows.get('A')!.data as ConditionalProgress).lessons).toEqual(acknowledged.lessons);
+  expect(JSON.parse(localStorage.getItem('student:A:conditional_course_state:conditionals-v1')!).lessons).toEqual(acknowledged.lessons);
+  first.unmount();
+
+  state.rows.get('A')!.data = JSON.parse(JSON.stringify(state.rows.get('A')!.data));
+  const writesBeforeReload = state.writes.length;
+  const resumed = renderHook(() => useConditionalProgress('A'));
+  await waitFor(() => expect(resumed.result.current.status).toBe('saved'));
+  expect(resumed.result.current.savedProgress!.lessons).toEqual(acknowledged.lessons);
+  expect(needsExpandedConditionalLessonReview(resumed.result.current.progress!.lessons, 'group-1')).toBe(false);
+  expect(reviewedConditionalLessonCount(resumed.result.current.savedProgress!.lessons)).toBe(2);
+  expect(state.writes).toHaveLength(writesBeforeReload);
 });
 
 it('detects a concurrent cloud revision, preserves both versions, and refuses blind overwrite', async () => {

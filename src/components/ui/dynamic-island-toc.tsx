@@ -58,11 +58,14 @@ type DynamicIslandTOCProps = {
    * Defaults to common blog content wrappers and explicit [data-toc] elements.
    */
   selector?: string;
+  /** Use an in-flow native disclosure instead of the floating island. */
+  variant?: "floating" | "inline";
 };
 
 export function DynamicIslandTOC({
   children,
   selector = "article h1, article h2, article h3, article h4, .prose h1, .prose h2, .prose h3, .prose h4, [data-toc]",
+  variant = "floating",
 }: DynamicIslandTOCProps) {
   const [headings, setHeadings] = useState<HeadingData[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -170,6 +173,30 @@ export function DynamicIslandTOC({
     checkVisibility();
     return () => window.removeEventListener("scroll", checkVisibility);
   }, []);
+
+  if (variant === "inline") {
+    return (
+      <>
+        {children}
+        {headings.length > 0 && (
+          <nav aria-label="Lesson contents" className="dynamic-island-toc-inline">
+            <details>
+              <summary>On this page</summary>
+              <ol>
+                {headings.map((heading) => (
+                  <li key={heading.id} data-toc-level={heading.level}>
+                    <a href={`#${heading.id}`} aria-current={activeId === heading.id ? "location" : undefined}>
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          </nav>
+        )}
+      </>
+    );
+  }
 
   return (
     <>

@@ -1,3 +1,4 @@
+import { conditionalAssignmentUnitIds } from './assignments';
 import { describe, expect, it } from 'vitest';
 import { conditionalAssignmentAllowsAction, resolveConditionalAssignments, type ConditionalAssignmentRow } from './assignments';
 import { DEFAULT_CONDITIONAL_TARGET } from '@/lib/conditionalBootcampAssignment';
@@ -9,6 +10,22 @@ const row = (patch: Partial<ConditionalAssignmentRow> = {}): ConditionalAssignme
 });
 const targetRow = (target: unknown) => row({ metadata_json: { bootcamp_id: 'conditionals', conditional_target: target } });
 describe('trusted conditional assignments', () => {
+  it('updates exact former generated display copy while preserving teacher wording and assigned level', async () => {
+    const target = { scope: 'skill', mode: 'practice', difficulty: 'advanced', unitId: 'group-2' } as const;
+    const generated = await import('@/lib/conditionalBootcampAssignment').then(module => module.resolveConditionalAssignment(target));
+    const label = generated.title.slice(0, -': practice'.length);
+    const original = targetRow(target);
+    original.title = `${label}: Level 3 practice`;
+    original.description = 'Assigned level 3 practice with explanations and optional hints.';
+    const [normalized] = await resolveConditionalAssignments([original], 'student');
+    expect(normalized.title).toBe(generated.title);
+    expect(normalized.description).toBe(generated.description);
+    expect(normalized.difficulty).toBe('advanced');
+    expect(original.title).toContain('Level 3');
+    const [custom] = await resolveConditionalAssignments([{ ...original, title: 'Only if: careful translation', description: 'Use your notes beside this set.' }], 'student');
+    expect(custom.title).toBe('Only if: careful translation');
+    expect(custom.description).toBe('Use your notes beside this set.');
+  });
   it('resolves course and later starting stage without a course-wide level', async () => {
     const [course] = await resolveConditionalAssignments([row()], 'student');
     expect(course.unitIds).toHaveLength(30);
@@ -62,4 +79,35 @@ describe('trusted conditional assignments', () => {
     expect(assigned.unitIds).toEqual(['group-3']);
     expect(conditionalAssignmentAllowsAction(assigned, { unitId: 'orientation', action: 'practice', difficulty: 'medium' })).toBe(false);
   });
+});
+
+it('preserves original stage assignment membership when teaching order changes', () => {
+  const group = conditionalAssignmentUnitIds({ scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: 'group-1' });
+  const contraposition = conditionalAssignmentUnitIds({ scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: 'contraposition' });
+  expect(group).not.toContain('contraposition');
+  expect(group).toContain('group-2');
+  expect(contraposition).toContain('group-1');
+  expect(contraposition).toContain('group-2');
+});
+
+it('resolves new stage grants in the current teaching order without losing later prerequisites', async () => {
+  const target = { scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: 'group-1', curriculumVersion: 2 } as const;
+  const [stage] = await resolveConditionalAssignments([targetRow(target)], 'student');
+  expect(stage.target.curriculumVersion).toBe(2);
+  expect(stage.unitIds.slice(0, 3)).toEqual(['group-1', 'group-2', 'rules-facts']);
+  expect(stage.unitIds).toContain('contraposition');
+  expect(stage.unitIds.indexOf('contraposition')).toBeLessThan(stage.unitIds.indexOf('group-3'));
+  expect(stage.unitIds).not.toContain('sufficient-necessary');
+});
+
+it('keeps unmarked metadata and legacy starting links on their original membership', async () => {
+  const target = { scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: 'group-1' } as const;
+  const [metadataStage, linkedStage] = await resolveConditionalAssignments([
+    targetRow(target),
+    row({ source_id: '/bootcamp/conditionals?start=group-1', metadata_json: { bootcamp_id: 'conditionals' } }),
+  ], 'student');
+  expect(metadataStage.unitIds).toEqual(linkedStage.unitIds);
+  expect(metadataStage.unitIds).not.toContain('contraposition');
+  expect(metadataStage.unitIds).not.toContain('rules-facts');
+  expect(metadataStage.target.curriculumVersion).toBeUndefined();
 });

@@ -3,11 +3,13 @@ import { DynamicIslandTOC } from '@/components/ui/dynamic-island-toc';
 import type { ConditionalUnit } from '../content/types';
 import { LessonInteraction } from './LessonInteractions';
 import '../notes.css';
+import { ConditionalOpeningLesson, hasOpeningLesson } from './ConditionalOpeningLesson';
 
 export interface ConditionalLessonNoteProps {
   unit: ConditionalUnit;
   onComplete: () => void;
   continueHref: string;
+  continueLabel?: string;
   previousHref?: string;
   reviewed: boolean;
 }
@@ -20,7 +22,8 @@ function sectionTitle(unit: ConditionalUnit, index: number): string {
   return index === 0 ? 'Understand the relationship' : index === 1 ? 'Compare the possible cases' : index === 2 ? 'Keep the whole claim' : `Check the reasoning ${index - 1}`;
 }
 
-export function ConditionalLessonNote({ unit, onComplete, continueHref, previousHref, reviewed }: ConditionalLessonNoteProps) {
+export function ConditionalLessonNote({ unit, onComplete, continueHref, continueLabel, previousHref, reviewed }: ConditionalLessonNoteProps) {
+  if (hasOpeningLesson(unit.id)) return <ConditionalOpeningLesson key={unit.id} unit={unit} onComplete={onComplete} continueHref={continueHref} continueLabel={continueLabel} previousHref={previousHref} reviewed={reviewed} />;
   return <div className="conditional-note">
     <DynamicIslandTOC key={unit.id} selector=".conditional-note [data-toc]" />
     <header className="cn-hero"><div><p className="cn-label">Conditional logic</p><h1>{unit.title}</h1><p>{unit.goal}</p></div><a className="cn-start" href="#conditional-note-start">Read the lesson<span aria-hidden="true">↓</span></a></header>

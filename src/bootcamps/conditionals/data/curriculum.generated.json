@@ -1,32 +1,43 @@
 [
   {
     "id": "orientation",
-    "title": "Find the Guarantee",
+    "title": "What Are Conditionals?",
     "area": "understanding",
     "phase": "conditional",
     "prerequisites": [],
-    "goal": "Separate a guarantee, a case fact and a prediction before drawing a conclusion.",
+    "goal": "Understand the two condition roles, derive the contrapositive, and translate a complete relationship into a diagram and back into English.",
     "teaching": [
-      "A conditional rule tells you what follows when a condition is met. If a parcel is scanned at intake, its tracking record is updated. Scanning is the starting condition. Updating the record is the guaranteed result.",
-      "The rule does not tell you that any parcel was scanned. A case fact supplies that information: Parcel 18 was scanned at intake. Together, the rule and the fact establish that Parcel 18's tracking record was updated.",
-      "Probably and usually express weaker claims. They do not give an exceptionless guarantee. Keep the whole claim, including its limits. An unknown result is not a false result."
+      "A condition is an idea that can be true or false of a situation. A conditional tells us that if one condition is true, another has to be true too. It describes what would follow if the first condition held; it doesn't report that it happened. On the LSAT, that connection helps us decide what the supplied information actually establishes.",
+      "If you win the raffle, you get a bicycle. Winning is sufficient: it is enough to establish getting a bicycle under this rule. The rule does not say you win. Not winning leaves getting a bicycle unsettled; you could buy one or receive a gift.",
+      "The sufficient word family includes if, when and whenever, any and anytime, all, every and every time, in order to, people who, and each. Read each expression in its sentence. Different wording can preserve the same relationship; a familiar word alone doesn't settle the meaning.",
+      "Getting a bicycle is necessary whenever you win the raffle. Necessary means required by this relationship. It describes a required result, not a condition you must meet before entering.",
+      "The necessary word family includes then, must, necessary, required, only and only if, depends, need and need to, have to, essential, and precondition. Only if names a requirement despite containing if. Keep the whole meaning, including permission or obligation, rather than treating every requirement as proof of compliance.",
+      "Suppose you do not get a bicycle. You cannot have won under our rule: winning would require getting one. We mean the settled outcome, not merely waiting for a prize. This is the contrapositive, understood before a symbolic shortcut.",
+      "Winning establishes getting a bicycle. Not getting one rules out winning. Not winning leaves getting a bicycle open; getting one leaves winning open. Those last two facts do not remove the rule. They simply do not establish the other condition.",
+      "Write the relationship: Win the raffle → Get a bicycle. Put sufficient on the left and necessary on the right. Find the indicator and its complete target, place both conditions, and read the diagram back. Sentence order need not match diagram order.",
+      "The contrapositive is Not get a bicycle → Not win the raffle. Keep the same raffle and outcome. Reverse both sides and negate both complete conditions. The full routine is: find the indicator; label both ideas; place their roles; find the contrapositive; say both forms back in English.",
+      "Use diagramming to keep difficult wording and connected rules clear. Check correctness by comparing the complete meaning with the original sentence and studying specific errors. Learn accurately before adding timing. Write contrapositives in practice to demonstrate the skill; on a question, write one when it helps. Keep abbreviations short but understandable.",
+      "An indicator's target is the complete idea it refers to. The target often follows the indicator, but can precede it. A requirement can be expressed as A pass is required for entry or Entry requires a pass. Both make a pass necessary for entry. Read the grammar rather than grabbing the nearest word.",
+      "A Personalized If/Then checks the translation. Read the ordinary meaning, imagine the proposed sufficient situation, and ask what the sentence makes you know. Then try the reverse and compare it with the original claim. The What Test helps identify the complete idea an expression refers to. Both checks serve meaning, not a memorized word-position rule.",
+      "Practice with fresh sentences. Identify each complete condition, build the original diagram, find its contrapositive, and read both in ordinary English. Make an attempt before the explanation, then name the specific wording or inference that caused any mistake. Looking back at the lesson is part of learning the process."
     ],
     "method": [
-      "Underline what the statement promises.",
-      "Separate any rule from a fact about one case.",
-      "Match the fact to the complete starting condition.",
-      "State only the promised result about that case."
+      "Read the whole sentence and identify its conditional expression.",
+      "Label the two complete ideas without dropping qualifications or changing what is required.",
+      "Place the sufficient idea before the must-arrow and the necessary idea after it.",
+      "Find the contrapositive: the missing necessary condition rules out the sufficient condition.",
+      "Say both forms back in English and check their meaning against the original sentence."
     ],
     "workedExample": {
       "statements": [
-        "Every calibrated gauge receives a blue seal.",
-        "Gauge 6 is calibrated."
+        "If you win the raffle, you get a bicycle.",
+        "You win the raffle."
       ],
       "reasoning": [
-        "The rule applies to calibrated gauges.",
-        "Gauge 6 meets that condition."
+        "The rule gives you a bicycle if you win. The separate fact says you win.",
+        "So you get a bicycle. The rule alone did not report a win; the separate fact supplied that condition."
       ],
-      "conclusion": "Gauge 6 receives a blue seal."
+      "conclusion": "You get a bicycle."
     },
     "guidedExample": {
       "id": "orientation-guide",
@@ -37,16 +48,16 @@
         "No other card is registered."
       ],
       "answerIndex": 0,
-      "hint": "Match Card L to the condition after if.",
+      "hint": "Card L is activated. Which part of the rule does that fact meet?",
       "reasoningSteps": [
-        "Card L satisfies the activation condition.",
-        "The rule guarantees registration for that card."
+        "Card L's number is registered: L is activated, so the rule covers L.",
+        "So L's number is registered. It doesn't give a reverse rule about every registered number or exclude other registered cards."
       ],
-      "explanation": "Card L satisfies the activation condition. The rule guarantees registration for that card."
+      "explanation": "Card L's number is registered: L is activated, so the rule covers L. So L's number is registered. It doesn't give a reverse rule about every registered number or exclude other registered cards."
     },
     "commonMistake": {
-      "mistake": "Treating a rule as evidence that its starting condition occurred.",
-      "repair": "Read the rule as a promise about qualifying cases. Look separately for a fact identifying one."
+      "mistake": "Treating an imagined case as something we've actually been told.",
+      "repair": "If you win the raffle, you get a bicycle. That rule lets us imagine a win and know what would follow. It does not say you actually win. Suppose you win is a situation to consider; You win is a case fact. With that fact and the rule, we can conclude you get a bicycle. Without it, the rule alone establishes no actual win."
     },
     "drills": {
       "beginner": [
@@ -59,12 +70,12 @@
             "The bell is usually answered."
           ],
           "answerIndex": 1,
-          "hint": "Look for a guaranteed connection.",
+          "hint": "Which sentence promises one condition whenever the other is true?",
           "reasoningSteps": [
-            "The if statement links staffing to answering.",
-            "The other statements report a case or a tendency."
+            "“If the desk is staffed, the bell is answered” gives an exceptionless rule: staffing guarantees an answer to the bell.",
+            "Staffed now reports one fact. Usually answered allows an exception. Neither gives that same connection."
           ],
-          "explanation": "The if statement links staffing to answering. The other statements report a case or a tendency."
+          "explanation": "“If the desk is staffed, the bell is answered” gives an exceptionless rule: staffing guarantees an answer to the bell. Staffed now reports one fact. Usually answered allows an exception. Neither gives that same connection."
         },
         {
           "id": "orientation-b2",
@@ -75,12 +86,12 @@
             "Crate M might be numbered."
           ],
           "answerIndex": 0,
-          "hint": "Find a fact that meets the entire starting condition.",
+          "hint": "What kind of crate does the rule promise a label for? Find a fact putting M in that group.",
           "reasoningSteps": [
-            "Being numbered is enough for a label.",
-            "The first fact establishes that condition for Crate M."
+            "“Crate M is numbered” lets us apply the rule to M and conclude that M has a label.",
+            "Crate M is numbered puts M in that group. Heavy doesn't do that, and might be numbered leaves it unsettled."
           ],
-          "explanation": "Being numbered is enough for a label. The first fact establishes that condition for Crate M."
+          "explanation": "“Crate M is numbered” lets us apply the rule to M and conclude that M has a label. Crate M is numbered puts M in that group. Heavy doesn't do that, and might be numbered leaves it unsettled."
         },
         {
           "id": "orientation-b3",
@@ -91,30 +102,30 @@
             "Restored books generally look newer."
           ],
           "answerIndex": 1,
-          "hint": "A case fact identifies a particular subject.",
+          "hint": "Look for a claim about one named book rather than a rule or tendency.",
           "reasoningSteps": [
-            "Book 4 is one specified book.",
-            "The statement reports its binding rather than a general relationship."
+            "“Book 4 has a new binding” reports a fact about that particular book.",
+            "All restored books gives a general rule. Generally look newer describes a tendency. Neither reports this single binding fact."
           ],
-          "explanation": "Book 4 is one specified book. The statement reports its binding rather than a general relationship."
+          "explanation": "“Book 4 has a new binding” reports a fact about that particular book. All restored books gives a general rule. Generally look newer describes a tendency. Neither reports this single binding fact."
         }
       ],
       "medium": [
         {
           "id": "orientation-m1",
-          "prompt": "Most inspected lifts operate quietly. Lift 2 was inspected. Is quiet operation guaranteed?",
+          "prompt": "Inspected lifts usually operate quietly. Lift 2 was inspected. Is quiet operation guaranteed?",
           "options": [
             "Yes.",
             "No; quiet operation is impossible.",
             "No; it remains unsettled."
           ],
           "answerIndex": 2,
-          "hint": "Most allows exceptions.",
+          "hint": "Could Lift 2 be an inspected lift that doesn't operate quietly without contradicting usually?",
           "reasoningSteps": [
-            "The claim permits some inspected lifts to operate noisily.",
-            "Nothing identifies which kind Lift 2 is."
+            "Quiet operation isn't guaranteed. An inspected lift could be noisy without contradicting a claim about what usually happens.",
+            "We know Lift 2 was inspected, but we don't know which kind it is. Quiet operation is possible, not guaranteed."
           ],
-          "explanation": "The claim permits some inspected lifts to operate noisily. Nothing identifies which kind Lift 2 is."
+          "explanation": "Quiet operation isn't guaranteed. An inspected lift could be noisy without contradicting a claim about what usually happens. We know Lift 2 was inspected, but we don't know which kind it is. Quiet operation is possible, not guaranteed."
         },
         {
           "id": "orientation-m2",
@@ -125,12 +136,12 @@
             "Its panel status is unknown."
           ],
           "answerIndex": 2,
-          "hint": "The promised result does not establish its source.",
+          "hint": "The fact gives you the support frame. What did the rule actually promise about framed roofs?",
           "reasoningSteps": [
-            "The rule promises a frame for panel-equipped roofs.",
-            "It does not exclude frames on other roofs."
+            "The roof's panel status is unknown. A support frame is required for a panel, but the rule hasn't said every framed roof has one.",
+            "This roof could have a panel or have a frame for another reason. Neither panel status follows from the information."
           ],
-          "explanation": "The rule promises a frame for panel-equipped roofs. It does not exclude frames on other roofs."
+          "explanation": "The roof's panel status is unknown. A support frame is required for a panel, but the rule hasn't said every framed roof has one. This roof could have a panel or have a frame for another reason. Neither panel status follows from the information."
         },
         {
           "id": "orientation-m3",
@@ -141,12 +152,12 @@
             "No samples are logged."
           ],
           "answerIndex": 1,
-          "hint": "Distinguish a relationship from an existing member.",
+          "hint": "Does every sealed sample is logged tell you that a sealed sample exists?",
           "reasoningSteps": [
-            "The rule governs any sealed sample.",
-            "It does not assert that a sample of that kind exists."
+            "Every sealed sample is logged, but the rule doesn't establish that any sealed or logged sample exists.",
+            "It hasn't identified a sealed sample or any other logged sample. The relationship remains true while existence remains unknown."
           ],
-          "explanation": "The rule governs any sealed sample. It does not assert that a sample of that kind exists."
+          "explanation": "Every sealed sample is logged, but the rule doesn't establish that any sealed or logged sample exists. It hasn't identified a sealed sample or any other logged sample. The relationship remains true while existence remains unknown."
         }
       ],
       "advanced": [
@@ -159,12 +170,12 @@
             "Imani receives a copy."
           ],
           "answerIndex": 1,
-          "hint": "Permission is not an action or a completed outcome.",
+          "hint": "Keep may request in your conclusion. Is permission the same as making or receiving a request?",
           "reasoningSteps": [
-            "The rule grants permission to authorized visitors.",
-            "It says neither that Imani uses it nor that a request succeeds."
+            "Imani may request a copy because Imani is one of the authorized visitors the rule covers.",
+            "It doesn't say Imani uses that permission or receives a copy. May request is the conclusion the wording supports."
           ],
-          "explanation": "The rule grants permission to authorized visitors. It says neither that Imani uses it nor that a request succeeds."
+          "explanation": "Imani may request a copy because Imani is one of the authorized visitors the rule covers. It doesn't say Imani uses that permission or receives a copy. May request is the conclusion the wording supports."
         },
         {
           "id": "orientation-a2",
@@ -175,12 +186,12 @@
             "Neither conclusion is established."
           ],
           "answerIndex": 2,
-          "hint": "Compare the two certification scopes.",
+          "hint": "Does certified for indoor use meet certified for underwater use?",
           "reasoningSteps": [
-            "Indoor certification does not establish underwater certification.",
-            "The supplied rule therefore gives no housing result for K."
+            "Neither housing conclusion is established. Indoor certification doesn't meet the rule's condition of certification for underwater use.",
+            "Indoor certification doesn't establish that condition. K could have a sealed housing or lack one without contradicting what we've been told."
           ],
-          "explanation": "Indoor certification does not establish underwater certification. The supplied rule therefore gives no housing result for K."
+          "explanation": "Neither housing conclusion is established. Indoor certification doesn't meet the rule's condition of certification for underwater use. Indoor certification doesn't establish that condition. K could have a sealed housing or lack one without contradicting what we've been told."
         },
         {
           "id": "orientation-a3",
@@ -191,12 +202,1065 @@
             "The machine cannot shut down."
           ],
           "answerIndex": 1,
-          "hint": "Keep an instruction separate from compliance.",
+          "hint": "The light flashes. What response does the instruction require, and what action has actually been reported?",
           "reasoningSteps": [
-            "The flashing light satisfies the instruction's condition.",
-            "That establishes the required response, not whether anyone performed it."
+            "The instruction calls for shutdown because the warning light is flashing.",
+            "The instruction therefore calls for shutdown. It doesn't report that anyone followed it or that the machine has already shut down."
           ],
-          "explanation": "The flashing light satisfies the instruction's condition. That establishes the required response, not whether anyone performed it."
+          "explanation": "The instruction calls for shutdown because the warning light is flashing. The instruction therefore calls for shutdown. It doesn't report that anyone followed it or that the machine has already shut down."
+        }
+      ]
+    }
+  },
+  {
+    "id": "sufficient-necessary",
+    "title": "What is enough? What is required?",
+    "area": "understanding",
+    "phase": "conditional",
+    "prerequisites": [
+      "orientation"
+    ],
+    "goal": "Explain sufficient as enough and necessary as required, then check which cases fit the same rule.",
+    "teaching": [
+      "Return to our rule: If you win the raffle, you get a bicycle. Knowing you win is enough to know you get one. Winning is sufficient, meaning enough to establish the other condition under this rule.",
+      "Getting a bicycle is necessary whenever you win. It is the required result, not a prerequisite for entering. Winning without getting a bicycle would violate the rule.",
+      "Does required mean enough? Suppose you get a bicycle. Must you have won? We do not know. You could buy it or receive it as a gift. Getting one meets the required result but does not prove winning.",
+      "Now suppose you do not win. Does that settle whether you get a bicycle? No. You could get one another way, or not get one. The rule does not choose between those possibilities.",
+      "Winning and getting a bicycle fits. Not winning and getting one fits too; not winning and not getting one also fits. Winning without getting one breaks the rule. Treat these outcomes as settled, not as snapshots while someone waits for a prize.",
+      "The names belong to this relationship. Getting a bicycle is necessary whenever you win here. In a different rule, such as if you get a bicycle then you get a helmet, getting the bicycle is sufficient for the helmet. Ask enough for what, or required for what.",
+      "When a sentence feels unclear, try a Personalized If/Then. Read it naturally first. Then imagine you meet the condition you think is sufficient. What does the sentence force you to know? Check that thought against the whole sentence, not just against a feeling that the arrow looks right.",
+      "A recovery code is required for a verified account. If my account is verified, what must it have? A recovery code. Now try the other direction: if I have a recovery code, must my account be verified? The sentence hasn't promised that. This check helps us hear why the requirement belongs on the right."
+    ],
+    "method": [
+      "Read the whole sentence in ordinary English before deciding which condition is enough.",
+      "Ask enough for what. Winning the raffle is enough to establish getting a bicycle under our rule.",
+      "Ask required for what. Getting a bicycle is required whenever you win; getting one does not establish winning.",
+      "Check your interpretation with a Personalized If/Then. Try the proposed starting condition, then compare the reverse with the original sentence.",
+      "Test a possible case against the actual guarantee. Keep a case that fits separate from a case the information establishes."
+    ],
+    "workedExample": {
+      "statements": [
+        "If you win the raffle, you get a bicycle.",
+        "You get a bicycle as a gift without winning."
+      ],
+      "reasoning": [
+        "The rule gives you a bicycle if you win. It has not made winning the only way to get one.",
+        "A bicycle received as a gift without winning fits the rule. That possible case shows why the reverse does not follow."
+      ],
+      "conclusion": "Getting a bicycle without winning fits this rule."
+    },
+    "guidedExample": {
+      "id": "sufficient-necessary-guide",
+      "prompt": "Every verified account has a recovery code. Before choosing, use a Personalized If/Then: imagine that your account is verified and state what you must know about it. Which combination violates the rule?",
+      "options": [
+        "Verified, with a recovery code.",
+        "Verified, without a recovery code.",
+        "Unverified, with a recovery code."
+      ],
+      "answerIndex": 1,
+      "hint": "If my account is verified, what does the rule require it to have? Compare the three cases with that promise.",
+      "reasoningSteps": [
+        "A verified account without a recovery code breaks the rule: every verified account has to have that code.",
+        "Verified without a code breaks that guarantee. A verified account with one fits, and an unverified account with one doesn't break any promise the rule made."
+      ],
+      "explanation": "A verified account without a recovery code breaks the rule: every verified account has to have that code. Verified without a code breaks that guarantee. A verified account with one fits, and an unverified account with one doesn't break any promise the rule made."
+    },
+    "commonMistake": {
+      "mistake": "Taking a required condition as enough to establish the other condition.",
+      "repair": "Try the reverse in English: if you get a bicycle, you must have won the raffle. Did the sentence promise that? It did not. A bicycle could be a purchase or gift. Keep the required result without adding a guarantee of winning."
+    },
+    "drills": {
+      "beginner": [
+        {
+          "id": "sufficient-necessary-b1",
+          "prompt": "If a cabinet is fire-rated, it has a steel shell. Which condition does this rule identify as guaranteeing a steel shell?",
+          "options": [
+            "Being fire-rated.",
+            "Having a steel shell.",
+            "Not being fire-rated."
+          ],
+          "answerIndex": 0,
+          "hint": "If the cabinet is fire-rated, what do you know about its shell?",
+          "reasoningSteps": [
+            "Being fire-rated is enough to establish a steel shell for this cabinet. That makes fire-rated status the sufficient condition here.",
+            "Having a steel shell is the promised result. The sentence hasn't identified that result or absence of fire-rating as its sufficient starting condition."
+          ],
+          "explanation": "Being fire-rated is enough to establish a steel shell for this cabinet. That makes fire-rated status the sufficient condition here. Having a steel shell is the promised result. The sentence hasn't identified that result or absence of fire-rating as its sufficient starting condition."
+        },
+        {
+          "id": "sufficient-necessary-b2",
+          "prompt": "Every accredited course has an assessment. What is necessary for accreditation?",
+          "options": [
+            "Absence of an assessment.",
+            "Having an assessment.",
+            "Being an evening course."
+          ],
+          "answerIndex": 1,
+          "hint": "Imagine an accredited course. What does the rule say it has to have?",
+          "reasoningSteps": [
+            "Having an assessment is necessary for accreditation. An accredited course without one would break the rule.",
+            "So an assessment is necessary for accreditation. The rule hasn't made every assessed course accredited."
+          ],
+          "explanation": "Having an assessment is necessary for accreditation. An accredited course without one would break the rule. So an assessment is necessary for accreditation. The rule hasn't made every assessed course accredited."
+        },
+        {
+          "id": "sufficient-necessary-b3",
+          "prompt": "Every packaged tube has a cap. Which case fits the rule?",
+          "options": [
+            "Packaged, no cap.",
+            "Not packaged, with a cap.",
+            "Packaged, no cap, but small."
+          ],
+          "answerIndex": 1,
+          "hint": "Which case avoids a packaged tube without a cap?",
+          "reasoningSteps": [
+            "A tube that isn't packaged and has a cap fits the rule. The sentence promises caps for packaged tubes without restricting caps to them.",
+            "Both uncapped packaged cases break that promise. Being small doesn't excuse the missing cap."
+          ],
+          "explanation": "A tube that isn't packaged and has a cap fits the rule. The sentence promises caps for packaged tubes without restricting caps to them. Both uncapped packaged cases break that promise. Being small doesn't excuse the missing cap."
+        }
+      ],
+      "medium": [
+        {
+          "id": "sufficient-necessary-m1",
+          "prompt": "For polished → reflective and reflective → visible, reflective is:",
+          "options": [
+            "Necessary in both rules.",
+            "Necessary in the first; sufficient in the second.",
+            "Sufficient in both rules."
+          ],
+          "answerIndex": 1,
+          "hint": "Read the two arrows separately. What role does reflective have in each relationship?",
+          "reasoningSteps": [
+            "Reflective is necessary in the first rule and sufficient in the second. Polishing requires reflection; reflection is enough to establish visibility.",
+            "In reflective → visible, reflective is enough to establish visible. It is sufficient there. The role changes with the relationship."
+          ],
+          "explanation": "Reflective is necessary in the first rule and sufficient in the second. Polishing requires reflection; reflection is enough to establish visibility. In reflective → visible, reflective is enough to establish visible. It is sufficient there. The role changes with the relationship."
+        },
+        {
+          "id": "sufficient-necessary-m2",
+          "prompt": "Every tagged specimen is stored. Specimen F is stored. Tagged status is:",
+          "options": [
+            "Guaranteed.",
+            "Ruled out.",
+            "Unknown."
+          ],
+          "answerIndex": 2,
+          "hint": "Could a specimen be stored without being tagged and still fit the sentence?",
+          "reasoningSteps": [
+            "F's tagged status is unknown. Tagged specimens must be stored, but the sentence doesn't restrict storage to tagged specimens.",
+            "F could be tagged or untagged. Storage alone doesn't settle which, so tagged status is unknown."
+          ],
+          "explanation": "F's tagged status is unknown. Tagged specimens must be stored, but the sentence doesn't restrict storage to tagged specimens. F could be tagged or untagged. Storage alone doesn't settle which, so tagged status is unknown."
+        },
+        {
+          "id": "sufficient-necessary-m3",
+          "prompt": "If a seat is upgraded, it has extra legroom. A seat is not upgraded and has no extra legroom. This case is:",
+          "options": [
+            "Forbidden.",
+            "Allowed, but not established by the rule alone.",
+            "Required for every seat."
+          ],
+          "answerIndex": 1,
+          "hint": "What promise would an upgraded seat without extra legroom break? Does this case have an upgraded seat?",
+          "reasoningSteps": [
+            "The case is allowed: an unupgraded seat without extra legroom doesn't break a promise about upgraded seats.",
+            "The case is allowed. The rule by itself wouldn't tell us this case occurred; that is a separate claim in the question."
+          ],
+          "explanation": "The case is allowed: an unupgraded seat without extra legroom doesn't break a promise about upgraded seats. The case is allowed. The rule by itself wouldn't tell us this case occurred; that is a separate claim in the question."
+        }
+      ],
+      "advanced": [
+        {
+          "id": "sufficient-necessary-a1",
+          "prompt": "Every paper accepted for the student symposium has a faculty sponsor. Which is sufficient for sponsorship under this rule?",
+          "options": [
+            "Acceptance for any conference.",
+            "Acceptance for the student symposium.",
+            "Merely being a paper."
+          ],
+          "answerIndex": 1,
+          "hint": "Which exact acceptance does the rule connect to having a faculty sponsor?",
+          "reasoningSteps": [
+            "Acceptance for the student symposium is sufficient for sponsorship. The rule promises a faculty sponsor for a paper with that exact acceptance.",
+            "Acceptance for a different conference, or simply being a paper, doesn't meet that full sufficient idea."
+          ],
+          "explanation": "Acceptance for the student symposium is sufficient for sponsorship. The rule promises a faculty sponsor for a paper with that exact acceptance. Acceptance for a different conference, or simply being a paper, doesn't meet that full sufficient idea."
+        },
+        {
+          "id": "sufficient-necessary-a2",
+          "prompt": "Every authenticated token is valid. A token is valid but not authenticated. What does that show?",
+          "options": [
+            "The rule is false.",
+            "Validity can hold without authentication consistently with the rule.",
+            "Authentication is necessary for validity."
+          ],
+          "answerIndex": 1,
+          "hint": "Would a valid token without authentication break a promise about authenticated tokens?",
+          "reasoningSteps": [
+            "Validity without authentication fits the rule. The promise covers authenticated tokens; it hasn't said every valid token is authenticated.",
+            "A valid unauthenticated token therefore fits the relationship. It doesn't make authentication necessary for validity."
+          ],
+          "explanation": "Validity without authentication fits the rule. The promise covers authenticated tokens; it hasn't said every valid token is authenticated. A valid unauthenticated token therefore fits the relationship. It doesn't make authentication necessary for validity."
+        },
+        {
+          "id": "sufficient-necessary-a3",
+          "prompt": "Every priority packet is routed through Server C. No priority packets are known to exist. Which is accurate?",
+          "options": [
+            "Routing through C is necessary for priority status; no such packet is established.",
+            "A packet through C must exist.",
+            "Routing through C is sufficient for priority status."
+          ],
+          "answerIndex": 0,
+          "hint": "Name the requirement for a priority packet, then ask whether the sentence identifies one.",
+          "reasoningSteps": [
+            "Routing through Server C is necessary for priority status, but no priority packet is established by the rule alone.",
+            "The rule hasn't identified a priority packet. It establishes a requirement, not the existence of a packet meeting it or the reverse direction."
+          ],
+          "explanation": "Routing through Server C is necessary for priority status, but no priority packet is established by the rule alone. The rule hasn't identified a priority packet. It establishes a requirement, not the existence of a packet meeting it or the reverse direction."
+        }
+      ]
+    }
+  },
+  {
+    "id": "group-1",
+    "title": "Group 1: what is enough?",
+    "area": "translation",
+    "phase": "conditional",
+    "prerequisites": [
+      "sufficient-necessary"
+    ],
+    "goal": "Find the complete sufficient idea in each Group 1 expression and preserve its meaning in a diagram.",
+    "teaching": [
+      "We've understood enough and required. Now let's see how different words express the sufficient side. Group 1 includes if, when, where, all, the only, every and any in their conditional uses. The words help you find a relationship. You still need to read what the whole sentence says.",
+      "Start with if: If you win the raffle, you get a bicycle. If what? You win the raffle. Now move the clause: You get a bicycle if you win the raffle. Winning still follows if and remains sufficient, even when the clause comes last. Sentence order does not choose the arrow direction.",
+      "When can introduce the event that's enough: When the alarm sounds, the staff evacuate. Ask when what. The alarm sounds. The sentence promises evacuation whenever the alarm sounds. Whenever makes the same repeated-case meaning explicit. But When I checked the desk, a notice was there reports one occasion; it doesn't promise a notice every time I check.",
+      "Where can make a rule about a location or situation: Where a station is available, the service operates. Which locations does the rule cover? Locations with an available station. At one of those locations, the service has to operate. Keep the location connection when you read the rule back; a station elsewhere hasn't met this location's condition.",
+      "All covers the whole group it names: All registered guests receive a wristband. All what? Registered guests, not guests generally. Being one of those registered guests is enough for a wristband. Another guest may receive one too; the sentence hasn't told us. It also hasn't told us that a registered guest exists.",
+      "The only needs careful reading: The only vehicles permitted inside are electric vehicles. The only what? Vehicles permitted inside. If a vehicle is permitted inside, it must be electric. Try electric vehicle → permitted inside. That would grant permission to every electric vehicle, which the sentence never promised. The grammatical target is the whole permission description, not the word electric.",
+      "Every takes the members one at a time but covers them all: Every finalist receives an invitation. Choose a finalist. The sentence promises that person an invitation. All finalists receive an invitation would express the same relationship. Neither wording says everyone receiving an invitation is a finalist.",
+      "Any says that whichever member of the named group you choose, the rule applies: Any applicant who submits late pays a fee. A late-submitting applicant pays a fee. That's what the sentence guarantees. Choose an applicant who submits on time and this sentence doesn't settle the fee question. Submits late stays with applicant in your diagram.",
+      "The What Test keeps you with the complete idea: if what, when what, where what, all what, the only what, every what, or any what? Don't stop at the nearest noun. In A report appears when a rover crosses the ridge, the target is the rover crossing the ridge. That event goes left, even though the sentence begins with the report.",
+      "An indicator can have another job. The curator asked if the painting was insured tells us about a question the curator asked. It gives no guarantee between asking and insurance. Read for a conditional meaning before drawing an arrow.",
+      "To build the diagram, name both complete ideas and give them clear condensed labels. Place the sufficient idea on the left and what it guarantees on the right. Then read the arrow as an if/then. Does that sentence say the same thing as the original? If a label lost a restriction or the arrow added a reverse, repair it before moving on.",
+      "For Recall and Rephrase, put the list aside and try a fresh sentence. Write its if/then meaning, then compare with the original. The point is to keep the relationship when the wording changes, not merely to remember which side a word usually points toward."
+    ],
+    "method": [
+      "Read the sentence for a guarantee, then identify the Group 1 expression. Use the What Test to find the whole idea it refers to.",
+      "Name both complete ideas. Keep who or what they concern, as well as restrictions such as registered or submits late.",
+      "Choose clear condensed labels for those ideas. A shorter label must still mean the same thing.",
+      "Place the sufficient idea left and what it guarantees right. Sentence order doesn't decide the arrow's direction.",
+      "Read the diagram as an if/then and compare it with the original. Check the direction and every restriction you kept in the labels."
+    ],
+    "workedExample": {
+      "statements": [
+        "Any parcel collected from the north depot receives a receipt."
+      ],
+      "reasoning": [
+        "Any what? A parcel collected from the north depot. Collection from that depot is part of the sufficient idea, so parcel alone would be too broad.",
+        "The rule promises a receipt for that same parcel. Read it back: if a parcel is collected from the north depot, it receives a receipt."
+      ],
+      "conclusion": "Parcel collected from north depot → receives receipt."
+    },
+    "guidedExample": {
+      "id": "group-1-guide",
+      "prompt": "A checkpoint report appears when a rover crosses the ridge. Before choosing, identify the indicator, name both complete ideas, place the sufficient idea left, and read your diagram back in English. Which translates the rule?",
+      "options": [
+        "Report appears → rover crosses ridge.",
+        "Rover crosses ridge → checkpoint report appears.",
+        "Rover does not cross ridge → no report appears."
+      ],
+      "answerIndex": 1,
+      "hint": "When what? A rover crosses the ridge. Does that event come first or second in the original sentence?",
+      "reasoningSteps": [
+        "Rover crosses ridge → report appears keeps the stated direction: crossing the ridge is enough for a report to appear.",
+        "Read the diagram: if a rover crosses the ridge, a checkpoint report appears. The sentence hasn't promised a crossing for every report or no report whenever a rover doesn't cross."
+      ],
+      "explanation": "Rover crosses ridge → report appears keeps the stated direction: crossing the ridge is enough for a report to appear. Read the diagram: if a rover crosses the ridge, a checkpoint report appears. The sentence hasn't promised a crossing for every report or no report whenever a rover doesn't cross."
+    },
+    "commonMistake": {
+      "mistake": "Putting the first idea left or dropping a restriction from the sufficient idea.",
+      "repair": "Ask what the expression refers to, then read your arrow in English. In “A report is reviewed if it is submitted before noon,” review comes first, but submission before noon is what guarantees it. Keep the full before-noon submission condition on the sufficient side."
+    },
+    "drills": {
+      "beginner": [
+        {
+          "id": "group-1-b1",
+          "prompt": "If a locker is reserved, it displays a nameplate. Choose the rule.",
+          "options": [
+            "Reserved locker → displays nameplate.",
+            "Nameplate displayed → reserved locker.",
+            "Unreserved locker → no nameplate."
+          ],
+          "answerIndex": 0,
+          "hint": "If what? A locker is reserved. Begin the arrow with that whole idea.",
+          "reasoningSteps": [
+            "Reserved locker → displays nameplate matches the rule: a reserved locker has to display a nameplate.",
+            "The sentence hasn't said a nameplate proves reservation or that every unreserved locker lacks one. Those alternatives add promises."
+          ],
+          "explanation": "Reserved locker → displays nameplate matches the rule: a reserved locker has to display a nameplate. The sentence hasn't said a nameplate proves reservation or that every unreserved locker lacks one. Those alternatives add promises."
+        },
+        {
+          "id": "group-1-b2",
+          "prompt": "Every woven basket has a reinforced rim. What follows for a woven basket?",
+          "options": [
+            "It has a reinforced rim.",
+            "Every rimmed basket is woven.",
+            "It is the only basket with a rim."
+          ],
+          "answerIndex": 0,
+          "hint": "Take one woven basket. What does every tell you must be true of it?",
+          "reasoningSteps": [
+            "The woven basket has a reinforced rim because it is one of the baskets the rule covers.",
+            "Other baskets might have reinforced rims too. The rule doesn't make this the only rimmed basket or make every rimmed basket woven."
+          ],
+          "explanation": "The woven basket has a reinforced rim because it is one of the baskets the rule covers. Other baskets might have reinforced rims too. The rule doesn't make this the only rimmed basket or make every rimmed basket woven."
+        },
+        {
+          "id": "group-1-b3",
+          "prompt": "A notice is printed whenever the schedule changes. What triggers printing under this rule?",
+          "options": [
+            "A notice being printed.",
+            "The schedule changing.",
+            "The schedule staying unchanged."
+          ],
+          "answerIndex": 1,
+          "hint": "Whenever what? Find the event after whenever, even though printing is mentioned first.",
+          "reasoningSteps": [
+            "The schedule changing is what guarantees printing. Whenever the schedule changes, the rule promises a printed notice.",
+            "Printing is the result. A schedule that stays unchanged hasn't met the sufficient idea named by whenever."
+          ],
+          "explanation": "The schedule changing is what guarantees printing. Whenever the schedule changes, the rule promises a printed notice. Printing is the result. A schedule that stays unchanged hasn't met the sufficient idea named by whenever."
+        },
+        {
+          "id": "group-1-b4",
+          "prompt": "Where a shelf has a blue label, its books are available to borrow. Which idea goes left?",
+          "options": [
+            "Books available to borrow.",
+            "Shelf has a blue label.",
+            "Any shelf."
+          ],
+          "answerIndex": 1,
+          "hint": "Where what? Keep the blue label with the shelf.",
+          "reasoningSteps": [
+            "Shelf has a blue label goes left. The rule makes that complete condition enough for its books to be available to borrow.",
+            "At such a shelf, its books are available to borrow. Any shelf would drop the restriction, and availability belongs on the result side."
+          ],
+          "explanation": "Shelf has a blue label goes left. The rule makes that complete condition enough for its books to be available to borrow. At such a shelf, its books are available to borrow. Any shelf would drop the restriction, and availability belongs on the result side."
+        },
+        {
+          "id": "group-1-b5",
+          "prompt": "All cups packed in the gift set have matching saucers. Which diagram preserves the rule?",
+          "options": [
+            "Matching saucer → cup packed in gift set.",
+            "Cup → has matching saucer.",
+            "Cup packed in gift set → has matching saucer."
+          ],
+          "answerIndex": 2,
+          "hint": "Which cups does all cover? Keep packed in the gift set in your answer.",
+          "reasoningSteps": [
+            "Cup packed in gift set → has matching saucer keeps both the direction and the restriction to cups in that gift set.",
+            "Cup → matching saucer would cover cups outside the set too. Matching saucer → gift-set cup would reverse a promise the sentence never made."
+          ],
+          "explanation": "Cup packed in gift set → has matching saucer keeps both the direction and the restriction to cups in that gift set. Cup → matching saucer would cover cups outside the set too. Matching saucer → gift-set cup would reverse a promise the sentence never made."
+        },
+        {
+          "id": "group-1-b6",
+          "prompt": "The only desserts on the lunch menu are chilled desserts. What follows about a dessert on that menu?",
+          "options": [
+            "It is chilled.",
+            "Every chilled dessert is on that menu.",
+            "It cannot be chilled."
+          ],
+          "answerIndex": 0,
+          "hint": "The only what? Start with desserts on the lunch menu.",
+          "reasoningSteps": [
+            "The dessert is chilled. The rule says every dessert on the lunch menu has to be a chilled dessert.",
+            "The sentence doesn't put every chilled dessert on the menu. It could be chilled without appearing there and still fit the rule."
+          ],
+          "explanation": "The dessert is chilled. The rule says every dessert on the lunch menu has to be a chilled dessert. The sentence doesn't put every chilled dessert on the menu. It could be chilled without appearing there and still fit the rule."
+        },
+        {
+          "id": "group-1-b7",
+          "prompt": "Any ticket bought online includes a receipt. What is the complete sufficient idea?",
+          "options": [
+            "Ticket.",
+            "Ticket bought online.",
+            "Receipt included."
+          ],
+          "answerIndex": 1,
+          "hint": "Any what? Read past ticket to the words limiting which tickets are covered.",
+          "reasoningSteps": [
+            "Ticket bought online is the complete sufficient idea. The promise covers tickets with that purchase method.",
+            "Ticket alone would make the same promise about other purchase methods. Receipt included names the result rather than the sufficient idea."
+          ],
+          "explanation": "Ticket bought online is the complete sufficient idea. The promise covers tickets with that purchase method. Ticket alone would make the same promise about other purchase methods. Receipt included names the result rather than the sufficient idea."
+        }
+      ],
+      "medium": [
+        {
+          "id": "group-1-m1",
+          "prompt": "Any invoice submitted through the portal is time-stamped. Which translation preserves scope?",
+          "options": [
+            "Invoice → time-stamped.",
+            "Invoice submitted through portal → time-stamped.",
+            "Time-stamped → submitted through portal."
+          ],
+          "answerIndex": 1,
+          "hint": "What does submitted through the portal add to invoice?",
+          "reasoningSteps": [
+            "Invoice submitted through portal → time-stamped preserves the full condition: the invoice was submitted through the portal.",
+            "It hasn't covered every invoice or said a time stamp proves portal submission. The broader and reversed arrows each add something."
+          ],
+          "explanation": "Invoice submitted through portal → time-stamped preserves the full condition: the invoice was submitted through the portal. It hasn't covered every invoice or said a time stamp proves portal submission. The broader and reversed arrows each add something."
+        },
+        {
+          "id": "group-1-m2",
+          "prompt": "The only rehearsals recorded are rehearsals held in Studio B. Which follows?",
+          "options": [
+            "Held in Studio B → recorded.",
+            "Recorded rehearsal → held in Studio B.",
+            "Held outside Studio B → recorded."
+          ],
+          "answerIndex": 1,
+          "hint": "The only what? Which rehearsals does the sentence tell you about first?",
+          "reasoningSteps": [
+            "Recorded rehearsal → held in Studio B matches the sentence: a recorded rehearsal has to be one held there.",
+            "Being in Studio B alone doesn't promise recording. The sentence restricts the recorded group without promising that every Studio B rehearsal joins it."
+          ],
+          "explanation": "Recorded rehearsal → held in Studio B matches the sentence: a recorded rehearsal has to be one held there. Being in Studio B alone doesn't promise recording. The sentence restricts the recorded group without promising that every Studio B rehearsal joins it."
+        },
+        {
+          "id": "group-1-m3",
+          "prompt": "Where a monitoring station detects ice, its warning flag rises. A station's flag rises. What follows?",
+          "options": [
+            "It detected ice.",
+            "It detected no ice.",
+            "Ice detection is unknown."
+          ],
+          "answerIndex": 2,
+          "hint": "The flag is raised. Has the sentence said ice detection is the only way that can happen?",
+          "reasoningSteps": [
+            "Ice detection is unknown. Detecting ice guarantees a raised flag, but a raised flag hasn't been made enough to establish ice detection.",
+            "A station could have detected ice or raised its flag for another reason. The fact leaves ice detection unknown."
+          ],
+          "explanation": "Ice detection is unknown. Detecting ice guarantees a raised flag, but a raised flag hasn't been made enough to establish ice detection. A station could have detected ice or raised its flag for another reason. The fact leaves ice detection unknown."
+        },
+        {
+          "id": "group-1-m4",
+          "prompt": "A tray gets a green sticker if its lid is sealed. Which translation preserves the sentence?",
+          "options": [
+            "Green sticker → sealed lid.",
+            "Sealed lid → green sticker.",
+            "No green sticker → no tray."
+          ],
+          "answerIndex": 1,
+          "hint": "If what? Its lid is sealed. Does mentioning the sticker first change that?",
+          "reasoningSteps": [
+            "Sealed lid → green sticker matches the sentence. The sealed lid is enough for the sticker even though the if-clause comes second.",
+            "Sealed lid → green sticker says the same thing. The reverse and the claim about no tray aren't supplied by the sentence."
+          ],
+          "explanation": "Sealed lid → green sticker matches the sentence. The sealed lid is enough for the sticker even though the if-clause comes second. Sealed lid → green sticker says the same thing. The reverse and the claim about no tray aren't supplied by the sentence."
+        },
+        {
+          "id": "group-1-m5",
+          "prompt": "When a rehearsal ends, the room lights dim. The lights are dim. What is established about the rehearsal?",
+          "options": [
+            "It ended.",
+            "It did not end.",
+            "Its ending is not established."
+          ],
+          "answerIndex": 2,
+          "hint": "Could the lights be dimmed while the rehearsal continues without breaking the rule?",
+          "reasoningSteps": [
+            "The rehearsal's ending is not established. Its ending guarantees dim lights, but dim lights don't establish its ending.",
+            "Dim lights leave the rehearsal's ending open. We can't conclude either that it ended or that it didn't."
+          ],
+          "explanation": "The rehearsal's ending is not established. Its ending guarantees dim lights, but dim lights don't establish its ending. Dim lights leave the rehearsal's ending open. We can't conclude either that it ended or that it didn't."
+        },
+        {
+          "id": "group-1-m6",
+          "prompt": "All mugs stored on the top shelf have handles. Which case fits this rule?",
+          "options": [
+            "Top shelf, no handle.",
+            "Lower shelf, with handle.",
+            "Top shelf, no handle, but small."
+          ],
+          "answerIndex": 1,
+          "hint": "Which mugs does the rule promise handles for? Compare each case with that group.",
+          "reasoningSteps": [
+            "A lower-shelf mug with a handle fits. The rule promises handles for top-shelf mugs without restricting handles to that shelf.",
+            "A top-shelf mug without a handle breaks the guarantee, whether the mug is small or not."
+          ],
+          "explanation": "A lower-shelf mug with a handle fits. The rule promises handles for top-shelf mugs without restricting handles to that shelf. A top-shelf mug without a handle breaks the guarantee, whether the mug is small or not."
+        },
+        {
+          "id": "group-1-m7",
+          "prompt": "Every guest arriving before six receives a seat number. What does Guest → Seat number lose?",
+          "options": [
+            "The before-six restriction.",
+            "The meaning of receives.",
+            "Nothing."
+          ],
+          "answerIndex": 0,
+          "hint": "Every which guest? What words disappear from the shorter arrow?",
+          "reasoningSteps": [
+            "Guest → Seat number loses the before-six restriction. The sentence covers guests arriving before six.",
+            "That would promise a seat number to any guest, including guests whose arrival time the sentence doesn't cover. Keep the restriction with the sufficient idea."
+          ],
+          "explanation": "Guest → Seat number loses the before-six restriction. The sentence covers guests arriving before six. That would promise a seat number to any guest, including guests whose arrival time the sentence doesn't cover. Keep the restriction with the sufficient idea."
+        }
+      ],
+      "advanced": [
+        {
+          "id": "group-1-a1",
+          "prompt": "Every film selected for the outdoor series is captioned. Film V is selected for an indoor series. Which follows?",
+          "options": [
+            "V is captioned.",
+            "V is not captioned.",
+            "Captioning is not settled by this rule."
+          ],
+          "answerIndex": 2,
+          "hint": "Compare selected for the indoor series with selected for the outdoor series. Are they the same full idea?",
+          "reasoningSteps": [
+            "Captioning is not settled. Selection for an indoor series doesn't meet the rule's condition of selection for the outdoor series.",
+            "Indoor selection alone doesn't meet that condition. V could be captioned or not; this rule doesn't settle it."
+          ],
+          "explanation": "Captioning is not settled. Selection for an indoor series doesn't meet the rule's condition of selection for the outdoor series. Indoor selection alone doesn't meet that condition. V could be captioned or not; this rule doesn't settle it."
+        },
+        {
+          "id": "group-1-a2",
+          "prompt": "The curator asked if the painting was insured. Which rule can be extracted from that sentence alone?",
+          "options": [
+            "Painting insured → curator asks.",
+            "Curator asks → painting insured.",
+            "Neither; it reports an inquiry."
+          ],
+          "answerIndex": 2,
+          "hint": "Is the curator making a guarantee, or asking a question about the painting?",
+          "reasoningSteps": [
+            "Neither arrow follows: “asked if” reports an inquiry about insurance rather than a conditional guarantee.",
+            "So neither arrow follows. The familiar word if has a different job in this sentence."
+          ],
+          "explanation": "Neither arrow follows: “asked if” reports an inquiry about insurance rather than a conditional guarantee. So neither arrow follows. The familiar word if has a different job in this sentence."
+        },
+        {
+          "id": "group-1-a3-v2",
+          "prompt": "Any component certified for heat exposure is stored in the outdoor cabinet. Which diagram preserves the complete rule?",
+          "options": [
+            "Certified for heat exposure → stored in outdoor cabinet.",
+            "Stored outdoors → certified for every use.",
+            "Component → stored in outdoor cabinet."
+          ],
+          "answerIndex": 0,
+          "hint": "Keep both limits: certified for which exposure, and stored in which place?",
+          "reasoningSteps": [
+            "Certified for heat exposure → stored in outdoor cabinet preserves both the certification limit and the specified storage place.",
+            "The matching arrow keeps both descriptions. Outdoors generally, certified for every use, and component alone each change or lose part of the meaning."
+          ],
+          "explanation": "Certified for heat exposure → stored in outdoor cabinet preserves both the certification limit and the specified storage place. The matching arrow keeps both descriptions. Outdoors generally, certified for every use, and component alone each change or lose part of the meaning."
+        },
+        {
+          "id": "group-1-a4",
+          "prompt": "When I checked the shop, the shutters were closed. What conditional rule does this sentence establish?",
+          "options": [
+            "I check → shutters closed.",
+            "Shutters closed → I check.",
+            "None; it reports one visit."
+          ],
+          "answerIndex": 2,
+          "hint": "Does when describe every check, or the particular check being reported?",
+          "reasoningSteps": [
+            "No conditional rule is established. The sentence reports one visit when the shutters were closed.",
+            "That observation doesn't promise closed shutters whenever I check, or a check whenever the shutters close. No conditional rule has been stated."
+          ],
+          "explanation": "No conditional rule is established. The sentence reports one visit when the shutters were closed. That observation doesn't promise closed shutters whenever I check, or a check whenever the shutters close. No conditional rule has been stated."
+        },
+        {
+          "id": "group-1-a5",
+          "prompt": "Where a table is reserved for evening service, its lamp is lit. A table reserved for lunch has an unlit lamp. Does that contradict the rule?",
+          "options": [
+            "Yes, every reserved table needs a lit lamp.",
+            "No, lunch does not meet the evening-service condition.",
+            "Yes, no table may have an unlit lamp."
+          ],
+          "answerIndex": 1,
+          "hint": "Keep evening service in the reservation condition. Does a lunch reservation meet it?",
+          "reasoningSteps": [
+            "The lunch case doesn't contradict the rule. Lunch reservation alone doesn't meet the complete evening-service condition.",
+            "A lunch reservation alone doesn't meet that complete condition. Its unlit lamp therefore doesn't contradict the stated evening-service guarantee."
+          ],
+          "explanation": "The lunch case doesn't contradict the rule. Lunch reservation alone doesn't meet the complete evening-service condition. A lunch reservation alone doesn't meet that complete condition. Its unlit lamp therefore doesn't contradict the stated evening-service guarantee."
+        },
+        {
+          "id": "group-1-a6",
+          "prompt": "All notebooks sold in the travel kit have waterproof covers. Which is the same rule?",
+          "options": [
+            "Waterproof cover → sold in travel kit.",
+            "Notebook sold in travel kit → waterproof cover.",
+            "Notebook → waterproof cover."
+          ],
+          "answerIndex": 1,
+          "hint": "All which notebooks? Keep sold in the travel kit with the sufficient idea.",
+          "reasoningSteps": [
+            "Notebook sold in travel kit → waterproof cover is the same rule: a notebook sold in that kit has to have a waterproof cover.",
+            "A waterproof cover doesn't prove the sale context, and notebook alone would cover notebooks outside the kit. Neither change is justified."
+          ],
+          "explanation": "Notebook sold in travel kit → waterproof cover is the same rule: a notebook sold in that kit has to have a waterproof cover. A waterproof cover doesn't prove the sale context, and notebook alone would cover notebooks outside the kit. Neither change is justified."
+        },
+        {
+          "id": "group-1-a7",
+          "prompt": "The only workshops offering same-day feedback are online workshops. An online workshop offers no same-day feedback. Which is accurate?",
+          "options": [
+            "It contradicts the rule.",
+            "It fits the rule; online is not stated enough for feedback.",
+            "The rule guarantees its feedback."
+          ],
+          "answerIndex": 1,
+          "hint": "Try the sentence from same-day feedback to online. Did it also promise feedback for every online workshop?",
+          "reasoningSteps": [
+            "The workshop fits the rule. Online format is required for same-day feedback, but online format hasn't been made enough for that feedback.",
+            "An online workshop without that feedback fits. The sentence requires online format for same-day feedback; it doesn't say every online workshop offers that feedback."
+          ],
+          "explanation": "The workshop fits the rule. Online format is required for same-day feedback, but online format hasn't been made enough for that feedback. An online workshop without that feedback fits. The sentence requires online format for same-day feedback; it doesn't say every online workshop offers that feedback."
+        },
+        {
+          "id": "group-1-a8",
+          "prompt": "A confirmation appears if an order includes a collection time. Which diagram preserves the complete rule?",
+          "options": [
+            "Confirmation appears → order includes collection time.",
+            "Order includes collection time → confirmation appears.",
+            "Order placed → confirmation appears."
+          ],
+          "answerIndex": 1,
+          "hint": "If what? The order includes a collection time. Keep includes a collection time, not just order.",
+          "reasoningSteps": [
+            "Order includes collection time → confirmation appears keeps the complete sufficient idea, even though it comes second in the sentence.",
+            "Order placed would lose the time restriction. A confirmation doesn't prove that time was included, because the sentence hasn't given that reverse guarantee."
+          ],
+          "explanation": "Order includes collection time → confirmation appears keeps the complete sufficient idea, even though it comes second in the sentence. Order placed would lose the time restriction. A confirmation doesn't prove that time was included, because the sentence hasn't given that reverse guarantee."
+        },
+        {
+          "id": "group-1-a9",
+          "prompt": "When a tray is set aside for nut-free orders, it carries a green marker. Tray Q carries a green marker. What follows?",
+          "options": [
+            "Q is set aside for nut-free orders.",
+            "Q is not set aside for nut-free orders.",
+            "The rule does not establish whether Q is set aside for nut-free orders."
+          ],
+          "answerIndex": 2,
+          "hint": "When what? Does a green marker by itself establish the nut-free reservation?",
+          "reasoningSteps": [
+            "The rule doesn't establish Q's reservation. A nut-free reservation guarantees a green marker, but the marker doesn't establish that reservation.",
+            "The sentence doesn't restrict green markers to those trays. Q could be set aside that way or have the marker without that reservation; we don't know which."
+          ],
+          "explanation": "The rule doesn't establish Q's reservation. A nut-free reservation guarantees a green marker, but the marker doesn't establish that reservation. The sentence doesn't restrict green markers to those trays. Q could be set aside that way or have the marker without that reservation; we don't know which."
+        }
+      ]
+    }
+  },
+  {
+    "id": "group-2",
+    "title": "Group 2: what is required?",
+    "area": "translation",
+    "phase": "conditional",
+    "prerequisites": [
+      "group-1"
+    ],
+    "goal": "Find what a Group 2 sentence requires, preserve its complete meaning, and distinguish a requirement from success or compliance.",
+    "teaching": [
+      "Group 2 helps us find the necessary side: what the sentence says is required. Its core expressions are only, only if, only when, only where, always, requires and must in their relevant uses. We'll keep the complete requirement on the right. First, let's hear why it belongs there.",
+      "Compare if with only if. You win the raffle if you get a bicycle makes getting a bicycle sufficient for winning. You win the raffle only if you get a bicycle makes getting one necessary whenever you win. The second statement allows someone to get a bicycle as a gift without winning. The first does not.",
+      "Only restricts who can meet the other condition: Only people who get a bicycle win this raffle. Winning establishes getting a bicycle. The only people who win this raffle are people who get a bicycle preserves the same rule, but the only refers to the winners. Read each complete phrase in its sentence.",
+      "Only if introduces a condition that has to be met: A student graduates only if the student completes the project. If the student graduates, the project must be completed. Project completion by itself doesn't promise graduation. Read the reverse aloud and you'll hear the extra guarantee it adds.",
+      "Only when makes an event or state required: A review occurs only when a complaint is filed. A complaint has to be filed for this review to occur. Imagine a complaint has been filed. Does this sentence say a review now occurs? No. It says what a review requires, not that every complaint gets one.",
+      "Only where makes a location condition required: The service operates only where a station is available. Wherever the service operates, a station has to be available there. A station at another location isn't enough. Nor has the sentence promised service to every place with an available station.",
+      "Always describes the result that holds throughout the named cases: A finalist always receives an invitation. Start with a finalist. Under that claim, the person receives an invitation. The subject supplies the sufficient idea; receiving an invitation is the required result. Always belongs in this teaching group, but it doesn't mean the next word automatically goes on the right. Read the complete subject and result.",
+      "Requires tells you what is needed: Entry requires a current pass. Requires what? A current pass. Entry goes left, having the current pass goes right. Change the wording to A current pass is required for entry. The requirement appears first now, but the relationship hasn't changed. A pass alone isn't a promise that you can enter, and an expired pass doesn't meet the full requirement.",
+      "Must can state an obligation: A finalist must attend the interview. What does finalist status establish? The person is required to attend. It doesn't establish that the person actually attends; people can fail to meet an obligation. Write Finalist → Required to attend interview so the diagram preserves that difference. Keep permission words such as may in the same careful way.",
+      "Use the What Test on the full expression, then check with a Personalized If/Then. If my display has activated, what does the battery rule force me to know? Its battery is charged. Now suppose I know only that the battery is charged. The rule still leaves activation open. That comparison checks the arrow against the sentence's ordinary meaning.",
+      "Keep every part of a requirement. In Entry requires a current pass, pass would drop current. In Only members may use this room, actually uses the room would change permission into an action. The right direction can't repair a label that has lost part of the idea.",
+      "In the fresh practice, explain what is required and what remains open. If your answer treats a requirement as enough, try saying that answer as an if/then. Compare it with the original sentence and point to the extra promise. That's the mistake we're learning to catch."
+    ],
+    "method": [
+      "Read the whole conditional claim. Identify the Group 2 expression and ask what it requires or restricts with the What Test.",
+      "Name both complete ideas. Keep restrictions, negatives, permission and obligation in their meaning.",
+      "Choose clear condensed labels. Required to attend must not become actually attends.",
+      "Place the restricted event or condition left and its requirement right. Check that direction with a Personalized If/Then.",
+      "Read the arrow back in English. Compare the reverse too: did the original sentence really make the requirement enough?"
+    ],
+    "workedExample": {
+      "statements": [
+        "A package is released only when its clearance is recorded."
+      ],
+      "reasoning": [
+        "Only when what? Its clearance is recorded. A released package has to meet that requirement, so release goes left and recorded clearance goes right.",
+        "Read it back: if a package is released, its clearance is recorded. Recorded clearance alone doesn't promise release; the sentence hasn't given us that direction."
+      ],
+      "conclusion": "Package released → its clearance recorded."
+    },
+    "guidedExample": {
+      "id": "group-2-guide",
+      "prompt": "Only subscribers can access the recording. Before choosing, identify what only restricts, name both complete ideas, put the requirement right, and check your direction with a Personalized If/Then about having access permission. Which follows?",
+      "options": [
+        "Subscriber → can access recording.",
+        "Can access recording → subscriber.",
+        "Subscriber → has accessed recording."
+      ],
+      "answerIndex": 1,
+      "hint": "If I can access the recording, what does only subscribers require about me?",
+      "reasoningSteps": [
+        "Can access recording → subscriber preserves the restriction: someone with access permission has to be a subscriber.",
+        "The sentence doesn't say every subscriber can access the recording. Nor does permission tell us someone actually accessed it."
+      ],
+      "explanation": "Can access recording → subscriber preserves the restriction: someone with access permission has to be a subscriber. The sentence doesn't say every subscriber can access the recording. Nor does permission tell us someone actually accessed it."
+    },
+    "commonMistake": {
+      "mistake": "Taking a requirement as a guarantee of the result, or taking an obligation as proof that someone complied.",
+      "repair": "Ask exactly what was promised. Having a current pass meets the requirement for entry, but it doesn't establish that someone entered. Must attend establishes required attendance, not actual attendance. Keep that distinction in the diagram and conclusion."
+    },
+    "drills": {
+      "beginner": [
+        {
+          "id": "group-2-b1",
+          "prompt": "The display activates only if the battery is charged. Translate.",
+          "options": [
+            "Display activates → battery charged.",
+            "Battery charged → display activates.",
+            "Display inactive → battery uncharged."
+          ],
+          "answerIndex": 0,
+          "hint": "Only if what? If the display has activated, what must be true of its battery?",
+          "reasoningSteps": [
+            "Display activates → battery charged preserves the requirement. If the display activates, its battery has to be charged.",
+            "The sentence doesn't promise activation from charging or an uncharged battery from an inactive display. Both alternatives add a direction we weren't given."
+          ],
+          "explanation": "Display activates → battery charged preserves the requirement. If the display activates, its battery has to be charged. The sentence doesn't promise activation from charging or an uncharged battery from an inactive display. Both alternatives add a direction we weren't given."
+        },
+        {
+          "id": "group-2-b2",
+          "prompt": "Only residents receive a parking sticker. What is necessary for receiving one?",
+          "options": [
+            "Being a resident.",
+            "Driving daily.",
+            "Already having a sticker."
+          ],
+          "answerIndex": 0,
+          "hint": "Only what? Which people can receive a parking sticker under this restriction?",
+          "reasoningSteps": [
+            "Being a resident is necessary for receiving a parking sticker: the rule restricts recipients to residents.",
+            "The rule hasn't promised a sticker to every resident or made daily driving a requirement. Having a sticker is the result we're asking about."
+          ],
+          "explanation": "Being a resident is necessary for receiving a parking sticker: the rule restricts recipients to residents. The rule hasn't promised a sticker to every resident or made daily driving a requirement. Having a sticker is the result we're asking about."
+        },
+        {
+          "id": "group-2-b3",
+          "prompt": "A registered buoy always broadcasts its identifier. Which rule follows?",
+          "options": [
+            "Broadcasts identifier → registered buoy.",
+            "Registered buoy → broadcasts identifier.",
+            "Unregistered buoy → no broadcast."
+          ],
+          "answerIndex": 1,
+          "hint": "Start with the full subject: a registered buoy. What does always say about it?",
+          "reasoningSteps": [
+            "Registered buoy → broadcasts identifier follows: every registered buoy broadcasts its identifier.",
+            "So Registered buoy → broadcasts identifier preserves the rule. The claim doesn't say every broadcasting buoy is registered or that an unregistered buoy stays silent."
+          ],
+          "explanation": "Registered buoy → broadcasts identifier follows: every registered buoy broadcasts its identifier. So Registered buoy → broadcasts identifier preserves the rule. The claim doesn't say every broadcasting buoy is registered or that an unregistered buoy stays silent."
+        },
+        {
+          "id": "group-2-b4",
+          "prompt": "The café serves breakfast only when its kitchen is open. Which idea goes right?",
+          "options": [
+            "Serves breakfast.",
+            "Kitchen is open.",
+            "Café."
+          ],
+          "answerIndex": 1,
+          "hint": "Only when what? What has to be true of the kitchen if breakfast is being served?",
+          "reasoningSteps": [
+            "Kitchen is open goes right because an open kitchen is required for the café to serve breakfast.",
+            "The kitchen could be open without serving breakfast. Serves breakfast goes left, and café alone isn't the requirement."
+          ],
+          "explanation": "Kitchen is open goes right because an open kitchen is required for the café to serve breakfast. The kitchen could be open without serving breakfast. Serves breakfast goes left, and café alone isn't the requirement."
+        },
+        {
+          "id": "group-2-b5",
+          "prompt": "This delivery service runs only where there is road access. Which diagram fits?",
+          "options": [
+            "Road access → delivery service runs.",
+            "Delivery service runs → road access.",
+            "No service → no road access."
+          ],
+          "answerIndex": 1,
+          "hint": "If the service runs at a location, what does only where require there?",
+          "reasoningSteps": [
+            "Delivery service runs → road access keeps the location requirement: wherever the service runs, road access has to be available there.",
+            "Road access alone doesn't tell us the service runs there. No service wouldn't prove there's no road. Keep the direction the sentence actually gives."
+          ],
+          "explanation": "Delivery service runs → road access keeps the location requirement: wherever the service runs, road access has to be available there. Road access alone doesn't tell us the service runs there. No service wouldn't prove there's no road. Keep the direction the sentence actually gives."
+        },
+        {
+          "id": "group-2-b6",
+          "prompt": "Borrowing a camera requires a signed form. What is necessary under this rule?",
+          "options": [
+            "Borrowing a camera.",
+            "Having a signed form.",
+            "Buying a camera."
+          ],
+          "answerIndex": 1,
+          "hint": "Requires what? Name the form completely.",
+          "reasoningSteps": [
+            "Having a signed form is necessary for borrowing a camera. The rule says the borrower needs that complete requirement.",
+            "Signing the form doesn't settle whether you borrow the camera. Borrowing is the restricted activity; buying a camera isn't discussed."
+          ],
+          "explanation": "Having a signed form is necessary for borrowing a camera. The rule says the borrower needs that complete requirement. Signing the form doesn't settle whether you borrow the camera. Borrowing is the restricted activity; buying a camera isn't discussed."
+        },
+        {
+          "id": "group-2-b7",
+          "prompt": "The rules say each team captain must attend the briefing. What follows about a captain?",
+          "options": [
+            "The captain attended.",
+            "The captain is required to attend.",
+            "Only captains attend."
+          ],
+          "answerIndex": 1,
+          "hint": "Does must report attendance, or say attendance is required?",
+          "reasoningSteps": [
+            "The captain is required to attend the briefing. “Must” gives an obligation rather than a report of attendance.",
+            "It doesn't report that the captain complied. Nor does it say only captains attend. Required to attend is what follows."
+          ],
+          "explanation": "The captain is required to attend the briefing. “Must” gives an obligation rather than a report of attendance. It doesn't report that the captain complied. Nor does it say only captains attend. Required to attend is what follows."
+        }
+      ],
+      "medium": [
+        {
+          "id": "group-2-m1",
+          "prompt": "Entry to the final round requires a qualifying score. Mira has a qualifying score. What follows?",
+          "options": [
+            "Mira enters the final round.",
+            "Mira cannot enter.",
+            "Entry is not established."
+          ],
+          "answerIndex": 2,
+          "hint": "Mira meets the score requirement. Did the sentence make that score enough for entry?",
+          "reasoningSteps": [
+            "Mira's entry is not established. A qualifying score is required for entry, but the rule hasn't made that score enough.",
+            "The rule doesn't say it is the only requirement or promise entry from it. Mira's entry remains open rather than established or ruled out."
+          ],
+          "explanation": "Mira's entry is not established. A qualifying score is required for entry, but the rule hasn't made that score enough. The rule doesn't say it is the only requirement or promise entry from it. Mira's entry remains open rather than established or ruled out."
+        },
+        {
+          "id": "group-2-m2-v2",
+          "prompt": "The camera records only when motion is detected. Which diagram preserves the requirement?",
+          "options": [
+            "Camera records → motion detected.",
+            "Motion detected → camera records.",
+            "Camera records → camera broken."
+          ],
+          "answerIndex": 0,
+          "hint": "Only when what? Read the arrow as a statement about what recording requires.",
+          "reasoningSteps": [
+            "Camera records → motion detected preserves the requirement: if the camera records, motion is detected.",
+            "Motion could be detected while the camera records nothing. The sentence also says nothing about the camera being broken."
+          ],
+          "explanation": "Camera records → motion detected preserves the requirement: if the camera records, motion is detected. Motion could be detected while the camera records nothing. The sentence also says nothing about the camera being broken."
+        },
+        {
+          "id": "group-2-m3",
+          "prompt": "The beacon operates only where satellite contact is available. It operates at Site P. What follows?",
+          "options": [
+            "Satellite contact is available at P.",
+            "It operates at all sites with contact.",
+            "P is the only site with contact."
+          ],
+          "answerIndex": 0,
+          "hint": "The beacon operates at P. What does the location restriction require at P?",
+          "reasoningSteps": [
+            "Satellite contact is available at P. The beacon operates there, and operation requires contact at that same location.",
+            "The rule doesn't promise operation at every contact site or say P is the only site with contact. Those claims go beyond this case."
+          ],
+          "explanation": "Satellite contact is available at P. The beacon operates there, and operation requires contact at that same location. The rule doesn't promise operation at every contact site or say P is the only site with contact. Those claims go beyond this case."
+        },
+        {
+          "id": "group-2-m4",
+          "prompt": "Only orders paid in advance are shipped today. Which idea is necessary for being shipped today?",
+          "options": [
+            "Order paid in advance.",
+            "Order shipped at any time.",
+            "Order."
+          ],
+          "answerIndex": 0,
+          "hint": "Only what? Keep paid in advance with the orders that may be shipped today.",
+          "reasoningSteps": [
+            "Order paid in advance is necessary for being shipped today. The sentence restricts today's shipments to those orders.",
+            "The sentence doesn't discuss shipments at every time or promise today's shipment from prepayment. Order alone would lose the requirement."
+          ],
+          "explanation": "Order paid in advance is necessary for being shipped today. The sentence restricts today's shipments to those orders. The sentence doesn't discuss shipments at every time or promise today's shipment from prepayment. Order alone would lose the requirement."
+        },
+        {
+          "id": "group-2-m5",
+          "prompt": "A guest gets a locker only if the guest has a day pass. A guest has a day pass. What follows?",
+          "options": [
+            "The guest gets a locker.",
+            "The guest gets no locker.",
+            "Locker allocation remains unknown."
+          ],
+          "answerIndex": 2,
+          "hint": "Try the reverse aloud: every guest with a day pass gets a locker. Was that promised?",
+          "reasoningSteps": [
+            "Locker allocation remains unknown. A day pass is required for a locker, but the rule doesn't promise a locker to every passholder.",
+            "This guest could receive a locker or not. The pass meets the named requirement without deciding allocation."
+          ],
+          "explanation": "Locker allocation remains unknown. A day pass is required for a locker, but the rule doesn't promise a locker to every passholder. This guest could receive a locker or not. The pass meets the named requirement without deciding allocation."
+        },
+        {
+          "id": "group-2-m6",
+          "prompt": "A print from this edition always carries a date stamp. Which translation preserves scope?",
+          "options": [
+            "Date stamp → this edition.",
+            "Print from this edition → date stamp.",
+            "Print → date stamp."
+          ],
+          "answerIndex": 1,
+          "hint": "Always carries a stamp applies to which exact prints?",
+          "reasoningSteps": [
+            "Print from this edition → date stamp preserves the scope: the promise applies to prints from this edition.",
+            "Print alone would cover other editions. A stamped print could come from another edition, so the reverse arrow adds something we weren't given."
+          ],
+          "explanation": "Print from this edition → date stamp preserves the scope: the promise applies to prints from this edition. Print alone would cover other editions. A stamped print could come from another edition, so the reverse arrow adds something we weren't given."
+        },
+        {
+          "id": "group-2-m7",
+          "prompt": "A renter must return the key by noon. Dana returned a key by noon. Does that prove Dana is a renter?",
+          "options": [
+            "Yes.",
+            "No; someone else may return a key too.",
+            "It proves no renter returned a key."
+          ],
+          "answerIndex": 1,
+          "hint": "The rule requires renters to return a key. Does it restrict all key returns to renters?",
+          "reasoningSteps": [
+            "Dana's key return doesn't prove renter status. Renters have an obligation to return the key, but the rule doesn't restrict key returns to renters.",
+            "Dana's return could therefore be made by a renter or someone else. The action doesn't prove renter status or tell us what every renter did."
+          ],
+          "explanation": "Dana's key return doesn't prove renter status. Renters have an obligation to return the key, but the rule doesn't restrict key returns to renters. Dana's return could therefore be made by a renter or someone else. The action doesn't prove renter status or tell us what every renter did."
+        }
+      ],
+      "advanced": [
+        {
+          "id": "group-2-a1-v2",
+          "prompt": "Only reviewers appointed for the emergency panel may inspect these records. Which diagram preserves both the appointment limit and the permission?",
+          "options": [
+            "May inspect these records → reviewer appointed for emergency panel.",
+            "Reviewer appointed to any panel → may inspect these records.",
+            "Reviewer appointed for emergency panel → has inspected these records."
+          ],
+          "answerIndex": 0,
+          "hint": "Only which reviewers? Keep emergency-panel appointment in the required idea, and may inspect as permission.",
+          "reasoningSteps": [
+            "May inspect these records → reviewer appointed for emergency panel preserves permission on the left and the complete reviewer appointment on the right.",
+            "An appointment to just any panel isn't the requirement we were given, and the sentence doesn't promise inspection permission from an appointment.",
+            "It also says may inspect, not has inspected. Permission doesn't establish that anyone used it."
+          ],
+          "explanation": "May inspect these records → reviewer appointed for emergency panel preserves permission on the left and the complete reviewer appointment on the right. An appointment to just any panel isn't the requirement we were given, and the sentence doesn't promise inspection permission from an appointment. It also says may inspect, not has inspected. Permission doesn't establish that anyone used it."
+        },
+        {
+          "id": "group-2-a2",
+          "prompt": "Under agency policy, a holder of a night-filming permit must submit a signed safety declaration. Rowan holds a night-filming permit. What follows?",
+          "options": [
+            "Rowan is required to submit a signed safety declaration.",
+            "Rowan actually submitted a signed declaration.",
+            "Everyone who submits a signed declaration receives a night-filming permit."
+          ],
+          "answerIndex": 0,
+          "hint": "Rowan holds the permit. What obligation does must submit give Rowan?",
+          "reasoningSteps": [
+            "Rowan is required to submit a signed safety declaration because Rowan holds a night-filming permit covered by the policy.",
+            "It doesn't report actual submission. Nor does submission guarantee a permit. Preserve the obligation instead of turning it into completed compliance."
+          ],
+          "explanation": "Rowan is required to submit a signed safety declaration because Rowan holds a night-filming permit covered by the policy. It doesn't report actual submission. Nor does submission guarantee a permit. Preserve the obligation instead of turning it into completed compliance."
+        },
+        {
+          "id": "group-2-a3-v2",
+          "prompt": "A claim is eligible only if it was filed by the deadline through the official portal. Which diagram preserves both limits?",
+          "options": [
+            "Eligible claim → filed by deadline through official portal.",
+            "Filed by deadline → eligible claim.",
+            "Official portal submission → eligible claim."
+          ],
+          "answerIndex": 0,
+          "hint": "Keep both parts of the requirement: by which deadline, through which channel?",
+          "reasoningSteps": [
+            "Eligible claim → filed by deadline through official portal preserves both limits of the requirement.",
+            "Timely filing alone and portal submission alone each omit part of that requirement. Neither has been made enough to establish eligibility."
+          ],
+          "explanation": "Eligible claim → filed by deadline through official portal preserves both limits of the requirement. Timely filing alone and portal submission alone each omit part of that requirement. Neither has been made enough to establish eligibility."
+        },
+        {
+          "id": "group-2-a4",
+          "prompt": "A replacement is sent only when a damaged item is returned with its receipt. Which translation preserves the complete requirement?",
+          "options": [
+            "Replacement sent → damaged item returned with receipt.",
+            "Item returned → replacement sent.",
+            "Receipt → replacement sent."
+          ],
+          "answerIndex": 0,
+          "hint": "Only when what? Keep the damaged item, its return, and its receipt in one complete idea.",
+          "reasoningSteps": [
+            "Replacement sent → damaged item returned with receipt keeps the complete requirement for a replacement.",
+            "An item returned alone or a receipt alone doesn't preserve the requirement, and neither has been made enough to guarantee a replacement."
+          ],
+          "explanation": "Replacement sent → damaged item returned with receipt keeps the complete requirement for a replacement. An item returned alone or a receipt alone doesn't preserve the requirement, and neither has been made enough to guarantee a replacement."
+        },
+        {
+          "id": "group-2-a5",
+          "prompt": "Outdoor screenings happen only where a shaded seating area is available. Site R has seats but no information about shade. What can we conclude?",
+          "options": [
+            "A screening happens there.",
+            "No screening can happen there.",
+            "The facts do not establish whether the requirement is met."
+          ],
+          "answerIndex": 2,
+          "hint": "What does shaded add to seating? Does the fact tell us whether R meets that part?",
+          "reasoningSteps": [
+            "The facts don't establish whether the requirement is met. A screening needs a shaded seating area, and seats alone don't establish shade.",
+            "We haven't been told shade is absent either. So the facts don't settle whether the requirement is met, much less whether a screening happens."
+          ],
+          "explanation": "The facts don't establish whether the requirement is met. A screening needs a shaded seating area, and seats alone don't establish shade. We haven't been told shade is absent either. So the facts don't settle whether the requirement is met, much less whether a screening happens."
+        },
+        {
+          "id": "group-2-a6",
+          "prompt": "Items in the express queue are always assigned a collection number. An item has a collection number. What follows?",
+          "options": [
+            "It is in the express queue.",
+            "It is outside the express queue.",
+            "Its queue is not established."
+          ],
+          "answerIndex": 2,
+          "hint": "The item has a number. Did always restrict collection numbers to the express queue?",
+          "reasoningSteps": [
+            "The item's queue is not established. Express-queue items receive a collection number, but the rule doesn't restrict those numbers to that queue.",
+            "This number therefore doesn't settle the item's queue. It proves neither express status nor its absence."
+          ],
+          "explanation": "The item's queue is not established. Express-queue items receive a collection number, but the rule doesn't restrict those numbers to that queue. This number therefore doesn't settle the item's queue. It proves neither express status nor its absence."
+        },
+        {
+          "id": "group-2-a7",
+          "prompt": "A waterproof case is required for this camera's underwater use. Which diagram preserves the sentence?",
+          "options": [
+            "Waterproof case → underwater use.",
+            "This camera used underwater → has waterproof case.",
+            "Camera → waterproof case."
+          ],
+          "answerIndex": 1,
+          "hint": "What is required? Find that idea even though it appears before required.",
+          "reasoningSteps": [
+            "This camera used underwater → has waterproof case preserves the requirement for underwater use, even though that requirement appears first in the sentence.",
+            "Having the case doesn't tell us the camera is used underwater, and the sentence doesn't require a case for every camera use. Keep underwater in the left-hand idea."
+          ],
+          "explanation": "This camera used underwater → has waterproof case preserves the requirement for underwater use, even though that requirement appears first in the sentence. Having the case doesn't tell us the camera is used underwater, and the sentence doesn't require a case for every camera use. Keep underwater in the left-hand idea."
         }
       ]
     }
@@ -207,7 +1271,7 @@
     "area": "understanding",
     "phase": "conditional",
     "prerequisites": [
-      "orientation"
+      "group-2"
     ],
     "goal": "Apply rules to case facts and distinguish case conclusions from new rules.",
     "teaching": [
@@ -409,218 +1473,12 @@
     }
   },
   {
-    "id": "sufficient-necessary",
-    "title": "Enough to Guarantee, Required to Follow",
-    "area": "understanding",
-    "phase": "conditional",
-    "prerequisites": [
-      "rules-facts"
-    ],
-    "goal": "Identify sufficient and necessary roles and test the four case combinations.",
-    "teaching": [
-      "If a window is impact-rated, it has reinforced glass. Impact-rated is sufficient for reinforced glass: it is enough to guarantee it. Reinforced glass is necessary for impact-rated status: the rating cannot occur without it under this descriptive rule.",
-      "Sufficient and necessary name roles in a particular relationship. Reinforced glass may be the sufficient condition of a different rule. It is not permanently a necessary condition.",
-      "The single forbidden combination is impact-rated with no reinforced glass. The other three combinations fit the rule. Reinforced glass alone does not prove the rating. No rating does not prove no reinforced glass.",
-      "Use the Personalized If/Then when the direction feels unclear. First understand the ordinary meaning. Guess which complete idea is sufficient. Put yourself in that situation and ask what the sentence forces you to know. Test that guess against the wording: if nothing forces the other idea, your proposed direction is not justified.",
-      "A recovery code is required for a verified account. Imagine that I have a verified account. Under this rule, I must have a recovery code. Now imagine that I merely have a recovery code. The sentence does not force me to be verified. Personalizing checks the relationship; it does not add facts or make a guess true."
-    ],
-    "method": [
-      "Read the ordinary meaning before guessing the sufficient condition.",
-      "Use a Personalized If/Then: imagine meeting that condition and ask what the wording forces you to know.",
-      "Name the sufficient and necessary conditions completely; test rather than assume your guessed direction.",
-      "Look for a trigger paired with an absent required result, and distinguish an allowed case from an established fact."
-    ],
-    "workedExample": {
-      "statements": [
-        "Every certified helmet has an inner liner.",
-        "A helmet has an inner liner but is not certified."
-      ],
-      "reasoning": [
-        "Certification requires a liner.",
-        "The rule does not require every lined helmet to be certified."
-      ],
-      "conclusion": "This combination fits the rule; it does not reverse it."
-    },
-    "guidedExample": {
-      "id": "sufficient-necessary-guide",
-      "prompt": "Every verified account has a recovery code. Before choosing, use a Personalized If/Then: imagine that your account is verified and state what you must know about it. Which combination violates the rule?",
-      "options": [
-        "Verified, with a recovery code.",
-        "Verified, without a recovery code.",
-        "Unverified, with a recovery code."
-      ],
-      "answerIndex": 1,
-      "hint": "If my account is verified, the rule forces it to have a recovery code.",
-      "reasoningSteps": [
-        "Verification is sufficient for a recovery code.",
-        "A verified account without one breaks that guarantee."
-      ],
-      "explanation": "Verification is sufficient for a recovery code. A verified account without one breaks that guarantee."
-    },
-    "commonMistake": {
-      "mistake": "Treating a necessary condition as sufficient.",
-      "repair": "A required ingredient need not be a complete recipe. Ask whether the reverse relationship was actually supplied."
-    },
-    "drills": {
-      "beginner": [
-        {
-          "id": "sufficient-necessary-b1",
-          "prompt": "If a cabinet is fire-rated, it has a steel shell. Which condition does this rule identify as guaranteeing a steel shell?",
-          "options": [
-            "Being fire-rated.",
-            "Having a steel shell.",
-            "Not being fire-rated."
-          ],
-          "answerIndex": 0,
-          "hint": "Find the condition the if clause presents as its trigger.",
-          "reasoningSteps": [
-            "Fire-rated status is the condition the rule presents as sufficient.",
-            "It guarantees the steel-shell result; the result itself is not the starting condition identified by this rule."
-          ],
-          "explanation": "Fire-rated status is the condition the rule presents as sufficient. It guarantees the steel-shell result; the result itself is not the starting condition identified by this rule."
-        },
-        {
-          "id": "sufficient-necessary-b2",
-          "prompt": "Every accredited course has an assessment. What is necessary for accreditation?",
-          "options": [
-            "Absence of an assessment.",
-            "Having an assessment.",
-            "Being an evening course."
-          ],
-          "answerIndex": 1,
-          "hint": "What must an accredited course have?",
-          "reasoningSteps": [
-            "Accreditation cannot occur without an assessment under the rule.",
-            "An assessment is therefore necessary, though not stated sufficient."
-          ],
-          "explanation": "Accreditation cannot occur without an assessment under the rule. An assessment is therefore necessary, though not stated sufficient."
-        },
-        {
-          "id": "sufficient-necessary-b3",
-          "prompt": "Every packaged tube has a cap. Which case fits the rule?",
-          "options": [
-            "Packaged, no cap.",
-            "Not packaged, with a cap.",
-            "Packaged, no cap, but small."
-          ],
-          "answerIndex": 1,
-          "hint": "The rule restricts packaged tubes only.",
-          "reasoningSteps": [
-            "A capped unpackaged tube does not break the guarantee.",
-            "Both packaged uncapped cases do."
-          ],
-          "explanation": "A capped unpackaged tube does not break the guarantee. Both packaged uncapped cases do."
-        }
-      ],
-      "medium": [
-        {
-          "id": "sufficient-necessary-m1",
-          "prompt": "For polished → reflective and reflective → visible, reflective is:",
-          "options": [
-            "Necessary in both rules.",
-            "Necessary in the first; sufficient in the second.",
-            "Sufficient in both rules."
-          ],
-          "answerIndex": 1,
-          "hint": "Name its role separately on each arrow.",
-          "reasoningSteps": [
-            "Reflective is the required result of polishing.",
-            "It is the starting condition that guarantees visibility."
-          ],
-          "explanation": "Reflective is the required result of polishing. It is the starting condition that guarantees visibility."
-        },
-        {
-          "id": "sufficient-necessary-m2",
-          "prompt": "Every tagged specimen is stored. Specimen F is stored. Tagged status is:",
-          "options": [
-            "Guaranteed.",
-            "Ruled out.",
-            "Unknown."
-          ],
-          "answerIndex": 2,
-          "hint": "Can an untagged specimen also be stored?",
-          "reasoningSteps": [
-            "Storage is necessary for tagging, but not stated sufficient.",
-            "Both tagged and untagged stored specimens fit."
-          ],
-          "explanation": "Storage is necessary for tagging, but not stated sufficient. Both tagged and untagged stored specimens fit."
-        },
-        {
-          "id": "sufficient-necessary-m3",
-          "prompt": "If a seat is upgraded, it has extra legroom. A seat is not upgraded and has no extra legroom. This case is:",
-          "options": [
-            "Forbidden.",
-            "Allowed, but not established by the rule alone.",
-            "Required for every seat."
-          ],
-          "answerIndex": 1,
-          "hint": "Neither condition of the forbidden combination is present.",
-          "reasoningSteps": [
-            "The sufficient condition is absent.",
-            "The rule allows this case but does not assert it occurred."
-          ],
-          "explanation": "The sufficient condition is absent. The rule allows this case but does not assert it occurred."
-        }
-      ],
-      "advanced": [
-        {
-          "id": "sufficient-necessary-a1",
-          "prompt": "Every paper accepted for the student symposium has a faculty sponsor. Which is sufficient for sponsorship under this rule?",
-          "options": [
-            "Acceptance for any conference.",
-            "Acceptance for the student symposium.",
-            "Merely being a paper."
-          ],
-          "answerIndex": 1,
-          "hint": "Keep the named event inside the condition.",
-          "reasoningSteps": [
-            "The rule is restricted to acceptance for this symposium.",
-            "It gives no guarantee for papers accepted elsewhere."
-          ],
-          "explanation": "The rule is restricted to acceptance for this symposium. It gives no guarantee for papers accepted elsewhere."
-        },
-        {
-          "id": "sufficient-necessary-a2",
-          "prompt": "Every authenticated token is valid. A token is valid but not authenticated. What does that show?",
-          "options": [
-            "The rule is false.",
-            "Validity can hold without authentication consistently with the rule.",
-            "Authentication is necessary for validity."
-          ],
-          "answerIndex": 1,
-          "hint": "Only authentication without validity would contradict the rule.",
-          "reasoningSteps": [
-            "The rule does not run from validity to authentication.",
-            "The described case fits its one-way relationship."
-          ],
-          "explanation": "The rule does not run from validity to authentication. The described case fits its one-way relationship."
-        },
-        {
-          "id": "sufficient-necessary-a3",
-          "prompt": "Every priority packet is routed through Server C. No priority packets are known to exist. Which is accurate?",
-          "options": [
-            "Routing through C is necessary for priority status; no such packet is established.",
-            "A packet through C must exist.",
-            "Routing through C is sufficient for priority status."
-          ],
-          "answerIndex": 0,
-          "hint": "Separate the role of a condition from membership in it.",
-          "reasoningSteps": [
-            "Priority status requires routing through C.",
-            "A universal rule alone creates no existing priority packet."
-          ],
-          "explanation": "Priority status requires routing through C. A universal rule alone creates no existing priority packet."
-        }
-      ]
-    }
-  },
-  {
     "id": "truth-validity",
     "title": "Does the Conclusion Have to Follow?",
     "area": "understanding",
     "phase": "conditional",
     "prerequisites": [
-      "sufficient-necessary"
+      "rules-facts"
     ],
     "goal": "Test whether true premises could coexist with a false conclusion.",
     "teaching": [
@@ -1036,8 +1894,8 @@
       "Every verified invoice is recorded. If an invoice were verified, it would have to be recorded. An invoice that is not recorded therefore cannot be verified. Verified → recorded and not recorded → not verified make the same guarantee.",
       "To form a contrapositive, reverse the two complete conditions and negate both. Reversing alone gives an unsupported converse. Negating both without reversing gives an unsupported inverse.",
       "Keep existing negatives and cancel double negatives. If a sensor is active, it is not silent becomes if it is silent, it is not active. Keep the same device and time throughout. A normative requirement establishes what must be done, not automatic factual compliance.",
-      "The six-step process finishes by translating back to English. Do not stop at symbols. For listed → not discontinued, its contrapositive is discontinued → not listed. Say it plainly: if this product is discontinued, it is not listed. That sentence checks both the negative and the direction.",
-      "Use the six steps to learn and check translation. They are a training scaffold, not six extra tasks you must write on every LSAT question forever. Apply an obvious forward match directly. Write the contrapositive when the fact denies a result or when it exposes a hidden connection. Use notation when it makes the relationship easier to track."
+      "After forming a contrapositive, translate it back to English. Do not stop at symbols. For listed → not discontinued, its contrapositive is discontinued → not listed. Say it plainly: if this product is discontinued, it is not listed. That sentence checks both the negative and the direction.",
+      "Use the diagramming routine to learn and check translation. It is a training scaffold, not extra writing required on every LSAT question. Apply an obvious forward match directly. Write the contrapositive when the fact denies a result or when it exposes a hidden connection. Use notation when it makes the relationship easier to track."
     ],
     "method": [
       "Write both complete conditions.",
@@ -1224,424 +2082,6 @@
             "A midnight observation does not establish the absence of that noon requirement."
           ],
           "explanation": "The rule requires a lit display at noon. A midnight observation does not establish the absence of that noon requirement."
-        }
-      ]
-    }
-  },
-  {
-    "id": "group-1",
-    "title": "Group 1: Identify What Guarantees What",
-    "area": "translation",
-    "phase": "conditional",
-    "prerequisites": [
-      "contraposition"
-    ],
-    "goal": "Translate sufficient-condition wording while preserving full predicates and contextual meaning.",
-    "teaching": [
-      "Group 1 includes if, when, where, all, the only, every and any in their conditional uses. If a probe restarts, its log resets gives probe restarts → its log resets. The sufficient idea can appear second: its log resets whenever a probe restarts has the same direction.",
-      "Preserve the whole subject. Every permit renewed through the regional office receives a new number starts with permit renewed through the regional office, not permit. The modifier limits which permits receive the guarantee.",
-      "An indicator list is a starting aid. We asked if the gate was open is an indirect question, not an if-then rule. When I arrived, the gate was open reports an event. The only paintings exhibited are restored paintings means exhibited painting → restored painting. Read the whole grammatical claim rather than attaching an arrow to an isolated noun.",
-      "Use the What Test to identify an indicator target: ask if what, when what, or every what. In A report appears when a rover crosses the ridge, when what points to the rover crossing the ridge. Identify the complete idea, not just the nearest noun. Then check whether the sentence actually promises a result.",
-      "Recall and Rephrase practice: put the indicator list aside, recall the Group 1 role, and write the sentence as an if/then. Add its contrapositive in ordinary English. Compare with the original wording and explain any correction before trying another sentence.",
-      "Recognize related trigger phrasing: whenever, wherever, anytime, in the event that, and the moment that can introduce the triggering event. Each, everyone who, and everything that can specify a whole group. In the event that a sensor restarts, a new log begins means sensor restarts → new log begins. Preserve the complete event and group restrictions.",
-      "Provided that needs the whole promise: The archive will open provided that power is restored states restored power → archive opens. Guarantees and ensures can also connect a sufficient idea to its result. Leads to, produces, and results in express that direction only when the sentence makes an exceptionless claim; a usual tendency or mere causal possibility is weaker."
-    ],
-    "method": [
-      "Identify the conditional indicator and Group 1; use the What Test to find its target.",
-      "Identify the two complete ideas, including subjects, modifiers and existing negatives.",
-      "Assign symbols to those complete ideas.",
-      "Apply the Group 1 translation rule and check the guarantee against the sentence.",
-      "Find the contrapositive by reversing and negating both complete conditions.",
-      "Translate both forms back to English and compare their meaning with the original."
-    ],
-    "workedExample": {
-      "statements": [
-        "Any parcel collected from the north depot receives a receipt."
-      ],
-      "reasoning": [
-        "The trigger is being a parcel collected from that depot.",
-        "The result is receiving a receipt for that same parcel."
-      ],
-      "conclusion": "Parcel collected from north depot → receives receipt."
-    },
-    "guidedExample": {
-      "id": "group-1-guide",
-      "prompt": "A checkpoint report appears when a rover crosses the ridge. Before choosing, run the six steps: identify the indicator and group, name both complete ideas, assign symbols, translate, contrapose, and rephrase both forms in English. Which translates the rule?",
-      "options": [
-        "Report appears → rover crosses ridge.",
-        "Rover crosses ridge → checkpoint report appears.",
-        "Rover does not cross ridge → no report appears."
-      ],
-      "answerIndex": 1,
-      "hint": "Ask when what: when a rover crosses the ridge. That is the sufficient event even though it appears second.",
-      "reasoningSteps": [
-        "Crossing the ridge triggers the report.",
-        "The sentence does not establish that reports occur only for crossings."
-      ],
-      "explanation": "Crossing the ridge triggers the report. The sentence does not establish that reports occur only for crossings."
-    },
-    "commonMistake": {
-      "mistake": "Dropping a modifier or reversing the rule because the result appears first.",
-      "repair": "Write the complete if clause first. Let meaning, rather than word order, determine its role."
-    },
-    "drills": {
-      "beginner": [
-        {
-          "id": "group-1-b1",
-          "prompt": "If a locker is reserved, it displays a nameplate. Choose the rule.",
-          "options": [
-            "Reserved locker → displays nameplate.",
-            "Nameplate displayed → reserved locker.",
-            "Unreserved locker → no nameplate."
-          ],
-          "answerIndex": 0,
-          "hint": "Start with the complete idea after if.",
-          "reasoningSteps": [
-            "Reservation is sufficient for the nameplate.",
-            "The other arrows add a reverse or inverse."
-          ],
-          "explanation": "Reservation is sufficient for the nameplate. The other arrows add a reverse or inverse."
-        },
-        {
-          "id": "group-1-b2",
-          "prompt": "Every woven basket has a reinforced rim. What follows for a woven basket?",
-          "options": [
-            "It has a reinforced rim.",
-            "Every rimmed basket is woven.",
-            "It is the only basket with a rim."
-          ],
-          "answerIndex": 0,
-          "hint": "Apply every in its stated direction.",
-          "reasoningSteps": [
-            "The basket belongs to the woven group.",
-            "That guarantees its reinforced rim without excluding other rimmed baskets."
-          ],
-          "explanation": "The basket belongs to the woven group. That guarantees its reinforced rim without excluding other rimmed baskets."
-        },
-        {
-          "id": "group-1-b3",
-          "prompt": "A notice is printed whenever the schedule changes. What triggers printing under this rule?",
-          "options": [
-            "A notice being printed.",
-            "The schedule changing.",
-            "The schedule staying unchanged."
-          ],
-          "answerIndex": 1,
-          "hint": "Whenever introduces the sufficient idea.",
-          "reasoningSteps": [
-            "The schedule change is the trigger.",
-            "Printing is the promised result."
-          ],
-          "explanation": "The schedule change is the trigger. Printing is the promised result."
-        }
-      ],
-      "medium": [
-        {
-          "id": "group-1-m1",
-          "prompt": "Any invoice submitted through the portal is time-stamped. Which translation preserves scope?",
-          "options": [
-            "Invoice → time-stamped.",
-            "Invoice submitted through portal → time-stamped.",
-            "Time-stamped → submitted through portal."
-          ],
-          "answerIndex": 1,
-          "hint": "Keep how the invoice was submitted.",
-          "reasoningSteps": [
-            "The rule covers portal-submitted invoices.",
-            "It neither covers every invoice nor identifies the source of every time stamp."
-          ],
-          "explanation": "The rule covers portal-submitted invoices. It neither covers every invoice nor identifies the source of every time stamp."
-        },
-        {
-          "id": "group-1-m2",
-          "prompt": "The only rehearsals recorded are rehearsals held in Studio B. Which follows?",
-          "options": [
-            "Held in Studio B → recorded.",
-            "Recorded rehearsal → held in Studio B.",
-            "Held outside Studio B → recorded."
-          ],
-          "answerIndex": 1,
-          "hint": "Ask which rehearsals are excluded from the recorded group.",
-          "reasoningSteps": [
-            "Recorded rehearsals are restricted to Studio B rehearsals.",
-            "Studio B alone is not stated enough for recording."
-          ],
-          "explanation": "Recorded rehearsals are restricted to Studio B rehearsals. Studio B alone is not stated enough for recording."
-        },
-        {
-          "id": "group-1-m3",
-          "prompt": "Where a monitoring station detects ice, its warning flag rises. A station's flag rises. What follows?",
-          "options": [
-            "It detected ice.",
-            "It detected no ice.",
-            "Ice detection is unknown."
-          ],
-          "answerIndex": 2,
-          "hint": "A raised flag may have another cause.",
-          "reasoningSteps": [
-            "Detection guarantees a flag, not the reverse.",
-            "The raised flag therefore leaves detection unsettled."
-          ],
-          "explanation": "Detection guarantees a flag, not the reverse. The raised flag therefore leaves detection unsettled."
-        }
-      ],
-      "advanced": [
-        {
-          "id": "group-1-a1",
-          "prompt": "Every film selected for the outdoor series is captioned. Film V is selected for an indoor series. Which follows?",
-          "options": [
-            "V is captioned.",
-            "V is not captioned.",
-            "Captioning is not settled by this rule."
-          ],
-          "answerIndex": 2,
-          "hint": "The series modifier belongs inside the trigger.",
-          "reasoningSteps": [
-            "Indoor selection does not satisfy outdoor-series selection.",
-            "The rule provides no captioning result for V."
-          ],
-          "explanation": "Indoor selection does not satisfy outdoor-series selection. The rule provides no captioning result for V."
-        },
-        {
-          "id": "group-1-a2",
-          "prompt": "The curator asked if the painting was insured. Which rule can be extracted from that sentence alone?",
-          "options": [
-            "Painting insured → curator asks.",
-            "Curator asks → painting insured.",
-            "Neither; it reports an inquiry."
-          ],
-          "answerIndex": 2,
-          "hint": "Ask whether if expresses a guarantee or an indirect question.",
-          "reasoningSteps": [
-            "The curator asks about insurance status.",
-            "The sentence asserts no conditional relationship between asking and insurance."
-          ],
-          "explanation": "The curator asks about insurance status. The sentence asserts no conditional relationship between asking and insurance."
-        },
-        {
-          "id": "group-1-a3",
-          "prompt": "If a component is not certified for heat exposure, it is stored indoors. Component E is not stored indoors. What follows?",
-          "options": [
-            "E is certified for heat exposure.",
-            "E is certified for every use.",
-            "E is not certified for heat exposure."
-          ],
-          "answerIndex": 0,
-          "hint": "Use the contrapositive and cancel the negative.",
-          "reasoningSteps": [
-            "No indoor storage excludes not certified for heat exposure.",
-            "The result is certification for that specific exposure, not universal certification."
-          ],
-          "explanation": "No indoor storage excludes not certified for heat exposure. The result is certification for that specific exposure, not universal certification."
-        }
-      ]
-    }
-  },
-  {
-    "id": "group-2",
-    "title": "Group 2: Keep the Requirement on the Right",
-    "area": "translation",
-    "phase": "conditional",
-    "prerequisites": [
-      "group-1"
-    ],
-    "goal": "Translate necessary-condition wording without mistaking a requirement for a guarantee of success.",
-    "teaching": [
-      "Group 2 includes only, only if, only when, only where, always, requires and must in their relevant uses. The vault opens only if its code is verified gives vault opens → code verified. Verification is required for opening, but may not be enough to open it.",
-      "Only members receive this newsletter restricts recipients to members: receives newsletter → member. Compare the only recipients are members, a Group 1 grammatical form with the same result. Meaning decides the direction.",
-      "Read requires and must carefully. Certification requires an exam pass states a requirement for certification. A staff member must wear a badge states an obligation; a person can violate it. Do not turn must wear into actually wears unless compliance is separately assumed. Always can describe a universal pattern; its placement and scope still matter.",
-      "The What Test matters when the target is not immediately after the indicator. A charged battery is required for activation: what is required? A charged battery. Activation requires a charged battery: requires what? A charged battery. Both express activation → charged battery. Word position changes; the requirement does not.",
-      "Use a Personalized If/Then to check your translation. Imagine the display has activated. This rule forces you to know that its battery is charged. Imagine only a charged battery instead: activation is not forced. Keep the original scope and do not fill in an unstated guarantee.",
-      "Recognize required, prerequisite, necessary, essential, needs, and depends on as requirement phrasing when that is their meaning. A seal is essential for pressure retention gives pressure retained → seal present. Pressure retention depends on a seal gives the same direction. Ask what is required even when the requirement appears first.",
-      "An expression can name the result without belonging to one fixed word group. Activation implies a recorded event means activation → recorded event, as does Activation means a recorded event under an explicit catalogue convention. Then and will can introduce the result of an if clause. Signals may describe evidence rather than certainty. Identify the guarantee in the full sentence instead of assigning direction from one word alone."
-    ],
-    "method": [
-      "Identify the conditional indicator and Group 2; ask what it requires or restricts using the What Test.",
-      "Identify the two complete ideas, preserving permission, obligation, qualifiers and negatives.",
-      "Assign symbols to those complete ideas.",
-      "Translate the restricted event on the left and its requirement on the right; verify with a Personalized If/Then.",
-      "Find the contrapositive by reversing and negating both complete conditions.",
-      "Translate both forms back to English without turning a requirement into a guarantee of success."
-    ],
-    "workedExample": {
-      "statements": [
-        "A package is released only after its clearance is recorded."
-      ],
-      "reasoning": [
-        "Release requires recorded clearance.",
-        "Recorded clearance alone does not promise release."
-      ],
-      "conclusion": "Package released → its clearance recorded."
-    },
-    "guidedExample": {
-      "id": "group-2-guide",
-      "prompt": "Only subscribers can access the recording. Before choosing, identify what only restricts, run the six steps, and check your direction with a Personalized If/Then about having access permission. Which follows?",
-      "options": [
-        "Subscriber → can access recording.",
-        "Can access recording → subscriber.",
-        "Subscriber → has accessed recording."
-      ],
-      "answerIndex": 1,
-      "hint": "If I can access the recording, what must be true of me? I must be a subscriber. Being a subscriber alone does not guarantee access.",
-      "reasoningSteps": [
-        "Access permission is restricted to subscribers.",
-        "The claim guarantees neither permission for every subscriber nor an actual access event."
-      ],
-      "explanation": "Access permission is restricted to subscribers. The claim guarantees neither permission for every subscriber nor an actual access event."
-    },
-    "commonMistake": {
-      "mistake": "Using a requirement as sufficient for the restricted result.",
-      "repair": "Read only if as cannot occur without. Then ask what additional requirements could still exist."
-    },
-    "drills": {
-      "beginner": [
-        {
-          "id": "group-2-b1",
-          "prompt": "The display activates only if the battery is charged. Translate.",
-          "options": [
-            "Display activates → battery charged.",
-            "Battery charged → display activates.",
-            "Display inactive → battery uncharged."
-          ],
-          "answerIndex": 0,
-          "hint": "Only if introduces the requirement.",
-          "reasoningSteps": [
-            "Activation requires charging.",
-            "Charging is not stated enough for activation."
-          ],
-          "explanation": "Activation requires charging. Charging is not stated enough for activation."
-        },
-        {
-          "id": "group-2-b2",
-          "prompt": "Only residents receive a parking sticker. What is necessary for receiving one?",
-          "options": [
-            "Being a resident.",
-            "Driving daily.",
-            "Already having a sticker."
-          ],
-          "answerIndex": 0,
-          "hint": "Identify the group to which recipients are restricted.",
-          "reasoningSteps": [
-            "Recipients must be residents under this rule.",
-            "No guarantee is made for every resident."
-          ],
-          "explanation": "Recipients must be residents under this rule. No guarantee is made for every resident."
-        },
-        {
-          "id": "group-2-b3",
-          "prompt": "Every registered buoy always broadcasts its identifier. Which rule follows?",
-          "options": [
-            "Broadcasts identifier → registered buoy.",
-            "Registered buoy → broadcasts identifier.",
-            "Unregistered buoy → no broadcast."
-          ],
-          "answerIndex": 1,
-          "hint": "Always describes what registered buoys do.",
-          "reasoningSteps": [
-            "Registration is the starting condition.",
-            "Broadcasting is the universal result assigned to that group."
-          ],
-          "explanation": "Registration is the starting condition. Broadcasting is the universal result assigned to that group."
-        }
-      ],
-      "medium": [
-        {
-          "id": "group-2-m1",
-          "prompt": "Entry to the final round requires a qualifying score. Mira has a qualifying score. What follows?",
-          "options": [
-            "Mira enters the final round.",
-            "Mira cannot enter.",
-            "Entry is not established."
-          ],
-          "answerIndex": 2,
-          "hint": "A required score might not be the only requirement.",
-          "reasoningSteps": [
-            "A qualifying score is necessary for entry.",
-            "The rule does not make it sufficient."
-          ],
-          "explanation": "A qualifying score is necessary for entry. The rule does not make it sufficient."
-        },
-        {
-          "id": "group-2-m2",
-          "prompt": "The camera records only when motion is detected. No motion is detected. What follows?",
-          "options": [
-            "The camera does not record.",
-            "The camera records.",
-            "The camera is broken."
-          ],
-          "answerIndex": 0,
-          "hint": "Use absence of the required detection.",
-          "reasoningSteps": [
-            "Recording would require motion detection.",
-            "Its absence excludes recording without identifying a fault."
-          ],
-          "explanation": "Recording would require motion detection. Its absence excludes recording without identifying a fault."
-        },
-        {
-          "id": "group-2-m3",
-          "prompt": "The beacon operates only where satellite contact is available. It operates at Site P. What follows?",
-          "options": [
-            "Satellite contact is available at P.",
-            "It operates at all sites with contact.",
-            "P is the only site with contact."
-          ],
-          "answerIndex": 0,
-          "hint": "Keep where as a restriction on the operation site.",
-          "reasoningSteps": [
-            "Operation at P requires contact there.",
-            "No claim identifies every operation site or every contact site."
-          ],
-          "explanation": "Operation at P requires contact there. No claim identifies every operation site or every contact site."
-        }
-      ],
-      "advanced": [
-        {
-          "id": "group-2-a1",
-          "prompt": "Only reviewers appointed for the emergency panel may inspect these records. Nia is a reviewer appointed to another panel. Which follows?",
-          "options": [
-            "Nia may inspect these records.",
-            "This rule excludes Nia's permission unless she also has the emergency appointment.",
-            "Nia cannot be a reviewer."
-          ],
-          "answerIndex": 1,
-          "hint": "The appointment modifier is part of the necessary condition.",
-          "reasoningSteps": [
-            "Inspection permission requires the emergency-panel appointment.",
-            "Another appointment alone does not meet that requirement."
-          ],
-          "explanation": "Inspection permission requires the emergency-panel appointment. Another appointment alone does not meet that requirement."
-        },
-        {
-          "id": "group-2-a2",
-          "prompt": "Agency policy obliges every holder of a night-filming permit to submit a signed safety declaration. Rowan holds a night-filming permit. What follows?",
-          "options": [
-            "Rowan is obliged to submit a signed safety declaration.",
-            "Rowan actually submitted a signed declaration.",
-            "Everyone who submits a signed declaration receives a night-filming permit."
-          ],
-          "answerIndex": 0,
-          "hint": "An explicit policy obligation does not establish compliance.",
-          "reasoningSteps": [
-            "Rowan is a holder covered by the stated policy.",
-            "The policy establishes Rowan's obligation, not whether Rowan performed it."
-          ],
-          "explanation": "Rowan is a holder covered by the stated policy. The policy establishes Rowan's obligation, not whether Rowan performed it."
-        },
-        {
-          "id": "group-2-a3",
-          "prompt": "A claim is eligible only if it was not filed after the deadline. Claim Q was filed after the deadline. What follows?",
-          "options": [
-            "Q is eligible.",
-            "Q is not eligible.",
-            "Every timely claim is eligible."
-          ],
-          "answerIndex": 1,
-          "hint": "Negate the negative necessary condition.",
-          "reasoningSteps": [
-            "Eligibility requires not filed after deadline.",
-            "Filing after deadline defeats that requirement and excludes eligibility."
-          ],
-          "explanation": "Eligibility requires not filed after deadline. Filing after deadline defeats that requirement and excludes eligibility."
         }
       ]
     }

@@ -1,10 +1,11 @@
 import { type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
+import { authUrlWithReturnTo } from '@/lib/authRedirect';
 import { supabase } from '@/integrations/supabase/client';
 import { bootcampIdFromRoute, classroomItemMatchesBootcamp } from '@/lib/bootcamps';
 
@@ -56,6 +57,7 @@ export default function BootcampGate({
   const { user, authReady } = useAuth();
   const { is_admin, loading: permsLoading } = useUserPermissions();
   const navigate = useNavigate();
+  const location = useLocation();
   const bootcampId =
     bootcampIdOverride ??
     bootcampIdFromRoute(routePath);
@@ -88,6 +90,11 @@ export default function BootcampGate({
 
   if (!authReady || permsLoading) {
     return <div className="min-h-screen bg-zinc-950" />;
+  }
+
+  if (!user) {
+    const returnTo = `${location.pathname}${location.search}${location.hash}`;
+    return <Navigate to={authUrlWithReturnTo(returnTo)} replace />;
   }
 
   if (is_admin || assigned) {
