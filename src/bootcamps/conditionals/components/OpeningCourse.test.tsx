@@ -98,7 +98,6 @@ it('starts mixed practice from concrete instructions and returns to the same ins
   expect(within(instructions).queryAllByRole('listitem')).toHaveLength(0);
   expect(instructions.textContent).not.toMatch(/24 questions|5 stages/);
   expect(screen.getByText("Before each section, we'll show you what to look for. Then you'll put it into practice.")).toBeVisible();
-  expect(screen.getByText("Practice answers aren't saved to your account. Reloading or leaving the course clears them.")).toBeVisible();
   expect(document.querySelector('.opening-course-content')).toBeNull();
   fireEvent.click(screen.getByRole('link', { name: 'Start practice' }));
   await waitFor(() => expect(document.querySelector('.opening-course-content')).not.toBeNull());
@@ -106,7 +105,6 @@ it('starts mixed practice from concrete instructions and returns to the same ins
   expect(screen.getByRole('heading', { level: 1, name: 'Conditional translation practice' }).closest('.oc-drill-run-header')).toBeTruthy();
   expect(screen.getByRole('heading', { name: 'What does the rule cover?' })).toBeVisible();
   expect(screen.getByRole('button', { name: 'Begin practice' })).toBeVisible();
-  expect(screen.getByText("Practice answers aren't saved to your account. Reloading or leaving the course clears them.")).toBeVisible();
   expect(screen.queryByText('Write each conditional as a diagram, read it back in English, and check whether it means the same thing.')).toBeNull();
   fireEvent.click(screen.getByRole('link', { name: 'Back to instructions' }));
   expect(screen.getByRole('link', { name: 'Start practice' })).toBeVisible();

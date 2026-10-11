@@ -46,7 +46,7 @@ function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourse
   const number = step.title.match(/^(Revisit )?Drill (\d+)/);
   return <li className={`oc-path-card${drill ? ' oc-drill-card' : ''}`} data-progress={saved?.status ?? 'new'}>
     {number && <span className="oc-card-num" aria-hidden="true">{number[2].padStart(2, '0')}</span>}
-    <span className="oc-label">{number?.[1] ? 'Revisit' : step.type}</span><CardStatus saved={saved} drill={drill}/><h2>{step.title}</h2><p>{step.description}</p>
+    <span className="oc-label">{number?.[1] ? 'Revisit' : drill ? 'Drill' : 'Lesson'}</span><CardStatus saved={saved} drill={drill}/><h2>{step.title}</h2><p>{step.description}</p>
     <div className="oc-card-foot"><Link className="oc-action" to={url(step.id)}>{drill ? <Dumbbell size={16}/> : <BookOpen size={16}/>} {saved?.status === 'started' ? 'Continue' : saved?.status === 'done' ? (drill ? 'Review drill' : 'Read again') : drill ? 'View drill' : 'Read lesson'}</Link>{count !== undefined && <span className="oc-card-count">{count} sentences</span>}</div>
   </li>;
 }

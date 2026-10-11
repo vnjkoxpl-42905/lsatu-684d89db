@@ -2377,7 +2377,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (those employees exceed sales targets) → NOT (employees qualify for bonuses)",
         "ifThen": "If employees qualify for bonuses, then those employees exceed sales targets.",
         "contrapositiveWords": "If those employees do not exceed sales targets, then employees do not qualify for bonuses.",
-        "explanation": "Qualification requires exceeding the groups. Exceeding them alone need not guarantee a bonus.",
+        "explanation": "Qualification requires exceeding the targets. Exceeding them alone need not guarantee a bonus.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
