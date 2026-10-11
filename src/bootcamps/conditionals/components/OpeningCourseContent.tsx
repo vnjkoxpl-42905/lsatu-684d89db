@@ -200,7 +200,7 @@ function FoundationPractice() {
     { title: 'Enough does not mean the only way', content: <NoteSection title="Enough does not mean the only way">{freshCheck}</NoteSection> },
     { title: 'Test the limit with a possible case', content: <NoteSection title="Test the limit with a possible case"><ReferenceQuestion prompt="Someone claims that getting a bicycle proves you won the raffle. Which possible case fits our rule but disproves that claim?" options={['You win and get a bicycle.', 'You do not win, but get a bicycle as a gift.', 'You win and never get a bicycle.']} correct={1} feedback={['This fits both the rule and the claim. It does not show why the claim adds something.', 'The rule promises a bicycle to a winner. It does not exclude a bicycle received as a gift without winning, so this case fits the rule and disproves the claim.', 'Winning without getting a bicycle breaks the original rule. We need a case that keeps the rule true.']}/></NoteSection> },
   ];
-  return <PracticeTaskRunner rounds={[{ title: 'Enough, required, or still open?', tasks }]}/>;
+  return <PracticeTaskRunner rounds={[{ title: 'Drill 1', tasks }]}/>;
 }
 
 function GroupPractice({ group }: { group: 'group-1' | 'group-2' }) {

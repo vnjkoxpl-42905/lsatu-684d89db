@@ -42,8 +42,8 @@ function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourse
 
 const drillInstructions: Record<string, { summary: string; heading: string; steps: string[] }> = {
   'foundation-practice': {
-    summary: 'Fresh rules and cases', heading: 'Decide what follows',
-    steps: ['Read the rule and the facts supplied with it.', 'Decide what follows, what is required, and what the information leaves open.', 'Check the explanation. If your answer needs changing, try the case again.'],
+    summary: '7 questions', heading: 'Use the conditional rule',
+    steps: ['Read each rule. Identify the sufficient condition and the necessary condition.', 'Use only the facts given to choose your answer. Decide what the rule guarantees and what the information does not establish.', 'For the final question, choose a case that fits the rule but shows why the proposed conclusion is wrong.', 'Select an answer to see the explanation. Compare its reasoning with yours before moving to the next question.'],
   },
   'sufficient-practice': {
     summary: 'Condition targets and diagrams', heading: 'Find the whole sufficient condition',
