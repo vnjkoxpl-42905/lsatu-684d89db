@@ -48,7 +48,7 @@ export function NecessaryIndicatorExplorer() {
       <div className="ni-examples">
         {examples.map((example, index) => <section key={example.expression} id={`${id}-example-${index}`}
           role="tabpanel" aria-labelledby={`${id}-tab-${index}`} tabIndex={0} hidden={selected !== index} className="ni-example">
-          <p className="ni-example-label">{String(index + 1).padStart(2, '0')} / {String(examples.length).padStart(2, '0')} · The sentence and its meaning</p>
+          <p className="ni-example-label">{String(index + 1).padStart(2, '0')} / {String(examples.length).padStart(2, '0')} · The rule and its meaning</p>
           <dl className="nc-indicator-examples"><div><dt>{example.expression}</dt><dd>{example.content}</dd></div></dl>
           <div className="ni-requirement"><span>Necessary condition</span><strong>{example.necessaryCondition}</strong></div>
         </section>)}

@@ -50,7 +50,7 @@ it('checks left, right, reading and clause order without claiming mastery', () =
     'Which complete condition belongs on the left side of the arrow?',
     'Which complete condition belongs on the right side of the arrow?',
     'How do you read this arrow?',
-    'Which arrow keeps the meaning of this sentence?',
+    'Which arrow keeps the meaning of this rule?',
   ];
   choices.forEach((choice, index) => {
     expect(screen.getByRole('group', { name: prompts[index] })).toBeVisible();
@@ -79,7 +79,7 @@ it('explains every distractor using the specific reasoning error', () => {
       ['This folder is marked complete and contains a signed form.', 'That treats both sides as facts.'],
     ],
     [
-      ['The library extends your loan → You renew online', 'That follows the sentence order but reverses the requirement.'],
+      ['The library extends your loan → You renew online', 'That follows the rule order but reverses the requirement.'],
       ['If → The library extends your loan', 'If is an indicator, not a complete condition.'],
     ],
   ];

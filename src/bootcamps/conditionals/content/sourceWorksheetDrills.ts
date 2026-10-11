@@ -153,7 +153,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the scholarship applies to that person) → NOT (a person is a student who maintains a 4.0 GPA)",
         "ifThen": "If a person is a student who maintains a 4.0 GPA, then the scholarship applies to that person.",
         "contrapositiveWords": "If the scholarship does not apply to that person, then that person is not a student who maintains a 4.0 GPA.",
-        "explanation": "Keep student and maintains a 4.0 GPA together. The sentence does not cover every person with that GPA.",
+        "explanation": "Keep student and maintains a 4.0 GPA together. The rule does not cover every person with that GPA.",
         "correctionNotes": [
           "Keep “student who maintains a 4.0 GPA.”"
         ],
@@ -343,7 +343,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the team goes to the finals) → NOT (the team wins the semifinals)",
         "ifThen": "If the team wins the semifinals, then the team goes to the finals.",
         "contrapositiveWords": "If the team does not go to the finals, then the team does not win the semifinals.",
-        "explanation": "The sufficient condition appears last in the sentence but still goes on the left.",
+        "explanation": "The sufficient condition appears last in the rule but still goes on the left.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -924,7 +924,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the scholarship applies to that person) → NOT (a person is a student who maintains a 4.0 GPA)",
         "ifThen": "If a person is a student who maintains a 4.0 GPA, then the scholarship applies to that person.",
         "contrapositiveWords": "If the scholarship does not apply to that person, then that person is not a student who maintains a 4.0 GPA.",
-        "explanation": "Keep student and maintains a 4.0 GPA together. The sentence does not cover every person with that GPA.",
+        "explanation": "Keep student and maintains a 4.0 GPA together. The rule does not cover every person with that GPA.",
         "correctionNotes": [
           "Keep “student who maintains a 4.0 GPA.”"
         ],
@@ -1114,7 +1114,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the team goes to the finals) → NOT (the team wins the semifinals)",
         "ifThen": "If the team wins the semifinals, then the team goes to the finals.",
         "contrapositiveWords": "If the team does not go to the finals, then the team does not win the semifinals.",
-        "explanation": "The sufficient condition appears last in the sentence but still goes on the left.",
+        "explanation": "The sufficient condition appears last in the rule but still goes on the left.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -1876,7 +1876,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (those artists create their most celebrated pieces) → NOT (artists are inspired)",
         "ifThen": "If artists are inspired, then those artists create their most celebrated pieces.",
         "contrapositiveWords": "If those artists do not create their most celebrated pieces, then those artists were not inspired.",
-        "explanation": "Assume the sentence as the exercise rule. Do not judge the diagram by whether this claim is realistic.",
+        "explanation": "Assume the rule as the exercise rule. Do not judge the diagram by whether this claim is realistic.",
         "correctionNotes": [],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -2345,7 +2345,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (minutes are recorded) → NOT (the committee meets)",
         "ifThen": "If the committee meets, then minutes are recorded.",
         "contrapositiveWords": "If minutes are not recorded, then the committee does not meet.",
-        "explanation": "Meeting is sufficient even though it appears at the end of the sentence.",
+        "explanation": "Meeting is sufficient even though it appears at the end of the rule.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -2397,7 +2397,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (managers have approved the budgets first) → NOT (expenditures can occur)",
         "ifThen": "If expenditures can occur, then managers have approved the budgets first.",
         "contrapositiveWords": "If managers have not approved the budgets first, then expenditures cannot occur.",
-        "explanation": "Keep can occur and first. The sentence is about authorization, not proof of spending.",
+        "explanation": "Keep can occur and first. The rule is about authorization, not proof of spending.",
         "correctionNotes": [
           "Keep “can occur” and “first.”"
         ],
@@ -3775,7 +3775,7 @@ export function checkIndicatorSelection(item: Pick<SourceWorksheetItem, 'stateme
     const normal = normalizeIndicator(text);
     if (expected.some(e => e.text !== normal && containsRun(e.text, normal))) return { correct: false, hint: `“${text}” is only part of an indicator. Select every word of the phrase.` };
     if (expected.some(e => containsRun(normal, e.text))) return { correct: false, hint: `“${text}” includes words that are not part of the indicator. Select only the signal words.` };
-    return { correct: false, hint: `“${text}” is not an indicator in this sentence.` };
+    return { correct: false, hint: `“${text}” is not an indicator in this rule.` };
   }
   if (wrongGroup.length) return { correct: false, hint: `Check the group for “${wrongGroup[0]}”. Does it introduce what is enough, or what is required?` };
   if (remaining.length) return { correct: false, hint: remaining.length === 1 ? 'One indicator is still unselected. Read the whole rule again.' : `${remaining.length} indicators are still unselected. Read the whole rule again.` };

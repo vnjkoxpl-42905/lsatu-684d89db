@@ -67,7 +67,7 @@ function WorksheetRun({ set, run, startUrl, title, storageScope }: { set: Source
       const folded = readSaved(storageKey.slice(0, -set.id.length) + foldedId, foldedCourse?.saved?.state);
       for (const [id, attempt] of Object.entries(folded.answers)) {
         if (restored.answers[id] || !set.items.some(entry => entry.id === id)) continue;
-        // The old set only had the indicator step. Keep that work; the conditions step is new, so the sentence is not yet reviewed.
+        // The old set only had the indicator step. Keep that work; the conditions step is new, so the rule is not yet reviewed.
         const passed = attempt.passed.filter(s => s === 'indicators');
         restored.answers[id] = { ...attempt, passed, stage: passed.length ? 1 : 0, review: null, revealed: false };
       }

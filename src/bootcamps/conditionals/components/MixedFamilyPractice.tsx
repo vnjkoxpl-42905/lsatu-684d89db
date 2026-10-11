@@ -57,18 +57,18 @@ export const mixedFamilyItems: MixedItem[] = [
   },
   {
     sentence: 'A booked table is required to eat on the terrace.', word: 'required', family: 'necessary',
-    targetPrompt: 'What kind of table does someone need to eat on the terrace?', targetFeedback: "You kept booked. The sentence requires a booking, not just any table.",
+    targetPrompt: 'What kind of table does someone need to eat on the terrace?', targetFeedback: "You kept booked. The rule requires a booking, not just any table.",
     target: 'a booked table', partial: 'a table', other: 'eat on the terrace',
     left: 'Eats on terrace', right: 'Has booked table',
     partialFeedback: "A table drops a word that limits the requirement. Would any table do under this rule? Reread the words before required.",
     otherFeedback: 'Eating on the terrace is what needs something, so it is not the requirement. Required refers back to the idea that comes before it.',
-    reversed: 'Your arrow sends everyone with a booking to the terrace. A diner could book a table and eat inside, and the sentence allows that.',
+    reversed: 'Your arrow sends everyone with a booking to the terrace. A diner could book a table and eat inside, and the rule allows that.',
     why: "Here the group comes before required. Eating on the terrace needs a booked table. A booking alone doesn't put you there.",
     readback: 'If someone eats on the terrace, they have a booked table.',
   },
   {
     sentence: 'The only phones placed in the same-day repair queue are phones that arrived with a cracked screen.', word: 'the only', family: 'sufficient',
-    targetPrompt: 'Which phones does the rule say arrived with a cracked screen?', targetFeedback: 'The sentence covers phones in the same-day repair queue.',
+    targetPrompt: 'Which phones does the rule say arrived with a cracked screen?', targetFeedback: 'The rule covers phones in the same-day repair queue.',
     target: 'phones placed in the same-day repair queue', partial: 'phones', other: 'phones that arrived with a cracked screen',
     left: 'Phone in same-day repair queue', right: 'Arrived with cracked screen',
     partialFeedback: 'Phones alone would make a claim about every phone in the shop. Ask: the only what? Keep every word that limits the group.',
@@ -150,7 +150,7 @@ export function MixedFamilyPractice() {
   const [current, setCurrent] = useState(0);
   const [checked, setChecked] = useState<boolean[]>(() => mixedFamilyItems.map(() => false));
   return <>
-    <p>These sentences use both kinds of indicator. The family name stays hidden until you check your choices. First translate each rule yourself, without supplied condition labels. Then compare your work and check who or what the rule covers and the arrow direction before moving on.</p>
+    <p>These rules use both kinds of indicator. The family name stays hidden until you check your choices. First translate each rule yourself, without supplied condition labels. Then compare your work and check who or what the rule covers and the arrow direction before moving on.</p>
     <p className="co-kicker" role="status">Question {current + 1} of {mixedFamilyItems.length}</p>
     {mixedFamilyItems.map((item, index) => <div key={item.sentence} hidden={current !== index}><MixedItemCheck item={item} index={index} onChecked={value => setChecked(previous => previous.map((old, itemIndex) => itemIndex === index ? value : old))}/></div>)}
     <div className="co-choices"><button type="button" disabled={current === 0} onClick={() => setCurrent(current - 1)}>Previous mixed question</button><button type="button" disabled={current === mixedFamilyItems.length - 1 || !checked[current]} onClick={() => setCurrent(current + 1)}>Next mixed question</button></div>

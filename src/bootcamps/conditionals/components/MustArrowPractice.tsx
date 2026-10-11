@@ -49,15 +49,15 @@ const questions = [
   {
     id: 'arrow-clause-order',
     rule: 'The library extends your loan if you renew online.',
-    prompt: 'Which arrow keeps the meaning of this sentence?',
+    prompt: 'Which arrow keeps the meaning of this rule?',
     options: [
       'The library extends your loan → You renew online',
       'You renew online → The library extends your loan',
       'If → The library extends your loan',
     ],
     feedback: [
-      'That follows the sentence order but reverses the requirement. Renewing online is enough to prove that the library extends your loan, even though renewing appears last.',
-      'Renewing online is the sufficient condition. If introduces it at the end of this sentence, so it still belongs on the left of the arrow.',
+      'That follows the rule order but reverses the requirement. Renewing online is enough to prove that the library extends your loan, even though renewing appears last.',
+      'Renewing online is the sufficient condition. If introduces it at the end of this rule, so it still belongs on the left of the arrow.',
       'If is an indicator, not a complete condition. Put the idea it introduces on the left: you renew online.',
     ],
     explanation: 'This has the same meaning as If you renew online, the library extends your loan. Moving the words does not change which condition is sufficient or necessary.',

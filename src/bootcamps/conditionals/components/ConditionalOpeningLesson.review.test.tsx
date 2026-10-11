@@ -171,7 +171,7 @@ it('gives each independently assigned group its own What Test explanation before
 
 it('pauses on both directions of a “Put yourself in it” check instead of supplying a conclusion immediately', () => {
   const { complete } = mount('sufficient-necessary');
-  const section = screen.getByRole('heading', { hidden: true, name: 'Try the sentence from the inside' }).closest<HTMLElement>('section')!;
+  const section = screen.getByRole('heading', { hidden: true, name: 'Try the rule from the inside' }).closest<HTMLElement>('section')!;
   showPageFor(section);
   const pauses = within(section).getAllByRole('button', { name: 'Show the reasoning' });
   expect(pauses).toHaveLength(2);
@@ -193,7 +193,7 @@ it('reuses the “Put yourself in it” in Only if with a genuine check of the r
   const pauses = within(section).getAllByRole('button', { name: 'Show the reasoning' });
   expect(pauses).toHaveLength(2);
   fireEvent.click(pauses[0]);
-  expect(within(section).getByText(/I've completed it. The sentence requires project completion/)).toBeTruthy();
+  expect(within(section).getByText(/I've completed it. The rule requires project completion/)).toBeTruthy();
   expect(within(section).queryByText(/I could complete the project without graduating/)).toBeNull();
   fireEvent.click(pauses[1]);
   expect(within(section).getByText(/I could complete the project without graduating/)).toBeTruthy();
@@ -216,7 +216,7 @@ it('renders the opening repair anchors with the assigned unit’s actual mistake
 
 it('makes the invitation check distinguish the stated requirement from its tempting reverse', () => {
   const { complete } = mount('sufficient-necessary');
-  const check = screen.getByRole('heading', { hidden: true, name: 'Every finalist receives an invitation. Which requirement does this sentence prove?' }).closest<HTMLElement>('.co-check')!;
+  const check = screen.getByRole('heading', { hidden: true, name: 'Every finalist receives an invitation. Which requirement does this rule prove?' }).closest<HTMLElement>('.co-check')!;
   showPageFor(check);
   fireEvent.click(within(check).getByRole('button', { name: 'Being a finalist is necessary for receiving an invitation.' }));
   expect(within(check).getByText(/You reversed the requirement/)).toBeTruthy();
@@ -442,7 +442,7 @@ it('animates the IF explanation only while it is in view and keeps its hypotheti
 
 it('uses denial of permission, rather than non-entry, to refute the reverse permission rule', () => {
   const { container } = mount('group-1');
-  const heading = [...container.querySelectorAll('h3')].find(node => node.textContent === 'You learn that a vehicle was permitted inside. What does the sentence tell you about it?')!;
+  const heading = [...container.querySelectorAll('h3')].find(node => node.textContent === 'You learn that a vehicle was permitted inside. What does the rule tell you about it?')!;
   showPageFor(heading);
   const pause = heading.closest<HTMLElement>('.co-think-pause')!;
   expect(pause.textContent).not.toContain('not permitted inside would fit');
