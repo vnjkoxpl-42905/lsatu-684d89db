@@ -2,7 +2,7 @@ import { Children, isValidElement, useEffect, useId, useRef, useState, type Reac
 import './reference-sequence.css';
 import { NegativeCaseLab } from './CounterexampleLab';
 import { StudyDeck } from './StudyDeck';
-import { groupOneCardIds, IndicatorFlashcardLink } from './FlashcardTools';
+import { IndicatorFlashcardLink } from './FlashcardTools';
 import type { LessonPage } from './LessonPages';
 import { SufficientConditionExperience, SufficientReasoningWalkthrough } from './SufficientConditionExperience';
 import { SufficientConditionFilm } from './SufficientConditionFilm';
@@ -236,7 +236,7 @@ export function conditionalReferenceContent() {
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 1 indicator words">
           <h3>Group 1: Sufficient-condition indicators</h3>
           <p>You've seen how <strong>if</strong> points to the sufficient condition. These indicator words and phrases can help you recognize it too:</p>
-          <ul>{sufficientFamily.map((entry, index) => <li key={entry.word}><IndicatorFlashcardLink group="group-1" card={groupOneCardIds[index]}>{entry.word}</IndicatorFlashcardLink></li>)}</ul>
+          <ul>{sufficientFamily.map(entry => <li key={entry.word}>{entry.word}</li>)}</ul>
           <IndicatorFlashcardLink group="group-1"/>
           <p>An <strong>indicator</strong> is a word or phrase that helps you recognize the rule. In our example, <strong>if</strong> is the indicator; <strong>being enrolled in law school</strong> is the condition that guarantees being a student. Look for the words, then ask what they tell you about the two conditions.</p>
         </section>
