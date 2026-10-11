@@ -113,26 +113,26 @@ function MustArrowNote() {
     <div className="cr-step-body">
       <p className="ma-lead">The arrow points from the <strong>sufficient condition</strong> to the <strong>necessary condition</strong>.</p>
       <figure className="ma-example" aria-label="If you are enrolled in law school, you must be a student">
-        <figcaption className="ma-read-instruction">Read left to right: <strong>“If this is true, this must be true.”</strong></figcaption>
+        <figcaption className="ma-read-instruction">Read left to right: <strong>“If the left side is true, the right side must be true.”</strong></figcaption>
         <div className="ma-relationship">
-          <div className="ma-condition"><span className="ma-side">Left: sufficient condition</span><span>Enough to guarantee the right</span><strong>You are enrolled in law school</strong></div>
+          <div className="ma-condition"><span className="ma-side">Left: sufficient condition</span><span>Enough to guarantee the right side</span><strong>You are enrolled in law school</strong></div>
           <div className="ma-arrow" aria-hidden="true"><span>must</span><b>⟶</b></div>
-          <div className="ma-condition"><span className="ma-side">Right: necessary condition</span><span>Required when the left is true</span><strong>You are a student</strong></div>
+          <div className="ma-condition"><span className="ma-side">Right: necessary condition</span><span>Required when the left side is true</span><strong>You are a student</strong></div>
         </div>
       </figure>
       <p>Being enrolled in law school is <strong>enough</strong> to know you are a student. That is why enrollment goes on the <strong>left</strong>. Being a student is <strong>required</strong>, so it goes on the <strong>right</strong>.</p>
       <section className="ma-placement" aria-label="Place and read the conditions">
         <h3>Place the conditions. Then read the arrow.</h3>
         <p>Choose what belongs on each side, then use the same direction with a new rule.</p>
-        <MustArrowPractice/>
         <p className="ma-compact-note">Put the <strong>condition</strong> beside the arrow, not the indicator word. For example, write “you win the raffle,” not “if.”</p>
+        <MustArrowPractice />
       </section>
-      <section className="ma-order" aria-label="Sentence order and arrow direction">
-        <h3>Sentence order can change. The arrow stays the same.</h3>
+      <section className="ma-order" aria-label="Two ways to say the same thing">
+        <h3>Two ways to say the same thing</h3>
         <div className="cr-language-pair"><p><strong>If</strong> you win the raffle, you get a bicycle.</p><p>You get a bicycle <strong>if</strong> you win the raffle.</p></div>
         <p>Both mean: <strong>You win the raffle → You get a bicycle.</strong> Winning is sufficient, so it goes left, even when it comes last in the sentence.</p>
       </section>
-      <p className="ma-takeaway"><strong>The arrow guarantees the right when the left is true.</strong> Being a student alone does not prove that you are enrolled in law school.</p>
+      <p className="ma-takeaway"><strong>The arrow guarantees the right side when the left side is true.</strong> Being a student alone does not prove that you are enrolled in law school.</p>
       <details className="cr-extension ma-reverse"><summary>Why can't we reverse it?</summary><div className="ma-reverse-body"><p>A person could be a history student who is not enrolled in law school. That possibility fits our rule.</p><p>The arrow states a relationship. By itself, it does not tell us that either condition is true, or that one causes the other.</p></div></details>
     </div>
   </section>;

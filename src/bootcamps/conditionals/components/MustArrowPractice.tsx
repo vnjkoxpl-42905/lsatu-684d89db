@@ -20,11 +20,11 @@ const questions = [
     id: 'arrow-right',
     rule: 'If you are enrolled in law school, then you are a student.',
     prompt: 'Which complete condition belongs on the right side of the arrow?',
-    options: ['You are enrolled in law school.', 'You are a student.', 'Then.'],
+    options: ['You are enrolled in law school.', 'You are a student.', 'Law school.'],
     feedback: [
       'Enrollment is the sufficient condition. It belongs on the left, where we start reading this rule.',
       'Being a student is required whenever you are enrolled in law school. It is the necessary condition, so it goes on the right.',
-      'Then helps connect the two parts of this sentence. The complete condition on the right is you are a student.',
+      'Law school names a place, not a complete condition. Keep the whole idea: you are a student. That is what enrollment requires.',
     ],
     explanation: 'The arrow points to what must be true if the left side is true. Enrollment on the left requires being a student on the right.',
     correct: 1,
@@ -39,28 +39,28 @@ const questions = [
       'If this folder is marked complete, it must contain a signed form.',
     ],
     feedback: [
-      'That reads the arrow backward. Start with the complete label on the left, then follow the arrow to the signed form on the right.',
+      'That reads the arrow backward. Start with this folder is marked complete on the left, then follow the arrow to the signed form on the right.',
       'That treats both sides as facts. The arrow tells us what must follow if the left side is true; it does not say either side is actually true.',
-      'That follows the arrow from left to right and keeps the requirement: if the complete label applies, the signed form must be there.',
+      'That follows the arrow from left to right and keeps the requirement: if this folder is marked complete, the signed form must be there.',
     ],
     explanation: 'Read the arrow as must: if the left side is true, the right side must be true.',
     correct: 2,
   },
   {
     id: 'arrow-clause-order',
-    rule: 'You get a bicycle if you win the raffle.',
+    rule: 'The library extends your loan if you renew online.',
     prompt: 'Which arrow keeps the meaning of this sentence?',
     options: [
-      'You get a bicycle → You win the raffle',
-      'You win the raffle → You get a bicycle',
-      'If → You get a bicycle',
+      'The library extends your loan → You renew online',
+      'You renew online → The library extends your loan',
+      'If → The library extends your loan',
     ],
     feedback: [
-      'That follows the sentence order but reverses the requirement. Winning the raffle is enough to establish that you get a bicycle, even though winning appears last.',
-      'Winning the raffle is still the sufficient condition. If introduces it at the end of this sentence, so it still belongs on the left of the arrow.',
-      'If is an indicator, not a complete condition. Put the idea it introduces on the left: you win the raffle.',
+      'That follows the sentence order but reverses the requirement. Renewing online is enough to establish that the library extends your loan, even though renewing appears last.',
+      'Renewing online is the sufficient condition. If introduces it at the end of this sentence, so it still belongs on the left of the arrow.',
+      'If is an indicator, not a complete condition. Put the idea it introduces on the left: you renew online.',
     ],
-    explanation: 'This has the same meaning as If you win the raffle, you get a bicycle. Moving the words does not change which condition is sufficient or necessary.',
+    explanation: 'This has the same meaning as If you renew online, the library extends your loan. Moving the words does not change which condition is sufficient or necessary.',
     correct: 1,
   },
 ];
@@ -97,7 +97,7 @@ export function MustArrowPractice() {
       <progress aria-labelledby={`${id}-progress`} value={count} max={questions.length}/>
     </div>
     <div className="ma-question-practice-question">
-      <h3 ref={heading} tabIndex={-1}>Question {index + 1} of {questions.length}</h3>
+      <h4 ref={heading} tabIndex={-1}>Question {index + 1} of {questions.length}</h4>
       <p className="ma-question-practice-rule">{question.rule}</p>
       <fieldset className="ma-question-practice-choices" disabled={answered}>
         <legend className="ma-question-practice-prompt">{question.prompt}</legend>
@@ -113,9 +113,9 @@ export function MustArrowPractice() {
           setAnswers(items => ({ ...items, [question.id]: choice }));
         }
       }}>Check answer</button>}
-      <div className="ma-question-practice-feedback" aria-live="polite" aria-atomic="true">
+      <div className="ma-question-practice-feedback">
         {answered && <div className="ma-question-practice-explanation">
-          <h4 ref={feedbackHeading} tabIndex={-1}>{answer === question.correct ? 'Correct.' : 'Not quite.'}</h4>
+          <h5 ref={feedbackHeading} tabIndex={-1}>{answer === question.correct ? 'Correct.' : 'Not quite.'}</h5>
           <p>{question.feedback[answer]}</p>
           {answer !== question.correct && <p><strong>The answer: {question.options[question.correct]}</strong></p>}
           <p>{question.explanation}</p>

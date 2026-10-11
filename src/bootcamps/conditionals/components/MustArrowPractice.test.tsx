@@ -10,16 +10,16 @@ function answer(option: string) {
 
 it('requires an answer before feedback and explains the placement mistake', () => {
   const { container } = render(<MustArrowPractice/>);
-  const liveRegion = container.querySelector('[aria-live="polite"]');
-  expect(liveRegion).toBeEmptyDOMElement();
+  const feedback = container.querySelector('.ma-question-practice-feedback');
+  expect(feedback).toBeEmptyDOMElement();
   expect(screen.getByRole('button', { name: 'Check answer' })).toBeDisabled();
   expect(screen.getByRole('button', { name: /Next question/ })).toBeDisabled();
   fireEvent.click(screen.getByRole('radio', { name: 'You are a student.' }));
   expect(screen.getByRole('progressbar')).toHaveAttribute('value', '0');
-  expect(liveRegion).toBeEmptyDOMElement();
+  expect(feedback).toBeEmptyDOMElement();
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
   expect(screen.getByRole('heading', { name: 'Not quite.' })).toHaveFocus();
-  expect(liveRegion).toHaveTextContent('It belongs on the right, because enrollment requires it.');
+  expect(feedback).toHaveTextContent('It belongs on the right, because enrollment requires it.');
   expect(screen.getByRole('progressbar')).toHaveAttribute('value', '1');
   expect(screen.queryByRole('button', { name: 'Check answer' })).not.toBeInTheDocument();
 });
@@ -44,7 +44,7 @@ it('checks left, right, reading and clause order without claiming mastery', () =
     'You are enrolled in law school.',
     'You are a student.',
     'If this folder is marked complete, it must contain a signed form.',
-    'You win the raffle → You get a bicycle',
+    'You renew online → The library extends your loan',
   ];
   const prompts = [
     'Which complete condition belongs on the left side of the arrow?',
@@ -72,15 +72,15 @@ it('explains every distractor using the specific reasoning error', () => {
     ],
     [
       ['You are enrolled in law school.', 'Enrollment is the sufficient condition.'],
-      ['Then.', 'The complete condition on the right is you are a student.'],
+      ['Law school.', 'Law school names a place, not a complete condition.'],
     ],
     [
       ['If this folder contains a signed form, it must be marked complete.', 'That reads the arrow backward.'],
       ['This folder is marked complete and contains a signed form.', 'That treats both sides as facts.'],
     ],
     [
-      ['You get a bicycle → You win the raffle', 'That follows the sentence order but reverses the requirement.'],
-      ['If → You get a bicycle', 'If is an indicator, not a complete condition.'],
+      ['The library extends your loan → You renew online', 'That follows the sentence order but reverses the requirement.'],
+      ['If → The library extends your loan', 'If is an indicator, not a complete condition.'],
     ],
   ];
   wrongResponses.forEach((responses, questionIndex) => responses.forEach(([choice, explanation]) => {
@@ -91,7 +91,7 @@ it('explains every distractor using the specific reasoning error', () => {
       fireEvent.click(screen.getByRole('button', { name: /Next question/ }));
     }
     answer(choice);
-    expect(container.querySelector('[aria-live="polite"]')).toHaveTextContent(explanation);
+    expect(container.querySelector('.ma-question-practice-feedback')).toHaveTextContent(explanation);
     expect(screen.getByRole('heading', { name: 'Not quite.' })).toHaveFocus();
     unmount();
   }));

@@ -260,11 +260,15 @@ it('keeps the must-arrow note to roles, the raffle diagram and a moved if-clause
   render(<OpeningCourseContent id="must-arrow"/>);
   expect(screen.queryByRole('button', { name: 'Find the indicator' })).not.toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Place the conditions. Then read the arrow.' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Sentence order can change. The arrow stays the same.' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Two ways to say the same thing' })).toBeVisible();
   expect(screen.getByText('Left: sufficient condition')).toBeVisible();
   expect(screen.getByText('Right: necessary condition')).toBeVisible();
   const note = document.querySelector('[data-reference-source="8"]') as HTMLElement;
-  expect(note.textContent).not.toMatch(/only if|requires|Group 1|Group 2/i);
+  expect(note.textContent).not.toMatch(/only if|Group 1|Group 2/i);
+  expect(document.querySelectorAll('.ma-question-practice')).toHaveLength(1);
+  expect(screen.getByRole('heading', { name: 'Question 1 of 4', level: 4 })).toBeVisible();
+  const recap = document.querySelector('.ma-order');
+  expect(recap?.textContent).not.toContain('You renew online');
   cleanup();
   render(<OpeningCourseContent id="necessary-words"/>);
   expect(screen.getByRole('heading', { name: 'A person borrows a locker only if they have a key. Which condition goes on the right?' })).toBeInTheDocument();
