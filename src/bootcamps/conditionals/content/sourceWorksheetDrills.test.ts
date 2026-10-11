@@ -66,7 +66,7 @@ describe('reviewed worksheet source bank', () => {
       expect(getSourceWorksheetDrill(id)!.items[8].necessary).toBe('the building should be evacuated immediately');
     }
     const rephrase = getSourceWorksheetDrill('source-rephrase')!.items;
-    expect(rephrase[3].indicators).toEqual([{ text: 'only if', group: 2 }]);
+    expect(rephrase[3].indicators).toEqual([{ text: 'The only', group: 1 }]);
     expect(rephrase[10].indicators).toContainEqual({ text: 'Every', group: 1 });
     expect(rephrase[10].sufficient).toBe('an agreement is legally binding');
     expect(rephrase[6].necessary).toBe('that project involves effective teamwork');

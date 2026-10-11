@@ -1586,23 +1586,22 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-rephrase-04",
         "sourceId": "rephrase-04",
         "originalStatement": "The only key to unlocking that door is the blue key.",
-        "statement": "That door is unlocked using a key only if the blue key is used.",
+        "statement": "The only key to unlocking that door is the blue key.",
         "indicators": [
           {
-            "text": "only if",
-            "group": 2
+            "text": "The only",
+            "group": 1
           }
         ],
-        "sufficient": "the door is unlocked using a key",
-        "necessary": "the blue key is used",
-        "diagram": "the door is unlocked using a key → the blue key is used",
-        "contrapositive": "NOT (the blue key is used) → NOT (the door is unlocked using a key)",
-        "ifThen": "If the door is unlocked using a key, then the blue key is used.",
-        "contrapositiveWords": "If the blue key is not used, then the door is not unlocked using a key.",
-        "explanation": "This version is limited to unlocking with a key. It does not exclude other possible ways of opening the door.",
+        "sufficient": "a key unlocks that door",
+        "necessary": "that key is the blue key",
+        "diagram": "a key unlocks that door → that key is the blue key",
+        "contrapositive": "NOT (that key is the blue key) → NOT (a key unlocks that door)",
+        "ifThen": "If a key unlocks that door, then that key is the blue key.",
+        "contrapositiveWords": "If a key is not the blue key, then that key does not unlock that door.",
+        "explanation": "The only what? The only key to unlocking that door. Any key that unlocks it has to be the blue key. The rule is about keys, so it says nothing about other ways of opening the door.",
         "correctionNotes": [
-          "“Only key” does not exclude non-key ways of opening the door.",
-          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
+          "Restored the source wording on 2026-10-11 so the item practises the indicator the only."
         ],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",

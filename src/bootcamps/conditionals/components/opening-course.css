@@ -213,17 +213,13 @@
 .co-focused-deck .co-study-card { text-align:left; min-height:18rem; }
 @media(prefers-reduced-motion:reduce) { .co-focused-deck * { animation:none!important; transition:none!important; } }
 
-/* Drill cards: ghost numeral, operation trail and a quiet lift on hover. */
+/* Drill cards: ghost numeral and a quiet lift on hover. */
 .oc-drill-card { position:relative; overflow:hidden; transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
 .oc-drill-card > :not(.oc-card-num) { position:relative; }
 .oc-card-num { position:absolute; top:-.14em; right:28px; font-family:Georgia,serif; font-style:italic; font-size:9.5rem; line-height:1; letter-spacing:-.06em; color:rgba(26,26,26,.055); pointer-events:none; user-select:none; transition:color .22s ease, transform .22s ease; }
 .oc-drill-card:hover { transform:translateY(-2px); border-color:var(--oc-control-line); box-shadow:0 14px 32px -18px rgba(26,26,26,.28); }
 .oc-drill-card:hover .oc-card-num { color:rgba(26,26,26,.09); transform:translateX(-4px); }
-.oc-ops { list-style:none; margin:0 0 28px; padding:0; display:flex; flex-wrap:wrap; }
-.oc-ops li { margin:0 -1px -1px 0; padding:8px 14px; border:1px solid var(--oc-line); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#8a9a90; background:transparent; }
-.oc-ops li[data-on="true"] { background:var(--oc-ink); border-color:var(--oc-ink); color:var(--oc-canvas); animation:oc-op-in .45s ease both; }
 .oc-card-foot { display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; }
 .oc-card-count { font-size:.9375rem; color:var(--oc-muted); letter-spacing:.01em; }
-@keyframes oc-op-in { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
-@media (prefers-reduced-motion:reduce) { .oc-drill-card, .oc-card-num { transition:none; } .oc-ops li[data-on="true"] { animation:none; } .oc-drill-card:hover { transform:none; } }
-@media (max-width:640px) { .oc-card-num { font-size:6.5rem; right:14px; } .oc-ops li { padding:7px 10px; font-size:.6875rem; } }
+@media (prefers-reduced-motion:reduce) { .oc-drill-card, .oc-card-num { transition:none; } .oc-drill-card:hover { transform:none; } }
+@media (max-width:640px) { .oc-card-num { font-size:6.5rem; right:14px; } }

@@ -17,7 +17,7 @@ export const sufficientStagedItems: Item[] = [
   ...[...translationExamples['group-1'], ...diagramExamples['group-1'], ...flashcardExamples['group-1']].map((item, index) => {
     const options = index % 2 ? [item.right, item.left] : [item.left, item.right];
     return { sentence: item.sentence, stages: [
-      choices('Find the indicator', 'Which expression identifies the sufficient condition?', index % 2 ? ['only if', item.word, 'requires'] : [item.word, 'only if', 'requires'], index % 2, `Read “${item.word}” with the complete condition it refers to. ${item.why}`),
+      choices('Find the indicator', 'Which indicator introduces the sufficient condition?', index % 2 ? ['only if', item.word, 'requires'] : [item.word, 'only if', 'requires'], index % 2, `Read “${item.word}” with the complete condition it refers to. ${item.why}`),
       choices('Find the condition', `What complete condition does “${item.word}” identify?`, options, options.indexOf(item.left), item.why),
       choices('Build the arrow', 'Which direction preserves the original rule?', index % 2 ? [`${item.right} → ${item.left}`, `${item.left} → ${item.right}`] : [`${item.left} → ${item.right}`, `${item.right} → ${item.left}`], index % 2, item.why),
       reading(item.readback, 'Compare the condition on each side. Keep every restriction and do not turn the requirement into a guarantee.'),

@@ -52,7 +52,7 @@ it('retains the first answer through repair and restores focus to an enabled cho
   }
   expect(screen.queryByRole('button', { name: 'Back to results' })).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: 'See results' }));
-  expect(screen.getByRole('heading', { name: 'Drill 1 complete.' })).toHaveFocus();
+  expect(screen.getByRole('heading', { name: 'Spot the condition complete.' })).toHaveFocus();
   expect(screen.getByText(/of 24 correct on your first attempt/)).toHaveTextContent('23 of 24');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '24');
   fireEvent.click(screen.getByRole('button', { name: 'Question 1 Review reasoning' }));
@@ -62,7 +62,7 @@ it('retains the first answer through repair and restores focus to an enabled cho
   expect(screen.getByRole('button', { name: 'Check answer' })).toBeDisabled();
   expect(screen.getByRole('button', { name: 'Back to results' })).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Back to results' }));
-  expect(screen.getByRole('heading', { name: 'Drill 1 complete.' })).toHaveFocus();
+  expect(screen.getByRole('heading', { name: 'Spot the condition complete.' })).toHaveFocus();
   expect(screen.getByText(/of 24 correct on your first attempt/)).toHaveTextContent('23 of 24');
 });
 

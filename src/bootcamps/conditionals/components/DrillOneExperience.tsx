@@ -79,7 +79,7 @@ export function DrillOneExperience({ questions }: { questions: DrillOneQuestion[
     setFocusAnswer('option');
   }
 
-  return <section className="d1-experience" aria-label="Drill 1 questions">
+  return <section className="d1-experience" aria-label="Spot the condition questions">
     <div className="d1-progress-summary">
       <div><span className="d1-eyebrow">Your progress</span><p>{answered === 0 ? 'Ready to begin' : answered === questions.length ? 'Practice complete' : 'Keep going'}</p></div>
       <div className="d1-progress-value" aria-hidden="true"><strong>{completion}<span>%</span></strong><span>complete</span></div>
@@ -87,7 +87,7 @@ export function DrillOneExperience({ questions }: { questions: DrillOneQuestion[
     <div className="d1-progress-track" role="progressbar" aria-label="Questions answered" aria-valuenow={answered} aria-valuemin={0} aria-valuemax={questions.length} aria-valuetext={`${completion}% complete. ${answered} of ${questions.length} questions answered.`}><span style={{ width: `${answered / questions.length * 100}%` }}/></div>
     {finished ? <div className="d1-completion">
       <div className="d1-completion-mark" aria-hidden="true"><Check size={32}/></div>
-      <p className="d1-eyebrow">You worked through every question</p><h2 ref={heading} tabIndex={-1}>Drill 1 complete.</h2>
+      <p className="d1-eyebrow">You worked through every question</p><h2 ref={heading} tabIndex={-1}>Spot the condition complete.</h2>
       <p className="d1-result"><strong>{correctFirst}</strong> of {questions.length} correct on your first attempt.</p>
       <p className="d1-completion-copy">{missed.length ? 'Return to the questions you missed and compare the explanation with your original reasoning.' : 'Every first answer was correct. You can review any question before moving on.'}</p>
       <div className="d1-review-list" aria-label="Review questions">{questions.map((item, index) => <button type="button" key={index} onClick={() => go(index)}><span>Question {index + 1}</span><span>{answers[index].first === item.correct ? 'Correct first attempt' : 'Review reasoning'}<ArrowRight size={16}/></span></button>)}</div>

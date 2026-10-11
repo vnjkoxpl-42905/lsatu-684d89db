@@ -17,14 +17,11 @@ it('offers nine dedicated notes and thirteen interleaved drill entries', () => {
   expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'missing-requirement', 'foundation-practice']);
 });
 
-it('shows which operations each drill works, in plain words with no mechanical counts', () => {
+it('shows the sentence count in plain words and never says statements or practise', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
-  const card = (title: RegExp) => screen.getByRole('heading', { name: title }).closest('li')!;
-  const lit = (title: RegExp) => within(within(card(title)).getByRole('list', { name: 'What you do in this drill' })).getAllByRole('listitem').map(item => item.textContent);
-  expect(lit(/Drill 3: Find the indicators/)).toEqual(['Indicators']);
-  expect(lit(/Drill 4: Place the conditions/)).toEqual(['Conditions', 'Arrow']);
-  expect(lit(/Drill 7: Build both diagrams/)).toEqual(['Indicators', 'Conditions', 'Symbols', 'Arrow', 'Contrapositive', 'In words']);
-  expect(within(card(/Drill 3: Find the indicators/)).getByText('13 sentences')).toBeVisible();
+  const card = screen.getByRole('heading', { name: /Drill 3: Find the indicators/ }).closest('li')!;
+  expect(within(card).getByText('13 sentences')).toBeVisible();
+  expect(within(card).queryByRole('list')).toBeNull();
   expect(document.querySelector('ol.oc-course-path')!.textContent).not.toMatch(/statements|Practise/i);
 });
 
