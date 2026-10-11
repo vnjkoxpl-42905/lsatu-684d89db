@@ -5,6 +5,7 @@ import { CounterexampleLab, NegativeCaseLab } from './CounterexampleLab';
 import { OpeningMixedDrill } from './OpeningMixedDrill';
 import { PracticeTaskRunner } from './PracticeTaskRunner';
 import { StudyDeck } from './StudyDeck';
+import './must-arrow-note.css';
 
 type ContentSection = ReactElement<{ id?: string; number?: number; title?: string; children?: ReactNode; dark?: boolean; 'data-reference-boundary'?: boolean }>;
 
@@ -104,23 +105,43 @@ function IndicatorNote({ group }: { group: 'group-1' | 'group-2' }) {
   </>;
 }
 
-// The raffle note sits before the families: arrow meaning, sides, one diagram and a moved if-clause.
+// Introduce notation through the familiar relationship before the raffle walkthrough.
 function MustArrowNote() {
-  return <section className="co-section cr-course-section" data-reference-source={8}>
-    <div className="co-section-heading"><h2>Give the relationship a shorter form</h2></div>
+  return <section className="co-section cr-course-section ma-lesson" data-reference-source={8}>
+    <div className="co-section-heading"><h2>The arrow means “must”</h2></div>
     <div className="cr-step-body">
-      <p>Put the sufficient condition on the <strong>left</strong>, the necessary condition on the <strong>right</strong>, and a <strong>must arrow</strong> between them.</p>
-      <RuleDiagram left="Sufficient: enough" right="Necessary: required"/>
-      <p>Read the arrow as <strong>must</strong>: if the left condition is true, the right condition must be true too. It does not mean the left caused the right, or that the right happens later.</p>
-      <p>The diagram holds the <strong>complete conditions</strong>, not the indicator word. An indicator helps you find a condition's job. Once you've found that job, place the whole condition on its side of the arrow.</p>
-      <h3>Build the raffle diagram one step at a time</h3>
-      <p>First find the indicator, then draw the arrow, place the complete idea it refers to, and fill the other side.</p>
-      <IncrementalWriter/>
-      <h3>The sentence can move. The roles stay the same.</h3>
-      <p>Compare these two versions of our raffle rule. The indicator is bold; the complete idea it refers to is in brackets.</p>
-      <div className="cr-language-pair"><p><strong>If</strong> [you win the raffle], you get a bicycle.</p><p>You get a bicycle <strong>if</strong> [you win the raffle].</p><span>If identifies the sufficient condition in both sentences.</span></div>
-      <p>In the second sentence, if appears in the middle. Its condition comes last, but winning is still enough to establish getting a bicycle. Don't let the first phrase in English choose the first side of your diagram.</p>
-      <ReferenceQuestion prompt="You get a bicycle if you win the raffle. Which diagram preserves this sentence?" options={['Get bicycle → Win', 'Win → Get bicycle']} correct={1} feedback={['You let sentence order choose the arrow. The if-clause still makes winning enough for getting a bicycle.', 'The sufficient condition is still winning. Where it appears in the sentence does not change what it establishes.']}/>
+      <p className="ma-lead">A <strong>must arrow</strong> shows what has to be true if another condition is true.</p>
+      <p>Use the rule you already know: <strong>if you are enrolled in law school, you must be a student.</strong></p>
+      <figure className="ma-example" aria-label="Being enrolled in law school implies being a student">
+        <div className="ma-relationship">
+          <div><span>Sufficient · enough</span><strong>Enrolled in law school</strong></div>
+          <div className="ma-arrow" aria-hidden="true"><span>must</span><b>→</b></div>
+          <div><span>Necessary · required</span><strong>Is a student</strong></div>
+        </div>
+        <figcaption>Start on the left: enrolled in law school. Follow the arrow: this person <strong>must be a student.</strong></figcaption>
+      </figure>
+      <div className="ma-direction">
+        <h3>From enough to required</h3>
+        <p>We draw the arrow <strong>from left to right</strong>. The sufficient condition goes on the left. The necessary condition goes on the right.</p>
+        <p>The arrow records the connection. It doesn't say that enrollment causes someone to be a student, or that being a student happens afterward.</p>
+      </div>
+      <section className="ma-practice" aria-label="Build a must-arrow diagram">
+        <h3>Now build one with a new rule</h3>
+        <p>Follow the raffle sentence into a diagram, one step at a time.</p>
+        <IncrementalWriter/>
+      </section>
+      <section className="ma-reading" aria-label="Read a diagram back into words">
+        <h3>Keep the ideas, leave out the indicator</h3>
+        <p><strong>If</strong> helps us find the sufficient condition. The condition itself is <strong>you win the raffle</strong>. That is what belongs on the left.</p>
+        <p>Short labels save writing, but they must keep the meaning. Here, <strong>Win</strong> means winning this raffle. <strong>Get bicycle</strong> means getting a bicycle.</p>
+      </section>
+      <section className="ma-order" aria-label="Sentence order and arrow direction">
+        <h3>Moving the words doesn't reverse the arrow</h3>
+        <p>These sentences say the same thing:</p>
+        <div className="cr-language-pair"><p><strong>If</strong> you win the raffle, you get a bicycle.</p><p>You get a bicycle <strong>if</strong> you win the raffle.</p></div>
+        <p>In both, winning is enough to establish getting a bicycle. Winning still goes on the left, even when it comes last in the sentence.</p>
+        <ReferenceQuestion prompt="You get a bicycle if you win the raffle. Which diagram preserves this sentence?" options={['Get bicycle → Win', 'Win → Get bicycle']} correct={1} feedback={['That would say getting a bicycle guarantees winning. The sentence tells us the other direction: if you win this raffle, you get a bicycle.', 'Winning is still enough to establish getting a bicycle. Moving the if-clause does not change that relationship.']}/>
+      </section>
     </div>
   </section>;
 }

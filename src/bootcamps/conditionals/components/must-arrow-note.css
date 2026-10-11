@@ -1,0 +1,25 @@
+#root .ma-lesson .cr-step-body { display: grid; gap: 1.5rem; }
+#root .ma-lesson p { font-size: clamp(1.125rem, 1rem + .3vw, 1.3rem); line-height: 1.7; margin: 0; }
+#root .ma-lesson h3 { font-size: clamp(1.5rem, 1.2rem + .6vw, 1.85rem); line-height: 1.25; margin: 0 0 1rem; }
+#root .ma-lesson .ma-lead { font-size: clamp(1.25rem, 1.1rem + .4vw, 1.5rem); }
+#root .ma-example { margin: 0; padding: clamp(1rem, 3vw, 2rem); border: 1px solid var(--co-polish-line); border-radius: 1rem; background: var(--co-sheet-ground); }
+#root .ma-relationship { display: grid; grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr); align-items: center; gap: 1rem; }
+#root .ma-relationship > div:not(.ma-arrow) { display: grid; gap: .65rem; }
+#root .ma-relationship span { font-size: 1rem; font-weight: 600; }
+#root .ma-relationship strong { font-size: clamp(1.25rem, 1rem + .7vw, 1.7rem); line-height: 1.3; }
+#root .ma-arrow { display: grid; text-align: center; color: var(--co-teal); }
+#root .ma-arrow b { font-size: 2.75rem; line-height: 1.2; }
+#root .ma-example figcaption { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--co-polish-line); font-size: 1.125rem; line-height: 1.65; }
+#root .ma-direction, #root .ma-reading, #root .ma-order { display: grid; gap: 1rem; padding-top: 1rem; }
+#root .ma-practice { padding: clamp(1rem, 3vw, 2rem); border-radius: 1rem; background: var(--co-polish-fill); }
+#root .ma-practice .cr-writer { margin-top: 1.5rem; }
+#root .ma-lesson .cr-diagram strong, #root .ma-lesson .cr-feedback p, #root .ma-lesson .cr-language-pair p { font-size: 1.125rem; }
+#root .ma-lesson .cr-control-row button { font-size: 1rem; min-height: 44px; }
+#root .ma-lesson .cr-paper-label { font-size: .95rem; }
+#root .ma-order { border-top: 1px solid var(--co-polish-line); padding-top: 2rem; }
+@media (max-width: 480px) {
+  #root .ma-relationship { gap: .45rem; grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr); }
+  #root .ma-relationship span { font-size: .95rem; }
+  #root .ma-relationship strong { font-size: 1.125rem; }
+  #root .ma-arrow b { font-size: 2rem; }
+}
