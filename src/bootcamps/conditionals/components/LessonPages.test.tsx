@@ -113,7 +113,7 @@ it('starts a changed unit at its first page and resets card state when returning
   rerender(lesson('group-1'));
   expect(screen.getByRole('heading', { name: 'Find the sufficient idea' })).toBeVisible();
   jumpTo('Recall the expressions');
-  expect(screen.getByText('Recall card 1 of 10')).toBeVisible();
+  expect(screen.getByText(`Recall card 1 of ${indicatorFlashcards.filter(card => card.group === 'group-1').length}`)).toBeVisible();
   expect(screen.getByRole('button', { name: /Turn to the explanation/ })).toHaveAttribute('aria-expanded', 'false');
   expect(screen.queryByRole('button', { name: 'Saved to revisit' })).toBeNull();
 });

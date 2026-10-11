@@ -71,6 +71,31 @@ function OnlyAndOnlyIf() {
   </NoteSection>;
 }
 
+function CompleteConditionNote() {
+  return <>
+    <NoteSection title="Keep the words that limit the rule">
+      <p>Finding <strong>all</strong> or <strong>if</strong> is only the start. Now identify the complete sufficient condition: exactly who or what does this rule cover?</p>
+      <blockquote>All <strong>registered guests</strong> receive a wristband.</blockquote>
+      <p>All guests? No, <strong>registered guests</strong>. Leaving out registered would give wristbands to people the rule never covered.</p>
+      <RuleDiagram left="Guest is registered" right="Guest receives a wristband"/>
+    </NoteSection>
+    <NoteSection title="Keep the condition together, wherever it appears">
+      <blockquote>A report is reviewed <strong>if it is submitted before noon</strong>.</blockquote>
+      <p>Ask <strong>“If what?”</strong> The report is submitted before noon. Keep the deadline with submitted, even though this condition comes last in the sentence.</p>
+      <RuleDiagram left="Report submitted before noon" right="Report reviewed"/>
+      <p>A report submitted at four does not meet that condition. This rule doesn't settle whether it gets reviewed.</p>
+      <ReferenceQuestion prompt="Any applicant who submits late pays a fee. Which complete condition goes on the left?" options={['Applicant', 'Applicant submits late', 'Applicant pays a fee']} correct={1} feedback={['Applicant alone includes people who submit on time. Keep who submits late: that is the group this rule covers.', 'Applicant submits late keeps the restriction. The rule guarantees a fee for that applicant.', 'Paying a fee is what follows. The sufficient condition is that the applicant submits late.']}/>
+    </NoteSection>
+    <NoteSection title="Read the expression in its sentence">
+      <p><strong>“We asked if the certificate was valid”</strong> reports what someone asked. It does not state that one condition guarantees another. A familiar word is a clue, not a rule by itself.</p>
+      <blockquote><strong>The only people admitted</strong> are members.</blockquote>
+      <p>The only what? People admitted. An admitted person must be a member, so <strong>Person admitted → Person is a member</strong>. Keep the whole expression together; the sentence does not promise admission to every member.</p>
+      <ReferenceQuestion prompt="The only notebooks kept on this shelf are hardback. Which condition is sufficient?" options={['Notebook is hardback', 'Notebook is kept on this shelf', 'Notebook']} correct={1} feedback={['Being hardback does not guarantee a place on this shelf. The rule tells us about the notebooks kept here.', 'A notebook kept on this shelf must be hardback. Kept on this shelf is the complete sufficient condition.', 'Notebook alone would cover every notebook. Keep the restriction: kept on this shelf.']}/>
+      <p>In the next drill, select the complete condition, place it beside the arrow and check that your diagram keeps the sentence's meaning.</p>
+    </NoteSection>
+  </>;
+}
+
 function IndicatorNote({ group }: { group: 'group-1' | 'group-2' }) {
   const [selected, setSelected] = useState(0);
   const [opened, setOpened] = useState<number[]>([0]);
@@ -306,7 +331,7 @@ function Content({ id }: { id: string }) {
     case 'sufficient': return <ReferenceBody number={2} omitTransition/>;
     case 'necessary': return <ReferenceBody number={4} omitTransition/>;
     case 'must-arrow': return <MustArrowNote/>;
-    case 'sufficient-words': return <IndicatorNote group="group-1"/>;
+    case 'sufficient-words': return <CompleteConditionNote/>;
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
     case 'whole-meaning': return <WholeMeaningNote/>;
     case 'missing-requirement': return <><ReferenceBody number={6}/><ReferenceBody number={7} omitTransition/></>;

@@ -206,26 +206,30 @@ it('checks the corrected bus and phone translations through the learner controls
   expect(within(phoneItem).getByText('Read it back: If a phone is placed in the same-day repair queue, it arrived with a cracked screen.')).toBeVisible();
 });
 
-it('walks the seven expressions with a next control while keeping manual selection', () => {
+it('teaches complete sufficient conditions without a word selector or duplicate flashcards', () => {
   render(<OpeningCourseContent id="sufficient-words"/>);
-  expect(screen.getByText(/Work through all seven expressions/)).toBeVisible();
-  expect(screen.getByText('Expression 1 of 7 · 1 of 7 opened')).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Recall the expressions' })).toBeVisible();
-  const ifPanel = screen.getByRole('heading', { level: 2, name: 'If: the starting condition can come last' });
-  fireEvent.click(screen.getByRole('button', { name: 'Next expression: When' }));
-  expect(screen.getByText('Expression 2 of 7 · 2 of 7 opened')).toBeVisible();
-  expect(ifPanel).not.toBeVisible();
-  const whenPanel = screen.getByRole('heading', { level: 2, name: 'When: an occasion can supply enough information' });
-  expect(whenPanel).toBeVisible();
-  expect(whenPanel.closest('[tabindex="-1"]')).toHaveFocus();
+  expect(screen.getByRole('heading', { name: 'Keep the words that limit the rule' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Keep the condition together, wherever it appears' })).toBeVisible();
+  expect(screen.queryByRole('group', { name: 'Choose an expression' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'Recall the expressions' })).toBeNull();
+  expect(screen.queryByText(/Work through all seven expressions/)).toBeNull();
 
-  fireEvent.click(screen.getByRole('button', { name: /^Any/ }));
-  expect(screen.getByText('Expression 7 of 7 · 3 of 7 opened')).toBeVisible();
-  expect(screen.queryByRole('button', { name: /Next expression/ })).toBeNull();
-  expect(screen.getByText(/That was the last of the seven expressions/)).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: /^If\W+opened$/ }));
-  expect(ifPanel).toBeVisible();
-  expect(screen.getByText('Expression 1 of 7 · 3 of 7 opened')).toBeVisible();
+  const applicant = screen.getByRole('group', { name: 'Any applicant who submits late pays a fee. Which complete condition goes on the left?' });
+  expect(screen.queryByText(/Applicant alone includes people/)).toBeNull();
+  fireEvent.click(within(applicant).getByRole('button', { name: 'Applicant' }));
+  expect(screen.getByText(/Applicant alone includes people who submit on time/)).toBeVisible();
+  fireEvent.click(within(applicant).getByRole('button', { name: 'Applicant submits late' }));
+  expect(screen.getByText(/Applicant submits late keeps the restriction/)).toBeVisible();
+  fireEvent.click(within(applicant).getByRole('button', { name: 'Applicant pays a fee' }));
+  expect(screen.getByText(/Paying a fee is what follows/)).toBeVisible();
+
+  const notebook = screen.getByRole('group', { name: 'The only notebooks kept on this shelf are hardback. Which condition is sufficient?' });
+  fireEvent.click(within(notebook).getByRole('button', { name: 'Notebook is hardback' }));
+  expect(screen.getByText(/Being hardback does not guarantee a place/)).toBeVisible();
+  fireEvent.click(within(notebook).getByRole('button', { name: 'Notebook is kept on this shelf' }));
+  expect(screen.getByText(/A notebook kept on this shelf must be hardback/)).toBeVisible();
+  fireEvent.click(within(notebook).getByRole('button', { name: 'Notebook' }));
+  expect(screen.getByText(/Notebook alone would cover every notebook/)).toBeVisible();
 });
 
 it('bridges with one raffle question, then tests fresh cases with reasoned feedback', () => {

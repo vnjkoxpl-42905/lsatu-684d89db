@@ -275,8 +275,8 @@ export const indicatorFlashcards = [
     "sourceCardIndex": 1,
     "adapted": true,
     "note": "Original example adapting the source concept; wording and reasoning reviewed."
-  }
-, {
+  },
+  {
   "id": "g1-whenever",
   "group": "group-1",
   "front": "Whenever a visitor books a morning tour, the visitor receives a map. Which complete condition is sufficient?",

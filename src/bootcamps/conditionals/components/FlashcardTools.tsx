@@ -42,7 +42,8 @@ export function FlashcardTools({ url, allowed }: { url: OpeningCourseUrl; allowe
     <div className="co-flashcard-sets">{sets.filter(item => allowed.includes(item.id)).map(item => <section key={item.id}><h2>{item.title}</h2><p>{item.description}</p><Link className="oc-action" to={flashcardUrl(url, item.id)}>Go to flashcards<ArrowRight size={16} aria-hidden="true"/></Link></section>)}</div>
     {!allowed.length && <p>No flashcards are available in this work.</p>}
   </div>;
-  const cards = indicatorFlashcards.filter(card => card.group === set.id);
+  const order = set.id === 'group-1' ? ['g1-if-first', 'g1-if-last', 'g1-when-first', 'g1-whenever', 'g1-when-last', 'g1-any', 'g1-anytime', 'g1-all', 'g1-every', 'g1-every-time', 'g1-target-later', 'g1-in-order-to', 'g1-people-who', 'g1-each', 'g1-where', 'g1-the-only'] : set.id === 'group-2' ? ['g2-only', 'g2-only-if', 'g2-only-when', 'g2-only-where', 'g2-always', 'g2-requires', 'g2-must-instruction', 'g2-if-contrast', 'g2-required-before', 'g2-only-the-only', 'g2-necessary-before'] : [];
+  const cards = indicatorFlashcards.filter(card => card.group === set.id).sort((a, b) => order.length ? order.indexOf(a.id) - order.indexOf(b.id) : 0);
   const selected = cards.find(card => card.id === params.get('card'))?.id || cards[0].id;
   const from = params.get('from');
   return <div className="oc-course-note co-flashcard-tools">

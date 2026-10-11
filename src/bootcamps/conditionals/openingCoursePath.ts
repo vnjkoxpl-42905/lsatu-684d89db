@@ -14,7 +14,7 @@ export const OPENING_COURSE_PATH: OpeningCourseStep[] = [
   { id: 'necessary', type: 'note', title: 'The Necessary Condition', description: 'What the sufficient condition requires.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'must-arrow', type: 'note', title: 'Must arrow', description: 'Show what must be true.', unitId: 'orientation' },
   { id: 'foundation-practice', type: 'drill', title: 'Drill 1', description: 'Identify sufficient and necessary conditions, place them beside the arrow, recognize indicators, and decide what the facts establish.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
-  { id: 'sufficient-words', type: 'note', title: 'Sufficient-condition words', description: 'Read if, when, where, all, the only, every and any in complete sentences.', unitId: 'group-1' },
+  { id: 'sufficient-words', type: 'note', title: 'Find the complete condition', description: 'Identify the full sufficient condition, including the words that limit who or what the rule covers.', unitId: 'group-1' },
   { id: 'sufficient-practice', type: 'drill', title: 'Build the sufficient side', description: 'Find the whole condition, construct the diagram and repair its direction.', unitId: 'group-1' },
   { id: 'necessary-words', type: 'note', title: 'Necessary-condition words', description: 'Read only, only if, only when, only where, always, requires and must.', unitId: 'group-2' },
   { id: 'whole-meaning', type: 'note', title: 'Keep the whole meaning', description: 'Compare changed wording, keep every qualification and test what your arrow says.', unitId: 'group-2' },

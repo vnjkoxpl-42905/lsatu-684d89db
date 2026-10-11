@@ -2,7 +2,7 @@ import { useEffect, useId, useState } from 'react';
 import { indicatorFlashcards } from '../content/indicatorFlashcards';
 
 export function StudyDeck({ group, selectedCard, onCardChange, choices }: { group: string; selectedCard?: string; onCardChange?: (id: string) => void; choices?: { id: string; label: string }[] }) {
-  const cards = indicatorFlashcards.filter(card => card.group === group);
+  const cards = indicatorFlashcards.filter(card => card.group === group).sort((a, b) => choices ? choices.findIndex(item => item.id === a.id) - choices.findIndex(item => item.id === b.id) : 0);
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [revisit, setRevisit] = useState<string[]>([]);
@@ -14,10 +14,10 @@ export function StudyDeck({ group, selectedCard, onCardChange, choices }: { grou
   if (!card) return null;
   const move = (next: number) => { setIndex(next); onCardChange?.(cards[next].id); setFlipped(false); };
   return <div className={`co-study-deck${focused ? " co-focused-deck" : ""}`}>
-    {choices && <label className="co-expression-picker">Choose an expression<select value={card.id} onChange={event => move(cards.findIndex(item => item.id === event.target.value))}>{choices.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>}
+    {choices && <label className="co-expression-picker">{group === 'foundation' ? 'Choose a concept' : 'Choose an expression'}<select value={card.id} onChange={event => move(cards.findIndex(item => item.id === event.target.value))}>{choices.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>}
     <div className="co-deck-meta"><span id={label}>{focused ? "Example" : "Recall card"} {activeIndex + 1} of {cards.length}</span><span>{focused ? "" : "Think before you turn"}</span></div>
     <button type="button" className="co-study-card" data-flipped={flipped} aria-describedby={label} aria-expanded={flipped} onClick={() => setFlipped(!flipped)}>
-      <span className="co-card-eyebrow">{focused ? (flipped ? 'Explanation' : 'Identify the complete condition') : (flipped ? 'Compare your reasoning' : 'Explain it in your own words')}</span>
+      <span className="co-card-eyebrow">{focused ? (flipped ? 'Explanation' : 'Your question') : (flipped ? 'Compare your reasoning' : 'Explain it in your own words')}</span>
       <span className="co-card-text" key={`${card.id}-${flipped}`}>{flipped ? card.back : card.front}</span>
       <span className="co-card-turn">{focused ? (flipped ? 'Show question' : 'Show explanation') : (flipped ? 'Turn back to the question' : 'Turn to the explanation')} <span aria-hidden="true">↻</span></span>
     </button>
