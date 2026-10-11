@@ -528,6 +528,7 @@ it('rejects an unassigned new note and does not widen practice-only assignments'
 
 it('preserves assignment context without recording legacy completion on new course navigation', () => {
   mount(`${base}/opening/necessary-words?assignment=skill&level=advanced&path=skill&start=group-2`, [skill()]);
+  fireEvent.click(screen.getByRole('link', { name: /Next lesson Keep the whole meaning/ }));
   fireEvent.click(screen.getByRole('link', { name: /Next drill Drill 2: Find both conditions/ }));
   expect(screen.getByRole('heading', { level: 1, name: 'Drill 2: Find both conditions' })).toBeVisible();
   const next = screen.getByRole('link', { name: /Start practice/ }).getAttribute('href')!;

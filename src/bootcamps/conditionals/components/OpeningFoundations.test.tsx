@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, expect, it } from 'vitest';
 import { OpeningCourseContent } from './OpeningCourseContent';
+import { sufficientStagedItems } from './StagedReasoningDrill';
 
 afterEach(cleanup);
 
@@ -35,20 +36,11 @@ it('shows one foundation question at a time and retains checked feedback when re
   expect(screen.getByText(/You treated the rule as a weather report/)).toBeVisible();
 });
 
-it('retains the sufficient-side practice destinations and the original ticket counterexample', () => {
+it('runs sufficient-side practice as the staged drill and keeps the original ticket counterexample', () => {
   const { container } = render(<OpeningCourseContent id="sufficient-practice"/>);
-  expect(container.querySelectorAll('[data-practice-task]')).toHaveLength(5);
-  expect(screen.getAllByRole('region')).toHaveLength(1);
-  expect(screen.queryByRole('button', { name: 'Outside Drawer R' })).toBeNull();
-  for (let question = 0; question < 4; question++) fireEvent.click(screen.getByRole('button', { name: 'Next task' }));
-  const region = screen.getByRole('region', { name: 'Build a case that proves the limit' });
-  expect(within(region).getByText('Every ticket in Drawer R has a blue border.')).toBeVisible();
-  fireEvent.click(within(region).getByRole('button', { name: 'Outside Drawer R' }));
-  fireEvent.click(within(region).getByRole('button', { name: /^Blue border$/ }));
-  fireEvent.click(within(region).getByRole('button', { name: 'Test this ticket' }));
-  expect(within(region).getByText('This fits the rule and disproves the reverse.')).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Previous task' }));
-  fireEvent.click(screen.getByRole('button', { name: 'Next task' }));
-  expect(within(screen.getByRole('region')).getByText('This fits the rule and disproves the reverse.')).toBeVisible();
-  expect(screen.getByRole('button', { name: 'Next task' })).toBeDisabled();
+  expect(container.querySelectorAll('[data-practice-task]')).toHaveLength(0);
+  expect(screen.getByRole('button', { name: 'Next step' })).toBeDisabled();
+  const ticket = sufficientStagedItems.find(item => item.sentence === 'Every ticket in Drawer R has a blue border.');
+  expect(ticket).toBeDefined();
+  expect(ticket!.stages[0].prompt).toMatch(/Which ticket fits our rule but disproves that claim\?/);
 });

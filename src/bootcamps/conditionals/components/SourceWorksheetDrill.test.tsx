@@ -99,9 +99,9 @@ it('begins rephrasing with writing before any supplied diagram or condition choi
   expect(screen.getByRole('heading', { name: 'Rewrite the rule' })).toBeVisible();
   expect(screen.queryByText('a person is a runner in a marathon', { exact: true })).toBeNull();
   write('Write this rule as an if/then sentence.', 'If a person runs the marathon, they must hydrate beforehand.');
-  compare();
-  expect(screen.getByText(/If a person is a runner in a marathon/)).toBeVisible();
-  confirm();
+  expect(screen.getByText('The model stays hidden until you have completed the whole translation.')).toBeVisible();
+  click('Save and continue');
+  expect(screen.queryByText(/If a person is a runner in a marathon/)).toBeNull();
   expect(screen.getByRole('heading', { name: 'Find the indicators' })).toBeVisible();
 });
 
