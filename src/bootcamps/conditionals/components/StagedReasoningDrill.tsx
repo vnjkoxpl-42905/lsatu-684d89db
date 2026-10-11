@@ -4,6 +4,7 @@ import { Check, X } from 'lucide-react';
 import { diagramExamples, flashcardExamples, translationExamples } from './ConditionalOpeningLesson';
 import { referencePracticeItems } from './ConditionalReferenceSequence';
 import { OpeningMixedDrill } from './OpeningMixedDrill';
+import { useCourseStep } from '../courseProgress';
 import './staged-reasoning-drill.css';
 
 type Stage = { name: string; prompt: string; options?: string[]; correct?: number; explanation: string; model?: string; hints?: string[] };
@@ -50,14 +51,21 @@ export const contrapositiveStagedItems: Item[] = referencePracticeItems.map((ite
 });
 
 export function StagedReasoningDrill({ mode }: { mode: 'sufficient' | 'contrapositive' | 'mixed' }) {
-  if (mode === 'mixed') return <div className="sr-mixed"><OpeningMixedDrill/></div>;
-  return <StagedRun key={mode} storageKey={`conditional-staged-v1:${mode}`} items={mode === 'sufficient' ? sufficientStagedItems : contrapositiveStagedItems}/>;
+  if (mode === 'mixed') return <div className="sr-mixed"><OpeningMixedDrill stepId="mixed-practice"/></div>;
+  return <StagedRun key={mode} stepId={`${mode}-practice`} storageKey={`conditional-staged-v1:${mode}`} items={mode === 'sufficient' ? sufficientStagedItems : contrapositiveStagedItems}/>;
 }
 
-function restore(storageKey: string, items: Item[]) {
+/** Short content fingerprint: a changed item set invalidates earlier checks. */
+function itemsFingerprint(items: Item[]) {
+  const text = JSON.stringify(items);
+  let hash = 5381;
+  for (let i = 0; i < text.length; i++) hash = (hash * 33 ^ text.charCodeAt(i)) >>> 0;
+  return `v2:${text.length}:${hash.toString(36)}`;
+}
+function restore(storageKey: string, items: Item[], accountState?: unknown) {
   const fallback = { index: 0, step: 0, answers: {} as Record<string, Answer> };
   try {
-    const data = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
+    const data = (accountState ?? JSON.parse(localStorage.getItem(storageKey) ?? 'null'));
     if (!data || !data.answers || typeof data.answers !== 'object') return fallback;
     const index = Number.isInteger(data.index) && data.index >= 0 && data.index < items.length ? data.index : 0;
     const step = Number.isInteger(data.step) && data.step >= 0 && data.step < items[index].stages.length ? data.step : 0;
@@ -68,7 +76,7 @@ function restore(storageKey: string, items: Item[]) {
       if (!items[i]?.stages[s] || !a || typeof a.writing !== 'string' || !(a.choice === null || Number.isInteger(a.choice)) || typeof a.checked !== 'boolean' || typeof a.accepted !== 'boolean') continue;
       const stage = items[i].stages[s];
       if (a.choice !== null && (!stage.options || a.choice < 0 || a.choice >= stage.options.length)) continue;
-      const checked = data.fingerprint === JSON.stringify(items) && a.checked;
+      const checked = (data.fingerprint === itemsFingerprint(items) || data.fingerprint === JSON.stringify(items)) && a.checked;
       answers[key] = { ...a, checked, accepted: checked && a.accepted && (stage.options ? a.choice === stage.correct : !!a.writing.trim()) };
     }
     const firstUnfinished = items[index].stages.findIndex((_, s) => !answers[`${index}:${s}`]?.accepted);
@@ -76,8 +84,10 @@ function restore(storageKey: string, items: Item[]) {
   } catch { return fallback; }
 }
 
-function StagedRun({ items, storageKey }: { items: Item[]; storageKey: string }) {
-  const [initial] = useState(() => restore(storageKey, items));
+function StagedRun({ items, storageKey, stepId }: { items: Item[]; storageKey: string; stepId?: string }) {
+  const course = useCourseStep(stepId);
+  const record = course?.record;
+  const [initial] = useState(() => restore(storageKey, items, course?.saved?.state));
   const [index, setIndex] = useState(initial.index);
   const [step, setStep] = useState(initial.step);
   const [answers, setAnswers] = useState<Record<string, Answer>>(initial.answers);
@@ -98,7 +108,11 @@ function StagedRun({ items, storageKey }: { items: Item[]; storageKey: string })
     }
     return next;
   }); }
-  useEffect(() => { try { localStorage.setItem(storageKey, JSON.stringify({ index, step, answers, fingerprint: JSON.stringify(items) })); setStorageFailed(false); } catch { setStorageFailed(true); } }, [index, step, answers, items, storageKey]);
+  useEffect(() => {
+    const snapshot = { index, step, answers, fingerprint: itemsFingerprint(items) };
+    record?.({ state: snapshot, done: completed, total: items.length, ...(completed === items.length ? { status: 'done' as const } : {}) });
+    try { localStorage.setItem(storageKey, JSON.stringify(snapshot)); setStorageFailed(false); } catch { setStorageFailed(!record); }
+  }, [index, step, answers, items, storageKey, record, completed]);
   useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [step, index, finished]);
   useEffect(() => { if (!answer.checked) return; const el = feedback.current; el?.focus({ preventScroll: true }); el?.scrollIntoView?.({ behavior: matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' }); }, [answer.checked]);
   function move(i: number) { setIndex(i); setStep(0); setFinished(false); }

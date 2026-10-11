@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getSourceWorksheetDrill, type SourceWorksheetDrillSet } from '../content/sourceWorksheetDrills';
+import { useCourseStep } from '../courseProgress';
 import './source-worksheet-drill.css';
 
 type Stage = 'indicators' | 'conditions' | 'symbols' | 'diagram' | 'contra' | 'readback' | 'contra-readback' | 'review';
@@ -26,9 +27,9 @@ const normalized = (text: string) => text.toLowerCase().replace(/[^a-z0-9 ]/g, '
 function fingerprint(item: { statement: string; sufficient: string; necessary: string; indicators: unknown; contrapositiveWords: string }) {
   return JSON.stringify([item.statement, item.sufficient, item.necessary, item.indicators, item.contrapositiveWords]);
 }
-function readSaved(key: string): Saved {
+function readSaved(key: string, accountState?: unknown): Saved {
   try {
-    const data = JSON.parse(localStorage.getItem(key) ?? 'null');
+    const data = accountState ?? JSON.parse(localStorage.getItem(key) ?? 'null');
     if (!data || !Number.isInteger(data.current) || !data.answers || typeof data.answers !== 'object') return { current: 0, answers: {} };
     const answers: Record<string, Attempt> = {};
     for (const [id, raw] of Object.entries(data.answers)) {
@@ -52,8 +53,10 @@ function WorksheetRun({ set, run, startUrl, title, storageScope }: { set: Source
   const storageKey = storageScope === 'preview' ? `conditional-worksheet-v1:${set.id}` : `conditional-worksheet-v1:${storageScope}:${set.id}`;
   const stages = stagesFor(set.taskKind);
   const stageName = (value: Stage) => set.taskKind === 'rephrase' && value === 'readback' ? 'Rewrite the rule' : names[value];
+  const course = useCourseStep(set.id);
+  const record = course?.record;
   const [saved, setSaved] = useState(() => {
-    const restored = readSaved(storageKey);
+    const restored = readSaved(storageKey, course?.saved?.state);
     for (const item of set.items) {
       const a = restored.answers[item.id];
       if (a && (a.fingerprint !== fingerprint(item) || !a.passed.length)) {
@@ -93,7 +96,11 @@ function WorksheetRun({ set, run, startUrl, title, storageScope }: { set: Source
   const neutralConditions = current % 2 === 0 ? [item.necessary, item.sufficient] : [item.sufficient, item.necessary];
   const condition = (value: string) => value === 'sufficient' ? item.sufficient : item.necessary;
 
-  useEffect(() => { try { localStorage.setItem(storageKey, JSON.stringify(saved)); setStorageFailed(false); } catch { setStorageFailed(true); } }, [saved, storageKey]);
+  const finishedItems = set.items.filter(entry => { const a = saved.answers[entry.id]; return !!a && stages.every(name => name === 'review' || a.passed.includes(name)); }).length;
+  useEffect(() => {
+    if (started) record?.({ state: saved, done: finishedItems, total: set.items.length, ...(finishedItems === set.items.length ? { status: 'done' as const } : {}) });
+    try { localStorage.setItem(storageKey, JSON.stringify(saved)); setStorageFailed(false); } catch { setStorageFailed(!record); }
+  }, [saved, storageKey, record, started, finishedItems, set.items.length]);
   useEffect(() => { if (started) heading.current?.focus({ preventScroll: true }); }, [current, stageIndex, started, results]);
   useEffect(() => { if (checked) feedback.current?.focus({ preventScroll: true }); }, [checked]);
   function update(patch: Partial<Attempt>) { setSaved(s => ({ ...s, answers: { ...s.answers, [item.id]: { ...(s.answers[item.id] ?? blank()), ...patch, fingerprint: fingerprint(item) } } })); }

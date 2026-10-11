@@ -223,3 +223,17 @@
 .oc-card-count { font-size:.9375rem; color:var(--oc-muted); letter-spacing:.01em; }
 @media (prefers-reduced-motion:reduce) { .oc-drill-card, .oc-card-num { transition:none; } .oc-drill-card:hover { transform:none; } }
 @media (max-width:640px) { .oc-card-num { font-size:6.5rem; right:14px; } }
+/* 2026-10-11: progress tracker */
+.oc-tracker{margin:28px 0 22px;padding:20px 22px;border:1px solid var(--oc-line);border-radius:14px;background:var(--oc-surface);box-shadow:var(--oc-shadow-subtle)}
+.oc-tracker-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}.oc-tracker-top>span{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--oc-muted)}
+.oc-tracker-top strong{font:400 30px/1 Georgia,serif;color:var(--oc-ink)}.oc-tracker-top small{font:500 14px/1 inherit;font-family:inherit;color:var(--oc-muted)}
+.oc-tracker-steps{display:flex;gap:4px}.oc-tracker-steps i{flex:1;height:8px;border-radius:4px;background:var(--oc-current);transition:background .4s}
+.oc-tracker-steps i[data-type=drill]{height:8px;border-radius:2px}
+.oc-tracker-steps i[data-progress=started]{background:#e5bd77}.oc-tracker-steps i[data-progress=done]{background:#1f7a54}
+.oc-status{display:inline-flex;align-items:center;gap:6px;margin-left:10px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;vertical-align:middle}
+.oc-status-new{color:var(--oc-muted);background:var(--oc-current)}
+.oc-status-started{color:#7a4f12;background:#f8ead0}
+.oc-status-done{color:#fff;background:#1f7a54}
+.oc-status-bar{display:inline-block;width:42px;height:4px;border-radius:2px;background:#e9d2a8;overflow:hidden}.oc-status-bar i{display:block;height:100%;background:#b77847}
+.oc-path-card[data-progress=done]{border-left:4px solid #1f7a54}.oc-path-card[data-progress=started]{border-left:4px solid #e5bd77}
+.dark .oc-status-started{color:#f6dfb5;background:#4a3a1f}.dark .oc-tracker-steps i[data-progress=done],.dark .oc-status-done{background:#2f9a6d}

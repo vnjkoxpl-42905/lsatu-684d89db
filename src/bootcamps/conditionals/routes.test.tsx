@@ -535,7 +535,8 @@ it('keeps assignment context without recording legacy completion on new course n
   expect(next).toContain('assignment=skill');
   expect(next).toContain('level=advanced');
   expect(next).toContain('start=group-2');
-  expect(state.updateCalls).toBe(0);
+  // Course progress is tracked separately; legacy lesson completion stays untouched.
+  expect(state.progress!.course?.['necessary-words']?.status).toBe('started');
   expect(state.progress!.lessons).toEqual({});
 });
 
@@ -558,16 +559,16 @@ it.each(['/lessons', '/opening/mixed-practice?run=1', '/opening-practice', '/ope
   mount(`${base}${path}`);
   expect(screen.getByText('Assigned work saved to your account')).toBeVisible();
   expect(screen.queryByText('Saved to your account')).toBeNull();
-  expect(state.updateCalls).toBe(0);
+  expect(state.progress!.lessons).toEqual({});
+  expect(state.progress!.attempts).toEqual([]);
 });
 
-it('explains local mixed practice without recording it as assigned work', () => {
+it('saves mixed practice progress without recording it as assigned work', () => {
   mount(`${base}/opening/mixed-practice?run=1`);
-  expect(screen.getByText("Practice answers aren't saved to your account. Reloading or leaving the course clears them.")).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Begin practice' }));
   fireEvent.click(screen.getByRole('button', { name: 'Every swimmer training before dawn' }));
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
-  expect(state.updateCalls).toBe(0);
+  expect(state.progress!.course?.['mixed-practice']).toMatchObject({ status: 'started', done: 1, total: 24 });
   expect(state.progress!.attempts).toEqual([]);
 });
 
@@ -585,9 +586,9 @@ it('keeps pending account changes visible on an opening surface', () => {
 });
 
 
-it.each(['/opening/foundation-practice', '/opening/foundation-practice?run=1'])('does not imply Drill 1 answers are saved to the account on %s', path => {
+it.each(['/opening/foundation-practice', '/opening/foundation-practice?run=1'])('saves Spot the condition progress to the account on %s', path => {
   mount(`${base}${path}`);
-  expect(screen.getByText('Spot the condition answers stay in this session')).toBeVisible();
-  expect(screen.queryByText('Assigned work saved to your account')).toBeNull();
-  expect(state.updateCalls).toBe(0);
+  expect(screen.getByText('Assigned work saved to your account')).toBeVisible();
+  expect(state.progress!.lessons).toEqual({});
+  if (path.endsWith('run=1')) expect(state.progress!.course?.['foundation-practice']).toMatchObject({ status: 'started', done: 0 });
 });
