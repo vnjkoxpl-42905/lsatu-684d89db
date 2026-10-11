@@ -23,6 +23,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { supabase } from "@/integrations/supabase/client";
 import { assignWork } from "@/lib/assignWork";
+import { BOOTCAMPS } from "@/lib/bootcamps";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -54,6 +55,7 @@ const has = (name: string) => process.argv.includes(`--${name}`);
 
 const studentQuery = arg("student");
 const activityQuery = arg("activity");
+const bootcampQuery = arg("bootcamp");
 const drillQuery = arg("drill");
 const messageText = arg("message");
 const sectionQuery = arg("section");
@@ -62,11 +64,11 @@ const scheduleFor = arg("schedule");
 const dueOn = arg("due");
 const dryRun = has("dry-run");
 
-const kinds = [activityQuery, drillQuery, messageText, sectionQuery, setQuery].filter(Boolean).length;
+const kinds = [activityQuery, bootcampQuery, drillQuery, messageText, sectionQuery, setQuery].filter(Boolean).length;
 if (!studentQuery || kinds !== 1) {
   console.error(
     "usage: vite-node scripts/assign.ts -- --student <name|email> \\\n" +
-      "         (--activity <title> | --drill <slug|title> | --message <text>\\\n" +
+      "         (--activity <title> | --bootcamp <id|title> | --drill <slug|title> | --message <text>\\\n" +
       "          | --section PT<n>.S<n> | --set <title|id>)\\\n" +
       "         [--schedule YYYY-MM-DD] [--due YYYY-MM-DD] [--dry-run]",
   );
@@ -408,6 +410,7 @@ async function findOrCreateThread(adminUserId: string, studentId: string): Promi
  */
 const ACCESS_FLAGS = {
   activity: ["has_activity_access"],
+  bootcamp: ["has_bootcamp_access"],
   guided_drill: ["has_drill_access"],
   // A homework set is opened from /classroom/:id and run at /drill.
   homework_set: ["has_classroom_access", "has_drill_access"],
@@ -465,6 +468,15 @@ async function main() {
     const a = await resolveActivity(activityQuery);
     item = { kind: "activity", activityId: a.id };
     label = a.title;
+  } else if (bootcampQuery) {
+    const q = bootcampQuery.trim().toLowerCase();
+    const b = BOOTCAMPS.find((x) => x.id.toLowerCase() === q || x.title.toLowerCase().includes(q));
+    if (!b) {
+      console.error(`assign: no bootcamp matches "${bootcampQuery}". Available: ${BOOTCAMPS.map((x) => x.id).join(", ")}`);
+      process.exit(1);
+    }
+    item = { kind: "bootcamp", topicId: b.id };
+    label = b.title;
   } else if (drillQuery) {
     const d = await resolveDrill(drillQuery);
     item = { kind: "guided_drill", drillId: d.id };
