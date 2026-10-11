@@ -11,8 +11,14 @@ const write = (name: string, value: string) => fireEvent.change(screen.getByLabe
 const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }));
 const compare = () => click('Compare this step');
 const confirm = () => click('I compared the meaning');
+// Highlights a condition by the position of its first and last word in the rule.
+const mark = (from: number, to: number) => {
+  const words = within(screen.getByRole('group', { name: /Click the first and last word/ })).getAllByRole('button');
+  fireEvent.click(words[from]);
+  fireEvent.click(words[to]);
+};
 
-it('keeps intro identification faithful: indicators first, then learner-written complete ideas', () => {
+it('keeps intro identification faithful: indicators first, then the learner highlights both conditions', () => {
   run('source-intro-identify');
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
   expect(screen.queryByRole('textbox')).toBeNull();
@@ -21,13 +27,14 @@ it('keeps intro identification faithful: indicators first, then learner-written 
   click('Check this step');
   expect(screen.getByRole('heading', { name: 'That step works.' })).toHaveFocus();
   click('Continue');
-  expect(screen.queryByRole('button', { name: 'if' })).toBeNull();
+  expect(screen.queryByLabelText(/Which group/)).toBeNull();
   expect(screen.queryByText('the product is registered within 30 days', { exact: true })).toBeNull();
-  write('First complete condition', 'registered within 30 days');
-  write('Second complete condition', 'warranty valid');
-  compare();
-  expect(screen.getByText('the product is registered within 30 days', { exact: true })).toBeVisible();
-  confirm();
+  expect(screen.queryByRole('textbox')).toBeNull();
+  mark(5, 11);
+  mark(0, 3);
+  click('Check this step');
+  expect(screen.getByText('the product is registered within 30 days', { selector: 'li' })).toBeVisible();
+  click('Continue');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   click('My reasoning matched');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
@@ -71,10 +78,10 @@ it('carries indicator work from the folded drill into Drill 2 without marking th
 
 it('gives a placement hint without showing the diagram until the placement is right', () => {
   run('source-roles');
-  write('First complete condition', 'qualify for promotion');
-  write('Second complete condition', 'complete training');
-  compare();
-  confirm();
+  mark(2, 4);
+  mark(6, 9);
+  click('Check this step');
+  click('Continue');
   const left = screen.getByRole('group', { name: 'Left: sufficient condition' });
   const right = screen.getByRole('group', { name: 'Right: necessary condition' });
   fireEvent.click(within(left).getByRole('button', { name: 'those employees complete training' }));
@@ -114,28 +121,52 @@ it('compares the diagram and checks the contrapositive as each is built, and hol
   fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '1' } });
   click('Check this step');
   click('Continue');
-  write('First complete condition', 'intern completes program');
-  write('Second complete condition', 'offered full-time position');
-  click('Save and continue');
+  // The conditions step is checked: an indicator inside the highlight, or the same condition twice, is not accepted.
+  mark(0, 5);
+  mark(7, 9);
+  click('Check this step');
+  expect(screen.getByText(/not a complete condition/)).toBeVisible();
+  expect(screen.queryByRole('button', { name: 'Continue' })).toBeNull();
+  click('Revise this step');
+  // Clicking inside a highlight removes it.
+  fireEvent.click(within(screen.getByRole('group', { name: /Click the first and last word/ })).getAllByRole('button')[0]);
+  mark(1, 5);
+  click('Check this step');
+  expect(screen.getByRole('heading', { name: 'That step works.' })).toBeVisible();
+  click('Continue');
   write('First condition’s symbol', 'I');
   write('Second condition’s symbol', 'I');
   expect(screen.getByRole('button', { name: 'Save and continue' })).toBeDisabled();
   write('Second condition’s symbol', 'O');
   click('Save and continue');
   const ours = sourceWorksheetDrills.find(s => s.id === 'source-full-translation')!.items[0];
-  write('Your original diagram', 'I → O');
+  const left = () => screen.getByRole('group', { name: 'Left: sufficient condition' });
+  const right = () => screen.getByRole('group', { name: 'Right: necessary condition' });
+  fireEvent.click(within(left()).getByRole('button', { name: 'O' }));
+  fireEvent.click(within(right()).getByRole('button', { name: 'I' }));
+  click('Check this step');
+  expect(screen.getByText('Which condition is enough to prove the other? That one goes on the left.')).toBeVisible();
   expect(screen.queryByText(ours.diagram)).toBeNull();
-  compare();
+  fireEvent.click(within(left()).getByRole('button', { name: 'I' }));
+  fireEvent.click(within(right()).getByRole('button', { name: 'O' }));
+  click('Check this step');
   expect(screen.getByText(ours.diagram)).toBeVisible();
-  click('My diagram matched');
-  write('Your contrapositive diagram', 'NOT I → NOT O');
+  click('Continue');
+  const contraLeft = () => screen.getByRole('group', { name: 'Left side' });
+  const contraRight = () => screen.getByRole('group', { name: 'Right side' });
+  fireEvent.click(within(contraLeft()).getByRole('button', { name: 'I' }));
+  fireEvent.click(within(contraRight()).getByRole('button', { name: 'O' }));
+  fireEvent.click(screen.getByLabelText('NOT on the left side'));
+  fireEvent.click(screen.getByLabelText('NOT on the right side'));
   click('Check this step');
   expect(screen.getByText('Start with the right side of your original diagram. It becomes the new left side.')).toBeVisible();
   expect(screen.queryByText(ours.contrapositive)).toBeNull();
-  write('Your contrapositive diagram', '~O → I');
+  fireEvent.click(within(contraLeft()).getByRole('button', { name: 'NOT O' }));
+  fireEvent.click(within(contraRight()).getByRole('button', { name: 'NOT I' }));
+  fireEvent.click(screen.getByLabelText('NOT on the right side'));
   click('Check this step');
   expect(screen.getByText('The order is right. Now negate each whole side once.')).toBeVisible();
-  write('Your contrapositive diagram', 'NOT O → NOT I');
+  fireEvent.click(screen.getByLabelText('NOT on the right side'));
   click('Check this step');
   expect(screen.getByText(ours.contrapositive)).toBeVisible();
   expect(screen.queryByText(ours.contrapositiveWords)).toBeNull();

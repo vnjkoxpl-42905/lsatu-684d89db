@@ -161,6 +161,6 @@ describe('indicator check', () => {
     expect(check(training, ['Only if', '1']).hint).toMatch(/^Check the group for “Only if”/);
     expect(check(training, ['employees', '1']).hint).toBe('“employees” is not an indicator in this sentence.');
     const errors = find('source-intro-identify', 'source-indicators-11');
-    expect(check(errors, ['must', '2']).hint).toBe('One indicator is still unselected. Read the whole sentence again.');
+    expect(check(errors, ['must', '2']).hint).toBe('One indicator is still unselected. Read the whole rule again.');
   });
 });

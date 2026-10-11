@@ -119,9 +119,9 @@ it('requires a checked group and arrow before revealing the family in mixed prac
   expect(mixed.textContent).not.toMatch(/Group 1|Group 2/);
   expect(within(item).queryByRole('button', { name: first.target })).toBeNull();
   attemptTranslation(item, 1);
-  let check = within(item).getByRole('button', { name: 'Check sentence 1' });
+  let check = within(item).getByRole('button', { name: 'Check question 1' });
   expect(check).toBeDisabled();
-  expect(within(mixed).getByRole('button', { name: 'Next mixed sentence' })).toBeDisabled();
+  expect(within(mixed).getByRole('button', { name: 'Next mixed question' })).toBeDisabled();
 
   // Incomplete target and reversed arrow each receive their own explanation.
   fireEvent.click(within(item).getByRole('button', { name: first.partial }));
@@ -139,16 +139,16 @@ it('requires a checked group and arrow before revealing the family in mixed prac
   fireEvent.click(within(item).getByRole('button', { name: 'Try sentence 1 again' }));
   expect(within(item).queryByText(first.reversed)).toBeNull();
   attemptTranslation(item, 1);
-  check = within(item).getByRole('button', { name: 'Check sentence 1' });
+  check = within(item).getByRole('button', { name: 'Check question 1' });
   fireEvent.click(within(item).getByRole('button', { name: first.target }));
   fireEvent.click(within(item).getByRole('button', { name: first.left }));
   fireEvent.click(check);
   expect(item.querySelector('.co-correct strong')?.textContent).toMatch(/^Read it back: If /);
 
-  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed sentence' }));
+  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed question' }));
   expect(within(mixed).getByText(mixedFamilyItems[1].sentence)).toBeVisible();
   expect(within(mixed).getByText(first.sentence)).not.toBeVisible();
-  fireEvent.click(within(mixed).getByRole('button', { name: 'Previous mixed sentence' }));
+  fireEvent.click(within(mixed).getByRole('button', { name: 'Previous mixed question' }));
   expect(item.querySelector('.co-correct strong')?.textContent).toMatch(/^Read it back: If /);
 
 });
@@ -179,14 +179,14 @@ it('checks the corrected bus and phone translations through the learner controls
     attemptTranslation(item, index + 1);
     fireEvent.click(within(item).getByRole('button', { name: entry.target }));
     fireEvent.click(within(item).getByRole('button', { name: entry.left }));
-    fireEvent.click(within(item).getByRole('button', { name: `Check sentence ${index + 1}` }));
+    fireEvent.click(within(item).getByRole('button', { name: `Check question ${index + 1}` }));
     expect(item.querySelector('.co-correct strong')?.textContent).toMatch(/^Read it back: If /);
     return item;
   };
   solve(0);
-  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed sentence' }));
+  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed question' }));
   solve(1);
-  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed sentence' }));
+  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed question' }));
 
   const bus = mixedFamilyItems[2];
   const busItem = within(mixed).getByText(bus.sentence).closest('[data-mixed-item]') as HTMLElement;
@@ -194,28 +194,28 @@ it('checks the corrected bus and phone translations through the learner controls
   fireEvent.click(within(busItem).getByRole('button', { name: bus.target }));
   fireEvent.click(within(busItem).getByRole('button', { name: 'Stops at hospital' }));
   expect(within(busItem).getByRole('img', { name: 'Your diagram: Stops at hospital implies Bus leaves depot after midnight' })).toBeVisible();
-  fireEvent.click(within(busItem).getByRole('button', { name: 'Check sentence 3' }));
+  fireEvent.click(within(busItem).getByRole('button', { name: 'Check question 3' }));
   expect(within(busItem).getByText(bus.reversed)).toBeVisible();
   fireEvent.click(within(busItem).getByRole('button', { name: 'Bus leaves depot after midnight' }));
-  fireEvent.click(within(busItem).getByRole('button', { name: 'Check sentence 3' }));
+  fireEvent.click(within(busItem).getByRole('button', { name: 'Check question 3' }));
   expect(busItem.querySelector('.co-correct strong')?.textContent).toContain(bus.readback);
   expect(within(busItem).getByText('Read it back: If a bus leaves the depot after midnight, it stops at the hospital.')).toBeVisible();
-  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed sentence' }));
+  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed question' }));
   solve(3);
-  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed sentence' }));
+  fireEvent.click(within(mixed).getByRole('button', { name: 'Next mixed question' }));
 
   const phone = mixedFamilyItems[4];
   const phoneItem = within(mixed).getByText(phone.sentence).closest('[data-mixed-item]') as HTMLElement;
   attemptTranslation(phoneItem, 5);
   fireEvent.click(within(phoneItem).getByRole('button', { name: 'phones that arrived with a cracked screen' }));
   fireEvent.click(within(phoneItem).getByRole('button', { name: 'Arrived with cracked screen' }));
-  fireEvent.click(within(phoneItem).getByRole('button', { name: 'Check sentence 5' }));
+  fireEvent.click(within(phoneItem).getByRole('button', { name: 'Check question 5' }));
   expect(within(phoneItem).getByText(phone.otherFeedback)).toBeVisible();
   expect(within(phoneItem).getByText(phone.reversed)).toBeVisible();
   fireEvent.click(within(phoneItem).getByRole('button', { name: 'phones placed in the same-day repair queue' }));
   fireEvent.click(within(phoneItem).getByRole('button', { name: 'Phone in same-day repair queue' }));
   expect(within(phoneItem).getByRole('img', { name: 'Your diagram: Phone in same-day repair queue implies Arrived with cracked screen' })).toBeVisible();
-  fireEvent.click(within(phoneItem).getByRole('button', { name: 'Check sentence 5' }));
+  fireEvent.click(within(phoneItem).getByRole('button', { name: 'Check question 5' }));
   expect(phoneItem.querySelector('.co-correct strong')?.textContent).toContain(phone.readback);
   expect(within(phoneItem).getByText('Read it back: If a phone is placed in the same-day repair queue, it arrived with a cracked screen.')).toBeVisible();
 });
