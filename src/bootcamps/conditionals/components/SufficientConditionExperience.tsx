@@ -92,7 +92,7 @@ const explanations = {
   result: {
     label: 'What must be true',
     title: 'Being a student is guaranteed.',
-    text: 'Once enrollment is proved, being a student is certain. It is more than a possibility or a likely outcome.',
+    text: 'Once enrollment is proven, being a student is certain. It is more than a possibility or a likely outcome.',
   },
   connection: {
     label: 'The guarantee',

@@ -506,7 +506,7 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
         "We've been told the archivist asked the question. We haven't been given its answer. There is no conditional rule to draw here, so read what the whole sentence says before treating if as a direction instruction.",
       ],
       check: {
-        prompt: 'The archivist asked if the drawer was locked. What has the sentence proved?',
+        prompt: 'The archivist asked if the drawer was locked. What has the sentence proven?',
         options: ['A locked drawer guarantees an inquiry.', 'The drawer was locked.', 'The archivist asked whether the drawer was locked.'],
         correct: 2,
         feedback: [

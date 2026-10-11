@@ -52,16 +52,14 @@ describe('the opening curriculum teaching contract', () => {
     const contract = openingIds.flatMap(unitId => {
       const unit = opening.find(item => item.id === unitId)!;
       return levels.flatMap(level => unit.drills[level].map(question => [
-        unit.id, level, question.id,
-        question.id === 'orientation-m1'
-          ? 'Most inspected lifts operate quietly. Lift 2 was inspected. Is quiet operation guaranteed?'
-          : question.prompt,
-        question.options, question.answerIndex,
+        // Saved choices and diagrams key on question ID, option position and the
+        // answer key, not on wording. Copy passes (2026-10-11) may reword text.
+        unit.id, level, question.id, question.options.length, question.answerIndex,
       ]));
     });
     expect(contract).toHaveLength(62);
-    expect(fingerprint(contract)).toBe('2cc25820135dd0c10ccfcd629a68758d4d924a9a3a3545df857dfbca1fc0f534');
-    expect(fingerprint(contract.filter(item => item[2] !== 'group-2-a1-v2'))).toBe('e4f9a1577a66ac70ca1e0fc26b6b96b6bb561e8160c00bf052517c3a4417a5f9');
+    expect(fingerprint(contract)).toBe('e3419c76032efbba9d0c2b772d86d317788a186482f36c7d1d5f12c2773cbbbe');
+    expect(fingerprint(contract.filter(item => item[2] !== 'group-2-a1-v2'))).toBe('6f3360c9bedaa3ea36562bca97d14a6bd05c50472ce9748f702fe42200f93c4f');
     const newPracticeIds = opening.flatMap(unit => levels.flatMap(level => unit.drills[level].map(question => question.id)));
     for (const id of historicalIds) {
       expect(newPracticeIds).not.toContain(id);
@@ -84,8 +82,8 @@ describe('the opening curriculum teaching contract', () => {
     expect(byId('orientation-m1').reasoningSteps[0]).toMatch(/^Quiet operation isn't guaranteed\./);
     expect(byId('orientation-m1').reasoningSteps[0]).toMatch(/could be noisy/);
     expect(byId('sufficient-necessary-m2').reasoningSteps[0]).toMatch(/^F's tagged status is unknown\./);
-    expect(byId('group-1-m5').reasoningSteps[0]).toMatch(/^The rehearsal's ending is not established\./);
-    expect(byId('group-2-m1').reasoningSteps[0]).toMatch(/^Mira's entry is not established\./);
+    expect(byId('group-1-m5').reasoningSteps[0]).toMatch(/^The rehearsal's ending is not proven\./);
+    expect(byId('group-2-m1').reasoningSteps[0]).toMatch(/^Mira's entry is not proven\./);
   });
 
   it('uses concept titles and the taught clause-order anchor for Group 1 repair', () => {
