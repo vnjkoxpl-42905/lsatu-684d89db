@@ -56,3 +56,10 @@
 @media(max-width:1100px){.sw-question{grid-template-columns:1fr}.sw-rule{padding:26px 30px}.sw-rule-sticky{position:static}.sw-rule blockquote{margin:12px 0;font-size:27px}.sw-rule-caption{display:none}.sw-stage-rail{display:flex;flex-wrap:wrap;gap:12px 18px;padding-top:18px;margin-top:20px}.sw-stage-rail li{gap:8px}.sw-stage-rail button{font-size:12px}.sw-stage-rail li>span{width:23px;height:23px}.sw-work{min-height:0}}
 @media(max-width:600px){.sw-work,.sw-rule{padding:24px 20px}.sw-rule blockquote{font-size:24px}.sw-stage-rail{gap:10px 14px}.sw-choice-slot button{padding:11px 8px;font-size:15px}.sw-choice-slot legend{font-size:12px}.sw-arrow{font-size:25px}.sw-choice-slot button svg{width:13px}.sw-active-task>p:first-child{font-size:17px}.sw-condition-model li{font-size:17px}.sw-header{gap:14px;flex-wrap:wrap}.sw-header .sw-text-button{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.sw-active-task{animation:none}}
+/* 2026-10-11: the sentence reads as text; words are clickable in place, no boxes */
+.sw-tokens{font:clamp(22px,2.2vw,28px)/1.9 Georgia,serif}
+.sw-tokens button{border:0;border-radius:4px;background:transparent;padding:0 2px;margin:0 .18em 0 0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline dotted transparent;text-underline-offset:6px;transition:background .15s,text-decoration-color .15s}
+.sw-tokens button:not(:disabled):hover{text-decoration-color:currentColor;background:#e9bd7433}
+.sw-tokens button:focus-visible{outline:2px solid #254d65;outline-offset:2px}
+.sw-tokens button[aria-pressed=true]{background:#e9bd74;color:#173544;box-shadow:0 0 0 2px #e9bd74}
+.dark .sw-tokens button[aria-pressed=true]{color:#173544}
