@@ -25,7 +25,7 @@ export function DrillOneEntry({ startUrl, lessonsUrl }: { startUrl: string; less
     <Link className="d1-back" to={lessonsUrl}><ArrowLeft size={16}/>Back to lessons</Link>
     <div className="d1-entry-grid">
       <header data-course-heading className="d1-entry-title"><p className="d1-eyebrow">Conditional reasoning</p><h1>Drill <em>1</em></h1><FoldedPaper/></header>
-      <section className="d1-entry-instructions" aria-label="Practice instructions"><span className="d1-eyebrow">Your task</span><h2>Decide what the information establishes.</h2>
+      <section className="d1-entry-instructions" aria-label="Practice instructions"><span className="d1-eyebrow">Your task</span><h2>Decide what the information proves.</h2>
         <ol><li><span>01</span><p>Recall what sufficient and necessary mean. Read the arrow and decide which condition belongs on each side.</p></li><li><span>02</span><p>Find the indicator words, identify the trigger and required outcome, and use the facts to decide what must be true.</p></li><li><span>03</span><p>Select your answer, then check it. Read the explanation before continuing. Finish by testing a proposed conclusion against a possible case.</p></li></ol>
         <Link className="d1-primary" to={startUrl}>Start practice<ArrowRight size={18}/></Link>
       </section>

@@ -9,7 +9,7 @@ const questions = [
     prompt: 'Which complete condition belongs on the left side of the arrow?',
     options: ['You are enrolled in law school.', 'You are a student.', 'If.'],
     feedback: [
-      'Enrollment is enough to establish that you are a student. It is the sufficient condition, so it goes on the left.',
+      'Enrollment is enough to prove that you are a student. It is the sufficient condition, so it goes on the left.',
       'Being a student is the necessary condition in this rule. It belongs on the right, because enrollment requires it.',
       'If points to the sufficient condition, but it is not itself a condition. Keep the whole idea it introduces: you are enrolled in law school.',
     ],
@@ -56,7 +56,7 @@ const questions = [
       'If → The library extends your loan',
     ],
     feedback: [
-      'That follows the sentence order but reverses the requirement. Renewing online is enough to establish that the library extends your loan, even though renewing appears last.',
+      'That follows the sentence order but reverses the requirement. Renewing online is enough to prove that the library extends your loan, even though renewing appears last.',
       'Renewing online is the sufficient condition. If introduces it at the end of this sentence, so it still belongs on the left of the arrow.',
       'If is an indicator, not a complete condition. Put the idea it introduces on the left: you renew online.',
     ],

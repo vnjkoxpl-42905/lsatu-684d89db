@@ -14,7 +14,7 @@ it('teaches necessity before the visual and distinguishes a requirement from a g
   expect(screen.queryByText(/Then is the indicator/)).toBeNull();
   const firstControl = container.querySelector('.nc-person-tabs button')!;
   expect(explanation.compareDocumentPosition(firstControl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-  const distinction = screen.getByRole('heading', { name: 'Two roles in the same relationship' });
+  const distinction = screen.getByRole('heading', { name: 'Two roles in the same rule' });
   expect(firstControl.compareDocumentPosition(distinction) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   const film = screen.getByRole('region', { name: 'Short explanation of necessity' });
   expect(firstControl.compareDocumentPosition(film) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -110,7 +110,7 @@ it('alternates sufficient and necessary sentences in the mixed set', () => {
   expect(new Set(mixedFamilyItems.map(item => item.sentence)).size).toBe(mixedFamilyItems.length);
 });
 
-it('requires a checked target and arrow before revealing the family in mixed practice', () => {
+it('requires a checked group and arrow before revealing the family in mixed practice', () => {
   render(<section><h2>Independent conditional translation</h2><MixedFamilyPractice/></section>);
   const mixed = section('Independent conditional translation');
   const first = mixedFamilyItems[0];
@@ -131,7 +131,7 @@ it('requires a checked target and arrow before revealing the family in mixed pra
   expect(within(item).getByText('Revise the part described below.')).toBeVisible();
   expect(within(item).getByText(first.partialFeedback)).toBeVisible();
   expect(within(item).getByText(first.reversed)).toBeVisible();
-  expect(within(item).getByText(/points to what is enough, so its target goes on the left/)).toBeVisible();
+  expect(within(item).getByText(/points to what is enough, so its group goes on the left/)).toBeVisible();
 
   fireEvent.click(within(item).getByRole('button', { name: 'Try sentence 1 again' }));
   expect(within(item).queryByText(first.reversed)).toBeNull();
@@ -220,8 +220,8 @@ it('teaches complete sufficient conditions without a word selector or duplicate 
   render(<OpeningCourseContent id="sufficient-words"/>);
   expect(screen.getByRole('heading', { name: 'Keep the words that limit the rule' })).toBeVisible();
   expect(screen.getByRole('heading', { name: 'Keep the condition together, wherever it appears' })).toBeVisible();
-  expect(screen.queryByRole('group', { name: 'Choose an expression' })).toBeNull();
-  expect(screen.queryByRole('heading', { name: 'Recall the expressions' })).toBeNull();
+  expect(screen.queryByRole('group', { name: 'Choose an indicator' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'Recall the indicators' })).toBeNull();
   expect(screen.queryByText(/Work through all seven expressions/)).toBeNull();
 
   const applicant = screen.getByRole('group', { name: 'Any applicant who submits late pays a fee. Which complete condition goes on the left?' });
@@ -252,7 +252,7 @@ it('bridges with one raffle question, then tests fresh cases with reasoned feedb
   }
 
   expect(screen.getAllByRole('heading', { name: 'Does the rule itself tell us that you actually win the raffle?' })).toHaveLength(1);
-  for (const repeated of ["You don't win the raffle. Could you still get a bicycle?", 'You win the raffle. Do we need another fact to establish that you get a bicycle?', 'Under our rule, what has to follow if you win?']) {
+  for (const repeated of ["You don't win the raffle. Could you still get a bicycle?", 'You win the raffle. Do we need another fact to prove that you get a bicycle?', 'Under our rule, what has to follow if you win?']) {
     expect(screen.queryByRole('heading', { name: repeated })).toBeNull();
   }
   fireEvent.click(screen.getByRole('button', { name: 'No, it tells me what follows if I win.' }));
@@ -305,9 +305,9 @@ it('teaches meaning checks, modal strength and symbol definitions before workshe
   const headings = screen.getAllByRole('heading', { level: 2 }).map(heading => heading.textContent);
   expect(headings).toEqual([
     'Check a translation four ways',
-    'Check 1: find the whole target, wherever it sits',
+    'Check 1: find the whole group, wherever it sits',
     'Check 2: keep every qualification',
-    'Check 3: only and the only point to different targets',
+    'Check 3: only and the only point to different groups',
     'Can, should and must keep their meaning',
     'Short symbols stand for complete conditions',
     'Check 4: try the sentence from the inside',

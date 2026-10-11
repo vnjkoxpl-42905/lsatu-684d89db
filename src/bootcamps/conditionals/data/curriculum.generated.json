@@ -5,24 +5,24 @@
     "area": "understanding",
     "phase": "conditional",
     "prerequisites": [],
-    "goal": "Understand the two condition roles, derive the contrapositive, and translate a complete relationship into a diagram and back into English.",
+    "goal": "Understand the two condition roles, derive the contrapositive, and translate a complete rule into a diagram and back into English.",
     "teaching": [
-      "A condition is an idea that can be true or false of a situation. A conditional tells us that if one condition is true, another has to be true too. It describes what would follow if the first condition held; it doesn't report that it happened. On the LSAT, that connection helps us decide what the supplied information actually establishes.",
-      "If you win the raffle, you get a bicycle. Winning is sufficient: it is enough to establish getting a bicycle under this rule. The rule does not say you win. Not winning leaves getting a bicycle unsettled; you could buy one or receive a gift.",
-      "The sufficient word family includes if, when and whenever, any and anytime, all, every and every time, in order to, people who, and each. Read each expression in its sentence. Different wording can preserve the same relationship; a familiar word alone doesn't settle the meaning.",
-      "Getting a bicycle is necessary whenever you win the raffle. Necessary means required by this relationship. It describes a required result, not a condition you must meet before entering.",
+      "A condition is an idea that can be true or false of a situation. A conditional tells us that if one condition is true, another has to be true too. It describes what would follow if the first condition held; it doesn't report that it happened. On the LSAT, that connection helps us decide what the supplied information actually proves.",
+      "If you win the raffle, you get a bicycle. Winning is sufficient: it is enough to prove getting a bicycle under this rule. The rule does not say you win. Not winning leaves getting a bicycle unsettled; you could buy one or receive a gift.",
+      "The sufficient word family includes if, when and whenever, any and anytime, all, every and every time, in order to, people who, and each. Read each indicator in its sentence. Different wording can keep the same rule; a familiar word alone doesn't settle the meaning.",
+      "Getting a bicycle is necessary whenever you win the raffle. Necessary means required by this rule. It describes a required result, not a condition you must meet before entering.",
       "The necessary word family includes then, must, necessary, required, only and only if, depends, need and need to, have to, essential, and precondition. Only if names a requirement despite containing if. Keep the whole meaning, including permission or obligation, rather than treating every requirement as proof of compliance.",
       "Suppose you do not get a bicycle. You cannot have won under our rule: winning would require getting one. We mean the settled outcome, not merely waiting for a prize. This is the contrapositive, understood before a symbolic shortcut.",
-      "Winning establishes getting a bicycle. Not getting one rules out winning. Not winning leaves getting a bicycle open; getting one leaves winning open. Those last two facts do not remove the rule. They simply do not establish the other condition.",
-      "Write the relationship: Win the raffle → Get a bicycle. Put sufficient on the left and necessary on the right. Find the indicator and its complete target, place both conditions, and read the diagram back. Sentence order need not match diagram order.",
+      "Winning proves getting a bicycle. Not getting one rules out winning. Not winning leaves getting a bicycle open; getting one leaves winning open. Those last two facts do not remove the rule. They simply do not prove the other condition.",
+      "Write the rule: Win the raffle → Get a bicycle. Put sufficient on the left and necessary on the right. Find the indicator and its complete group, place both conditions, and read the diagram back. Sentence order need not match diagram order.",
       "The contrapositive is Not get a bicycle → Not win the raffle. Keep the same raffle and outcome. Reverse both sides and negate both complete conditions. The full routine is: find the indicator; label both ideas; place their roles; find the contrapositive; say both forms back in English.",
       "Use diagramming to keep difficult wording and connected rules clear. Check correctness by comparing the complete meaning with the original sentence and studying specific errors. Learn accurately before adding timing. Write contrapositives in practice to demonstrate the skill; on a question, write one when it helps. Keep abbreviations short but understandable.",
-      "An indicator's target is the complete idea it refers to. The target often follows the indicator, but can precede it. A requirement can be expressed as A pass is required for entry or Entry requires a pass. Both make a pass necessary for entry. Read the grammar rather than grabbing the nearest word.",
-      "A Personalized If/Then checks the translation. Read the ordinary meaning, imagine the proposed sufficient situation, and ask what the sentence makes you know. Then try the reverse and compare it with the original claim. The What Test helps identify the complete idea an expression refers to. Both checks serve meaning, not a memorized word-position rule.",
+      "An indicator's group is the complete idea it refers to. The group often follows the indicator, but can precede it. A requirement can be expressed as A pass is required for entry or Entry requires a pass. Both make a pass necessary for entry. Read the grammar rather than grabbing the nearest word.",
+      "A “Put yourself in it” check checks the translation. Read the ordinary meaning, imagine the proposed sufficient situation, and ask what the sentence makes you know. Then try the reverse and compare it with the original claim. The What Test helps identify the complete idea an indicator refers to. Both checks serve meaning, not a memorized word-position rule.",
       "Practice with fresh sentences. Identify each complete condition, build the original diagram, find its contrapositive, and read both in ordinary English. Make an attempt before the explanation, then name the specific wording or inference that caused any mistake. Looking back at the lesson is part of learning the process."
     ],
     "method": [
-      "Read the whole sentence and identify its conditional expression.",
+      "Read the whole sentence and identify its conditional indicator.",
       "Label the two complete ideas without dropping qualifications or changing what is required.",
       "Place the sufficient idea before the must-arrow and the necessary idea after it.",
       "Find the contrapositive: the missing necessary condition rules out the sufficient condition.",
@@ -57,7 +57,7 @@
     },
     "commonMistake": {
       "mistake": "Treating an imagined case as something we've actually been told.",
-      "repair": "If you win the raffle, you get a bicycle. That rule lets us imagine a win and know what would follow. It does not say you actually win. Suppose you win is a situation to consider; You win is a case fact. With that fact and the rule, we can conclude you get a bicycle. Without it, the rule alone establishes no actual win."
+      "repair": "If you win the raffle, you get a bicycle. That rule lets us imagine a win and know what would follow. It does not say you actually win. Suppose you win is a situation to consider; You win is a case fact. With that fact and the rule, we can conclude you get a bicycle. Without it, the rule alone proves no actual win."
     },
     "drills": {
       "beginner": [
@@ -222,21 +222,21 @@
     ],
     "goal": "Explain sufficient as enough and necessary as required, then check which cases fit the same rule.",
     "teaching": [
-      "Return to our rule: If you win the raffle, you get a bicycle. Knowing you win is enough to know you get one. Winning is sufficient, meaning enough to establish the other condition under this rule.",
+      "Return to our rule: If you win the raffle, you get a bicycle. Knowing you win is enough to know you get one. Winning is sufficient, meaning enough to prove the other condition under this rule.",
       "Getting a bicycle is necessary whenever you win. It is the required result, not a prerequisite for entering. Winning without getting a bicycle would violate the rule.",
       "Does required mean enough? Suppose you get a bicycle. Must you have won? We do not know. You could buy it or receive it as a gift. Getting one meets the required result but does not prove winning.",
       "Now suppose you do not win. Does that settle whether you get a bicycle? No. You could get one another way, or not get one. The rule does not choose between those possibilities.",
       "Winning and getting a bicycle fits. Not winning and getting one fits too; not winning and not getting one also fits. Winning without getting one breaks the rule. Treat these outcomes as settled, not as snapshots while someone waits for a prize.",
-      "The names belong to this relationship. Getting a bicycle is necessary whenever you win here. In a different rule, such as if you get a bicycle then you get a helmet, getting the bicycle is sufficient for the helmet. Ask enough for what, or required for what.",
-      "When a sentence feels unclear, try a Personalized If/Then. Read it naturally first. Then imagine you meet the condition you think is sufficient. What does the sentence force you to know? Check that thought against the whole sentence, not just against a feeling that the arrow looks right.",
+      "The names belong to this rule. Getting a bicycle is necessary whenever you win here. In a different rule, such as if you get a bicycle then you get a helmet, getting the bicycle is sufficient for the helmet. Ask enough for what, or required for what.",
+      "When a sentence feels unclear, try a “Put yourself in it” check. Read it naturally first. Then imagine you meet the condition you think is sufficient. What does the sentence force you to know? Check that thought against the whole sentence, not just against a feeling that the arrow looks right.",
       "A recovery code is required for a verified account. If my account is verified, what must it have? A recovery code. Now try the other direction: if I have a recovery code, must my account be verified? The sentence hasn't promised that. This check helps us hear why the requirement belongs on the right."
     ],
     "method": [
       "Read the whole sentence in ordinary English before deciding which condition is enough.",
-      "Ask enough for what. Winning the raffle is enough to establish getting a bicycle under our rule.",
-      "Ask required for what. Getting a bicycle is required whenever you win; getting one does not establish winning.",
-      "Check your interpretation with a Personalized If/Then. Try the proposed starting condition, then compare the reverse with the original sentence.",
-      "Test a possible case against the actual guarantee. Keep a case that fits separate from a case the information establishes."
+      "Ask enough for what. Winning the raffle is enough to prove getting a bicycle under our rule.",
+      "Ask required for what. Getting a bicycle is required whenever you win; getting one does not prove winning.",
+      "Check your interpretation with a “Put yourself in it” check. Try the proposed starting condition, then compare the reverse with the original sentence.",
+      "Test a possible case against the actual guarantee. Keep a case that fits separate from a case the information proves."
     ],
     "workedExample": {
       "statements": [
@@ -266,7 +266,7 @@
       "explanation": "A verified account without a recovery code breaks the rule: every verified account has to have that code. Verified without a code breaks that guarantee. A verified account with one fits, and an unverified account with one doesn't break any promise the rule made."
     },
     "commonMistake": {
-      "mistake": "Taking a required condition as enough to establish the other condition.",
+      "mistake": "Taking a required condition as enough to prove the other condition.",
       "repair": "Try the reverse in English: if you get a bicycle, you must have won the raffle. Did the sentence promise that? It did not. A bicycle could be a purchase or gift. Keep the required result without adding a guarantee of winning."
     },
     "drills": {
@@ -430,23 +430,23 @@
     "prerequisites": [
       "sufficient-necessary"
     ],
-    "goal": "Find the complete sufficient idea in each Group 1 expression and preserve its meaning in a diagram.",
+    "goal": "Find the complete sufficient idea in each Group 1 indicator and keep its meaning in a diagram.",
     "teaching": [
-      "We've understood enough and required. Now let's see how different words express the sufficient side. Group 1 includes if, when, where, all, the only, every and any in their conditional uses. The words help you find a relationship. You still need to read what the whole sentence says.",
+      "We've understood enough and required. Now let's see how different words express the sufficient side. Group 1 includes if, when, where, all, the only, every and any in their conditional uses. The words help you find a rule. You still need to read what the whole sentence says.",
       "Start with if: If you win the raffle, you get a bicycle. If what? You win the raffle. Now move the clause: You get a bicycle if you win the raffle. Winning still follows if and remains sufficient, even when the clause comes last. Sentence order does not choose the arrow direction.",
       "When can introduce the event that's enough: When the alarm sounds, the staff evacuate. Ask when what. The alarm sounds. The sentence promises evacuation whenever the alarm sounds. Whenever makes the same repeated-case meaning explicit. But When I checked the desk, a notice was there reports one occasion; it doesn't promise a notice every time I check.",
       "Where can make a rule about a location or situation: Where a station is available, the service operates. Which locations does the rule cover? Locations with an available station. At one of those locations, the service has to operate. Keep the location connection when you read the rule back; a station elsewhere hasn't met this location's condition.",
       "All covers the whole group it names: All registered guests receive a wristband. All what? Registered guests, not guests generally. Being one of those registered guests is enough for a wristband. Another guest may receive one too; the sentence hasn't told us. It also hasn't told us that a registered guest exists.",
-      "The only needs careful reading: The only vehicles permitted inside are electric vehicles. The only what? Vehicles permitted inside. If a vehicle is permitted inside, it must be electric. Try electric vehicle → permitted inside. That would grant permission to every electric vehicle, which the sentence never promised. The grammatical target is the whole permission description, not the word electric.",
-      "Every takes the members one at a time but covers them all: Every finalist receives an invitation. Choose a finalist. The sentence promises that person an invitation. All finalists receive an invitation would express the same relationship. Neither wording says everyone receiving an invitation is a finalist.",
+      "The only needs careful reading: The only vehicles permitted inside are electric vehicles. The only what? Vehicles permitted inside. If a vehicle is permitted inside, it must be electric. Try electric vehicle → permitted inside. That would grant permission to every electric vehicle, which the sentence never promised. The grammatical group is the whole permission description, not the word electric.",
+      "Every takes the members one at a time but covers them all: Every finalist receives an invitation. Choose a finalist. The sentence promises that person an invitation. All finalists receive an invitation would express the same rule. Neither wording says everyone receiving an invitation is a finalist.",
       "Any says that whichever member of the named group you choose, the rule applies: Any applicant who submits late pays a fee. A late-submitting applicant pays a fee. That's what the sentence guarantees. Choose an applicant who submits on time and this sentence doesn't settle the fee question. Submits late stays with applicant in your diagram.",
-      "The What Test keeps you with the complete idea: if what, when what, where what, all what, the only what, every what, or any what? Don't stop at the nearest noun. In A report appears when a rover crosses the ridge, the target is the rover crossing the ridge. That event goes left, even though the sentence begins with the report.",
+      "The What Test keeps you with the complete idea: if what, when what, where what, all what, the only what, every what, or any what? Don't stop at the nearest noun. In A report appears when a rover crosses the ridge, It points to the rover crossing the ridge. That event goes left, even though the sentence begins with the report.",
       "An indicator can have another job. The curator asked if the painting was insured tells us about a question the curator asked. It gives no guarantee between asking and insurance. Read for a conditional meaning before drawing an arrow.",
       "To build the diagram, name both complete ideas and give them clear condensed labels. Place the sufficient idea on the left and what it guarantees on the right. Then read the arrow as an if/then. Does that sentence say the same thing as the original? If a label lost a restriction or the arrow added a reverse, repair it before moving on.",
-      "For Recall and Rephrase, put the list aside and try a fresh sentence. Write its if/then meaning, then compare with the original. The point is to keep the relationship when the wording changes, not merely to remember which side a word usually points toward."
+      "For Recall and Rephrase, put the list aside and try a fresh sentence. Write its if/then meaning, then compare with the original. The point is to keep the rule when the wording changes, not merely to remember which side a word usually points toward."
     ],
     "method": [
-      "Read the sentence for a guarantee, then identify the Group 1 expression. Use the What Test to find the whole idea it refers to.",
+      "Read the sentence for a guarantee, then identify the Group 1 indicator. Use the What Test to find the whole idea it refers to.",
       "Name both complete ideas. Keep who or what they concern, as well as restrictions such as registered or submits late.",
       "Choose clear condensed labels for those ideas. A shorter label must still mean the same thing.",
       "Place the sufficient idea left and what it guarantees right. Sentence order doesn't decide the arrow's direction.",
@@ -480,7 +480,7 @@
     },
     "commonMistake": {
       "mistake": "Putting the first idea left or dropping a restriction from the sufficient idea.",
-      "repair": "Ask what the expression refers to, then read your arrow in English. In “A report is reviewed if it is submitted before noon,” review comes first, but submission before noon is what guarantees it. Keep the full before-noon submission condition on the sufficient side."
+      "repair": "Ask what the indicator refers to, then read your arrow in English. In “A report is reviewed if it is submitted before noon,” review comes first, but submission before noon is what guarantees it. Keep the full before-noon submission condition on the sufficient side."
     },
     "drills": {
       "beginner": [
@@ -867,26 +867,26 @@
     "prerequisites": [
       "group-1"
     ],
-    "goal": "Find what a Group 2 sentence requires, preserve its complete meaning, and distinguish a requirement from success or compliance.",
+    "goal": "Find what a Group 2 sentence requires, keep its complete meaning, and distinguish a requirement from success or compliance.",
     "teaching": [
-      "Group 2 helps us find the necessary side: what the sentence says is required. Its core expressions are only, only if, only when, only where, always, requires and must in their relevant uses. We'll keep the complete requirement on the right. First, let's hear why it belongs there.",
+      "Group 2 helps us find the necessary side: what the sentence says is required. Its core indicators are only, only if, only when, only where, always, requires and must in their relevant uses. We'll keep the complete requirement on the right. First, let's hear why it belongs there.",
       "Compare if with only if. You win the raffle if you get a bicycle makes getting a bicycle sufficient for winning. You win the raffle only if you get a bicycle makes getting one necessary whenever you win. The second statement allows someone to get a bicycle as a gift without winning. The first does not.",
-      "Only restricts who can meet the other condition: Only people who get a bicycle win this raffle. Winning establishes getting a bicycle. The only people who win this raffle are people who get a bicycle preserves the same rule, but the only refers to the winners. Read each complete phrase in its sentence.",
+      "Only restricts who can meet the other condition: Only people who get a bicycle win this raffle. Winning proves getting a bicycle. The only people who win this raffle are people who get a bicycle keeps the same rule, but the only refers to the winners. Read each complete phrase in its sentence.",
       "Only if introduces a condition that has to be met: A student graduates only if the student completes the project. If the student graduates, the project must be completed. Project completion by itself doesn't promise graduation. Read the reverse aloud and you'll hear the extra guarantee it adds.",
       "Only when makes an event or state required: A review occurs only when a complaint is filed. A complaint has to be filed for this review to occur. Imagine a complaint has been filed. Does this sentence say a review now occurs? No. It says what a review requires, not that every complaint gets one.",
       "Only where makes a location condition required: The service operates only where a station is available. Wherever the service operates, a station has to be available there. A station at another location isn't enough. Nor has the sentence promised service to every place with an available station.",
       "Always describes the result that holds throughout the named cases: A finalist always receives an invitation. Start with a finalist. Under that claim, the person receives an invitation. The subject supplies the sufficient idea; receiving an invitation is the required result. Always belongs in this teaching group, but it doesn't mean the next word automatically goes on the right. Read the complete subject and result.",
-      "Requires tells you what is needed: Entry requires a current pass. Requires what? A current pass. Entry goes left, having the current pass goes right. Change the wording to A current pass is required for entry. The requirement appears first now, but the relationship hasn't changed. A pass alone isn't a promise that you can enter, and an expired pass doesn't meet the full requirement.",
-      "Must can state an obligation: A finalist must attend the interview. What does finalist status establish? The person is required to attend. It doesn't establish that the person actually attends; people can fail to meet an obligation. Write Finalist → Required to attend interview so the diagram preserves that difference. Keep permission words such as may in the same careful way.",
-      "Use the What Test on the full expression, then check with a Personalized If/Then. If my display has activated, what does the battery rule force me to know? Its battery is charged. Now suppose I know only that the battery is charged. The rule still leaves activation open. That comparison checks the arrow against the sentence's ordinary meaning.",
+      "Requires tells you what is needed: Entry requires a current pass. Requires what? A current pass. Entry goes left, having the current pass goes right. Change the wording to A current pass is required for entry. The requirement appears first now, but the rule hasn't changed. A pass alone isn't a promise that you can enter, and an expired pass doesn't meet the full requirement.",
+      "Must can state an obligation: A finalist must attend the interview. What does finalist status prove? The person is required to attend. It doesn't prove that the person actually attends; people can fail to meet an obligation. Write Finalist → Required to attend interview so the diagram keeps that difference. Keep permission words such as may in the same careful way.",
+      "Use the What Test on the full phrase, then check with a “Put yourself in it” check. If my display has activated, what does the battery rule force me to know? Its battery is charged. Now suppose I know only that the battery is charged. The rule still leaves activation open. That comparison checks the arrow against the sentence's ordinary meaning.",
       "Keep every part of a requirement. In Entry requires a current pass, pass would drop current. In Only members may use this room, actually uses the room would change permission into an action. The right direction can't repair a label that has lost part of the idea.",
       "In the fresh practice, explain what is required and what remains open. If your answer treats a requirement as enough, try saying that answer as an if/then. Compare it with the original sentence and point to the extra promise. That's the mistake we're learning to catch."
     ],
     "method": [
-      "Read the whole conditional claim. Identify the Group 2 expression and ask what it requires or restricts with the What Test.",
+      "Read the whole conditional claim. Identify the Group 2 indicator and ask what it requires or restricts with the What Test.",
       "Name both complete ideas. Keep restrictions, negatives, permission and obligation in their meaning.",
       "Choose clear condensed labels. Required to attend must not become actually attends.",
-      "Place the restricted event or condition left and its requirement right. Check that direction with a Personalized If/Then.",
+      "Place the restricted event or condition left and its requirement right. Check that direction with a “Put yourself in it” check.",
       "Read the arrow back in English. Compare the reverse too: did the original sentence really make the requirement enough?"
     ],
     "workedExample": {
@@ -917,7 +917,7 @@
     },
     "commonMistake": {
       "mistake": "Taking a requirement as a guarantee of the result, or taking an obligation as proof that someone complied.",
-      "repair": "Ask exactly what was promised. Having a current pass meets the requirement for entry, but it doesn't establish that someone entered. Must attend establishes required attendance, not actual attendance. Keep that distinction in the diagram and conclusion."
+      "repair": "Ask exactly what was promised. Having a current pass meets the requirement for entry, but it doesn't prove that someone entered. Must attend proves required attendance, not actual attendance. Keep that distinction in the diagram and conclusion."
     },
     "drills": {
       "beginner": [
@@ -1276,11 +1276,11 @@
     "goal": "Apply rules to case facts and distinguish case conclusions from new rules.",
     "teaching": [
       "A fact tells you something about a case. A rule connects conditions. Every digitized map is searchable is a rule. Map R is digitized is a fact. Match the fact to the rule's starting condition to conclude that Map R is searchable.",
-      "For digitized → searchable, digitized establishes searchable. Not searchable rules out digitized: a digitized map would have to be searchable. Searchable alone leaves digitization unknown. Not digitized alone leaves searchability unknown.",
-      "Two rules can create a new rule. Digitized → searchable and searchable → indexed give digitized → indexed. They do not establish that an indexed map exists. Add a digitized case as a separate fact to establish an indexed case.",
+      "For digitized → searchable, digitized proves searchable. Not searchable rules out digitized: a digitized map would have to be searchable. Searchable alone leaves digitization unknown. Not digitized alone leaves searchability unknown.",
+      "Two rules can create a new rule. Digitized → searchable and searchable → indexed give digitized → indexed. They do not prove that an indexed map exists. Add a digitized case as a separate fact to prove an indexed case.",
       "Make the reasoning visible: Fact: Map R is digitized. Rule: every digitized map is searchable. Match: the fact meets the complete digitized-map condition for R. Conclusion: R is searchable. Why: the rule covers that same map. Contrast this with two rules alone: digitized → searchable → indexed proves a new rule, without proving a fact about R.",
       "Keep one rule unchanged and vary only the fact: translated notice → archived notice. Notice H is translated: H is archived. H is not archived: H is not translated. H is archived: translation remains unknown. H is not translated: archiving remains unknown. In the last two cases, give an allowed example rather than forcing a conclusion.",
-      "Requires approval does not mean has received approval. A late submission may require approval while it is still waiting for review. If the next rule begins with received approval, the requirement does not activate it. Preserve the whole condition before comparing the fact and rule."
+      "Requires approval does not mean has received approval. A late submission may require approval while it is still waiting for review. If the next rule begins with received approval, the requirement does not activate it. Keep the whole condition before comparing the fact and rule."
     ],
     "method": [
       "List rules separately from case facts.",
@@ -1484,7 +1484,7 @@
     "teaching": [
       "Truth concerns whether a statement matches the facts. Validity concerns the connection between premises and conclusion. To test a deduction, temporarily accept its premises. Ask whether its conclusion could still be false.",
       "Every copper key is magnetic. This key is copper. Therefore this key is magnetic. The reasoning follows the given rule, even if the first premise is false outside the exercise. We are testing the inference, not endorsing the premise.",
-      "A counterexample keeps every premise true while making the conclusion false. For A → B and B, therefore A, a case with B but no A does that. Invalid does not mean the conclusion must be false. It means the premises do not establish it."
+      "A counterexample keeps every premise true while making the conclusion false. For A → B and B, therefore A, a case with B but no A does that. Invalid does not mean the conclusion must be false. It means the premises do not prove it."
     ],
     "method": [
       "Accept the supplied premises for the inference test.",
@@ -1500,7 +1500,7 @@
       ],
       "reasoning": [
         "The rule allows a blue square tile.",
-        "That case preserves the premises and defeats the claim."
+        "That case keeps the premises and defeats the claim."
       ],
       "conclusion": "Circularity is not guaranteed."
     },
@@ -1893,9 +1893,9 @@
     "teaching": [
       "Every verified invoice is recorded. If an invoice were verified, it would have to be recorded. An invoice that is not recorded therefore cannot be verified. Verified → recorded and not recorded → not verified make the same guarantee.",
       "To form a contrapositive, reverse the two complete conditions and negate both. Reversing alone gives an unsupported converse. Negating both without reversing gives an unsupported inverse.",
-      "Keep existing negatives and cancel double negatives. If a sensor is active, it is not silent becomes if it is silent, it is not active. Keep the same device and time throughout. A normative requirement establishes what must be done, not automatic factual compliance.",
+      "Keep existing negatives and cancel double negatives. If a sensor is active, it is not silent becomes if it is silent, it is not active. Keep the same device and time throughout. A normative requirement proves what must be done, not automatic factual compliance.",
       "After forming a contrapositive, translate it back to English. Do not stop at symbols. For listed → not discontinued, its contrapositive is discontinued → not listed. Say it plainly: if this product is discontinued, it is not listed. That sentence checks both the negative and the direction.",
-      "Use the diagramming routine to learn and check translation. It is a training scaffold, not extra writing required on every LSAT question. Apply an obvious forward match directly. Write the contrapositive when the fact denies a result or when it exposes a hidden connection. Use notation when it makes the relationship easier to track."
+      "Use the diagramming routine to learn and check translation. It is a training scaffold, not extra writing required on every LSAT question. Apply an obvious forward match directly. Write the contrapositive when the fact denies a result or when it exposes a hidden connection. Use notation when it makes the rule easier to track."
     ],
     "method": [
       "Write both complete conditions.",
@@ -2099,12 +2099,12 @@
     "teaching": [
       "The Refresher calls Group 3 negate sufficient. It includes unless, until and without in their conditional uses. The audit proceeds unless its authorization is withdrawn means not withdrawn → proceeds. Its contrapositive is not proceeds → withdrawn.",
       "You can choose either complete idea, negate it and make it sufficient, while keeping the other unchanged. For proceeds unless authorization withdrawn, negating proceeds gives not proceeds → authorization withdrawn. The two forms are contrapositives, not competing interpretations.",
-      "Preserve negatives already in the sentence. The gate does not open without a clearance means no clearance → no opening, equivalent to opening → clearance. Until also sets a time boundary: it does not promise that the withheld action happens immediately after the boundary. Without can merely describe circumstances, so first verify what the sentence actually guarantees.",
+      "Keep negatives already in the sentence. The gate does not open without a clearance means no clearance → no opening, equivalent to opening → clearance. Until also sets a time boundary: it does not promise that the withheld action happens immediately after the boundary. Without can merely describe circumstances, so first verify what the sentence actually guarantees.",
       "Except needs the full claim too. Every crate is retained except damaged crates guarantees not damaged → retained. It does not, by that wording alone, prove what happens to a damaged crate. If the sentence explicitly says damaged crates are discarded, that supplies a separate rule. Keep permission, prohibition, and actual events distinct when an exception concerns who may act.",
-      "Otherwise or if not can introduce the other case without making a biconditional. If a sensor resets, its log clears; otherwise its log does not clear states both cases and supports a two-way relationship between resetting and clearing. Its log clears, otherwise an alert appears supplies only not clear → alert. Translate each stated case rather than assuming both directions."
+      "Otherwise or if not can introduce the other case without making a biconditional. If a sensor resets, its log clears; otherwise its log does not clear states both cases and supports a two-way rule between resetting and clearing. Its log clears, otherwise an alert appears supplies only not clear → alert. Translate each stated case rather than assuming both directions."
     ],
     "method": [
-      "Identify the conditional indicator and Group 3, checking its meaning and target.",
+      "Identify the conditional indicator and Group 3, checking its meaning and group.",
       "Identify the two complete ideas, including existing negatives, subjects and any time boundary.",
       "Assign symbols to the complete ideas without dropping their qualifiers.",
       "Apply the Group 3 rule: negate one idea on the left and keep the other unchanged on the right; cancel any resulting double negative.",
@@ -2312,7 +2312,7 @@
     ],
     "method": [
       "Identify the exclusion indicator and Group 4, checking exactly what coexistence is forbidden.",
-      "Identify the two complete conditions that cannot coexist, preserving subjects, qualifiers and existing negatives.",
+      "Identify the two complete conditions that cannot coexist, keeping subjects, qualifiers and existing negatives.",
       "Assign symbols to those complete conditions.",
       "Apply the Group 4 rule: keep one unchanged on the left and negate the other on the right; cancel any resulting double negative.",
       "Find the equivalent contrapositive by reversing and negating both complete conditions.",
@@ -2511,15 +2511,15 @@
     ],
     "goal": "Select the appropriate translation procedure without relying on a single familiar word.",
     "teaching": [
-      "Mixed practice asks you to read the relationship before choosing a procedure. If a hearing is televised, it is recorded puts televised left. A hearing is televised only if it is recorded has the same direction, although the wording points you to a necessary condition.",
-      "A hearing is not televised without a recording also gives televised → recorded. No televised hearing is unrecorded excludes the same forbidden combination. Different indicator groups can express equivalent relationships.",
+      "Mixed practice asks you to read the rule before choosing a procedure. If a hearing is televised, it is recorded puts televised left. A hearing is televised only if it is recorded has the same direction, although the wording points you to a necessary condition.",
+      "A hearing is not televised without a recording also gives televised → recorded. No televised hearing is unrecorded excludes the same forbidden combination. Different indicator groups can express equivalent rules.",
       "Keep full predicates before abbreviating. Approved for trial use differs from approved for routine use. A word such as only or without is evidence about structure, not permission to discard modifiers, existing negatives or obligations."
     ],
     "method": [
-      "Identify the indicator and group, using the What Test when its target is unclear.",
-      "Identify both complete ideas, preserving subjects, scope and existing negatives.",
+      "Identify the indicator and group, using the What Test when its group is unclear.",
+      "Identify both complete ideas, keeping subjects, scope and existing negatives.",
       "Assign symbols to the complete ideas.",
-      "Apply the matching group translation rule; use a Personalized If/Then to check the meaning.",
+      "Apply the matching group translation rule; use a “Put yourself in it” check to check the meaning.",
       "Find the contrapositive, reversing and negating each complete condition.",
       "Recall and Rephrase: put the guide aside, write both forms in English, then compare with the original and explain any correction."
     ],
@@ -2716,9 +2716,9 @@
     ],
     "goal": "Translate guarantees expressed through verbs, definitions and restricted subjects.",
     "teaching": [
-      "The relationship can appear without if or only if. A certified seal guarantees traceability gives certified seal → traceability. Traceability is a prerequisite for listing gives listed → traceable. Ask what the sentence makes enough and what it makes required.",
+      "The rule can appear without if or only if. A certified seal guarantees traceability gives certified seal → traceability. Traceability is a prerequisite for listing gives listed → traceable. Ask what the sentence makes enough and what it makes required.",
       "Definitions can supply both directions, but only when the definition is explicit. Here, a dormant account means an account with no transactions for a year identifies the defined category. Do not turn a loose description such as dormant accounts tend to be old into a definition or an exceptionless rule.",
-      "Preserve the distinction between guarantee, permission and evidence. A grant authorizes travel gives a permission; it does not prove the traveler leaves. A wet pavement suggests rain does not guarantee rain. Active and passive phrasing can express the same rule without changing the subject involved."
+      "Keep the distinction between guarantee, permission and evidence. A grant authorizes travel gives a permission; it does not prove the traveler leaves. A wet pavement suggests rain does not guarantee rain. Active and passive phrasing can express the same rule without changing the subject involved."
     ],
     "method": [
       "Find the guarantee, prerequisite, exclusion or explicit definition.",
@@ -2754,7 +2754,7 @@
     },
     "commonMistake": {
       "mistake": "Treating any association as a guarantee.",
-      "repair": "Compare ensures with suggests. Translate the author's degree of commitment, not a stronger relationship."
+      "repair": "Compare ensures with suggests. Translate the author's degree of commitment, not a stronger rule."
     },
     "drills": {
       "beginner": [
@@ -2931,7 +2931,7 @@
       "Translate each rule into complete conditions.",
       "Find a result-to-trigger match; if needed, form an equivalent contrapositive to expose it.",
       "Follow only forward arrows in the rules or their valid contrapositives to create a new rule.",
-      "Apply a separately supplied case fact, or preserve the result as a rule if no fact is given."
+      "Apply a separately supplied case fact, or keep the result as a rule if no fact is given."
     ],
     "workedExample": {
       "statements": [
@@ -3128,8 +3128,8 @@
     ],
     "goal": "Reject false links caused by shared results, shared triggers, scope changes or subject changes.",
     "teaching": [
-      "Every trained guide is insured. Every licensed guide is insured. Both rules end at insured. They do not establish that trained guides are licensed or licensed guides are trained. Insurance can be shared by different groups.",
-      "A shared trigger produces two results, not a new relationship between those results. Every approved item is tagged and every approved item is boxed establish both results for an approved item. They do not establish tagged → boxed for all items.",
+      "Every trained guide is insured. Every licensed guide is insured. Both rules end at insured. They do not prove that trained guides are licensed or licensed guides are trained. Insurance can be shared by different groups.",
+      "A shared trigger produces two results, not a new rule between those results. Every approved item is tagged and every approved item is boxed prove both results for an approved item. They do not prove tagged → boxed for all items.",
       "An apparent mismatch may be real or may be resolved by a valid contrapositive. Check exact scope and subjects before declaring no link. The preceding linking lesson showed how contraposition exposes hidden connections. Use that procedure before deciding that a shared word supplies no valid path.",
       "Check the requirement-versus-completion distinction explicitly. Late application → requires approval does not meet received approval → has a signature. A late application awaiting approval is a counterexample to the claim that it must have a signature. Nothing in the two rules says its requirement has been fulfilled."
     ],
@@ -3137,7 +3137,7 @@
       "Write the direction of each rule.",
       "Compare complete predicates, including qualifiers and subjects.",
       "Look for an actual result-to-trigger connection, including a taught equivalent form.",
-      "If none exists, preserve separate rules and draw only conclusions supported by any case fact."
+      "If none exists, keep separate rules and draw only conclusions supported by any case fact."
     ],
     "workedExample": {
       "statements": [
@@ -3333,14 +3333,14 @@
       "direct-linking",
       "no-link"
     ],
-    "goal": "Apply a rule to established facts without assuming its trigger.",
+    "goal": "Apply a rule to proved facts without assuming its trigger.",
     "teaching": [
       "A rule and a fact do different jobs. If every approved order is dispatched, the rule does not tell us that any order is approved. An approved order supplies the trigger; then dispatch follows.",
       "A fact about the necessary condition does not fire the rule backward. A negative fact about that condition can fire the contrapositive. Keep the same order, person or event throughout the inference."
     ],
     "method": [
       "Write the complete trigger and result.",
-      "List only established facts about the same subject.",
+      "List only proved facts about the same subject.",
       "Match a fact to the trigger, or to the trigger of the contrapositive.",
       "State the result and leave every untriggered rule open."
     ],
@@ -3363,7 +3363,7 @@
       "id": "triggering-guided-1",
       "prompt": "Every verified account can upload. Account T can upload. What follows?",
       "options": [
-        "Verification is not established.",
+        "Verification is not proved.",
         "T is verified.",
         "T is not verified."
       ],
@@ -3547,13 +3547,13 @@
     ],
     "goal": "Distinguish joint requirements from alternative routes.",
     "teaching": [
-      "AND requires both listed conditions. OR permits at least one and ordinarily permits both. In (license AND insurance) → entry, neither license alone nor insurance alone establishes entry.",
+      "AND requires both listed conditions. OR permits at least one and ordinarily permits both. In (license AND insurance) → entry, neither license alone nor insurance alone proves entry.",
       "Scope matters. A → (B OR C) gives alternatives in the result. (A OR B) → C supplies two separate routes to C. A → (B AND C) requires both results. Do not replace a complete phrase with one convenient word."
     ],
     "method": [
       "Bracket the complete sufficient and necessary sides.",
       "Read AND as both; read OR as at least one.",
-      "For a joint trigger, establish every part.",
+      "For a joint trigger, prove every part.",
       "For an alternative result, retain the alternatives unless another fact removes one."
     ],
     "workedExample": {
@@ -3565,7 +3565,7 @@
         "(Ticket AND identification) → entry.",
         "Nora does not satisfy the complete trigger."
       ],
-      "conclusion": "This rule does not establish whether Nora may enter."
+      "conclusion": "This rule does not prove whether Nora may enter."
     },
     "commonMistake": {
       "mistake": "Splitting a joint trigger into two sufficient routes.",
@@ -3580,11 +3580,11 @@
         "Jo receives both."
       ],
       "answerIndex": 0,
-      "explanation": "Finalist establishes at least one reward. No medal leaves the grant.",
+      "explanation": "Finalist proves at least one reward. No medal leaves the grant.",
       "hint": "Eliminate the disjunct that the fact rules out.",
       "reasoningSteps": [
         "Eliminate the disjunct that the fact rules out.",
-        "Finalist establishes at least one reward.",
+        "Finalist proves at least one reward.",
         "No medal leaves the grant."
       ]
     },
@@ -3761,7 +3761,7 @@
       "When taking a contrapositive, negate each entire side, not just its first word. A → (B AND C) becomes (not B OR not C) → not A. (A OR B) → C becomes not C → (not A AND not B)."
     ],
     "method": [
-      "Identify the whole expression being denied.",
+      "Identify the whole condition being denied.",
       "Switch AND with OR.",
       "Negate each complete component.",
       "If taking a contrapositive, reverse the sides as well."
@@ -3981,7 +3981,7 @@
       ],
       "reasoning": [
         "The trigger is being an evening museum volunteer.",
-        "Morning volunteering does not establish evening volunteering."
+        "Morning volunteering does not prove evening volunteering."
       ],
       "conclusion": "The rule alone does not decide whether Kai carries a radio."
     },
@@ -3993,7 +3993,7 @@
       "id": "domain-guided-1",
       "prompt": "All winter buses serving Hill Road have chains. Bus D serves Hill Road in summer. What follows?",
       "options": [
-        "Chains are not established.",
+        "Chains are not proved.",
         "D has chains.",
         "D cannot have chains."
       ],
@@ -4201,7 +4201,7 @@
     },
     "guidedExample": {
       "id": "biconditionals-guided-1",
-      "prompt": "Entry is allowed iff the fee is paid and the form is signed. The fee is paid. Is entry established?",
+      "prompt": "Entry is allowed iff the fee is paid and the form is signed. The fee is paid. Is entry proved?",
       "options": [
         "No; a signature is also needed.",
         "Yes; either component is sufficient.",
@@ -4595,7 +4595,7 @@
     "goal": "Use conditional rules for guaranteed inference without treating support as certainty.",
     "teaching": [
       "A Must Be True task asks what cannot be false if the premises hold. Start with a worked chain: every approved report is logged; every logged report is stored; R is approved. R must be stored.",
-      "Most Strongly Supported asks for the strongest available support, which can be weaker than certainty. Do not import that lower standard into MBT. Conversely, a guaranteed conclusion can be appropriate in an MSS task when the facts establish it. Match the actual question demand."
+      "Most Strongly Supported asks for the strongest available support, which can be weaker than certainty. Do not import that lower standard into MBT. Conversely, a guaranteed conclusion can be appropriate in an MSS task when the facts prove it. Match the actual question demand."
     ],
     "method": [
       "Accept the stated premises for the task.",
@@ -4830,7 +4830,7 @@
     },
     "commonMistake": {
       "mistake": "Choosing a bridge in the wrong direction.",
-      "repair": "Start from what the premises establish. The added arrow must let you travel to the actual conclusion."
+      "repair": "Start from what the premises prove. The added arrow must let you travel to the actual conclusion."
     },
     "guidedExample": {
       "id": "sufficient-assumption-guided-1",
@@ -5017,7 +5017,7 @@
     "goal": "Separate a required assumption from a powerful but optional sufficient bridge.",
     "teaching": [
       "A necessary assumption is something the argument needs. It need not prove the conclusion by itself. If the argument concludes that Jo can enter using a ticket rule, it must assume that the rule applies to Jo’s ticket. A rule admitting everyone could guarantee entry but is not required.",
-      "Negate a candidate precisely and ask whether the argument can still establish its stated conclusion. “All” is denied by one exception, not by “none.” Conditional necessary assumptions can be narrow compatibility claims. Do not choose a universal bridge merely because it would fix the argument.",
+      "Negate a candidate precisely and ask whether the argument can still prove its stated conclusion. “All” is denied by one exception, not by “none.” Conditional necessary assumptions can be narrow compatibility claims. Do not choose a universal bridge merely because it would fix the argument.",
       "If an argument needs at least one trained usher, deny that assumption by saying no usher is trained. One untrained usher does not deny the existence of a trained one. The exact negation removes every possible trained-usher witness."
     ],
     "method": [
@@ -5234,7 +5234,7 @@
     "goal": "Identify an unsupported conditional inference and explain it with a counterexample.",
     "teaching": [
       "From A → B and B, concluding A affirms the necessary condition. B could occur without A. From A → B and not A, concluding not B denies the sufficient condition. Another route could produce B.",
-      "A flaw explanation should describe the move the author actually makes. A negative conclusion is not automatically flawed: A → B with not B validly yields not A. Preserve compound and domain restrictions before judging the form."
+      "A flaw explanation should describe the move the author actually makes. A negative conclusion is not automatically flawed: A → B with not B validly yields not A. Keep compound and domain restrictions before judging the form."
     ],
     "method": [
       "Separate the rule, fact and conclusion.",
@@ -5447,7 +5447,7 @@
     "goal": "Match valid or flawed reasoning by form rather than by topic or word order.",
     "teaching": [
       "Parallel reasoning compares how premises support a conclusion. “All approved plans are funded; P is approved; therefore P is funded” has the same form as “All trained ushers are assigned; U is trained; therefore U is assigned.” Different subjects do not change the move.",
-      "A chain between classes is different from applying a rule to a named case. A parallel flaw must preserve the mistaken direction. Match quantifiers, compound scope and conclusion strength. Reordered sentences or different positive wording can still express the same structure."
+      "A chain between classes is different from applying a rule to a named case. A parallel flaw must keep the mistaken direction. Match quantifiers, compound scope and conclusion strength. Reordered sentences or different positive wording can still express the same structure."
     ],
     "method": [
       "Label the premises and conclusion.",
@@ -5480,11 +5480,11 @@
         "All artists sketch; Jo does not sketch; therefore Jo is not an artist."
       ],
       "answerIndex": 0,
-      "explanation": "The model affirms the necessary condition. Only the first argument repeats that flaw.",
+      "explanation": "Our version affirms the necessary condition. Only the first argument repeats that flaw.",
       "hint": "Match the direction of the move, not the letters’ meanings.",
       "reasoningSteps": [
         "Match the direction of the move, not the letters’ meanings.",
-        "The model affirms the necessary condition.",
+        "Our version affirms the necessary condition.",
         "Only the first argument repeats that flaw."
       ]
     },
@@ -5656,11 +5656,11 @@
     "goal": "Check a rule’s complete trigger and distinguish rule application from general illustration.",
     "teaching": [
       "Some principle tasks give a rule and ask which case it governs. “Any applicant with experience and a reference should be interviewed” requires both facts. An experienced applicant without a stated reference does not yet qualify.",
-      "Other principle tasks ask for an abstract idea illustrated by a case, rather than a strict conditional guarantee. First identify what the task asks. A single example does not establish a universal empirical law. A supplied normative rule can govern its stated cases without proving what actually happens."
+      "Other principle tasks ask for an abstract idea illustrated by a case, rather than a strict conditional guarantee. First identify what the task asks. A single example does not prove a universal empirical law. A supplied normative rule can govern its stated cases without proving what actually happens."
     ],
     "method": [
       "Identify whether the task asks application, justification or illustration.",
-      "For a rule, preserve its complete trigger and consequence.",
+      "For a rule, keep its complete trigger and consequence.",
       "For justification, test whether the principle bridges the facts to the conclusion.",
       "For illustration, match the general idea without adding universal claims."
     ],
@@ -5673,7 +5673,7 @@
         "Late AND caused by documented outage → should receive refund.",
         "Both conditions are supplied for J."
       ],
-      "conclusion": "J should receive a refund under the policy; actual payment is not established."
+      "conclusion": "J should receive a refund under the policy; actual payment is not proved."
     },
     "commonMistake": {
       "mistake": "Treating any abstract sentence as a rigid trigger-and-consequence rule.",
@@ -5866,9 +5866,9 @@
     ],
     "goal": "Distinguish existence, majority and universal membership.",
     "teaching": [
-      "Some means at least one. It permits one, several or all. Most means more than half of the stated population. All means every member satisfies the claim, but a universal statement alone does not establish that the population has members.",
+      "Some means at least one. It permits one, several or all. Most means more than half of the stated population. All means every member satisfies the claim, but a universal statement alone does not prove that the population has members.",
       "Keep the reference population fixed. Most musicians read does not say most readers are musicians. Some overlap is reversible: a person who is both a musician and a reader witnesses both statements. No means zero overlap. Many and few have no exact numerical cutoff without context.",
-      "Combine a count with a rule one member at a time. Most of six inspectors are licensed gives at least four licensed inspectors. If every licensed inspector carries a radio, each of those four carries one. That establishes at least four radio-carrying inspectors, not a majority of all radio carriers. A separate fact naming a member can likewise supply the existence that universal rules alone leave open."
+      "Combine a count with a rule one member at a time. Most of six inspectors are licensed gives at least four licensed inspectors. If every licensed inspector carries a radio, each of those four carries one. That proves at least four radio-carrying inspectors, not a majority of all radio carriers. A separate fact naming a member can likewise supply the existence that universal rules alone leave open."
     ],
     "method": [
       "Name the reference population.",
@@ -5884,7 +5884,7 @@
         "More than half of ten means at least six.",
         "The volunteers are the reference group; radio owners may include many nonvolunteers."
       ],
-      "conclusion": "At least six volunteers have radios. Most radio owners being volunteers is not established."
+      "conclusion": "At least six volunteers have radios. Most radio owners being volunteers is not proved."
     },
     "commonMistake": {
       "mistake": "Reading some as some but not all.",
@@ -6295,7 +6295,7 @@
     ],
     "method": [
       "Mark the existing witness or majority and its reference population.",
-      "Follow only universal arrows from its established properties.",
+      "Follow only universal arrows from its proved properties.",
       "For two most statements, compare denominators.",
       "State the weakest quantity the premises guarantee."
     ],

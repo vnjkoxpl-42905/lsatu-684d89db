@@ -52,12 +52,12 @@ function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourse
 
 const drillInstructions: Record<string, { summary: string; heading: string; steps: string[] }> = {
   'sufficient-practice': {
-    summary: 'Condition targets and diagrams', heading: 'Find the whole sufficient condition',
-    steps: ['Find the complete idea the sufficient expression refers to.', 'Put that condition on the left and the required condition on the right. Read the arrow back in English.', 'Check your work, then build a possible case that shows why the reverse does not follow.'],
+    summary: 'Condition groups and diagrams', heading: 'Find the whole sufficient condition',
+    steps: ['Find the complete idea the sufficient indicator refers to.', 'Put that condition on the left and the required condition on the right. Read the arrow back in English.', 'Check your work, then build a possible case that shows why the reverse does not follow.'],
   },
   'contrapositive-practice': {
     summary: 'Originals and contrapositives', heading: 'Check the direction and each negation',
-    steps: ['Choose the original arrow that preserves both complete conditions.', 'Choose its contrapositive: reverse the sides and negate both conditions. Correct each choice before continuing.', 'Write each form in ordinary English, then compare your wording with the explanation.'],
+    steps: ['Choose the original arrow that keeps both complete conditions.', 'Choose its contrapositive: reverse the sides and negate both conditions. Correct each choice before continuing.', 'Write each form in ordinary English, then compare your wording with the explanation.'],
   },
 };
 

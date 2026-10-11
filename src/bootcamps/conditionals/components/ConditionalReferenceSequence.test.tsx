@@ -35,11 +35,11 @@ it('teaches all thirteen reference steps in order with notation after the concep
   expect(step(9).textContent).toMatch(/contrapositive/i);
   expect(step(10).textContent).toMatch(/diagram|abbreviat/i);
   expect(step(11).textContent).toMatch(/target/i);
-  expect(step(12).textContent).toMatch(/Personalized If\/Then/);
+  expect(step(12).textContent).toMatch(/“Put yourself in it”/);
   expect(step(13).textContent).toMatch(/practice|diagram/i);
 });
 
-it('lets learners inspect every family expression in source order while preserving the same relationship', () => {
+it('lets learners inspect every family indicator in source order while keeping the same rule', () => {
   const { step } = mount();
   const families = [
     { number: 3, names: ['if', 'when / whenever', 'any / anytime', 'all', 'every / every time', 'in order to', 'people who', 'each'], role: 'Borrows a locker' },
@@ -109,7 +109,7 @@ it('distinguishes the two valid inferences from both unknown cases without expos
   expect(within(lab).getByRole('status').textContent).toBe('');
 });
 
-it('constructs the first diagram incrementally and preserves roles when the if-clause moves', () => {
+it('constructs the first diagram incrementally and keeps roles when the if-clause moves', () => {
   const { step } = mount();
   const writer = step(8).querySelector<HTMLElement>('.cr-writer')!;
   expect(within(writer).queryByRole('img')).toBeNull();
@@ -156,7 +156,7 @@ it('negates both complete conditions correctly in all four sign patterns, includ
   expect(step(9).querySelectorAll('.cr-method li')).toHaveLength(5);
 });
 
-it('answers practical writing questions before target reading and the Personalized If/Then', () => {
+it('answers practical writing questions before group reading and the “Put yourself in it”', () => {
   const { step } = mount();
   const faq = step(10).querySelector<HTMLElement>('.cr-faq')!;
   const summaries = [...faq.querySelectorAll('summary')].map(summary => summary.textContent);
@@ -170,7 +170,7 @@ it('answers practical writing questions before target reading and the Personaliz
   expect(step(12).compareDocumentPosition(step(13)) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });
 
-it('keeps a complete qualified target and recognizes its role on either side of the indicator', () => {
+it('keeps a complete qualified group and recognizes its role on either side of the indicator', () => {
   const { step } = mount();
   const labs = [...step(11).querySelectorAll<HTMLElement>('.cr-target')];
   expect(labs).toHaveLength(3);
@@ -183,13 +183,13 @@ it('keeps a complete qualified target and recognizes its role on either side of 
     expect(lab.querySelector('.cr-correct')).toBeNull();
     fireEvent.click(within(lab).getByRole('button', { name: correct }));
     expect(lab.querySelector('mark')?.textContent?.toLowerCase()).toBe(correct);
-    expect(within(lab).getByRole('status').textContent).toMatch(/Correct target/);
-    fireEvent.click(within(lab).getByRole('button', { name: 'Clear the target' }));
+    expect(within(lab).getByRole('status').textContent).toMatch(/Correct group/);
+    fireEvent.click(within(lab).getByRole('button', { name: 'Clear the group' }));
     expect(lab.querySelector('mark')).toBeNull();
   }
 });
 
-it('tests a Personalized If/Then in both directions without treating the necessary condition as enough', () => {
+it('tests a “Put yourself in it” check in both directions without treating the necessary condition as enough', () => {
   const { step } = mount();
   const section = step(12);
   const checks = [...section.querySelectorAll<HTMLElement>('.cr-question')];
@@ -232,7 +232,7 @@ it('requires both independent diagrams before giving nine fresh practice keys an
     expect(item.querySelector('.cr-answer-key')).toBeNull();
     fireEvent.click(check);
     expect(item.querySelector('.cr-correct')).toBeNull();
-    expect(within(item).getByRole('status').textContent).toMatch(/original preserves the direction.*contrapositive must start/i);
+    expect(within(item).getByRole('status').textContent).toMatch(/original keeps the direction.*contrapositive must start/i);
     expect(item.querySelector('.cr-answer-key')?.textContent).toContain(original);
     expect(item.querySelector('.cr-answer-key')?.textContent).toContain(contra);
     fireEvent.click(within(contraChoices).getByRole('button', { name: contra }));
@@ -266,7 +266,7 @@ it('covers both source word families in their assigned teaching sections without
   expect(step(11).textContent).toMatch(/before/i);
 });
 
-it('retains a nearby focus target when the final construction action disappears', () => {
+it('retains a nearby focus group when the final construction action disappears', () => {
   const { step } = mount();
   const area = within(step(8));
   for (const name of ['Find the indicator', 'Draw the must arrow', 'Put winning on the left', 'Fill the remaining condition']) {
@@ -291,7 +291,7 @@ it('returns focus to the first answer when a retry clears its own control', () =
   expect(area.queryByRole('button', { name: 'Try again' })).toBeNull();
 });
 
-it('returns focus to the first expression when a family example is cleared', () => {
+it('returns focus to the first indicator when a family example is cleared', () => {
   const { step } = mount();
   const area = within(step(3));
   const first = area.getByRole('button', { name: /^if$/ });
@@ -303,14 +303,14 @@ it('returns focus to the first expression when a family example is cleared', () 
   expect(area.queryByRole('button', { name: 'Clear the example' })).toBeNull();
 });
 
-it('returns focus to the first target choice when target feedback is cleared', () => {
+it('returns focus to the first group choice when group feedback is cleared', () => {
   const { step } = mount();
   const area = within(step(11).querySelector<HTMLElement>('.cr-target')!);
   const first = area.getAllByRole('button')[0];
   fireEvent.click(first);
-  const clear = area.getByRole('button', { name: 'Clear the target' });
+  const clear = area.getByRole('button', { name: 'Clear the group' });
   clear.focus();
   fireEvent.click(clear);
   expect(document.activeElement).toBe(first);
-  expect(area.queryByRole('button', { name: 'Clear the target' })).toBeNull();
+  expect(area.queryByRole('button', { name: 'Clear the group' })).toBeNull();
 });

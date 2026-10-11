@@ -66,7 +66,7 @@ it('retains the first answer through repair and restores focus to an enabled cho
   expect(screen.getByText(/of 24 correct on your first attempt/)).toHaveTextContent('23 of 24');
 });
 
-it('checks every option across all 24 questions and preserves the final source rule', () => {
+it('checks every option across all 24 questions and keeps the final source rule', () => {
   render(<OpeningCourseContent id="foundation-practice"/>);
   for (let index = 0; index < correctAnswers.length; index++) {
     expect(screen.getByText(`Question ${index + 1} of 24`)).toBeVisible();

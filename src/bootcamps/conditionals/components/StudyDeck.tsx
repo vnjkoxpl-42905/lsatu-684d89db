@@ -14,7 +14,7 @@ export function StudyDeck({ group, selectedCard, onCardChange, choices }: { grou
   if (!card) return null;
   const move = (next: number) => { setIndex(next); onCardChange?.(cards[next].id); setFlipped(false); };
   return <div className={`co-study-deck${focused ? " co-focused-deck" : ""}`}>
-    {choices && <label className="co-expression-picker">{group === 'foundation' ? 'Choose a concept' : 'Choose an expression'}<select value={card.id} onChange={event => move(cards.findIndex(item => item.id === event.target.value))}>{choices.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>}
+    {choices && <label className="co-expression-picker">{group === 'foundation' ? 'Choose a concept' : 'Choose an indicator'}<select value={card.id} onChange={event => move(cards.findIndex(item => item.id === event.target.value))}>{choices.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>}
     <div className="co-deck-meta"><span id={label}>{focused ? "Example" : "Recall card"} {activeIndex + 1} of {cards.length}</span><span>{focused ? "" : "Think before you turn"}</span></div>
     <button type="button" className="co-study-card" data-flipped={flipped} aria-describedby={label} aria-expanded={flipped} onClick={() => setFlipped(!flipped)}>
       <span className="co-card-eyebrow">{focused ? (flipped ? 'Explanation' : 'Your question') : (flipped ? 'Compare your reasoning' : 'Explain it in your own words')}</span>

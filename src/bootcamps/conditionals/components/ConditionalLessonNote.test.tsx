@@ -26,7 +26,7 @@ function showLastPage() {
   showPageFor(pages[pages.length - 1]);
 }
 function showTargetPractice() {
-  showPageFor(screen.getByText('Which words does the expression refer to?'));
+  showPageFor(screen.getByText('Which words does the indicator refer to?'));
 }
 
 it('keeps the full orientation formative until the student marks the lesson read', () => {
@@ -57,12 +57,12 @@ it('mounts the thirteen reference steps before the attached guided activity', ()
   expect(complete).not.toHaveBeenCalled();
 });
 
-it('checks each Group 2 target before revealing direction and preserves obligations', () => {
+it('checks each Group 2 group before revealing direction and keeps obligations', () => {
   mount('group-2');
   showTargetPractice();
   fireEvent.click(screen.getByRole('button', { name: 'must' }));
   fireEvent.click(screen.getAllByRole('button', { name: 'Required to attend interview' })[0]);
-  expect(screen.getByText(/does not establish that every finalist complied/)).toBeTruthy();
+  expect(screen.getByText(/does not prove that every finalist complied/)).toBeTruthy();
   fireEvent.click(screen.getByRole('button', { name: 'Show the requirement on the right' }));
   expect(screen.getByText('Required to attend interview', { selector: '.co-arrow span' })).toBeTruthy();
   expect(screen.queryByRole('combobox')).toBeNull();
@@ -77,7 +77,7 @@ it('sequences language before later inference and retains stable assignment IDs'
   }
 });
 
-it('distinguishes a chain rule from the new facts established by adding a case', () => {
+it('distinguishes a chain rule from the new facts proved by adding a case', () => {
   mount('direct-linking');
   expect(screen.getByText('Every calibrated meter is listed.')).toBeTruthy();
   fireEvent.click(screen.getByRole('button', { name: 'Add: Meter D is calibrated' }));

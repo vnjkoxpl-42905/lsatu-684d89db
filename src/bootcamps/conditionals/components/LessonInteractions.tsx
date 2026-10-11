@@ -31,7 +31,7 @@ function TranslationExplorer({ id }: { id: string }) {
   const [step, setStep] = useState(0);
   const item = translations[id];
   return <div className="cn-interaction"><p className="cn-statement">{item.sentence}</p><p>Identify the complete ideas and predict the direction before revealing it.</p>
-    <div className="cn-controls"><button type="button" onClick={() => setStep(Math.max(step, 1))}>Find the target</button><button type="button" onClick={() => setStep(2)}>Show the translation</button><button type="button" onClick={() => setStep(0)}>Try again</button></div>
+    <div className="cn-controls"><button type="button" onClick={() => setStep(Math.max(step, 1))}>Find the group</button><button type="button" onClick={() => setStep(2)}>Show the translation</button><button type="button" onClick={() => setStep(0)}>Try again</button></div>
     <div aria-live="polite">{step >= 1 && <p>{item.target}</p>}{step === 2 && <div className="cn-result"><p><strong>{item.rule}</strong></p><p>{item.why}</p></div>}</div>
   </div>;
 }
@@ -39,9 +39,9 @@ function TranslationExplorer({ id }: { id: string }) {
 function ChainExplorer() {
   const [fact, setFact] = useState(false);
   return <div className="cn-interaction"><p className="cn-label">Two rules</p><div className="cn-diagram"><span>Calibrated</span><span aria-hidden="true">→</span><span>Registered</span><span aria-hidden="true">→</span><span>Listed</span></div>
-    <p>Registered is the exact result-to-trigger match. The rules establish calibrated → listed.</p>
+    <p>Registered is the exact result-to-trigger match. The rules prove calibrated → listed.</p>
     <div className="cn-controls"><button type="button" aria-pressed={fact} onClick={() => setFact(!fact)}>{fact ? 'Remove the case fact' : 'Add: Meter D is calibrated'}</button></div>
-    <div className="cn-result" aria-live="polite"><p><strong>{fact ? 'Meter D is registered and listed.' : 'Every calibrated meter is listed.'}</strong></p><p>{fact ? 'The separate fact activates the chain for D. Both intermediate and final results follow.' : 'This is a new rule. These rules alone do not establish that any calibrated meter exists.'}</p></div>
+    <div className="cn-result" aria-live="polite"><p><strong>{fact ? 'Meter D is registered and listed.' : 'Every calibrated meter is listed.'}</strong></p><p>{fact ? 'The separate fact activates the chain for D. Both intermediate and final results follow.' : 'This is a new rule. These rules alone do not prove that any calibrated meter exists.'}</p></div>
   </div>;
 }
 
@@ -56,7 +56,7 @@ function NoLinkExplorer() {
 
 function WorkedReasoningReveal({ unit }: { unit: ConditionalUnit }) {
   const [shown, setShown] = useState(0);
-  return <div className="cn-interaction"><p className="cn-label">Explain the next move</p><p>Use the statements above. Say what the next step establishes and why before revealing it.</p>
+  return <div className="cn-interaction"><p className="cn-label">Explain the next move</p><p>Use the statements above. Say what the next step proves and why before revealing it.</p>
     <ol>{unit.workedExample.reasoning.slice(0, shown).map((reason, index) => <li key={index}>{reason}</li>)}</ol>
     <div className="cn-controls"><button type="button" disabled={shown === unit.workedExample.reasoning.length} onClick={() => setShown(shown + 1)}>Reveal next reasoning step</button><button type="button" onClick={() => setShown(0)}>Start again</button></div>
     <div aria-live="polite">{shown === unit.workedExample.reasoning.length && <p className="cn-result"><strong>{unit.workedExample.conclusion}</strong></p>}</div>

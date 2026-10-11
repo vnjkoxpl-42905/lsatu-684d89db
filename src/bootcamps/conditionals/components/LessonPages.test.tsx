@@ -57,7 +57,7 @@ it('exposes only the current page, focuses its heading, and retains a checked ca
 it('retains the actual lesson card and revealed side across page navigation without pre-exposing answers', () => {
   render(lesson('group-1'));
   const cards = indicatorFlashcards.filter(card => card.group === 'group-1');
-  jumpTo('Recall the expressions');
+  jumpTo('Recall the indicators');
   expect(screen.queryByText(cards[0].back)).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: 'Next card' }));
   fireEvent.click(screen.getByRole('button', { name: /Turn to the explanation/ }));
@@ -97,7 +97,7 @@ it('requires an explicit end-page action to record reading, including after a co
 
 it('starts a changed unit at its first page and resets card state when returning to the prior unit', () => {
   const { rerender } = render(lesson('group-1'));
-  jumpTo('Recall the expressions');
+  jumpTo('Recall the indicators');
   fireEvent.click(screen.getByRole('button', { name: 'Next card' }));
   fireEvent.click(screen.getByRole('button', { name: /Turn to the explanation/ }));
   fireEvent.click(screen.getByRole('button', { name: 'Revisit this card' }));
@@ -105,14 +105,14 @@ it('starts a changed unit at its first page and resets card state when returning
   rerender(lesson('group-2'));
   expect(screen.getByRole('heading', { name: 'Find what is required' })).toBeVisible();
   expect(screen.queryByRole('button', { name: 'Next card' })).toBeNull();
-  jumpTo('Recall the expressions');
+  jumpTo('Recall the indicators');
   expect(screen.getByText('Recall card 1 of 11')).toBeVisible();
   expect(screen.getByRole('button', { name: /Turn to the explanation/ })).toHaveAttribute('aria-expanded', 'false');
   expect(screen.queryByRole('button', { name: 'Saved to revisit' })).toBeNull();
 
   rerender(lesson('group-1'));
   expect(screen.getByRole('heading', { name: 'Find the sufficient idea' })).toBeVisible();
-  jumpTo('Recall the expressions');
+  jumpTo('Recall the indicators');
   expect(screen.getByText(`Recall card 1 of ${indicatorFlashcards.filter(card => card.group === 'group-1').length}`)).toBeVisible();
   expect(screen.getByRole('button', { name: /Turn to the explanation/ })).toHaveAttribute('aria-expanded', 'false');
   expect(screen.queryByRole('button', { name: 'Saved to revisit' })).toBeNull();
@@ -138,7 +138,7 @@ it('separates a present negative requirement from its absence in the fresh two-r
   fireEvent.click(screen.getByRole('button', { name: 'No film. No workshop.' }));
   fireEvent.click(screen.getByRole('button', { name: 'Check these possibilities' }));
   expect(screen.getByText('Both film possibilities remain open.')).toBeVisible();
-  expect(screen.getByText(/~W establishes neither F nor ~F/)).toBeVisible();
+  expect(screen.getByText(/~W proves neither F nor ~F/)).toBeVisible();
   expect(screen.queryByText(/Negating ~W gives W/)).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: 'Yes, it could.' }));
   expect(screen.getByText(/That conflicts with our new fact that a workshop is underway/)).toBeVisible();

@@ -54,7 +54,7 @@ it('supports roving keyboard focus, arrow wrapping, Home and End', () => {
   expect(tabs.filter(tab => tab.tabIndex === 0)).toHaveLength(1);
 });
 
-it('supports mouse hover only beside the panel, ignoring touch and preserving a clicked narrow-layout choice', () => {
+it('supports mouse hover only beside the panel, ignoring touch and keeping a clicked narrow-layout choice', () => {
   const media = vi.fn().mockReturnValue({ matches: true });
   vi.stubGlobal('matchMedia', media);
   const view = render(<NecessaryIndicatorExplorer/>);

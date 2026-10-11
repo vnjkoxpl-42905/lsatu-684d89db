@@ -29,8 +29,8 @@ export const indicatorFlashcards = [
   {
     "id": "foundation-enough",
     "group": "foundation",
-    "front": "Every folder marked complete contains a signed form. Which condition is enough to establish the other one?",
-    "back": "Being a folder marked complete is enough to establish that the folder contains a signed form. The rule covers every folder with that label. Sufficient goes left; necessary goes right: Folder marked complete → Contains signed form.",
+    "front": "Every folder marked complete contains a signed form. Which condition is enough to prove the other one?",
+    "back": "Being a folder marked complete is enough to prove that the folder contains a signed form. The rule covers every folder with that label. Sufficient goes left; necessary goes right: Folder marked complete → Contains signed form.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 12,
     "adapted": true,
@@ -80,7 +80,7 @@ export const indicatorFlashcards = [
     "id": "g1-if-last",
     "group": "group-1",
     "front": "A visitor receives a map if the visitor books a morning tour. Which condition goes left? Explain why.",
-    "back": "Books a morning tour goes left. It is the if-condition even though it comes last in the sentence. Booking that tour is enough to establish the map: Books morning tour → Receives map. Sentence order has not changed the relationship.",
+    "back": "Books a morning tour goes left. It is the if-condition even though it comes last in the sentence. Booking that tour is enough to prove the map: Books morning tour → Receives map. Sentence order has not changed the rule.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 28,
     "adapted": true,
@@ -100,7 +100,7 @@ export const indicatorFlashcards = [
     "id": "g1-when-last",
     "group": "group-1",
     "front": "The oven light switches on when the kitchen clock chimes. Does putting the light first make it the sufficient condition?",
-    "back": "No. When still refers to the clock chiming. That is the condition that establishes the light, so it goes left: Clock chimes → Oven light switches on. The first phrase in English does not choose the arrow direction.",
+    "back": "No. When still refers to the clock chiming. That is the condition that proves the light, so it goes left: Clock chimes → Oven light switches on. The first phrase in English does not choose the arrow direction.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 65,
     "adapted": true,
@@ -110,7 +110,7 @@ export const indicatorFlashcards = [
     "id": "g1-where",
     "group": "group-1",
     "front": "Where a path crosses the stream, there is a footbridge. What is enough, and what must be there under this stated rule?",
-    "back": "A path crossing the stream is enough to establish a footbridge at that crossing. Where identifies the crossing condition, which goes left: Path crosses stream → Footbridge at crossing. A footbridge alone does not establish that a path crosses the stream there.",
+    "back": "A path crossing the stream is enough to prove a footbridge at that crossing. Where identifies the crossing condition, which goes left: Path crosses stream → Footbridge at crossing. A footbridge alone does not prove that a path crosses the stream there.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 30,
     "adapted": true,
@@ -170,7 +170,7 @@ export const indicatorFlashcards = [
     "id": "g2-only",
     "group": "group-2",
     "front": "Only visitors with a morning-tour booking receive maps. What is required for receiving a map?",
-    "back": "Having a morning-tour booking is required. Only restricts map recipients to visitors with that booking. Put receiving a map left and the requirement right: Receives map → Has morning-tour booking. A booking alone does not establish that the visitor receives a map.",
+    "back": "Having a morning-tour booking is required. Only restricts map recipients to visitors with that booking. Put receiving a map left and the requirement right: Receives map → Has morning-tour booking. A booking alone does not prove that the visitor receives a map.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 46,
     "adapted": true,
@@ -180,7 +180,7 @@ export const indicatorFlashcards = [
     "id": "g2-only-if",
     "group": "group-2",
     "front": "A visitor receives a map only if the visitor has a morning-tour booking. Which complete condition belongs on the right?",
-    "back": "Has a morning-tour booking belongs right because it is required for receiving a map. Receives map → Has morning-tour booking. Read only if as one expression. It contains if, but it does not make the booking enough for a map.",
+    "back": "Has a morning-tour booking belongs right because it is required for receiving a map. Receives map → Has morning-tour booking. Read only if as one phrase. It contains if, but it does not make the booking enough for a map.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 40,
     "adapted": true,
@@ -200,7 +200,7 @@ export const indicatorFlashcards = [
     "id": "g2-only-when",
     "group": "group-2",
     "front": "The reading light is on only when the desk drawer is closed. What must be true if the light is on?",
-    "back": "The desk drawer must be closed. Only when makes a closed drawer necessary for the light: Reading light on → Desk drawer closed. A closed drawer alone does not establish that the light is on.",
+    "back": "The desk drawer must be closed. Only when makes a closed drawer necessary for the light: Reading light on → Desk drawer closed. A closed drawer alone does not prove that the light is on.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 48,
     "adapted": true,
@@ -220,7 +220,7 @@ export const indicatorFlashcards = [
     "id": "g2-always",
     "group": "group-2",
     "front": "A folder marked complete always contains a signed form. Which condition goes on each side?",
-    "back": "Folder marked complete goes left; Contains signed form goes right. Always makes this an exceptionless claim about folders with the complete label. Read the subject and the whole relationship: Folder marked complete → Contains signed form. Always is not a rule to put whichever words come next on the right.",
+    "back": "Folder marked complete goes left; Contains signed form goes right. Always makes this an exceptionless claim about folders with the complete label. Read the subject and the whole rule: Folder marked complete → Contains signed form. Always is not a rule to put whichever words come next on the right.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 50,
     "adapted": true,
@@ -230,7 +230,7 @@ export const indicatorFlashcards = [
     "id": "g2-requires",
     "group": "group-2",
     "front": "Borrowing a studio microphone requires a current booking. What complete condition does requires identify?",
-    "back": "Having a current booking is the requirement. Keep current; an expired booking would not meet it. The requirement goes right: Borrows studio microphone → Has current booking. A current booking alone does not establish that someone borrowed a microphone.",
+    "back": "Having a current booking is the requirement. Keep current; an expired booking would not meet it. The requirement goes right: Borrows studio microphone → Has current booking. A current booking alone does not prove that someone borrowed a microphone.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 42,
     "adapted": true,
@@ -250,7 +250,7 @@ export const indicatorFlashcards = [
     "id": "g2-must-instruction",
     "group": "group-2",
     "front": "The class rule says: A student presenting today must bring a printed outline. Maya is presenting today. What is required, and do we know she brought it?",
-    "back": "Maya is required to bring a printed outline. The instruction does not report that she did it. Preserve that meaning: Presents today → Required to bring printed outline. The requirement goes right; actual compliance needs a separate fact.",
+    "back": "Maya is required to bring a printed outline. The instruction does not report that she did it. Keep that meaning: Presents today → Required to bring printed outline. The requirement goes right; actual compliance needs a separate fact.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 47,
     "adapted": true,
@@ -260,7 +260,7 @@ export const indicatorFlashcards = [
     "id": "g2-only-the-only",
     "group": "group-2",
     "front": "Only blue mugs are on the top shelf. The only mugs on the top shelf are blue mugs. Do these sentences give different arrows?",
-    "back": "No. Both say a mug on the top shelf is blue: Mug on top shelf → Blue mug. Only refers to blue mugs, the required group on the right. The only refers to mugs on the top shelf, the sufficient group on the left. The complete expressions have different targets but preserve the same relationship.",
+    "back": "No. Both say a mug on the top shelf is blue: Mug on top shelf → Blue mug. Only refers to blue mugs, the required group on the right. The only refers to mugs on the top shelf, the sufficient group on the left. The complete indicators have different groups but keep the same rule.",
     "sourceArtifactId": "cca0a9e6-888b-4607-b8e7-2ab94a97b0e3",
     "sourceCardIndex": 45,
     "adapted": true,
@@ -269,8 +269,8 @@ export const indicatorFlashcards = [
   {
     "id": "g2-necessary-before",
     "group": "group-2",
-    "front": "A battery is necessary for this desk lamp to work. Which complete condition is required, and which condition is enough to establish it?",
-    "back": "Having a battery is required for the lamp to work. Knowing the lamp works is enough, under this rule, to establish that it has a battery. Lamp works → Has battery. The required idea comes before necessary but still goes right. A battery alone does not establish that the lamp works.",
+    "front": "A battery is necessary for this desk lamp to work. Which complete condition is required, and which condition is enough to prove it?",
+    "back": "Having a battery is required for the lamp to work. Knowing the lamp works is enough, under this rule, to prove that it has a battery. Lamp works → Has battery. The required idea comes before necessary but still goes right. A battery alone does not prove that the lamp works.",
     "sourceArtifactId": "53a08bbf-5e99-443f-bd7b-276a721cc9b0",
     "sourceCardIndex": 1,
     "adapted": true,
@@ -282,15 +282,15 @@ export const indicatorFlashcards = [
   "front": "Whenever a visitor books a morning tour, the visitor receives a map. Which complete condition is sufficient?",
   "back": "Booking a morning tour is sufficient. Whenever covers every occasion that meets this condition: Books morning tour → Receives map. The indicator is whenever; the condition is booking a morning tour.",
   "adapted": true,
-  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+  "note": "2026-10-11 local extension using the existing Group 1 lesson rules; not a downloaded source card."
 },
 {
   "id": "g1-anytime",
   "group": "group-1",
   "front": "Anytime a visitor books a morning tour, the visitor receives a map. What goes on the left of the arrow?",
-  "back": "Books a morning tour goes on the left. Anytime covers each occasion of booking that tour: Books morning tour → Receives map. Receiving a map alone does not establish a booking.",
+  "back": "Books a morning tour goes on the left. Anytime covers each occasion of booking that tour: Books morning tour → Receives map. Receiving a map alone does not prove a booking.",
   "adapted": true,
-  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+  "note": "2026-10-11 local extension using the existing Group 1 lesson rules; not a downloaded source card."
 },
 {
   "id": "g1-every-time",
@@ -298,7 +298,7 @@ export const indicatorFlashcards = [
   "front": "Every time a visitor books a morning tour, the visitor receives a map. What does every time tell you?",
   "back": "The rule covers every occasion of booking a morning tour. That whole condition is sufficient: Books morning tour → Receives map. Every time is the indicator, not the condition to place beside the arrow.",
   "adapted": true,
-  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+  "note": "2026-10-11 local extension using the existing Group 1 lesson rules; not a downloaded source card."
 },
 {
   "id": "g1-in-order-to",
@@ -306,7 +306,7 @@ export const indicatorFlashcards = [
   "front": "In order to borrow a locker, a person needs a key. Which condition goes on the left, and what is required?",
   "back": "Borrowing a locker goes on the left; having a key is required on the right: Borrows locker → Has key. In order to introduces the goal whose requirement is stated. Having a key does not guarantee borrowing a locker.",
   "adapted": true,
-  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+  "note": "2026-10-11 local extension using the existing Group 1 lesson rules; not a downloaded source card."
 },
 {
   "id": "g1-people-who",
@@ -314,14 +314,14 @@ export const indicatorFlashcards = [
   "front": "People who borrow a locker have a key. Which complete group does the rule describe?",
   "back": "People who borrow a locker. Keep borrow a locker with people: the rule is not about every person. Borrows locker → Has key. Borrowing a locker is sufficient for having a key under this rule.",
   "adapted": true,
-  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+  "note": "2026-10-11 local extension using the existing Group 1 lesson rules; not a downloaded source card."
 },
 {
   "id": "g1-each",
   "group": "group-1",
-  "front": "Each person who borrows a locker has a key. What does each establish about locker borrowers?",
+  "front": "Each person who borrows a locker has a key. What does each prove about locker borrowers?",
   "back": "Every individual who borrows a locker has a key. Borrowing a locker is the sufficient condition: Borrows locker → Has key. The rule does not say everyone with a key borrows a locker.",
   "adapted": true,
-  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+  "note": "2026-10-11 local extension using the existing Group 1 lesson rules; not a downloaded source card."
 }
 ];

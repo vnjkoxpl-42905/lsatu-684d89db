@@ -67,9 +67,9 @@ it('orders complete ideas consistently while varying the correct position within
   }
 });
 
-it.each(['group-1', 'group-2'])('keeps %s target choices stable while learners change their answers', id => {
+it.each(['group-1', 'group-2'])('keeps %s group choices stable while learners change their answers', id => {
   const { complete } = mount(id);
-  const lab = screen.getByText('Which words does the expression refer to?').closest<HTMLElement>('.co-lab')!;
+  const lab = screen.getByText('Which words does the indicator refer to?').closest<HTMLElement>('.co-lab')!;
   showPageFor(lab);
   const correctPositions = new Set<number>();
   for (const item of translationExamples[id]) {
@@ -112,13 +112,13 @@ it('teaches inquiry and single-occasion wording before testing a recurring rule'
   showPageFor(ifSection);
   const whenSection = container.querySelector<HTMLElement>('#co-when-an-occasion-can-supply-enough-information')!;
   showPageFor(whenSection);
-  const lab = screen.getByText('Which words does the expression refer to?').closest<HTMLElement>('.co-lab')!;
+  const lab = screen.getByText('Which words does the indicator refer to?').closest<HTMLElement>('.co-lab')!;
   showPageFor(lab);
   expect(ifSection.compareDocumentPosition(lab) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   expect(whenSection.compareDocumentPosition(lab) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   expect(within(ifSection).getByText(/You can read asked if as asked whether/)).toBeTruthy();
   expect(within(whenSection).getByText(/That reports what was true on one visit/)).toBeTruthy();
-  expect(within(whenSection).getByText(/Whenever can express the same recurring relationship/)).toBeTruthy();
+  expect(within(whenSection).getByText(/Whenever can express the same recurring rule/)).toBeTruthy();
 
   showPageFor(ifSection);
   fireEvent.click(within(ifSection).getByRole('button', { name: 'A locked drawer guarantees an inquiry.' }));
@@ -128,7 +128,7 @@ it('teaches inquiry and single-occasion wording before testing a recurring rule'
   expect(within(ifSection).getByText(/You treated the question as if it supplied its own answer/)).toBeTruthy();
   showPageFor(ifSection);
   fireEvent.click(within(ifSection).getByRole('button', { name: 'The archivist asked whether the drawer was locked.' }));
-  expect(within(ifSection).getByText(/This preserves the inquiry/)).toBeTruthy();
+  expect(within(ifSection).getByText(/This keeps the inquiry/)).toBeTruthy();
 
   showPageFor(whenSection);
   fireEvent.click(within(whenSection).getByRole('button', { name: 'When I checked the gallery, a lamp was on.' }));
@@ -146,7 +146,7 @@ it('renders each named opening method before the learner continues to guided pra
     const { unmount } = mount(id);
     showLastPage();
     const guided = screen.getByRole('link', { name: /Continue to guided practice/ });
-    for (const name of ['What Test', 'Personalized If/Then']) {
+    for (const name of ['What Test', '“Put yourself in it”']) {
       if (!instructions.includes(name)) continue;
       const method = id === 'orientation' && name === 'What Test'
         ? screen.getByRole('heading', { hidden: true, name: /Use the What Test/ })
@@ -157,11 +157,11 @@ it('renders each named opening method before the learner continues to guided pra
   }
 });
 
-it('gives each independently assigned group its own What Test explanation before target selection', () => {
+it('gives each independently assigned group its own What Test explanation before group selection', () => {
   for (const id of ['group-1', 'group-2']) {
     const { unmount } = mount(id);
     const method = screen.getByText('What Test', { selector: 'strong' });
-    const lab = screen.getByText('Which words does the expression refer to?').closest<HTMLElement>('.co-lab')!;
+    const lab = screen.getByText('Which words does the indicator refer to?').closest<HTMLElement>('.co-lab')!;
   showPageFor(lab);
     expect(method.closest('p')?.textContent).toMatch(/Guest alone drops registration.*parent alone drops the signature/);
     expect(method.compareDocumentPosition(lab) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -169,7 +169,7 @@ it('gives each independently assigned group its own What Test explanation before
   }
 });
 
-it('pauses on both directions of a Personalized If/Then instead of supplying a conclusion immediately', () => {
+it('pauses on both directions of a “Put yourself in it” check instead of supplying a conclusion immediately', () => {
   const { complete } = mount('sufficient-necessary');
   const section = screen.getByRole('heading', { hidden: true, name: 'Try the sentence from the inside' }).closest<HTMLElement>('section')!;
   showPageFor(section);
@@ -185,11 +185,11 @@ it('pauses on both directions of a Personalized If/Then instead of supplying a c
   expect(complete).not.toHaveBeenCalled();
 });
 
-it('reuses the Personalized If/Then in Only if with a genuine check of the reverse', () => {
+it('reuses the “Put yourself in it” in Only if with a genuine check of the reverse', () => {
   const { container, complete } = mount('group-2');
   const section = container.querySelector<HTMLElement>('#co-only-if-a-condition-that-must-be-met')!;
   showPageFor(section);
-  expect(within(section).getByText('Personalized If/Then', { selector: 'strong' })).toBeTruthy();
+  expect(within(section).getByText('“Put yourself in it”', { selector: 'strong' })).toBeTruthy();
   const pauses = within(section).getAllByRole('button', { name: 'Show the reasoning' });
   expect(pauses).toHaveLength(2);
   fireEvent.click(pauses[0]);
@@ -216,7 +216,7 @@ it('renders the opening repair anchors with the assigned unit’s actual mistake
 
 it('makes the invitation check distinguish the stated requirement from its tempting reverse', () => {
   const { complete } = mount('sufficient-necessary');
-  const check = screen.getByRole('heading', { hidden: true, name: 'Every finalist receives an invitation. Which requirement does this sentence establish?' }).closest<HTMLElement>('.co-check')!;
+  const check = screen.getByRole('heading', { hidden: true, name: 'Every finalist receives an invitation. Which requirement does this sentence prove?' }).closest<HTMLElement>('.co-check')!;
   showPageFor(check);
   fireEvent.click(within(check).getByRole('button', { name: 'Being a finalist is necessary for receiving an invitation.' }));
   expect(within(check).getByText(/You reversed the requirement/)).toBeTruthy();
@@ -226,9 +226,9 @@ it('makes the invitation check distinguish the stated requirement from its tempt
   expect(complete).not.toHaveBeenCalled();
 });
 
-it.each(['group-1', 'group-2'])('reveals %s exact sentence targets only after a correct choice and clears them on a new example', id => {
+it.each(['group-1', 'group-2'])('reveals %s exact sentence groups only after a correct choice and clears them on a new example', id => {
   const { complete } = mount(id);
-  const lab = screen.getByText('Which words does the expression refer to?').closest<HTMLElement>('.co-lab')!;
+  const lab = screen.getByText('Which words does the indicator refer to?').closest<HTMLElement>('.co-lab')!;
   showPageFor(lab);
   for (const item of translationExamples[id]) {
     fireEvent.click(within(lab).getByRole('button', { name: item.word }));
@@ -305,7 +305,7 @@ it('keeps the entire connector in reserved space beneath a sentence whose later 
     return [bounds] as unknown as DOMRectList;
   });
   mount('group-2');
-  const lab = screen.getByText('Which words does the expression refer to?').closest<HTMLElement>('.co-lab')!;
+  const lab = screen.getByText('Which words does the indicator refer to?').closest<HTMLElement>('.co-lab')!;
   showPageFor(lab);
   fireEvent.click(within(lab).getByRole('button', { name: 'Member' }));
   // Marks finish at y=245, but a later sentence line continues to y=400.
@@ -327,7 +327,7 @@ it('reports a correct negative answer without reversing its meaning in feedback'
   expect(complete).not.toHaveBeenCalled();
 });
 
-it('teaches permission and instruction after the core sequence but before the preserved attached practice', () => {
+it('teaches permission and instruction after the core sequence but before the kept attached practice', () => {
   const { container, complete } = mount('orientation');
   const unit = conditionalUnits.find(item => item.id === 'orientation')!;
   const permissionItem = unit.drills.advanced.find(item => item.id === 'orientation-a1')!;
@@ -345,7 +345,7 @@ it('teaches permission and instruction after the core sequence but before the pr
   const permission = within(section).getByRole('heading', { name: 'Lena is a guest with a ticket. Do we know that she used the cloakroom?' }).closest<HTMLElement>('.cr-question')!;
   const instruction = within(section).getByRole('heading', { name: /The notice says: If a tray is empty/ }).closest<HTMLElement>('.cr-question')!;
   expect(within(permission).getByRole('status').textContent).toBe('');
-  fireEvent.click(within(permission).getByRole('button', { name: 'Yes, the ticket establishes that she used it.' }));
+  fireEvent.click(within(permission).getByRole('button', { name: 'Yes, the ticket proves that she used it.' }));
   expect(within(permission).getByRole('status').textContent).toMatch(/permission into a completed action/);
   fireEvent.click(within(permission).getByRole('button', { name: 'No, we know she is allowed to use it.' }));
   expect(permission.querySelector('.cr-correct')).toBeTruthy();
@@ -378,13 +378,13 @@ it('builds from a hypothetical through enough and required roles before missing 
   expect(complete).not.toHaveBeenCalled();
 });
 
-it('keeps correct target status readable without colour and uses a fresh the-only check', () => {
+it('keeps correct group status readable without colour and uses a fresh the-only check', () => {
   const { complete } = mount('group-1');
-  const lab = screen.getByText('Which words does the expression refer to?').closest<HTMLElement>('.co-lab')!;
+  const lab = screen.getByText('Which words does the indicator refer to?').closest<HTMLElement>('.co-lab')!;
   showPageFor(lab);
   fireEvent.click(within(lab).getByRole('button', { name: 'Submitted before noon' }));
-  expect(lab.querySelector('.co-correct .co-answer-state')?.textContent).toBe('Correct target.');
-  const check = screen.getByRole('heading', { hidden: true, name: 'The only notebooks kept on this shelf are hardback. Which diagram preserves the rule?' }).closest<HTMLElement>('.co-check')!;
+  expect(lab.querySelector('.co-correct .co-answer-state')?.textContent).toBe('Correct group.');
+  const check = screen.getByRole('heading', { hidden: true, name: 'The only notebooks kept on this shelf are hardback. Which diagram keeps the rule?' }).closest<HTMLElement>('.co-check')!;
   showPageFor(check);
   fireEvent.click(within(check).getByRole('button', { name: 'Hardback → Kept on shelf' }));
   expect(within(check).getByText(/it does not put every hardback notebook on this shelf/)).toBeTruthy();
@@ -399,7 +399,7 @@ it('keeps inline contents before the lesson and visible during practice', () => 
   const navigation = container.querySelector<HTMLElement>('.co-page-bar')!;
   const article = container.querySelector('[data-lesson-page]')!;
   expect(navigation.compareDocumentPosition(article) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-  const lab = screen.getByText('Which words does the expression refer to?').closest<HTMLElement>('.co-lab')!;
+  const lab = screen.getByText('Which words does the indicator refer to?').closest<HTMLElement>('.co-lab')!;
   showPageFor(lab);
   fireEvent.focus(within(lab).getByRole('button', { name: 'Member' }));
   fireEvent.click(within(lab).getByRole('button', { name: 'Member' }));

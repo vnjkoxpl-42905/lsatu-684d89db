@@ -15,7 +15,7 @@ function Section({ title, children, dark = false, expressionNumber, id }: { titl
   const tocTitle = title.includes(':') ? title.split(':')[0] : ({
     'Which reports does this rule cover?': 'Reports covered by the rule',
     'What kind of pass does entry require?': 'The pass entry requires',
-    'Try the sentence from the inside': 'Personalized If/Then',
+    'Try the sentence from the inside': '“Put yourself in it”',
     'A guarantee is stronger than a tendency': 'Guarantees and wording',
     'Having a requirement does not guarantee the result': 'Requirement or guarantee?',
     'Try the same reasoning with a new rule': 'Try a new rule',
@@ -72,7 +72,7 @@ export const translationExamples: Record<string, MappedTranslation[]> = {
     { word: 'only where', sentence: 'The service operates only where a station is available.', sentenceTarget: 'a station is available', target: 'Station available', other: 'Service operates', left: 'Service operates', right: 'Station available', why: 'Only where what? A station is available. Availability is required wherever this service operates.', readback: 'If the service operates at a location, then a station is available there.' },
     { word: 'always', sentence: 'A finalist always receives an invitation.', sentenceTarget: 'receives an invitation', target: 'Receives invitation', other: 'Finalist', left: 'Finalist', right: 'Receives invitation', why: 'What does the sentence promise every finalist? An invitation. Every finalist receives one. There are no exceptions in this sentence.', readback: 'If someone is a finalist, then that person receives an invitation.' },
     { word: 'requires', sentence: 'Entry requires a current pass.', sentenceTarget: 'a current pass', target: 'Has current pass', other: 'Enters', left: 'Enters', right: 'Has current pass', why: 'Requires what? A current pass. Keep current; an expired pass does not meet the condition.', readback: 'If someone enters, then that person has a current pass.' },
-    { word: 'must', sentence: 'A finalist must attend the interview.', sentenceTarget: 'attend the interview', target: 'Required to attend interview', other: 'Finalist', left: 'Finalist', right: 'Required to attend interview', why: 'Must what? Attend the interview. This sentence states a requirement. It does not establish that every finalist complied.', readback: 'If someone is a finalist, then that person is required to attend the interview.' },
+    { word: 'must', sentence: 'A finalist must attend the interview.', sentenceTarget: 'attend the interview', target: 'Required to attend interview', other: 'Finalist', left: 'Finalist', right: 'Required to attend interview', why: 'Must what? Attend the interview. This sentence states a requirement. It does not prove that every finalist complied.', readback: 'If someone is a finalist, then that person is required to attend the interview.' },
   ],
 };
 
@@ -88,7 +88,7 @@ export const diagramExamples: Record<string, DiagramTranslation[]> = {
       "left": "Countdown reaches zero",
       "right": "Timer rings",
       "readback": "If the countdown reaches zero, then the kitchen timer rings.",
-      "why": "This sentence gives a ring whenever its countdown reaches zero. That makes reaching zero the starting condition. A ring alone doesn't establish that the countdown reached zero, since another reason for ringing would also fit the sentence.",
+      "why": "This sentence gives a ring whenever its countdown reaches zero. That makes reaching zero the starting condition. A ring alone doesn't prove that the countdown reached zero, since another reason for ringing would also fit the sentence.",
       "reversedPromise": "A ring for another reason would fit this rule. Your reverse arrow rules that out: it says every ring proves the countdown reached zero. The sentence only guarantees a ring when the countdown reaches zero."
     },
     {
@@ -100,7 +100,7 @@ export const diagramExamples: Record<string, DiagramTranslation[]> = {
       "left": "Reservation confirmed",
       "right": "Confirmation email sent",
       "readback": "If a library reservation is confirmed, then a confirmation email is sent.",
-      "why": "A confirmed library reservation gets a confirmation email. That makes confirmation the starting condition. The sentence has not said that every confirmation email establishes a confirmed library reservation.",
+      "why": "A confirmed library reservation gets a confirmation email. That makes confirmation the starting condition. The sentence has not said that every confirmation email proves a confirmed library reservation.",
       "reversedPromise": "An email sent without a confirmed reservation has not been ruled out. Starting with the email would make confirmation certain, but the sentence only tells us what confirmed reservations receive."
     },
     {
@@ -175,7 +175,7 @@ export const diagramExamples: Record<string, DiagramTranslation[]> = {
       "right": "Guest has booking",
       "readback": "If a guest receives a room key, then that guest has a booking.",
       "why": "A room key tells you the guest has a booking because only limits keys to those guests. Nothing says every guest with a booking receives a key, so a booking alone leaves that question open.",
-      "reversedPromise": "A guest could have a booking without receiving a key. That meets the requirement without establishing the result. Booking \u2192 Receives key would promise a key to every booked guest."
+      "reversedPromise": "A guest could have a booking without receiving a key. That meets the requirement without proving the result. Booking \u2192 Receives key would promise a key to every booked guest."
     },
     {
       "word": "only if",
@@ -186,7 +186,7 @@ export const diagramExamples: Record<string, DiagramTranslation[]> = {
       "left": "Printer releases document",
       "right": "Job approved",
       "readback": "If a printer releases a document, then its job has been approved.",
-      "why": "The printer needs an approved job to release the document. Release therefore establishes approval. A job that is approved but unreleased would fit the sentence too.",
+      "why": "The printer needs an approved job to release the document. Release therefore proves approval. A job that is approved but unreleased would fit the sentence too.",
       "reversedPromise": "An approved job could remain unreleased. The rule requires approval for release; it doesn't guarantee release for every approved job. Your arrow would make approval enough."
     },
     {
@@ -210,7 +210,7 @@ export const diagramExamples: Record<string, DiagramTranslation[]> = {
       "left": "Delivery van stops",
       "right": "Parking permitted",
       "readback": "If a delivery van stops at a location, then parking is permitted there.",
-      "why": "A van stopping at a location tells us parking is permitted there. Permission at another location would not meet this condition. Nor does parking permission by itself establish that the van stops.",
+      "why": "A van stopping at a location tells us parking is permitted there. Permission at another location would not meet this condition. Nor does parking permission by itself prove that the van stops.",
       "reversedPromise": "Parking could be permitted somewhere the van never stops. The sentence hasn't promised a stop at every permitted location. Starting from permission would add exactly that promise."
     },
     {
@@ -234,7 +234,7 @@ export const diagramExamples: Record<string, DiagramTranslation[]> = {
       "left": "Borrows telescope",
       "right": "Has signed checkout form",
       "readback": "If someone borrows a telescope, then that person has a signed checkout form.",
-      "why": "Borrowing the telescope needs a signed checkout form. Signed belongs in the requirement, so an unsigned form would not preserve the sentence. Having the signed form alone doesn't prove the telescope was borrowed.",
+      "why": "Borrowing the telescope needs a signed checkout form. Signed belongs in the requirement, so an unsigned form would not keep the sentence. Having the signed form alone doesn't prove the telescope was borrowed.",
       "reversedPromise": "Someone could sign a checkout form without borrowing the telescope. The sentence hasn't ruled that out. Your arrow would turn the signed form into proof of borrowing instead of keeping it a requirement."
     },
     {
@@ -246,7 +246,7 @@ export const diagramExamples: Record<string, DiagramTranslation[]> = {
       "left": "Visitor uses workshop",
       "right": "Required to wear safety glasses",
       "readback": "If a visitor uses the workshop, then that visitor is required to wear safety glasses.",
-      "why": "Using the workshop gives the visitor an obligation to wear safety glasses. It does not supply a fact proving the visitor wore them. Required to wear safety glasses preserves the claim that must makes here.",
+      "why": "Using the workshop gives the visitor an obligation to wear safety glasses. It does not supply a fact proving the visitor wore them. Required to wear safety glasses keeps the claim that must makes here.",
       "reversedPromise": "A visitor in another room could have the same safety-glasses obligation. The sentence doesn't restrict that obligation to workshop users. Your arrow would make the obligation proof that the visitor uses the workshop."
     }
   ]
@@ -261,7 +261,7 @@ export const flashcardExamples: Record<string, Translation[]> = {
       "left": "Door opened",
       "right": "Oven light comes on",
       "readback": "If the oven door is opened, then its light comes on.",
-      "why": "The sentence gives you the oven light coming on when the door is opened. The if-clause supplies that starting condition even though it comes last. The light being on alone doesn't establish why it came on."
+      "why": "The sentence gives you the oven light coming on when the door is opened. The if-clause supplies that starting condition even though it comes last. The light being on alone doesn't prove why it came on."
     },
     {
       "word": "when",
@@ -271,7 +271,7 @@ export const flashcardExamples: Record<string, Translation[]> = {
       "left": "Parcel reaches pickup shelf",
       "right": "Status changes",
       "readback": "If a parcel reaches the pickup shelf, then its status changes.",
-      "why": "The parcel reaching the pickup shelf is the event that gives us a status change. A change by itself wouldn't establish arrival there; the sentence hasn't said that is the only way the status can change."
+      "why": "The parcel reaching the pickup shelf is the event that gives us a status change. A change by itself wouldn't prove arrival there; the sentence hasn't said that is the only way the status can change."
     },
     {
       "word": "where",
@@ -281,7 +281,7 @@ export const flashcardExamples: Record<string, Translation[]> = {
       "left": "Garden bed contains seedlings",
       "right": "Shade cover installed",
       "readback": "If a garden bed contains seedlings, then a shade cover is installed over it.",
-      "why": "The rule covers a bed containing seedlings. A shade cover is installed over that same bed. Finding a cover over a bed doesn't establish seedlings, since the sentence hasn't restricted covers to those beds."
+      "why": "The rule covers a bed containing seedlings. A shade cover is installed over that same bed. Finding a cover over a bed doesn't prove seedlings, since the sentence hasn't restricted covers to those beds."
     },
     {
       "word": "all",
@@ -301,7 +301,7 @@ export const flashcardExamples: Record<string, Translation[]> = {
       "left": "Photograph displayed in hallway",
       "right": "Black-and-white photograph",
       "readback": "If a photograph is displayed in the hallway, then it is black-and-white.",
-      "why": "The only points to photographs displayed in the hallway. Any photograph displayed there has to be black-and-white. Being black-and-white alone doesn't establish that a photograph is on that wall."
+      "why": "The only points to photographs displayed in the hallway. Any photograph displayed there has to be black-and-white. Being black-and-white alone doesn't prove that a photograph is on that wall."
     },
     {
       "word": "every",
@@ -333,7 +333,7 @@ export const flashcardExamples: Record<string, Translation[]> = {
       "left": "Rents power tool",
       "right": "Adult",
       "readback": "If someone rents a power tool, then that person is an adult.",
-      "why": "Only limits power-tool rentals to adults. If someone rents a power tool, the sentence establishes that they're an adult. Being an adult alone doesn't establish that they rent one."
+      "why": "Only limits power-tool rentals to adults. If someone rents a power tool, the sentence proves that they're an adult. Being an adult alone doesn't prove that they rent one."
     },
     {
       "word": "only if",
@@ -373,7 +373,7 @@ export const flashcardExamples: Record<string, Translation[]> = {
       "left": "Returned rental bike",
       "right": "Has return record",
       "readback": "If a rental bike has been returned, then it has a return record.",
-      "why": "Every returned rental bike has a return record, so a return establishes the record. That's why the record belongs on the right. The sentence doesn't tell us that every bike with a return record has been returned."
+      "why": "Every returned rental bike has a return record, so a return proves the record. That's why the record belongs on the right. The sentence doesn't tell us that every bike with a return record has been returned."
     },
     {
       "word": "requires",
@@ -393,7 +393,7 @@ export const flashcardExamples: Record<string, Translation[]> = {
       "left": "Cyclist enters track",
       "right": "Required to wear helmet",
       "readback": "If a cyclist enters the track, then that cyclist is required to wear a helmet.",
-      "why": "Entering the track gives the cyclist a requirement to wear a helmet. It doesn't establish compliance. Keep required to wear helmet in the diagram so the stated obligation remains an obligation."
+      "why": "Entering the track gives the cyclist a requirement to wear a helmet. It doesn't prove compliance. Keep required to wear helmet in the diagram so the stated obligation remains an obligation."
     }
   ]
 };
@@ -446,7 +446,7 @@ function TargetSentence({ item, marked }: { item: MappedTranslation; marked: boo
       {item.sentence.slice(spans[1].end)}
     </blockquote>
     {connector && <svg className="co-target-connector" aria-hidden="true"><path d={connector}/></svg>}
-    <figcaption><span>Expression: <strong>{item.word}</strong></span><span>Complete target: <strong>{item.target}</strong></span></figcaption>
+    <figcaption><span>Expression: <strong>{item.word}</strong></span><span>Points to: <strong>{item.target}</strong></span></figcaption>
   </figure>;
 }
 
@@ -455,7 +455,7 @@ function TranslationLab({ id }: { id: string }) {
   const [choice, setChoice] = useState<string | null>(null);
   const [diagram, setDiagram] = useState(false);
   const item = translationExamples[id][index];
-  return <div className="co-lab"><p className="co-kicker">Which words does the expression refer to?</p><div className="co-word-tabs" role="group" aria-label="Indicator examples">{translationExamples[id].map((e, i) => <button key={e.word} aria-pressed={i === index} onClick={() => { setIndex(i); setChoice(null); setDiagram(false); }}>{e.word}</button>)}</div><TargetSentence item={item} marked={choice === item.target}/><p>What is <strong>{item.word}</strong> referring to?</p><div className="co-choices">{orderedConditionalIdeas(item).map(value => <button key={value} aria-pressed={choice === value} onClick={() => { setChoice(value); setDiagram(false); }}>{value}</button>)}</div><div role="status">{choice && <div className={`co-feedback ${choice === item.target ? 'co-correct' : ''}`}><span className="co-answer-state">{choice === item.target ? 'Correct target.' : 'Not quite.'}</span><strong>{choice === item.target ? 'You have the complete target.' : 'You chose the other condition.'}</strong>{choice !== item.target && <p>You chose {choice}, but {item.word} refers to {item.target}. {id === 'group-1' ? 'You selected the result rather than the complete sufficient idea.' : 'You selected the condition that needs the requirement rather than the required idea.'}</p>}<p>{item.why}</p>{choice === item.target && <button className="co-primary" onClick={() => setDiagram(true)}>Show the {id === 'group-1' ? 'sufficient condition on the left' : 'requirement on the right'}</button>}</div>}</div>{diagram && <Arrow left={item.left} right={item.right}/>}</div>;
+  return <div className="co-lab"><p className="co-kicker">Which words does the indicator refer to?</p><div className="co-word-tabs" role="group" aria-label="Indicator examples">{translationExamples[id].map((e, i) => <button key={e.word} aria-pressed={i === index} onClick={() => { setIndex(i); setChoice(null); setDiagram(false); }}>{e.word}</button>)}</div><TargetSentence item={item} marked={choice === item.target}/><p>What is <strong>{item.word}</strong> referring to?</p><div className="co-choices">{orderedConditionalIdeas(item).map(value => <button key={value} aria-pressed={choice === value} onClick={() => { setChoice(value); setDiagram(false); }}>{value}</button>)}</div><div role="status">{choice && <div className={`co-feedback ${choice === item.target ? 'co-correct' : ''}`}><span className="co-answer-state">{choice === item.target ? 'Correct group.' : 'Not quite.'}</span><strong>{choice === item.target ? 'You have the complete group.' : 'You chose the other condition.'}</strong>{choice !== item.target && <p>You chose {choice}, but {item.word} refers to {item.target}. {id === 'group-1' ? 'You selected the result rather than the complete sufficient idea.' : 'You selected the condition that needs the requirement rather than the required idea.'}</p>}<p>{item.why}</p>{choice === item.target && <button className="co-primary" onClick={() => setDiagram(true)}>Show the {id === 'group-1' ? 'sufficient condition on the left' : 'requirement on the right'}</button>}</div>}</div>{diagram && <Arrow left={item.left} right={item.right}/>}</div>;
 }
 function Flashcards({ id }: { id: string }) {
   const cards = flashcardExamples[id];
@@ -465,11 +465,11 @@ function Flashcards({ id }: { id: string }) {
   const card = cards[index];
   return <div className="co-flash"><p className="co-kicker">Recall before revealing · {index + 1} / {cards.length}</p>
     <div className={`co-flash-face ${back ? 'co-flipped' : ''}`}><strong>{card.sentence}</strong><span>Say the complete rule, then compare.</span><div id={faceId} aria-live="polite">{back && <><strong>{card.readback}</strong><p>{card.why}</p></>}</div></div>
-    <div className="co-choices"><button aria-expanded={back} aria-controls={faceId} onClick={() => setBack(!back)}>{back ? 'Hide answer' : 'Reveal answer'}</button><button disabled={index === 0} onClick={() => { setIndex(index - 1); setBack(false); }}>Previous sentence</button><button onClick={() => { setIndex((index + 1) % cards.length); setBack(false); }}>{index === cards.length - 1 ? 'Start again' : 'Next sentence'}</button></div><p className="co-small">These examples help you recall the relationship. Your attached drill gives you separate questions.</p></div>;
+    <div className="co-choices"><button aria-expanded={back} aria-controls={faceId} onClick={() => setBack(!back)}>{back ? 'Hide answer' : 'Reveal answer'}</button><button disabled={index === 0} onClick={() => { setIndex(index - 1); setBack(false); }}>Previous sentence</button><button onClick={() => { setIndex((index + 1) % cards.length); setBack(false); }}>{index === cards.length - 1 ? 'Start again' : 'Next sentence'}</button></div><p className="co-small">These examples help you recall the rule. Your attached drill gives you separate questions.</p></div>;
 }
 function DirectionSwitch() {
   const [only, setOnly] = useState(false);
-  return <div className="co-switch"><div className="co-choices"><button aria-pressed={!only} onClick={() => setOnly(false)}>if</button><button aria-pressed={only} onClick={() => setOnly(true)}>only if</button></div><blockquote>A student enters <mark>{only ? 'only if' : 'if'}</mark> the student has a pass.</blockquote><Arrow left={only ? 'Enters' : 'Has pass'} right={only ? 'Has pass' : 'Enters'}/><p role="status">{only ? 'The pass is required. Having one does not establish entry.' : 'This sentence guarantees entry for a student who has a pass.'}</p></div>;
+  return <div className="co-switch"><div className="co-choices"><button aria-pressed={!only} onClick={() => setOnly(false)}>if</button><button aria-pressed={only} onClick={() => setOnly(true)}>only if</button></div><blockquote>A student enters <mark>{only ? 'only if' : 'if'}</mark> the student has a pass.</blockquote><Arrow left={only ? 'Enters' : 'Has pass'} right={only ? 'Has pass' : 'Enters'}/><p role="status">{only ? 'The pass is required. Having one does not prove entry.' : 'This sentence guarantees entry for a student who has a pass.'}</p></div>;
 }
 function DiagramBuilder({ id }: { id: string }) {
   const items = diagramExamples[id];
@@ -477,7 +477,7 @@ function DiagramBuilder({ id }: { id: string }) {
   const [left, setLeft] = useState<string | null>(null);
   const [checked, setChecked] = useState(false);
   const item = items[index];
-  return <div className="co-lab"><p className="co-kicker">Build the diagram</p><TargetSentence item={item} marked={checked && left === item.left}/><p>Both complete ideas are below. Choose the sufficient condition, the one that gives you enough to establish the other. It belongs on the left of the arrow.</p><div className="co-choices">{orderedConditionalIdeas(item).map(value => <button key={value} aria-pressed={left === value} onClick={() => { setLeft(value); setChecked(false); }}>{value}</button>)}</div>{left && <><Arrow left={left} right={left === item.target ? item.other : item.target}/><button className="co-primary" onClick={() => setChecked(true)}>Check my diagram</button></>}<div role="status">{checked && <div className={`co-feedback ${left === item.left ? 'co-correct' : ''}`}><strong>{left === item.left ? 'Your arrow preserves the relationship.' : 'Your arrow reverses this relationship.'}</strong>{left !== item.left && <p>{item.reversedPromise}</p>}<p>{item.why}</p><p>{item.readback}</p><button onClick={() => { setIndex((index + 1) % items.length); setLeft(null); setChecked(false); }}>{index === items.length - 1 ? 'Practice these again' : 'Next sentence'}</button></div>}</div></div>;
+  return <div className="co-lab"><p className="co-kicker">Build the diagram</p><TargetSentence item={item} marked={checked && left === item.left}/><p>Both complete ideas are below. Choose the sufficient condition, the one that gives you enough to prove the other. It belongs on the left of the arrow.</p><div className="co-choices">{orderedConditionalIdeas(item).map(value => <button key={value} aria-pressed={left === value} onClick={() => { setLeft(value); setChecked(false); }}>{value}</button>)}</div>{left && <><Arrow left={left} right={left === item.target ? item.other : item.target}/><button className="co-primary" onClick={() => setChecked(true)}>Check my diagram</button></>}<div role="status">{checked && <div className={`co-feedback ${left === item.left ? 'co-correct' : ''}`}><strong>{left === item.left ? 'Your arrow keeps the rule.' : 'Your arrow reverses this rule.'}</strong>{left !== item.left && <p>{item.reversedPromise}</p>}<p>{item.why}</p><p>{item.readback}</p><button onClick={() => { setIndex((index + 1) % items.length); setLeft(null); setChecked(false); }}>{index === items.length - 1 ? 'Practice these again' : 'Next sentence'}</button></div>}</div></div>;
 }
 type IndicatorExplanation = {
   title: string;
@@ -494,9 +494,9 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
       title: 'If: the starting condition can come last',
       paragraphs: [
         "Read the if-clause first: the report is submitted before noon. The sentence makes that enough for review. Every report meeting that condition is reviewed.",
-        "The target of if is the complete idea submitted before noon. It appears second in the sentence, but it still has the sufficient role. Moving a clause doesn't change what guarantees what.",
+        "The group of if is the complete idea submitted before noon. It appears second in the sentence, but it still has the sufficient role. Moving a clause doesn't change what guarantees what.",
       ],
-      prompt: 'Which fact lets you establish review: submission before noon, or review itself?',
+      prompt: 'Which fact lets you prove review: submission before noon, or review itself?',
       reasoning: [
         "Submission before noon. That's the condition the rule makes enough for review. Start there and the sentence gives you the other condition.",
         "Starting from review instead would make a new promise about submission time. The original sentence hasn't told us that every reviewed report arrived before noon.",
@@ -506,24 +506,24 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
         "We've been told the archivist asked the question. We haven't been given its answer. There is no conditional rule to draw here, so read what the whole sentence says before treating if as a direction instruction.",
       ],
       check: {
-        prompt: 'The archivist asked if the drawer was locked. What has the sentence established?',
+        prompt: 'The archivist asked if the drawer was locked. What has the sentence proved?',
         options: ['A locked drawer guarantees an inquiry.', 'The drawer was locked.', 'The archivist asked whether the drawer was locked.'],
         correct: 2,
         feedback: [
           'You changed a report of a question into a rule about locked drawers. Asked if tells us what the archivist asked, not what every locked drawer guarantees.',
-          "You treated the question as if it supplied its own answer. The sentence establishes that the archivist asked whether the drawer was locked; it doesn't tell us that it was locked.",
-          'This preserves the inquiry. Asked if means asked whether here. The sentence tells us a question was asked while leaving its answer open.',
+          "You treated the question as if it supplied its own answer. The sentence proves that the archivist asked whether the drawer was locked; it doesn't tell us that it was locked.",
+          'This keeps the inquiry. Asked if means asked whether here. The sentence tells us a question was asked while leaving its answer open.',
         ],
       },
     },
     {
       title: 'When: an occasion can supply enough information',
       paragraphs: [
-        "In this stated rule, the alarm sounding is enough for the staff to evacuate. When refers to that complete event. We're taking the sentence as an exceptionless relationship, rather than predicting what staff usually do.",
+        "In this stated rule, the alarm sounding is enough for the staff to evacuate. When refers to that complete event. We're taking the sentence as an exceptionless rule, rather than predicting what staff usually do.",
         "The staff evacuate when the alarm sounds expresses the same connection. The starting condition can appear after the result without changing its job.",
-        "Whenever can express the same recurring relationship: Whenever the alarm sounds, the staff evacuate. Each alarm gives us evacuation in that sentence. It still doesn't tell us that every evacuation follows an alarm.",
+        "Whenever can express the same recurring rule: Whenever the alarm sounds, the staff evacuate. Each alarm gives us evacuation in that sentence. It still doesn't tell us that every evacuation follows an alarm.",
       ],
-      prompt: 'The staff are evacuating. Does this rule establish that the alarm sounded?',
+      prompt: 'The staff are evacuating. Does this rule prove that the alarm sounded?',
       reasoning: [
         "No. The sentence tells us what follows when the alarm sounds. It hasn't said that an alarm is the only possible reason for evacuation.",
         "Staff evacuating for another reason would fit the rule. The alarm gives us evacuation; evacuation alone doesn't settle the alarm question.",
@@ -537,7 +537,7 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
         options: ['When I checked the gallery, a lamp was on.', 'Whenever the alarm sounds, the staff evacuate.'],
         correct: 1,
         feedback: [
-          "You treated one reported visit as a promise about every visit. The lamp was on when the speaker checked, but the sentence doesn't establish a recurring connection between checking and the lamp.",
+          "You treated one reported visit as a promise about every visit. The lamp was on when the speaker checked, but the sentence doesn't prove a recurring connection between checking and the lamp.",
           'Whenever states the recurring connection here: each time the alarm sounds, the staff evacuate. That supplies an exceptionless rule in this sentence; the gallery sentence reports one occasion.',
         ],
       },
@@ -548,7 +548,7 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
         "The sentence tells us about a location where a station is available. At that location, availability is enough for the service to operate. Where refers to the station being available, not to service in some unrelated place.",
         "Keep the location the same on both sides. A short label can save writing, but it still needs to refer to the place the sentence concerns.",
       ],
-      prompt: 'A station is available at North Square. What does the rule establish about North Square?',
+      prompt: 'A station is available at North Square. What does the rule prove about North Square?',
       reasoning: [
         "The service operates there. The fact puts North Square in the locations covered by this rule.",
         "Read the diagram as: if a station is available at a location, the service operates there. This fact doesn't give us a conclusion about another square whose station status we don't know.",
@@ -558,7 +558,7 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
       title: 'All: name the complete group',
       paragraphs: [
         "The statement covers each registered guest. Once you know someone is a registered guest, you can conclude that person receives a wristband.",
-        "Registered matters. The target of all is the complete group registered guests, so the sufficient condition includes registration. The rule doesn't tell us about every guest regardless of registration.",
+        "Registered matters. The group of all is the complete group registered guests, so the sufficient condition includes registration. The rule doesn't tell us about every guest regardless of registration.",
       ],
       prompt: "Nora is a guest, but we don't know whether she's registered. Does this rule settle her wristband status?",
       reasoning: [
@@ -567,10 +567,10 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
       ],
     },
     {
-      title: 'The only: read the whole expression',
+      title: 'The only: read the whole phrase',
       paragraphs: [
-        "The sentence limits the vehicles permitted inside. Every vehicle in that group has to be electric. Start by asking the only what? The target is vehicles permitted inside, not electric vehicles.",
-        "Knowing a vehicle is permitted inside is therefore enough to establish that it is electric. The expression's complete target has the sufficient role.",
+        "The sentence limits the vehicles permitted inside. Every vehicle in that group has to be electric. Start by asking the only what? It points to vehicles permitted inside, not electric vehicles.",
+        "Knowing a vehicle is permitted inside is therefore enough to prove that it is electric. The indicator's complete group has the sufficient role.",
       ],
       prompt: 'You learn that a vehicle was permitted inside. What does the sentence tell you about it?',
       reasoning: [
@@ -578,7 +578,7 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
         "The sentence hasn't promised that every electric vehicle is permitted inside. An electric vehicle that is not permitted inside would fit the rule. Whether a vehicle actually enters is a separate question.",
       ],
       after: [
-        "This is why the only belongs with our sufficient expressions: the complete group it introduces gives us the starting condition. Read it as a whole expression. We'll compare it with only once we've learned the other group.",
+        "This is why the only belongs with our sufficient indicators: the complete group it introduces gives us the starting condition. Read it as a whole phrase. We'll compare it with only once we've learned the other group.",
       ],
     },
     {
@@ -587,7 +587,7 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
         "Every gives finalist status the same sufficient job that all gave registered-guest status. Pick any person who is a finalist and the sentence settles the invitation question for that person.",
         "The statement doesn't tell us who the finalists are. It tells us what has to be true of each one. A separate fact about a person can let us use that connection.",
       ],
-      prompt: 'Someone receives an invitation. Have we established that they are a finalist?',
+      prompt: 'Someone receives an invitation. Have we proved that they are a finalist?',
       reasoning: [
         "No. Every finalist receives one, but the sentence hasn't restricted invitations to finalists.",
         "The rule starts from finalists. It tells you what each finalist gets, not who else might get an invitation. The direction comes from which people the sentence covers, not from which condition seems most important.",
@@ -597,9 +597,9 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
       title: 'Any: keep the restriction with the person',
       paragraphs: [
         "Any covers each applicant who meets the stated restriction. The complete sufficient idea is that the person is an applicant who submits late. Applicant alone doesn't capture it.",
-        "A fee is paid by any applicant who submits late moves the target later in the sentence. It still tells us what follows for late-submitting applicants. Locate what any refers to rather than using sentence position as a placement instruction.",
+        "A fee is paid by any applicant who submits late moves the group later in the sentence. It still tells us what follows for late-submitting applicants. Locate what any refers to rather than using sentence position as a placement instruction.",
       ],
-      prompt: 'Which label preserves the sufficient condition: Applicant, or Applicant submits late?',
+      prompt: 'Which label keeps the sufficient condition: Applicant, or Applicant submits late?',
       reasoning: [
         "Applicant submits late. The rule makes that whole condition enough for a fee.",
         "Leaving out submits late changes the statement. It would make every applicant pay a fee, including someone who submitted on time, even though the original sentence hasn't said that.",
@@ -616,22 +616,22 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
       prompt: 'Leon is a member. Does this sentence promise that Leon is admitted?',
       reasoning: [
         "No. Membership is required, but a member could remain outside without breaking this rule.",
-        "Admitted → Member preserves the restriction on admission. Member → Admitted would add a promise about every member that the sentence hasn't made.",
+        "Admitted → Member keeps the restriction on admission. Member → Admitted would add a promise about every member that the sentence hasn't made.",
       ],
       after: [
-        "Compare The only people admitted are members. That also tells us every admitted person is a member. The only points to admitted people, the sufficient target. Only members are admitted points to members, the necessary target. Different grammatical targets; the same complete relationship.",
+        "Compare The only people admitted are members. That also tells us every admitted person is a member. The only points to admitted people, the sufficient group. Only members are admitted points to members, the necessary group. Different grammatical groups; the same complete rule.",
       ],
     },
     {
       title: 'Only if: a condition that must be met',
       paragraphs: [
         "The student needs to complete the project for graduation. Only if makes project completion a requirement; it doesn't make completion a promise of graduation.",
-        "The target is the complete condition completes the project. If graduation occurs, that condition has to be met. That is why it belongs on the required side.",
+        "It points to the complete condition completes the project. If graduation occurs, that condition has to be met. That is why it belongs on the required side.",
       ],
-      prompt: 'If my project is completed, does the sentence establish that I graduate?',
+      prompt: 'If my project is completed, does the sentence prove that I graduate?',
       reasoning: [
         "No. I could complete the project without graduating. The sentence hasn't said completion is the only requirement, or that every student who completes the project graduates.",
-        "Graduates → Completes project preserves what graduation requires. Reversing that arrow would turn the requirement into a guarantee.",
+        "Graduates → Completes project keeps what graduation requires. Reversing that arrow would turn the requirement into a guarantee.",
       ],
       after: [
         "Watch what changes when only is added to if below. One sentence makes a pass enough for entry. The other requires a pass for entry. Compare what each one lets you conclude from having a pass.",
@@ -641,9 +641,9 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
       title: 'Only when: an occasion that is required',
       paragraphs: [
         "The sentence restricts reviews to occasions with a filed complaint. A review needs a complaint. Nothing says every complaint produces a review.",
-        "Only when a complaint is filed does a review occur moves the required condition to the front. It keeps the same relationship. Find what the sentence requires rather than assuming the first condition goes left.",
+        "Only when a complaint is filed does a review occur moves the required condition to the front. It keeps the same rule. Find what the sentence requires rather than assuming the first condition goes left.",
       ],
-      prompt: 'A complaint has been filed. Does that alone establish that a review occurs?',
+      prompt: 'A complaint has been filed. Does that alone prove that a review occurs?',
       reasoning: [
         "No. A filed complaint with no review fits the sentence. The statement restricts reviews to occasions with a filed complaint; it doesn't say every complaint produces one.",
         "Review occurs → Complaint filed keeps the required occasion on the right. If we learn that a review occurs, this rule lets us conclude a complaint was filed.",
@@ -670,26 +670,26 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
       prompt: 'What is guaranteed here: an invitation for a finalist, or finalist status for anyone invited?',
       reasoning: [
         "An invitation for a finalist. The sentence gives one to every person who meets that condition.",
-        "Always hasn't told us that invitations go only to finalists. The invitation belongs on the right as the result each finalist must receive; starting from it would reverse the relationship.",
+        "Always hasn't told us that invitations go only to finalists. The invitation belongs on the right as the result each finalist must receive; starting from it would reverse the rule.",
       ],
     },
     {
-      title: 'Requires: the target can come before the word',
+      title: 'Requires: the group can come before the word',
       paragraphs: [
         "What does entry require? A current pass. That complete idea is necessary. A pass that has expired doesn't meet the condition the sentence gives us.",
         "Now move the requirement: A current pass is required for entry. The pass comes before required, but its role hasn't changed. Automatically taking the words after the indicator would point you toward entry and reverse the rule.",
       ],
       prompt: 'How would you diagram: A current pass is required for entry?',
       reasoning: [
-        "Enters → Has current pass. If someone enters, the required pass is present. The target is a current pass, wherever that phrase appears in the sentence.",
-        "Having the pass still doesn't guarantee entry. Someone could keep one in a drawer and never enter. Required means needed for the other condition, not enough to establish that it happened.",
+        "Enters → Has current pass. If someone enters, the required pass is present. It points to a current pass, wherever that phrase appears in the sentence.",
+        "Having the pass still doesn't guarantee entry. Someone could keep one in a drawer and never enter. Required means needed for the other condition, not enough to prove that it happened.",
       ],
     },
     {
-      title: 'Must: preserve an obligation as an obligation',
+      title: 'Must: keep an obligation as an obligation',
       paragraphs: [
         "Here must states what finalists are required to do. If someone is a finalist, that person has an obligation to attend the interview.",
-        "The sentence hasn't supplied a fact proving that every finalist complied. Keep required to in the complete target so that your diagram preserves the difference between an obligation and a completed action.",
+        "The sentence hasn't supplied a fact proving that every finalist complied. Keep required to in the complete group so that your diagram keeps the difference between an obligation and a completed action.",
       ],
       prompt: 'Maya is a finalist. Which follows: she is required to attend, or she actually attended?',
       reasoning: [
@@ -697,7 +697,7 @@ const indicatorExplanations: Record<string, IndicatorExplanation[]> = {
         "Actual attendance would need information about what Maya did. Finalist → Attends interview would quietly turn the stated requirement into proof of compliance.",
       ],
       after: [
-        "Shortening a label should save writing while preserving the claim. Required to attend interview is longer than attends interview, but here those extra words are doing necessary work.",
+        "Shortening a label should save writing while keeping the claim. Required to attend interview is longer than attends interview, but here those extra words are doing necessary work.",
       ],
     },
   ],
@@ -711,7 +711,7 @@ function IndicatorSections({ id }: { id: string }) {
       {lesson.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
       {id === 'group-2' && item.word === 'only if' && <>
         <p>Try reading the sentence as though it concerns you. Imagine that you graduate and ask what you now have to know about your project. Then try starting from project completion and see whether the sentence settles graduation.</p>
-        <p>This is a <strong>Personalized If/Then</strong>. Put yourself in the proposed starting condition, then check what the original sentence requires you to know. We're checking its meaning, not predicting what usually happens to graduates.</p>
+        <p>This is a <strong>“Put yourself in it”</strong>. Put yourself in the proposed starting condition, then check what the original sentence requires you to know. We're checking its meaning, not predicting what usually happens to graduates.</p>
         <ThinkPause prompt="If I graduate, what must be true of my project?">
           <p>I've completed it. The sentence requires project completion for anyone who graduates, including me in this imagined case.</p>
           <p>Graduates → Completes project matches that reading. Now try the reverse below.</p>
@@ -735,9 +735,9 @@ export function Fundamentals() {
       <Section title="Sufficient means enough">
         <p>Winning the raffle is enough to know you get a bicycle. That makes winning <strong>sufficient</strong> for getting one under this rule. Sufficient means enough.</p>
         <blockquote>If you win the raffle, you get a bicycle.</blockquote>
-        <p>The rule already tells you what follows if you win. We call winning the <strong>sufficient condition</strong>. Here, sufficient means enough to establish getting a bicycle under this particular rule.</p>
+        <p>The rule already tells you what follows if you win. We call winning the <strong>sufficient condition</strong>. Here, sufficient means enough to prove getting a bicycle under this particular rule.</p>
         <ThinkPause prompt="You win the raffle. Do you need another fact to know you get a bicycle?">
-          <p>No. Winning meets the condition the rule tells us about. The rule and that fact are enough to establish that you get a bicycle.</p>
+          <p>No. Winning meets the condition the rule tells us about. The rule and that fact are enough to prove that you get a bicycle.</p>
           <p>This does not make winning the only possible way to get a bicycle. It gives us one way to settle that question.</p>
         </ThinkPause>
       </Section>
@@ -748,17 +748,17 @@ export function Fundamentals() {
           <p>The sentence gives us one condition that settles whether you get a bicycle. It has not said winning is the only route. When that sufficient condition is absent, the other condition may still be true.</p>
         </ThinkPause>
         <p>Use a new rule to check whether you can recognize what is enough.</p>
-        <Check prompt="Every delivery marked collected has a pickup receipt. What is sufficient here?" options={['Marked collected', 'Has a pickup receipt']} correct={0} feedback={['Marked collected is enough to establish a pickup receipt. The rule tells us what is true of every delivery with that label.', 'You chose the required result. The sentence gives a receipt to every delivery marked collected; it does not say every delivery with a receipt has that label.']}/>
+        <Check prompt="Every delivery marked collected has a pickup receipt. What is sufficient here?" options={['Marked collected', 'Has a pickup receipt']} correct={0} feedback={['Marked collected is enough to prove a pickup receipt. The rule tells us what is true of every delivery with that label.', 'You chose the required result. The sentence gives a receipt to every delivery marked collected; it does not say every delivery with a receipt has that label.']}/>
       </Section>
       <Section title="Necessary means required">
         <p>Now look at the other condition in the same rule. If you win, you have to get a bicycle. Getting one is the required result. That makes getting a bicycle <strong>necessary</strong> whenever you win.</p>
         <p>We call getting a bicycle the <strong>necessary condition</strong>. Necessary means required. Here it is a required result of winning, not a task you must complete before entering the raffle.</p>
-        <p>Ask “required for what?” Here, required whenever you win, under this rule. The relationship gives the word its meaning. The word necessary does not tell you which event happens first.</p>
+        <p>Ask “required for what?” Here, required whenever you win, under this rule. The rule gives the word its meaning. The word necessary does not tell you which event happens first.</p>
         <ThinkPause prompt="Which result does winning require under this rule?">
           <p>You have to get a bicycle. Otherwise you would win without getting one, which the sentence rules out.</p>
-          <p>Winning is enough to establish getting a bicycle, and getting a bicycle is required whenever you win. Those are two views of the same relationship.</p>
+          <p>Winning is enough to prove getting a bicycle, and getting a bicycle is required whenever you win. Those are two views of the same rule.</p>
         </ThinkPause>
-        <div className="co-role-pair"><div><h3>Sufficient</h3><p>Win the raffle: enough to establish getting a bicycle.</p><strong>Goes left</strong></div><div><h3>Necessary</h3><p>Get a bicycle: required whenever you win.</p><strong>Goes right</strong></div></div>
+        <div className="co-role-pair"><div><h3>Sufficient</h3><p>Win the raffle: enough to prove getting a bicycle.</p><strong>Goes left</strong></div><div><h3>Necessary</h3><p>Get a bicycle: required whenever you win.</p><strong>Goes right</strong></div></div>
         <p>Now compare what each starting fact tells us. Keep the same rule while you switch between winning and getting a bicycle.</p>
         <GateExplorer/>
       </Section>
@@ -767,15 +767,15 @@ export function Fundamentals() {
         <blockquote>Entering the archive requires a pass.</blockquote>
         <p>The sentence tells us what someone needs for entry: a pass. If someone enters the archive, they have that pass. That's why has a pass belongs on the required side.</p>
         <Arrow left="Enters the archive" right="Has a pass"/>
-        <ThinkPause prompt="Mina has a pass. Does this sentence establish that she entered the archive?">
+        <ThinkPause prompt="Mina has a pass. Does this sentence prove that she entered the archive?">
           <p>No. Mina could have a pass and remain outside. The rule tells us what entry requires; it doesn't tell us that every person with a pass enters.</p>
-          <p>Necessary doesn't mean enough. A requirement can be present while the other condition remains unknown. To conclude Mina entered, we'd need information establishing that additional connection.</p>
+          <p>Necessary doesn't mean enough. A requirement can be present while the other condition remains unknown. To conclude Mina entered, we'd need information proving that additional connection.</p>
         </ThinkPause>
-        <Check prompt="Every finalist receives an invitation. Which requirement does this sentence establish?" options={['Receiving an invitation is necessary for being a finalist.', 'Being a finalist is necessary for receiving an invitation.']} correct={0} feedback={['The sentence gives an invitation to every finalist. That makes receiving one required for finalist status; it does not restrict invitations to finalists.', "You reversed the requirement. Your choice would mean anyone receiving an invitation has to be a finalist. The sentence allows someone who isn't a finalist to receive an invitation too."]}/>
+        <Check prompt="Every finalist receives an invitation. Which requirement does this sentence prove?" options={['Receiving an invitation is necessary for being a finalist.', 'Being a finalist is necessary for receiving an invitation.']} correct={0} feedback={['The sentence gives an invitation to every finalist. That makes receiving one required for finalist status; it does not restrict invitations to finalists.', "You reversed the requirement. Your choice would mean anyone receiving an invitation has to be a finalist. The sentence allows someone who isn't a finalist to receive an invitation too."]}/>
       </Section>
       <Section title="Try the sentence from the inside">
         <p>We can check a proposed arrow by imagining a case in which its left side is true. Read the original sentence and ask what you now have to know about that same case. Your answer should match the right side of the arrow.</p>
-        <p>This is a <strong>Personalized If/Then</strong>. Read the rule as if it concerns you or something of yours. The point is to test what the sentence guarantees, not guess what usually happens.</p>
+        <p>This is a <strong>“Put yourself in it”</strong>. Read the rule as if it concerns you or something of yours. The point is to test what the sentence guarantees, not guess what usually happens.</p>
         <blockquote>If you win the raffle, you get a bicycle.</blockquote>
         <p>For this rule, imagine yourself in the raffle. Keep the same raffle and the same bicycle outcome in mind on both sides.</p>
         <ThinkPause prompt="If I win the raffle, what do I know?">
@@ -786,8 +786,8 @@ export function Fundamentals() {
           <p>Get a bicycle → Win the raffle would make every bicycle receipt proof of winning. The sentence does not give me that direction. Trying both readings lets me catch the reverse instead of accepting an arrow just because it looks familiar.</p>
         </ThinkPause>
       </Section>
-      <Section title="Read the roles in the relationship">
-        <p>In <strong>Win the raffle → Get a bicycle</strong>, the left condition is sufficient for the right: it is enough to establish it. The right condition is necessary for the left: it is required whenever the left holds.</p>
+      <Section title="Read the roles in the rule">
+        <p>In <strong>Win the raffle → Get a bicycle</strong>, the left condition is sufficient for the right: it is enough to prove it. The right condition is necessary for the left: it is required whenever the left holds.</p>
         <p>These names describe roles in this rule. A different sentence could give the same idea a different role. Don't ask whether a pass is sufficient or necessary by itself. Ask what the complete sentence says having the pass does.</p>
         <p>The next two groups give us ways to recognize these roles in varied wording. We'll keep returning to the meaning because an indicator can only help if you know what complete idea it refers to.</p>
       </Section>
@@ -800,25 +800,25 @@ export function GroupLessons({ id }: { id: string }) {
   return <>
     <Section title={first ? 'Find the sufficient idea' : 'Find what is required'}>
       <p>{first
-        ? "A sufficient condition gives you enough information to establish the other condition. Group 1 helps you recognize that job in several kinds of sentence. For example, all registered guests covers the registered guests. It doesn't cover every guest who happens to be nearby. We'll check which people or situations each expression includes."
+        ? "A sufficient condition gives you enough information to prove the other condition. Group 1 helps you recognize that job in several kinds of sentence. For example, all registered guests covers the registered guests. It doesn't cover every guest who happens to be nearby. We'll check which people or situations each indicator includes."
         : "A necessary condition is something the other condition requires. Group 2 helps us recognize what must be true when that other condition holds. The requirement belongs on the right because the left condition cannot hold without it. Having the requirement, though, leaves the left condition unknown unless something else settles it."}</p>
       <div className="co-vocabulary">{group.words.map(word => <span key={word}>{word}</span>)}</div>
-      <p>An <strong>indicator</strong> is an expression that helps us recognize the relationship. Its <strong>target</strong> is the complete idea it refers to. For example, in “All registered guests receive a wristband,” the target of all is registered guests. Leaving out registered would make the rule apply to guests it never covered.</p>
+      <p>An <strong>indicator</strong> is a word or phrase that helps us recognize the rule. What it <strong>points to</strong> is the complete idea. For example, in “All registered guests receive a wristband,” all points to registered guests. Leaving out registered would make the rule apply to guests it never covered.</p>
       <p>Before looking for a word, ask what the sentence says. Does it give a rule, cover every member of a group, promise a result, or name something required? Each can tell us that if one condition holds, another must hold. A sentence about what usually happens leaves room for exceptions; a conditional rule makes its consequence certain whenever its sufficient condition holds.</p>
-      <p>Read the arrow as <strong>must</strong>. The sufficient condition goes on the left. The necessary condition goes on the right. If the left condition is true, the right condition must be true too. The arrow doesn't say which event happened first, and it doesn't establish that one event caused the other.</p>
+      <p>Read the arrow as <strong>must</strong>. The sufficient condition goes on the left. The necessary condition goes on the right. If the left condition is true, the right condition must be true too. The arrow doesn't say which event happened first, and it doesn't prove that one event caused the other.</p>
     </Section>
     <Section title={first ? 'Different wording can make the same rule' : 'Read it as a requirement'}>
       {first ? <>
-        <p>Suppose a studio has this rule: every painting with a silver seal has been inspected. Having the seal is enough to establish inspection. Let's keep that meaning and change the wording.</p>
+        <p>Suppose a studio has this rule: every painting with a silver seal has been inspected. Having the seal is enough to prove inspection. Let's keep that meaning and change the wording.</p>
         <div className="co-word-comparison"><div><blockquote>If a painting has a silver seal, it has been inspected.</blockquote><p>If what? It has a silver seal. That complete idea goes on the left.</p></div><div><blockquote>A painting has been inspected whenever it has a silver seal.</blockquote><p>Whenever what? It has a silver seal. The sufficient condition comes later in this sentence, but it still goes on the left.</p></div></div>
         <Arrow left="Has silver seal" right="Has been inspected"/>
-        <p>The indicator can appear at the beginning or in the middle. Sentence position doesn't choose the side of the arrow. Find the idea the expression refers to, then ask what the sentence tells you if that idea is true.</p>
+        <p>The indicator can appear at the beginning or in the middle. Sentence position doesn't choose the side of the arrow. Find the idea the indicator refers to, then ask what the sentence tells you if that idea is true.</p>
         <ThinkPause prompt="Each painting with a silver seal has been inspected. Did changing every to each change the rule?">
           <p>No. Each still covers every painting with that seal. A painting with the seal that hadn't been inspected would break either statement. Keep has silver seal on the left and has been inspected on the right.</p>
         </ThinkPause>
         <p>Some wording presents a rule: <strong>if, when, whenever</strong>. Some covers a whole group: <strong>all, each, any, every</strong>. Read each in its sentence. Any in “Do you have any paint?” asks a question; it doesn't give us a rule.</p>
         <p>Other sentences promise an outcome: “A silver seal ensures the painting has been inspected” or “A silver seal implies the painting has been inspected.” Here, the promised outcome is inspection. Ensures and implies express the arrow between the two complete ideas. Leads to, will, and always can also express a definite result in a rule, but the word alone doesn't settle the meaning. “The studio will open tomorrow” gives us no sufficient condition to put on the left.</p>
-        <p>Try the next sentences by imagining the condition each one covers. If you know a guest is registered, what follows? If you know a report arrived before noon, what follows? Each expression will help us find that starting condition.</p>
+        <p>Try the next sentences by imagining the condition each one covers. If you know a guest is registered, what follows? If you know a report arrived before noon, what follows? Each indicator will help us find that starting condition.</p>
       </> : <>
         <p>A useful way to read the whole rule is: <strong>the left condition requires the right condition</strong>. Suppose borrowing a studio camera requires a current membership. What is required for borrowing? A current membership. That's the necessary condition.</p>
         <div className="co-word-comparison"><div><blockquote>Borrowing a studio camera requires a current membership.</blockquote><p>Requires names what borrowing needs: a current membership. An expired membership would not meet that requirement.</p></div><div><blockquote>A current membership is required to borrow a studio camera.</blockquote><p>The same required idea now comes first. Moving it in the sentence hasn't changed what borrowing requires.</p></div></div>
@@ -828,7 +828,7 @@ export function GroupLessons({ id }: { id: string }) {
         </ThinkPause>
         <p>Notice the meaning shared by <strong>requires, necessitates, depends on,</strong> and <strong>relies on</strong> when they express a strict requirement. If borrowing depends on having a current membership, borrowing still requires membership. “Depends partly on” may describe an influence instead, so read the whole claim before treating it as a conditional.</p>
         <p>You may also hear the requirement as “In order to borrow a camera, you must have a current membership.” The goal is borrowing; the required condition is membership. “Only people with a current membership borrow a camera” and “You borrow a camera only if you have a current membership” keep membership required. Neither tells us that every member borrows one.</p>
-        <Check prompt="Using the recording booth depends on having a reservation. What belongs on the right?" options={['Uses recording booth', 'Has a reservation']} correct={1} feedback={['Using the booth is what needs the reservation. Putting use on the right would make a reservation enough to establish that someone used the booth, which the sentence never says.', 'A reservation is required for using the booth, so it belongs on the right. Having a reservation still leaves open whether the person uses it.']}/>
+        <Check prompt="Using the recording booth depends on having a reservation. What belongs on the right?" options={['Uses recording booth', 'Has a reservation']} correct={1} feedback={['Using the booth is what needs the reservation. Putting use on the right would make a reservation enough to prove that someone used the booth, which the sentence never says.', 'A reservation is required for using the booth, so it belongs on the right. Having a reservation still leaves open whether the person uses it.']}/>
         <p>You won't always see a familiar word. Find what the sentence says is required <strong>for the other condition</strong>. Then check that your arrow keeps that requirement on the right.</p>
       </>}
     </Section>
@@ -837,13 +837,13 @@ export function GroupLessons({ id }: { id: string }) {
       {first ? <>
         <blockquote>A report is reviewed if it is submitted before noon.</blockquote>
         <p>If what? If the report is submitted before noon. Keep before noon with submitted. A report arriving at four in the afternoon does not meet the condition this sentence gives us.</p>
-        <p>Now suppose the report does arrive before noon. We know it is reviewed. Submission before noon is enough to establish review, so that condition belongs on the left of our arrow.</p>
+        <p>Now suppose the report does arrive before noon. We know it is reviewed. Submission before noon is enough to prove review, so that condition belongs on the left of our arrow.</p>
       </> : <>
         <blockquote>Entry requires a current pass.</blockquote>
         <p>What does entry require? A current pass. Current matters: an expired pass would not meet the requirement. Requires refers to that complete requirement, even if we rewrite the sentence as “A current pass is required for entry.”</p>
         <p>Suppose someone enters. Under this rule, that person has a current pass. That puts entry on the left and the required pass on the right. Someone with a current pass could still stay outside.</p>
       </>}
-      <p>This is the <strong>What Test</strong>: ask what the expression refers to, and answer with the words that make the condition complete. All what? Registered guests. Only if what? A parent signs the consent form. Guest alone drops registration; a parent alone drops the signature.</p>
+      <p>This is the <strong>What Test</strong>: ask what the indicator refers to, and answer with the words that make the condition complete. All what? Registered guests. Only if what? A parent signs the consent form. Guest alone drops registration; a parent alone drops the signature.</p>
       <p>Try that question on each sentence below. When your answer includes the complete condition, the sentence will highlight its words. Then show the diagram and ask what you would know if its left condition were true. The right condition should be exactly what the sentence lets you conclude.</p>
       <TranslationLab id={id}/>
     </Section>
@@ -851,40 +851,40 @@ export function GroupLessons({ id }: { id: string }) {
       <blockquote>{first ? 'Any applicant who submits late pays a fee.' : 'Entry requires a current pass.'}</blockquote>
       <p>{first
         ? "Applicant alone isn't the condition. The sentence is about an applicant who submits late. Keep that restriction when you shorten the idea; otherwise your diagram would make a claim about on-time applicants too."
-        : "A current pass is required. Has a pass drops current and would include an expired pass. Shortening a label should save writing while preserving what the sentence requires."}</p>
+        : "A current pass is required. Has a pass drops current and would include an expired pass. Shortening a label should save writing while keeping what the sentence requires."}</p>
       <Check prompt={first ? 'What goes left in this rule?' : 'What goes right in this rule?'} options={first ? ['Applicant', 'Applicant submits late'] : ['Has current pass', 'Has any pass']} correct={first ? 1 : 0} feedback={first
         ? ['You dropped the late-submission restriction. Applicant alone would cover every applicant, including someone who submits on time. The sufficient idea is applicant submits late.', 'This keeps the complete sufficient idea. The rule covers applicants who submit late, so keep that restriction with the applicant.']
         : ['This keeps the full requirement. Entry needs a current pass; an expired pass does not meet that requirement.', 'You dropped current from the requirement. Has any pass would include an expired pass, which is not what the sentence requires.']}/>
     </Section>
-    <Section title={first ? 'Read the only as a complete expression' : 'Compare only with the only'}>
+    <Section title={first ? 'Read the only as a complete phrase' : 'Compare only with the only'}>
       {first ? <>
         <blockquote>The only people admitted are members.</blockquote>
-        <p>The only what? The only people admitted. The complete target is admitted people. If someone is admitted, the sentence tells us they're a member.</p>
+        <p>The only what? The only people admitted. The complete group is admitted people. If someone is admitted, the sentence tells us they're a member.</p>
         <Arrow left="Admitted" right="Member"/>
         <p>A member who stays outside fits this rule. Nothing says every member is admitted. Check that your diagram keeps that possibility open.</p>
-        <Check prompt="The only notebooks kept on this shelf are hardback. Which diagram preserves the rule?" options={['Hardback → Kept on shelf', 'Kept on shelf → Hardback']} correct={1} feedback={['You made being hardback enough for a place on the shelf. The sentence limits the notebooks kept there; it does not put every hardback notebook on this shelf.', 'A notebook kept on this shelf has to be hardback. A hardback notebook on another shelf would also fit the rule, so this direction keeps what the sentence actually says.']}/>
+        <Check prompt="The only notebooks kept on this shelf are hardback. Which diagram keeps the rule?" options={['Hardback → Kept on shelf', 'Kept on shelf → Hardback']} correct={1} feedback={['You made being hardback enough for a place on the shelf. The sentence limits the notebooks kept there; it does not put every hardback notebook on this shelf.', 'A notebook kept on this shelf has to be hardback. A hardback notebook on another shelf would also fit the rule, so this direction keeps what the sentence actually says.']}/>
       </> : <>
         <p>Try the distinction on the raffle rule we already understand. The wording changes, but winning still tells us that you get a bicycle.</p>
-        <div className="co-word-comparison"><div><blockquote>Only people who get a bicycle win this raffle.</blockquote><p>Only refers to people who get a bicycle. Getting one is required whenever someone wins, so get a bicycle goes right.</p></div><div><blockquote>The only people who win this raffle are people who get a bicycle.</blockquote><p>The only refers to people who win. Winning is enough to establish getting a bicycle, so win the raffle goes left.</p></div></div>
+        <div className="co-word-comparison"><div><blockquote>Only people who get a bicycle win this raffle.</blockquote><p>Only refers to people who get a bicycle. Getting one is required whenever someone wins, so get a bicycle goes right.</p></div><div><blockquote>The only people who win this raffle are people who get a bicycle.</blockquote><p>The only refers to people who win. Winning is enough to prove getting a bicycle, so win the raffle goes left.</p></div></div>
         <Arrow left="Win the raffle" right="Get a bicycle"/>
-        <p>Both sentences preserve the same direction. Someone who gets a bicycle as a gift without winning fits both. Neither sentence makes getting a bicycle enough to establish winning.</p>
-        <Check prompt="Only registered guests receive wristbands. What follows from receiving a wristband?" options={['The person is a registered guest.', 'Nothing about registration.']} correct={0} feedback={['Only limits wristbands to registered guests, so receiving one establishes that the person is registered.', 'You treated the sentence like all registered guests receive wristbands. Only restricts who receives one, so the wristband does establish that the person is a registered guest.']}/>
+        <p>Both sentences keep the same direction. Someone who gets a bicycle as a gift without winning fits both. Neither sentence makes getting a bicycle enough to prove winning.</p>
+        <Check prompt="Only registered guests receive wristbands. What follows from receiving a wristband?" options={['The person is a registered guest.', 'Nothing about registration.']} correct={0} feedback={['Only limits wristbands to registered guests, so receiving one proves that the person is registered.', 'You treated the sentence like all registered guests receive wristbands. Only restricts who receives one, so the wristband does prove that the person is a registered guest.']}/>
       </>}
     </Section>
     <Section title="From sentence to diagram">
-      <p>You have seen the expressions with help. Now use a new sentence. Identify both complete ideas, choose the sufficient one for the left, and check whether your diagram says what the sentence says.</p>
-      <p>If you know the meaning but hesitate over the arrow, imagine the left condition is true. Does the sentence then require the right condition? Read the whole relationship in English. If it makes a promise the original didn't make, change the direction.</p>
+      <p>You have seen the indicators with help. Now use a new sentence. Identify both complete ideas, choose the sufficient one for the left, and check whether your diagram says what the sentence says.</p>
+      <p>If you know the meaning but hesitate over the arrow, imagine the left condition is true. Does the sentence then require the right condition? Read the whole rule in English. If it makes a promise the original didn't make, change the direction.</p>
       <DiagramBuilder id={id}/>
       <details className="co-practical-note"><summary>Why write a diagram when I understand the sentence?</summary><p>For one short sentence, you may be able to hold the connection in your head. Here, writing it makes your direction and complete conditions visible so you can check them. If your first diagram doesn't match the meaning, find the exact phrase you misread and revise that part.</p></details>
     </Section>
     <Section title="Say the rule without the clues">
-      <p>Read the new sentence and explain its direction before revealing. If you hesitate, ask what the indicator refers to, then try the proposed relationship in ordinary English. Compare your explanation with the one that appears.</p>
+      <p>Read the new sentence and explain its direction before revealing. If you hesitate, ask what the indicator refers to, then try the proposed rule in ordinary English. Compare your explanation with the one that appears.</p>
       <Flashcards id={id}/>
     </Section>
     <Section title="Check the meaning, not just the word">
       <Check prompt={first ? 'A report is reviewed if submitted before noon. Which is the same rule?' : 'A student graduates only if the project is completed. Which is the same rule?'} options={first ? ['If reviewed, it was submitted before noon.', 'If submitted before noon, it is reviewed.'] : ['If the student graduates, the project was completed.', 'If the project is completed, the student graduates.']} correct={first ? 1 : 0} feedback={first
-        ? ['You reversed the if relationship. Submission before noon is enough for review; the sentence has not said review proves when the report was submitted.', 'This preserves the if-clause as the sufficient condition. Submission before noon gives us review even though it appears second in the original sentence.']
-        : ['This preserves project completion as a requirement for graduation. It does not turn completing the project into a promise of graduation.', 'You turned the only-if requirement into a guarantee. Graduation requires completion, but the sentence allows a completed project without graduation.']}/>
+        ? ['You reversed the if rule. Submission before noon is enough for review; the sentence has not said review proves when the report was submitted.', 'This keeps the if-clause as the sufficient condition. Submission before noon gives us review even though it appears second in the original sentence.']
+        : ['This keeps project completion as a requirement for graduation. It does not turn completing the project into a promise of graduation.', 'You turned the only-if requirement into a guarantee. Graduation requires completion, but the sentence allows a completed project without graduation.']}/>
       <p>The guided practice asks you to write your reasoning with the method beside you. Then the attached drill gives you fresh questions. Use the explanation to inspect the direction and complete conditions, not only whether you chose the same answer.</p>
     </Section>
   </>;
@@ -900,7 +900,7 @@ function OpeningFigure({ unitId }: { unitId: string }) {
   if (unitId === 'sufficient-necessary') return <figure className="co-hero-figure co-roles-figure">
     <p className="co-kicker">Two views of one rule</p>
     <p className="co-hero-rule">If you win the raffle, you get a bicycle.</p>
-    <div className="co-role-compass"><div><span>Enough</span><strong>Win the raffle</strong><small>Establishes getting a bicycle</small></div><div><span>Required</span><strong>Get a bicycle</strong><small>The result winning requires</small></div></div>
+    <div className="co-role-compass"><div><span>Enough</span><strong>Win the raffle</strong><small>Proves getting a bicycle</small></div><div><span>Required</span><strong>Get a bicycle</strong><small>The result winning requires</small></div></div>
     <figcaption>One condition is enough. The other is required by that same rule.</figcaption>
   </figure>;
   if (unitId === 'group-1') return <figure className="co-hero-figure co-sufficient-figure">
@@ -913,7 +913,7 @@ function OpeningFigure({ unitId }: { unitId: string }) {
     <p className="co-kicker">Read what the sentence needs</p>
     <p className="co-hero-sentence">Entry requires a <strong>current pass.</strong></p>
     <div className="co-pass-figure"><span>Required for entry</span><strong>A current pass</strong><small>An expired pass won't meet this requirement.</small></div>
-    <figcaption>Having the pass alone doesn't establish entry.</figcaption>
+    <figcaption>Having the pass alone doesn't prove entry.</figcaption>
   </figure>;
 }
 
@@ -925,8 +925,8 @@ function OpeningLessonBody({ unit, onComplete, continueHref, continueLabel = 'Co
   const subtitle = orientation
     ? "A conditional tells us that if one thing is true, something else has to be true too. Let's see what we can conclude from a rule, and what we still don't know."
     : group ? unit.id === 'group-1'
-      ? 'These expressions can point to the sufficient idea. Read what each one says before deciding which complete condition belongs on the left.'
-      : 'These expressions can identify a requirement. Find the complete idea the sentence says you need, then check what its presence does and does not prove.'
+      ? 'These indicators can point to the sufficient idea. Read what each one says before deciding which complete condition belongs on the left.'
+      : 'These indicators can identify a requirement. Find the complete idea the sentence says you need, then check what its presence does and does not prove.'
     : "The same rule gives its two conditions different jobs. Let's take each one seriously before giving it a place in the diagram.";
   return <div className="conditional-note co-opening">
     <header className={'co-hero ' + (orientation ? 'co-intro-hero' : '')}>
@@ -937,8 +937,8 @@ function OpeningLessonBody({ unit, onComplete, continueHref, continueLabel = 'Co
     <article id="co-reading">
       <LessonPages pages={[
         ...(orientation ? conditionalReferencePages() : flattenLessonPages(group ? GroupLessons({ id: unit.id }) : Fundamentals())),
-        ...(!orientation && !group ? [{ title: 'Recall the relationship', content: <Section title="Recall the relationship"><p>Leave the examples behind for a moment. Say your answer before turning the card, then compare the reasoning.</p><StudyDeck group="foundation"/></Section> }] : group ? [{ title: 'Recall the expressions', content: <Section title="Recall the expressions"><p>These sentences change the wording and the situation. Explain the complete relationship before turning each card.</p><StudyDeck group={unit.id}/></Section> }] : []),
-        ...(!group ? [{ title: 'Return to the relationship', content: <ConditionalOpeningMedia unitId={unit.id}/> }] : []),
+        ...(!orientation && !group ? [{ title: 'Recall the rule', content: <Section title="Recall the rule"><p>Leave the examples behind for a moment. Say your answer before turning the card, then compare the reasoning.</p><StudyDeck group="foundation"/></Section> }] : group ? [{ title: 'Recall the indicators', content: <Section title="Recall the indicators"><p>These sentences change the wording and the situation. Explain the complete rule before turning each card.</p><StudyDeck group={unit.id}/></Section> }] : []),
+        ...(!group ? [{ title: 'Return to the rule', content: <ConditionalOpeningMedia unitId={unit.id}/> }] : []),
         ...(orientation ? [{ title: 'Build a case that proves the limit', content: <Section title="Build a case that proves the limit"><CounterexampleLab/></Section> }] : unit.id === 'group-2' ? [{ title: 'Keep the rule while the words change', content: <Section title="Keep the rule while the words change"><RuleComparisonLab/></Section> }] : []),
         { title: repairTitle, content: <Section id="repair" title={repairTitle}><div className="co-word-comparison"><div><h3>The tempting move</h3><p>{unit.commonMistake.mistake}</p></div><div><h3>Read the sentence again</h3><p>{unit.commonMistake.repair}</p></div></div></Section> },
       ]}>

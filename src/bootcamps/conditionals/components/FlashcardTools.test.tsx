@@ -10,7 +10,7 @@ function Harness() {
   const location = useLocation();
   return <OpeningCourseScreen view={new URLSearchParams(location.search).get('page') || 'lessons'} url={url}/>;
 }
-it('opens the matching expression, hides its answer, changes expression and returns to the lesson', () => {
+it('opens the matching indicator, hides its answer, changes indicator and returns to the lesson', () => {
   render(<MemoryRouter initialEntries={[url('sufficient')]}><Harness/></MemoryRouter>);
   const list = screen.getByRole('region', { name: 'Group 1 indicator words' });
   expect(within(list).getByRole('link', { name: 'Go to flashcards' })).toHaveAttribute('href', flashcardUrl(url, 'group-1', undefined, 'sufficient'));
@@ -21,7 +21,7 @@ it('opens the matching expression, hides its answer, changes expression and retu
   expect(screen.queryByText(card.back)).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: /Show explanation/ }));
   expect(screen.getByText(card.back)).toBeVisible();
-  fireEvent.change(screen.getByRole('combobox', { name: 'Choose an expression' }), { target: { value: 'g1-whenever' } });
+  fireEvent.change(screen.getByRole('combobox', { name: 'Choose an indicator' }), { target: { value: 'g1-whenever' } });
   expect(screen.queryByText(card.back)).toBeNull();
   expect(screen.getByText(indicatorFlashcards.find(item => item.id === 'g1-whenever')!.front)).toBeVisible();
   fireEvent.click(screen.getByRole('link', { name: 'Back to sufficient condition' }));

@@ -26,7 +26,7 @@ describe('reviewed worksheet source bank', () => {
     }
   });
 
-  it('preserves complete propositions when reversing and negating', () => {
+  it('keeps complete propositions when reversing and negating', () => {
     for (const item of items) {
       expect(item.diagram).toBe(`${item.sufficient} → ${item.necessary}`);
       expect(item.contrapositive).toBe(`NOT (${item.necessary}) → NOT (${item.sufficient})`);
@@ -61,7 +61,7 @@ describe('reviewed worksheet source bank', () => {
     expect(getSourceWorksheetDrill('source-intro-identify')!.items[3].necessary).toContain('required');
   });
 
-  it('preserves modal claims and corrects reviewed indicator classifications', () => {
+  it('keeps modal claims and corrects reviewed indicator classifications', () => {
     for (const id of ['source-intro-identify', 'source-intro-diagrams']) {
       expect(getSourceWorksheetDrill(id)!.items[8].necessary).toBe('the building should be evacuated immediately');
     }

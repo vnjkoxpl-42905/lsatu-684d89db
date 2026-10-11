@@ -28,9 +28,9 @@ export const mixedFamilyItems: MixedItem[] = [
     target: 'the forecast shows lightning', partial: 'the forecast', other: 'the match moves indoors',
     left: 'Forecast shows lightning', right: 'Match moves indoors',
     partialFeedback: "The forecast alone isn't something that can be true or false. If refers to the whole clause: the forecast shows lightning.",
-    otherFeedback: 'Moving indoors is what the rule establishes. If points to the clause after it: the forecast shows lightning.',
+    otherFeedback: 'Moving indoors is what the rule proves. If points to the clause after it: the forecast shows lightning.',
     reversed: 'Your arrow makes every indoor match proof of a lightning forecast. The match could move indoors because the pitch is flooded, and that case still fits the sentence.',
-    why: "The if-clause comes last, but it's still the part that's enough. A lightning forecast establishes the move indoors.",
+    why: "The if-clause comes last, but it's still the part that's enough. A lightning forecast proves the move indoors.",
     readback: 'If the forecast shows lightning, the match moves indoors.',
   },
   {
@@ -50,7 +50,7 @@ export const mixedFamilyItems: MixedItem[] = [
     target: 'bus leaving the depot after midnight', partial: 'bus', other: 'stops at the hospital',
     left: 'Bus leaves depot after midnight', right: 'Stops at hospital',
     partialFeedback: 'Bus alone would cover the daytime buses too. Every refers to buses leaving the depot after midnight, so keep the depot and the time.',
-    otherFeedback: 'Stopping at the hospital is what the rule establishes. Every points to the group it covers: buses leaving the depot after midnight.',
+    otherFeedback: 'Stopping at the hospital is what the rule proves. Every points to the group it covers: buses leaving the depot after midnight.',
     reversed: "Your arrow says any bus at the hospital left the depot after midnight. A morning bus stopping there fits the sentence, so the stop doesn't settle when the bus left the depot.",
     why: 'Every covers each bus leaving the depot after midnight. Pick one, and the rule tells you it stops at the hospital.',
     readback: 'If a bus leaves the depot after midnight, it stops at the hospital.',
@@ -63,7 +63,7 @@ export const mixedFamilyItems: MixedItem[] = [
     partialFeedback: "A table drops booked, and booked is the requirement. The sentence doesn't ask for just any table; it asks for a booked one.",
     otherFeedback: 'Eating on the terrace is what needs the booking. Required refers back to the idea before it: a booked table.',
     reversed: 'Your arrow sends everyone with a booking to the terrace. A diner could book a table and eat inside, and the sentence allows that.',
-    why: "Here the target comes before required. Eating on the terrace needs a booked table. A booking alone doesn't put you there.",
+    why: "Here the group comes before required. Eating on the terrace needs a booked table. A booking alone doesn't put you there.",
     readback: 'If someone eats on the terrace, they have a booked table.',
   },
   {
@@ -127,7 +127,7 @@ export function MixedItemCheck({ item, index, onChecked, onResult, embedded = fa
     <p>{embedded ? "Compare your diagram with the choices. Keep every detail that limits who or what the rule covers, and check which way the arrow points." : 'Your written answer stays here while you compare. The choices below check who or what the rule covers and the arrow direction; your written answer is not graded automatically.'}</p>
     <h3 ref={comparisonHeading} tabIndex={-1} id={targetQuestion}>{item.targetPrompt}</h3>
     <div className="co-choices" role="group" aria-labelledby={targetQuestion}>{targetOptions(item, index).map(option => <button type="button" key={option} aria-pressed={target === option} onClick={() => change(() => setTarget(option))}>{option}</button>)}</div>
-    <h3 id={sideQuestion}>Which condition gives you enough to establish the other?</h3>
+    <h3 id={sideQuestion}>Which condition gives you enough to prove the other?</h3>
     <div className="co-choices" role="group" aria-labelledby={sideQuestion}>{sideOptions(item, index).map(option => <button type="button" key={option} aria-pressed={left === option} onClick={() => change(() => setLeft(option))}>{option}</button>)}</div>
     {left && <RuleDiagram left={left} right={left === item.left ? item.right : item.left} label={`Your diagram: ${left} implies ${left === item.left ? item.right : item.left}`}/>}
     <div className="cr-control-row"><button type="button" className="co-primary" disabled={target === null || left === null} onClick={() => { setChecked(true); onChecked(true); onResult?.({ targetCorrect, targetIncomplete: target === item.partial, sideCorrect }); }}>{embedded ? 'Check answer' : `Check sentence ${number}`}</button><button type="button" className="cr-reset" onClick={reset}>{embedded ? 'Revise my answer' : `Try sentence ${number} again`}</button></div>
@@ -139,7 +139,7 @@ export function MixedItemCheck({ item, index, onChecked, onResult, embedded = fa
       <strong>Revise the part described below.</strong>
       <p>{targetCorrect ? item.targetFeedback : target === item.partial ? item.partialFeedback : item.otherFeedback}</p>
       <p>{sideCorrect ? 'Your arrow keeps the direction the sentence gives.' : item.reversed}</p>
-      <p>Here, <strong>{item.word}</strong> points to what is {item.family === 'sufficient' ? 'enough, so its target goes on the left' : 'required, so its target goes on the right'}. {item.why}</p>
+      <p>Here, <strong>{item.word}</strong> points to what is {item.family === 'sufficient' ? 'enough, so its group goes on the left' : 'required, so its group goes on the right'}. {item.why}</p>
       <p>Read it back: {item.readback}</p>
       </>}
     </div>}</div>
@@ -152,7 +152,7 @@ export function MixedFamilyPractice() {
   const [current, setCurrent] = useState(0);
   const [checked, setChecked] = useState<boolean[]>(() => mixedFamilyItems.map(() => false));
   return <>
-    <p>These sentences use both kinds of expression. The family name stays hidden until you check your choices. First translate each sentence yourself, without supplied condition labels. Then compare your work and check who or what the rule covers and the arrow direction before moving on.</p>
+    <p>These sentences use both kinds of indicator. The family name stays hidden until you check your choices. First translate each sentence yourself, without supplied condition labels. Then compare your work and check who or what the rule covers and the arrow direction before moving on.</p>
     <p className="co-kicker" role="status">Sentence {current + 1} of {mixedFamilyItems.length}</p>
     {mixedFamilyItems.map((item, index) => <div key={item.sentence} hidden={current !== index}><MixedItemCheck item={item} index={index} onChecked={value => setChecked(previous => previous.map((old, itemIndex) => itemIndex === index ? value : old))}/></div>)}
     <div className="co-choices"><button type="button" disabled={current === 0} onClick={() => setCurrent(current - 1)}>Previous mixed sentence</button><button type="button" disabled={current === mixedFamilyItems.length - 1 || !checked[current]} onClick={() => setCurrent(current + 1)}>Next mixed sentence</button></div>

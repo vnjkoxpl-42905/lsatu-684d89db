@@ -125,7 +125,7 @@ it('freezes first checks and treats a repaired fresh answer differently from an 
   expect(active().getByText(`Read it back: ${mixedFamilyItems[0].readback}`)).toBeVisible();
 }, 30000);
 
-it('targets a wrong role choice with a new direction question instead of a qualification question', () => {
+it('groups a wrong role choice with a new direction question instead of a qualification question', () => {
   renderPractice();
   choose(completeConditionItems[0].options[2]);
   for (let index = 0; index < 24; index++) { solve(index); next(); }

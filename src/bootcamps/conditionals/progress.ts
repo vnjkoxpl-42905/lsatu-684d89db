@@ -86,7 +86,7 @@ export function attemptSummary(attempts: ConditionalAttempt[]) {
   return { total: attempts.length, correct: attempts.filter(a => a.correct).length, assisted: attempts.filter(a => a.hint || a.explanationBeforeCheck).length };
 }
 export function parseConditionalProgress(value: unknown): ConditionalProgress {
-  const bad = () => { throw new Error('Your stored conditional progress has an unsupported format. Your record has been preserved; ask Joshua to review it.'); };
+  const bad = () => { throw new Error('Your stored conditional progress has an unsupported format. Your record has been kept; ask Joshua to review it.'); };
   if (!value || typeof value !== 'object') return bad();
   const record = value as ConditionalProgress;
   if (record.id !== 'conditionals-v1' || !record.lessons || typeof record.lessons !== 'object' || !record.runs || typeof record.runs !== 'object' || !Array.isArray(record.attempts) || typeof record.journal !== 'string' || typeof record.settings?.showMethod !== 'boolean' || !Number.isFinite(Date.parse(record.updated_at))) return bad();

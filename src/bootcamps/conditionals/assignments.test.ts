@@ -10,7 +10,7 @@ const row = (patch: Partial<ConditionalAssignmentRow> = {}): ConditionalAssignme
 });
 const targetRow = (target: unknown) => row({ metadata_json: { bootcamp_id: 'conditionals', conditional_target: target } });
 describe('trusted conditional assignments', () => {
-  it('updates exact former generated display copy while preserving teacher wording and assigned level', async () => {
+  it('updates exact former generated display copy while keeping teacher wording and assigned level', async () => {
     const target = { scope: 'skill', mode: 'practice', difficulty: 'advanced', unitId: 'group-2' } as const;
     const generated = await import('@/lib/conditionalBootcampAssignment').then(module => module.resolveConditionalAssignment(target));
     const label = generated.title.slice(0, -': practice'.length);
@@ -81,7 +81,7 @@ describe('trusted conditional assignments', () => {
   });
 });
 
-it('preserves original stage assignment membership when teaching order changes', () => {
+it('keeps original stage assignment membership when teaching order changes', () => {
   const group = conditionalAssignmentUnitIds({ scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: 'group-1' });
   const contraposition = conditionalAssignmentUnitIds({ scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: 'contraposition' });
   expect(group).not.toContain('contraposition');
