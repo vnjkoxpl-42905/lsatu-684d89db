@@ -21,8 +21,8 @@ export const RC_DIRECTIONS: ToolbarDirections = {
         the question.
       </p>
       <p>
-        After you have chosen the best answer, blacken the corresponding space on your answer
-        sheet.
+        Select the letter beside your chosen answer. You can change your choice until
+        the drill records it. Answers appear at the feedback point chosen for this drill.
       </p>
     </>
   ),

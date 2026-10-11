@@ -159,6 +159,7 @@ export default function OfficialDrillToolbar({
 }: Props) {
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
   const [aaOpen, setAaOpen] = React.useState(false);
+  const aaTriggerRef = React.useRef<HTMLButtonElement>(null);
   const currentFontLabel = fontScaleOptions.find(option => Math.abs(fontScale - option.value) < 0.001)?.label
     ?? `${Math.round(fontScale * 100)}%`;
 
@@ -260,7 +261,7 @@ export default function OfficialDrillToolbar({
           )}
 
           {/* Right cluster: tools | Aa + line-spacing | timer */}
-          <div className="ml-0 flex w-full max-w-full items-center gap-1.5 overflow-x-auto sm:ml-auto sm:w-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="ml-0 flex w-full max-w-full flex-wrap items-center gap-1.5 sm:ml-auto sm:w-auto">
             {highlightToolsVisible && (
               <>
                 <div className="flex items-center gap-0.5">
@@ -294,6 +295,7 @@ export default function OfficialDrillToolbar({
             <Popover open={aaOpen} onOpenChange={setAaOpen}>
               <PopoverTrigger asChild>
                 <button
+                  ref={aaTriggerRef}
                   type="button"
                   aria-label="Text size"
                   title={`Text size: ${currentFontLabel}`}
@@ -309,6 +311,7 @@ export default function OfficialDrillToolbar({
                 </button>
               </PopoverTrigger>
               <PopoverContent aria-label="Reading preferences" align="end" sideOffset={6} collisionPadding={12}
+                onCloseAutoFocus={(event) => { event.preventDefault(); aaTriggerRef.current?.focus(); }}
                 className="w-64 max-w-[calc(100vw-24px)] p-2 bg-white border border-slate-200 shadow-lg rounded-md overflow-y-auto"
                 style={{ maxHeight: 'min(70dvh, var(--radix-popover-content-available-height))' }}>
                 <div className="px-3 pt-1 pb-2 text-sm font-semibold text-slate-900">Text size</div>
@@ -355,13 +358,13 @@ export default function OfficialDrillToolbar({
             )}
 
             {timerLabelPrefix && (
-              <>
+              <div className="flex min-w-0 basis-full items-center sm:basis-auto">
                 <PipeSeparator />
-                <div className="pl-1 min-w-[168px]">
+                <div className="min-w-0 pl-1 sm:min-w-[168px]">
                   <div
                     role="timer"
                     className={cn(
-                      "text-[14px] font-semibold tabular-nums whitespace-nowrap",
+                      "text-[14px] font-semibold tabular-nums whitespace-normal",
                       timerOverBudget ? "text-red-700" : "text-slate-900",
                     )}
                   >
@@ -383,7 +386,7 @@ export default function OfficialDrillToolbar({
                     </div>
                   )}
                 </div>
-              </>
+              </div>
             )}
 
             {notesButtonVisible && onToggleNotes && (

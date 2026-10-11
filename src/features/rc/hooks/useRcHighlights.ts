@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { loadAnnotations, saveAnnotations } from '../api/rcProgress';
+import { loadAnnotations, saveAnnotationsNow } from '../api/rcProgress';
+import { readAnnotationRecovery, writeAnnotationRecovery, clearAnnotationRecovery } from './rcAnnotationRecovery';
 import type {
   RcAnnotationKind,
   RcHighlight,
@@ -12,10 +13,21 @@ import type {
  * (debounced) as the student paints. Keyed by passage so they restore on any
  * future encounter with that passage, in this session or a later one.
  */
-export function useRcHighlights(passageIds: number[]) {
+export type RcAnnotationSaveStatus = 'idle' | 'saving' | 'saved' | 'error' | 'recovered';
+
+export function useRcHighlights(passageIds: number[], actorId?: string | null) {
   const [byPassage, setByPassage] = React.useState<Map<number, RcHighlight[]>>(new Map());
   const [color, setColor] = React.useState<RcHighlightColor>('yellow');
   const [loaded, setLoaded] = React.useState(false);
+  const [loadError, setLoadError] = React.useState<string | null>(null);
+  const [revision, retryLoad] = React.useReducer((value) => value + 1, 0);
+  const [statuses, setStatuses] = React.useState<Map<number, RcAnnotationSaveStatus>>(new Map());
+  const [errors, setErrors] = React.useState<Map<number, string>>(new Map());
+  const context = React.useRef<{ actor: string; key: string; ready: boolean; cancelled: boolean; saving: Map<number, number> } | null>(null);
+  const pending = React.useRef(new Map<number, { highlights: RcHighlight[]; version: number; intentId: string }>());
+  const timers = React.useRef(new Map<number, ReturnType<typeof setTimeout>>());
+  const chains = React.useRef(new Map<number, Promise<void>>());
+  const versions = React.useRef(0);
   /**
    * Mirrors `byPassage`, but updated synchronously on every write. Reading the
    * state variable inside the mutators would capture whatever the last render
@@ -27,38 +39,105 @@ export function useRcHighlights(passageIds: number[]) {
 
   const key = passageIds.join(',');
   React.useEffect(() => {
-    let cancelled = false;
-    if (passageIds.length === 0) return;
-    loadAnnotations(passageIds)
+    const owner = { actor: actorId ?? '', key, ready: false, cancelled: false, saving: new Map<number, number>() };
+    const ownedTimers = new Map<number, ReturnType<typeof setTimeout>>();
+    timers.current = ownedTimers;
+    context.current = owner;
+    latest.current = new Map();
+    pending.current = new Map();
+    chains.current = new Map();
+    setByPassage(new Map());
+    setStatuses(new Map());
+    setErrors(new Map());
+    setLoaded(false);
+    setLoadError(null);
+    if (actorId && passageIds.length) loadAnnotations(passageIds, actorId)
       .then((map) => {
-        if (!cancelled) {
-          latest.current = map;
-          setByPassage(map);
+        if (!owner.cancelled) {
+          const restored = new Map(map);
+          const nextStatuses = new Map<number, RcAnnotationSaveStatus>();
+          for (const id of passageIds) {
+            const recovery = readAnnotationRecovery(owner.actor, id);
+            if (recovery !== null) {
+              restored.set(id, recovery.highlights);
+              pending.current.set(id, { highlights: recovery.highlights, version: ++versions.current, intentId: recovery.intentId });
+              nextStatuses.set(id, 'recovered');
+            }
+          }
+          latest.current = restored;
+          setByPassage(restored);
+          setStatuses(nextStatuses);
+          owner.ready = true;
           setLoaded(true);
         }
       })
-      .catch(() => {
-        // Highlights are an aid, not the drill. A load failure must not block it.
-        if (!cancelled) setLoaded(true);
+      .catch((error: unknown) => {
+        if (!owner.cancelled) setLoadError(error instanceof Error ? error.message : 'Passage marks could not be loaded.');
       });
     return () => {
-      cancelled = true;
+      owner.cancelled = true;
+      for (const timer of ownedTimers.values()) clearTimeout(timer);
+      ownedTimers.clear();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key]);
+  }, [key, actorId, revision]);
 
   const forPassage = React.useCallback(
-    (passageId: number) => byPassage.get(passageId) ?? [],
-    [byPassage],
+    (passageId: number) => context.current?.actor === actorId && context.current?.key === key ? byPassage.get(passageId) ?? [] : [],
+    [byPassage, actorId, key],
   );
 
+  const save = React.useCallback((passageId: number) => {
+    const owner = context.current;
+    const intent = pending.current.get(passageId);
+    if (!owner?.ready || owner.cancelled || owner.actor !== actorId || owner.key !== key || !intent) return;
+    if (owner.saving.get(passageId) === intent.version) return;
+    owner.saving.set(passageId, intent.version);
+    const previous = chains.current.get(passageId) ?? Promise.resolve();
+    setStatuses((map) => new Map(map).set(passageId, 'saving'));
+    const task = previous.catch(() => undefined).then(async () => {
+      if (owner.cancelled) return;
+      try {
+        await saveAnnotationsNow(passageId, intent.highlights, owner.actor);
+        clearAnnotationRecovery(owner.actor, passageId, intent.intentId);
+        if (!owner.cancelled && pending.current.get(passageId)?.version === intent.version) {
+          pending.current.delete(passageId);
+          setStatuses((map) => new Map(map).set(passageId, 'saved'));
+          setErrors((map) => { const next = new Map(map); next.delete(passageId); return next; });
+        }
+      } catch (error: unknown) {
+        if (!owner.cancelled && pending.current.get(passageId)?.version === intent.version) {
+          setStatuses((map) => new Map(map).set(passageId, 'error'));
+          setErrors((map) => new Map(map).set(passageId, error instanceof Error ? error.message : 'Passage marks were not saved.'));
+        }
+      } finally {
+        if (owner.saving.get(passageId) === intent.version) owner.saving.delete(passageId);
+      }
+    });
+    chains.current.set(passageId, task);
+  }, [actorId, key]);
+
   const write = React.useCallback((passageId: number, next: RcHighlight[]) => {
+    const owner = context.current;
+    if (!owner?.ready || owner.cancelled || owner.actor !== actorId || owner.key !== key || !passageIds.includes(passageId)) return;
     const map = new Map(latest.current);
     map.set(passageId, next);
     latest.current = map;
     setByPassage(map);
-    saveAnnotations(passageId, next);
-  }, []);
+    const intentId = crypto.randomUUID();
+    pending.current.set(passageId, { highlights: next, version: ++versions.current, intentId });
+    try {
+      writeAnnotationRecovery(owner.actor, passageId, next, intentId);
+      setStatuses((map) => new Map(map).set(passageId, 'saving'));
+    } catch {
+      setStatuses((map) => new Map(map).set(passageId, 'error'));
+      setErrors((map) => new Map(map).set(passageId, 'The device could not keep a recovery copy. Retry saving before leaving.'));
+    }
+    const timer = timers.current.get(passageId);
+    if (timer) clearTimeout(timer);
+    timers.current.set(passageId, setTimeout(() => { timers.current.delete(passageId); save(passageId); }, 1000));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [actorId, key, save]);
 
   const add = React.useCallback(
     (
@@ -141,5 +220,11 @@ export function useRcHighlights(passageIds: number[]) {
     [write],
   );
 
-  return { forPassage, add, removeAt, removeRange, color, setColor, loaded };
+  const ready = loaded && context.current?.actor === actorId && context.current?.key === key;
+  return { forPassage, add, removeAt, removeRange, color, setColor, loaded: ready,
+    loadStatus: loadError ? 'error' as const : ready ? 'ready' as const : 'loading' as const,
+    loadError, retryLoad, retrySave: save,
+    statusForPassage: (id: number): RcAnnotationSaveStatus => ready ? statuses.get(id) ?? 'idle' : 'idle',
+    errorForPassage: (id: number) => ready ? errors.get(id) ?? null : null,
+  };
 }

@@ -29,6 +29,7 @@ import {
 } from '../lib/rcTypes';
 import '../rc.css';
 import { missedRcConfig } from '@/lib/timedSectionAdoption';
+import { safeRcReturnTo } from '../lib/rcReturnTo';
 
 /** m:ss. Results show real recorded time, never an estimate. */
 function clock(ms: number): string {
@@ -51,15 +52,9 @@ export default function RcResults() {
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  /**
-   * Set when this section was one leg of something larger — a practice test.
-   * Same-origin paths only; it arrives on the query string.
-   */
+  /** Validated internal destination carried from the drill's entry point. */
   const returnToParam = searchParams.get('returnTo');
-  const returnTo =
-    returnToParam && returnToParam.startsWith('/') && !returnToParam.startsWith('//')
-      ? returnToParam
-      : null;
+  const returnTo = returnToParam ? safeRcReturnTo(returnToParam) : null;
 
   const [session, setSession] = React.useState<RcDrillSession | null>(null);
   const [passages, setPassages] = React.useState<RcPassage[]>([]);
@@ -235,7 +230,7 @@ export default function RcResults() {
 
   return (
     <div className="min-h-screen bg-background pb-12">
-      <div className="sticky top-0 z-20 border-b bg-card shadow-sm">
+      <div className="border-b bg-card shadow-sm">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="mb-6 flex items-center justify-between">
             <Button variant="ghost" size="sm" onClick={() => navigate('/rc')}>
@@ -584,7 +579,7 @@ export default function RcResults() {
         {/* Inside a practice test the sitting is not over, so getting back to it
             is the primary action and everything else waits until the end. */}
         {returnTo && (
-          <Button onClick={() => navigate(returnTo)}>Back to your practice test</Button>
+          <Button onClick={() => navigate(returnTo)}>{session?.config.practiceTestRunId ? 'Back to your practice test' : returnTo.startsWith('/classroom') ? 'Back to classroom' : 'Back to Practice'}</Button>
         )}
         <Button
           variant={returnTo ? 'outline' : 'default'}

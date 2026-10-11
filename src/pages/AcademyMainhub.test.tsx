@@ -178,7 +178,7 @@ describe("AcademyMainhub", () => {
     expect(screen.queryByText("Robot scene")).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Build the drill you need." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Set up an LR drill" })).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: "PrepTest" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open a question" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Advanced/i })).not.toBeInTheDocument();
     expect(
       screen.getByRole("region", { name: "Practice and insight workspace" }),
@@ -195,7 +195,7 @@ describe("AcademyMainhub", () => {
     expect(screen.queryByRole("tablist", { name: "Insight slides" })).not.toBeInTheDocument();
     // The Question finder's second mount. Without it, a student standing on the
     // page that exists for picking questions has to go back to Home to search.
-    expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "Open a question" })).toHaveLength(1);
     expect(screen.getByRole("region", { name: "Assigned work" })).toBeInTheDocument();
     expect(await screen.findByText("Nothing assigned right now.")).toBeInTheDocument();
     expect(screen.queryByText("Orbital workspace")).not.toBeInTheDocument();

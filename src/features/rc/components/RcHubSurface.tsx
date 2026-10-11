@@ -257,11 +257,10 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   const appliedFor = React.useRef<string | null>(null);
   React.useEffect(() => {
     const key = params.toString();
-    if (appliedFor.current === key || passages.length === 0) return;
+    if (appliedFor.current === key) return;
     appliedFor.current = key;
     setNotice(null);
 
-    const ids = params.get('passages');
     const revealParam = params.get('reveal');
     const timingParam = params.get('timing');
     const countParam = Number(params.get('count'));
@@ -294,6 +293,19 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
       setCount(Math.min(8, Math.round(countParam)));
     }
     setAutoStart(params.get('start') === '1');
+  }, [params]);
+
+  // Apply URL settings before the passage index loads so a later index reply
+  // cannot reset reveal/timing choices the student already made. Only linked
+  // passage IDs need to wait for the index to validate their membership.
+  const selectionAppliedFor = React.useRef<string | null>(null);
+  const [selectionQuery, setSelectionQuery] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    const key = params.toString();
+    const ids = params.get('passages');
+    if (selectionAppliedFor.current === key || ids && passages.length === 0) return;
+    selectionAppliedFor.current = key;
+    setSelectionQuery(key);
 
     if (ids) {
       const wanted = ids
@@ -358,7 +370,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
         : 0;
   /* Inspect and Start both act on what is on screen. They wait for a passage
      list that loaded on this attempt and a custom pace that parses. */
-  const builderReady = indexStatus === 'ready' && !customInvalid;
+  const builderReady = indexStatus === 'ready' && selectionQuery === params.toString() && !customInvalid;
 
   const ptRun = params.get('ptRun');
   const ptLeg = params.get('ptLeg');
@@ -454,7 +466,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
     if (startingRef.current) return;
     if (pendingLoad.error) { setNotice(pendingLoad.error); return; }
     if (!uncertainStart.current && !options?.replace && !canStart) {
-      setNotice(activeSet ? 'Confirm the set below before starting it.' : 'Inspect a set before starting it.');
+      setNotice(activeSet ? 'Confirm the drill below before starting it.' : 'Preview the drill before starting it.');
       return;
     }
     startingRef.current = true;
@@ -536,11 +548,11 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, act
   // Runs a tick after the link has been applied, so it starts on the count and
   // timing the link asked for rather than on the builder defaults.
   React.useEffect(() => {
-    if (!autoStart || passages.length === 0 || starting) return;
+    if (!autoStart || passages.length === 0 || selectionQuery !== params.toString() || starting) return;
     setAutoStart(false);
     void start({ replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoStart, passages, starting]);
+  }, [autoStart, passages, starting, selectionQuery, params]);
 
   const toggle = (key: 'topics' | 'formats' | 'frameworks', value: string) =>
     setFilters((f) => ({

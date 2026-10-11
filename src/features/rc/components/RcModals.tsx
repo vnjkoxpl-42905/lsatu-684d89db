@@ -129,6 +129,7 @@ function OptionRow({
     <button
       type="button"
       onClick={onClick}
+      aria-pressed={selected}
       className="flex w-full items-center justify-between rounded-sm px-3 py-2 text-left text-[15px] text-slate-900 hover:bg-slate-50"
     >
       <span>{label}</span>
@@ -174,8 +175,8 @@ export function RcQuestionDetails({
     ['Passage Topic', dash(passage.topic)],
     ['Passage Format', dash(passage.format)],
     ['Frameworks', passage.frameworks.length > 0 ? passage.frameworks.join(', ') : '—'],
-    ['Set Difficulty', dash(passage.difficulty)],
-    ['Set Number', dash(passage.setNumber)],
+    ['Passage difficulty', dash(passage.difficulty)],
+    ['Passage', dash(passage.setNumber)],
   ];
 
   return (

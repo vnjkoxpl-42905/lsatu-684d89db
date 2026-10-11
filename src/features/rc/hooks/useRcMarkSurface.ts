@@ -42,6 +42,8 @@ export interface RcMarkSurfaceHandle {
 }
 
 export interface RcMarkSurfaceOptions {
+  /** Annotation hydration/read failure gates marks independently of answers. */
+  disabled?: boolean;
   /** The element whose rendered text the offsets are measured against. */
   textRef: React.RefObject<HTMLElement | null>;
   /** The positioned, scrolling ancestor the popover is anchored inside. */
@@ -75,7 +77,7 @@ export function useRcMarkSurface(options: RcMarkSurfaceOptions): RcMarkSurfaceHa
   const handle = React.useMemo<RcMarkSurfaceHandle>(() => {
     const self: RcMarkSurfaceHandle = {
       applyPending: (chosen) => {
-        if (pending.current) {
+        if (!latest.current.disabled && pending.current) {
           latest.current.onAdd(pending.current.start, pending.current.end, chosen, 'highlight');
           pending.current = null;
         }
@@ -83,7 +85,7 @@ export function useRcMarkSurface(options: RcMarkSurfaceOptions): RcMarkSurfaceHa
         latest.current.onAnchor(null, self);
       },
       removePending: () => {
-        if (removeOffset.current != null) latest.current.onRemove(removeOffset.current);
+        if (!latest.current.disabled && removeOffset.current != null) latest.current.onRemove(removeOffset.current);
         removeOffset.current = null;
         latest.current.onAnchor(null, self);
       },
@@ -91,6 +93,14 @@ export function useRcMarkSurface(options: RcMarkSurfaceOptions): RcMarkSurfaceHa
     };
     return self;
   }, []);
+
+  React.useEffect(() => {
+    if (!options.disabled) return;
+    pending.current = null;
+    removeOffset.current = null;
+    consumed.current = false;
+    latest.current.onAnchor(null, handle);
+  }, [options.disabled, handle]);
 
   React.useEffect(() => {
     /**
@@ -109,6 +119,13 @@ export function useRcMarkSurface(options: RcMarkSurfaceOptions): RcMarkSurfaceHa
     };
 
     const onMouseUp = (event: MouseEvent) => {
+      if (latest.current.disabled) {
+        pending.current = null;
+        removeOffset.current = null;
+        consumed.current = false;
+        latest.current.onAnchor(null, handle);
+        return;
+      }
       const { textRef, highlightMode, color, onAdd, onRemove, onRemoveRange, onAnchor } =
         latest.current;
       const el = textRef.current;

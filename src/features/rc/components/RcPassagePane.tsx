@@ -19,6 +19,7 @@ import type {
 } from '../lib/rcTypes';
 
 interface Props {
+  annotationsDisabled?: boolean;
   passage: RcPassage;
   highlights: RcHighlight[];
   color: RcHighlightColor;
@@ -54,6 +55,7 @@ export function RcPassagePane({
   onAddHighlight,
   onRemoveHighlight,
   onRemoveRange,
+  annotationsDisabled = false,
   highlightMode,
   findQuery,
   findIndex,
@@ -111,7 +113,7 @@ export function RcPassagePane({
   }, [passage.passageId]);
 
   const surface = useRcMarkSurface({
-    textRef,
+    disabled: annotationsDisabled,    textRef,
     paneRef,
     highlightMode,
     color,
@@ -145,7 +147,7 @@ export function RcPassagePane({
       {children}
 
       <RcSelectionPopover
-        anchor={anchor}
+        anchor={annotationsDisabled ? null : anchor}
         color={color}
         onColorChange={onColorChange}
         onApply={surface.applyPending}

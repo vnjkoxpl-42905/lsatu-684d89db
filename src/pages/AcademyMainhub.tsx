@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { listStandaloneDrillRuns } from "@/lib/drillRunLedger";
 import { getSessionAttempts, listSessions } from "@/features/rc/api/rcProgress";
@@ -34,17 +34,16 @@ import {
 import { launchDrill } from "@/lib/drillLaunch";
 import { cn } from "@/lib/utils";
 import type { TypeDrillConfig } from "@/types/drill";
+import { safeRcReturnTo } from "@/features/rc/lib/rcReturnTo";
 
 function MainhubHero({
   section,
   drillReturnTo,
   onOpenBuilder,
-  onStartSmartRc,
 }: {
   section: DrillSection;
   drillReturnTo: string;
   onOpenBuilder: () => void;
-  onStartSmartRc: () => void;
 }) {
   const navigate = useNavigate();
 
@@ -55,7 +54,17 @@ function MainhubHero({
     })}`);
   }, [drillReturnTo, navigate]);
 
-  const startSmart = section === "rc" ? onStartSmartRc : startSmartDrill;
+  if (section === "rc") {
+    return (
+      <section className="rc-practice-create" aria-labelledby="rc-create-title">
+        <div>
+          <h2 id="rc-create-title">Create an RC drill</h2>
+          <p>Choose passages, timing, and when to check your answers.</p>
+        </div>
+        <Button type="button" onClick={onOpenBuilder}>Create RC drill <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
+      </section>
+    );
+  }
 
   return (
     <Card
@@ -71,7 +80,7 @@ function MainhubHero({
             </p>
           </div>
           <Button
-            onClick={startSmart}
+            onClick={startSmartDrill}
             className="drill-observatory-cta drill-observatory-smart-drill-pulse mt-5 w-fit"
           >
             Smart Drill
@@ -82,12 +91,10 @@ function MainhubHero({
           <div className="flex flex-col justify-center gap-5">
             <div className="space-y-3">
               <h2 className="drill-observatory-ink-full font-semibold leading-tight tracking-[-0.025em]">
-                {section === "rc" ? "Build the reading set you need." : "Build the drill you need."}
+                Build the drill you need.
               </h2>
               <p className="drill-observatory-ink-70 max-w-[48ch] text-sm leading-[1.6]">
-                {section === "rc"
-                  ? "Pick PrepTests, topics, and difficulty. Choose the passages or let the set fill itself."
-                  : "Pick PrepTests, question types, and difficulty. See the exact set before you start."}
+                Pick PrepTests, question types, and difficulty. See the exact set before you start.
               </p>
             </div>
             <Button
@@ -95,7 +102,7 @@ function MainhubHero({
               onClick={onOpenBuilder}
               className="drill-observatory-console-start"
             >
-              {section === "rc" ? "Set up an RC drill" : "Set up an LR drill"}
+              Set up an LR drill
               <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
             </Button>
           </div>
@@ -195,6 +202,13 @@ export default function AcademyMainhub({
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const lookupParams = new URLSearchParams(location.search);
+  lookupParams.delete("finder");
+  lookupParams.delete("finderReturnTo");
+  const lookupSearch = lookupParams.toString();
+  const lookupReturnTo = safeRcReturnTo(searchParams.get("finderReturnTo"))
+    ?? `${location.pathname}${lookupSearch ? `?${lookupSearch}` : ""}`;
   const questionFinderRef = React.useRef<QuestionFinderHandle>(null);
   const navigate = useNavigate();
   const viewParam = searchParams.get("view");
@@ -209,6 +223,7 @@ export default function AcademyMainhub({
     questionFinderRef.current?.open();
     const next = new URLSearchParams(searchParams);
     next.delete("finder");
+    next.delete("finderReturnTo");
     setSearchParams(next, { replace: true });
   }, [searchParams, setSearchParams]);
 
@@ -342,26 +357,6 @@ export default function AcademyMainhub({
     setSearchParams({ [DRILL_SECTION_PARAM]: section }, { replace: true });
   }, [section, setSearchParams]);
 
-  /* Smart Reading Drill: one passage, untimed, answers after each passage —
-     RcHubSurface's own defaults, spelled in the URL so the builder mounts,
-     applies them, and starts itself. The student sees the builder for the
-     moment the passage index is loading and then lands in the drill; they
-     never have to press Start a second time. */
-  const startSmartRc = React.useCallback(() => {
-    rememberSection("rc");
-    setSearchParams(
-      {
-        [DRILL_SECTION_PARAM]: "rc",
-        stage: "type-drill",
-        count: "1",
-        timing: "untimed",
-        reveal: "per_passage",
-        start: "1",
-      },
-      { replace: false },
-    );
-  }, [setSearchParams]);
-
   /* Escape leaves a stage. The stage is a room the hub opened, and every other
      room in this app closes on Escape; the return control stays the visible way
      out. Deliberately narrow about when it fires:
@@ -398,13 +393,13 @@ export default function AcademyMainhub({
   }, [setOrbitalActive, stage]);
 
   return (
-    <div className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-12">
+    <div data-section={section} className="drill-observatory-root @container relative h-full w-full overflow-y-auto bg-transparent px-0 py-0 pb-12">
       {/* 1140px and a 20px gap: the design's column. The three cards each carry
           26-30px of internal padding, so the gap between them stays smaller than
           their padding by design — they read as three objects on one field, not
           as one split surface. */}
       <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5">
-        <nav aria-label="Drills" className="flex flex-wrap gap-2 border-b border-border pb-3">
+        <nav aria-label="Drills" className="drill-view-tabs flex flex-wrap gap-2 border-b border-border pb-3">
           {([ ["create", "Create"], ["in-progress", "In progress"], ["completed", "Completed"], ["saved", "Saved sets"] ] as const).map(([key, label]) => (
             <Button key={key} type="button" size="sm" variant={view === key ? "default" : "ghost"} aria-current={view === key ? "page" : undefined} onClick={() => changeView(key)}>{label}</Button>
           ))}
@@ -455,7 +450,7 @@ export default function AcademyMainhub({
         {!isLauncherStage && <div className="drill-observatory-tools">
           <QuestionJump
             ref={questionFinderRef}
-            returnTo={drillReturnTo}
+            returnTo={lookupReturnTo}
             tone={theme === "dark" ? "dark" : "light"}
             bank={section}
             withSearch={false}
@@ -481,7 +476,6 @@ export default function AcademyMainhub({
             section={section}
             drillReturnTo={drillReturnTo}
             onOpenBuilder={() => openLauncher("type-drill")}
-            onStartSmartRc={startSmartRc}
           />
         )}
 
@@ -502,7 +496,7 @@ export default function AcademyMainhub({
           <section
             className={cn(
               "drill-observatory-deck grid grid-cols-1 items-start",
-              !isWideLauncherStage &&
+              !isWideLauncherStage && section !== "rc" &&
                 "@[760px]:grid-cols-[minmax(0,1.2fr)_minmax(340px,1fr)]",
             )}
             data-stacked={isWideLauncherStage ? "true" : undefined}
@@ -536,9 +530,14 @@ export default function AcademyMainhub({
               )}
             </section>
 
-            {!isLauncherStage && <section className="drill-observatory-today-bay">
+            {!isLauncherStage && (section === "rc" ? (
+              <details className="rc-practice-assigned">
+                <summary>Assigned work <span>View homework from My Work</span></summary>
+                <AssignedWorkPanel drillReturnTo={drillReturnTo} />
+              </details>
+            ) : <section className="drill-observatory-today-bay">
               <AssignedWorkPanel drillReturnTo={drillReturnTo} />
-            </section>}
+            </section>)}
           </section>
         )}
         </>}
