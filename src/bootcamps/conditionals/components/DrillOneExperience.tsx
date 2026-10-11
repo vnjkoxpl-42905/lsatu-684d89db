@@ -91,7 +91,6 @@ export function DrillOneExperience({ questions }: { questions: DrillOneQuestion[
       <p className="d1-result"><strong>{correctFirst}</strong> of {questions.length} correct on your first attempt.</p>
       <p className="d1-completion-copy">{missed.length ? 'Return to the questions you missed and compare the explanation with your original reasoning.' : 'Every first answer was correct. You can review any question before moving on.'}</p>
       <div className="d1-review-list" aria-label="Review questions">{questions.map((item, index) => <button type="button" key={index} onClick={() => go(index)}><span>Question {index + 1}</span><span>{answers[index].first === item.correct ? 'Correct first attempt' : 'Review reasoning'}<ArrowRight size={16}/></span></button>)}</div>
-      <p className="d1-save">These results stay in this practice session. They are not saved to your account.</p>
     </div> : <div key={current} className="d1-question-scene" data-practice-task={current + 1}>
       <div className="d1-rule-panel">
         <div className="d1-rule-top"><span className="d1-eyebrow">{question.contextLabel ?? 'Given rule'}</span><span className="d1-rule-number" aria-hidden="true">{String(current + 1).padStart(2, '0')}</span></div>

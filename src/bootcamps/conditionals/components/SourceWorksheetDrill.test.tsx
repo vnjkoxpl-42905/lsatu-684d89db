@@ -64,11 +64,17 @@ it('keeps every source task reachable and future operations gated', () => {
 
 it('requires a blank production attempt across all six operations before revealing the final model', () => {
   run('source-full-translation');
-  expect(screen.getByRole('button', { name: 'Save and continue' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
   expect(screen.queryByText('that intern is offered a full-time position', { exact: true })).toBeNull();
   click('All');
+  fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '2' } });
+  click('Check this step');
+  expect(screen.getByRole('heading', { name: 'Make one adjustment.' })).toBeVisible();
+  expect(screen.queryByRole('button', { name: 'Continue' })).toBeNull();
+  click('Revise this step');
   fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '1' } });
-  click('Save and continue');
+  click('Check this step');
+  click('Continue');
   write('First complete condition', 'intern completes program');
   write('Second complete condition', 'offered full-time position');
   click('Save and continue');

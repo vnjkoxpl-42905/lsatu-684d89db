@@ -23,7 +23,7 @@ function useCourse() { const value = useContext(Context); if (!value) throw new 
 
 type NextStep = { mode: 'learn' | 'practice'; unitId?: string; label: string; difficulty: ConditionalDifficulty; phase: ConditionalUnit['phase'] };
 type PathSelection = { allowedUnits?: string[]; assignmentId?: string; practiceOnly?: boolean; scope: 'course' | 'area' | 'skill' | 'practice'; area?: ConditionalArea; unitId?: string; start?: string; assignedLevel?: boolean; difficulty: ConditionalDifficulty; phase?: ConditionalUnit['phase'] };
-const WorkContext = createContext<{ selection: PathSelection; assignments: ConditionalAssignment[]; active?: ConditionalAssignment; isAdmin: boolean } | null>(null);
+const WorkContext = createContext<{ selection: PathSelection; assignments: ConditionalAssignment[]; active?: ConditionalAssignment; isAdmin: boolean; userId?: string } | null>(null);
 function useWork() { const value = useContext(WorkContext); if (!value) throw new Error('Conditional work provider missing'); return value; }
 function useSelection() { return useWork().selection; }
 function selectedUnits(selection: PathSelection) {
@@ -108,7 +108,7 @@ export function ConditionalBootcampRoutes({ userId, isAdmin = false, assignments
   const matching = requestedUnit ? assignments.find(item => (openingStep ? openingStepAccessUnits(openingStep) : [requestedUnit]).some(unitId => conditionalAssignmentAllowsAction(item, { unitId, action: requestedAction, difficulty: params.has('level') ? difficultyFrom(params) : item.difficulty ?? getCurriculumDifficulty(unitId) }))) : undefined;
   const active = params.has('assignment') ? assignments.find(item => item.id === params.get('assignment')) : matching ?? assignments[0];
   const selection = isAdmin ? pathSelection(params, /\/(practice|simulator|hard-sentences)$/.test(location.pathname)) : active ? assignmentSelection(active) : { scope: 'course' as const, allowedUnits: [], difficulty: 'beginner' as const };
-  return <Context.Provider value={course}><WorkContext.Provider value={{ selection, assignments, active, isAdmin }}><Routes><Route element={<Shell />}>
+  return <Context.Provider value={course}><WorkContext.Provider value={{ selection, assignments, active, isAdmin, userId }}><Routes><Route element={<Shell />}>
     <Route index element={<LearningPath />} />
     <Route path="lessons" element={<OpeningCourseRoute view="lessons"/>} />
     <Route path="opening/:stepId" element={<OpeningCourseRoute/>} />
@@ -180,13 +180,13 @@ function OpeningCourseRoute({ view: surface }: { view?: string }) {
   const { stepId } = useParams();
   const location = useLocation();
   const [params] = useSearchParams();
-  const { isAdmin, active, selection } = useWork();
+  const { isAdmin, active, selection, userId } = useWork();
   const steps = OPENING_COURSE_PATH.filter(step => isAdmin || !!active && openingStepAccessUnits(step).some(unitId => conditionalAssignmentAllowsAction(active, {
     unitId, action: step.type === 'note' ? 'lesson' : 'guided', difficulty: active.difficulty ?? getCurriculumDifficulty(unitId),
   })));
   const units = selectedUnits(selection).filter(unit => CONDITIONAL_OPENING_UNIT_IDS.some(id => id === unit.id));
   const recordedPractice = <section className="cb-card"><h2>Your assigned skill drills</h2><p>These drills record your responses and reasoning in your existing work.</p><div className="cb-actions">{units.filter(unit => isAdmin || !!active && conditionalAssignmentAllowsAction(active, { unitId: unit.id, action: 'practice', difficulty: active.difficulty ?? getCurriculumDifficulty(unit) })).map(unit => <Link key={unit.id} className="cb-button" to={actionUrl(unit, 'practice', selection)}>{unit.title}<ArrowRight size={16}/></Link>)}</div></section>;
-  return <OpeningCourseScreen view={surface ?? stepId} run={params.get('run') === '1'} url={courseUrl(location.search)} steps={steps} recordedPractice={recordedPractice}/>;
+  return <OpeningCourseScreen view={surface ?? stepId} run={params.get('run') === '1'} url={courseUrl(location.search)} steps={steps} recordedPractice={recordedPractice} storageScope={userId}/>;
 }
 
 function Shell() {

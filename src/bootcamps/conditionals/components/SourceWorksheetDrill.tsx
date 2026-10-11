@@ -48,7 +48,7 @@ export function SourceWorksheetDrill({ setId, run = false, startUrl, title, stor
 }
 
 function WorksheetRun({ set, run, startUrl, title, storageScope }: { set: SourceWorksheetDrillSet; run: boolean; startUrl?: string; title?: string; storageScope: string }) {
-  // Only the local preview reads the legacy preview key. Signed-in users never import it.
+  // The unscoped preview key belongs to the local dev preview. Signed-in routes pass their user id, so students on a shared device never share drafts.
   const storageKey = storageScope === 'preview' ? `conditional-worksheet-v1:${set.id}` : `conditional-worksheet-v1:${storageScope}:${set.id}`;
   const stages = stagesFor(set.taskKind);
   const stageName = (value: Stage) => set.taskKind === 'rephrase' && value === 'readback' ? 'Rewrite the rule' : names[value];
@@ -85,7 +85,7 @@ function WorksheetRun({ set, run, startUrl, title, storageScope }: { set: Source
   const placementCorrect = answer.left === 'sufficient' && answer.right === 'necessary';
   const contraCorrect = answer.contraLeft === 'necessary' && answer.contraRight === 'sufficient' && answer.negateLeft && answer.negateRight;
   const production = set.taskKind === 'forward' || set.taskKind === 'contrapositive';
-  const deferredComparison = set.taskKind === 'contrapositive' || set.taskKind === 'rephrase' && stage === 'readback';
+  const deferredComparison = set.taskKind === 'contrapositive' && stage !== 'indicators' || set.taskKind === 'rephrase' && stage === 'readback';
   const objective = stage === 'indicators' || !production && ['diagram', 'contra'].includes(stage);
   const correct = stage === 'indicators' ? indicatorsCorrect : stage === 'diagram' ? placementCorrect : stage === 'contra' ? contraCorrect : true;
   const ready = stage === 'indicators' ? phrases.length > 0 && phrases.every(p => !!answer.groups[p.join('-')]) : stage === 'conditions' ? !!answer.conditionOne.trim() && !!answer.conditionTwo.trim() : stage === 'symbols' ? !!answer.symbolOne.trim() && !!answer.symbolTwo.trim() && answer.symbolOne.trim().toLowerCase() !== answer.symbolTwo.trim().toLowerCase() : stage === 'diagram' ? production ? !!answer.originalDraft.trim() : !!answer.left && !!answer.right : stage === 'contra' ? production ? !!answer.contraDraft.trim() : !!answer.contraLeft && !!answer.contraRight : stage === 'readback' ? !!answer.writing.trim() : stage === 'contra-readback' ? !!answer.contraWriting.trim() : true;

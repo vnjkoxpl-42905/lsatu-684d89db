@@ -1,9 +1,8 @@
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
-import { conditionalReferenceContent, IntegratedItem, referencePracticeItems, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
-import { CounterexampleLab, NegativeCaseLab } from './CounterexampleLab';
+import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
+import { NegativeCaseLab } from './CounterexampleLab';
 import { StagedReasoningDrill } from './StagedReasoningDrill';
-import { PracticeTaskRunner } from './PracticeTaskRunner';
 import { DrillOneExperience, type DrillOneQuestion } from './DrillOneExperience';
 import { StudyDeck } from './StudyDeck';
 import './must-arrow-note.css';
@@ -300,17 +299,6 @@ function FoundationPractice() {
   return <DrillOneExperience key={foundationPracticeQuestions.length} questions={foundationPracticeQuestions}/>;
 }
 
-function GroupPractice({ group }: { group: 'group-1' | 'group-2' }) {
-  const meaningCheck = groupSection(group, 'Check the meaning, not just the word');
-  return <>
-    {groupSection(group, 'condition-practice')}
-    {groupSection(group, 'From sentence to diagram')}
-    {group === 'group-1' && groupSection(group, 'Read the only as a complete expression')}
-    {cloneElement(meaningCheck, {}, Children.toArray(meaningCheck.props.children).slice(0, -1))}
-    <details className="co-practical-note"><summary>More sentences to recall and explain</summary>{groupSection(group, 'Say the rule without the clues')}</details>
-  </>;
-}
-
 function PermissionBoundary() {
   const boundary = sections(conditionalReferenceContent().props.children).find(section => section.props['data-reference-boundary'] !== undefined);
   if (!boundary) throw new Error('Missing approved permission and instruction boundary');
@@ -346,34 +334,6 @@ function WholeConditionNegation() {
   </NoteSection>;
 }
 
-
-function groupPracticeTasks(group: 'group-1' | 'group-2') {
-  const content = sections(GroupPractice({ group }).props.children);
-  const recall = content[content.length - 1];
-  return content.slice(0, -1).map((item, index, items) => ({
-    title: item.props.title ?? 'Read the whole rule',
-    content: <>{item}{index === items.length - 1 && recall}</>,
-  }));
-}
-
-function SufficientPractice() {
-  return <PracticeTaskRunner rounds={[{ title: 'Build the sufficient side', tasks: [
-    ...groupPracticeTasks('group-1'),
-    { title: 'Build a case that proves the limit', content: <NoteSection title="Build a case that proves the limit"><CounterexampleLab/></NoteSection> },
-  ] }]}/>;
-}
-
-function ContrapositivePractice() {
-  const [current, setCurrent] = useState(0);
-  const [checked, setChecked] = useState<boolean[]>(() => referencePracticeItems.map(() => false));
-  return <NoteSection title="Build an original and its contrapositive">
-    <p>For each sentence, identify the indicator and both complete conditions. Choose the original diagram, then its contrapositive. Read both back before checking. If an answer needs revision, inspect the direction, qualifications and negation, then retry.</p>
-    <p className="co-kicker" role="status">Sentence {current + 1} of {referencePracticeItems.length}</p>
-    {referencePracticeItems.map((item, index) => <div key={item.sentence} hidden={current !== index} data-course-practice-item={index + 1}><IntegratedItem item={item} number={index + 1} onChecked={value => setChecked(previous => previous.map((old, itemIndex) => itemIndex === index ? value : old))}/></div>)}
-    <div className="co-choices"><button type="button" disabled={current === 0} onClick={() => setCurrent(current - 1)}>Previous sentence</button><button type="button" disabled={current === referencePracticeItems.length - 1 || !checked[current]} onClick={() => setCurrent(current + 1)}>Next sentence</button></div>
-    <p>Moving between sentences keeps your choices and feedback.</p>
-  </NoteSection>;
-}
 
 function Content({ id }: { id: string }) {
   switch (id) {

@@ -223,7 +223,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "statement": "Members who pay their dues can attend the meeting.",
         "indicators": [
           {
-            "text": "Members who",
+            "text": "who",
             "group": 1
           }
         ],
@@ -1000,7 +1000,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "statement": "Members who pay their dues can attend the meeting.",
         "indicators": [
           {
-            "text": "Members who",
+            "text": "who",
             "group": 1
           }
         ],
