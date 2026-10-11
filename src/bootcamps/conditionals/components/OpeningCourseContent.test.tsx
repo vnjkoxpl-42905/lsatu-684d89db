@@ -235,24 +235,27 @@ it('bridges with one raffle question, then tests fresh cases with reasoned feedb
     expect(screen.queryByRole('heading', { name: repeated })).toBeNull();
   }
   fireEvent.click(screen.getByRole('button', { name: 'No, it tells me what follows if I win.' }));
-  fireEvent.click(screen.getByRole('button', { name: 'Next task' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   for (let index = 0; index < 4; index++) {
     const fresh = document.querySelector<HTMLElement>(`[data-practice-task="${index + 2}"]`)!;
     expect(fresh).toBeVisible();
     expect(fresh.textContent).not.toContain('→');
     expect(fresh.textContent).not.toMatch(/raffle|bicycle/);
-    const question = fresh.querySelector<HTMLElement>('.cr-question')!;
+    const question = fresh.querySelector<HTMLElement>('.d1-question-body')!;
     const choices = within(within(question).getByRole('group')).getAllByRole('button');
     const explanations = new Set<string>();
     for (const choice of choices) {
       fireEvent.click(choice);
-      explanations.add(within(question).getByRole('status').textContent || '');
+      fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
+      explanations.add(question.querySelector('.d1-feedback')?.textContent || '');
       fireEvent.click(within(question).getByRole('button', { name: 'Try again' }));
     }
     expect(explanations.size).toBe(choices.length);
     fireEvent.click(choices[[2, 0, 0, 2][index]]);
+    fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
     if (index === 0) expect(within(question).getByText(/a promise about a possible case, not a report that the case happened/)).toBeVisible();
-    if (index < 3) fireEvent.click(screen.getByRole('button', { name: 'Next task' }));
+    if (index < 3) fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   }
 });
 

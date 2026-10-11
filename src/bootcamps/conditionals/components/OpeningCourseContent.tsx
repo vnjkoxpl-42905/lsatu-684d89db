@@ -4,6 +4,7 @@ import { conditionalReferenceContent, IntegratedItem, referencePracticeItems, Re
 import { CounterexampleLab, NegativeCaseLab } from './CounterexampleLab';
 import { OpeningMixedDrill } from './OpeningMixedDrill';
 import { PracticeTaskRunner } from './PracticeTaskRunner';
+import { DrillOneExperience, type DrillOneQuestion } from './DrillOneExperience';
 import { StudyDeck } from './StudyDeck';
 import './must-arrow-note.css';
 import { MustArrowPractice } from './MustArrowPractice';
@@ -193,14 +194,24 @@ function FoundationPractice() {
   if (!fresh) throw new Error('Missing approved fresh sufficient-condition check');
   const freshContent = Children.toArray(fresh.props.children);
   const freshCheck = freshContent[freshContent.length - 1];
-  const freshTitles = [['Distinguish a rule from a fact', 'Use the new fact'], ['Identify enough and required'], ['Keep other reasons possible']];
-  const tasks = [
-    { title: 'Separate the rule from the fact', content: <NoteSection title="Separate the rule from the fact"><blockquote>If you win the raffle, you get a bicycle.</blockquote><p>Start with the rule you know. Decide what the rule itself establishes before any fact arrives.</p>{anchor}</NoteSection> },
-    ...freshCases.flatMap((item, caseIndex) => item.questions.map((question, questionIndex) => ({ title: freshTitles[caseIndex][questionIndex], content: <NoteSection title={freshTitles[caseIndex][questionIndex]}><blockquote>{item.rule}</blockquote><ReferenceQuestion {...question}/></NoteSection> }))),
-    { title: 'Enough does not mean the only way', content: <NoteSection title="Enough does not mean the only way">{freshCheck}</NoteSection> },
-    { title: 'Test the limit with a possible case', content: <NoteSection title="Test the limit with a possible case"><ReferenceQuestion prompt="Someone claims that getting a bicycle proves you won the raffle. Which possible case fits our rule but disproves that claim?" options={['You win and get a bicycle.', 'You do not win, but get a bicycle as a gift.', 'You win and never get a bicycle.']} correct={1} feedback={['This fits both the rule and the claim. It does not show why the claim adds something.', 'The rule promises a bicycle to a winner. It does not exclude a bicycle received as a gift without winning, so this case fits the rule and disproves the claim.', 'Winning without getting a bicycle breaks the original rule. We need a case that keeps the rule true.']}/></NoteSection> },
+  if (!isValidElement<DrillOneQuestion>(freshCheck)) throw new Error('Missing approved delivery question');
+  const anchorQuestion = anchor as ReactElement<DrillOneQuestion>;
+  const questions: DrillOneQuestion[] = [
+    { ...anchorQuestion.props, rule: 'If you win the raffle, you get a bicycle.' },
+    ...freshCases.flatMap(item => item.questions.map(question => ({ ...question, rule: item.rule }))),
+    { ...freshCheck.props, rule: 'Every delivery marked collected has a pickup receipt.', prompt: 'What is sufficient here?' },
+    { rule: 'If you win the raffle, you get a bicycle.', prompt: 'Someone claims that getting a bicycle proves you won the raffle. Which possible case fits our rule but disproves that claim?', options: ['You win and get a bicycle.', 'You do not win, but get a bicycle as a gift.', 'You win and never get a bicycle.'], correct: 1, feedback: ['This fits both the rule and the claim. It does not show why the claim adds something.', 'The rule promises a bicycle to a winner. It does not exclude a bicycle received as a gift without winning, so this case fits the rule and disproves the claim.', 'Winning without getting a bicycle breaks the original rule. We need a case that keeps the rule true.'] },
   ];
-  return <PracticeTaskRunner rounds={[{ title: 'Drill 1', tasks }]}/>;
+  const conditions: Array<[string, string]> = [
+    ['You win the raffle', 'You get a bicycle'],
+    ['It rains on Saturday', 'The market moves into the town hall'],
+    ['It rains on Saturday', 'The market moves into the town hall'],
+    ['A student goes on the museum trip', 'That student has a signed permission slip'],
+    ['The café runs out of bread', 'The café closes early'],
+    ['A delivery is marked collected', 'That delivery has a pickup receipt'],
+    ['You win the raffle', 'You get a bicycle'],
+  ];
+  return <DrillOneExperience questions={questions.map((question, index) => ({ ...question, conditions: conditions[index] }))}/>;
 }
 
 function GroupPractice({ group }: { group: 'group-1' | 'group-2' }) {
@@ -288,5 +299,5 @@ function Content({ id }: { id: string }) {
 
 /** Article body only. Course routes own titles, navigation and completion. */
 export function OpeningCourseContent({ id }: { id: string }) {
-  return <div className="co-opening cr-sequence opening-course-content"><Content key={id} id={id}/></div>;
+  return <div className={id === 'foundation-practice' ? 'opening-course-content' : 'co-opening cr-sequence opening-course-content'}><Content key={id} id={id}/></div>;
 }

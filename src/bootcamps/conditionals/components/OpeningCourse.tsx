@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/s
 import { OPENING_COURSE_PATH, openingCourseStep, type OpeningCourseStep } from '../openingCoursePath';
 import { OpeningCourseContent } from './OpeningCourseContent';
 import { StudyDeck } from './StudyDeck';
+import { DrillOneEntry } from './DrillOneExperience';
 import './opening-course.css';
 
 export type OpeningCourseUrl = (destination: string, run?: boolean) => string;
@@ -41,10 +42,6 @@ function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourse
 }
 
 const drillInstructions: Record<string, { summary: string; heading: string; steps: string[] }> = {
-  'foundation-practice': {
-    summary: '7 questions', heading: 'Use the conditional rule',
-    steps: ['Read each rule. Identify the sufficient condition and the necessary condition.', 'Use only the facts given to choose your answer. Decide what the rule guarantees and what the information does not establish.', 'For the final question, choose a case that fits the rule but shows why the proposed conclusion is wrong.', 'Select an answer to see the explanation. Compare its reasoning with yours before moving to the next question.'],
-  },
   'sufficient-practice': {
     summary: 'Condition targets and diagrams', heading: 'Find the whole sufficient condition',
     steps: ['Find the complete idea the sufficient expression refers to.', 'Put that condition on the left and the required condition on the right. Read the arrow back in English.', 'Check your work, then build a possible case that shows why the reverse does not follow.'],
@@ -56,6 +53,7 @@ const drillInstructions: Record<string, { summary: string; heading: string; step
 };
 
 function DrillEntry({ step, url }: { step: OpeningCourseStep; url: OpeningCourseUrl }) {
+  if (step.id === 'foundation-practice') return <DrillOneEntry startUrl={url(step.id, true)} lessonsUrl={url('lessons')} saveNotice={practiceSaveNotice}/>;
   if (step.id === 'mixed-practice') return <div className="oc-drill-landing oc-translation-entry">
     <div className="oc-drill-overview">
       <Link className="oc-back oc-entry-back" to={url('lessons')}><ArrowLeft size={16}/>Back to lessons</Link>
@@ -102,7 +100,7 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
   const next = steps[index + 1];
   const list = view === 'labs' || view === 'practice' ? steps.filter(step => step.type === 'drill') : steps;
   const isIndex = ['lessons', 'labs', 'practice'].includes(view);
-  return <div ref={root} className="oc-course-screen">
+  return <div ref={root} className={`oc-course-screen${view === 'foundation-practice' ? ' d1-screen' : ''}`}>
     {isIndex && <div className="oc-course-index">
       <div data-course-heading><PageHeader noBloom eyebrow={view === 'lessons' ? 'Introduction' : 'Practice'} title={view === 'lessons' ? 'Conditional reasoning.' : view === 'labs' ? 'Make the move yourself.' : 'Practice the reasoning.'} description={view === 'lessons' ? 'Learn one idea, use it, then build on it. The drills between lessons give you a chance to test the meaning before moving on.' : 'Make an attempt before reading the explanation. Name the mistake, repair it and try again.'}/></div>
       {view === 'practice' && recordedPractice}
@@ -122,7 +120,7 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}><ArrowLeft size={16}/>Back to instructions</Link>}
       {current.id === 'mixed-practice' && <p className="oc-save-scope">{practiceSaveNotice}</p>}
     </div>}
-    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className="oc-course-body co-opening cr-sequence"><OpeningCourseContent id={step.id}/></div>)}</div>
+    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><OpeningCourseContent id={step.id}/></div>)}</div>
     {current && (current.type === 'note' || run) && <nav className="oc-course-turn" aria-label="Course navigation">{prior ? <Link to={url(prior.id)}><span>Previous {prior.type === 'note' ? 'lesson' : 'drill'}</span><strong>{prior.title}</strong></Link> : <Link to={url('lessons')}>All lessons</Link>}{next ? <Link to={url(next.id)}><span>Next {next.type === 'note' ? 'lesson' : 'drill'}</span><strong>{next.title}<ArrowRight size={18}/></strong></Link> : <Link to={url('lessons')}>Return to lessons<ArrowRight size={18}/></Link>}</nav>}
     {!isIndex && view !== 'tools' && !current && <div className="oc-course-note"><h1>This lesson is not available here.</h1><Link to={url('lessons')}>Return to lessons</Link></div>}
   </div>;
