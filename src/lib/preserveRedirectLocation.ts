@@ -10,3 +10,14 @@ export function preserveRedirectLocation(to: string, search: string, hash: strin
   const query = merged.toString();
   return `${path}${query ? `?${query}` : ""}${targetHash === undefined ? hash : `#${targetHash}`}`;
 }
+
+/** Translate the old History area filter into the new page's URL state. */
+export function redirectLegacyHistoryLocation(search: string, hash: string): string {
+  const params = new URLSearchParams(search);
+  const oldArea = params.get("area")?.toUpperCase();
+  if (!params.has("historyArea") && (oldArea === "LR" || oldArea === "RC")) {
+    params.set("historyArea", oldArea);
+  }
+  params.delete("area");
+  return preserveRedirectLocation("/progress/history", params.toString(), hash);
+}

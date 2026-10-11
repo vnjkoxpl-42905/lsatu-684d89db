@@ -1,4 +1,4 @@
-import { preserveRedirectLocation } from "./lib/preserveRedirectLocation";
+import { preserveRedirectLocation, redirectLegacyHistoryLocation } from "./lib/preserveRedirectLocation";
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -207,6 +207,11 @@ function RedirectBootcampStudentToInsights() {
 function RedirectWithSearch({ to }: { to: string }) {
   const { search, hash } = useLocation();
   return <Navigate to={preserveRedirectLocation(to, search, hash)} replace />;
+}
+
+function RedirectLegacyHistory() {
+  const { search, hash } = useLocation();
+  return <Navigate to={redirectLegacyHistoryLocation(search, hash)} replace />;
 }
 
 function RedirectLegacyExamDetail() {
@@ -711,7 +716,7 @@ const App = () => {
                       </ProtectedRoute>
                     } />
                     <Route path="/analytics" element={<RedirectWithSearch to="/progress/overview" />} />
-                    <Route path="/history" element={<RedirectWithSearch to="/progress/history" />} />
+                    <Route path="/history" element={<RedirectLegacyHistory />} />
                     <Route path="/schedule" element={
                       <ProtectedRoute flag="has_schedule_access" allowSignedIn><Schedule /></ProtectedRoute>
                     } />
