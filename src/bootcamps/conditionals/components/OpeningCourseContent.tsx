@@ -110,21 +110,17 @@ function MustArrowNote() {
   return <section className="co-section cr-course-section ma-lesson" data-reference-source={8}>
     <div className="co-section-heading"><h2>The arrow means “must”</h2></div>
     <div className="cr-step-body">
-      <p className="ma-lead">The <strong>must arrow</strong> points from left to right. <strong>If the left side is true, the right side must be true.</strong></p>
-      <p>Use the rule you already know: <strong>if you are enrolled in law school, you must be a student.</strong></p>
-      <figure className="ma-example" aria-label="Being enrolled in law school implies being a student">
+      <p className="ma-lead"><strong>Read from left to right.</strong> The arrow tells you what <strong>must be true</strong> when the left side is true.</p>
+      <figure className="ma-example" aria-label="Read left to right: if you are enrolled in law school, you must be a student">
+        <figcaption className="ma-read-instruction">Read it as: <strong>“If this is true, this must be true.”</strong></figcaption>
         <div className="ma-relationship">
-          <div><span>Sufficient · enough</span><strong>Enrolled in law school</strong></div>
+          <div><span className="ma-side">Left side</span><span>Sufficient<br/>Enough</span><strong>You are enrolled in law school</strong></div>
           <div className="ma-arrow" aria-hidden="true"><span>must</span><b>→</b></div>
-          <div><span>Necessary · required</span><strong>Is a student</strong></div>
+          <div><span className="ma-side">Right side</span><span>Necessary<br/>Required</span><strong>You are a student</strong></div>
         </div>
-        <figcaption>If someone is enrolled in law school, follow the arrow: they <strong>must be a student.</strong></figcaption>
       </figure>
-      <div className="ma-direction">
-        <h3>From enough to required</h3>
-        <p>We draw the arrow <strong>from left to right</strong>. The sufficient condition goes on the left. The necessary condition goes on the right.</p>
-        <p>The left side guarantees the right. The arrow alone doesn't tell us that either side is actually true. It also doesn't mean that one causes the other or happens first.</p>
-      </div>
+      <p>Start with <strong>“If you are enrolled in law school…”</strong> Follow the arrow and read <strong>“…you must be a student.”</strong></p>
+      <details className="cr-extension"><summary>Does the arrow work in reverse?</summary><p>No. Being a student does not establish law-school enrollment. Follow the arrow from left to right to read this rule. The rule alone does not say either condition is actually true, or that one causes the other.</p></details>
       <section className="ma-practice" aria-label="Build a must-arrow diagram">
         <h3>Now build one with a new rule</h3>
         <p>Follow the raffle sentence into a diagram, one step at a time.</p>

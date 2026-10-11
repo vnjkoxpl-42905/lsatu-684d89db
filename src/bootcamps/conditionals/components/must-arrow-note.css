@@ -3,7 +3,7 @@
 #root .ma-lesson h3 { font-size: clamp(1.5rem, 1.2rem + .6vw, 1.85rem); line-height: 1.25; margin: 0 0 1rem; }
 #root .ma-lesson .ma-lead { font-size: clamp(1.25rem, 1.1rem + .4vw, 1.5rem); }
 #root .ma-example { margin: 0; padding: clamp(1rem, 3vw, 2rem); border: 1px solid var(--co-polish-line); border-radius: 1rem; background: var(--co-sheet-ground); }
-#root .ma-relationship { display: grid; grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr); align-items: center; gap: 1rem; }
+#root .ma-relationship { display: grid; grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr); align-items: start; gap: 1rem; }
 #root .ma-relationship > div:not(.ma-arrow) { display: grid; gap: .65rem; }
 #root .ma-relationship span { font-size: 1rem; font-weight: 600; }
 #root .ma-relationship strong { font-size: clamp(1.25rem, 1rem + .7vw, 1.7rem); line-height: 1.3; }
@@ -23,3 +23,8 @@
   #root .ma-relationship strong { font-size: 1.125rem; }
   #root .ma-arrow b { font-size: 2rem; }
 }
+
+#root .ma-relationship .ma-side { font-size: 1.125rem; font-weight: 800; color: var(--co-ink); }
+#root .ma-example .ma-read-instruction { margin: 0 0 1.5rem; padding: 0 0 1.25rem; border-top: 0; border-bottom: 1px solid var(--co-polish-line); }
+#root .ma-arrow { align-self: center; }
+#root .ma-lesson summary { font-size: 1.125rem; cursor: pointer; padding: .75rem 0; }
