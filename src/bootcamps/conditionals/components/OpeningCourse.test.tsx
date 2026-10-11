@@ -20,7 +20,7 @@ it('offers nine dedicated notes and twelve interleaved drill entries', () => {
 it('shows the sentence count in plain words and never says statements or practise', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
   const card = screen.getByRole('heading', { name: /Drill 2: Find both conditions/ }).closest('li')!;
-  expect(within(card).getByText('28 sentences')).toBeVisible();
+  expect(within(card).getByText('28 questions')).toBeVisible();
   expect(within(card).queryByRole('list')).toBeNull();
   expect(document.querySelector('ol.oc-course-path')!.textContent).not.toMatch(/statements|Practise/i);
 });

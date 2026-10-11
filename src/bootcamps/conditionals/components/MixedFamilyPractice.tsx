@@ -151,7 +151,7 @@ export function MixedFamilyPractice() {
   const [checked, setChecked] = useState<boolean[]>(() => mixedFamilyItems.map(() => false));
   return <>
     <p>These sentences use both kinds of indicator. The family name stays hidden until you check your choices. First translate each sentence yourself, without supplied condition labels. Then compare your work and check who or what the rule covers and the arrow direction before moving on.</p>
-    <p className="co-kicker" role="status">Sentence {current + 1} of {mixedFamilyItems.length}</p>
+    <p className="co-kicker" role="status">Question {current + 1} of {mixedFamilyItems.length}</p>
     {mixedFamilyItems.map((item, index) => <div key={item.sentence} hidden={current !== index}><MixedItemCheck item={item} index={index} onChecked={value => setChecked(previous => previous.map((old, itemIndex) => itemIndex === index ? value : old))}/></div>)}
     <div className="co-choices"><button type="button" disabled={current === 0} onClick={() => setCurrent(current - 1)}>Previous mixed sentence</button><button type="button" disabled={current === mixedFamilyItems.length - 1 || !checked[current]} onClick={() => setCurrent(current + 1)}>Next mixed sentence</button></div>
     <p>Moving between sentences keeps your written attempt, choices, and feedback. Trying a sentence again keeps your writing so you can revise it, and hides the supplied labels until you compare again.</p>

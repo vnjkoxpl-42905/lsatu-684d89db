@@ -100,7 +100,7 @@ it.each(['group-1', 'group-2'])('varies %s diagram choices and explains the prom
     fireEvent.click(within(lab).getByRole('button', { name: 'Check my diagram' }));
     expect(within(lab).getByText(item.reversedPromise)).toBeTruthy();
     expect(choiceOrder(lab)).toEqual(order);
-    if (index < diagramExamples[id].length - 1) fireEvent.click(within(lab).getByRole('button', { name: 'Next sentence' }));
+    if (index < diagramExamples[id].length - 1) fireEvent.click(within(lab).getByRole('button', { name: 'Next example' }));
   }
   expect(correctPositions).toEqual(new Set([0, 1]));
   expect(complete).not.toHaveBeenCalled();
@@ -263,7 +263,7 @@ it.each(['group-1', 'group-2'])('marks %s transfer spans only after the learner 
     expect(lab.querySelector('.co-sentence-target')?.textContent).toBe(item.sentenceTarget);
     expect(lab.querySelector('blockquote')?.textContent).toBe(item.sentence);
     if (index < diagramExamples[id].length - 1) {
-      fireEvent.click(within(lab).getByRole('button', { name: 'Next sentence' }));
+      fireEvent.click(within(lab).getByRole('button', { name: 'Next example' }));
       expect(lab.querySelector('mark')).toBeNull();
     }
   }

@@ -132,7 +132,7 @@ it('keeps recall prompts readable and exposes answers through an expanded contro
   expect(screen.getByText('If the oven door is opened, then its light comes on.')).toBeTruthy();
   expect(screen.getByRole('button', { name: 'Hide answer' }).getAttribute('aria-expanded')).toBe('true');
   expect(screen.queryByRole('button', { name: 'Reveal recall explanation' })).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: 'Next sentence' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Next example' }));
   expect(screen.getByRole('button', { name: 'Reveal answer' }).getAttribute('aria-expanded')).toBe('false');
   expect(screen.queryByText('If the oven door is opened, then its light comes on.')).toBeNull();
 });
