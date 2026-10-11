@@ -49,7 +49,7 @@ export const mixedFamilyItems: MixedItem[] = [
     targetPrompt: 'Which buses does the rule say stop at the hospital?', targetFeedback: 'You kept both restrictions: leaving the depot and after midnight.',
     target: 'bus leaving the depot after midnight', partial: 'bus', other: 'stops at the hospital',
     left: 'Bus leaves depot after midnight', right: 'Stops at hospital',
-    partialFeedback: 'Bus alone would cover the daytime buses too. Ask: every what? Keep every detail that limits which buses the rule covers.',
+    partialFeedback: 'Bus alone would cover daytime buses and buses that never use the depot. Ask: every what? Keep every detail that limits which buses the rule covers.',
     otherFeedback: 'Stopping at the hospital is what the rule proves, not the group it covers. Ask: every what?',
     reversed: "Your arrow says any bus at the hospital left the depot after midnight. A morning bus stopping there fits the sentence, so the stop doesn't settle when the bus left the depot.",
     why: 'Every covers each bus leaving the depot after midnight. Pick one, and the rule tells you it stops at the hospital.',

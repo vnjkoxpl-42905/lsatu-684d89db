@@ -131,7 +131,10 @@ it('requires a checked group and arrow before revealing the family in mixed prac
   expect(within(item).getByText('Revise the part described below.')).toBeVisible();
   expect(within(item).getByText(first.partialFeedback)).toBeVisible();
   expect(within(item).getByText(first.reversed)).toBeVisible();
-  expect(within(item).getByText(/points to what is enough, so its group goes on the left/)).toBeVisible();
+  // A wrong check gives hints only: no family, explanation or readback until the translation is right.
+  expect(within(item).queryByText(/points to what is enough/)).toBeNull();
+  expect(within(item).queryByText(first.why)).toBeNull();
+  expect(within(item).queryByText(/Read it back/)).toBeNull();
 
   fireEvent.click(within(item).getByRole('button', { name: 'Try sentence 1 again' }));
   expect(within(item).queryByText(first.reversed)).toBeNull();
@@ -152,13 +155,14 @@ it('requires a checked group and arrow before revealing the family in mixed prac
 
 it('keeps the depot and the intake-time classification in every field of the corrected mixed items', () => {
   const bus = mixedFamilyItems[2];
-  for (const text of [bus.sentence, bus.target, bus.left, bus.partialFeedback, bus.otherFeedback, bus.reversed, bus.why, bus.readback]) {
+  // Wrong-answer hints no longer restate the answer, so they are checked only for stale wording.
+  for (const text of [bus.sentence, bus.target, bus.left, bus.partialFeedback, bus.reversed, bus.why, bus.readback]) {
     expect(text).toMatch(/depot/);
   }
   const phone = mixedFamilyItems[4];
   const fields = [phone.sentence, phone.target, phone.other, phone.left, phone.right, phone.partialFeedback, phone.otherFeedback, phone.reversed, phone.why, phone.readback];
   for (const text of fields) expect(text).not.toMatch(/repaired on the same day|has a cracked screen|has cracked screen/i);
-  for (const text of [phone.sentence, phone.target, phone.left, phone.partialFeedback, phone.otherFeedback, phone.reversed, phone.why, phone.readback]) {
+  for (const text of [phone.sentence, phone.target, phone.left, phone.reversed, phone.why, phone.readback]) {
     expect(text).toMatch(/same-day repair queue/);
   }
   for (const text of [phone.sentence, phone.other, phone.right, phone.otherFeedback, phone.reversed, phone.why, phone.readback]) {
@@ -216,22 +220,19 @@ it('checks the corrected bus and phone translations through the learner controls
   expect(within(phoneItem).getByText('Read it back: If a phone is placed in the same-day repair queue, it arrived with a cracked screen.')).toBeVisible();
 });
 
-it('teaches complete sufficient conditions without a word selector or duplicate flashcards', () => {
+it('teaches every Group 1 indicator before the sufficient-side drill, then the complete phrase', () => {
   render(<OpeningCourseContent id="sufficient-words"/>);
-  expect(screen.getByRole('heading', { name: 'Keep the words that limit the rule' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Keep the condition together, wherever it appears' })).toBeVisible();
-  expect(screen.queryByRole('group', { name: 'Choose an indicator' })).toBeNull();
-  expect(screen.queryByRole('heading', { name: 'Recall the indicators' })).toBeNull();
-  expect(screen.queryByText(/Work through all seven expressions/)).toBeNull();
-
-  const applicant = screen.getByRole('group', { name: 'Any applicant who submits late pays a fee. Which complete condition goes on the left?' });
-  expect(screen.queryByText(/Applicant alone includes people/)).toBeNull();
-  fireEvent.click(within(applicant).getByRole('button', { name: 'Applicant' }));
-  expect(screen.getByText(/Applicant alone includes people who submit on time/)).toBeVisible();
-  fireEvent.click(within(applicant).getByRole('button', { name: 'Applicant submits late' }));
-  expect(screen.getByText(/Applicant submits late keeps the restriction/)).toBeVisible();
-  fireEvent.click(within(applicant).getByRole('button', { name: 'Applicant pays a fee' }));
-  expect(screen.getByText(/Paying a fee is what follows/)).toBeVisible();
+  const tabs = within(screen.getByRole('group', { name: 'Choose an indicator' })).getAllByRole('button').map(tab => tab.textContent?.replace(/[^A-Za-z ]/g, '').replace(/ opened$/, '').trim());
+  expect(tabs).toEqual(['If', 'When', 'Where', 'All', 'The only', 'Every', 'Any']);
+  expect(screen.getByText(/Work through all seven indicators/)).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Recall the indicators' })).toBeVisible();
+  const text = document.body.textContent ?? '';
+  // Words the drills test: when, whenever, where, each, every, any, people who.
+  for (const word of [/\bWhenever\b/, /\bEach\b/, /people who/i, /\bWhere\b/]) expect(text).toMatch(word);
+  // The complete-condition note no longer repeats the report and late-applicant examples the indicator note teaches.
+  expect(screen.queryByRole('heading', { name: 'Keep the condition together, wherever it appears' })).toBeNull();
+  expect(screen.queryByRole('group', { name: 'Any applicant who submits late pays a fee. Which complete condition goes on the left?' })).toBeNull();
+  expect(screen.getByRole('heading', { name: 'Keep the whole phrase before you place it' })).toBeVisible();
 
   const notebook = screen.getByRole('group', { name: 'The only notebooks kept on this shelf are hardback. Which condition is sufficient?' });
   fireEvent.click(within(notebook).getByRole('button', { name: 'Notebook is hardback' }));
@@ -242,15 +243,19 @@ it('teaches complete sufficient conditions without a word selector or duplicate 
   expect(screen.getByText(/Notebook alone would cover every notebook/)).toBeVisible();
 });
 
-it('bridges with one raffle question, then tests fresh cases with reasoned feedback', () => {
-  render(<OpeningCourseContent id="foundation-practice"/>);
-  // The original seven applied questions follow the seventeen foundation checks.
-  for (const answer of [0, 2, 1, 2, 0, 1, 0, 2, 1, 1, 0, 2, 1, 0, 2, 1, 2]) {
-    fireEvent.click(within(screen.getByRole('group')).getAllByRole('button')[answer]);
-    fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
-  }
+it('teaches only after with the Group 2 words before the drills test it', () => {
+  render(<OpeningCourseContent id="necessary-words"/>);
+  expect(screen.getByRole('heading', { name: 'Only after also marks a requirement' })).toBeInTheDocument();
+  expect(screen.getByText(/Only after what\?/)).toBeInTheDocument();
+  expect(screen.getByRole('img', { name: 'Pharmacy fills the prescription implies A doctor has signed it' })).toBeInTheDocument();
+  const question = screen.getByRole('group', { name: "A doctor has signed Ana's prescription. Does this rule prove the pharmacy fills it?" });
+  fireEvent.click(within(question).getByRole('button', { name: 'Yes. The signature is enough.' }));
+  expect(screen.getByText(/The signature is what filling requires/)).toBeInTheDocument();
+});
 
+it('opens with one raffle question, then tests fresh cases with reasoned feedback', () => {
+  render(<OpeningCourseContent id="foundation-practice"/>);
+  // The seven rule-vs-fact questions now open the drill.
   expect(screen.getAllByRole('heading', { name: 'Does the rule itself tell us that you actually win the raffle?' })).toHaveLength(1);
   for (const repeated of ["You don't win the raffle. Could you still get a bicycle?", 'You win the raffle. Do we need another fact to prove that you get a bicycle?', 'Under our rule, what has to follow if you win?']) {
     expect(screen.queryByRole('heading', { name: repeated })).toBeNull();
@@ -258,23 +263,26 @@ it('bridges with one raffle question, then tests fresh cases with reasoned feedb
   fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' }));
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
   fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+  const correct = [2, 0, 0, 2];
   for (let index = 0; index < 4; index++) {
-    const fresh = document.querySelector<HTMLElement>(`[data-practice-task="${index + 19}"]`)!;
+    const fresh = document.querySelector<HTMLElement>(`[data-practice-task="${index + 2}"]`)!;
     expect(fresh).toBeVisible();
     expect(fresh.textContent).not.toContain('→');
     expect(fresh.textContent).not.toMatch(/raffle|bicycle/);
     const question = fresh.querySelector<HTMLElement>('.d1-question-body')!;
     const choices = within(within(question).getByRole('group')).getAllByRole('button');
     const explanations = new Set<string>();
-    for (const choice of choices) {
+    choices.forEach((choice, option) => {
+      if (option === correct[index]) return;
       fireEvent.click(choice);
       fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
       explanations.add(question.querySelector('.d1-feedback')?.textContent || '');
       fireEvent.click(within(question).getByRole('button', { name: 'Try again' }));
-    }
-    expect(explanations.size).toBe(choices.length);
-    fireEvent.click(choices[[2, 0, 0, 2][index]]);
+    });
+    fireEvent.click(choices[correct[index]]);
     fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
+    explanations.add(question.querySelector('.d1-feedback')?.textContent || '');
+    expect(explanations.size).toBe(choices.length);
     if (index === 0) expect(within(question).getByText(/a promise about a possible case, not a report that the case happened/)).toBeVisible();
     if (index < 3) fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   }
