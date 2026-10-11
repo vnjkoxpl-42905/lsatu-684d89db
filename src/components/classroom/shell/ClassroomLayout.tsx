@@ -233,7 +233,10 @@ function ClassroomSidebar({
   // point is to have the route's chunk parsed before the click lands, so the
   // student never sees the stage fallback at all.
 
-  const railGroups = resolveRailGroups(railPrefs);
+  const railGroups = resolveRailGroups(railPrefs).map((group) => ({
+    ...group,
+    items: group.items.filter((item) => item.id !== "schedule" || !permissions.is_admin),
+  }));
 
   // Behavior stays here (it needs closures over routing + section state); the
   // catalog owns what the rail contains and in what order.
@@ -276,15 +279,11 @@ function ClassroomSidebar({
           onClick: () => go(permissions.loading ? "/library" : destinationLandingPath("library", permissions)),
         };
       case "schedule":
-        // One entry, two stage tabs. /booking is the same shell with the Book
-        // tab open, so it lights the same rail item. Teachers manage each
-        // student's pass from their dossier — /booking redirects them there.
+        // The student Schedule and Book tabs share this rail destination.
+        // Teachers reach each student's schedule through the Students dossier.
         return {
-          active:
-            location.pathname === "/schedule" ||
-            location.pathname === "/booking" ||
-            location.pathname.startsWith("/teacher/students"),
-          onClick: () => go(permissions.is_admin ? "/teacher/students" : "/schedule"),
+          active: location.pathname === "/schedule" || location.pathname === "/booking",
+          onClick: () => go("/schedule"),
         };
     }
   };
