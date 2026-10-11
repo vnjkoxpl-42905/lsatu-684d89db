@@ -336,6 +336,10 @@
     "reason": "excluded file"
   },
   {
+    "path": "docs/agent/conditional-recovery-20261007/media/necessary-depth-build.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "docs/agent/conditional-recovery-20261007/media/necessary-lesson-build.log",
     "reason": "excluded file"
   },

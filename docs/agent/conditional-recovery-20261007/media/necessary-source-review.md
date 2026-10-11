@@ -51,3 +51,27 @@ Joshua's wording follow-up on 2026-10-10 makes the opening link explicit: whenev
 - Actual CSS widths 320, 400, 960, 1200 and 1600: no document overflow or lesson buttons below 44px. Viewport override reset. Palette applies to visible definition pages and does not leak into the must-arrow page.
 - Full `npm run build` and postbuild exclusion check pass. The final bundle contains the corrected required-versus-enough definition. Receipt: `necessary-lesson-build.log`.
 - No physical-device, screen-reader speech or production acceptance claim.
+
+## 2026-10-10 follow-up: teach the relationship in greater depth
+
+Joshua requested a deeper explanation grounded in the corpus and original HTML, flowing from definition through the existing example into interaction, with necessary indicators explicitly connected to the sufficient condition. The earlier revision was accurate, but seven indicator labels and one requires example did not teach the expressions' meanings.
+
+The follow-up source audit reread the original HTML necessary section and adjoining sufficient-family comparison (lines 180-230), its requirement-present/missing reasoning (269-281), the selected standard (389-423, 443-454), LSAT Lab 16784 (164-261), 7Sage overview (64-70, 307-322), Demon sufficient/necessary (25-27), Demon mastering-conditionals comparison (36-45), and relevant recovered Conditional Logic notes. The original HTML models multiple phrasings of one relationship; the selected standard explicitly cautions against treating a word table as complete instruction. The recovered notes' What Test (`corpus/Curriculum/Conditional Logic/Notes/_megadoc_notes_conditionals.md:158`) supports finding the expression's complete target. Old rule-disappears claims and conflicting inventories were not adopted. This was a bounded local-source review, not new web research or exhaustive corpus certification.
+
+The necessary definition page now:
+
+1. Explains required as something the sufficient condition cannot be true without, including why a sufficient-without-necessary case would violate the relationship.
+2. Develops the same law-school/student relationship from both roles, with paired explanations of enough to establish and required for. The rule does not assert that the learner actually is enrolled.
+3. Uses the larger student group and a possible history student to explain why meeting this requirement leaves enrollment unsettled. It explicitly avoids claiming a necessary condition can never also be sufficient.
+4. Places the existing present/missing interaction after that explanation and retains the necessary film, captions and transcript.
+5. Gives all seven reviewed Group 2 forms a complete sentence and explanation. Six use the anchor; only where explicitly changes to a seminar/tutor setting example. Only when does not invent temporal order; always stays within enrollment; must distinguishes certainty from an instruction.
+6. Compares equivalent if and only-if sentences, then removes only to expose the changed claim. Fresh current-reference-letter checks still test the complete requirement and the unsupported reverse.
+
+Independent source/learner-flow review found no logical or material flow issue in the revised reference4. A small wording clarification identifies the six anchor examples before the separate place example. Code edits belong to `ConditionalReferenceSequence.tsx` and scoped role-comparison/indicator-example styles; this follow-up did not replace media or alter immutable sources.
+
+Final verification, reported by the implementing parent after the independent source review:
+
+- 30 relevant tests, full application typecheck and build/postbuild pass. Build receipt: `necessary-depth-build.log`; the final first-six wording was confirmed in the compiled bundle.
+- Codex Browser screenshots show the rendered definition, paired roles and indicator examples; both existing interaction states were checked.
+- Actual CSS widths 320/400/960/1200/1600 have no document overflow or visible lesson buttons below 44px. Paired roles collapse to one column at narrow widths.
+- Existing media is preserved; no new generation or spending. No commit, push or deployment. Physical devices, screen-reader speech and production acceptance remain unverified.

@@ -278,22 +278,48 @@ export function conditionalReferenceContent() {
     <ReferenceStep number={4} label="The necessary condition" title="Necessary means required">
       <div className="cr-sufficiency nc-lesson">
         <p className="cr-sufficiency-lead"><strong>Necessary means required.</strong> In a conditional relationship, the <strong>necessary condition</strong> is what the sufficient condition requires. Whenever the sufficient condition is true, the necessary condition must be true too. It cannot be missing.</p>
-        <p>Let's return to the relationship from the last lesson:</p>
+        <p>Required for what? For the sufficient condition to be true. We are not saying the necessary condition is important, helpful, or usually there. We are saying that <strong>the sufficient condition cannot be true without it.</strong> Even one case with the sufficient condition but without the necessary condition would break the relationship.</p>
+        <p>The two names describe two roles in the same connection. <strong>Sufficient</strong> asks what is enough to establish something else. <strong>Necessary</strong> asks what that condition cannot be true without. Let's look at our example from both sides.</p>
+        <h3>What does law-school enrollment require?</h3>
         <blockquote>If you are enrolled in law school, then you are <strong>a student</strong>.</blockquote>
-        <p><strong>Being a student</strong> is the required part, introduced here by <strong>then</strong>. If you are enrolled in law school, being a student is certain. You cannot be enrolled without being a student. That is why <strong>being a student is necessary for law-school enrollment</strong>.</p>
+        <p>In the last lesson, we started with <strong>being enrolled in law school</strong>. That was enough to know you are a student. Now look at what enrollment makes certain: <strong>being a student</strong>. This is the necessary condition, introduced here by <strong>then</strong>.</p>
+        <p>Try to imagine someone who is enrolled in law school but is not a student. The two descriptions cannot fit together. A person enrolled in law school is one kind of student. You cannot keep the enrollment and take away the studenthood. That is why <strong>being a student is necessary for law-school enrollment</strong>.</p>
+        <div className="nc-role-comparison" aria-label="One relationship described from both sides">
+          <div><h4>Enrollment is sufficient for studenthood.</h4><p>Knowing you are enrolled in law school is <strong>enough to establish</strong> that you are a student.</p></div>
+          <div><h4>Studenthood is necessary for enrollment.</h4><p>Being a student is <strong>required for</strong> being enrolled in law school. Enrollment cannot be true without it.</p></div>
+        </div>
+        <p>Those are two descriptions of the same relationship. We have not reversed it or added another rule. And we have not said you actually are enrolled. We are explaining what must be true <strong>if</strong> you are.</p>
         <section className="cr-sufficient-explanation" aria-label="Why a requirement is not necessarily enough">
-          <h3>Required doesn't mean enough</h3>
-          <p>Knowing that a condition is required doesn't, by itself, tell you whether it's enough.</p>
-          <p>Someone could be a history student without being enrolled in law school. So being a student is required for law-school enrollment without guaranteeing it.</p>
-          <p>The two conditions have different jobs: <strong>enrollment guarantees being a student; being a student is what enrollment requires.</strong> Knowing only that someone is a student doesn't tell you which subject they study.</p>
+          <h3>What if all you know is that someone is a student?</h3>
+          <p>That person meets the requirement. But which subject do they study? They could study law. They could instead be a history student who is not enrolled in law school. Both possibilities fit what we know.</p>
+          <p>Think back to the groups in the last lesson. Everyone in the law-school group belongs inside the student group. But the student group has room for people outside law school too. Knowing someone is in the larger group does not put them in the smaller one.</p>
+          <p>So <strong>being a student is required for law-school enrollment without guaranteeing it.</strong> Having the necessary condition leaves enrollment open; missing it rules enrollment out. This is the difference the interaction below will let you compare.</p>
+          <p>Do not turn that into a rule that a necessary condition can never be sufficient. A condition can have both roles when the relationship supports both. The word <strong>necessary</strong>, by itself, tells you it is required. It does not tell you it is enough.</p>
         </section>
         <NecessaryConditionExperience/>
         <SufficientConditionFilm key="necessary-definition" assets={necessaryConditionFilms} title="Why the requirement is not enough here" ariaLabel="Short explanation of necessity"/>
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 2 indicator words">
           <h3>Group 2: Necessary-condition indicators</h3>
-          <p>These words and phrases can help you recognize a requirement:</p>
+          <p>An <strong>indicator</strong> is a word or phrase that helps you recognize a condition's role. We used <strong>then</strong> to introduce the required part of our if/then sentence. These Group 2 expressions can also point to what is necessary:</p>
           <ul>{['only', 'only if', 'only when', 'only where', 'always', 'requires', 'must'].map(word => <li key={word}>{word}</li>)}</ul>
-          <p>For example, “Law-school enrollment <strong>requires</strong> being a student.” Requires points to <strong>being a student</strong>, the condition that cannot be missing. Read the full relationship; a familiar word alone doesn't tell you what is required.</p>
+          <h3>Different wording, the same requirement</h3>
+          <p>The first six sentences describe our law-school relationship. In each one, ask what a person enrolled in law school has to be. Then we'll use a place example for only where.</p>
+          <dl className="nc-indicator-examples">
+            <div><dt>Requires</dt><dd><blockquote>Being enrolled in law school <strong>requires</strong> being a student.</blockquote><p>What does enrollment require? <strong>Being a student.</strong> Requires is the indicator; being a student is the condition it identifies. They are not the same thing.</p></dd></div>
+            <div><dt>Must</dt><dd><blockquote>If you are enrolled in law school, you <strong>must</strong> be a student.</blockquote><p>Must makes the certainty explicit: enrollment cannot coexist with not being a student. Here it describes what has to be true, not a task someone has been told to complete.</p></dd></div>
+            <div><dt>Only</dt><dd><blockquote><strong>Only</strong> students are enrolled in law school.</blockquote><p>This excludes nonstudents from the law-school group. It does not put every student in that group. Being a student remains required; being enrolled remains enough to establish it.</p></dd></div>
+            <div><dt>Only if</dt><dd><blockquote>You are enrolled in law school <strong>only if</strong> you are a student.</blockquote><p>Only if introduces the requirement: <strong>you are a student</strong>. Read the whole phrase. The if inside only if does not make being a student sufficient.</p></dd></div>
+            <div><dt>Only when</dt><dd><blockquote>You are enrolled in law school <strong>only when</strong> you are a student.</blockquote><p>On any occasion when enrollment is true, being a student must be true too. This does not say you become enrolled whenever you are a student, or that one condition has to happen later than the other.</p></dd></div>
+            <div><dt>Always</dt><dd><blockquote>While you are enrolled in law school, you are <strong>always</strong> a student.</blockquote><p>Always allows no exception within the situation described: being enrolled in law school. It does not say every student is enrolled, or that someone remains a student after enrollment ends.</p></dd></div>
+            <div><dt>Only where</dt><dd><p>This expression restricts places, so use a setting example:</p><blockquote>A seminar takes place <strong>only where</strong> a tutor is present.</blockquote><p>At any place with that seminar, <strong>a tutor must be present</strong>. A tutor could also be somewhere without a seminar. A seminar taking place is sufficient to establish a tutor's presence there; the tutor's presence is necessary for the seminar.</p></dd></div>
+          </dl>
+          <h3>Why only if is different from if</h3>
+          <div className="nc-role-comparison">
+            <div><h4>If you are enrolled in law school, you are a student.</h4><p><strong>If</strong> identifies enrollment as enough. This is our original relationship.</p></div>
+            <div><h4>You are enrolled in law school only if you are a student.</h4><p><strong>Only if</strong> identifies being a student as required. This preserves that same relationship.</p></div>
+          </div>
+          <p>Now remove only from the second sentence: “You are enrolled in law school <strong>if</strong> you are a student.” That would make being a student enough for law-school enrollment. A history student who is not enrolled in law school shows why that is a different claim.</p>
+          <p>Whether the sentence starts with the requirement or ends with it, ask the same question: <strong>what cannot be missing if the sufficient condition is true?</strong> Find that complete idea, not just the indicator word. The next example gives you a new relationship to check.</p>
         </section>
         <section className="cr-sufficient-explanation nc-checks" aria-label="Apply the necessary condition to a new rule">
           <h3>Find the requirement in a new rule</h3>
