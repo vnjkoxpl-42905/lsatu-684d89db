@@ -300,7 +300,7 @@ it('keeps the must-arrow note to roles, the raffle diagram and a moved if-clause
   expect(screen.getByRole('heading', { name: 'A person borrows a locker only if they have a key. Which condition goes on the right?' })).toBeInTheDocument();
 });
 
-it('presents whole meaning as one sequence of four checks', () => {
+it('teaches meaning checks, modal strength and symbol definitions before worksheet production', () => {
   render(<OpeningCourseContent id="whole-meaning"/>);
   const headings = screen.getAllByRole('heading', { level: 2 }).map(heading => heading.textContent);
   expect(headings).toEqual([
@@ -308,6 +308,8 @@ it('presents whole meaning as one sequence of four checks', () => {
     'Check 1: find the whole target, wherever it sits',
     'Check 2: keep every qualification',
     'Check 3: only and the only point to different targets',
+    'Can, should and must keep their meaning',
+    'Short symbols stand for complete conditions',
     'Check 4: try the sentence from the inside',
   ]);
   expect(screen.getByText(/Borrowing a locker/)).toBeInTheDocument();
