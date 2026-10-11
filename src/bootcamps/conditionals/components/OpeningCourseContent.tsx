@@ -2,7 +2,7 @@ import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, use
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, IntegratedItem, referencePracticeItems, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
 import { CounterexampleLab, NegativeCaseLab } from './CounterexampleLab';
-import { OpeningMixedDrill } from './OpeningMixedDrill';
+import { StagedReasoningDrill } from './StagedReasoningDrill';
 import { PracticeTaskRunner } from './PracticeTaskRunner';
 import { DrillOneExperience, type DrillOneQuestion } from './DrillOneExperience';
 import { StudyDeck } from './StudyDeck';
@@ -220,6 +220,20 @@ function WholeMeaningNote() {
       <ReferenceQuestion prompt="Entry requires a current pass. What goes right?" options={['Has current pass', 'Has any pass']} correct={0} feedback={['This keeps the full requirement. Entry needs a current pass; an expired pass does not meet that requirement.', 'You dropped current from the requirement. Has any pass would include an expired pass, which is not what the sentence requires.']}/>
     </NoteSection>
     <NoteSection title="Check 3: only and the only point to different targets">{onlyComparison.props.children}</NoteSection>
+    <NoteSection title="Can, should and must keep their meaning">
+      <blockquote>If a visitor registers, the visitor may enter.</blockquote>
+      <p>Registration guarantees <strong>permission to enter</strong>. It does not mean the visitor actually enters. Keep “may enter” together on the right.</p>
+      <blockquote>If a report contains an error, the editor should correct it.</blockquote>
+      <p>The rule tells us what the editor <strong>should do</strong>. It does not establish that the correction happens. A diagram must preserve the obligation instead of turning it into a fact.</p>
+      <p>Keep time limits too. <strong>“Before noon”</strong> is not the same as “at some point.” When two ideas form one condition, keep both: <strong>“signed and dated”</strong> is the complete requirement.</p>
+    </NoteSection>
+    <NoteSection title="Short symbols stand for complete conditions">
+      <p>You choose the letters. Write what each one means so a short diagram keeps the whole rule.</p>
+      <blockquote>All registered guests receive a wristband.</blockquote>
+      <p><strong>R</strong> = guest is registered. <strong>W</strong> = guest receives a wristband.</p>
+      <RuleDiagram left="R" right="W"/>
+      <p>Read it back: <strong>If a guest is registered, the guest receives a wristband.</strong> R does not mean “guest” alone. Its definition keeps “registered.”</p>
+    </NoteSection>
     <NoteSection title="Check 4: try the sentence from the inside">{insideCheck.slice(0, -1)}</NoteSection>
   </>;
 }
@@ -321,6 +335,17 @@ function CompatibleCasesRecap() {
   </NoteSection>;
 }
 
+function WholeConditionNegation() {
+  return <NoteSection title="Negate the whole condition">
+    <p>To negate a condition, describe what makes <strong>that complete claim false</strong>. Adding “not” to one convenient word can change the claim.</p>
+    <ReferenceQuestion prompt="A form is signed and dated. What makes that complete condition false?" options={['It is missing a signature, a date, or both.', 'It has neither a signature nor a date.']} correct={0} feedback={['One missing part is enough. Not both does not require both to be missing.', 'That is one way to fail, but not the only way. A signed form with no date also fails the complete condition.']}/>
+    <ReferenceQuestion prompt="Every covered duty is superseded. What is the negation?" options={['No covered duty is superseded.', 'At least one covered duty is not superseded.']} correct={1} feedback={['None is stronger than needed. One duty that is not superseded already makes every false.', 'Not every means at least one exception. It does not mean none.']}/>
+    <ReferenceQuestion prompt="An evaluator with current authorization signs the form. What makes this false?" options={['One evaluator does not sign.', 'No evaluator with current authorization signs.']} correct={1} feedback={['Another authorized evaluator might sign. One person failing does not rule out a qualifying signer.', 'Keep the qualification. The negation rules out every signer who meets it, not just one evaluator.']}/>
+    <p><strong>Numbers need the same care.</strong> If a condition means “at least three reviewers request revision,” its negation is “fewer than three do.” If it means “exactly three,” the negation is “not exactly three.” Never silently change the numerical meaning.</p>
+    <p>When a condition is long, define a symbol for the <strong>whole condition</strong> and write NOT with that symbol. Then explain what its falsity means in ordinary words.</p>
+  </NoteSection>;
+}
+
 
 function groupPracticeTasks(group: 'group-1' | 'group-2') {
   const content = sections(GroupPractice({ group }).props.children);
@@ -360,11 +385,11 @@ function Content({ id }: { id: string }) {
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
     case 'whole-meaning': return <WholeMeaningNote/>;
     case 'missing-requirement': return <MissingRequirementNote/>;
-    case 'contrapositive': return <><ReferenceBody number={9}/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection><CompatibleCasesRecap/></>;
+    case 'contrapositive': return <><ReferenceBody number={9}/><WholeConditionNegation/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection><CompatibleCasesRecap/></>;
     case 'foundation-practice': return <FoundationPractice/>;
-    case 'sufficient-practice': return <SufficientPractice/>;
-    case 'mixed-practice': return <OpeningMixedDrill/>;
-    case 'contrapositive-practice': return <ContrapositivePractice/>;
+    case 'sufficient-practice': return <StagedReasoningDrill mode="sufficient"/>;
+    case 'mixed-practice': return <StagedReasoningDrill mode="mixed"/>;
+    case 'contrapositive-practice': return <StagedReasoningDrill mode="contrapositive"/>;
     default: throw new Error(`Unknown opening course content: ${id}`);
   }
 }

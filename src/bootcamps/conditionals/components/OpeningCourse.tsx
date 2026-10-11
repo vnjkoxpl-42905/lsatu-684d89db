@@ -49,8 +49,8 @@ const drillInstructions: Record<string, { summary: string; heading: string; step
     steps: ['Find the complete idea the sufficient expression refers to.', 'Put that condition on the left and the required condition on the right. Read the arrow back in English.', 'Check your work, then build a possible case that shows why the reverse does not follow.'],
   },
   'contrapositive-practice': {
-    summary: 'Originals and contrapositives', heading: 'Keep both diagrams tied to the sentence',
-    steps: ['Identify the indicator and both complete conditions, including any negatives.', 'Build the original diagram. Reverse the sides and negate both conditions to form its contrapositive.', 'Read both diagrams in English before checking. Use the explanation to repair any change in meaning.'],
+    summary: 'Originals and contrapositives', heading: 'Check the direction and each negation',
+    steps: ['Choose the original arrow that preserves both complete conditions.', 'Choose its contrapositive: reverse the sides and negate both conditions. Correct each choice before continuing.', 'Write each form in ordinary English, then compare your wording with the explanation.'],
   },
 };
 

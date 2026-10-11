@@ -22,6 +22,7 @@ it('teaches each prerequisite before the source drills that use it', () => {
   expect(position('necessary-words')).toBeLessThan(position('source-intro-identify'));
   expect(position('source-roles')).toBeLessThan(position('source-intro-diagrams'));
   expect(position('whole-meaning')).toBeLessThan(position('source-rephrase'));
+  expect(position('whole-meaning')).toBeLessThan(position('source-intro-identify'));
   expect(position('contrapositive')).toBeLessThan(position('source-full-translation'));
   expect(position('contrapositive')).toBeLessThan(position('source-intro-diagrams-contrapositive'));
   expect(position('contrapositive')).toBeLessThan(position('source-rephrase-contrapositive'));

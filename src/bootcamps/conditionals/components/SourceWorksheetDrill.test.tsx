@@ -7,104 +7,128 @@ import { sourceWorksheetDrills } from '../content/sourceWorksheetDrills';
 beforeEach(() => localStorage.clear());
 afterEach(cleanup);
 const run = (setId: string) => render(<SourceWorksheetDrill setId={setId} run/>);
-const choose = (label: string, value: string) => fireEvent.change(screen.getByLabelText(label), { target: { value } });
-const compare = () => fireEvent.click(screen.getByRole('button', { name: 'Compare with explanation' }));
+const write = (name: string, value: string) => fireEvent.change(screen.getByLabelText(name), { target: { value } });
+const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }));
+const compare = () => click('Compare this step');
+const confirm = () => click('I compared the meaning');
 
-it('requires an attempt and deliberate comparison before counting an item reviewed', () => {
+it('keeps intro identification faithful: indicators first, then learner-written complete ideas', () => {
   run('source-intro-identify');
-  expect(screen.getByRole('button', { name: 'Compare with explanation' })).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: 'if' }));
+  expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
+  expect(screen.queryByRole('textbox')).toBeNull();
+  click('if');
   fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '1' } });
-  choose('Left: sufficient condition', 'sufficient');
-  choose('Right: necessary condition', 'necessary');
+  click('Check this step');
+  expect(screen.getByRole('heading', { name: 'That step works.' })).toHaveFocus();
+  click('Continue');
+  expect(screen.queryByRole('button', { name: 'if' })).toBeNull();
+  expect(screen.queryByText('the product is registered within 30 days', { exact: true })).toBeNull();
+  write('First complete condition', 'registered within 30 days');
+  write('Second complete condition', 'warranty valid');
   compare();
-  expect(screen.getByRole('heading', { name: 'Compare your reasoning.' })).toHaveFocus();
+  expect(screen.getByText('the product is registered within 30 days', { exact: true })).toBeVisible();
+  confirm();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
-  expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: 'My reasoning matched' }));
+  click('My reasoning matched');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
-  fireEvent.click(screen.getByRole('button', { name: 'Next' }));
-  expect(screen.getByRole('button', { name: 'Compare with explanation' })).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: 'Previous' }));
-  expect(screen.getByRole('button', { name: 'My reasoning matched' })).toHaveAttribute('aria-pressed', 'true');
-  fireEvent.click(screen.getByRole('button', { name: 'Review my work' }));
-  expect(screen.getByRole('heading', { name: 'Your practice so far.' })).toBeVisible();
+  click('Next');
+  expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
 });
 
-it('keeps every source task reachable and hides contraposition in early sets', () => {
+it('requires the whole indicator phrase and correct group before advancing', () => {
+  run('source-indicators');
+  click('Only');
+  fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '2' } });
+  click('Check this step');
+  expect(screen.getByRole('heading', { name: 'Make one adjustment.' })).toBeVisible();
+  expect(screen.queryByRole('button', { name: 'Continue' })).toBeNull();
+  click('if');
+  fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '2' } });
+  click('Check this step');
+  click('Continue');
+  expect(screen.getByRole('button', { name: 'My reasoning matched' })).toBeVisible();
+});
+
+it('keeps every source task reachable and future operations gated', () => {
   for (const set of sourceWorksheetDrills) {
     const view = run(set.id);
     const navigator = screen.getByLabelText('Go to statement');
     expect(navigator.querySelectorAll('option')).toHaveLength(set.items.length);
     fireEvent.change(navigator, { target: { value: set.items.length - 1 } });
     expect(screen.getByText(`Statement ${set.items.length} of ${set.items.length}`)).toBeVisible();
-    if (set.taskKind !== 'contrapositive') expect(screen.queryByText('Contrapositive', { exact: true })).toBeNull();
+    expect(screen.getByRole('button', { name: 'Bring it together' })).toBeDisabled();
+    if (set.taskKind !== 'contrapositive') expect(screen.queryByRole('button', { name: 'Reverse and negate' })).toBeNull();
     view.unmount();
   }
 });
 
-it('checks reverse and negate separately and never calls self assessment a grade', () => {
+it('requires a blank production attempt across all six operations before revealing the final model', () => {
   run('source-full-translation');
-  choose('Left: sufficient condition', 'sufficient');
-  choose('Right: necessary condition', 'necessary');
-  choose('Contrapositive left', 'necessary');
-  choose('Contrapositive right', 'sufficient');
-  expect(screen.getByRole('button', { name: 'Compare with explanation' })).toBeDisabled();
-  screen.getAllByRole('textbox').forEach(box => fireEvent.change(box, { target: { value: 'My reading of this diagram.' } }));
-  compare();
-  expect(screen.getByRole('heading', { name: 'Revise your diagram.' })).toBeVisible();
-  expect(screen.getByRole('button', { name: 'My reasoning matched' })).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: 'Revise my attempt' }));
-  screen.getAllByLabelText('Negate this condition').forEach(box => fireEvent.click(box));
-  compare();
-  expect(screen.getByRole('heading', { name: 'Compare your reasoning.' })).toBeVisible();
-  expect(screen.queryByText('Correct.')).toBeNull();
+  expect(screen.getByRole('button', { name: 'Save and continue' })).toBeDisabled();
+  expect(screen.queryByText('that intern is offered a full-time position', { exact: true })).toBeNull();
+  click('All');
+  fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '1' } });
+  click('Save and continue');
+  write('First complete condition', 'intern completes program');
+  write('Second complete condition', 'offered full-time position');
+  click('Save and continue');
+  write('First condition’s symbol', 'I');
+  write('Second condition’s symbol', 'I');
+  expect(screen.getByRole('button', { name: 'Save and continue' })).toBeDisabled();
+  write('Second condition’s symbol', 'O');
+  click('Save and continue');
+  expect(screen.queryByRole('button', { name: 'Check this step' })).toBeNull();
+  write('Your original diagram', 'I → O');
+  click('Save and continue');
+  write('Your contrapositive diagram', 'NOT O → NOT I');
+  click('Save and continue');
+  write('Write this rule as an if/then sentence.', 'If an intern completes the program, then they are offered a full-time position.');
+  click('Save and continue');
+  write('Write the contrapositive in ordinary language.', 'If that intern is not offered the position, then they did not complete the program.');
+  expect(screen.queryByText('Compare with the model')).toBeNull();
+  click('Save and continue');
+  expect(screen.getByText('Compare with the model')).toBeVisible();
+  expect(screen.getByText('I → O', { exact: true })).toBeVisible();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+  click('Needs another look');
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
 });
 
-it('restores written attempts and review marks after remount', () => {
-  const view = run('source-rephrase');
-  fireEvent.click(document.querySelector('.sw-tokens button')!);
-  fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '1' } });
-  choose('Left: sufficient condition', 'sufficient');
-  choose('Right: necessary condition', 'necessary');
-  fireEvent.change(screen.getByRole('textbox'), { target: { value: 'If the condition holds, then the requirement holds.' } });
+it('begins rephrasing with writing before any supplied diagram or condition choices', () => {
+  run('source-rephrase');
+  expect(screen.getByRole('heading', { name: 'Rewrite the rule' })).toBeVisible();
+  expect(screen.queryByText('a person is a runner in a marathon', { exact: true })).toBeNull();
+  write('Write this rule as an if/then sentence.', 'If a person runs the marathon, they must hydrate beforehand.');
   compare();
-  fireEvent.click(screen.getByRole('button', { name: 'Needs another look' }));
+  expect(screen.getByText(/If a person is a runner in a marathon/)).toBeVisible();
+  confirm();
+  expect(screen.getByRole('heading', { name: 'Find the indicators' })).toBeVisible();
+});
+
+it('restores a partially written stage and invalidates stale source checks without discarding drafts', () => {
+  const view = run('source-rephrase');
+  write('Write this rule as an if/then sentence.', 'My earlier wording.');
   view.unmount();
   run('source-rephrase');
-  expect(screen.getByRole('textbox')).toHaveValue('If the condition holds, then the requirement holds.');
-  expect(screen.getByRole('button', { name: 'Needs another look' })).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByRole('textbox')).toHaveValue('My earlier wording.');
+  cleanup();
+  const key = 'conditional-worksheet-v1:source-rephrase';
+  const data = JSON.parse(localStorage.getItem(key)!);
+  const item = sourceWorksheetDrills.find(s => s.id === 'source-rephrase')!.items[0];
+  data.answers[item.id].conditionOne = null;
+  data.answers[item.id].contraDraft = null;
+  data.answers[item.id].fingerprint = 'old content';
+  data.answers[item.id].review = 'matched';
+  localStorage.setItem(key, JSON.stringify(data));
+  run('source-rephrase');
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+  expect(screen.getByRole('textbox')).toHaveValue('My earlier wording.');
 });
 
-it('recovers safely from malformed saved state and links the landing to its run route', () => {
+it('recovers malformed saved state and links the landing to its run route', () => {
   localStorage.setItem('conditional-worksheet-v1:source-rephrase', '{broken');
   render(<MemoryRouter><SourceWorksheetDrill setId="source-rephrase" title="Drill 6" startUrl="?page=source-rephrase&run=1"/></MemoryRouter>);
   expect(screen.getByRole('heading', { name: 'Drill 6' })).toBeVisible();
   expect(screen.getByRole('link', { name: 'Start practice' })).toHaveAttribute('href', '/?page=source-rephrase&run=1');
 });
-
-it('requires separate group classifications for multiple selected expressions', () => {
-  run('source-indicators');
-  const tokens = document.querySelectorAll('.sw-tokens button');
-  fireEvent.click(tokens[0]);
-  fireEvent.click(tokens[2]);
-  const groups = screen.getAllByLabelText(/Which group/);
-  expect(groups).toHaveLength(2);
-  fireEvent.change(groups[0], { target: { value: '1' } });
-  expect(screen.getByRole('button', { name: 'Compare with explanation' })).toBeDisabled();
-  fireEvent.change(groups[1], { target: { value: '2' } });
-  expect(screen.getByRole('button', { name: 'Compare with explanation' })).toBeEnabled();
-});
-
-it('invalidates review when source meaning changes while retaining the written attempt', () => {
-  const item = sourceWorksheetDrills.find(set => set.id === 'source-rephrase')!.items[0];
-  localStorage.setItem('conditional-worksheet-v1:source-rephrase', JSON.stringify({ current: 0, answers: { [item.id]: { words: [0], groups: { '0': '1' }, fingerprint: 'old content', left: 'sufficient', right: 'necessary', contraLeft: '', contraRight: '', negateLeft: false, negateRight: false, writing: 'My earlier wording.', contraWriting: '', revealed: true, review: 'matched' } } }));
-  run('source-rephrase');
-  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
-  expect(screen.getByRole('textbox')).toHaveValue('My earlier wording.');
-  expect(screen.queryByRole('button', { name: 'My reasoning matched' })).toBeNull();
-});
-
-
-
 

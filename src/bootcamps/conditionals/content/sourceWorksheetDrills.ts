@@ -21,7 +21,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Intro training",
     "stage": "Recognize",
     "taskKind": "identify",
-    "instructions": "Select the indicator expression, then place the complete sufficient and necessary conditions. Keep words that limit who, when, or what the rule covers.",
+    "instructions": "Select the indicator expressions and their groups. Then write the two complete conditions before comparing with the model. Keep words that limit who, when, or what the rule covers.",
     "items": [
       {
         "id": "source-intro-identify-01",
@@ -798,7 +798,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Intro training revisited",
     "stage": "Diagram",
     "taskKind": "forward",
-    "instructions": "Place each complete sufficient condition on the left and each necessary condition on the right. These are the same 15 statements you identified earlier. Read your arrow back before checking.",
+    "instructions": "Return to the 15 intro statements. Write the complete conditions, assign each a symbol, then construct the original arrow using your own legend. Compare its direction and complete meaning.",
     "items": [
       {
         "id": "source-intro-diagrams-01",
@@ -1219,7 +1219,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Diagramming and roles",
     "stage": "Diagram",
     "taskKind": "roles",
-    "instructions": "Select the complete sufficient and necessary conditions and place them beside the arrow. Their order in the sentence may differ from their order in the diagram.",
+    "instructions": "Write the two complete conditions. Compare their meaning, then place the sufficient condition on the left and the necessary condition on the right. Their order in the sentence may differ.",
     "items": [
       {
         "id": "source-roles-01",
@@ -1495,7 +1495,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Conditional rephrasing",
     "stage": "Translate",
     "taskKind": "rephrase",
-    "instructions": "Select each indicator and its group, place the complete conditions beside the arrow, then rewrite the rule as “If …, then …”. Keep permissions, duties, deadlines, and restrictions.",
+    "instructions": "Rewrite the statement as “If …, then …” before looking at a model. Then identify each indicator and its group and build the original arrow. Keep permissions, duties, deadlines, and restrictions.",
     "items": [
       {
         "id": "source-rephrase-01",
@@ -2203,7 +2203,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Four ways to express the rule",
     "stage": "After contraposition",
     "taskKind": "contrapositive",
-    "instructions": "Build the original diagram and its contrapositive. Then write both in ordinary if/then language. Reverse the conditions and negate each complete idea, including its restrictions.",
+    "instructions": "Identify each indicator and its group, then write the complete conditions and define your symbols. Build the original diagram and its contrapositive, then read both back in ordinary if/then language. Complete your own translation before revealing the model.",
     "items": [
       {
         "id": "source-full-translation-01",
@@ -2747,7 +2747,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "The complete translation set",
     "stage": "After contraposition",
     "taskKind": "contrapositive",
-    "instructions": "Treat each statement as the supplied rule. Diagram its conditional relationship, then write its contrapositive. Keep every qualifier and define any abbreviation you use. Later items include negative and compound conditions.",
+    "instructions": "Translate each statement independently: identify the indicators, write the complete conditions, define your symbols, build both arrows, and read them back in words. Complete your attempt before comparing with the model. Keep every qualifier and negate whole conditions.",
     "items": [
       {
         "id": "source-independent-01",
@@ -3715,6 +3715,6 @@ export const getSourceWorksheetDrill = (id: string): SourceWorksheetDrillSet | u
     shortTitle: revisit.shortTitle,
     stage: 'After contraposition',
     taskKind: 'contrapositive',
-    instructions: 'Return to these familiar statements. Build the original diagram and its contrapositive, then write both in ordinary if/then language. Reverse the conditions and negate each complete idea, including its restrictions.',
+    instructions: 'Return to these familiar statements. Identify the indicators, write the complete conditions, and define your symbols. Build the original diagram and its contrapositive, then write both in ordinary if/then language. Reverse the conditions and negate each complete idea, including its restrictions.',
   };
 };
