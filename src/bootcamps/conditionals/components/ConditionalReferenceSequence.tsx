@@ -278,21 +278,22 @@ export function conditionalReferenceContent() {
 
     <ReferenceStep number={4} label="The necessary condition" title="Necessary means required">
       <div className="cr-sufficiency nc-lesson">
-        <p className="cr-sufficiency-lead">A <strong>necessary condition</strong> is something that must be true for another condition to be true. Start with the same example from the last lesson.</p>
+        <p className="cr-sufficiency-lead"><strong>A necessary condition is a requirement. It has to be met, but meeting it might not be enough.</strong></p>
+        <p>For example, you have to be a student to be enrolled in law school. That makes being a student <strong>necessary for law-school enrollment</strong>.</p>
         <NecessaryConditionStatement/>
-        <p className="nc-takeaway"><strong>You cannot be enrolled in law school without being a student.</strong> That is why being a student is necessary for law-school enrollment.</p>
+        <p>But being a student doesn’t mean you’re enrolled in law school. You could be studying history instead.</p>
+        <p className="nc-takeaway"><strong>Being a student is required. It doesn’t establish enrollment on its own.</strong></p>
         <NecessaryConditionExperience/>
         <section className="cr-sufficient-explanation" aria-label="Why a requirement is not necessarily enough">
-          <h3>Required does not mean enough</h3>
-          <p>The law student and the history student both meet the requirement: <strong>they are students.</strong> But only the first person in our examples is enrolled in law school. So learning only that someone is a student does not tell you whether they are enrolled in law school.</p>
+          <h3>Two roles in the same relationship</h3>
           <p>Compare the two roles: <strong>being enrolled is enough to establish being a student; being a student is required for being enrolled.</strong> These describe the same relationship from different sides.</p>
           <p>Whenever the sufficient condition is true, the necessary condition must be true too. The rule does not tell us that either condition is actually true of a particular person.</p>
-          <details className="cr-extension"><summary>Can a condition be both necessary and sufficient?</summary><p>Yes, when the relationship supports both directions. Necessary means required; it does not mean never enough. In our law-school example, being a student is necessary but not sufficient.</p></details>
+          <details className="cr-extension"><summary>Can a condition be both necessary and sufficient?</summary><p>Yes, when the relationship supports both directions. Necessary means required; it doesn't mean never enough. Our rule tells us that enrollment requires being a student. It doesn't say that being a student is enough to establish enrollment.</p></details>
         </section>
         <SufficientConditionFilm key="necessary-definition" assets={necessaryConditionFilms} title="Why the requirement is not enough here" ariaLabel="Short explanation of necessity"/>
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 2 indicator words">
           <h3>Group 2: Necessary-condition indicators</h3>
-          <p>An <strong>indicator</strong> is a word or phrase that helps you recognize a condition's role. We used <strong>then</strong> to introduce the required part of our if/then sentence. These Group 2 expressions can also point to what is necessary:</p>
+          <p>These words and phrases can help you find a requirement. Read the whole sentence, then identify <strong>what is required and what requires it</strong>.</p>
           <ul>{['only', 'only if', 'only when', 'only where', 'always', 'requires', 'must'].map(word => <li key={word}>{word}</li>)}</ul>
           <h3>Different wording, the same requirement</h3>
           <p>The first six sentences describe our law-school relationship. In each one, ask what a person enrolled in law school has to be. Then we'll use a place example for only where.</p>
@@ -311,12 +312,12 @@ export function conditionalReferenceContent() {
             <div><h4>You are enrolled in law school only if you are a student.</h4><p><strong>Only if</strong> identifies being a student as required. This preserves that same relationship.</p></div>
           </div>
           <p>Now remove only from the second sentence: “You are enrolled in law school <strong>if</strong> you are a student.” That would make being a student enough for law-school enrollment. A history student who is not enrolled in law school shows why that is a different claim.</p>
-          <p>Whether the sentence starts with the requirement or ends with it, ask the same question: <strong>what cannot be missing if the sufficient condition is true?</strong> Find that complete idea, not just the indicator word. The next example gives you a new relationship to check.</p>
+          <p>Ask <strong>what the sentence requires</strong>. Identify the complete condition, including any restrictions. The next example gives you a new relationship to check.</p>
         </section>
         <section className="cr-sufficient-explanation nc-checks" aria-label="Apply the necessary condition to a new rule">
           <h3>Find the requirement in a new rule</h3>
           <blockquote>An application is accepted for review only if it includes a current reference letter.</blockquote>
-          <ReferenceQuestion prompt="What is required for an application to be accepted for review?" options={['Including a current reference letter.', 'Including any reference letter, even an outdated one.']} correct={0} feedback={['Only if identifies including a current reference letter as required. An application accepted for review cannot be missing that current letter.', 'Current matters. An outdated letter does not meet the requirement in this rule. Keep that word when you identify what is required.']}/>
+          <ReferenceQuestion prompt="What is required for an application to be accepted for review?" options={['Including a current reference letter.', 'Including any reference letter, even an outdated one.', 'Being accepted for review.']} correct={0} feedback={['Only if identifies including a current reference letter as required. An application accepted for review cannot be missing that current letter.', 'Current matters. An outdated letter does not meet the requirement in this rule. Keep that word when you identify what is required.', 'Acceptance is the condition that requires the letter. Including a current reference letter is the requirement. You have swapped the two roles.']}/>
           <h3>Does meeting the requirement guarantee acceptance?</h3>
           <ReferenceQuestion prompt="Does including a current reference letter guarantee that the application is accepted for review?" options={['Yes. The letter is all the application needs.', 'No. The letter is required, but the rule does not say it is enough.']} correct={1} feedback={['You turned a requirement into a guarantee. The rule tells us that accepted applications include a current letter, not that every application with one is accepted.', 'An application with a current letter could be accepted or not accepted. Both fit the rule. Having the required letter alone does not establish acceptance.']}/>
         </section>

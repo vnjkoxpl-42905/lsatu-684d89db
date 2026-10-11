@@ -1,4 +1,5 @@
-import { useId, useState } from 'react';
+import { useId, useRef, useState, type KeyboardEvent } from 'react';
+import './necessary-condition-tabs.css';
 
 const cases = [
   { label: 'Law student', fact: 'Suppose this person is enrolled in law school.', student: 'Must be a student', studentNote: 'Follows from the rule', enrollment: 'Enrolled', note: 'Given in this example', title: 'Enrollment guarantees being a student.', explanation: 'Enrollment requires being a student. So this person must be a student.' },
@@ -8,25 +9,43 @@ const cases = [
 
 export function NecessaryConditionExperience() {
   const [selected, setSelected] = useState(0);
-  const current = cases[selected];
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const id = useId();
+  function navigateTabs(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    let next: number;
+    switch (event.key) {
+      case 'ArrowDown': next = (index + 1) % cases.length; break;
+      case 'ArrowUp': next = (index + cases.length - 1) % cases.length; break;
+      case 'Home': next = 0; break;
+      case 'End': next = cases.length - 1; break;
+      default: return;
+    }
+    event.preventDefault();
+    setSelected(next);
+    tabs.current[next]?.focus();
+  }
   return <section className="nc-experience" aria-labelledby={`${id}-heading`}>
     <header>
-      <h3 id={`${id}-heading`}>Compare three people</h3>
+      <h3 id={`${id}-heading`}>What does each case tell you?</h3>
       <p>Keep the same rule. Choose a person and see what their situation tells you.</p>
     </header>
-    <div className="nc-controls" role="group" aria-label="Choose a person to compare">
-      {cases.map((item, index) => <button key={item.label} type="button" aria-pressed={selected === index} aria-controls={`${id}-reading`} onClick={() => setSelected(index)}>{item.label}</button>)}
-    </div>
-    <p className="nc-case-fact" aria-hidden="true">{current.fact}</p>
-    <div className="nc-relationship" data-required-present={selected !== 2} aria-hidden="true">
-      <div className="nc-condition"><span>Being a student</span><strong key={selected} className="nc-verdict">{current.student}</strong><small>{current.studentNote}</small></div>
-      <div className="nc-enrollment"><span>Law-school enrollment</span><strong key={selected} className="nc-verdict">{current.enrollment}</strong><small>{current.note}</small></div>
-    </div>
-    <div className="nc-reading" id={`${id}-reading`} role="status" aria-live="polite" aria-atomic="true">
-      <p className="nc-sr-fact">{current.fact}</p>
-      <h4>{current.title}</h4>
-      <p>{current.explanation}</p>
+    <div className="nc-tab-layout">
+      <div className="nc-person-tabs" role="tablist" aria-label="Choose a person to compare" aria-orientation="vertical">
+        {cases.map((item, index) => <button key={item.label} ref={(element) => { tabs.current[index] = element; }} type="button" role="tab" id={`${id}-tab-${index}`} aria-selected={selected === index} tabIndex={selected === index ? 0 : -1} aria-controls={`${id}-panel-${index}`} onKeyDown={(event) => navigateTabs(event, index)} onClick={() => setSelected(index)}>{item.label}</button>)}
+      </div>
+      <div className="nc-person-panels">
+        {cases.map((item, index) => <div key={item.label} className="nc-person-panel" id={`${id}-panel-${index}`} role="tabpanel" aria-labelledby={`${id}-tab-${index}`} tabIndex={0} hidden={selected !== index}>
+          <p className="nc-person-fact">{item.fact}</p>
+          <dl className="nc-person-facts">
+            <div><dt>Being a student</dt><dd><strong>{item.student}</strong><span>{item.studentNote}</span></dd></div>
+            <div><dt>Law-school enrollment</dt><dd><strong>{item.enrollment}</strong><span>{item.note}</span></dd></div>
+          </dl>
+          <div className="nc-reading">
+            <h4>{item.title}</h4>
+            <p>{item.explanation}</p>
+          </div>
+        </div>)}
+      </div>
     </div>
   </section>;
 }

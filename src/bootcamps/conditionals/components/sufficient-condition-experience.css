@@ -135,8 +135,7 @@
 .cr-sufficiency .nc-statement blockquote { margin:0 0 1.5rem; padding:0; border:0; font-size:clamp(1.55rem,3vw,2.1rem); line-height:1.6; }
 .nc-statement-if,.nc-statement-then { display:block; }
 .nc-statement-then { position:relative; width:fit-content; max-width:100%; color:var(--sc-ink); background:oklch(92% .055 83); border-bottom:3px solid var(--sc-brass); padding:.15em .25em; border-radius:.15em; }
-.nc-then-indicator { text-decoration:underline; text-underline-offset:.2em; text-decoration-thickness:1px; }
-.nc-statement-emphasis { animation:nc-required-emphasis 700ms ease-out; }
+.nc-statement-emphasis { animation:nc-required-emphasis 3.2s ease-in-out infinite; }
 .nc-statement-roles { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.5rem; }
 .nc-statement-roles>div { border-left:3px solid var(--sc-ink); padding-left:1rem; min-width:0; }
 .nc-statement-roles>div:last-child { border-left-color:var(--sc-brass); }
@@ -144,9 +143,6 @@
 .nc-statement-roles strong { display:block; line-height:1.5; }
 .cr-sufficiency .nc-statement-roles p { margin:.5rem 0 0; font-size:.95rem; }
 .cr-sufficiency .nc-statement-key { margin:1.5rem 0 .5rem; padding-top:1rem; border-top:1px solid var(--sc-line); font-size:.95rem; }
-#root .nc-lesson .nc-replay { min-height:44px; padding:.5rem .8rem; border:1px solid var(--sc-line); border-radius:.4rem; background:transparent; color:var(--sc-ink); font-size:.9rem; font-weight:600; }
-#root .nc-lesson .nc-replay:hover { background:oklch(92% .055 83); }
-#root .nc-lesson .nc-replay:focus-visible { outline:2px solid var(--sc-ink); outline-offset:3px; }
 .nc-verdict { animation:nc-verdict-enter 220ms ease-out; }
 @keyframes nc-required-emphasis { 0%,100% { background:oklch(92% .055 83); } 40% { background:oklch(85% .1 83); } }
 @keyframes nc-verdict-enter { from { opacity:.55; transform:translateY(3px); } to { opacity:1; transform:translateY(0); } }
