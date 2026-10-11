@@ -52,10 +52,10 @@ it('requires the whole indicator phrase and correct group before advancing', () 
 it('keeps every source task reachable and future operations gated', () => {
   for (const set of sourceWorksheetDrills) {
     const view = run(set.id);
-    const navigator = screen.getByLabelText('Go to statement');
+    const navigator = screen.getByLabelText('Go to sentence');
     expect(navigator.querySelectorAll('option')).toHaveLength(set.items.length);
     fireEvent.change(navigator, { target: { value: set.items.length - 1 } });
-    expect(screen.getByText(`Statement ${set.items.length} of ${set.items.length}`)).toBeVisible();
+    expect(screen.getByText(`Sentence ${set.items.length} of ${set.items.length}`)).toBeVisible();
     expect(screen.getByRole('button', { name: 'Bring it together' })).toBeDisabled();
     if (set.taskKind !== 'contrapositive') expect(screen.queryByRole('button', { name: 'Reverse and negate' })).toBeNull();
     view.unmount();

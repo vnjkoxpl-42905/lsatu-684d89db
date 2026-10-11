@@ -69,7 +69,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The instruction to expect thunder is the result. It does not establish that thunder actually follows.",
         "correctionNotes": [
           "The key strengthens “expect thunder” to “thunder will follow.” Preserve the expectation.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -291,7 +291,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositiveWords": "If that passenger does not present a ticket, then that passenger is not allowed to board the train.",
         "explanation": "This is a boarding requirement. Keep presents a ticket, rather than merely owns a ticket.",
         "correctionNotes": [
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -399,7 +399,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositiveWords": "If that person is not over 18, then that person is not eligible to vote in this fictional election.",
         "explanation": "Over 18 means older than 18. This exercise supplies a fictional eligibility rule, not election-law advice.",
         "correctionNotes": [
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -648,7 +648,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The loan requires collateral. Providing collateral alone does not guarantee a loan.",
         "correctionNotes": [
           "The borrowing/collateral wording needs clarification before grading.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -729,7 +729,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "Before is part of the requirement. Documentation after troubleshooting would not meet it.",
         "correctionNotes": [
           "This is an instruction. Do not treat it as proof of actual compliance.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -798,7 +798,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Intro training revisited",
     "stage": "Diagram",
     "taskKind": "forward",
-    "instructions": "Return to the 15 intro statements. Write the complete conditions, assign each a symbol, then construct the original arrow using your own legend. Compare its direction and complete meaning.",
+    "instructions": "Return to the 15 intro sentences. Write the complete conditions, assign each a symbol, then construct the original arrow using your own legend. Compare its direction and complete meaning.",
     "items": [
       {
         "id": "source-intro-diagrams-01",
@@ -846,7 +846,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The instruction to expect thunder is the result. It does not establish that thunder actually follows.",
         "correctionNotes": [
           "The key strengthens “expect thunder” to “thunder will follow.” Preserve the expectation.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -1068,7 +1068,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositiveWords": "If that passenger does not present a ticket, then that passenger is not allowed to board the train.",
         "explanation": "This is a boarding requirement. Keep presents a ticket, rather than merely owns a ticket.",
         "correctionNotes": [
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -1176,7 +1176,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositiveWords": "If that person is not over 18, then that person is not eligible to vote in this fictional election.",
         "explanation": "Over 18 means older than 18. This exercise supplies a fictional eligibility rule, not election-law advice.",
         "correctionNotes": [
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -1371,7 +1371,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The loan requires collateral. Providing collateral alone does not guarantee a loan.",
         "correctionNotes": [
           "The key incorrectly turns a collateral requirement into a guaranteed loan.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -1478,7 +1478,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "Before is part of the requirement. Documentation after troubleshooting would not meet it.",
         "correctionNotes": [
           "Keep “before” and distinguish an instruction from actual compliance.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -1495,7 +1495,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Conditional rephrasing",
     "stage": "Translate",
     "taskKind": "rephrase",
-    "instructions": "Rewrite the statement as “If …, then …” before looking at a model. Then identify each indicator and its group and build the original arrow. Keep permissions, duties, deadlines, and restrictions.",
+    "instructions": "Rewrite the sentence as “If …, then …” before looking at a model. Then identify each indicator and its group and build the original arrow. Keep permissions, duties, deadlines, and restrictions.",
     "items": [
       {
         "id": "source-rephrase-01",
@@ -1521,7 +1521,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The outcome is a hydration duty, not proof that a runner complied. Keep before the marathon.",
         "correctionNotes": [
           "Mixed indicators and obligation: do not force one group label.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -1602,7 +1602,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "This version is limited to unlocking with a key. It does not exclude other possible ways of opening the door.",
         "correctionNotes": [
           "“Only key” does not exclude non-key ways of opening the door.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -1693,7 +1693,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The reviewed statement makes teamwork necessary for success. Teamwork alone does not guarantee a successful project.",
         "correctionNotes": [
           "Allow a separate group label for each indicator.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -2050,7 +2050,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The reviewed policy creates an obligation. A device awaiting recalibration can still bear a failed seal. Keep must in the outcome.",
         "correctionNotes": [
           "Allow both indicators; preserve requirement status.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -2435,7 +2435,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The reviewed rule makes maintenance a prerequisite for the halt. Maintenance alone does not establish that operations halt.",
         "correctionNotes": [
           "The key changes a requirement into completed maintenance.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -2516,7 +2516,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The reviewed rule is factual. Keep the checks and their timing together.",
         "correctionNotes": [
           "Keep “before”; this instruction needs a compliance-rule frame.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -2747,7 +2747,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "The complete translation set",
     "stage": "After contraposition",
     "taskKind": "contrapositive",
-    "instructions": "Translate each statement independently: identify the indicators, write the complete conditions, define your symbols, build both arrows, and read them back in words. Complete your attempt before comparing with the model. Keep every qualifier and negate whole conditions.",
+    "instructions": "Translate each sentence independently: identify the indicators, write the complete conditions, define your symbols, build both arrows, and read them back in words. Complete your attempt before comparing with the model. Keep every qualifier and negate whole conditions.",
     "items": [
       {
         "id": "source-independent-01",
@@ -2821,7 +2821,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The unclear name in the source has been replaced with a clear result. The conditional direction is unchanged.",
         "correctionNotes": [
           "Named comparison is unclear in the source.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3268,7 +3268,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "Always is not a condition. The explicit time and place supply the domain; sunny is the required property.",
         "correctionNotes": [
           "The key incorrectly uses “Always” as a condition. This needs an explicit domain.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3483,7 +3483,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "The exclusivity claim makes pleasure necessary for goodness. Good goes left; pleasure goes right.",
         "correctionNotes": [
           "The key misses the exclusivity direction. Adjudicate the natural-language claim.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3566,7 +3566,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "explanation": "This explicitly labeled adaptation replaces the unclear source result. Keep both fresh and dried and the garden-soil setting.",
         "correctionNotes": [
           "“Plant soil decreases” is unclear. Preserve this source for review; do not grade it.",
-          "Reviewed derivative: the learner-facing statement clarifies the source. The exact original remains in originalStatement."
+          "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",

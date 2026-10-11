@@ -7,7 +7,7 @@ import { OPENING_COURSE_PATH, openingCourseStep, type OpeningCourseStep } from '
 import { OpeningCourseContent } from './OpeningCourseContent';
 import { CourseFlashcardUrl, FlashcardTools } from './FlashcardTools';
 import { DrillOneEntry } from './DrillOneExperience';
-import { SourceWorksheetDrill } from './SourceWorksheetDrill';
+import { SourceWorksheetDrill, stagesFor } from './SourceWorksheetDrill';
 import { getSourceWorksheetDrill } from '../content/sourceWorksheetDrills';
 import './opening-course.css';
 
@@ -39,8 +39,33 @@ export function OpeningCourseNavigation({ view, url }: { view: string; url: Open
   </>;
 }
 
+// Every drill works some of the same six operations. The trail shows which ones, so drills read as distinct at a glance.
+const DRILL_OPERATIONS = [
+  { key: 'indicators', label: 'Indicators' }, { key: 'conditions', label: 'Conditions' }, { key: 'symbols', label: 'Symbols' },
+  { key: 'diagram', label: 'Arrow' }, { key: 'contra', label: 'Contrapositive' }, { key: 'words', label: 'In words' },
+] as const;
+
+function drillOperations(id: string): Set<string> | null {
+  const set = getSourceWorksheetDrill(id);
+  if (set) return new Set(stagesFor(set.taskKind).filter(stage => stage !== 'review').map(stage => stage === 'readback' || stage === 'contra-readback' ? 'words' : stage));
+  if (id === 'sufficient-practice') return new Set(['indicators', 'conditions', 'diagram', 'words']);
+  if (id === 'contrapositive-practice') return new Set(['diagram', 'contra', 'words']);
+  return null;
+}
+
 function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourseUrl }) {
-  return <li className="oc-path-card"><span className="oc-label">{step.type}</span><h2>{step.title}</h2><p>{step.description}</p><Link className="oc-action" to={url(step.id)}>{step.type === 'note' ? <BookOpen size={16}/> : <Dumbbell size={16}/>} {step.type === 'note' ? 'Read lesson' : 'View drill'}<ArrowRight size={16}/></Link></li>;
+  const drill = step.type === 'drill';
+  const operations = drill ? drillOperations(step.id) : null;
+  const count = drill ? getSourceWorksheetDrill(step.id)?.items.length : undefined;
+  const number = step.title.match(/^(Revisit )?Drill (\d+)/);
+  return <li className={`oc-path-card${drill ? ' oc-drill-card' : ''}`}>
+    {number && <span className="oc-card-num" aria-hidden="true">{number[2].padStart(2, '0')}</span>}
+    <span className="oc-label">{number?.[1] ? 'Revisit' : step.type}</span><h2>{step.title}</h2><p>{step.description}</p>
+    {operations && <ol className="oc-ops" aria-label="What you do in this drill">{DRILL_OPERATIONS.map((operation, index) => operations.has(operation.key)
+      ? <li key={operation.key} data-on="true" style={{ animationDelay: `${index * 60}ms` }}>{operation.label}</li>
+      : <li key={operation.key} data-on="false" aria-hidden="true">{operation.label}</li>)}</ol>}
+    <div className="oc-card-foot"><Link className="oc-action" to={url(step.id)}>{drill ? <Dumbbell size={16}/> : <BookOpen size={16}/>} {drill ? 'View drill' : 'Read lesson'}<ArrowRight size={16}/></Link>{count !== undefined && <span className="oc-card-count">{count} sentences</span>}</div>
+  </li>;
 }
 
 const drillInstructions: Record<string, { summary: string; heading: string; steps: string[] }> = {

@@ -9,12 +9,23 @@ afterEach(cleanup);
 
 it('offers nine dedicated notes and thirteen interleaved drill entries', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
-  const list = screen.getByRole('list');
-  expect(within(list).getAllByRole('listitem')).toHaveLength(22);
+  const list = document.querySelector<HTMLElement>('ol.oc-course-path')!;
+  expect(list.children).toHaveLength(22);
   expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(9);
   expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(13);
   expect(document.querySelector('.co-pages')).toBeNull();
   expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'missing-requirement', 'foundation-practice']);
+});
+
+it('shows which operations each drill works, in plain words with no mechanical counts', () => {
+  render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
+  const card = (title: RegExp) => screen.getByRole('heading', { name: title }).closest('li')!;
+  const lit = (title: RegExp) => within(within(card(title)).getByRole('list', { name: 'What you do in this drill' })).getAllByRole('listitem').map(item => item.textContent);
+  expect(lit(/Drill 3: Find the indicators/)).toEqual(['Indicators']);
+  expect(lit(/Drill 4: Place the conditions/)).toEqual(['Conditions', 'Arrow']);
+  expect(lit(/Drill 7: Build both diagrams/)).toEqual(['Indicators', 'Conditions', 'Symbols', 'Arrow', 'Contrapositive', 'In words']);
+  expect(within(card(/Drill 3: Find the indicators/)).getByText('13 sentences')).toBeVisible();
+  expect(document.querySelector('ol.oc-course-path')!.textContent).not.toMatch(/statements|Practise/i);
 });
 
 it('teaches each prerequisite before the source drills that use it', () => {
