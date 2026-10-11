@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { SourceWorksheetDrill } from './SourceWorksheetDrill';
@@ -35,18 +35,57 @@ it('keeps intro identification faithful: indicators first, then learner-written 
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
 });
 
-it('requires the whole indicator phrase and correct group before advancing', () => {
-  run('source-indicators');
+it('requires the whole indicator phrase and correct group before advancing, with a hint instead of the key', () => {
+  // The former indicator drill now continues Drill 2 from sentence 16.
+  run('source-intro-identify');
+  fireEvent.change(screen.getByLabelText('Go to sentence'), { target: { value: 15 } });
   click('Only');
   fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '2' } });
   click('Check this step');
   expect(screen.getByRole('heading', { name: 'Make one adjustment.' })).toBeVisible();
+  expect(screen.getByText('“Only” is only part of an indicator. Select every word of the phrase.')).toBeVisible();
+  expect(screen.queryByText(/Indicators:/)).toBeNull();
+  expect(screen.queryByText(/training requirement comes first/)).toBeNull();
   expect(screen.queryByRole('button', { name: 'Continue' })).toBeNull();
   click('if');
   fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '2' } });
   click('Check this step');
+  expect(screen.getByText(/Indicators:/)).toBeVisible();
   click('Continue');
-  expect(screen.getByRole('button', { name: 'My reasoning matched' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
+});
+
+it('carries indicator work from the folded drill into Drill 2 without marking the sentence reviewed', () => {
+  const folded = sourceWorksheetDrills.find(s => s.id === 'source-intro-identify')!.items.find(i => i.id === 'source-indicators-01')!;
+  const fingerprint = JSON.stringify([folded.statement, folded.sufficient, folded.necessary, folded.indicators, folded.contrapositiveWords]);
+  localStorage.setItem('conditional-worksheet-v1:source-indicators', JSON.stringify({ current: 0, answers: { 'source-indicators-01': {
+    groups: { '0-1': '2' }, fingerprint, words: [0, 1], left: '', right: '', contraLeft: '', contraRight: '', writing: '',
+    stage: 1, passed: ['indicators'], revealed: true, review: 'matched',
+  } } }));
+  run('source-intro-identify');
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+  fireEvent.change(screen.getByLabelText('Go to sentence'), { target: { value: 15 } });
+  expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
+  expect(JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-indicators')!).answers['source-indicators-01'].review).toBe('matched');
+});
+
+it('gives a placement hint without showing the diagram until the placement is right', () => {
+  run('source-roles');
+  write('First complete condition', 'qualify for promotion');
+  write('Second complete condition', 'complete training');
+  compare();
+  confirm();
+  const left = screen.getByRole('group', { name: 'Left: sufficient condition' });
+  const right = screen.getByRole('group', { name: 'Right: necessary condition' });
+  fireEvent.click(within(left).getByRole('button', { name: 'those employees complete training' }));
+  fireEvent.click(within(right).getByRole('button', { name: 'employees qualify for promotion' }));
+  click('Check this step');
+  expect(screen.getByText('Which condition is enough to prove the other? That one goes on the left.')).toBeVisible();
+  expect(screen.queryByText('employees qualify for promotion → those employees complete training')).toBeNull();
+  fireEvent.click(within(left).getByRole('button', { name: 'employees qualify for promotion' }));
+  fireEvent.click(within(right).getByRole('button', { name: 'those employees complete training' }));
+  click('Check this step');
+  expect(screen.getByText('employees qualify for promotion → those employees complete training')).toBeVisible();
 });
 
 it('keeps every source task reachable and future operations gated', () => {
@@ -62,7 +101,7 @@ it('keeps every source task reachable and future operations gated', () => {
   }
 });
 
-it('requires a blank production attempt across all six operations before revealing the final model', () => {
+it('compares the diagram and checks the contrapositive as each is built, and holds the written readbacks to the end', () => {
   run('source-full-translation');
   expect(screen.getByRole('button', { name: 'Check this step' })).toBeDisabled();
   expect(screen.queryByText('that intern is offered a full-time position', { exact: true })).toBeNull();
@@ -83,11 +122,24 @@ it('requires a blank production attempt across all six operations before reveali
   expect(screen.getByRole('button', { name: 'Save and continue' })).toBeDisabled();
   write('Second condition’s symbol', 'O');
   click('Save and continue');
-  expect(screen.queryByRole('button', { name: 'Check this step' })).toBeNull();
+  const ours = sourceWorksheetDrills.find(s => s.id === 'source-full-translation')!.items[0];
   write('Your original diagram', 'I → O');
-  click('Save and continue');
+  expect(screen.queryByText(ours.diagram)).toBeNull();
+  compare();
+  expect(screen.getByText(ours.diagram)).toBeVisible();
+  click('My diagram matched');
+  write('Your contrapositive diagram', 'NOT I → NOT O');
+  click('Check this step');
+  expect(screen.getByText('Start with the right side of your original diagram. It becomes the new left side.')).toBeVisible();
+  expect(screen.queryByText(ours.contrapositive)).toBeNull();
+  write('Your contrapositive diagram', '~O → I');
+  click('Check this step');
+  expect(screen.getByText('The order is right. Now negate each whole side once.')).toBeVisible();
   write('Your contrapositive diagram', 'NOT O → NOT I');
-  click('Save and continue');
+  click('Check this step');
+  expect(screen.getByText(ours.contrapositive)).toBeVisible();
+  expect(screen.queryByText(ours.contrapositiveWords)).toBeNull();
+  click('Continue');
   write('Write this rule as an if/then sentence.', 'If an intern completes the program, then they are offered a full-time position.');
   click('Save and continue');
   write('Write the contrapositive in ordinary language.', 'If that intern is not offered the position, then they did not complete the program.');

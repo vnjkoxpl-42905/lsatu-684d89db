@@ -26,7 +26,7 @@ describe('opening course progress', () => {
     fireEvent.click(options[0]);
     fireEvent.click(screen.getByRole('button', { name: 'Check this step' }));
     fireEvent.click(screen.getByRole('button', { name: 'Next step' }));
-    expect(steps['sufficient-practice']).toMatchObject({ status: 'started', total: 24 });
+    expect(steps['sufficient-practice']).toMatchObject({ status: 'started', total: 13 });
     first.unmount();
     localStorage.clear();
     render(<CourseProgressProvider store={store()}><StagedReasoningDrill mode="sufficient"/></CourseProgressProvider>);

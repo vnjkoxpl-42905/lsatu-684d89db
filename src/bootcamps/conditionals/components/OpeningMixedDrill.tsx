@@ -15,14 +15,38 @@ const stages = [
   { title: 'Try the distinction in a new case', purpose: 'Now use the distinctions you revised with different sentences.', example: '', explanation: 'The next questions revisit mistakes from this practice with fresh examples.', instruction: 'Make a new attempt before checking. An answer you reach after feedback is useful practice, but it is different from getting a fresh case right on the first check.' },
 ];
 
+type DiagramItem = (typeof openingActivityItems)[number];
+/**
+ * The shared refresher items use one-word labels ("dancer", "map"). This drill
+ * teaches keeping the complete condition, so it builds with full labels. The
+ * item ids, and so saved results, are unchanged.
+ */
+const fullDiagramLabels: Record<string, { left: string; right: string }> = {
+  d1: { left: 'Mia trains', right: 'Mia qualifies' },
+  d2: { left: 'Person is a dancer', right: 'Person stretches' },
+  d3: { left: 'Student is admitted', right: 'Student is a senior' },
+  d5: { left: 'Person votes', right: 'Person is a member' },
+  d6: { left: 'Bridge opens', right: 'Bridge has been inspected' },
+  d7: { left: 'There is funding', right: 'There is approval' },
+  d8: { left: 'Person is a hiker', right: 'Person brings a map' },
+};
+export const openingDiagramItems: DiagramItem[] = openingActivityItems.map(item => {
+  const labels = fullDiagramLabels[item.id];
+  return labels ? { ...item, names: [labels.left, labels.right], left: labels.left, right: labels.right } : item;
+});
+// Each explanation opens with the readback; the rest is shown after a correct diagram.
+const splitExplanation = (text: string) => { const end = text.indexOf('. '); return end < 0 ? { readback: text, rest: '' } : { readback: text.slice(0, end + 1), rest: text.slice(end + 2) }; };
+const diagramReadbacks = Object.fromEntries(Object.entries(openingActivityExplanations).map(([id, text]) => [id, splitExplanation(text)]));
+const diagramFollowUps: Record<string, string> = Object.fromEntries(Object.entries(diagramReadbacks).map(([id, parts]) => [id, parts.rest]));
+
 type Question =
   | { id: string; stage: number; kind: 'choice'; item: MixedDrillChoiceItem }
-  | { id: string; stage: number; kind: 'diagram'; item: (typeof openingActivityItems)[number] }
+  | { id: string; stage: number; kind: 'diagram'; item: DiagramItem }
   | { id: string; stage: number; kind: 'independent'; item: (typeof mixedFamilyItems)[number]; itemIndex: number };
 
 const baselineQuestions: Question[] = [
   ...completeConditionItems.map(item => ({ id: item.id, stage: 0, kind: 'choice' as const, item })),
-  ...openingActivityItems.map(item => ({ id: item.id, stage: 1, kind: 'diagram' as const, item })),
+  ...openingDiagramItems.map(item => ({ id: item.id, stage: 1, kind: 'diagram' as const, item })),
   ...mixedFamilyItems.map((item, itemIndex) => ({ id: `mixed-independent-${itemIndex + 1}`, stage: 2, kind: 'independent' as const, item, itemIndex })),
   ...equivalenceItems.map(item => ({ id: item.id, stage: 3, kind: 'choice' as const, item })),
   ...transferItems.map(item => ({ id: item.id, stage: 4, kind: 'choice' as const, item })),
@@ -66,16 +90,24 @@ function DrillQuestion({ question, onCheck }: { question: Question; onCheck: Che
     if (!result.sideCorrect) errors.push(question.item.family === 'necessary' ? 'requirement' : 'direction');
     onCheck(result.targetCorrect && result.sideCorrect, errors);
   }}/>;
-  return <div className="cir-root omd-diagram"><p>Build the original diagram, then read it as an if/then sentence before checking.</p>
-    <DiagramDrills items={[question.item]} embedded persistProgress={false} allowContrapositive={false} allowNegation={false} shuffleItems={false} explanations={openingActivityExplanations} feedbackForResult={result => {
-      if (result.correct) return `Your diagram keeps ${question.item.left} as sufficient for ${question.item.right}.`;
-      const reversed = result.left === question.item.right && result.right === question.item.left;
-      if (reversed) return `Your arrow makes ${question.item.right} enough to prove ${question.item.left}. The rule makes ${question.item.left} enough to prove ${question.item.right}, and leaves the reverse open.`;
-      return `Your diagram has “${result.left}” on the left and “${result.right}” on the right. Use each condition once: ${question.item.left} on the left, ${question.item.right} on the right. Extra or repeated words change the diagram.`;
+  return <DiagramQuestion item={question.item} onCheck={onCheck}/>;
+}
+
+/** Hint only on a wrong diagram; the full diagram and explanation appear once it is right. */
+function DiagramQuestion({ item, onCheck }: { item: DiagramItem; onCheck: Check }) {
+  const [solved, setSolved] = useState<boolean | null>(null);
+  const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
+  return <div className="cir-root omd-diagram" data-result={solved === null ? undefined : solved ? 'right' : 'wrong'}><p>Build the original diagram, then read it as an if/then sentence before checking.</p>
+    <DiagramDrills items={[item]} embedded persistProgress={false} allowContrapositive={false} allowNegation={false} shuffleItems={false} explanations={solved ? diagramFollowUps : {}} feedbackForResult={result => {
+      if (result.correct) return `Right. Read it back: ${diagramReadbacks[item.id]?.readback ?? `If ${item.left.toLowerCase()}, then ${item.right.toLowerCase()}.`}`;
+      const reversed = same(result.left, item.right) && same(result.right, item.left);
+      if (reversed) return 'Check which condition is enough to prove the other.';
+      return 'Use each condition once, one on each side. Extra or repeated words change the diagram. Check which condition is enough to prove the other.';
     }} onResult={result => {
+      setSolved(result ? result.correct : null);
       if (!result) return onCheck(null);
-      const reversed = result.left === question.item.right && result.right === question.item.left;
-      onCheck(result.correct, result.correct ? [] : [reversed && question.item.group === 'g2' ? 'requirement' : 'direction']);
+      const reversed = same(result.left, item.right) && same(result.right, item.left);
+      onCheck(result.correct, result.correct ? [] : [reversed && item.group === 'g2' ? 'requirement' : 'direction']);
     }}/>
   </div>;
 }
@@ -165,7 +197,7 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
   const confirmations = questions.filter(item => item.stage === 5);
   return <section ref={runner} className="omd-runner" aria-label="Conditional translation practice">
     <div className="omd-summary" hidden={!finished}><h2 ref={finished ? heading : undefined} tabIndex={-1}>Review your practice</h2>
-      <p>You answered {firstCorrect} of 24 correctly on your first try. You corrected {corrected} after checking the explanation.</p>
+      <p>You answered {firstCorrect} of {baselineQuestions.length} correctly on your first try. You corrected {corrected} after checking the explanation.</p>
       <p>This result covers your answer choices and the diagrams you built with the supplied words. Your written translations are for you to compare with the examples.</p>
       {!!confirmations.length && <><h3>How the new sentences went</h3><ul>{confirmations.map(item => <li key={item.id}>{item.id === obligationConfirmationItem.id ? 'What is required and what actually happened' : item.kind === 'choice' && errorLabels[item.item.skill]}: {results[item.id]?.firstCorrect ? 'you answered the new question correctly on your first try' : 'you corrected the new question after checking the explanation. Give this another try with a different sentence'}.</li>)}</ul></>}
       <p>When you return to a sentence, read your diagram back in English. Keep every restriction, and ask whether your arrow promises more than the sentence does.</p>
@@ -179,8 +211,8 @@ export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
       <button type="button" className="omd-primary" onClick={() => setIntroducedStages(previous => [...previous, question.stage])}>{question.stage === 0 ? 'Begin practice' : 'Continue'}</button>
     </div>
     <div hidden={finished || showIntroduction}>
-    <div className="omd-progress-heading"><p>{question.stage < 5 ? `Stage ${question.stage + 1} of 5` : '24 main questions completed'}</p><p>{question.stage < 5 ? `Question ${current + 1} of 24` : `Fresh check ${current - 23} of ${questions.length - 24}`}</p></div>
-    <div className="omd-progress" role="progressbar" aria-label={question.stage < 5 ? 'Main questions completed' : 'Fresh checks completed'} aria-valuemin={0} aria-valuemax={question.stage < 5 ? 24 : questions.length - 24} aria-valuenow={questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length}><span style={{ width: `${questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length / (question.stage < 5 ? 24 : questions.length - 24) * 100}%` }}/></div>
+    <div className="omd-progress-heading"><p>{question.stage < 5 ? `Stage ${question.stage + 1} of 5` : `${baselineQuestions.length} main questions completed`}</p><p>{question.stage < 5 ? `Question ${current + 1} of ${baselineQuestions.length}` : `Fresh check ${current - baselineQuestions.length + 1} of ${questions.length - baselineQuestions.length}`}</p></div>
+    <div className="omd-progress" role="progressbar" aria-label={question.stage < 5 ? 'Main questions completed' : 'Fresh checks completed'} aria-valuemin={0} aria-valuemax={question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length} aria-valuenow={questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length}><span style={{ width: `${questions.filter(item => (item.stage === 5) === (question.stage === 5) && results[item.id]?.correct).length / (question.stage < 5 ? baselineQuestions.length : questions.length - baselineQuestions.length) * 100}%` }}/></div>
     <h2 ref={!finished && !showIntroduction ? heading : undefined} tabIndex={-1}>{stage.title}</h2><p className="omd-purpose">{stage.purpose}</p>
     </div>
     {questions.filter(item => visited.includes(item.id)).map(item => <div key={item.id} hidden={finished || showIntroduction || item.id !== question.id} data-mixed-question={item.id}><RetainedQuestion question={item} record={record}/></div>)}

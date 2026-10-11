@@ -1,9 +1,8 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { StrictMode } from 'react';
 import { afterEach, expect, it, vi } from 'vitest';
-import { OpeningMixedDrill } from './OpeningMixedDrill';
+import { OpeningMixedDrill, openingDiagramItems } from './OpeningMixedDrill';
 import { completeConditionItems, equivalenceItems, transferItems, confirmationItemsByError, obligationConfirmationItem } from '../content/mixedDrillItems';
-import { openingActivityItems } from '../content/openingActivityItems';
 import { mixedFamilyItems } from './MixedFamilyPractice';
 
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
@@ -25,7 +24,7 @@ function choose(option: string) {
 function solve(index: number) {
   if (index < 3) return choose(completeConditionItems[index].options[completeConditionItems[index].correct]);
   if (index < 10) {
-    const item = openingActivityItems[index - 3];
+    const item = openingDiagramItems[index - 3];
     fireEvent.click(active().getByRole('button', { name: 'Choose the left condition' }));
     fireEvent.click(active().getByRole('button', { name: item.left }));
     fireEvent.click(active().getByRole('button', { name: 'Choose the right condition' }));
@@ -72,13 +71,13 @@ it('reuses the real reviewed diagram engine without its own count, storage or un
   renderPractice();
   for (let index = 0; index < 3; index++) { solve(index); next(); }
   expect(screen.getByText('Question 4 of 24')).toBeVisible();
-  expect(screen.getByText(openingActivityItems[0].prompt)).toBeVisible();
+  expect(screen.getByText(openingDiagramItems[0].prompt)).toBeVisible();
   expect(screen.queryByText(/Statement 1 of|Sentence 1 of|Contrapositive/i)).toBeNull();
   expect(screen.queryByRole('button', { name: /^Not / })).toBeNull();
   solve(3);
   expect(screen.getByRole('button', { name: 'Next question' })).toBeEnabled();
   next();
-  expect(screen.getByText(openingActivityItems[1].prompt)).toBeVisible();
+  expect(screen.getByText(openingDiagramItems[1].prompt)).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
   expect(active().getByRole('status')).toBeVisible();
   expect(screen.getByRole('button', { name: 'Next question' })).toBeEnabled();
@@ -136,12 +135,13 @@ it('groups a wrong role choice with a new direction question instead of a qualif
 it('explains repeated diagram conditions and follows them with a fresh diagram check', () => {
   renderPractice();
   for (let index = 0; index < 3; index++) { solve(index); next(); }
-  fireEvent.click(active().getByRole('button', { name: 'trains' }));
-  fireEvent.click(active().getByRole('button', { name: 'trains' }));
+  fireEvent.click(active().getByRole('button', { name: 'Mia trains' }));
+  fireEvent.click(active().getByRole('button', { name: 'Mia trains' }));
   fireEvent.click(active().getByRole('button', { name: 'Choose the right condition' }));
-  fireEvent.click(active().getByRole('button', { name: 'qualifies' }));
+  fireEvent.click(active().getByRole('button', { name: 'Mia qualifies' }));
   fireEvent.click(active().getByRole('button', { name: 'Check answer' }));
   expect(active().getByText(/Extra or repeated words change the diagram/)).toBeVisible();
+  expect(active().queryByText(/Mia trains on the left/)).toBeNull();
   expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
   fireEvent.click(active().getByRole('button', { name: 'Try again' }));
   for (let index = 3; index < 24; index++) { solve(index); next(); }
@@ -199,4 +199,31 @@ it('returns focus to the first answer when an incorrect choice is retried', () =
   expect(active().getByRole('button', { name: completeConditionItems[0].options[0] })).toHaveFocus();
   expect(active().queryByRole('button', { name: 'Try this question again' })).toBeNull();
   expect(active().getByRole('button', { name: 'Check answer' })).toBeDisabled();
+});
+
+it('builds diagrams from full condition labels and gives only a hint for a reversed arrow', () => {
+  renderPractice();
+  for (let index = 0; index < 3; index++) { solve(index); next(); }
+  expect(active().queryByRole('button', { name: 'trains' })).toBeNull();
+  fireEvent.click(active().getByRole('button', { name: 'Mia qualifies' }));
+  fireEvent.click(active().getByRole('button', { name: 'Choose the right condition' }));
+  fireEvent.click(active().getByRole('button', { name: 'Mia trains' }));
+  fireEvent.click(active().getByRole('button', { name: 'Check answer' }));
+  const diagram = document.querySelector('[data-mixed-question]:not([hidden]) .omd-diagram')!;
+  expect(diagram).toHaveAttribute('data-result', 'wrong');
+  const feedback = diagram.querySelector('.cir-feedback')!;
+  expect(feedback.querySelector('p')).toHaveTextContent('Check which condition is enough to prove the other.');
+  expect(feedback.textContent).not.toMatch(/Training is enough|If Mia trains/);
+  fireEvent.click(active().getByRole('button', { name: 'Try again' }));
+  solve(3);
+  expect(diagram).toHaveAttribute('data-result', 'right');
+  expect(diagram.querySelector('.cir-feedback p')).toHaveTextContent('Right. Read it back: If Mia trains, she qualifies.');
+  expect(diagram.querySelector('.cir-feedback')).toHaveTextContent(/Training is enough under this rule/);
+});
+
+it('maps the shared one-word diagram labels to full condition labels', () => {
+  expect(openingDiagramItems.map(item => [item.left, item.right])).toEqual([
+    ['Mia trains', 'Mia qualifies'], ['Person is a dancer', 'Person stretches'], ['Student is admitted', 'Student is a senior'],
+    ['Person votes', 'Person is a member'], ['Bridge opens', 'Bridge has been inspected'], ['There is funding', 'There is approval'], ['Person is a hiker', 'Person brings a map'],
+  ]);
 });

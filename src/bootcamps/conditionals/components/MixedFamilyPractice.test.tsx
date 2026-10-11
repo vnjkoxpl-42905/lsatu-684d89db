@@ -56,7 +56,7 @@ it('describes hidden family labels truthfully for the deterministic mixed order'
   expect(view.container.textContent).not.toContain('nothing tells you which kind is coming');
 });
 
-it('asks an authored question about each rule and names the restriction retained when only the arrow needs revision', () => {
+it('asks an authored question about each rule and gives only the arrow hint when only the arrow needs revision', () => {
   for (const [index, item] of mixedFamilyItems.entries()) {
     const view = render(<MixedItemCheck item={item} index={index} embedded onChecked={() => undefined}/>);
     fireEvent.change(view.getByLabelText('Your diagram'), { target: { value: 'My attempted diagram' } });
@@ -66,8 +66,10 @@ it('asks an authored question about each rule and names the restriction retained
     fireEvent.click(view.getByRole('button', { name: item.target }));
     fireEvent.click(view.getByRole('button', { name: item.right }));
     fireEvent.click(view.getByRole('button', { name: 'Check answer' }));
-    expect(view.getByRole('status')).toHaveTextContent(item.targetFeedback);
+    expect(view.getByRole('status')).not.toHaveTextContent(item.targetFeedback);
     expect(view.getByRole('status')).toHaveTextContent(item.reversed);
+    expect(view.getByRole('status')).not.toHaveTextContent(item.readback);
+    expect(view.getByRole('status')).not.toHaveTextContent(item.why);
     expect(view.getByRole('status')).not.toHaveTextContent('complete group');
     view.unmount();
   }

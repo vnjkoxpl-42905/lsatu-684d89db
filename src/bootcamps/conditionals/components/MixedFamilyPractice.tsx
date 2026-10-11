@@ -27,8 +27,8 @@ export const mixedFamilyItems: MixedItem[] = [
     targetPrompt: 'What does the forecast have to show for the match to move indoors under this rule?', targetFeedback: 'You identified the forecast showing lightning.',
     target: 'the forecast shows lightning', partial: 'the forecast', other: 'the match moves indoors',
     left: 'Forecast shows lightning', right: 'Match moves indoors',
-    partialFeedback: "The forecast alone isn't something that can be true or false. If refers to the whole clause: the forecast shows lightning.",
-    otherFeedback: 'Moving indoors is what the rule proves. If points to the clause after it: the forecast shows lightning.',
+    partialFeedback: "The forecast alone isn't something that can be true or false. Ask: if what? Keep the whole clause.",
+    otherFeedback: 'Moving indoors is what the rule proves, not what proves it. Look at the clause right after if.',
     reversed: 'Your arrow makes every indoor match proof of a lightning forecast. The match could move indoors because the pitch is flooded, and that case still fits the sentence.',
     why: "The if-clause comes last, but it's still the part that's enough. A lightning forecast proves the move indoors.",
     readback: 'If the forecast shows lightning, the match moves indoors.',
@@ -38,8 +38,8 @@ export const mixedFamilyItems: MixedItem[] = [
     targetPrompt: 'What does a student need in order to join the choir trip?', targetFeedback: 'You kept what the parent must do: sign the consent form.',
     target: 'a parent signs the consent form', partial: 'a parent', other: 'a student joins the choir trip',
     left: 'Joins choir trip', right: 'Parent signs consent form',
-    partialFeedback: 'A parent alone drops what the parent has to do. The requirement is the signature: a parent signs the consent form.',
-    otherFeedback: 'Joining the trip is the condition that carries the requirement. Only if points to what joining needs: a signed form.',
+    partialFeedback: 'A parent alone drops what the parent has to do. Ask: only if what? Keep the whole clause.',
+    otherFeedback: 'Joining the trip is the condition that carries the requirement. Look at the clause after only if to find what joining needs.',
     reversed: "Your arrow promises a place on the trip to every student with a signed form. A student with a signed form who is ill on the day fits the sentence, so the signature isn't enough.",
     why: 'Only if names a requirement. Any student on the trip has a signed form. A signed form leaves the trip open.',
     readback: 'If a student joins the choir trip, a parent has signed the consent form.',
@@ -49,8 +49,8 @@ export const mixedFamilyItems: MixedItem[] = [
     targetPrompt: 'Which buses does the rule say stop at the hospital?', targetFeedback: 'You kept both restrictions: leaving the depot and after midnight.',
     target: 'bus leaving the depot after midnight', partial: 'bus', other: 'stops at the hospital',
     left: 'Bus leaves depot after midnight', right: 'Stops at hospital',
-    partialFeedback: 'Bus alone would cover the daytime buses too. Every refers to buses leaving the depot after midnight, so keep the depot and the time.',
-    otherFeedback: 'Stopping at the hospital is what the rule proves. Every points to the group it covers: buses leaving the depot after midnight.',
+    partialFeedback: 'Bus alone would cover daytime buses and buses that never use the depot. Ask: every what? Keep every detail that limits which buses the rule covers.',
+    otherFeedback: 'Stopping at the hospital is what the rule proves, not the group it covers. Ask: every what?',
     reversed: "Your arrow says any bus at the hospital left the depot after midnight. A morning bus stopping there fits the sentence, so the stop doesn't settle when the bus left the depot.",
     why: 'Every covers each bus leaving the depot after midnight. Pick one, and the rule tells you it stops at the hospital.',
     readback: 'If a bus leaves the depot after midnight, it stops at the hospital.',
@@ -60,8 +60,8 @@ export const mixedFamilyItems: MixedItem[] = [
     targetPrompt: 'What kind of table does someone need to eat on the terrace?', targetFeedback: "You kept booked. The sentence requires a booking, not just any table.",
     target: 'a booked table', partial: 'a table', other: 'eat on the terrace',
     left: 'Eats on terrace', right: 'Has booked table',
-    partialFeedback: "A table drops booked, and booked is the requirement. The sentence doesn't ask for just any table; it asks for a booked one.",
-    otherFeedback: 'Eating on the terrace is what needs the booking. Required refers back to the idea before it: a booked table.',
+    partialFeedback: "A table drops a word that limits the requirement. Would any table do under this rule? Reread the words before required.",
+    otherFeedback: 'Eating on the terrace is what needs something, so it is not the requirement. Required refers back to the idea that comes before it.',
     reversed: 'Your arrow sends everyone with a booking to the terrace. A diner could book a table and eat inside, and the sentence allows that.',
     why: "Here the group comes before required. Eating on the terrace needs a booked table. A booking alone doesn't put you there.",
     readback: 'If someone eats on the terrace, they have a booked table.',
@@ -71,19 +71,19 @@ export const mixedFamilyItems: MixedItem[] = [
     targetPrompt: 'Which phones does the rule say arrived with a cracked screen?', targetFeedback: 'The sentence covers phones in the same-day repair queue.',
     target: 'phones placed in the same-day repair queue', partial: 'phones', other: 'phones that arrived with a cracked screen',
     left: 'Phone in same-day repair queue', right: 'Arrived with cracked screen',
-    partialFeedback: 'Phones alone would make a claim about every phone in the shop. The only refers to phones placed in the same-day repair queue.',
-    otherFeedback: 'Arriving with a cracked screen is what every phone in that queue has in common. Ask the only what? Phones placed in the same-day repair queue.',
+    partialFeedback: 'Phones alone would make a claim about every phone in the shop. Ask: the only what? Keep every word that limits the group.',
+    otherFeedback: 'Arriving with a cracked screen is what every phone in the group has in common, not the group itself. Ask: the only what?',
     reversed: 'Your arrow puts every phone that arrived with a cracked screen in the same-day repair queue. A phone that arrived cracked and was booked in for next week fits the sentence.',
     why: "The only introduces the group that's enough. Any phone placed in the same-day repair queue arrived with a cracked screen. Arriving with a cracked screen doesn't put a phone in that queue.",
     readback: 'If a phone is placed in the same-day repair queue, it arrived with a cracked screen.',
   },
   {
     sentence: 'Only stalls with a permit sell food at the festival.', word: 'only', family: 'necessary',
-    targetPrompt: 'What must be true of a stall that sells food at the festival?', targetFeedback: 'Every stall selling food at the festival has a permit.',
+    targetPrompt: 'Which stalls does the rule allow to sell food at the festival?', targetFeedback: 'Every stall selling food at the festival has a permit.',
     target: 'stalls with a permit', partial: 'stalls', other: 'sell food at the festival',
     left: 'Stall sells food at festival', right: 'Stall has permit',
-    partialFeedback: 'Stalls alone loses the restriction. Only refers to stalls with a permit.',
-    otherFeedback: 'Selling food is what the restriction limits. Only points to which stalls sell food under this statement: stalls with a permit.',
+    partialFeedback: 'Stalls alone loses the restriction. Ask: only what? Keep every word that limits which stalls.',
+    otherFeedback: 'Selling food is what the restriction limits, not the stalls it allows. Ask: only what? The answer names which stalls sell food under this rule.',
     reversed: 'Your arrow says every stall with a permit sells food. A permitted stall selling only crafts fits the sentence.',
     why: "Only limits food sellers to permitted stalls. A stall selling food has a permit. A permit doesn't tell you what the stall sells.",
     readback: 'If a stall sells food at the festival, it has a permit.',
@@ -137,10 +137,8 @@ export function MixedItemCheck({ item, index, onChecked, onResult, embedded = fa
         <p>{item.why}</p>
       </> : <>
       <strong>Revise the part described below.</strong>
-      <p>{targetCorrect ? item.targetFeedback : target === item.partial ? item.partialFeedback : item.otherFeedback}</p>
-      <p>{sideCorrect ? 'Your arrow keeps the direction the sentence gives.' : item.reversed}</p>
-      <p>Here, <strong>{item.word}</strong> points to what is {item.family === 'sufficient' ? 'enough, so its group goes on the left' : 'required, so its group goes on the right'}. {item.why}</p>
-      <p>Read it back: {item.readback}</p>
+      {!targetCorrect && <p>{target === item.partial ? item.partialFeedback : item.otherFeedback}</p>}
+      {!sideCorrect && <p>{item.reversed}</p>}
       </>}
     </div>}</div>
     </>}
