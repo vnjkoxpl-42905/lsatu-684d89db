@@ -3,6 +3,7 @@ import { DiagramDrills } from '@/features/conditional-refresher/ConditionalIndic
 import { openingActivityExplanations, openingActivityItems } from '../content/openingActivityItems';
 import { completeConditionItems, confirmationItemsByError, equivalenceItems, obligationConfirmationItem, transferItems, type MixedDrillChoiceItem, type MixedDrillError } from '../content/mixedDrillItems';
 import { MixedItemCheck, mixedFamilyItems } from './MixedFamilyPractice';
+import { useCourseStep } from '../courseProgress';
 import './opening-mixed-drill.css';
 
 const stages = [
@@ -86,13 +87,40 @@ const RetainedQuestion = memo(function RetainedQuestion({ question, record }: {
   return <DrillQuestion question={question} onCheck={(correct, errors) => record(question.id, correct, errors)}/>;
 });
 
-export function OpeningMixedDrill() {
-  const [questions, setQuestions] = useState<Question[]>(baselineQuestions);
-  const [current, setCurrent] = useState(0);
-  const [visited, setVisited] = useState([baselineQuestions[0].id]);
-  const [results, setResults] = useState<Record<string, Result>>({});
-  const [finished, setFinished] = useState(false);
-  const [introducedStages, setIntroducedStages] = useState<number[]>([]);
+const confirmationPool: MixedDrillChoiceItem[] = [...Object.values(confirmationItemsByError).flat(), obligationConfirmationItem];
+type MixedState = { questions: Question[]; current: number; visited: string[]; results: Record<string, Result>; finished: boolean; introducedStages: number[] };
+/** Rebuilds a saved run. Anything that no longer matches the current question set starts fresh. */
+function restoreMixed(state: unknown): MixedState | null {
+  const data = state as { questionIds?: unknown; current?: unknown; visited?: unknown; results?: unknown; finished?: unknown; introducedStages?: unknown } | undefined;
+  if (!data || !Array.isArray(data.questionIds) || !data.results || typeof data.results !== 'object') return null;
+  const ids = data.questionIds as unknown[];
+  if (ids.length < baselineQuestions.length || baselineQuestions.some((question, index) => ids[index] !== question.id)) return null;
+  const extra = ids.slice(baselineQuestions.length).map(id => confirmationPool.find(item => item.id === id));
+  if (extra.some(item => !item)) return null;
+  const questions: Question[] = [...baselineQuestions, ...extra.map(item => ({ id: item!.id, stage: 5, kind: 'choice' as const, item: item! }))];
+  const results: Record<string, Result> = {};
+  for (const [id, raw] of Object.entries(data.results as Record<string, Partial<Result>>)) {
+    if (raw && typeof raw.firstCorrect === 'boolean' && typeof raw.correct === 'boolean' && Array.isArray(raw.errors)) results[id] = { firstCorrect: raw.firstCorrect, correct: raw.correct, errors: raw.errors.filter((error): error is MixedDrillError => error in errorLabels) };
+  }
+  const current = Number.isInteger(data.current) && (data.current as number) >= 0 && (data.current as number) < questions.length ? data.current as number : 0;
+  const visited = Array.isArray(data.visited) ? (data.visited as unknown[]).filter((id): id is string => questions.some(question => question.id === id)) : [];
+  const introducedStages = Array.isArray(data.introducedStages) ? (data.introducedStages as unknown[]).filter((value): value is number => Number.isInteger(value)) : [];
+  return { questions, current, visited: visited.length ? visited : [questions[current].id], results, finished: data.finished === true, introducedStages };
+}
+
+export function OpeningMixedDrill({ stepId }: { stepId?: string } = {}) {
+  const course = useCourseStep(stepId);
+  const saveStep = course?.record;
+  const [restored] = useState(() => restoreMixed(course?.saved?.state));
+  const [questions, setQuestions] = useState<Question[]>(restored?.questions ?? baselineQuestions);
+  const [current, setCurrent] = useState(restored?.current ?? 0);
+  const [visited, setVisited] = useState(restored?.visited ?? [baselineQuestions[0].id]);
+  const [results, setResults] = useState<Record<string, Result>>(restored?.results ?? {});
+  const [finished, setFinished] = useState(restored?.finished ?? false);
+  const [introducedStages, setIntroducedStages] = useState<number[]>(restored?.introducedStages ?? []);
+  useEffect(() => {
+    saveStep?.({ state: { questionIds: questions.map(question => question.id), current, visited, results, finished, introducedStages }, done: baselineQuestions.filter(question => results[question.id]).length, total: baselineQuestions.length, ...(finished ? { status: 'done' as const } : {}) });
+  }, [saveStep, questions, current, visited, results, finished, introducedStages]);
   const heading = useRef<HTMLHeadingElement>(null);
   const runner = useRef<HTMLElement>(null);
   const question = questions[current];

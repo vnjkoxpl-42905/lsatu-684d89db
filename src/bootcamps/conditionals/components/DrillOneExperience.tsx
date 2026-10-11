@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useCourseStep } from '../courseProgress';
 import './drill-one.css';
 
 export type DrillOneQuestion = {
@@ -33,11 +34,24 @@ export function DrillOneEntry({ startUrl, lessonsUrl }: { startUrl: string; less
   </div>;
 }
 
+/** Saved Drill 1 state, accepted only when it matches the current question count. */
+function restoreDrillOne(state: unknown, count: number): { current: number; answers: Answer[]; finished: boolean; seenResults: boolean } | null {
+  const data = state as { current?: unknown; answers?: unknown; finished?: unknown; seenResults?: unknown } | undefined;
+  if (!data || !Array.isArray(data.answers) || data.answers.length !== count) return null;
+  const index = (value: unknown) => value === null || (Number.isInteger(value) && (value as number) >= 0);
+  if (!data.answers.every(a => a && typeof a === 'object' && index(a.selected) && index(a.first) && typeof a.checked === 'boolean')) return null;
+  const current = Number.isInteger(data.current) && (data.current as number) >= 0 && (data.current as number) < count ? data.current as number : 0;
+  return { current, answers: data.answers as Answer[], finished: data.finished === true, seenResults: data.seenResults === true };
+}
+
 export function DrillOneExperience({ questions }: { questions: DrillOneQuestion[] }) {
-  const [current, setCurrent] = useState(0);
-  const [answers, setAnswers] = useState<Answer[]>(() => questions.map(() => ({ selected: null, checked: false, first: null })));
-  const [finished, setFinished] = useState(false);
-  const [seenResults, setSeenResults] = useState(false);
+  const course = useCourseStep('foundation-practice');
+  const record = course?.record;
+  const [restored] = useState(() => restoreDrillOne(course?.saved?.state, questions.length));
+  const [current, setCurrent] = useState(restored?.current ?? 0);
+  const [answers, setAnswers] = useState<Answer[]>(() => restored?.answers ?? questions.map(() => ({ selected: null, checked: false, first: null })));
+  const [finished, setFinished] = useState(restored?.finished ?? false);
+  const [seenResults, setSeenResults] = useState(restored?.seenResults ?? false);
   const [focusOnArrival, setFocusOnArrival] = useState(false);
   const [focusAnswer, setFocusAnswer] = useState<'feedback' | 'option' | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -49,6 +63,9 @@ export function DrillOneExperience({ questions }: { questions: DrillOneQuestion[
   const answered = answers.filter(item => item.first !== null).length;
   const completion = Math.round(answered / questions.length * 100);
   const correctFirst = answers.filter((item, index) => item.first === questions[index].correct).length;
+  useEffect(() => {
+    record?.({ state: { current, answers, finished, seenResults }, done: answers.filter(item => item.first !== null).length, total: questions.length, ...(seenResults ? { status: 'done' as const } : {}) });
+  }, [record, current, answers, finished, seenResults, questions.length]);
   const missed = answers.flatMap((item, index) => item.first !== null && item.first !== questions[index].correct ? [index] : []);
 
   useEffect(() => {

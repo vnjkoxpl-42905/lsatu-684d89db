@@ -1,10 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, Outlet, Route, Routes, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, Clock, RotateCcw } from 'lucide-react';
 import { conditionalUnits, findConditionalUnit, getConditionalQuestions } from './content';
 import { findLegacyConditionalQuestion } from './content/legacyQuestions';
 import { DIFFICULTIES, type ConditionalArea, type ConditionalDifficulty, type ConditionalQuestion, type ConditionalUnit } from './content/types';
-import { attemptSummary, elapsedSeconds, emptyDraft, markConditionalLessonRead, newRun, nextUncheckedQuestionIndex, reconcileConditionalRun, reviewedConditionalLessonCount, type AnswerDraft, type ConditionalProgress, type ConditionalRun } from './progress';
+import { recordCourseStep, attemptSummary, elapsedSeconds, emptyDraft, markConditionalLessonRead, newRun, nextUncheckedQuestionIndex, reconcileConditionalRun, reviewedConditionalLessonCount, type AnswerDraft, type ConditionalProgress, type ConditionalRun } from './progress';
 import { needsExpandedConditionalLessonReview, CONDITIONAL_OPENING_UNIT_IDS } from './openingRevision';
 import { useConditionalProgress } from './useConditionalProgress';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
@@ -181,12 +181,15 @@ function OpeningCourseRoute({ view: surface }: { view?: string }) {
   const location = useLocation();
   const [params] = useSearchParams();
   const { isAdmin, active, selection, userId } = useWork();
+  const { progress, update } = useCourse();
+  const saveStep = useCallback((stepId: string, patch: Parameters<typeof recordCourseStep>[2]) => update(prior => recordCourseStep(prior, stepId, patch)), [update]);
+  const progressStore = useMemo(() => ({ steps: progress?.course ?? {}, save: saveStep }), [progress?.course, saveStep]);
   const steps = OPENING_COURSE_PATH.filter(step => isAdmin || !!active && openingStepAccessUnits(step).some(unitId => conditionalAssignmentAllowsAction(active, {
     unitId, action: step.type === 'note' ? 'lesson' : 'guided', difficulty: active.difficulty ?? getCurriculumDifficulty(unitId),
   })));
   const units = selectedUnits(selection).filter(unit => CONDITIONAL_OPENING_UNIT_IDS.some(id => id === unit.id));
   const recordedPractice = <section className="cb-card"><h2>Your assigned skill drills</h2><p>These drills record your responses and reasoning in your existing work.</p><div className="cb-actions">{units.filter(unit => isAdmin || !!active && conditionalAssignmentAllowsAction(active, { unitId: unit.id, action: 'practice', difficulty: active.difficulty ?? getCurriculumDifficulty(unit) })).map(unit => <Link key={unit.id} className="cb-button" to={actionUrl(unit, 'practice', selection)}>{unit.title}<ArrowRight size={16}/></Link>)}</div></section>;
-  return <OpeningCourseScreen view={surface ?? stepId} run={params.get('run') === '1'} url={courseUrl(location.search)} steps={steps} recordedPractice={recordedPractice} storageScope={userId}/>;
+  return <OpeningCourseScreen view={surface ?? stepId} run={params.get('run') === '1'} url={courseUrl(location.search)} steps={steps} recordedPractice={recordedPractice} storageScope={userId} progressStore={progressStore}/>;
 }
 
 function Shell() {
@@ -200,7 +203,7 @@ function Shell() {
   const courseView = location.pathname.includes('/opening/') ? location.pathname.split('/opening/')[1] : location.pathname.endsWith('/opening-practice') ? 'practice' : location.pathname.endsWith('/opening-labs') ? 'labs' : location.pathname.endsWith('/opening-tools') ? 'tools' : 'lessons';
   const openingSurface = /^\/(?:lessons\/?|opening\/[^/]+\/?|opening-(?:practice|labs|tools)\/?)$/.test(location.pathname.slice(BASE.length));
   const saveMessages = {
-    saved: courseView === 'foundation-practice' ? 'Spot the condition answers stay in this session' : openingSurface ? 'Assigned work saved to your account' : 'Saved to your account',
+    saved: openingSurface ? 'Assigned work saved to your account' : 'Saved to your account',
     loading: openingSurface ? 'Loading your saved assigned work...' : 'Loading your saved work...',
     saving: openingSurface ? 'Saving your assigned work...' : 'Saving your changes...',
     unsaved: openingSurface ? 'Assigned work waiting to save' : 'Changes waiting to save',

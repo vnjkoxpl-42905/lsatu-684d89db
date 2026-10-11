@@ -31,8 +31,18 @@ export interface ConditionalRun {
   timerEnabled: boolean;
   timerStartedAt?: string | null;
 }
+/** One opening-course lesson or drill. `state` is the drill's own resumable snapshot. */
+export interface CourseStepProgress {
+  status: 'started' | 'done';
+  done?: number;
+  total?: number;
+  state?: unknown;
+  updatedAt: string;
+}
 export interface ConditionalProgress {
   id: 'conditionals-v1';
+  /** Optional so records saved before 2026-10-11 stay valid. */
+  course?: Record<string, CourseStepProgress>;
   lessons: Record<string, string>;
   runs: Record<string, ConditionalRun>;
   attempts: ConditionalAttempt[];
@@ -45,6 +55,20 @@ export const emptyProgress = (): ConditionalProgress => ({ id: 'conditionals-v1'
 export function markConditionalLessonRead(progress: ConditionalProgress, unitId: string, readAt = new Date().toISOString()): ConditionalProgress {
   const editionKey = conditionalOpeningEditionKey(unitId);
   return { ...progress, lessons: { ...progress.lessons, [unitId]: readAt, ...(editionKey ? { [editionKey]: readAt } : {}) } };
+}
+export function recordCourseStep(progress: ConditionalProgress, stepId: string, patch: Partial<Omit<CourseStepProgress, 'updatedAt'>>, at = new Date().toISOString()): ConditionalProgress {
+  const prior = progress.course?.[stepId];
+  // Finishing is permanent: revisiting or resetting a drill never un-completes it.
+  const status = prior?.status === 'done' ? 'done' : patch.status ?? prior?.status ?? 'started';
+  return { ...progress, course: { ...progress.course, [stepId]: { ...prior, ...patch, status, updatedAt: at } } };
+}
+function cleanCourse(course: unknown): Record<string, CourseStepProgress> | undefined {
+  if (course === undefined) return undefined;
+  if (!course || typeof course !== 'object') return {};
+  const entries = Object.entries(course as Record<string, Partial<CourseStepProgress>>).filter(([, step]) =>
+    !!step && (step.status === 'started' || step.status === 'done') && typeof step.updatedAt === 'string'
+    && (step.done === undefined || Number.isInteger(step.done)) && (step.total === undefined || Number.isInteger(step.total)));
+  return Object.fromEntries(entries) as Record<string, CourseStepProgress>;
 }
 export function reviewedConditionalLessonCount(lessons: Record<string, string>): number {
   return Object.keys(lessons).filter(id => !isConditionalLessonEditionKey(id)).length;
@@ -96,7 +120,8 @@ export function parseConditionalProgress(value: unknown): ConditionalProgress {
     for (const draft of Object.values(run.drafts)) if (!draft || typeof draft.working !== 'string' || typeof draft.hint !== 'boolean' || typeof draft.revealed !== 'boolean' || typeof draft.checked !== 'boolean' || (draft.choice !== null && (!Number.isInteger(draft.choice) || draft.choice < 0))) return bad();
   }
   for (const attempt of record.attempts) if (!attempt || typeof attempt.id !== 'string' || typeof attempt.questionId !== 'string' || typeof attempt.unitId !== 'string' || !['beginner', 'medium', 'advanced'].includes(attempt.difficulty) || typeof attempt.correct !== 'boolean' || typeof attempt.hint !== 'boolean' || typeof attempt.explanationBeforeCheck !== 'boolean' || typeof attempt.working !== 'string' || !Number.isFinite(Date.parse(attempt.checkedAt)) || (attempt.choice !== null && (!Number.isInteger(attempt.choice) || attempt.choice < 0))) return bad();
-  return record;
+  const course = cleanCourse(record.course);
+  return course === undefined ? record : { ...record, course };
 }
 export function elapsedSeconds(run: ConditionalRun, now = Date.now()): number {
   return run.elapsed + (run.timerStartedAt ? Math.max(0, Math.floor((now - Date.parse(run.timerStartedAt)) / 1000)) : 0);

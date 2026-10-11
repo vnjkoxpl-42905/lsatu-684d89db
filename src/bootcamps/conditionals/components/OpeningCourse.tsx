@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, BookOpen, Bookmark, Dumbbell, Menu, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, Bookmark, Check, Dumbbell, Menu, Sparkles } from 'lucide-react';
+import { CourseProgressProvider, useCourseProgress, useDeviceCourseProgress, type CourseProgressStore } from '../courseProgress';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { OPENING_COURSE_PATH, openingCourseStep, type OpeningCourseStep } from '../openingCoursePath';
@@ -13,7 +14,6 @@ import './opening-course.css';
 
 export type OpeningCourseUrl = (destination: string, run?: boolean) => string;
 
-const practiceSaveNotice = "Practice answers aren't saved to your account. Reloading or leaving the course clears them.";
 
 export function OpeningCourseNavigation({ view, url }: { view: string; url: OpeningCourseUrl }) {
   const [open, setOpen] = useState(false);
@@ -40,13 +40,14 @@ export function OpeningCourseNavigation({ view, url }: { view: string; url: Open
 }
 
 function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourseUrl }) {
+  const saved = useCourseProgress()?.steps[step.id];
   const drill = step.type === 'drill';
   const count = drill ? getSourceWorksheetDrill(step.id)?.items.length : undefined;
   const number = step.title.match(/^(Revisit )?Drill (\d+)/);
-  return <li className={`oc-path-card${drill ? ' oc-drill-card' : ''}`}>
+  return <li className={`oc-path-card${drill ? ' oc-drill-card' : ''}`} data-progress={saved?.status ?? 'new'}>
     {number && <span className="oc-card-num" aria-hidden="true">{number[2].padStart(2, '0')}</span>}
-    <span className="oc-label">{number?.[1] ? 'Revisit' : step.type}</span><h2>{step.title}</h2><p>{step.description}</p>
-    <div className="oc-card-foot"><Link className="oc-action" to={url(step.id)}>{drill ? <Dumbbell size={16}/> : <BookOpen size={16}/>} {drill ? 'View drill' : 'Read lesson'}<ArrowRight size={16}/></Link>{count !== undefined && <span className="oc-card-count">{count} sentences</span>}</div>
+    <span className="oc-label">{number?.[1] ? 'Revisit' : step.type}</span><CardStatus saved={saved} drill={drill}/><h2>{step.title}</h2><p>{step.description}</p>
+    <div className="oc-card-foot"><Link className="oc-action" to={url(step.id)}>{drill ? <Dumbbell size={16}/> : <BookOpen size={16}/>} {saved?.status === 'started' ? 'Continue' : saved?.status === 'done' ? (drill ? 'Review drill' : 'Read again') : drill ? 'View drill' : 'Read lesson'}</Link>{count !== undefined && <span className="oc-card-count">{count} sentences</span>}</div>
   </li>;
 }
 
@@ -73,7 +74,6 @@ function DrillEntry({ step, url, storageScope }: { step: OpeningCourseStep; url:
       <h2>One step at a time</h2>
       <p>Before each section, we'll show you what to look for. Then you'll put it into practice.</p>
       <Link className="oc-action oc-start-pulse" to={url(step.id, true)}>Start practice<ArrowRight size={16}/></Link>
-      <p className="oc-save-scope">{practiceSaveNotice}</p>
     </section>
   </div>;
   const instructions = drillInstructions[step.id];
@@ -89,8 +89,49 @@ function DrillEntry({ step, url, storageScope }: { step: OpeningCourseStep; url:
   </div>;
 }
 
-export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps = OPENING_COURSE_PATH, recordedPractice, storageScope }: {
-  view?: string; run?: boolean; url: OpeningCourseUrl; steps?: OpeningCourseStep[]; recordedPractice?: ReactNode; storageScope?: string;
+function CardStatus({ saved, drill }: { saved?: CourseProgressStore['steps'][string]; drill: boolean }) {
+  if (!saved) return <span className="oc-status oc-status-new">Not started</span>;
+  if (saved.status === 'done') return <span className="oc-status oc-status-done"><Check size={13} aria-hidden/>Done</span>;
+  const partial = drill && saved.total ? <>{saved.done ?? 0} / {saved.total}<span className="oc-status-bar" aria-hidden><i style={{ width: `${(saved.done ?? 0) / saved.total * 100}%` }}/></span></> : 'In progress';
+  return <span className="oc-status oc-status-started">{partial}</span>;
+}
+
+function CourseTracker({ steps }: { steps: OpeningCourseStep[] }) {
+  const saved = useCourseProgress()?.steps ?? {};
+  const done = steps.filter(step => saved[step.id]?.status === 'done').length;
+  return <div className="oc-tracker" role="group" aria-label="Your progress">
+    <div className="oc-tracker-top"><span>Your progress</span><strong>{done} <small>of {steps.length} done</small></strong></div>
+    <div className="oc-tracker-steps">{steps.map(step => <i key={step.id} data-progress={saved[step.id]?.status ?? 'new'} data-type={step.type} title={step.title}/>)}</div>
+  </div>;
+}
+
+/** Marks a lesson started on arrival and done once its closing navigation is reached. */
+function LessonCompletion({ stepId }: { stepId: string }) {
+  const store = useCourseProgress();
+  const save = store?.save;
+  useEffect(() => {
+    if (!save) return;
+    save(stepId, {});
+    const end = document.querySelector('.oc-course-turn');
+    if (!end || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) { save(stepId, { status: 'done' }); observer.disconnect(); }
+    });
+    observer.observe(end);
+    return () => observer.disconnect();
+  }, [save, stepId]);
+  return null;
+}
+
+export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps = OPENING_COURSE_PATH, recordedPractice, storageScope, progressStore }: {
+  view?: string; run?: boolean; url: OpeningCourseUrl; steps?: OpeningCourseStep[]; recordedPractice?: ReactNode; storageScope?: string; progressStore?: CourseProgressStore;
+}) {
+  const device = useDeviceCourseProgress(storageScope);
+  return <CourseProgressProvider store={progressStore ?? device}><CourseScreen view={view} run={run} url={url} steps={steps} recordedPractice={recordedPractice} storageScope={storageScope}/></CourseProgressProvider>;
+}
+
+function CourseScreen({ view, run, url, steps, recordedPractice, storageScope }: {
+  view: string; run: boolean; url: OpeningCourseUrl; steps: OpeningCourseStep[]; recordedPractice?: ReactNode; storageScope?: string;
 }) {
   const current = steps.find(step => step.id === view);
   const [visited, setVisited] = useState<string[]>([]);
@@ -112,7 +153,8 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
   const isIndex = ['lessons', 'labs', 'practice'].includes(view);
   return <div ref={root} className={`oc-course-screen${view === 'foundation-practice' ? ' d1-screen' : ''}`}>
     {isIndex && <div className="oc-course-index">
-      <div data-course-heading><PageHeader noBloom eyebrow={view === 'lessons' ? 'Introduction' : 'Practice'} title={view === 'lessons' ? 'Conditional reasoning.' : view === 'labs' ? 'Make the move yourself.' : 'Practice the reasoning.'} description={view === 'lessons' ? 'Learn one idea, use it, then build on it. The drills between lessons give you a chance to test the meaning before moving on.' : 'Make an attempt before reading the explanation. Name the mistake, repair it and try again.'}/></div>
+      <div data-course-heading><PageHeader noBloom eyebrow={view === 'lessons' ? 'Introduction' : 'Practice'} title={view === 'lessons' ? 'Conditional reasoning.' : view === 'labs' ? 'Make the move yourself.' : 'Practice the reasoning.'}/></div>
+      <CourseTracker steps={list}/>
       {view === 'practice' && recordedPractice}
       <ol className="oc-course-path">{list.map(step => <CourseCard key={step.id} step={step} url={url}/>)}</ol>
       {!list.length && <p>No opening lessons are available in this work.</p>}
@@ -125,9 +167,9 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
         <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{current.id === 'necessary' ? <strong>{current.description}</strong> : current.description}</p>
       </header> : <header><p className="oc-label">Practice</p><h1>{current.title}</h1></header>}</div>
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions</Link>}
-      {current.id === 'mixed-practice' && <p className="oc-save-scope">{practiceSaveNotice}</p>}
     </div>}
     <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}>{getSourceWorksheetDrill(step.id) ? <SourceWorksheetDrill setId={step.id} run startUrl={url(step.id, true)} storageScope={storageScope}/> : <OpeningCourseContent id={step.id}/>}</CourseFlashcardUrl.Provider></div>)}</div>
+    {current?.type === 'note' && <LessonCompletion key={current.id} stepId={current.id}/>}
     {current && (current.type === 'note' || run) && <nav className="oc-course-turn" aria-label="Course navigation">{prior ? <Link to={url(prior.id)}><span>Previous {prior.type === 'note' ? 'lesson' : 'drill'}</span><strong>{prior.title}</strong></Link> : <Link to={url('lessons')}>All lessons</Link>}{next ? <Link to={url(next.id)}><span>Next {next.type === 'note' ? 'lesson' : 'drill'}</span><strong>{next.title}<ArrowRight size={18}/></strong></Link> : <Link to={url('lessons')}>Return to lessons<ArrowRight size={18}/></Link>}</nav>}
     {!isIndex && view !== 'tools' && !current && <div className="oc-course-note"><h1>This lesson is not available here.</h1><Link to={url('lessons')}>Return to lessons</Link></div>}
   </div>;
