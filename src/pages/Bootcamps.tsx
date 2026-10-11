@@ -46,11 +46,9 @@ export default function BootcampsPage() {
     // No header of its own: the classroom rail owns the way back, sign out and
     // the theme toggle. Drawing them again put a second set on top of the frame.
     <div className="bg-background">
-      <main className="max-w-7xl mx-auto space-y-6">
+      <section aria-labelledby="bootcamps-heading" className="max-w-7xl mx-auto space-y-6">
         <div>
-          {/* Matches Schedule and Analytics: these three are siblings in one
-              stage now, so they carry the same heading weight. */}
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Bootcamps</h1>
+          <h2 id="bootcamps-heading" className="text-3xl font-semibold tracking-tight text-foreground">Bootcamps</h2>
           <p className="text-sm text-muted-foreground mt-1.5">
             {is_admin
               ? 'All bootcamps. Students only see bootcamps you assign from the Teacher Workspace.'
@@ -131,7 +129,7 @@ export default function BootcampsPage() {
             ))}
           </div>
         )}
-      </main>
+      </section>
     </div>
   );
 }

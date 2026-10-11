@@ -91,6 +91,19 @@ describe("classroom rail access", () => {
     expect(railButton(/^Review/)).not.toHaveAttribute("aria-current");
   });
 
+  it("keeps the student Schedule destination out of the teacher rail", async () => {
+    permissions.is_admin = true;
+    await renderShell("/teacher/students");
+    expect(railButton(/^Schedule/)).toBeUndefined();
+    expect(railButton(/^Students/)).toBeInTheDocument();
+  });
+
+  it("keeps Schedule in the student rail", async () => {
+    await renderShell("/classroom");
+    fireEvent.click(railButton(/^Schedule/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/schedule");
+  });
+
   it("keeps a locked shortcut focusable with its explanation, but inert", async () => {
     permissions.has_chat_access = false;
     await renderShell("/classroom");
