@@ -22,7 +22,7 @@ export const OPENING_COURSE_PATH: OpeningCourseStep[] = [
   { id: 'source-intro-identify', type: 'drill', title: 'Drill 2: Find both conditions', description: 'Find the indicator, then write the complete sufficient and necessary conditions.', unitId: 'group-2' },
   { id: 'source-indicators', type: 'drill', title: 'Drill 3: Find the indicators', description: 'Select the words that signal each condition.', unitId: 'group-2' },
   { id: 'source-roles', type: 'drill', title: 'Drill 4: Place the conditions', description: 'Put each condition on its side of the arrow.', unitId: 'group-2' },
-  { id: 'source-intro-diagrams', type: 'drill', title: 'Drill 5: Build the arrow', description: 'Return to the introductory sentences and build each arrow.', unitId: 'group-2' },
+  { id: 'source-intro-diagrams', type: 'drill', title: 'Drill 5: Build the diagram', description: 'Return to the introductory sentences and build each diagram.', unitId: 'group-2' },
   { id: 'source-rephrase', type: 'drill', title: 'Drill 6: Write it as if/then', description: 'Rewrite each rule as if/then without changing its meaning, then compare your wording with the explanation.', unitId: 'group-2' },
   { id: 'mixed-practice', type: 'drill', title: 'Conditional translation practice', description: 'Who or what does the rule cover? What does it require? Answer without adding anything the sentence does not say.', unitId: 'group-2' },
   { id: 'contrapositive', type: 'note', title: 'Write and read the contrapositive', description: 'Reverse the sides, negate both complete conditions and check the meaning.', unitId: 'orientation' },

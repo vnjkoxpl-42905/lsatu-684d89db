@@ -15,7 +15,7 @@ type Attempt = {
 };
 const blank = (): Attempt => ({ groups: {}, fingerprint: '', words: [], left: '', right: '', contraLeft: '', contraRight: '', negateLeft: false, negateRight: false, writing: '', contraWriting: '', conditionOne: '', conditionTwo: '', symbolOne: '', symbolTwo: '', originalDraft: '', contraDraft: '', stage: 0, passed: [], revealed: false, review: null });
 type Saved = { current: number; answers: Record<string, Attempt> };
-const names: Record<Stage, string> = { indicators: 'Find the indicators', conditions: 'Keep the complete ideas', symbols: 'Define your symbols', diagram: 'Build the arrow', contra: 'Reverse and negate', readback: 'Read the original', 'contra-readback': 'Read the contrapositive', review: 'Bring it together' };
+const names: Record<Stage, string> = { indicators: 'Find the indicators', conditions: 'Keep the complete ideas', symbols: 'Define your symbols', diagram: 'Build the diagram', contra: 'Reverse and negate', readback: 'Read the original', 'contra-readback': 'Read the contrapositive', review: 'Bring it together' };
 function stagesFor(kind: SourceWorksheetDrillSet['taskKind']): Stage[] {
   if (kind === 'indicators') return ['indicators', 'review'];
   if (kind === 'identify') return ['indicators', 'conditions', 'review'];
