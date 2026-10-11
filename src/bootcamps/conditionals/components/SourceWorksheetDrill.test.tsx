@@ -38,7 +38,7 @@ it('keeps intro identification faithful: indicators first, then learner-written 
 it('requires the whole indicator phrase and correct group before advancing, with a hint instead of the key', () => {
   // The former indicator drill now continues Drill 2 from sentence 16.
   run('source-intro-identify');
-  fireEvent.change(screen.getByLabelText('Go to sentence'), { target: { value: 15 } });
+  fireEvent.change(screen.getByLabelText('Go to question'), { target: { value: 15 } });
   click('Only');
   fireEvent.change(screen.getByLabelText(/Which group/), { target: { value: '2' } });
   click('Check this step');
@@ -64,7 +64,7 @@ it('carries indicator work from the folded drill into Drill 2 without marking th
   } } }));
   run('source-intro-identify');
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
-  fireEvent.change(screen.getByLabelText('Go to sentence'), { target: { value: 15 } });
+  fireEvent.change(screen.getByLabelText('Go to question'), { target: { value: 15 } });
   expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
   expect(JSON.parse(localStorage.getItem('conditional-worksheet-v1:source-indicators')!).answers['source-indicators-01'].review).toBe('matched');
 });
@@ -91,10 +91,10 @@ it('gives a placement hint without showing the diagram until the placement is ri
 it('keeps every source task reachable and future operations gated', () => {
   for (const set of sourceWorksheetDrills) {
     const view = run(set.id);
-    const navigator = screen.getByLabelText('Go to sentence');
+    const navigator = screen.getByLabelText('Go to question');
     expect(navigator.querySelectorAll('option')).toHaveLength(set.items.length);
     fireEvent.change(navigator, { target: { value: set.items.length - 1 } });
-    expect(screen.getByText(`Sentence ${set.items.length} of ${set.items.length}`)).toBeVisible();
+    expect(screen.getByText(`Question ${set.items.length} of ${set.items.length}`)).toBeVisible();
     expect(screen.getByRole('button', { name: 'Bring it together' })).toBeDisabled();
     if (set.taskKind !== 'contrapositive') expect(screen.queryByRole('button', { name: 'Reverse and negate' })).toBeNull();
     view.unmount();

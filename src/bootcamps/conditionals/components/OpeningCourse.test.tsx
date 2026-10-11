@@ -20,7 +20,7 @@ it('offers nine dedicated notes and twelve interleaved drill entries', () => {
 it('shows the sentence count in plain words and never says statements or practise', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
   const card = screen.getByRole('heading', { name: /Drill 2: Find both conditions/ }).closest('li')!;
-  expect(within(card).getByText('28 sentences')).toBeVisible();
+  expect(within(card).getByText('28 questions')).toBeVisible();
   expect(within(card).queryByRole('list')).toBeNull();
   expect(document.querySelector('ol.oc-course-path')!.textContent).not.toMatch(/statements|Practise/i);
 });
@@ -95,7 +95,7 @@ it('starts mixed practice from concrete instructions and returns to the same ins
   const instructions = screen.getByRole('region', { name: 'Practice instructions' });
   expect(screen.getByRole('heading', { level: 1, name: 'Conditional translation practice' })).toBeVisible();
   expect(within(instructions).getByRole('heading', { name: 'One step at a time' })).toBeVisible();
-  expect(within(instructions).queryAllByRole('listitem')).toHaveLength(0);
+  expect(within(within(instructions).getByRole('region', { name: 'How this drill works' })).getAllByRole('listitem')).toHaveLength(5);
   expect(instructions.textContent).not.toMatch(/24 questions|5 stages/);
   expect(screen.getByText("Before each section, we'll show you what to look for. Then you'll put it into practice.")).toBeVisible();
   expect(document.querySelector('.opening-course-content')).toBeNull();
