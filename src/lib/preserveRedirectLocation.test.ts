@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { preserveRedirectLocation } from "./preserveRedirectLocation";
+import { preserveRedirectLocation, redirectLegacyHistoryLocation } from "./preserveRedirectLocation";
 describe("legacy redirect context", () => {
   it("retains student, repeated filters and section hash", () => {
     expect(preserveRedirectLocation("/teacher/library", "?student=a&topic=lr&topic=rc", "#notes"))
@@ -12,5 +12,13 @@ describe("legacy redirect context", () => {
   it("honors an explicit target anchor", () => {
     expect(preserveRedirectLocation("/teacher/library#uploads", "?student=a", "#old"))
       .toBe("/teacher/library?student=a#uploads");
+  });
+  it("opens an old RC History link with the RC filter selected", () => {
+    expect(redirectLegacyHistoryLocation("?area=rc&historyResult=missed", "#row"))
+      .toBe("/progress/history?historyResult=missed&historyArea=RC#row");
+  });
+  it("keeps an explicit new History area when both formats occur", () => {
+    expect(redirectLegacyHistoryLocation("?area=rc&historyArea=LR", ""))
+      .toBe("/progress/history?historyArea=LR");
   });
 });

@@ -11,7 +11,7 @@ import {
   tabAccess,
   type Destination,
 } from "./destinationAccess";
-import { preserveRedirectLocation } from "./preserveRedirectLocation";
+import { preserveRedirectLocation, redirectLegacyHistoryLocation } from "./preserveRedirectLocation";
 
 const app = readFileSync(resolve(process.cwd(), "src/App.tsx"), "utf8");
 
@@ -158,7 +158,6 @@ describe("legacy links", () => {
     ["/journal", "/review/wrong"],
     ["/flagged", "/review/flagged"],
     ["/analytics", "/progress/overview"],
-    ["/history", "/progress/history"],
     ["/testing", "/practice/exams"],
     ["/testing/exams", "/practice/exams/all"],
     ["/testing/attempts", "/practice/exams/attempts"],
@@ -173,6 +172,12 @@ describe("legacy links", () => {
     ["/settings/layout", "/classroom/account?section=layout"],
   ])("%s forwards to %s keeping its query and hash", (from, to) => {
     expect(redirects.get(from)).toBe(to);
+  });
+
+  it("forwards old History links through the filter-aware redirect", () => {
+    expect(app).toContain('<Route path="/history" element={<RedirectLegacyHistory />} />');
+    expect(redirectLegacyHistoryLocation("?area=rc", "#row"))
+      .toBe("/progress/history?historyArea=RC#row");
   });
 
   it("reaches every legacy target in one hop, so no redirect can loop", () => {
