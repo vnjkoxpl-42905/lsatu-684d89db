@@ -17,3 +17,17 @@ Create a quiet cinematic educational film for an LSAT lesson, natural live-actio
 ## Placement
 
 The original two sufficient clips are restored as optional examples after the definition and interactive group visual, with explicit hypothetical context. Their later missing-requirement placement is preserved. The new necessary film follows the requirement comparison, before Group 2 indicators. Written explanations and learner-controlled playback remain available.
+
+## Completed and verified
+
+- Kling returned COMPLETED. Original output: https://v15-kling.klingai.com/bs2/upload-ylab-stunt-sgp/fc9837f0-abf0-4bff-afd1-b868803a9a41-o4HQzAkgVDjUcbe5HXwWpQ-output.mp4?x-kcdn-pid=112372
+- Original preserved in `originals/required-not-enough.mp4`. Optimized H264/AAC faststart output, poster and WebVTT captions are in `public/media/conditionals/necessity/`. No further generation was submitted.
+- Public MP4 SHA256: `b32e59e98a5b14e16e8fb262d0a54e76cee1c15c1c8ad1d248478c0128bbdd42`.
+- Local faster-whisper `base.en` transcription of the final embedded MP4 matches the intended spoken words. Receipt: `verification/required-not-enough.transcript.json`. Automated transcription does not certify subjective voice quality.
+- Six sampled frames inspected in `verification/necessary-frames.jpg`: two distinct adult students, books/map, natural university-library lighting and navy clothing. Similar visual style to existing films; no claim of identical speaker or character continuity.
+- Codex Browser: both restored sufficient clips played; changing clip resets paused at time zero. All three media files reached readyState4 and caption readyState2. Necessary video advanced past 7 seconds with captions visible. Native keyboard playback tested; no autoplay.
+- Navigation from sufficient clip 2 to necessary leaves the new player available. Distinct definition-player keys and regression coverage protect player selection state.
+- Both pages at actual CSS widths 320, 400, 960, 1200 and 1600: no document overflow or visible lesson buttons below44px. Viewport override reset. Actual devices and screen-reader speech were not tested.
+- 35 focused tests passed; 14 affected course tests passed again after navigation-key revision. Full app typecheck passed. Final code build/postbuild passed (`films-20261010-build.log`); that build preceded arrival of the new static media. The final media was verified through the local Vite preview.
+- Screenshot: `C:/Users/Joshu/.codex/visualizations/2026/10/10/01a1282c-ac7e-7380-90fe-9ca58e32512f/necessary-film-playing.png`.
+- Local only. No commit, push, deployment or claim of production acceptance.

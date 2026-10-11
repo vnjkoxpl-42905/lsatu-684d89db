@@ -1,0 +1,23 @@
+{
+  "source": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-conditional-bootcamp\\public\\media\\conditionals\\necessity\\required-not-enough.mp4",
+  "sha256": "b32e59e98a5b14e16e8fb262d0a54e76cee1c15c1c8ad1d248478c0128bbdd42",
+  "model": "base.en",
+  "device": "cpu",
+  "compute_type": "int8",
+  "language": "en",
+  "duration_seconds": 11.0526875,
+  "text": "Law School enrollment requires being a student, but studying history also makes you a student. That requirement alone does not establish law school enrollment.",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 6.72,
+      "text": "Law School enrollment requires being a student, but studying history also makes you a student."
+    },
+    {
+      "start": 6.72,
+      "end": 11.0,
+      "text": "That requirement alone does not establish law school enrollment."
+    }
+  ],
+  "verification_note": "Automated local transcription; manually check names, logical claims, and wording against intended narration."
+}
