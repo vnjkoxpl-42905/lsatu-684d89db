@@ -29,9 +29,9 @@ it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an o
 it('separates a drill landing from its attempt surface', () => {
   const { rerender } = render(<MemoryRouter><OpeningCourseScreen view="foundation-practice" url={url}/></MemoryRouter>);
   expect(screen.getByRole('link', { name: 'Start practice' })).toHaveAttribute('href', '/course/foundation-practice?run=1');
-  expect(screen.queryByRole('button', { name: 'Yes, it says I win.' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'What is a necessary condition?' })).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="foundation-practice" run url={url}/></MemoryRouter>);
-  expect(screen.getByRole('button', { name: 'Yes, it says I win.' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'What is a necessary condition?' })).toBeVisible();
 });
 
 it('retains a corrected answer when returning from another dedicated lesson', () => {

@@ -6,8 +6,15 @@ afterEach(cleanup);
 
 it('shows one foundation question at a time and retains checked feedback when returning', () => {
   const { container } = render(<OpeningCourseContent id="foundation-practice"/>);
+  // The original seven applied questions follow the seventeen foundation checks.
+  for (const answer of [0, 2, 1, 2, 0, 1, 0, 2, 1, 1, 0, 2, 1, 0, 2, 1, 2]) {
+    fireEvent.click(within(screen.getByRole('group')).getAllByRole('button')[answer]);
+    fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+  }
+
   expect(container.querySelectorAll('[data-practice-task]')).toHaveLength(1);
-  expect(screen.getByText('Question 1 of 7')).toBeVisible();
+  expect(screen.getByText('Question 18 of 24')).toBeVisible();
   expect(screen.queryByRole('button', { name: 'In the town hall.' })).toBeNull();
   expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
   fireEvent.click(screen.getByRole('button', { name: 'No, it tells me what follows if I win.' }));

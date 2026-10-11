@@ -230,6 +230,13 @@ it('walks the seven expressions with a next control while keeping manual selecti
 
 it('bridges with one raffle question, then tests fresh cases with reasoned feedback', () => {
   render(<OpeningCourseContent id="foundation-practice"/>);
+  // The original seven applied questions follow the seventeen foundation checks.
+  for (const answer of [0, 2, 1, 2, 0, 1, 0, 2, 1, 1, 0, 2, 1, 0, 2, 1, 2]) {
+    fireEvent.click(within(screen.getByRole('group')).getAllByRole('button')[answer]);
+    fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+  }
+
   expect(screen.getAllByRole('heading', { name: 'Does the rule itself tell us that you actually win the raffle?' })).toHaveLength(1);
   for (const repeated of ["You don't win the raffle. Could you still get a bicycle?", 'You win the raffle. Do we need another fact to establish that you get a bicycle?', 'Under our rule, what has to follow if you win?']) {
     expect(screen.queryByRole('heading', { name: repeated })).toBeNull();
@@ -238,7 +245,7 @@ it('bridges with one raffle question, then tests fresh cases with reasoned feedb
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
   fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   for (let index = 0; index < 4; index++) {
-    const fresh = document.querySelector<HTMLElement>(`[data-practice-task="${index + 2}"]`)!;
+    const fresh = document.querySelector<HTMLElement>(`[data-practice-task="${index + 19}"]`)!;
     expect(fresh).toBeVisible();
     expect(fresh.textContent).not.toContain('→');
     expect(fresh.textContent).not.toMatch(/raffle|bicycle/);

@@ -5,6 +5,7 @@ import './drill-one.css';
 
 export type DrillOneQuestion = {
   rule: string;
+  contextLabel?: string;
   prompt: string;
   options: string[];
   correct: number;
@@ -25,7 +26,7 @@ export function DrillOneEntry({ startUrl, lessonsUrl }: { startUrl: string; less
     <div className="d1-entry-grid">
       <header data-course-heading className="d1-entry-title"><p className="d1-eyebrow">Conditional reasoning</p><h1>Drill <em>1</em></h1><FoldedPaper/></header>
       <section className="d1-entry-instructions" aria-label="Practice instructions"><span className="d1-eyebrow">Your task</span><h2>Decide what the information establishes.</h2>
-        <ol><li><span>01</span><p>Identify which condition is sufficient and which is necessary.</p></li><li><span>02</span><p>Use the facts given to decide what follows. In the final question, test a proposed conclusion against a possible case.</p></li><li><span>03</span><p>Select your answer, then check it. Read the explanation before continuing.</p></li></ol>
+        <ol><li><span>01</span><p>Recall what sufficient and necessary mean. Read the arrow and decide which condition belongs on each side.</p></li><li><span>02</span><p>Find the indicator words, identify the trigger and required outcome, and use the facts to decide what must be true.</p></li><li><span>03</span><p>Select your answer, then check it. Read the explanation before continuing. Finish by testing a proposed conclusion against a possible case.</p></li></ol>
         <Link className="d1-primary" to={startUrl}>Start practice<ArrowRight size={18}/></Link>
       </section>
     </div>
@@ -46,6 +47,7 @@ export function DrillOneExperience({ questions }: { questions: DrillOneQuestion[
   const question = questions[current];
   const answer = answers[current];
   const answered = answers.filter(item => item.first !== null).length;
+  const completion = Math.round(answered / questions.length * 100);
   const correctFirst = answers.filter((item, index) => item.first === questions[index].correct).length;
   const missed = answers.flatMap((item, index) => item.first !== null && item.first !== questions[index].correct ? [index] : []);
 
@@ -78,18 +80,21 @@ export function DrillOneExperience({ questions }: { questions: DrillOneQuestion[
   }
 
   return <section className="d1-experience" aria-label="Drill 1 questions">
-    <div className="d1-progress-header"><span className="d1-eyebrow">{finished ? 'Practice complete' : 'Your progress'}</span><span>{answered} answered <span aria-hidden="true">/</span> {questions.length - answered} remaining</span></div>
-    <div className="d1-progress" role="progressbar" aria-label="Questions answered" aria-valuenow={answered} aria-valuemin={0} aria-valuemax={questions.length} aria-valuetext={`${answered} answered, ${questions.length - answered} remaining`}>{questions.map((_, index) => <span key={index} data-answered={answers[index].first !== null} data-current={!finished && current === index}/>)}</div>
+    <div className="d1-progress-summary">
+      <div><span className="d1-eyebrow">Your progress</span><p>{answered === 0 ? 'Ready to begin' : answered === questions.length ? 'Practice complete' : 'Keep going'}</p></div>
+      <div className="d1-progress-value" aria-hidden="true"><strong>{completion}<span>%</span></strong><span>complete</span></div>
+    </div>
+    <div className="d1-progress-track" role="progressbar" aria-label="Questions answered" aria-valuenow={answered} aria-valuemin={0} aria-valuemax={questions.length} aria-valuetext={`${completion}% complete. ${answered} of ${questions.length} questions answered.`}><span style={{ width: `${answered / questions.length * 100}%` }}/></div>
     {finished ? <div className="d1-completion">
       <div className="d1-completion-mark" aria-hidden="true"><Check size={32}/></div>
       <p className="d1-eyebrow">You worked through every question</p><h2 ref={heading} tabIndex={-1}>Drill 1 complete.</h2>
       <p className="d1-result"><strong>{correctFirst}</strong> of {questions.length} correct on your first attempt.</p>
       <p className="d1-completion-copy">{missed.length ? 'Return to the questions you missed and compare the explanation with your original reasoning.' : 'Every first answer was correct. You can review any question before moving on.'}</p>
-      <div className="d1-review-list" aria-label="Review questions">{questions.map((item, index) => <button type="button" key={item.prompt} onClick={() => go(index)}><span>Question {index + 1}</span><span>{answers[index].first === item.correct ? 'Correct first attempt' : 'Review reasoning'}<ArrowRight size={16}/></span></button>)}</div>
+      <div className="d1-review-list" aria-label="Review questions">{questions.map((item, index) => <button type="button" key={index} onClick={() => go(index)}><span>Question {index + 1}</span><span>{answers[index].first === item.correct ? 'Correct first attempt' : 'Review reasoning'}<ArrowRight size={16}/></span></button>)}</div>
       <p className="d1-save">These results stay in this practice session. They are not saved to your account.</p>
     </div> : <div key={current} className="d1-question-scene" data-practice-task={current + 1}>
       <div className="d1-rule-panel">
-        <div className="d1-rule-top"><span className="d1-eyebrow">Given rule</span><span className="d1-rule-number" aria-hidden="true">{String(current + 1).padStart(2, '0')}</span></div>
+        <div className="d1-rule-top"><span className="d1-eyebrow">{question.contextLabel ?? 'Given rule'}</span><span className="d1-rule-number" aria-hidden="true">{String(current + 1).padStart(2, '0')}</span></div>
         <blockquote>{question.rule}</blockquote>
         {answer.checked && question.conditions && <figure className="d1-relation"><figcaption>Read the rule left to right</figcaption><div className="d1-relation-pair"><div><span>Sufficient</span><strong>{question.conditions[0]}</strong></div><span className="d1-relation-arrow" aria-hidden="true">→</span><span className="d1-sr-only">requires</span><div><span>Necessary</span><strong>{question.conditions[1]}</strong></div></div><p>If the left condition is true, the right condition must be true.</p></figure>}
         <div className="d1-rule-foot" aria-hidden="true"><span/><span/><span/></div>

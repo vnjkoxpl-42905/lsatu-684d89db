@@ -13,7 +13,7 @@ export const OPENING_COURSE_PATH: OpeningCourseStep[] = [
   { id: 'sufficient', type: 'note', title: 'The Sufficient Condition', description: 'When one condition guarantees another.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'necessary', type: 'note', title: 'The Necessary Condition', description: 'What the sufficient condition requires.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'must-arrow', type: 'note', title: 'Must arrow', description: 'Show what must be true.', unitId: 'orientation' },
-  { id: 'foundation-practice', type: 'drill', title: 'Drill 1', description: 'Use sufficient and necessary conditions to decide what you can conclude from a rule and the facts given.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
+  { id: 'foundation-practice', type: 'drill', title: 'Drill 1', description: 'Identify sufficient and necessary conditions, place them beside the arrow, recognize indicators, and decide what the facts establish.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'sufficient-words', type: 'note', title: 'Sufficient-condition words', description: 'Read if, when, where, all, the only, every and any in complete sentences.', unitId: 'group-1' },
   { id: 'sufficient-practice', type: 'drill', title: 'Build the sufficient side', description: 'Find the whole condition, construct the diagram and repair its direction.', unitId: 'group-1' },
   { id: 'necessary-words', type: 'note', title: 'Necessary-condition words', description: 'Read only, only if, only when, only where, always, requires and must.', unitId: 'group-2' },

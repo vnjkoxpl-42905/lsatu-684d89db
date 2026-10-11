@@ -148,3 +148,16 @@
 .d1-review-list button>span:last-child { font-size:.875rem; }
 @media(max-width:480px) { .d1-answer-actions { flex-wrap:wrap; } .d1-navigation { align-items:stretch; } .d1-navigation button { max-width:50%; text-align:left; font-size:.9375rem; } .d1-navigation svg { flex-shrink:0; } .d1-review-list button { align-items:flex-start; } .d1-review-list button>span:last-child { text-align:right; } }
 @media(max-width:480px) { .d1-entry-grid { padding-top:20px; gap:20px; } .d1-entry-title { min-height:270px; padding-right:0; } .d1-screen.oc-course-screen .d1-entry-title h1 { font-size:clamp(4.5rem,21vw,5.3rem); white-space:nowrap; margin:16px 0 20px; } .d1-entry-lead { max-width:15ch; } .d1-sculpture { top:128px; right:-72px; } }
+
+/* A continuous completion rail replaces the crowded per-question ticks. */
+.d1-progress-summary { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:24px 30px 18px; }
+.d1-progress-summary .d1-eyebrow { color:var(--d1-muted); }
+.d1-experience .d1-progress-summary p { margin:7px 0 0; font-size:1.125rem; font-weight:500; color:var(--d1-ink); }
+.d1-progress-value { display:flex; align-items:baseline; gap:10px; color:var(--d1-blue); }
+.d1-progress-value strong { font-family:var(--font-mc-serif,Georgia,serif); font-weight:400; font-size:2.6rem; line-height:1; font-variant-numeric:tabular-nums; letter-spacing:-.04em; }
+.d1-progress-value strong span { font-size:1.2rem; margin-left:3px; }
+.d1-progress-value>span { font-size:.875rem; color:var(--d1-muted); }
+.d1-progress-track { height:8px; margin:0 30px 26px; background:#e7e9e4; border-radius:99px; overflow:hidden; box-shadow:inset 0 1px 2px #193a4c0a; }
+.d1-progress-track>span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#244c62,#548078); box-shadow:0 0 8px #54807826; transition:width .6s cubic-bezier(.22,1,.36,1); }
+@media(max-width:480px) { .d1-progress-summary { padding:20px 20px 16px; gap:12px; } .d1-progress-value { align-items:flex-end; flex-direction:column; gap:5px; } .d1-progress-value strong { font-size:2.2rem; } .d1-progress-value>span { font-size:.75rem; } .d1-progress-track { margin:0 20px 22px; } }
+@media(prefers-reduced-motion:reduce) { .d1-progress-track>span { transition:none; } }
