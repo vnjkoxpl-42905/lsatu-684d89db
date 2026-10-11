@@ -4,22 +4,28 @@ import { OpeningCourseContent } from './OpeningCourseContent';
 
 afterEach(cleanup);
 
-it('separates the seven foundation questions and retains attempted feedback when returning', () => {
+it('shows one foundation question at a time and retains checked feedback when returning', () => {
   const { container } = render(<OpeningCourseContent id="foundation-practice"/>);
-  expect(container.querySelectorAll('[data-practice-task]')).toHaveLength(7);
-  expect(screen.getAllByRole('region')).toHaveLength(1);
+  expect(container.querySelectorAll('[data-practice-task]')).toHaveLength(1);
+  expect(screen.getByText('Question 1 of 7')).toBeVisible();
   expect(screen.queryByRole('button', { name: 'In the town hall.' })).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: 'Next task' }));
-  const question = screen.getByRole('region');
-  expect(within(question).getByRole('heading', { level: 3 })).toHaveTextContent("It's Friday.");
-  fireEvent.click(within(question).getByRole('button', { name: 'In the town hall.' }));
-  expect(within(question).getByText(/You treated the rule as a weather report/)).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Next task' }));
-  expect(screen.getByRole('region').textContent).toContain("Saturday arrives, and it's raining.");
-  expect(screen.queryByText(/You treated the rule as a weather report/)).not.toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Previous task' }));
-  expect(within(screen.getByRole('region')).getByRole('button', { name: 'In the town hall.' })).toHaveAttribute('aria-pressed', 'true');
-  expect(within(screen.getByRole('region')).getByText(/You treated the rule as a weather report/)).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('button', { name: 'No, it tells me what follows if I win.' }));
+  expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
+  fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+  expect(screen.getByRole('heading', { level: 2, name: /It's Friday/ })).toHaveFocus();
+  fireEvent.click(screen.getByRole('button', { name: 'In the town hall.' }));
+  expect(screen.queryByText(/You treated the rule as a weather report/)).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
+  expect(screen.getByText(/You treated the rule as a weather report/)).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
+  expect(screen.getByRole('heading', { level: 2, name: /Saturday arrives/ })).toHaveFocus();
+  expect(screen.queryByText(/You treated the rule as a weather report/)).toBeNull();
+  expect(container.querySelectorAll('[data-practice-task]')).toHaveLength(1);
+  fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
+  expect(screen.getByRole('button', { name: 'In the town hall.' })).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByText(/You treated the rule as a weather report/)).toBeVisible();
 });
 
 it('retains the sufficient-side practice destinations and the original ticket counterexample', () => {

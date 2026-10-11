@@ -53,7 +53,7 @@ const drillInstructions: Record<string, { summary: string; heading: string; step
 };
 
 function DrillEntry({ step, url }: { step: OpeningCourseStep; url: OpeningCourseUrl }) {
-  if (step.id === 'foundation-practice') return <DrillOneEntry startUrl={url(step.id, true)} lessonsUrl={url('lessons')} saveNotice={practiceSaveNotice}/>;
+  if (step.id === 'foundation-practice') return <DrillOneEntry startUrl={url(step.id, true)} lessonsUrl={url('lessons')}/>;
   if (step.id === 'mixed-practice') return <div className="oc-drill-landing oc-translation-entry">
     <div className="oc-drill-overview">
       <Link className="oc-back oc-entry-back" to={url('lessons')}><ArrowLeft size={16}/>Back to lessons</Link>

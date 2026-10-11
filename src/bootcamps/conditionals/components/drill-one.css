@@ -71,7 +71,8 @@
 .d1-experience button.d1-option[data-correct=true] .d1-option-letter { background:#3a684b; border-color:#3a684b; color:#fff; }
 .d1-experience button.d1-option[data-incorrect=true] { border-color:#b2704e; background:#fbf2e9; box-shadow:none; }
 .d1-experience button.d1-option[data-incorrect=true] .d1-option-letter { background:#a26141; border-color:#a26141; color:#fff; }
-.d1-answer-actions { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:24px; }
+.d1-answer-actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; margin-top:24px; }
+.d1-answer-actions .d1-return-results { flex-basis:100%; justify-content:flex-end; }
 .d1-experience .d1-answer-actions>p { font-size:.75rem; line-height:1.5; color:var(--d1-muted); margin:0; }
 .d1-answer-actions .d1-primary { font-size:.8rem; min-height:46px; padding:12px 17px; gap:20px; }
 .d1-feedback { margin-top:24px; border-top:1px solid #dacabc; padding-top:20px; animation:d1-arrive .3s ease-out; }

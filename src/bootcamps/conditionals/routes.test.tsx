@@ -582,3 +582,11 @@ it('keeps pending account changes visible on an opening surface', () => {
   expect(screen.getByText('Assigned work waiting to save')).toBeVisible();
   expect(screen.queryByText('Assigned work saved to your account')).toBeNull();
 });
+
+
+it.each(['/opening/foundation-practice', '/opening/foundation-practice?run=1'])('does not imply Drill 1 answers are saved to the account on %s', path => {
+  mount(`${base}${path}`);
+  expect(screen.getByText('Drill 1 answers stay in this session')).toBeVisible();
+  expect(screen.queryByText('Assigned work saved to your account')).toBeNull();
+  expect(state.updateCalls).toBe(0);
+});

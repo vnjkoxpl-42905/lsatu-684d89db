@@ -20,6 +20,8 @@ it('requires a deliberate check before feedback, diagrams, progress or forward n
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   check();
   expect(screen.getByRole('heading', { name: 'Correct.' })).toHaveFocus();
+  expect(screen.getByRole('heading', { name: 'Correct.' })).toHaveAccessibleDescription(/The diagram places.*You win the raffle.*sufficient condition.*You get a bicycle.*necessary condition/);
+  expect(document.querySelector('.d1-relation-arrow')).toHaveAttribute('aria-hidden', 'true');
   expect(screen.getByText('Read the rule left to right')).toBeVisible();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
   expect(screen.getByRole('button', { name: 'Next question' })).toBeEnabled();
@@ -49,6 +51,7 @@ it('retains the first answer through repair and restores focus to an enabled cho
     fireEvent.click(answerOptions()[correctAnswers[index]]);
     check();
   }
+  expect(screen.queryByRole('button', { name: 'Back to results' })).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: 'See results' }));
   expect(screen.getByRole('heading', { name: 'Drill 1 complete.' })).toHaveFocus();
   expect(screen.getByText(/of 7 correct on your first attempt/)).toHaveTextContent('6 of 7');
@@ -56,6 +59,9 @@ it('retains the first answer through repair and restores focus to an enabled cho
   fireEvent.click(screen.getByRole('button', { name: 'Question 1 Review reasoning' }));
   expect(screen.getByRole('heading', { name: /Does the rule itself/ })).toHaveFocus();
   expect(answerOptions()[1]).toHaveAttribute('aria-pressed', 'true');
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+  expect(screen.getByRole('button', { name: 'Check answer' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Back to results' })).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Back to results' }));
   expect(screen.getByRole('heading', { name: 'Drill 1 complete.' })).toHaveFocus();
   expect(screen.getByText(/of 7 correct on your first attempt/)).toHaveTextContent('6 of 7');

@@ -200,7 +200,7 @@ function Shell() {
   const courseView = location.pathname.includes('/opening/') ? location.pathname.split('/opening/')[1] : location.pathname.endsWith('/opening-practice') ? 'practice' : location.pathname.endsWith('/opening-labs') ? 'labs' : location.pathname.endsWith('/opening-tools') ? 'tools' : 'lessons';
   const openingSurface = /^\/(?:lessons\/?|opening\/[^/]+\/?|opening-(?:practice|labs|tools)\/?)$/.test(location.pathname.slice(BASE.length));
   const saveMessages = {
-    saved: openingSurface ? 'Assigned work saved to your account' : 'Saved to your account',
+    saved: courseView === 'foundation-practice' ? 'Drill 1 answers stay in this session' : openingSurface ? 'Assigned work saved to your account' : 'Saved to your account',
     loading: openingSurface ? 'Loading your saved assigned work...' : 'Loading your saved work...',
     saving: openingSurface ? 'Saving your assigned work...' : 'Saving your changes...',
     unsaved: openingSurface ? 'Assigned work waiting to save' : 'Changes waiting to save',
