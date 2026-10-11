@@ -42,7 +42,15 @@
   #root .ma-example { padding: .875rem; }
   #root .ma-relationship { grid-template-columns: minmax(0, 1fr) 2.5rem minmax(0, 1fr); gap: .65rem; }
   #root .ma-relationship > .ma-condition { gap: .75rem; }
-  #root .ma-relationship strong { font-size: 1.125rem; overflow-wrap: anywhere; }
+  #root .ma-relationship strong { font-size: 1.125rem; overflow-wrap: normal; }
+}
+@media (max-width: 480px) {
+  #root .ma-lesson, #root .co-section:has(> .ma-question-practice) { padding-inline: .5rem; }
+  #root .ma-example { padding: .5rem; }
+  #root .ma-relationship { grid-template-columns: minmax(0, 1fr) 2.25rem minmax(0, 1fr); gap: .35rem; }
+  #root .ma-relationship span, #root .ma-relationship .ma-side { font-size: .9rem; }
+  #root .ma-relationship strong { font-size: 1rem; }
+  #root .ma-arrow b { font-size: 1.75rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   #root .ma-arrow b { animation: none; }

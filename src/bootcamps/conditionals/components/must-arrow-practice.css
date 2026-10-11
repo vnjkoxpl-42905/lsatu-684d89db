@@ -25,3 +25,8 @@
 #root .ma-question-practice-choices input { flex: 0 0 auto; width: 1.15rem; height: 1.15rem; margin: .3rem 0 0; accent-color: var(--co-teal); }
 #root .ma-question-practice-choices label:focus-within { outline: 2px solid var(--co-teal); outline-offset: 3px; }
 #root .ma-question-practice-choices:disabled label { cursor: default; }
+#root .ma-question-practice-explanation h4:focus-visible { outline: 2px solid var(--co-teal); outline-offset: .35rem; }
+@media (max-width: 480px) {
+  #root .ma-question-practice-question { padding: .65rem .75rem; }
+  #root .ma-question-practice-choices label { padding: .5rem .65rem; }
+}
