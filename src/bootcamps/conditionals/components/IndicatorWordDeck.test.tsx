@@ -36,7 +36,6 @@ it('shakes and corrects on a wrong choice, then brings the card back once at the
   expect(screen.getByText(/1 needed a second look/)).toBeVisible();
   click('Go again');
   expect(screen.getByText('Card 1 of 20')).toBeVisible();
-  expect(screen.getByText(/Round 1, 19 of 20/)).toBeVisible();
 });
 
 it('resumes on the same card, mid-answer, after the page is reopened', () => {

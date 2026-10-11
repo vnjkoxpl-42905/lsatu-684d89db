@@ -39,14 +39,20 @@ export function longestRun(cards: IndicatorWordCard[]): number {
   cards.forEach((card, i) => { run = i && cards[i - 1].group === card.group ? run + 1 : 1; best = Math.max(best, run); });
   return best;
 }
-/** A true shuffle, redrawn until no group repeats more than twice in a row. Some back-to-backs stay; long streaks do not. */
+const triples = (cards: IndicatorWordCard[]) => cards.reduce((n, card, i) => n + (i >= 2 && cards[i - 1].group === card.group && cards[i - 2].group === card.group ? 1 : 0), 0);
+/** A true shuffle, then random swaps until no group repeats more than twice in a row. Some back-to-backs stay; long streaks do not. */
 export function shuffleSpread(cards: IndicatorWordCard[], rng: () => number = Math.random): IndicatorWordCard[] {
-  let best = shuffled(cards, rng);
-  for (let attempt = 0; attempt < 400 && longestRun(best) > 2; attempt += 1) {
-    const next = shuffled(cards, rng);
-    if (longestRun(next) < longestRun(best)) best = next;
+  const order = shuffled(cards, rng);
+  let bad = triples(order);
+  for (let step = 0; step < 4000 && bad > 0; step += 1) {
+    const i = Math.floor(rng() * order.length);
+    const j = Math.floor(rng() * order.length);
+    if (i === j || order[i].group === order[j].group) continue;
+    [order[i], order[j]] = [order[j], order[i]];
+    const now = triples(order);
+    if (now <= bad) bad = now; else [order[i], order[j]] = [order[j], order[i]];
   }
-  return best;
+  return order;
 }
 
 export function newRound(previous?: DeckState, rng: () => number = Math.random): DeckState {
