@@ -29,7 +29,7 @@ export const mixedFamilyItems: MixedItem[] = [
     left: 'Forecast shows lightning', right: 'Match moves indoors',
     partialFeedback: "The forecast alone isn't something that can be true or false. Ask: if what? Keep the whole clause.",
     otherFeedback: 'Moving indoors is what the rule proves, not what proves it. Look at the clause right after if.',
-    reversed: 'Your arrow makes every indoor match proof of a lightning forecast. The match could move indoors because the pitch is flooded, and that case still fits the sentence.',
+    reversed: 'Your arrow makes every indoor match proof of a lightning forecast. The match could move indoors because the pitch is flooded, and that case still fits the rule.',
     why: "The if-clause comes last, but it's still the part that's enough. A lightning forecast proves the move indoors.",
     readback: 'If the forecast shows lightning, the match moves indoors.',
   },
@@ -40,7 +40,7 @@ export const mixedFamilyItems: MixedItem[] = [
     left: 'Joins choir trip', right: 'Parent signs consent form',
     partialFeedback: 'A parent alone drops what the parent has to do. Ask: only if what? Keep the whole clause.',
     otherFeedback: 'Joining the trip is the condition that carries the requirement. Look at the clause after only if to find what joining needs.',
-    reversed: "Your arrow promises a place on the trip to every student with a signed form. A student with a signed form who is ill on the day fits the sentence, so the signature isn't enough.",
+    reversed: "Your arrow promises a place on the trip to every student with a signed form. A student with a signed form who is ill on the day fits the rule, so the signature isn't enough.",
     why: 'Only if names a requirement. Any student on the trip has a signed form. A signed form leaves the trip open.',
     readback: 'If a student joins the choir trip, a parent has signed the consent form.',
   },
@@ -51,7 +51,7 @@ export const mixedFamilyItems: MixedItem[] = [
     left: 'Bus leaves depot after midnight', right: 'Stops at hospital',
     partialFeedback: 'Bus alone would cover daytime buses and buses that never use the depot. Ask: every what? Keep every detail that limits which buses the rule covers.',
     otherFeedback: 'Stopping at the hospital is what the rule proves, not the group it covers. Ask: every what?',
-    reversed: "Your arrow says any bus at the hospital left the depot after midnight. A morning bus stopping there fits the sentence, so the stop doesn't settle when the bus left the depot.",
+    reversed: "Your arrow says any bus at the hospital left the depot after midnight. A morning bus stopping there fits the rule, so the stop doesn't settle when the bus left the depot.",
     why: 'Every covers each bus leaving the depot after midnight. Pick one, and the rule tells you it stops at the hospital.',
     readback: 'If a bus leaves the depot after midnight, it stops at the hospital.',
   },
@@ -73,7 +73,7 @@ export const mixedFamilyItems: MixedItem[] = [
     left: 'Phone in same-day repair queue', right: 'Arrived with cracked screen',
     partialFeedback: 'Phones alone would make a claim about every phone in the shop. Ask: the only what? Keep every word that limits the group.',
     otherFeedback: 'Arriving with a cracked screen is what every phone in the group has in common, not the group itself. Ask: the only what?',
-    reversed: 'Your arrow puts every phone that arrived with a cracked screen in the same-day repair queue. A phone that arrived cracked and was booked in for next week fits the sentence.',
+    reversed: 'Your arrow puts every phone that arrived with a cracked screen in the same-day repair queue. A phone that arrived cracked and was booked in for next week fits the rule.',
     why: "The only introduces the group that's enough. Any phone placed in the same-day repair queue arrived with a cracked screen. Arriving with a cracked screen doesn't put a phone in that queue.",
     readback: 'If a phone is placed in the same-day repair queue, it arrived with a cracked screen.',
   },
@@ -84,7 +84,7 @@ export const mixedFamilyItems: MixedItem[] = [
     left: 'Stall sells food at festival', right: 'Stall has permit',
     partialFeedback: 'Stalls alone loses the restriction. Ask: only what? Keep every word that limits which stalls.',
     otherFeedback: 'Selling food is what the restriction limits, not the stalls it allows. Ask: only what? The answer names which stalls sell food under this rule.',
-    reversed: 'Your arrow says every stall with a permit sells food. A permitted stall selling only crafts fits the sentence.',
+    reversed: 'Your arrow says every stall with a permit sells food. A permitted stall selling only crafts fits the rule.',
     why: "Only limits food sellers to permitted stalls. A stall selling food has a permit. A permit doesn't tell you what the stall sells.",
     readback: 'If a stall sells food at the festival, it has a permit.',
   },
@@ -130,7 +130,7 @@ export function MixedItemCheck({ item, index, onChecked, onResult, embedded = fa
     <h3 id={sideQuestion}>Which condition gives you enough to prove the other?</h3>
     <div className="co-choices" role="group" aria-labelledby={sideQuestion}>{sideOptions(item, index).map(option => <button type="button" key={option} aria-pressed={left === option} onClick={() => change(() => setLeft(option))}>{option}</button>)}</div>
     {left && <RuleDiagram left={left} right={left === item.left ? item.right : item.left} label={`Your diagram: ${left} implies ${left === item.left ? item.right : item.left}`}/>}
-    <div className="cr-control-row"><button type="button" className="co-primary" disabled={target === null || left === null} onClick={() => { setChecked(true); onChecked(true); onResult?.({ targetCorrect, targetIncomplete: target === item.partial, sideCorrect }); }}>{embedded ? 'Check answer' : `Check sentence ${number}`}</button><button type="button" className="cr-reset" onClick={reset}>{embedded ? 'Revise my answer' : `Try sentence ${number} again`}</button></div>
+    <div className="cr-control-row"><button type="button" className="co-primary" disabled={target === null || left === null} onClick={() => { setChecked(true); onChecked(true); onResult?.({ targetCorrect, targetIncomplete: target === item.partial, sideCorrect }); }}>{embedded ? 'Check answer' : `Check question ${number}`}</button><button type="button" className="cr-reset" onClick={reset}>{embedded ? 'Revise my answer' : `Try sentence ${number} again`}</button></div>
     <div role="status">{checked && <div className={`co-feedback ${targetCorrect && sideCorrect ? 'co-correct' : ''}`}>
       {targetCorrect && sideCorrect ? <>
         <strong>Read it back: {item.readback}</strong>
@@ -150,10 +150,10 @@ export function MixedFamilyPractice() {
   const [current, setCurrent] = useState(0);
   const [checked, setChecked] = useState<boolean[]>(() => mixedFamilyItems.map(() => false));
   return <>
-    <p>These sentences use both kinds of indicator. The family name stays hidden until you check your choices. First translate each sentence yourself, without supplied condition labels. Then compare your work and check who or what the rule covers and the arrow direction before moving on.</p>
+    <p>These sentences use both kinds of indicator. The family name stays hidden until you check your choices. First translate each rule yourself, without supplied condition labels. Then compare your work and check who or what the rule covers and the arrow direction before moving on.</p>
     <p className="co-kicker" role="status">Question {current + 1} of {mixedFamilyItems.length}</p>
     {mixedFamilyItems.map((item, index) => <div key={item.sentence} hidden={current !== index}><MixedItemCheck item={item} index={index} onChecked={value => setChecked(previous => previous.map((old, itemIndex) => itemIndex === index ? value : old))}/></div>)}
-    <div className="co-choices"><button type="button" disabled={current === 0} onClick={() => setCurrent(current - 1)}>Previous mixed sentence</button><button type="button" disabled={current === mixedFamilyItems.length - 1 || !checked[current]} onClick={() => setCurrent(current + 1)}>Next mixed sentence</button></div>
-    <p>Moving between sentences keeps your written attempt, choices, and feedback. Trying a sentence again keeps your writing so you can revise it, and hides the supplied labels until you compare again.</p>
+    <div className="co-choices"><button type="button" disabled={current === 0} onClick={() => setCurrent(current - 1)}>Previous mixed question</button><button type="button" disabled={current === mixedFamilyItems.length - 1 || !checked[current]} onClick={() => setCurrent(current + 1)}>Next mixed question</button></div>
+    <p>Moving between questions keeps your written attempt, choices, and feedback. Trying a question again keeps your writing so you can revise it, and hides the supplied labels until you compare again.</p>
   </>;
 }

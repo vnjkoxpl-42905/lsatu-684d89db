@@ -22,7 +22,7 @@ it('requires an independent diagram and readback before exposing complete labels
   fireEvent.click(compare);
   expect(scope.getByRole('heading', { name: mixedFamilyItems[0].targetPrompt })).toHaveFocus();
   expect(item.textContent).toContain('your written answer is not graded automatically');
-  const check = scope.getByRole('button', { name: 'Check sentence 1' }) as HTMLButtonElement;
+  const check = scope.getByRole('button', { name: 'Check question 1' }) as HTMLButtonElement;
   expect(check.disabled).toBe(true);
   fireEvent.click(scope.getByRole('button', { name: mixedFamilyItems[0].target }));
   fireEvent.click(scope.getByRole('button', { name: mixedFamilyItems[0].right }));
@@ -36,8 +36,8 @@ it('requires an independent diagram and readback before exposing complete labels
   expect(scope.getByRole('status').textContent).toContain(mixedFamilyItems[0].readback);
   expect(scope.getByRole('status').textContent).toContain(mixedFamilyItems[0].why);
   expect(scope.getByRole('status').textContent).not.toContain('keep the rule');
-  fireEvent.click(view.getByRole('button', { name: 'Next mixed sentence' }));
-  fireEvent.click(view.getByRole('button', { name: 'Previous mixed sentence' }));
+  fireEvent.click(view.getByRole('button', { name: 'Next mixed question' }));
+  fireEvent.click(view.getByRole('button', { name: 'Previous mixed question' }));
   expect(diagram.value).toBe('Lightning forecast -> Move indoors');
   expect(item.querySelector('.co-correct')).toBeTruthy();
   fireEvent.click(scope.getByRole('button', { name: 'Try sentence 1 again' }));

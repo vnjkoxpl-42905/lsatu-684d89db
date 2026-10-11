@@ -22,8 +22,8 @@ export const completeConditionItems: MixedDrillChoiceItem[] = [
     options: ['Every swimmer', 'Every swimmer training before dawn', 'Anyone who receives a wristband'], correct: 1,
     errorByOption: ['qualification', null, 'direction'],
     feedback: [
-      'Every swimmer includes people training later in the day. Reread the sentence for the words that limit which swimmers the rule covers.',
-      'Each swimmer training before dawn receives a wristband. The time restriction matters: the sentence does not tell us what swimmers training later receive.',
+      'Every swimmer includes people training later in the day. Reread the rule for the words that limit which swimmers the rule covers.',
+      'Each swimmer training before dawn receives a wristband. The time restriction matters: the rule does not tell us what swimmers training later receive.',
       'The wristband is what the rule proves, not the group it covers. Ask: every what? Keep every word that limits that group.',
     ],
   },
@@ -75,7 +75,7 @@ export const equivalenceItems: MixedDrillChoiceItem[] = [
     options: ['Same rule', 'Reversed rule'], correct: 1,
     errorByOption: ['equivalence', null],
     feedback: [
-      'If now makes a stamp sufficient for going into the tray. The original allowed a stamped envelope elsewhere. This sentence sends every stamped envelope into the tray, so it changes the rule.',
+      'If now makes a stamp sufficient for going into the tray. The original allowed a stamped envelope elsewhere. This rule sends every stamped envelope into the tray, so it changes the rule.',
       'The new sentence starts from the stamp and proves the tray. The original starts from the tray and proves the stamp. A stamped envelope elsewhere fits the original but conflicts with this reverse.',
     ],
   },
@@ -137,7 +137,7 @@ export const transferItems: MixedDrillChoiceItem[] = [
     feedback: [
       'Electric is required for permission, but the sentence does not make it enough. An electric vehicle denied permission still fits the rule. Actual entry is a separate question.',
       'The rule does not deny permission to electric vehicles. Some could be permitted and others denied. It only restricts permitted vehicles to electric ones.',
-      'Any permitted vehicle has to be electric. Knowing a vehicle is electric does not settle whether it has permission. An electric vehicle denied permission fits the sentence, as does an electric vehicle with permission.',
+      'Any permitted vehicle has to be electric. Knowing a vehicle is electric does not settle whether it has permission. An electric vehicle denied permission fits the rule, as does an electric vehicle with permission.',
     ],
   },
   {
@@ -187,7 +187,7 @@ export const confirmationItemsByError: Record<MixedDrillError, MixedDrillChoiceI
     errorByOption: [null, 'requirement'],
     feedback: [
       'Only if makes verification required for booking. A reader with a verified account could make a booking or never make one. Verification alone leaves booking open.',
-      'You made the requirement enough. A verified reader who does not book fits the sentence. The rule tells us what a booking needs, not that verification proves booking.',
+      'You made the requirement enough. A verified reader who does not book fits the rule. The rule tells us what a booking needs, not that verification proves booking.',
     ],
   }],
   equivalence: [{
@@ -197,7 +197,7 @@ export const confirmationItemsByError: Record<MixedDrillError, MixedDrillChoiceI
     options: ['No. The second sentence reverses the rule.', 'Yes. Both require registration for using the slipway.'], correct: 1,
     errorByOption: ['equivalence', null],
     feedback: [
-      'Check where each sentence starts. Ask what only restricts in the first sentence, then compare it with the group every covers in the second.',
+      'Check where each rule starts. Ask what only restricts in the first rule, then compare it with the group every covers in the second.',
       'Both require registration for a boat using the slipway. A registered boat that never uses it fits both sentences. Neither makes registration enough for use.',
     ],
   }],

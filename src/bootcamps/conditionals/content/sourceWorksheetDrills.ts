@@ -21,7 +21,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Intro training",
     "stage": "Recognize",
     "taskKind": "identify",
-    "instructions": "Select the indicators and choose each one’s group. Then write the two complete conditions and compare them with our version. Keep words that limit who, when, or what the rule covers.",
+    "instructions": "Select the indicators and choose each one’s group. Then highlight the two complete conditions in the rule. Keep words that limit who, when, or what the rule covers.",
     "items": [
       {
         "id": "source-intro-identify-01",
@@ -451,7 +451,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (those employees complete training) → NOT (employees qualify for promotion)",
         "ifThen": "If employees qualify for promotion, then those employees complete training.",
         "contrapositiveWords": "If those employees do not complete training, then employees do not qualify for promotion.",
-        "explanation": "The training requirement comes first in the sentence, but qualification goes on the left of the arrow.",
+        "explanation": "The training requirement comes first in the rule, but qualification goes on the left of the arrow.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -792,7 +792,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Intro training revisited",
     "stage": "Diagram",
     "taskKind": "forward",
-    "instructions": "Return to the 15 intro sentences. Write the complete conditions, assign each a symbol, then construct the original arrow using your own legend. Compare its direction and complete meaning.",
+    "instructions": "Return to the 15 intro rules. Highlight the complete conditions, give each a letter, then build the original diagram with your own letters. It is checked for direction and complete meaning.",
     "items": [
       {
         "id": "source-intro-diagrams-01",
@@ -1213,7 +1213,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Diagramming and roles",
     "stage": "Diagram",
     "taskKind": "roles",
-    "instructions": "Write the two complete conditions. Compare their meaning, then place the sufficient condition on the left and the necessary condition on the right. Their order in the sentence may differ.",
+    "instructions": "Highlight the two complete conditions. Then place the sufficient condition on the left and the necessary condition on the right. Their order in the rule may differ.",
     "items": [
       {
         "id": "source-roles-01",
@@ -1232,7 +1232,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (those employees complete training) → NOT (employees qualify for promotion)",
         "ifThen": "If employees qualify for promotion, then those employees complete training.",
         "contrapositiveWords": "If those employees do not complete training, then employees do not qualify for promotion.",
-        "explanation": "The training requirement comes first in the sentence, but qualification goes on the left of the arrow.",
+        "explanation": "The training requirement comes first in the rule, but qualification goes on the left of the arrow.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -1493,7 +1493,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Conditional rephrasing",
     "stage": "Translate",
     "taskKind": "rephrase",
-    "instructions": "Rewrite the sentence as “If …, then …” before you look at our version. Then find each indicator and its group, and build the original diagram. Keep permissions, duties, deadlines, and restrictions.",
+    "instructions": "Rewrite the rule as “If …, then …” before you look at our version. Then find each indicator and its group, and build the original diagram. Keep permissions, duties, deadlines, and restrictions.",
     "items": [
       {
         "id": "source-rephrase-01",
@@ -1824,7 +1824,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you remain committed) → NOT (you achieve your goals)",
         "ifThen": "If you achieve your goals, then you remain committed.",
         "contrapositiveWords": "If you do not remain committed, then you do not achieve your goals.",
-        "explanation": "Achievement requires commitment. The sentence does not guarantee achievement from commitment alone.",
+        "explanation": "Achievement requires commitment. The rule does not guarantee achievement from commitment alone.",
         "correctionNotes": [],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -2196,7 +2196,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Four ways to express the rule",
     "stage": "After contraposition",
     "taskKind": "contrapositive",
-    "instructions": "Find each indicator and its group, then write the complete conditions and define your symbols. Build the original diagram and compare it with ours. Then build the contrapositive and check it. Last, read both back in ordinary if/then language.",
+    "instructions": "Find each indicator and its group, then highlight the complete conditions and give each a letter. Build the original diagram, then the contrapositive; each is checked as you go. Last, read both back in ordinary if/then language.",
     "items": [
       {
         "id": "source-full-translation-01",
@@ -2740,7 +2740,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "The complete translation set",
     "stage": "After contraposition",
     "taskKind": "contrapositive",
-    "instructions": "Translate each sentence on your own: find the indicators, write the complete conditions, define your symbols, build both diagrams, and read them back in words. You compare each diagram with ours as you go, and your wording at the end. Keep every qualifier and negate whole conditions.",
+    "instructions": "Translate each rule on your own: find the indicators, highlight the complete conditions, give each a letter, build both diagrams, and read them back in words. Each diagram is checked as you build it, and you compare your wording with ours at the end. Keep every qualifier and negate whole conditions.",
     "items": [
       {
         "id": "source-independent-01",
@@ -3778,6 +3778,6 @@ export function checkIndicatorSelection(item: Pick<SourceWorksheetItem, 'stateme
     return { correct: false, hint: `“${text}” is not an indicator in this sentence.` };
   }
   if (wrongGroup.length) return { correct: false, hint: `Check the group for “${wrongGroup[0]}”. Does it introduce what is enough, or what is required?` };
-  if (remaining.length) return { correct: false, hint: remaining.length === 1 ? 'One indicator is still unselected. Read the whole sentence again.' : `${remaining.length} indicators are still unselected. Read the whole sentence again.` };
+  if (remaining.length) return { correct: false, hint: remaining.length === 1 ? 'One indicator is still unselected. Read the whole rule again.' : `${remaining.length} indicators are still unselected. Read the whole rule again.` };
   return { correct: true, hint: '' };
 }

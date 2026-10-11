@@ -65,3 +65,11 @@
 .dark .sw-tokens button[aria-pressed=true]{color:#173544}
 .sw-demo-toggle{margin:0 0 20px}.sw-demo-toggle summary{cursor:pointer;font-size:14px;color:#254d65;font-weight:600;margin-bottom:10px}
 .sw-entry.sw-entry{grid-template-columns:minmax(0,760px)}
+.sw-tokens button[data-span="1"]{background:#c9e2d6;box-shadow:0 0 0 2px #c9e2d6;color:#173544}
+.sw-tokens button[data-span="2"]{background:#f0d6bb;box-shadow:0 0 0 2px #f0d6bb;color:#173544}
+.sw-tokens button[data-span="start"]{background:#e9bd74;box-shadow:0 0 0 2px #e9bd74;color:#173544}
+.sw-span-status p{margin:0 0 6px}
+.sw-slot-wrap{min-width:0}
+.sw-symbol-slot button span{font-family:Georgia,serif;font-size:24px;font-weight:700}
+.sw-choice-slot button[aria-pressed=true]{color:#173544}
+.dark .sw-choice-slot button[aria-pressed=true]{color:#edf3ed}
