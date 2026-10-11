@@ -4,7 +4,7 @@ import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetRead
 import { NegativeCaseLab } from './CounterexampleLab';
 import { StagedReasoningDrill } from './StagedReasoningDrill';
 import { DrillOneExperience, type DrillOneQuestion } from './DrillOneExperience';
-import { StudyDeck } from './StudyDeck';
+import { IndicatorWordDeck } from './IndicatorWordDeck';
 import './must-arrow-note.css';
 import './missing-requirement-note.css';
 import { MustArrowPractice } from './MustArrowPractice';
@@ -149,7 +149,7 @@ function IndicatorNote({ group }: { group: 'group-1' | 'group-2' }) {
       : <button type="button" className="co-primary" onClick={() => choose(selected + 1, true)}>Next indicator: {names[selected + 1]}</button>}</div>
     {group === 'group-2' && <><OnlyAndOnlyIf/><OnlyAfter/></>}
     <FamilySupplement group={group}/>
-    <NoteSection title="Recall the indicators"><p>Once you've read the seven examples, use these cards to recall them. Explain the rule before turning each card, then compare the complete ideas and the direction with your answer.</p><StudyDeck group={group}/></NoteSection>
+    <NoteSection title="Recall the indicators">{group === 'group-2' ? <><p>Now that you have met both groups, practice telling them apart. Pick the group for each word and the card tells you right away.</p><IndicatorWordDeck/></> : <p>The flashcards mix Group 1 and Group 2 words, so they open once you have met both groups.</p>}</NoteSection>
   </>;
 }
 

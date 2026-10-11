@@ -54,27 +54,22 @@ it('exposes only the current page, focuses its heading, and retains a checked ca
   expect(screen.getByText('This fits the rule and disproves the reverse.')).toBeVisible();
 });
 
-it('retains the actual lesson card and revealed side across page navigation without pre-exposing answers', () => {
-  render(lesson('group-1'));
-  const cards = indicatorFlashcards.filter(card => card.group === 'group-1');
+it('keeps the word deck on the same answered card across page navigation', () => {
+  localStorage.clear();
+  render(lesson('group-2'));
   jumpTo('Recall the indicators');
-  expect(screen.queryByText(cards[0].back)).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: 'Next card' }));
-  fireEvent.click(screen.getByRole('button', { name: /Turn to the explanation/ }));
-  expect(screen.getByText(cards[1].back)).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Revisit this card' }));
+  expect(screen.getByText('Card 1 of 20')).toBeVisible();
+  const word = document.querySelector('.iw-front .iw-word')!.textContent;
+  fireEvent.click(screen.getByRole('button', { name: 'Group 1' }));
+  expect(screen.getByRole('button', { name: 'Next card' })).toBeVisible();
   turn('Next');
-  expect(screen.queryByRole('button', { name: /Turn back to the question/ })).toBeNull();
   turn('Back');
-  expect(screen.getByText(`Recall card 2 of ${cards.length}`)).toBeVisible();
-  expect(screen.getByText(cards[1].back)).toBeVisible();
-  expect(screen.getByRole('button', { name: 'Saved to revisit' })).toHaveAttribute('aria-pressed', 'true');
-  fireEvent.click(screen.getByRole('button', { name: /Turn back to the question/ }));
-  expect(screen.queryByText(cards[1].back)).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: /Turn to the explanation/ }));
+  expect(screen.getByText('Card 1 of 20')).toBeVisible();
+  expect(document.querySelector('.iw-front .iw-word')!.textContent).toBe(word);
+  expect(screen.getByRole('button', { name: 'Next card' })).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Next card' }));
-  expect(screen.getByText(cards[2].front)).toBeVisible();
-  expect(screen.queryByText(cards[2].back)).toBeNull();
+  expect(screen.getByText('Card 2 of 20')).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Group 2' })).toBeEnabled();
 });
 
 it('requires an explicit end-page action to record reading, including after a contents jump', async () => {
@@ -95,27 +90,24 @@ it('requires an explicit end-page action to record reading, including after a co
   expect(complete).toHaveBeenCalledTimes(1);
 });
 
-it('starts a changed unit at its first page and resets card state when returning to the prior unit', () => {
+it('starts a changed unit at its first page and only hosts the mixed deck once both groups are taught', () => {
+  localStorage.clear();
   const { rerender } = render(lesson('group-1'));
   jumpTo('Recall the indicators');
-  fireEvent.click(screen.getByRole('button', { name: 'Next card' }));
-  fireEvent.click(screen.getByRole('button', { name: /Turn to the explanation/ }));
-  fireEvent.click(screen.getByRole('button', { name: 'Revisit this card' }));
+  expect(screen.getByText(/flashcards mix Group 1 and Group 2 words/)).toBeVisible();
+  expect(screen.queryByRole('button', { name: 'Group 1' })).toBeNull();
 
   rerender(lesson('group-2'));
   expect(screen.getByRole('heading', { name: 'Find what is required' })).toBeVisible();
-  expect(screen.queryByRole('button', { name: 'Next card' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Group 1' })).toBeNull();
   jumpTo('Recall the indicators');
-  expect(screen.getByText('Recall card 1 of 11')).toBeVisible();
-  expect(screen.getByRole('button', { name: /Turn to the explanation/ })).toHaveAttribute('aria-expanded', 'false');
-  expect(screen.queryByRole('button', { name: 'Saved to revisit' })).toBeNull();
+  expect(screen.getByText('Card 1 of 20')).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Group 1' })).toBeVisible();
 
   rerender(lesson('group-1'));
   expect(screen.getByRole('heading', { name: 'Find the sufficient idea' })).toBeVisible();
   jumpTo('Recall the indicators');
-  expect(screen.getByText(`Recall card 1 of ${indicatorFlashcards.filter(card => card.group === 'group-1').length}`)).toBeVisible();
-  expect(screen.getByRole('button', { name: /Turn to the explanation/ })).toHaveAttribute('aria-expanded', 'false');
-  expect(screen.queryByRole('button', { name: 'Saved to revisit' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Group 1' })).toBeNull();
 });
 
 it('separates a present negative requirement from its absence in the fresh two-room exercise', () => {

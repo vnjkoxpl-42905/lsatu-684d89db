@@ -3,10 +3,10 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { indicatorFlashcards } from '../content/indicatorFlashcards';
 import { StudyDeck } from './StudyDeck';
+import { IndicatorWordDeck } from './IndicatorWordDeck';
 import type { OpeningCourseUrl } from './OpeningCourse';
 
 export const CourseFlashcardUrl = createContext<OpeningCourseUrl | null>(null);
-export const groupOneCardIds = ['g1-if-first', 'g1-when-first', 'g1-any', 'g1-all', 'g1-every', 'g1-in-order-to', 'g1-people-who', 'g1-each'];
 const labels: Record<string, string> = {
   'g1-if-first': 'if', 'g1-if-last': 'if: condition comes last', 'g1-when-first': 'when', 'g1-when-last': 'when: condition comes last',
   'g1-where': 'where', 'g1-all': 'all', 'g1-every': 'every', 'g1-any': 'any', 'g1-the-only': 'the only', 'g1-target-later': 'every: condition comes last',
@@ -27,22 +27,29 @@ export function flashcardUrl(url: OpeningCourseUrl, group: string, card?: string
 export function IndicatorFlashcardLink({ group, card, children }: { group: string; card?: string; children?: React.ReactNode }) {
   const url = useContext(CourseFlashcardUrl);
   if (!url) return children ? <>{children}</> : null;
-  return <Link className={card ? 'co-indicator-card-link' : 'oc-action co-flashcard-entry'} to={flashcardUrl(url, group, card, group === 'group-1' ? 'sufficient' : 'necessary')}>{children || 'Go to flashcards'}<ArrowRight size={16} aria-hidden="true"/></Link>;
+  return <Link className={card ? 'co-indicator-card-link' : 'oc-action co-flashcard-entry'} to={flashcardUrl(url, 'indicators', card, group === 'group-1' ? 'sufficient' : 'necessary')}>{children || 'Go to flashcards'}<ArrowRight size={16} aria-hidden="true"/></Link>;
 }
 const sets = [
   { id: 'foundation', title: 'Terms and concepts', description: 'Sufficient, necessary, arrow direction, and the difference between a rule and a fact.' },
-  { id: 'group-1', title: 'Group 1: Conditional indicator words', description: 'Find the sufficient condition introduced by each word or phrase.' },
-  { id: 'group-2', title: 'Group 2: Conditional indicator words', description: 'Find the necessary condition identified by each word or phrase.' },
+  { id: 'indicators', title: 'Indicator words', description: 'One word at a time. Say which group it belongs to, and the card tells you right away.' },
 ];
 export function FlashcardTools({ url, allowed }: { url: OpeningCourseUrl; allowed: string[] }) {
   const [params, setParams] = useSearchParams();
-  const set = sets.find(item => item.id === params.get('deck') && allowed.includes(item.id));
+  // The word deck mixes both groups, so it opens once the work covers both. Old Group 1 and Group 2 links land on it.
+  const available = [...allowed.filter(id => id === 'foundation'), ...(allowed.includes('group-1') && allowed.includes('group-2') ? ['indicators'] : [])];
+  const requested = ['group-1', 'group-2'].includes(params.get('deck') ?? '') ? 'indicators' : params.get('deck');
+  const set = sets.find(item => item.id === requested && available.includes(item.id));
   if (!set) return <div className="oc-course-note co-flashcard-tools">
     <header data-course-heading><p className="oc-label">Tools</p><h1>Flashcards</h1><p>Choose the set you want to practice.</p></header>
-    <div className="co-flashcard-sets">{sets.filter(item => allowed.includes(item.id)).map(item => <section key={item.id}><h2>{item.title}</h2><p>{item.description}</p><Link className="oc-action" to={flashcardUrl(url, item.id)}>Go to flashcards<ArrowRight size={16} aria-hidden="true"/></Link></section>)}</div>
-    {!allowed.length && <p>No flashcards are available in this work.</p>}
+    <div className="co-flashcard-sets">{sets.filter(item => available.includes(item.id)).map(item => <section key={item.id}><h2>{item.title}</h2><p>{item.description}</p><Link className="oc-action" to={flashcardUrl(url, item.id)}>Go to flashcards<ArrowRight size={16} aria-hidden="true"/></Link></section>)}</div>
+    {!available.length && <p>No flashcards are available in this work.</p>}
   </div>;
-  const order = set.id === 'group-1' ? ['g1-if-first', 'g1-if-last', 'g1-when-first', 'g1-whenever', 'g1-when-last', 'g1-any', 'g1-anytime', 'g1-all', 'g1-every', 'g1-every-time', 'g1-target-later', 'g1-in-order-to', 'g1-people-who', 'g1-each', 'g1-where', 'g1-the-only'] : set.id === 'group-2' ? ['g2-only', 'g2-only-if', 'g2-only-when', 'g2-only-where', 'g2-always', 'g2-requires', 'g2-must-instruction', 'g2-if-contrast', 'g2-required-before', 'g2-only-the-only', 'g2-necessary-before'] : [];
+  if (set.id === 'indicators') return <div className="oc-course-note co-flashcard-tools">
+    <nav className="co-flashcard-return" aria-label="Flashcard navigation"><Link to={url('tools')}><ArrowLeft size={16}/>All flashcard sets</Link>{(params.get('from') === 'sufficient' || params.get('from') === 'necessary') && <Link to={url(params.get('from')!)}>Back to {params.get('from') === 'sufficient' ? 'sufficient' : 'necessary'} condition<ArrowRight size={16}/></Link>}</nav>
+    <header data-course-heading><p className="oc-label">Flashcards</p><h1>{set.title}</h1><p>{set.description}</p></header>
+    <IndicatorWordDeck/>
+  </div>;
+  const order = ['foundation-enough', 'foundation-required', 'foundation-reverse', 'foundation-rule-not-fact'];
   const cards = indicatorFlashcards.filter(card => card.group === set.id).sort((a, b) => order.length ? order.indexOf(a.id) - order.indexOf(b.id) : 0);
   const selected = cards.find(card => card.id === params.get('card'))?.id || cards[0].id;
   const from = params.get('from');
