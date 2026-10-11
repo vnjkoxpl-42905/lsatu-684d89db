@@ -60,4 +60,54 @@ describe('reviewed worksheet source bank', () => {
     expect(rephrase[17].necessary).toContain('currently active');
     expect(getSourceWorksheetDrill('source-intro-identify')!.items[3].necessary).toContain('required');
   });
+
+  it('preserves modal claims and corrects reviewed indicator classifications', () => {
+    for (const id of ['source-intro-identify', 'source-intro-diagrams']) {
+      expect(getSourceWorksheetDrill(id)!.items[8].necessary).toBe('the building should be evacuated immediately');
+    }
+    const rephrase = getSourceWorksheetDrill('source-rephrase')!.items;
+    expect(rephrase[3].indicators).toEqual([{ text: 'only if', group: 2 }]);
+    expect(rephrase[10].indicators).toContainEqual({ text: 'Every', group: 1 });
+    expect(rephrase[10].sufficient).toBe('an agreement is legally binding');
+    expect(rephrase[6].necessary).toBe('that project involves effective teamwork');
+    expect(rephrase[19].necessary).toContain('must be recalibrated under the maintenance policy');
+    expect(rephrase[19].statement).not.toBe(rephrase[19].originalStatement);
+    expect(getSourceWorksheetDrill('source-full-translation')!.items[8].necessary).toBe('system maintenance is performed');
+  });
+
+  it('reads simple and negative contrapositives naturally without losing scope', () => {
+    const full = getSourceWorksheetDrill('source-full-translation')!.items;
+    expect(full[0].contrapositiveWords).toBe('If that intern is not offered a full-time position, then that person is not an intern who completes the program.');
+    expect(full[12].contrapositiveWords).toBe('If alarms deactivate on their own, then the emergency protocol initiates within one minute.');
+    expect(full[15].contrapositiveWords).toContain('not verified by both authorities');
+    const independent = getSourceWorksheetDrill('source-independent')!.items;
+    expect(independent[20].contrapositiveWords).toBe('If Rufus is around, then food is not in the fridge.');
+    expect(independent[22].contrapositiveWords).toBe('If I can see Arun, then Arun is not in the next room.');
+    expect(independent[24].contrapositiveWords).toContain('do not both buy less and use less');
+    expect(independent[19].statement).not.toContain('every moment');
+  });
+
+  it('binds both sides of each contrapositive to the same case', () => {
+    const location = getSourceWorksheetDrill('source-indicators')!.items[11];
+    expect(location.contrapositiveWords).toBe('If pathways do not lead to that location, then the park is not accessible at that location.');
+    const independent = getSourceWorksheetDrill('source-independent')!.items;
+    expect(independent[25].contrapositiveWords).toBe('If that system does not have a good legal system, then judges are not independent in that system.');
+    expect(independent[27].contrapositiveWords).toBe('If it is not pleasure, then it is not good under the stated theory.');
+  });
+
+  it('restores later contrapositive operations without duplicating canonical source items', () => {
+    for (const sourceId of ['source-intro-diagrams', 'source-rephrase']) {
+      const source = getSourceWorksheetDrill(sourceId)!;
+      const revisit = getSourceWorksheetDrill(`${sourceId}-contrapositive`)!;
+      expect(revisit.id).toBe(`${sourceId}-contrapositive`);
+      expect(revisit.taskKind).toBe('contrapositive');
+      expect(revisit.stage).toBe('After contraposition');
+      expect(revisit.items).toBe(source.items);
+      expect(revisit.items.map((item) => item.sourceId)).toEqual(source.items.map((item) => item.sourceId));
+      expect(source.taskKind).not.toBe('contrapositive');
+    }
+    expect(sourceWorksheetDrills).toHaveLength(7);
+    expect(sourceWorksheetDrills.flatMap((set) => set.items)).toHaveLength(133);
+    expect(getSourceWorksheetDrill('unknown')).toBeUndefined();
+  });
 });

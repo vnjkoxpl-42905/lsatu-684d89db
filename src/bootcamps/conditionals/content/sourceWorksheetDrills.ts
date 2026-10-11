@@ -754,7 +754,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "diagram": "the park is accessible at a location → pathways lead to that location",
         "contrapositive": "NOT (pathways lead to that location) → NOT (the park is accessible at a location)",
         "ifThen": "If the park is accessible at a location, then pathways lead to that location.",
-        "contrapositiveWords": "If pathways do not lead to that location, then the park is not accessible at a location.",
+        "contrapositiveWords": "If pathways do not lead to that location, then the park is not accessible at that location.",
         "explanation": "Keep the same location on both sides. Accessible park locations require pathways leading there.",
         "correctionNotes": [],
         "source": {
@@ -1219,7 +1219,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Diagramming and roles",
     "stage": "Diagram",
     "taskKind": "roles",
-    "instructions": "Identify the full sufficient condition and the full necessary condition. Write them beside the arrow, even when the sentence gives them in a different order.",
+    "instructions": "Select the complete sufficient and necessary conditions and place them beside the arrow. Their order in the sentence may differ from their order in the diagram.",
     "items": [
       {
         "id": "source-roles-01",
@@ -1495,7 +1495,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Conditional rephrasing",
     "stage": "Translate",
     "taskKind": "rephrase",
-    "instructions": "Rewrite each rule as “If …, then …” without changing its meaning. Keep permissions, duties, deadlines, and restrictions. Name each indicator separately.",
+    "instructions": "Select each indicator and its group, place the complete conditions beside the arrow, then rewrite the rule as “If …, then …”. Keep permissions, duties, deadlines, and restrictions.",
     "items": [
       {
         "id": "source-rephrase-01",
@@ -2203,7 +2203,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Four ways to express the rule",
     "stage": "After contraposition",
     "taskKind": "contrapositive",
-    "instructions": "Write the original arrow, its contrapositive, and both in ordinary if/then language. Negate the whole condition, including any restriction. Complete this set after the contrapositive lesson.",
+    "instructions": "Build the original diagram and its contrapositive. Then write both in ordinary if/then language. Reverse the conditions and negate each complete idea, including its restrictions.",
     "items": [
       {
         "id": "source-full-translation-01",
@@ -3425,7 +3425,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "diagram": "judges are independent in a system → that system has a good legal system",
         "contrapositive": "NOT (that system has a good legal system) → NOT (judges are independent in a system)",
         "ifThen": "If judges are independent in a system, then that system has a good legal system.",
-        "contrapositiveWords": "If that system does not have a good legal system, then judges are not independent in a system.",
+        "contrapositiveWords": "If that system does not have a good legal system, then judges are not independent in that system.",
         "explanation": "Keep the same system on both sides. No causal claim is needed to translate the rule.",
         "correctionNotes": [],
         "source": {
@@ -3479,7 +3479,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "diagram": "something is good under the stated theory → it is pleasure",
         "contrapositive": "NOT (it is pleasure) → NOT (something is good under the stated theory)",
         "ifThen": "If something is good under the stated theory, then it is pleasure.",
-        "contrapositiveWords": "If it is not pleasure, then something is not good under the stated theory.",
+        "contrapositiveWords": "If it is not pleasure, then it is not good under the stated theory.",
         "explanation": "The exclusivity claim makes pleasure necessary for goodness. Good goes left; pleasure goes right.",
         "correctionNotes": [
           "The key misses the exclusivity direction. Adjudicate the natural-language claim.",
@@ -3687,4 +3687,34 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
   }
 ];
 
-export const getSourceWorksheetDrill = (id: string) => sourceWorksheetDrills.find((set) => set.id === id);
+// Later visits reuse source items without counting them as new worksheet questions.
+const contrapositiveRevisits: Record<string, { sourceSetId: string; title: string; shortTitle: string }> = {
+  'source-intro-diagrams-contrapositive': {
+    sourceSetId: 'source-intro-diagrams',
+    title: 'Revisit the intro: build the contrapositive',
+    shortTitle: 'Intro training: contrapositives',
+  },
+  'source-rephrase-contrapositive': {
+    sourceSetId: 'source-rephrase',
+    title: 'Revisit the rules: write both directions',
+    shortTitle: 'Rephrasing: contrapositives',
+  },
+};
+
+export const getSourceWorksheetDrill = (id: string): SourceWorksheetDrillSet | undefined => {
+  const canonical = sourceWorksheetDrills.find((set) => set.id === id);
+  if (canonical) return canonical;
+  const revisit = contrapositiveRevisits[id];
+  if (!revisit) return undefined;
+  const source = sourceWorksheetDrills.find((set) => set.id === revisit.sourceSetId);
+  if (!source) return undefined;
+  return {
+    ...source,
+    id,
+    title: revisit.title,
+    shortTitle: revisit.shortTitle,
+    stage: 'After contraposition',
+    taskKind: 'contrapositive',
+    instructions: 'Return to these familiar statements. Build the original diagram and its contrapositive, then write both in ordinary if/then language. Reverse the conditions and negate each complete idea, including its restrictions.',
+  };
+};
