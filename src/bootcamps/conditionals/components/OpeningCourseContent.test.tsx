@@ -9,9 +9,11 @@ it('teaches necessity before the visual and distinguishes a requirement from a g
   const { container } = render(<OpeningCourseContent id="necessary"/>);
   expect(screen.queryByText(/raffle|bicycle|breathing/i)).toBeNull();
   const explanation = container.querySelector('.nc-lesson .cr-sufficiency-lead')!;
-  expect(explanation).toHaveTextContent('Whenever the sufficient condition is true, the necessary condition must be true too.');
+  expect(explanation).toHaveTextContent('something that must be true for another condition to be true');
   const firstControl = container.querySelector('.nc-controls button')!;
   expect(explanation.compareDocumentPosition(firstControl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  const distinction = screen.getByRole('heading', { name: 'Required does not mean enough' });
+  expect(firstControl.compareDocumentPosition(distinction) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   const film = screen.getByRole('region', { name: 'Short explanation of necessity' });
   expect(firstControl.compareDocumentPosition(film) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   expect(film.querySelector('source')).toHaveAttribute('src', '/media/conditionals/necessity/required-not-enough.mp4');

@@ -7,6 +7,7 @@ import { SufficientConditionExperience, SufficientReasoningWalkthrough } from '.
 import { SufficientConditionFilm } from './SufficientConditionFilm';
 import { necessaryConditionFilms } from '../content/necessaryConditionFilms';
 import { NecessaryConditionExperience } from './NecessaryConditionExperience';
+import { NecessaryConditionStatement } from './NecessaryConditionStatement';
 
 const raffleRule = 'If you win the raffle, you get a bicycle.';
 
@@ -277,26 +278,17 @@ export function conditionalReferenceContent() {
 
     <ReferenceStep number={4} label="The necessary condition" title="Necessary means required">
       <div className="cr-sufficiency nc-lesson">
-        <p className="cr-sufficiency-lead"><strong>Necessary means required.</strong> In a conditional relationship, the <strong>necessary condition</strong> is what the sufficient condition requires. Whenever the sufficient condition is true, the necessary condition must be true too. It cannot be missing.</p>
-        <p>Required for what? For the sufficient condition to be true. We are not saying the necessary condition is important, helpful, or usually there. We are saying that <strong>the sufficient condition cannot be true without it.</strong> Even one case with the sufficient condition but without the necessary condition would break the relationship.</p>
-        <p>The two names describe two roles in the same connection. <strong>Sufficient</strong> asks what is enough to establish something else. <strong>Necessary</strong> asks what that condition cannot be true without. Let's look at our example from both sides.</p>
-        <h3>What does law-school enrollment require?</h3>
-        <blockquote>If you are enrolled in law school, then you are <strong>a student</strong>.</blockquote>
-        <p>In the last lesson, we started with <strong>being enrolled in law school</strong>. That was enough to know you are a student. Now look at what enrollment makes certain: <strong>being a student</strong>. This is the necessary condition, introduced here by <strong>then</strong>.</p>
-        <p>Try to imagine someone who is enrolled in law school but is not a student. The two descriptions cannot fit together. A person enrolled in law school is one kind of student. You cannot keep the enrollment and take away the studenthood. That is why <strong>being a student is necessary for law-school enrollment</strong>.</p>
-        <div className="nc-role-comparison" aria-label="One relationship described from both sides">
-          <div><h4>Enrollment is sufficient for studenthood.</h4><p>Knowing you are enrolled in law school is <strong>enough to establish</strong> that you are a student.</p></div>
-          <div><h4>Studenthood is necessary for enrollment.</h4><p>Being a student is <strong>required for</strong> being enrolled in law school. Enrollment cannot be true without it.</p></div>
-        </div>
-        <p>Those are two descriptions of the same relationship. We have not reversed it or added another rule. And we have not said you actually are enrolled. We are explaining what must be true <strong>if</strong> you are.</p>
-        <section className="cr-sufficient-explanation" aria-label="Why a requirement is not necessarily enough">
-          <h3>What if all you know is that someone is a student?</h3>
-          <p>That person meets the requirement. But which subject do they study? They could study law. They could instead be a history student who is not enrolled in law school. Both possibilities fit what we know.</p>
-          <p>Think back to the groups in the last lesson. Everyone in the law-school group belongs inside the student group. But the student group has room for people outside law school too. Knowing someone is in the larger group does not put them in the smaller one.</p>
-          <p>So <strong>being a student is required for law-school enrollment without guaranteeing it.</strong> Having the necessary condition leaves enrollment open; missing it rules enrollment out. This is the difference the interaction below will let you compare.</p>
-          <p>Do not turn that into a rule that a necessary condition can never be sufficient. A condition can have both roles when the relationship supports both. The word <strong>necessary</strong>, by itself, tells you it is required. It does not tell you it is enough.</p>
-        </section>
+        <p className="cr-sufficiency-lead">A <strong>necessary condition</strong> is something that must be true for another condition to be true. Start with the same example from the last lesson.</p>
+        <NecessaryConditionStatement/>
+        <p className="nc-takeaway"><strong>You cannot be enrolled in law school without being a student.</strong> That is why being a student is necessary for law-school enrollment.</p>
         <NecessaryConditionExperience/>
+        <section className="cr-sufficient-explanation" aria-label="Why a requirement is not necessarily enough">
+          <h3>Required does not mean enough</h3>
+          <p>The law student and the history student both meet the requirement: <strong>they are students.</strong> But only the first person in our examples is enrolled in law school. So learning only that someone is a student does not tell you whether they are enrolled in law school.</p>
+          <p>Compare the two roles: <strong>being enrolled is enough to establish being a student; being a student is required for being enrolled.</strong> These describe the same relationship from different sides.</p>
+          <p>Whenever the sufficient condition is true, the necessary condition must be true too. The rule does not tell us that either condition is actually true of a particular person.</p>
+          <details className="cr-extension"><summary>Can a condition be both necessary and sufficient?</summary><p>Yes, when the relationship supports both directions. Necessary means required; it does not mean never enough. In our law-school example, being a student is necessary but not sufficient.</p></details>
+        </section>
         <SufficientConditionFilm key="necessary-definition" assets={necessaryConditionFilms} title="Why the requirement is not enough here" ariaLabel="Short explanation of necessity"/>
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 2 indicator words">
           <h3>Group 2: Necessary-condition indicators</h3>

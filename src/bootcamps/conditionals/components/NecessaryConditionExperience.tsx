@@ -1,24 +1,32 @@
 import { useId, useState } from 'react';
 
+const cases = [
+  { label: 'Law student', fact: 'Suppose this person is enrolled in law school.', student: 'Must be a student', studentNote: 'Follows from the rule', enrollment: 'Enrolled', note: 'Given in this example', title: 'Enrollment guarantees being a student.', explanation: 'Enrollment requires being a student. So this person must be a student.' },
+  { label: 'History student', fact: 'Suppose this person is a history student who is not enrolled in law school.', student: 'Is a student', studentNote: 'Given in this example', enrollment: 'Not enrolled', note: 'Given in this example', title: 'Being a student does not guarantee law-school enrollment.', explanation: 'This person is a student, but is not enrolled in law school. That fits the rule. Being a student is required for enrollment, but it is not enough to establish enrollment.' },
+  { label: 'Not a student', fact: 'Suppose this person is not a student.', student: 'Not a student', studentNote: 'Given in this example', enrollment: 'Ruled out', note: 'Follows from the rule', title: 'Without being a student, this person cannot be enrolled in law school.', explanation: 'Anyone enrolled in law school has to be a student. Because this person is not a student, enrollment is ruled out. The requirement cannot be false while enrollment is true.' },
+] as const;
+
 export function NecessaryConditionExperience() {
-  const [isStudent, setIsStudent] = useState(true);
+  const [selected, setSelected] = useState(0);
+  const current = cases[selected];
   const id = useId();
   return <section className="nc-experience" aria-labelledby={`${id}-heading`}>
     <header>
-      <h3 id={`${id}-heading`}>Can you be enrolled without being a student?</h3>
-      <p>Being a student is required for law-school enrollment. Compare what happens with and without that condition.</p>
+      <h3 id={`${id}-heading`}>Compare three people</h3>
+      <p>Keep the same rule. Choose a person and see what their situation tells you.</p>
     </header>
-    <div className="nc-controls" role="group" aria-label="Compare the requirement being present or missing">
-      <button type="button" aria-pressed={isStudent} aria-controls={`${id}-reading`} onClick={() => setIsStudent(true)}>A student</button>
-      <button type="button" aria-pressed={!isStudent} aria-controls={`${id}-reading`} onClick={() => setIsStudent(false)}>Not a student</button>
+    <div className="nc-controls" role="group" aria-label="Choose a person to compare">
+      {cases.map((item, index) => <button key={item.label} type="button" aria-pressed={selected === index} aria-controls={`${id}-reading`} onClick={() => setSelected(index)}>{item.label}</button>)}
     </div>
-    <div className="nc-relationship" data-required-present={isStudent} aria-hidden="true">
-      <div className="nc-condition"><span>The requirement</span><strong>Being a student</strong><small>{isStudent ? 'Present' : 'Missing'}</small></div>
-      <div className="nc-enrollment"><span>Law-school enrollment</span><strong>{isStudent ? 'Possible' : 'Ruled out'}</strong><small>{isStudent ? 'Still needs to be established' : 'Cannot hold without being a student'}</small></div>
+    <p className="nc-case-fact" aria-hidden="true">{current.fact}</p>
+    <div className="nc-relationship" data-required-present={selected !== 2} aria-hidden="true">
+      <div className="nc-condition"><span>Being a student</span><strong key={selected} className="nc-verdict">{current.student}</strong><small>{current.studentNote}</small></div>
+      <div className="nc-enrollment"><span>Law-school enrollment</span><strong key={selected} className="nc-verdict">{current.enrollment}</strong><small>{current.note}</small></div>
     </div>
     <div className="nc-reading" id={`${id}-reading`} role="status" aria-live="polite" aria-atomic="true">
-      <h4>{isStudent ? "Being a student doesn't tell us whether you are enrolled in law school." : "Without being a student, you can't be enrolled in law school."}</h4>
-      <p>{isStudent ? "You could be enrolled in law school, or you could study something else. Either way, you are a student. Meeting this requirement alone doesn't establish enrollment." : "Anyone enrolled in law school has to be a student. You can't have enrollment while being a student is missing. That's why being a student is necessary."}</p>
+      <p className="nc-sr-fact">{current.fact}</p>
+      <h4>{current.title}</h4>
+      <p>{current.explanation}</p>
     </div>
   </section>;
 }

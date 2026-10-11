@@ -11,7 +11,7 @@ export type OpeningCourseStep = {
 export const OPENING_COURSE_PATH: OpeningCourseStep[] = [
   { id: 'meaning', type: 'note', title: 'What conditionals are', description: 'Separate a rule from a fact, and see what a conditional actually promises.', unitId: 'orientation' },
   { id: 'sufficient', type: 'note', title: 'The Sufficient Condition', description: 'When one condition guarantees another.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
-  { id: 'necessary', type: 'note', title: 'The Necessary Condition', description: "What can't be missing, and why having it may not be enough.", unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
+  { id: 'necessary', type: 'note', title: 'The Necessary Condition', description: 'What the sufficient condition requires.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'must-arrow', type: 'note', title: 'Read the must arrow', description: 'Put sufficient on the left and necessary on the right, wherever they appear in the sentence.', unitId: 'orientation' },
   { id: 'foundation-practice', type: 'drill', title: 'Enough, required, or still open?', description: 'Use fresh facts and build a case that exposes a reversed rule.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'sufficient-words', type: 'note', title: 'Sufficient-condition words', description: 'Read if, when, where, all, the only, every and any in complete sentences.', unitId: 'group-1' },
