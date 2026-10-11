@@ -63,3 +63,4 @@
 .sw-tokens button:focus-visible{outline:2px solid #254d65;outline-offset:2px}
 .sw-tokens button[aria-pressed=true]{background:#e9bd74;color:#173544;box-shadow:0 0 0 2px #e9bd74}
 .dark .sw-tokens button[aria-pressed=true]{color:#173544}
+.sw-demo-toggle{margin:0 0 20px}.sw-demo-toggle summary{cursor:pointer;font-size:14px;color:#254d65;font-weight:600;margin-bottom:10px}
