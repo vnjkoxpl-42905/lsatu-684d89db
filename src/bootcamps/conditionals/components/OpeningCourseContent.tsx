@@ -6,6 +6,7 @@ import { OpeningMixedDrill } from './OpeningMixedDrill';
 import { PracticeTaskRunner } from './PracticeTaskRunner';
 import { StudyDeck } from './StudyDeck';
 import './must-arrow-note.css';
+import { MustArrowPractice } from './MustArrowPractice';
 
 type ContentSection = ReactElement<{ id?: string; number?: number; title?: string; children?: ReactNode; dark?: boolean; 'data-reference-boundary'?: boolean }>;
 
@@ -114,13 +115,13 @@ function MustArrowNote() {
       <figure className="ma-example" aria-label="Read left to right: if you are enrolled in law school, you must be a student">
         <figcaption className="ma-read-instruction">Read it as: <strong>“If this is true, this must be true.”</strong></figcaption>
         <div className="ma-relationship">
-          <div><span className="ma-side">Left side</span><span>Sufficient<br/>Enough</span><strong>You are enrolled in law school</strong></div>
+          <div className="ma-condition"><span className="ma-side">Left side</span><span>Sufficient<br/>Enough</span><strong>You are enrolled in law school</strong></div>
           <div className="ma-arrow" aria-hidden="true"><span>must</span><b>→</b></div>
-          <div><span className="ma-side">Right side</span><span>Necessary<br/>Required</span><strong>You are a student</strong></div>
+          <div className="ma-condition"><span className="ma-side">Right side</span><span>Necessary<br/>Required</span><strong>You are a student</strong></div>
         </div>
       </figure>
       <p>Start with <strong>“If you are enrolled in law school…”</strong> Follow the arrow and read <strong>“…you must be a student.”</strong></p>
-      <details className="cr-extension"><summary>Does the arrow work in reverse?</summary><p>No. Being a student does not establish law-school enrollment. Follow the arrow from left to right to read this rule. The rule alone does not say either condition is actually true, or that one causes the other.</p></details>
+      <details className="cr-extension ma-reverse"><summary>Does the arrow work in reverse?</summary><div className="ma-reverse-body"><p><strong>No. Being a student does not prove law-school enrollment.</strong></p><p>A person could be studying history instead. They would be a student without being enrolled in law school.</p><p className="ma-takeaway">Enrollment guarantees being a student.<br/><strong>Being a student does not guarantee enrollment.</strong></p><p>The rule describes a connection. It does not tell us that either condition is actually true, or that one causes the other.</p></div></details>
       <section className="ma-practice" aria-label="Build a must-arrow diagram">
         <h3>Now build one with a new rule</h3>
         <p>Follow the raffle sentence into a diagram, one step at a time.</p>
@@ -276,7 +277,7 @@ function Content({ id }: { id: string }) {
     case 'meaning': return <ReferenceBody number={1} omitTransition/>;
     case 'sufficient': return <ReferenceBody number={2} omitTransition/>;
     case 'necessary': return <ReferenceBody number={4} omitTransition/>;
-    case 'must-arrow': return <><MustArrowNote/><NoteSection title="Recall enough and required"><p>Use these new examples to check the roles and their direction.</p><StudyDeck group="foundation"/></NoteSection></>;
+    case 'must-arrow': return <><MustArrowNote/><NoteSection title="Try the relationship yourself"><MustArrowPractice/></NoteSection></>;
     case 'sufficient-words': return <IndicatorNote group="group-1"/>;
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
     case 'whole-meaning': return <WholeMeaningNote/>;

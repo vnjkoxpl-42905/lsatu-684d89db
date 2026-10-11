@@ -1,0 +1,20 @@
+#root .ma-question-practice { margin-block: 2rem; }
+#root .ma-question-practice-progress { display: grid; gap: .75rem; margin-bottom: 1.75rem; font-size: 1rem; }
+#root .ma-question-practice progress { appearance: none; width: 100%; height: .5rem; border: 0; border-radius: 1rem; overflow: hidden; background: var(--co-polish-fill); accent-color: var(--co-teal); }
+#root .ma-question-practice progress::-webkit-progress-bar { background: var(--co-polish-fill); }
+#root .ma-question-practice progress::-webkit-progress-value { background: var(--co-teal); border-radius: 1rem; }
+#root .ma-question-practice progress::-moz-progress-bar { background: var(--co-teal); border-radius: 1rem; }
+#root .ma-question-practice-question { padding: clamp(1.25rem, 3vw, 2.25rem); border: 1px solid var(--co-polish-line); border-radius: 1rem; background: var(--co-sheet-ground); }
+#root .ma-question-practice h3 { margin: 0 0 1.75rem; font-size: 1.35rem; }
+#root .ma-question-practice h3:focus-visible { outline: 2px solid var(--co-teal); outline-offset: .5rem; }
+#root .ma-question-practice .ma-question-practice-rule { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height: 1.55; padding-bottom: 1.5rem; border-bottom: 1px solid var(--co-polish-line); }
+#root .ma-question-practice .ma-question-practice-prompt { font-size: 1.25rem; font-weight: 650; line-height: 1.6; margin: 1.5rem 0; }
+#root .ma-question-practice button { font: inherit; font-size: 1.05rem; min-height: 48px; border: 1px solid var(--co-polish-line); border-radius: .5rem; padding: .75rem 1.15rem; background: var(--co-sheet-ground); color: inherit; cursor: pointer; }
+#root .ma-question-practice button:hover:not(:disabled) { background: var(--co-polish-fill); }
+#root .ma-question-practice button:focus-visible { outline: 2px solid var(--co-teal); outline-offset: 4px; }
+#root .ma-question-practice button:disabled { opacity: .5; cursor: default; }
+#root .ma-question-practice-explanation { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--co-polish-line); }
+#root .ma-question-practice-explanation h4 { margin: 0 0 .75rem; font-size: 1.1rem; }
+#root .ma-question-practice-explanation p, #root .ma-question-practice-finished { font-size: 1.2rem; line-height: 1.75; }
+#root .ma-question-practice-navigation { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.25rem; flex-wrap: wrap; }
+@media (max-width: 480px) { #root .ma-question-practice-navigation button { flex: 1 1 100%; } }

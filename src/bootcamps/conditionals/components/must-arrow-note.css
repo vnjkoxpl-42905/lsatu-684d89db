@@ -28,3 +28,22 @@
 #root .ma-example .ma-read-instruction { margin: 0 0 1.5rem; padding: 0 0 1.25rem; border-top: 0; border-bottom: 1px solid var(--co-polish-line); }
 #root .ma-arrow { align-self: center; }
 #root .ma-lesson summary { font-size: 1.125rem; cursor: pointer; padding: .75rem 0; }
+
+/* Give the two complete conditions equal space; the arrow has its own lane. */
+#root .ma-relationship { grid-template-columns: minmax(0, 1fr) 4rem minmax(0, 1fr); gap: 2rem; padding: 1rem 0; }
+#root .ma-relationship > .ma-condition { gap: 1rem; }
+#root .ma-condition strong { margin-top: .5rem; }
+#root .ma-arrow b { animation: ma-follow-arrow 2.4s ease-in-out 3; }
+#root .ma-reverse-body { display: grid; gap: 1.25rem; padding: 1rem 0 .5rem; }
+#root .ma-reverse-body .ma-takeaway { padding: 1.25rem; background: var(--co-polish-fill); border-radius: .5rem; }
+@keyframes ma-follow-arrow { 0%, 100% { transform: translateX(-3px); } 55% { transform: translateX(6px); } }
+@media (max-width: 600px) {
+  #root .ma-lesson { padding-inline: 1rem; }
+  #root .ma-example { padding: .875rem; }
+  #root .ma-relationship { grid-template-columns: minmax(0, 1fr) 2.5rem minmax(0, 1fr); gap: .65rem; }
+  #root .ma-relationship > .ma-condition { gap: .75rem; }
+  #root .ma-relationship strong { font-size: 1.125rem; overflow-wrap: anywhere; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #root .ma-arrow b { animation: none; }
+}
