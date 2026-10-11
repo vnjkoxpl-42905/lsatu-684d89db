@@ -2,6 +2,7 @@ import { Children, isValidElement, useEffect, useId, useRef, useState, type Reac
 import './reference-sequence.css';
 import { NegativeCaseLab } from './CounterexampleLab';
 import { StudyDeck } from './StudyDeck';
+import { groupOneCardIds, IndicatorFlashcardLink } from './FlashcardTools';
 import type { LessonPage } from './LessonPages';
 import { SufficientConditionExperience, SufficientReasoningWalkthrough } from './SufficientConditionExperience';
 import { SufficientConditionFilm } from './SufficientConditionFilm';
@@ -235,7 +236,8 @@ export function conditionalReferenceContent() {
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 1 indicator words">
           <h3>Group 1: Sufficient-condition indicators</h3>
           <p>You've seen how <strong>if</strong> points to the sufficient condition. These indicator words and phrases can help you recognize it too:</p>
-          <ul>{sufficientFamily.map(entry => <li key={entry.word}>{entry.word}</li>)}</ul>
+          <ul>{sufficientFamily.map((entry, index) => <li key={entry.word}><IndicatorFlashcardLink group="group-1" card={groupOneCardIds[index]}>{entry.word}</IndicatorFlashcardLink></li>)}</ul>
+          <IndicatorFlashcardLink group="group-1"/>
           <p>An <strong>indicator</strong> is a word or phrase that helps you recognize the relationship. In our example, <strong>if</strong> is the indicator; <strong>being enrolled in law school</strong> is the condition that guarantees being a student. Look for the words, then ask what they tell you about the two conditions.</p>
         </section>
 
@@ -298,6 +300,7 @@ export function conditionalReferenceContent() {
           <h3>Group 2: Necessary-condition indicators</h3>
           <p>These words and phrases help you identify the <strong>necessary condition</strong>. Read the whole sentence, then identify <strong>what is required and what requires it</strong>.</p>
           <NecessaryIndicatorExplorer/>
+          <IndicatorFlashcardLink group="group-2"/>
           <h3>Why only if is different from if</h3>
           <div className="nc-role-comparison">
             <div><h4>If you are enrolled in law school, you are a student.</h4><p><strong>If</strong> identifies enrollment as enough. This is our original relationship.</p></div>

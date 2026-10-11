@@ -52,8 +52,8 @@ it('exposes only the permitted content and flashcard families', () => {
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
   expect(document.querySelector('.opening-course-content')).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={steps} url={url}/></MemoryRouter>);
-  expect(screen.getByRole('heading', { name: 'Sufficient-condition words' })).toBeVisible();
-  expect(screen.queryByRole('heading', { name: 'Necessary-condition words' })).toBeNull();
+  expect(screen.getByRole('heading', { name: 'Group 1: Conditional indicator words' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Group 2: Conditional indicator words' })).toBeNull();
 });
 
 

@@ -276,4 +276,52 @@ export const indicatorFlashcards = [
     "adapted": true,
     "note": "Original example adapting the source concept; wording and reasoning reviewed."
   }
+, {
+  "id": "g1-whenever",
+  "group": "group-1",
+  "front": "Whenever a visitor books a morning tour, the visitor receives a map. Which complete condition is sufficient?",
+  "back": "Booking a morning tour is sufficient. Whenever covers every occasion that meets this condition: Books morning tour → Receives map. The indicator is whenever; the condition is booking a morning tour.",
+  "adapted": true,
+  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+},
+{
+  "id": "g1-anytime",
+  "group": "group-1",
+  "front": "Anytime a visitor books a morning tour, the visitor receives a map. What goes on the left of the arrow?",
+  "back": "Books a morning tour goes on the left. Anytime covers each occasion of booking that tour: Books morning tour → Receives map. Receiving a map alone does not establish a booking.",
+  "adapted": true,
+  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+},
+{
+  "id": "g1-every-time",
+  "group": "group-1",
+  "front": "Every time a visitor books a morning tour, the visitor receives a map. What does every time tell you?",
+  "back": "The rule covers every occasion of booking a morning tour. That whole condition is sufficient: Books morning tour → Receives map. Every time is the indicator, not the condition to place beside the arrow.",
+  "adapted": true,
+  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+},
+{
+  "id": "g1-in-order-to",
+  "group": "group-1",
+  "front": "In order to borrow a locker, a person needs a key. Which condition goes on the left, and what is required?",
+  "back": "Borrowing a locker goes on the left; having a key is required on the right: Borrows locker → Has key. In order to introduces the goal whose requirement is stated. Having a key does not guarantee borrowing a locker.",
+  "adapted": true,
+  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+},
+{
+  "id": "g1-people-who",
+  "group": "group-1",
+  "front": "People who borrow a locker have a key. Which complete group does the rule describe?",
+  "back": "People who borrow a locker. Keep borrow a locker with people: the rule is not about every person. Borrows locker → Has key. Borrowing a locker is sufficient for having a key under this rule.",
+  "adapted": true,
+  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+},
+{
+  "id": "g1-each",
+  "group": "group-1",
+  "front": "Each person who borrows a locker has a key. What does each establish about locker borrowers?",
+  "back": "Every individual who borrows a locker has a key. Borrowing a locker is the sufficient condition: Borrows locker → Has key. The rule does not say everyone with a key borrows a locker.",
+  "adapted": true,
+  "note": "2026-10-11 local extension using the existing Group 1 lesson relationships; not a downloaded source card."
+}
 ];

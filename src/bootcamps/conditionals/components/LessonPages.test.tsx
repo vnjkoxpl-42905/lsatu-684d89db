@@ -66,7 +66,7 @@ it('retains the actual lesson card and revealed side across page navigation with
   turn('Next');
   expect(screen.queryByRole('button', { name: /Turn back to the question/ })).toBeNull();
   turn('Back');
-  expect(screen.getByText('Recall card 2 of 10')).toBeVisible();
+  expect(screen.getByText(`Recall card 2 of ${cards.length}`)).toBeVisible();
   expect(screen.getByText(cards[1].back)).toBeVisible();
   expect(screen.getByRole('button', { name: 'Saved to revisit' })).toHaveAttribute('aria-pressed', 'true');
   fireEvent.click(screen.getByRole('button', { name: /Turn back to the question/ }));

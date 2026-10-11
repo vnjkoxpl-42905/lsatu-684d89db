@@ -192,3 +192,23 @@
   .co-task-header,.co-task-turn { padding:24px 18px; }
   .co-task-runner>.co-round-links { padding:24px 18px 0; }
 }
+
+/* Flashcards retain the course typography and separate concepts from indicators. */
+.co-flashcard-tools header { margin:0 0 2.25rem; }
+.co-flashcard-tools h1 { font-family:var(--font-mc-serif,Georgia,serif); font-size:clamp(2.2rem,4vw,3.5rem); line-height:1.1; margin:.6rem 0 1.25rem; }
+.co-flashcard-tools header>p:last-child { font-size:1.125rem; line-height:1.7; max-width:65ch; }
+.co-flashcard-sets { display:grid; gap:1.25rem; }
+.co-flashcard-sets section { padding:clamp(1.25rem,3vw,2rem); border:1px solid #bdccc8; border-radius:16px; background:#fffdf7; }
+.co-flashcard-sets h2 { font-family:var(--font-mc-serif,Georgia,serif); font-size:1.75rem; margin:0 0 .75rem; }
+.co-flashcard-sets p { font-size:1.125rem; line-height:1.6; margin:0 0 1.25rem; }
+.co-flashcard-return { display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; margin-bottom:2rem; }
+.co-flashcard-return a,.co-indicator-card-link { display:flex; align-items:center; gap:.65rem; }
+.co-indicator-card-link { justify-content:space-between; padding:.3rem .4rem; border-radius:6px; text-decoration:underline; text-underline-offset:.25em; }
+.co-indicator-card-link:hover { background:#e7eee7; }
+.co-indicator-card-link:focus-visible,.co-flashcard-tools a:focus-visible,.co-expression-picker select:focus-visible { outline:3px solid #b05b38; outline-offset:4px; }
+.co-flashcard-entry { margin:1rem 0; }
+.co-expression-picker { display:grid; gap:.6rem; font-weight:600; margin-bottom:1.5rem; }
+.co-expression-picker select { width:100%; min-height:48px; padding:.75rem; font:inherit; border:1px solid #8ca9a2; border-radius:8px; background:#fffdf7; color:inherit; }
+.co-focused-deck .co-deck-controls { display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+.co-focused-deck .co-study-card { text-align:left; min-height:18rem; }
+@media(prefers-reduced-motion:reduce) { .co-focused-deck * { animation:none!important; transition:none!important; } }

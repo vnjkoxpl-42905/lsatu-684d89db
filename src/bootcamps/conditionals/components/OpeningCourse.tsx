@@ -5,7 +5,7 @@ import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/Pa
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { OPENING_COURSE_PATH, openingCourseStep, type OpeningCourseStep } from '../openingCoursePath';
 import { OpeningCourseContent } from './OpeningCourseContent';
-import { StudyDeck } from './StudyDeck';
+import { CourseFlashcardUrl, FlashcardTools } from './FlashcardTools';
 import { DrillOneEntry } from './DrillOneExperience';
 import './opening-course.css';
 
@@ -107,10 +107,7 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
       <ol className="oc-course-path">{list.map(step => <CourseCard key={step.id} step={step} url={url}/>)}</ol>
       {!list.length && <p>No opening lessons are available in this work.</p>}
     </div>}
-    {view === 'tools' && <div className="oc-course-note">
-      <div data-course-heading><PageHeader noBloom eyebrow="Tools" title="Recall before you turn." description="Say the relationship in your own words. Turn the card to compare your reasoning."/></div>
-      <div className="co-opening">{steps.some(step => step.unitId === 'orientation' || step.unitId === 'sufficient-necessary') && <><h2>Enough and required</h2><StudyDeck group="foundation"/></>}{steps.some(step => step.unitId === 'group-1') && <><h2>Sufficient-condition words</h2><StudyDeck group="group-1"/></>}{steps.some(step => step.unitId === 'group-2') && <><h2>Necessary-condition words</h2><StudyDeck group="group-2"/></>}{!steps.length && <p>No flashcards are available in this work.</p>}</div>
-    </div>}
+    {view === 'tools' && <FlashcardTools url={url} allowed={[...(steps.some(step => step.unitId === 'orientation' || step.unitId === 'sufficient-necessary') ? ['foundation'] : []), ...(steps.some(step => step.unitId === 'group-1') ? ['group-1'] : []), ...(steps.some(step => step.unitId === 'group-2') ? ['group-2'] : [])]}/>}
     {current?.type === 'drill' && !run && <DrillEntry step={current} url={url}/>}
     {current && (current.type === 'note' || run) && <div className={current.type === 'note' ? 'oc-course-note' : 'oc-drill-run-header'}>
       <div data-course-heading>{current.type === 'note' ? <header className="mb-10">
@@ -120,7 +117,7 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions<ArrowRight size={16}/></Link>}
       {current.id === 'mixed-practice' && <p className="oc-save-scope">{practiceSaveNotice}</p>}
     </div>}
-    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><OpeningCourseContent id={step.id}/></div>)}</div>
+    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}><OpeningCourseContent id={step.id}/></CourseFlashcardUrl.Provider></div>)}</div>
     {current && (current.type === 'note' || run) && <nav className="oc-course-turn" aria-label="Course navigation">{prior ? <Link to={url(prior.id)}><span>Previous {prior.type === 'note' ? 'lesson' : 'drill'}</span><strong>{prior.title}</strong></Link> : <Link to={url('lessons')}>All lessons</Link>}{next ? <Link to={url(next.id)}><span>Next {next.type === 'note' ? 'lesson' : 'drill'}</span><strong>{next.title}<ArrowRight size={18}/></strong></Link> : <Link to={url('lessons')}>Return to lessons<ArrowRight size={18}/></Link>}</nav>}
     {!isIndex && view !== 'tools' && !current && <div className="oc-course-note"><h1>This lesson is not available here.</h1><Link to={url('lessons')}>Return to lessons</Link></div>}
   </div>;
