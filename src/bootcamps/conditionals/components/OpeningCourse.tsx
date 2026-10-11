@@ -117,7 +117,7 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
         <h1 className="font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]">{current.title}</h1>
         <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{current.id === 'necessary' ? <strong>{current.description}</strong> : current.description}</p>
       </header> : <header><p className="oc-label">Practice</p><h1>{current.title}</h1></header>}</div>
-      {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}><ArrowLeft size={16}/>Back to instructions</Link>}
+      {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions<ArrowRight size={16}/></Link>}
       {current.id === 'mixed-practice' && <p className="oc-save-scope">{practiceSaveNotice}</p>}
     </div>}
     <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><OpeningCourseContent id={step.id}/></div>)}</div>

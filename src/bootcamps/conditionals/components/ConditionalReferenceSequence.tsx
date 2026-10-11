@@ -232,6 +232,13 @@ export function conditionalReferenceContent() {
         <p>Being enrolled in law school is enough to know you're <strong>a student</strong>. You don't need to know which classes you're taking. Enrollment already guarantees it. That's why being enrolled is the sufficient condition in this relationship.</p>
         <p>Here, <strong>if</strong> introduces <strong>being enrolled in law school</strong>. That whole idea is the sufficient condition. If is the word that helps you find it. We haven't said you're actually enrolled; we're explaining what follows if you are.</p>
 
+        <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 1 indicator words">
+          <h3>Group 1: Sufficient-condition indicators</h3>
+          <p>You've seen how <strong>if</strong> points to the sufficient condition. These indicator words and phrases can help you recognize it too:</p>
+          <ul>{sufficientFamily.map(entry => <li key={entry.word}>{entry.word}</li>)}</ul>
+          <p>An <strong>indicator</strong> is a word or phrase that helps you recognize the relationship. In our example, <strong>if</strong> is the indicator; <strong>being enrolled in law school</strong> is the condition that guarantees being a student. Look for the words, then ask what they tell you about the two conditions.</p>
+        </section>
+
         <section className="cr-sufficient-explanation" aria-label="What makes a condition sufficient">
           <SufficientReasoningWalkthrough/>
         </section>
@@ -247,12 +254,7 @@ export function conditionalReferenceContent() {
         <p>Want to see the relationship in a short video? These optional clips use a hypothetical student, Maya. The first supposes she is enrolled in law school. The second supposes only that she is a student. Compare what each piece of information establishes.</p>
         <SufficientConditionFilm key="sufficient-definition"/>
 
-        <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 1 indicator words">
-          <h3>Group 1: Sufficient-condition indicators</h3>
-          <p>You've seen how <strong>if</strong> points to the sufficient condition. These indicator words and phrases can help you recognize it too:</p>
-          <ul>{sufficientFamily.map(entry => <li key={entry.word}>{entry.word}</li>)}</ul>
-          <p>An <strong>indicator</strong> is a word or phrase that helps you recognize the relationship. In our example, <strong>if</strong> is the indicator; <strong>being enrolled in law school</strong> is the condition that guarantees being a student. Look for the words, then ask what they tell you about the two conditions.</p>
-        </section>
+
 
         <section className="cr-sufficient-explanation cr-sufficient-checks" aria-label="Check your understanding of sufficiency">
           <h3>Use an indicator to find the guarantee</h3>
