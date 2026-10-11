@@ -110,7 +110,7 @@ function MustArrowNote() {
   return <section className="co-section cr-course-section ma-lesson" data-reference-source={8}>
     <div className="co-section-heading"><h2>The arrow means “must”</h2></div>
     <div className="cr-step-body">
-      <p className="ma-lead">A <strong>must arrow</strong> shows what has to be true if another condition is true.</p>
+      <p className="ma-lead">The <strong>must arrow</strong> points from left to right. <strong>If the left side is true, the right side must be true.</strong></p>
       <p>Use the rule you already know: <strong>if you are enrolled in law school, you must be a student.</strong></p>
       <figure className="ma-example" aria-label="Being enrolled in law school implies being a student">
         <div className="ma-relationship">
@@ -118,12 +118,12 @@ function MustArrowNote() {
           <div className="ma-arrow" aria-hidden="true"><span>must</span><b>→</b></div>
           <div><span>Necessary · required</span><strong>Is a student</strong></div>
         </div>
-        <figcaption>Start on the left: enrolled in law school. Follow the arrow: this person <strong>must be a student.</strong></figcaption>
+        <figcaption>If someone is enrolled in law school, follow the arrow: they <strong>must be a student.</strong></figcaption>
       </figure>
       <div className="ma-direction">
         <h3>From enough to required</h3>
         <p>We draw the arrow <strong>from left to right</strong>. The sufficient condition goes on the left. The necessary condition goes on the right.</p>
-        <p>The arrow records the connection. It doesn't say that enrollment causes someone to be a student, or that being a student happens afterward.</p>
+        <p>The left side guarantees the right. The arrow alone doesn't tell us that either side is actually true. It also doesn't mean that one causes the other or happens first.</p>
       </div>
       <section className="ma-practice" aria-label="Build a must-arrow diagram">
         <h3>Now build one with a new rule</h3>
