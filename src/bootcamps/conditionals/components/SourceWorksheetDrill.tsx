@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { checkIndicatorSelection, getSourceWorksheetDrill, type SourceWorksheetDrillSet } from '../content/sourceWorksheetDrills';
 import { useCourseStep } from '../courseProgress';
-import { IndicatorDemo } from './IndicatorDemo';
+import { DrillDemo } from './DrillDemo';
 import './source-worksheet-drill.css';
 
 type Stage = 'indicators' | 'conditions' | 'symbols' | 'diagram' | 'contra' | 'readback' | 'contra-readback' | 'review';
@@ -153,8 +153,7 @@ function WorksheetRun({ set, run, startUrl, title, storageScope }: { set: Source
   function slot(label: string, field: 'left' | 'right' | 'contraLeft' | 'contraRight') {
     return <fieldset className="sw-choice-slot"><legend>{label}</legend>{choices.map(value => <button type="button" key={value} aria-pressed={answer[field] === value} onClick={() => edit({ [field]: value })}>{answer[field] === value && <Check size={17}/>}<span>{(field === 'contraLeft' && answer.negateLeft || field === 'contraRight' && answer.negateRight) ? `NOT (${condition(value)})` : condition(value)}</span></button>)}</fieldset>;
   }
-  const phaseSummary = stages.filter(s => s !== 'review');
-  if (!started) return <section className="sw-entry"><div data-course-heading><p className="sw-eyebrow">{set.items.length} sentences · One step at a time</p><h1>{title ?? set.title}</h1>{title && <h2>{set.title}</h2>}<p className="sw-entry-copy">{set.instructions}</p><ol>{phaseSummary.map(s => <li key={s}>{stageName(s)}.</li>)}</ol>{stages.includes('indicators') && <IndicatorDemo/>}{startUrl ? <Link className="sw-primary" to={startUrl}>{reviewed ? 'Continue practice' : 'Start practice'}<ArrowRight size={18}/></Link> : <button className="sw-primary" onClick={() => setStarted(true)}>{reviewed ? 'Continue practice' : 'Start practice'}<ArrowRight size={18}/></button>}</div></section>;
+  if (!started) return <section className="sw-entry"><div data-course-heading><p className="sw-eyebrow">{set.items.length} sentences · One step at a time</p><h1>{title ?? set.title}</h1>{title && <h2>{set.title}</h2>}<p className="sw-entry-copy">{set.instructions}</p><DrillDemo drillId={set.id}/>{startUrl ? <Link className="sw-primary" to={startUrl}>{reviewed ? 'Continue practice' : 'Start practice'}<ArrowRight size={18}/></Link> : <button className="sw-primary" onClick={() => setStarted(true)}>{reviewed ? 'Continue practice' : 'Start practice'}<ArrowRight size={18}/></button>}</div></section>;
 
   return <section className="sw-experience" aria-label={set.title}>
     <header className="sw-header"><div><p className="sw-eyebrow">{set.shortTitle}</p><p>{reviewed ? `${reviewed} of ${set.items.length} reviewed` : 'Ready to begin'}</p></div>{reviewed > 0 && !results && <button className="sw-text-button" onClick={() => setResults(true)}>Review my work</button>}<strong className="sw-percent">{percent}<small>%</small></strong></header>

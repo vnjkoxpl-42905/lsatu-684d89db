@@ -8,6 +8,7 @@ import { OPENING_COURSE_PATH, openingCourseStep, type OpeningCourseStep } from '
 import { OpeningCourseContent } from './OpeningCourseContent';
 import { CourseFlashcardUrl, FlashcardTools } from './FlashcardTools';
 import { DrillOneEntry } from './DrillOneExperience';
+import { DrillDemo } from './DrillDemo';
 import { SourceWorksheetDrill } from './SourceWorksheetDrill';
 import { getSourceWorksheetDrill } from '../content/sourceWorksheetDrills';
 import './opening-course.css';
@@ -73,6 +74,7 @@ function DrillEntry({ step, url, storageScope }: { step: OpeningCourseStep; url:
     <section className="oc-drill-start" aria-label="Practice instructions">
       <h2>One step at a time</h2>
       <p>Before each section, we'll show you what to look for. Then you'll put it into practice.</p>
+      <DrillDemo drillId={step.id}/>
       <Link className="oc-action oc-start-pulse" to={url(step.id, true)}>Start practice<ArrowRight size={16}/></Link>
     </section>
   </div>;
@@ -84,6 +86,7 @@ function DrillEntry({ step, url, storageScope }: { step: OpeningCourseStep; url:
     <section className="oc-drill-start" aria-label="Practice instructions">
       <p className="oc-label">{instructions.summary}</p><h2>{instructions.heading}</h2>
       <ol>{instructions.steps.map(instruction => <li key={instruction}>{instruction}</li>)}</ol>
+      <DrillDemo drillId={step.id}/>
       <Link className="oc-action" to={url(step.id, true)}>Start practice<ArrowRight size={16}/></Link>
     </section>
   </div>;
