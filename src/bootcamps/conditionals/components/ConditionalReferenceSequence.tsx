@@ -220,7 +220,7 @@ export function conditionalReferenceContent() {
       <p>Let's read one rule.</p><blockquote>{raffleRule}</blockquote>
       <p>Under this rule, winning the raffle makes getting a bicycle certain. Winning without getting one would break the stated rule. That is what we mean by a <strong>guarantee</strong> here.</p>
       <p>Compare that with “If you win the raffle, you usually get a bicycle.” Usually allows an exception. Our rule does not. Take the stated rule as given; we are asking what it tells us, not whether a real organizer keeps a promise.</p>
-      <ReferenceQuestion prompt="Does the rule itself tell us that you actually win the raffle?" options={['Yes, it says I win.', 'No, it tells me what follows if I win.']} correct={1} feedback={['You added a case fact. The rule has not reported a win; it tells you what getting one would prove.', 'Imagining a win helps us understand the rule. We need a separate fact to prove that you actually win.']}/>
+      <ReferenceQuestion prompt="Does the rule itself tell us that you actually win the raffle?" options={['Yes, it says you win.', 'No, it tells you what follows if you win.']} correct={1} feedback={['You added a case fact. The rule has not reported a win; it tells you what getting one would prove.', 'Imagining a win helps us understand the rule. We need a separate fact to prove that you actually win.']}/>
       <p>Now let's take the two conditions one at a time.</p>
     </ReferenceStep>
 

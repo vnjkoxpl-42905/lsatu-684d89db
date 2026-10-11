@@ -161,3 +161,8 @@
 .d1-progress-track>span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#244c62,#548078); box-shadow:0 0 8px #54807826; transition:width .6s cubic-bezier(.22,1,.36,1); }
 @media(max-width:480px) { .d1-progress-summary { padding:20px 20px 16px; gap:12px; } .d1-progress-value { align-items:flex-end; flex-direction:column; gap:5px; } .d1-progress-value strong { font-size:2.2rem; } .d1-progress-value>span { font-size:.75rem; } .d1-progress-track { margin:0 20px 22px; } }
 @media(prefers-reduced-motion:reduce) { .d1-progress-track>span { transition:none; } }
+
+/* The entry title is a phrase ("Spot the condition"), not a numeral; size it so it wraps cleanly. */
+.d1-screen.oc-course-screen .d1-entry-title h1 { font-size:clamp(3.4rem,6.2vw,5.8rem); line-height:.98; letter-spacing:-.05em; max-width:9ch; }
+@media(max-width:800px) { .d1-screen.oc-course-screen .d1-entry-title h1 { font-size:clamp(3rem,10vw,4.2rem); } }
+@media(max-width:480px) { .d1-screen.oc-course-screen .d1-entry-title h1 { font-size:clamp(2.6rem,12vw,3.3rem); white-space:normal; } }

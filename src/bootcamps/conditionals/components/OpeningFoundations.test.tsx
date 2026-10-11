@@ -18,7 +18,7 @@ it('shows one foundation question at a time and retains checked feedback when re
   expect(screen.getByText('Question 18 of 24')).toBeVisible();
   expect(screen.queryByRole('button', { name: 'In the town hall.' })).toBeNull();
   expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: 'No, it tells me what follows if I win.' }));
+  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' }));
   expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled();
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
   fireEvent.click(screen.getByRole('button', { name: 'Next question' }));

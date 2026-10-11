@@ -8,7 +8,6 @@
 .sw-selected-condition{font-size:17px;line-height:1.6;font-weight:500;overflow-wrap:anywhere;padding:8px 0}
 .sw-entry-art{flex-direction:row;transform:none;gap:12px}.sw-entry-art span{padding:24px 13px;font-size:22px;letter-spacing:0;box-shadow:6px 7px 0 #dfb371}.sw-entry-art i{transform:none;font-size:32px}.sw-notation-help{font-size:15px;color:var(--sw-soft)}.sw-review-actions button:disabled{opacity:.45;cursor:not-allowed}.sw-entry h2{font-family:Georgia,serif;font-size:28px;line-height:1.35}
 @media(max-width:600px){.sw-arrow-row{grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr);gap:7px}.sw-arrow{transform:none;padding:0}.sw-slot{font-size:12px}.sw-slot select{font-size:14px;padding:8px 18px 8px 6px}.sw-selected-condition{font-size:15px}.sw-negation{font-size:12px;align-items:flex-start}}
-.sw-source-note{margin:20px 0;font-size:15px;line-height:1.65;border:1px solid var(--sw-line);border-radius:7px;padding:12px 16px}.sw-source-note summary{cursor:pointer;font-weight:600}.sw-source-note ul{padding-left:20px}.sw-source-note li+li{margin-top:8px}
 @keyframes sw-arrive{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}.sw-question,.sw-feedback,.sw-results{animation:sw-arrive .28s ease-out both}@media(prefers-reduced-motion:reduce){.sw-question,.sw-feedback,.sw-results{animation:none}}
 .sw-indicator-groups{display:grid;gap:15px;margin:0 0 25px}.sw-indicator-groups select{min-height:48px}.sw-indicator-groups .sw-slot{font-size:15px}
 /* Staged worksheet workspace: one operation remains visible at a time. */

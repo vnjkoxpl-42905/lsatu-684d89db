@@ -7,20 +7,20 @@ import { OpeningCourseNavigation, OpeningCourseScreen } from './OpeningCourse';
 const url = (id: string, run = false) => `/course/${id}${run ? '?run=1' : ''}`;
 afterEach(cleanup);
 
-it('offers nine dedicated notes and thirteen interleaved drill entries', () => {
+it('offers nine dedicated notes and twelve interleaved drill entries', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
   const list = document.querySelector<HTMLElement>('ol.oc-course-path')!;
-  expect(list.children).toHaveLength(22);
+  expect(list.children).toHaveLength(21);
   expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(9);
-  expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(13);
+  expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(12);
   expect(document.querySelector('.co-pages')).toBeNull();
   expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'missing-requirement', 'foundation-practice']);
 });
 
 it('shows the sentence count in plain words and never says statements or practise', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
-  const card = screen.getByRole('heading', { name: /Drill 3: Find the indicators/ }).closest('li')!;
-  expect(within(card).getByText('13 sentences')).toBeVisible();
+  const card = screen.getByRole('heading', { name: /Drill 2: Find both conditions/ }).closest('li')!;
+  expect(within(card).getByText('28 sentences')).toBeVisible();
   expect(within(card).queryByRole('list')).toBeNull();
   expect(document.querySelector('ol.oc-course-path')!.textContent).not.toMatch(/statements|Practise/i);
 });
@@ -56,13 +56,13 @@ it('separates a drill landing from its attempt surface', () => {
 
 it('retains a corrected answer when returning from another dedicated lesson', () => {
   const { rerender } = render(<MemoryRouter><OpeningCourseScreen view="meaning" url={url}/></MemoryRouter>);
-  fireEvent.click(screen.getByRole('button', { name: 'Yes, it says I win.' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Yes, it says you win.' }));
   expect(screen.getByText('Not quite.')).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'No, it tells me what follows if I win.' }));
+  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' }));
   rerender(<MemoryRouter><OpeningCourseScreen view="sufficient" url={url}/></MemoryRouter>);
-  expect(screen.queryByRole('button', { name: 'No, it tells me what follows if I win.' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'No, it tells you what follows if you win.' })).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="meaning" url={url}/></MemoryRouter>);
-  expect(screen.getByRole('button', { name: 'No, it tells me what follows if I win.' })).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' })).toHaveAttribute('aria-pressed', 'true');
   expect(screen.getByText('Correct.')).toBeVisible();
 });
 

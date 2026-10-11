@@ -17,11 +17,11 @@ export interface SourceWorksheetDrillSet {
 export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
   {
     "id": "source-intro-identify",
-    "title": "Find the indicator and both conditions",
+    "title": "Find the indicators and both conditions",
     "shortTitle": "Intro training",
     "stage": "Recognize",
     "taskKind": "identify",
-    "instructions": "Select the indicator expressions and their groups. Then write the two complete conditions before comparing with the model. Keep words that limit who, when, or what the rule covers.",
+    "instructions": "Select the indicators and choose each one’s group. Then write the two complete conditions and compare them with our version. Keep words that limit who, when, or what the rule covers.",
     "items": [
       {
         "id": "source-intro-identify-01",
@@ -53,7 +53,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-intro-identify-02",
         "sourceId": "intro-p1-02",
         "originalStatement": "Whenever you see lightning, expect thunder to follow.",
-        "statement": "Whenever you see lightning, you are instructed to expect thunder to follow.",
+        "statement": "Whenever you see lightning, you should expect thunder to follow.",
         "indicators": [
           {
             "text": "Whenever",
@@ -61,12 +61,12 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
           }
         ],
         "sufficient": "you see lightning",
-        "necessary": "you are instructed to expect thunder to follow",
-        "diagram": "you see lightning → you are instructed to expect thunder to follow",
-        "contrapositive": "NOT (you are instructed to expect thunder to follow) → NOT (you see lightning)",
-        "ifThen": "If you see lightning, then you are instructed to expect thunder to follow.",
-        "contrapositiveWords": "If you are not instructed to expect thunder to follow, then you do not see lightning.",
-        "explanation": "The instruction to expect thunder is the result. It does not prove that thunder actually follows.",
+        "necessary": "you should expect thunder to follow",
+        "diagram": "you see lightning → you should expect thunder to follow",
+        "contrapositive": "NOT (you should expect thunder to follow) → NOT (you see lightning)",
+        "ifThen": "If you see lightning, then you should expect thunder to follow.",
+        "contrapositiveWords": "If it is not true that you should expect thunder to follow, then you do not see lightning.",
+        "explanation": "The result is that you should expect thunder. The rule does not promise that thunder actually follows.",
         "correctionNotes": [
           "The key strengthens “expect thunder” to “thunder will follow.” Preserve the expectation.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -384,20 +384,20 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-intro-identify-14",
         "sourceId": "intro-p1-14",
         "originalStatement": "You must be over 18 to vote in the election.",
-        "statement": "You must be over 18 to be eligible to vote in this fictional election.",
+        "statement": "You must be over 18 to vote in the club election.",
         "indicators": [
           {
             "text": "must",
             "group": 2
           }
         ],
-        "sufficient": "a person is eligible to vote in this fictional election",
+        "sufficient": "a person votes in the club election",
         "necessary": "that person is over 18",
-        "diagram": "a person is eligible to vote in this fictional election → that person is over 18",
-        "contrapositive": "NOT (that person is over 18) → NOT (a person is eligible to vote in this fictional election)",
-        "ifThen": "If a person is eligible to vote in this fictional election, then that person is over 18.",
-        "contrapositiveWords": "If that person is not over 18, then that person is not eligible to vote in this fictional election.",
-        "explanation": "Over 18 means older than 18. This exercise supplies a fictional eligibility rule, not election-law advice.",
+        "diagram": "a person votes in the club election → that person is over 18",
+        "contrapositive": "NOT (that person is over 18) → NOT (a person votes in the club election)",
+        "ifThen": "If a person votes in the club election, then that person is over 18.",
+        "contrapositiveWords": "If a person is not over 18, then that person does not vote in the club election.",
+        "explanation": "Over 18 means older than 18. Voting requires being over 18, but being over 18 does not prove that a person votes.",
         "correctionNotes": [
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
@@ -433,17 +433,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
           "part": "Intro training · Part 1",
           "item": 15
         }
-      }
-    ]
-  },
-  {
-    "id": "source-indicators",
-    "title": "Recognize Group 1 and Group 2",
-    "shortTitle": "Indicator identification",
-    "stage": "Recognize",
-    "taskKind": "indicators",
-    "instructions": "Select each indicator expression and identify its group. A sentence may contain expressions from both groups. Check which condition each expression helps you find.",
-    "items": [
+      },
       {
         "id": "source-indicators-01",
         "sourceId": "indicator-p1-01",
@@ -713,8 +703,12 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-indicators-11",
         "sourceId": "indicator-p1-11",
         "originalStatement": "Always document errors before troubleshooting.",
-        "statement": "Errors are always documented before troubleshooting begins.",
+        "statement": "Errors must always be documented before troubleshooting begins.",
         "indicators": [
+          {
+            "text": "must",
+            "group": 2
+          },
           {
             "text": "always",
             "group": 2
@@ -726,7 +720,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (errors have been documented before troubleshooting) → NOT (troubleshooting begins)",
         "ifThen": "If troubleshooting begins, then errors have been documented before troubleshooting.",
         "contrapositiveWords": "If errors have not been documented before troubleshooting, then troubleshooting does not begin.",
-        "explanation": "Before is part of the requirement. Documentation after troubleshooting would not meet it.",
+        "explanation": "Must and always both point to the requirement. Before is part of it: documentation after troubleshooting would not meet it.",
         "correctionNotes": [
           "This is an instruction. Do not treat it as proof of actual compliance.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -830,7 +824,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-intro-diagrams-02",
         "sourceId": "intro-p2-02",
         "originalStatement": "Whenever you see lightning, expect thunder to follow.",
-        "statement": "Whenever you see lightning, you are instructed to expect thunder to follow.",
+        "statement": "Whenever you see lightning, you should expect thunder to follow.",
         "indicators": [
           {
             "text": "Whenever",
@@ -838,12 +832,12 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
           }
         ],
         "sufficient": "you see lightning",
-        "necessary": "you are instructed to expect thunder to follow",
-        "diagram": "you see lightning → you are instructed to expect thunder to follow",
-        "contrapositive": "NOT (you are instructed to expect thunder to follow) → NOT (you see lightning)",
-        "ifThen": "If you see lightning, then you are instructed to expect thunder to follow.",
-        "contrapositiveWords": "If you are not instructed to expect thunder to follow, then you do not see lightning.",
-        "explanation": "The instruction to expect thunder is the result. It does not prove that thunder actually follows.",
+        "necessary": "you should expect thunder to follow",
+        "diagram": "you see lightning → you should expect thunder to follow",
+        "contrapositive": "NOT (you should expect thunder to follow) → NOT (you see lightning)",
+        "ifThen": "If you see lightning, then you should expect thunder to follow.",
+        "contrapositiveWords": "If it is not true that you should expect thunder to follow, then you do not see lightning.",
+        "explanation": "The result is that you should expect thunder. The rule does not promise that thunder actually follows.",
         "correctionNotes": [
           "The key strengthens “expect thunder” to “thunder will follow.” Preserve the expectation.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -1161,20 +1155,20 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-intro-diagrams-14",
         "sourceId": "intro-p2-14",
         "originalStatement": "You must be over 18 to vote in the election.",
-        "statement": "You must be over 18 to be eligible to vote in this fictional election.",
+        "statement": "You must be over 18 to vote in the club election.",
         "indicators": [
           {
             "text": "must",
             "group": 2
           }
         ],
-        "sufficient": "a person is eligible to vote in this fictional election",
+        "sufficient": "a person votes in the club election",
         "necessary": "that person is over 18",
-        "diagram": "a person is eligible to vote in this fictional election → that person is over 18",
-        "contrapositive": "NOT (that person is over 18) → NOT (a person is eligible to vote in this fictional election)",
-        "ifThen": "If a person is eligible to vote in this fictional election, then that person is over 18.",
-        "contrapositiveWords": "If that person is not over 18, then that person is not eligible to vote in this fictional election.",
-        "explanation": "Over 18 means older than 18. This exercise supplies a fictional eligibility rule, not election-law advice.",
+        "diagram": "a person votes in the club election → that person is over 18",
+        "contrapositive": "NOT (that person is over 18) → NOT (a person votes in the club election)",
+        "ifThen": "If a person votes in the club election, then that person is over 18.",
+        "contrapositiveWords": "If a person is not over 18, then that person does not vote in the club election.",
+        "explanation": "Over 18 means older than 18. Voting requires being over 18, but being over 18 does not prove that a person votes.",
         "correctionNotes": [
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
@@ -1462,8 +1456,12 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-roles-10",
         "sourceId": "indicator-p2-10",
         "originalStatement": "Always document errors before troubleshooting.",
-        "statement": "Errors are always documented before troubleshooting begins.",
+        "statement": "Errors must always be documented before troubleshooting begins.",
         "indicators": [
+          {
+            "text": "must",
+            "group": 2
+          },
           {
             "text": "always",
             "group": 2
@@ -1475,7 +1473,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (errors have been documented before troubleshooting) → NOT (troubleshooting begins)",
         "ifThen": "If troubleshooting begins, then errors have been documented before troubleshooting.",
         "contrapositiveWords": "If errors have not been documented before troubleshooting, then troubleshooting does not begin.",
-        "explanation": "Before is part of the requirement. Documentation after troubleshooting would not meet it.",
+        "explanation": "Must and always both point to the requirement. Before is part of it: documentation after troubleshooting would not meet it.",
         "correctionNotes": [
           "Keep “before” and distinguish an instruction from actual compliance.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -1495,7 +1493,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Conditional rephrasing",
     "stage": "Translate",
     "taskKind": "rephrase",
-    "instructions": "Rewrite the sentence as “If …, then …” before looking at a model. Then identify each indicator and its group and build the original arrow. Keep permissions, duties, deadlines, and restrictions.",
+    "instructions": "Rewrite the sentence as “If …, then …” before you look at our version. Then find each indicator and its group, and build the original diagram. Keep permissions, duties, deadlines, and restrictions.",
     "items": [
       {
         "id": "source-rephrase-01",
@@ -1689,7 +1687,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (that project involves effective teamwork) → NOT (a project is successful)",
         "ifThen": "If a project is successful, then that project involves effective teamwork.",
         "contrapositiveWords": "If that project does not involve effective teamwork, then that project is not successful.",
-        "explanation": "The reviewed statement makes teamwork necessary for success. Teamwork alone does not guarantee a successful project.",
+        "explanation": "The rule makes teamwork necessary for success. Teamwork alone does not guarantee a successful project.",
         "correctionNotes": [
           "Allow a separate group label for each indicator.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -1788,10 +1786,6 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "statement": "Every agreement must be in writing to be legally binding.",
         "indicators": [
           {
-            "text": "Every",
-            "group": 1
-          },
-          {
             "text": "must",
             "group": 2
           }
@@ -1802,7 +1796,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (that agreement is in writing) → NOT (an agreement is legally binding)",
         "ifThen": "If an agreement is legally binding, then that agreement is in writing.",
         "contrapositiveWords": "If that agreement is not in writing, then that agreement is not legally binding.",
-        "explanation": "Every covers the agreements under discussion, but the full sufficient condition is legally binding agreement. Must be in writing to be binding supplies the requirement.",
+        "explanation": "Must introduces the requirement: being in writing. The full sufficient condition is that an agreement is legally binding, so every does not mark the sufficient condition here.",
         "correctionNotes": [
           "Keep the legally-binding restriction; classify each expression separately."
         ],
@@ -1881,7 +1875,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "diagram": "artists are inspired → those artists create their most celebrated pieces",
         "contrapositive": "NOT (those artists create their most celebrated pieces) → NOT (artists are inspired)",
         "ifThen": "If artists are inspired, then those artists create their most celebrated pieces.",
-        "contrapositiveWords": "If those artists do not create their most celebrated pieces, then artists are not inspired.",
+        "contrapositiveWords": "If those artists do not create their most celebrated pieces, then those artists were not inspired.",
         "explanation": "Assume the sentence as the exercise rule. Do not judge the diagram by whether this claim is realistic.",
         "correctionNotes": [],
         "source": {
@@ -2041,12 +2035,12 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
           }
         ],
         "sufficient": "a device bears a failed seal",
-        "necessary": "that device must be recalibrated under the maintenance policy",
-        "diagram": "a device bears a failed seal → that device must be recalibrated under the maintenance policy",
-        "contrapositive": "NOT (that device must be recalibrated under the maintenance policy) → NOT (a device bears a failed seal)",
-        "ifThen": "If a device bears a failed seal, then that device must be recalibrated under the maintenance policy.",
-        "contrapositiveWords": "If that device is not required to be recalibrated under the maintenance policy, then that device does not bear a failed seal.",
-        "explanation": "The reviewed policy creates an obligation. A device awaiting recalibration can still bear a failed seal. Keep must in the outcome.",
+        "necessary": "that device is required to be recalibrated under the maintenance policy",
+        "diagram": "a device bears a failed seal → that device is required to be recalibrated under the maintenance policy",
+        "contrapositive": "NOT (that device is required to be recalibrated under the maintenance policy) → NOT (a device bears a failed seal)",
+        "ifThen": "If a device bears a failed seal, then that device is required to be recalibrated under the maintenance policy.",
+        "contrapositiveWords": "If a device is not required to be recalibrated under the maintenance policy, then that device does not bear a failed seal.",
+        "explanation": "The policy creates an obligation. A device still waiting for recalibration can bear a failed seal. Keep the requirement in the result.",
         "correctionNotes": [
           "Allow both indicators; preserve requirement status.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -2152,7 +2146,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "diagram": "a complaint meeting the policy threshold is filed with the office → an investigation begins",
         "contrapositive": "NOT (an investigation begins) → NOT (a complaint meeting the policy threshold is filed with the office)",
         "ifThen": "If a complaint meeting the policy threshold is filed with the office, then an investigation begins.",
-        "contrapositiveWords": "If that investigation does not begin, then that complaint meeting the policy threshold is not filed with the office.",
+        "contrapositiveWords": "If an investigation does not begin, then no complaint meeting the policy threshold has been filed with the office.",
         "explanation": "Both the policy threshold and filing with the office belong in the trigger.",
         "correctionNotes": [],
         "source": {
@@ -2202,7 +2196,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "Four ways to express the rule",
     "stage": "After contraposition",
     "taskKind": "contrapositive",
-    "instructions": "Identify each indicator and its group, then write the complete conditions and define your symbols. Build the original diagram and its contrapositive, then read both back in ordinary if/then language. Complete your own translation before revealing the model.",
+    "instructions": "Find each indicator and its group, then write the complete conditions and define your symbols. Build the original diagram and compare it with ours. Then build the contrapositive and check it. Last, read both back in ordinary if/then language.",
     "items": [
       {
         "id": "source-full-translation-01",
@@ -2746,7 +2740,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
     "shortTitle": "The complete translation set",
     "stage": "After contraposition",
     "taskKind": "contrapositive",
-    "instructions": "Translate each sentence independently: identify the indicators, write the complete conditions, define your symbols, build both arrows, and read them back in words. Complete your attempt before comparing with the model. Keep every qualifier and negate whole conditions.",
+    "instructions": "Translate each sentence on your own: find the indicators, write the complete conditions, define your symbols, build both diagrams, and read them back in words. You compare each diagram with ours as you go, and your wording at the end. Keep every qualifier and negate whole conditions.",
     "items": [
       {
         "id": "source-independent-01",
@@ -2781,7 +2775,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "statement": "Each and every member of the Q continuum is omnipotent.",
         "indicators": [
           {
-            "text": "Each and every",
+            "text": "every",
             "group": 1
           }
         ],
@@ -2791,7 +2785,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (that individual is omnipotent) → NOT (an individual is a member of the Q continuum)",
         "ifThen": "If an individual is a member of the Q continuum, then that individual is omnipotent.",
         "contrapositiveWords": "If that individual is not omnipotent, then that individual is not a member of the Q continuum.",
-        "explanation": "Treat this as a fictional rule. Membership is sufficient; omnipotence alone does not prove membership.",
+        "explanation": "Each and every works like every. Membership is sufficient; omnipotence alone does not prove membership.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3251,22 +3245,22 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-independent-20",
         "sourceId": "translation-20",
         "originalStatement": "It's always sunny in Philadelphia.",
-        "statement": "In this fictional Philadelphia scenario, it is always sunny.",
+        "statement": "Ripe mangoes are always soft to the touch.",
         "indicators": [
           {
             "text": "always",
             "group": 2
           }
         ],
-        "sufficient": "a moment is in the stated Philadelphia scenario",
-        "necessary": "it is sunny there at that moment",
-        "diagram": "a moment is in the stated Philadelphia scenario → it is sunny there at that moment",
-        "contrapositive": "NOT (it is sunny there at that moment) → NOT (a moment is in the stated Philadelphia scenario)",
-        "ifThen": "If a moment is in the stated Philadelphia scenario, then it is sunny there at that moment.",
-        "contrapositiveWords": "If it is not sunny there at that moment, then that moment is not in the stated Philadelphia scenario.",
-        "explanation": "Always is not a condition. The explicit time and place supply the domain; sunny is the required property.",
+        "sufficient": "a mango is ripe",
+        "necessary": "that mango is soft to the touch",
+        "diagram": "a mango is ripe → that mango is soft to the touch",
+        "contrapositive": "NOT (that mango is soft to the touch) → NOT (a mango is ripe)",
+        "ifThen": "If a mango is ripe, then that mango is soft to the touch.",
+        "contrapositiveWords": "If a mango is not soft to the touch, then that mango is not ripe.",
+        "explanation": "Always points to what every ripe mango has: softness. A soft mango is not proven ripe.",
         "correctionNotes": [
-          "The key incorrectly uses “Always” as a condition. This needs an explicit domain.",
+          "The source sentence has no condition to translate, so this item uses a fresh always sentence.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
@@ -3419,13 +3413,13 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
             "group": 1
           }
         ],
-        "sufficient": "judges are independent in a system",
-        "necessary": "that system has a good legal system",
-        "diagram": "judges are independent in a system → that system has a good legal system",
-        "contrapositive": "NOT (that system has a good legal system) → NOT (judges are independent in a system)",
-        "ifThen": "If judges are independent in a system, then that system has a good legal system.",
-        "contrapositiveWords": "If that system does not have a good legal system, then judges are not independent in that system.",
-        "explanation": "Keep the same system on both sides. No causal claim is needed to translate the rule.",
+        "sufficient": "a place has independent judges",
+        "necessary": "that place has a good legal system",
+        "diagram": "a place has independent judges → that place has a good legal system",
+        "contrapositive": "NOT (that place has a good legal system) → NOT (a place has independent judges)",
+        "ifThen": "If a place has independent judges, then that place has a good legal system.",
+        "contrapositiveWords": "If a place does not have a good legal system, then that place does not have independent judges.",
+        "explanation": "Keep the same place on both sides. No causal claim is needed to translate the rule.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3549,22 +3543,22 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "id": "source-independent-31",
         "sourceId": "translation-31",
         "originalStatement": "When a mix of fresh and dried grass clippings is mixed into garden soil, plant soil decreases.",
-        "statement": "When a mix of fresh and dried grass clippings is mixed into garden soil, the soil’s moisture loss decreases.",
+        "statement": "When a mix of fresh and dried grass clippings is worked into garden soil, that soil holds water longer.",
         "indicators": [
           {
             "text": "When",
             "group": 1
           }
         ],
-        "sufficient": "a mix of fresh and dried grass clippings is mixed into garden soil",
-        "necessary": "the soil's moisture loss decreases",
-        "diagram": "a mix of fresh and dried grass clippings is mixed into garden soil → the soil's moisture loss decreases",
-        "contrapositive": "NOT (the soil's moisture loss decreases) → NOT (a mix of fresh and dried grass clippings is mixed into garden soil)",
-        "ifThen": "If a mix of fresh and dried grass clippings is mixed into garden soil, then the soil's moisture loss decreases.",
-        "contrapositiveWords": "If the soil's moisture loss does not decrease, then that mix of fresh and dried grass clippings is not mixed into garden soil.",
-        "explanation": "This explicitly labeled adaptation replaces the unclear source result. Keep both fresh and dried and the garden-soil setting.",
+        "sufficient": "a mix of fresh and dried grass clippings is worked into garden soil",
+        "necessary": "that soil holds water longer",
+        "diagram": "a mix of fresh and dried grass clippings is worked into garden soil → that soil holds water longer",
+        "contrapositive": "NOT (that soil holds water longer) → NOT (a mix of fresh and dried grass clippings is worked into garden soil)",
+        "ifThen": "If a mix of fresh and dried grass clippings is worked into garden soil, then that soil holds water longer.",
+        "contrapositiveWords": "If garden soil does not hold water longer, then a mix of fresh and dried grass clippings was not worked into that soil.",
+        "explanation": "Keep both fresh and dried clippings in the condition. Soil that holds water longer does not prove that clippings were added.",
         "correctionNotes": [
-          "“Plant soil decreases” is unclear. Preserve this source for review; do not grade it.",
+          "The source result (“plant soil decreases”) is unclear, so the learner sentence states a clear result about the same garden setting.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
         ],
         "source": {
@@ -3714,6 +3708,76 @@ export const getSourceWorksheetDrill = (id: string): SourceWorksheetDrillSet | u
     shortTitle: revisit.shortTitle,
     stage: 'After contraposition',
     taskKind: 'contrapositive',
-    instructions: 'Return to these familiar statements. Identify the indicators, write the complete conditions, and define your symbols. Build the original diagram and its contrapositive, then write both in ordinary if/then language. Reverse the conditions and negate each complete idea, including its restrictions.',
+    instructions: 'Return to these familiar sentences. Find the indicators, write the complete conditions, and define your symbols. Build the original diagram and compare it with ours, then build the contrapositive and check it. Last, write both in ordinary if/then language. Reverse the conditions and negate each complete idea, including its restrictions.',
   };
 };
+
+/** A run of adjacent words the learner selected, with the group they chose ('1', '2' or ''). */
+export interface IndicatorSelection { text: string; group: string }
+export interface IndicatorCheck { correct: boolean; hint: string }
+
+export const normalizeIndicator = (text: string) => text.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
+
+// Accepted alternatives. Items keep one keyed indicator; these rules decide which other selections mean the same thing.
+const DETERMINER_TAILS = ['those', 'the ones', 'these'];
+const QUANTIFIERS = ['any', 'every', 'all', 'each', 'no', 'anyone', 'anything', 'everyone', 'everything', 'none'];
+const WORD_ALTERNATIVES: Record<string, string[]> = { every: ['each and every'] };
+const WHO_PHRASE = /^([a-z]+ )?who$/;
+
+function acceptsSelection(expected: string, text: string) {
+  if (text === expected || WORD_ALTERNATIVES[expected]?.includes(text)) return true;
+  for (const tail of DETERMINER_TAILS) {
+    // "Only those" was taught as "only": accept the head word, and the phrase continued by "who".
+    if (expected.endsWith(` ${tail}`) && (text === expected.slice(0, -tail.length - 1) || text === `${expected} who`)) return true;
+  }
+  // A condition introduced by who: accept "who" or "[group] who" (e.g. "members who").
+  if ((expected === 'who' || expected.endsWith(' who')) && WHO_PHRASE.test(text)) return true;
+  // "Every applicant who" selected as one run still marks the quantifier.
+  const words = text.split(' ');
+  return QUANTIFIERS.includes(expected) && words.length <= 4 && words[0] === expected && words[words.length - 1] === 'who';
+}
+
+const containsRun = (outer: string, inner: string) => ` ${outer} `.includes(` ${inner} `);
+
+/** Grades the indicator step and returns a hint that never names the keyed answer. */
+export function checkIndicatorSelection(item: Pick<SourceWorksheetItem, 'statement' | 'indicators'>, selections: IndicatorSelection[]): IndicatorCheck {
+  const expected = item.indicators.map(i => ({ text: normalizeIndicator(i.text), group: String(i.group) }));
+  const remaining = [...expected];
+  const statementWords = normalizeIndicator(item.statement).split(' ');
+  const whoIntroducesCondition = statementWords.includes('who') && expected.some(e => e.group === '1' && QUANTIFIERS.includes(e.text));
+  const extra: string[] = [];
+  const wrongGroup: string[] = [];
+  for (const selection of selections) {
+    const text = normalizeIndicator(selection.text);
+    const index = remaining.findIndex(e => acceptsSelection(e.text, text));
+    if (index >= 0) {
+      if (remaining[index].group !== selection.group) wrongGroup.push(selection.text);
+      remaining.splice(index, 1);
+      continue;
+    }
+    // Two adjacent indicators ("must always") form one run of selected words.
+    const pairs: [number, number][] = [];
+    for (let i = 0; i < remaining.length; i++) for (let j = 0; j < remaining.length; j++) if (i !== j && `${remaining[i].text} ${remaining[j].text}` === text) pairs.push([i, j]);
+    const pair = pairs[0];
+    if (pair) {
+      if (remaining[pair[0]].group !== selection.group || remaining[pair[1]].group !== selection.group) wrongGroup.push(selection.text);
+      for (const i of [...pair].sort((a, b) => b - a)) remaining.splice(i, 1);
+      continue;
+    }
+    if (whoIntroducesCondition && WHO_PHRASE.test(text)) {
+      if (selection.group !== '1') wrongGroup.push(selection.text);
+      continue;
+    }
+    extra.push(selection.text);
+  }
+  if (extra.length) {
+    const text = extra[0];
+    const normal = normalizeIndicator(text);
+    if (expected.some(e => e.text !== normal && containsRun(e.text, normal))) return { correct: false, hint: `“${text}” is only part of an indicator. Select every word of the phrase.` };
+    if (expected.some(e => containsRun(normal, e.text))) return { correct: false, hint: `“${text}” includes words that are not part of the indicator. Select only the signal words.` };
+    return { correct: false, hint: `“${text}” is not an indicator in this sentence.` };
+  }
+  if (wrongGroup.length) return { correct: false, hint: `Check the group for “${wrongGroup[0]}”. Does it introduce what is enough, or what is required?` };
+  if (remaining.length) return { correct: false, hint: remaining.length === 1 ? 'One indicator is still unselected. Read the whole sentence again.' : `${remaining.length} indicators are still unselected. Read the whole sentence again.` };
+  return { correct: true, hint: '' };
+}

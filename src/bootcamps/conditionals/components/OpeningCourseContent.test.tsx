@@ -255,7 +255,7 @@ it('bridges with one raffle question, then tests fresh cases with reasoned feedb
   for (const repeated of ["You don't win the raffle. Could you still get a bicycle?", 'You win the raffle. Do we need another fact to prove that you get a bicycle?', 'Under our rule, what has to follow if you win?']) {
     expect(screen.queryByRole('heading', { name: repeated })).toBeNull();
   }
-  fireEvent.click(screen.getByRole('button', { name: 'No, it tells me what follows if I win.' }));
+  fireEvent.click(screen.getByRole('button', { name: 'No, it tells you what follows if you win.' }));
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
   fireEvent.click(screen.getByRole('button', { name: 'Next question' }));
   for (let index = 0; index < 4; index++) {
