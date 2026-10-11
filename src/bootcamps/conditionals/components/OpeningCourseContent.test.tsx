@@ -271,8 +271,10 @@ it('keeps the must-arrow note to roles, the raffle diagram and a moved if-clause
   expect(screen.queryByRole('button', { name: 'Find the indicator' })).not.toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Place the conditions. Then read the arrow.' })).toBeVisible();
   expect(screen.getByRole('heading', { name: 'Two ways to say the same thing' })).toBeVisible();
-  expect(screen.getByText('Left: sufficient condition')).toBeVisible();
-  expect(screen.getByText('Right: necessary condition')).toBeVisible();
+  expect(screen.getByText('Left side')).toBeVisible();
+  expect(screen.getByText('Sufficient condition')).toBeVisible();
+  expect(screen.getByText('Right side')).toBeVisible();
+  expect(screen.getByText('Necessary condition')).toBeVisible();
   const note = document.querySelector('[data-reference-source="8"]') as HTMLElement;
   expect(note.textContent).not.toMatch(/only if|Group 1|Group 2/i);
   expect(document.querySelectorAll('.ma-question-practice')).toHaveLength(1);

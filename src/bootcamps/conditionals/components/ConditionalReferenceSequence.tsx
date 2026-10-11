@@ -8,6 +8,7 @@ import { SufficientConditionFilm } from './SufficientConditionFilm';
 import { necessaryConditionFilms } from '../content/necessaryConditionFilms';
 import { NecessaryConditionExperience } from './NecessaryConditionExperience';
 import { NecessaryConditionStatement } from './NecessaryConditionStatement';
+import { NecessaryIndicatorExplorer } from './NecessaryIndicatorExplorer';
 
 const raffleRule = 'If you win the raffle, you get a bicycle.';
 
@@ -293,19 +294,8 @@ export function conditionalReferenceContent() {
         <SufficientConditionFilm key="necessary-definition" assets={necessaryConditionFilms} title="Why the requirement is not enough here" ariaLabel="Short explanation of necessity"/>
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 2 indicator words">
           <h3>Group 2: Necessary-condition indicators</h3>
-          <p>These words and phrases can help you find a requirement. Read the whole sentence, then identify <strong>what is required and what requires it</strong>.</p>
-          <ul>{['only', 'only if', 'only when', 'only where', 'always', 'requires', 'must'].map(word => <li key={word}>{word}</li>)}</ul>
-          <h3>Different wording, the same requirement</h3>
-          <p>The first six sentences describe our law-school relationship. In each one, ask what a person enrolled in law school has to be. Then we'll use a place example for only where.</p>
-          <dl className="nc-indicator-examples">
-            <div><dt>Requires</dt><dd><blockquote>Being enrolled in law school <strong>requires</strong> being a student.</blockquote><p>What does enrollment require? <strong>Being a student.</strong> Requires is the indicator; being a student is the condition it identifies. They are not the same thing.</p></dd></div>
-            <div><dt>Must</dt><dd><blockquote>If you are enrolled in law school, you <strong>must</strong> be a student.</blockquote><p>Must makes the certainty explicit: enrollment cannot coexist with not being a student. Here it describes what has to be true, not a task someone has been told to complete.</p></dd></div>
-            <div><dt>Only</dt><dd><blockquote><strong>Only</strong> students are enrolled in law school.</blockquote><p>This excludes nonstudents from the law-school group. It does not put every student in that group. Being a student remains required; being enrolled remains enough to establish it.</p></dd></div>
-            <div><dt>Only if</dt><dd><blockquote>You are enrolled in law school <strong>only if</strong> you are a student.</blockquote><p>Only if introduces the requirement: <strong>you are a student</strong>. Read the whole phrase. The if inside only if does not make being a student sufficient.</p></dd></div>
-            <div><dt>Only when</dt><dd><blockquote>You are enrolled in law school <strong>only when</strong> you are a student.</blockquote><p>On any occasion when enrollment is true, being a student must be true too. This does not say you become enrolled whenever you are a student, or that one condition has to happen later than the other.</p></dd></div>
-            <div><dt>Always</dt><dd><blockquote>While you are enrolled in law school, you are <strong>always</strong> a student.</blockquote><p>Always allows no exception within the situation described: being enrolled in law school. It does not say every student is enrolled, or that someone remains a student after enrollment ends.</p></dd></div>
-            <div><dt>Only where</dt><dd><p>This expression restricts places, so use a setting example:</p><blockquote>A seminar takes place <strong>only where</strong> a tutor is present.</blockquote><p>At any place with that seminar, <strong>a tutor must be present</strong>. A tutor could also be somewhere without a seminar. A seminar taking place is sufficient to establish a tutor's presence there; the tutor's presence is necessary for the seminar.</p></dd></div>
-          </dl>
+          <p>These words and phrases help you identify the <strong>necessary condition</strong>. Read the whole sentence, then identify <strong>what is required and what requires it</strong>.</p>
+          <NecessaryIndicatorExplorer/>
           <h3>Why only if is different from if</h3>
           <div className="nc-role-comparison">
             <div><h4>If you are enrolled in law school, you are a student.</h4><p><strong>If</strong> identifies enrollment as enough. This is our original relationship.</p></div>

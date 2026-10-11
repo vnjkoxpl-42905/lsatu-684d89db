@@ -6,13 +6,17 @@ afterEach(cleanup);
 
 it('keeps one named panel visible and distinguishes given facts from conclusions', () => {
   render(<NecessaryConditionExperience/>);
+  const rule = screen.getByText('If you are enrolled in law school, then you are a student.');
+  expect(rule).toBeVisible();
   expect(screen.getByRole('tabpanel', { name: 'Law student' })).toHaveTextContent('Enrollment guarantees being a student.');
   fireEvent.click(screen.getByRole('tab', { name: 'History student' }));
+  expect(rule).toBeVisible();
   const history = screen.getByRole('tabpanel', { name: 'History student' });
   expect(history).toHaveTextContent('history student who is not enrolled in law school');
   expect(history).toHaveTextContent('Being a student does not guarantee law-school enrollment.');
   expect(within(history).getByText('Not enrolled')).toBeVisible();
   fireEvent.click(screen.getByRole('tab', { name: 'Not a student' }));
+  expect(rule).toBeVisible();
   expect(screen.getAllByRole('tabpanel')).toHaveLength(1);
   expect(screen.getByRole('tabpanel', { name: 'Not a student' })).toHaveTextContent('enrollment is ruled out');
   expect(screen.getByRole('tab', { name: 'Not a student' })).toHaveAttribute('aria-selected', 'true');

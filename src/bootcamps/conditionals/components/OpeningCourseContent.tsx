@@ -116,9 +116,9 @@ function MustArrowNote() {
       <figure className="ma-example" aria-label="If you are enrolled in law school, you must be a student">
         <figcaption className="ma-read-instruction">Read left to right: <strong>“If the left side is true, the right side must be true.”</strong></figcaption>
         <div className="ma-relationship">
-          <div className="ma-condition"><span className="ma-side">Left: sufficient condition</span><span>Enough to guarantee the right side</span><strong>You are enrolled in law school</strong></div>
-          <div className="ma-arrow" aria-hidden="true"><span>must</span><b>⟶</b></div>
-          <div className="ma-condition"><span className="ma-side">Right: necessary condition</span><span>Required when the left side is true</span><strong>You are a student</strong></div>
+          <div className="ma-condition"><span className="ma-side"><small>Left side</small>Sufficient condition</span><strong>You are enrolled in law school</strong><span className="ma-meaning">Enough to guarantee the right side</span></div>
+          <div className="ma-arrow" aria-hidden="true"><span>must</span><svg viewBox="0 0 100 32" fill="none"><path d="M3 16H93M77 3L94 16L77 29" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+          <div className="ma-condition"><span className="ma-side"><small>Right side</small>Necessary condition</span><strong>You are a student</strong><span className="ma-meaning">Required when the left side is true</span></div>
         </div>
       </figure>
       <p>Being enrolled in law school is <strong>enough</strong> to know you are a student. That is why enrollment goes on the <strong>left</strong>. Being a student is <strong>required</strong>, so it goes on the <strong>right</strong>.</p>

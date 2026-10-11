@@ -34,3 +34,7 @@
   #root .nc-lesson .nc-person-tabs button { transition:none; }
   #root .nc-lesson .nc-person-panel:not([hidden]) { animation:none; }
 }
+
+#root .nc-lesson .nc-case-rule { border-left: 3px solid var(--sc-brass); padding: .7rem 1.1rem; margin-block: 1.5rem; background: oklch(100% 0 0 / .04); border-radius: 0 .6rem .6rem 0; }
+#root .nc-case-rule > span { color: var(--sc-brass); font-size: .8rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+#root .nc-lesson .nc-case-rule p { margin: .5rem 0 0; color: var(--sc-white); font-size: 1.2rem; line-height: 1.6; }

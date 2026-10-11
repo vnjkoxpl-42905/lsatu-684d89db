@@ -27,7 +27,7 @@ export function NecessaryConditionExperience() {
   return <section className="nc-experience" aria-labelledby={`${id}-heading`}>
     <header>
       <h3 id={`${id}-heading`}>What does each case tell you?</h3>
-      <p>Keep the same rule. Choose a person and see what their situation tells you.</p>
+      <div className="nc-case-rule"><span>The rule</span><p>If you are enrolled in law school, then you are a student.</p></div>
     </header>
     <div className="nc-tab-layout">
       <div className="nc-person-tabs" role="tablist" aria-label="Choose a person to compare" aria-orientation="vertical">
