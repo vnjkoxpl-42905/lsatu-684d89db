@@ -40,7 +40,7 @@ export function RuleComparisonLab() {
   const item = comparisons[index];
   const answer = answers[index];
   return <div className="co-comparison-lab">
-    <p>You now know both groups. Set the group names aside and read what each sentence promises.</p>
+    <p>You now know both groups. Set the group names aside and read what each rule promises.</p>
     <p className="co-kicker">Keep this original rule</p><blockquote>Every envelope in the dispatch tray is stamped.</blockquote>
     <p>An envelope in the tray has to be stamped. A stamped envelope could still be elsewhere. Use that possible case to check each new version.</p>
     <div className="co-word-tabs" role="group" aria-label="Wording variations">{comparisons.map((_, i) => <button type="button" key={i} aria-pressed={index === i} onClick={() => { setIndex(i); setExplain(false); }}>Version {i + 1}</button>)}</div>

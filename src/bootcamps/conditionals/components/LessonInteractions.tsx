@@ -21,7 +21,7 @@ export function FourCaseExplorer() {
 }
 
 const translations: Record<string, { sentence: string; target: string; rule: string; why: string }> = {
-  'group-1': { sentence: 'A receipt appears whenever a payment is recorded.', target: 'Whenever what? A payment is recorded.', rule: 'Payment recorded → receipt appears.', why: 'The trigger appears second in the sentence. Its position does not reverse the guarantee.' },
+  'group-1': { sentence: 'A receipt appears whenever a payment is recorded.', target: 'Whenever what? A payment is recorded.', rule: 'Payment recorded → receipt appears.', why: 'The trigger appears second in the rule. Its position does not reverse the guarantee.' },
   'group-2': { sentence: 'A current pass is required for entry.', target: 'What is required? A current pass.', rule: 'Entry → current pass.', why: 'The required idea appears before required. Having a pass alone does not guarantee entry.' },
   'group-3': { sentence: 'The lamp does not light unless the battery is charged.', target: 'The two complete ideas are lamp does not light and battery is charged.', rule: 'Battery not charged → lamp does not light. Equivalently: lamp lights → battery charged.', why: 'Keep the existing negative. Negating does not light gives lights when you form the equivalent direction.' },
   'group-4': { sentence: 'No approved sample is unlabelled.', target: 'The excluded pair is approved sample and unlabelled sample.', rule: 'Approved sample → not unlabelled, or labelled.', why: 'Negating unlabelled cancels its existing negative. This does not make every labelled sample approved.' },

@@ -117,6 +117,7 @@ const ActivityCentre = safeLazy(() => import("./pages/ActivityCentre"));
 const ConditionalPractice = safeLazy(() => import("./features/activity-centre/conditionals/ConditionalPractice"));
 const ConditionalPracticeLab = safeLazy(() => import("./features/activity-centre/conditionals/ConditionalPractice").then(module => ({ default: module.ConditionalPracticeLab })));
 const ConditionalIndicatorsRefresher = safeLazy(() => import("./features/conditional-refresher/ConditionalIndicatorsRefresher"));
+const UnlessDrillPage = safeLazy(() => import("./pages/UnlessDrillPage"));
 const ActivitySections = safeLazy(() => import("./pages/ActivitySections"));
 const ActivityRunner = safeLazy(() => import("./features/activity-centre/components/ActivityRunner"));
 
@@ -706,6 +707,12 @@ const App = () => {
                     <Route path="/conditional-indicators-refresher" element={
                       <ProtectedRoute flag={["has_activity_access", "has_drill_access"]}>
                         <ConditionalIndicatorsRefresher />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/conditional-indicators-refresher/unless" element={<RedirectWithSearch to="/unless-drill" />} />
+                    <Route path="/unless-drill" element={
+                      <ProtectedRoute flag={["has_activity_access", "has_drill_access", "has_bootcamp_access"]}>
+                        <UnlessDrillPage />
                       </ProtectedRoute>
                     } />
                     <Route path="/analytics" element={<RedirectWithSearch to="/progress/overview" />} />

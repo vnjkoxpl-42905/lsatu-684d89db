@@ -28,6 +28,7 @@ export function getConditionalQuestions(filter: {
 export interface ConditionalResource { title: string; description: string; route: string }
 export const conditionalResources: ConditionalResource[] = [
   { title: 'Conditional Indicators Refresher', description: 'Existing four-group reference, sorting, flashcards and diagrams. This opens the full Activity.', route: '/conditional-indicators-refresher' },
+  { title: 'Unless Speed Drill', description: 'Speed drill for Group 3 indicators (unless, until, without) with 5-second rounds.', route: '/unless-drill' },
   { title: 'Conditional practice worlds', description: 'Existing General, Linking, Missing Link and Must Be True practice.', route: '/activities/conditionals' },
   { title: 'Conditional Logic: introductory guided practice', description: 'Existing mixed official-question set. Learn the relevant operations before transfer.', route: '/guided-drills/w5-02-conditional-logic-easier-set-4' },
   { title: 'Conditional Logic: Medium guided practice', description: 'Existing mixed official-question set; its catalog band is not a specific-skill mastery check.', route: '/guided-drills/w5-09-conditional-logic-medium-set-1' },

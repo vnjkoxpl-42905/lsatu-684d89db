@@ -26,6 +26,7 @@ import { ConditionalAssignmentFields } from '@/components/teacher/ConditionalAss
 import { DEFAULT_CONDITIONAL_TARGET, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
+  'unless-drill': 1,
   'conditional-indicators-refresher': 1,
   'principle-flaw': 14,
   'intro-to-lr': 14,

@@ -76,7 +76,7 @@ it('requires an attempted written readback and explicit self-comparison', () => 
   expect(screen.getByRole('heading', { name: 'Now write the contrapositive in ordinary English.' })).toBeVisible();
 });
 
-it('skips the English step when the sentence is already an if/then sentence', () => {
+it('skips the English step when the rule is already an if/then sentence', () => {
   mount('contrapositive');
   for (const correct of [0, 1]) {
     fireEvent.click(within(screen.getByRole('group', { name: 'Answer choices' })).getAllByRole('button')[correct]);

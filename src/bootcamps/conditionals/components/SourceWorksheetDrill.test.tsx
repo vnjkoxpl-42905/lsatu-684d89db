@@ -62,7 +62,7 @@ it('requires the whole indicator phrase and correct group before advancing, with
   expect(screen.getByRole('heading', { name: 'Keep the complete ideas' })).toBeVisible();
 });
 
-it('carries indicator work from the folded drill into Drill 2 without marking the sentence reviewed', () => {
+it('carries indicator work from the folded drill into Drill 2 without marking the rule reviewed', () => {
   const folded = sourceWorksheetDrills.find(s => s.id === 'source-intro-identify')!.items.find(i => i.id === 'source-indicators-01')!;
   const fingerprint = JSON.stringify([folded.statement, folded.sufficient, folded.necessary, folded.indicators, folded.contrapositiveWords]);
   localStorage.setItem('conditional-worksheet-v1:source-indicators', JSON.stringify({ current: 0, answers: { 'source-indicators-01': {

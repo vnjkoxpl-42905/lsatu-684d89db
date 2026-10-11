@@ -159,7 +159,7 @@ describe('indicator check', () => {
     const training = find('source-intro-identify', 'source-indicators-01');
     expect(check(training, ['Only', '2']).hint).toBe('“Only” is only part of an indicator. Select every word of the phrase.');
     expect(check(training, ['Only if', '1']).hint).toMatch(/^Check the group for “Only if”/);
-    expect(check(training, ['employees', '1']).hint).toBe('“employees” is not an indicator in this sentence.');
+    expect(check(training, ['employees', '1']).hint).toBe('“employees” is not an indicator in this rule.');
     const errors = find('source-intro-identify', 'source-indicators-11');
     expect(check(errors, ['must', '2']).hint).toBe('One indicator is still unselected. Read the whole rule again.');
   });

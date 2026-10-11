@@ -318,7 +318,7 @@ it('teaches meaning checks, modal strength and symbol definitions before workshe
     'Check 3: only and the only point to different groups',
     'Can, should and must keep their meaning',
     'Short symbols stand for complete conditions',
-    'Check 4: try the sentence from the inside',
+    'Check 4: try the rule from the inside',
   ]);
   expect(screen.getByText(/Borrowing a locker/)).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Any applicant who submits late pays a fee. What goes left?' })).toBeVisible();

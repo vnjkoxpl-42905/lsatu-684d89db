@@ -17,7 +17,7 @@ it('offers nine dedicated notes and twelve interleaved drill entries', () => {
   expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'missing-requirement', 'foundation-practice']);
 });
 
-it('shows the sentence count in plain words and never says statements or practise', () => {
+it('shows the rule count in plain words and never says statements or practise', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
   const card = screen.getByRole('heading', { name: /Drill 2: Find both conditions/ }).closest('li')!;
   expect(within(card).getByText('28 questions')).toBeVisible();

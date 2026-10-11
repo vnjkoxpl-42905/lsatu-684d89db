@@ -61,6 +61,22 @@ export const BOOTCAMPS: BootcampDef[] = [
     },
   },
   {
+    id: 'unless-drill',
+    title: 'Group 3 Unless Drill',
+    description:
+      'Speed drill for Group 3 conditional indicators (unless, until, without): 5-second rounds to diagram statements into sufficient and necessary conditions.',
+    route: '/unless-drill',
+    stats: ['Group 3 indicators', '5-second speed drill', 'Diagrams & contrapositives'],
+    theme: {
+      style: 'editorial',
+      bg: '#F5F2ED',
+      ink: '#143937',
+      inkSoft: '#65706A',
+      accent: '#244E49',
+      accentInk: '#FBF8F1',
+    },
+  },
+  {
     id: 'principle-flaw',
     title: 'Principle & Flaw',
     description: 'Principle questions, flaw patterns, and parallel-flaw transfer.',

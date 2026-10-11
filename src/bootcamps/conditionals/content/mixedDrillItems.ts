@@ -47,7 +47,7 @@ export const completeConditionItems: MixedDrillChoiceItem[] = [
     errorByOption: [null, 'qualification', 'direction'],
     feedback: [
       'Current belongs in the requirement. Leading the climbing group requires a current safety certificate; an expired certificate would not meet the stated requirement. Having a current one does not prove that someone leads the group.',
-      'Safety certificate alone allows an expired certificate. Which word in the sentence rules that out? Keep it in the label.',
+      'Safety certificate alone allows an expired certificate. Which word in the rule rules that out? Keep it in the label.',
       'Leading the group is what needs something, so it is not the requirement. Ask: what is required? Look at the words before required.',
     ],
   },
@@ -107,11 +107,11 @@ export const transferItems: MixedDrillChoiceItem[] = [
   {
     id: 'mixed-transfer-1', stage: 'transfer', skill: 'direction',
     sentence: 'The heater runs if the timer reaches six.',
-    prompt: 'Which diagram keeps what the sentence says?',
+    prompt: 'Which diagram keeps what the rule says?',
     options: ['Heater runs → Timer reaches six', 'Timer reaches six → Heater runs', 'Timer is on → Heater runs'], correct: 1,
     errorByOption: ['direction', null, 'qualification'],
     feedback: [
-      'The sentence has not said the timer is the only way to start the heater. A running heater could have been switched on another way. Ask: if what? Start your arrow from that condition.',
+      'The rule has not said the timer is the only way to start the heater. A running heater could have been switched on another way. Ask: if what? Start your arrow from that condition.',
       'The if-clause is enough even though it comes last. If the timer reaches six, the heater runs. A running heater alone leaves the timer reading open.',
       'Timer is on drops part of the condition. The rule does not say the heater runs whenever the timer is on; it names a point the timer has to reach. Keep that detail in the condition.',
     ],
@@ -124,7 +124,7 @@ export const transferItems: MixedDrillChoiceItem[] = [
     errorByOption: ['qualification', 'direction', null],
     feedback: [
       'Trainee alone extends the rule to trainees without night-work certification. Keep every word that limits which trainees the rule covers.',
-      'Receiving the badge is the result, not proof of this certification. A badge recipient without that certification could fit the rule. Start from the complete group the sentence covers.',
+      'Receiving the badge is the result, not proof of this certification. A badge recipient without that certification could fit the rule. Start from the complete group the rule covers.',
       'The rule covers every trainee certified for night work. That full condition proves a shift badge. It leaves the badge status of other trainees open.',
     ],
   },
@@ -135,7 +135,7 @@ export const transferItems: MixedDrillChoiceItem[] = [
     options: ['It is permitted inside.', 'It is not permitted inside.', 'Its permission remains open.'], correct: 2,
     errorByOption: ['requirement', 'requirement', null],
     feedback: [
-      'Electric is required for permission, but the sentence does not make it enough. An electric vehicle denied permission still fits the rule. Actual entry is a separate question.',
+      'Electric is required for permission, but the rule does not make it enough. An electric vehicle denied permission still fits the rule. Actual entry is a separate question.',
       'The rule does not deny permission to electric vehicles. Some could be permitted and others denied. It only restricts permitted vehicles to electric ones.',
       'Any permitted vehicle has to be electric. Knowing a vehicle is electric does not settle whether it has permission. An electric vehicle denied permission fits the rule, as does an electric vehicle with permission.',
     ],
@@ -164,7 +164,7 @@ export const confirmationItemsByError: Record<MixedDrillError, MixedDrillChoiceI
     feedback: [
       'Printing is what the rule proves, not what proves something. The rule has not said every printed invitation means the registration was accepted. Ask: when what? Start from that condition.',
       'Acceptance is enough for printing, so put registration accepted on the left and invitation printed on the right. A printed invitation alone leaves acceptance open.',
-      'Submitted is not the same as accepted. A registration can be submitted and then turned down, and the rule promises nothing for it. Keep the exact condition the sentence uses.',
+      'Submitted is not the same as accepted. A registration can be submitted and then turned down, and the rule promises nothing for it. Keep the exact condition the rule uses.',
     ],
   }],
   qualification: [{
@@ -176,7 +176,7 @@ export const confirmationItemsByError: Record<MixedDrillError, MixedDrillChoiceI
     feedback: [
       'Keep delivering refrigerated medicine attached to courier. The rule proves an insulated pack for each courier in that complete group. It leaves other couriers outside this promise.',
       'Courier alone includes couriers carrying other deliveries. Keep every detail that limits which couriers the rule covers.',
-      'Delivering medicine includes medicine that is not refrigerated. That would broaden the group beyond the sentence. Which word did you drop?',
+      'Delivering medicine includes medicine that is not refrigerated. That would broaden the group beyond the rule. Which word did you drop?',
     ],
   }],
   requirement: [{
