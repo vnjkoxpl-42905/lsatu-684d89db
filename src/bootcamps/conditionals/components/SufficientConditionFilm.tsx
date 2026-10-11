@@ -4,7 +4,7 @@ import { sufficientConditionFilms } from '../content/sufficientConditionFilms';
 export type SufficientConditionFilmAsset = { id: string; title: string; src: string; poster?: string; captions: string; caption: string; transcript: string };
 
 /** Render only an actual generated asset; the written lesson remains available without video. */
-export function SufficientConditionFilm({ assets = sufficientConditionFilms }: { assets?: SufficientConditionFilmAsset[] }) {
+export function SufficientConditionFilm({ assets = sufficientConditionFilms, title = 'What the rule gives us', ariaLabel = 'Short explanations of sufficiency' }: { assets?: SufficientConditionFilmAsset[]; title?: string; ariaLabel?: string }) {
   const [selected, setSelected] = useState(0);
   const [failedId, setFailedId] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
@@ -12,13 +12,13 @@ export function SufficientConditionFilm({ assets = sufficientConditionFilms }: {
   const asset = assets[selected];
   if (!asset) return null;
   const failed = failedId === asset.id;
-  return <section className="sc-film" aria-label="Short explanations of sufficiency">
-    <header><p className="sc-eyebrow">Watch the explanation</p><h3>What the rule gives us</h3></header>
-    <div className="sc-film-selector" role="group" aria-label="Choose an explanation">
+  return <section className="sc-film" aria-label={ariaLabel}>
+    <header><p className="sc-eyebrow">Watch the explanation</p><h3>{title}</h3></header>
+    {assets.length > 1 && <div className="sc-film-selector" role="group" aria-label="Choose an explanation">
       {assets.map((clip, index) => <button type="button" key={clip.id}
         aria-pressed={index === selected} aria-controls={videoId}
         onClick={() => { setSelected(index); setFailedId(null); }}>{clip.title}</button>)}
-    </div>
+    </div>}
     <figure>
       <video id={videoId} key={`${asset.id}-${attempt}`} controls preload="metadata" playsInline
         poster={asset.poster} aria-label={asset.caption} onError={() => setFailedId(asset.id)}>

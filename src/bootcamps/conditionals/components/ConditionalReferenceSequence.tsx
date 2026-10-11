@@ -5,6 +5,7 @@ import { StudyDeck } from './StudyDeck';
 import type { LessonPage } from './LessonPages';
 import { SufficientConditionExperience, SufficientReasoningWalkthrough } from './SufficientConditionExperience';
 import { SufficientConditionFilm } from './SufficientConditionFilm';
+import { necessaryConditionFilms } from '../content/necessaryConditionFilms';
 import { NecessaryConditionExperience } from './NecessaryConditionExperience';
 
 const raffleRule = 'If you win the raffle, you get a bicycle.';
@@ -241,6 +242,9 @@ export function conditionalReferenceContent() {
 
         <SufficientConditionExperience/>
 
+        <p>Want to see the relationship in a short video? These optional clips use a hypothetical student, Maya. The first supposes she is enrolled in law school. The second supposes only that she is a student. Compare what each piece of information establishes.</p>
+        <SufficientConditionFilm key="sufficient-definition"/>
+
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 1 indicator words">
           <h3>Group 1: Sufficient-condition indicators</h3>
           <p>You've seen how <strong>if</strong> points to the sufficient condition. These indicator words and phrases can help you recognize it too:</p>
@@ -284,6 +288,7 @@ export function conditionalReferenceContent() {
           <p>The two conditions have different jobs: <strong>enrollment guarantees being a student; being a student is what enrollment requires.</strong> Knowing only that someone is a student doesn't tell you which subject they study.</p>
         </section>
         <NecessaryConditionExperience/>
+        <SufficientConditionFilm key="necessary-definition" assets={necessaryConditionFilms} title="Why the requirement is not enough here" ariaLabel="Short explanation of necessity"/>
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 2 indicator words">
           <h3>Group 2: Necessary-condition indicators</h3>
           <p>These words and phrases can help you recognize a requirement:</p>

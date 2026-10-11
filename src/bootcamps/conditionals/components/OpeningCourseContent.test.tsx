@@ -12,6 +12,12 @@ it('teaches necessity before the visual and distinguishes a requirement from a g
   expect(explanation).toHaveTextContent('Whenever the sufficient condition is true, the necessary condition must be true too.');
   const firstControl = container.querySelector('.nc-controls button')!;
   expect(explanation.compareDocumentPosition(firstControl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  const film = screen.getByRole('region', { name: 'Short explanation of necessity' });
+  expect(firstControl.compareDocumentPosition(film) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(film.querySelector('source')).toHaveAttribute('src', '/media/conditionals/necessity/required-not-enough.mp4');
+  expect(within(film).queryByRole('group', { name: 'Choose an explanation' })).toBeNull();
+  expect(film.querySelector('video')).toHaveAttribute('controls');
+  expect(film.querySelector('video')).not.toHaveAttribute('autoplay');
   const questions = [...container.querySelectorAll<HTMLElement>('.nc-checks .cr-question')];
   const correctAnswers = [0, 1];
   questions.forEach((question, index) => {
@@ -28,16 +34,25 @@ it('teaches necessity before the visual and distinguishes a requirement from a g
 });
 
 it('retains the full sufficient explanation and necessity bridge on the dedicated course page', () => {
-  render(<OpeningCourseContent id="sufficient"/>);
+  const { rerender } = render(<OpeningCourseContent id="sufficient"/>);
   expect(screen.getByRole('heading', { name: 'Next: The Necessary Condition' })).toBeVisible();
   expect(screen.getByRole('heading', { name: 'Use an indicator to find the guarantee' })).toBeVisible();
   expect(document.querySelectorAll('.cr-sufficient-checks [role="status"]')).toHaveLength(2);
   expect(screen.queryByText(/raffle|bicycle|100%|breathing/i)).toBeNull();
-  expect(screen.queryByText(/Maya|The fact|Enough for what\?/i)).toBeNull();
-  expect(document.querySelector('video')).toBeNull();
+  expect(screen.queryByText(/The fact|Enough for what\?/i)).toBeNull();
+  expect(screen.getByText(/optional clips use a hypothetical student, Maya/)).toBeVisible();
+  const film = screen.getByRole('region', { name: 'Short explanations of sufficiency' });
+  const groupVisual = document.querySelector('.sc-experience')!;
+  expect(groupVisual.compareDocumentPosition(film) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(film.querySelector('video')).toHaveAttribute('controls');
+  expect(film.querySelector('video')).not.toHaveAttribute('autoplay');
+  fireEvent.click(within(film).getByRole('button', { name: 'What stays open' }));
+  expect(film.querySelector('source')).toHaveAttribute('src', '/media/conditionals/sufficiency/what-stays-open.mp4');
   const guaranteeExplanation = screen.getByText(/Enrollment already guarantees it/);
   const firstControl = document.querySelector('.sc-sentence-map button')!;
   expect(guaranteeExplanation.compareDocumentPosition(firstControl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  rerender(<OpeningCourseContent id="necessary"/>);
+  expect(screen.getByRole('region', { name: 'Short explanation of necessity' }).querySelector('source')).toHaveAttribute('src', '/media/conditionals/necessity/required-not-enough.mp4');
 });
 
 it('explains the sufficiency errors and retains keyboard focus when a learner retries', () => {
