@@ -12,6 +12,7 @@ import {
   type DestinationTab,
 } from "@/lib/destinationAccess";
 import { preserveRedirectLocation } from "@/lib/preserveRedirectLocation";
+import { DestinationHeadingContext } from "@/contexts/DestinationHeadingContext";
 
 export function StudentDestination({ destination }: { destination: Destination }) {
   const { pathname } = useLocation();
@@ -80,7 +81,9 @@ export function StudentDestination({ destination }: { destination: Destination }
         </p>
       ) : null}
       <div className="student-destination-content">
-        <Outlet />
+        <DestinationHeadingContext.Provider value>
+          <Outlet />
+        </DestinationHeadingContext.Provider>
       </div>
     </div>
   );
