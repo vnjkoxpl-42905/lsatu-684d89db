@@ -7,6 +7,8 @@ import { OPENING_COURSE_PATH, openingCourseStep, type OpeningCourseStep } from '
 import { OpeningCourseContent } from './OpeningCourseContent';
 import { CourseFlashcardUrl, FlashcardTools } from './FlashcardTools';
 import { DrillOneEntry } from './DrillOneExperience';
+import { SourceWorksheetDrill } from './SourceWorksheetDrill';
+import { getSourceWorksheetDrill } from '../content/sourceWorksheetDrills';
 import './opening-course.css';
 
 export type OpeningCourseUrl = (destination: string, run?: boolean) => string;
@@ -53,6 +55,7 @@ const drillInstructions: Record<string, { summary: string; heading: string; step
 };
 
 function DrillEntry({ step, url }: { step: OpeningCourseStep; url: OpeningCourseUrl }) {
+  if (getSourceWorksheetDrill(step.id)) return <SourceWorksheetDrill setId={step.id} title={step.title} run={false} startUrl={url(step.id, true)}/>;
   if (step.id === 'foundation-practice') return <DrillOneEntry startUrl={url(step.id, true)} lessonsUrl={url('lessons')}/>;
   if (step.id === 'mixed-practice') return <div className="oc-drill-landing oc-translation-entry">
     <div className="oc-drill-overview">
@@ -117,7 +120,7 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
       {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions<ArrowRight size={16}/></Link>}
       {current.id === 'mixed-practice' && <p className="oc-save-scope">{practiceSaveNotice}</p>}
     </div>}
-    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}><OpeningCourseContent id={step.id}/></CourseFlashcardUrl.Provider></div>)}</div>
+    <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}>{getSourceWorksheetDrill(step.id) ? <SourceWorksheetDrill setId={step.id} run startUrl={url(step.id, true)}/> : <OpeningCourseContent id={step.id}/>}</CourseFlashcardUrl.Provider></div>)}</div>
     {current && (current.type === 'note' || run) && <nav className="oc-course-turn" aria-label="Course navigation">{prior ? <Link to={url(prior.id)}><span>Previous {prior.type === 'note' ? 'lesson' : 'drill'}</span><strong>{prior.title}</strong></Link> : <Link to={url('lessons')}>All lessons</Link>}{next ? <Link to={url(next.id)}><span>Next {next.type === 'note' ? 'lesson' : 'drill'}</span><strong>{next.title}<ArrowRight size={18}/></strong></Link> : <Link to={url('lessons')}>Return to lessons<ArrowRight size={18}/></Link>}</nav>}
     {!isIndex && view !== 'tools' && !current && <div className="oc-course-note"><h1>This lesson is not available here.</h1><Link to={url('lessons')}>Return to lessons</Link></div>}
   </div>;

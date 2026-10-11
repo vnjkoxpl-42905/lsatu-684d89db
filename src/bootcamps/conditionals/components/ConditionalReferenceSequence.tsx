@@ -335,10 +335,10 @@ export function conditionalReferenceContent() {
     </ReferenceStep>
 
     <ReferenceStep number={7} label="The four situations" title="Keep what follows separate from what stays open">
-      <p>Change the fact about your outcome while keeping the rule. Treat each fact as settled, not as a report that you are still waiting. Decide what it establishes before comparing the explanation.</p>
+      <p>Keep the raffle rule. Choose a fact, then decide what it lets you conclude.</p>
       <FourCaseExplorer/>
-      <h3>Apply another rule</h3>
-      <p>The next two clips use a different statement: if you're enrolled in law school, you're a student. Now we add information about Maya and examine what that statement lets us conclude.</p>
+      <h3>Return to the law-school rule</h3>
+      <p>Watch how the same law-school rule handles different facts about Maya.</p>
       <div className="cr-sufficiency"><SufficientConditionFilm/></div>
       <p>Starting from getting a bicycle and concluding that you win is the tempting <strong>reverse</strong>. Starting from not winning and concluding that you do not get a bicycle is the tempting <strong>inverse</strong>. Neither follows from this rule alone.</p>
       <p>The contrapositive starts from <strong>not getting a bicycle</strong> and establishes <strong>not winning the raffle</strong>. Its reasoning depends on the missing required result, not on reversing whichever words happen to appear.</p>

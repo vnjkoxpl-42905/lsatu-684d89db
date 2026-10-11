@@ -80,9 +80,19 @@ it('explains the sufficiency errors and retains keyboard focus when a learner re
 
 it('places narrated case applications after condition roles have been taught', () => {
   render(<OpeningCourseContent id="missing-requirement"/>);
-  expect(screen.getByRole('heading', { name: 'Apply another rule' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'The missing requirement rules out enrollment' })).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: 'Yes, she could still be enrolled.' }));
+  expect(screen.getByText(/Enrollment would require Maya to be a student/)).toBeVisible();
+  expect(screen.getByRole('img', { name: 'Is not a student implies Not enrolled in law school' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Return to the law-school rule' })).toBeVisible();
+  expect(screen.queryByText(/Maya could be studying history/)).toBeNull();
   expect(document.querySelector('video')).toHaveAttribute('controls');
   expect(screen.getByRole('button', { name: 'Enough to know' })).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: 'No, she cannot be enrolled.' }));
+  expect(screen.getByText(/If Maya were enrolled, she would have to be a student/)).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+  expect(screen.queryByRole('heading', { name: 'The missing requirement rules out enrollment' })).toBeNull();
+  expect(screen.getByRole('button', { name: 'Yes, she could still be enrolled.' })).toHaveFocus();
 });
 
 const section = (name: string) => screen.getByRole('heading', { level: 2, name }).closest('section') as HTMLElement;

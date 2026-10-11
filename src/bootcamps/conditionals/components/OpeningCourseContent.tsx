@@ -7,6 +7,7 @@ import { PracticeTaskRunner } from './PracticeTaskRunner';
 import { DrillOneExperience, type DrillOneQuestion } from './DrillOneExperience';
 import { StudyDeck } from './StudyDeck';
 import './must-arrow-note.css';
+import './missing-requirement-note.css';
 import { MustArrowPractice } from './MustArrowPractice';
 
 type ContentSection = ReactElement<{ id?: string; number?: number; title?: string; children?: ReactNode; dark?: boolean; 'data-reference-boundary'?: boolean }>;
@@ -93,6 +94,30 @@ function CompleteConditionNote() {
       <ReferenceQuestion prompt="The only notebooks kept on this shelf are hardback. Which condition is sufficient?" options={['Notebook is hardback', 'Notebook is kept on this shelf', 'Notebook']} correct={1} feedback={['Being hardback does not guarantee a place on this shelf. The rule tells us about the notebooks kept here.', 'A notebook kept on this shelf must be hardback. Kept on this shelf is the complete sufficient condition.', 'Notebook alone would cover every notebook. Keep the restriction: kept on this shelf.']}/>
       <p>In the next drill, select the complete condition, place it beside the arrow and check that your diagram keeps the sentence's meaning.</p>
     </NoteSection>
+  </>;
+}
+
+function MissingRequirementNote() {
+  const [attempted, setAttempted] = useState(false);
+  return <>
+    <NoteSection title="What if someone is not a student?">
+      <p>Keep the rule from the last lesson:</p>
+      <blockquote>If you are enrolled in law school, then you are a student.</blockquote>
+      <p>Now you learn that Maya is <strong>not a student</strong>. Think about what enrollment would require before choosing.</p>
+      <ReferenceQuestion prompt="Could Maya be enrolled in law school while this rule holds?" options={['Yes, she could still be enrolled.', 'No, she cannot be enrolled.', 'The rule leaves her enrollment unknown.']} correct={1} onAttempt={choice => setAttempted(choice !== null)} feedback={['Enrollment would require Maya to be a student. That conflicts with the fact that she is not a student.', 'If Maya were enrolled, she would have to be a student. She is not a student, so she cannot be enrolled under this rule.', 'This fact settles enrollment. An enrolled person who is not a student would break the rule.']}/>
+      {attempted && <div className="cr-discovery-reasoning">
+        <h3>The missing requirement rules out enrollment</h3>
+        <p>That is the <strong>contrapositive</strong>: <strong>if the necessary condition is false, the sufficient condition must be false too.</strong></p>
+        <p>Being a student is required for enrollment. When that requirement is missing, enrollment is ruled out. We have not added a new rule; this follows from the rule we already had.</p>
+        <figure className="cr-contrapositive-pair">
+          <figcaption>Two ways to read the same relationship</figcaption>
+          <p><strong>Original</strong></p><RuleDiagram left="Enrolled in law school" right="Is a student"/>
+          <p><strong>Contrapositive</strong></p><RuleDiagram left="Is not a student" right="Not enrolled in law school"/>
+        </figure>
+        <p>This is different from simply reversing the arrow. <strong>Being a student does not establish enrollment.</strong> A student could be studying history instead. The contrapositive starts with <strong>not being a student</strong>.</p>
+      </div>}
+    </NoteSection>
+    {attempted && <ReferenceBody number={7} omitTransition/>}
   </>;
 }
 
@@ -334,7 +359,7 @@ function Content({ id }: { id: string }) {
     case 'sufficient-words': return <CompleteConditionNote/>;
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
     case 'whole-meaning': return <WholeMeaningNote/>;
-    case 'missing-requirement': return <><ReferenceBody number={6}/><ReferenceBody number={7} omitTransition/></>;
+    case 'missing-requirement': return <MissingRequirementNote/>;
     case 'contrapositive': return <><ReferenceBody number={9}/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection><CompatibleCasesRecap/></>;
     case 'foundation-practice': return <FoundationPractice/>;
     case 'sufficient-practice': return <SufficientPractice/>;

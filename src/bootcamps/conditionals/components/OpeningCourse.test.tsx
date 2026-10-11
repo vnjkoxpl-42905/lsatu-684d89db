@@ -7,14 +7,23 @@ import { OpeningCourseNavigation, OpeningCourseScreen } from './OpeningCourse';
 const url = (id: string, run = false) => `/course/${id}${run ? '?run=1' : ''}`;
 afterEach(cleanup);
 
-it('offers nine dedicated notes and four interleaved drill entries', () => {
+it('offers nine dedicated notes and eleven interleaved drill entries', () => {
   render(<MemoryRouter><OpeningCourseScreen url={url}/></MemoryRouter>);
   const list = screen.getByRole('list');
-  expect(within(list).getAllByRole('listitem')).toHaveLength(13);
+  expect(within(list).getAllByRole('listitem')).toHaveLength(20);
   expect(screen.getAllByRole('link', { name: /Read lesson/ })).toHaveLength(9);
-  expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(4);
+  expect(screen.getAllByRole('link', { name: /View drill/ })).toHaveLength(11);
   expect(document.querySelector('.co-pages')).toBeNull();
-  expect(OPENING_COURSE_PATH.slice(0, 5).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'foundation-practice']);
+  expect(OPENING_COURSE_PATH.slice(0, 6).map(step => step.id)).toEqual(['meaning', 'sufficient', 'necessary', 'must-arrow', 'missing-requirement', 'foundation-practice']);
+});
+
+it('teaches each prerequisite before the source drills that use it', () => {
+  const position = (id: string) => OPENING_COURSE_PATH.findIndex(step => step.id === id);
+  expect(position('necessary-words')).toBeLessThan(position('source-intro-identify'));
+  expect(position('source-roles')).toBeLessThan(position('source-intro-diagrams'));
+  expect(position('whole-meaning')).toBeLessThan(position('source-rephrase'));
+  expect(position('contrapositive')).toBeLessThan(position('source-full-translation'));
+  expect(position('contrapositive-practice')).toBeLessThan(position('source-independent'));
 });
 
 it.each(OPENING_COURSE_PATH)('renders the dedicated $id destination without an old reader index', async step => {
