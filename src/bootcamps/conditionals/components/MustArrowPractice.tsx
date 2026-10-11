@@ -1,58 +1,69 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { indicatorFlashcards } from '../content/indicatorFlashcards';
 import './must-arrow-practice.css';
 
-const rule = 'Every folder marked complete contains a signed form.';
-// These questions adapt the four reviewed foundation concepts. Keep their source explanations.
+// Practice follows the lesson's source-supported sufficient-to-necessary convention.
 const questions = [
   {
-    id: 'foundation-enough', rule,
-    prompt: 'Which fact is enough to conclude that a folder contains a signed form?',
-    options: ['The folder is marked complete.', 'The folder is not marked complete.', 'The folder has some unfinished work.'],
+    id: 'arrow-left',
+    rule: 'If you are enrolled in law school, then you are a student.',
+    prompt: 'Which complete condition belongs on the left side of the arrow?',
+    options: ['You are enrolled in law school.', 'You are a student.', 'If.'],
     feedback: [
-      'The complete label gives us the left side of the rule. The signed form must follow.',
-      'The rule tells us what follows when a folder is marked complete. If it is not marked complete, the rule leaves open whether it contains a signed form.',
-      'Unfinished work does not tell us whether the folder contains a signed form. The fact that guarantees the form is the complete label.',
+      'Enrollment is enough to establish that you are a student. It is the sufficient condition, so it goes on the left.',
+      'Being a student is the necessary condition in this rule. It belongs on the right, because enrollment requires it.',
+      'If points to the sufficient condition, but it is not itself a condition. Keep the whole idea it introduces: you are enrolled in law school.',
     ],
+    explanation: 'Read from the sufficient condition toward the necessary condition: You are enrolled in law school → You are a student.',
     correct: 0,
   },
   {
-    id: 'foundation-required', rule,
-    prompt: 'A folder is marked complete. What must be true?',
-    options: ['Every folder with a signed form is marked complete.', 'This folder contains a signed form.', 'This folder contains no unsigned forms.'],
+    id: 'arrow-right',
+    rule: 'If you are enrolled in law school, then you are a student.',
+    prompt: 'Which complete condition belongs on the right side of the arrow?',
+    options: ['You are enrolled in law school.', 'You are a student.', 'Then.'],
     feedback: [
-      'That reverses the rule. A complete folder must contain a signed form, but a signed form does not guarantee the complete label.',
-      'We know this folder is marked complete, so the rule requires it to contain a signed form.',
-      'That adds a claim the rule does not make. A folder can contain a signed form and also contain unsigned forms.',
+      'Enrollment is the sufficient condition. It belongs on the left, where we start reading this rule.',
+      'Being a student is required whenever you are enrolled in law school. It is the necessary condition, so it goes on the right.',
+      'Then helps connect the two parts of this sentence. The complete condition on the right is you are a student.',
     ],
+    explanation: 'The arrow points to what must be true if the left side is true. Enrollment on the left requires being a student on the right.',
     correct: 1,
   },
   {
-    id: 'foundation-reverse', rule,
-    prompt: 'This folder contains a signed form. Do we know whether it is marked complete?',
-    options: ['Yes. It must be marked complete.', 'Yes. It cannot be marked complete.', 'No. It could be marked complete, but we do not know.'],
-    feedback: [
-      'That moves backward from the right side to the left. Having the signed form does not prove that the folder is marked complete.',
-      'A signed form does not rule out the complete label. In fact, every folder marked complete has one. The label is still unknown.',
-      'The signed form fits either possibility: the folder may be marked complete, or it may still need other work.',
+    id: 'arrow-reading',
+    rule: 'This folder is marked complete → This folder contains a signed form',
+    prompt: 'How do you read this arrow?',
+    options: [
+      'If this folder contains a signed form, it must be marked complete.',
+      'This folder is marked complete and contains a signed form.',
+      'If this folder is marked complete, it must contain a signed form.',
     ],
+    feedback: [
+      'That reads the arrow backward. Start with the complete label on the left, then follow the arrow to the signed form on the right.',
+      'That treats both sides as facts. The arrow tells us what must follow if the left side is true; it does not say either side is actually true.',
+      'That follows the arrow from left to right and keeps the requirement: if the complete label applies, the signed form must be there.',
+    ],
+    explanation: 'Read the arrow as must: if the left side is true, the right side must be true.',
     correct: 2,
   },
   {
-    id: 'foundation-rule-not-fact', rule,
-    prompt: 'Does the rule tell us that any folder is actually marked complete?',
-    options: ['Yes. At least one folder must be marked complete.', 'No. It tells us what follows if a folder is marked complete.', 'No. It tells us that no folders are marked complete.'],
-    feedback: [
-      'That turns a rule into a fact. The rule describes folders with the complete label; it does not tell us that any such folders exist.',
-      'The rule gives a requirement for any folder with that label. It does not report whether any folder has the label.',
-      'That also turns the rule into a fact. The rule does not say the complete label is absent. It leaves open whether any folders have it.',
+    id: 'arrow-clause-order',
+    rule: 'You get a bicycle if you win the raffle.',
+    prompt: 'Which arrow keeps the meaning of this sentence?',
+    options: [
+      'You get a bicycle → You win the raffle',
+      'You win the raffle → You get a bicycle',
+      'If → You get a bicycle',
     ],
+    feedback: [
+      'That follows the sentence order but reverses the requirement. Winning the raffle is enough to establish that you get a bicycle, even though winning appears last.',
+      'Winning the raffle is still the sufficient condition. If introduces it at the end of this sentence, so it still belongs on the left of the arrow.',
+      'If is an indicator, not a complete condition. Put the idea it introduces on the left: you win the raffle.',
+    ],
+    explanation: 'This has the same meaning as If you win the raffle, you get a bicycle. Moving the words does not change which condition is sufficient or necessary.',
     correct: 1,
   },
-].map(question => ({
-  ...question,
-  explanation: indicatorFlashcards.find(item => item.id === question.id)!.back,
-}));
+];
 
 export function MustArrowPractice() {
   const [index, setIndex] = useState(0);
@@ -82,7 +93,7 @@ export function MustArrowPractice() {
 
   return <div className="ma-question-practice">
     <div className="ma-question-practice-progress">
-      <span id={`${id}-progress`}>{count} of {questions.length} questions answered</span>
+      <span id={`${id}-progress`}>{count} answered · {questions.length - count} remaining</span>
       <progress aria-labelledby={`${id}-progress`} value={count} max={questions.length}/>
     </div>
     <div className="ma-question-practice-question">

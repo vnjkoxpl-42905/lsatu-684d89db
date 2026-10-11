@@ -258,8 +258,11 @@ it('bridges with one raffle question, then tests fresh cases with reasoned feedb
 
 it('keeps the must-arrow note to roles, the raffle diagram and a moved if-clause', () => {
   render(<OpeningCourseContent id="must-arrow"/>);
-  expect(screen.getByRole('button', { name: 'Find the indicator' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'You get a bicycle if you win the raffle. Which diagram preserves this sentence?' })).toBeVisible();
+  expect(screen.queryByRole('button', { name: 'Find the indicator' })).not.toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Place the conditions. Then read the arrow.' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Sentence order can change. The arrow stays the same.' })).toBeVisible();
+  expect(screen.getByText('Left: sufficient condition')).toBeVisible();
+  expect(screen.getByText('Right: necessary condition')).toBeVisible();
   const note = document.querySelector('[data-reference-source="8"]') as HTMLElement;
   expect(note.textContent).not.toMatch(/only if|requires|Group 1|Group 2/i);
   cleanup();

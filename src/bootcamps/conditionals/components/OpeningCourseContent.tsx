@@ -1,6 +1,6 @@
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
-import { conditionalReferenceContent, IncrementalWriter, IntegratedItem, referencePracticeItems, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
+import { conditionalReferenceContent, IntegratedItem, referencePracticeItems, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
 import { CounterexampleLab, NegativeCaseLab } from './CounterexampleLab';
 import { OpeningMixedDrill } from './OpeningMixedDrill';
 import { PracticeTaskRunner } from './PracticeTaskRunner';
@@ -106,40 +106,34 @@ function IndicatorNote({ group }: { group: 'group-1' | 'group-2' }) {
   </>;
 }
 
-// Introduce notation through the familiar relationship before the raffle walkthrough.
+// Teach placement and reading through the familiar relationship, then require a decision.
 function MustArrowNote() {
   return <section className="co-section cr-course-section ma-lesson" data-reference-source={8}>
-    <div className="co-section-heading"><h2>The arrow means “must”</h2></div>
+    <div className="co-section-heading"><h2>Left: sufficient. Right: necessary.</h2></div>
     <div className="cr-step-body">
-      <p className="ma-lead"><strong>Read from left to right.</strong> The arrow tells you what <strong>must be true</strong> when the left side is true.</p>
-      <figure className="ma-example" aria-label="Read left to right: if you are enrolled in law school, you must be a student">
-        <figcaption className="ma-read-instruction">Read it as: <strong>“If this is true, this must be true.”</strong></figcaption>
+      <p className="ma-lead">The arrow points from the <strong>sufficient condition</strong> to the <strong>necessary condition</strong>.</p>
+      <figure className="ma-example" aria-label="If you are enrolled in law school, you must be a student">
+        <figcaption className="ma-read-instruction">Read left to right: <strong>“If this is true, this must be true.”</strong></figcaption>
         <div className="ma-relationship">
-          <div className="ma-condition"><span className="ma-side">Left side</span><span>Sufficient<br/>Enough</span><strong>You are enrolled in law school</strong></div>
-          <div className="ma-arrow" aria-hidden="true"><span>must</span><b>→</b></div>
-          <div className="ma-condition"><span className="ma-side">Right side</span><span>Necessary<br/>Required</span><strong>You are a student</strong></div>
+          <div className="ma-condition"><span className="ma-side">Left: sufficient condition</span><span>Enough to guarantee the right</span><strong>You are enrolled in law school</strong></div>
+          <div className="ma-arrow" aria-hidden="true"><span>must</span><b>⟶</b></div>
+          <div className="ma-condition"><span className="ma-side">Right: necessary condition</span><span>Required when the left is true</span><strong>You are a student</strong></div>
         </div>
       </figure>
-      <p>Start with <strong>“If you are enrolled in law school…”</strong> Follow the arrow and read <strong>“…you must be a student.”</strong></p>
-      <p className="ma-takeaway"><strong>Being a student does not guarantee that you are enrolled in law school.</strong> Follow this arrow from left to right, not backward.</p>
-      <details className="cr-extension ma-reverse"><summary>Why doesn't the arrow work in reverse?</summary><div className="ma-reverse-body"><p>A person could be a history student who is not enrolled in law school. Being a student alone does not tell us whether they are enrolled in law school.</p><p>The rule describes a connection. It does not tell us that either condition is actually true, or that one causes the other.</p></div></details>
-      <section className="ma-practice" aria-label="Build a must-arrow diagram">
-        <h3>Now build one with a new rule</h3>
-        <p>Follow the raffle sentence into a diagram, one step at a time.</p>
-        <IncrementalWriter/>
-      </section>
-      <section className="ma-reading" aria-label="Read a diagram back into words">
-        <h3>Keep the ideas, leave out the indicator</h3>
-        <p><strong>If</strong> helps us find the sufficient condition. The condition itself is <strong>you win the raffle</strong>. That is what belongs on the left.</p>
-        <p>Short labels save writing, but they must keep the meaning. Here, <strong>Win</strong> means winning this raffle. <strong>Get bicycle</strong> means getting a bicycle.</p>
+      <p>Being enrolled in law school is <strong>enough</strong> to know you are a student. That is why enrollment goes on the <strong>left</strong>. Being a student is <strong>required</strong>, so it goes on the <strong>right</strong>.</p>
+      <section className="ma-placement" aria-label="Place and read the conditions">
+        <h3>Place the conditions. Then read the arrow.</h3>
+        <p>Choose what belongs on each side, then use the same direction with a new rule.</p>
+        <MustArrowPractice/>
+        <p className="ma-compact-note">Put the <strong>condition</strong> beside the arrow, not the indicator word. For example, write “you win the raffle,” not “if.”</p>
       </section>
       <section className="ma-order" aria-label="Sentence order and arrow direction">
-        <h3>Moving the words doesn't reverse the arrow</h3>
-        <p>These sentences say the same thing:</p>
+        <h3>Sentence order can change. The arrow stays the same.</h3>
         <div className="cr-language-pair"><p><strong>If</strong> you win the raffle, you get a bicycle.</p><p>You get a bicycle <strong>if</strong> you win the raffle.</p></div>
-        <p>In both, winning is enough to establish getting a bicycle. Winning still goes on the left, even when it comes last in the sentence.</p>
-        <ReferenceQuestion prompt="You get a bicycle if you win the raffle. Which diagram preserves this sentence?" options={['Get bicycle → Win', 'Win → Get bicycle']} correct={1} feedback={['That would say getting a bicycle guarantees winning. The sentence tells us the other direction: if you win this raffle, you get a bicycle.', 'Winning is still enough to establish getting a bicycle. Moving the if-clause does not change that relationship.']}/>
+        <p>Both mean: <strong>You win the raffle → You get a bicycle.</strong> Winning is sufficient, so it goes left, even when it comes last in the sentence.</p>
       </section>
+      <p className="ma-takeaway"><strong>The arrow guarantees the right when the left is true.</strong> Being a student alone does not prove that you are enrolled in law school.</p>
+      <details className="cr-extension ma-reverse"><summary>Why can't we reverse it?</summary><div className="ma-reverse-body"><p>A person could be a history student who is not enrolled in law school. That possibility fits our rule.</p><p>The arrow states a relationship. By itself, it does not tell us that either condition is true, or that one causes the other.</p></div></details>
     </div>
   </section>;
 }
@@ -278,7 +272,7 @@ function Content({ id }: { id: string }) {
     case 'meaning': return <ReferenceBody number={1} omitTransition/>;
     case 'sufficient': return <ReferenceBody number={2} omitTransition/>;
     case 'necessary': return <ReferenceBody number={4} omitTransition/>;
-    case 'must-arrow': return <><MustArrowNote/><NoteSection title="Try the relationship yourself"><MustArrowPractice/></NoteSection></>;
+    case 'must-arrow': return <MustArrowNote/>;
     case 'sufficient-words': return <IndicatorNote group="group-1"/>;
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
     case 'whole-meaning': return <WholeMeaningNote/>;

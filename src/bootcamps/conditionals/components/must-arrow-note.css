@@ -55,3 +55,12 @@
 @media (prefers-reduced-motion: reduce) {
   #root .ma-arrow b { animation: none; }
 }
+
+#root .ma-placement { border-top: 1px solid var(--co-polish-line); padding-top: 2rem; }
+#root .ma-placement .ma-compact-note { font-size: 1.05rem; }
+#root .ma-relationship .ma-side { font-size: clamp(1.1rem, 1rem + .35vw, 1.35rem); }
+#root .ma-arrow b { font-size: 3.5rem; }
+@media (max-width: 480px) {
+  #root .ma-relationship .ma-side { font-size: 1rem; }
+  #root .ma-arrow b { font-size: 2rem; }
+}

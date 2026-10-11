@@ -3,83 +3,84 @@ import { afterEach, expect, it } from 'vitest';
 import { MustArrowPractice } from './MustArrowPractice';
 
 afterEach(cleanup);
-
 function answer(option: string) {
   fireEvent.click(screen.getByRole('radio', { name: option }));
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
 }
 
-it('requires a response before feedback and explains an incorrect answer', () => {
+it('requires an answer before feedback and explains the placement mistake', () => {
   const { container } = render(<MustArrowPractice/>);
   const liveRegion = container.querySelector('[aria-live="polite"]');
   expect(liveRegion).toBeEmptyDOMElement();
   expect(screen.getByRole('button', { name: 'Check answer' })).toBeDisabled();
   expect(screen.getByRole('button', { name: /Next question/ })).toBeDisabled();
-  fireEvent.click(screen.getByRole('radio', { name: 'The folder is not marked complete.' }));
+  fireEvent.click(screen.getByRole('radio', { name: 'You are a student.' }));
   expect(screen.getByRole('progressbar')).toHaveAttribute('value', '0');
   expect(liveRegion).toBeEmptyDOMElement();
   fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
-  expect(liveRegion).toHaveTextContent('Not quite.');
   expect(screen.getByRole('heading', { name: 'Not quite.' })).toHaveFocus();
-  expect(liveRegion).toHaveTextContent('the rule leaves open whether it contains a signed form');
-  expect(liveRegion).toHaveTextContent('The answer: The folder is marked complete.');
-  expect(liveRegion).toHaveTextContent('The rule covers every folder with that label.');
+  expect(liveRegion).toHaveTextContent('It belongs on the right, because enrollment requires it.');
   expect(screen.getByRole('progressbar')).toHaveAttribute('value', '1');
   expect(screen.queryByRole('button', { name: 'Check answer' })).not.toBeInTheDocument();
 });
 
-it('preserves the submitted answer on revisits and focuses navigation', () => {
+it('preserves submitted choices on revisits and focuses navigation', () => {
   render(<MustArrowPractice/>);
-  answer('The folder is marked complete.');
-  expect(screen.getByRole('heading', { name: 'Correct.' })).toBeVisible();
+  answer('You are enrolled in law school.');
   fireEvent.click(screen.getByRole('button', { name: /Next question/ }));
   expect(screen.getByRole('heading', { name: 'Question 2 of 4' })).toHaveFocus();
   expect(screen.getByRole('button', { name: 'Check answer' })).toBeDisabled();
   fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
   expect(screen.getByRole('heading', { name: 'Question 1 of 4' })).toHaveFocus();
-  expect(screen.getByRole('radio', { name: 'The folder is marked complete.' })).toBeChecked();
-  expect(screen.getByRole('radio', { name: 'The folder is marked complete.' })).toBeDisabled();
+  expect(screen.getByRole('radio', { name: 'You are enrolled in law school.' })).toBeChecked();
+  expect(screen.getByRole('radio', { name: 'You are enrolled in law school.' })).toBeDisabled();
   expect(screen.getByRole('heading', { name: 'Correct.' })).toBeVisible();
   expect(screen.getByRole('progressbar')).toHaveAttribute('value', '1');
 });
 
-it('teaches all four concepts and completes without claiming mastery', () => {
+it('checks left, right, reading and clause order without claiming mastery', () => {
   render(<MustArrowPractice/>);
   const choices = [
-    'The folder is marked complete.',
-    'This folder contains a signed form.',
-    'No. It could be marked complete, but we do not know.',
-    'No. It tells us what follows if a folder is marked complete.',
+    'You are enrolled in law school.',
+    'You are a student.',
+    'If this folder is marked complete, it must contain a signed form.',
+    'You win the raffle → You get a bicycle',
+  ];
+  const prompts = [
+    'Which complete condition belongs on the left side of the arrow?',
+    'Which complete condition belongs on the right side of the arrow?',
+    'How do you read this arrow?',
+    'Which arrow keeps the meaning of this sentence?',
   ];
   choices.forEach((choice, index) => {
+    expect(screen.getByRole('group', { name: prompts[index] })).toBeVisible();
     answer(choice);
-    expect(screen.getByRole('heading', { name: 'Correct.' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Correct.' })).toHaveFocus();
     expect(screen.getByRole('progressbar')).toHaveAttribute('value', String(index + 1));
     if (index < choices.length - 1) fireEvent.click(screen.getByRole('button', { name: /Next question/ }));
   });
   expect(screen.getByText(/You've answered all 4 questions/)).toBeVisible();
-  expect(screen.getByText(/We need a separate fact/)).toBeVisible();
+  expect(screen.getByText('4 answered · 0 remaining')).toBeVisible();
   expect(screen.queryByRole('button', { name: /Next question/ })).not.toBeInTheDocument();
-  expect(screen.queryByText(/Recall card|Think before you turn|Revisit this card|Explanation shown/)).not.toBeInTheDocument();
 });
 
-it('explains the specific mistake for each wrong choice', () => {
+it('explains every distractor using the specific reasoning error', () => {
   const wrongResponses = [
     [
-      ['The folder is not marked complete.', 'the rule leaves open whether it contains a signed form'],
-      ['The folder has some unfinished work.', 'Unfinished work does not tell us whether'],
+      ['You are a student.', 'Being a student is the necessary condition'],
+      ['If.', 'it is not itself a condition'],
     ],
     [
-      ['Every folder with a signed form is marked complete.', 'That reverses the rule.'],
-      ['This folder contains no unsigned forms.', 'That adds a claim the rule does not make.'],
+      ['You are enrolled in law school.', 'Enrollment is the sufficient condition.'],
+      ['Then.', 'The complete condition on the right is you are a student.'],
     ],
     [
-      ['Yes. It must be marked complete.', 'That moves backward from the right side to the left.'],
-      ['Yes. It cannot be marked complete.', 'A signed form does not rule out the complete label.'],
+      ['If this folder contains a signed form, it must be marked complete.', 'That reads the arrow backward.'],
+      ['This folder is marked complete and contains a signed form.', 'That treats both sides as facts.'],
     ],
     [
-      ['Yes. At least one folder must be marked complete.', 'That turns a rule into a fact.'],
-      ['No. It tells us that no folders are marked complete.', 'That also turns the rule into a fact.'],
+      ['You get a bicycle → You win the raffle', 'That follows the sentence order but reverses the requirement.'],
+      ['If → You get a bicycle', 'If is an indicator, not a complete condition.'],
     ],
   ];
   wrongResponses.forEach((responses, questionIndex) => responses.forEach(([choice, explanation]) => {
