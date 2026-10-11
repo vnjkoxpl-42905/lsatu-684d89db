@@ -129,7 +129,7 @@
         },
         {
           "id": "orientation-m2",
-          "prompt": "If a roof has a solar panel, it has a support frame. A roof has a support frame. What is established?",
+          "prompt": "If a roof has a solar panel, it has a support frame. A roof has a support frame. What is proven?",
           "options": [
             "It has a solar panel.",
             "It has no solar panel.",
@@ -154,10 +154,10 @@
           "answerIndex": 1,
           "hint": "Does every sealed sample is logged tell you that a sealed sample exists?",
           "reasoningSteps": [
-            "Every sealed sample is logged, but the rule doesn't establish that any sealed or logged sample exists.",
-            "It hasn't identified a sealed sample or any other logged sample. The relationship remains true while existence remains unknown."
+            "Every sealed sample is logged, but the rule doesn't prove that any sealed or logged sample exists.",
+            "It hasn't identified a sealed sample or any other logged sample. The rule remains true while existence remains unknown."
           ],
-          "explanation": "Every sealed sample is logged, but the rule doesn't establish that any sealed or logged sample exists. It hasn't identified a sealed sample or any other logged sample. The relationship remains true while existence remains unknown."
+          "explanation": "Every sealed sample is logged, but the rule doesn't prove that any sealed or logged sample exists. It hasn't identified a sealed sample or any other logged sample. The rule remains true while existence remains unknown."
         }
       ],
       "advanced": [
@@ -183,15 +183,15 @@
           "options": [
             "It is sealed.",
             "It is not sealed.",
-            "Neither conclusion is established."
+            "Neither conclusion is proven."
           ],
           "answerIndex": 2,
           "hint": "Does certified for indoor use meet certified for underwater use?",
           "reasoningSteps": [
-            "Neither housing conclusion is established. Indoor certification doesn't meet the rule's condition of certification for underwater use.",
-            "Indoor certification doesn't establish that condition. K could have a sealed housing or lack one without contradicting what we've been told."
+            "Neither housing conclusion is proven. Indoor certification doesn't meet the rule's condition of certification for underwater use.",
+            "Indoor certification doesn't prove that condition. K could have a sealed housing or lack one without contradicting what we've been told."
           ],
-          "explanation": "Neither housing conclusion is established. Indoor certification doesn't meet the rule's condition of certification for underwater use. Indoor certification doesn't establish that condition. K could have a sealed housing or lack one without contradicting what we've been told."
+          "explanation": "Neither housing conclusion is proven. Indoor certification doesn't meet the rule's condition of certification for underwater use. Indoor certification doesn't prove that condition. K could have a sealed housing or lack one without contradicting what we've been told."
         },
         {
           "id": "orientation-a3",
@@ -251,7 +251,7 @@
     },
     "guidedExample": {
       "id": "sufficient-necessary-guide",
-      "prompt": "Every verified account has a recovery code. Before choosing, use a Personalized If/Then: imagine that your account is verified and state what you must know about it. Which combination violates the rule?",
+      "prompt": "Every verified account has a recovery code. Before choosing, use a “Put yourself in it” check: imagine that your account is verified and state what you must know about it. Which combination violates the rule?",
       "options": [
         "Verified, with a recovery code.",
         "Verified, without a recovery code.",
@@ -282,10 +282,10 @@
           "answerIndex": 0,
           "hint": "If the cabinet is fire-rated, what do you know about its shell?",
           "reasoningSteps": [
-            "Being fire-rated is enough to establish a steel shell for this cabinet. That makes fire-rated status the sufficient condition here.",
+            "Being fire-rated is enough to prove a steel shell for this cabinet. That makes fire-rated status the sufficient condition here.",
             "Having a steel shell is the promised result. The sentence hasn't identified that result or absence of fire-rating as its sufficient starting condition."
           ],
-          "explanation": "Being fire-rated is enough to establish a steel shell for this cabinet. That makes fire-rated status the sufficient condition here. Having a steel shell is the promised result. The sentence hasn't identified that result or absence of fire-rating as its sufficient starting condition."
+          "explanation": "Being fire-rated is enough to prove a steel shell for this cabinet. That makes fire-rated status the sufficient condition here. Having a steel shell is the promised result. The sentence hasn't identified that result or absence of fire-rating as its sufficient starting condition."
         },
         {
           "id": "sufficient-necessary-b2",
@@ -330,12 +330,12 @@
             "Sufficient in both rules."
           ],
           "answerIndex": 1,
-          "hint": "Read the two arrows separately. What role does reflective have in each relationship?",
+          "hint": "Read the two arrows separately. What role does reflective have in each rule?",
           "reasoningSteps": [
-            "Reflective is necessary in the first rule and sufficient in the second. Polishing requires reflection; reflection is enough to establish visibility.",
-            "In reflective → visible, reflective is enough to establish visible. It is sufficient there. The role changes with the relationship."
+            "Reflective is necessary in the first rule and sufficient in the second. Polishing requires reflection; reflection is enough to prove visibility.",
+            "In reflective → visible, reflective is enough to prove visible. It is sufficient there. The role changes with the rule."
           ],
-          "explanation": "Reflective is necessary in the first rule and sufficient in the second. Polishing requires reflection; reflection is enough to establish visibility. In reflective → visible, reflective is enough to establish visible. It is sufficient there. The role changes with the relationship."
+          "explanation": "Reflective is necessary in the first rule and sufficient in the second. Polishing requires reflection; reflection is enough to prove visibility. In reflective → visible, reflective is enough to prove visible. It is sufficient there. The role changes with the rule."
         },
         {
           "id": "sufficient-necessary-m2",
@@ -358,7 +358,7 @@
           "prompt": "If a seat is upgraded, it has extra legroom. A seat is not upgraded and has no extra legroom. This case is:",
           "options": [
             "Forbidden.",
-            "Allowed, but not established by the rule alone.",
+            "Allowed, but not proven by the rule alone.",
             "Required for every seat."
           ],
           "answerIndex": 1,
@@ -399,25 +399,25 @@
           "hint": "Would a valid token without authentication break a promise about authenticated tokens?",
           "reasoningSteps": [
             "Validity without authentication fits the rule. The promise covers authenticated tokens; it hasn't said every valid token is authenticated.",
-            "A valid unauthenticated token therefore fits the relationship. It doesn't make authentication necessary for validity."
+            "A valid unauthenticated token therefore fits the rule. It doesn't make authentication necessary for validity."
           ],
-          "explanation": "Validity without authentication fits the rule. The promise covers authenticated tokens; it hasn't said every valid token is authenticated. A valid unauthenticated token therefore fits the relationship. It doesn't make authentication necessary for validity."
+          "explanation": "Validity without authentication fits the rule. The promise covers authenticated tokens; it hasn't said every valid token is authenticated. A valid unauthenticated token therefore fits the rule. It doesn't make authentication necessary for validity."
         },
         {
           "id": "sufficient-necessary-a3",
           "prompt": "Every priority packet is routed through Server C. No priority packets are known to exist. Which is accurate?",
           "options": [
-            "Routing through C is necessary for priority status; no such packet is established.",
+            "Routing through C is necessary for priority status; no such packet is proven.",
             "A packet through C must exist.",
             "Routing through C is sufficient for priority status."
           ],
           "answerIndex": 0,
           "hint": "Name the requirement for a priority packet, then ask whether the sentence identifies one.",
           "reasoningSteps": [
-            "Routing through Server C is necessary for priority status, but no priority packet is established by the rule alone.",
-            "The rule hasn't identified a priority packet. It establishes a requirement, not the existence of a packet meeting it or the reverse direction."
+            "Routing through Server C is necessary for priority status, but no priority packet is proven by the rule alone.",
+            "The rule hasn't identified a priority packet. It proves a requirement, not the existence of a packet meeting it or the reverse direction."
           ],
-          "explanation": "Routing through Server C is necessary for priority status, but no priority packet is established by the rule alone. The rule hasn't identified a priority packet. It establishes a requirement, not the existence of a packet meeting it or the reverse direction."
+          "explanation": "Routing through Server C is necessary for priority status, but no priority packet is proven by the rule alone. The rule hasn't identified a priority packet. It proves a requirement, not the existence of a packet meeting it or the reverse direction."
         }
       ]
     }
@@ -550,7 +550,7 @@
         },
         {
           "id": "group-1-b5",
-          "prompt": "All cups packed in the gift set have matching saucers. Which diagram preserves the rule?",
+          "prompt": "All cups packed in the gift set have matching saucers. Which diagram keeps the rule?",
           "options": [
             "Matching saucer → cup packed in gift set.",
             "Cup → has matching saucer.",
@@ -600,7 +600,7 @@
       "medium": [
         {
           "id": "group-1-m1",
-          "prompt": "Any invoice submitted through the portal is time-stamped. Which translation preserves scope?",
+          "prompt": "Any invoice submitted through the portal is time-stamped. Which translation keeps scope?",
           "options": [
             "Invoice → time-stamped.",
             "Invoice submitted through portal → time-stamped.",
@@ -609,10 +609,10 @@
           "answerIndex": 1,
           "hint": "What does submitted through the portal add to invoice?",
           "reasoningSteps": [
-            "Invoice submitted through portal → time-stamped preserves the full condition: the invoice was submitted through the portal.",
+            "Invoice submitted through portal → time-stamped keeps the full condition: the invoice was submitted through the portal.",
             "It hasn't covered every invoice or said a time stamp proves portal submission. The broader and reversed arrows each add something."
           ],
-          "explanation": "Invoice submitted through portal → time-stamped preserves the full condition: the invoice was submitted through the portal. It hasn't covered every invoice or said a time stamp proves portal submission. The broader and reversed arrows each add something."
+          "explanation": "Invoice submitted through portal → time-stamped keeps the full condition: the invoice was submitted through the portal. It hasn't covered every invoice or said a time stamp proves portal submission. The broader and reversed arrows each add something."
         },
         {
           "id": "group-1-m2",
@@ -641,14 +641,14 @@
           "answerIndex": 2,
           "hint": "The flag is raised. Has the sentence said ice detection is the only way that can happen?",
           "reasoningSteps": [
-            "Ice detection is unknown. Detecting ice guarantees a raised flag, but a raised flag hasn't been made enough to establish ice detection.",
+            "Ice detection is unknown. Detecting ice guarantees a raised flag, but a raised flag hasn't been made enough to prove ice detection.",
             "A station could have detected ice or raised its flag for another reason. The fact leaves ice detection unknown."
           ],
-          "explanation": "Ice detection is unknown. Detecting ice guarantees a raised flag, but a raised flag hasn't been made enough to establish ice detection. A station could have detected ice or raised its flag for another reason. The fact leaves ice detection unknown."
+          "explanation": "Ice detection is unknown. Detecting ice guarantees a raised flag, but a raised flag hasn't been made enough to prove ice detection. A station could have detected ice or raised its flag for another reason. The fact leaves ice detection unknown."
         },
         {
           "id": "group-1-m4",
-          "prompt": "A tray gets a green sticker if its lid is sealed. Which translation preserves the sentence?",
+          "prompt": "A tray gets a green sticker if its lid is sealed. Which translation keeps the sentence?",
           "options": [
             "Green sticker → sealed lid.",
             "Sealed lid → green sticker.",
@@ -664,19 +664,19 @@
         },
         {
           "id": "group-1-m5",
-          "prompt": "When a rehearsal ends, the room lights dim. The lights are dim. What is established about the rehearsal?",
+          "prompt": "When a rehearsal ends, the room lights dim. The lights are dim. What is proven about the rehearsal?",
           "options": [
             "It ended.",
             "It did not end.",
-            "Its ending is not established."
+            "Its ending is not proven."
           ],
           "answerIndex": 2,
           "hint": "Could the lights be dimmed while the rehearsal continues without breaking the rule?",
           "reasoningSteps": [
-            "The rehearsal's ending is not established. Its ending guarantees dim lights, but dim lights don't establish its ending.",
+            "The rehearsal's ending is not proven. Its ending guarantees dim lights, but dim lights don't prove its ending.",
             "Dim lights leave the rehearsal's ending open. We can't conclude either that it ended or that it didn't."
           ],
-          "explanation": "The rehearsal's ending is not established. Its ending guarantees dim lights, but dim lights don't establish its ending. Dim lights leave the rehearsal's ending open. We can't conclude either that it ended or that it didn't."
+          "explanation": "The rehearsal's ending is not proven. Its ending guarantees dim lights, but dim lights don't prove its ending. Dim lights leave the rehearsal's ending open. We can't conclude either that it ended or that it didn't."
         },
         {
           "id": "group-1-m6",
@@ -746,7 +746,7 @@
         },
         {
           "id": "group-1-a3-v2",
-          "prompt": "Any component certified for heat exposure is stored in the outdoor cabinet. Which diagram preserves the complete rule?",
+          "prompt": "Any component certified for heat exposure is stored in the outdoor cabinet. Which diagram keeps the complete rule?",
           "options": [
             "Certified for heat exposure → stored in outdoor cabinet.",
             "Stored outdoors → certified for every use.",
@@ -755,14 +755,14 @@
           "answerIndex": 0,
           "hint": "Keep both limits: certified for which exposure, and stored in which place?",
           "reasoningSteps": [
-            "Certified for heat exposure → stored in outdoor cabinet preserves both the certification limit and the specified storage place.",
+            "Certified for heat exposure → stored in outdoor cabinet keeps both the certification limit and the specified storage place.",
             "The matching arrow keeps both descriptions. Outdoors generally, certified for every use, and component alone each change or lose part of the meaning."
           ],
-          "explanation": "Certified for heat exposure → stored in outdoor cabinet preserves both the certification limit and the specified storage place. The matching arrow keeps both descriptions. Outdoors generally, certified for every use, and component alone each change or lose part of the meaning."
+          "explanation": "Certified for heat exposure → stored in outdoor cabinet keeps both the certification limit and the specified storage place. The matching arrow keeps both descriptions. Outdoors generally, certified for every use, and component alone each change or lose part of the meaning."
         },
         {
           "id": "group-1-a4",
-          "prompt": "When I checked the shop, the shutters were closed. What conditional rule does this sentence establish?",
+          "prompt": "When I checked the shop, the shutters were closed. What conditional rule does this sentence prove?",
           "options": [
             "I check → shutters closed.",
             "Shutters closed → I check.",
@@ -771,10 +771,10 @@
           "answerIndex": 2,
           "hint": "Does when describe every check, or the particular check being reported?",
           "reasoningSteps": [
-            "No conditional rule is established. The sentence reports one visit when the shutters were closed.",
+            "No conditional rule is proven. The sentence reports one visit when the shutters were closed.",
             "That observation doesn't promise closed shutters whenever I check, or a check whenever the shutters close. No conditional rule has been stated."
           ],
-          "explanation": "No conditional rule is established. The sentence reports one visit when the shutters were closed. That observation doesn't promise closed shutters whenever I check, or a check whenever the shutters close. No conditional rule has been stated."
+          "explanation": "No conditional rule is proven. The sentence reports one visit when the shutters were closed. That observation doesn't promise closed shutters whenever I check, or a check whenever the shutters close. No conditional rule has been stated."
         },
         {
           "id": "group-1-a5",
@@ -826,7 +826,7 @@
         },
         {
           "id": "group-1-a8",
-          "prompt": "A confirmation appears if an order includes a collection time. Which diagram preserves the complete rule?",
+          "prompt": "A confirmation appears if an order includes a collection time. Which diagram keeps the complete rule?",
           "options": [
             "Confirmation appears → order includes collection time.",
             "Order includes collection time → confirmation appears.",
@@ -846,15 +846,15 @@
           "options": [
             "Q is set aside for nut-free orders.",
             "Q is not set aside for nut-free orders.",
-            "The rule does not establish whether Q is set aside for nut-free orders."
+            "The rule does not prove whether Q is set aside for nut-free orders."
           ],
           "answerIndex": 2,
-          "hint": "When what? Does a green marker by itself establish the nut-free reservation?",
+          "hint": "When what? Does a green marker by itself prove the nut-free reservation?",
           "reasoningSteps": [
-            "The rule doesn't establish Q's reservation. A nut-free reservation guarantees a green marker, but the marker doesn't establish that reservation.",
+            "The rule doesn't prove Q's reservation. A nut-free reservation guarantees a green marker, but the marker doesn't prove that reservation.",
             "The sentence doesn't restrict green markers to those trays. Q could be set aside that way or have the marker without that reservation; we don't know which."
           ],
-          "explanation": "The rule doesn't establish Q's reservation. A nut-free reservation guarantees a green marker, but the marker doesn't establish that reservation. The sentence doesn't restrict green markers to those trays. Q could be set aside that way or have the marker without that reservation; we don't know which."
+          "explanation": "The rule doesn't prove Q's reservation. A nut-free reservation guarantees a green marker, but the marker doesn't prove that reservation. The sentence doesn't restrict green markers to those trays. Q could be set aside that way or have the marker without that reservation; we don't know which."
         }
       ]
     }
@@ -901,7 +901,7 @@
     },
     "guidedExample": {
       "id": "group-2-guide",
-      "prompt": "Only subscribers can access the recording. Before choosing, identify what only restricts, name both complete ideas, put the requirement right, and check your direction with a Personalized If/Then about having access permission. Which follows?",
+      "prompt": "Only subscribers can access the recording. Before choosing, identify what only restricts, name both complete ideas, put the requirement right, and check your direction with a “Put yourself in it” check about having access permission. Which follows?",
       "options": [
         "Subscriber → can access recording.",
         "Can access recording → subscriber.",
@@ -910,10 +910,10 @@
       "answerIndex": 1,
       "hint": "If I can access the recording, what does only subscribers require about me?",
       "reasoningSteps": [
-        "Can access recording → subscriber preserves the restriction: someone with access permission has to be a subscriber.",
+        "Can access recording → subscriber keeps the restriction: someone with access permission has to be a subscriber.",
         "The sentence doesn't say every subscriber can access the recording. Nor does permission tell us someone actually accessed it."
       ],
-      "explanation": "Can access recording → subscriber preserves the restriction: someone with access permission has to be a subscriber. The sentence doesn't say every subscriber can access the recording. Nor does permission tell us someone actually accessed it."
+      "explanation": "Can access recording → subscriber keeps the restriction: someone with access permission has to be a subscriber. The sentence doesn't say every subscriber can access the recording. Nor does permission tell us someone actually accessed it."
     },
     "commonMistake": {
       "mistake": "Taking a requirement as a guarantee of the result, or taking an obligation as proof that someone complied.",
@@ -932,10 +932,10 @@
           "answerIndex": 0,
           "hint": "Only if what? If the display has activated, what must be true of its battery?",
           "reasoningSteps": [
-            "Display activates → battery charged preserves the requirement. If the display activates, its battery has to be charged.",
+            "Display activates → battery charged keeps the requirement. If the display activates, its battery has to be charged.",
             "The sentence doesn't promise activation from charging or an uncharged battery from an inactive display. Both alternatives add a direction we weren't given."
           ],
-          "explanation": "Display activates → battery charged preserves the requirement. If the display activates, its battery has to be charged. The sentence doesn't promise activation from charging or an uncharged battery from an inactive display. Both alternatives add a direction we weren't given."
+          "explanation": "Display activates → battery charged keeps the requirement. If the display activates, its battery has to be charged. The sentence doesn't promise activation from charging or an uncharged battery from an inactive display. Both alternatives add a direction we weren't given."
         },
         {
           "id": "group-2-b2",
@@ -965,9 +965,9 @@
           "hint": "Start with the full subject: a registered buoy. What does always say about it?",
           "reasoningSteps": [
             "Registered buoy → broadcasts identifier follows: every registered buoy broadcasts its identifier.",
-            "So Registered buoy → broadcasts identifier preserves the rule. The claim doesn't say every broadcasting buoy is registered or that an unregistered buoy stays silent."
+            "So Registered buoy → broadcasts identifier keeps the rule. The claim doesn't say every broadcasting buoy is registered or that an unregistered buoy stays silent."
           ],
-          "explanation": "Registered buoy → broadcasts identifier follows: every registered buoy broadcasts its identifier. So Registered buoy → broadcasts identifier preserves the rule. The claim doesn't say every broadcasting buoy is registered or that an unregistered buoy stays silent."
+          "explanation": "Registered buoy → broadcasts identifier follows: every registered buoy broadcasts its identifier. So Registered buoy → broadcasts identifier keeps the rule. The claim doesn't say every broadcasting buoy is registered or that an unregistered buoy stays silent."
         },
         {
           "id": "group-2-b4",
@@ -1041,19 +1041,19 @@
           "options": [
             "Mira enters the final round.",
             "Mira cannot enter.",
-            "Entry is not established."
+            "Entry is not proven."
           ],
           "answerIndex": 2,
           "hint": "Mira meets the score requirement. Did the sentence make that score enough for entry?",
           "reasoningSteps": [
-            "Mira's entry is not established. A qualifying score is required for entry, but the rule hasn't made that score enough.",
-            "The rule doesn't say it is the only requirement or promise entry from it. Mira's entry remains open rather than established or ruled out."
+            "Mira's entry is not proven. A qualifying score is required for entry, but the rule hasn't made that score enough.",
+            "The rule doesn't say it is the only requirement or promise entry from it. Mira's entry remains open rather than proved or ruled out."
           ],
-          "explanation": "Mira's entry is not established. A qualifying score is required for entry, but the rule hasn't made that score enough. The rule doesn't say it is the only requirement or promise entry from it. Mira's entry remains open rather than established or ruled out."
+          "explanation": "Mira's entry is not proven. A qualifying score is required for entry, but the rule hasn't made that score enough. The rule doesn't say it is the only requirement or promise entry from it. Mira's entry remains open rather than proved or ruled out."
         },
         {
           "id": "group-2-m2-v2",
-          "prompt": "The camera records only when motion is detected. Which diagram preserves the requirement?",
+          "prompt": "The camera records only when motion is detected. Which diagram keeps the requirement?",
           "options": [
             "Camera records → motion detected.",
             "Motion detected → camera records.",
@@ -1062,10 +1062,10 @@
           "answerIndex": 0,
           "hint": "Only when what? Read the arrow as a statement about what recording requires.",
           "reasoningSteps": [
-            "Camera records → motion detected preserves the requirement: if the camera records, motion is detected.",
+            "Camera records → motion detected keeps the requirement: if the camera records, motion is detected.",
             "Motion could be detected while the camera records nothing. The sentence also says nothing about the camera being broken."
           ],
-          "explanation": "Camera records → motion detected preserves the requirement: if the camera records, motion is detected. Motion could be detected while the camera records nothing. The sentence also says nothing about the camera being broken."
+          "explanation": "Camera records → motion detected keeps the requirement: if the camera records, motion is detected. Motion could be detected while the camera records nothing. The sentence also says nothing about the camera being broken."
         },
         {
           "id": "group-2-m3",
@@ -1117,7 +1117,7 @@
         },
         {
           "id": "group-2-m6",
-          "prompt": "A print from this edition always carries a date stamp. Which translation preserves scope?",
+          "prompt": "A print from this edition always carries a date stamp. Which translation keeps scope?",
           "options": [
             "Date stamp → this edition.",
             "Print from this edition → date stamp.",
@@ -1126,10 +1126,10 @@
           "answerIndex": 1,
           "hint": "Always carries a stamp applies to which exact prints?",
           "reasoningSteps": [
-            "Print from this edition → date stamp preserves the scope: the promise applies to prints from this edition.",
+            "Print from this edition → date stamp keeps the scope: the promise applies to prints from this edition.",
             "Print alone would cover other editions. A stamped print could come from another edition, so the reverse arrow adds something we weren't given."
           ],
-          "explanation": "Print from this edition → date stamp preserves the scope: the promise applies to prints from this edition. Print alone would cover other editions. A stamped print could come from another edition, so the reverse arrow adds something we weren't given."
+          "explanation": "Print from this edition → date stamp keeps the scope: the promise applies to prints from this edition. Print alone would cover other editions. A stamped print could come from another edition, so the reverse arrow adds something we weren't given."
         },
         {
           "id": "group-2-m7",
@@ -1151,7 +1151,7 @@
       "advanced": [
         {
           "id": "group-2-a1-v2",
-          "prompt": "Only reviewers appointed for the emergency panel may inspect these records. Which diagram preserves both the appointment limit and the permission?",
+          "prompt": "Only reviewers appointed for the emergency panel may inspect these records. Which diagram keeps both the appointment limit and the permission?",
           "options": [
             "May inspect these records → reviewer appointed for emergency panel.",
             "Reviewer appointed to any panel → may inspect these records.",
@@ -1160,11 +1160,11 @@
           "answerIndex": 0,
           "hint": "Only which reviewers? Keep emergency-panel appointment in the required idea, and may inspect as permission.",
           "reasoningSteps": [
-            "May inspect these records → reviewer appointed for emergency panel preserves permission on the left and the complete reviewer appointment on the right.",
+            "May inspect these records → reviewer appointed for emergency panel keeps permission on the left and the complete reviewer appointment on the right.",
             "An appointment to just any panel isn't the requirement we were given, and the sentence doesn't promise inspection permission from an appointment.",
-            "It also says may inspect, not has inspected. Permission doesn't establish that anyone used it."
+            "It also says may inspect, not has inspected. Permission doesn't prove that anyone used it."
           ],
-          "explanation": "May inspect these records → reviewer appointed for emergency panel preserves permission on the left and the complete reviewer appointment on the right. An appointment to just any panel isn't the requirement we were given, and the sentence doesn't promise inspection permission from an appointment. It also says may inspect, not has inspected. Permission doesn't establish that anyone used it."
+          "explanation": "May inspect these records → reviewer appointed for emergency panel keeps permission on the left and the complete reviewer appointment on the right. An appointment to just any panel isn't the requirement we were given, and the sentence doesn't promise inspection permission from an appointment. It also says may inspect, not has inspected. Permission doesn't prove that anyone used it."
         },
         {
           "id": "group-2-a2",
@@ -1178,13 +1178,13 @@
           "hint": "Rowan holds the permit. What obligation does must submit give Rowan?",
           "reasoningSteps": [
             "Rowan is required to submit a signed safety declaration because Rowan holds a night-filming permit covered by the policy.",
-            "It doesn't report actual submission. Nor does submission guarantee a permit. Preserve the obligation instead of turning it into completed compliance."
+            "It doesn't report actual submission. Nor does submission guarantee a permit. Keep the obligation instead of turning it into completed compliance."
           ],
-          "explanation": "Rowan is required to submit a signed safety declaration because Rowan holds a night-filming permit covered by the policy. It doesn't report actual submission. Nor does submission guarantee a permit. Preserve the obligation instead of turning it into completed compliance."
+          "explanation": "Rowan is required to submit a signed safety declaration because Rowan holds a night-filming permit covered by the policy. It doesn't report actual submission. Nor does submission guarantee a permit. Keep the obligation instead of turning it into completed compliance."
         },
         {
           "id": "group-2-a3-v2",
-          "prompt": "A claim is eligible only if it was filed by the deadline through the official portal. Which diagram preserves both limits?",
+          "prompt": "A claim is eligible only if it was filed by the deadline through the official portal. Which diagram keeps both limits?",
           "options": [
             "Eligible claim → filed by deadline through official portal.",
             "Filed by deadline → eligible claim.",
@@ -1193,14 +1193,14 @@
           "answerIndex": 0,
           "hint": "Keep both parts of the requirement: by which deadline, through which channel?",
           "reasoningSteps": [
-            "Eligible claim → filed by deadline through official portal preserves both limits of the requirement.",
-            "Timely filing alone and portal submission alone each omit part of that requirement. Neither has been made enough to establish eligibility."
+            "Eligible claim → filed by deadline through official portal keeps both limits of the requirement.",
+            "Timely filing alone and portal submission alone each omit part of that requirement. Neither has been made enough to prove eligibility."
           ],
-          "explanation": "Eligible claim → filed by deadline through official portal preserves both limits of the requirement. Timely filing alone and portal submission alone each omit part of that requirement. Neither has been made enough to establish eligibility."
+          "explanation": "Eligible claim → filed by deadline through official portal keeps both limits of the requirement. Timely filing alone and portal submission alone each omit part of that requirement. Neither has been made enough to prove eligibility."
         },
         {
           "id": "group-2-a4",
-          "prompt": "A replacement is sent only when a damaged item is returned with its receipt. Which translation preserves the complete requirement?",
+          "prompt": "A replacement is sent only when a damaged item is returned with its receipt. Which translation keeps the complete requirement?",
           "options": [
             "Replacement sent → damaged item returned with receipt.",
             "Item returned → replacement sent.",
@@ -1210,9 +1210,9 @@
           "hint": "Only when what? Keep the damaged item, its return, and its receipt in one complete idea.",
           "reasoningSteps": [
             "Replacement sent → damaged item returned with receipt keeps the complete requirement for a replacement.",
-            "An item returned alone or a receipt alone doesn't preserve the requirement, and neither has been made enough to guarantee a replacement."
+            "An item returned alone or a receipt alone doesn't keep the requirement, and neither has been made enough to guarantee a replacement."
           ],
-          "explanation": "Replacement sent → damaged item returned with receipt keeps the complete requirement for a replacement. An item returned alone or a receipt alone doesn't preserve the requirement, and neither has been made enough to guarantee a replacement."
+          "explanation": "Replacement sent → damaged item returned with receipt keeps the complete requirement for a replacement. An item returned alone or a receipt alone doesn't keep the requirement, and neither has been made enough to guarantee a replacement."
         },
         {
           "id": "group-2-a5",
@@ -1220,15 +1220,15 @@
           "options": [
             "A screening happens there.",
             "No screening can happen there.",
-            "The facts do not establish whether the requirement is met."
+            "The facts do not prove whether the requirement is met."
           ],
           "answerIndex": 2,
           "hint": "What does shaded add to seating? Does the fact tell us whether R meets that part?",
           "reasoningSteps": [
-            "The facts don't establish whether the requirement is met. A screening needs a shaded seating area, and seats alone don't establish shade.",
+            "The facts don't prove whether the requirement is met. A screening needs a shaded seating area, and seats alone don't prove shade.",
             "We haven't been told shade is absent either. So the facts don't settle whether the requirement is met, much less whether a screening happens."
           ],
-          "explanation": "The facts don't establish whether the requirement is met. A screening needs a shaded seating area, and seats alone don't establish shade. We haven't been told shade is absent either. So the facts don't settle whether the requirement is met, much less whether a screening happens."
+          "explanation": "The facts don't prove whether the requirement is met. A screening needs a shaded seating area, and seats alone don't prove shade. We haven't been told shade is absent either. So the facts don't settle whether the requirement is met, much less whether a screening happens."
         },
         {
           "id": "group-2-a6",
@@ -1236,19 +1236,19 @@
           "options": [
             "It is in the express queue.",
             "It is outside the express queue.",
-            "Its queue is not established."
+            "Its queue is not proven."
           ],
           "answerIndex": 2,
           "hint": "The item has a number. Did always restrict collection numbers to the express queue?",
           "reasoningSteps": [
-            "The item's queue is not established. Express-queue items receive a collection number, but the rule doesn't restrict those numbers to that queue.",
+            "The item's queue is not proven. Express-queue items receive a collection number, but the rule doesn't restrict those numbers to that queue.",
             "This number therefore doesn't settle the item's queue. It proves neither express status nor its absence."
           ],
-          "explanation": "The item's queue is not established. Express-queue items receive a collection number, but the rule doesn't restrict those numbers to that queue. This number therefore doesn't settle the item's queue. It proves neither express status nor its absence."
+          "explanation": "The item's queue is not proven. Express-queue items receive a collection number, but the rule doesn't restrict those numbers to that queue. This number therefore doesn't settle the item's queue. It proves neither express status nor its absence."
         },
         {
           "id": "group-2-a7",
-          "prompt": "A waterproof case is required for this camera's underwater use. Which diagram preserves the sentence?",
+          "prompt": "A waterproof case is required for this camera's underwater use. Which diagram keeps the sentence?",
           "options": [
             "Waterproof case → underwater use.",
             "This camera used underwater → has waterproof case.",
@@ -1257,10 +1257,10 @@
           "answerIndex": 1,
           "hint": "What is required? Find that idea even though it appears before required.",
           "reasoningSteps": [
-            "This camera used underwater → has waterproof case preserves the requirement for underwater use, even though that requirement appears first in the sentence.",
+            "This camera used underwater → has waterproof case keeps the requirement for underwater use, even though that requirement appears first in the sentence.",
             "Having the case doesn't tell us the camera is used underwater, and the sentence doesn't require a case for every camera use. Keep underwater in the left-hand idea."
           ],
-          "explanation": "This camera used underwater → has waterproof case preserves the requirement for underwater use, even though that requirement appears first in the sentence. Having the case doesn't tell us the camera is used underwater, and the sentence doesn't require a case for every camera use. Keep underwater in the left-hand idea."
+          "explanation": "This camera used underwater → has waterproof case keeps the requirement for underwater use, even though that requirement appears first in the sentence. Having the case doesn't tell us the camera is used underwater, and the sentence doesn't require a case for every camera use. Keep underwater in the left-hand idea."
         }
       ]
     }
@@ -1430,12 +1430,12 @@
             "Tavi's appeal was accepted."
           ],
           "answerIndex": 1,
-          "hint": "Preserve the modal word may.",
+          "hint": "Keep the modal word may.",
           "reasoningSteps": [
             "Tavi satisfies the complete eligible-applicant condition, which grants appeal permission.",
-            "Permission establishes neither action nor acceptance."
+            "Permission proves neither action nor acceptance."
           ],
-          "explanation": "Tavi satisfies the complete eligible-applicant condition, which grants appeal permission. Permission establishes neither action nor acceptance."
+          "explanation": "Tavi satisfies the complete eligible-applicant condition, which grants appeal permission. Permission proves neither action nor acceptance."
         },
         {
           "id": "rules-facts-a2",
@@ -1548,7 +1548,7 @@
           "options": [
             "The conclusion contradicts the rule.",
             "The rule was reversed without support.",
-            "The premises establish no cover."
+            "The premises prove no cover."
           ],
           "answerIndex": 1,
           "hint": "A cover may have another source.",
@@ -1588,9 +1588,9 @@
           "hint": "Keep the rule and the resistance fact true.",
           "reasoningSteps": [
             "An unlaminated resistant card is permitted by the rule.",
-            "It makes the proposed conclusion false while preserving both premises."
+            "It makes the proposed conclusion false while keeping both premises."
           ],
-          "explanation": "An unlaminated resistant card is permitted by the rule. It makes the proposed conclusion false while preserving both premises."
+          "explanation": "An unlaminated resistant card is permitted by the rule. It makes the proposed conclusion false while keeping both premises."
         },
         {
           "id": "truth-validity-m2",
@@ -1648,7 +1648,7 @@
           "options": [
             "The rule's adult condition cannot be inferred from a badge.",
             "Children cannot have badges.",
-            "Workshop enrollment always establishes adulthood."
+            "Workshop enrollment always proves adulthood."
           ],
           "answerIndex": 0,
           "hint": "A modifier remains part of the sufficient condition.",
@@ -1807,9 +1807,9 @@
           "hint": "Deny the requirement, not the action.",
           "reasoningSteps": [
             "Not required removes the obligation.",
-            "It neither prohibits a report nor establishes noncompliance."
+            "It neither prohibits a report nor proves noncompliance."
           ],
-          "explanation": "Not required removes the obligation. It neither prohibits a report nor establishes noncompliance."
+          "explanation": "Not required removes the obligation. It neither prohibits a report nor proves noncompliance."
         },
         {
           "id": "negation-m3",
@@ -1857,9 +1857,9 @@
           "hint": "Certification and physical ability differ.",
           "reasoningSteps": [
             "The original is about a certification.",
-            "Denying it establishes neither inability nor another certification."
+            "Denying it proves neither inability nor another certification."
           ],
-          "explanation": "The original is about a certification. Denying it establishes neither inability nor another certification."
+          "explanation": "The original is about a certification. Denying it proves neither inability nor another certification."
         },
         {
           "id": "negation-a3",
@@ -1963,9 +1963,9 @@
           "hint": "Use the missing required result, without inventing a cause.",
           "reasoningSteps": [
             "Being on would require current.",
-            "No current excludes on, but does not establish why."
+            "No current excludes on, but does not prove why."
           ],
-          "explanation": "Being on would require current. No current excludes on, but does not establish why."
+          "explanation": "Being on would require current. No current excludes on, but does not prove why."
         },
         {
           "id": "contraposition-b3",
@@ -2044,7 +2044,7 @@
             "Ivo cannot drive."
           ],
           "answerIndex": 1,
-          "hint": "Preserve Route 8 in both conditions.",
+          "hint": "Keep Route 8 in both conditions.",
           "reasoningSteps": [
             "Ivo is a driver, so Route 8 certification would require that roster listing.",
             "Its absence excludes only that certification."
@@ -2073,15 +2073,15 @@
           "options": [
             "It was not running at noon.",
             "It was running at noon.",
-            "Neither is established."
+            "Neither is proven."
           ],
           "answerIndex": 2,
           "hint": "The contrapositive must keep the original time.",
           "reasoningSteps": [
             "The rule requires a lit display at noon.",
-            "A midnight observation does not establish the absence of that noon requirement."
+            "A midnight observation does not prove the absence of that noon requirement."
           ],
-          "explanation": "The rule requires a lit display at noon. A midnight observation does not establish the absence of that noon requirement."
+          "explanation": "The rule requires a lit display at noon. A midnight observation does not prove the absence of that noon requirement."
         }
       ]
     }
@@ -2156,9 +2156,9 @@
           "hint": "Negate road closes and keep proceeds unchanged.",
           "reasoningSteps": [
             "The rule promises delivery when closure is absent.",
-            "It does not establish the outcome when closure occurs."
+            "It does not prove the outcome when closure occurs."
           ],
-          "explanation": "The rule promises delivery when closure is absent. It does not establish the outcome when closure occurs."
+          "explanation": "The rule promises delivery when closure is absent. It does not prove the outcome when closure occurs."
         },
         {
           "id": "group-3-b2",
@@ -2222,9 +2222,9 @@
           "hint": "Use the contrapositive of no failure → receipt appears.",
           "reasoningSteps": [
             "Receipt absence excludes no upload failure.",
-            "It therefore establishes failure under the stated rule, not a different explanation."
+            "It therefore proves failure under the stated rule, not a different explanation."
           ],
-          "explanation": "Receipt absence excludes no upload failure. It therefore establishes failure under the stated rule, not a different explanation."
+          "explanation": "Receipt absence excludes no upload failure. It therefore proves failure under the stated rule, not a different explanation."
         },
         {
           "id": "group-3-m3",
@@ -2272,9 +2272,9 @@
           "hint": "Keep the site identity in the temporal requirement.",
           "reasoningSteps": [
             "A repair at K requires the boundary condition for K.",
-            "Neither inspections elsewhere nor causation is established."
+            "Neither inspections elsewhere nor causation is proven."
           ],
-          "explanation": "A repair at K requires the boundary condition for K. Neither inspections elsewhere nor causation is established."
+          "explanation": "A repair at K requires the boundary condition for K. Neither inspections elsewhere nor causation is proven."
         },
         {
           "id": "group-3-a3",
@@ -2475,7 +2475,7 @@
             "The entrant cannot be a visitor."
           ],
           "answerIndex": 1,
-          "hint": "The policy establishes a prohibition, not factual compliance.",
+          "hint": "The policy proves a prohibition, not factual compliance.",
           "reasoningSteps": [
             "The visitor is subject to the entry prohibition.",
             "The event breaches that prohibition without changing the person's status."
@@ -2487,16 +2487,16 @@
           "prompt": "No artwork on loan is insured by the museum's local policy. Which follows from the rule alone?",
           "options": [
             "Some artwork has no insurance at all.",
-            "On-loan artwork is not insured by that local policy; existence is not established.",
+            "On-loan artwork is not insured by that local policy; existence is not proven.",
             "All artwork without local insurance is on loan."
           ],
           "answerIndex": 1,
           "hint": "Keep both the insurance scope and the absence of an existence fact.",
           "reasoningSteps": [
             "The exclusion concerns one named policy.",
-            "It establishes neither an existing artwork nor absence of other insurance."
+            "It proves neither an existing artwork nor absence of other insurance."
           ],
-          "explanation": "The exclusion concerns one named policy. It establishes neither an existing artwork nor absence of other insurance."
+          "explanation": "The exclusion concerns one named policy. It proves neither an existing artwork nor absence of other insurance."
         }
       ]
     }
@@ -2683,9 +2683,9 @@
           "hint": "A license in M does not exclude also having a license in N.",
           "reasoningSteps": [
             "The role requires Region N licensing.",
-            "The fact about M establishes neither N licensing nor its absence."
+            "The fact about M proves neither N licensing nor its absence."
           ],
-          "explanation": "The role requires Region N licensing. The fact about M establishes neither N licensing nor its absence."
+          "explanation": "The role requires Region N licensing. The fact about M proves neither N licensing nor its absence."
         },
         {
           "id": "mixed-translation-a3",
@@ -2802,9 +2802,9 @@
           "hint": "Apply absence of the guaranteed result.",
           "reasoningSteps": [
             "A valid token would ensure entry.",
-            "Unsuccessful entry excludes token validity under this stipulated rule."
+            "Unsuccessful entry excludes token validity under this rule."
           ],
-          "explanation": "A valid token would ensure entry. Unsuccessful entry excludes token validity under this stipulated rule."
+          "explanation": "A valid token would ensure entry. Unsuccessful entry excludes token validity under this rule."
         }
       ],
       "medium": [
@@ -2820,13 +2820,13 @@
           "hint": "By identifies the source of the guarantee in this passive sentence.",
           "reasoningSteps": [
             "Factory certification is what ensures sealing.",
-            "The passive phrasing does not reverse that relationship."
+            "The passive phrasing does not reverse that rule."
           ],
-          "explanation": "Factory certification is what ensures sealing. The passive phrasing does not reverse that relationship."
+          "explanation": "Factory certification is what ensures sealing. The passive phrasing does not reverse that rule."
         },
         {
           "id": "implicit-conditionals-m2",
-          "prompt": "Residue on a filter suggests that the intake was blocked. What rule is established?",
+          "prompt": "Residue on a filter suggests that the intake was blocked. What rule is proven?",
           "options": [
             "Residue → blocked intake.",
             "Blocked intake → residue.",
@@ -2852,9 +2852,9 @@
           "hint": "Keep authorizes in the result.",
           "reasoningSteps": [
             "Holding the pass guarantees the stated authorization.",
-            "It establishes neither exercise of that permission nor an exclusive source of permission."
+            "It proves neither exercise of that permission nor an exclusive source of permission."
           ],
-          "explanation": "Holding the pass guarantees the stated authorization. It establishes neither exercise of that permission nor an exclusive source of permission."
+          "explanation": "Holding the pass guarantees the stated authorization. It proves neither exercise of that permission nor an exclusive source of permission."
         }
       ],
       "advanced": [
@@ -3026,7 +3026,7 @@
             "Registration is unknown."
           ],
           "answerIndex": 2,
-          "hint": "Being at the end of a chain does not establish its beginning.",
+          "hint": "Being at the end of a chain does not prove its beginning.",
           "reasoningSteps": [
             "Registration guarantees tagging through calibration.",
             "Tagging may also occur without registration."
@@ -3042,7 +3042,7 @@
             "All battery-powered sensors are compact."
           ],
           "answerIndex": 1,
-          "hint": "Preserve the output as a rule.",
+          "hint": "Keep the output as a rule.",
           "reasoningSteps": [
             "Compact → portable → battery-powered.",
             "No case fact supports an existence conclusion."
@@ -3185,9 +3185,9 @@
           "hint": "Both arrows point toward numbered.",
           "reasoningSteps": [
             "Numbering can result from either medal category.",
-            "It does not establish a connection between those categories."
+            "It does not prove a connection between those categories."
           ],
-          "explanation": "Numbering can result from either medal category. It does not establish a connection between those categories."
+          "explanation": "Numbering can result from either medal category. It does not prove a connection between those categories."
         },
         {
           "id": "no-link-b2",
@@ -3217,9 +3217,9 @@
           "hint": "Use D's actual sufficient condition.",
           "reasoningSteps": [
             "Approval guarantees mounting.",
-            "The lamination rule has no established trigger for D."
+            "The lamination rule has no proved trigger for D."
           ],
-          "explanation": "Approval guarantees mounting. The lamination rule has no established trigger for D."
+          "explanation": "Approval guarantees mounting. The lamination rule has no proved trigger for D."
         }
       ],
       "medium": [
@@ -3250,10 +3250,10 @@
           "answerIndex": 2,
           "hint": "Padding is a result, not the shared trigger.",
           "reasoningSteps": [
-            "Padding alone does not establish certification.",
+            "Padding alone does not prove certification.",
             "Without certification, the serial-number rule has no confirmed trigger."
           ],
-          "explanation": "Padding alone does not establish certification. Without certification, the serial-number rule has no confirmed trigger."
+          "explanation": "Padding alone does not prove certification. Without certification, the serial-number rule has no confirmed trigger."
         },
         {
           "id": "no-link-m3",
@@ -3284,10 +3284,10 @@
           "answerIndex": 1,
           "hint": "Track which subject receives the second property.",
           "reasoningSteps": [
-            "Inspection establishes authorization of that vehicle's owner.",
+            "Inspection proves authorization of that vehicle's owner.",
             "The permit belongs to the owner, not automatically to the vehicle."
           ],
-          "explanation": "Inspection establishes authorization of that vehicle's owner. The permit belongs to the owner, not automatically to the vehicle."
+          "explanation": "Inspection proves authorization of that vehicle's owner. The permit belongs to the owner, not automatically to the vehicle."
         },
         {
           "id": "no-link-a2",
@@ -3333,14 +3333,14 @@
       "direct-linking",
       "no-link"
     ],
-    "goal": "Apply a rule to proved facts without assuming its trigger.",
+    "goal": "Apply a rule to proven facts without assuming its trigger.",
     "teaching": [
       "A rule and a fact do different jobs. If every approved order is dispatched, the rule does not tell us that any order is approved. An approved order supplies the trigger; then dispatch follows.",
       "A fact about the necessary condition does not fire the rule backward. A negative fact about that condition can fire the contrapositive. Keep the same order, person or event throughout the inference."
     ],
     "method": [
       "Write the complete trigger and result.",
-      "List only proved facts about the same subject.",
+      "List only proven facts about the same subject.",
       "Match a fact to the trigger, or to the trigger of the contrapositive.",
       "State the result and leave every untriggered rule open."
     ],
@@ -3363,7 +3363,7 @@
       "id": "triggering-guided-1",
       "prompt": "Every verified account can upload. Account T can upload. What follows?",
       "options": [
-        "Verification is not proved.",
+        "Verification is not proven.",
         "T is verified.",
         "T is not verified."
       ],
@@ -3421,9 +3421,9 @@
           ],
           "answerIndex": 2,
           "explanation": "Searchable messages may have other sources. The rule gives only one direction.",
-          "hint": "A result alone does not establish its cause or trigger.",
+          "hint": "A result alone does not prove its cause or trigger.",
           "reasoningSteps": [
-            "A result alone does not establish its cause or trigger.",
+            "A result alone does not prove its cause or trigger.",
             "Searchable messages may have other sources.",
             "The rule gives only one direction."
           ]
@@ -3448,7 +3448,7 @@
         },
         {
           "id": "triggering-medium-2",
-          "prompt": "Audited accounts have records. P lacks records; Q has records. Which is established?",
+          "prompt": "Audited accounts have records. P lacks records; Q has records. Which is proven?",
           "options": [
             "Neither P nor Q is audited.",
             "P is not audited; Q remains undecided.",
@@ -3485,7 +3485,7 @@
           "id": "triggering-advanced-1",
           "prompt": "All approved designs use recycled steel. All coastal designs are approved. Design X uses recycled steel. What is known?",
           "options": [
-            "X may be coastal, but this is not established.",
+            "X may be coastal, but this is not proven.",
             "X must be coastal.",
             "X cannot be coastal."
           ],
@@ -3524,13 +3524,13 @@
             "No, under these rules."
           ],
           "answerIndex": 2,
-          "explanation": "A valid permit guarantees a completed restoration survey, which guarantees an access plan. L lacks that result, so valid permit status is ruled out. These descriptive premises establish actual conditions, not merely obligations.",
+          "explanation": "A valid permit guarantees a completed restoration survey, which guarantees an access plan. L lacks that result, so valid permit status is ruled out. These descriptive premises prove actual conditions, not merely obligations.",
           "hint": "Follow valid permit → completed restoration survey → access plan for the same project.",
           "reasoningSteps": [
             "Follow valid permit → completed restoration survey → access plan for the same project.",
             "A valid permit guarantees a completed restoration survey, which guarantees an access plan.",
             "L lacks that result, so valid permit status is ruled out.",
-            "These descriptive premises establish actual conditions, not merely obligations."
+            "These descriptive premises prove actual conditions, not merely obligations."
           ]
         }
       ]
@@ -3594,7 +3594,7 @@
           "id": "and-or-beginner-1",
           "prompt": "(Pass AND attendance) → credit. Lee passed. What follows?",
           "options": [
-            "Credit is not established.",
+            "Credit is not proven.",
             "Lee receives credit.",
             "Lee has attendance."
           ],
@@ -3666,12 +3666,12 @@
             "Rae is not licensed."
           ],
           "answerIndex": 1,
-          "explanation": "Both trigger components together would force eligibility. With license established, insurance must be absent.",
+          "explanation": "Both trigger components together would force eligibility. With license proven, insurance must be absent.",
           "hint": "Which missing component prevents the joint trigger?",
           "reasoningSteps": [
             "Which missing component prevents the joint trigger?",
             "Both trigger components together would force eligibility.",
-            "With license established, insurance must be absent."
+            "With license proven, insurance must be absent."
           ]
         },
         {
@@ -3680,14 +3680,14 @@
           "options": [
             "Max must be eligible.",
             "Max cannot be eligible.",
-            "Eligibility is not established."
+            "Eligibility is not proven."
           ],
           "answerIndex": 2,
-          "explanation": "Even both results do not establish the sufficient condition. Inclusive OR permits both.",
+          "explanation": "Even both results do not prove the sufficient condition. Inclusive OR permits both.",
           "hint": "Keep direction separate from the meaning of OR.",
           "reasoningSteps": [
             "Keep direction separate from the meaning of OR.",
-            "Even both results do not establish the sufficient condition.",
+            "Even both results do not prove the sufficient condition.",
             "Inclusive OR permits both."
           ]
         }
@@ -3869,7 +3869,7 @@
         },
         {
           "id": "de-morgan-medium-2",
-          "prompt": "(Signed AND witnessed) → valid. Which equivalent rule preserves all cases?",
+          "prompt": "(Signed AND witnessed) → valid. Which equivalent rule keeps all cases?",
           "options": [
             "not valid → (not signed AND not witnessed).",
             "not valid → (not signed OR not witnessed).",
@@ -3944,9 +3944,9 @@
           ],
           "answerIndex": 2,
           "explanation": "The denial of the complete trigger permits either absent A or failure of both B and C.",
-          "hint": "Preserve the nested scope when switching connectors.",
+          "hint": "Keep the nested scope when switching connectors.",
           "reasoningSteps": [
-            "Preserve the nested scope when switching connectors.",
+            "Keep the nested scope when switching connectors.",
             "The denial of the complete trigger permits either absent A or failure of both B and C."
           ]
         }
@@ -3993,7 +3993,7 @@
       "id": "domain-guided-1",
       "prompt": "All winter buses serving Hill Road have chains. Bus D serves Hill Road in summer. What follows?",
       "options": [
-        "Chains are not proved.",
+        "Chains are not proven.",
         "D has chains.",
         "D cannot have chains."
       ],
@@ -4042,7 +4042,7 @@
         },
         {
           "id": "domain-beginner-3",
-          "prompt": "Every brass instrument in cabinet A is polished. Does this establish that cabinet A contains a brass instrument?",
+          "prompt": "Every brass instrument in cabinet A is polished. Does this prove that cabinet A contains a brass instrument?",
           "options": [
             "Yes, at least one.",
             "Yes, all instruments are brass.",
@@ -4084,11 +4084,11 @@
             "No restoration project can have a map."
           ],
           "answerIndex": 1,
-          "explanation": "A permit requiring a survey does not establish that its project belongs to the construction-project domain of the second rule.",
+          "explanation": "A permit requiring a survey does not prove that its project belongs to the construction-project domain of the second rule.",
           "hint": "Are these surveys about the same kind of subject?",
           "reasoningSteps": [
             "Are these surveys about the same kind of subject?",
-            "A permit requiring a survey does not establish that its project belongs to the construction-project domain of the second rule."
+            "A permit requiring a survey does not prove that its project belongs to the construction-project domain of the second rule."
           ]
         },
         {
@@ -4118,29 +4118,29 @@
             "No; historical maps cannot be scanned."
           ],
           "answerIndex": 0,
-          "explanation": "The first rule establishes cataloguing. The second needs both cataloguing and west-room location.",
+          "explanation": "The first rule proves cataloguing. The second needs both cataloguing and west-room location.",
           "hint": "Find the qualifier that the first result does not supply.",
           "reasoningSteps": [
             "Find the qualifier that the first result does not supply.",
-            "The first rule establishes cataloguing.",
+            "The first rule proves cataloguing.",
             "The second needs both cataloguing and west-room location."
           ]
         },
         {
           "id": "domain-advanced-2",
-          "prompt": "Every permit approved in a given year expires in June of that same year. Every permit that expired in June last year was renewed. Permit T is approved this year. Is renewal established?",
+          "prompt": "Every permit approved in a given year expires in June of that same year. Every permit that expired in June last year was renewed. Permit T is approved this year. Is renewal proven?",
           "options": [
             "Yes. June expiry always implies renewal.",
             "No. The expiry facts refer to different years.",
             "T was renewed last year."
           ],
           "answerIndex": 1,
-          "explanation": "This year’s approval gives June expiry this year. The renewal rule concerns June expiry last year, which is not established for T.",
+          "explanation": "This year’s approval gives June expiry this year. The renewal rule concerns June expiry last year, which is not proven for T.",
           "hint": "Do not merge dates because the month matches.",
           "reasoningSteps": [
             "Do not merge dates because the month matches.",
             "This year’s approval gives June expiry this year.",
-            "The renewal rule concerns June expiry last year, which is not established for T."
+            "The renewal rule concerns June expiry last year, which is not proven for T."
           ]
         },
         {
@@ -4201,7 +4201,7 @@
     },
     "guidedExample": {
       "id": "biconditionals-guided-1",
-      "prompt": "Entry is allowed iff the fee is paid and the form is signed. The fee is paid. Is entry proved?",
+      "prompt": "Entry is allowed iff the fee is paid and the form is signed. The fee is paid. Is entry proven?",
       "options": [
         "No; a signature is also needed.",
         "Yes; either component is sufficient.",
@@ -4328,11 +4328,11 @@
             "The form is unsigned."
           ],
           "answerIndex": 0,
-          "explanation": "If reviewed joined the established signing, approval would follow. Since approval fails, review must fail.",
+          "explanation": "If reviewed joined the proven signing, approval would follow. Since approval fails, review must fail.",
           "hint": "Combine the failed joint result with the known component.",
           "reasoningSteps": [
             "Combine the failed joint result with the known component.",
-            "If reviewed joined the established signing, approval would follow.",
+            "If reviewed joined the proven signing, approval would follow.",
             "Since approval fails, review must fail."
           ]
         },
@@ -4469,11 +4469,11 @@
             "No; it is equivalent."
           ],
           "answerIndex": 2,
-          "explanation": "Reversing and negating both sides preserves the original rule.",
+          "explanation": "Reversing and negating both sides keeps the original rule.",
           "hint": "Compare the cases each rule excludes.",
           "reasoningSteps": [
             "Compare the cases each rule excludes.",
-            "Reversing and negating both sides preserves the original rule."
+            "Reversing and negating both sides keeps the original rule."
           ]
         }
       ],
@@ -4538,9 +4538,9 @@
           ],
           "answerIndex": 0,
           "explanation": "Retain both coastal status and generator possession, then deny at least one required result. Not accepting transfers does not have to mean actively refusing them.",
-          "hint": "Preserve the domain and negate each exact predicate in the compound consequent.",
+          "hint": "Keep the domain and negate each exact predicate in the compound consequent.",
           "reasoningSteps": [
-            "Preserve the domain and negate each exact predicate in the compound consequent.",
+            "Keep the domain and negate each exact predicate in the compound consequent.",
             "Retain both coastal status and generator possession, then deny at least one required result.",
             "Not accepting transfers does not have to mean actively refusing them."
           ]
@@ -4648,9 +4648,9 @@
           ],
           "answerIndex": 0,
           "explanation": "The fact directly fires the rule.",
-          "hint": "Start with the established cleared fact.",
+          "hint": "Start with the proven cleared fact.",
           "reasoningSteps": [
-            "Start with the established cleared fact.",
+            "Start with the proven cleared fact.",
             "The fact directly fires the rule."
           ]
         },
@@ -4713,11 +4713,11 @@
             "Training alone guarantees a badge."
           ],
           "answerIndex": 1,
-          "explanation": "Both trigger components establish authorization, which establishes a badge.",
+          "explanation": "Both trigger components prove authorization, which proves a badge.",
           "hint": "Keep the joint trigger intact before chaining.",
           "reasoningSteps": [
             "Keep the joint trigger intact before chaining.",
-            "Both trigger components establish authorization, which establishes a badge."
+            "Both trigger components prove authorization, which proves a badge."
           ]
         },
         {
@@ -4748,12 +4748,12 @@
             "D is inspected."
           ],
           "answerIndex": 0,
-          "explanation": "No record gives not inspected. Since coastal is established, a crane would create the forbidden joint trigger.",
+          "explanation": "No record gives not inspected. Since coastal is proven, a crane would create the forbidden joint trigger.",
           "hint": "Use the failed result and the known half of the trigger.",
           "reasoningSteps": [
             "Use the failed result and the known half of the trigger.",
             "No record gives not inspected.",
-            "Since coastal is established, a crane would create the forbidden joint trigger."
+            "Since coastal is proven, a crane would create the forbidden joint trigger."
           ]
         },
         {
@@ -4859,11 +4859,11 @@
             "Some assigned ushers have badges."
           ],
           "answerIndex": 0,
-          "explanation": "Eli is both an usher and trained, so the premise establishes assignment. The added rule then gives Eli a badge.",
+          "explanation": "Eli is both an usher and trained, so the premise proves assignment. The added rule then gives Eli a badge.",
           "hint": "Keep usher status while following trained usher → assigned usher → badge.",
           "reasoningSteps": [
             "Keep usher status while following trained usher → assigned usher → badge.",
-            "Eli is both an usher and trained, so the premise establishes assignment.",
+            "Eli is both an usher and trained, so the premise proves assignment.",
             "The added rule then gives Eli a badge."
           ]
         },
@@ -4927,9 +4927,9 @@
           ],
           "answerIndex": 1,
           "explanation": "For accounts, insured → audited → has records. Its contrapositive gives no records → uninsured. Q is explicitly an account, so that rule applies to Q.",
-          "hint": "Preserve account status while using the contrapositive.",
+          "hint": "Keep account status while using the contrapositive.",
           "reasoningSteps": [
-            "Preserve account status while using the contrapositive.",
+            "Keep account status while using the contrapositive.",
             "For accounts, insured → audited → has records.",
             "Its contrapositive gives no records → uninsured.",
             "Q is explicitly an account, so that rule applies to Q."
@@ -5176,12 +5176,12 @@
             "Every inspected building is old."
           ],
           "answerIndex": 0,
-          "explanation": "The descriptive premise makes both properties necessary for certified-restored status. Age alone does not establish either property, and the two properties do not guarantee that certification.",
+          "explanation": "The descriptive premise makes both properties necessary for certified-restored status. Age alone does not prove either property, and the two properties do not guarantee that certification.",
           "hint": "Keep both components required by certified-restored status.",
           "reasoningSteps": [
             "Keep both components required by certified-restored status.",
             "The descriptive premise makes both properties necessary for certified-restored status.",
-            "Age alone does not establish either property, and the two properties do not guarantee that certification."
+            "Age alone does not prove either property, and the two properties do not guarantee that certification."
           ]
         },
         {
@@ -5370,11 +5370,11 @@
             "The author drops the time restriction."
           ],
           "answerIndex": 2,
-          "explanation": "Morning volunteering does not establish evening status. Training may happen but is not forced.",
+          "explanation": "Morning volunteering does not prove evening status. Training may happen but is not forced.",
           "hint": "Retain the qualifier in the full trigger.",
           "reasoningSteps": [
             "Retain the qualifier in the full trigger.",
-            "Morning volunteering does not establish evening status.",
+            "Morning volunteering does not prove evening status.",
             "Training may happen but is not forced."
           ]
         }
@@ -5673,7 +5673,7 @@
         "Late AND caused by documented outage → should receive refund.",
         "Both conditions are supplied for J."
       ],
-      "conclusion": "J should receive a refund under the policy; actual payment is not proved."
+      "conclusion": "J should receive a refund under the policy; actual payment is not proven."
     },
     "commonMistake": {
       "mistake": "Treating any abstract sentence as a rigid trigger-and-consequence rule.",
@@ -5723,11 +5723,11 @@
             "Every paused project lacks a permit."
           ],
           "answerIndex": 1,
-          "explanation": "The rule establishes an obligation for J, not actual behavior or the reverse rule.",
-          "hint": "Preserve must rather than changing it to did.",
+          "explanation": "The rule proves an obligation for J, not actual behavior or the reverse rule.",
+          "hint": "Keep must rather than changing it to did.",
           "reasoningSteps": [
-            "Preserve must rather than changing it to did.",
-            "The rule establishes an obligation for J, not actual behavior or the reverse rule."
+            "Keep must rather than changing it to did.",
+            "The rule proves an obligation for J, not actual behavior or the reverse rule."
           ]
         },
         {
@@ -5753,7 +5753,7 @@
           "id": "principle-medium-1",
           "prompt": "Policy: Trained and insured guides should be hired. Nora is insured; training is unknown. Is hiring required by this policy?",
           "options": [
-            "Not yet established.",
+            "Not yet proven.",
             "Yes, insurance alone is enough.",
             "The policy requires refusing Nora."
           ],
@@ -5809,12 +5809,12 @@
             "J was inspected because of the policy."
           ],
           "answerIndex": 0,
-          "explanation": "J qualifies for the obligation. Actual inspection does not establish either reversal or its cause.",
+          "explanation": "J qualifies for the obligation. Actual inspection does not prove either reversal or its cause.",
           "hint": "Separate qualifying under a rule from explaining behavior.",
           "reasoningSteps": [
             "Separate qualifying under a rule from explaining behavior.",
             "J qualifies for the obligation.",
-            "Actual inspection does not establish either reversal or its cause."
+            "Actual inspection does not prove either reversal or its cause."
           ]
         },
         {
@@ -5840,15 +5840,15 @@
           "options": [
             "J has already been refunded.",
             "Every late delivery should be refunded, including replacement cases.",
-            "J should be refunded; actual payment is not established."
+            "J should be refunded; actual payment is not proven."
           ],
           "answerIndex": 2,
-          "explanation": "J satisfies lateness and documented-outage causation, and the exception is absent. The policy therefore establishes an obligation to refund J. It neither proves payment nor extends the rule to cases inside the exception.",
+          "explanation": "J satisfies lateness and documented-outage causation, and the exception is absent. The policy therefore proves an obligation to refund J. It neither proves payment nor extends the rule to cases inside the exception.",
           "hint": "Check both trigger conditions and the replacement exception before retaining should.",
           "reasoningSteps": [
             "Check both trigger conditions and the replacement exception before retaining should.",
             "J satisfies lateness and documented-outage causation, and the exception is absent.",
-            "The policy therefore establishes an obligation to refund J.",
+            "The policy therefore proves an obligation to refund J.",
             "It neither proves payment nor extends the rule to cases inside the exception."
           ]
         }
@@ -5884,7 +5884,7 @@
         "More than half of ten means at least six.",
         "The volunteers are the reference group; radio owners may include many nonvolunteers."
       ],
-      "conclusion": "At least six volunteers have radios. Most radio owners being volunteers is not proved."
+      "conclusion": "At least six volunteers have radios. Most radio owners being volunteers is not proven."
     },
     "commonMistake": {
       "mistake": "Reading some as some but not all.",
@@ -6034,34 +6034,34 @@
           "prompt": "Most of eight museum guides are historians. All historians speak French. Which is guaranteed without reversing either statement?",
           "options": [
             "Most French speakers are museum guides.",
-            "At least five museum guides speak French; most French speakers being museum guides is not established.",
+            "At least five museum guides speak French; most French speakers being museum guides is not proven.",
             "Every museum guide is a historian and speaks French."
           ],
           "answerIndex": 1,
-          "explanation": "The historian majority contains at least five guides. Every member of that majority speaks French, so at least five guides do. Nothing bounds the total French-speaking population or reverses its relationship to guides.",
+          "explanation": "The historian majority contains at least five guides. Every member of that majority speaks French, so at least five guides do. Nothing bounds the total French-speaking population or reverses its rule to guides.",
           "hint": "Carry the known guide majority forward while keeping guides as the reference group.",
           "reasoningSteps": [
             "Carry the known guide majority forward while keeping guides as the reference group.",
             "The historian majority contains at least five guides.",
             "Every member of that majority speaks French, so at least five guides do.",
-            "Nothing bounds the total French-speaking population or reverses its relationship to guides."
+            "Nothing bounds the total French-speaking population or reverses its rule to guides."
           ]
         },
         {
           "id": "quantifier-meaning-advanced-3",
-          "prompt": "Every certified marine probe is pressure-tested. Every pressure-tested probe is logged. No probe is stated to exist. Which added fact is enough to establish that some logged probe exists?",
+          "prompt": "Every certified marine probe is pressure-tested. Every pressure-tested probe is logged. No probe is stated to exist. Which added fact is enough to prove that some logged probe exists?",
           "options": [
             "Every logged probe has an identifier.",
             "Every certified marine probe is also insured.",
             "Probe R is a certified marine probe."
           ],
           "answerIndex": 2,
-          "explanation": "The two original rules give certified marine probe → pressure-tested → logged, but no member. R supplies a witness at the chain’s start, establishing a logged probe. Either added universal rule can still hold with no probes at all.",
-          "hint": "Look for an existence fact that enters the forward chain, rather than another universal relationship.",
+          "explanation": "The two original rules give certified marine probe → pressure-tested → logged, but no member. R supplies a witness at the chain’s start, proving a logged probe. Either added universal rule can still hold with no probes at all.",
+          "hint": "Look for an existence fact that enters the forward chain, rather than another universal rule.",
           "reasoningSteps": [
-            "Look for an existence fact that enters the forward chain, rather than another universal relationship.",
+            "Look for an existence fact that enters the forward chain, rather than another universal rule.",
             "The two original rules give certified marine probe → pressure-tested → logged, but no member.",
-            "R supplies a witness at the chain’s start, establishing a logged probe.",
+            "R supplies a witness at the chain’s start, proving a logged probe.",
             "Either added universal rule can still hold with no probes at all."
           ]
         }
@@ -6295,7 +6295,7 @@
     ],
     "method": [
       "Mark the existing witness or majority and its reference population.",
-      "Follow only universal arrows from its proved properties.",
+      "Follow only universal arrows from its proven properties.",
       "For two most statements, compare denominators.",
       "State the weakest quantity the premises guarantee."
     ],
@@ -6461,9 +6461,9 @@
           ],
           "answerIndex": 1,
           "explanation": "The editor and translator majorities overlap. Every editor in that overlap is trained, so at least one trained translator exists.",
-          "hint": "First establish overlap, then carry its editor property through the universal rule.",
+          "hint": "First prove overlap, then carry its editor property through the universal rule.",
           "reasoningSteps": [
-            "First establish overlap, then carry its editor property through the universal rule.",
+            "First prove overlap, then carry its editor property through the universal rule.",
             "The editor and translator majorities overlap.",
             "Every editor in that overlap is trained, so at least one trained translator exists."
           ]
@@ -6478,9 +6478,9 @@
           ],
           "answerIndex": 2,
           "explanation": "The existing registered-rescue witness gets a radio and satisfies both parts of the final restricted trigger.",
-          "hint": "Preserve registered status while adding radio status to the witness.",
+          "hint": "Keep registered status while adding radio status to the witness.",
           "reasoningSteps": [
-            "Preserve registered status while adding radio status to the witness.",
+            "Keep registered status while adding radio status to the witness.",
             "The existing registered-rescue witness gets a radio and satisfies both parts of the final restricted trigger."
           ]
         }

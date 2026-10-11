@@ -53,7 +53,7 @@ function CourseCard({ step, url }: { step: OpeningCourseStep; url: OpeningCourse
 const drillInstructions: Record<string, { summary: string; heading: string; steps: string[] }> = {
   'sufficient-practice': {
     summary: 'Condition groups and diagrams', heading: 'Find the whole sufficient condition',
-    steps: ['Find the complete idea the sufficient indicator refers to.', 'Put that condition on the left and the required condition on the right. Read the arrow back in English.', 'Check your work, then build a possible case that shows why the reverse does not follow.'],
+    steps: ['Find the indicator that introduces the sufficient condition.', 'Find the complete condition it points to. Keep every word that limits it.', 'Build the diagram: the guarantee goes on the left, what it requires on the right.', 'Write the rule in ordinary English and compare it with our version.'],
   },
   'contrapositive-practice': {
     summary: 'Originals and contrapositives', heading: 'Check the direction and each negation',
@@ -124,7 +124,7 @@ export function OpeningCourseScreen({ view = 'lessons', run = false, url, steps 
         <h1 className="font-mc-serif text-ink leading-[0.94] italic text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]">{current.title}</h1>
         <p className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">{current.id === 'necessary' ? <strong>{current.description}</strong> : current.description}</p>
       </header> : <header><p className="oc-label">Practice</p><h1>{current.title}</h1></header>}</div>
-      {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions<ArrowRight size={16}/></Link>}
+      {current.type === 'drill' && <Link className="oc-back oc-drill-back" to={url(view)}>Back to instructions</Link>}
       {current.id === 'mixed-practice' && <p className="oc-save-scope">{practiceSaveNotice}</p>}
     </div>}
     <div className="oc-course-bodies">{steps.filter(step => visited.includes(step.id)).map(step => <div key={step.id} hidden={step.id !== view || (step.type === 'drill' && !run)} className={step.id === 'foundation-practice' ? 'oc-course-body d1-body' : 'oc-course-body co-opening cr-sequence'}><CourseFlashcardUrl.Provider value={url}>{getSourceWorksheetDrill(step.id) ? <SourceWorksheetDrill setId={step.id} run startUrl={url(step.id, true)} storageScope={storageScope}/> : <OpeningCourseContent id={step.id}/>}</CourseFlashcardUrl.Provider></div>)}</div>

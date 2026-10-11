@@ -24,8 +24,10 @@ it('shows one stage at a time and requires a correct checked choice', () => {
   fireEvent.click(options[1]);
   fireEvent.click(screen.getByRole('button', { name: 'Check this step' }));
   expect(screen.getByRole('heading', { name: 'Not quite. Try again.' })).toHaveFocus();
+  expect(screen.getByText(/“only if” introduces what is required, not what is enough/)).toBeVisible();
+  expect(screen.queryByText(/with the complete condition it refers to/)).toBeNull();
   expect(screen.getByRole('button', { name: 'Next step' })).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: 'Revise my answer' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
   fireEvent.click(options[0]);
   fireEvent.click(screen.getByRole('button', { name: 'Check this step' }));
   fireEvent.click(screen.getByRole('button', { name: 'Next step' }));
