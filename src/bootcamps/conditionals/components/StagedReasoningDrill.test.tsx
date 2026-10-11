@@ -8,7 +8,7 @@ afterEach(cleanup);
 beforeEach(() => localStorage.clear());
 const mount = (mode: 'sufficient' | 'contrapositive') => render(<MemoryRouter><StagedReasoningDrill mode={mode}/></MemoryRouter>);
 
-it('preserves all existing sufficient examples and nine contrapositive cases', () => {
+it('keeps all existing sufficient examples and nine contrapositive cases', () => {
   const source = [...translationExamples['group-1'], ...diagramExamples['group-1'], ...flashcardExamples['group-1']];
   expect(sufficientStagedItems).toHaveLength(source.length + 3);
   source.forEach(item => expect(sufficientStagedItems.some(q => q.sentence === item.sentence)).toBe(true));
@@ -23,7 +23,7 @@ it('shows one stage at a time and requires a correct checked choice', () => {
   const options = within(screen.getByRole('group', { name: 'Answer choices' })).getAllByRole('button');
   fireEvent.click(options[1]);
   fireEvent.click(screen.getByRole('button', { name: 'Check this step' }));
-  expect(screen.getByRole('heading', { name: 'Revise this step.' })).toHaveFocus();
+  expect(screen.getByRole('heading', { name: 'Not quite. Try again.' })).toHaveFocus();
   expect(screen.getByRole('button', { name: 'Next step' })).toBeDisabled();
   fireEvent.click(screen.getByRole('button', { name: 'Revise my answer' }));
   fireEvent.click(options[0]);
@@ -53,7 +53,7 @@ it('restores drafts and invalidates later checks when an earlier step is revised
   const answers = { '0:0': { choice: 0, writing: '', checked: true, accepted: true }, '0:1': { choice: 1, writing: '', checked: true, accepted: true }, '0:2': { choice: null, writing: 'My saved reasoning.', checked: true, accepted: true } };
   localStorage.setItem('conditional-staged-v1:contrapositive', JSON.stringify({ index: 0, step: 0, answers, fingerprint: JSON.stringify(contrapositiveStagedItems) }));
   mount('contrapositive');
-  expect(screen.getByRole('heading', { name: 'That keeps the meaning.' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Right rule.' })).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Revise my answer' }));
   const stored = JSON.parse(localStorage.getItem('conditional-staged-v1:contrapositive')!);
   expect(stored.answers['0:1'].accepted).toBe(false);

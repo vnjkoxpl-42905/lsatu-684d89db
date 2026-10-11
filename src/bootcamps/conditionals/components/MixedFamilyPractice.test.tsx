@@ -35,7 +35,7 @@ it('requires an independent diagram and readback before exposing complete labels
   expect(item.querySelector('.co-correct')).toBeTruthy();
   expect(scope.getByRole('status').textContent).toContain(mixedFamilyItems[0].readback);
   expect(scope.getByRole('status').textContent).toContain(mixedFamilyItems[0].why);
-  expect(scope.getByRole('status').textContent).not.toContain('preserve the rule');
+  expect(scope.getByRole('status').textContent).not.toContain('keep the rule');
   fireEvent.click(view.getByRole('button', { name: 'Next mixed sentence' }));
   fireEvent.click(view.getByRole('button', { name: 'Previous mixed sentence' }));
   expect(diagram.value).toBe('Lightning forecast -> Move indoors');
@@ -68,7 +68,7 @@ it('asks an authored question about each rule and names the restriction retained
     fireEvent.click(view.getByRole('button', { name: 'Check answer' }));
     expect(view.getByRole('status')).toHaveTextContent(item.targetFeedback);
     expect(view.getByRole('status')).toHaveTextContent(item.reversed);
-    expect(view.getByRole('status')).not.toHaveTextContent('complete target');
+    expect(view.getByRole('status')).not.toHaveTextContent('complete group');
     view.unmount();
   }
 });

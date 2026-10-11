@@ -91,9 +91,9 @@ it('requires a blank production attempt across all six operations before reveali
   write('Write this rule as an if/then sentence.', 'If an intern completes the program, then they are offered a full-time position.');
   click('Save and continue');
   write('Write the contrapositive in ordinary language.', 'If that intern is not offered the position, then they did not complete the program.');
-  expect(screen.queryByText('Compare with the model')).toBeNull();
+  expect(screen.queryByText('Compare with our version')).toBeNull();
   click('Save and continue');
-  expect(screen.getByText('Compare with the model')).toBeVisible();
+  expect(screen.getByText('Compare with our version')).toBeVisible();
   expect(screen.getByText('I → O', { exact: true })).toBeVisible();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   click('Needs another look');
@@ -105,7 +105,7 @@ it('begins rephrasing with writing before any supplied diagram or condition choi
   expect(screen.getByRole('heading', { name: 'Rewrite the rule' })).toBeVisible();
   expect(screen.queryByText('a person is a runner in a marathon', { exact: true })).toBeNull();
   write('Write this rule as an if/then sentence.', 'If a person runs the marathon, they must hydrate beforehand.');
-  expect(screen.getByText('The model stays hidden until you have completed the whole translation.')).toBeVisible();
+  expect(screen.getByText('Our version stays hidden until you have completed the whole translation.')).toBeVisible();
   click('Save and continue');
   expect(screen.queryByText(/If a person is a runner in a marathon/)).toBeNull();
   expect(screen.getByRole('heading', { name: 'Find the indicators' })).toBeVisible();

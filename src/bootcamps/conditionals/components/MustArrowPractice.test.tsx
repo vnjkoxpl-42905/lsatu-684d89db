@@ -24,7 +24,7 @@ it('requires an answer before feedback and explains the placement mistake', () =
   expect(screen.queryByRole('button', { name: 'Check answer' })).not.toBeInTheDocument();
 });
 
-it('preserves submitted choices on revisits and focuses navigation', () => {
+it('keeps submitted choices on revisits and focuses navigation', () => {
   render(<MustArrowPractice/>);
   answer('You are enrolled in law school.');
   fireEvent.click(screen.getByRole('button', { name: /Next question/ }));

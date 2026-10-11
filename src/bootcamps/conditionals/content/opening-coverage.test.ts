@@ -12,7 +12,7 @@ const historicalIds = ['group-1-a3', 'group-2-m2', 'group-2-a3', 'group-2-a1'];
 const fingerprint = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 
 describe('the opening curriculum teaching contract', () => {
-  it('introduces the relationship before its two indicator groups', () => {
+  it('introduces the rule before its two indicator groups', () => {
     expect(conditionalUnits.slice(0, 4).map(unit => unit.id)).toEqual(openingIds);
     expect(opening.map(unit => unit.prerequisites)).toEqual([
       [], ['orientation'], ['sufficient-necessary'], ['group-1'],
@@ -30,7 +30,7 @@ describe('the opening curriculum teaching contract', () => {
         // The approved reference-ordered opening develops contraposition before
         // notation. Independently assigned group notes keep their narrow scope.
         expect(unit.teaching.findIndex(text => /This is the contrapositive/.test(text))).toBeLessThan(
-          unit.teaching.findIndex(text => /Write the relationship/.test(text)),
+          unit.teaching.findIndex(text => /Write the rule/.test(text)),
         );
         expect(unit.method).toHaveLength(5);
         expect(unit.method[3]).toMatch(/contrapositive/);
@@ -40,7 +40,7 @@ describe('the opening curriculum teaching contract', () => {
     }
   });
 
-  it('preserves the 62-question answer contract used by saved choices and diagrams', () => {
+  it('keeps the 62-question answer contract used by saved choices and diagrams', () => {
     // The pre-voice baseline preserves 61 current answer contracts after the
     // original three -v2 mappings. Actual inspection also replaces group-2-a1
     // with direct translation under its own -v2 ID, retaining the HEAD original.

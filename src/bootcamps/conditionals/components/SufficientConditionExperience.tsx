@@ -37,7 +37,7 @@ export function SufficientConditionExperience() {
   const current = relationships[selected];
   return <section className="sc-experience" aria-labelledby={titleId}>
     <header>
-      <p className="sc-eyebrow">Picture the relationship</p>
+      <p className="sc-eyebrow">Picture the rule</p>
       <h3 id={titleId}>Law-school students belong inside the student group.</h3>
       <p>Choose a combination and compare it with the groups. Does it fit the guarantee?</p>
     </header>
@@ -92,7 +92,7 @@ const explanations = {
   result: {
     label: 'What must be true',
     title: 'Being a student is guaranteed.',
-    text: 'Once enrollment is established, being a student is certain. It is more than a possibility or a likely outcome.',
+    text: 'Once enrollment is proved, being a student is certain. It is more than a possibility or a likely outcome.',
   },
   connection: {
     label: 'The guarantee',

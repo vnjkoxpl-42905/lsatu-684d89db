@@ -9,7 +9,7 @@ export function NecessaryConditionStatement() {
     </blockquote>
     <figcaption>
       <div className="nc-statement-roles">
-        <div><span>Sufficient condition</span><strong>You are enrolled in law school</strong><p>Enough to establish that you are a student.</p></div>
+        <div><span>Sufficient condition</span><strong>You are enrolled in law school</strong><p>Enough to prove that you are a student.</p></div>
         <div><span>Necessary condition</span><strong>You are a student</strong><p>Required whenever you are enrolled in law school.</p></div>
       </div>
     </figcaption>

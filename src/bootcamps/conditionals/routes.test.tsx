@@ -55,7 +55,7 @@ it('lands on one current lesson without a curriculum map or teaching rail', () =
   expect(document.querySelector('.cb-sequence')).toBeNull();
   expect(screen.queryAllByRole('combobox')).toHaveLength(0);
 });
-it('shows only actual assignments and ignores forged broader query targets', () => {
+it('shows only actual assignments and ignores forged broader query groups', () => {
   mount(`${base}?start=orientation&path=course&level=beginner`, [skill()]);
   expect(screen.getByRole('link', { name: 'Begin lesson' }).getAttribute('href')).toContain('/lessons?');
   expect(screen.getByRole('link', { name: 'Begin lesson' }).getAttribute('href')).toContain('assignment=skill');
@@ -295,7 +295,7 @@ it.each([
   ['area practice', '/practice?area=translation', 'practice:beginner:translation', 'area'],
   ['phase practice', '/practice?phase=conditional', 'practice:beginner:conditional', 'general'],
   ['area flashcards', '/flashcards?area=translation', 'flashcards:translation:beginner', 'area'],
-] as const)('completes the available subset of a shared %s run and preserves its other work', (_name, route, runKey, scope) => {
+] as const)('completes the available subset of a shared %s run and keeps its other work', (_name, route, runKey, scope) => {
   const group1 = conditionalUnits.find(unit => unit.id === 'group-1')!;
   const group2 = conditionalUnits.find(unit => unit.id === 'group-2')!;
   const run = { ...newRun([group1.drills.beginner[0], group2.drills.beginner[0], group1.drills.beginner[1], ...group2.drills.beginner.slice(1), ...group1.drills.beginner.slice(2)].map(question => question.id)), elapsed: 41 };
@@ -414,7 +414,7 @@ it('keeps retired IDs out of new practice runs', () => {
   expect(state.progress!.runs['practice:advanced:group-1'].questionIds).not.toContain('group-1-a3');
 });
 
-it('resumes advanced Group 2 at its direct replacement and preserves both original attempts', () => {
+it('resumes advanced Group 2 at its direct replacement and keeps both original attempts', () => {
   const run = savedOpeningRun('group-2', 'advanced', ['group-2-a1', 'group-2-a2', 'group-2-a3'], 3, true);
   const historicalAttempts = state.progress!.attempts;
   const unit = conditionalUnits.find(item => item.id === 'group-2')!;
@@ -526,7 +526,7 @@ it('rejects an unassigned new note and does not widen practice-only assignments'
   expect(state.updateCalls).toBe(0);
 });
 
-it('preserves assignment context without recording legacy completion on new course navigation', () => {
+it('keeps assignment context without recording legacy completion on new course navigation', () => {
   mount(`${base}/opening/necessary-words?assignment=skill&level=advanced&path=skill&start=group-2`, [skill()]);
   fireEvent.click(screen.getByRole('link', { name: /Next lesson Keep the whole meaning/ }));
   fireEvent.click(screen.getByRole('link', { name: /Next drill Drill 2: Find both conditions/ }));
@@ -571,7 +571,7 @@ it('explains local mixed practice without recording it as assigned work', () => 
   expect(state.progress!.attempts).toEqual([]);
 });
 
-it.each(['/lessons/rules-facts', '/practice?unit=group-2'])('preserves account saving for recorded work on %s', path => {
+it.each(['/lessons/rules-facts', '/practice?unit=group-2'])('keeps account saving for recorded work on %s', path => {
   mount(`${base}${path}`);
   expect(screen.getByText('Saved to your account')).toBeVisible();
   expect(screen.queryByText('Assigned work saved to your account')).toBeNull();

@@ -29,7 +29,7 @@ describe('conditional stored progress', () => {
     const progress = emptyProgress();
     change(progress);
     const before = JSON.stringify(progress);
-    expect(() => parseConditionalProgress(progress)).toThrow('record has been preserved');
+    expect(() => parseConditionalProgress(progress)).toThrow('record has been kept');
     expect(JSON.stringify(progress)).toBe(before);
   });
   it('resumes stopwatch elapsed time from the saved starting timestamp without periodic persisted ticks', () => {
@@ -133,7 +133,7 @@ describe('opening question revisions in saved runs', () => {
     expect(reconcileConditionalRun(run, [...current].reverse(), [])).toBe(run);
     expect(run.index).toBe(1);
   });
-  it('preserves checked-current feedback until Next and skips already checked questions afterward', () => {
+  it('keeps checked-current feedback until Next and skips already checked questions afterward', () => {
     const run = { ...newRun(['group-1-b1', 'group-1-b2', 'group-1-b3']), index: 1 };
     for (const id of run.questionIds) run.drafts[id] = { ...emptyDraft(), working: 'Retain my reasoning', choice: 0, checked: true, revealed: true };
     const updated = reconcileConditionalRun(run, questions('group-1', 'beginner'), []);

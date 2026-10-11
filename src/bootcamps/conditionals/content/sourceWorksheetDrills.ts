@@ -66,7 +66,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you are instructed to expect thunder to follow) → NOT (you see lightning)",
         "ifThen": "If you see lightning, then you are instructed to expect thunder to follow.",
         "contrapositiveWords": "If you are not instructed to expect thunder to follow, then you do not see lightning.",
-        "explanation": "The instruction to expect thunder is the result. It does not establish that thunder actually follows.",
+        "explanation": "The instruction to expect thunder is the result. It does not prove that thunder actually follows.",
         "correctionNotes": [
           "The key strengthens “expect thunder” to “thunder will follow.” Preserve the expectation.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -95,7 +95,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the correct code is entered) → NOT (the gate opens)",
         "ifThen": "If the gate opens, then the correct code is entered.",
         "contrapositiveWords": "If the correct code is not entered, then the gate does not open.",
-        "explanation": "Opening requires the correct code. Entering a code alone does not establish that the gate opens.",
+        "explanation": "Opening requires the correct code. Entering a code alone does not prove that the gate opens.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -261,7 +261,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the building should be evacuated immediately) → NOT (the alarm sounds)",
         "ifThen": "If the alarm sounds, then the building should be evacuated immediately.",
         "contrapositiveWords": "If it is not the case that the building should be evacuated immediately, then the alarm does not sound.",
-        "explanation": "Keep should in the result. Failure to evacuate does not establish that evacuation was not called for or that the alarm was silent.",
+        "explanation": "Keep should in the result. Failure to evacuate does not prove that evacuation was not called for or that the alarm was silent.",
         "correctionNotes": [
           "“Should be evacuated” is an obligation, not proof of evacuation."
         ],
@@ -425,7 +425,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you support the environment) → NOT (you plant trees)",
         "ifThen": "If you plant trees, then you support the environment.",
         "contrapositiveWords": "If you do not support the environment, then you do not plant trees.",
-        "explanation": "Use the supplied rule. Planting trees is enough for its stated result; the result alone does not establish planting.",
+        "explanation": "Use the supplied rule. Planting trees is enough for its stated result; the result alone does not prove planting.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -843,7 +843,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you are instructed to expect thunder to follow) → NOT (you see lightning)",
         "ifThen": "If you see lightning, then you are instructed to expect thunder to follow.",
         "contrapositiveWords": "If you are not instructed to expect thunder to follow, then you do not see lightning.",
-        "explanation": "The instruction to expect thunder is the result. It does not establish that thunder actually follows.",
+        "explanation": "The instruction to expect thunder is the result. It does not prove that thunder actually follows.",
         "correctionNotes": [
           "The key strengthens “expect thunder” to “thunder will follow.” Preserve the expectation.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -872,7 +872,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the correct code is entered) → NOT (the gate opens)",
         "ifThen": "If the gate opens, then the correct code is entered.",
         "contrapositiveWords": "If the correct code is not entered, then the gate does not open.",
-        "explanation": "Opening requires the correct code. Entering a code alone does not establish that the gate opens.",
+        "explanation": "Opening requires the correct code. Entering a code alone does not prove that the gate opens.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -1038,7 +1038,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the building should be evacuated immediately) → NOT (the alarm sounds)",
         "ifThen": "If the alarm sounds, then the building should be evacuated immediately.",
         "contrapositiveWords": "If it is not the case that the building should be evacuated immediately, then the alarm does not sound.",
-        "explanation": "Keep should in the result. Failure to evacuate does not establish that evacuation was not called for or that the alarm was silent.",
+        "explanation": "Keep should in the result. Failure to evacuate does not prove that evacuation was not called for or that the alarm was silent.",
         "correctionNotes": [
           "“Should be evacuated” is an obligation, not proof of evacuation."
         ],
@@ -1202,7 +1202,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (you support the environment) → NOT (you plant trees)",
         "ifThen": "If you plant trees, then you support the environment.",
         "contrapositiveWords": "If you do not support the environment, then you do not plant trees.",
-        "explanation": "Use the supplied rule. Planting trees is enough for its stated result; the result alone does not establish planting.",
+        "explanation": "Use the supplied rule. Planting trees is enough for its stated result; the result alone does not prove planting.",
         "correctionNotes": [],
         "source": {
           "file": "Intro training set/Homework/2025-06-23_intro training group ½ (3).pdf",
@@ -1573,7 +1573,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (that person conserves water) → NOT (a person receives the rebate)",
         "ifThen": "If a person receives the rebate, then that person conserves water.",
         "contrapositiveWords": "If that person does not conserve water, then that person does not receive the rebate.",
-        "explanation": "Receiving the rebate requires conservation. Conservation alone need not establish a rebate.",
+        "explanation": "Receiving the rebate requires conservation. Conservation alone need not prove a rebate.",
         "correctionNotes": [],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -1657,7 +1657,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (that artist is required to clean their brushes thoroughly) → NOT (a person is an artist who uses oil paints)",
         "ifThen": "If a person is an artist who uses oil paints, then that artist is required to clean their brushes thoroughly.",
         "contrapositiveWords": "If that artist is not required to clean their brushes thoroughly, then that person is not an artist who uses oil paints.",
-        "explanation": "The outcome is the cleaning requirement. Noncompliance alone does not establish the artist avoided oil paints.",
+        "explanation": "The outcome is the cleaning requirement. Noncompliance alone does not prove the artist avoided oil paints.",
         "correctionNotes": [
           "Mixed indicators and obligation: preserve the duty."
         ],
@@ -1718,7 +1718,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (that person has a degree in architecture) → NOT (a person can apply for this position)",
         "ifThen": "If a person can apply for this position, then that person has a degree in architecture.",
         "contrapositiveWords": "If that person does not have a degree in architecture, then that person cannot apply for this position.",
-        "explanation": "Can apply is not actually applies. Preserve eligibility in both translations.",
+        "explanation": "Can apply is not actually applies. Keep eligibility in both translations.",
         "correctionNotes": [
           "Preserve “can apply.”"
         ],
@@ -1746,7 +1746,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the streetlights turn on) → NOT (the sun sets)",
         "ifThen": "If the sun sets, then the streetlights turn on.",
         "contrapositiveWords": "If the streetlights do not turn on, then the sun does not set.",
-        "explanation": "Sunset is the trigger in the supplied rule. Lights being on need not establish sunset.",
+        "explanation": "Sunset is the trigger in the supplied rule. Lights being on need not prove sunset.",
         "correctionNotes": [],
         "source": {
           "file": "If-Then rephrase set (Sep 5)/Homework/2025-09-05_IF_THEN worksheet.pdf",
@@ -2014,7 +2014,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the request file assigned by the portal to that requester is present) → NOT (a request is processed)",
         "ifThen": "If a request is processed, then the request file assigned by the portal to that requester is present.",
         "contrapositiveWords": "If the request file assigned by the portal to that requester is not present, then that request is not processed.",
-        "explanation": "Preserve the assignment to this requester. Just any file is not enough.",
+        "explanation": "Keep the assignment to this requester. Just any file is not enough.",
         "correctionNotes": [
           "Keep the file assigned to this requester."
         ],
@@ -2273,7 +2273,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (students exit the building) → NOT (the final bell rings)",
         "ifThen": "If the final bell rings, then students exit the building.",
         "contrapositiveWords": "If students do not exit the building, then the final bell does not ring.",
-        "explanation": "The bell is sufficient under this rule. Exiting does not establish that the bell rang.",
+        "explanation": "The bell is sufficient under this rule. Exiting does not prove that the bell rang.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -2377,7 +2377,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (those employees exceed sales targets) → NOT (employees qualify for bonuses)",
         "ifThen": "If employees qualify for bonuses, then those employees exceed sales targets.",
         "contrapositiveWords": "If those employees do not exceed sales targets, then employees do not qualify for bonuses.",
-        "explanation": "Qualification requires exceeding the targets. Exceeding them alone need not guarantee a bonus.",
+        "explanation": "Qualification requires exceeding the groups. Exceeding them alone need not guarantee a bonus.",
         "correctionNotes": [],
         "source": {
           "file": "Indicator ID set (Part 1)/Homework/2025-09-03_G1 &G2 worksheet (1) (1).docx",
@@ -2403,7 +2403,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (managers have approved the budgets first) → NOT (expenditures can occur)",
         "ifThen": "If expenditures can occur, then managers have approved the budgets first.",
         "contrapositiveWords": "If managers have not approved the budgets first, then expenditures cannot occur.",
-        "explanation": "Preserve can occur and first. The sentence is about authorization, not proof of spending.",
+        "explanation": "Keep can occur and first. The sentence is about authorization, not proof of spending.",
         "correctionNotes": [
           "Keep “can occur” and “first.”"
         ],
@@ -2431,7 +2431,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (system maintenance is performed) → NOT (operations are halted temporarily)",
         "ifThen": "If operations are halted temporarily, then system maintenance is performed.",
         "contrapositiveWords": "If system maintenance is not performed, then operations are not halted temporarily.",
-        "explanation": "The reviewed rule makes maintenance a prerequisite for the halt. Maintenance alone does not establish that operations halt.",
+        "explanation": "The reviewed rule makes maintenance a prerequisite for the halt. Maintenance alone does not prove that operations halt.",
         "correctionNotes": [
           "The key changes a requirement into completed maintenance.",
           "Reviewed derivative: the learner-facing sentence clarifies the source. The exact original remains in originalStatement."
@@ -2675,7 +2675,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the employee submits a detailed online report) → NOT (a reimbursement request can be processed)",
         "ifThen": "If a reimbursement request can be processed, then the employee submits a detailed online report.",
         "contrapositiveWords": "If the employee does not submit a detailed online report, then that reimbursement request cannot be processed.",
-        "explanation": "Preserve can be processed, detailed, and online. An incomplete report does not meet the requirement.",
+        "explanation": "Keep can be processed, detailed, and online. An incomplete report does not meet the requirement.",
         "correctionNotes": [
           "Keep “can be processed.”"
         ],
@@ -2791,7 +2791,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (that individual is omnipotent) → NOT (an individual is a member of the Q continuum)",
         "ifThen": "If an individual is a member of the Q continuum, then that individual is omnipotent.",
         "contrapositiveWords": "If that individual is not omnipotent, then that individual is not a member of the Q continuum.",
-        "explanation": "Treat this as a fictional rule. Membership is sufficient; omnipotence alone does not establish membership.",
+        "explanation": "Treat this as a fictional rule. Membership is sufficient; omnipotence alone does not prove membership.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -2846,7 +2846,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (your disposable income increases) → NOT (you reduce your expenses)",
         "ifThen": "If you reduce your expenses, then your disposable income increases.",
         "contrapositiveWords": "If your disposable income does not increase, then you do not reduce your expenses.",
-        "explanation": "Use the stated relationship as the premise. The exercise is about its direction, not financial advice.",
+        "explanation": "Use the stated rule as the premise. The exercise is about its direction, not financial advice.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3002,7 +3002,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (that animal lives in trees) → NOT (an animal is a monkey)",
         "ifThen": "If an animal is a monkey, then that animal lives in trees.",
         "contrapositiveWords": "If that animal does not live in trees, then that animal is not a monkey.",
-        "explanation": "The only monkeys identifies the sufficient category. Monkeys require tree dwelling in this stipulated rule.",
+        "explanation": "The only monkeys identifies the sufficient category. Monkeys require tree dwelling in this rule.",
         "correctionNotes": [
           "The key explanation conflicts with its correctly directed arrow."
         ],
@@ -3108,7 +3108,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (that animal loves to eat maple trees) → NOT (an animal is a beaver)",
         "ifThen": "If an animal is a beaver, then that animal loves to eat maple trees.",
         "contrapositiveWords": "If that animal does not love to eat maple trees, then that animal is not a beaver.",
-        "explanation": "Loves to eat is not the same as eats. Preserve the complete stated result.",
+        "explanation": "Loves to eat is not the same as eats. Keep the complete stated result.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3508,7 +3508,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (that behavior can be conceptualized as a game to illuminate its underlying strategies) → NOT (a behavior is a mating ritual)",
         "ifThen": "If a behavior is a mating ritual, then that behavior can be conceptualized as a game to illuminate its underlying strategies.",
         "contrapositiveWords": "If that behavior cannot be conceptualized as a game to illuminate its underlying strategies, then that behavior is not a mating ritual.",
-        "explanation": "Preserve can be conceptualized and the purpose clause. Possibility is different from actual conceptualization.",
+        "explanation": "Keep can be conceptualized and the purpose clause. Possibility is different from actual conceptualization.",
         "correctionNotes": [
           "Preserve “can be conceptualized.”"
         ],
@@ -3591,7 +3591,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (atmospheric pressure is high) → NOT (the sky is clear)",
         "ifThen": "If the sky is clear, then atmospheric pressure is high.",
         "contrapositiveWords": "If atmospheric pressure is not high, then the sky is not clear.",
-        "explanation": "Clear sky is sufficient in the exercise rule. High pressure alone does not establish a clear sky.",
+        "explanation": "Clear sky is sufficient in the exercise rule. High pressure alone does not prove a clear sky.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",
@@ -3645,7 +3645,7 @@ export const sourceWorksheetDrills: SourceWorksheetDrillSet[] = [
         "contrapositive": "NOT (the policy of free trade had already been implemented) → NOT (economic conditions improved)",
         "ifThen": "If economic conditions improved, then the policy of free trade had already been implemented.",
         "contrapositiveWords": "If the policy of free trade had not already been implemented, then economic conditions did not improve.",
-        "explanation": "Implementation precedes improvement. The conditional alone does not establish causation.",
+        "explanation": "Implementation precedes improvement. The conditional alone does not prove causation.",
         "correctionNotes": [],
         "source": {
           "file": "Translation set (burrito)/Homework/2025-07-03_Homework For Group 1 & Group 2 (1).pdf",

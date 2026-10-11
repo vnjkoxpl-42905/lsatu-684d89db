@@ -24,7 +24,7 @@ export const completeConditionItems: MixedDrillChoiceItem[] = [
     feedback: [
       'Swimmer alone includes people training later in the day. The rule covers swimmers training before dawn, so keep the time restriction.',
       'Each swimmer training before dawn receives a wristband. The time restriction matters: the sentence does not tell us what swimmers training later receive.',
-      'The wristband is what the rule establishes. Every refers to the swimmers training before dawn, not to everyone who receives a wristband.',
+      'The wristband is what the rule proves. Every refers to the swimmers training before dawn, not to everyone who receives a wristband.',
     ],
   },
   {
@@ -46,7 +46,7 @@ export const completeConditionItems: MixedDrillChoiceItem[] = [
     options: ['A current safety certificate', 'A safety certificate', 'Leading the climbing group'], correct: 0,
     errorByOption: [null, 'qualification', 'direction'],
     feedback: [
-      'Current belongs in the requirement. Leading the climbing group requires a current safety certificate; an expired certificate would not meet the stated requirement. Having a current one does not establish that someone leads the group.',
+      'Current belongs in the requirement. Leading the climbing group requires a current safety certificate; an expired certificate would not meet the stated requirement. Having a current one does not prove that someone leads the group.',
       'Safety certificate alone allows an expired certificate. The sentence requires a current one, so that qualification must stay in the label.',
       'Leading the group is what needs the certificate. Required refers back to the complete requirement before it: a current safety certificate.',
     ],
@@ -60,7 +60,7 @@ export const equivalenceItems: MixedDrillChoiceItem[] = [
   {
     id: 'mixed-equivalence-1', stage: 'equivalence', skill: 'equivalence',
     sentence: 'Only stamped envelopes go into the dispatch tray.',
-    prompt: `Original rule: ${envelopeRule} Does the new sentence preserve it?`,
+    prompt: `Original rule: ${envelopeRule} Does the new sentence keep it?`,
     options: ['Same rule', 'Reversed rule'], correct: 0,
     errorByOption: [null, 'equivalence'],
     feedback: [
@@ -71,34 +71,34 @@ export const equivalenceItems: MixedDrillChoiceItem[] = [
   {
     id: 'mixed-equivalence-2', stage: 'equivalence', skill: 'equivalence',
     sentence: 'An envelope goes into the dispatch tray if it is stamped.',
-    prompt: `Original rule: ${envelopeRule} Does the new sentence preserve it?`,
+    prompt: `Original rule: ${envelopeRule} Does the new sentence keep it?`,
     options: ['Same rule', 'Reversed rule'], correct: 1,
     errorByOption: ['equivalence', null],
     feedback: [
       'If now makes a stamp sufficient for going into the tray. The original allowed a stamped envelope elsewhere. This sentence sends every stamped envelope into the tray, so it changes the rule.',
-      'The new sentence starts from the stamp and establishes the tray. The original starts from the tray and establishes the stamp. A stamped envelope elsewhere fits the original but conflicts with this reverse.',
+      'The new sentence starts from the stamp and proves the tray. The original starts from the tray and proves the stamp. A stamped envelope elsewhere fits the original but conflicts with this reverse.',
     ],
   },
   {
     id: 'mixed-equivalence-3', stage: 'equivalence', skill: 'equivalence',
     sentence: 'The only envelopes in the dispatch tray are stamped envelopes.',
-    prompt: `Original rule: ${envelopeRule} Does the new sentence preserve it?`,
+    prompt: `Original rule: ${envelopeRule} Does the new sentence keep it?`,
     options: ['Reversed rule', 'Same rule'], correct: 1,
     errorByOption: ['equivalence', null],
     feedback: [
       'The only refers to envelopes in the dispatch tray. Pick an envelope in that group and it must be stamped. Starting from a stamp instead would add a claim about where stamped envelopes go.',
-      'The only identifies the tray envelopes as the complete starting group. Each has a stamp. This keeps the original relationship and leaves stamped envelopes elsewhere possible.',
+      'The only identifies the tray envelopes as the complete starting group. Each has a stamp. This keeps the original rule and leaves stamped envelopes elsewhere possible.',
     ],
   },
   {
     id: 'mixed-equivalence-4', stage: 'equivalence', skill: 'equivalence',
     sentence: 'An envelope goes into the dispatch tray only if it is stamped.',
-    prompt: `Original rule: ${envelopeRule} Does the new sentence preserve it?`,
+    prompt: `Original rule: ${envelopeRule} Does the new sentence keep it?`,
     options: ['Same rule', 'Reversed rule'], correct: 0,
     errorByOption: [null, 'equivalence'],
     feedback: [
       'Only if makes being stamped a requirement for going into the tray. Every envelope in the tray must meet that requirement. It does not promise a place there to every stamped envelope.',
-      'Read only if as the whole expression. The stamp is required for the tray, rather than enough for it. That preserves the original rule.',
+      'Read only if as the whole phrase. The stamp is required for the tray, rather than enough for it. That keeps the original rule.',
     ],
   },
 ];
@@ -107,13 +107,13 @@ export const transferItems: MixedDrillChoiceItem[] = [
   {
     id: 'mixed-transfer-1', stage: 'transfer', skill: 'direction',
     sentence: 'The heater runs if the timer reaches six.',
-    prompt: 'Which diagram preserves what the sentence says?',
+    prompt: 'Which diagram keeps what the sentence says?',
     options: ['Heater runs → Timer reaches six', 'Timer reaches six → Heater runs', 'Timer has not reached six → Heater does not run'], correct: 1,
     errorByOption: ['direction', null, 'direction'],
     feedback: [
       'The sentence has not said the timer is the only way to start the heater. A running heater before six could fit the rule. Start from the complete if-clause: the timer reaches six.',
       'The if-clause is enough even though it comes last. If the timer reaches six, the heater runs. A running heater alone leaves the timer reading open.',
-      'You made the absence of six enough to establish that the heater is off. It could run at another time without breaking the rule. The sentence only establishes running when the timer reaches six.',
+      'You made the absence of six enough to prove that the heater is off. It could run at another time without breaking the rule. The sentence only proves running when the timer reaches six.',
     ],
   },
   {
@@ -125,13 +125,13 @@ export const transferItems: MixedDrillChoiceItem[] = [
     feedback: [
       'Trainee alone extends the rule to trainees without night-work certification. Keep certified for night work in the starting condition.',
       'Receiving the badge is the result, not proof of this certification. A badge recipient without that certification could fit the rule. Start from the complete group the sentence covers.',
-      'The rule covers every trainee certified for night work. That full condition establishes a shift badge. It leaves the badge status of other trainees open.',
+      'The rule covers every trainee certified for night work. That full condition proves a shift badge. It leaves the badge status of other trainees open.',
     ],
   },
   {
     id: 'mixed-transfer-3', stage: 'transfer', skill: 'requirement',
     sentence: 'Only electric vehicles are permitted inside the courtyard.',
-    prompt: 'A vehicle is electric. What does this rule establish about its permission to enter?',
+    prompt: 'A vehicle is electric. What does this rule prove about its permission to enter?',
     options: ['It is permitted inside.', 'It is not permitted inside.', 'Its permission remains open.'], correct: 2,
     errorByOption: ['requirement', 'requirement', null],
     feedback: [
@@ -148,7 +148,7 @@ export const transferItems: MixedDrillChoiceItem[] = [
     errorByOption: ['equivalence', null],
     feedback: [
       'Must gives finalists an obligation to attend. It does not supply a fact showing they complied. Keep required to attend in the result rather than reporting completed attendance.',
-      'The original establishes an obligation for each finalist. A finalist who has not attended could still have that obligation. The rewrite reports completed attendance, so it adds something the original did not establish.',
+      'The original proves an obligation for each finalist. A finalist who has not attended could still have that obligation. The rewrite reports completed attendance, so it adds something the original did not prove.',
     ],
   },
 ];
@@ -162,9 +162,9 @@ export const confirmationItemsByError: Record<MixedDrillError, MixedDrillChoiceI
     options: ['Invitation printed → Registration accepted', 'Registration accepted → Invitation printed', 'Registration accepted → Registration accepted'], correct: 1,
     errorByOption: ['direction', null, 'direction'],
     feedback: [
-      'Printing is what acceptance establishes. The rule has not said every printed invitation proves acceptance. Start from the complete when-clause: the registration is accepted.',
+      'Printing is what acceptance proves. The rule has not said every printed invitation proves acceptance. Start from the complete when-clause: the registration is accepted.',
       'Acceptance is enough for printing, so put registration accepted on the left and invitation printed on the right. A printed invitation alone leaves acceptance open.',
-      'Both sides name acceptance. That leaves out what the rule establishes about the invitation. Keep acceptance on the left, then put invitation printed on the right.',
+      'Both sides name acceptance. That leaves out what the rule proves about the invitation. Keep acceptance on the left, then put invitation printed on the right.',
     ],
   }],
   qualification: [{
@@ -174,7 +174,7 @@ export const confirmationItemsByError: Record<MixedDrillError, MixedDrillChoiceI
     options: ['Courier delivering refrigerated medicine', 'Courier', 'Courier delivering medicine'], correct: 0,
     errorByOption: [null, 'qualification', 'qualification'],
     feedback: [
-      'Keep delivering refrigerated medicine attached to courier. The rule establishes an insulated pack for each courier in that complete group. It leaves other couriers outside this promise.',
+      'Keep delivering refrigerated medicine attached to courier. The rule proves an insulated pack for each courier in that complete group. It leaves other couriers outside this promise.',
       'Courier alone includes couriers carrying other deliveries. The rule covers couriers delivering refrigerated medicine, so retain both delivery and refrigeration.',
       'Medicine alone includes medicine that is not refrigerated. That would broaden the group beyond the sentence. Keep refrigerated when you describe which couriers the rule covers.',
     ],
@@ -182,12 +182,12 @@ export const confirmationItemsByError: Record<MixedDrillError, MixedDrillChoiceI
   requirement: [{
     id: 'mixed-confirm-requirement', stage: 'confirmation', skill: 'requirement',
     sentence: 'A reader books a study room only if the reader has a verified account.',
-    prompt: 'A reader has a verified account. Does the rule establish a booking?',
+    prompt: 'A reader has a verified account. Does the rule prove a booking?',
     options: ['No. A booking remains open.', 'Yes. Verification is enough for a booking.'], correct: 0,
     errorByOption: [null, 'requirement'],
     feedback: [
       'Only if makes verification required for booking. A reader with a verified account could make a booking or never make one. Verification alone leaves booking open.',
-      'You made the requirement enough. A verified reader who does not book fits the sentence. The rule tells us what a booking needs, not that verification establishes booking.',
+      'You made the requirement enough. A verified reader who does not book fits the sentence. The rule tells us what a booking needs, not that verification proves booking.',
     ],
   }],
   equivalence: [{

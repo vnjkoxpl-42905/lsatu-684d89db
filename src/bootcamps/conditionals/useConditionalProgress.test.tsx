@@ -62,7 +62,7 @@ it('blocks failed hydration instead of manufacturing empty account progress', as
   expect(state.writes).toEqual([]);
 });
 
-it('rejects malformed account records and preserves their contents', async () => {
+it('rejects malformed account records and keeps their contents', async () => {
   state.rows.set('A', { data: { id: 'other-course' }, updated_at: 'revision-one' });
   const { result } = renderHook(() => useConditionalProgress('A'));
   await waitFor(() => expect(result.current.error).toContain('unsupported format'));
@@ -88,8 +88,8 @@ it('keeps failed changes visibly dirty and retries the same work with exact acco
   expect(state.writes.every(write => write.operation === 'update')).toBe(true);
 });
 
-it('preserves the opening edition and unknown lesson keys through acknowledged saves and reload without an automatic write', async () => {
-  const original = record('preserved journal');
+it('keeps the opening edition and unknown lesson keys through acknowledged saves and reload without an automatic write', async () => {
+  const original = record('kept journal');
   original.lessons = { 'group-1': '2026-12-01T12:00:00.000Z', 'historical-unit': '2026-10-01T12:00:00.000Z' };
   original.runs.run = newRun(['group-1-b1']);
   state.rows.set('A', { data: original, updated_at: '2026-10-01T11:00:00.000Z' });
@@ -133,7 +133,7 @@ it('preserves the opening edition and unknown lesson keys through acknowledged s
   expect(state.writes).toHaveLength(writesBeforeReload);
 });
 
-it('detects a concurrent cloud revision, preserves both versions, and refuses blind overwrite', async () => {
+it('detects a concurrent cloud revision, keeps both versions, and refuses blind overwrite', async () => {
   cloud('A', 'original');
   const { result } = renderHook(() => useConditionalProgress('A'));
   await waitFor(() => expect(result.current.progress).not.toBeNull());
@@ -205,12 +205,12 @@ it('resumes unfinished working, assistance, choice, and timer from a same-base d
 
 it('refuses to auto-save a dirty local draft based on an older account revision after reload', async () => {
   cloud('A', 'other window revision');
-  const draft = { ...record('preserved draft'), updated_at: '2026-10-01T11:20:00.000Z' };
+  const draft = { ...record('kept draft'), updated_at: '2026-10-01T11:20:00.000Z' };
   const original = JSON.stringify(draft);
   localStorage.setItem('student:A:conditional_draft_state:conditionals-v1', original);
   localStorage.setItem('student:A:conditional_draft_base:conditionals-v1', JSON.stringify({ revision: '2026-10-01T10:30:00.000Z' }));
   const { result } = renderHook(() => useConditionalProgress('A'));
-  await waitFor(() => expect(result.current.error).toContain('Both versions are preserved'));
+  await waitFor(() => expect(result.current.error).toContain('Both versions are kept'));
   expect(result.current.progress).toBeNull();
   expect(state.writes).toEqual([]);
   expect(localStorage.getItem('student:A:conditional_draft_state:conditionals-v1')).toBe(original);
