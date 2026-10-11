@@ -4,28 +4,58 @@ import { MustArrowPractice } from './MustArrowPractice';
 
 afterEach(cleanup);
 
-it('counts unique explanations viewed, preserves revisits, and focuses the new question', () => {
-  render(<MustArrowPractice/>);
-  expect(screen.getByRole('progressbar')).toHaveAttribute('value', '0');
+function answer(option: string) {
+  fireEvent.click(screen.getByRole('radio', { name: option }));
+  fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
+}
+
+it('requires a response before feedback and explains an incorrect answer', () => {
+  const { container } = render(<MustArrowPractice/>);
+  const liveRegion = container.querySelector('[aria-live="polite"]');
+  expect(liveRegion).toBeEmptyDOMElement();
+  expect(screen.getByRole('button', { name: 'Check answer' })).toBeDisabled();
   expect(screen.getByRole('button', { name: /Next question/ })).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: 'Show explanation' }));
+  fireEvent.click(screen.getByRole('radio', { name: 'The folder is not marked complete.' }));
+  expect(screen.getByRole('progressbar')).toHaveAttribute('value', '0');
+  expect(liveRegion).toBeEmptyDOMElement();
+  fireEvent.click(screen.getByRole('button', { name: 'Check answer' }));
+  expect(liveRegion).toHaveTextContent('Not quite.');
+  expect(liveRegion).toHaveTextContent('The answer: The folder is marked complete.');
+  expect(liveRegion).toHaveTextContent('The rule covers every folder with that label.');
   expect(screen.getByRole('progressbar')).toHaveAttribute('value', '1');
+  expect(screen.queryByRole('button', { name: 'Check answer' })).not.toBeInTheDocument();
+});
+
+it('preserves the submitted answer on revisits and focuses navigation', () => {
+  render(<MustArrowPractice/>);
+  answer('The folder is marked complete.');
+  expect(screen.getByRole('heading', { name: 'Correct.' })).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: /Next question/ }));
   expect(screen.getByRole('heading', { name: 'Question 2 of 4' })).toHaveFocus();
+  expect(screen.getByRole('button', { name: 'Check answer' })).toBeDisabled();
   fireEvent.click(screen.getByRole('button', { name: 'Previous question' }));
-  expect(screen.getByText(/Being a folder marked complete is enough/)).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Explanation shown' }));
+  expect(screen.getByRole('radio', { name: 'The folder is marked complete.' })).toBeChecked();
+  expect(screen.getByRole('radio', { name: 'The folder is marked complete.' })).toBeDisabled();
+  expect(screen.getByRole('heading', { name: 'Correct.' })).toBeVisible();
   expect(screen.getByRole('progressbar')).toHaveAttribute('value', '1');
 });
 
-it('finishes after all four explanations without implying mastery', () => {
+it('teaches all four concepts and completes without claiming mastery', () => {
   render(<MustArrowPractice/>);
-  for (let i = 0; i < 4; i++) {
-    fireEvent.click(screen.getByRole('button', { name: 'Show explanation' }));
-    if (i < 3) fireEvent.click(screen.getByRole('button', { name: /Next question/ }));
-  }
-  expect(screen.getByRole('progressbar')).toHaveAttribute('value', '4');
-  expect(screen.getByRole('status')).toHaveTextContent("You've viewed all four explanations.");
+  const choices = [
+    'The folder is marked complete.',
+    'This folder contains a signed form.',
+    'No. It could be marked complete, but we do not know.',
+    'No. It tells us what follows if a folder is marked complete.',
+  ];
+  choices.forEach((choice, index) => {
+    answer(choice);
+    expect(screen.getByRole('heading', { name: 'Correct.' })).toBeVisible();
+    expect(screen.getByRole('progressbar')).toHaveAttribute('value', String(index + 1));
+    if (index < choices.length - 1) fireEvent.click(screen.getByRole('button', { name: /Next question/ }));
+  });
+  expect(screen.getByRole('status')).toHaveTextContent("You've answered all 4 questions.");
+  expect(screen.getByText(/We need a separate fact/)).toBeVisible();
   expect(screen.queryByRole('button', { name: /Next question/ })).not.toBeInTheDocument();
-  expect(screen.queryByText(/Recall card|Think before you turn|Revisit this card/)).not.toBeInTheDocument();
+  expect(screen.queryByText(/Recall card|Think before you turn|Revisit this card|Explanation shown/)).not.toBeInTheDocument();
 });

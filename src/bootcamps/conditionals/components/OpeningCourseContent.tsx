@@ -121,7 +121,8 @@ function MustArrowNote() {
         </div>
       </figure>
       <p>Start with <strong>“If you are enrolled in law school…”</strong> Follow the arrow and read <strong>“…you must be a student.”</strong></p>
-      <details className="cr-extension ma-reverse"><summary>Does the arrow work in reverse?</summary><div className="ma-reverse-body"><p><strong>No. Being a student does not prove law-school enrollment.</strong></p><p>A person could be studying history instead. They would be a student without being enrolled in law school.</p><p className="ma-takeaway">Enrollment guarantees being a student.<br/><strong>Being a student does not guarantee enrollment.</strong></p><p>The rule describes a connection. It does not tell us that either condition is actually true, or that one causes the other.</p></div></details>
+      <p className="ma-takeaway"><strong>Being a student does not guarantee enrollment.</strong> Follow the arrow from left to right, not backward.</p>
+      <details className="cr-extension ma-reverse"><summary>Why doesn't the arrow work in reverse?</summary><div className="ma-reverse-body"><p>A person could be a history student who is not enrolled in law school. Being a student alone does not tell us whether they are enrolled in law school.</p><p>The rule describes a connection. It does not tell us that either condition is actually true, or that one causes the other.</p></div></details>
       <section className="ma-practice" aria-label="Build a must-arrow diagram">
         <h3>Now build one with a new rule</h3>
         <p>Follow the raffle sentence into a diagram, one step at a time.</p>

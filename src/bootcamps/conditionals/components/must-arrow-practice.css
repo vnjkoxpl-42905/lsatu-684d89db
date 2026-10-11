@@ -18,3 +18,10 @@
 #root .ma-question-practice-explanation p, #root .ma-question-practice-finished { font-size: 1.2rem; line-height: 1.75; }
 #root .ma-question-practice-navigation { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.25rem; flex-wrap: wrap; }
 @media (max-width: 480px) { #root .ma-question-practice-navigation button { flex: 1 1 100%; } }
+#root .ma-question-practice-choices { border: 0; margin: 0 0 1.5rem; padding: 0; min-width: 0; }
+#root .ma-question-practice-choices legend { padding: 0; }
+#root .ma-question-practice-choices label { display: flex; align-items: flex-start; gap: .8rem; margin-top: .75rem; padding: 1rem; border: 1px solid var(--co-polish-line); border-radius: .5rem; font-size: 1.125rem; line-height: 1.6; cursor: pointer; }
+#root .ma-question-practice-choices label.is-selected { background: var(--co-polish-fill); border-color: var(--co-teal); box-shadow: inset 3px 0 var(--co-teal); }
+#root .ma-question-practice-choices input { flex: 0 0 auto; width: 1.15rem; height: 1.15rem; margin: .3rem 0 0; accent-color: var(--co-teal); }
+#root .ma-question-practice-choices label:focus-within { outline: 2px solid var(--co-teal); outline-offset: 3px; }
+#root .ma-question-practice-choices:disabled label { cursor: default; }

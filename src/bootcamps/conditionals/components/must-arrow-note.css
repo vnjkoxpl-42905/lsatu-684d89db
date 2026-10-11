@@ -35,7 +35,7 @@
 #root .ma-condition strong { margin-top: .5rem; }
 #root .ma-arrow b { animation: ma-follow-arrow 2.4s ease-in-out 3; }
 #root .ma-reverse-body { display: grid; gap: 1.25rem; padding: 1rem 0 .5rem; }
-#root .ma-reverse-body .ma-takeaway { padding: 1.25rem; background: var(--co-polish-fill); border-radius: .5rem; }
+#root .ma-lesson .ma-takeaway { padding: 1.25rem; background: var(--co-polish-fill); border-radius: .5rem; }
 @keyframes ma-follow-arrow { 0%, 100% { transform: translateX(-3px); } 55% { transform: translateX(6px); } }
 @media (max-width: 600px) {
   #root .ma-lesson { padding-inline: 1rem; }
