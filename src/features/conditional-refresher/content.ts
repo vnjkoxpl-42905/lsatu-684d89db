@@ -217,13 +217,38 @@ export function unlessStatement({ pattern, x, y }: UnlessRound): string {
   }
 }
 
-export function unlessAnswer({ pattern, x, y }: UnlessRound): { left: string; right: string } {
+/**
+ * The two complete ideas as they appear in the statement: `after` is the idea
+ * that follows "unless" (with any slash it carries), `other` is the rest.
+ */
+export function unlessParts({ pattern, x, y }: UnlessRound): { after: string; other: string } {
   switch (pattern) {
-    case 1: return { left: x, right: y };
-    case 2: return { left: `/${x}`, right: y };
-    case 3: return { left: x, right: `/${y}` };
-    case 4: return { left: `/${x}`, right: `/${y}` };
+    case 1: return { after: y, other: `/${x}` };
+    case 2: return { after: y, other: x };
+    case 3: return { after: `/${y}`, other: `/${x}` };
+    case 4: return { after: `/${y}`, other: x };
   }
+}
+
+/** The Group 3 move: negate the "unless" idea, put it left, keep the other idea unchanged on the right. */
+export function unlessAnswer(round: UnlessRound): { left: string; right: string } {
+  const { after, other } = unlessParts(round);
+  return { left: negateToken(after), right: other };
+}
+
+export type UnlessVerdict = "correct" | "no-answer" | "not-negated" | "reversed" | "both-negated" | "other";
+
+/** Grades a placement. The diagram and its contrapositive both count. */
+export function gradeUnless(round: UnlessRound, left: string | null, right: string | null): UnlessVerdict {
+  if (!left || !right) return "no-answer";
+  const { after, other } = unlessParts(round);
+  const is = (l: string, r: string) => left === l && right === r;
+  const either = (l: string, r: string) => is(l, r) || is(negateToken(r), negateToken(l));
+  if (either(negateToken(after), other)) return "correct";
+  if (either(after, other)) return "not-negated";
+  if (either(other, negateToken(after))) return "reversed";
+  if (either(negateToken(after), negateToken(other))) return "both-negated";
+  return "other";
 }
 
 export function negateToken(token: string): string {

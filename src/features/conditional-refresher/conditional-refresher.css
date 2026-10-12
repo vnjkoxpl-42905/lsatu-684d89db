@@ -47,7 +47,7 @@
 .cir-words { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .cir-word { border: 1px solid var(--cir-rule); border-radius: 8px; padding: 5px 10px; font-size: 14px; background: var(--cir-paper); }
 .cir-quad p { color: var(--cir-ink-soft); line-height: 1.65; font-size: 15px; margin: 0; }
-.cir-steps { margin: 0; padding-left: 20px; color: var(--cir-ink-soft); line-height: 1.7; font-size: 15px; }
+.cir-steps { list-style: decimal; margin: 0; padding-left: 20px; color: var(--cir-ink-soft); line-height: 1.7; font-size: 15px; }
 .cir-note { margin-top: 12px; font-size: 14px; color: var(--cir-ink-mute); font-style: italic; }
 .cir-legend { margin-top: 22px; border-top: 1px solid var(--cir-rule); padding-top: 18px; display: flex; flex-wrap: wrap; gap: 28px; align-items: center; color: var(--cir-ink-soft); font-size: 14px; }
 .cir-legend > div { display: flex; align-items: center; gap: 10px; }
@@ -101,9 +101,61 @@
 .cir-timer small { display: block; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--cir-ink-mute); font-family: inherit; }
 .cir-statement { font-family: var(--font-display, Georgia, serif); font-size: clamp(26px, 5vw, 40px); text-align: center; margin: 18px 0 26px; }
 .cir-summary-row { border-top: 1px solid var(--cir-rule); padding: 18px 0; display: grid; gap: 8px; }
-.cir-summary-row span { font-size: 12px; color: var(--cir-ink-mute); }
+/* Only the meta line is small. A bare `span` selector here used to shrink the
+   statement and both diagrams too, which wrecked the review. */
+.cir-summary-meta { font-size: 12px; color: var(--cir-ink-mute); }
+
+.ud-move { background: var(--cir-paper); border: 1px solid var(--cir-rule); border-radius: 12px; padding: 18px 20px; margin-bottom: 18px; }
+.ud-move-title { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cir-ink-mute); margin: 0 0 10px; }
+.ud-example { display: grid; gap: 8px; margin-top: 16px; border-top: 1px solid var(--cir-rule-soft); padding-top: 14px; color: var(--cir-ink-soft); }
+.ud-example-label { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cir-ink-mute); }
+.ud-example-statement { font-family: var(--font-display, Georgia, serif); font-size: 22px; color: var(--cir-ink); }
+.ud-example-row { display: block; margin: 0; line-height: 1.8; }
+.ud-example .cir-diagram, .ud-row-grid .cir-diagram { display: inline-flex; vertical-align: middle; font-size: 20px; }
+.ud-muted { color: var(--cir-ink-mute); font-size: 14px; }
+.ud-pace { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.ud-pace .cir-tab[aria-checked="true"] { background: var(--cir-ink); color: var(--cir-paper-raised); border-color: var(--cir-ink); }
+.ud-best { margin: 14px 0 0; }
+
+.ud-stage { text-align: center; }
+.ud-ready { font-family: var(--font-display, Georgia, serif); font-size: clamp(64px, 12vw, 110px); margin: 10px 0 18px; line-height: 1; }
+.ud-head { display: flex; justify-content: space-between; align-items: baseline; }
+.ud-head .cir-meta { margin: 0; }
+.ud-count { font-family: var(--font-display, Georgia, serif); font-size: clamp(28px, 5vw, 40px); font-variant-numeric: tabular-nums; color: var(--cir-ink); }
+.ud-count.is-warn { color: var(--cir-bad); }
+.ud-clock { height: 8px; border-radius: 999px; background: var(--cir-rule-soft); overflow: hidden; margin: 10px 0 6px; }
+.ud-clock > span { display: block; height: 100%; background: var(--cir-good); transform-origin: left center; }
+.ud-clock.is-warn > span { background: var(--cir-bad); }
+.ud-build { gap: 14px; }
+.ud-slot { background: transparent; color: var(--cir-ink); font: inherit; font-size: 26px; min-width: 96px; min-height: 52px; border-width: 0 0 2px; border-style: solid; border-color: var(--cir-rule); cursor: pointer; }
+.ud-slot:disabled { cursor: default; }
+.ud-build .cir-arrow { font-size: 26px; }
+.ud-tokens { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+.ud-token { position: relative; font-size: 24px; padding: 14px 0; min-height: 56px; }
+.ud-token:disabled { opacity: .45; cursor: default; }
+.ud-token kbd { position: absolute; top: 4px; right: 7px; font-size: 10px; font-family: inherit; color: var(--cir-ink-mute); }
+.ud-lock { justify-content: center; }
+.ud-lock .cir-btn { min-width: 160px; }
+.ud-hint { margin: 14px 0 0; }
+
+.ud-score { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
+.ud-score > div { flex: 1 1 140px; background: var(--cir-paper); border: 1px solid var(--cir-rule); border-radius: 12px; padding: 12px 16px; display: grid; }
+.ud-score b { font-family: var(--font-display, Georgia, serif); font-size: 26px; font-weight: 600; }
+.ud-score span { font-size: 12px; color: var(--cir-ink-mute); }
+.ud-row { border-left: 3px solid transparent; padding-left: 14px; }
+.ud-row.is-right { border-left-color: var(--cir-good); }
+.ud-row.is-wrong { border-left-color: var(--cir-bad); }
+.ud-row-statement { font-family: var(--font-display, Georgia, serif); font-size: 24px; margin: 0; }
+.ud-row-grid { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 16px; align-items: center; }
+.ud-row-grid > span { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.ud-row-label { font-size: 12px; color: var(--cir-ink-mute); }
+.ud-why { margin: 0; color: var(--cir-bad); font-size: 15px; }
+.ud-steps { margin: 0; color: var(--cir-ink-soft); font-size: 15px; line-height: 1.7; }
 
 @media (max-width: 720px) {
   .cir-quadrants { grid-template-columns: minmax(0, 1fr); }
+  .ud-tokens { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ud-row-grid { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .ud-hint { display: none; }
   .cir-shell { padding-bottom: 56px; }
 }

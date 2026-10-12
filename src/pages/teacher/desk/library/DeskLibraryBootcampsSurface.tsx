@@ -27,6 +27,7 @@ import { DEFAULT_CONDITIONAL_TARGET, type ConditionalAssignmentTarget } from '@/
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
   'conditional-indicators-refresher': 1,
+  'unless-drill': 7,
   'principle-flaw': 14,
   'intro-to-lr': 14,
   'causation-station': 7,

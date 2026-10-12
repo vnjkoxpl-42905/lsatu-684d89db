@@ -61,6 +61,22 @@ export const BOOTCAMPS: BootcampDef[] = [
     },
   },
   {
+    id: 'unless-drill',
+    title: 'Unless Drill',
+    description:
+      'Timed Group 3 practice: diagram unless statements in five seconds each, then review the move.',
+    route: '/unless-drill',
+    stats: ['3 statements a round', '5-second clock', 'Review with the Group 3 move'],
+    theme: {
+      style: 'editorial',
+      bg: '#F5F2ED',
+      ink: '#143937',
+      inkSoft: '#65706A',
+      accent: '#244E49',
+      accentInk: '#FBF8F1',
+    },
+  },
+  {
     id: 'principle-flaw',
     title: 'Principle & Flaw',
     description: 'Principle questions, flaw patterns, and parallel-flaw transfer.',
