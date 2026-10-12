@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { format, isSameDay, isSameMonth, isToday, startOfDay, startOfWeek, endOfWeek, eachDayOfInterval, addWeeks, subWeeks, addMonths, subMonths, startOfMonth, endOfMonth } from 'date-fns';
 import { CalendarDays, ChevronLeft, ChevronRight, CircleAlert, Clock3, ExternalLink, Loader2, Video } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import TodayAgenda from '@/components/schedule/TodayAgenda';
 import BookingView from '@/components/booking/BookingView';
 import { useBookingScheduleItems } from '@/hooks/useBookingScheduleItems';
-import { useClassroomItems } from '@/hooks/useClassroomItems';
+import { useClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
 import { useStudentTodo } from '@/hooks/useStudentTodo';
 import { buildScheduleEntries, groupScheduleEntries, type ScheduleEntry } from '@/lib/scheduleEntries';
 import { cn } from '@/lib/utils';
+import SessionChainPanel, { SessionHistory } from '@/components/schedule/SessionChainPanel';
+import { useStudentSessionChain } from '@/hooks/useSessionChain';
+import { bookingKey, decodeSessionParam, identityFromBookingItem, SESSION_PARAM, withSessionParam, type BookingIdentity } from '@/lib/sessionChain';
 
 type CalendarView = 'month' | 'week';
 type MainView = 'today' | 'calendar';
@@ -154,7 +157,7 @@ function WeekView({
   );
 }
 
-function AgendaEntry({ entry, onOpen }: { entry: ScheduleEntry; onOpen: (entry: ScheduleEntry) => void }) {
+function AgendaEntry({ entry, onOpen, onOpenSessionWork }: { entry: ScheduleEntry; onOpen: (entry: ScheduleEntry) => void; onOpenSessionWork: (entry: ScheduleEntry) => void }) {
   const isSession = entry.kind === 'session';
   const syncFailed = isSession && entry.calendarStatus === 'failed';
   const syncPending = isSession && entry.calendarStatus !== 'synced' && !syncFailed;
@@ -179,19 +182,20 @@ function AgendaEntry({ entry, onOpen }: { entry: ScheduleEntry; onOpen: (entry: 
           <Button size="sm" asChild><a href={entry.meetUrl} target="_blank" rel="noreferrer">Join Meet<ExternalLink className="ml-1.5 h-3.5 w-3.5" /></a></Button>
         ) : null}
         {(entry.route || isSession) ? <Button size="sm" variant={isSession && entry.meetUrl ? 'outline' : 'default'} onClick={() => onOpen(entry)}>{isSession ? 'Manage booking' : 'Open work'}</Button> : null}
+        {isSession ? <Button size="sm" variant="outline" onClick={() => onOpenSessionWork(entry)}>Session work</Button> : null}
       </div>
     </article>
   );
 }
 
-function SelectedDayAgenda({ date, entries, onOpen }: { date: Date; entries: ScheduleEntry[]; onOpen: (entry: ScheduleEntry) => void }) {
+function SelectedDayAgenda({ date, entries, onOpen, onOpenSessionWork }: { date: Date; entries: ScheduleEntry[]; onOpen: (entry: ScheduleEntry) => void; onOpenSessionWork: (entry: ScheduleEntry) => void }) {
   return (
     <aside className="min-w-0 rounded-xl border border-border bg-muted/20 p-4 @[1080px]/schedule:p-5" aria-label={`Schedule for ${format(date, 'MMMM d')}`}>
       <div className="mb-4">
         <h2 className="text-lg font-semibold tracking-tight">{isToday(date) ? 'Today' : format(date, 'EEEE')}</h2>
         <p className="text-sm text-muted-foreground">{format(date, 'MMMM d, yyyy')}</p>
       </div>
-      {entries.length ? <div className="space-y-3">{entries.map((entry) => <AgendaEntry key={entry.key} entry={entry} onOpen={onOpen} />)}</div> : (
+      {entries.length ? <div className="space-y-3">{entries.map((entry) => <AgendaEntry key={entry.key} entry={entry} onOpen={onOpen} onOpenSessionWork={onOpenSessionWork} />)}</div> : (
         <div className="rounded-lg border border-dashed border-border bg-background/60 px-4 py-8 text-center">
           <p className="text-sm font-medium">Nothing scheduled.</p>
           <p className="mt-1 text-xs text-muted-foreground">Choose another date or add a personal task in Today.</p>
@@ -222,6 +226,23 @@ export default function Schedule({ initialTab = 'schedule' }: { initialTab?: Sta
   const [mainView, setMainView] = React.useState<MainView>('calendar');
   const [calendarView, setCalendarView] = React.useState<CalendarView>('month');
   const [focusedDate, setFocusedDate] = React.useState(() => startOfDay(new Date()));
+  const [params, setParams] = useSearchParams();
+  const sessionChain = useStudentSessionChain();
+  const selection = decodeSessionParam(params.get(SESSION_PARAM));
+  const selectedSession = selection.kind === 'valid' ? selection.identity : null;
+  const sessionPanelRef = React.useRef<HTMLDivElement>(null);
+
+  // The selection is a pushed URL entry, so Back and reload restore it and
+  // unrelated query parameters survive.
+  const selectSession = React.useCallback((identity: BookingIdentity) => {
+    setParams(withSessionParam(params, identity));
+    requestAnimationFrame(() => sessionPanelRef.current?.focus());
+  }, [params, setParams]);
+  const openSessionWork = React.useCallback((entry: ScheduleEntry) => {
+    const identity = entry.sourceType === 'booking' ? identityFromBookingItem(entry.source as ClassroomItem) : null;
+    if (identity) selectSession(identity);
+  }, [selectSession]);
+  const closeSessionWork = React.useCallback(() => setParams(withSessionParam(params, null)), [params, setParams]);
 
   // Keep the tab and the URL in step so the surface stays linkable and the
   // browser back button moves between tabs the way a student expects.
@@ -292,12 +313,18 @@ export default function Schedule({ initialTab = 'schedule' }: { initialTab?: Sta
         </div>
       </div>
 
+      {selection.kind !== 'absent' ? (
+        <div ref={sessionPanelRef} tabIndex={-1} className="mb-5 focus:outline-none">
+          <SessionChainPanel state={sessionChain} selected={selectedSession} selectionInvalid={selection.kind === 'invalid'} onBack={closeSessionWork} />
+        </div>
+      ) : null}
+
       {partialError ? <div role="alert" className="mb-5 flex items-start gap-2 rounded-xl border border-amber-300/50 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:bg-amber-950/25 dark:text-amber-100"><CircleAlert className="mt-0.5 h-4 w-4 shrink-0" /><span>Some schedule information could not be refreshed. The items that loaded successfully are still shown.</span></div> : null}
 
       {mainView === 'today' ? (
         loading
           ? <div role="status" aria-live="polite" className="flex min-h-80 items-center justify-center text-sm text-muted-foreground"><Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" />Loading today…</div>
-          : <TodayAgenda entries={entriesByDay.get(dayKey(new Date())) ?? []} todo={todo} onOpenEntry={openEntry} />
+          : <TodayAgenda entries={entriesByDay.get(dayKey(new Date())) ?? []} todo={todo} onOpenEntry={openEntry} onOpenSessionWork={openSessionWork} />
       ) : (
         <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-4 @[640px]/schedule:px-6">
@@ -319,7 +346,7 @@ export default function Schedule({ initialTab = 'schedule' }: { initialTab?: Sta
               <div className="min-w-0">
                 {calendarView === 'month' ? <MonthGrid anchor={focusedDate} entriesByDay={entriesByDay} focusedDate={focusedDate} onSelect={setFocusedDate} /> : <WeekView anchor={focusedDate} entriesByDay={entriesByDay} focusedDate={focusedDate} onSelect={setFocusedDate} />}
               </div>
-              <SelectedDayAgenda date={focusedDate} entries={focusedEntries} onOpen={openEntry} />
+              <SelectedDayAgenda date={focusedDate} entries={focusedEntries} onOpen={openEntry} onOpenSessionWork={openSessionWork} />
             </div>
           )}
           {/* An empty calendar is the moment a student most needs the way to
@@ -333,6 +360,7 @@ export default function Schedule({ initialTab = 'schedule' }: { initialTab?: Sta
           ) : null}
         </section>
       )}
+      <SessionHistory state={sessionChain} selectedKey={selectedSession ? bookingKey(selectedSession) : null} onSelect={selectSession} />
       </>
       )}
     </div>

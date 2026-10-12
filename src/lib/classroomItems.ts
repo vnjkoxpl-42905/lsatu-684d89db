@@ -203,3 +203,84 @@ export function resolveItemRoute(item: ClassroomItem): string | null {
       return `/classroom/item/${encodeURIComponent(item.id)}`;
   }
 }
+
+/**
+ * Compare-and-swap write of `metadata_json` on one item.
+ *
+ * Applies only when the row still has the `updated_at` the caller just read.
+ * The `classroom_items_touch` trigger stamps `updated_at` on every update, so
+ * any write in between (a status sync, a note marked read, another tab) makes
+ * this match zero rows instead of overwriting it. Returns the updated row on
+ * success and null on a conflict. `student_id` narrows the target so a stale
+ * id from a previous selection cannot touch another student's row; RLS still
+ * decides whether the caller may write at all.
+ */
+export async function updateClassroomItemMetadataIfUnchanged(input: {
+  id: string;
+  studentId: string;
+  expectedUpdatedAt: string;
+  metadata: Record<string, unknown>;
+}): Promise<ClassroomItem | null> {
+  const { data, error } = await supabase
+    .from('classroom_items')
+    .update({ metadata_json: input.metadata as Json })
+    .eq('id', input.id)
+    .eq('student_id', input.studentId)
+    .eq('updated_at', input.expectedUpdatedAt)
+    .select()
+    .maybeSingle();
+  if (error) throw error;
+  return data ? (data as ClassroomItem) : null;
+}
+
+export type ClassroomItemColumnPatch = Partial<{
+  status: ClassroomItem['status'];
+  completed_at: string | null;
+}>;
+
+/** Raised when a metadata merge could not be applied after its retries. */
+export class ClassroomItemMergeError extends Error {
+  constructor(message: string, readonly reason: 'conflict' | 'unavailable') {
+    super(message);
+    this.name = 'ClassroomItemMergeError';
+  }
+}
+
+/**
+ * Change part of one item's `metadata_json` without losing anyone else's part.
+ *
+ * Every attempt re-reads the row and recomputes the change from what is stored
+ * now, never from a cached copy, then writes conditioned on that read's
+ * `updated_at`. A concurrent write makes the attempt match zero rows and the
+ * loop re-reads and recomputes. After `maxAttempts` it throws instead of
+ * falling back to an unconditional overwrite.
+ *
+ * `recompute` returns null when nothing needs writing (already applied).
+ */
+export async function mergeClassroomItemMetadata(input: {
+  id: string;
+  studentId: string;
+  recompute: (fresh: ClassroomItem) => { metadata: Record<string, unknown>; columns?: ClassroomItemColumnPatch } | null;
+  maxAttempts?: number;
+}): Promise<ClassroomItem | null> {
+  const attempts = input.maxAttempts ?? 3;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const fresh = await getClassroomItem(input.id);
+    if (!fresh || fresh.student_id !== input.studentId) {
+      throw new ClassroomItemMergeError('This item is not available to update.', 'unavailable');
+    }
+    const change = input.recompute(fresh);
+    if (!change) return fresh;
+    const { data, error } = await supabase
+      .from('classroom_items')
+      .update({ ...(change.columns ?? {}), metadata_json: change.metadata as Json })
+      .eq('id', fresh.id)
+      .eq('student_id', input.studentId)
+      .eq('updated_at', fresh.updated_at)
+      .select()
+      .maybeSingle();
+    if (error) throw error;
+    if (data) return data as ClassroomItem;
+  }
+  throw new ClassroomItemMergeError('This item kept changing while it was being saved. Nothing was overwritten.', 'conflict');
+}

@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
+import { mergeClassroomItemMetadata } from '@/lib/classroomItems';
 
 /**
  * Mark a note read the first time the student opens it, and clear the bell
@@ -25,14 +26,17 @@ export async function markNoteRead(item: ClassroomItem) {
     await clearNoteNotifications(item.id);
     return;
   }
-  // Merged rather than replaced: metadata_json already carries `kind`, and on
-  // a drill-linked note the assignment id too. A blind overwrite would drop them.
-  const next = { ...(item.metadata_json ?? {}), read_at: new Date().toISOString() };
-  const { error } = await supabase
-    .from('classroom_items')
-    .update({ metadata_json: next })
-    .eq('id', item.id);
-  if (error) throw error;
+  // Merged from the row as stored now, not from `item`: the caller's copy can
+  // predate a teacher's change (a session link added or removed) and spreading
+  // it would undo that change. The merge re-reads, recomputes and writes only
+  // if the row is unchanged since the read, retrying a bounded number of times.
+  await mergeClassroomItemMetadata({
+    id: item.id,
+    studentId: item.student_id,
+    recompute: (fresh) => isReadInMetadata(fresh)
+      ? null
+      : { metadata: { ...(fresh.metadata_json ?? {}), read_at: new Date().toISOString() } },
+  });
 
   await clearNoteNotifications(item.id);
 }

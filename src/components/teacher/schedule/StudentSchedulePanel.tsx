@@ -27,6 +27,7 @@ import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/class
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import StudentBookingPanel from './StudentBookingPanel';
+import { TeacherSessionWork } from '@/components/schedule/SessionChainPanel';
 
 const QUICK_TYPES: { value: ClassroomItemType; label: string }[] = [
   { value: 'note', label: 'Note' },
@@ -160,6 +161,10 @@ export default function StudentSchedulePanel({
         studentName={studentName}
         studentEmail={studentEmail}
       />
+
+      {/* Explicit appointment links. Kept apart from quick-add below, which
+          creates a new item and notifies the student; linking does neither. */}
+      <TeacherSessionWork key={studentId} studentId={studentId} studentName={studentName} />
 
       <header className="flex items-center justify-between gap-3">
         {showHeading ? (

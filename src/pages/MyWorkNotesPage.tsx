@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { ClassroomRecapsView } from "@/components/classroom/ClassroomRouteViews";
 import { createPage, listPages, updateMyNotePage, type JournalPage } from "@/lib/journalService";
 import { noteBodyToText, textToNoteBody } from "@/components/my-work/studentNoteText";
+import { useStudentSessionChain } from "@/hooks/useSessionChain";
+import { NOTE_TYPES } from "@/components/classroom/classroomData";
+import { formatAppointment, groupsFor, itemTypeLabel, PHASE_ACTION, PHASE_LABEL, scheduleHrefFor, SESSION_PHASES } from "@/lib/sessionChain";
 import "./myWorkNotes.css";
 
 function updatedDate(value: string): string {
@@ -112,6 +115,64 @@ function StudentNotesSection() {
   );
 }
 
+/**
+ * Notes and recaps Joshua explicitly linked to one of the student's
+ * appointments, each with a way into that appointment on Schedule. Unlinked
+ * notes are never placed under a guessed session.
+ */
+function SessionLinkedNotes() {
+  const chain = useStudentSessionChain();
+  // Loading, failure and "nothing linked" are three different states. A failed
+  // read is never shown as an empty list.
+  if (chain.bookingsLoading || chain.itemsLoading) {
+    return <section className="my-work-session-notes" aria-labelledby="session-notes-heading"><h2 id="session-notes-heading">From your sessions</h2><p role="status" className="student-destination-message">Checking which notes belong to your sessions…</p></section>;
+  }
+  if (chain.bookingsFailed || chain.itemsFailed) {
+    const what = chain.bookingsFailed && chain.itemsFailed
+      ? "Your sessions and notes"
+      : chain.bookingsFailed ? "Your sessions" : "Your notes and recaps";
+    return (
+      <section className="my-work-session-notes" aria-labelledby="session-notes-heading">
+        <h2 id="session-notes-heading">From your sessions</h2>
+        <div role="alert" className="student-destination-message">
+          <p>{what} could not be loaded, so session links for your notes are unknown.</p>
+          <button type="button" className="classroom-button" onClick={chain.retry}>Try again</button>
+        </div>
+      </section>
+    );
+  }
+  const rows = chain.bookings.flatMap((booking) => {
+    const groups = groupsFor(chain.projection, booking);
+    return SESSION_PHASES.flatMap((phase) => groups[phase])
+      .filter((record) => NOTE_TYPES.has(record.item.type))
+      .map((record) => ({ booking, record }));
+  });
+  const capNote = chain.olderSingleSessionsOmitted
+    ? <p className="student-destination-message">Notes linked to single sessions older than your latest 30 are not listed here.</p>
+    : null;
+  if (rows.length === 0 && !chain.stale) return capNote ? <section className="my-work-session-notes" aria-labelledby="session-notes-heading"><h2 id="session-notes-heading">From your sessions</h2>{capNote}</section> : null;
+  return (
+    <section className="my-work-session-notes" aria-labelledby="session-notes-heading">
+      <h2 id="session-notes-heading">From your sessions</h2>
+      {chain.stale ? <div role="status" className="student-destination-message"><p>Could not refresh. Showing what loaded earlier.</p><button type="button" className="classroom-button" onClick={chain.retry}>Try again</button></div> : null}
+      {rows.length === 0 ? <p>No notes are linked to your sessions in what loaded earlier.</p> : null}
+      {capNote}
+      <ul>
+        {rows.map(({ booking, record }) => (
+          <li key={`${booking.source}:${booking.id}:${record.item.id}`}>
+            <strong>{record.item.title}</strong>
+            <span>{itemTypeLabel(record.item.type)} · {PHASE_LABEL[record.phase]}</span>
+            <span className="my-work-session-actions">
+              {record.route ? <Link className="classroom-button" to={record.route} aria-label={`${PHASE_ACTION[record.phase]}: ${record.item.title}`}>{PHASE_ACTION[record.phase]}</Link> : null}
+              <Link className="classroom-button" to={scheduleHrefFor(booking)}>Session {formatAppointment(booking)}</Link>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 export default function MyWorkNotesPage() {
-  return <div className="my-work-notes-page"><StudentNotesSection /><section className="my-work-teacher-notes" aria-label="Notes and recaps from Joshua"><h2>From Joshua</h2><ClassroomRecapsView /></section></div>;
+  return <div className="my-work-notes-page"><StudentNotesSection /><SessionLinkedNotes /><section className="my-work-teacher-notes" aria-label="Notes and recaps from Joshua"><h2>From Joshua</h2><ClassroomRecapsView /></section></div>;
 }

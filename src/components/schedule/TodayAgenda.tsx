@@ -69,7 +69,7 @@ function TaskRow({ item, todo, onOpen }: { item: TodoItem; todo: TodoController;
   );
 }
 
-function DatedEntryRow({ entry, onOpen }: { entry: ScheduleEntry; onOpen: (entry: ScheduleEntry) => void }) {
+function DatedEntryRow({ entry, onOpen, onOpenSessionWork }: { entry: ScheduleEntry; onOpen: (entry: ScheduleEntry) => void; onOpenSessionWork?: (entry: ScheduleEntry) => void }) {
   const session = entry.kind === 'session';
   return (
     <article className={cn('rounded-xl border px-4 py-4', session ? 'border-primary/25 bg-primary/5' : 'border-border bg-card')}>
@@ -84,6 +84,7 @@ function DatedEntryRow({ entry, onOpen }: { entry: ScheduleEntry; onOpen: (entry
       <div className="mt-3 flex flex-wrap gap-2">
         {session && entry.meetUrl ? <Button size="sm" asChild><a href={entry.meetUrl} target="_blank" rel="noreferrer">Join Meet<ExternalLink className="ml-1.5 h-3.5 w-3.5" /></a></Button> : null}
         {(entry.route || session) ? <Button size="sm" variant={session && entry.meetUrl ? 'outline' : 'default'} onClick={() => onOpen(entry)}>{session ? 'Manage booking' : 'Open work'}</Button> : null}
+        {session && onOpenSessionWork ? <Button size="sm" variant="outline" onClick={() => onOpenSessionWork(entry)}>Session work</Button> : null}
       </div>
     </article>
   );
@@ -101,7 +102,7 @@ function AddTask({ onAdd }: { onAdd: (title: string) => void }) {
   );
 }
 
-export default function TodayAgenda({ entries, todo, onOpenEntry }: { entries: ScheduleEntry[]; todo: TodoController; onOpenEntry: (entry: ScheduleEntry) => void }) {
+export default function TodayAgenda({ entries, todo, onOpenEntry, onOpenSessionWork }: { entries: ScheduleEntry[]; todo: TodoController; onOpenEntry: (entry: ScheduleEntry) => void; onOpenSessionWork?: (entry: ScheduleEntry) => void }) {
   const today = startOfDay(new Date());
   const overdue = todo.items.filter((item) => isOverdue(item, today));
   const overdueIds = new Set(overdue.map((item) => item.id));
@@ -120,7 +121,7 @@ export default function TodayAgenda({ entries, todo, onOpenEntry }: { entries: S
           <p className="mt-1 text-sm text-muted-foreground">Only work and sessions scheduled for today.</p>
         </div>
         {overdue.length ? <section><h3 className="mb-3 text-sm font-semibold text-destructive">Overdue · {overdue.length}</h3><div className="space-y-2">{overdue.map((item) => <TaskRow key={item.id} item={item} todo={todo} onOpen={onOpenEntry} />)}</div></section> : null}
-        {dated.length ? <section><h3 className="mb-3 text-sm font-semibold">Scheduled · {dated.length}</h3><div className="space-y-3">{dated.map((entry) => <DatedEntryRow key={entry.key} entry={entry} onOpen={onOpenEntry} />)}</div></section> : null}
+        {dated.length ? <section><h3 className="mb-3 text-sm font-semibold">Scheduled · {dated.length}</h3><div className="space-y-3">{dated.map((entry) => <DatedEntryRow key={entry.key} entry={entry} onOpen={onOpenEntry} onOpenSessionWork={onOpenSessionWork} />)}</div></section> : null}
         {tasks.length ? <section><h3 className="mb-3 text-sm font-semibold">Tasks · {tasks.length}</h3><div className="space-y-2">{tasks.map((entry) => <TaskRow key={entry.key} item={entry.source} todo={todo} onOpen={onOpenEntry} />)}</div></section> : null}
         {empty ? <div className="rounded-xl border border-dashed border-border px-6 py-12 text-center"><ListChecks className="mx-auto h-6 w-6 text-muted-foreground" /><p className="mt-3 text-sm font-medium">Today is clear.</p><p className="mt-1 text-xs text-muted-foreground">Add a personal task or use Calendar to plan ahead.</p></div> : null}
         <AddTask onAdd={(title) => void todo.addTask({ title, day_date: ymd(today) })} />
