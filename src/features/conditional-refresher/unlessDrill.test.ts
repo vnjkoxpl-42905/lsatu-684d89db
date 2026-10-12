@@ -1,16 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { contrapositiveOf, gradeUnless, unlessAnswer, type UnlessRound } from "./content";
+import { contrapositiveOf, gradeUnless, unlessAnswer, unlessStatement, type UnlessRound } from "./content";
 
 const round = (pattern: 1 | 2 | 3 | 4): UnlessRound => ({ pattern, x: "A", y: "B" });
 
 describe("Unless drill answers follow the Group 3 move", () => {
-  // Negate the idea after "unless", put it left, keep the other idea as written.
+  // Joshua's answer key, letter for letter.
   it.each([
-    [1, "/A unless B", "/B", "/A"],
-    [2, "Unless B, A", "/B", "A"],
-    [3, "Unless /B, /A", "B", "/A"],
-    [4, "A unless /B", "B", "A"],
-  ] as const)("pattern %i (%s) is %s -> %s", (pattern, _statement, left, right) => {
+    [1, "/A, unless B.", "A", "B"],
+    [2, "Unless B, A.", "/A", "B"],
+    [3, "Unless /B, /A.", "A", "/B"],
+    [4, "A, unless /B.", "/A", "/B"],
+  ] as const)("pattern %i (%s) is %s -> %s", (pattern, statement, left, right) => {
+    expect(unlessStatement(round(pattern))).toBe(statement);
     expect(unlessAnswer(round(pattern))).toEqual({ left, right });
   });
 
@@ -23,11 +24,11 @@ describe("Unless drill answers follow the Group 3 move", () => {
   });
 
   it("names the common mistakes", () => {
-    const r = round(2); // Unless B, A  ->  /B -> A
+    const r = round(2); // Unless B, A.  ->  /A -> B
     expect(gradeUnless(r, null, "A")).toBe("no-answer");
-    expect(gradeUnless(r, "B", "A")).toBe("not-negated");
-    expect(gradeUnless(r, "A", "/B")).toBe("reversed");
-    expect(gradeUnless(r, "/B", "/A")).toBe("both-negated");
+    expect(gradeUnless(r, "A", "B")).toBe("kept-both");
+    expect(gradeUnless(r, "B", "/A")).toBe("reversed");
+    expect(gradeUnless(r, "/A", "/B")).toBe("changed-unless");
     expect(gradeUnless(r, "A", "/A")).toBe("other");
   });
 });

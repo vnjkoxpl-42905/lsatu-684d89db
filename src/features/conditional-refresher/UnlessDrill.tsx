@@ -8,7 +8,7 @@ import "./conditional-refresher.css";
 
 /* The timed Unless drill. Used as a tab of the Conditional Indicators
    Refresher and as its own assignable page (/unless-drill). The statements are
-   the refresher's originals: three of the four unless patterns per round, with
+   Joshua's four unless patterns, all four every round in a new order, with
    fresh letters each time. */
 
 const KEY = "lsatu.unless-drill.v1";
@@ -40,7 +40,7 @@ function shuffle<T>(items: T[]): T[] {
 }
 
 function buildRound(): UnlessRound[] {
-  const patterns = shuffle<UnlessPattern>([1, 2, 3, 4]).slice(0, 3);
+  const patterns = shuffle<UnlessPattern>([1, 2, 3, 4]);
   const letters = shuffle(UNLESS_LETTERS);
   return shuffle(patterns).map((pattern, i) => ({
     pattern,
@@ -63,9 +63,9 @@ const EMPTY: Placed = { left: null, right: null };
 
 const VERDICT_TEXT: Record<Exclude<UnlessVerdict, "correct">, string> = {
   "no-answer": "Time ran out before both sides were filled.",
-  "not-negated": "You kept the unless idea as written. Group 3 negates it before it goes left.",
-  reversed: "Right pieces, wrong direction. The negated unless idea goes on the left.",
-  "both-negated": "You negated both ideas. Only the unless idea changes. The other stays as written.",
+  "kept-both": "You left both ideas as written. Negate the idea that is not attached to unless.",
+  reversed: "Right pieces, wrong direction. The negated idea goes on the left and the unless idea goes on the right.",
+  "changed-unless": "You changed the unless idea. It goes on the right exactly as written.",
   other: "Each side needs a different idea: one from each part of the statement.",
 };
 
@@ -201,26 +201,26 @@ export default function UnlessDrill() {
   if (phase === "idle") {
     return (
       <section className="cir-card">
-        <p className="cir-prompt">Three unless statements. Beat the clock on each one.</p>
+        <p className="cir-prompt">Four unless statements. Beat the clock on each one.</p>
         <div className="ud-move">
           <p className="ud-move-title">The Group 3 move</p>
           <ol className="cir-steps">
-            <li>Find the idea right after <strong>unless</strong>.</li>
+            <li>Find the idea that is not attached to <strong>unless</strong>.</li>
             <li>Negate it.</li>
-            <li>Put it on the left of the arrow.</li>
-            <li>Keep the other idea exactly as written on the right.</li>
+            <li>Put it on the left.</li>
+            <li>Put the unless idea on the right, exactly as written.</li>
           </ol>
           <div className="ud-example">
             <span className="ud-example-label">Example</span>
             <span className="ud-example-statement"><UnlessText round={{ pattern: 1, x: "A", y: "B" }} /></span>
-            <span className="ud-example-row">After unless: <Tok text="B" />. Negate it: <Tok text="/B" />. <Tok text="/A" /> stays as written.</span>
-            <span className="ud-example-row"><Diagram left="/B" right="/A" /></span>
-            <span className="ud-example-row ud-muted">The contrapositive, <Diagram left="A" right="B" />, also counts.</span>
+            <span className="ud-example-row">Not attached to unless: <Tok text="/A" />. Negate it: <Tok text="A" /> (the two slashes cancel). That goes left. <Tok text="B" /> goes right, as written.</span>
+            <span className="ud-example-row"><Diagram left="A" right="B" /></span>
+            <span className="ud-example-row ud-muted">The contrapositive, <Diagram left="/B" right="/A" />, is also correct.</span>
           </div>
         </div>
         <p className="cir-feedback">
           Tap the idea that goes left, then the idea that goes right. Lock it in as soon as you are sure.
-          Your review comes after all three.
+          Your review comes after all four.
         </p>
         <div className="ud-pace" role="radiogroup" aria-label="Time per statement">
           {PACES.map(p => (
@@ -228,6 +228,9 @@ export default function UnlessDrill() {
               className="cir-tab" onClick={() => choosePace(p.ms)}>{p.label}</button>
           ))}
         </div>
+        <p className="ud-instruction">
+          Start every LSAT study session with this quick workout until you can diagram Unless accurately in under 5 seconds.
+        </p>
         <div className="cir-actions"><button type="button" className="cir-btn" onClick={() => begin(buildRound())}>Start round</button></div>
         {best !== undefined && <p className="cir-meta ud-best">Fastest perfect round: {best.toFixed(1)}s per statement</p>}
       </section>
@@ -254,6 +257,9 @@ export default function UnlessDrill() {
     return (
       <section className="cir-card">
         <p className="cir-prompt">Round review</p>
+        {pace === PACES[0].ms && results.length > 0 && correct === results.length && (
+          <p className="ud-goal">You hit the goal: all four accurate, each under 5 seconds.</p>
+        )}
         <div className="ud-score">
           <div><b>{correct} of {results.length}</b><span>correct</span></div>
           <div><b>{avg.toFixed(1)}s</b><span>average per statement</span></div>
@@ -343,14 +349,14 @@ function ReviewRow({ n, result }: { n: number; result: UnlessResult }) {
           : <em>no answer</em>}</span>
         <span className="ud-row-label">Correct</span>
         <span><Diagram left={answer.left} right={answer.right} /></span>
-        <span className="ud-row-label">Also counts</span>
+        <span className="ud-row-label">Also correct</span>
         <span><Diagram left={contra.left} right={contra.right} /> <span className="ud-muted">(contrapositive)</span></span>
       </div>
       {!ok && <p className="ud-why">{VERDICT_TEXT[result.verdict as Exclude<UnlessVerdict, "correct">]}</p>}
       <p className="ud-steps">
-        After unless: <Tok text={after} />. Negate it: <Tok text={negateToken(after)} />
-        {after.startsWith("/") ? " (the two slashes cancel)" : ""}. That goes left.{" "}
-        <Tok text={other} /> stays as written on the right.
+        Not attached to unless: <Tok text={other} />. Negate it: <Tok text={negateToken(other)} />
+        {other.startsWith("/") ? " (the two slashes cancel)" : ""}. That goes left.{" "}
+        The unless idea, <Tok text={after} />, goes right as written.
       </p>
     </div>
   );

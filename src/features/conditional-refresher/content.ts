@@ -210,10 +210,10 @@ export interface UnlessRound {
 /** Statement text pieces; "/" marks the slashed letter. */
 export function unlessStatement({ pattern, x, y }: UnlessRound): string {
   switch (pattern) {
-    case 1: return `/${x} unless ${y}`;
-    case 2: return `Unless ${y}, ${x}`;
-    case 3: return `Unless /${y}, /${x}`;
-    case 4: return `${x} unless /${y}`;
+    case 1: return `/${x}, unless ${y}.`;
+    case 2: return `Unless ${y}, ${x}.`;
+    case 3: return `Unless /${y}, /${x}.`;
+    case 4: return `${x}, unless /${y}.`;
   }
 }
 
@@ -230,13 +230,17 @@ export function unlessParts({ pattern, x, y }: UnlessRound): { after: string; ot
   }
 }
 
-/** The Group 3 move: negate the "unless" idea, put it left, keep the other idea unchanged on the right. */
+/**
+ * Joshua's answer key: negate the idea not attached to "unless" and put it on
+ * the left; the unless idea goes on the right exactly as written.
+ * (/A, unless B. -> A -> B; Unless B, A. -> /A -> B; Unless /B, /A. -> A -> /B; A, unless /B. -> /A -> /B)
+ */
 export function unlessAnswer(round: UnlessRound): { left: string; right: string } {
   const { after, other } = unlessParts(round);
-  return { left: negateToken(after), right: other };
+  return { left: negateToken(other), right: after };
 }
 
-export type UnlessVerdict = "correct" | "no-answer" | "not-negated" | "reversed" | "both-negated" | "other";
+export type UnlessVerdict = "correct" | "no-answer" | "kept-both" | "reversed" | "changed-unless" | "other";
 
 /** Grades a placement. The diagram and its contrapositive both count. */
 export function gradeUnless(round: UnlessRound, left: string | null, right: string | null): UnlessVerdict {
@@ -244,10 +248,10 @@ export function gradeUnless(round: UnlessRound, left: string | null, right: stri
   const { after, other } = unlessParts(round);
   const is = (l: string, r: string) => left === l && right === r;
   const either = (l: string, r: string) => is(l, r) || is(negateToken(r), negateToken(l));
-  if (either(negateToken(after), other)) return "correct";
-  if (either(after, other)) return "not-negated";
-  if (either(other, negateToken(after))) return "reversed";
-  if (either(negateToken(after), negateToken(other))) return "both-negated";
+  if (either(negateToken(other), after)) return "correct";
+  if (either(other, after)) return "kept-both";
+  if (either(after, negateToken(other))) return "reversed";
+  if (either(negateToken(other), negateToken(after))) return "changed-unless";
   return "other";
 }
 

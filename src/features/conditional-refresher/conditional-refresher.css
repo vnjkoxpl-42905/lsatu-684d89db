@@ -116,6 +116,8 @@
 .ud-pace { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 .ud-pace .cir-tab[aria-checked="true"] { background: var(--cir-ink); color: var(--cir-paper-raised); border-color: var(--cir-ink); }
 .ud-best { margin: 14px 0 0; }
+.ud-instruction { margin: 18px 0 0; font-size: 15px; color: var(--cir-ink); font-style: italic; }
+.ud-goal { margin: 0 0 14px; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--cir-good); color: var(--cir-good); font-weight: 600; }
 
 .ud-stage { text-align: center; }
 .ud-ready { font-family: var(--font-display, Georgia, serif); font-size: clamp(64px, 12vw, 110px); margin: 10px 0 18px; line-height: 1; }
