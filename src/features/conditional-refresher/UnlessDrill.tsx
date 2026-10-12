@@ -12,16 +12,15 @@ import "./conditional-refresher.css";
    fresh letters each time. */
 
 const KEY = "lsatu.unless-drill.v1";
-const PACES = [
-  { ms: 5000, label: "5 seconds" },
-  { ms: 10000, label: "10 seconds (warm-up)" },
-] as const;
+// Students start at 10 seconds. A perfect full round at 10 seconds unlocks 5.
+const SLOW_MS = 10000;
+const FAST_MS = 5000;
 const READY_STEPS = 3;
 const READY_STEP_MS = 550;
 const BETWEEN_MS = 850;
 const WARN_MS = 1500;
 
-interface Saved { pace?: number; rounds?: number; bestPerfectAvg?: number }
+interface Saved { pace?: number; rounds?: number; bestPerfectAvg?: number; fastUnlocked?: boolean }
 
 function readSaved(): Saved {
   try { return JSON.parse(localStorage.getItem(KEY) || "{}") as Saved; } catch { return {}; }
@@ -71,7 +70,12 @@ const VERDICT_TEXT: Record<Exclude<UnlessVerdict, "correct">, string> = {
 
 export default function UnlessDrill() {
   const [phase, setPhase] = useState<Phase>("idle");
-  const [pace, setPace] = useState<number>(() => readSaved().pace ?? PACES[0].ms);
+  const [fastUnlocked, setFastUnlocked] = useState<boolean>(() => !!readSaved().fastUnlocked);
+  const [pace, setPace] = useState<number>(() => {
+    const saved = readSaved();
+    return saved.fastUnlocked && saved.pace === FAST_MS ? FAST_MS : SLOW_MS;
+  });
+  const [justUnlocked, setJustUnlocked] = useState(false);
   const [rounds, setRounds] = useState<UnlessRound[]>([]);
   const [index, setIndex] = useState(0);
   const [placed, setPlaced] = useState<Placed>(EMPTY);
@@ -150,7 +154,14 @@ export default function UnlessDrill() {
     recorded.current = results;
     const saved = readSaved();
     const patch: Saved = { rounds: (saved.rounds ?? 0) + 1 };
-    if (results.every(r => r.verdict === "correct")) {
+    const perfect = results.every(r => r.verdict === "correct");
+    // Only a full round of all four counts toward the unlock, not a retry of misses.
+    if (perfect && results.length === 4 && pace === SLOW_MS && !saved.fastUnlocked) {
+      patch.fastUnlocked = true;
+      setFastUnlocked(true);
+      setJustUnlocked(true);
+    }
+    if (perfect) {
       const avg = results.reduce((s, r) => s + r.seconds, 0) / results.length;
       if (saved.bestPerfectAvg === undefined || avg < saved.bestPerfectAvg) {
         patch.bestPerfectAvg = avg;
@@ -158,7 +169,7 @@ export default function UnlessDrill() {
       }
     }
     writeSaved(patch);
-  }, [phase, results]);
+  }, [phase, results, pace]);
 
   const begin = (set: UnlessRound[]) => {
     setRounds(set);
@@ -166,6 +177,7 @@ export default function UnlessDrill() {
     setIndex(0);
     setPlaced(EMPTY);
     setReady(READY_STEPS);
+    setJustUnlocked(false);
     setPhase("ready");
   };
 
@@ -217,11 +229,16 @@ export default function UnlessDrill() {
           Your review comes after all four.
         </p>
         <div className="ud-pace" role="radiogroup" aria-label="Time per statement">
-          {PACES.map(p => (
-            <button key={p.ms} type="button" role="radio" aria-checked={pace === p.ms}
-              className="cir-tab" onClick={() => choosePace(p.ms)}>{p.label}</button>
-          ))}
+          <button type="button" role="radio" aria-checked={pace === SLOW_MS}
+            className="cir-tab" onClick={() => choosePace(SLOW_MS)}>10 seconds</button>
+          <button type="button" role="radio" aria-checked={pace === FAST_MS} disabled={!fastUnlocked}
+            className="cir-tab" onClick={() => choosePace(FAST_MS)}>
+            {fastUnlocked ? "5 seconds" : "5 seconds (locked)"}
+          </button>
         </div>
+        {!fastUnlocked && (
+          <p className="cir-meta ud-unlock-note">Get all four right at 10 seconds to unlock 5 seconds.</p>
+        )}
         <p className="ud-instruction">
           Start every LSAT study session with this quick workout until you can diagram Unless accurately in under 5 seconds.
         </p>
@@ -251,7 +268,10 @@ export default function UnlessDrill() {
     return (
       <section className="cir-card">
         <p className="cir-prompt">Round review</p>
-        {pace === PACES[0].ms && results.length > 0 && correct === results.length && (
+        {justUnlocked && (
+          <p className="ud-goal">All four right at 10 seconds. 5 seconds is unlocked.</p>
+        )}
+        {pace === FAST_MS && results.length === 4 && correct === results.length && (
           <p className="ud-goal">You hit the goal: all four accurate, each under 5 seconds.</p>
         )}
         <div className="ud-score">
@@ -267,7 +287,11 @@ export default function UnlessDrill() {
             </button>
           )}
           <button type="button" className={`cir-btn${missed.length ? " ghost" : ""}`} onClick={() => begin(buildRound())}>New round</button>
-          <button type="button" className="cir-btn ghost" onClick={() => setPhase("idle")}>Change pace</button>
+          {justUnlocked ? (
+            <button type="button" className="cir-btn" onClick={() => { choosePace(FAST_MS); begin(buildRound()); }}>Try 5 seconds</button>
+          ) : (
+            <button type="button" className="cir-btn ghost" onClick={() => setPhase("idle")}>Change pace</button>
+          )}
         </div>
       </section>
     );
@@ -382,13 +406,21 @@ function DrillPreview() {
     () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
     [],
   );
-  const [t, setT] = useState(reduced ? 5000 : 0);
+  const [t, setT] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [played, setPlayed] = useState(false);
   useEffect(() => {
-    if (reduced) return;
+    if (!playing) return;
+    if (reduced) { setT(PREVIEW_BEATS[4].at); setPlaying(false); setPlayed(true); return; }
     const start = performance.now();
-    const id = window.setInterval(() => setT((performance.now() - start) % PREVIEW_LOOP_MS), 80);
+    const id = window.setInterval(() => {
+      const elapsed = performance.now() - start;
+      if (elapsed >= PREVIEW_LOOP_MS) { setPlaying(false); setPlayed(true); return; }
+      setT(elapsed);
+    }, 80);
     return () => window.clearInterval(id);
-  }, [reduced]);
+  }, [playing, reduced]);
+  const play = () => { setT(0); setPlayed(false); setPlaying(true); };
 
   const beat = PREVIEW_BEATS.reduce((b, x, i) => (t >= x.at ? i : b), 0);
   const left = beat >= 1 ? "K" : null;
@@ -399,7 +431,9 @@ function DrillPreview() {
   const fraction = remaining / 5000;
 
   return (
-    <div className="ud-preview" aria-label="Preview of one statement in the drill">
+    <div className="ud-preview">
+      <div className="ud-preview-frame">
+      <span className="ud-preview-label">Preview</span>
       <div className="ud-preview-screen" aria-hidden="true">
         <div className="ud-head">
           <span className="cir-meta">Statement 1 of 4</span>
@@ -422,7 +456,17 @@ function DrillPreview() {
         </div>
         {beat >= 4 && <p className="ud-preview-result">Correct: <Diagram left="K" right="M" /></p>}
       </div>
-      <p className="ud-preview-caption" aria-live="off">{PREVIEW_BEATS[beat].caption}</p>
+      {!playing && (
+        <button type="button" className="ud-play" onClick={play}
+          aria-label={played ? "Replay the preview" : "Play a preview of the drill"}>
+          <span className="ud-play-icon" aria-hidden="true">{played ? "\u21BB" : "\u25B6"}</span>
+          <span>{played ? "Replay preview" : "Watch a preview"}</span>
+        </button>
+      )}
+      </div>
+      <p className="ud-preview-caption" aria-live="off">
+        {playing || played ? PREVIEW_BEATS[beat].caption : "See one statement played through before you start."}
+      </p>
     </div>
   );
 }
