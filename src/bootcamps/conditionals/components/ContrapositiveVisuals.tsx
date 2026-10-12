@@ -139,13 +139,13 @@ const lightPower: DemoProps = {
   captions: ['This is the rule. Click Step 1.', 'The sides are flipped. Now click Step 2.', 'Both ideas are crossed out. That is “not” on both, and it is the contrapositive.'],
 };
 
-const dishwasherDoor: DemoProps = {
-  left: { text: 'Dishwasher running', tone: 'amber' },
-  right: { text: 'Door open', tone: 'teal', struck: true },
+const snowHot: DemoProps = {
+  left: { text: 'Snowing', tone: 'amber' },
+  right: { text: 'Hot', tone: 'teal', struck: true },
   label: 'A rule that already has a “not”',
-  rule: 'If the dishwasher is running, then the door must not be open.',
-  result: 'If the door is open, then the dishwasher must not be running.',
-  captions: ['This rule already has a “not” on the right side. Click Step 1.', 'The sides are flipped. Now click Step 2.', 'Each idea gets a “not.” Door open already had one, so the two cancel and it turns positive. That is the contrapositive.'],
+  rule: 'If it is snowing, then it must not be hot.',
+  result: 'If it is hot, then it must not be snowing.',
+  captions: ['This rule already has a “not” on the right side. Click Step 1.', 'The sides are flipped. Now click Step 2.', 'Each idea gets a “not.” Hot already had one, so the two cancel and it turns positive. That is the contrapositive.'],
 };
 
 /** A rule becomes its contrapositive in two clicks: Step 1 swaps the sides, Step 2 puts "not" on each idea.
@@ -176,7 +176,7 @@ function FlipAndNegate({ left, right, captions, label, rule, result }: DemoProps
 }
 
 export const FlipAndNegateDemo = () => <FlipAndNegate {...lightPower}/>;
-export const DoubleNegativeDemo = () => <FlipAndNegate {...dishwasherDoor}/>;
+export const DoubleNegativeDemo = () => <FlipAndNegate {...snowHot}/>;
 
 const moves: { key: string; right: boolean; name: string; how: string; left: ReactNode; to: ReactNode; why: string }[] = [
   { key: 'reverse', right: false, name: 'The reverse', how: 'Flip the sides only.', left: 'Power', to: 'Light', why: 'The power can be on while the light is off. Power does not force the light on.' },
@@ -202,67 +202,67 @@ export function ThreeMoves() {
 type Tone = 'amber' | 'teal';
 
 /** One idea as a coloured pill. A struck pill is the idea with "not" on it. */
-function Pill({ code, tone, negated }: { code: string; tone: Tone; negated: boolean }) {
-  return <span className="ct-pill" data-tone={tone} data-not={negated}>{negated && <span className="ct-sr">not </span>}{code}</span>;
+function Pill({ text, tone, negated }: { text: string; tone: Tone; negated: boolean }) {
+  return <span className="ct-pill" data-tone={tone} data-not={negated}>{negated && <span className="ct-sr">not </span>}{text}</span>;
 }
 
-type Idea = { code: string; meaning: string; negated: boolean };
+type Idea = { short: string; negated: boolean };
 type RuleCase = { tag: string; sentence: string; left: Idea; right: Idea; place: number; why: { reverse: string; inverse: string; contrapositive: string } };
 
 const ruleCases: RuleCase[] = [
   {
     tag: 'No “not” in the rule',
     sentence: 'If a guest is on the list, the guest gets a wristband.',
-    left: { code: 'L', meaning: 'the guest is on the list', negated: false },
-    right: { code: 'W', meaning: 'the guest gets a wristband', negated: false },
+    left: { short: 'On the list', negated: false },
+    right: { short: 'Wristband', negated: false },
     place: 2,
     why: {
-      reverse: 'This only flips the sides. A wristband does not prove the guest is on the list.',
-      inverse: 'This changes the “nots” without flipping the sides. Being off the list leaves the wristband open.',
-      contrapositive: 'No wristband, not on the list. The sides flip, and both ideas get a “not.”',
+      reverse: "A wristband doesn't prove the guest is on the list.",
+      inverse: "Being off the list doesn't rule out a wristband.",
+      contrapositive: "If a guest doesn't get a wristband, then the guest isn't on the list.",
     },
   },
   {
     tag: 'A “not” on the right',
     sentence: 'If the shop is open, the shutters are not down.',
-    left: { code: 'O', meaning: 'the shop is open', negated: false },
-    right: { code: 'D', meaning: 'the shutters are down', negated: true },
+    left: { short: 'Shop open', negated: false },
+    right: { short: 'Shutters down', negated: true },
     place: 0,
     why: {
-      reverse: 'This only flips the sides. Shutters that are up do not prove the shop is open.',
-      inverse: 'This changes the “nots” without flipping the sides. A closed shop could still have its shutters up.',
-      contrapositive: 'Shutters down rule out an open shop. The sides flip, the “not” on D comes off, and O gets one.',
+      reverse: "Shutters that are up don't prove the shop is open.",
+      inverse: "A closed shop can still have its shutters up.",
+      contrapositive: "If the shutters are down, then the shop isn't open.",
     },
   },
   {
     tag: 'A “not” on the left',
     sentence: 'If the gate is not locked, the dog can get out.',
-    left: { code: 'L', meaning: 'the gate is locked', negated: true },
-    right: { code: 'G', meaning: 'the dog can get out', negated: false },
+    left: { short: 'Gate locked', negated: true },
+    right: { short: 'Dog gets out', negated: false },
     place: 1,
     why: {
-      reverse: 'This only flips the sides. The dog could get out another way, so getting out does not prove the gate is unlocked.',
-      inverse: 'This changes the “nots” without flipping the sides. The rule only speaks about an unlocked gate, so a locked gate leaves the dog open.',
-      contrapositive: 'If the dog can\'t get out, the gate must be locked. The sides flip, and the “not” on L comes off.',
+      reverse: "The dog could get out another way.",
+      inverse: "The rule only covers an unlocked gate.",
+      contrapositive: "If the dog can't get out, then the gate is locked.",
     },
   },
   {
     tag: 'A “not” on both sides',
     sentence: 'If a ticket is not stamped, it is not valid.',
-    left: { code: 'S', meaning: 'the ticket is stamped', negated: true },
-    right: { code: 'V', meaning: 'the ticket is valid', negated: true },
+    left: { short: 'Ticket stamped', negated: true },
+    right: { short: 'Ticket valid', negated: true },
     place: 2,
     why: {
-      reverse: 'This only flips the sides. An invalid ticket might be stamped.',
-      inverse: 'This changes the “nots” without flipping the sides. A stamp alone does not make a ticket valid.',
-      contrapositive: 'A valid ticket must be stamped. The sides flip, and both “nots” come off.',
+      reverse: "An invalid ticket might still be stamped.",
+      inverse: "A stamp alone doesn't make a ticket valid.",
+      contrapositive: "If a ticket is valid, then it is stamped.",
     },
   },
 ];
 
 type Choice = { kind: 'reverse' | 'inverse' | 'contrapositive'; left: Idea; right: Idea; leftTone: Tone; rightTone: Tone };
 
-const spoken = (idea: Idea) => (idea.negated ? 'not ' : '') + idea.code;
+const spoken = (idea: Idea) => (idea.negated ? 'not ' : '') + idea.short.toLowerCase();
 
 /** The three look-alikes for a rule, with the contrapositive at the position the case asks for. Colour follows the idea. */
 function choicesFor(rule: RuleCase): Choice[] {
@@ -286,7 +286,7 @@ export function RuleDrill() {
   const lastTried = wrong.length ? choices[wrong[wrong.length - 1]] : null;
   const message = solved !== null
     ? rule.why.contrapositive
-    : lastTried ? `Not that one. ${rule.why[lastTried.kind as 'reverse' | 'inverse']} Try another.` : 'Pick the diagram that says the same thing as the rule.';
+    : lastTried ? `Not that one. ${rule.why[lastTried.kind as 'reverse' | 'inverse']}` : 'Pick the diagram that says the same thing as the rule.';
   const next = () => { setStep(value => value + 1); setWrong([]); setSolved(null); };
   const restart = () => { setStep(0); setWrong([]); setSolved(null); };
   return <div className="ct-drill" data-step={step}>
@@ -294,21 +294,16 @@ export function RuleDrill() {
       <p className="ct-picker-kicker">Your turn</p>
       <p className="ct-drill-count">Rule {step + 1} of {ruleCases.length}<span className="ct-drill-dots" aria-hidden="true">{ruleCases.map((item, index) => <i key={item.tag} data-state={index < step ? 'done' : index === step ? 'now' : 'todo'}/>)}</span></p>
     </div>
-    <p className="ct-drill-tag">{rule.tag}</p>
     <p className="ct-drill-sentence">{rule.sentence}</p>
     <div className="ct-drill-original" role="img" aria-label={`The rule: ${spoken(rule.left)} implies ${spoken(rule.right)}`}>
-      <Pill code={rule.left.code} tone="amber" negated={rule.left.negated}/><span className="ct-drill-arrow" aria-hidden="true">→</span><Pill code={rule.right.code} tone="teal" negated={rule.right.negated}/>
+      <Pill text={rule.left.short} tone="amber" negated={rule.left.negated}/><span className="ct-drill-arrow" aria-hidden="true">→</span><Pill text={rule.right.short} tone="teal" negated={rule.right.negated}/>
     </div>
-    <ul className="ct-drill-legend">
-      <li><Pill code={rule.left.code} tone="amber" negated={false}/> {rule.left.meaning}</li>
-      <li><Pill code={rule.right.code} tone="teal" negated={false}/> {rule.right.meaning}</li>
-    </ul>
     <p className="ct-picker-question" id={`ct-drill-q-${step}`}>Which one is the contrapositive?</p>
     <div className="ct-drill-options" role="group" aria-labelledby={`ct-drill-q-${step}`}>
       {choices.map((choice, index) => {
         const state = solved === index ? 'right' : wrong.includes(index) ? 'wrong' : 'open';
         return <button key={choice.kind} type="button" className="ct-drill-option" data-state={state} disabled={solved !== null && solved !== index} aria-label={`${spoken(choice.left)} → ${spoken(choice.right)}`} onClick={() => { if (solved !== null) return; if (choice.kind === 'contrapositive') setSolved(index); else setWrong(items => items.includes(index) ? items : [...items, index]); }}>
-          <span aria-hidden="true" className="ct-drill-diagram"><Pill code={choice.left.code} tone={choice.leftTone} negated={choice.left.negated}/><span className="ct-drill-arrow">→</span><Pill code={choice.right.code} tone={choice.rightTone} negated={choice.right.negated}/></span>
+          <span aria-hidden="true" className="ct-drill-diagram"><Pill text={choice.left.short} tone={choice.leftTone} negated={choice.left.negated}/><span className="ct-drill-arrow">→</span><Pill text={choice.right.short} tone={choice.rightTone} negated={choice.right.negated}/></span>
           {state === 'right' && <span className="ct-drill-mark" data-kind="right"><Check size={16} strokeWidth={3} aria-hidden="true"/>Yes</span>}
           {state === 'wrong' && <span className="ct-drill-mark" data-kind="wrong"><X size={16} strokeWidth={3} aria-hidden="true"/>No</span>}
         </button>;
@@ -336,4 +331,15 @@ export function ContrapositiveLecture() {
     {failed && <p role="alert" className="ct-lecture-error">The video couldn't load. The lesson is written out below.</p>}
     <details open={failed || undefined} onToggle={event => setRead(event.currentTarget.open)}><summary>Read the video</summary>{(read || failed) && <p>{LECTURE_TRANSCRIPT}</p>}</details>
   </figure>;
+}
+
+/** "Pop Quiz", centred. Each letter springs up in turn once the title scrolls into view, then a band of light keeps sweeping across the lettering. */
+export function PopQuizTitle() {
+  const [ref, inView] = useInView<HTMLHeadingElement>();
+  const letters = 'Pop Quiz'.split('');
+  return <h2 ref={ref} className="ct-popquiz" data-in-view={inView} aria-label="Pop Quiz">
+    {letters.map((letter, index) => letter === ' '
+      ? <span key={index} className="ct-popquiz-gap" aria-hidden="true"/>
+      : <span key={index} className="ct-popquiz-letter" aria-hidden="true" style={{ animationDelay: `${index * 0.08}s` }}>{letter}</span>)}
+  </h2>;
 }
