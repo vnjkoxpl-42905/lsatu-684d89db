@@ -55,3 +55,5 @@
 .iw-nav button:disabled{opacity:.4;cursor:default}
 .dark .iw-nav button{color:#edf3ed;background:#203b40;border-color:#89c4ac}
 .iw-deck{margin-left:0;margin-right:0;max-width:640px}
+.iw-question{font:clamp(24px,4vw,32px)/1.3 Georgia,serif;color:#173544;max-width:24ch}
+.dark .iw-question{color:#edf3ed}
