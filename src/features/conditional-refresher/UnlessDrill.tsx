@@ -4,6 +4,7 @@ import {
   type UnlessPattern, type UnlessRound, type UnlessVerdict,
 } from "./content";
 import { Diagram, Tok } from "./Notation";
+import { useUnlessMilestones } from "./unlessProgress";
 import "./conditional-refresher.css";
 
 /* The timed Unless drill. Used as a tab of the Conditional Indicators
@@ -12,7 +13,8 @@ import "./conditional-refresher.css";
    fresh letters each time. */
 
 const KEY = "lsatu.unless-drill.v1";
-// Students start at 10 seconds. A perfect full round at 10 seconds unlocks 5.
+// Students start at 10 seconds. A full round at 100% accuracy at 10 seconds
+// unlocks 5; the same at 5 seconds clears the drill. Both are saved to the account.
 const SLOW_MS = 10000;
 const FAST_MS = 5000;
 const READY_STEPS = 3;
@@ -20,7 +22,7 @@ const READY_STEP_MS = 550;
 const BETWEEN_MS = 850;
 const WARN_MS = 1500;
 
-interface Saved { pace?: number; rounds?: number; bestPerfectAvg?: number; fastUnlocked?: boolean }
+interface Saved { pace?: number; rounds?: number; bestPerfectAvg?: number }
 
 function readSaved(): Saved {
   try { return JSON.parse(localStorage.getItem(KEY) || "{}") as Saved; } catch { return {}; }
@@ -70,12 +72,14 @@ const VERDICT_TEXT: Record<Exclude<UnlessVerdict, "correct">, string> = {
 
 export default function UnlessDrill() {
   const [phase, setPhase] = useState<Phase>("idle");
-  const [fastUnlocked, setFastUnlocked] = useState<boolean>(() => !!readSaved().fastUnlocked);
-  const [pace, setPace] = useState<number>(() => {
-    const saved = readSaved();
-    return saved.fastUnlocked && saved.pace === FAST_MS ? FAST_MS : SLOW_MS;
-  });
+  const { milestones, loading: milestonesLoading, record } = useUnlessMilestones();
+  const fastUnlocked = milestones.has("cleared-10s");
+  const cleared = milestones.has("cleared-5s");
+  const [chosenPace, setPace] = useState<number>(() => readSaved().pace ?? SLOW_MS);
+  // A remembered 5-second choice only applies once the account has unlocked it.
+  const pace = fastUnlocked ? chosenPace : SLOW_MS;
   const [justUnlocked, setJustUnlocked] = useState(false);
+  const [justCleared, setJustCleared] = useState(false);
   const [rounds, setRounds] = useState<UnlessRound[]>([]);
   const [index, setIndex] = useState(0);
   const [placed, setPlaced] = useState<Placed>(EMPTY);
@@ -156,10 +160,9 @@ export default function UnlessDrill() {
     const patch: Saved = { rounds: (saved.rounds ?? 0) + 1 };
     const perfect = results.every(r => r.verdict === "correct");
     // Only a full round of all four counts toward the unlock, not a retry of misses.
-    if (perfect && results.length === 4 && pace === SLOW_MS && !saved.fastUnlocked) {
-      patch.fastUnlocked = true;
-      setFastUnlocked(true);
-      setJustUnlocked(true);
+    if (perfect && results.length === 4) {
+      if (pace === SLOW_MS && !fastUnlocked) { void record("cleared-10s"); setJustUnlocked(true); }
+      if (pace === FAST_MS && !cleared) { void record("cleared-5s"); setJustCleared(true); }
     }
     if (perfect) {
       const avg = results.reduce((s, r) => s + r.seconds, 0) / results.length;
@@ -169,7 +172,7 @@ export default function UnlessDrill() {
       }
     }
     writeSaved(patch);
-  }, [phase, results, pace]);
+  }, [phase, results, pace, fastUnlocked, cleared, record]);
 
   const begin = (set: UnlessRound[]) => {
     setRounds(set);
@@ -178,6 +181,7 @@ export default function UnlessDrill() {
     setPlaced(EMPTY);
     setReady(READY_STEPS);
     setJustUnlocked(false);
+    setJustCleared(false);
     setPhase("ready");
   };
 
@@ -236,9 +240,12 @@ export default function UnlessDrill() {
             {fastUnlocked ? "5 seconds" : "5 seconds (locked)"}
           </button>
         </div>
-        {!fastUnlocked && (
-          <p className="cir-meta ud-unlock-note">Get all four right at 10 seconds to unlock 5 seconds.</p>
-        )}
+        <p className="cir-meta ud-unlock-note">
+          {milestonesLoading ? "\u00a0"
+            : cleared ? "Cleared at 5 seconds. Keep it as your warm-up."
+            : fastUnlocked ? "Next: all four right at 5 seconds to clear the drill."
+            : "Clear 10 seconds first: all four right in one round. That unlocks 5 seconds."}
+        </p>
         <p className="ud-instruction">
           Start every LSAT study session with this quick workout until you can diagram Unless accurately in under 5 seconds.
         </p>
@@ -271,7 +278,10 @@ export default function UnlessDrill() {
         {justUnlocked && (
           <p className="ud-goal">All four right at 10 seconds. 5 seconds is unlocked.</p>
         )}
-        {pace === FAST_MS && results.length === 4 && correct === results.length && (
+        {justCleared && (
+          <p className="ud-goal">Drill cleared: all four right at 5 seconds.</p>
+        )}
+        {!justCleared && pace === FAST_MS && results.length === 4 && correct === results.length && (
           <p className="ud-goal">You hit the goal: all four accurate, each under 5 seconds.</p>
         )}
         <div className="ud-score">
@@ -356,8 +366,9 @@ function ReviewRow({ n, result }: { n: number; result: UnlessResult }) {
   const ok = result.verdict === "correct";
   return (
     <div className={`cir-summary-row ud-row${ok ? " is-right" : " is-wrong"}`}>
-      <div className="cir-summary-meta">
-        Statement {n} · {result.timedOut ? "time ran out" : `${result.seconds.toFixed(1)}s`} · {ok ? "correct" : "not correct"}
+      <div className="cir-summary-meta ud-row-meta">
+        <span className={`ud-status${ok ? " is-right" : " is-wrong"}`}>{ok ? "Correct" : "Not correct"}</span>
+        <span>Statement {n} · {result.timedOut ? "time ran out" : `${result.seconds.toFixed(1)}s`}</span>
       </div>
       <p className="ud-row-statement"><UnlessText round={result} /></p>
       <div className="ud-row-grid">
@@ -365,17 +376,32 @@ function ReviewRow({ n, result }: { n: number; result: UnlessResult }) {
         <span>{result.chosenLeft && result.chosenRight
           ? <Diagram left={result.chosenLeft} right={result.chosenRight} />
           : <em>no answer</em>}</span>
-        <span className="ud-row-label">Correct</span>
-        <span><Diagram left={answer.left} right={answer.right} /></span>
-        <span className="ud-row-label">Also correct</span>
-        <span><Diagram left={contra.left} right={contra.right} /> <span className="ud-muted">(contrapositive)</span></span>
+        {ok ? (
+          <>
+            <span className="ud-row-label">Contrapositive</span>
+            <span>{result.chosenLeft === answer.left
+              ? <Diagram left={contra.left} right={contra.right} />
+              : <Diagram left={answer.left} right={answer.right} />}</span>
+          </>
+        ) : (
+          <>
+            <span className="ud-row-label">Correct</span>
+            <span><Diagram left={answer.left} right={answer.right} /></span>
+            <span className="ud-row-label">Also correct</span>
+            <span><Diagram left={contra.left} right={contra.right} /> <span className="ud-muted">(contrapositive)</span></span>
+          </>
+        )}
       </div>
-      {!ok && <p className="ud-why">{VERDICT_TEXT[result.verdict as Exclude<UnlessVerdict, "correct">]}</p>}
-      <p className="ud-steps">
-        Choose <Tok text={other} />. Negate it: <Tok text={negateToken(other)} />
-        {other.startsWith("/") ? " (the two slashes cancel)" : ""}. That goes left.{" "}
-        <Tok text={after} /> goes right, exactly as written.
-      </p>
+      {!ok && (
+        <>
+          <p className="ud-why">{VERDICT_TEXT[result.verdict as Exclude<UnlessVerdict, "correct">]}</p>
+          <p className="ud-steps">
+            Choose <Tok text={other} />. Negate it: <Tok text={negateToken(other)} />
+            {other.startsWith("/") ? " (the two slashes cancel)" : ""}. That goes left.{" "}
+            <Tok text={after} /> goes right, exactly as written.
+          </p>
+        </>
+      )}
     </div>
   );
 }
@@ -427,8 +453,8 @@ function DrillPreview() {
   const right = beat >= 2 ? "M" : null;
   const pressed = beat === 1 ? "K" : beat === 2 ? "M" : null;
   const locked = beat >= 3;
-  const remaining = Math.max(0, 5000 - Math.min(t, PREVIEW_BEATS[3].at));
-  const fraction = remaining / 5000;
+  const remaining = Math.max(0, SLOW_MS - Math.min(t, PREVIEW_BEATS[3].at));
+  const fraction = remaining / SLOW_MS;
 
   return (
     <div className="ud-preview">

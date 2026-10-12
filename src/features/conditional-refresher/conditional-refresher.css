@@ -74,7 +74,9 @@
 .cir-feedback { margin-top: 18px; font-size: 15px; color: var(--cir-ink-soft); }
 .cir-feedback strong { color: var(--cir-ink); }
 .cir-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-.cir-btn { border: 1px solid var(--cir-ink); background: var(--cir-ink); color: var(--cir-paper-raised); border-radius: 10px; padding: 11px 18px; font-size: 14px; cursor: pointer; }
+.cir-btn { min-height: 44px; border: 1px solid var(--cir-ink); background: var(--cir-ink); color: var(--cir-paper-raised); border-radius: 6px; padding: 10px 18px; font-size: 14px; cursor: pointer; transition: background-color .15s cubic-bezier(.25, 1, .5, 1), color .15s cubic-bezier(.25, 1, .5, 1); }
+.cir-btn:hover:not(:disabled) { background: var(--cir-ink-soft); border-color: var(--cir-ink-soft); }
+.cir-btn.ghost:hover:not(:disabled) { background: var(--cir-rule-soft); border-color: var(--cir-rule); }
 .cir-btn.ghost { background: transparent; color: var(--cir-ink); border-color: var(--cir-rule); }
 .cir-btn:disabled { opacity: .45; cursor: not-allowed; }
 .cir-meta { font-size: 13px; color: var(--cir-ink-mute); margin-bottom: 14px; }
@@ -92,7 +94,8 @@
 .cir-slot { min-width: 120px; min-height: 42px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--cir-rule); padding: 6px 10px; font-size: 18px; }
 .cir-slot.active { border-color: var(--cir-ink); }
 .cir-palette { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.cir-token { border: 1px solid var(--cir-rule); background: var(--cir-paper); color: var(--cir-ink); border-radius: 8px; padding: 8px 14px; font-size: 15px; cursor: pointer; }
+.cir-token { min-height: 44px; border: 1px solid var(--cir-rule); background: var(--cir-paper); color: var(--cir-ink); border-radius: 6px; padding: 8px 14px; font-size: 15px; cursor: pointer; transition: background-color .15s cubic-bezier(.25, 1, .5, 1), border-color .15s cubic-bezier(.25, 1, .5, 1); }
+.cir-token:active:not(:disabled) { background: var(--cir-rule-soft); }
 .cir-token:hover { border-color: var(--cir-ink-mute); }
 .cir-side-toggle { display: flex; gap: 8px; margin-top: 14px; }
 
@@ -105,7 +108,7 @@
    statement and both diagrams too, which wrecked the review. */
 .cir-summary-meta { font-size: 12px; color: var(--cir-ink-mute); }
 
-.ud-move { background: var(--cir-paper); border: 1px solid var(--cir-rule); border-radius: 12px; padding: 18px 20px; margin-bottom: 18px; }
+.ud-move { margin: 0 0 30px; }
 .ud-move-title { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cir-ink-mute); margin: 0 0 10px; }
 .ud-example { display: grid; gap: 8px; margin-top: 16px; border-top: 1px solid var(--cir-rule-soft); padding-top: 14px; color: var(--cir-ink-soft); }
 .ud-example-label { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cir-ink-mute); }
@@ -129,7 +132,7 @@
 .ud-clock > span { display: block; height: 100%; background: var(--cir-good); transform-origin: left center; }
 .ud-clock.is-warn > span { background: var(--cir-bad); }
 .ud-build { gap: 14px; }
-.ud-slot { background: transparent; color: var(--cir-ink); font: inherit; font-size: 26px; min-width: 96px; min-height: 52px; border-width: 0 0 2px; border-style: solid; border-color: var(--cir-rule); cursor: pointer; }
+.ud-slot { background: transparent; color: var(--cir-ink); font: inherit; font-size: 26px; min-width: 96px; min-height: 52px; border-width: 0 0 1px; border-style: solid; border-color: var(--cir-ink-mute); border-radius: 0; cursor: pointer; }
 .ud-slot:disabled { cursor: default; }
 .ud-build .cir-arrow { font-size: 26px; }
 .ud-tokens { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
@@ -140,13 +143,14 @@
 .ud-lock .cir-btn { min-width: 160px; }
 .ud-hint { margin: 14px 0 0; }
 
-.ud-score { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
-.ud-score > div { flex: 1 1 140px; background: var(--cir-paper); border: 1px solid var(--cir-rule); border-radius: 12px; padding: 12px 16px; display: grid; }
+.ud-score { display: flex; flex-wrap: wrap; gap: 8px 36px; margin: 0 0 8px; padding-bottom: 16px; }
+.ud-score > div { display: grid; gap: 2px; }
 .ud-score b { font-family: var(--font-display, Georgia, serif); font-size: 26px; font-weight: 600; }
 .ud-score span { font-size: 12px; color: var(--cir-ink-mute); }
-.ud-row { border-left: 3px solid transparent; padding-left: 14px; }
-.ud-row.is-right { border-left-color: var(--cir-good); }
-.ud-row.is-wrong { border-left-color: var(--cir-bad); }
+.ud-row-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.ud-status { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; border: 1px solid currentColor; border-radius: 4px; padding: 2px 8px; }
+.ud-status.is-right { color: var(--cir-good); }
+.ud-status.is-wrong { color: var(--cir-bad); }
 .ud-row-statement { font-family: var(--font-display, Georgia, serif); font-size: 24px; margin: 0; }
 .ud-row-grid { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 16px; align-items: center; }
 .ud-row-grid > span { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -159,6 +163,8 @@
   .ud-tokens { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ud-row-grid { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .ud-hint { display: none; }
+  .ud-build { flex-wrap: nowrap; }
+  .ud-slot { min-width: 72px; }
   .cir-shell { padding-bottom: 56px; }
 }
 
@@ -167,16 +173,25 @@
 .ud-preview-frame { position: relative; }
 .ud-preview-label { position: absolute; top: -9px; left: 14px; z-index: 2; background: var(--cir-ink); color: var(--cir-paper-raised); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; border-radius: 999px; padding: 3px 10px; }
 .ud-play { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 12px; background: color-mix(in srgb, var(--cir-paper) 72%, transparent); color: var(--cir-ink); font-size: 15px; font-weight: 600; cursor: pointer; }
-.ud-play-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 999px; background: var(--cir-ink); color: var(--cir-paper-raised); font-size: 24px; padding-left: 4px; box-shadow: 0 6px 18px rgba(19, 51, 42, .22); transition: transform .15s ease; }
-.ud-play:hover .ud-play-icon { transform: scale(1.06); }
+.ud-play-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 999px; background: var(--cir-ink); color: var(--cir-paper-raised); font-size: 24px; padding-left: 4px; transition: background-color .15s cubic-bezier(.25, 1, .5, 1); }
+.ud-play:hover .ud-play-icon { background: var(--cir-ink-soft); }
 .ud-play:focus-visible { outline: 2px solid var(--cir-ink); outline-offset: 2px; }
 .ud-pace .cir-tab:disabled { opacity: .5; cursor: not-allowed; }
 .ud-unlock-note { margin: 8px 0 0; }
 .ud-preview-screen { position: relative; text-align: center; background: var(--cir-paper-raised); border: 1px solid var(--cir-rule); border-radius: 12px; padding: 16px 18px 18px; pointer-events: none; user-select: none; }
 .ud-preview-screen .cir-statement { font-size: clamp(22px, 4vw, 30px); margin: 12px 0 16px; }
 .ud-preview-screen .ud-token { font-size: 20px; padding: 10px 0; min-height: 0; transition: transform .15s ease, border-color .15s ease; }
-.ud-preview-screen .is-pressed { transform: scale(.94); border-color: var(--cir-ink); }
-.ud-preview-screen .cir-btn { display: inline-block; min-width: 140px; transition: transform .15s ease; }
+.ud-preview-screen .is-pressed { background: var(--cir-rule-soft); border-color: var(--cir-ink); }
+.ud-preview-screen .cir-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 140px; }
+.ud-preview-screen .cir-btn.is-pressed { background: var(--cir-ink-soft); }
 .ud-preview-result { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); margin: 0; display: inline-flex; align-items: center; gap: 8px; background: var(--cir-paper-raised); border: 1px solid var(--cir-good); color: var(--cir-good); border-radius: 999px; padding: 6px 16px; font-weight: 600; white-space: nowrap; }
 .ud-preview-result .cir-diagram { font-size: 18px; }
 .ud-preview-caption { margin: 10px 0 0; font-size: 14px; color: var(--cir-ink-soft); text-align: center; min-height: 2.6em; }
+
+/* One focus treatment for every control in this room: a solid two-pixel ink
+   outline, offset two pixels, never animated. */
+.cir-root :is(button, [role="tab"], [role="radio"]):focus-visible { outline: 2px solid var(--cir-ink); outline-offset: 2px; transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cir-root *, .cir-root *::before, .cir-root *::after { transition: none !important; animation: none !important; }
+}
