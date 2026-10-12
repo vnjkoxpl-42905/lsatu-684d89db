@@ -1,3 +1,4 @@
+import { BulbBoard, FlipAndNegateDemo, PunchWord, TwinRules } from './ContrapositiveVisuals';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
@@ -119,28 +120,29 @@ function MissingRequirementNote() {
 function ContrapositiveNote() {
   return <>
     <NoteSection title="What a contrapositive is">
-      <p>So far, you know the core of every conditional: <strong>if the sufficient condition occurs, then the necessary condition must occur.</strong> That is the left side of the arrow guaranteeing the right side. It holds every time.</p>
-      <p>The contrapositive is what you know when the right side is missing:</p>
+      <p>You already know the core of every conditional. If the sufficient condition happens, the necessary condition <strong>must</strong> happen. The left side of the arrow guarantees the right side. Every time.</p>
+      <p>The contrapositive is what you know when the right side goes missing:</p>
       <p className="ct-definition"><strong>If the necessary condition is absent, the sufficient condition is absent too.</strong></p>
-      <p>Take this rule: <strong>If the ceiling light is on, then the power is on.</strong></p>
+      <p>Take this rule: <strong>If the ceiling light is on, then the power must be on.</strong></p>
       <RuleDiagram left="Light on" right="Power on"/>
-      <p>So if the light is on, it needs power. It has to have power for the light to come on. The power is completely necessary. Now what if there's no power? Then the light doesn't have the thing it needs. Could the light be on? No. No power means the light can't be on.</p>
+      <p>So if the light is on, it needs power. It has to have power to come on. The power is completely necessary. Now, what if there's no power? Then the light doesn't have what it needs. Could it be on? Nope. No power, no light.</p>
       <RuleDiagram left="No power" right="Light is not on"/>
-      <p>That is the contrapositive. The right side of the arrow is missing, so the left side can't happen.</p>
+      <p>That's the contrapositive. The right side of the arrow is missing, so the left side can't happen.</p>
     </NoteSection>
-    <NoteSection title="Why you didn't have to learn anything new">
-      <p>You can find the contrapositive on your own. It isn't some foreign process you perform on a rule. It's sitting there inside the original, waiting to be recognized. If the requirement hasn't been met, the condition that needed it can't have happened.</p>
-      <p>That is why the original and its contrapositive are <strong>logically equivalent</strong>. They describe the same relationship, so they say exactly the same thing. If one is true, the other is true, and the other way around. You can use either one. They're interchangeable.</p>
-      <figure className="cr-contrapositive-pair">
-        <figcaption>One rule, said two ways</figcaption>
-        <p><strong>Original.</strong> The left side of the arrow is true, so the right side is true.</p><RuleDiagram left="Left side" right="Right side"/>
-        <p><strong>Contrapositive.</strong> The right side of the arrow is false, so the left side is false.</p><RuleDiagram left="Right side is false" right="Left side is false"/>
-      </figure>
+    <NoteSection title="You already knew this">
+      <p>Here's the good news: you didn't just learn a new rule. You found one that was already there. The contrapositive was hiding inside the original the whole time, waiting for you to spot it. If the requirement isn't met, the thing that needed it can't happen.</p>
+      <p>That's why the original and its contrapositive are <strong>logically equivalent</strong>. Same relationship. Same meaning. If one is true, the other is true, and the other way around. Use either one. They're <PunchWord>interchangeable!</PunchWord></p>
+      <TwinRules
+        original={<><p><strong>Original.</strong> The left side of the arrow is true, so the right side is true.</p><RuleDiagram left="Left side" right="Right side"/></>}
+        contrapositive={<><p><strong>Contrapositive.</strong> The right side of the arrow is false, so the left side is false.</p><RuleDiagram left="Right side is false" right="Left side is false"/></>}
+      />
     </NoteSection>
     <NoteSection title="What the rule tells you, and when">
-      <p>A rule only does something in the right situation. Here are all four situations for the light and the power.</p>
+      <p>A rule only does something in the right situation. Play with the light and the power. Which of the four worlds can't exist?</p>
+      <BulbBoard/>
+      <p>That broken world is exactly what the contrapositive rules out. Here are all four situations side by side.</p>
       <table className="co-combination-table ct-compare">
-        <caption>If the light is on, then the power is on</caption>
+        <caption>If the light is on, then the power must be on</caption>
         <thead><tr><th scope="col">Situation</th><th scope="col">What has to happen?</th><th scope="col">The light and the power</th></tr></thead>
         <tbody>
           <tr><td>Left side true</td><td>The right side must be true.</td><td>The light is on, so the power must be on.</td></tr>
@@ -149,11 +151,13 @@ function ContrapositiveNote() {
           <tr><td>Right side true</td><td>Nothing.</td><td>The power is on. The light could be on or off. We don't know.</td></tr>
         </tbody>
       </table>
-      <p>The first two rows are the only situations where the rule makes something happen. In the last two, the rule settles nothing, and you need other information.</p>
+      <p>Only the first two rows make anything happen. In the last two, the rule shrugs, and you need other information.</p>
     </NoteSection>
     <NoteSection title="How to write it">
       <p>Write the rule with an arrow: <strong>Light → Power</strong>. The sufficient condition goes on the left side of the arrow. The necessary condition goes on the right side.</p>
-      <p>The contrapositive is <strong>~Power → ~Light</strong>. The ~ is a squiggle. Read it as “not.” Here are more pairs:</p>
+      <p>The contrapositive is <strong>~Power → ~Light</strong>. The ~ is a squiggle. Read it as “not.” Watch how you get there:</p>
+      <FlipAndNegateDemo/>
+      <p>Here are more pairs:</p>
       <table className="co-combination-table ct-compare">
         <caption>Original and contrapositive</caption>
         <thead><tr><th scope="col">Original</th><th scope="col">Contrapositive</th></tr></thead>
@@ -183,7 +187,7 @@ function ContrapositiveNote() {
           <tr><td>Flip the sides and add “not” to both. This is the contrapositive.</td><td>~Power → ~Light</td><td>Yes. It says the same thing as the original.</td></tr>
         </tbody>
       </table>
-      <p>Wrong answer choices use the reverse and the inverse on purpose. Each one is a single move away from the right answer.</p>
+      <p>Wrong answer choices use the reverse and the inverse on purpose. Each one is one move away from the right answer.</p>
     </NoteSection>
     <NoteSection title="Read it, don't always write it">
       <p>Every rule can be read two ways.</p>
@@ -196,8 +200,8 @@ function ContrapositiveNote() {
     </NoteSection>
     <NoteSection title="Why it matters">
       <p>The LSAT often gives you a rule one way and then uses it the other way. You'll see the contrapositive as a conclusion, as an answer choice, or as one link in a chain. Since it says the same thing as the rule, you can treat the two as one fact.</p>
-      <blockquote>If the ceiling light is on, then the power is on. So if the power is off, the ceiling light is not on.</blockquote>
-      <p>The second sentence isn't new information. It's the first sentence turned around. A student who doesn't see that treats it as a leap. A student who does sees a rule they already had.</p>
+      <blockquote>If the ceiling light is on, then the power must be on. So if the power is off, the ceiling light is not on.</blockquote>
+      <p>The second sentence isn't new information. It's the first sentence turned around. Miss that, and it feels like a leap. Catch it, and it's a rule you already had.</p>
       <ReferenceQuestion prompt="Rule: If a visitor enters the lab, the visitor has a badge. Which is the contrapositive?" options={['If a visitor has a badge, the visitor enters the lab.', 'If a visitor does not enter the lab, the visitor has no badge.', 'If a visitor has no badge, the visitor does not enter the lab.']} correct={2} feedback={['This only flips the sides. That is the reverse. A badge could be required without being enough.', 'This only adds “not.” Staying out of the lab leaves the badge question open.', 'Right. No badge, no entry. The sides flipped and both conditions got a “not.”']}/>
     </NoteSection>
   </>;

@@ -347,22 +347,47 @@ it('shows every combination of the two conditions and rejects only a win without
   expect(recap.textContent).toContain('not a claim that any of them happened');
 });
 
-it('defines the contrapositive first, in the source order: definition, equivalence, four situations, writing it, what it is not, reading it', () => {
+it('defines the contrapositive first, then says it was already there, plays the four worlds, flips and negates, and sets it against the reverse and inverse', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
-  const names = ['What a contrapositive is', "Why you didn't have to learn anything new", 'What the rule tells you, and when', 'How to write it', 'What it is not', "Read it, don't always write it", 'Why it matters'];
+  const names = ['What a contrapositive is', 'You already knew this', 'What the rule tells you, and when', 'How to write it', 'What it is not', "Read it, don't always write it", 'Why it matters'];
   for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
   const full = document.body.textContent ?? '';
   const text = full.slice(0, full.indexOf('Write the meaning you already understand'));
   const order = names.map(name => text.indexOf(name));
   expect(order).toEqual([...order].sort((m, n) => m - n));
-  expect(text).toMatch(/If the necessary condition is absent, the sufficient condition is absent too/);
-  expect(text.indexOf('If the necessary condition is absent')).toBeLessThan(text.indexOf('ceiling light'));
+  expect(text.indexOf('If the necessary condition is absent, the sufficient condition is absent too')).toBeLessThan(text.indexOf('ceiling light'));
+  expect(text).toMatch(/then the power must be on/);
   expect(text).toMatch(/left side of the arrow/);
   expect(text).toMatch(/right side of the arrow/);
   expect(text).toMatch(/logically equivalent/);
-  expect(text).toMatch(/waiting to be recognized/);
-  expect(text).not.toMatch(/promise|nothing to stand on|depends on|raffle|elevator|coat|coffee|breathing|Logic Games|the one other thing|ignore the conditional/i);
+  expect(text).toMatch(/waiting for you to spot it/);
+  expect(text).toMatch(/interchangeable!/);
+  expect(text).not.toMatch(/foreign|promise|nothing to stand on|depends on|raffle|elevator|coat|coffee|breathing|Logic Games|the one other thing|ignore the conditional/i);
   expect(text).not.toMatch(/[—–]/);
+});
+
+it('lets the student cut the power and see the one world the rule forbids', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  const board = document.querySelector('.ct-board') as HTMLElement;
+  expect(board.dataset.state).toBe('lit');
+  fireEvent.click(screen.getByRole('button', { name: 'Power: on' }));
+  expect(board.dataset.state).toBe('broken');
+  expect(within(board).getByText(/Can't happen!/)).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Light: on' }));
+  expect(board.dataset.state).toBe('dark');
+  expect(within(board).getByText(/the rule has nothing to say about the power/)).toBeInTheDocument();
+});
+
+it('steps through flip and negate by hand', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  const demo = document.querySelector('.ct-flip') as HTMLElement;
+  fireEvent.click(within(demo).getByRole('button', { name: 'Play it again' }));
+  expect(demo.dataset.stage).toBe('0');
+  fireEvent.click(within(demo).getByRole('button', { name: 'Next step' }));
+  expect(demo.dataset.stage).toBe('1');
+  fireEvent.click(within(demo).getByRole('button', { name: 'Next step' }));
+  expect(demo.dataset.stage).toBe('2');
+  expect(within(demo).getByRole('button', { name: 'Next step' })).toBeDisabled();
 });
 
 it('tells the student what the arrow says, where to start reading and what it is for', () => {
