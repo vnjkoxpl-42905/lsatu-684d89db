@@ -383,16 +383,21 @@ it('keeps the plain-English pair and the pulsing key term, and the page no longe
   expect(document.querySelectorAll('.co-opening .cr-question').length).toBeGreaterThanOrEqual(7);
 });
 
-it('steps through flip and negate by hand', () => {
+it('lets the student click Step 1 to flip and Step 2 to put not on both', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
   const demo = document.querySelector('.ct-flip') as HTMLElement;
-  fireEvent.click(within(demo).getByRole('button', { name: 'Play it again' }));
+  const step1 = within(demo).getByRole('button', { name: /Step 1. Click here to flip the sides/ });
+  const step2 = within(demo).getByRole('button', { name: /Step 2. Click here to put “not” on both/ });
   expect(demo.dataset.stage).toBe('0');
-  fireEvent.click(within(demo).getByRole('button', { name: 'Next step' }));
+  expect(step2).toBeDisabled();
+  fireEvent.click(step1);
   expect(demo.dataset.stage).toBe('1');
-  fireEvent.click(within(demo).getByRole('button', { name: 'Next step' }));
+  expect(step1).toBeDisabled();
+  fireEvent.click(step2);
   expect(demo.dataset.stage).toBe('2');
-  expect(within(demo).getByRole('button', { name: 'Next step' })).toBeDisabled();
+  expect(demo.querySelectorAll('[data-struck=true]')).toHaveLength(2);
+  fireEvent.click(within(demo).getByRole('button', { name: 'Start over' }));
+  expect(demo.dataset.stage).toBe('0');
 });
 
 it('tells the student what the arrow says, where to start reading and what it is for', () => {

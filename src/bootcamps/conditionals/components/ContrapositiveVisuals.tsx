@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Check, Play, RotateCcw, X, Zap, ZapOff } from 'lucide-react';
+import { Check, RotateCcw, X, Zap, ZapOff } from 'lucide-react';
 import './contrapositive-visuals.css';
 
 /** True once the element has scrolled into view. Without IntersectionObserver (old browsers, tests) it is true straight away. */
@@ -16,7 +16,6 @@ function useInView<T extends Element>(): [React.RefObject<T>, boolean] {
   return [ref, inView];
 }
 
-const reducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 /** An idea shown as false: struck through from its top left corner to its bottom right, with a hidden "not" for screen readers. */
 export function Neg({ children }: { children: ReactNode }) {
@@ -111,24 +110,14 @@ export function WorldPicker() {
   </div>;
 }
 
-const stageText = ['Start with the rule.', 'Flip the sides.', 'Cross out both ideas. That is “not” on both, and it is the contrapositive.'];
+const stageText = ['This is the rule. Click Step 1.', 'The sides are flipped. Now click Step 2.', 'Both ideas are crossed out. That is “not” on both, and it is the contrapositive.'];
 
-/** Light → Power becomes the contrapositive in two moves: the sides swap, then each idea gets crossed out. */
+/** Light → Power becomes the contrapositive in two clicks: Step 1 swaps the sides, Step 2 crosses out each idea. */
 export function FlipAndNegateDemo() {
-  const [ref, inView] = useInView<HTMLDivElement>();
   const [stage, setStage] = useState(0);
-  const [runId, setRunId] = useState(0);
-  const timers = useRef<number[]>([]);
-  useEffect(() => {
-    if (!inView || reducedMotion()) return;
-    setStage(0);
-    timers.current.forEach(window.clearTimeout);
-    timers.current = [window.setTimeout(() => setStage(1), 1600), window.setTimeout(() => setStage(2), 3600)];
-    return () => timers.current.forEach(window.clearTimeout);
-  }, [inView, runId]);
   const flipped = stage >= 1;
   const negated = stage >= 2;
-  return <div ref={ref} className="ct-flip" data-stage={stage}>
+  return <div className="ct-flip" data-stage={stage}>
     <div className="ct-flip-row">
       <span className="ct-chip" data-tone="amber" data-side="left" data-moved={flipped} data-struck={negated}>Light</span>
       <span className="ct-flip-arrow" aria-hidden="true">→</span>
@@ -136,8 +125,9 @@ export function FlipAndNegateDemo() {
     </div>
     <p className="ct-flip-caption" role="status">{stageText[stage]}</p>
     <div className="ct-flip-controls">
-      <button type="button" disabled={stage >= 2} onClick={() => setStage(value => Math.min(2, value + 1))}><Play size={15} aria-hidden="true"/>Next step</button>
-      <button type="button" onClick={() => { setStage(0); setRunId(value => value + 1); }}><RotateCcw size={15} aria-hidden="true"/>Play it again</button>
+      <button type="button" className="ct-step" data-ready={stage === 0} data-done={stage >= 1} disabled={stage !== 0} onClick={() => setStage(1)}><b aria-hidden="true">{stage >= 1 ? <Check size={16} strokeWidth={3}/> : 1}</b>Step 1. Click here to flip the sides</button>
+      <button type="button" className="ct-step" data-ready={stage === 1} data-done={stage >= 2} disabled={stage !== 1} onClick={() => setStage(2)}><b aria-hidden="true">{stage >= 2 ? <Check size={16} strokeWidth={3}/> : 2}</b>Step 2. Click here to put “not” on both</button>
+      {stage > 0 && <button type="button" className="ct-flip-reset" onClick={() => setStage(0)}><RotateCcw size={15} aria-hidden="true"/>Start over</button>}
     </div>
   </div>;
 }

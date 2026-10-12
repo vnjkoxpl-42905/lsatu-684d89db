@@ -82,12 +82,20 @@
 .ct-chip[data-side=right][data-moved=true]{transform:translateX(calc(-100% - var(--ct-arrow) - 2 * var(--ct-gap)))}
 .ct-chip::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top right,transparent calc(50% - 2px),#b8391f calc(50% - 2px),#b8391f calc(50% + 2px),transparent calc(50% + 2px));clip-path:inset(0 100% 0 0);transition:clip-path .6s cubic-bezier(.5,0,.2,1)}
 .ct-chip[data-struck=true]::after{clip-path:inset(0 0 0 0)}
-.ct-chip[data-struck=true]{opacity:.8;filter:saturate(.7)}
+.ct-chip[data-struck=true]{filter:saturate(.75)}
 .ct-flip-arrow{text-align:center;font-size:2rem;color:#173544}
 .ct-flip-caption{margin:0;font-size:clamp(1.05rem,1rem + .3vw,1.25rem);font-weight:700;min-height:1.6em}
 .ct-flip-controls{display:flex;gap:.75rem;flex-wrap:wrap}
-#root .ct-flip-controls button{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.1rem;font-size:1rem;font-weight:800;color:#fff;background:#173544;border:0;border-radius:999px;cursor:pointer}
-#root .ct-flip-controls button:disabled{opacity:.4;cursor:default}
+#root .ct-flip-controls button{display:inline-flex;align-items:center;gap:.65rem;padding:.7rem 1.2rem .7rem .7rem;font-size:1.02rem;font-weight:800;color:#173544;background:#fff;border:2px solid #173544;border-radius:999px;cursor:pointer;transition:transform .15s,box-shadow .2s}
+#root .ct-flip-controls button b{display:grid;place-items:center;width:1.9rem;height:1.9rem;border-radius:50%;background:#173544;color:#fff;font-size:.95rem}
+#root .ct-flip-controls button.ct-step[data-ready=true]{background:#ffc247;border-color:#ffc247;color:#3b2500;animation:ct-invite 1.3s ease-in-out infinite}
+#root .ct-flip-controls button.ct-step[data-ready=true]:hover{transform:translateY(-2px)}
+#root .ct-flip-controls button.ct-step[data-done=true]{background:#e4f5ec;border-color:#2fb07a;color:#14573a}
+#root .ct-flip-controls button.ct-step[data-done=true] b{background:#2fb07a}
+#root .ct-flip-controls button:disabled:not([data-done=true]){opacity:.5;cursor:default}
+#root .ct-flip-controls button.ct-step[data-done=true]:disabled{cursor:default}
+#root .ct-flip-controls .ct-flip-reset{padding:.6rem 1rem;border-color:#b9c4c9;color:#4b5f69;font-weight:700}
+@keyframes ct-invite{0%,100%{box-shadow:0 0 0 0 #ffc24700}50%{box-shadow:0 0 0 8px #ffc24766}}
 
 /* ---- Negation: a line from the top left corner to the bottom right corner of the idea, never a squiggle ---- */
 .ct-neg{--ct-line:#b8391f;position:relative;display:inline-block;padding:.04em .34em;margin-inline:.06em;border-radius:.4em;color:inherit;background:linear-gradient(to top right,transparent calc(50% - .8px),var(--ct-line) calc(50% - .8px),var(--ct-line) calc(50% + .8px),transparent calc(50% + .8px)),color-mix(in srgb,var(--ct-line) 9%,transparent)}
@@ -121,7 +129,7 @@
 #root .co-opening .cr-formula .ct-neg,#root .co-opening .cr-symbol-options .ct-neg,#root .co-opening .cr-pattern .cr-answer-options .ct-neg{padding-inline:.4em}
 
 @media (prefers-reduced-motion:reduce){
-  .ct-punch[data-in-view=true],.ct-twin[data-in-view=true] .ct-equals,.ct-pulse-word,.ct-flow-line,.ct-moves3[data-in-view=true] .ct-move-badge,#root .ct-world[data-verdict=broken]{animation:none}
+  .ct-punch[data-in-view=true],.ct-twin[data-in-view=true] .ct-equals,.ct-pulse-word,.ct-flow-line,#root .ct-flip-controls button.ct-step[data-ready=true],.ct-moves3[data-in-view=true] .ct-move-badge,#root .ct-world[data-verdict=broken]{animation:none}
   .ct-chip,.ct-chip::after,.ct-glass{transition:none}
 }
 
@@ -129,7 +137,8 @@
 .dark .ct-twin-side,.dark .ct-flip{background:linear-gradient(160deg,#25454b,#1d3a40);border-color:#50636a;color:#edf3ed}
 .dark .ct-twin-sentence,.dark .ct-flip-arrow{color:#edf3ed}
 .dark .ct-flow path{stroke:#edf3ed}
-.dark #root .ct-flip-controls button,.dark .ct-twin-label{background:#89c4ac;color:#0f2a32}
+.dark .ct-twin-label{background:#89c4ac;color:#0f2a32}
+.dark #root .ct-flip-controls button.ct-step[data-done=true]{background:#17382d;color:#7ff0b8}
 .dark .ct-punch{color:#7ff0b8}
 .dark .ct-moves3-start{background:#0f2a32}
 .dark .ct-move{--ct-wash:#3a2623}
