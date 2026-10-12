@@ -127,20 +127,46 @@ export function WorldPicker() {
   </div>;
 }
 
-const stageText = ['This is the rule. Click Step 1.', 'The sides are flipped. Now click Step 2.', 'Both ideas are crossed out. That is “not” on both, and it is the contrapositive.'];
+type DemoIdea = { text: string; tone: Tone; struck?: boolean };
+type DemoProps = { left: DemoIdea; right: DemoIdea; captions: [string, string, string]; label: string; rule: string; result: string };
 
-/** Light → Power becomes the contrapositive in two clicks: Step 1 swaps the sides, Step 2 crosses out each idea. */
-export function FlipAndNegateDemo() {
+const lightPower: DemoProps = {
+  left: { text: 'Light', tone: 'amber' },
+  right: { text: 'Power', tone: 'teal' },
+  label: 'Flip the sides, then put “not” on both',
+  rule: 'If the light is on, then the power must be on.',
+  result: 'If the power is off, then the light must be off.',
+  captions: ['This is the rule. Click Step 1.', 'The sides are flipped. Now click Step 2.', 'Both ideas are crossed out. That is “not” on both, and it is the contrapositive.'],
+};
+
+const dishwasherDoor: DemoProps = {
+  left: { text: 'Dishwasher running', tone: 'amber' },
+  right: { text: 'Door open', tone: 'teal', struck: true },
+  label: 'A rule that already has a “not”',
+  rule: 'If the dishwasher is running, then the door must not be open.',
+  result: 'If the door is open, then the dishwasher must not be running.',
+  captions: ['This rule already has a “not” on the right side. Click Step 1.', 'The sides are flipped. Now click Step 2.', 'Each idea gets a “not.” Door open already had one, so the two cancel and it turns positive. That is the contrapositive.'],
+};
+
+/** A rule becomes its contrapositive in two clicks: Step 1 swaps the sides, Step 2 puts "not" on each idea.
+ *  A "not" that was already there cancels: the idea loses its strike and turns positive. */
+function FlipAndNegate({ left, right, captions, label, rule, result }: DemoProps) {
   const [stage, setStage] = useState(0);
   const flipped = stage >= 1;
   const negated = stage >= 2;
-  return <div className="ct-flip" data-stage={stage}>
+  const chip = (idea: DemoIdea, side: 'left' | 'right') => {
+    const struck = !!idea.struck !== negated;
+    return <span className="ct-chip" data-tone={idea.tone} data-side={side} data-moved={flipped} data-struck={struck}>{struck && <span className="ct-sr">not </span>}{idea.text}</span>;
+  };
+  return <div className="ct-flip" data-stage={stage} role="group" aria-label={label}>
+    <p className="ct-flip-sentence" data-kind="rule"><span>The rule</span>{rule}</p>
     <div className="ct-flip-row">
-      <span className="ct-chip" data-tone="amber" data-side="left" data-moved={flipped} data-struck={negated}>Light</span>
+      {chip(left, 'left')}
       <span className="ct-flip-arrow" aria-hidden="true">→</span>
-      <span className="ct-chip" data-tone="teal" data-side="right" data-moved={flipped} data-struck={negated}>Power</span>
+      {chip(right, 'right')}
     </div>
-    <p className="ct-flip-caption" role="status">{stageText[stage]}</p>
+    <p className="ct-flip-sentence" data-kind="result" data-show={negated} aria-hidden={!negated}><span>The contrapositive</span>{result}</p>
+    <p className="ct-flip-caption" role="status">{captions[stage]}</p>
     <div className="ct-flip-controls">
       <button type="button" className="ct-step" data-ready={stage === 0} data-done={stage >= 1} disabled={stage !== 0} onClick={() => setStage(1)}><b aria-hidden="true">{stage >= 1 ? <Check size={16} strokeWidth={3}/> : 1}</b>Step 1. Click here to flip the sides</button>
       <button type="button" className="ct-step" data-ready={stage === 1} data-done={stage >= 2} disabled={stage !== 1} onClick={() => setStage(2)}><b aria-hidden="true">{stage >= 2 ? <Check size={16} strokeWidth={3}/> : 2}</b>Step 2. Click here to put “not” on both</button>
@@ -148,6 +174,9 @@ export function FlipAndNegateDemo() {
     </div>
   </div>;
 }
+
+export const FlipAndNegateDemo = () => <FlipAndNegate {...lightPower}/>;
+export const DoubleNegativeDemo = () => <FlipAndNegate {...dishwasherDoor}/>;
 
 const moves: { key: string; right: boolean; name: string; how: string; left: ReactNode; to: ReactNode; why: string }[] = [
   { key: 'reverse', right: false, name: 'The reverse', how: 'Flip the sides only.', left: 'Power', to: 'Light', why: 'The power can be on while the light is off. Power does not force the light on.' },
@@ -163,10 +192,8 @@ export function ThreeMoves() {
     <div className="ct-moves3-grid">
       {moves.map(move => <article key={move.key} className="ct-move" data-verdict={move.right ? 'right' : 'wrong'}>
         <p className="ct-move-badge">{move.right ? <Check size={16} strokeWidth={3} aria-hidden="true"/> : <X size={16} strokeWidth={3} aria-hidden="true"/>}{move.right ? 'Right' : 'Wrong'}</p>
-        <p className="ct-move-name">{move.name}</p>
         <p className="ct-move-how">{move.how}</p>
         <p className="ct-move-diagram"><strong>{move.left}</strong><span aria-hidden="true">→</span><strong>{move.to}</strong></p>
-        <p className="ct-move-why">{move.why}</p>
       </article>)}
     </div>
   </div>;
@@ -292,4 +319,21 @@ export function RuleDrill() {
       ? <div className="ct-drill-end"><strong>That is all four. Same two steps every time.</strong><button type="button" className="ct-drill-next" onClick={restart}><RotateCcw size={15} aria-hidden="true"/>Try them again</button></div>
       : <button type="button" className="ct-drill-next" onClick={next}>Next rule</button>)}
   </div>;
+}
+
+const LECTURE_TRANSCRIPT = "Here's a rule: if the ceiling light is on, then the power must be on. Now flip the question. What if the power goes out? Could the light still be on? Nope. No power, no light. That's a second rule, and it was hiding inside the first one. If the power is off, then the light must be off. That's the contrapositive. If the necessary condition is absent, the sufficient condition is absent too. Here's how you write it. Start with the rule: Light, arrow, Power. Step one: flip the sides. Power goes on the left, and Light goes on the right. Step two: put a not on both. Not power, arrow, not light. Read it back: if there's no power, the light is not on. The original and the contrapositive are logically equivalent. If one is true, the other is true, so you can use either one. They're interchangeable! Be careful, though. Only flipping the sides is not the contrapositive, and neither is only adding a not. Each one is a different rule, and the original doesn't give it to you. You need both changes together. So when you see a rule, flip it, put a not on both sides, and you've got the contrapositive. Now try it on the next few rules yourself.";
+
+/** Short narrated lecture. The written lesson below stands on its own if the video cannot load. */
+export function ContrapositiveLecture() {
+  const [failed, setFailed] = useState(false);
+  const [read, setRead] = useState(false);
+  return <figure className="ct-lecture">
+    <video controls preload="metadata" playsInline poster="/media/conditionals/contrapositive/lecture.jpg" aria-label="A short lecture on the contrapositive" onError={() => setFailed(true)}>
+      <source src="/media/conditionals/contrapositive/lecture.mp4" type="video/mp4" onError={() => setFailed(true)}/>
+      <track kind="captions" src="/media/conditionals/contrapositive/lecture.vtt" srcLang="en" label="English"/>
+      Your browser cannot play this video. The lesson is written out below.
+    </video>
+    {failed && <p role="alert" className="ct-lecture-error">The video couldn't load. The lesson is written out below.</p>}
+    <details open={failed || undefined} onToggle={event => setRead(event.currentTarget.open)}><summary>Read the video</summary>{(read || failed) && <p>{LECTURE_TRANSCRIPT}</p>}</details>
+  </figure>;
 }
