@@ -355,8 +355,10 @@ it('says the contrapositive is logically equivalent before any example, then sho
   const text = full.slice(0, full.indexOf('Write the meaning you already understand'));
   const order = names.map(name => text.indexOf(name));
   expect(order).toEqual([...order].sort((m, n) => m - n));
-  expect(text.indexOf('logically equivalent')).toBeLessThan(text.indexOf('raffle'));
+  expect(text.indexOf('logically equivalent')).toBeLessThan(text.indexOf('elevator'));
   expect(text).not.toMatch(/promise|nothing to stand on|depends on/i);
+  expect(text).not.toMatch(/raffle|the one other thing/i);
+  expect(text).toMatch(/interchangeable/);
   expect(text).not.toMatch(/[—–]/);
 });
 
