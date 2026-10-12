@@ -225,7 +225,7 @@ it('teaches every Group 1 indicator before the sufficient-side drill, then the c
   const tabs = within(screen.getByRole('group', { name: 'Choose an indicator' })).getAllByRole('button').map(tab => tab.textContent?.replace(/[^A-Za-z ]/g, '').replace(/ opened$/, '').trim());
   expect(tabs).toEqual(['If', 'When', 'Where', 'All', 'The only', 'Every', 'Any']);
   expect(screen.getByText(/Work through all seven indicators/)).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Recall the indicators' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Recall the indicators' })).toBeNull();
   const text = document.body.textContent ?? '';
   // Words the drills test: when, whenever, where, each, every, any, people who.
   for (const word of [/\bWhenever\b/, /\bEach\b/, /people who/i, /\bWhere\b/]) expect(text).toMatch(word);

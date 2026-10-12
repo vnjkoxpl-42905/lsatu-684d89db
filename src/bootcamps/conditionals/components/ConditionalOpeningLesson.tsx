@@ -2,7 +2,6 @@ import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom';
 import { LessonPages, flattenLessonPages } from './LessonPages';
 import { StudyDeck } from './StudyDeck';
-import { IndicatorWordDeck } from './IndicatorWordDeck';
 import { CounterexampleLab, RuleComparisonLab } from './CounterexampleLab';
 import { ConditionalOpeningMedia } from './ConditionalOpeningMedia';
 import { GROUPS } from '@/features/conditional-refresher/content';
@@ -938,7 +937,7 @@ function OpeningLessonBody({ unit, onComplete, continueHref, continueLabel = 'Co
     <article id="co-reading">
       <LessonPages pages={[
         ...(orientation ? conditionalReferencePages() : flattenLessonPages(group ? GroupLessons({ id: unit.id }) : Fundamentals())),
-        ...(!orientation && !group ? [{ title: 'Recall the rule', content: <Section title="Recall the rule"><p>Leave the examples behind for a moment. Say your answer before turning the card, then compare the reasoning.</p><StudyDeck group="foundation"/></Section> }] : group ? [{ title: 'Recall the indicators', content: <Section title="Recall the indicators">{unit.id === 'group-2' ? <><p>Now that you have met both groups, practice telling them apart. Pick the group for each word and the card tells you right away.</p><IndicatorWordDeck/></> : <p>The flashcards mix Group 1 and Group 2 words, so they open once you have met both groups.</p>}</Section> }] : []),
+        ...(!orientation && !group ? [{ title: 'Recall the rule', content: <Section title="Recall the rule"><p>Leave the examples behind for a moment. Say your answer before turning the card, then compare the reasoning.</p><StudyDeck group="foundation"/></Section> }] : []),
         ...(!group ? [{ title: 'Return to the rule', content: <ConditionalOpeningMedia unitId={unit.id}/> }] : []),
         ...(orientation ? [{ title: 'Build a case that proves the limit', content: <Section title="Build a case that proves the limit"><CounterexampleLab/></Section> }] : unit.id === 'group-2' ? [{ title: 'Keep the rule while the words change', content: <Section title="Keep the rule while the words change"><RuleComparisonLab/></Section> }] : []),
         { title: repairTitle, content: <Section id="repair" title={repairTitle}><div className="co-word-comparison"><div><h3>The tempting move</h3><p>{unit.commonMistake.mistake}</p></div><div><h3>Read the rule again</h3><p>{unit.commonMistake.repair}</p></div></div></Section> },

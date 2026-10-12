@@ -39,3 +39,16 @@
 .dark .iw-stage[data-result=wrong] .iw-verdict{color:#ffb8a6}
 .dark .iw-progress{background:#334a50}
 .dark .iw-primary{background:#89c4ac;color:#0f2a32}
+.iw-nav{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.iw-nav button:not(.iw-primary){display:inline-flex;align-items:center;gap:8px;padding:13px 16px;font-size:16px;font-weight:700;color:#173544;background:#fffdf7;border:2px solid #254d65;border-radius:10px;cursor:pointer}
+.iw-nav button:disabled{opacity:.4;cursor:default}
+.dark .iw-nav button:not(.iw-primary){color:#edf3ed;background:#203b40;border-color:#89c4ac}
+.iw-back{gap:8px}
+.iw-back-word{font:clamp(32px,7vw,44px)/1.1 Georgia,serif;color:#173544}
+.iw-back-group{font-size:22px;font-weight:800;color:#254d65}
+.iw-back-kind{font-size:16px;font-weight:600;color:#3d5560}
+.iw-back-side{margin-top:6px;padding-top:12px;border-top:1px solid #cfd9d3;font-size:17px;color:#173544}
+.dark .iw-back-word,.dark .iw-back-side{color:#edf3ed}
+.dark .iw-back-group{color:#9fd3bc}
+.dark .iw-back-kind{color:#c0cccd}
+.dark .iw-back-side{border-color:#50636a}

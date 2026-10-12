@@ -15,3 +15,5 @@ export const displayWord = (word: string) => word.charAt(0).toUpperCase() + word
 export const groupKind = (group: IndicatorGroup) => group === 1 ? 'sufficient' : 'necessary';
 /** The one line on the back of every card. */
 export const groupSentence = (group: IndicatorGroup) => `This is a ${groupKind(group)} condition indicator word, Group ${group}.`;
+/** Sufficient ideas go on the left of the arrow, necessary ideas on the right. */
+export const groupSide = (group: IndicatorGroup) => group === 1 ? 'left' : 'right';

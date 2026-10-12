@@ -54,24 +54,6 @@ it('exposes only the current page, focuses its heading, and retains a checked ca
   expect(screen.getByText('This fits the rule and disproves the reverse.')).toBeVisible();
 });
 
-it('keeps the word deck on the same answered card across page navigation', () => {
-  localStorage.clear();
-  render(lesson('group-2'));
-  jumpTo('Recall the indicators');
-  expect(screen.getByText('Card 1 of 20')).toBeVisible();
-  const word = document.querySelector('.iw-front .iw-word')!.textContent;
-  fireEvent.click(screen.getByRole('button', { name: 'Group 1' }));
-  expect(screen.getByRole('button', { name: 'Next card' })).toBeVisible();
-  turn('Next');
-  turn('Back');
-  expect(screen.getByText('Card 1 of 20')).toBeVisible();
-  expect(document.querySelector('.iw-front .iw-word')!.textContent).toBe(word);
-  expect(screen.getByRole('button', { name: 'Next card' })).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Next card' }));
-  expect(screen.getByText('Card 2 of 20')).toBeVisible();
-  expect(screen.getByRole('button', { name: 'Group 2' })).toBeEnabled();
-});
-
 it('requires an explicit end-page action to record reading, including after a contents jump', async () => {
   const complete = vi.fn();
   render(lesson('group-1', complete));
@@ -90,24 +72,17 @@ it('requires an explicit end-page action to record reading, including after a co
   expect(complete).toHaveBeenCalledTimes(1);
 });
 
-it('starts a changed unit at its first page and only hosts the mixed deck once both groups are taught', () => {
+it('starts a changed unit at its first page and has no flashcards page', () => {
   localStorage.clear();
   const { rerender } = render(lesson('group-1'));
-  jumpTo('Recall the indicators');
-  expect(screen.getByText(/flashcards mix Group 1 and Group 2 words/)).toBeVisible();
-  expect(screen.queryByRole('button', { name: 'Group 1' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Recall the indicators' })).toBeNull();
 
   rerender(lesson('group-2'));
   expect(screen.getByRole('heading', { name: 'Find what is required' })).toBeVisible();
-  expect(screen.queryByRole('button', { name: 'Group 1' })).toBeNull();
-  jumpTo('Recall the indicators');
-  expect(screen.getByText('Card 1 of 20')).toBeVisible();
-  expect(screen.getByRole('button', { name: 'Group 1' })).toBeVisible();
+  expect(screen.queryByRole('button', { name: 'Recall the indicators' })).toBeNull();
 
   rerender(lesson('group-1'));
   expect(screen.getByRole('heading', { name: 'Find the sufficient idea' })).toBeVisible();
-  jumpTo('Recall the indicators');
-  expect(screen.queryByRole('button', { name: 'Group 1' })).toBeNull();
 });
 
 it('separates a present negative requirement from its absence in the fresh two-room exercise', () => {
