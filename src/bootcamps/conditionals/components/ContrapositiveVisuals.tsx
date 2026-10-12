@@ -217,9 +217,9 @@ const ruleCases: RuleCase[] = [
     right: { short: 'Wristband', negated: false },
     place: 2,
     why: {
-      reverse: 'This only flips the sides. A wristband does not prove the guest is on the list.',
-      inverse: 'This changes the “nots” without flipping the sides. Being off the list leaves the wristband open.',
-      contrapositive: 'No wristband, not on the list. The sides flip, and both ideas get a “not.”',
+      reverse: "A wristband doesn't prove the guest is on the list.",
+      inverse: "Being off the list doesn't rule out a wristband.",
+      contrapositive: "If a guest doesn't get a wristband, then the guest isn't on the list.",
     },
   },
   {
@@ -229,9 +229,9 @@ const ruleCases: RuleCase[] = [
     right: { short: 'Shutters down', negated: true },
     place: 0,
     why: {
-      reverse: 'This only flips the sides. Shutters that are up do not prove the shop is open.',
-      inverse: 'This changes the “nots” without flipping the sides. A closed shop could still have its shutters up.',
-      contrapositive: 'Shutters down rule out an open shop. The sides flip, the “not” on D comes off, and O gets one.',
+      reverse: "Shutters that are up don't prove the shop is open.",
+      inverse: "A closed shop can still have its shutters up.",
+      contrapositive: "If the shutters are down, then the shop isn't open.",
     },
   },
   {
@@ -241,9 +241,9 @@ const ruleCases: RuleCase[] = [
     right: { short: 'Dog gets out', negated: false },
     place: 1,
     why: {
-      reverse: 'This only flips the sides. The dog could get out another way, so getting out does not prove the gate is unlocked.',
-      inverse: 'This changes the “nots” without flipping the sides. The rule only speaks about an unlocked gate, so a locked gate leaves the dog open.',
-      contrapositive: 'If the dog can\'t get out, the gate must be locked. The sides flip, and the “not” on L comes off.',
+      reverse: "The dog could get out another way.",
+      inverse: "The rule only covers an unlocked gate.",
+      contrapositive: "If the dog can't get out, then the gate is locked.",
     },
   },
   {
@@ -253,9 +253,9 @@ const ruleCases: RuleCase[] = [
     right: { short: 'Ticket valid', negated: true },
     place: 2,
     why: {
-      reverse: 'This only flips the sides. An invalid ticket might be stamped.',
-      inverse: 'This changes the “nots” without flipping the sides. A stamp alone does not make a ticket valid.',
-      contrapositive: 'A valid ticket must be stamped. The sides flip, and both “nots” come off.',
+      reverse: "An invalid ticket might still be stamped.",
+      inverse: "A stamp alone doesn't make a ticket valid.",
+      contrapositive: "If a ticket is valid, then it is stamped.",
     },
   },
 ];
@@ -286,7 +286,7 @@ export function RuleDrill() {
   const lastTried = wrong.length ? choices[wrong[wrong.length - 1]] : null;
   const message = solved !== null
     ? rule.why.contrapositive
-    : lastTried ? `Not that one. ${rule.why[lastTried.kind as 'reverse' | 'inverse']} Try another.` : 'Pick the diagram that says the same thing as the rule.';
+    : lastTried ? `Not that one. ${rule.why[lastTried.kind as 'reverse' | 'inverse']}` : 'Pick the diagram that says the same thing as the rule.';
   const next = () => { setStep(value => value + 1); setWrong([]); setSolved(null); };
   const restart = () => { setStep(0); setWrong([]); setSolved(null); };
   return <div className="ct-drill" data-step={step}>
@@ -294,7 +294,6 @@ export function RuleDrill() {
       <p className="ct-picker-kicker">Your turn</p>
       <p className="ct-drill-count">Rule {step + 1} of {ruleCases.length}<span className="ct-drill-dots" aria-hidden="true">{ruleCases.map((item, index) => <i key={item.tag} data-state={index < step ? 'done' : index === step ? 'now' : 'todo'}/>)}</span></p>
     </div>
-    <p className="ct-drill-tag">{rule.tag}</p>
     <p className="ct-drill-sentence">{rule.sentence}</p>
     <div className="ct-drill-original" role="img" aria-label={`The rule: ${spoken(rule.left)} implies ${spoken(rule.right)}`}>
       <Pill text={rule.left.short} tone="amber" negated={rule.left.negated}/><span className="ct-drill-arrow" aria-hidden="true">→</span><Pill text={rule.right.short} tone="teal" negated={rule.right.negated}/>
@@ -332,4 +331,15 @@ export function ContrapositiveLecture() {
     {failed && <p role="alert" className="ct-lecture-error">The video couldn't load. The lesson is written out below.</p>}
     <details open={failed || undefined} onToggle={event => setRead(event.currentTarget.open)}><summary>Read the video</summary>{(read || failed) && <p>{LECTURE_TRANSCRIPT}</p>}</details>
   </figure>;
+}
+
+/** "Pop Quiz", centred. Each letter springs up in turn once the title scrolls into view, then a band of light keeps sweeping across the lettering. */
+export function PopQuizTitle() {
+  const [ref, inView] = useInView<HTMLHeadingElement>();
+  const letters = 'Pop Quiz'.split('');
+  return <h2 ref={ref} className="ct-popquiz" data-in-view={inView} aria-label="Pop Quiz">
+    {letters.map((letter, index) => letter === ' '
+      ? <span key={index} className="ct-popquiz-gap" aria-hidden="true"/>
+      : <span key={index} className="ct-popquiz-letter" aria-hidden="true" style={{ animationDelay: `${index * 0.08}s` }}>{letter}</span>)}
+  </h2>;
 }

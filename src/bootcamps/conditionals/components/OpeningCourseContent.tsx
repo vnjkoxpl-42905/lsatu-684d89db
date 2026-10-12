@@ -1,4 +1,4 @@
-import { ContrapositiveLecture, DoubleNegativeDemo, FlipAndNegateDemo, Neg, PulseWord, PunchWord, RuleDrill, ThreeMoves } from './ContrapositiveVisuals';
+import { ContrapositiveLecture, DoubleNegativeDemo, FlipAndNegateDemo, Neg, PopQuizTitle, PulseWord, PunchWord, RuleDrill, ThreeMoves } from './ContrapositiveVisuals';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
@@ -117,10 +117,7 @@ function MissingRequirementNote() {
 }
 
 function FourRules() {
-  return <NoteSection title="Try it on four rules">
-    <p>A rule can have a “not” nowhere, on the right, on the left or on both sides. Every time: flip the sides, put “not” on both ideas, and take off any “not” that was already there. Try one of each.</p>
-    <RuleDrill/>
-  </NoteSection>;
+  return <section className="co-section"><div className="co-section-heading"><PopQuizTitle/></div><RuleDrill/></section>;
 }
 
 function ContrapositiveNote() {

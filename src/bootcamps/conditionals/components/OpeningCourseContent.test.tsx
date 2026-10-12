@@ -341,7 +341,7 @@ it('defines the contrapositive first, then says it was already there, plays the 
   const names = ['What a contrapositive is', 'You already knew this', 'Watch the lesson', 'How to write it', 'What it is not', "Read it, don't always write it"];
   for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
   const full = document.body.textContent ?? '';
-  const text = full.slice(0, full.indexOf('Try it on four rules'));
+  const text = full.slice(0, full.indexOf('Pop Quiz'));
   const order = names.map(name => text.indexOf(name));
   expect(order).toEqual([...order].sort((m, n) => m - n));
   expect(text.indexOf('If the necessary condition is absent, the sufficient condition is absent too')).toBeLessThan(text.indexOf('ceiling light'));
@@ -375,7 +375,7 @@ it('says the contrapositive in plain English early, pulses the key term, and no 
 
 it('works through four fresh rules one at a time, one for each place a not can sit', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
-  expect(screen.getByRole('heading', { name: 'Try it on four rules' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Pop Quiz' })).toBeVisible();
   expect(document.body.textContent).not.toMatch(/patterns?/i);
   const drill = document.querySelector('.ct-drill') as HTMLElement;
   const rules = [
