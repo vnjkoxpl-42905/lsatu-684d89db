@@ -26,7 +26,7 @@ export function flashcardUrl(url: OpeningCourseUrl, group: string, card?: string
 }
 const sets = [
   { id: 'foundation', title: 'Terms and concepts', description: 'Sufficient, necessary, arrow direction, and the difference between a rule and a fact.' },
-  { id: 'indicators', title: 'Indicator words', description: 'One word at a time. Say which group it belongs to, and the card tells you right away.' },
+  { id: 'indicators', title: 'Indicator words', description: 'Group 1 or Group 2? Pick for each word.' },
 ];
 export function FlashcardTools({ url, allowed }: { url: OpeningCourseUrl; allowed: string[] }) {
   const [params, setParams] = useSearchParams();
@@ -41,7 +41,7 @@ export function FlashcardTools({ url, allowed }: { url: OpeningCourseUrl; allowe
   </div>;
   if (set.id === 'indicators') return <div className="oc-course-note co-flashcard-tools">
     <nav className="co-flashcard-return" aria-label="Flashcard navigation"><Link to={url('tools')}><ArrowLeft size={16}/>All flashcard sets</Link>{(params.get('from') === 'sufficient' || params.get('from') === 'necessary') && <Link to={url(params.get('from')!)}>Back to {params.get('from') === 'sufficient' ? 'sufficient' : 'necessary'} condition<ArrowRight size={16}/></Link>}</nav>
-    <header data-course-heading><p className="oc-label">Flashcards</p><h1>{set.title}</h1><p>{set.description}</p></header>
+    <header data-course-heading><h1>{set.title}</h1></header>
     <IndicatorWordDeck/>
   </div>;
   const order = ['foundation-enough', 'foundation-required', 'foundation-reverse', 'foundation-rule-not-fact'];
