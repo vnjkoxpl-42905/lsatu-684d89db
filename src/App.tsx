@@ -30,6 +30,9 @@ import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const DrillSetupPreview = React.lazy(() => import('./dev/DrillSetupPreview'));
 const PracticeExamsPreview = React.lazy(() => import('./dev/PracticeExamsPreview'));
+const ConditionalOpeningPreview = import.meta.env.DEV
+  ? safeLazy(() => import('./dev/ConditionalOpeningPreview'))
+  : () => null;
 const Drill = safeLazy(() => import("./pages/Drill"));
 const DrillLaunchGate = safeLazy(() => import("./components/drill/DrillLaunchGate"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));
@@ -288,6 +291,7 @@ const App = () => {
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
             {import.meta.env.DEV && <Route path="/dev/drill-setup-preview" element={<DrillSetupPreview />} />}
+            {import.meta.env.DEV && <Route path="/dev/conditional-opening-preview" element={<ConditionalOpeningPreview />} />}
             {import.meta.env.DEV && <Route path="/dev/practice-exams-preview/*" element={<PracticeExamsPreview />} />}
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />

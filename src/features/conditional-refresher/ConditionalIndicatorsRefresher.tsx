@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   DIAGRAM_ITEMS, FLASHCARDS, GROUPS, GROUP_LABEL, INDICATOR_POOL,
   negateToken, type DiagramItem, type GroupId,
@@ -227,17 +227,42 @@ function itemContrapositive(item: DiagramItem): { left: string; right: string } 
 
 const norm = (s: string) => s.trim().replace(/\s+/g, " ").toLowerCase();
 
-function DiagramDrills() {
-  const [queue, setQueue] = useState(() => shuffle(DIAGRAM_ITEMS));
+export interface DiagramDrillsProps {
+  items?: DiagramItem[];
+  persistProgress?: boolean;
+  allowContrapositive?: boolean;
+  allowNegation?: boolean;
+  shuffleItems?: boolean;
+  explanations?: Record<string, string>;
+  embedded?: boolean;
+  onResult?: (result: { itemId: string; left: string; right: string; correct: boolean } | null) => void;
+  feedbackForResult?: (result: { left: string; right: string; correct: boolean }) => string;
+}
+
+export function DiagramDrills({
+  items = DIAGRAM_ITEMS,
+  persistProgress = true,
+  allowContrapositive = true,
+  allowNegation = true,
+  shuffleItems = true,
+  explanations = {},
+  embedded = false,
+  onResult,
+  feedbackForResult,
+}: DiagramDrillsProps = {}) {
+  const [queue, setQueue] = useState(() => shuffleItems ? shuffle(items) : [...items]);
   const [index, setIndex] = useState(0);
   const [side, setSide] = useState<"left" | "right">("left");
   const [left, setLeft] = useState<string[]>([]);
   const [right, setRight] = useState<string[]>([]);
   const [checked, setChecked] = useState<null | boolean>(null);
+  const retryButton = useRef<HTMLButtonElement>(null);
+  const leftButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => { if (checked !== null) retryButton.current?.focus(); }, [checked]);
   const item = queue[index];
   const done = index >= queue.length;
 
-  const reset = useCallback(() => { setLeft([]); setRight([]); setSide("left"); setChecked(null); }, []);
+  const reset = useCallback(() => { leftButton.current?.focus(); setLeft([]); setRight([]); setSide("left"); setChecked(null); onResult?.(null); }, [onResult]);
   const push = (token: string) => {
     if (checked !== null) return;
     (side === "left" ? setLeft : setRight)(v => [...v, token]);
@@ -249,10 +274,13 @@ function DiagramDrills() {
     const target = { left: norm(item.left), right: norm(item.right) };
     const contra = itemContrapositive(item);
     const ok = (mine.left === target.left && mine.right === target.right)
-      || (mine.left === norm(contra.left) && mine.right === norm(contra.right));
+      || (allowContrapositive && mine.left === norm(contra.left) && mine.right === norm(contra.right));
     setChecked(ok);
-    const saved = readSaved().diagram ?? { done: 0, correct: 0 };
-    writeSaved({ diagram: { done: saved.done + 1, correct: saved.correct + (ok ? 1 : 0) } });
+    onResult?.({ itemId: item.id, left: mine.left, right: mine.right, correct: ok });
+    if (persistProgress) {
+      const saved = readSaved().diagram ?? { done: 0, correct: 0 };
+      writeSaved({ diagram: { done: saved.done + 1, correct: saved.correct + (ok ? 1 : 0) } });
+    }
   };
 
   if (done) {
@@ -260,7 +288,7 @@ function DiagramDrills() {
       <section className="cir-card">
         <p className="cir-prompt">All diagram drills done.</p>
         <div className="cir-actions">
-          <button type="button" className="cir-btn" onClick={() => { setQueue(shuffle(DIAGRAM_ITEMS)); setIndex(0); reset(); }}>Shuffle again</button>
+          <button type="button" className="cir-btn" onClick={() => { setQueue(shuffleItems ? shuffle(items) : [...items]); setIndex(0); reset(); }}>{shuffleItems ? "Shuffle again" : "Practice again"}</button>
         </div>
       </section>
     );
@@ -269,8 +297,8 @@ function DiagramDrills() {
   const contra = itemContrapositive(item);
   return (
     <section className="cir-card">
-      <div className="cir-bar"><span style={{ width: `${Math.round((index / queue.length) * 100)}%` }} /></div>
-      <p className="cir-meta">Diagram it. Contrapositives count.</p>
+      {!embedded && <><div className="cir-bar"><span style={{ width: `${Math.round((index / queue.length) * 100)}%` }} /></div>
+      <p className="cir-meta">Statement {index + 1} of {queue.length}. {allowContrapositive ? "Diagram it. Contrapositives count." : "Build the original diagram."}</p></>}
       <p className="cir-prompt">{item.prompt}</p>
 
       <div className="cir-build">
@@ -284,13 +312,13 @@ function DiagramDrills() {
       </div>
 
       <div className="cir-side-toggle">
-        <button type="button" className={`cir-btn ${side === "left" ? "" : "ghost"}`} onClick={() => setSide("left")}>Building left</button>
-        <button type="button" className={`cir-btn ${side === "right" ? "" : "ghost"}`} onClick={() => setSide("right")}>Building right</button>
+        <button ref={leftButton} type="button" aria-pressed={side === "left"} className={`cir-btn ${side === "left" ? "" : "ghost"}`} onClick={() => setSide("left")}>{embedded ? 'Choose the left condition' : 'Building left'}</button>
+        <button type="button" aria-pressed={side === "right"} className={`cir-btn ${side === "right" ? "" : "ghost"}`} onClick={() => setSide("right")}>{embedded ? 'Choose the right condition' : 'Building right'}</button>
       </div>
 
       <div className="cir-palette">
-        {item.names.flatMap(name => [name, `/${name}`]).map(token => (
-          <button key={token} type="button" className="cir-token" onClick={() => push(token)}><Tok text={token} /></button>
+        {item.names.flatMap(name => allowNegation ? [name, `/${name}`] : [name]).map(token => (
+          <button key={token} type="button" className="cir-token" aria-label={token.startsWith("/") ? `Not ${token.slice(1)}` : token} disabled={checked !== null} onClick={() => push(token)}><Tok text={token} /></button>
         ))}
         {(item.connectors ?? []).map(c => (
           <button key={c} type="button" className="cir-token" onClick={() => push(c)}>{c}</button>
@@ -300,19 +328,24 @@ function DiagramDrills() {
 
       <div className="cir-actions">
         {checked === null ? (
-          <button type="button" className="cir-btn" disabled={!left.length || !right.length} onClick={check}>Check</button>
+          <button type="button" className="cir-btn" disabled={!left.length || !right.length} onClick={check}>{embedded ? 'Check answer' : 'Check'}</button>
         ) : (
-          <button type="button" className="cir-btn" onClick={() => { setIndex(i => i + 1); reset(); }}>Next</button>
+          <>
+            <button ref={retryButton} type="button" className="cir-btn ghost" onClick={reset}>Try again</button>
+            {!embedded && <button type="button" className="cir-btn" onClick={() => { setIndex(i => i + 1); reset(); }}>Next</button>}
+          </>
         )}
       </div>
 
-      {checked !== null && (
-        <div className="cir-feedback">
-          <p>{checked ? "Right." : "Not quite."}</p>
+      <div className={checked !== null ? "cir-feedback" : undefined} role="status" aria-atomic="true">
+        {checked !== null && <>
+          {!embedded && <p>{checked ? "Right." : "Not quite."}</p>}
+          {feedbackForResult && <p>{feedbackForResult({ left: norm(left.join(' ')), right: norm(right.join(' ')), correct: checked })}</p>}
           <p>Conditional: <Diagram left={item.left} right={item.right} /></p>
-          <p>Contrapositive: <Diagram left={contra.left} right={contra.right} /></p>
-        </div>
-      )}
+          {explanations[item.id] && <p>{explanations[item.id]}</p>}
+          {allowContrapositive && <p>Contrapositive: <Diagram left={contra.left} right={contra.right} /></p>}
+        </>}
+      </div>
     </section>
   );
 }
