@@ -1,0 +1,608 @@
+[
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Critic: People today place an especially high value on respect for others; yet, in their comedy acts, many of today’s most popular comedians display blatant disrespect for others. But when people fail to live up to the very ideals they hold in highest esteem, exaggeration of such failings often forms the basis of successful comedy. Thus the current popularity of comedians who display disrespect in their acts is hardly surprising.",
+    "questionStem": "The critic’s argument depends on which one of the following assumptions?",
+    "answerChoices": {
+      "A": "People who enjoy comedians who display disrespect in their acts do not place a high value on respect for others.",
+      "B": "Only comedians who display blatant disrespect in their acts are currently successful.",
+      "C": "Many people disapprove of the portrayal of blatant disrespect for others in comedy acts.",
+      "D": "People who value an ideal especially highly do not always succeed in living up to this ideal.",
+      "E": "People today fail to live up to their own ideals more frequently than was the case in the past."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Defender",
+      "Dense Stimulus",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "The law firm of Sutherlin, Pérez, and Associates is one of the most successful law firms whose primary specialization is in criminal defense cases. In fact, the firm has a better than 90 percent acquittal rate in such cases. Dalton is an attorney whose primary specialization is in divorce cases, so Dalton certainly cannot be a member of Sutherlin, Pérez, and Associates.",
+    "questionStem": "The reasoning in the argument is flawed because the argument",
+    "answerChoices": {
+      "A": "offers in support of its conclusion pieces of evidence that are mutually contradictory",
+      "B": "overlooks the possibility that a person can practice law without being a member of a law firm",
+      "C": "concludes that someone is not a member of a group on the grounds that that person does not have a characteristic that the group as a whole has",
+      "D": "takes a high rate of success among the members of a group to indicate that the successes are evenly spread among the members",
+      "E": "states a generalization based on a selection that is not representative of the group about which the generalization is supposed to hold true"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Part vs. Whole"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Opponents of allowing triple-trailer trucks to use the national highway system are wrong in claiming that these trucks are more dangerous than other commercial vehicles. In the western part of the country, in areas where triple-trailers are now permitted on some highways, for these vehicles the rate of road accident fatalities per mile of travel is lower than the national rate for other types of commercial vehicles. Clearly, triple-trailers are safer than other commercial vehicles.",
+    "questionStem": "Which one of the following, if true, most substantially weakens the argument?",
+    "answerChoices": {
+      "A": "It takes two smaller semitrailers to haul as much weight as a single triple-trailer can.",
+      "B": "Highways in the sparsely populated West are much less heavily traveled and consequently are far safer than highways in the national system as a whole.",
+      "C": "Opponents of the triple-trailers also once opposed the shorter twin-trailers, which are now common on the nation’s highways.",
+      "D": "In areas where the triple-trailers are permitted, drivers need a special license to operate them.",
+      "E": "For triple-trailers the rate of road accident fatalities per mile of travel was higher last year than in the two previous years."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Whittaker: There can be no such thing as the number of medical school students who drop out before their second year, because if they drop out, they never have a second year. Hudson: By your reasoning I cannot help but become rich, because there is similarly no such thing as my dying before my first million dollars is in the bank.",
+    "questionStem": "Hudson responds to Whittaker by",
+    "answerChoices": {
+      "A": "showing that a relevantly analogous argument leads to an untenable conclusion",
+      "B": "citing a specific example to counter Whittaker’s general claim",
+      "C": "pointing out that Whittaker mistakes a necessary situation for a possible situation",
+      "D": "claiming that what Whittaker says cannot be true because Whittaker acts as if it were false",
+      "E": "showing that Whittaker’s argument relies on analyzing an extreme and unrepresentative case"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Strengthen EXCEPT",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A newly developed light bulb is much more cost-effective than conventional light bulbs: it costs only about 3 times what a conventional light bulb costs but it lasts up to 10 times as long as a conventional light bulb. Despite the manufacturer’s intense efforts to publicize the advantages of the new bulb, one analyst predicts that these new bulbs will prove to sell very poorly.",
+    "questionStem": "Each of the following, if true, provides support for the analyst’s prediction EXCEPT:",
+    "answerChoices": {
+      "A": "The light generated by the new bulb is in the yellow range of the spectrum, a type of artificial light most people find unappealing.",
+      "B": "Most people who purchase light bulbs prefer to buy inexpensive light bulbs rather than more durable but expensive light bulbs.",
+      "C": "A manufacturer of one brand of conventional light bulb has advertised claims that the new light bulb uses more electricity than do conventional light bulbs.",
+      "D": "The new bulb is to be marketed in several different quantities, ranging from packages containing one bulb to packages containing four bulbs.",
+      "E": "A competing manufacturer is about to introduce a light bulb that lasts 10 times as long as a conventional bulb but costs less than a conventional bulb."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The Rienzi, a passenger ship, sank as a result of a hole in its hull, possibly caused by sabotage. Normally, when a holed ship sinks as rapidly as the Rienzi did, water does not enter the ship quickly enough for the ship to be fully flooded when it reaches the ocean floor. Full flooding can be achieved, however, by sabotage. Any ship that sinks deep into the ocean when not fully flooded will implode. Deep-sea photographs, taken of the sunken Rienzi where it rests on the ocean floor, reveal that the Rienzi did not implode.",
+    "questionStem": "Which one of the following must be true on the basis of the information above?",
+    "answerChoices": {
+      "A": "The Rienzi was so constructed as to reduce the risk of sinking by impact.",
+      "B": "If the Rienzi became fully flooded, it did so only after it reached the ocean floor.",
+      "C": "If the Rienzi was not sunk by sabotage, water flooded into it unusually fast.",
+      "D": "If the Rienzi had sunk more slowly, it would have imploded.",
+      "E": "The Rienzi was so strongly constructed as to resist imploding under deep-sea pressure."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Argument Evaluation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "For every 50 dogs that contract a certain disease, one will die from it. A vaccine exists that is virtually 100 percent effective in preventing this disease. Since the risk of death from complications of vaccination is one death per 5,000 vaccinations, it is therefore safer for a dog to receive the vaccine than not to receive it.",
+    "questionStem": "Which one of the following would it be most helpful to know in order to evaluate the argument?",
+    "answerChoices": {
+      "A": "the total number of dogs that die each year from all causes taken together",
+      "B": "whether the vaccine is effective against the disease in household pets other than dogs",
+      "C": "the number of dogs that die each year from diseases other than the disease in question",
+      "D": "the likelihood that a dog will contract another disease such as rabies",
+      "E": "the likelihood that an unvaccinated dog will contract the disease in question"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff",
+      "Medical",
+      "Net Effect",
+      "Percentages",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The symptoms of mental disorders are behavioral, cognitive, or emotional problems. Some patients with mental disorders can be effectively treated with psychotherapy. But it is now known that in some patients mental disorders result from chemical imbalances affecting the brain. Thus these patients can be effectively treated only with medication that will reduce or correct the imbalance.",
+    "questionStem": "The argument depends on assuming which one of the following?",
+    "answerChoices": {
+      "A": "Treatment by psychotherapy can produce no effective reduction in or correction of chemical imbalances that cause mental disorders.",
+      "B": "Treatment with medication always shows faster results for patients with mental disorders than does treatment with psychotherapy.",
+      "C": "Most mental disorders are not the result of chemical imbalances affecting the brain.",
+      "D": "Medication is always more effective in treating patients with mental disorders than is psychotherapy.",
+      "E": "Treatment with psychotherapy has no effect on mental disorders other than a reduction of the symptoms."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Alternatives",
+      "Defender",
+      "Medical",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Argument Part",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Curator: The decision to restore the cloak of the central figure in Veronese’s painting from its present red to the green found underneath is fully justified. Reliable x-ray and chemical tests show that the red pigment was applied after the painting had been completed, and that the red paint was not mixed in Veronese’s workshop. Hence it appears likely that an artist other than Veronese tampered with Veronese’s painting after its completion.\n\nArt critic: But in a copy of Veronese’s painting made shortly after Veronese died, the cloak is red. It is highly unlikely that a copyist would have made so major a change so soon after Veronese’s death.",
+    "questionStem": "The assertion that a later artist tampered with Veronese’s painting serves which one of the following functions in the curator’s argument?",
+    "answerChoices": {
+      "A": "It is the main point toward which the argument as a whole is directed.",
+      "B": "It is a subsidiary conclusion that supports the argument’s main conclusion.",
+      "C": "It is a clarification of a key term of the argument.",
+      "D": "It is a particular instance of the general position to be defended.",
+      "E": "It is a reiteration of the main point that is made for the sake of emphasis."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers",
+      "First Sentence Conclusion",
+      "2-Speaker",
+      "Intermediate Conclusions"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Curator: The decision to restore the cloak of the central figure in Veronese’s painting from its present red to the green found underneath is fully justified. Reliable x-ray and chemical tests show that the red pigment was applied after the painting had been completed, and that the red paint was not mixed in Veronese’s workshop. Hence it appears likely that an artist other than Veronese tampered with Veronese’s painting after its completion.\n\nArt critic: But in a copy of Veronese’s painting made shortly after Veronese died, the cloak is red. It is highly unlikely that a copyist would have made so major a change so soon after Veronese’s death.",
+    "questionStem": "The art critic’s response to the curator would provide the strongest support for which one of the following conclusions?",
+    "answerChoices": {
+      "A": "The copy of Veronese’s painting that was made soon after the painter’s death is indistinguishable from the original.",
+      "B": "No painting should be restored before the painting is tested with technologically sophisticated equipment.",
+      "C": "The proposed restoration will fail to restore Veronese’s painting to the appearance it had at the end of the artist’s lifetime.",
+      "D": "The value of an artist’s work is not necessarily compromised when that work is tampered with by later artists.",
+      "E": "Veronese did not originally intend the central figure’s cloak to be green."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "John works five days each week except when on vacation or during weeks in which national holidays occur. Four days a week he works in an insurance company; on Fridays he works as a blacksmith. Last week there were no holidays, and John was not on vacation. Therefore, he must have worked in the insurance company on Monday, Tuesday, Wednesday, and Thursday last week.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "John never takes a vacation of more than one week in length.",
+      "B": "Every day last week that John worked, he worked for an entire workday.",
+      "C": "John does not take vacations in weeks in which national holidays occur.",
+      "D": "Last week John worked neither on Saturday nor on Sunday.",
+      "E": "There were no days last week on which John both worked in the insurance company and also worked as a blacksmith."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "After several attempts to distract his young parrot from chewing on furniture, George reluctantly took an expert’s advice and gently hit the parrot’s beak whenever the bird started to chew furniture. The bird stopped chewing furniture, but it is now afraid of hands and will sometimes bite. Since chewing on the furniture would not have hurt the bird, George should not have hit it. When Carla’s puppy escaped from her yard, it bounded into a busy street. Although Carla does not generally approve of physical discipline, she hit the puppy sharply with her hand. Now the puppy enters the street only when accompanied by Carla, so Carla was justified in disciplining the puppy.",
+    "questionStem": "Which one of the following principles, if established, would justify the judgments about George’s and Carla’s actions?",
+    "answerChoices": {
+      "A": "When disciplining an animal physically, a trainer should use an object such as a rolled up newspaper to avoid making the animal frightened of hands.",
+      "B": "When training an animal, physical discipline should be used only when such discipline is necessary to correct behavior that could result in serious harm to the animal.",
+      "C": "Using physical discipline to train an animal is justified only when all alternative strategies for correcting undesirable behavior have failed.",
+      "D": "Physical discipline should not be used on immature animals.",
+      "E": "Physical discipline should not be used by an animal trainer except to correct persistent behavior problems."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Most Strongly Supported Fill-in",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Mature white pines intercept almost all the sunlight that shines on them. They leave a deep litter that dries readily, and they grow to prodigious height so that, even when there are large gaps in a stand of such trees, little light reaches the forest floor. For this reason white pines cannot regenerate in their own shade. Thus, when in a dense forest a stand of trees consists of nothing but mature white pines, it is a fair bet that _______.",
+    "questionStem": "Which one of the following most logically concludes the argument?",
+    "answerChoices": {
+      "A": "the ages of the trees in the stand do not differ from each other by much more than the length of time it takes a white pine to grow to maturity",
+      "B": "the land on which the stand is now growing had been cleared of all trees at the time when the first of the white pines started growing",
+      "C": "competition among the trees in the stand for sunlight will soon result in some trees’ dying and the stand thus becoming thinner",
+      "D": "other species of trees will soon begin to colonize the stand, eventually replacing all of the white pines",
+      "E": "any differences in the heights of the trees in the stand are attributable solely to differences in the ages of the trees"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Advertisement: A leading economist has determined that among people who used computers at their place of employment last year, those who also owned portable (“laptop”) computers earned 25 percent more on average than those who did not. It is obvious from this that owning a laptop computer led to a higher-paying job.",
+    "questionStem": "Which one of the following identifies a reasoning error in the argument?",
+    "answerChoices": {
+      "A": "It attempts to support a sweeping generalization on the basis of information about only a small number of individuals.",
+      "B": "Its conclusion merely restates a claim made earlier in the argument.",
+      "C": "It concludes that one thing was caused by another although the evidence given is consistent with the first thing’s having caused the second.",
+      "D": "It offers information as support for a conclusion when that information actually shows that the conclusion is false.",
+      "E": "It uncritically projects currently existing trends indefinitely into the future."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Rhonda will see the movie tomorrow afternoon only if Paul goes to the concert in the afternoon. Paul will not go to the concert unless Ted agrees to go to the concert. However, Ted refuses to go to the concert. So Rhonda will not see the movie tomorrow afternoon.",
+    "questionStem": "The pattern of reasoning displayed above is most closely paralleled in which one of the following?",
+    "answerChoices": {
+      "A": "If Janice comes to visit, Mary will not pay the bills tomorrow. Janice will not come to visit unless she locates a babysitter. However, Janice has located a babysitter, so she will visit Mary.",
+      "B": "Gary will do his laundry tomorrow only if Peter has to go to work. Unless Cathy is ill, Peter will not have to go to work. Since Cathy is not ill, Gary will not do his laundry tomorrow.",
+      "C": "Kelly will barbecue fish tonight if it does not rain and the market has fresh trout. Although the forecast does not call for rain, the market does not have fresh trout. So Kelly will not barbecue fish tonight.",
+      "D": "Lisa will attend the family reunion next week only if one of her brothers, Jared or Karl, also attends. Karl will not attend the reunion, but Jared will. So Lisa will attend the reunion.",
+      "E": "George will not go to the museum tomorrow unless Mark agrees to go. Mark will go to the museum only if he can postpone most of his appointments. Mark has postponed some of his appointments, so he will go to the museum."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Private industry is trying to attract skilled research scientists by offering them high salaries. As a result, most research scientists employed in private industry now earn 50 percent more than do comparably skilled research scientists employed by the government. So, unless government-employed research scientists are motivated more by a sense of public duty than by their own interests, the government is likely to lose its most skilled research scientists to private industry, since none of these scientists would have problems finding private-sector jobs.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Government research scientists are less likely to receive acknowledgment for their research contributions than are research scientists in the private sector.",
+      "B": "None of the research scientists currently employed by the government earns more than the highest-paid researchers employed in the private sector.",
+      "C": "The government does not employ as many research scientists who are highly skilled as does any large company in the private sector which employs research scientists.",
+      "D": "The government does not provide its research scientists with unusually good working conditions or fringe benefits that more than compensate for the lower salaries they receive.",
+      "E": "Research scientists employed in the private sector generally work longer hours than do researchers employed by the government."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender",
+      "Net Effect",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Using fossil energy more efficiently is in the interest of the nation and the global environment, but major improvements are unlikely unless proposed government standards are implemented to eliminate products or practices that are among the least efficient in their class. Objection: Decisions on energy use are best left to the operation of the market.",
+    "questionStem": "Which one of the following, if true, most directly undermines the objection above?",
+    "answerChoices": {
+      "A": "It would be unrealistic to expect society to make the changes necessary to achieve maximum energy efficiency all at once.",
+      "B": "There are products, such as automobiles, that consume energy at a sufficient rate that persons who purchase and use them will become conscious of any unusual energy inefficiency in comparison with other products in the same class.",
+      "C": "Whenever a new mode of generating energy, such as a new fuel, is introduced, a number of support systems, such as a fuel-distribution system, must be created or adapted.",
+      "D": "When energy prices rise, consumers of energy tend to look for new ways to increase energy efficiency, such as by adding insulation to their houses.",
+      "E": "Often the purchaser of a product, such as a landlord buying an appliance, chooses on the basis of purchase price because the purchaser is not the person who will pay for energy used by the product."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Dobson: Some historians claim that the people who built a ring of stones thousands of years ago in Britain were knowledgeable about celestial events. The ground for this claim is that two of the stones determine a line pointing directly to the position of the sun at sunrise at the spring equinox. There are many stones in the ring, however, so the chance that one pair will point in a celestially significant direction is large. Therefore, the people who built the ring were not knowledgeable about celestial events.",
+    "questionStem": "Which one of the following is an error of reasoning in Dobson’s argument?",
+    "answerChoices": {
+      "A": "The failure of cited evidence to establish a statement is taken as evidence that that statement is false.",
+      "B": "Dobson’s conclusion logically contradicts some of the evidence presented in support of it.",
+      "C": "Statements that absolutely establish Dobson’s conclusion are treated as if they merely give some support to that conclusion.",
+      "D": "Something that is merely a matter of opinion is treated as if it were subject to verification as a matter of fact.",
+      "E": "Dobson’s drawing the conclusion relies on interpreting a key term in two different ways."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Abstract Answers",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Nearly all mail that is correctly addressed arrives at its destination within two business days of being sent. In fact, correctly addressed mail takes longer than this only when it is damaged in transit. Overall, however, most mail arrives three business days or more after being sent.",
+    "questionStem": "If the statements above are true, which one of the following must be true?",
+    "answerChoices": {
+      "A": "A large proportion of the mail that is correctly addressed is damaged in transit.",
+      "B": "No incorrectly addressed mail arrives within two business days of being sent.",
+      "C": "Most mail that arrives within two business days of being sent is correctly addressed.",
+      "D": "A large proportion of mail is incorrectly addressed.",
+      "E": "More mail arrives within two business days of being sent than arrives between two and three business days after being sent."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "The report released by the interior ministry states that within the past 5 years the national land-reclamation program has resulted in a 19 percent increase in the amount of arable land within the country. If these figures are accurate, the program has been a resounding success. Senator Armand, a distinguished mathematician and a woman of indisputable brilliance, maintains, however, that the reclamation program could not possibly have been successful. Clearly, therefore, the figures cited in the report cannot be accurate.",
+    "questionStem": "The argument above exhibits an erroneous pattern of reasoning most similar to that exhibited by which one of the following?",
+    "answerChoices": {
+      "A": "Albert’s father claims that Albert does not know where the spare car keys are hidden. Yesterday, however, Albert reported that he had discovered the spare car keys in the garage toolbox, so his father’s claim cannot be true.",
+      "B": "Gloria’s drama teacher claims that her policy is to give each student the opportunity to act in at least one play during the year but, since Gloria, who attended every class, reports that she was not given such an opportunity, the teacher’s claim cannot be true.",
+      "C": "Amos claims that he can hold his breath under water for a full hour. Dr. Treviso, a cardiopulmonary specialist, has stated that humans are physiologically incapable of holding their breath for even half that long; so Amos’ claim cannot be true.",
+      "D": "Evelyn reports that she got home before midnight. Robert, who always knows the time, insists that she did not. If Robert is right, Evelyn could not possibly have listened to the late news; since she admits not having listened to the late news, her report cannot be true.",
+      "E": "Moira, after observing the finish of the 60-kilometer bicycle race, reports that Lee won with Adams a distant third. Lomas, a bicycle engineering expert, insists, however, that Lee could not have won a race in which Adams competed; so Moira’s report cannot be true."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Wirth: All efforts to identify a gene responsible for predisposing people to manic-depression have failed. In fact, nearly all researchers now agree that there is no “manic-depression gene.” Therefore, if these researchers are right, any claim that some people are genetically predisposed to manic-depression is simply false.\n\nChang: I do not dispute your evidence, but I take issue with your conclusion. Many of the researchers you refer to have found evidence that a set of several genes is involved and that complex interactions among these genes produce a predisposition to manic-depression.",
+    "questionStem": "The point at issue between Wirth and Chang is whether",
+    "answerChoices": {
+      "A": "efforts to identify a gene or set of several genes responsible for predisposing people to manic-depression have all failed",
+      "B": "it is likely that researchers will ever be able to find a single gene that predisposes people to manic-depression",
+      "C": "nearly all researchers now agree that there is no manic-depression gene",
+      "D": "current research supports the claim that no one is genetically predisposed to manic-depression",
+      "E": "the efforts made to find a gene that can produce a predisposition to manic-depression were thorough"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Wirth: All efforts to identify a gene responsible for predisposing people to manic-depression have failed. In fact, nearly all researchers now agree that there is no “manic-depression gene.” Therefore, if these researchers are right, any claim that some people are genetically predisposed to manic-depression is simply false.\n\nChang: I do not dispute your evidence, but I take issue with your conclusion. Many of the researchers you refer to have found evidence that a set of several genes is involved and that complex interactions among these genes produce a predisposition to manic-depression.",
+    "questionStem": "Which one of the following most accurately expresses Chang’s criticism of Wirth’s argument?",
+    "answerChoices": {
+      "A": "It presupposes only one possibility where more than one exists.",
+      "B": "It depends on separate pieces of evidence that contradict each other.",
+      "C": "It relies on the opinion of experts in an area outside the experts’ field of expertise.",
+      "D": "It disallows in principle any evidence that would disconfirm its conclusion.",
+      "E": "It treats something that is merely unlikely as though it were impossible."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers",
+      "2-Speaker",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Weaken EXCEPT",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Garbage dumps do not harm wildlife. Evidence is furnished by the Masai-Mara reserve in Kenya, where baboons that use the garbage dumps on the reserve as a food source mature faster and have more offspring than do baboons on the reserve that do not scavenge on garbage.",
+    "questionStem": "Each of the following statements, if true, casts doubt on the argument EXCEPT:",
+    "answerChoices": {
+      "A": "The baboons that feed on the garbage dump are of a different species from those that do not.",
+      "B": "The life expectancy of baboons that eat garbage is significantly lower than that of baboons that do not eat garbage.",
+      "C": "The cholesterol level of garbage-eating baboons is dangerously higher than that of baboons that do not eat garbage.",
+      "D": "The population of hyenas that live near unregulated garbage landfills north of the reserve has doubled in the last two years.",
+      "E": "The rate of birth defects for the baboon population on the reserve has doubled since the first landfills were opened."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Marianne is a professional chess player who hums audibly while playing her matches, thereby distracting her opponents. When ordered by chess officials to cease humming or else be disqualified from professional chess, Marianne protested the order. She argued that since she was unaware of her humming, her humming was involuntary and that therefore she should not be held responsible for it.",
+    "questionStem": "Which one of the following principles, if valid, most helps to support Marianne’s argument against the order?",
+    "answerChoices": {
+      "A": "Chess players who hum audibly while playing their matches should not protest if their opponents also hum.",
+      "B": "Of a player’s actions, only those that are voluntary should be used as justification for disqualifying that player from professional chess.",
+      "C": "A person should be held responsible for those involuntary actions that serve that person’s interests.",
+      "D": "Types of behavior that are not considered voluntary in everyday circumstances should be considered voluntary if they occur in the context of a professional chess match.",
+      "E": "Chess players should be disqualified from professional chess matches if they regularly attempt to distract their opponents."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Marianne is a professional chess player who hums audibly while playing her matches, thereby distracting her opponents. When ordered by chess officials to cease humming or else be disqualified from professional chess, Marianne protested the order. She argued that since she was unaware of her humming, her humming was involuntary and that therefore she should not be held responsible for it.",
+    "questionStem": "Which one of the following, if true, most undermines Marianne’s argument against the order?",
+    "answerChoices": {
+      "A": "The officials of chess have little or no authority to control the behavior of its professional players outside of matches.",
+      "B": "Many of the customs of amateur chess matches are not observed by professional chess players.",
+      "C": "Not all of a person’s involuntary actions are actions of which that person is unaware.",
+      "D": "A person who hums involuntarily can easily learn to notice it and can thereby come to control it.",
+      "E": "Not all of Marianne’s opponents are distracted by her humming during chess matches."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Intermediate Conclusions",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT106",
+    "sectionNumber": 2,
+    "questionNumber": 26,
+    "questionType": "Resolve/Reconcile/Explain EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Smoking in bed has long been the main cause of home fires. Despite a significant decline in cigarette smoking in the last two decades, however, there has been no comparable decline in the number of people killed in home fires.",
+    "questionStem": "Each one of the following statements, if true over the last two decades, helps to resolve the apparent discrepancy above EXCEPT:",
+    "answerChoices": {
+      "A": "Compared to other types of home fires, home fires caused by smoking in bed usually cause relatively little damage before they are extinguished.",
+      "B": "Home fires caused by smoking in bed often break out after the home’s occupants have fallen asleep.",
+      "C": "Smokers who smoke in bed tend to be heavy smokers who are less likely to quit smoking than are smokers who do not smoke in bed.",
+      "D": "An increasing number of people have been killed in home fires that started in the kitchen.",
+      "E": "Population densities have increased, with the result that one home fire can cause more deaths than in previous decades."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  }
+]

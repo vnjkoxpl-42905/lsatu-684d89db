@@ -1,0 +1,620 @@
+[
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Ullman: Plato argued that because of the harmful ways\nin which music can manipulate the emotions,\nsocieties need to put restrictions on the music\ntheir citizens hear. However, because musicians\nseek not to manipulate the emotions but to create\nbeauty, this argument is misguided.",
+    "questionStem": "Ullman’s argument is most vulnerable to criticism on the\ngrounds that it fails to consider the possibility that",
+    "answerChoices": {
+      "A": "what musicians intend their music to do and what it actually does are different",
+      "B": "those with the power to censor music would not censor other forms of expression",
+      "C": "there are other, more convincing arguments for allowing the censorship of music",
+      "D": "other forms of art have more potential to be harmful to society than music has",
+      "E": "artists who are trying to manipulate people’s emotions to control them are not likely to admit it"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Belief / Knowledge / Intent",
+      "Anti-Causal",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Physician: A tax on saturated fat, which was intended\nto reduce consumption of unhealthy foods, has\nbeen repealed after having been in effect for only\nseven months. The tax was apparently having\nsome undesirable and unintended consequences,\nencouraging people to travel to neighboring\ncountries to purchase certain foods, for example.\nNonetheless, the tax should not have been\nrepealed so soon.",
+    "questionStem": "Which one of the following principles, if valid, most\nhelps to justify the physician’s conclusion regarding\nthe tax?",
+    "answerChoices": {
+      "A": "A tax on unhealthy foods should be implemented only if it can be known with a high degree of certainty that it will actually improve people’s health.",
+      "B": "It is not possible to adequately gauge the impact of a tax intended to affect people’s health until the tax has been in effect for at least one year.",
+      "C": "Before any law intended to improve people’s health is implemented, all foreseeable negative consequences should be carefully considered.",
+      "D": "A law intended to improve people’s health should be repealed if it is clear that most people are evading the law.",
+      "E": "A tax on unhealthy foods should be applied only to those foods that are widely believed to be the most unhealthy."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Legislator: A foreign company is attempting to buy\nFerroMetal, a domestic iron-mining company. We\nshould prohibit this sale. Since manufacturing is\ncentral to our economy, we need a dependable\nsupply of iron ore. If we allow a foreign company\nto buy FerroMetal, we will have no grounds\nto stop foreign companies from buying other\niron-mining companies. Soon foreigners will\ncontrol most of the iron mining here, leaving our\nmanufacturers at their mercy. The end result will\nbe that our manufacturers will no longer be able\nto rely on a domestic supply of iron ore.",
+    "questionStem": "Which one of the following most accurately describes a\nflaw in the reasoning of the legislator’s argument?",
+    "answerChoices": {
+      "A": "The argument draws a conclusion that simply restates a premise presented in support of that conclusion.",
+      "B": "The argument takes for granted that what is true of one particular industry is true of industry in general.",
+      "C": "The argument defends a practice solely on the grounds that the practice is widely accepted.",
+      "D": "The argument presents a chain of possible consequences of a given event as if it were the only possible chain of consequences of that event.",
+      "E": "The argument concludes that one event would cause a second event even though the second event would have to precede the first."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Argue the Anti-Conclusion",
+      "Causal Chains",
+      "Focused on Evidence",
+      "Plans / Recommendations",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Food company engineer: I stand by my decision to order\nthe dumping of small amounts of chemicals\ninto the local river even though there is some\nevidence that this material may pose health\nproblems. I fish in the river myself and will\ncontinue to do so. Furthermore, I will have no\nproblem if other food manufacturers do what our\ncompany does.",
+    "questionStem": "The engineer’s reasoning most closely conforms to\nwhich one of the following principles?",
+    "answerChoices": {
+      "A": "One is justified in performing an act if other people are also planning to perform that kind of act.",
+      "B": "One should always choose to act in a way that will benefit the greatest number of people.",
+      "C": "One is justified in performing an act if one is willing to submit oneself to the consequences of that action performed by oneself or others.",
+      "D": "One should never perform an act until one has fully analyzed all the ways in which that act could impact others.",
+      "E": "One has the right to perform an act as long as that act does not harm anyone else."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Political strategist: Clearly, attacking an opposing\ncandidate on philosophical grounds is generally\nmore effective than attacking the details of the\nopponent’s policy proposals. A philosophical\nattack links an opponent’s policy proposals to an\noverarching ideological scheme, thereby telling\na story and providing context. This makes the\nattack emotionally compelling.",
+    "questionStem": "Which one of the following is an assumption required by\nthe political strategist’s argument?",
+    "answerChoices": {
+      "A": "The stories that people are most likely to remember are those that are emotionally compelling.",
+      "B": "Political attacks that are emotionally compelling are generally more effective than those that are not.",
+      "C": "Political attacks that tell a story are able to provide more context than those that do not.",
+      "D": "Voters are typically uninterested in the details of candidates’ policy proposals.",
+      "E": "Most candidates’ policy proposals are grounded in an overarching ideological scheme."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Michaela: I think doctors who complain about patients\ndoing medical research on the Internet are being\na little unfair. It seems only natural that a patient\nwould want to know as much as possible about\nhis or her condition. Sam: It is not unfair. Doctors have undergone years of\ntraining. How can you maintain that a doctor’s\nopinion is not worth more than something an\nuntrained person comes up with after searching\nthe Internet?",
+    "questionStem": "Sam’s response indicates that he interpreted Michaela’s\nremarks to mean that",
+    "answerChoices": {
+      "A": "health information found on the Internet is trustworthy",
+      "B": "the opinion of a patient who has done Internet research on his or her condition should have at least as much weight as the opinion of a doctor",
+      "C": "the opinion of a patient’s own doctor should not be given more weight than the opinions of doctors published on websites",
+      "D": "a doctor’s explanation of a patient’s symptoms should be taken more seriously than the patient’s own view of his or her symptoms",
+      "E": "patients who do not research their conditions on the Internet give their doctors’ opinions more consideration"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Clarification/Misunderstanding"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Strengthen",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Principle: People should not feed wild animals because it\nmakes them dependent on humans and less likely\nto survive on their own.\nSituation: Bird lovers commonly feed wild birds to attract\nthem to their yards and gardens.",
+    "questionStem": "Which one of the following, if assumed, would most\nhelp to justify treating the human feeding of wild birds\nas an exception to the principle above?",
+    "answerChoices": {
+      "A": "Congregating around human bird feeders makes wild birds more vulnerable to predators and diseases.",
+      "B": "Some species of wild birds benefit humans by consuming large numbers of mosquitoes and other insect pests.",
+      "C": "Wild birds are much more likely to congregate in yards where they are fed than in yards where they are not fed.",
+      "D": "Most bird lovers are very active in efforts to preserve the habitats of threatened species of wild birds and other animals.",
+      "E": "Human settlement is so pervasive in the habitat of most wild birds that they must depend in part on human sources of food for survival."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Normally, political candidates send out campaign\nmaterial in order to influence popular opinion. But the\nrecent ads for Ebsen’s campaign were sent to too few\nhouseholds to serve this purpose effectively. The ads\nwere evidently sent out to test their potential to influence\npopular opinion. They covered a wide variety of topics,\nand Ebsen’s campaign has been spending heavily on\nfollow-up to gauge their effect on recipients.",
+    "questionStem": "Which one of the following most accurately expresses\nthe conclusion drawn in the argument above?",
+    "answerChoices": {
+      "A": "Normally, political candidates send out campaign material to influence popular opinion.",
+      "B": "The recent ads for Ebsen’s campaign were sent to too few households to influence popular opinion effectively.",
+      "C": "The recent ads for Ebsen’s campaign were sent out to test their potential to influence popular opinion.",
+      "D": "The recent ads for Ebsen’s campaign covered a wide variety of topics.",
+      "E": "Ebsen’s campaign has been spending heavily on follow-up surveys to gauge the ads’ effect on recipients."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Last year, pharmaceutical manufacturers significantly\nincreased the amount of money they spent promoting\nnew drugs, which they do mainly by sending sales\nrepresentatives to visit physicians in their offices.\nHowever, two years ago there was an average of 640\nsuch visits per representative, whereas last year that\nfigure fell to 501. So the additional promotion must have\nbeen counterproductive, making physicians less willing\nto receive visits by pharmaceutical sales representatives.",
+    "questionStem": "Which one of the following, if true, most weakens the\nargument?",
+    "answerChoices": {
+      "A": "Most pharmaceutical manufacturers increased the size of their sales forces so that their sales representatives could devote more time to each physician.",
+      "B": "Physicians who receive visits from pharmaceutical sales representatives usually accept free samples of medication from the representatives’ companies.",
+      "C": "Most pharmaceutical companies did not increase the amount of money they spend promoting drugs through advertising targeted directly at consumers.",
+      "D": "Most physicians who agree to receive a visit from a pharmaceutical sales representative will see that representative more than once during a given year.",
+      "E": "The more visits a physician receives from a pharmaceutical sales representative, the more likely he or she is to prescribe drugs made by that representative’s company."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Archaeologist: The extensive network of ancient tracks\non the island of Malta was most likely created\nthrough erosion caused by the passage of wheeled\nvehicles. Some researchers have suggested that\nthe tracks were in fact manually cut to facilitate\nthe passage of carts, citing the uniformity in\ntrack depth. However, this uniformity is more\nlikely indicative of wheel diameter: Routes were\nutilized until tracks eroded to a depth that made\nvehicle passage impossible.",
+    "questionStem": "Which one of the following is the overall conclusion of\nthe archaeologist’s argument?",
+    "answerChoices": {
+      "A": "The extensive network of ancient tracks on the island of Malta was most likely created through erosion caused by the passage of wheeled vehicles.",
+      "B": "Some researchers have suggested that the ancient tracks on the island of Malta were in fact manually cut to facilitate the passage of carts.",
+      "C": "Some researchers cite the uniformity of the depth of the ancient tracks on the island of Malta to support the suggestion that they were manually cut.",
+      "D": "The uniformity of depth of the ancient tracks on the island of Malta is probably indicative of the wheel diameter of the carts that passed over them.",
+      "E": "The ancient tracks on the island of Malta were utilized until they eroded to a depth that made vehicle passage impossible."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Explain Curious Fact",
+      "Intermediate Conclusions",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The goal of reforesting degraded land is to create an\narea with a multitude of thriving tree species. But some\nexperienced land managers use a reforesting strategy that\ninvolves planting a single fast-growing tree species.",
+    "questionStem": "Which one of the following, if true, most helps to resolve\nthe apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "Tree species that require abundant sunlight tend to grow quickly on degraded land.",
+      "B": "An area with a multitude of thriving tree species tends to be more aesthetically pleasing than an area with only a single tree species.",
+      "C": "The reforestation of degraded land is generally unsuccessful unless the land is planted with tree species that are native to the area designated for reforestation.",
+      "D": "The growth of trees attracts wildlife whose activities contribute to the dispersal of a large variety of tree seeds from surrounding areas.",
+      "E": "The process of reforesting degraded sites is time consuming and labor intensive."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "An independent computer service company tallied the\nservice requests it receives for individual brands of\npersonal computers. It found that, after factoring in each\nbrand’s market share, KRV brand computers had the\nlargest proportion of service requests, whereas ProBit\nbrand computers had the smallest proportion of service\nrequests. Obviously, ProBit is the more reliable personal\ncomputer brand.",
+    "questionStem": "Which one of the following, if true, most seriously\nweakens the argument?",
+    "answerChoices": {
+      "A": "The proportions of service requests for the other computer brands in the tally were clustered much closer to the ProBit level of service requests than to the KRV level.",
+      "B": "For some computer brands, but not for others, most service requests are made to the manufacturer’s service department rather than to an independent service company.",
+      "C": "The company that did the tally receives more service requests for ProBit brand computers than does any other independent computer service company.",
+      "D": "The computer brands covered in the computer service company’s tally differ greatly with respect to their market share.",
+      "E": "ProBit has been selling personal computers for many more years than has KRV ."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "When scientific journals began to offer full online access\nto their articles in addition to the traditional printed\nvolumes, scientists gained access to more journals and\neasier access to back issues. Surprisingly, this did not\nlead to a broader variety of articles being cited in new\nscientific articles. Instead, it led to a greater tendency\namong scientists to cite the same articles that their fellow\nscientists cited.",
+    "questionStem": "Which one of the following, if true, most helps to\nexplain the surprising outcome described above?",
+    "answerChoices": {
+      "A": "A few of the most authoritative scientific journals were among the first to offer full online access to their articles.",
+      "B": "Scientists who wrote a lot of articles were the most enthusiastic about accessing journal articles online.",
+      "C": "Scientists are more likely to cite articles by scientists that they know than they are to cite articles by scientists they have never met, even if the latter are more prominent.",
+      "D": "Several new scientific journals appeared at roughly the same time that full online access to scientific articles became commonplace.",
+      "E": "Online searching made it easier for scientists to identify the articles that present the most highly regarded views on an issue, which they prefer to cite."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Researcher: People are able to tell whether a person is\nextroverted just by looking at pictures in which\nthe person has a neutral expression. Since people\nare also able to tell whether a chimpanzee\nbehaves dominantly just by looking at a picture\nof the chimpanzee’s expressionless face, and\nsince both humans and chimpanzees are primates,\nwe conclude that this ability is probably not\nacquired solely through culture but rather as a\nresult of primate biology.",
+    "questionStem": "Which one of the following, if true, most strengthens the\nresearcher’s argument?",
+    "answerChoices": {
+      "A": "People are generally unable to judge the dominance of bonobos, which are also primates, by looking at pictures of them.",
+      "B": "People are able to identify a wider range of personality traits from pictures of other people than from pictures of chimpanzees.",
+      "C": "Extroversion in people and dominant behavior in chimpanzees are both indicators of a genetic predisposition to assertiveness.",
+      "D": "Any common ancestor of humans and chimpanzees would have to have lived over 7 million years ago.",
+      "E": "Some of the pictures of people used in the experiments were composites of several different people."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "All the apartments on 20th Avenue are in old houses.\nHowever, there are twice as many apartments on 20th\nAvenue as there are old houses. Therefore, most old\nhouses on 20th Avenue contain more than one apartment.",
+    "questionStem": "The reasoning in the argument above is most vulnerable\nto criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "overlooks the possibility that some of the buildings on 20th Avenue are not old houses",
+      "B": "draws a conclusion that simply restates one of the premises offered in support of the conclusion",
+      "C": "fails to consider the possibility that some buildings on 20th Avenue may offer types of rental accommodation other than apartments",
+      "D": "confuses a condition whose presence would be sufficient to ensure the truth of the argument’s conclusion with a condition whose presence is required in order for the conclusion to be true",
+      "E": "fails to address the possibility that a significant number of old houses on 20th Avenue contain three or more apartments"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Scientist: An orbiting spacecraft detected a short-term\nspike in sulfur dioxide in Venus’s atmosphere.\nV olcanoes are known to cause sulfur dioxide\nspikes in Earth’s atmosphere, and Venus has\nhundreds of mountains that show signs of past\nvolcanic activity. But we should not conclude that\nvolcanic activity caused the spike on Venus. No\nactive volcanoes have been identified on Venus,\nand planetary atmospheres are known to undergo\nsome cyclical variations in chemical composition.",
+    "questionStem": "Which one of the following, if true, most weakens the\nscientist’s argument?",
+    "answerChoices": {
+      "A": "Conditions on Venus make it unlikely that any instrument targeting Venus would detect a volcanic eruption directly.",
+      "B": "Evidence suggests that there was a short-term spike in sulfur dioxide in Venus’s atmosphere 30 years earlier.",
+      "C": "Levels of sulfur dioxide have been higher in Venus’s atmosphere than in Earth’s atmosphere over the long term.",
+      "D": "Traces of the sulfur dioxide from volcanic eruptions on Earth are detectable in the atmosphere years after the eruptions take place.",
+      "E": "Most instances of sulfur dioxide spikes in the Earth’s atmosphere are caused by the burning of fossil fuels."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Focused on Evidence"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Increasing the electrical load carried on a transmission\nline increases the line’s temperature, and too great a load\nwill cause the line to exceed its maximum operating\ntemperature. The line’s temperature is also affected by\nwind speed and direction: Strong winds cool the line\nmore than light winds, and wind blowing across a line\ncools it more than does wind blowing parallel to it.",
+    "questionStem": "Which one of the following is most strongly supported\nby the information above?",
+    "answerChoices": {
+      "A": "Electrical utility companies typically increase the electrical load on their transmission lines on days on which the wind has a strong cooling effect.",
+      "B": "Transmission lines that run parallel to the prevailing winds can generally carry greater electrical loads than otherwise identical lines at a right angle to the prevailing winds.",
+      "C": "The electrical load that a transmission line can carry without reaching its maximum operating temperature increases when the wind speed increases.",
+      "D": "Air temperature has less effect on the temperature of a transmission line than wind speed does.",
+      "E": "The maximum operating temperature of a transmission line is greater on windy days than on calm days."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "In grasslands near the Namib Desert there are “fairy\ncircles”—large, circular patches that are entirely devoid\nof vegetation. Since sand termite colonies were found in\nevery fairy circle they investigated, scientists hypothesize\nthat it is the burrowing activities of these termites that\ncause the circles to form.",
+    "questionStem": "Which one of the following, if true, most supports the\nscientists’ hypothesis?",
+    "answerChoices": {
+      "A": "Dying grass plants within newly forming fairy circles are damaged only at the roots.",
+      "B": "The grasses that grow around fairy circles are able to survive even the harshest and most prolonged droughts in the region.",
+      "C": "The soil in fairy circles typically has higher water content than the soil in areas immediately outside the circles.",
+      "D": "Fairy circles tend to form in areas that already have numerous other fairy circles.",
+      "E": "Species of animals that feed on sand termites are often found living near fairy circles."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Munroe was elected in a landslide. It is impossible for\nMunroe to have been elected without both a fundamental\nshift in the sentiments of the electorate and a well-run\ncampaign. Thus, one cannot avoid the conclusion that\nthere has been a fundamental shift in the sentiments of\nthe electorate.",
+    "questionStem": "Which one of the following arguments is most closely\nparallel in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "The Park Street Cafe closed this year even though its customer base was satisfied. So, because its customer base was satisfied, the only conclusion one can draw is that the Park Street Cafe closed because it was facing strong competition.",
+      "B": "The Park Street Cafe closed this year. So we must conclude that the Park Street Cafe was facing strong competition, since it would not have closed unless it was true both that it was facing strong competition and that its customer base was unsatisfied.",
+      "C": "No one can argue that the Park Street Cafe closed this year because its customer base was not satisfied. Even if its customer base was not satisfied, the Park Street Cafe would have closed only if it was facing strong competition.",
+      "D": "The Park Street Cafe closed this year. There was no reason for it to remain open if it was facing strong competition and had an unsatisfied customer base. So one cannot rule out the possibility that it was both facing strong competition and had an unsatisfied customer base.",
+      "E": "The Park Street Cafe closed this year. In order to stay open, it needed a lack of competition and it needed a satisfied customer base. Because it had neither, the unavoidable conclusion is that the Park Street Cafe could not have stayed open this year."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "For pollinating certain crops such as cranberries,\nbumblebees are far more efficient than honeybees. This\nis because a bumblebee tends to visit only a few plant\nspecies in a limited area, whereas a honeybee generally\nflies over a much broader area and visits a wider variety\nof species.",
+    "questionStem": "Which one of the following is most strongly supported\nby the information above?",
+    "answerChoices": {
+      "A": "If a honeybee visits a wider variety of plant species than a bumblebee visits, the honeybee will be less efficient than the bumblebee at pollinating any one of those species.",
+      "B": "The number of plant species other than cranberries that a bee visits affects the efficiency with which the bee pollinates cranberries.",
+      "C": "The broader an area a bee flies over, the smaller the number of plant species that bee will be able to visit.",
+      "D": "Cranberries are typically found concentrated in limited areas that bumblebees are more likely than honeybees ever to visit.",
+      "E": "The greater the likelihood of a given bee species visiting one or more plants in a given cranberry crop, the more efficient that bee species will be at pollinating that crop."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Economist: Currently the interest rates that banks pay\nto borrow are higher than the interest rates that\nthey can receive for loans to large, financially\nstrong companies. Banks will not currently lend\nto companies that are not financially strong, and\ntotal lending by banks to small and medium-sized\ncompanies is less than it was five years ago. So\ntotal bank lending to companies is less than it\nwas five years ago.",
+    "questionStem": "The economist’s conclusion follows logically if which\none of the following is assumed?",
+    "answerChoices": {
+      "A": "Banks will not lend money at interest rates that are lower than the interest rates they pay to borrow.",
+      "B": "Most small and medium-sized companies were financially stronger five years ago than they are now.",
+      "C": "Five years ago, some banks would lend to companies that were not financially strong.",
+      "D": "The interest rates that banks currently pay to borrow are higher than the rates they paid five years ago.",
+      "E": "The interest rates that small and medium-sized companies pay to borrow are higher than those paid by large, financially strong companies."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Must Be False",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Counselor: To be kind to someone, one must want that\nperson to prosper. Yet, even two people who\ndislike each other may nevertheless treat each\nother with respect. And while no two people who\ndislike each other can be fully content in each\nother’s presence, any two people who do not\ndislike each other will be kind to each other.",
+    "questionStem": "If the counselor’s statements are true, then which one of\nthe following must be false?",
+    "answerChoices": {
+      "A": "Some people who like each other are not fully content in each other’s presence.",
+      "B": "Some people who are fully content in each other’s presence do not want each other to prosper.",
+      "C": "Some people who treat each other with respect are not fully content in each other’s presence.",
+      "D": "Some people who want each other to prosper dislike each other.",
+      "E": "Some people who are kind to each other do not treat each other with respect."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A gram of the artificial sweetener aspartame is much\nsweeter than a gram of sugar. Soft drinks that are\nsweetened with sugar are, of course, sweet, so those\nsweetened with aspartame must be even sweeter. Thus\npeople who regularly drink soft drinks sweetened with\naspartame will develop a preference for extremely sweet\nproducts.",
+    "questionStem": "Which one of the following arguments exhibits flawed\nreasoning that is most similar to flawed reasoning in the\nargument above?",
+    "answerChoices": {
+      "A": "People sometimes develop a preference for foods that they initially disliked. So if you dislike a new food, then you will eventually develop a preference for it.",
+      "B": "Most people own more books than televisions. Moreover, it takes longer to read a book than to watch an episode of a television show. So most people must spend more time reading than they do watching television.",
+      "C": "Joe’s piggy bank has only pennies in it, and Maria’s has only nickels. Nickels are worth much more than pennies. It therefore follows that there is more money in Maria’s piggy bank than in Joe’s.",
+      "D": "Stephanie likes hot summer weather much more than Katherine does. So the place where Stephanie grew up must have had more days of hot summer weather than the place where Katherine grew up.",
+      "E": "Guillermo has a much shorter drive to work than Abdul does. So Guillermo’s estimate of the average commute for workers in the country as a whole is likely to be lower than Abdul’s estimate."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Part vs. Whole"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Economist: If minimum wage levels are low, employers\nhave a greater incentive to hire more workers\nthan to buy productivity-enhancing new\ntechnology. As a result, productivity growth,\nwhich is necessary for higher average living\nstandards, falls off. Conversely, high minimum\nwage levels result in higher productivity. Thus,\nraising our currently low minimum wage levels\nwould improve the country’s overall economic\nhealth more than any hiring cutbacks triggered by\nthe raise would harm it.",
+    "questionStem": "Which one of the following, if true, most strengthens the\neconomist’s argument?",
+    "answerChoices": {
+      "A": "Productivity growth in a country usually leads to an eventual increase in job creation.",
+      "B": "The economist’s country has seen a slow but steady increase in its unemployment rate over the last decade.",
+      "C": "A country’s unemployment rate is a key factor in determining its average living standards.",
+      "D": "The economist’s country currently lags behind other countries in the development of new technology.",
+      "E": "Productivity-enhancing new technology tends to quickly become outdated."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Binaries",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Predictions",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Mayor: Periodically an ice cream company will hold a\nfree ice cream day as a promotion. Showing up\nmay not cost you any money, but it sure does\ncost you time. We learn from this that when\nsomething valuable costs no money you get\noverconsumption and long lines. Currently, those\nwho drive to work complain about the congestion\nthey face in their rush-hour commutes. What is\nneeded is a system for charging people for the\nuse of roads during rush hour. Then rush hour\ncongestion will abate.",
+    "questionStem": "The claim that when something valuable costs no money\nyou get overconsumption and long lines plays which one\nof the following roles in the mayor’s argument?",
+    "answerChoices": {
+      "A": "It is a hypothesis that is rejected in favor of the hypothesis stated in the argument’s overall conclusion.",
+      "B": "It is a concession made to those who dispute an analogy drawn in the argument.",
+      "C": "It helps establish the importance of the argument’s overall conclusion, but is not offered as evidence for that conclusion.",
+      "D": "It is a general claim used in support of the argument’s overall conclusion.",
+      "E": "It is the overall conclusion of the argument."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT151",
+    "sectionNumber": 2,
+    "questionNumber": 26,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The advertising campaign for Roadwise auto insurance\nis notable for the variety of its commercials, which\nrange from straightforward and informative to funny\nand offbeat. This is unusual in the advertising world,\nwhere companies typically strive for uniformity in\nadvertising in order to establish a brand identity with\ntheir target demographic. But in this case variety is a\nsmart approach, since purchasers of auto insurance are so\ndemographically diverse.",
+    "questionStem": "Which one of the following, if true, adds the most\nsupport for the conclusion of the argument?",
+    "answerChoices": {
+      "A": "Advertising campaigns designed to target one demographic sometimes appeal to a wider group of people than expected.",
+      "B": "Consistent efforts to establish a brand identity are critical for encouraging product interest and improving company recognition.",
+      "C": "Fewer people are influenced by auto insurance commercials than by commercials for other types of products.",
+      "D": "Advertising campaigns that target one demographic often alienate people who are not part of the target demographic.",
+      "E": "Efforts to influence a target demographic do not pay off when the content of the advertising campaign falls short."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Causal Difference-Maker"
+    ]
+  }
+]

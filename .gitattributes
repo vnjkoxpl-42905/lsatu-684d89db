@@ -1,0 +1,25 @@
+# Scripts are LF, in the index and in the working copy.
+#
+# Not a style preference. A `.mjs` under scripts/ that starts with a shebang
+# and has CRLF line endings cannot be imported by a vitest test: it fails with
+# `SyntaxError: Invalid or unexpected token`, reported against line 4 of the
+# *importing* test file, which is a comment.
+#
+# `src/lib/__tests__/questionStatsBuilder.test.ts` sat broken on main for
+# exactly this reason and its whole 17-test suite never ran. A previous
+# investigation cleared the test file and was right to: it was byte-identical to
+# origin/main, valid UTF-8, and `node --check` passed on both of its imports.
+# The problem was in `scripts/knowledge/build-question-stats.mjs`, and the
+# reported position was not where it was.
+#
+# Isolated 2026-09-09 in a clean checkout, one variable at a time. CRLF on the
+# test file alone: passes. CRLF on both imports: fails. CRLF on
+# build-question-stats.mjs alone: fails. Same file, same CRLF, shebang removed:
+# passes. So it is the shebang and the line endings together, and 1,796 CRLF
+# files under src/ are unaffected because nothing strips a shebang from them.
+#
+# `core.autocrlf` is `input` here, so git already writes LF on checkout. What
+# this adds is that a tool which rewrites a whole file cannot quietly leave CRLF
+# behind in a tree git still calls clean. `src/lib/__tests__/lineEndings.test.ts`
+# is the guard that speaks up if one appears anyway.
+scripts/** text=auto eol=lf
