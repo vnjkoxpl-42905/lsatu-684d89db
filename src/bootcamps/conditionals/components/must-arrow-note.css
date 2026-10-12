@@ -48,3 +48,5 @@
 #root .ma-purpose ul { list-style: disc; }
 #root .ct-moves { list-style: decimal; margin: 0 0 1.5rem; padding-left: 1.6rem; display: grid; gap: .6rem; font-size: clamp(1.125rem, 1rem + .3vw, 1.3rem); line-height: 1.6; }
 #root .ct-compare td:nth-child(2) { white-space: nowrap; }
+#root .ct-list { list-style: disc; margin: 0 0 1.5rem; padding-left: 1.6rem; display: grid; gap: .5rem; font-size: clamp(1.125rem, 1rem + .3vw, 1.3rem); line-height: 1.6; }
+#root .ma-lesson .ct-definition, #root .co-section p.ct-definition { padding: 1.1rem 1.4rem; background: var(--co-polish-fill, oklch(96% .02 82)); border-left: 3px solid var(--co-teal, oklch(43% .08 180)); border-radius: 0 .65rem .65rem 0; margin: 1.25rem 0; font-size: clamp(1.2rem, 1.1rem + .4vw, 1.4rem); }

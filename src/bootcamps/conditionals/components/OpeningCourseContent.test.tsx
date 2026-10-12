@@ -347,18 +347,21 @@ it('shows every combination of the two conditions and rejects only a win without
   expect(recap.textContent).toContain('not a claim that any of them happened');
 });
 
-it('says the contrapositive is logically equivalent before any example, then shows it, writes it, and sets it against the reverse and inverse', () => {
+it('defines the contrapositive first, in the source order: definition, equivalence, four situations, writing it, what it is not, reading it', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
-  const names = ['What a contrapositive is', 'See it work', 'How to write it', 'What it is not', 'The steps', 'Why it matters'];
+  const names = ['What a contrapositive is', "Why you didn't have to learn anything new", 'What the rule tells you, and when', 'How to write it', 'What it is not', "Read it, don't always write it", 'Why it matters'];
   for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
   const full = document.body.textContent ?? '';
   const text = full.slice(0, full.indexOf('Write the meaning you already understand'));
   const order = names.map(name => text.indexOf(name));
   expect(order).toEqual([...order].sort((m, n) => m - n));
-  expect(text.indexOf('logically equivalent')).toBeLessThan(text.indexOf('raffle'));
-  expect(text).not.toMatch(/promise|nothing to stand on|depends on/i);
-  expect(text).not.toMatch(/raffle|the one other thing/i);
-  expect(text).toMatch(/interchangeable/);
+  expect(text).toMatch(/If the necessary condition is absent, the sufficient condition is absent too/);
+  expect(text.indexOf('If the necessary condition is absent')).toBeLessThan(text.indexOf('ceiling light'));
+  expect(text).toMatch(/left side of the arrow/);
+  expect(text).toMatch(/right side of the arrow/);
+  expect(text).toMatch(/logically equivalent/);
+  expect(text).toMatch(/waiting to be recognized/);
+  expect(text).not.toMatch(/promise|nothing to stand on|depends on|raffle|elevator|coat|coffee|breathing|Logic Games|the one other thing|ignore the conditional/i);
   expect(text).not.toMatch(/[—–]/);
 });
 
