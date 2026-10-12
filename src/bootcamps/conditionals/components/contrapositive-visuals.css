@@ -25,20 +25,56 @@
 .ct-flow-line{stroke-dasharray:6 7;animation:ct-flow 1s linear infinite}
 @keyframes ct-flow{to{stroke-dashoffset:-26}}
 
-/* ---- Twin diagrams with an equals badge ---- */
-.ct-twin{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(.6rem,2vw,1.2rem);align-items:stretch;margin:1.6rem 0}
-.ct-twin-side{display:grid;align-content:start;gap:.4rem;padding:1.1rem 1.1rem 1.25rem;border-radius:18px;background:linear-gradient(160deg,#fffaf0,#eef6f8);border:1px solid #e0d6bd;box-shadow:0 14px 28px -22px #173544}
-.ct-twin-side p{margin:0}
-.ct-twin-label{justify-self:start;padding:.22rem .7rem;border-radius:999px;background:#173544;color:#fff;font-size:.74rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
-.ct-twin-sentence{font-size:1.08rem;line-height:1.5;text-align:center;text-wrap:balance;color:#173544}
-.ct-equals{align-self:center;display:grid;place-items:center;gap:2px;width:5.2rem;height:5.2rem;border-radius:50%;background:#173544;border:3px solid #ffc247;color:#fff;font-weight:800;text-align:center;line-height:1}
-.ct-equals span{font-size:1.9rem}
-.ct-equals small{font-size:.5rem;letter-spacing:.07em;text-transform:uppercase}
-.ct-twin[data-in-view=true] .ct-equals{animation:ct-pulse 1.4s ease-in-out 3}
-@keyframes ct-pulse{0%,100%{box-shadow:0 0 0 0 #ffc24700}50%{box-shadow:0 0 0 14px #ffc24744,0 0 28px #ffc247aa}}
-.ct-twin-frame{container-type:inline-size}
-.ct-twin .ct-pill{padding:.5rem .95rem;font-size:1rem}.ct-twin .ct-flow{width:2.4rem}.ct-twin .ct-arrow-rule{gap:.35rem;padding:.7rem 0}.ct-twin .ct-equals{width:4.3rem;height:4.3rem;margin-inline:-.5rem;z-index:1}.ct-twin .ct-equals span{font-size:1.6rem}.ct-twin-sentence{font-size:1rem!important}
-@container (max-width:620px){.ct-twin{grid-template-columns:minmax(0,1fr)}.ct-equals{margin:0 auto}}
+/* ---- The rule and its contrapositive on one tabbed stage ---- */
+.ct-stage{margin:1.6rem 0;display:grid;gap:.9rem}
+.ct-tabs{display:flex;gap:.5rem;padding:.35rem;border-radius:999px;background:#e9e2cf;justify-self:start}
+#root .ct-tabs button{padding:.6rem 1.3rem;border:0;border-radius:999px;background:transparent;color:#4a4333;font-size:1rem;font-weight:800;cursor:pointer;transition:background .2s,color .2s,box-shadow .2s}
+#root .ct-tabs button[aria-selected=true]{color:#fff;background:#173544;box-shadow:0 8px 16px -8px #173544}
+#root .ct-tabs button[data-kind=original][aria-selected=true]{background:linear-gradient(135deg,#f2a516,#d98200)}
+#root .ct-tabs button[data-kind=contrapositive][aria-selected=true]{background:linear-gradient(135deg,#1394a6,#0b6f80)}
+.ct-stage-panel{padding:clamp(1.1rem,3vw,1.7rem);border-radius:22px;color:#fff;background:radial-gradient(120% 140% at 0% 0%,#1d4b63 0%,#0f2a38 70%);box-shadow:0 20px 40px -24px #0f2a38}
+.ct-stage-panel p{margin:0}
+.ct-stage-sentence{text-align:center;font-size:1.1rem;line-height:1.5;text-wrap:balance;color:#e2eef2}
+.ct-stage .ct-arrow-rule{padding-top:.2rem}
+.ct-stage .ct-flow path{stroke:#e2eef2}
+.ct-circuit{display:grid;grid-template-columns:minmax(0,1fr) minmax(3rem,7rem) minmax(0,1fr);align-items:center;gap:.5rem;margin:1.2rem 0 1rem}
+.ct-node{display:grid;justify-items:center;gap:.2rem;padding:1rem .6rem;border-radius:18px;background:#ffffff12;border:2px dashed #ffffff40;transition:background .3s,border-color .3s,box-shadow .3s}
+.ct-node-icon{display:grid;place-items:center;height:92px}
+.ct-circuit .ct-bulb-icon{width:72px;height:90px}
+.ct-node-icon svg:not(.ct-bulb-icon){width:42px;height:42px}
+.ct-node-name{font-size:1.1rem;font-weight:900}
+.ct-node-state{padding:.2rem .7rem;border-radius:999px;background:#ffffff1f;font-size:.8rem;font-weight:800;letter-spacing:.04em;text-align:center}
+.ct-node[data-kind=power] .ct-node-icon{color:#8f9fa6}
+.ct-node[data-kind=power][data-state=on]{border:2px solid #3fb8c6;background:#3fb8c629;box-shadow:0 0 28px #3fb8c688}
+.ct-node[data-kind=power][data-state=on] .ct-node-icon{color:#7ee6f1;filter:drop-shadow(0 0 10px #3fe0f0)}
+.ct-node[data-kind=power][data-state=off]{border:2px solid #e0583b;background:#e0583b22}
+.ct-node[data-kind=power][data-state=off] .ct-node-icon{color:#ff9d85}
+.ct-node[data-kind=light][data-state=on]{border:2px solid #ffc247;background:#ffc24724;box-shadow:0 0 28px #ffc24788}
+.ct-node[data-kind=light][data-state=blocked]{border:2px solid #e0583b;background:#e0583b22}
+.ct-node[data-kind=light][data-state=blocked] .ct-node-state{background:#e0583b;color:#fff}
+.ct-node[data-kind=light][data-try=true][data-state=blocked]{animation:ct-shake .45s ease-in-out}
+.ct-node[data-kind=light][data-try=true][data-state=blocked] .ct-glass{animation:ct-flicker .6s steps(2) 1}
+.ct-node[data-kind=light][data-state=on] .ct-node-state{background:#ffc247;color:#3b2500}
+.ct-node[data-kind=power][data-state=on] .ct-node-state{background:#3fb8c6;color:#06343b}
+@keyframes ct-flicker{0%{fill:#ffd24a}50%{fill:#d9dde0}100%{fill:#d9dde0}}
+.ct-wire{width:100%;height:1.8rem;overflow:visible}
+.ct-wire path{fill:none;stroke-linecap:round;stroke-width:4}
+.ct-wire-line{stroke:#ffffff55;stroke-dasharray:3 9}
+.ct-wire[data-flow=true] .ct-wire-line{stroke:#ffc247;stroke-dasharray:10 8;animation:ct-flow 1s linear infinite}
+.ct-wire-cut{stroke:#ff6b4a;opacity:0}
+.ct-wire[data-cut=true] .ct-wire-cut{opacity:1}
+.ct-wire[data-cut=true] .ct-wire-line{stroke:#ff6b4a66}
+.ct-stage-controls{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;justify-content:center}
+#root .ct-switch{display:inline-flex;align-items:center;gap:.8rem;padding:.55rem 1.3rem .55rem .55rem;border:0;border-radius:999px;background:#fffaf0;color:#173544;font-size:1.05rem;font-weight:900;cursor:pointer}
+.ct-switch-track{position:relative;width:3.4rem;height:1.9rem;border-radius:999px;background:#b9c4c9;transition:background .25s}
+.ct-switch-knob{position:absolute;top:.2rem;left:.2rem;width:1.5rem;height:1.5rem;border-radius:50%;background:#fff;box-shadow:0 2px 6px #0006;transition:transform .25s}
+#root .ct-switch[aria-checked=true] .ct-switch-track{background:#2fb07a}
+#root .ct-switch[aria-checked=true] .ct-switch-knob{transform:translateX(1.5rem)}
+#root .ct-switch[data-invite=true]{animation:ct-invite 1.3s ease-in-out infinite}
+#root .ct-try{padding:.7rem 1.2rem;border:2px solid #ffc247;border-radius:999px;background:transparent;color:#ffc247;font-size:1rem;font-weight:800;cursor:pointer}
+#root .ct-try:hover{background:#ffc24722}
+.ct-stage-message{margin-top:1rem!important;padding:.85rem 1rem;border-radius:12px;background:#ffffff14;font-size:1.1rem;line-height:1.5;text-align:center;min-height:3.2em;display:grid;place-items:center}
+@media (max-width:560px){.ct-circuit{grid-template-columns:minmax(0,1fr) 2.5rem minmax(0,1fr)}.ct-node-state{font-size:.7rem}}
 
 /* ---- Which of the four worlds can't happen? ---- */
 .ct-picker{margin:1.6rem 0;padding:clamp(1.1rem,3vw,1.8rem);border-radius:22px;color:#fff;background:radial-gradient(120% 140% at 0% 0%,#1d4b63 0%,#0f2a38 70%);box-shadow:0 20px 40px -24px #0f2a38}
@@ -129,15 +165,14 @@
 #root .co-opening .cr-formula .ct-neg,#root .co-opening .cr-symbol-options .ct-neg,#root .co-opening .cr-pattern .cr-answer-options .ct-neg{padding-inline:.4em}
 
 @media (prefers-reduced-motion:reduce){
-  .ct-punch[data-in-view=true],.ct-twin[data-in-view=true] .ct-equals,.ct-pulse-word,.ct-flow-line,#root .ct-flip-controls button.ct-step[data-ready=true],.ct-moves3[data-in-view=true] .ct-move-badge,#root .ct-world[data-verdict=broken]{animation:none}
+  .ct-punch[data-in-view=true],.ct-pulse-word,.ct-flow-line,.ct-wire[data-flow=true] .ct-wire-line,#root .ct-switch[data-invite=true],.ct-node[data-try=true],.ct-node[data-try=true] .ct-glass,#root .ct-flip-controls button.ct-step[data-ready=true],.ct-moves3[data-in-view=true] .ct-move-badge,#root .ct-world[data-verdict=broken]{animation:none}
   .ct-chip,.ct-chip::after,.ct-glass{transition:none}
 }
 
 /* ---- Dark ---- */
-.dark .ct-twin-side,.dark .ct-flip{background:linear-gradient(160deg,#25454b,#1d3a40);border-color:#50636a;color:#edf3ed}
-.dark .ct-twin-sentence,.dark .ct-flip-arrow{color:#edf3ed}
+.dark .ct-flip{background:linear-gradient(160deg,#25454b,#1d3a40);border-color:#50636a;color:#edf3ed}
+.dark .ct-flip-arrow{color:#edf3ed}
 .dark .ct-flow path{stroke:#edf3ed}
-.dark .ct-twin-label{background:#89c4ac;color:#0f2a32}
 .dark #root .ct-flip-controls button.ct-step[data-done=true]{background:#17382d;color:#7ff0b8}
 .dark .ct-punch{color:#7ff0b8}
 .dark .ct-moves3-start{background:#0f2a32}

@@ -50,14 +50,73 @@ export function ArrowRule({ left, right, leftNot, rightNot, tones = ['amber', 't
   </div>;
 }
 
-/** Two sides of one rule, with a pulsing "same rule" badge between them. */
-export function TwinRules({ original, contrapositive }: { original: ReactNode; contrapositive: ReactNode }) {
-  const [ref, inView] = useInView<HTMLDivElement>();
-  return <div className="ct-twin-frame"><div ref={ref} className="ct-twin" data-in-view={inView}>
-    <div className="ct-twin-side"><p className="ct-twin-label" data-kind="original">Original</p>{original}</div>
-    <div className="ct-equals" aria-label="These say the same thing"><span aria-hidden="true">=</span><small>same rule</small></div>
-    <div className="ct-twin-side"><p className="ct-twin-label" data-kind="contrapositive">Contrapositive</p>{contrapositive}</div>
-  </div></div>;
+type Side = 'original' | 'contrapositive';
+
+/** The rule and its contrapositive on one stage. Original: flip the light on and the power has to be on.
+ *  Contrapositive: cut the power and the light cannot be on, however hard you try the switch. */
+export function RuleStage() {
+  const [side, setSide] = useState<Side>('original');
+  const [light, setLight] = useState(false);
+  const [power, setPower] = useState(true);
+  const [touched, setTouched] = useState<Record<Side, boolean>>({ original: false, contrapositive: false });
+  const [tries, setTries] = useState(0);
+  const original = side === 'original';
+  const powerState: 'on' | 'off' | 'unknown' = original ? (light ? 'on' : 'unknown') : (power ? 'on' : 'off');
+  const lightState: 'on' | 'off' | 'unknown' | 'blocked' = original ? (light ? 'on' : 'off') : (power ? 'unknown' : 'blocked');
+  const touch = () => setTouched(value => ({ ...value, [side]: true }));
+  const message = original
+    ? (light
+      ? 'The light is on, so the power MUST be on. Every time.'
+      : touched.original
+        ? 'The light is off. The rule says nothing about the power. It could be on or off.'
+        : 'Flip the light switch on. Watch what the power has to do.')
+    : (power
+      ? (touched.contrapositive
+        ? 'The power is on. The rule says nothing about the light. It could be on or off.'
+        : 'Cut the power. Watch what happens to the light.')
+      : tries > 0
+        ? 'You flipped the light switch. Nothing happens. No power, no light.'
+        : 'The power is off, so the light can\'t be on. No power, no light.');
+  const powerLabel = { on: original ? 'On. It has to be.' : 'On', off: 'Off', unknown: 'On or off? Unknown' }[powerState];
+  const lightLabel = { on: 'On', off: 'Off', unknown: 'On or off? Unknown', blocked: 'Can\'t be on' }[lightState];
+  const pickSide = (next: Side) => { setSide(next); setTries(0); };
+  return <div className="ct-stage" data-side={side}>
+    <div className="ct-tabs" role="tablist" aria-label="The rule and its contrapositive">
+      <button type="button" role="tab" id="ct-tab-original" aria-selected={original} aria-controls="ct-panel" data-kind="original" onClick={() => pickSide('original')}>Original</button>
+      <button type="button" role="tab" id="ct-tab-contrapositive" aria-selected={!original} aria-controls="ct-panel" data-kind="contrapositive" onClick={() => pickSide('contrapositive')}>Contrapositive</button>
+    </div>
+    <div className="ct-stage-panel" role="tabpanel" id="ct-panel" aria-labelledby={`ct-tab-${side}`}>
+      {original
+        ? <ArrowRule left="Light" right="Power"/>
+        : <ArrowRule left="Power" right="Light" leftNot rightNot tones={['teal', 'amber']}/>}
+      <p className="ct-stage-sentence">{original ? 'If the ceiling light is on, then the power must be on.' : 'If the power is off, then the ceiling light must be off.'}</p>
+      <div className="ct-circuit">
+        <div className="ct-node" data-kind="power" data-state={powerState}>
+          <span className="ct-node-icon">{powerState === 'off' ? <ZapOff size={30} aria-hidden="true"/> : <Zap size={30} aria-hidden="true"/>}</span>
+          <span className="ct-node-name">Power</span>
+          <span className="ct-node-state">{powerLabel}</span>
+        </div>
+        <svg className="ct-wire" viewBox="0 0 100 24" aria-hidden="true" data-flow={powerState === 'on' && lightState === 'on'} data-cut={powerState === 'off'}>
+          <path className="ct-wire-line" d="M2 12h96"/>
+          <path className="ct-wire-cut" d="M44 4l12 16M56 4L44 20"/>
+        </svg>
+        <div className="ct-node" data-kind="light" data-state={lightState} key={`${side}-${tries}`} data-try={tries > 0}>
+          <span className="ct-node-icon"><Bulb lit={lightState === 'on'} broken={lightState === 'blocked' && tries > 0}/></span>
+          <span className="ct-node-name">Light</span>
+          <span className="ct-node-state">{lightLabel}</span>
+        </div>
+      </div>
+      <div className="ct-stage-controls">
+        {original
+          ? <button type="button" role="switch" aria-checked={light} className="ct-switch" data-invite={!touched.original} onClick={() => { touch(); setLight(value => !value); }}><span className="ct-switch-track"><span className="ct-switch-knob"/></span>Light switch: {light ? 'on' : 'off'}</button>
+          : <>
+            <button type="button" role="switch" aria-checked={power} className="ct-switch" data-invite={!touched.contrapositive} onClick={() => { touch(); setTries(0); setPower(value => !value); }}><span className="ct-switch-track"><span className="ct-switch-knob"/></span>Power switch: {power ? 'on' : 'off'}</button>
+            {!power && <button type="button" className="ct-try" onClick={() => setTries(value => value + 1)}>Try the light switch anyway</button>}
+          </>}
+      </div>
+      <p className="ct-stage-message" role="status">{message}</p>
+    </div>
+  </div>;
 }
 
 type World = { key: string; light: boolean; power: boolean; allowed: boolean; reason: string };

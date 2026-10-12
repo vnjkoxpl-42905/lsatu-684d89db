@@ -373,14 +373,44 @@ it('asks one clear question and lets the student find the one world the rule for
   expect(picker.querySelectorAll('[data-verdict=broken]')).toHaveLength(1);
 });
 
-it('keeps the plain-English pair and the pulsing key term, and the page no longer repeats the raffle recap', () => {
+it('says the contrapositive in plain English early, pulses the key term, and no longer repeats the raffle recap', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
-  expect(screen.getByText('If the ceiling light is on, then the power must be on.', { selector: '.ct-twin-sentence' })).toBeVisible();
-  expect(screen.getByText('If the power is off, then the ceiling light must be off.', { selector: '.ct-twin-sentence' })).toBeVisible();
+  expect(document.body.textContent).toContain('If the power is off, then the ceiling light must be off.');
   expect(document.querySelector('.ct-pulse-word')?.textContent).toBe('logically equivalent');
   expect(document.body.textContent).not.toMatch(/Three combinations fit|Write the meaning you already understand/);
-  expect(screen.getAllByText(/Check that you've got it/)).not.toHaveLength(0);
   expect(document.querySelectorAll('.co-opening .cr-question').length).toBeGreaterThanOrEqual(7);
+});
+
+it('lets the student switch the light on and see the power forced on, then cut the power and see the light blocked', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  const stage = document.querySelector('.ct-stage') as HTMLElement;
+  expect(within(stage).getByRole('tab', { name: 'Original' })).toHaveAttribute('aria-selected', 'true');
+  expect(stage.querySelector('[data-kind=power]')).toHaveAttribute('data-state', 'unknown');
+  fireEvent.click(within(stage).getByRole('switch', { name: /Light switch: off/ }));
+  expect(stage.querySelector('[data-kind=power]')).toHaveAttribute('data-state', 'on');
+  expect(within(stage).getByRole('status').textContent).toMatch(/the power MUST be on/);
+  fireEvent.click(within(stage).getByRole('tab', { name: 'Contrapositive' }));
+  expect(within(stage).getByText('If the power is off, then the ceiling light must be off.')).toBeVisible();
+  fireEvent.click(within(stage).getByRole('switch', { name: /Power switch: on/ }));
+  expect(stage.querySelector('[data-kind=light]')).toHaveAttribute('data-state', 'blocked');
+  fireEvent.click(within(stage).getByRole('button', { name: 'Try the light switch anyway' }));
+  expect(within(stage).getByRole('status').textContent).toMatch(/Nothing happens. No power, no light./);
+  expect(stage.querySelector('[data-kind=light]')).toHaveAttribute('data-state', 'blocked');
+});
+
+it('marks the reverse and the inverse as wrong and the contrapositive as right', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  const cards = [...document.querySelectorAll<HTMLElement>('.ct-move')];
+  expect(cards.map(card => card.dataset.verdict)).toEqual(['wrong', 'wrong', 'right']);
+  expect(cards.map(card => card.querySelector('.ct-move-badge')?.textContent)).toEqual(['Wrong', 'Wrong', 'Right']);
+  expect(cards.map(card => card.querySelector('.ct-move-name')?.textContent)).toEqual(['The reverse', 'The inverse', 'The contrapositive']);
+});
+
+it('never shows a squiggle anywhere on the contrapositive page, including the reference practice and answer choices', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  expect(document.body.textContent).not.toMatch(/[~∼¬]/);
+  const choices = [...document.querySelectorAll('.cr-answer-options button')].filter(button => button.querySelector('.ct-neg'));
+  expect(choices.length).toBeGreaterThan(6);
 });
 
 it('lets the student click Step 1 to flip and Step 2 to put not on both', () => {
