@@ -22,7 +22,7 @@ it('teaches all thirteen reference steps in order with notation after the concep
   );
   for (const section of sections) {
     expect(section.hasAttribute('data-toc')).toBe(true);
-    expect(within(section).getByRole('heading', { level: 2 }).textContent?.trim()).toBeTruthy();
+    expect(within(section).getAllByRole('heading', { level: 2 })[0].textContent?.trim()).toBeTruthy();
   }
   expect(step(2).textContent).toMatch(/sufficient|enough/i);
   expect(step(4).textContent).toMatch(/necessary|required/i);

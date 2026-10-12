@@ -37,45 +37,50 @@ it('teaches necessity before the visual and distinguishes a requirement from a g
   });
 });
 
-it('retains the full sufficient explanation and necessity bridge on the dedicated course page', () => {
+it('keeps the sufficient page short: definition, indicators, demo, video, Pop Quiz, then the necessity bridge', () => {
   const { rerender } = render(<OpeningCourseContent id="sufficient"/>);
   expect(screen.getByRole('heading', { name: 'Next: The Necessary Condition' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Use an indicator to find the guarantee' })).toBeVisible();
-  expect(document.querySelectorAll('.cr-sufficient-checks [role="status"]')).toHaveLength(2);
+  expect(screen.getByRole('heading', { name: 'Pop Quiz' })).toBeVisible();
   expect(screen.queryByText(/raffle|bicycle|100%|breathing/i)).toBeNull();
   expect(screen.queryByText(/The fact|Enough for what\?/i)).toBeNull();
-  expect(screen.getByText(/optional clips use a hypothetical student, Maya/)).toBeVisible();
+  expect(screen.queryByText(/optional clips|Want to see the rule|Let's look at what that means|Let's use every/)).toBeNull();
+  const indicators = document.querySelector('.sc-indicator-list')!;
   const film = screen.getByRole('region', { name: 'Short explanations of sufficiency' });
-  const groupVisual = document.querySelector('.sc-experience')!;
-  expect(groupVisual.compareDocumentPosition(film) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  const demo = document.querySelector('.sc-experience')!;
+  const quiz = screen.getByRole('heading', { name: 'Pop Quiz' });
+  const bridge = screen.getByRole('heading', { name: 'Next: The Necessary Condition' });
+  const before = (first: Element, second: Element) => expect(first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  before(indicators, demo); before(demo, film); before(film, quiz); before(quiz, bridge);
   expect(film.querySelector('video')).toHaveAttribute('controls');
   expect(film.querySelector('video')).not.toHaveAttribute('autoplay');
   fireEvent.click(within(film).getByRole('button', { name: 'What stays open' }));
   expect(film.querySelector('source')).toHaveAttribute('src', '/media/conditionals/sufficiency/what-stays-open.mp4');
-  const guaranteeExplanation = screen.getByText(/Enrollment already guarantees it/);
-  const firstControl = document.querySelector('.sc-sentence-map button')!;
-  expect(guaranteeExplanation.compareDocumentPosition(firstControl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   rerender(<OpeningCourseContent id="necessary"/>);
   expect(screen.getByRole('region', { name: 'Short explanation of necessity' }).querySelector('source')).toHaveAttribute('src', '/media/conditionals/necessity/required-not-enough.mp4');
 });
 
-it('explains the sufficiency errors and retains keyboard focus when a learner retries', () => {
-  const { container } = render(<OpeningCourseContent id="sufficient"/>);
-  const questions = [...container.querySelectorAll<HTMLElement>('.cr-question')];
-  const correctAnswers = [0, 1];
-  questions.forEach((question, index) => {
-    const area = within(question);
-    const answers = area.getAllByRole('button');
-    fireEvent.click(answers[1 - correctAnswers[index]]);
-    expect(area.getByRole('status').textContent).toMatch(/Not quite/);
-    fireEvent.click(answers[correctAnswers[index]]);
-    expect(area.getByRole('status').textContent).toMatch(/Correct/);
-    const retry = area.getByRole('button', { name: 'Try again' });
-    retry.focus();
-    fireEvent.click(retry);
-    expect(answers[0]).toHaveFocus();
-    expect(area.getByRole('status').textContent).toBe('');
-  });
+it('runs the sufficient Pop Quiz one question at a time with short, specific feedback', () => {
+  render(<OpeningCourseContent id="sufficient"/>);
+  const quiz = document.querySelector('.cr-sufficient-checks .ct-drill') as HTMLElement;
+  const area = within(quiz);
+  expect(area.getByText('Question 1 of 4')).toBeVisible();
+  fireEvent.click(area.getByRole('button', { name: 'Any applicant' }));
+  expect(area.getByRole('status')).toHaveTextContent('Not that one. The rule covers invited applicants, not every applicant.');
+  fireEvent.click(area.getByRole('button', { name: 'Invited to an interview' }));
+  expect(area.getByRole('status')).toHaveTextContent('If an applicant is invited to an interview, then the applicant gets an email.');
+  fireEvent.click(area.getByRole('button', { name: 'Next question' }));
+  expect(area.getByText('Question 2 of 4')).toBeVisible();
+  expect(area.getByRole('status')).toHaveTextContent('Pick the answer the rule supports.');
+  fireEvent.click(area.getByRole('button', { name: 'It is match day' }));
+  expect(area.getByRole('status')).toHaveTextContent('Not that one.');
+  fireEvent.click(area.getByRole('button', { name: 'It rains on match day' }));
+  fireEvent.click(area.getByRole('button', { name: 'Next question' }));
+  fireEvent.click(area.getByRole('button', { name: 'Nothing. They might or might not get one.' }));
+  fireEvent.click(area.getByRole('button', { name: 'Next question' }));
+  expect(area.getByText('Question 4 of 4')).toBeVisible();
+  fireEvent.click(area.getByRole('button', { name: /Nothing. She might be studying something else./ }));
+  expect(area.getByRole('status')).toHaveTextContent('If someone is a student, the rule says nothing about law school.');
+  expect(area.getByRole('button', { name: 'Try them again' })).toBeVisible();
 });
 
 it('places narrated case applications after condition roles have been taught', () => {

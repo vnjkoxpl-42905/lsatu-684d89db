@@ -420,8 +420,9 @@ it('animates the IF explanation only while it is in view and keeps its hypotheti
   let visibility: ((entries: { isIntersecting: boolean }[]) => void) | undefined;
   const observe = vi.fn();
   vi.stubGlobal('IntersectionObserver', class {
-    constructor(callback: typeof visibility) { visibility = callback; }
-    observe = observe;
+    callback: typeof visibility;
+    constructor(callback: typeof visibility) { this.callback = callback; }
+    observe = (node: Element) => { observe(node); if (node.classList.contains('co-if-connection')) visibility = this.callback; };
     disconnect = vi.fn();
   });
   const { container, complete } = mount('orientation');

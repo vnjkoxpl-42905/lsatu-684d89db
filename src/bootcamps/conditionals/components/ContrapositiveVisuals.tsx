@@ -202,7 +202,7 @@ export function ThreeMoves() {
 type Tone = 'amber' | 'teal';
 
 /** One idea as a coloured pill. A struck pill is the idea with "not" on it. */
-function Pill({ text, tone, negated }: { text: string; tone: Tone; negated: boolean }) {
+export function Pill({ text, tone, negated }: { text: string; tone: Tone; negated: boolean }) {
   return <span className="ct-pill" data-tone={tone} data-not={negated}>{negated && <span className="ct-sr">not </span>}{text}</span>;
 }
 

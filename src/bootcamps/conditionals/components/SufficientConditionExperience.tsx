@@ -4,21 +4,15 @@ import './sufficient-condition-experience.css';
 const relationships = [
   {
     key: 'both', label: 'Enrolled and a student', fits: true,
-    result: 'The whole law-school group stays inside Students.',
-    explanation: "Pick any person in the smaller group. Being enrolled in law school is enough to know they're in the larger group too.",
-    caption: 'Everyone enrolled in law school belongs inside Students.',
+    result: 'If someone is enrolled in law school, then they are a student.',
   },
   {
     key: 'contradiction', label: 'Enrolled, but not a student', fits: false,
-    result: 'An enrolled person cannot be outside Students.',
-    explanation: "Here enrollment is true, but being a student is false. That is the combination this guarantee rules out.",
-    caption: 'An enrolled person outside Students would break the rule.',
+    result: 'Enrolled but not a student can\'t happen.',
   },
   {
     key: 'other', label: 'A student outside law school', fits: true,
-    result: 'Without law-school enrollment, you might be a student or you might not.',
-    explanation: "Someone not enrolled in law school could be a student or not a student. A history student belongs in the highlighted area; someone who isn't a student belongs outside both groups. The highlight shows one allowed possibility.",
-    caption: 'Highlighted: one possible case, a student outside law school.',
+    result: "If someone isn't enrolled in law school, they might or might not be a student.",
   },
 ] as const;
 
@@ -37,9 +31,9 @@ export function SufficientConditionExperience() {
   const current = relationships[selected];
   return <section className="sc-experience" aria-labelledby={titleId}>
     <header>
-      <p className="sc-eyebrow">Picture the rule</p>
-      <h3 id={titleId}>Law-school students belong inside the student group.</h3>
-      <p>Choose a combination and compare it with the groups. Does it fit the guarantee?</p>
+      <h3 id={titleId}>Test the rule</h3>
+      <p className="sc-rule-line">If you're enrolled in law school, you're a student.</p>
+      <p>Click a combination to check it against the rule.</p>
     </header>
     <figure className="sc-membership" data-case={current.key}>
       <div className="sc-group-visual">
@@ -70,7 +64,6 @@ export function SufficientConditionExperience() {
         </svg>
         <div className="sc-diagram-key" aria-hidden="true"><span><i/>Enrolled in law school</span><span><i/>Other students</span></div>
       </div>
-      <figcaption>{current.caption} Figures show the groups.</figcaption>
     </figure>
     <div className="sc-case-controls" role="group" aria-label="Compare combinations with this conditional">
       {relationships.map((relationship, index) => <button type="button" key={relationship.key} aria-pressed={selected === index} aria-controls={readingId} onClick={() => setSelected(index)}>{relationship.label}</button>)}
@@ -78,7 +71,6 @@ export function SufficientConditionExperience() {
     <div className="sc-case-reading" id={readingId} aria-live="polite" aria-atomic="true" data-fits={current.fits}>
       <p className="sc-case-verdict"><span aria-hidden="true">{current.fits ? '✓' : '×'}</span>{current.fits ? 'Allowed by this conditional' : 'Breaks the guarantee'}</p>
       <strong>{current.result}</strong>
-      <p>{current.explanation}</p>
     </div>
   </section>;
 }

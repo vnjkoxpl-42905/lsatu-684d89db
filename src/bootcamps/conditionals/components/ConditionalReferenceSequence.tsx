@@ -3,13 +3,14 @@ import './reference-sequence.css';
 import { NegativeCaseLab } from './CounterexampleLab';
 import { StudyDeck } from './StudyDeck';
 import type { LessonPage } from './LessonPages';
-import { SufficientConditionExperience, SufficientReasoningWalkthrough } from './SufficientConditionExperience';
+import { SufficientConditionExperience } from './SufficientConditionExperience';
+import { SufficientQuiz } from './SufficientQuiz';
 import { SufficientConditionFilm } from './SufficientConditionFilm';
 import { necessaryConditionFilms } from '../content/necessaryConditionFilms';
 import { NecessaryConditionExperience } from './NecessaryConditionExperience';
 import { NecessaryConditionStatement } from './NecessaryConditionStatement';
 import { NecessaryIndicatorExplorer } from './NecessaryIndicatorExplorer';
-import { Neg, Notation } from './ContrapositiveVisuals';
+import { Neg, Notation, PopQuizTitle } from './ContrapositiveVisuals';
 
 const raffleRule = 'If you win the raffle, you get a bicycle.';
 
@@ -227,46 +228,30 @@ export function conditionalReferenceContent() {
 
     <ReferenceStep number={2} label="The sufficient condition" title="Sufficient means enough">
       <div className="cr-sufficiency">
-        <p className="cr-sufficiency-lead"><strong>Sufficient means enough.</strong> When one condition guarantees another, knowing the first is true tells you the second has to be true too. The first is the <strong>sufficient condition</strong>: it's enough to prove the second.</p>
-        <p>Nothing else has to be true for the guarantee to hold. If the first condition is true, the second condition has to be true as well.</p>
-        <p>Let's look at what that means:</p>
-        <blockquote><strong>If</strong> you're enrolled in law school, you're a student.</blockquote>
-        <p>Being enrolled in law school is enough to know you're <strong>a student</strong>. You don't need to know which classes you're taking. Enrollment already guarantees it. That's why being enrolled is the sufficient condition in this rule.</p>
-        <p>Here, <strong>if</strong> introduces <strong>being enrolled in law school</strong>. That whole idea is the sufficient condition. If is the word that helps you find it. We haven't said you're actually enrolled; we're explaining what follows if you are.</p>
+        <p className="cr-sufficiency-lead"><strong>A sufficient condition is the “if” part of a rule. When it is true, the “then” part has to be true too.</strong></p>
+        <p>For example, in the rule below, being enrolled in law school is the <strong>sufficient condition</strong>. Being a student is the “then” part. It's what the rule guarantees.</p>
+        <blockquote><strong>If</strong> you're enrolled in law school, <strong>then</strong> you're a student.</blockquote>
+        <p>Someone might be enrolled. Someone might not. The rule doesn't say which. It only says what follows if they are.</p>
+        <p>Nothing else has to be true for the guarantee to hold. If someone is enrolled in law school, they have to be a student.</p>
+        <p>If they aren't enrolled, the rule says nothing. They might be a student or they might not.</p>
+        <p className="nc-takeaway"><strong>Being enrolled is enough. If it's true, being a student has to be true.</strong></p>
 
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 1 indicator words">
           <h3>Group 1: Sufficient-condition indicators</h3>
-          <p>You've seen how <strong>if</strong> points to the sufficient condition. These indicator words and phrases can help you recognize it too:</p>
+          <p>In our rule, <strong>if</strong> is the indicator and <strong>being enrolled in law school</strong> is the sufficient condition. These words and phrases point to it too:</p>
           <ul>{sufficientFamily.map(entry => <li key={entry.word}>{entry.word}</li>)}</ul>
-          <p>An <strong>indicator</strong> is a word or phrase that helps you recognize the rule. In our example, <strong>if</strong> is the indicator; <strong>being enrolled in law school</strong> is the condition that guarantees being a student. Look for the words, then ask what they tell you about the two conditions.</p>
-        </section>
-
-        <section className="cr-sufficient-explanation" aria-label="What makes a condition sufficient">
-          <SufficientReasoningWalkthrough/>
-        </section>
-
-        <section className="cr-sufficient-explanation" aria-label="When the sufficient condition is not met">
-          <h3>What if you aren't enrolled in law school?</h3>
-          <p>You could be studying something else. Or you might not be a student at all. Both are possible. Without law-school enrollment, this conditional doesn't tell us whether you're a student.</p>
-          <p>That's the difference: <strong>being enrolled guarantees being a student; not being enrolled leaves the question open.</strong></p>
+          <p>The indicator is the word. The sufficient condition is the whole idea it points to.</p>
         </section>
 
         <SufficientConditionExperience/>
 
-        <p>Want to see the rule in a short video? These optional clips use a hypothetical student, Maya. The first supposes she is enrolled in law school. The second supposes only that she is a student. Compare what each piece of information proves.</p>
         <SufficientConditionFilm key="sufficient-definition"/>
 
-
-
-        <section className="cr-sufficient-explanation cr-sufficient-checks" aria-label="Check your understanding of sufficiency">
-          <h3>Use an indicator to find the guarantee</h3>
-          <p>Let's use <strong>every</strong> in a new example:</p>
-          <blockquote><strong>Every</strong> applicant invited to an interview receives an email.</blockquote>
-          <ReferenceQuestion prompt="Which condition guarantees receiving an email?" options={['Being an applicant invited to an interview.', 'Being an applicant.']} correct={0} feedback={['Every covers the applicants invited to an interview. For anyone in that group, receiving an email is guaranteed.', 'The rule covers applicants invited to an interview, not all applicants. Keep invited to an interview with applicant; that is what guarantees the email.']}/>
-          <h3>What does the rule leave open?</h3>
-          <ReferenceQuestion prompt="Does this rule tell us whether applicants who aren't invited receive an email?" options={['Yes. They cannot receive an email.', 'No. They could receive an email, or they might not.']} correct={1} feedback={['The rule guarantees an email for invited applicants. It does not say that only invited applicants receive emails. Others could receive a different email, or no email at all.', 'The rule tells us what invited applicants receive. It says nothing about emails to other applicants, so either possibility fits.']}/>
+        <section className="cr-sufficient-explanation cr-sufficient-checks" aria-label="Pop Quiz on sufficiency">
+          <div className="co-section-heading"><PopQuizTitle/></div>
+          <SufficientQuiz/>
         </section>
-        <aside className="cr-sufficient-bridge"><h3>Next: The Necessary Condition</h3><p>We've focused on what guarantees being a student: enrollment in law school. Now look at the rule from the other side. You can't be enrolled in law school without being a student. Being a student is the <strong>necessary condition</strong>, the part that must be true. That's what we'll examine next.</p></aside>
+        <aside className="cr-sufficient-bridge"><h3>Next: The Necessary Condition</h3><p>Now look at the rule from the other side. Being a student is the <strong>necessary condition</strong>, the part that must be true. That's next.</p></aside>
       </div>
       <p>Next, we'll examine what the sufficient condition requires.</p>
     </ReferenceStep>
