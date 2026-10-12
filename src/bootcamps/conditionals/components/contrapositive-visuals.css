@@ -204,3 +204,7 @@
 .ct-flip-sentence[data-kind=result]{background:#0b6f80;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s}
 .ct-flip-sentence[data-kind=result][data-show=true]{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.ct-flip-sentence[data-kind=result]{transition:none}}
+.ct-drill-options{grid-template-columns:1fr}
+.ct-drill-diagram{flex-wrap:wrap;justify-content:center}
+.ct-drill-original{flex-wrap:wrap;border-radius:28px}
+.ct-drill-original .ct-pill,.ct-drill-diagram .ct-pill{font-size:1.05rem}

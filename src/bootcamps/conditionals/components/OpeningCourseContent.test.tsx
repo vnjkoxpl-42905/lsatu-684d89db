@@ -379,10 +379,10 @@ it('works through four fresh rules one at a time, one for each place a not can s
   expect(document.body.textContent).not.toMatch(/patterns?/i);
   const drill = document.querySelector('.ct-drill') as HTMLElement;
   const rules = [
-    ['If a guest is on the list, the guest gets a wristband.', 'not W → not L'],
-    ['If the shop is open, the shutters are not down.', 'D → not O'],
-    ['If the gate is not locked, the dog can get out.', 'not G → L'],
-    ['If a ticket is not stamped, it is not valid.', 'V → S'],
+    ['If a guest is on the list, the guest gets a wristband.', 'not wristband → not on the list'],
+    ['If the shop is open, the shutters are not down.', 'shutters down → not shop open'],
+    ['If the gate is not locked, the dog can get out.', 'not dog gets out → gate locked'],
+    ['If a ticket is not stamped, it is not valid.', 'ticket valid → ticket stamped'],
   ];
   rules.forEach(([sentence, correct], index) => {
     expect(within(drill).getByText(sentence)).toBeVisible();
@@ -439,7 +439,7 @@ it('tells the student what the arrow says, where to start reading and what it is
 it('shows a rule that already has a not, and its double negative turning positive', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
   const demo = document.querySelectorAll('.ct-flip')[1] as HTMLElement;
-  expect(demo.textContent).toMatch(/Dishwasher running/);
+  expect(demo.textContent).toMatch(/Snowing/);
   expect(demo.querySelectorAll('[data-struck=true]')).toHaveLength(1);
   fireEvent.click(within(demo).getByRole('button', { name: /Step 1/ }));
   fireEvent.click(within(demo).getByRole('button', { name: /Step 2/ }));
