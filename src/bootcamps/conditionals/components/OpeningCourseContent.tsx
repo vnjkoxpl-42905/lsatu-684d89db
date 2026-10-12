@@ -1,4 +1,4 @@
-import { FlipAndNegateDemo, Neg, PulseWord, PunchWord, RuleStage, ThreeMoves, WorldPicker } from './ContrapositiveVisuals';
+import { FlipAndNegateDemo, Neg, Notation, PulseWord, PunchWord, RuleStage, ThreeMoves, WorldPicker } from './ContrapositiveVisuals';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
@@ -41,14 +41,13 @@ function NoteSection({ title, children }: { title: string; children: ReactNode }
   return <section className="co-section"><div className="co-section-heading"><h2>{title}</h2></div>{children}</section>;
 }
 
-function ReferenceBody({ number, omitTransition = false, keep, title }: { number: number; omitTransition?: boolean; keep?: number[]; title?: string }) {
+function ReferenceBody({ number, omitTransition = false }: { number: number; omitTransition?: boolean }) {
   const source = reference(number);
-  const all = Children.toArray(source.props.children);
-  const children = keep ? all.filter((_, index) => keep.includes(index)) : all;
+  const children = Children.toArray(source.props.children);
   // These source sections end in navigation prose for the former ordering.
   // The course shell now owns transitions; the teaching stays in its source.
   return <section className={`co-section cr-course-section ${source.props.dark ? 'cr-dark' : ''}`} data-reference-source={number}>
-    <div className="co-section-heading"><h2>{title ?? source.props.title}</h2></div>
+    <div className="co-section-heading"><h2>{source.props.title}</h2></div>
     <div className="cr-step-body">{omitTransition ? children.slice(0, -1) : children}</div>
   </section>;
 }
@@ -116,6 +115,60 @@ function MissingRequirementNote() {
     </NoteSection>
     {attempted && <ReferenceBody number={7} omitTransition/>}
   </>;
+}
+
+const contrapositivePatterns = [
+  {
+    label: 'No “not” on either side',
+    sentence: 'If a guest is on the list, the guest gets a wristband.',
+    legend: 'L = the guest is on the list. W = the guest gets a wristband.',
+    original: 'L → W',
+    options: ['W → L', '~L → ~W', '~W → ~L'],
+    correct: 2,
+    feedback: ['This only flips the sides. A wristband does not prove the guest is on the list.', 'This only adds “not.” Being off the list leaves the wristband open.', 'No wristband, not on the list. Flip the sides, then put “not” on both.'],
+  },
+  {
+    label: '“Not” on the right side',
+    sentence: 'If the shop is open, the shutters are not down.',
+    legend: 'O = the shop is open. D = the shutters are down.',
+    original: 'O → ~D',
+    options: ['D → ~O', '~D → O', '~O → D'],
+    correct: 0,
+    feedback: ['Shutters down rule out an open shop. The sides flip, the “not” on D comes off, and O gets one.', 'This only flips the sides. Shutters that are up do not prove the shop is open.', 'This only adds “not” where there was none. A closed shop could still have its shutters up.'],
+  },
+  {
+    label: '“Not” on the left side',
+    sentence: 'If the gate is not locked, the dog can get out.',
+    legend: 'L = the gate is locked. G = the dog can get out.',
+    original: '~L → G',
+    options: ['G → ~L', '~G → L', 'L → ~G'],
+    correct: 1,
+    feedback: ['This only flips the sides. The dog could get out another way, so getting out does not prove the gate is unlocked.', 'If the dog can\'t get out, the gate must be locked. The sides flip, and the “not” on L comes off.', 'This only changes the nots. A locked gate leaves the dog question open, because the rule only speaks about an unlocked gate.'],
+  },
+  {
+    label: '“Not” on both sides',
+    sentence: 'If a ticket is not stamped, it is not valid.',
+    legend: 'S = the ticket is stamped. V = the ticket is valid.',
+    original: '~S → ~V',
+    options: ['~V → ~S', 'S → V', 'V → S'],
+    correct: 2,
+    feedback: ['This only flips the sides. An invalid ticket might be stamped.', 'This only takes the “nots” off. A stamp alone does not make a ticket valid.', 'A valid ticket must be stamped. The sides flip, and both “nots” come off.'],
+  },
+];
+
+function FourPatterns() {
+  return <NoteSection title="Try the four patterns">
+    <p>A rule can have a “not” on neither side, on the right, on the left or on both. The move never changes: flip the sides, then put “not” on both. A “not” that is already there comes off.</p>
+    <div className="cr-pattern-grid">
+      {contrapositivePatterns.map((item, index) => <div className="cr-pattern" key={item.label}>
+        <p className="co-kicker">{index + 1}. {item.label}</p>
+        <p>{item.sentence}</p>
+        <p className="cr-legend">{item.legend}</p>
+        <div className="cr-formula"><Notation text={item.original}/></div>
+        <ReferenceQuestion prompt={`Which is the contrapositive of ${item.original}?`} options={item.options} correct={item.correct} feedback={item.feedback}/>
+      </div>)}
+    </div>
+  </NoteSection>;
 }
 
 function ContrapositiveNote() {
@@ -414,7 +467,7 @@ function Content({ id }: { id: string }) {
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
     case 'whole-meaning': return <WholeMeaningNote/>;
     case 'missing-requirement': return <MissingRequirementNote/>;
-    case 'contrapositive': return <><ContrapositiveNote/><ReferenceBody number={9} keep={[2, 3]} title="Try the four patterns"/><WholeConditionNegation/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection></>;
+    case 'contrapositive': return <><ContrapositiveNote/><FourPatterns/><WholeConditionNegation/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection></>;
     case 'foundation-practice': return <FoundationPractice/>;
     case 'sufficient-practice': return <StagedReasoningDrill mode="sufficient"/>;
     case 'mixed-practice': return <StagedReasoningDrill mode="mixed"/>;

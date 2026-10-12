@@ -377,8 +377,26 @@ it('says the contrapositive in plain English early, pulses the key term, and no 
   render(<OpeningCourseContent id="contrapositive"/>);
   expect(document.body.textContent).toContain('If the power is off, then the ceiling light must be off.');
   expect(document.querySelector('.ct-pulse-word')?.textContent).toBe('logically equivalent');
-  expect(document.body.textContent).not.toMatch(/Three combinations fit|Write the meaning you already understand/);
+  expect(document.body.textContent).not.toMatch(/Three combinations fit|Write the meaning you already understand|raffle|bicycle/i);
   expect(document.querySelectorAll('.co-opening .cr-question').length).toBeGreaterThanOrEqual(7);
+});
+
+it('gives four fresh rules, one for each place a not can sit, and checks the contrapositive of each', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  expect(screen.getByRole('heading', { name: 'Try the four patterns' })).toBeVisible();
+  const cards = [...document.querySelectorAll<HTMLElement>('.cr-pattern')];
+  expect(cards).toHaveLength(4);
+  const answers = [['L → W', 'not W → not L'], ['O → not D', 'D → not O'], ['not L → G', 'not G → L'], ['not S → not V', 'V → S']];
+  cards.forEach((card, index) => {
+    const [original, correct] = answers[index];
+    expect(card.querySelector('.cr-formula')?.textContent).toBe(original);
+    const question = card.querySelector('.cr-question') as HTMLElement;
+    const wrong = [...question.querySelectorAll('button')].find(button => button.getAttribute('aria-pressed') !== null && button.textContent !== correct)!;
+    fireEvent.click(wrong);
+    expect(question.querySelector('.cr-correct')).toBeNull();
+    fireEvent.click(within(question).getByRole('button', { name: correct }));
+    expect(question.querySelector('.cr-correct')).toBeTruthy();
+  });
 });
 
 it('lets the student switch the light on and see the power forced on, then cut the power and see the light forced off', () => {
