@@ -346,3 +346,20 @@ it('shows every combination of the two conditions and rejects only a win without
   expect(rows.filter(row => row[2].startsWith('No.')).map(row => row.slice(0, 2))).toEqual([['Yes', 'No']]);
   expect(recap.textContent).toContain('not a claim that any of them happened');
 });
+
+it('explains what the contrapositive is before any example, then shows it, writes it, and sets it against the reverse and inverse', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  const names = ['What a contrapositive is', 'Watch it work', 'How to write it', 'What it is not', 'The steps', 'Why it matters'];
+  for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
+  const text = document.body.textContent ?? '';
+  const order = names.map(name => text.indexOf(name));
+  expect(order).toEqual([...order].sort((m, n) => m - n));
+  expect(text.indexOf('What a contrapositive is')).toBeLessThan(text.indexOf('raffle'));
+  expect(text.indexOf('The steps')).toBeLessThan(text.indexOf('Write the meaning you already understand'));
+  expect(text).not.toMatch(/[—–]/);
+});
+
+it('tells the student what the arrow says, where to start reading and what it is for', () => {
+  render(<OpeningCourseContent id="must-arrow"/>);
+  for (const name of ['What the arrow says', 'Start at the left', 'What the arrow is for']) expect(screen.getByRole('heading', { name })).toBeVisible();
+});
