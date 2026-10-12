@@ -1,4 +1,3 @@
-import { ContrapositiveGuessCard } from './ContrapositiveGuessCard';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
@@ -119,28 +118,30 @@ function MissingRequirementNote() {
 
 function ContrapositiveNote() {
   return <>
-    <NoteSection title="Something hiding inside every rule">
-      <p>So far, you know this about a rule: <strong>if the condition on the left side of the arrow is true, the condition on the right side must be true.</strong> That holds every time. Keep it in mind for a thought experiment.</p>
-      <ContrapositiveGuessCard
-        story={<><p>Imagine you hate the cold. <strong>If your coat is on, you're going outside.</strong> Going outside is the only reason you ever put your coat on. Every single time the coat is on, you're headed out the door.</p><RuleDiagram left="Coat on" right="Going outside"/></>}
-        question={<p>Now imagine you are <strong>not</strong> going outside. What do you know about your coat?</p>}
-        answer={<><p><strong>Your coat is not on.</strong></p><p>You're not going outside, so the requirement for wearing the coat is missing. Could the coat be on? No. If it were on, you'd be headed out the door. You're not, so it isn't.</p><p className="cg-remember"><strong>Remember:</strong> if the right side of the arrow is missing, the left side is missing too. This is the contrapositive.</p></>}
-      />
-      <p>You didn't need a new rule to get that answer. It was sitting inside the original rule, waiting to be recognized.</p>
-      <p>The original and the contrapositive are <strong>logically equivalent</strong>. They say exactly the same thing. If one is true, the other is true, and the other way around. You can use either one. They're interchangeable.</p>
+    <NoteSection title="What a contrapositive is">
+      <p>So far, you know the core of every conditional: <strong>if the sufficient condition occurs, then the necessary condition must occur.</strong> That is the left side of the arrow guaranteeing the right side. It holds every time.</p>
+      <p>The contrapositive is what you know when the right side is missing:</p>
+      <p className="ct-definition"><strong>If the necessary condition is absent, the sufficient condition is absent too.</strong></p>
+      <p>Take this rule: <strong>If the ceiling light is on, then the power is on.</strong></p>
+      <RuleDiagram left="Light on" right="Power on"/>
+      <p>So if the light is on, it needs power. It has to have power for the light to come on. The power is completely necessary. Now what if there's no power? Then the light doesn't have the thing it needs. Could the light be on? No. No power means the light can't be on.</p>
+      <RuleDiagram left="No power" right="Light is not on"/>
+      <p>That is the contrapositive. The right side of the arrow is missing, so the left side can't happen.</p>
+    </NoteSection>
+    <NoteSection title="Why you didn't have to learn anything new">
+      <p>You can find the contrapositive on your own. It isn't some foreign process you perform on a rule. It's sitting there inside the original, waiting to be recognized. If the requirement hasn't been met, the condition that needed it can't have happened.</p>
+      <p>That is why the original and its contrapositive are <strong>logically equivalent</strong>. They describe the same relationship, so they say exactly the same thing. If one is true, the other is true, and the other way around. You can use either one. They're interchangeable.</p>
       <figure className="cr-contrapositive-pair">
         <figcaption>One rule, said two ways</figcaption>
         <p><strong>Original.</strong> The left side of the arrow is true, so the right side is true.</p><RuleDiagram left="Left side" right="Right side"/>
         <p><strong>Contrapositive.</strong> The right side of the arrow is false, so the left side is false.</p><RuleDiagram left="Right side is false" right="Left side is false"/>
       </figure>
     </NoteSection>
-    <NoteSection title="Say it out loud once more">
-      <p>Here is another one: <strong>If the ceiling light is on, then the power is on.</strong></p>
-      <p>So if the light is on, it needs power. It has to have power for the light to come on. The power is completely necessary. What if there's no power? Then the light doesn't have what it needs. It can't be on.</p>
-      <p>Power sits on the right side of the arrow. When the right side is missing, the left side can't happen.</p>
+    <NoteSection title="What the rule tells you, and when">
+      <p>A rule only does something in the right situation. Here are all four situations for the light and the power.</p>
       <table className="co-combination-table ct-compare">
-        <caption>What the rule tells you, and when</caption>
-        <thead><tr><th scope="col">Situation</th><th scope="col">What has to happen?</th><th scope="col">If the light is on, then the power is on</th></tr></thead>
+        <caption>If the light is on, then the power is on</caption>
+        <thead><tr><th scope="col">Situation</th><th scope="col">What has to happen?</th><th scope="col">The light and the power</th></tr></thead>
         <tbody>
           <tr><td>Left side true</td><td>The right side must be true.</td><td>The light is on, so the power must be on.</td></tr>
           <tr><td>Right side false</td><td>The left side can't be true.</td><td>There's no power, so the light can't be on.</td></tr>
@@ -148,11 +149,11 @@ function ContrapositiveNote() {
           <tr><td>Right side true</td><td>Nothing.</td><td>The power is on. The light could be on or off. We don't know.</td></tr>
         </tbody>
       </table>
-      <p>The first two rows are the two situations that make the rule do something. In the last two, the rule settles nothing, and you need other information.</p>
+      <p>The first two rows are the only situations where the rule makes something happen. In the last two, the rule settles nothing, and you need other information.</p>
     </NoteSection>
     <NoteSection title="How to write it">
       <p>Write the rule with an arrow: <strong>Light → Power</strong>. The sufficient condition goes on the left side of the arrow. The necessary condition goes on the right side.</p>
-      <p>Now the contrapositive: <strong>~Power → ~Light</strong>. The ~ is a squiggle. Read it as “not.”</p>
+      <p>The contrapositive is <strong>~Power → ~Light</strong>. The ~ is a squiggle. Read it as “not.” Here are more pairs:</p>
       <table className="co-combination-table ct-compare">
         <caption>Original and contrapositive</caption>
         <thead><tr><th scope="col">Original</th><th scope="col">Contrapositive</th></tr></thead>
@@ -163,14 +164,13 @@ function ContrapositiveNote() {
           <tr><td>~S → ~T</td><td>T → S</td></tr>
         </tbody>
       </table>
-      <p>Once you have the original written down, flip and negate to get the contrapositive.</p>
+      <p>Once you have the original written down, you flip and negate both sides.</p>
       <ol className="ct-moves">
         <li><strong>Write the rule as a diagram.</strong></li>
         <li><strong>Flip the sides.</strong> The right side goes on the left, and the left side goes on the right.</li>
         <li><strong>Put “not” on both.</strong> If a side already has a “not,” the “not” comes off.</li>
-        <li><strong>Read it back in plain English.</strong> Check it against the rule.</li>
+        <li><strong>Read it back in plain English.</strong> If there's no power, the light is not on. Does the rule say that? It does.</li>
       </ol>
-      <p>Read it back: if there's no power, the light is not on. Does the rule say that? It does. That check catches most mistakes.</p>
     </NoteSection>
     <NoteSection title="What it is not">
       <p>Two other moves look like the contrapositive. Each one does only half the work.</p>
