@@ -228,7 +228,7 @@ export function conditionalReferenceContent() {
     <ReferenceStep number={2} label="The sufficient condition" title="Sufficient means enough">
       <div className="cr-sufficiency">
         <p className="cr-sufficiency-lead"><strong>Sufficient means enough.</strong> When one condition guarantees another, knowing the first is true tells you the second has to be true too. The first is the <strong>sufficient condition</strong>: it's enough to prove the second.</p>
-        <p>You don't need to meet an additional condition to get that guarantee. And we're talking about certainty, not likelihood: the first condition can't be true while the condition it guarantees is false.</p>
+        <p>Nothing else has to be true for the guarantee to hold. If the first condition is true, the second condition has to be true as well.</p>
         <p>Let's look at what that means:</p>
         <blockquote><strong>If</strong> you're enrolled in law school, you're a student.</blockquote>
         <p>Being enrolled in law school is enough to know you're <strong>a student</strong>. You don't need to know which classes you're taking. Enrollment already guarantees it. That's why being enrolled is the sufficient condition in this rule.</p>
