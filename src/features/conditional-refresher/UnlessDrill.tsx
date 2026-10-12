@@ -478,9 +478,10 @@ function DrillPreview() {
           ))}
         </div>
         <div className="cir-actions ud-lock">
-          <span className={`cir-btn${beat === 3 ? " is-pressed" : ""}`}>Lock in</span>
+          {beat >= 4
+            ? <span className="ud-preview-result">Correct: <Diagram left="K" right="M" /></span>
+            : <span className={`cir-btn${beat === 3 ? " is-pressed" : ""}`}>Lock in</span>}
         </div>
-        {beat >= 4 && <p className="ud-preview-result">Correct: <Diagram left="K" right="M" /></p>}
       </div>
       {!playing && (
         <button type="button" className="ud-play" onClick={play}
