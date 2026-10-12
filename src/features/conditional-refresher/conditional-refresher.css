@@ -161,3 +161,14 @@
   .ud-hint { display: none; }
   .cir-shell { padding-bottom: 56px; }
 }
+
+/* Unless drill preview clip ------------------------------------------------ */
+.ud-preview { margin: 0 0 18px; }
+.ud-preview-screen { position: relative; text-align: center; background: var(--cir-paper-raised); border: 1px solid var(--cir-rule); border-radius: 12px; padding: 16px 18px 18px; pointer-events: none; user-select: none; }
+.ud-preview-screen .cir-statement { font-size: clamp(22px, 4vw, 30px); margin: 12px 0 16px; }
+.ud-preview-screen .ud-token { font-size: 20px; padding: 10px 0; min-height: 0; transition: transform .15s ease, border-color .15s ease; }
+.ud-preview-screen .is-pressed { transform: scale(.94); border-color: var(--cir-ink); }
+.ud-preview-screen .cir-btn { display: inline-block; min-width: 140px; transition: transform .15s ease; }
+.ud-preview-result { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); margin: 0; display: inline-flex; align-items: center; gap: 8px; background: var(--cir-paper-raised); border: 1px solid var(--cir-good); color: var(--cir-good); border-radius: 999px; padding: 6px 16px; font-weight: 600; white-space: nowrap; }
+.ud-preview-result .cir-diagram { font-size: 18px; }
+.ud-preview-caption { margin: 10px 0 0; font-size: 14px; color: var(--cir-ink-soft); text-align: center; min-height: 2.6em; }

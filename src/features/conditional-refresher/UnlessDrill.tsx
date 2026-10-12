@@ -210,14 +210,8 @@ export default function UnlessDrill() {
             <li>Put it on the left.</li>
             <li>Take the other idea and put it on the right, exactly as written.</li>
           </ol>
-          <div className="ud-example">
-            <span className="ud-example-label">Example</span>
-            <span className="ud-example-statement"><UnlessText round={{ pattern: 1, x: "A", y: "B" }} /></span>
-            <span className="ud-example-row">Choose <Tok text="/A" />. Negate it: <Tok text="A" /> (the two slashes cancel). That goes left. <Tok text="B" /> goes right, exactly as written.</span>
-            <span className="ud-example-row"><Diagram left="A" right="B" /></span>
-            <span className="ud-example-row ud-muted">Choose <Tok text="B" /> instead and you get <Diagram left="/B" right="/A" />, the contrapositive. Also correct.</span>
-          </div>
         </div>
+        <DrillPreview />
         <p className="cir-feedback">
           Tap the idea that goes left, then the idea that goes right. Lock it in as soon as you are sure.
           Your review comes after all four.
@@ -369,5 +363,66 @@ function UnlessText({ round }: { round: UnlessRound }) {
     <span>
       {parts.map((p, i) => (/^\/?[A-Z]$/.test(p) ? <Tok key={i} text={p} /> : <span key={i}>{p}</span>))}
     </span>
+  );
+}
+
+/* A looping preview of one statement, played on the real drill furniture. */
+const PREVIEW = { pattern: 1 as const, x: "K", y: "M" }; // /K, unless M.  ->  K -> M
+const PREVIEW_LOOP_MS = 7000;
+const PREVIEW_BEATS = [
+  { at: 0, caption: "The statement appears and the clock starts." },
+  { at: 1400, caption: "Choose an idea and negate it: /K becomes K. Tap it for the left." },
+  { at: 2900, caption: "Tap the other idea, M, for the right. It stays exactly as written." },
+  { at: 4300, caption: "Lock it in." },
+  { at: 4900, caption: "Correct. Your review shows every statement after the round." },
+];
+
+function DrillPreview() {
+  const reduced = useMemo(
+    () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
+    [],
+  );
+  const [t, setT] = useState(reduced ? 5000 : 0);
+  useEffect(() => {
+    if (reduced) return;
+    const start = performance.now();
+    const id = window.setInterval(() => setT((performance.now() - start) % PREVIEW_LOOP_MS), 80);
+    return () => window.clearInterval(id);
+  }, [reduced]);
+
+  const beat = PREVIEW_BEATS.reduce((b, x, i) => (t >= x.at ? i : b), 0);
+  const left = beat >= 1 ? "K" : null;
+  const right = beat >= 2 ? "M" : null;
+  const pressed = beat === 1 ? "K" : beat === 2 ? "M" : null;
+  const locked = beat >= 3;
+  const remaining = Math.max(0, 5000 - Math.min(t, PREVIEW_BEATS[3].at));
+  const fraction = remaining / 5000;
+
+  return (
+    <div className="ud-preview" aria-label="Preview of one statement in the drill">
+      <div className="ud-preview-screen" aria-hidden="true">
+        <div className="ud-head">
+          <span className="cir-meta">Statement 1 of 4</span>
+          <span className="ud-count">{locked ? "Locked" : (remaining / 1000).toFixed(1)}</span>
+        </div>
+        <div className="ud-clock"><span style={{ transform: `scaleX(${fraction})` }} /></div>
+        <p className="cir-statement"><UnlessText round={PREVIEW} /></p>
+        <div className="cir-build ud-build">
+          <span className="cir-slot ud-slot">{left ? <Tok text={left} /> : <span className="cir-stack-join">left</span>}</span>
+          <span className="cir-arrow">&rarr;</span>
+          <span className="cir-slot ud-slot">{right ? <Tok text={right} /> : <span className="cir-stack-join">right</span>}</span>
+        </div>
+        <div className="ud-tokens">
+          {["K", "M", "/K", "/M"].map(o => (
+            <span key={o} className={`cir-token ud-token${pressed === o ? " is-pressed" : ""}`}><Tok text={o} /></span>
+          ))}
+        </div>
+        <div className="cir-actions ud-lock">
+          <span className={`cir-btn${beat === 3 ? " is-pressed" : ""}`}>Lock in</span>
+        </div>
+        {beat >= 4 && <p className="ud-preview-result">Correct: <Diagram left="K" right="M" /></p>}
+      </div>
+      <p className="ud-preview-caption" aria-live="off">{PREVIEW_BEATS[beat].caption}</p>
+    </div>
   );
 }
