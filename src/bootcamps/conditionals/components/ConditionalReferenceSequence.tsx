@@ -228,10 +228,13 @@ export function conditionalReferenceContent() {
 
     <ReferenceStep number={2} label="The sufficient condition" title="Sufficient means enough">
       <div className="cr-sufficiency">
-        <p className="cr-sufficiency-lead"><strong>Sufficient means enough.</strong> When one condition guarantees another, knowing the first is true tells you the second has to be true too. The first is the <strong>sufficient condition</strong>: it's enough to prove the second.</p>
-        <p>Nothing else has to be true for the guarantee to hold. If the first condition is true, the second condition has to be true as well.</p>
-        <blockquote><strong>If</strong> you're enrolled in law school, you're a student.</blockquote>
-        <p>Enrollment is enough. You don't need to know which classes someone takes. The rule doesn't say anyone is enrolled; it says what follows if they are.</p>
+        <p className="cr-sufficiency-lead"><strong>A sufficient condition is the “if” part of a rule. When it is true, the “then” part has to be true too.</strong></p>
+        <p>For example, in the rule below, being enrolled in law school is the <strong>sufficient condition</strong>. Being a student is the “then” part. It's what the rule guarantees.</p>
+        <blockquote><strong>If</strong> you're enrolled in law school, <strong>then</strong> you're a student.</blockquote>
+        <p>Someone might be enrolled. Someone might not. The rule doesn't say which. It only says what follows if they are.</p>
+        <p>Nothing else has to be true for the guarantee to hold. If someone is enrolled in law school, they have to be a student.</p>
+        <p>If they aren't enrolled, the rule says nothing. They might be a student or they might not.</p>
+        <p className="nc-takeaway"><strong>Being enrolled is enough. If it's true, being a student has to be true.</strong></p>
 
         <section className="cr-sufficient-explanation sc-indicator-list" aria-label="Group 1 indicator words">
           <h3>Group 1: Sufficient-condition indicators</h3>
