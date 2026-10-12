@@ -40,8 +40,12 @@ export interface BootcampDef {
   route: string;
   stats: string[];
   legacyRoutes?: string[];
+  /** Short, repeatable drills list under Quick Drills instead of Bootcamps. */
+  group?: 'quick-drill';
   theme: BootcampTheme;
 }
+
+export const isQuickDrill = (b: BootcampDef) => b.group === 'quick-drill';
 
 export const BOOTCAMPS: BootcampDef[] = [
 {
@@ -65,7 +69,8 @@ export const BOOTCAMPS: BootcampDef[] = [
     title: 'Unless Drill',
     description:
       'Timed Group 3 practice: diagram all four unless statements against the clock (10 seconds, then 5 once perfect), then check them against the answer key.',
-    route: '/unless-drill',
+    route: '/quick-drills/unless-drill',
+    group: 'quick-drill',
     stats: ['All 4 unless statements', '10 seconds, then 5', 'Review against the answer key'],
     theme: {
       style: 'editorial',
