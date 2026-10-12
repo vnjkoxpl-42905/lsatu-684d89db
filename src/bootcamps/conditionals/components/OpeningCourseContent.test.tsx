@@ -405,7 +405,7 @@ it('marks the reverse and the inverse as wrong and the contrapositive as right',
   const cards = [...document.querySelectorAll<HTMLElement>('.ct-move')];
   expect(cards.map(card => card.dataset.verdict)).toEqual(['wrong', 'wrong', 'right']);
   expect(cards.map(card => card.querySelector('.ct-move-badge')?.textContent)).toEqual(['Wrong', 'Wrong', 'Right']);
-  expect(cards.map(card => card.querySelector('.ct-move-name')?.textContent)).toEqual(['The reverse', 'The inverse', 'The contrapositive']);
+  expect(cards.map(card => card.querySelector('.ct-move-how')?.textContent)).toEqual(['Flip the sides only.', 'Add “not” only.', 'Flip the sides and add “not” to both.']);
 });
 
 it('never shows a squiggle anywhere on the contrapositive page, including the practice answer choices', () => {
@@ -434,4 +434,16 @@ it('lets the student click Step 1 to flip and Step 2 to put not on both', () => 
 it('tells the student what the arrow says, where to start reading and what it is for', () => {
   render(<OpeningCourseContent id="must-arrow"/>);
   for (const name of ['What the arrow says', 'Start at the left', 'What the arrow is for']) expect(screen.getByRole('heading', { name })).toBeVisible();
+});
+
+it('shows a rule that already has a not, and its double negative turning positive', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  const demo = document.querySelectorAll('.ct-flip')[1] as HTMLElement;
+  expect(demo.textContent).toMatch(/Dishwasher running/);
+  expect(demo.querySelectorAll('[data-struck=true]')).toHaveLength(1);
+  fireEvent.click(within(demo).getByRole('button', { name: /Step 1/ }));
+  fireEvent.click(within(demo).getByRole('button', { name: /Step 2/ }));
+  const chips = [...demo.querySelectorAll('.ct-chip')].map(chip => (chip as HTMLElement).dataset.struck);
+  expect(chips).toEqual(['true', 'false']);
+  expect(within(demo).getByRole('status').textContent).toMatch(/the two cancel and it turns positive/);
 });

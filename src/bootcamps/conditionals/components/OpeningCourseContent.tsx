@@ -1,4 +1,4 @@
-import { ContrapositiveLecture, FlipAndNegateDemo, Neg, PulseWord, PunchWord, RuleDrill, ThreeMoves } from './ContrapositiveVisuals';
+import { ContrapositiveLecture, DoubleNegativeDemo, FlipAndNegateDemo, Neg, PulseWord, PunchWord, RuleDrill, ThreeMoves } from './ContrapositiveVisuals';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
@@ -145,10 +145,11 @@ function ContrapositiveNote() {
         <li><strong>Step 2: Negate both.</strong> Put “not” on each idea. If an idea already has a “not,” the two cancel: a double negative turns positive.</li>
       </ol>
       <FlipAndNegateDemo/>
-      <p>Try one that starts negative. <strong><Neg>Light</Neg> → <Neg>Power</Neg></strong> flips to <strong><Neg>Power</Neg> → <Neg>Light</Neg></strong>. Negating both cancels each “not,” so the contrapositive is <strong>Power → Light</strong>.</p>
+      <p>Same two steps when a side already has a “not.” Watch what happens to it:</p>
+      <DoubleNegativeDemo/>
     </NoteSection>
     <NoteSection title="What it is not">
-      <p>Two other changes look like the contrapositive. Each one gives you a different rule that the original does not guarantee. Wrong answer choices use them on purpose.</p>
+      <p>Two look-alikes fail. Wrong answer choices use them on purpose.</p>
       <ThreeMoves/>
     </NoteSection>
     <NoteSection title="Read it, don't always write it">
