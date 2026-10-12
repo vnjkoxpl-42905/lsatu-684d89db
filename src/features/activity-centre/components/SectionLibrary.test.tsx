@@ -123,7 +123,7 @@ describe("getting back to a Report Card", () => {
   /*
    * Reported by a student, not found by a test.
    *
-   * Celia finished her first section, saw "87% carried" on this row, and asked
+   * Celia finished her first section, saw "87% held" on this row, and asked
    * where the graded responses were. The button already went to her Report
    * Card. It just read as a caption with a number on it, so she never pressed
    * it. A row that is the only way back to the card has to say so.
@@ -167,7 +167,7 @@ describe("getting back to a Report Card", () => {
         loadGrades={graded}
       />,
     );
-    expect(await screen.findByText(/91% carried/)).toBeInTheDocument();
+    expect(await screen.findByText(/91% held/)).toBeInTheDocument();
   });
 
   it("says a finished run is still being marked rather than showing it as scored", async () => {

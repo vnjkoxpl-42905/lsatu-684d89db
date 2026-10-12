@@ -236,6 +236,13 @@ export function SectionLaunchFrame({
     drawerRef.current?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
   }, [reduced]);
 
+  /*
+   * What the slab is, said by the buttons that scroll to it. On the library
+   * it is the list of sections; on a section page it is her own attempts,
+   * and three controls and a heading called that "Choose a section" on a
+   * page with one section.
+   */
+  const slabLabel = sectionsFirst ? "Choose a section" : "Your attempts";
   const goToSections = useCallback(() => {
     const slab = sectionsRef.current;
     if (!slab) return;
@@ -292,10 +299,9 @@ export function SectionLaunchFrame({
             className="rd-hero-copy"
             style={reduced ? undefined : { y: copyY, opacity: copyOpacity, filter: copyFilter, scale: copyScale }}
           >
-            <span className="sl-chip">
-              <Mic size={11} strokeWidth={2.6} aria-hidden="true" />
-              Read, Recall, Colour
-            </span>
+            {/* No chip. It restated the H1 verbatim, in a glass pill with a
+                backdrop blur, which is the second-order tell the audit named
+                first. The title says it once. */}
             <h1 className="sl-title" id="rd-title">
               {/* "Read, Recall, Colour · PT102 Section 3" is one title in the
                   record and two lines on the door: the drill, then the section
@@ -483,7 +489,7 @@ export function SectionLaunchFrame({
                         </button>
                       ) : (
                         <button type="button" className="sl-close" onClick={goToSections}>
-                          Choose a section
+                          {slabLabel}
                           <ArrowDown size={13} strokeWidth={2.4} aria-hidden="true" />
                         </button>
                       )}
@@ -527,7 +533,7 @@ export function SectionLaunchFrame({
                       Back to the steps
                     </button>
                     <button type="button" className="sl-close" onClick={goToSections}>
-                      Choose a section
+                      {slabLabel}
                       <ArrowDown size={13} strokeWidth={2.4} aria-hidden="true" />
                     </button>
                   </div>
@@ -586,7 +592,7 @@ export function SectionLaunchFrame({
           {...reveal}
         >
           <h2 className="sr-only" id="rd-slab-title">
-            Choose a section
+            {slabLabel}
           </h2>
           {children}
         </motion.section>
@@ -601,11 +607,11 @@ export function SectionLaunchFrame({
         </h2>
         <div className="rd-close-panel">
           <p className="rd-close-line">
-            Twenty-five minutes. No going back. <em>Every detail you can still hold.</em>
+            All the way through, out loud. <em>Every detail you can still hold.</em>
           </p>
           {closingAction ?? (
             <button type="button" className="sl-start" onClick={goToSections}>
-              Choose a section
+              {slabLabel}
               <ArrowDown size={16} strokeWidth={2.4} aria-hidden="true" />
             </button>
           )}

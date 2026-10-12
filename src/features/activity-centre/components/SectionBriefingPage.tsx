@@ -2,6 +2,7 @@ import type React from "react";
 import { ArrowRight } from "lucide-react";
 import type { ActivityInstructions } from "../api/types";
 import { renderInlineMarks } from "../prompt-format";
+import { useNoKeyboard } from "../recall/noKeyboard";
 import { SectionDemos } from "./SectionDemos";
 import "./section-launch.css";
 
@@ -30,6 +31,7 @@ export function SectionBriefingPage({
   onExit,
 }: SectionBriefingPageProps) {
   const briefing = instructions.briefing;
+  const noKeyboard = useNoKeyboard();
   const steps = briefing?.sections.find((s) => (s.steps?.length ?? 0) > 0)?.steps ?? [];
 
   const startButton = (label: string) => (
@@ -147,11 +149,29 @@ export function SectionBriefingPage({
           closer is the authored last beat before Start and belongs here too. */}
       <footer className="sl-bp-foot">
         <p className="sl-bp-fact">
-          It runs in one take. You can pause: the text hides and the clock stops
-          while you are away, and you cannot go back to a stimulus. Twenty-five
-          minutes for the whole section is the goal you are working toward, not a
-          limit.
+          It runs in one take, all the way through, out loud. You can pause: the text
+          hides and the clock stops while you are away, and you cannot go back to a
+          stimulus. Twenty-five minutes for the whole section is the goal you are
+          working toward, not a limit.
         </p>
+        {/* The key that runs the drill, said here rather than in the ready beat,
+            where it was thirty words to read in three seconds. Here she has as
+            long as she likes. */}
+        <p className="sl-bp-fact">
+          Space twice per stimulus: once when you have read it all, once when you have
+          given The Recall.
+        </p>
+        {/* A phone has no Space bar. The run shows a button in its place, and
+            this is the one page that can say so before the recording is
+            running. The door already carries the laptop warning; this is the
+            instruction, not the warning. */}
+        {noKeyboard && (
+          <p className="sl-bp-fact">
+            On a touch screen there is no Space bar. The run shows a button at the foot of
+            the page instead, Next stimulus and then Recall full stimulus, and it does the
+            same thing.
+          </p>
+        )}
         {briefing?.closer && (
           <p className="sl-bp-closer">{renderInlineMarks(briefing.closer, "sl-bp-closer")}</p>
         )}
@@ -159,8 +179,9 @@ export function SectionBriefingPage({
             described the mechanism and left her wondering what it counted
             toward. */}
         <p>
-          When you are ready, press Start. Recording begins the moment you do, and the timer
-          starts with it. The first time, your browser will ask to use your microphone. Allow it.
+          When you are ready, press Start. Recording begins the moment you do. Say something so
+          you can see the microphone is live, and the timer starts a few seconds after that. The
+          first time, your browser will ask to use your microphone. Allow it.
         </p>
         <div className="sl-cta">{startButton("Start the section")}</div>
       </footer>

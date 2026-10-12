@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { bandFor } from "../recall/grading";
 import { nextStep } from "../recall/nextStep";
@@ -8,8 +7,21 @@ import { insideTime } from "../recall/sectionClock";
 import { listModelRuns, signSectionRecording } from "../api/activitiesClient";
 import { raiseDispute } from "../recall/disputes";
 import type { ModelRun } from "../api/activitiesClient";
-import type { SectionGrade, SectionLineGrade, SectionStimulusGrade } from "../api/types";
+import type { SectionGrade, SectionLineGrade, SectionStimulusGrade, SectionLineVerdict } from "../api/types";
 import "./report-card.css";
+
+/**
+ * The judge's word for the whole-stimulus Recall, in hers.
+ *
+ * `s.recall.verdict` was printed as the enum: "text off screen: partial".
+ * A verdict is a thing she reads, so it is said in the card's own register.
+ */
+const RECALL_WORDS: Record<SectionLineVerdict, string> = {
+  strong: "held together.",
+  partial: "partly there.",
+  thin: "thin.",
+  skipped: "skipped.",
+};
 
 /**
  * What a finished Read, Recall, Colour section produces.
@@ -699,7 +711,7 @@ export function SectionReportCard({
         {/* ── The ledger ──────────────────────────────────────────────────
             The shape of the run in one glance, and the only navigation. */}
         <div className="rc__console-divider mt-7 border-t pt-6">
-          <h2 className="rc__label rc__label--onconsole">The run</h2>
+          <h2 className="rc__label rc__label--onconsole">Stimulus by stimulus</h2>
           {/*
             * One tab stop, and the arrows do the rest.
             *
@@ -712,7 +724,7 @@ export function SectionReportCard({
           <div
             className="rc__ledger mt-3.5"
             role="toolbar"
-            aria-label="The run, stimulus by stimulus"
+            aria-label="Stimulus by stimulus"
             aria-orientation="horizontal"
             onKeyDown={(e) => {
               const last = stimuli.length - 1;
@@ -828,9 +840,9 @@ export function SectionReportCard({
                     </button>
                   )}
                 </div>
-                {hersPlaying && !!s.lines?.length && (
+                {!!s.lines?.length && (
                   <p className="text-xs text-[var(--rc-ink-faint)]" role="status">
-                    Following your recording, line by line.
+                    {hersPlaying ? "Following your recording, line by line." : ""}
                   </p>
                 )}
               </div>
@@ -994,7 +1006,9 @@ export function SectionReportCard({
                         * answer. The reason is what she can dispute; the key is
                         * what she can learn from.
                         */}
-                      {s.readReason && (
+                      {/* The reason is why the Read did NOT match. Under "You found
+                          the move" it read as a correction of a right answer. */}
+                      {s.readReason && !s.readMatches && (
                         <p className="mt-1.5 text-sm leading-relaxed text-[var(--rc-ink-muted)]">
                           {s.readReason}
                         </p>
@@ -1107,7 +1121,7 @@ export function SectionReportCard({
                       {s.recall && (
                         <div className="mt-4 rounded-lg border border-[var(--rc-hairline)] px-4 py-3">
                           <p className="text-sm font-medium text-[var(--rc-ink)]">
-                            The whole thing, text off screen: {s.recall.verdict}
+                            The whole thing, text off screen: {RECALL_WORDS[s.recall.verdict]}
                           </p>
                           {s.recall.note && (
                             <p className="mt-1 text-sm leading-relaxed text-[var(--rc-ink-muted)]">
@@ -1213,7 +1227,9 @@ export function SectionReportCard({
 
       {onDone && (
         <div className="border-t border-[var(--rc-hairline)] px-6 py-6 text-center">
-          <Button onClick={onDone}>Done</Button>
+          <button type="button" className="rc__cta" onClick={onDone}>
+            Done
+          </button>
         </div>
       )}
     </div>
@@ -1269,31 +1285,36 @@ function DisputeControl({
     setState(failure.reason === "not-configured" ? "unavailable" : "failed");
   }, [grade, stimulus]);
 
-  if (state === "noted") {
-    return (
-      <p className="mt-2 text-xs text-[var(--rc-ink-faint)]" role="status">
-        Noted. Joshua will see this beside the run.
-      </p>
-    );
-  }
+  const settled = state === "noted" || state === "unavailable" || state === "failed";
+  const said =
+    state === "noted"
+      ? "Noted. Joshua will see this beside your Report Card."
+      : state === "unavailable" || state === "failed"
+        ? "That did not save. Tell Joshua directly and he will look at the recording."
+        : "";
 
-  if (state === "unavailable" || state === "failed") {
-    return (
-      <p className="mt-2 text-xs text-[var(--rc-ink-faint)]" role="status">
-        That did not save. Tell Joshua directly and he will look at the recording.
-      </p>
-    );
-  }
-
+  /*
+   * One status region, mounted from the start, and the button beside it until
+   * it has done its job. The three states used to be three different elements
+   * swapped in and out, so the region a reader was told to watch was never the
+   * one that changed.
+   */
   return (
-    <button
-      type="button"
-      className="mt-2 text-xs text-[var(--rc-ink-faint)] underline underline-offset-2 hover:text-[var(--rc-ink)] disabled:opacity-60"
-      onClick={send}
-      disabled={state === "sending"}
-    >
-      {state === "sending" ? "Saving..." : "This is not what I said"}
-    </button>
+    <>
+      {!settled && (
+        <button
+          type="button"
+          className="mt-2 text-xs text-[var(--rc-ink-faint)] underline underline-offset-2 hover:text-[var(--rc-ink)] disabled:opacity-60"
+          onClick={send}
+          disabled={state === "sending"}
+        >
+          {state === "sending" ? "Saving..." : "This is not what I said"}
+        </button>
+      )}
+      <p className="mt-2 text-xs text-[var(--rc-ink-faint)]" role="status">
+        {said}
+      </p>
+    </>
   );
 }
 
@@ -1370,19 +1391,19 @@ function FocusSetPanel({
       </ul>
 
       <div className="mt-5 flex items-center gap-4">
-        <Button onClick={() => void go()} disabled={starting}>
+        <button type="button" className="rc__cta" onClick={() => void go()} disabled={starting}>
           {starting ? "Setting it up..." : `Run these ${set.slugs.length} again`}
-        </Button>
+        </button>
         <span className="text-xs text-[var(--rc-ink-faint)]">
-          Optional. This run and its recording are saved either way.
+          Optional. This section and its recording are saved either way.
         </span>
       </div>
 
-      {failed && (
-        <p className="mt-3 text-xs text-[var(--rc-ink-faint)]" role="status">
-          That did not start. Try again in a moment — nothing has been lost.
-        </p>
-      )}
+      {/* Always mounted, so the change is what gets announced. A region that
+          arrives with its text already inside it is silent to most readers. */}
+      <p className="mt-3 text-xs text-[var(--rc-ink-faint)]" role="status">
+        {failed ? "That did not start. Nothing has been lost. Try again in a moment." : ""}
+      </p>
     </div>
   );
 }

@@ -46,7 +46,7 @@ export function SectionProgress({
       <section className="rounded-2xl border border-border/60 bg-card/40 p-6">
         <h2 className="text-sm font-semibold tracking-wide text-foreground">Your progress</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Your past runs could not be loaded just now. They are saved — try again in a moment.
+          Your past Attempts could not be loaded just now. They are saved. Try again in a moment.
         </p>
       </section>
     );
@@ -56,7 +56,7 @@ export function SectionProgress({
     return (
       <section className="rounded-2xl border border-border/60 bg-card/40 p-6">
         <h2 className="text-sm font-semibold tracking-wide text-foreground">Your progress</h2>
-        <p className="mt-2 text-sm text-muted-foreground">Loading your past runs…</p>
+        <p className="mt-2 text-sm text-muted-foreground">Loading your past Attempts…</p>
       </section>
     );
   }
@@ -66,8 +66,8 @@ export function SectionProgress({
       <section className="rounded-2xl border border-border/60 bg-card/40 p-6">
         <h2 className="text-sm font-semibold tracking-wide text-foreground">Your progress</h2>
         <p className="mt-2 max-w-[60ch] text-sm text-muted-foreground">
-          No graded runs yet. Finish a section below and its marked report is saved here — every
-          run you do from then on shows up in this list.
+          No graded Attempts yet. Finish a section below and its marked report is saved here.
+          Every Attempt from then on shows up in this list.
         </p>
       </section>
     );
@@ -87,7 +87,7 @@ export function SectionProgress({
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <h2 className="text-sm font-semibold tracking-wide text-foreground">Your progress</h2>
         <p className="text-xs text-muted-foreground">
-          {ordered.length} graded {ordered.length === 1 ? "run" : "runs"}
+          {ordered.length} graded {ordered.length === 1 ? "Attempt" : "Attempts"}
           {ordered.length > 1 && (
             <>
               {" · "}

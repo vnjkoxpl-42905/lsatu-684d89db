@@ -206,6 +206,9 @@ createRoot(document.getElementById("root")!).render(
   >
     <SectionReportCard
       grade={grade}
+      /* The card's own Done control, so the harness shows the foot as the
+         product does. It goes nowhere here. */
+      onDone={() => {}}
       loadModelRuns={async () =>
         Object.fromEntries(list.map((s) => [s.slug, { audio: null, walkthrough: WALKTHROUGH }]))
       }

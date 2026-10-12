@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { SectionBriefingPage } from "./SectionBriefingPage";
+import { NO_KEYBOARD_QUERY } from "../recall/noKeyboard";
 import type { ActivityInstructions } from "../api/types";
 import sectionInstructions from "../content/read-recall-colour-section.instructions.json";
 
@@ -22,6 +23,50 @@ function renderPage(props?: Partial<Parameters<typeof SectionBriefingPage>[0]>) 
   );
 }
 
+/** Answer the pointer query one way, and every other query the way the suite does. */
+function setPointer(coarse: boolean) {
+  vi.stubGlobal(
+    "matchMedia",
+    (query: string) =>
+      ({
+        matches: query === NO_KEYBOARD_QUERY ? coarse : false,
+        media: query,
+        onchange: null,
+        addListener: () => {},
+        removeListener: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        dispatchEvent: () => false,
+      }) as unknown as MediaQueryList,
+  );
+}
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
+
+/*
+ * The page said "Space twice per stimulus" to a phone, which has no Space bar,
+ * and the on-screen button that replaces it was never named before the
+ * recording was running.
+ */
+describe("the briefing on a device with no keyboard", () => {
+  it("names the button that stands in for Space", () => {
+    setPointer(true);
+    renderPage();
+    const foot = document.querySelector(".sl-bp-foot")?.textContent ?? "";
+    expect(foot).toMatch(/no Space bar/);
+    expect(foot).toMatch(/Next stimulus/);
+    expect(foot).toMatch(/Recall full stimulus/);
+  });
+
+  it("says nothing about touch where there is a keyboard", () => {
+    setPointer(false);
+    renderPage();
+    expect(document.querySelector(".sl-bp-foot")?.textContent ?? "").not.toMatch(/no Space bar/);
+  });
+});
+
 describe("the section briefing page", () => {
   it("says at the foot, beside Start, what one take and a pause each cost her, and what the time is for", () => {
     renderPage();
@@ -33,6 +78,11 @@ describe("the section briefing page", () => {
     expect(foot).toMatch(/the clock stops/i);
     expect(foot).toMatch(/cannot go back/i);
     expect(foot).toMatch(/goal/i);
+    // The key, and the step it ends, live here now rather than in the ready
+    // beat, where they were thirty words to read in three seconds.
+    expect(foot).toMatch(/Space twice per stimulus/);
+    expect(foot).toMatch(/given The Recall/);
+    expect(foot).not.toMatch(/given your Read/);
     // The authored closer is the last beat before Start, and it renders here.
     expect(foot).toContain("One a day holds you steady.");
   });

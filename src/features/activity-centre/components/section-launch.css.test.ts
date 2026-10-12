@@ -71,6 +71,22 @@ describe("section-launch.css", () => {
     expect(tab).toMatch(/padding:\s*10px 0 14px/);
   });
 
+  it("keeps the phone's hero to one screen, with the clock line on it", () => {
+    const phone = CSS.split("@media (max-width: 640px) {")[1]?.split("\n}\n")[0] ?? "";
+    // 760px of reserved room on a 375x812 phone was a screen and a half with
+    // the demonstration cut at the fold; capping the room put it under Start.
+    // The scene's box dissolves and the stage flows after the copy instead.
+    expect(phone).toMatch(/\.rd-hero-space\s*\{[^}]*min-height:\s*0/);
+    // Scoped like the base rules. Unscoped, `.sl .mw` outranked them from
+    // outside the media query and the phone hero collapsed to 456px.
+    expect(phone).toMatch(/\.sl \.mw\s*\{[^}]*display:\s*contents/);
+    expect(phone).toMatch(/\.sl \.mw-stage\s*\{[^}]*position:\s*static/);
+    // "25 min" was hidden on the device most likely to be short of it.
+    expect(phone).not.toMatch(/\.rd-meta\s*\{[^}]*display:\s*none/);
+    // One column: the card carries the whole step, not four clamped lines.
+    expect(phone).toMatch(/\.sl-beat \.sl-d\s*\{[^}]*-webkit-line-clamp:\s*unset/);
+  });
+
   it("keeps the way out above the hero copy", () => {
     // Same layer, and the copy comes later in the DOM, so on a phone it took
     // the bottom half of the crumb's target with it.

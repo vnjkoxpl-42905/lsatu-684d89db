@@ -194,11 +194,11 @@ function StatStrip({
   return (
     <div className="sl-stats">
       <div className="sl-stat">
-        <span className="sl-label">Last run</span>
+        <span className="sl-label">Last attempt</span>
         <span className="sl-sv" data-empty={stats.lastRunSeconds === null || undefined}>
-          {stats.lastRunSeconds === null ? "no runs yet" : clock(stats.lastRunSeconds)}
+          {stats.lastRunSeconds === null ? "no attempts yet" : clock(stats.lastRunSeconds)}
         </span>
-        <span className="sl-sd">{stats.totalRuns === 1 ? "first run" : "most recent"}</span>
+        <span className="sl-sd">{stats.totalRuns === 1 ? "first attempt" : "most recent"}</span>
       </div>
       <div className="sl-stat">
         <span className="sl-label">Trend</span>

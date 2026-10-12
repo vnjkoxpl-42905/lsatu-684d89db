@@ -76,7 +76,7 @@ describe("the first-run walkthrough", () => {
     }
   });
 
-  it("says The Recall in the ready beat, not the retired step name", () => {
+  it("keeps the beat to the microphone, and the step names out of it", () => {
     render(
       <SectionStage
         stimulus={stimulus}
@@ -88,6 +88,11 @@ describe("the first-run walkthrough", () => {
         countdown={2}
       />,
     );
-    expect(screen.getByText(/once when you have given The Recall/)).toBeInTheDocument();
+    // The instruction moved to the foot of the briefing. What is left is the
+    // one thing only the beat can show her.
+    expect(screen.getByText("Microphone on.")).toBeInTheDocument();
+    expect(screen.getByText(/say something to check your microphone/i)).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/given your Read/);
+    expect(document.body.textContent).not.toMatch(/Space twice/);
   });
 });

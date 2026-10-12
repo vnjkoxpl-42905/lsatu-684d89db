@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import {
   getSectionGrade,
   requestSectionGrading,
@@ -165,7 +164,7 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
           */}
         <div role="status" aria-live="polite">
           <p className="rc__display mt-3 text-[34px] text-[var(--rc-ink)]">
-            {stillWaiting ? "Still being marked" : "Marking your run"}
+            {stillWaiting ? "Still being marked" : "Marking your attempt"}
           </p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--rc-ink-muted)]">
             {stillWaiting
@@ -184,19 +183,21 @@ export function SectionReport({ assignmentId, onDone }: SectionReportProps) {
           */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           {stillWaiting && (
-            <Button
+            <button
+              type="button"
+              className="rc__cta"
               onClick={() => {
                 setStillWaiting(false);
                 setRound((n) => n + 1);
               }}
             >
               Check again
-            </Button>
+            </button>
           )}
           {onDone && (
-            <Button variant="outline" onClick={onDone}>
+            <button type="button" className="rc__cta rc__cta--quiet" onClick={onDone}>
               Back to the Activity Centre
-            </Button>
+            </button>
           )}
         </div>
         {/*

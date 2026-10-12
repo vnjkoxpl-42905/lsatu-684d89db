@@ -158,11 +158,6 @@ export function RecallDemo() {
   return (
     <div className="rd-demo" ref={rootRef} data-phase={phase} data-still={!running || undefined}>
       <div className="rd-demo-bar">
-        <span className="rd-demo-dots" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </span>
         <span className="rd-demo-title">Read, Recall, Colour</span>
         {/* Named for anyone watching, never announced: the label turns over
             every 1.5 to 4.2 seconds for as long as the door is open, and a
