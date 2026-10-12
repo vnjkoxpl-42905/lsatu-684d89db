@@ -19,7 +19,7 @@ import { updateClassroomItem } from '@/lib/classroomItems';
 import { assignWork, describeAssignResult } from '@/lib/assignWork';
 import { localDayISO } from '@/lib/localDate';
 import { useAuth } from '@/contexts/AuthContext';
-import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
+import { BOOTCAMPS, isQuickDrill, type BootcampDef } from '@/lib/bootcamps';
 import { BOOTCAMP_INLINE } from '@/lib/bootcampInline';
 import { useHubStudents } from '@/hooks/useHubStudents';
 import { ConditionalAssignmentFields } from '@/components/teacher/ConditionalAssignmentFields';
@@ -27,6 +27,7 @@ import { DEFAULT_CONDITIONAL_TARGET, type ConditionalAssignmentTarget } from '@/
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
   'conditional-indicators-refresher': 1,
+  'unless-drill': 7,
   'principle-flaw': 14,
   'intro-to-lr': 14,
   'causation-station': 7,
@@ -153,16 +154,22 @@ export function DeskLibraryBootcampsSurface({ view }: { view: LibraryView }) {
   return (
     <section className="flex h-full w-full flex-col">
       <header className="shrink-0 border-b border-black/10 px-6 py-4">
-        <h2 className="text-base font-semibold text-black">Bootcamps</h2>
+        <h2 className="text-base font-semibold text-black">Bootcamps and Quick Drills</h2>
         <p className="mt-0.5 text-xs text-black/55">
-          Open a bootcamp to preview it, or assign it to one or more students with a start and end date.
+          Open one to preview it, or assign it to one or more students with a start and end date.
         </p>
       </header>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">
+        {([
+          ['Bootcamps', BOOTCAMPS.filter((b) => !isQuickDrill(b))],
+          ['Quick Drills', BOOTCAMPS.filter(isQuickDrill)],
+        ] as const).filter(([, list]) => list.length > 0).map(([heading, list]) => (
+        <section key={heading} className="mb-8 last:mb-0">
+        <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-black/55">{heading}</h3>
         <LibraryViews
           view={view}
-          items={BOOTCAMPS.map((b): LibraryItem => ({
+          items={list.map((b): LibraryItem => ({
             id: b.id,
             title: b.title,
             subtitle: b.description,
@@ -188,6 +195,8 @@ export function DeskLibraryBootcampsSurface({ view }: { view: LibraryView }) {
             ),
           }))}
         />
+        </section>
+        ))}
       </div>
 
       {/* Assign sheet */}
