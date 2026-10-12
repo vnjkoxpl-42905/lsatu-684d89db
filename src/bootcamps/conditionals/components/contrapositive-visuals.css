@@ -108,3 +108,9 @@
 #root .ct-compare tr.ct-settles td:first-child{box-shadow:inset 4px 0 0 #1f6a4a;font-weight:700}
 #root .ct-compare tr.ct-silent td{color:#5b6f78}
 #root .ct-compare tr.ct-silent td:first-child{box-shadow:inset 4px 0 0 #b9c4c9}
+.ct-move[data-verdict=right] .ct-neg{--ct-line:#1f6a4a}
+.dark .ct-move[data-verdict=right] .ct-neg{--ct-line:#7ff0b8}
+
+/* Symbol answer choices stay on one line; the struck ideas stay readable at button size. */
+#root .co-opening :is(.cr-pattern .cr-answer-options,.cr-symbol-options) button{white-space:nowrap;min-width:max-content;font-size:1.1rem;padding-inline:1rem;letter-spacing:.01em}
+#root .co-opening .cr-formula .ct-neg,#root .co-opening .cr-symbol-options .ct-neg,#root .co-opening .cr-pattern .cr-answer-options .ct-neg{padding-inline:.4em}

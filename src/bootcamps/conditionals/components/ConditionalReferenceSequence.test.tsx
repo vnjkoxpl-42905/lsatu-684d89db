@@ -96,10 +96,10 @@ it('distinguishes the two valid inferences from both unknown cases without expos
     fireEvent.click(within(startingFacts).getByRole('button', { name: new RegExp(label) }));
     expect(within(lab).getByRole('status').textContent).toBe('');
     const options = within(lab).getByRole('group', { name: 'Choose what follows' });
-    fireEvent.click(within(options).getByRole('button', { name: wrong }));
+    fireEvent.click(within(options).getByRole('button', { name: spoken(wrong) }));
     expect(lab.querySelector('.cr-correct')).toBeNull();
     expect(within(lab).getByRole('status').textContent).toMatch(/Not quite/);
-    fireEvent.click(within(options).getByRole('button', { name: correct }));
+    fireEvent.click(within(options).getByRole('button', { name: spoken(correct) }));
     expect(lab.querySelector('.cr-correct')).toBeTruthy();
     expect(within(lab).getByRole('status').textContent).toMatch(reasoning);
   }
@@ -134,6 +134,8 @@ it('constructs the first diagram incrementally and keeps roles when the if-claus
   expect(writer.querySelector('mark')).toBeNull();
 });
 
+const spoken = (text: string) => text.replace(/~/g, 'not ');
+
 it('negates both complete conditions correctly in all four sign patterns, including existing negatives', () => {
   const { step } = mount();
   const patterns = [
@@ -143,11 +145,12 @@ it('negates both complete conditions correctly in all four sign patterns, includ
     ['~F → ~G', 'G → F', 'F → G'],
   ];
   for (const [original, correct, wrong] of patterns) {
-    const question = within(step(9)).getByRole('heading', { name: `Which is the contrapositive of ${original}?` }).closest<HTMLElement>('.cr-question')!;
+    const heading = [...step(9).querySelectorAll('h3')].find(node => node.textContent === `Which is the contrapositive of ${spoken(original)}?`)!;
+    const question = heading.closest<HTMLElement>('.cr-question')!;
     expect(within(question).getByRole('status').textContent).toBe('');
-    fireEvent.click(within(question).getByRole('button', { name: wrong }));
+    fireEvent.click(within(question).getByRole('button', { name: spoken(wrong) }));
     expect(question.querySelector('.cr-correct')).toBeNull();
-    fireEvent.click(within(question).getByRole('button', { name: correct }));
+    fireEvent.click(within(question).getByRole('button', { name: spoken(correct) }));
     expect(question.querySelector('.cr-correct')).toBeTruthy();
     expect(within(question).getByRole('status').textContent).toMatch(/same (rule|relationship)/);
     fireEvent.click(within(question).getByRole('button', { name: 'Try again' }));
@@ -178,10 +181,10 @@ it('keeps a complete qualified group and recognizes its role on either side of t
   for (const [index, lab] of labs.entries()) {
     const [correct, wrong] = answers[index];
     expect(lab.querySelector('mark')).toBeNull();
-    fireEvent.click(within(lab).getByRole('button', { name: wrong }));
+    fireEvent.click(within(lab).getByRole('button', { name: spoken(wrong) }));
     expect(lab.querySelector('mark')).toBeNull();
     expect(lab.querySelector('.cr-correct')).toBeNull();
-    fireEvent.click(within(lab).getByRole('button', { name: correct }));
+    fireEvent.click(within(lab).getByRole('button', { name: spoken(correct) }));
     expect(lab.querySelector('mark')?.textContent?.toLowerCase()).toBe(correct);
     expect(within(lab).getByRole('status').textContent).toMatch(/Correct group/);
     fireEvent.click(within(lab).getByRole('button', { name: 'Clear the group' }));
@@ -224,18 +227,18 @@ it('requires both independent diagrams before giving nine fresh practice keys an
     expect(check.disabled).toBe(true);
     expect(item.querySelector('.cr-answer-key')).toBeNull();
     expect(within(item).getByRole('status').textContent).toBe('');
-    fireEvent.click(within(originalChoices).getByRole('button', { name: original }));
+    fireEvent.click(within(originalChoices).getByRole('button', { name: spoken(original) }));
     expect(check.disabled).toBe(true);
-    const wrongContra = within(contraChoices).getAllByRole('button').find(button => button.textContent !== contra)!;
+    const wrongContra = within(contraChoices).getAllByRole('button').find(button => button.textContent !== spoken(contra))!;
     fireEvent.click(wrongContra);
     expect(check.disabled).toBe(false);
     expect(item.querySelector('.cr-answer-key')).toBeNull();
     fireEvent.click(check);
     expect(item.querySelector('.cr-correct')).toBeNull();
     expect(within(item).getByRole('status').textContent).toMatch(/original keeps the direction.*contrapositive must start/i);
-    expect(item.querySelector('.cr-answer-key')?.textContent).toContain(original);
-    expect(item.querySelector('.cr-answer-key')?.textContent).toContain(contra);
-    fireEvent.click(within(contraChoices).getByRole('button', { name: contra }));
+    expect(item.querySelector('.cr-answer-key')?.textContent).toContain(spoken(original));
+    expect(item.querySelector('.cr-answer-key')?.textContent).toContain(spoken(contra));
+    fireEvent.click(within(contraChoices).getByRole('button', { name: spoken(contra) }));
     expect(item.querySelector('.cr-answer-key')).toBeNull();
     fireEvent.click(check);
     expect(item.querySelector('.cr-correct strong')?.textContent).toBe('Both diagrams are correct.');

@@ -381,6 +381,21 @@ it('lets the student cut the power and see the one world the rule forbids', () =
   expect(within(board).getByText(/the rule has nothing to say about the power/)).toBeInTheDocument();
 });
 
+it('marks the reverse and the inverse as wrong and the contrapositive as right', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  const cards = [...document.querySelectorAll<HTMLElement>('.ct-move')];
+  expect(cards.map(card => card.dataset.verdict)).toEqual(['wrong', 'wrong', 'right']);
+  expect(cards.map(card => card.querySelector('.ct-move-badge')?.textContent)).toEqual(['Wrong', 'Wrong', 'Right']);
+  expect(cards.map(card => card.querySelector('.ct-move-name')?.textContent)).toEqual(['The reverse', 'The inverse', 'The contrapositive']);
+});
+
+it('never shows a squiggle anywhere on the contrapositive page, including the reference practice and answer choices', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  expect(document.body.textContent).not.toMatch(/[~∼¬]/);
+  const choices = [...document.querySelectorAll('.cr-answer-options button')].filter(button => button.querySelector('.ct-neg'));
+  expect(choices.length).toBeGreaterThan(6);
+});
+
 it('steps through flip and negate by hand', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
   const demo = document.querySelector('.ct-flip') as HTMLElement;
