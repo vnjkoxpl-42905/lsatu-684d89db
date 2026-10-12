@@ -1,5 +1,5 @@
 import UnlessDrill from "./UnlessDrill";
-import "./conditional-refresher.css";
+import "@/features/conditional-refresher/conditional-refresher.css";
 
 /** The Unless drill on its own, so it can be assigned without the rest of the refresher. */
 export default function UnlessDrillPage() {

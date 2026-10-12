@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   UNLESS_LETTERS, contrapositiveOf, gradeUnless, negateToken, unlessAnswer, unlessParts, unlessStatement,
   type UnlessPattern, type UnlessRound, type UnlessVerdict,
-} from "./content";
-import { Diagram, Tok } from "./Notation";
+} from "@/features/conditional-refresher/content";
+import { Diagram, Tok } from "@/features/conditional-refresher/Notation";
 import { useUnlessMilestones } from "./unlessProgress";
-import "./conditional-refresher.css";
+import "@/features/conditional-refresher/conditional-refresher.css";
 
 /* The timed Unless drill. Used as a tab of the Conditional Indicators
    Refresher and as its own assignable page (/unless-drill). The statements are

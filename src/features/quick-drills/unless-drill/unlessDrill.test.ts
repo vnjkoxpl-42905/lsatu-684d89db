@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { contrapositiveOf, gradeUnless, unlessAnswer, unlessStatement, type UnlessRound } from "./content";
+import { contrapositiveOf, gradeUnless, unlessAnswer, unlessStatement, type UnlessRound } from "@/features/conditional-refresher/content";
 
 const round = (pattern: 1 | 2 | 3 | 4): UnlessRound => ({ pattern, x: "A", y: "B" });
 

@@ -4,7 +4,7 @@ import {
   negateToken, type DiagramItem, type GroupId,
 } from "./content";
 import { Diagram, Side, Tok } from "./Notation";
-import UnlessDrill from "./UnlessDrill";
+import UnlessDrill from "@/features/quick-drills/unless-drill/UnlessDrill";
 import "./conditional-refresher.css";
 
 const TABS = ["Cheat Sheet", "Sort Drills", "Flashcards", "Diagram Drills", "Unless Drill"] as const;
