@@ -18,6 +18,11 @@ function useInView<T extends Element>(): [React.RefObject<T>, boolean] {
 
 const reducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
+/** An idea shown as false: struck through from its top left corner to its bottom right, with a hidden "not" for screen readers. */
+export function Neg({ children }: { children: ReactNode }) {
+  return <span className="ct-neg"><span className="ct-sr">not </span>{children}</span>;
+}
+
 /** A word that punches the screen once, when it scrolls into view, then keeps a steady glow. */
 export function PunchWord({ children }: { children: ReactNode }) {
   const [ref, inView] = useInView<HTMLSpanElement>();
@@ -85,9 +90,9 @@ export function FlipAndNegateDemo() {
   const negated = stage >= 2;
   return <div ref={ref} className="ct-flip" data-stage={stage}>
     <div className="ct-flip-row">
-      <span className="ct-chip" data-side="left" data-moved={flipped}><span className="ct-idea" data-struck={negated}>Light</span></span>
+      <span className="ct-chip" data-side="left" data-moved={flipped} data-struck={negated}>Light</span>
       <span className="ct-flip-arrow" aria-hidden="true">→</span>
-      <span className="ct-chip" data-side="right" data-moved={flipped}><span className="ct-idea" data-struck={negated}>Power</span></span>
+      <span className="ct-chip" data-side="right" data-moved={flipped} data-struck={negated}>Power</span>
     </div>
     <p className="ct-flip-caption" role="status">{stageText[stage]}</p>
     <div className="ct-flip-controls">

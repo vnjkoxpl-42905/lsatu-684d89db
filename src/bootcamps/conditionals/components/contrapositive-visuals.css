@@ -64,9 +64,12 @@
 .dark #root .ct-toggles button[aria-pressed=true]{background:#89c4ac;color:#0f2a32}
 .dark .ct-punch{color:#7ff0b8}
 
-/* Negation is a line through the idea, never a squiggle beside it. */
-.ct-idea{position:relative;display:inline-block;padding:0 .15rem}
-.ct-idea::after{content:"";position:absolute;left:-4px;right:-4px;top:52%;height:4px;border-radius:2px;background:#a23b25;transform:scaleX(0);transform-origin:left center;transition:transform .5s cubic-bezier(.5,0,.2,1)}
-.ct-idea[data-struck=true]::after{transform:scaleX(1)}
-.ct-idea[data-struck=true]{color:#6b2a1c}
-@media (prefers-reduced-motion:reduce){.ct-idea::after{transition:none}}
+/* Negation is a line from the top left corner to the bottom right corner of the idea, never a squiggle beside it. */
+.ct-chip{position:relative;overflow:hidden}
+.ct-chip::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top right,transparent calc(50% - 2px),#a23b25 calc(50% - 2px),#a23b25 calc(50% + 2px),transparent calc(50% + 2px));clip-path:inset(0 100% 0 0);transition:clip-path .6s cubic-bezier(.5,0,.2,1)}
+.ct-chip[data-struck=true]::after{clip-path:inset(0 0 0 0)}
+.ct-chip[data-struck=true]{color:#6b2a1c}
+.ct-neg{position:relative;display:inline-block;padding:.05em .4em;color:#173544;background:linear-gradient(to top right,transparent calc(50% - 1px),#c0472c calc(50% - 1px),#c0472c calc(50% + 1px),transparent calc(50% + 1px))}
+.ct-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.ct-chip::after{transition:none}}
+#root .ct-sentences { padding: 1rem 1.25rem; border-left: 3px solid #1f6a4a; background: #eef6ef; border-radius: 0 .65rem .65rem 0; line-height: 1.8; }

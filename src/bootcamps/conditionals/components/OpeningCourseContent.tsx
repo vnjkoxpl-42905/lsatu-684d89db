@@ -1,4 +1,4 @@
-import { BulbBoard, FlipAndNegateDemo, PunchWord, TwinRules } from './ContrapositiveVisuals';
+import { BulbBoard, FlipAndNegateDemo, Neg, PunchWord, TwinRules } from './ContrapositiveVisuals';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
@@ -123,11 +123,13 @@ function ContrapositiveNote() {
       <p>You already know the core of every conditional. If the sufficient condition happens, the necessary condition <strong>must</strong> happen. The left side of the arrow guarantees the right side. Every time.</p>
       <p>The contrapositive is what you know when the right side goes missing:</p>
       <p className="ct-definition"><strong>If the necessary condition is absent, the sufficient condition is absent too.</strong></p>
+      <p>In plain English: <strong>if the thing a rule requires is missing, the thing that needed it can't happen.</strong></p>
       <p>Take this rule: <strong>If the ceiling light is on, then the power must be on.</strong></p>
       <RuleDiagram left="Light on" right="Power on"/>
       <p>So if the light is on, it needs power. It has to have power to come on. The power is completely necessary. Now, what if there's no power? Then the light doesn't have what it needs. Could it be on? Nope. No power, no light.</p>
       <RuleDiagram left="No power" right="Light is not on"/>
       <p>That's the contrapositive. The right side of the arrow is missing, so the left side can't happen.</p>
+      <p className="ct-sentences">Said as plain sentences, the two read like this:<br/><strong>Original:</strong> If the ceiling light is on, then the power must be on.<br/><strong>Contrapositive:</strong> If the power is off, then the ceiling light must be off.</p>
     </NoteSection>
     <NoteSection title="You already knew this">
       <p>Here's the good news: you didn't just learn a new rule. You found one that was already there. The contrapositive was hiding inside the original the whole time, waiting for you to spot it. If the requirement isn't met, the thing that needed it can't happen.</p>
@@ -155,17 +157,17 @@ function ContrapositiveNote() {
     </NoteSection>
     <NoteSection title="How to write it">
       <p>Write the rule with an arrow: <strong>Light → Power</strong>. The sufficient condition goes on the left side of the arrow. The necessary condition goes on the right side.</p>
-      <p>The contrapositive is <strong>not Power → not Light</strong>. To show “not,” write the word or cross the idea out. Watch how you get there:</p>
+      <p>The contrapositive is <strong><Neg>Power</Neg> → <Neg>Light</Neg></strong>. A line through an idea means “not.” Watch how you get there:</p>
       <FlipAndNegateDemo/>
       <p>Here are more pairs:</p>
       <table className="co-combination-table ct-compare">
         <caption>Original and contrapositive</caption>
         <thead><tr><th scope="col">Original</th><th scope="col">Contrapositive</th></tr></thead>
         <tbody>
-          <tr><td>C → D</td><td>not D → not C</td></tr>
-          <tr><td>M → not N</td><td>N → not M</td></tr>
-          <tr><td>not G → H</td><td>not H → G</td></tr>
-          <tr><td>not S → not T</td><td>T → S</td></tr>
+          <tr><td>C → D</td><td><Neg>D</Neg> → <Neg>C</Neg></td></tr>
+          <tr><td>M → <Neg>N</Neg></td><td>N → <Neg>M</Neg></td></tr>
+          <tr><td><Neg>G</Neg> → H</td><td><Neg>H</Neg> → G</td></tr>
+          <tr><td><Neg>S</Neg> → <Neg>T</Neg></td><td>T → S</td></tr>
         </tbody>
       </table>
       <p>Once you have the original written down, you flip and negate both sides.</p>
@@ -183,8 +185,8 @@ function ContrapositiveNote() {
         <thead><tr><th scope="col">What you do</th><th scope="col">What you get</th><th scope="col">Do you know it's true?</th></tr></thead>
         <tbody>
           <tr><td>Flip the sides only. This is the reverse.</td><td>Power → Light</td><td>No. The power can be on with the light off.</td></tr>
-          <tr><td>Add “not” only. This is the inverse.</td><td>not Light → not Power</td><td>No. A light that's off doesn't mean the power is off.</td></tr>
-          <tr><td>Flip the sides and add “not” to both. This is the contrapositive.</td><td>not Power → not Light</td><td>Yes. It says the same thing as the original.</td></tr>
+          <tr><td>Add “not” only. This is the inverse.</td><td><Neg>Light</Neg> → <Neg>Power</Neg></td><td>No. A light that's off doesn't mean the power is off.</td></tr>
+          <tr><td>Flip the sides and add “not” to both. This is the contrapositive.</td><td><Neg>Power</Neg> → <Neg>Light</Neg></td><td>Yes. It says the same thing as the original.</td></tr>
         </tbody>
       </table>
       <p>Wrong answer choices use the reverse and the inverse on purpose. Each one is one move away from the right answer.</p>
