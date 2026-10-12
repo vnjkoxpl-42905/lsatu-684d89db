@@ -64,9 +64,9 @@ export const BOOTCAMPS: BootcampDef[] = [
     id: 'unless-drill',
     title: 'Unless Drill',
     description:
-      'Timed Group 3 practice: diagram all four unless statements in five seconds each, then check them against the answer key.',
+      'Timed Group 3 practice: diagram all four unless statements against the clock (10 seconds, then 5 once perfect), then check them against the answer key.',
     route: '/unless-drill',
-    stats: ['All 4 unless statements', '5-second clock', 'Review against the answer key'],
+    stats: ['All 4 unless statements', '10 seconds, then 5', 'Review against the answer key'],
     theme: {
       style: 'editorial',
       bg: '#F5F2ED',
