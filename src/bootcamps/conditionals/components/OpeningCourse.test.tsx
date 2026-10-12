@@ -72,11 +72,13 @@ it('exposes only the permitted content and flashcard families', () => {
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
   expect(document.querySelector('.opening-course-content')).toBeNull();
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={steps} url={url}/></MemoryRouter>);
-  // The word deck mixes both groups, so Group 1 work alone opens no deck.
-  expect(screen.getByText('No flashcards are available in this work.')).toBeVisible();
+  // Group 1 work alone opens the Group 1 words but not the mixed quiz deck.
+  expect(screen.getByRole('heading', { name: 'Group 1 words' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Group 2 words' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'Indicator words, both groups' })).toBeNull();
   const both = OPENING_COURSE_PATH.filter(step => step.unitId === 'group-1' || step.unitId === 'group-2');
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={both} url={url}/></MemoryRouter>);
-  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Indicator words, both groups' })).toBeVisible();
   expect(screen.queryByRole('heading', { name: 'Terms and concepts' })).toBeNull();
 });
 
