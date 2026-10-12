@@ -155,17 +155,17 @@ function ContrapositiveNote() {
     </NoteSection>
     <NoteSection title="How to write it">
       <p>Write the rule with an arrow: <strong>Light → Power</strong>. The sufficient condition goes on the left side of the arrow. The necessary condition goes on the right side.</p>
-      <p>The contrapositive is <strong>~Power → ~Light</strong>. The ~ is a squiggle. Read it as “not.” Watch how you get there:</p>
+      <p>The contrapositive is <strong>not Power → not Light</strong>. To show “not,” write the word or cross the idea out. Watch how you get there:</p>
       <FlipAndNegateDemo/>
       <p>Here are more pairs:</p>
       <table className="co-combination-table ct-compare">
         <caption>Original and contrapositive</caption>
         <thead><tr><th scope="col">Original</th><th scope="col">Contrapositive</th></tr></thead>
         <tbody>
-          <tr><td>C → D</td><td>~D → ~C</td></tr>
-          <tr><td>M → ~N</td><td>N → ~M</td></tr>
-          <tr><td>~G → H</td><td>~H → G</td></tr>
-          <tr><td>~S → ~T</td><td>T → S</td></tr>
+          <tr><td>C → D</td><td>not D → not C</td></tr>
+          <tr><td>M → not N</td><td>N → not M</td></tr>
+          <tr><td>not G → H</td><td>not H → G</td></tr>
+          <tr><td>not S → not T</td><td>T → S</td></tr>
         </tbody>
       </table>
       <p>Once you have the original written down, you flip and negate both sides.</p>
@@ -183,8 +183,8 @@ function ContrapositiveNote() {
         <thead><tr><th scope="col">What you do</th><th scope="col">What you get</th><th scope="col">Do you know it's true?</th></tr></thead>
         <tbody>
           <tr><td>Flip the sides only. This is the reverse.</td><td>Power → Light</td><td>No. The power can be on with the light off.</td></tr>
-          <tr><td>Add “not” only. This is the inverse.</td><td>~Light → ~Power</td><td>No. A light that's off doesn't mean the power is off.</td></tr>
-          <tr><td>Flip the sides and add “not” to both. This is the contrapositive.</td><td>~Power → ~Light</td><td>Yes. It says the same thing as the original.</td></tr>
+          <tr><td>Add “not” only. This is the inverse.</td><td>not Light → not Power</td><td>No. A light that's off doesn't mean the power is off.</td></tr>
+          <tr><td>Flip the sides and add “not” to both. This is the contrapositive.</td><td>not Power → not Light</td><td>Yes. It says the same thing as the original.</td></tr>
         </tbody>
       </table>
       <p>Wrong answer choices use the reverse and the inverse on purpose. Each one is one move away from the right answer.</p>

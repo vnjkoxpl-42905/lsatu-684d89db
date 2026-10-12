@@ -364,6 +364,7 @@ it('defines the contrapositive first, then says it was already there, plays the 
   expect(text).toMatch(/interchangeable!/);
   expect(text).not.toMatch(/foreign|promise|nothing to stand on|depends on|raffle|elevator|coat|coffee|breathing|Logic Games|the one other thing|ignore the conditional/i);
   expect(text).not.toMatch(/[—–]/);
+  expect(text).not.toMatch(/~/);
 });
 
 it('lets the student cut the power and see the one world the rule forbids', () => {

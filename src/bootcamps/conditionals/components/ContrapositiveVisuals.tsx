@@ -66,9 +66,9 @@ export function BulbBoard() {
   </div>;
 }
 
-const stageText = ['Start with the rule.', 'Flip the sides.', 'Put “not” on both. That is the contrapositive.'];
+const stageText = ['Start with the rule.', 'Flip the sides.', 'Cross out both ideas. That is “not” on both, and it is the contrapositive.'];
 
-/** Light → Power becomes ~Power → ~Light in two moves: the sides swap, then a “not” pops onto each. */
+/** Light → Power becomes ~Power → ~Light in two moves: the sides swap, then each idea gets crossed out. */
 export function FlipAndNegateDemo() {
   const [ref, inView] = useInView<HTMLDivElement>();
   const [stage, setStage] = useState(0);
@@ -85,9 +85,9 @@ export function FlipAndNegateDemo() {
   const negated = stage >= 2;
   return <div ref={ref} className="ct-flip" data-stage={stage}>
     <div className="ct-flip-row">
-      <span className="ct-chip" data-side="left" data-moved={flipped}><span className="ct-not" data-on={negated} aria-hidden="true">~</span>Light</span>
+      <span className="ct-chip" data-side="left" data-moved={flipped}><span className="ct-idea" data-struck={negated}>Light</span></span>
       <span className="ct-flip-arrow" aria-hidden="true">→</span>
-      <span className="ct-chip" data-side="right" data-moved={flipped}><span className="ct-not" data-on={negated} aria-hidden="true">~</span>Power</span>
+      <span className="ct-chip" data-side="right" data-moved={flipped}><span className="ct-idea" data-struck={negated}>Power</span></span>
     </div>
     <p className="ct-flip-caption" role="status">{stageText[stage]}</p>
     <div className="ct-flip-controls">

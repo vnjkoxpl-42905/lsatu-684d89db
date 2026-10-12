@@ -63,3 +63,10 @@
 .dark #root .ct-toggles button,.dark #root .ct-flip-controls button{background:#203b40;color:#edf3ed;border-color:#89c4ac}
 .dark #root .ct-toggles button[aria-pressed=true]{background:#89c4ac;color:#0f2a32}
 .dark .ct-punch{color:#7ff0b8}
+
+/* Negation is a line through the idea, never a squiggle beside it. */
+.ct-idea{position:relative;display:inline-block;padding:0 .15rem}
+.ct-idea::after{content:"";position:absolute;left:-4px;right:-4px;top:52%;height:4px;border-radius:2px;background:#a23b25;transform:scaleX(0);transform-origin:left center;transition:transform .5s cubic-bezier(.5,0,.2,1)}
+.ct-idea[data-struck=true]::after{transform:scaleX(1)}
+.ct-idea[data-struck=true]{color:#6b2a1c}
+@media (prefers-reduced-motion:reduce){.ct-idea::after{transition:none}}
