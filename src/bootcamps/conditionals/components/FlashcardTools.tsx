@@ -1,20 +1,11 @@
 import { createContext, useContext } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { indicatorFlashcards } from '../content/indicatorFlashcards';
-import { StudyDeck } from './StudyDeck';
 import { IndicatorWordDeck } from './IndicatorWordDeck';
+import { TermDeck } from './TermDeck';
 import type { OpeningCourseUrl } from './OpeningCourse';
 
 export const CourseFlashcardUrl = createContext<OpeningCourseUrl | null>(null);
-const labels: Record<string, string> = {
-  'g1-if-first': 'if', 'g1-if-last': 'if: condition comes last', 'g1-when-first': 'when', 'g1-when-last': 'when: condition comes last',
-  'g1-where': 'where', 'g1-all': 'all', 'g1-every': 'every', 'g1-any': 'any', 'g1-the-only': 'the only', 'g1-target-later': 'every: condition comes last',
-  'g1-whenever': 'whenever', 'g1-anytime': 'anytime', 'g1-every-time': 'every time', 'g1-in-order-to': 'in order to', 'g1-people-who': 'people who', 'g1-each': 'each',
-  'g2-only': 'only', 'g2-only-if': 'only if', 'g2-if-contrast': 'if / only if', 'g2-only-when': 'only when', 'g2-only-where': 'only where',
-  'g2-always': 'always', 'g2-requires': 'requires', 'g2-required-before': 'required for', 'g2-must-instruction': 'must', 'g2-only-the-only': 'only / the only', 'g2-necessary-before': 'necessary for',
-  'foundation-enough': 'Sufficient condition', 'foundation-required': 'Necessary condition', 'foundation-reverse': 'Reversing the arrow', 'foundation-rule-not-fact': 'Rules and facts',
-};
 export function flashcardUrl(url: OpeningCourseUrl, group: string, card?: string, from?: string) {
   const target = url('tools');
   const [path, query = ''] = target.split('?');
@@ -25,17 +16,17 @@ export function flashcardUrl(url: OpeningCourseUrl, group: string, card?: string
   return `${path}?${params}`;
 }
 const sets = [
-  { id: 'foundation', title: 'Terms and concepts', description: 'Sufficient, necessary, arrow direction, and the difference between a rule and a fact.' },
+  { id: 'foundation', title: 'Sufficient and necessary', description: 'Quick cards on the two ideas behind every rule.' },
   { id: 'indicators', title: 'Indicator words', description: 'Group 1 or Group 2? Pick for each word.' },
 ];
 export function FlashcardTools({ url, allowed }: { url: OpeningCourseUrl; allowed: string[] }) {
-  const [params, setParams] = useSearchParams();
+  const [params] = useSearchParams();
   // The word deck always mixes both groups, so it is one set for everyone. Old Group 1 and Group 2 links land on it.
   const available = [...allowed.filter(id => id === 'foundation'), 'indicators'];
   const requested = ['group-1', 'group-2'].includes(params.get('deck') ?? '') ? 'indicators' : params.get('deck');
   const set = sets.find(item => item.id === requested && available.includes(item.id));
   if (!set) return <div className="oc-course-note co-flashcard-tools">
-    <header data-course-heading><p className="oc-label">Tools</p><h1>Flashcards</h1><p>Choose the set you want to practice.</p></header>
+    <header data-course-heading><p className="oc-label">Tools</p><h1>Flashcards</h1></header>
     <div className="co-flashcard-sets">{sets.filter(item => available.includes(item.id)).map(item => <section key={item.id}><h2>{item.title}</h2><p>{item.description}</p><Link className="oc-action" to={flashcardUrl(url, item.id)}>Go to flashcards<ArrowRight size={16} aria-hidden="true"/></Link></section>)}</div>
     {!available.length && <p>No flashcards are available in this work.</p>}
   </div>;
@@ -44,13 +35,9 @@ export function FlashcardTools({ url, allowed }: { url: OpeningCourseUrl; allowe
     <header data-course-heading><h1>{set.title}</h1></header>
     <IndicatorWordDeck/>
   </div>;
-  const order = ['foundation-enough', 'foundation-required', 'foundation-reverse', 'foundation-rule-not-fact'];
-  const cards = indicatorFlashcards.filter(card => card.group === set.id).sort((a, b) => order.length ? order.indexOf(a.id) - order.indexOf(b.id) : 0);
-  const selected = cards.find(card => card.id === params.get('card'))?.id || cards[0].id;
-  const from = params.get('from');
   return <div className="oc-course-note co-flashcard-tools">
-    <nav className="co-flashcard-return" aria-label="Flashcard navigation"><Link to={url('tools')}><ArrowLeft size={16}/>All flashcard sets</Link>{(from === 'sufficient' || from === 'necessary') && <Link to={url(from)}>Back to {from === 'sufficient' ? 'sufficient' : 'necessary'} condition<ArrowRight size={16}/></Link>}</nav>
-    <header data-course-heading><p className="oc-label">Flashcards</p><h1>{set.title}</h1><p>{set.description} Answer before you reveal the explanation.</p></header>
-    <div className="co-opening"><StudyDeck key={set.id} group={set.id} selectedCard={selected} choices={cards.map(card => ({ id: card.id, label: labels[card.id] || card.id }))} onCardChange={id => setParams(previous => { const next = new URLSearchParams(previous); next.set('card', id); return next; }, { replace: true })}/></div>
+    <nav className="co-flashcard-return" aria-label="Flashcard navigation"><Link to={url('tools')}><ArrowLeft size={16}/>All flashcard sets</Link></nav>
+    <header data-course-heading><h1>{set.title}</h1></header>
+    <TermDeck/>
   </div>;
 }

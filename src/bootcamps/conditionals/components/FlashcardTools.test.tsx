@@ -19,7 +19,7 @@ it('keeps flashcards out of the lessons', () => {
 });
 it('lists one mixed word deck beside the concept cards, and old group links open it', () => {
   render(<MemoryRouter initialEntries={[url('tools')]}><Harness/></MemoryRouter>);
-  expect(screen.getByRole('heading', { name: 'Terms and concepts' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Sufficient and necessary' })).toBeVisible();
   expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
   expect(screen.queryByRole('heading', { name: /Group [12] words/ })).toBeNull();
   cleanup();
@@ -34,5 +34,13 @@ it('lists one mixed word deck beside the concept cards, and old group links open
 it('does not expose a concept set the work does not include', () => {
   render(<MemoryRouter initialEntries={[`${url('tools')}&deck=foundation`]}><OpeningCourseScreen view="tools" steps={[]} url={url}/></MemoryRouter>);
   expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
-  expect(screen.queryByRole('heading', { name: 'Terms and concepts' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'Sufficient and necessary' })).toBeNull();
+});
+it('turns a key-term card with one tap and moves on', () => {
+  render(<MemoryRouter initialEntries={[`${url('tools')}&deck=foundation`]}><Harness/></MemoryRouter>);
+  expect(screen.getByText('Card 1 of 4')).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: /enough, by itself, to guarantee/ }));
+  expect(screen.getByRole('button', { name: /Sufficient condition It goes on the left of the arrow/ })).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+  expect(screen.getByText('Card 2 of 4')).toBeVisible();
 });

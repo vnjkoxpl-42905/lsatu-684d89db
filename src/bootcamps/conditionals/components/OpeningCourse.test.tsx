@@ -78,7 +78,7 @@ it('exposes only the permitted content and flashcard families', () => {
   const both = OPENING_COURSE_PATH.filter(step => step.unitId === 'group-1' || step.unitId === 'group-2');
   rerender(<MemoryRouter><OpeningCourseScreen view="tools" steps={both} url={url}/></MemoryRouter>);
   expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
-  expect(screen.queryByRole('heading', { name: 'Terms and concepts' })).toBeNull();
+  expect(screen.queryByRole('heading', { name: 'Sufficient and necessary' })).toBeNull();
 });
 
 
