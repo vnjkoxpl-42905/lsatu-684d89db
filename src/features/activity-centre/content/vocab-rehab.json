@@ -1,0 +1,499 @@
+{
+  "slug": "vocab-rehab",
+  "title": "Vocab Rehab",
+  "subtitle": "Work out the word from the sentence around it",
+  "item_format": "free-text",
+  "instructions": {
+    "coach": {
+      "drill": "a context-definition drill: the student works out what a marked word probably means from the structure of the paragraph around it, and says why",
+      "rubric": [
+        "The reasoning is the point. An answer that gives a correct definition with no reason is incomplete, and an answer that gives the wrong definition for a well-identified clue is closer to the skill than a lucky guess.",
+        "Hedged, multi-candidate answers are the target form, not a weakness. Probably means A, B or C, because of this clue, is a full-credit answer.",
+        "Accept any phrasing that lands the meaning. This drill never tests dictionary wording.",
+        "A correct positive or negative read is a full answer on its own, which is what this drill promises the student in its own rules. Credit it as correct and hand them the sharper meaning as the next rung. Never score an answer down for stopping at valence.",
+        "Right valence with wrong precision is the signature miss to teach past, not to mark down. Balance is not the same as peace, a substitute is not the same as bad, and treated-as-such is not the same as fake: name the exact shade after crediting what they already got.",
+        "When the student names the clue correctly, say so explicitly before correcting anything else, because the clue is the transferable part."
+      ],
+      "partial_rule": "Mark 'partial' when the student gives a workable meaning but cites no evidence from the paragraph, or names a clue and then reads its direction backwards. A correct valence call with a reason attached is 'correct', never 'partial', even when the precise meaning is still missing. Mark 'incorrect' when the meaning is wrong and no usable clue has been identified."
+    },
+    "tagline": "You do not need to know the word. You need to read the sentence.",
+    "task": "What do you think the marked word could mean, and why do you think that?",
+    "rules": [
+      "Guessing is the exercise. Even deciding whether the word is positive or negative is a real answer.",
+      "Relate it to a word you already know, then look for what the sentence does with it.",
+      "Look for the clue: a restatement right next to the word, a contrast, a list of examples, or an antonym.",
+      "Answer in this shape: the word probably means A or B, and I think that because of this specific thing in the paragraph.",
+      "Getting the right feeling with the wrong precision is the usual miss. Push for the exact shade."
+    ],
+    "worked_example": {
+      "statement": "Investors hesitated, wary of the market's *capricious* mood swings.",
+      "credited_answers": [
+        "Capricious probably means unpredictable, erratic or changeable. I think this because it describes mood swings, and because the investors are wary, which tells me it is negative."
+      ],
+      "explanation": "Two clues, and the answer names both. Mood swings restates the word, and the investors' wariness fixes the valence as negative. Notice the answer hedges with probably and offers more than one candidate, which is exactly right."
+    },
+    "answer_label": "Your reading of the word",
+    "answer_placeholder": "What could the marked word mean, and why…"
+  },
+  "items": [
+    {
+      "order": 1,
+      "prompt": "In regions with heavy snowfall, avalanche training for mountain guides becomes an *imperative* part of their preparation. It is not merely an option but a crucial requirement to ensure safety during their expeditions.",
+      "credited_answers": [
+        "imperative probably means essential, necessary, crucial. I think this because of the necessity/requirement signal (\"not merely an option\") in the sentence."
+      ],
+      "explanation": "Meaning in context: absolutely necessary; required. Reusable pattern: necessity/requirement signal (\"not merely an option\"). Quick synonyms: essential, necessary, crucial. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 2,
+      "prompt": "Critics argue that the new film lacks *authenticity*, as its portrayal of historical events appears overly dramatized rather than true to actual occurrences.",
+      "credited_answers": [
+        "authenticity probably means genuineness, truthfulness, realness. I think this because of the real vs dramatized contrast in the sentence."
+      ],
+      "explanation": "Meaning in context: genuineness; truth to facts. Reusable pattern: real vs dramatized contrast. Quick synonyms: genuineness, truthfulness, realness. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 3,
+      "prompt": "The *crescendo* of public enthusiasm for the festival reached its peak as the main musical act took the stage, with the crowd's energy building to an explosive climax.",
+      "credited_answers": [
+        "crescendo probably means climax, build-up, swelling. I think this because of the rising-to-peak signal in the sentence."
+      ],
+      "explanation": "Meaning in context: a rise building to a peak. Reusable pattern: rising-to-peak signal. Quick synonyms: climax, build-up, swelling. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 4,
+      "prompt": "The scientist's approach was *a priori*, developing theories through logical reasoning rather than direct observation.",
+      "credited_answers": [
+        "a priori probably means theoretical, deductive, presumed. I think this because of the reasoning-not-observation contrast in the sentence."
+      ],
+      "explanation": "Meaning in context: from reasoning, not experience. Reusable pattern: reasoning-not-observation contrast. Quick synonyms: theoretical, deductive, presumed. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 5,
+      "prompt": "After the oil spill, the environmental agency focused on the *abatement* of pollution to minimize harm to local wildlife. The reduction of contaminants was crucial.",
+      "credited_answers": [
+        "abatement probably means reduction, lessening, decline. I think this because of the minimize/reduce signal in the sentence."
+      ],
+      "explanation": "Meaning in context: a reduction or decrease. Reusable pattern: minimize/reduce signal. Quick synonyms: reduction, lessening, decline. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 6,
+      "prompt": "Recognizing that the demands of the presidency were overwhelming, the leader chose to *abdicate* and pass the responsibility to a successor.",
+      "credited_answers": [
+        "abdicate probably means step down, resign, relinquish. I think this because of the hand-off signal (\"pass the responsibility to a successor\") in the sentence."
+      ],
+      "explanation": "Meaning in context: to give up a position or duty formally. Reusable pattern: hand-off signal (\"pass the responsibility to a successor\"). Quick synonyms: step down, resign, relinquish. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 7,
+      "prompt": "The sudden, *aberrant* behavior of the normally placid animal surprised the researchers.",
+      "credited_answers": [
+        "aberrant probably means abnormal, atypical, deviant. I think this because of the normally-x contrast (\"normally placid,\" \"surprised\") in the sentence."
+      ],
+      "explanation": "Meaning in context: departing from what is normal. Reusable pattern: normally-X contrast (\"normally placid,\" \"surprised\"). Quick synonyms: abnormal, atypical, deviant. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 8,
+      "prompt": "Geologists study *abiogenic* processes to understand how certain minerals form without the influence of life.",
+      "credited_answers": [
+        "abiogenic probably means non-biological, lifeless in origin. I think this because of the in-sentence definition (\"without the influence of life\") + prefix *a-* = not, *bio-* = life in the sentence."
+      ],
+      "explanation": "Meaning in context: arising without living organisms. Reusable pattern: in-sentence definition (\"without the influence of life\") + prefix *a-* = not, *bio-* = life. Quick synonyms: non-biological, lifeless in origin. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 9,
+      "prompt": "The *abolition* of outdated laws was essential for creating a more just legal system, ensuring progress was not hindered by archaic rules.",
+      "credited_answers": [
+        "abolition probably means elimination, repeal, ending. I think this because of the removal signal (outdated rules no longer hindering) in the sentence."
+      ],
+      "explanation": "Meaning in context: formal ending or doing away with. Reusable pattern: removal signal (outdated rules no longer hindering). Quick synonyms: elimination, repeal, ending. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 10,
+      "prompt": "Efforts to preserve *aboriginal* cultures often focus on traditions that predate colonization.",
+      "credited_answers": [
+        "aboriginal probably means original, indigenous, earliest. I think this because of the time-priority signal (\"predate colonization,\" \"ancient ways\") in the sentence."
+      ],
+      "explanation": "Meaning in context: original to a place, from the earliest time. Reusable pattern: time-priority signal (\"predate colonization,\" \"ancient ways\"). Quick synonyms: original, indigenous, earliest. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 11,
+      "prompt": "Using an *abrasive* scrub, the workers cleaned the corroded metal, revealing a shiny surface beneath.",
+      "credited_answers": [
+        "abrasive probably means rough, scouring, grinding. I think this because of the function-from-result (\"cleaned the corroded metal,\" \"revealing a shiny surface\") in the sentence."
+      ],
+      "explanation": "Meaning in context: rough; wearing a surface away by friction. Reusable pattern: function-from-result (\"cleaned the corroded metal,\" \"revealing a shiny surface\"). Quick synonyms: rough, scouring, grinding. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 12,
+      "prompt": "Her *laconic* reply left the board uncertain whether she supported the motion.",
+      "credited_answers": [
+        "laconic probably means terse, brief, curt. I think this because of the consequence clue: too little said to tell in the sentence."
+      ],
+      "explanation": "Meaning in context: using very few words. Reusable pattern: consequence clue: too little said to tell. Quick synonyms: terse, brief, curt. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 13,
+      "prompt": "By the time the product launched, its marketing was *ubiquitous*, saturating every commute.",
+      "credited_answers": [
+        "ubiquitous probably means omnipresent, pervasive, everywhere. I think this because of the saturation restatement in the sentence."
+      ],
+      "explanation": "Meaning in context: present everywhere. Reusable pattern: saturation restatement. Quick synonyms: omnipresent, pervasive, everywhere. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 14,
+      "prompt": "The memo urged analysts to *eschew* speculation and rely solely on audited figures.",
+      "credited_answers": [
+        "eschew probably means avoid, shun, abstain from. I think this because of the *and rely solely on* opposition in the sentence."
+      ],
+      "explanation": "Meaning in context: to deliberately avoid. Reusable pattern: *and rely solely on* opposition. Quick synonyms: avoid, shun, abstain from. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 15,
+      "prompt": "The most *salient* detail in the report was the unexplained spike in returns.",
+      "credited_answers": [
+        "salient probably means prominent, striking, standout. I think this because of the superlative + the thing singled out in the sentence."
+      ],
+      "explanation": "Meaning in context: most noticeable or important. Reusable pattern: superlative + the thing singled out. Quick synonyms: prominent, striking, standout. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 16,
+      "prompt": "Investors hesitated, wary of the market's *capricious* mood swings.",
+      "credited_answers": [
+        "capricious probably means unpredictable, erratic, fickle. I think this because of the *mood swings* restatement, negative valence in the sentence."
+      ],
+      "explanation": "Meaning in context: changing suddenly and without reason. Reusable pattern: *mood swings* restatement, negative valence. Quick synonyms: unpredictable, erratic, fickle. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 17,
+      "prompt": "Her *pragmatic* fix didn't impress purists, but it solved the outage in minutes.",
+      "credited_answers": [
+        "pragmatic probably means practical, workable, results-focused. I think this because of the purists-vs-worked contrast in the sentence."
+      ],
+      "explanation": "Meaning in context: practical; focused on what works. Reusable pattern: purists-vs-worked contrast. Quick synonyms: practical, workable, results-focused. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 18,
+      "prompt": "Skipping quality checks had a *deleterious* effect on customer trust.",
+      "credited_answers": [
+        "deleterious probably means damaging, harmful, injurious. I think this because of the cause is a lapse, so the effect is bad in the sentence."
+      ],
+      "explanation": "Meaning in context: harmful. Reusable pattern: cause is a lapse, so the effect is bad. Quick synonyms: damaging, harmful, injurious. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 19,
+      "prompt": "He was *circumspect* in his comments, avoiding anything that might be construed as an admission.",
+      "credited_answers": [
+        "circumspect probably means cautious, guarded, wary. I think this because of the *avoiding anything that might* expansion in the sentence."
+      ],
+      "explanation": "Meaning in context: cautious; watchful of consequences. Reusable pattern: *avoiding anything that might* expansion. Quick synonyms: cautious, guarded, wary. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 20,
+      "prompt": "The playful tone felt *incongruous* with the gravity of the findings.",
+      "credited_answers": [
+        "incongruous probably means mismatched, out of place, jarring. I think this because of the playful-vs-gravity mismatch in the sentence."
+      ],
+      "explanation": "Meaning in context: out of keeping; not fitting together. Reusable pattern: playful-vs-gravity mismatch. Quick synonyms: mismatched, out of place, jarring. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 21,
+      "prompt": "The policy aims to *ameliorate* the delays without increasing costs.",
+      "credited_answers": [
+        "ameliorate probably means improve, ease, alleviate. I think this because of the goal-directed improvement in the sentence."
+      ],
+      "explanation": "Meaning in context: to make better; to ease. Reusable pattern: goal-directed improvement. Quick synonyms: improve, ease, alleviate. Say what the word probably means AND why, citing the clue. A definition with no reasoning is not a complete answer.",
+      "category": "Joshua's worksheet"
+    },
+    {
+      "order": 22,
+      "prompt": "The commission's work was surprisingly *remunerative*, paying enough over three years that two of its members gave up their practices to serve full time.",
+      "credited_answers": [
+        "*Remunerative* probably means well paid or profitable. I think this because the sentence expands it immediately: paying enough that members could give up their practices."
+      ],
+      "explanation": "Clue: appositive expansion. Boundary: it is about payment, not about being worthwhile or important.",
+      "category": "Tier 1: The clue sits next to the word"
+    },
+    {
+      "order": 23,
+      "prompt": "The specimens arrived *desiccated*, dried so completely that the leaves crumbled when the box was opened.",
+      "credited_answers": [
+        "*Desiccated* probably means dried out or moisture-free. I think this because the next clause defines it: dried so completely that the leaves crumbled."
+      ],
+      "explanation": "Clue: in-sentence definition.",
+      "category": "Tier 1: The clue sits next to the word"
+    },
+    {
+      "order": 24,
+      "prompt": "The new drainage scheme proved *inimical* to the meadow, working steadily against the very conditions the reserve had been created to hold.",
+      "credited_answers": [
+        "*Inimical* probably means harmful or actively opposed to. I think this because it is restated as working steadily against those conditions."
+      ],
+      "explanation": "Clue: restatement. Boundary: stronger than merely unhelpful. It implies working against.",
+      "category": "Tier 1: The clue sits next to the word"
+    },
+    {
+      "order": 25,
+      "prompt": "His output over those years was *prodigious*: four novels, two translations, and a correspondence that fills nine volumes.",
+      "credited_answers": [
+        "*Prodigious* probably means enormous or extraordinarily large. I think this because the colon introduces a list whose whole point is the quantity."
+      ],
+      "explanation": "Clue: post-word example list.",
+      "category": "Tier 1: The clue sits next to the word"
+    },
+    {
+      "order": 26,
+      "prompt": "The final statement was so *anodyne* that no delegate could object to it and no delegate could remember it an hour later.",
+      "credited_answers": [
+        "*Anodyne* probably means inoffensive or bland. I think this because the sentence says nobody could object and nobody could remember."
+      ],
+      "explanation": "Clue: paired consequence. Boundary: not *false* and not *short*. Inoffensive to the point of being forgettable.",
+      "category": "Tier 1: The clue sits next to the word"
+    },
+    {
+      "order": 27,
+      "prompt": "The normally accommodating chair turned *truculent* the moment the audit was mentioned, cutting off two speakers and refusing the motion outright.",
+      "credited_answers": [
+        "*Truculent* probably means aggressive or hostile. I think this because it is set against *normally accommodating*, and the behaviour after it is cutting people off."
+      ],
+      "explanation": "Clue: normally-X contrast plus behavioural evidence.",
+      "category": "Tier 2: Direct contrast"
+    },
+    {
+      "order": 28,
+      "prompt": "Where the other founders left modest bequests, hers was *munificent*, endowing the library, the chair in classics, and the whole east wing.",
+      "credited_answers": [
+        "*Munificent* probably means extremely generous or lavish. I think this because it is contrasted with *modest bequests* and followed by a list of large gifts."
+      ],
+      "explanation": "Clue: contrast plus list.",
+      "category": "Tier 2: Direct contrast"
+    },
+    {
+      "order": 29,
+      "prompt": "The argument looked sound on first reading and turned out to be *specious*: every step followed except the one that mattered.",
+      "credited_answers": [
+        "*Specious* probably means seemingly right but actually false. I think this because it is set against *looked sound on first reading*, and the colon says one step failed."
+      ],
+      "explanation": "Clue: appearance-versus-reality contrast. Boundary: not simply *wrong*. The point is that it looks right.",
+      "category": "Tier 2: Direct contrast"
+    },
+    {
+      "order": 30,
+      "prompt": "One side moved on every point of substance; the other remained *intransigent*, conceding nothing across eleven sessions.",
+      "credited_answers": [
+        "*Intransigent* probably means unwilling to compromise or immovable. I think this because it is contrasted with the side that moved, and expanded by *conceding nothing*."
+      ],
+      "explanation": "Clue: contrast plus expansion.",
+      "category": "Tier 2: Direct contrast"
+    },
+    {
+      "order": 31,
+      "prompt": "Most of the testimony wandered into matters the tribunal had no power to consider. Only the section on the timeline was *germane*.",
+      "credited_answers": [
+        "*Germane* probably means relevant or on point. I think this because it is set against testimony that wandered outside what the tribunal could consider."
+      ],
+      "explanation": "Clue: contrast across sentences.",
+      "category": "Tier 2: Direct contrast"
+    },
+    {
+      "order": 32,
+      "prompt": "The clinic's *ancillary* services grew faster than its clinical ones: transport, interpretation, records retrieval, and a small pharmacy.",
+      "credited_answers": [
+        "*Ancillary* probably means supporting or secondary. I think this because the list after the colon is all support functions rather than the clinical work itself."
+      ],
+      "explanation": "Clue: post-word list. Boundary: secondary in role, not necessarily minor in size. The sentence says they grew faster.",
+      "category": "Tier 3: Example list or evidence after the word"
+    },
+    {
+      "order": 33,
+      "prompt": "He was *peripatetic* even by the standards of his trade, holding posts in Lisbon, Kraków, Montreal, and finally Perth, none for longer than three years.",
+      "credited_answers": [
+        "*Peripatetic* probably means constantly moving or itinerant. I think this because the list is a sequence of places and the closing clause says none lasted long."
+      ],
+      "explanation": "Clue: list plus duration evidence.",
+      "category": "Tier 3: Example list or evidence after the word"
+    },
+    {
+      "order": 34,
+      "prompt": "The room was *redolent* of the building's earlier life: coal dust, machine oil, and something faintly like wet rope.",
+      "credited_answers": [
+        "*Redolent* probably means strongly smelling of, or strongly suggestive of. I think this because the list after the colon is all smells."
+      ],
+      "explanation": "Clue: post-word list. Boundary: it can be literal smell or figurative evocation, and here it is doing both.",
+      "category": "Tier 3: Example list or evidence after the word"
+    },
+    {
+      "order": 35,
+      "prompt": "The estate's accounts describe a *profligate* decade: two houses bought and sold at a loss, a racing stable, and a subscription to an opera company that never performed.",
+      "credited_answers": [
+        "*Profligate* probably means recklessly extravagant or wasteful. I think this because the list is expensive things that produced nothing."
+      ],
+      "explanation": "Clue: list with a shared negative pattern. Boundary: wasteful, not merely rich.",
+      "category": "Tier 3: Example list or evidence after the word"
+    },
+    {
+      "order": 36,
+      "prompt": "She was *assiduous* about the checking: every entry read twice, every source noted, every discrepancy logged with a date.",
+      "credited_answers": [
+        "*Assiduous* probably means diligent or painstakingly thorough. I think this because the colon introduces three parallel examples of careful repeated work."
+      ],
+      "explanation": "Clue: parallel example list.",
+      "category": "Tier 3: Example list or evidence after the word"
+    },
+    {
+      "order": 37,
+      "prompt": "The field is *nascent* rather than established: three laboratories, one journal, and no agreed method.",
+      "credited_answers": [
+        "*Nascent* probably means new or just beginning. I think this because it is placed directly against *established*, and the evidence is how little exists yet."
+      ],
+      "explanation": "Clue: explicit antonym.",
+      "category": "Tier 4: Antonym or opposition clue"
+    },
+    {
+      "order": 38,
+      "prompt": "The earlier accounts are transparent about their sources. This one is *opaque*, and after two readings I still cannot tell where the figures came from.",
+      "credited_answers": [
+        "*Opaque* probably means unclear or impossible to see into. I think this because it is opposed to *transparent* and followed by not being able to tell where figures came from."
+      ],
+      "explanation": "Clue: antonym plus consequence. Boundary: unclear to the reader, not secret by intent.",
+      "category": "Tier 4: Antonym or opposition clue"
+    },
+    {
+      "order": 39,
+      "prompt": "Nothing about the arrangement was *ephemeral*; the parties expected it to outlast all of them, and it did.",
+      "credited_answers": [
+        "*Ephemeral* probably means short-lived or fleeting. I think this because it is negated and set against outlasting everyone."
+      ],
+      "explanation": "Clue: negation plus opposite. Note: the word appears under a *not*, so the student has to flip once before answering.",
+      "category": "Tier 4: Antonym or opposition clue"
+    },
+    {
+      "order": 40,
+      "prompt": "The defence pressed for the second file, arguing that where the first was incriminating the second was *exculpatory*.",
+      "credited_answers": [
+        "*Exculpatory* probably means clearing of blame or tending to show innocence. I think this because it is set directly against *incriminating*."
+      ],
+      "explanation": "Clue: explicit antonym.",
+      "category": "Tier 4: Antonym or opposition clue"
+    },
+    {
+      "order": 41,
+      "prompt": "Every forecast in the room was gloomy except hers, which was *sanguine* about all three quarters.",
+      "credited_answers": [
+        "*Sanguine* probably means optimistic or cheerfully confident. I think this because it is the exception to gloomy forecasts."
+      ],
+      "explanation": "Clue: exception-to-the-set. Boundary: optimistic, not merely calm.",
+      "category": "Tier 4: Antonym or opposition clue"
+    },
+    {
+      "order": 42,
+      "prompt": "The survey is presented as neutral, but it asks about waste before it asks about services, describes one option as a burden and the other as an investment, and offers no box for 'neither.' Calling it *tendentious* is generous.",
+      "credited_answers": [
+        "*Tendentious* probably means biased or written to push a conclusion. I think this because the whole paragraph is a list of ways the survey is loaded, and the last sentence says the word is a mild description of it."
+      ],
+      "explanation": "Clue: whole-paragraph accumulation. Boundary: biased on purpose, not simply mistaken.",
+      "category": "Tier 5: No nearby clue; the paragraph's structure carries it"
+    },
+    {
+      "order": 43,
+      "prompt": "He worked at it for a decade in a *desultory* way, weeks of nothing followed by a fortnight of intensity, no plan across the years, each return starting from wherever he had stopped.",
+      "credited_answers": [
+        "*Desultory* probably means unmethodical or lacking a steady plan. I think this because the rest of the sentence describes work with no continuity or direction."
+      ],
+      "explanation": "Clue: structural description after the word. Boundary: it is about lacking method, not about lacking effort.",
+      "category": "Tier 5: No nearby clue; the paragraph's structure carries it"
+    },
+    {
+      "order": 44,
+      "prompt": "Of the four quotations he might have used, only one actually concerned the question of who bore the cost, and that is the one he chose. The choice was *apposite*.",
+      "credited_answers": [
+        "*Apposite* probably means fitting or exactly suited to the point. I think this because the previous sentence sets up that only one of four was on the real question and he picked it."
+      ],
+      "explanation": "Clue: prior-sentence setup. Boundary: well suited, not merely correct.",
+      "category": "Tier 5: No nearby clue; the paragraph's structure carries it"
+    },
+    {
+      "order": 45,
+      "prompt": "The theory in that first paper is *inchoate*. The terms shift between sections, two of the central claims are stated only as questions, and the mechanism is named but never described.",
+      "credited_answers": [
+        "*Inchoate* probably means unformed or only partly developed. I think this because the following sentence lists ways the theory is not finished."
+      ],
+      "explanation": "Clue: following-sentence evidence. Boundary: undeveloped, not wrong.",
+      "category": "Tier 5: No nearby clue; the paragraph's structure carries it"
+    },
+    {
+      "order": 46,
+      "prompt": "What the diaries record is *quotidian* almost throughout: what was eaten, what the weather did, who called and for how long. The two pages everyone quotes are the exception.",
+      "credited_answers": [
+        "*Quotidian* probably means everyday or ordinary. I think this because the list is routine daily detail and the famous pages are called the exception."
+      ],
+      "explanation": "Clue: list plus exception framing.",
+      "category": "Tier 5: No nearby clue; the paragraph's structure carries it"
+    },
+    {
+      "order": 47,
+      "prompt": "The panel wanted a *disinterested* assessor, someone with no stake in either outcome, and spent four months finding one.",
+      "credited_answers": [
+        "*Disinterested* probably means impartial or having no stake. I think this because the sentence defines it: no stake in either outcome."
+      ],
+      "explanation": "The trap: *uninterested*, meaning bored. The paragraph rules it out. Someone bored would not take four months to find.",
+      "category": "Tier 6: Precision traps"
+    },
+    {
+      "order": 48,
+      "prompt": "The introduction is so *fulsome* in its praise of the donor that the reader begins to doubt the rest of the book.",
+      "credited_answers": [
+        "*Fulsome* probably means excessive or so overdone it reads as insincere. I think this because the praise causes the reader to doubt the book."
+      ],
+      "explanation": "The trap: *generous* or *full*. Those are positive; the clue is that it produces doubt.",
+      "category": "Tier 6: Precision traps"
+    },
+    {
+      "order": 49,
+      "prompt": "Two hours in that room *enervated* the whole committee, and the afternoon session achieved nothing.",
+      "credited_answers": [
+        "*Enervated* probably means drained or sapped of energy. I think this because the afternoon achieved nothing afterward."
+      ],
+      "explanation": "The trap: *energized*, which the word looks like and which the consequence contradicts.",
+      "category": "Tier 6: Precision traps"
+    },
+    {
+      "order": 50,
+      "prompt": "She was *nonplussed* by the question and said nothing at all for several seconds.",
+      "credited_answers": [
+        "*Nonplussed* probably means bewildered or at a loss. I think this because she was silent for several seconds."
+      ],
+      "explanation": "The trap: *unbothered*, from reading *non-* as a simple negative. The evidence is a pause, which is what confusion looks like.",
+      "category": "Tier 6: Precision traps"
+    },
+    {
+      "order": 51,
+      "prompt": "The meeting was entirely *fortuitous*; neither of them had known the other would be in the city that week.",
+      "credited_answers": [
+        "*Fortuitous* probably means happening by chance or accidental. I think this because neither knew the other would be there."
+      ],
+      "explanation": "The trap: *fortunate*. Nothing in the sentence says the meeting was lucky, only that it was unplanned.",
+      "category": "Tier 6: Precision traps"
+    }
+  ]
+}

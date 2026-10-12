@@ -1,0 +1,613 @@
+[
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Among Trinidadian guppies, males with large spots are\nmore attractive to females than are males with small\nspots, who consequently are presented with less frequent\nmating opportunities. Yet guppies with small spots are\nmore likely to avoid detection by predators, so in waters\nwhere predators are abundant only guppies with small\nspots live to maturity.",
+    "questionStem": "The situation described above most closely conforms to\nwhich one of the following generalizations?",
+    "answerChoices": {
+      "A": "A trait that helps attract mates is sometimes more dangerous to one sex than to another.",
+      "B": "Those organisms that are most attractive to the opposite sex have the greatest number of offspring.",
+      "C": "Those organisms that survive the longest have the greatest number of offspring.",
+      "D": "Whether a trait is harmful to the organisms of a species can depend on which sex possesses it.",
+      "E": "A trait that is helpful to procreation can also hinder it in certain environments."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Causal Difference-Maker",
+      "Proposition/Generalization",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Evaluate",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Programmer: We computer programmers at Mytheco\nare demanding raises to make our average salary\ncomparable with that of the technical writers\nhere who receive, on average, 20 percent more\nin salary and benefits than we do. This pay\ndifference is unfair and intolerable. Mytheco executive: But many of the technical writers\nhave worked for Mytheco longer than have many\nof the programmers. Since salary and benefits\nat Mytheco are directly tied to seniority, the 20\npercent pay difference you mention is perfectly\nacceptable.",
+    "questionStem": "Evaluating the adequacy of the Mytheco executive’s\nresponse requires a clarification of which one of the\nfollowing?",
+    "answerChoices": {
+      "A": "whether any of the technical writers at Mytheco once worked as programmers at the company",
+      "B": "how the average seniority of programmers compares with the average seniority of technical writers",
+      "C": "whether the sorts of benefits an employee of Mytheco receives are tied to the salary of that employee",
+      "D": "whether the Mytheco executive was at one time a technical writer employed by Mytheco",
+      "E": "how the Mytheco executive’s salary compares with that of the programmers"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sampling",
+      "Math-y Stuff",
+      "Percentages",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Cable TV stations have advantages that enable them to\nattract many more advertisers than broadcast networks\nattract. For example, cable stations are able to target\nparticular audiences with 24-hour news, sports, or\nmovies, whereas broadcast networks must offer a\nvariety of programming. Cable can also offer lower\nadvertising rates than any broadcast network can,\nbecause it is subsidized by viewers through subscriber\nfees. Additionally, many cable stations have expanded\nworldwide with multinational programming.",
+    "questionStem": "The statements above, if true, provide support for each\nof the following except:",
+    "answerChoices": {
+      "A": "Some broadcast networks can be viewed in several countries.",
+      "B": "Broadcast networks do not rely on subscriber fees from viewers.",
+      "C": "Low costs are often an important factor for advertisers in selecting a station or network on which to run a TV ad.",
+      "D": "Some advertisers prefer to have the opportunity to address a worldwide audience.",
+      "E": "The audiences that some advertisers prefer to target watch 24-hour news stations."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In polluted industrial English cities during the Industrial\nRevolution, two plant diseases—black spot, which infects\nroses, and tar spot, which infects sycamore trees—\ndisappeared. It is likely that air pollution eradicated these\ndiseases.",
+    "questionStem": "Which one of the following, if true, most strengthens the\nreasoning above?",
+    "answerChoices": {
+      "A": "Scientists theorize that some plants can develop a resistance to air pollution.",
+      "B": "Certain measures help prevent infection by black spot and tar spot, but once infection occurs, it is very difficult to eliminate.",
+      "C": "For many plant species, scientists have not determined the effects of air pollution.",
+      "D": "Black spot and tar spot returned when the air in the cities became less polluted.",
+      "E": "Black spot and tar spot were the only plant diseases that disappeared in any English cities during the Industrial Revolution."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Many scholars are puzzled about who created the\nseventeenth-century abridgment of Shakespeare’s\nHamlet contained in the First Quarto. Two facts about\nthe work shed light on this question. First, the person\nwho undertook the abridgment clearly did not possess\na copy of Hamlet. Second, the abridgment contains a\nvery accurate rendering of the speeches of one of the\ncharacters, but a slipshod handling of all the other parts.",
+    "questionStem": "Which one of the following statements is most supported\nby the information above?",
+    "answerChoices": {
+      "A": "The abridgment was prepared by Shakespeare.",
+      "B": "The abridgment was created to make Hamlet easier to produce on stage.",
+      "C": "The abridgment was produced by an actor who had played a role in Hamlet.",
+      "D": "The abridgment was prepared by a spectator of a performance of Hamlet.",
+      "E": "The abridgment was produced by an actor who was trying to improve the play."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Musicologist: Many critics complain of the disproportion\nbetween text and music in Handel’s da capo arias.\nThese texts are generally quite short and often\nrepeated well beyond what is needed for literal\nunderstanding. Yet such criticism is refuted by\nnoting that repetition serves a vital function: it\nfrees the audience to focus on the music itself,\nwhich can speak to audiences whatever their\nlanguage.",
+    "questionStem": "Which one of the following sentences best expresses the\nmain point of the musicologist’s reasoning?",
+    "answerChoices": {
+      "A": "Handel’s da capo arias contain a disproportionate amount of music.",
+      "B": "Handel’s da capo arias are superior to most in their accessibility to diverse audiences.",
+      "C": "At least one frequent criticism of Handel’s da capo arias is undeserved.",
+      "D": "At least some of Handel’s da capo arias contain unnecessary repetitions.",
+      "E": "Most criticism of Handel’s da capo arias is unwarranted."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Baxe Interiors, one of the largest interior design\ncompanies in existence, currently has a near monopoly\nin the corporate market. Several small design companies\nhave won prestigious awards for their corporate work,\nwhile Baxe has won none. Nonetheless, the corporate\nmanagers who solicit design proposals will only contract\nwith companies they believe are unlikely to go bankrupt,\nand they believe that only very large companies are\nunlikely to go bankrupt.",
+    "questionStem": "The statements above, if true, most strongly support\nwhich one of the following?",
+    "answerChoices": {
+      "A": "There are other very large design companies besides Baxe, but they produce designs that are inferior to Baxe’s.",
+      "B": "Baxe does not have a near monopoly in the market of any category of interior design other than corporate interiors.",
+      "C": "For the most part, designs that are produced by small companies are superior to the designs produced by Baxe.",
+      "D": "At least some of the corporate managers who solicit design proposals are unaware that there are designs that are much better than those produced by Baxe.",
+      "E": "The existence of interior designs that are superior to those produced by Baxe does not currently threaten its near monopoly in the corporate market."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The giant Chicxulub crater in Mexico provides\nindisputable evidence that a huge asteroid, about six\nmiles across, struck Earth around the time many of the\nlast dinosaur species were becoming extinct. But this\ncatastrophe was probably not responsible for most of\nthese extinctions. Any major asteroid strike kills many\norganisms in or near the region of the impact, but\nthere is little evidence that such a strike could have a\nworldwide effect. Indeed, some craters even larger than\nthe Chicxulub crater were made during times in Earth’s\nhistory when there were no known extinctions.",
+    "questionStem": "Which one of the following, if true, would most weaken\nthe argument?",
+    "answerChoices": {
+      "A": "The vast majority of dinosaur species are known to have gone extinct well before the time of the asteroid impact that produced the Chicxulub crater.",
+      "B": "The size of a crater caused by an asteroid striking Earth generally depends on both the size of that asteroid and the force of its impact.",
+      "C": "Fossils have been discovered of a number of dinosaurs that clearly died as a result of the asteroid impact that produced the Chicxulub crater.",
+      "D": "There is no evidence that any other asteroid of equal size struck Earth at the same time as the asteroid that produced the Chicxulub crater.",
+      "E": "During the period immediately before the asteroid that produced the Chicxulub crater struck, most of the world’s dinosaurs lived in or near the region of the asteroid’s impending impact."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "In a sample containing 1,000 peanuts from lot A and\n1,000 peanuts from lot B, 50 of the peanuts from lot A\nwere found to be infected with Aspergillus. Two hundred\nof the peanuts from lot B were found to be infected with\nAspergillus. Therefore, infection with Aspergillus is more\nwidespread in lot B than in lot A.",
+    "questionStem": "The reasoning in which one of the following is most\nsimilar to the reasoning in the argument above?",
+    "answerChoices": {
+      "A": "Every one of these varied machine parts is of uniformly high quality. Therefore, the machine that we assemble from them will be of equally high quality.",
+      "B": "If a plant is carelessly treated, it is likely to develop blight. If a plant develops blight, it is likely to die. Therefore, if a plant is carelessly treated, it is likely to die.",
+      "C": "In the past 1,000 experiments, whenever an experimental fungicide was applied to coffee plants infected with coffee rust, the infection disappeared. The coffee rust never disappeared before the fungicide was applied. Therefore, in these experiments, application of the fungicide caused the disappearance of coffee rust.",
+      "D": "Three thousand registered voters—1,500 members of the Liberal party and 1,500 members of the Conservative party—were asked which mayoral candidate they favored. Four hundred of the Liberals and 300 of the Conservatives favored Pollack. Therefore, Pollack has more support among Liberals than among Conservatives.",
+      "E": "All of my livestock are registered with the regional authority. None of the livestock registered with the regional authority are free-range livestock. Therefore, none of my livestock are free-range livestock."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Economist: If the belief were to become widespread\nthat losing one’s job is not a sign of personal\nshortcomings but instead an effect of impersonal\nsocial forces (which is surely correct), there\nwould be growth in the societal demand for\nmore government control of the economy to\nprotect individuals from these forces, just as the\ngovernment now protects them from military\ninvasion. Such extensive government control of\nthe economy would lead to an economic disaster,\nhowever.",
+    "questionStem": "The economist’s statements, if true, most strongly\nsupport which one of the following?",
+    "answerChoices": {
+      "A": "Increased knowledge of the causes of job loss could lead to economic disaster.",
+      "B": "An individual’s belief in his or her own abilities is the only reliable protection against impersonal social forces.",
+      "C": "Governments should never interfere with economic forces.",
+      "D": "Societal demand for government control of the economy is growing.",
+      "E": "In general, people should feel no more responsible for economic disasters than for military invasions."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A development company has proposed building an\nairport near the city of Dalton. If the majority of Dalton’s\nresidents favor the proposal, the airport will be built.\nHowever, it is unlikely that a majority of Dalton’s\nresidents would favor the proposal, for most of them\nbelieve that the airport would create noise problems.\nThus, it is unlikely that the airport will be built.",
+    "questionStem": "The reasoning in the argument is flawed in that the\nargument",
+    "answerChoices": {
+      "A": "treats a sufficient condition for the airport’s being built as a necessary condition",
+      "B": "concludes that something must be true, because most people believe it to be true",
+      "C": "concludes, on the basis that a certain event is unlikely to occur, that the event will not occur",
+      "D": "fails to consider whether people living near Dalton would favor building the airport",
+      "E": "overlooks the possibility that a new airport could benefit the local economy"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "After the rush-hour speed limit on the British M25\nmotorway was lowered from 70 miles per hour (115\nkilometers per hour) to 50 miles per hour (80 kilometers\nper hour), rush-hour travel times decreased by\napproximately 15 percent.",
+    "questionStem": "Which one of the following, if true, most helps to\nexplain the decrease in travel times described above?",
+    "answerChoices": {
+      "A": "After the decrease in the rush-hour speed limit, the average speed on the M25 was significantly lower during rush hours than at other times of the day.",
+      "B": "Travel times during periods other than rush hours were essentially unchanged after the rush-hour speed limit was lowered.",
+      "C": "Before the rush-hour speed limit was lowered, rush-hour accidents that caused lengthy delays were common, and most of these accidents were caused by high-speed driving.",
+      "D": "Enforcement of speed limits on the M25 was quite rigorous both before and after the rush-hour speed limit was lowered.",
+      "E": "The number of people who drive on the M25 during rush hours did not increase after the rush-hour speed limit was lowered."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "An art critic, by ridiculing an artwork, can undermine the\npleasure one takes in it; conversely, by lavishing praise\nupon an artwork, an art critic can render the experience\nof viewing the artwork more pleasurable. So an artwork’s\nartistic merit can depend not only on the person who\ncreates it but also on those who critically evaluate it.",
+    "questionStem": "The conclusion can be properly drawn if which one of\nthe following is assumed?",
+    "answerChoices": {
+      "A": "The merit of an artistic work is determined by the amount of pleasure it elicits.",
+      "B": "Most people lack the confidence necessary for making their own evaluations of art.",
+      "C": "Art critics understand what gives an artwork artistic merit better than artists do.",
+      "D": "Most people seek out critical reviews of particular artworks before viewing those works.",
+      "E": "The pleasure people take in something is typically influenced by what they think others feel about it."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The number of automobile thefts has declined steadily\nduring the past five years, and it is more likely now than\nit was five years ago that someone who steals a car will\nbe convicted of the crime.",
+    "questionStem": "Which one of the following, if true, most helps to\nexplain the facts cited above?",
+    "answerChoices": {
+      "A": "Although there are fewer car thieves now than there were five years ago, the proportion of thieves who tend to abandon cars before their owners notice that they have been stolen has also decreased.",
+      "B": "Car alarms are more common than they were five years ago, but their propensity to be triggered in the absence of any criminal activity has resulted in people generally ignoring them when they are triggered.",
+      "C": "An upsurge in home burglaries over the last five years has required police departments to divert limited resources to investigation of these cases.",
+      "D": "Because of the increasingly lucrative market for stolen automobile parts, many stolen cars are quickly disassembled and the parts are sold to various buyers across the country.",
+      "E": "There are more adolescent car thieves now than there were five years ago, and the sentences given to young criminals tend to be far more lenient than those given to adult criminals."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Legislator: My staff conducted a poll in which my\nconstituents were asked whether they favor high\ntaxes. More than 97 percent answered “no.”\nClearly, then, my constituents would support\nthe bill I recently introduced, which reduces the\ncorporate income tax.",
+    "questionStem": "The reasoning in the legislator’s argument is most\nvulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "fails to establish that the opinions of the legislator’s constituents are representative of the opinions of the country’s population as a whole",
+      "B": "fails to consider whether the legislator’s constituents consider the current corporate income tax a high tax",
+      "C": "confuses an absence of evidence that the legislator’s constituents oppose a bill with the existence of evidence that the legislator’s constituents support that bill",
+      "D": "draws a conclusion that merely restates a claim presented in support of that conclusion",
+      "E": "treats a result that proves that the public supports a bill as a result that is merely consistent with public support for that bill"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Sampling",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Many nursing homes have prohibitions against having\npets, and these should be lifted. The presence of an\nanimal companion can yield health benefits by reducing a\nperson’s stress. A pet can also make one’s time at a home\nmore rewarding, which will be important to more people\nas the average life span of our population increases.",
+    "questionStem": "Which one of the following most accurately expresses\nthe conclusion drawn in the argument above?",
+    "answerChoices": {
+      "A": "As the average life span increases, it will be important to more people that life in nursing homes be rewarding.",
+      "B": "Residents of nursing homes should enjoy the same rewarding aspects of life as anyone else.",
+      "C": "The policy that many nursing homes have should be changed so that residents are allowed to have pets.",
+      "D": "Having a pet can reduce one’s stress and thereby make one a healthier person.",
+      "E": "The benefits older people derive from having pets need to be recognized, especially as the average life span increases."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Near many cities, contamination of lakes and rivers\nfrom pollutants in rainwater runoff exceeds that from\nindustrial discharge. As the runoff washes over buildings\nand pavements, it picks up oil and other pollutants. Thus,\nwater itself is among the biggest water polluters.",
+    "questionStem": "The statement that contamination of lakes and rivers\nfrom pollutants in rainwater runoff exceeds that from\nindustrial discharge plays which one of the following\nroles in the argument?",
+    "answerChoices": {
+      "A": "It is a conclusion for which the claim that water itself should be considered a polluter is offered as support.",
+      "B": "It is cited as evidence that pollution from rainwater runoff is a more serious problem than pollution from industrial discharge.",
+      "C": "It is a generalization based on the observation that rainwater runoff picks up oil and other pollutants as it washes over buildings and pavements.",
+      "D": "It is a premise offered in support of the conclusion that water itself is among the biggest water polluters.",
+      "E": "It is stated to provide an example of a typical kind of city pollution."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Wong: Although all countries are better off as\ndemocracies, a transitional autocratic stage is\nsometimes required before a country can become\ndemocratic. Tate: The freedom and autonomy that democracy\nprovides are of genuine value, but the simple\nmaterial needs of people are more important. Some countries can better meet these needs as\nautocracies than as democracies.",
+    "questionStem": "Wong’s and Tate’s statements provide the most support\nfor the claim that they disagree over the truth of which\none of the following?",
+    "answerChoices": {
+      "A": "There are some countries that are better off as autocracies than as democracies.",
+      "B": "Nothing is more important to a country than the freedom and autonomy of the individuals who live in that country.",
+      "C": "In some cases, a country cannot become a democracy.",
+      "D": "The freedom and autonomy that democracy provides are of genuine value.",
+      "E": "All democracies succeed in meeting the simple material needs of people."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Principle: When none of the fully qualified candidates\nfor a new position at Arvue Corporation currently\nworks for that company, it should hire the\ncandidate who would be most productive in that\nposition.\nApplication: Arvue should not hire Krall for the new\nposition, because Delacruz is a candidate and is\nfully qualified.",
+    "questionStem": "Which one of the following, if true, justifies the above\napplication of the principle?",
+    "answerChoices": {
+      "A": "All of the candidates are fully qualified for the new position, but none already works for Arvue.",
+      "B": "Of all the candidates who do not already work for Arvue, Delacruz would be the most productive in the new position.",
+      "C": "Krall works for Arvue, but Delacruz is the candidate who would be most productive in the new position.",
+      "D": "Several candidates currently work for Arvue, but Krall and Delacruz do not.",
+      "E": "None of the candidates already works for Arvue, and Delacruz is the candidate who would be most productive in the new position."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Many important types of medicine have been developed\nfrom substances discovered in plants that grow only in\ntropical rain forests. There are thousands of plant species\nin these rain forests that have not yet been studied by\nscientists, and it is very likely that many such plants\nalso contain substances of medicinal value. Thus, if the\ntropical rain forests are not preserved, important types of\nmedicine will never be developed.",
+    "questionStem": "Which one of the following is an assumption required by\nthe argument?",
+    "answerChoices": {
+      "A": "There are substances of medicinal value contained in tropical rain forest plants not yet studied by scientists that differ from those substances already discovered in tropical rain forest plants.",
+      "B": "Most of the tropical rain forest plants that contain substances of medicinal value can also be found growing in other types of environment.",
+      "C": "The majority of plant species that are unique to tropical rain forests and that have been studied by scientists have been discovered to contain substances of medicinal value.",
+      "D": "Any substance of medicinal value contained in plant species indigenous to tropical rain forests will eventually be discovered if those species are studied by scientists.",
+      "E": "The tropical rain forests should be preserved to make it possible for important medicines to be developed from plant species that have not yet been studied by scientists."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Conditional Conclusion",
+      "Defender",
+      "Predictions",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "In modern deep-diving marine mammals, such as whales,\nthe outer shell of the bones is porous. This has the effect\nof making the bones light enough so that it is easy for\nthe animals to swim back to the surface after a deep\ndive. The outer shell of the bones was also porous in the\nichthyosaur, an extinct prehistoric marine reptile. We can\nconclude from this that ichthyosaurs were deep divers.",
+    "questionStem": "Which one of the following, if true, most weakens the\nargument?",
+    "answerChoices": {
+      "A": "Some deep-diving marine species must surface after dives but do not have bones with porous outer shells.",
+      "B": "In most modern marine reptile species, the outer shell of the bones is not porous.",
+      "C": "In most modern and prehistoric marine reptile species that are not deep divers, the outer shell of the bones is porous.",
+      "D": "In addition to the porous outer shells of their bones, whales have at least some characteristics suited to deep diving for which there is no clear evidence whether these were shared by ichthyosaurs.",
+      "E": "There is evidence that the bones of ichthyosaurs would have been light enough to allow surfacing even if the outer shells were not porous."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Librarian: Some argue that the preservation grant we\nreceived should be used to restore our original\ncopy of our town’s charter, since if the charter\nis not restored, it will soon deteriorate beyond\nrepair. But this document, although sentimentally\nimportant, has no scholarly value. Copies are\nreadily available. Since we are a research library\nand not a museum, the money would be better\nspent preserving documents that have significant\nscholarly value.",
+    "questionStem": "The claim that the town’s charter, if not restored, will\nsoon deteriorate beyond repair plays which one of the\nfollowing roles in the librarian’s argument?",
+    "answerChoices": {
+      "A": "It is a claim that the librarian’s argument attempts to show to be false.",
+      "B": "It is the conclusion of the argument that the librarian’s argument rejects.",
+      "C": "It is a premise in an argument whose conclusion is rejected by the librarian’s argument.",
+      "D": "It is a premise used to support the librarian’s main conclusion.",
+      "E": "It is a claim whose truth is required by the librarian’s argument."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Columnist: Although much has been learned, we are still\nlargely ignorant of the intricate interrelationships\namong species of living organisms. We should,\ntherefore, try to preserve the maximum number\nof species if we have an interest in preserving\nany, since allowing species toward which we\nare indifferent to perish might undermine the\nviability of other species.",
+    "questionStem": "Which one of the following principles, if valid, most\nhelps to justify the columnist’s argument?",
+    "answerChoices": {
+      "A": "It is strongly in our interest to preserve certain plant and animal species.",
+      "B": "We should not take any action until all relevant scientific facts have been established and taken into account.",
+      "C": "We should not allow the number of species to diminish any further than is necessary for the flourishing of present and future human populations.",
+      "D": "We should not allow a change to occur unless we are assured that that change will not jeopardize anything that is important to us.",
+      "E": "We should always undertake the course of action that is likely to have the best consequences in the immediate future."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "One is likely to feel comfortable approaching a stranger\nif the stranger is of one’s approximate age. Therefore,\nlong-term friends are probably of the same approximate\nage as each other since most long-term friendships begin\nbecause someone felt comfortable approaching a stranger.",
+    "questionStem": "The reasoning in the argument is flawed in that it",
+    "answerChoices": {
+      "A": "presumes, without warrant, that one is likely to feel uncomfortable approaching a person only if that person is a stranger",
+      "B": "infers that a characteristic is present in a situation from the fact that that characteristic is present in most similar situations",
+      "C": "overlooks the possibility that one is less likely to feel comfortable approaching someone who is one’s approximate age if that person is a stranger than if that person is not a stranger",
+      "D": "presumes, without warrant, that one never approaches a stranger unless one feels comfortable doing so",
+      "E": "fails to address whether one is likely to feel comfortable approaching a stranger who is not one’s approximate age"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "There can be no individual freedom without the rule of\nlaw, for there is no individual freedom without social\nintegrity, and pursuing the good life is not possible\nwithout social integrity.",
+    "questionStem": "The conclusion drawn above follows logically if which\none of the following is assumed?",
+    "answerChoices": {
+      "A": "There can be no rule of law without social integrity.",
+      "B": "There can be no social integrity without the rule of law.",
+      "C": "One cannot pursue the good life without the rule of law.",
+      "D": "Social integrity is possible only if individual freedom prevails.",
+      "E": "There can be no rule of law without individual freedom."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Economist: Countries with an uneducated population are\ndestined to be weak economically and politically,\nwhereas those with an educated population have\ngovernments that display a serious financial\ncommitment to public education. So any\nnation with a government that has made such a\ncommitment will avoid economic and political\nweakness.",
+    "questionStem": "The pattern of flawed reasoning in which one of the\nfollowing arguments is most similar to that in the\neconomist’s argument?",
+    "answerChoices": {
+      "A": "Animal species with a very narrow diet will have more difficulty surviving if the climate suddenly changes, but a species with a broader diet will not; for changes in the climate can remove the traditional food supply.",
+      "B": "People incapable of empathy are not good candidates for public office, but those who do have the capacity for empathy are able to manipulate others easily; hence, people who can manipulate others are good candidates for public office.",
+      "C": "People who cannot give orders are those who do not understand the personalities of the people to whom they give orders. Thus, those who can give orders are those who understand the personalities of the people to whom they give orders.",
+      "D": "Poets who create poetry of high quality are those who have studied traditional poetry, because poets who have not studied traditional poetry are the poets most likely to create something shockingly inventive, and poetry that is shockingly inventive is rarely fine poetry.",
+      "E": "People who dislike exercise are unlikely to lose weight without sharply curtailing their food intake; but since those who dislike activity generally tend to avoid it, people who like to eat but dislike exercise will probably fail to lose weight."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  }
+]

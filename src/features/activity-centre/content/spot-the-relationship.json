@@ -1,0 +1,471 @@
+{
+  "slug": "spot-the-relationship",
+  "title": "Spot the Relationship",
+  "subtitle": "Name the relationship and the exact words that create it",
+  "item_format": "free-text",
+  "instructions": {
+    "coach": {
+      "drill": "a relationship-identification drill: the student names whether a statement is conditional, causal or comparative, and quotes the exact word or words that create it",
+      "rubric": [
+        "A correct answer has two parts and needs both: the relationship type, and the exact indicator word or words from the statement. Type alone is not a complete answer.",
+        "A statement can carry more than one relationship. When it does, every relationship must be named with its own indicators, and naming a relationship that is not there is also wrong.",
+        "The strongest causal indicator is often a verb rather than a connective. Raises, drives, yields, starves, dries, lowers and homogenizes are causal words, and a student who quotes one has found the right thing.",
+        "Requirement language is conditional, not causal. Requires, depends on, contingent on and provided name what must be true; they do not claim that anything made anything happen.",
+        "Accept any reasonable quotation of the indicator. Do not penalise capitalisation, a slightly wider or narrower span, or a student who writes only if as only-if."
+      ],
+      "partial_rule": "Mark 'partial' when the student names the right type with wrong or missing indicators, quotes the credited indicators but labels the type wrongly, or finds some but not all of the relationships in a multi-relationship statement. Mark 'incorrect' only when both parts miss."
+    },
+    "tagline": "Type plus the exact words. Both halves, every time.",
+    "task": "Tell me what kind of relationship this statement contains and the exact word or words that create it. If there is more than one, name them all.",
+    "rules": [
+      "Answer in the game format: type, then the words. Conditional, only if. Causal, caused. Comparative, heavier than.",
+      "A conditional says what must be true. A causal says one thing made another happen. A comparative measures one thing against another.",
+      "Causal words are often verbs, not connectives. Raises, drives, dries, starves and lowers are all causal.",
+      "Requires, depends on and contingent on are conditional. They name a requirement, not a mechanism.",
+      "Some statements carry two or three relationships at once. Name every one you find."
+    ],
+    "worked_example": {
+      "statement": "A lantern can be lit only if its wick is dry.",
+      "credited_answers": [
+        "conditional, only if"
+      ],
+      "explanation": "Only if introduces the necessary condition. A dry wick is required for lighting, which is not the same as saying a dry wick makes the lantern light. That would be causal, and this statement does not claim it."
+    },
+    "answer_label": "Your answer",
+    "answer_placeholder": "Name the relationship and the exact words that create it…"
+  },
+  "items": [
+    {
+      "order": 1,
+      "prompt": "A greenhouse vent opens only if the interior temperature exceeds 28 degrees.",
+      "credited_answers": [
+        "conditional, \"only if\""
+      ],
+      "explanation": "1 relationship in this statement. The textbook necessary condition.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 2,
+      "prompt": "If the ferry misses the tide, it docks at the outer berth.",
+      "credited_answers": [
+        "conditional, \"if\""
+      ],
+      "explanation": "1 relationship in this statement. The plain sufficient condition, front seat.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 3,
+      "prompt": "Whenever the tide gauge is recalibrated, the readings shift by a few centimetres.",
+      "credited_answers": [
+        "conditional, \"whenever\""
+      ],
+      "explanation": "1 relationship in this statement. Reads like time, works like *if*.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 4,
+      "prompt": "A permit is required before any tree on the boulevard may be removed.",
+      "credited_answers": [
+        "conditional, \"required\""
+      ],
+      "explanation": "1 relationship in this statement. First requirement verb. No claim that the permit makes anything happen.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 5,
+      "prompt": "A blocked flue caused the smoke to back into the reading room.",
+      "credited_answers": [
+        "causal, \"caused\""
+      ],
+      "explanation": "1 relationship in this statement. The clean case, matching his heater seed.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 6,
+      "prompt": "The late frost destroyed most of the apricot blossom.",
+      "credited_answers": [
+        "causal, \"destroyed\""
+      ],
+      "explanation": "1 relationship in this statement. First verb-only causal. There is no connective at all.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 7,
+      "prompt": "Salt spray corroded the bridge's lower bolts.",
+      "credited_answers": [
+        "causal, \"corroded\""
+      ],
+      "explanation": "1 relationship in this statement. Same shape, different verb. Say the verb aloud and the causation is audible.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 8,
+      "prompt": "The new filter produced a measurable drop in turbidity.",
+      "credited_answers": [
+        "causal, \"produced\""
+      ],
+      "explanation": "1 relationship in this statement. Matches the \"produced\" indicator from his own list.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 9,
+      "prompt": "The bronze bell is louder than the iron one.",
+      "credited_answers": [
+        "comparative, \"louder than\""
+      ],
+      "explanation": "1 relationship in this statement. The twin of his astrolabe seed.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 10,
+      "prompt": "This year's harvest came in lighter than last year's.",
+      "credited_answers": [
+        "comparative, \"lighter than\""
+      ],
+      "explanation": "1 relationship in this statement. Comparison across time rather than objects.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 11,
+      "prompt": "The southern route takes less time than the coastal one.",
+      "credited_answers": [
+        "comparative, \"less time than\""
+      ],
+      "explanation": "1 relationship in this statement. The comparison sits in a noun phrase.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 12,
+      "prompt": "The oak beam is as strong as the steel channel it replaced.",
+      "credited_answers": [
+        "comparative, \"as strong as\""
+      ],
+      "explanation": "1 relationship in this statement. Equality, not superiority. Still comparative.",
+      "category": "Rung 1: Single relationship, classic indicators"
+    },
+    {
+      "order": 13,
+      "prompt": "The kiln reaches cone 10 only when the damper is fully closed.",
+      "credited_answers": [
+        "conditional, \"only when\""
+      ],
+      "explanation": "1 relationship in this statement. Pair A, conditional half. A requirement, not a mechanism.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 14,
+      "prompt": "Closing the damper raises the kiln to cone 10.",
+      "credited_answers": [
+        "causal, \"raises\""
+      ],
+      "explanation": "1 relationship in this statement. Pair A, causal half. Same facts, and now the sentence claims the closing *makes* the rise happen.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 15,
+      "prompt": "A stable emulsion requires an added lecithin.",
+      "credited_answers": [
+        "conditional, \"requires\""
+      ],
+      "explanation": "1 relationship in this statement. Pair B, conditional half. *Requires* is the most-missed conditional word in the bank.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 16,
+      "prompt": "Adding lecithin stabilizes the emulsion.",
+      "credited_answers": [
+        "causal, \"stabilizes\""
+      ],
+      "explanation": "1 relationship in this statement. Pair B, causal half.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 17,
+      "prompt": "The grant is contingent on a matching pledge from the county.",
+      "credited_answers": [
+        "conditional, \"contingent on\""
+      ],
+      "explanation": "1 relationship in this statement. Pair C, conditional half.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 18,
+      "prompt": "The matching pledge from the county secured the grant.",
+      "credited_answers": [
+        "causal, \"secured\""
+      ],
+      "explanation": "1 relationship in this statement. Pair C, causal half.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 19,
+      "prompt": "Certification depends on an unbroken chain of custody.",
+      "credited_answers": [
+        "conditional, \"depends on\""
+      ],
+      "explanation": "1 relationship in this statement. Pair D, conditional half. His own necessary-condition verb, reused here.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 20,
+      "prompt": "The broken chain of custody sank the certification.",
+      "credited_answers": [
+        "causal, \"sank\""
+      ],
+      "explanation": "1 relationship in this statement. Pair D, causal half. An informal verb still carries the causal claim.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 21,
+      "prompt": "No manuscript is catalogued unless a conservator has signed the condition report.",
+      "credited_answers": [
+        "conditional, \"unless\""
+      ],
+      "explanation": "1 relationship in this statement. Negative main clause plus *unless*, the pair students scramble most.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 22,
+      "prompt": "Longer soak times yield a deeper indigo.",
+      "credited_answers": [
+        "causal, \"yield\""
+      ],
+      "explanation": "1 relationship in this statement. Bait: the comparatives *longer* and *deeper* are real words on the page, but neither one compares two named things. The sentence claims a mechanism.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 23,
+      "prompt": "The archive's holdings are more extensive than the university library's.",
+      "credited_answers": [
+        "comparative, \"more extensive than\""
+      ],
+      "explanation": "1 relationship in this statement. Clean comparative after two baited items.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 24,
+      "prompt": "Peat soils hold water better than sandy soils do.",
+      "credited_answers": [
+        "comparative, \"better than\""
+      ],
+      "explanation": "1 relationship in this statement. Comparison of a capacity rather than a property.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 25,
+      "prompt": "The tremor registered stronger on the eastern array than on the western.",
+      "credited_answers": [
+        "comparative, \"stronger than\""
+      ],
+      "explanation": "1 relationship in this statement. One event, two measurements. Still a comparison.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 26,
+      "prompt": "Because the sluice was left open, the lower field flooded.",
+      "credited_answers": [
+        "causal, \"because\""
+      ],
+      "explanation": "1 relationship in this statement. The word that does double duty. Here it names a cause. In an argument the same word marks support, which is why the Coach names the ambiguity rather than letting a rule form.",
+      "category": "Rung 2: Discrimination"
+    },
+    {
+      "order": 27,
+      "prompt": "Only if the vat is held below four degrees does the culture stay viable, because warmth accelerates the competing bacteria.",
+      "credited_answers": [
+        "conditional, \"Only if\"; causal, \"because\" and \"accelerates\""
+      ],
+      "explanation": "2 relationships in this statement. Two relationships. The causal clause is doing explanatory work for the conditional one.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 28,
+      "prompt": "The northern kiln fires more evenly than the southern one, since its flue draws harder.",
+      "credited_answers": [
+        "comparative, \"more evenly than\"; causal, \"since\" and \"draws\""
+      ],
+      "explanation": "2 relationships in this statement. Note *harder* is part of the causal clause, not a second comparison between two named things.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 29,
+      "prompt": "Only when the moisture content falls lower than eight percent will the beams season without checking, because trapped water expands the grain.",
+      "credited_answers": [
+        "conditional, \"Only when\"; comparative, \"lower than\"; causal, \"because\" and \"expands\""
+      ],
+      "explanation": "3 relationships in this statement. The full triple, matching his kiln seed's shape.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 30,
+      "prompt": "Unless the primer is thinner than the topcoat, the finish will craze, since the layers cure at different rates.",
+      "credited_answers": [
+        "conditional, \"Unless\"; comparative, \"thinner than\"; causal, \"since\" and \"cure\""
+      ],
+      "explanation": "3 relationships in this statement. Triple, with the conditional in its negative form.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 31,
+      "prompt": "The heavier bell carries farther than the light one, which is why the foundry cast the alarm bell in the larger mould.",
+      "credited_answers": [
+        "comparative, \"heavier\" and \"farther than\"; causal, \"which is why\""
+      ],
+      "explanation": "2 relationships in this statement. A causal connective that is not a single word.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 32,
+      "prompt": "The rate rises only when demand exceeds supply, and the rise itself dampens demand.",
+      "credited_answers": [
+        "conditional, \"only when\"; comparative, \"exceeds\"; causal, \"dampens\""
+      ],
+      "explanation": "3 relationships in this statement. *Exceeds* is a comparison hiding in a verb.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 33,
+      "prompt": "Provided the sample is colder than the reference cell, the reading drifts upward, because the thermocouple lags.",
+      "credited_answers": [
+        "conditional, \"Provided\"; comparative, \"colder than\"; causal, \"because\" and \"lags.\""
+      ],
+      "explanation": "3 relationships in this statement.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 34,
+      "prompt": "The eastern quarry yields harder stone than the western, so masons reserve it for thresholds, but only if the block is free of iron staining.",
+      "credited_answers": [
+        "comparative, \"harder than\"; causal, \"so\"; conditional, \"only if\""
+      ],
+      "explanation": "3 relationships in this statement. Three relationships in three clauses, in an order that hides the conditional at the end.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 35,
+      "prompt": "Since the mill race silted, the wheel turns slower than it did, and the mill cannot grind unless the race is dredged each spring.",
+      "credited_answers": [
+        "causal, \"Since\" and \"silted\"; comparative, \"slower than\"; conditional, \"unless\""
+      ],
+      "explanation": "3 relationships in this statement. The causal opens, which students read as a support indicator.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 36,
+      "prompt": "Repointing lasts longer when the mortar is softer than the brick, because a hard mortar drives the stress into the face of the brick.",
+      "credited_answers": [
+        "conditional, \"when\"; comparative, \"longer\" and \"softer than\"; causal, \"because\" and \"drives.\""
+      ],
+      "explanation": "3 relationships in this statement.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 37,
+      "prompt": "The transplant takes only if the rootstock is more vigorous than the scion, since a weak stock starves the graft.",
+      "credited_answers": [
+        "conditional, \"only if\"; comparative, \"more vigorous than\"; causal, \"since\" and \"starves.\""
+      ],
+      "explanation": "3 relationships in this statement.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 38,
+      "prompt": "Only where the canopy is denser than sixty percent do the seedlings survive, because direct sun dries the litter layer.",
+      "credited_answers": [
+        "conditional, \"Only where\"; comparative, \"denser than\"; causal, \"because\" and \"dries\""
+      ],
+      "explanation": "3 relationships in this statement. *Only where* is the spatial sibling of *only when*.",
+      "category": "Rung 3: Compound statements"
+    },
+    {
+      "order": 39,
+      "prompt": "Only when the delta-13C value of the sample sits closer to the C3 range than to the C4 range will the provenance panel accept the attribution, since maize agriculture elevates the ratio.",
+      "credited_answers": [
+        "conditional, \"Only when\"; comparative, \"closer to … than to\"; causal, \"since\" and \"elevates\""
+      ],
+      "explanation": "3 relationships in this statement. The twin of his vanilla-extract seed, same triple, different field.",
+      "category": "Rung 4: The same structures under jargon"
+    },
+    {
+      "order": 40,
+      "prompt": "Anodization passivates the surface, so a coupon with a thicker oxide layer than the control resists pitting, provided the electrolyte is chloride-free.",
+      "credited_answers": [
+        "causal, \"passivates\" and \"so\"; comparative, \"thicker than\"; conditional, \"provided\"; Causal first, conditional last, which inverts the usual reading order."
+      ],
+      "explanation": "4 relationships in this statement.",
+      "category": "Rung 4: The same structures under jargon"
+    },
+    {
+      "order": 41,
+      "prompt": "Unless the interstitial fluid osmolality exceeds that of the tubular filtrate, the countercurrent multiplier cannot concentrate the urine, because water follows the gradient.",
+      "credited_answers": [
+        "conditional, \"Unless\"; comparative, \"exceeds\"; causal, \"because\" and \"follows.\""
+      ],
+      "explanation": "3 relationships in this statement.",
+      "category": "Rung 4: The same structures under jargon"
+    },
+    {
+      "order": 42,
+      "prompt": "A dendrochronological match is accepted only if the cross-correlation coefficient is higher than the site threshold, since spurious matches inflate at short series lengths.",
+      "credited_answers": [
+        "conditional, \"only if\"; comparative, \"higher than\"; causal, \"since\" and \"inflate.\""
+      ],
+      "explanation": "3 relationships in this statement.",
+      "category": "Rung 4: The same structures under jargon"
+    },
+    {
+      "order": 43,
+      "prompt": "The catalyst lowers the activation barrier, which is why the reaction proceeds faster at ambient temperature than the uncatalyzed route does.",
+      "credited_answers": [
+        "causal, \"lowers\" and \"which is why\"; comparative, \"faster … than\""
+      ],
+      "explanation": "2 relationships in this statement. Two relationships only, in a rung where students start expecting three. Naming a relationship that is not there is not a correct answer.",
+      "category": "Rung 4: The same structures under jargon"
+    },
+    {
+      "order": 44,
+      "prompt": "Only where the sediment's magnetic susceptibility runs lower than the regional baseline does the core preserve an intact excursion, because bioturbation homogenizes the signal.",
+      "credited_answers": [
+        "conditional, \"Only where\"; comparative, \"lower than\"; causal, \"because\" and \"homogenizes.\""
+      ],
+      "explanation": "3 relationships in this statement.",
+      "category": "Rung 4: The same structures under jargon"
+    },
+    {
+      "order": 45,
+      "prompt": "Provided the assay's limit of detection is finer than the regulatory threshold, a null result is meaningful, since a coarse assay produces nulls that mean nothing.",
+      "credited_answers": [
+        "conditional, \"Provided\"; comparative, \"finer than\"; causal, \"since\" and \"produces.\""
+      ],
+      "explanation": "3 relationships in this statement.",
+      "category": "Rung 4: The same structures under jargon"
+    },
+    {
+      "order": 46,
+      "prompt": "Isostatic rebound raises the shoreline, so a terrace formed after deglaciation sits higher than one formed before, unless local subsidence offsets the uplift.",
+      "credited_answers": [
+        "causal, \"raises\" and \"so\"; comparative, \"higher than\"; conditional, \"unless\""
+      ],
+      "explanation": "3 relationships in this statement. The conditional arrives last, after the student has already committed.",
+      "category": "Rung 4: The same structures under jargon"
+    },
+    {
+      "order": 47,
+      "prompt": "The membrane fouls only when the transmembrane pressure climbs above the critical flux, and the fouling itself drives the pressure higher still.",
+      "credited_answers": [
+        "conditional, \"only when\"; comparative, \"above\" and \"higher still\"; causal, \"drives\""
+      ],
+      "explanation": "3 relationships in this statement. A feedback loop: the effect feeds the condition.",
+      "category": "Rung 4: The same structures under jargon"
+    },
+    {
+      "order": 48,
+      "prompt": "Only if the radiocarbon date is calibrated against a curve more regionally appropriate than the global one can the offset be trusted, because atmospheric mixing produces hemispheric differences.",
+      "credited_answers": [
+        "conditional, \"Only if\"; comparative, \"more … than\"; causal, \"because\" and \"produces\""
+      ],
+      "explanation": "3 relationships in this statement. The hardest reading order in the bank: the conditional's main clause is inverted and sits behind a long comparative phrase.",
+      "category": "Rung 4: The same structures under jargon"
+    }
+  ]
+}

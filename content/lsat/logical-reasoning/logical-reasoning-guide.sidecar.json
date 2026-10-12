@@ -1,0 +1,3886 @@
+{
+  "schema_version": "1.0",
+  "source_slug": "lsat-lr-question-reasoning-guide",
+  "source_version": "1.1.1",
+  "description": "Metadata-only sidecar for the LR canonical MD. Body text comes solely from the Markdown; this file supplies structural metadata that is not derivable from the MD alone (canonical_id, section_role, aliases, related_*, sort_order). Records are keyed by heading_path.",
+  "record_count": 158,
+  "records": [
+    {
+      "sort_order": 0,
+      "record_id": "question-types/agree-disagree/keywords/chunk-00",
+      "canonical_id": "question-types/agree-disagree/keywords",
+      "title": "Agree/Disagree \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Agree/Disagree",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "agree-disagree",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "agreement",
+        "disagreement",
+        "point at issue"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 1,
+      "record_id": "question-types/agree-disagree/examples/chunk-00",
+      "canonical_id": "question-types/agree-disagree/examples",
+      "title": "Agree/Disagree \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Agree/Disagree",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "agree-disagree",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "agreement",
+        "disagreement",
+        "point at issue"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 2,
+      "record_id": "question-types/agree-disagree/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/agree-disagree/stimulus-tendencies",
+      "title": "Agree/Disagree \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Agree/Disagree",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "agree-disagree",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "agreement",
+        "disagreement",
+        "point at issue"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 3,
+      "record_id": "question-types/agree-disagree/pre-phrase-goal/chunk-00",
+      "canonical_id": "question-types/agree-disagree/pre-phrase-goal",
+      "title": "Agree/Disagree \u2014 Pre-phrase Goal",
+      "heading_path": [
+        "Question Types",
+        "Agree/Disagree",
+        "Pre-phrase Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "agree-disagree",
+      "section_key": "pre-phrase-goal",
+      "section_role": "prephrase_strategy",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "agreement",
+        "disagreement",
+        "point at issue"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 4,
+      "record_id": "question-types/agree-disagree/reading-goal/chunk-00",
+      "canonical_id": "question-types/agree-disagree/reading-goal",
+      "title": "Agree/Disagree \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Agree/Disagree",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "agree-disagree",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "agreement",
+        "disagreement",
+        "point at issue"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 5,
+      "record_id": "question-types/agree-disagree/correct-answers/chunk-00",
+      "canonical_id": "question-types/agree-disagree/correct-answers",
+      "title": "Agree/Disagree \u2014 Correct Answers",
+      "heading_path": [
+        "Question Types",
+        "Agree/Disagree",
+        "Correct Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "agree-disagree",
+      "section_key": "correct-answers",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "agreement",
+        "disagreement",
+        "point at issue"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 6,
+      "record_id": "question-types/agree-disagree/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/agree-disagree/incorrect-answers",
+      "title": "Agree/Disagree \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Agree/Disagree",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "agree-disagree",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "agreement",
+        "disagreement",
+        "point at issue"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 7,
+      "record_id": "question-types/flaw/keywords/chunk-00",
+      "canonical_id": "question-types/flaw/keywords",
+      "title": "Flaw \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Flaw",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "flaw",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "errors of reasoning",
+        "logical flaw",
+        "vulnerable to criticism"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 8,
+      "record_id": "question-types/flaw/examples/chunk-00",
+      "canonical_id": "question-types/flaw/examples",
+      "title": "Flaw \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Flaw",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "flaw",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "errors of reasoning",
+        "logical flaw",
+        "vulnerable to criticism"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 9,
+      "record_id": "question-types/flaw/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/flaw/stimulus-tendencies",
+      "title": "Flaw \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Flaw",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "flaw",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "errors of reasoning",
+        "logical flaw",
+        "vulnerable to criticism"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "famous-flaws"
+      ]
+    },
+    {
+      "sort_order": 10,
+      "record_id": "question-types/flaw/reading-goal/chunk-00",
+      "canonical_id": "question-types/flaw/reading-goal",
+      "title": "Flaw \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Flaw",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "flaw",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "errors of reasoning",
+        "logical flaw",
+        "vulnerable to criticism"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 11,
+      "record_id": "question-types/flaw/correct-answers/chunk-00",
+      "canonical_id": "question-types/flaw/correct-answers",
+      "title": "Flaw \u2014 Correct Answers",
+      "heading_path": [
+        "Question Types",
+        "Flaw",
+        "Correct Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "flaw",
+      "section_key": "correct-answers",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "errors of reasoning",
+        "logical flaw",
+        "vulnerable to criticism"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 12,
+      "record_id": "question-types/flaw/assumption-phrasings/chunk-00",
+      "canonical_id": "question-types/flaw/assumption-phrasings",
+      "title": "Flaw \u2014 ASSUMPTION phrasings",
+      "heading_path": [
+        "Question Types",
+        "Flaw",
+        "ASSUMPTION phrasings"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "flaw",
+      "section_key": "assumption-phrasings",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "errors of reasoning",
+        "logical flaw",
+        "vulnerable to criticism"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 13,
+      "record_id": "question-types/flaw/x-objection-phrasings/chunk-00",
+      "canonical_id": "question-types/flaw/x-objection-phrasings",
+      "title": "Flaw \u2014 X OBJECTION phrasings",
+      "heading_path": [
+        "Question Types",
+        "Flaw",
+        "X OBJECTION phrasings"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "flaw",
+      "section_key": "x-objection-phrasings",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "errors of reasoning",
+        "logical flaw",
+        "vulnerable to criticism"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 14,
+      "record_id": "question-types/flaw/y-match-phrasings/chunk-00",
+      "canonical_id": "question-types/flaw/y-match-phrasings",
+      "title": "Flaw \u2014 Y MATCH phrasings",
+      "heading_path": [
+        "Question Types",
+        "Flaw",
+        "Y MATCH phrasings"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "flaw",
+      "section_key": "y-match-phrasings",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "errors of reasoning",
+        "logical flaw",
+        "vulnerable to criticism"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 15,
+      "record_id": "question-types/flaw/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/flaw/incorrect-answers",
+      "title": "Flaw \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Flaw",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "flaw",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "errors of reasoning",
+        "logical flaw",
+        "vulnerable to criticism"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "famous-flaws"
+      ]
+    },
+    {
+      "sort_order": 16,
+      "record_id": "question-types/main-conclusion/keywords/chunk-00",
+      "canonical_id": "question-types/main-conclusion/keywords",
+      "title": "Main Conclusion \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Main Conclusion",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "main-conclusion",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "conclusion",
+        "main point"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 17,
+      "record_id": "question-types/main-conclusion/examples/chunk-00",
+      "canonical_id": "question-types/main-conclusion/examples",
+      "title": "Main Conclusion \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Main Conclusion",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "main-conclusion",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "conclusion",
+        "main point"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 18,
+      "record_id": "question-types/main-conclusion/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/main-conclusion/stimulus-tendencies",
+      "title": "Main Conclusion \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Main Conclusion",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "main-conclusion",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "conclusion",
+        "main point"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 19,
+      "record_id": "question-types/main-conclusion/pre-phrase-goal/chunk-00",
+      "canonical_id": "question-types/main-conclusion/pre-phrase-goal",
+      "title": "Main Conclusion \u2014 Pre-phrase Goal",
+      "heading_path": [
+        "Question Types",
+        "Main Conclusion",
+        "Pre-phrase Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "main-conclusion",
+      "section_key": "pre-phrase-goal",
+      "section_role": "prephrase_strategy",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "conclusion",
+        "main point"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 20,
+      "record_id": "question-types/main-conclusion/reading-goal/chunk-00",
+      "canonical_id": "question-types/main-conclusion/reading-goal",
+      "title": "Main Conclusion \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Main Conclusion",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "main-conclusion",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "conclusion",
+        "main point"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 21,
+      "record_id": "question-types/main-conclusion/correct-answer/chunk-00",
+      "canonical_id": "question-types/main-conclusion/correct-answer",
+      "title": "Main Conclusion \u2014 Correct Answer",
+      "heading_path": [
+        "Question Types",
+        "Main Conclusion",
+        "Correct Answer"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "main-conclusion",
+      "section_key": "correct-answer",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "conclusion",
+        "main point"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 22,
+      "record_id": "question-types/main-conclusion/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/main-conclusion/incorrect-answers",
+      "title": "Main Conclusion \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Main Conclusion",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "main-conclusion",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "conclusion",
+        "main point"
+      ],
+      "related_question_types": [
+        "necessary-assumption"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 23,
+      "record_id": "question-types/method/keywords/chunk-00",
+      "canonical_id": "question-types/method/keywords",
+      "title": "Method \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Method",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "method",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "method of reasoning",
+        "argumentative technique",
+        "proceeds by"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 24,
+      "record_id": "question-types/method/examples/chunk-00",
+      "canonical_id": "question-types/method/examples",
+      "title": "Method \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Method",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "method",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "method of reasoning",
+        "argumentative technique",
+        "proceeds by"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 25,
+      "record_id": "question-types/method/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/method/stimulus-tendencies",
+      "title": "Method \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Method",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "method",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "method of reasoning",
+        "argumentative technique",
+        "proceeds by"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 26,
+      "record_id": "question-types/method/reading-goal/chunk-00",
+      "canonical_id": "question-types/method/reading-goal",
+      "title": "Method \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Method",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "method",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "method of reasoning",
+        "argumentative technique",
+        "proceeds by"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 27,
+      "record_id": "question-types/method/pre-phrase-goal/chunk-00",
+      "canonical_id": "question-types/method/pre-phrase-goal",
+      "title": "Method \u2014 Pre-phrase Goal",
+      "heading_path": [
+        "Question Types",
+        "Method",
+        "Pre-phrase Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "method",
+      "section_key": "pre-phrase-goal",
+      "section_role": "prephrase_strategy",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "method of reasoning",
+        "argumentative technique",
+        "proceeds by"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 28,
+      "record_id": "question-types/method/correct-answer/chunk-00",
+      "canonical_id": "question-types/method/correct-answer",
+      "title": "Method \u2014 Correct Answer",
+      "heading_path": [
+        "Question Types",
+        "Method",
+        "Correct Answer"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "method",
+      "section_key": "correct-answer",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "method of reasoning",
+        "argumentative technique",
+        "proceeds by"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 29,
+      "record_id": "question-types/method/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/method/incorrect-answers",
+      "title": "Method \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Method",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "method",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "method of reasoning",
+        "argumentative technique",
+        "proceeds by"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 30,
+      "record_id": "question-types/most-supported/keywords/chunk-00",
+      "canonical_id": "question-types/most-supported/keywords",
+      "title": "Most Supported \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Most Supported",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "most-supported",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "logical completion",
+        "most strongly supported"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 31,
+      "record_id": "question-types/most-supported/examples/chunk-00",
+      "canonical_id": "question-types/most-supported/examples",
+      "title": "Most Supported \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Most Supported",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "most-supported",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "logical completion",
+        "most strongly supported"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 32,
+      "record_id": "question-types/most-supported/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/most-supported/stimulus-tendencies",
+      "title": "Most Supported \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Most Supported",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "most-supported",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "logical completion",
+        "most strongly supported"
+      ],
+      "related_question_types": [
+        "must-be-true",
+        "necessary-assumption"
+      ],
+      "related_reasoning_types": [
+        "comparison",
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 33,
+      "record_id": "question-types/most-supported/reading-goal/chunk-00",
+      "canonical_id": "question-types/most-supported/reading-goal",
+      "title": "Most Supported \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Most Supported",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "most-supported",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "logical completion",
+        "most strongly supported"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "comparison"
+      ]
+    },
+    {
+      "sort_order": 34,
+      "record_id": "question-types/most-supported/correct-answer/chunk-00",
+      "canonical_id": "question-types/most-supported/correct-answer",
+      "title": "Most Supported \u2014 Correct Answer",
+      "heading_path": [
+        "Question Types",
+        "Most Supported",
+        "Correct Answer"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "most-supported",
+      "section_key": "correct-answer",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "logical completion",
+        "most strongly supported"
+      ],
+      "related_question_types": [
+        "must-be-true"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 35,
+      "record_id": "question-types/most-supported/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/most-supported/incorrect-answers",
+      "title": "Most Supported \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Most Supported",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "most-supported",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "logical completion",
+        "most strongly supported"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "comparison",
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 36,
+      "record_id": "question-types/must-be-true/keywords/chunk-00",
+      "canonical_id": "question-types/must-be-true/keywords",
+      "title": "Must be True \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Must be True",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-true",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "follows logically",
+        "properly inferred"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 37,
+      "record_id": "question-types/must-be-true/examples/chunk-00",
+      "canonical_id": "question-types/must-be-true/examples",
+      "title": "Must be True \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Must be True",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-true",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "follows logically",
+        "properly inferred"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 38,
+      "record_id": "question-types/must-be-true/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/must-be-true/stimulus-tendencies",
+      "title": "Must be True \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Must be True",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-true",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "follows logically",
+        "properly inferred"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 39,
+      "record_id": "question-types/must-be-true/conditional-inferences/chunk-00",
+      "canonical_id": "question-types/must-be-true/conditional-inferences",
+      "title": "Must be True \u2014 Conditional Inferences",
+      "heading_path": [
+        "Question Types",
+        "Must be True",
+        "Conditional Inferences"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-true",
+      "section_key": "conditional-inferences",
+      "section_role": "inference_rules",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "follows logically",
+        "properly inferred"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 40,
+      "record_id": "question-types/must-be-true/quantified-mathematical-inferences/chunk-00",
+      "canonical_id": "question-types/must-be-true/quantified-mathematical-inferences",
+      "title": "Must be True \u2014 Quantified / Mathematical Inferences",
+      "heading_path": [
+        "Question Types",
+        "Must be True",
+        "Quantified / Mathematical Inferences"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-true",
+      "section_key": "quantified-mathematical-inferences",
+      "section_role": "inference_rules",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "follows logically",
+        "properly inferred"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 41,
+      "record_id": "question-types/must-be-true/reading-goal/chunk-00",
+      "canonical_id": "question-types/must-be-true/reading-goal",
+      "title": "Must be True \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Must be True",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-true",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "follows logically",
+        "properly inferred"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 42,
+      "record_id": "question-types/must-be-true/correct-answer/chunk-00",
+      "canonical_id": "question-types/must-be-true/correct-answer",
+      "title": "Must be True \u2014 Correct Answer",
+      "heading_path": [
+        "Question Types",
+        "Must be True",
+        "Correct Answer"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-true",
+      "section_key": "correct-answer",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "follows logically",
+        "properly inferred"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 43,
+      "record_id": "question-types/must-be-true/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/must-be-true/incorrect-answers",
+      "title": "Must be True \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Must be True",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-true",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "follows logically",
+        "properly inferred"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "comparison",
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 44,
+      "record_id": "question-types/must-be-false/keywords/chunk-00",
+      "canonical_id": "question-types/must-be-false/keywords",
+      "title": "Must be False \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Must be False",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-false",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "cannot be true",
+        "least compatible"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 45,
+      "record_id": "question-types/must-be-false/examples/chunk-00",
+      "canonical_id": "question-types/must-be-false/examples",
+      "title": "Must be False \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Must be False",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-false",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "cannot be true",
+        "least compatible"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 46,
+      "record_id": "question-types/must-be-false/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/must-be-false/stimulus-tendencies",
+      "title": "Must be False \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Must be False",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-false",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "cannot be true",
+        "least compatible"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 47,
+      "record_id": "question-types/must-be-false/conditional/chunk-00",
+      "canonical_id": "question-types/must-be-false/conditional",
+      "title": "Must be False \u2014 Conditional",
+      "heading_path": [
+        "Question Types",
+        "Must be False",
+        "Conditional"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-false",
+      "section_key": "conditional",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "cannot be true",
+        "least compatible"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 48,
+      "record_id": "question-types/must-be-false/mathematical/chunk-00",
+      "canonical_id": "question-types/must-be-false/mathematical",
+      "title": "Must be False \u2014 Mathematical",
+      "heading_path": [
+        "Question Types",
+        "Must be False",
+        "Mathematical"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-false",
+      "section_key": "mathematical",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "cannot be true",
+        "least compatible"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 49,
+      "record_id": "question-types/must-be-false/causal-difference-maker/chunk-00",
+      "canonical_id": "question-types/must-be-false/causal-difference-maker",
+      "title": "Must be False \u2014 Causal Difference-Maker",
+      "heading_path": [
+        "Question Types",
+        "Must be False",
+        "Causal Difference-Maker"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-false",
+      "section_key": "causal-difference-maker",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "cannot be true",
+        "least compatible"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 50,
+      "record_id": "question-types/must-be-false/reading-goal/chunk-00",
+      "canonical_id": "question-types/must-be-false/reading-goal",
+      "title": "Must be False \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Must be False",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-false",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "cannot be true",
+        "least compatible"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 51,
+      "record_id": "question-types/must-be-false/correct-answer/chunk-00",
+      "canonical_id": "question-types/must-be-false/correct-answer",
+      "title": "Must be False \u2014 Correct Answer",
+      "heading_path": [
+        "Question Types",
+        "Must be False",
+        "Correct Answer"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-false",
+      "section_key": "correct-answer",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "cannot be true",
+        "least compatible"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 52,
+      "record_id": "question-types/must-be-false/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/must-be-false/incorrect-answers",
+      "title": "Must be False \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Must be False",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "must-be-false",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "cannot be true",
+        "least compatible"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 53,
+      "record_id": "question-types/necessary-assumption/keywords/chunk-00",
+      "canonical_id": "question-types/necessary-assumption/keywords",
+      "title": "Necessary Assumption \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Necessary Assumption",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "necessary-assumption",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "depends on",
+        "negation test",
+        "required assumption"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 54,
+      "record_id": "question-types/necessary-assumption/examples/chunk-00",
+      "canonical_id": "question-types/necessary-assumption/examples",
+      "title": "Necessary Assumption \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Necessary Assumption",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "necessary-assumption",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "depends on",
+        "negation test",
+        "required assumption"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 55,
+      "record_id": "question-types/necessary-assumption/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/necessary-assumption/stimulus-tendencies",
+      "title": "Necessary Assumption \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Necessary Assumption",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "necessary-assumption",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "depends on",
+        "negation test",
+        "required assumption"
+      ],
+      "related_question_types": [
+        "flaw",
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": [
+        "comparison",
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 56,
+      "record_id": "question-types/necessary-assumption/negating-answers/chunk-00",
+      "canonical_id": "question-types/necessary-assumption/negating-answers",
+      "title": "Necessary Assumption \u2014 Negating Answers",
+      "heading_path": [
+        "Question Types",
+        "Necessary Assumption",
+        "Negating Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "necessary-assumption",
+      "section_key": "negating-answers",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "depends on",
+        "negation test",
+        "required assumption"
+      ],
+      "related_question_types": [
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 57,
+      "record_id": "question-types/necessary-assumption/reading-goal/chunk-00",
+      "canonical_id": "question-types/necessary-assumption/reading-goal",
+      "title": "Necessary Assumption \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Necessary Assumption",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "necessary-assumption",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "depends on",
+        "negation test",
+        "required assumption"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 58,
+      "record_id": "question-types/necessary-assumption/pre-phrase-goal/chunk-00",
+      "canonical_id": "question-types/necessary-assumption/pre-phrase-goal",
+      "title": "Necessary Assumption \u2014 Pre-phrase Goal",
+      "heading_path": [
+        "Question Types",
+        "Necessary Assumption",
+        "Pre-phrase Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "necessary-assumption",
+      "section_key": "pre-phrase-goal",
+      "section_role": "prephrase_strategy",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "depends on",
+        "negation test",
+        "required assumption"
+      ],
+      "related_question_types": [
+        "must-be-true"
+      ],
+      "related_reasoning_types": [
+        "comparison"
+      ]
+    },
+    {
+      "sort_order": 59,
+      "record_id": "question-types/necessary-assumption/correct-answers/chunk-00",
+      "canonical_id": "question-types/necessary-assumption/correct-answers",
+      "title": "Necessary Assumption \u2014 Correct Answers",
+      "heading_path": [
+        "Question Types",
+        "Necessary Assumption",
+        "Correct Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "necessary-assumption",
+      "section_key": "correct-answers",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "depends on",
+        "negation test",
+        "required assumption"
+      ],
+      "related_question_types": [
+        "weaken"
+      ],
+      "related_reasoning_types": [
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 60,
+      "record_id": "question-types/necessary-assumption/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/necessary-assumption/incorrect-answers",
+      "title": "Necessary Assumption \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Necessary Assumption",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "necessary-assumption",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "depends on",
+        "negation test",
+        "required assumption"
+      ],
+      "related_question_types": [
+        "most-supported",
+        "weaken"
+      ],
+      "related_reasoning_types": [
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 61,
+      "record_id": "question-types/paradox/keywords/chunk-00",
+      "canonical_id": "question-types/paradox/keywords",
+      "title": "Paradox \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Paradox",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "paradox",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "explain result",
+        "resolve discrepancy"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 62,
+      "record_id": "question-types/paradox/examples/chunk-00",
+      "canonical_id": "question-types/paradox/examples",
+      "title": "Paradox \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Paradox",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "paradox",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "explain result",
+        "resolve discrepancy"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 63,
+      "record_id": "question-types/paradox/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/paradox/stimulus-tendencies",
+      "title": "Paradox \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Paradox",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "paradox",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "explain result",
+        "resolve discrepancy"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "comparison"
+      ]
+    },
+    {
+      "sort_order": 64,
+      "record_id": "question-types/paradox/reading-goal/chunk-00",
+      "canonical_id": "question-types/paradox/reading-goal",
+      "title": "Paradox \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Paradox",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "paradox",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "explain result",
+        "resolve discrepancy"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 65,
+      "record_id": "question-types/paradox/frame-the-tension/chunk-00",
+      "canonical_id": "question-types/paradox/frame-the-tension",
+      "title": "Paradox \u2014 Frame the tension",
+      "heading_path": [
+        "Question Types",
+        "Paradox",
+        "Frame the tension"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "paradox",
+      "section_key": "frame-the-tension",
+      "section_role": "problem_frame",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "explain result",
+        "resolve discrepancy"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 66,
+      "record_id": "question-types/paradox/correct-answer/chunk-00",
+      "canonical_id": "question-types/paradox/correct-answer",
+      "title": "Paradox \u2014 Correct Answer",
+      "heading_path": [
+        "Question Types",
+        "Paradox",
+        "Correct Answer"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "paradox",
+      "section_key": "correct-answer",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "explain result",
+        "resolve discrepancy"
+      ],
+      "related_question_types": [
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 67,
+      "record_id": "question-types/paradox/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/paradox/incorrect-answers",
+      "title": "Paradox \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Paradox",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "paradox",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "explain result",
+        "resolve discrepancy"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 68,
+      "record_id": "question-types/parallel/keywords/chunk-00",
+      "canonical_id": "question-types/parallel/keywords",
+      "title": "Parallel \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Parallel",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "parallel reasoning",
+        "pattern of reasoning"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 69,
+      "record_id": "question-types/parallel/examples/chunk-00",
+      "canonical_id": "question-types/parallel/examples",
+      "title": "Parallel \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Parallel",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "parallel reasoning",
+        "pattern of reasoning"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 70,
+      "record_id": "question-types/parallel/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/parallel/stimulus-tendencies",
+      "title": "Parallel \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Parallel",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "parallel reasoning",
+        "pattern of reasoning"
+      ],
+      "related_question_types": [
+        "flaw"
+      ],
+      "related_reasoning_types": [
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 71,
+      "record_id": "question-types/parallel/reading-goal/chunk-00",
+      "canonical_id": "question-types/parallel/reading-goal",
+      "title": "Parallel \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Parallel",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "parallel reasoning",
+        "pattern of reasoning"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 72,
+      "record_id": "question-types/parallel/correct-answers/chunk-00",
+      "canonical_id": "question-types/parallel/correct-answers",
+      "title": "Parallel \u2014 Correct Answers",
+      "heading_path": [
+        "Question Types",
+        "Parallel",
+        "Correct Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel",
+      "section_key": "correct-answers",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "parallel reasoning",
+        "pattern of reasoning"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 73,
+      "record_id": "question-types/parallel/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/parallel/incorrect-answers",
+      "title": "Parallel \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Parallel",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "parallel reasoning",
+        "pattern of reasoning"
+      ],
+      "related_question_types": [
+        "flaw"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 74,
+      "record_id": "question-types/parallel-flaw/keywords/chunk-00",
+      "canonical_id": "question-types/parallel-flaw/keywords",
+      "title": "Parallel Flaw \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Parallel Flaw",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel-flaw",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "flawed pattern",
+        "parallel flaw"
+      ],
+      "related_question_types": [
+        "flaw",
+        "parallel"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 75,
+      "record_id": "question-types/parallel-flaw/examples/chunk-00",
+      "canonical_id": "question-types/parallel-flaw/examples",
+      "title": "Parallel Flaw \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Parallel Flaw",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel-flaw",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "flawed pattern",
+        "parallel flaw"
+      ],
+      "related_question_types": [
+        "flaw",
+        "parallel"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 76,
+      "record_id": "question-types/parallel-flaw/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/parallel-flaw/stimulus-tendencies",
+      "title": "Parallel Flaw \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Parallel Flaw",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel-flaw",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "flawed pattern",
+        "parallel flaw"
+      ],
+      "related_question_types": [
+        "flaw"
+      ],
+      "related_reasoning_types": [
+        "famous-flaws"
+      ]
+    },
+    {
+      "sort_order": 77,
+      "record_id": "question-types/parallel-flaw/reading-goal/chunk-00",
+      "canonical_id": "question-types/parallel-flaw/reading-goal",
+      "title": "Parallel Flaw \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Parallel Flaw",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel-flaw",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "flawed pattern",
+        "parallel flaw"
+      ],
+      "related_question_types": [
+        "flaw"
+      ],
+      "related_reasoning_types": [
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 78,
+      "record_id": "question-types/parallel-flaw/pre-phrasing/chunk-00",
+      "canonical_id": "question-types/parallel-flaw/pre-phrasing",
+      "title": "Parallel Flaw \u2014 Pre-phrasing",
+      "heading_path": [
+        "Question Types",
+        "Parallel Flaw",
+        "Pre-phrasing"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel-flaw",
+      "section_key": "pre-phrasing",
+      "section_role": "prephrase_strategy",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "flawed pattern",
+        "parallel flaw"
+      ],
+      "related_question_types": [
+        "flaw"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 79,
+      "record_id": "question-types/parallel-flaw/correct-answer/chunk-00",
+      "canonical_id": "question-types/parallel-flaw/correct-answer",
+      "title": "Parallel Flaw \u2014 Correct Answer",
+      "heading_path": [
+        "Question Types",
+        "Parallel Flaw",
+        "Correct Answer"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel-flaw",
+      "section_key": "correct-answer",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "flawed pattern",
+        "parallel flaw"
+      ],
+      "related_question_types": [
+        "flaw"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 80,
+      "record_id": "question-types/parallel-flaw/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/parallel-flaw/incorrect-answers",
+      "title": "Parallel Flaw \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Parallel Flaw",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "parallel-flaw",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "flawed pattern",
+        "parallel flaw"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 81,
+      "record_id": "question-types/principle-strengthen/principle-strengthen-principles-in-answers-overview/chunk-00",
+      "canonical_id": "question-types/principle-strengthen/principle-strengthen-principles-in-answers-overview",
+      "title": "Principle-Strengthen \u2014 Principle-Strengthen + Principles in Answers \u2014 Overview",
+      "heading_path": [
+        "Question Types",
+        "Principle-Strengthen",
+        "Principle-Strengthen + Principles in Answers \u2014 Overview"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "principle-strengthen",
+      "section_key": "principle-strengthen-principles-in-answers-overview",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "principle application",
+        "principle justify"
+      ],
+      "related_question_types": [
+        "strengthen"
+      ],
+      "related_reasoning_types": [
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 82,
+      "record_id": "question-types/principle-strengthen/principle-strengthen-principles-in-stimulus-overview/chunk-00",
+      "canonical_id": "question-types/principle-strengthen/principle-strengthen-principles-in-stimulus-overview",
+      "title": "Principle-Strengthen \u2014 Principle-Strengthen + Principles in Stimulus \u2014 Overview",
+      "heading_path": [
+        "Question Types",
+        "Principle-Strengthen",
+        "Principle-Strengthen + Principles in Stimulus \u2014 Overview"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "principle-strengthen",
+      "section_key": "principle-strengthen-principles-in-stimulus-overview",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "principle application",
+        "principle justify"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 83,
+      "record_id": "question-types/principle-strengthen/principle-strengthen-principles-in-answers-procedure/chunk-00",
+      "canonical_id": "question-types/principle-strengthen/principle-strengthen-principles-in-answers-procedure",
+      "title": "Principle-Strengthen \u2014 Principle-Strengthen + Principles in Answers \u2014 Procedure",
+      "heading_path": [
+        "Question Types",
+        "Principle-Strengthen",
+        "Principle-Strengthen + Principles in Answers \u2014 Procedure"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "principle-strengthen",
+      "section_key": "principle-strengthen-principles-in-answers-procedure",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "principle application",
+        "principle justify"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 84,
+      "record_id": "question-types/principle-strengthen/principle-strengthen-principles-in-stimulus-procedure/chunk-00",
+      "canonical_id": "question-types/principle-strengthen/principle-strengthen-principles-in-stimulus-procedure",
+      "title": "Principle-Strengthen \u2014 Principle-Strengthen + Principles in Stimulus \u2014 Procedure",
+      "heading_path": [
+        "Question Types",
+        "Principle-Strengthen",
+        "Principle-Strengthen + Principles in Stimulus \u2014 Procedure"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "principle-strengthen",
+      "section_key": "principle-strengthen-principles-in-stimulus-procedure",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "principle application",
+        "principle justify"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 85,
+      "record_id": "question-types/principle-conform/overview/chunk-00",
+      "canonical_id": "question-types/principle-conform/overview",
+      "title": "Principle-Conform \u2014 Overview",
+      "heading_path": [
+        "Question Types",
+        "Principle-Conform"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "principle-conform",
+      "section_key": "overview",
+      "section_role": "overview",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "illustrates principle",
+        "principle conform"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 86,
+      "record_id": "question-types/principle-conform/principles-in-stimulus/chunk-00",
+      "canonical_id": "question-types/principle-conform/principles-in-stimulus",
+      "title": "Principle-Conform \u2014 Principles in Stimulus",
+      "heading_path": [
+        "Question Types",
+        "Principle-Conform",
+        "Principles in Stimulus"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "principle-conform",
+      "section_key": "principles-in-stimulus",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "illustrates principle",
+        "principle conform"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 87,
+      "record_id": "question-types/principle-conform/principles-in-answers/chunk-00",
+      "canonical_id": "question-types/principle-conform/principles-in-answers",
+      "title": "Principle-Conform \u2014 Principles in Answers",
+      "heading_path": [
+        "Question Types",
+        "Principle-Conform",
+        "Principles in Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "principle-conform",
+      "section_key": "principles-in-answers",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "illustrates principle",
+        "principle conform"
+      ],
+      "related_question_types": [
+        "principle-strengthen",
+        "strengthen"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 88,
+      "record_id": "question-types/principle-conform/implicit-principles/chunk-00",
+      "canonical_id": "question-types/principle-conform/implicit-principles",
+      "title": "Principle-Conform \u2014 Implicit Principles",
+      "heading_path": [
+        "Question Types",
+        "Principle-Conform",
+        "Implicit Principles"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "principle-conform",
+      "section_key": "implicit-principles",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "illustrates principle",
+        "principle conform"
+      ],
+      "related_question_types": [
+        "parallel"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 89,
+      "record_id": "question-types/role/keywords/chunk-00",
+      "canonical_id": "question-types/role/keywords",
+      "title": "Role \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Role",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "role",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "claim role",
+        "role of statement"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 90,
+      "record_id": "question-types/role/examples/chunk-00",
+      "canonical_id": "question-types/role/examples",
+      "title": "Role \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Role",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "role",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "claim role",
+        "role of statement"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 91,
+      "record_id": "question-types/role/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/role/stimulus-tendencies",
+      "title": "Role \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Role",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "role",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "claim role",
+        "role of statement"
+      ],
+      "related_question_types": [
+        "main-conclusion"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 92,
+      "record_id": "question-types/role/reading-goal/chunk-00",
+      "canonical_id": "question-types/role/reading-goal",
+      "title": "Role \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Role",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "role",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "claim role",
+        "role of statement"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 93,
+      "record_id": "question-types/role/pre-phrase-goal/chunk-00",
+      "canonical_id": "question-types/role/pre-phrase-goal",
+      "title": "Role \u2014 Pre-phrase Goal",
+      "heading_path": [
+        "Question Types",
+        "Role",
+        "Pre-phrase Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "role",
+      "section_key": "pre-phrase-goal",
+      "section_role": "prephrase_strategy",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "claim role",
+        "role of statement"
+      ],
+      "related_question_types": [
+        "main-conclusion"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 94,
+      "record_id": "question-types/role/correct-answers/chunk-00",
+      "canonical_id": "question-types/role/correct-answers",
+      "title": "Role \u2014 Correct Answers",
+      "heading_path": [
+        "Question Types",
+        "Role",
+        "Correct Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "role",
+      "section_key": "correct-answers",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "claim role",
+        "role of statement"
+      ],
+      "related_question_types": [
+        "main-conclusion"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 95,
+      "record_id": "question-types/role/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/role/incorrect-answers",
+      "title": "Role \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Role",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "role",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "claim role",
+        "role of statement"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 96,
+      "record_id": "question-types/strengthen/keywords/chunk-00",
+      "canonical_id": "question-types/strengthen/keywords",
+      "title": "Strengthen \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Strengthen",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "strengthen",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "support the argument",
+        "most strengthens"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 97,
+      "record_id": "question-types/strengthen/examples/chunk-00",
+      "canonical_id": "question-types/strengthen/examples",
+      "title": "Strengthen \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Strengthen",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "strengthen",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "support the argument",
+        "most strengthens"
+      ],
+      "related_question_types": [
+        "most-supported"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 98,
+      "record_id": "question-types/strengthen/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/strengthen/stimulus-tendencies",
+      "title": "Strengthen \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Strengthen",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "strengthen",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "support the argument",
+        "most strengthens"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 99,
+      "record_id": "question-types/strengthen/reading-goal/chunk-00",
+      "canonical_id": "question-types/strengthen/reading-goal",
+      "title": "Strengthen \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Strengthen",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "strengthen",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "support the argument",
+        "most strengthens"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 100,
+      "record_id": "question-types/strengthen/pre-phrase-goal/chunk-00",
+      "canonical_id": "question-types/strengthen/pre-phrase-goal",
+      "title": "Strengthen \u2014 Pre-phrase Goal",
+      "heading_path": [
+        "Question Types",
+        "Strengthen",
+        "Pre-phrase Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "strengthen",
+      "section_key": "pre-phrase-goal",
+      "section_role": "prephrase_strategy",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "support the argument",
+        "most strengthens"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "comparison"
+      ]
+    },
+    {
+      "sort_order": 101,
+      "record_id": "question-types/strengthen/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/strengthen/incorrect-answers",
+      "title": "Strengthen \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Strengthen",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "strengthen",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "support the argument",
+        "most strengthens"
+      ],
+      "related_question_types": [
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 102,
+      "record_id": "question-types/strengthen/correct-answers/chunk-00",
+      "canonical_id": "question-types/strengthen/correct-answers",
+      "title": "Strengthen \u2014 Correct Answers",
+      "heading_path": [
+        "Question Types",
+        "Strengthen",
+        "Correct Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "strengthen",
+      "section_key": "correct-answers",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "support the argument",
+        "most strengthens"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 103,
+      "record_id": "question-types/weaken/keywords/chunk-00",
+      "canonical_id": "question-types/weaken/keywords",
+      "title": "Weaken \u2014 Keywords",
+      "heading_path": [
+        "Question Types",
+        "Weaken",
+        "Keywords"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "weaken",
+      "section_key": "keywords",
+      "section_role": "recognition_keywords",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "undermine the argument",
+        "casts doubt"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 104,
+      "record_id": "question-types/weaken/examples/chunk-00",
+      "canonical_id": "question-types/weaken/examples",
+      "title": "Weaken \u2014 Examples",
+      "heading_path": [
+        "Question Types",
+        "Weaken",
+        "Examples"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "weaken",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "undermine the argument",
+        "casts doubt"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 105,
+      "record_id": "question-types/weaken/stimulus-tendencies/chunk-00",
+      "canonical_id": "question-types/weaken/stimulus-tendencies",
+      "title": "Weaken \u2014 Stimulus Tendencies",
+      "heading_path": [
+        "Question Types",
+        "Weaken",
+        "Stimulus Tendencies"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "weaken",
+      "section_key": "stimulus-tendencies",
+      "section_role": "stimulus_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "undermine the argument",
+        "casts doubt"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 106,
+      "record_id": "question-types/weaken/reading-goal/chunk-00",
+      "canonical_id": "question-types/weaken/reading-goal",
+      "title": "Weaken \u2014 Reading Goal",
+      "heading_path": [
+        "Question Types",
+        "Weaken",
+        "Reading Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "weaken",
+      "section_key": "reading-goal",
+      "section_role": "reading_process",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "undermine the argument",
+        "casts doubt"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 107,
+      "record_id": "question-types/weaken/pre-phrase-goal/chunk-00",
+      "canonical_id": "question-types/weaken/pre-phrase-goal",
+      "title": "Weaken \u2014 Pre-phrase Goal",
+      "heading_path": [
+        "Question Types",
+        "Weaken",
+        "Pre-phrase Goal"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "weaken",
+      "section_key": "pre-phrase-goal",
+      "section_role": "prephrase_strategy",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "undermine the argument",
+        "casts doubt"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "comparison"
+      ]
+    },
+    {
+      "sort_order": 108,
+      "record_id": "question-types/weaken/incorrect-answers/chunk-00",
+      "canonical_id": "question-types/weaken/incorrect-answers",
+      "title": "Weaken \u2014 Incorrect Answers",
+      "heading_path": [
+        "Question Types",
+        "Weaken",
+        "Incorrect Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "weaken",
+      "section_key": "incorrect-answers",
+      "section_role": "trap_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "undermine the argument",
+        "casts doubt"
+      ],
+      "related_question_types": [
+        "strengthen"
+      ],
+      "related_reasoning_types": [
+        "comparison"
+      ]
+    },
+    {
+      "sort_order": 109,
+      "record_id": "question-types/weaken/correct-answers/chunk-00",
+      "canonical_id": "question-types/weaken/correct-answers",
+      "title": "Weaken \u2014 Correct Answers",
+      "heading_path": [
+        "Question Types",
+        "Weaken",
+        "Correct Answers"
+      ],
+      "entity_type": "question_type",
+      "entity_key": "weaken",
+      "section_key": "correct-answers",
+      "section_role": "correct_answer_patterns",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "undermine the argument",
+        "casts doubt"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 110,
+      "record_id": "reasoning-types/causation/by-question-type/chunk-00",
+      "canonical_id": "reasoning-types/causation/by-question-type",
+      "title": "Causation \u2014 By Question Type",
+      "heading_path": [
+        "Reasoning Types",
+        "Causation",
+        "By Question Type"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "causation",
+      "section_key": "by-question-type",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "alternative explanation",
+        "causal reasoning",
+        "correlation"
+      ],
+      "related_question_types": [
+        "flaw",
+        "most-supported",
+        "must-be-true",
+        "necessary-assumption",
+        "paradox",
+        "parallel",
+        "parallel-flaw",
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 111,
+      "record_id": "reasoning-types/causation/causal-verbs/chunk-00",
+      "canonical_id": "reasoning-types/causation/causal-verbs",
+      "title": "Causation \u2014 Causal Verbs",
+      "heading_path": [
+        "Reasoning Types",
+        "Causation",
+        "Causal Verbs"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "causation",
+      "section_key": "causal-verbs",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "alternative explanation",
+        "causal reasoning",
+        "correlation"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 112,
+      "record_id": "reasoning-types/causation/causal-difference-maker-language/chunk-00",
+      "canonical_id": "reasoning-types/causation/causal-difference-maker-language",
+      "title": "Causation \u2014 Causal Difference-Maker Language",
+      "heading_path": [
+        "Reasoning Types",
+        "Causation",
+        "Causal Difference-Maker Language"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "causation",
+      "section_key": "causal-difference-maker-language",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "alternative explanation",
+        "causal reasoning",
+        "correlation"
+      ],
+      "related_question_types": [
+        "most-supported"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 113,
+      "record_id": "reasoning-types/causation/curious-facts/chunk-00",
+      "canonical_id": "reasoning-types/causation/curious-facts",
+      "title": "Causation \u2014 Curious Facts",
+      "heading_path": [
+        "Reasoning Types",
+        "Causation",
+        "Curious Facts"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "causation",
+      "section_key": "curious-facts",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "alternative explanation",
+        "causal reasoning",
+        "correlation"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "comparison"
+      ]
+    },
+    {
+      "sort_order": 114,
+      "record_id": "reasoning-types/causation/curious-fact-to-author-s-causal-story/chunk-00",
+      "canonical_id": "reasoning-types/causation/curious-fact-to-author-s-causal-story",
+      "title": "Causation \u2014 Curious Fact \u2192 Author's Causal Story",
+      "heading_path": [
+        "Reasoning Types",
+        "Causation",
+        "Curious Fact \u2192 Author's Causal Story"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "causation",
+      "section_key": "curious-fact-to-author-s-causal-story",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "alternative explanation",
+        "causal reasoning",
+        "correlation"
+      ],
+      "related_question_types": [
+        "flaw",
+        "necessary-assumption",
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": [
+        "comparison"
+      ]
+    },
+    {
+      "sort_order": 115,
+      "record_id": "reasoning-types/conditional-logic/importance/chunk-00",
+      "canonical_id": "reasoning-types/conditional-logic/importance",
+      "title": "Conditional Logic \u2014 Importance",
+      "heading_path": [
+        "Reasoning Types",
+        "Conditional Logic",
+        "Importance"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "conditional-logic",
+      "section_key": "importance",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "contrapositive",
+        "if then",
+        "necessary sufficient"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 116,
+      "record_id": "reasoning-types/conditional-logic/relevant-question-types/chunk-00",
+      "canonical_id": "reasoning-types/conditional-logic/relevant-question-types",
+      "title": "Conditional Logic \u2014 Relevant Question Types",
+      "heading_path": [
+        "Reasoning Types",
+        "Conditional Logic",
+        "Relevant Question Types"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "conditional-logic",
+      "section_key": "relevant-question-types",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "contrapositive",
+        "if then",
+        "necessary sufficient"
+      ],
+      "related_question_types": [
+        "flaw",
+        "must-be-false",
+        "must-be-true",
+        "necessary-assumption",
+        "parallel",
+        "parallel-flaw",
+        "principle-strengthen",
+        "strengthen"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 117,
+      "record_id": "reasoning-types/conditional-logic/same-idea-opposite-side/chunk-00",
+      "canonical_id": "reasoning-types/conditional-logic/same-idea-opposite-side",
+      "title": "Conditional Logic \u2014 Same Idea / Opposite Side",
+      "heading_path": [
+        "Reasoning Types",
+        "Conditional Logic",
+        "Same Idea / Opposite Side"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "conditional-logic",
+      "section_key": "same-idea-opposite-side",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "contrapositive",
+        "if then",
+        "necessary sufficient"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 118,
+      "record_id": "reasoning-types/conditional-logic/opposite-idea-same-side/chunk-00",
+      "canonical_id": "reasoning-types/conditional-logic/opposite-idea-same-side",
+      "title": "Conditional Logic \u2014 Opposite Idea / Same Side",
+      "heading_path": [
+        "Reasoning Types",
+        "Conditional Logic",
+        "Opposite Idea / Same Side"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "conditional-logic",
+      "section_key": "opposite-idea-same-side",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "contrapositive",
+        "if then",
+        "necessary sufficient"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 119,
+      "record_id": "reasoning-types/comparison/assumes-a-similarity/chunk-00",
+      "canonical_id": "reasoning-types/comparison/assumes-a-similarity",
+      "title": "Comparison \u2014 Assumes a Similarity",
+      "heading_path": [
+        "Reasoning Types",
+        "Comparison",
+        "Assumes a Similarity"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "comparison",
+      "section_key": "assumes-a-similarity",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "comparative reasoning",
+        "similarity difference"
+      ],
+      "related_question_types": [
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 120,
+      "record_id": "reasoning-types/comparison/assumes-a-difference/chunk-00",
+      "canonical_id": "reasoning-types/comparison/assumes-a-difference",
+      "title": "Comparison \u2014 Assumes a Difference",
+      "heading_path": [
+        "Reasoning Types",
+        "Comparison",
+        "Assumes a Difference"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "comparison",
+      "section_key": "assumes-a-difference",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "comparative reasoning",
+        "similarity difference"
+      ],
+      "related_question_types": [
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 121,
+      "record_id": "reasoning-types/comparison/past-vs-present/chunk-00",
+      "canonical_id": "reasoning-types/comparison/past-vs-present",
+      "title": "Comparison \u2014 Past vs. Present",
+      "heading_path": [
+        "Reasoning Types",
+        "Comparison",
+        "Past vs. Present"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "comparison",
+      "section_key": "past-vs-present",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "comparative reasoning",
+        "similarity difference"
+      ],
+      "related_question_types": [
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 122,
+      "record_id": "reasoning-types/comparison/present-vs-future/chunk-00",
+      "canonical_id": "reasoning-types/comparison/present-vs-future",
+      "title": "Comparison \u2014 Present vs. Future",
+      "heading_path": [
+        "Reasoning Types",
+        "Comparison",
+        "Present vs. Future"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "comparison",
+      "section_key": "present-vs-future",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "comparative reasoning",
+        "similarity difference"
+      ],
+      "related_question_types": [
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 123,
+      "record_id": "reasoning-types/comparison/current-world-vs-world-of-plan-recommendation/chunk-00",
+      "canonical_id": "reasoning-types/comparison/current-world-vs-world-of-plan-recommendation",
+      "title": "Comparison \u2014 Current World vs. World of Plan / Recommendation",
+      "heading_path": [
+        "Reasoning Types",
+        "Comparison",
+        "Current World vs. World of Plan / Recommendation"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "comparison",
+      "section_key": "current-world-vs-world-of-plan-recommendation",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "comparative reasoning",
+        "similarity difference"
+      ],
+      "related_question_types": [
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 124,
+      "record_id": "reasoning-types/comparison/anti-causal/chunk-00",
+      "canonical_id": "reasoning-types/comparison/anti-causal",
+      "title": "Comparison \u2014 Anti-Causal",
+      "heading_path": [
+        "Reasoning Types",
+        "Comparison",
+        "Anti-Causal"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "comparison",
+      "section_key": "anti-causal",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "comparative reasoning",
+        "similarity difference"
+      ],
+      "related_question_types": [
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 125,
+      "record_id": "reasoning-types/comparison/percentage-vs-amount/chunk-00",
+      "canonical_id": "reasoning-types/comparison/percentage-vs-amount",
+      "title": "Comparison \u2014 Percentage vs. Amount",
+      "heading_path": [
+        "Reasoning Types",
+        "Comparison",
+        "Percentage vs. Amount"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "comparison",
+      "section_key": "percentage-vs-amount",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "comparative reasoning",
+        "similarity difference"
+      ],
+      "related_question_types": [
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 126,
+      "record_id": "reasoning-types/comparison/pros-vs-cons/chunk-00",
+      "canonical_id": "reasoning-types/comparison/pros-vs-cons",
+      "title": "Comparison \u2014 Pros vs. Cons",
+      "heading_path": [
+        "Reasoning Types",
+        "Comparison",
+        "Pros vs. Cons"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "comparison",
+      "section_key": "pros-vs-cons",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "comparative reasoning",
+        "similarity difference"
+      ],
+      "related_question_types": [
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 127,
+      "record_id": "reasoning-types/comparison/complete-the-analogy/chunk-00",
+      "canonical_id": "reasoning-types/comparison/complete-the-analogy",
+      "title": "Comparison \u2014 Complete the Analogy",
+      "heading_path": [
+        "Reasoning Types",
+        "Comparison",
+        "Complete the Analogy"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "comparison",
+      "section_key": "complete-the-analogy",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "comparative reasoning",
+        "similarity difference"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 128,
+      "record_id": "reasoning-types/explain-curious-fact/overview/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/overview",
+      "title": "Explain Curious Fact \u2014 Overview",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "overview",
+      "section_role": "overview",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [
+        "flaw",
+        "necessary-assumption",
+        "strengthen",
+        "weaken"
+      ],
+      "related_reasoning_types": [
+        "causation"
+      ]
+    },
+    {
+      "sort_order": 129,
+      "record_id": "reasoning-types/explain-curious-fact/strengthen/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/strengthen",
+      "title": "Explain Curious Fact \u2014 Strengthen",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Pre-phrasing by Question Type",
+        "Strengthen"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "strengthen",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [
+        "strengthen"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 130,
+      "record_id": "reasoning-types/explain-curious-fact/weaken/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/weaken",
+      "title": "Explain Curious Fact \u2014 Weaken",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Pre-phrasing by Question Type",
+        "Weaken"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "weaken",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [
+        "weaken"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 131,
+      "record_id": "reasoning-types/explain-curious-fact/evaluate/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/evaluate",
+      "title": "Explain Curious Fact \u2014 Evaluate",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Pre-phrasing by Question Type",
+        "Evaluate"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "evaluate",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 132,
+      "record_id": "reasoning-types/explain-curious-fact/flaw/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/flaw",
+      "title": "Explain Curious Fact \u2014 Flaw",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Pre-phrasing by Question Type",
+        "Flaw"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "flaw",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [
+        "flaw"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 133,
+      "record_id": "reasoning-types/explain-curious-fact/necessary-assumption/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/necessary-assumption",
+      "title": "Explain Curious Fact \u2014 Necessary Assumption",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Pre-phrasing by Question Type",
+        "Necessary Assumption"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "necessary-assumption",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [
+        "necessary-assumption"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 134,
+      "record_id": "reasoning-types/explain-curious-fact/find-the-curious-fact/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/find-the-curious-fact",
+      "title": "Explain Curious Fact \u2014 Find the Curious Fact",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Find the Curious Fact"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "find-the-curious-fact",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 135,
+      "record_id": "reasoning-types/explain-curious-fact/examples/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/examples",
+      "title": "Explain Curious Fact \u2014 Examples",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Find the Curious Fact",
+        "Examples"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "examples",
+      "section_role": "question_stem_examples",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 136,
+      "record_id": "reasoning-types/explain-curious-fact/ask-yourself-the-curious-question/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/ask-yourself-the-curious-question",
+      "title": "Explain Curious Fact \u2014 Ask Yourself the Curious Question",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Ask Yourself the Curious Question"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "ask-yourself-the-curious-question",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 137,
+      "record_id": "reasoning-types/explain-curious-fact/articulate-the-author-s-causal-storyline-explanation/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/articulate-the-author-s-causal-storyline-explanation",
+      "title": "Explain Curious Fact \u2014 Articulate the Author's Causal Storyline (Explanation)",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Articulate the Author's Causal Storyline (Explanation)"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "articulate-the-author-s-causal-storyline-explanation",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 138,
+      "record_id": "reasoning-types/explain-curious-fact/pose-the-two-pronged-question/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/pose-the-two-pronged-question",
+      "title": "Explain Curious Fact \u2014 Pose the Two-Pronged Question",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Pose the Two-Pronged Question"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "pose-the-two-pronged-question",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 139,
+      "record_id": "reasoning-types/explain-curious-fact/categorize-the-correct-answers/chunk-00",
+      "canonical_id": "reasoning-types/explain-curious-fact/categorize-the-correct-answers",
+      "title": "Explain Curious Fact \u2014 Categorize the Correct Answers",
+      "heading_path": [
+        "Reasoning Types",
+        "Explain Curious Fact",
+        "Categorize the Correct Answers"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "explain-curious-fact",
+      "section_key": "categorize-the-correct-answers",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "causal explanation",
+        "curious fact"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 140,
+      "record_id": "reasoning-types/famous-flaws/where-these-flaws-matter/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/where-these-flaws-matter",
+      "title": "Famous Flaws \u2014 Where These Flaws Matter",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Where These Flaws Matter"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "where-these-flaws-matter",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [
+        "flaw",
+        "parallel",
+        "parallel-flaw"
+      ],
+      "related_reasoning_types": [
+        "causation",
+        "conditional-logic"
+      ]
+    },
+    {
+      "sort_order": 141,
+      "record_id": "reasoning-types/famous-flaws/why-these-flaws-matter/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/why-these-flaws-matter",
+      "title": "Famous Flaws \u2014 Why These Flaws Matter",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Why These Flaws Matter"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "why-these-flaws-matter",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [
+        "flaw",
+        "parallel",
+        "parallel-flaw"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 142,
+      "record_id": "reasoning-types/famous-flaws/the-famous-flaws/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/the-famous-flaws",
+      "title": "Famous Flaws \u2014 The Famous Flaws",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "The Famous Flaws"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "the-famous-flaws",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [
+        "flaw"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 143,
+      "record_id": "reasoning-types/famous-flaws/necessary-vs-sufficient/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/necessary-vs-sufficient",
+      "title": "Famous Flaws \u2014 Necessary vs. Sufficient",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Necessary vs. Sufficient"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "necessary-vs-sufficient",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [
+        "flaw",
+        "parallel",
+        "parallel-flaw"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 144,
+      "record_id": "reasoning-types/famous-flaws/causal/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/causal",
+      "title": "Famous Flaws \u2014 Causal",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Causal"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "causal",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 145,
+      "record_id": "reasoning-types/famous-flaws/part-vs-whole/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/part-vs-whole",
+      "title": "Famous Flaws \u2014 Part vs. Whole",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Part vs. Whole"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "part-vs-whole",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 146,
+      "record_id": "reasoning-types/famous-flaws/unproven-vs-proven-false/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/unproven-vs-proven-false",
+      "title": "Famous Flaws \u2014 Unproven vs. Proven False",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Unproven vs. Proven False"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "unproven-vs-proven-false",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 147,
+      "record_id": "reasoning-types/famous-flaws/ad-hominem/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/ad-hominem",
+      "title": "Famous Flaws \u2014 Ad Hominem",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Ad Hominem"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "ad-hominem",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 148,
+      "record_id": "reasoning-types/famous-flaws/sampling/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/sampling",
+      "title": "Famous Flaws \u2014 Sampling",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Sampling"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "sampling",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 149,
+      "record_id": "reasoning-types/famous-flaws/how-to-study-famous-flaws/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/how-to-study-famous-flaws",
+      "title": "Famous Flaws \u2014 How to Study Famous Flaws",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "How to Study Famous Flaws"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "how-to-study-famous-flaws",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [
+        "flaw",
+        "parallel",
+        "parallel-flaw"
+      ],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 150,
+      "record_id": "reasoning-types/famous-flaws/irrelevant-rebuttal/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/irrelevant-rebuttal",
+      "title": "Famous Flaws \u2014 Irrelevant Rebuttal",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Irrelevant Rebuttal"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "irrelevant-rebuttal",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 151,
+      "record_id": "reasoning-types/famous-flaws/false-choice/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/false-choice",
+      "title": "Famous Flaws \u2014 False Choice",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "False Choice"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "false-choice",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 152,
+      "record_id": "reasoning-types/famous-flaws/relative-vs-absolute/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/relative-vs-absolute",
+      "title": "Famous Flaws \u2014 Relative vs. Absolute",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Relative vs. Absolute"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "relative-vs-absolute",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 153,
+      "record_id": "reasoning-types/famous-flaws/inappropriate-appeal/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/inappropriate-appeal",
+      "title": "Famous Flaws \u2014 Inappropriate Appeal",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Inappropriate Appeal"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "inappropriate-appeal",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 154,
+      "record_id": "reasoning-types/famous-flaws/almost-always-wrong-answers/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/almost-always-wrong-answers",
+      "title": "Famous Flaws \u2014 Almost Always Wrong Answers",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Inappropriate Appeal",
+        "Almost Always Wrong Answers"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "almost-always-wrong-answers",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 155,
+      "record_id": "reasoning-types/famous-flaws/circular-reasoning/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/circular-reasoning",
+      "title": "Famous Flaws \u2014 Circular Reasoning",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Circular Reasoning"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "circular-reasoning",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": [
+        "comparison"
+      ]
+    },
+    {
+      "sort_order": 156,
+      "record_id": "reasoning-types/famous-flaws/internal-contradiction/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/internal-contradiction",
+      "title": "Famous Flaws \u2014 Internal Contradiction",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Internal Contradiction"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "internal-contradiction",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    },
+    {
+      "sort_order": 157,
+      "record_id": "reasoning-types/famous-flaws/equivocation/chunk-00",
+      "canonical_id": "reasoning-types/famous-flaws/equivocation",
+      "title": "Famous Flaws \u2014 Equivocation",
+      "heading_path": [
+        "Reasoning Types",
+        "Famous Flaws",
+        "Equivocation"
+      ],
+      "entity_type": "reasoning_type",
+      "entity_key": "famous-flaws",
+      "section_key": "equivocation",
+      "section_role": "concept",
+      "section_occurrence": 1,
+      "chunk_index": 0,
+      "aliases": [
+        "common flaws",
+        "logical fallacies"
+      ],
+      "related_question_types": [],
+      "related_reasoning_types": []
+    }
+  ]
+}

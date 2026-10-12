@@ -1,0 +1,4279 @@
+# PrepTest 149 — Explanations
+
+Transcribed verbatim from LSAT Lab. Video-only questions omitted. Sections covered: S1, S3, S4 (Logical Reasoning). Style capture note: this test's authored questions use a single written explanation (no Standard / Brief / Another Way selector); each is captured as a single `### Written (single style)` block.
+
+---
+
+# Section 1 (Logical Reasoning)
+
+## S1 · Q1 — Weaken
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+The mayoral race in Bensburg is a choice between Chu, a prodevelopment candidate, and Lewis, who favors placing greater limits on development. Prodevelopment candidates have won in the last six mayoral elections. Thus, Chu will probably defeat Lewis.
+
+### Prompt
+Which one of the following statements, if true, most weakens the argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (Thus):** Chu will probably defeat Lewis.
+- **Evidence:** The election is between Chu and Lewis. Chu is a prodevelopment candidate, whereas Lewis favors placing limits on development. Prodevelopment candidates have won in the last six mayoral elections.
+- **Evaluate:** Given that ... prodevelopment candidates have won the last six elections and that ... Chu is more pro-development than Lewis. How could we argue that ... Chu will probably not defeat Lewis? Maybe there's something super toxic about Chu that outweighs the positive that he's more prodevelopment than Lewis. Maybe something has changed in this election cycle that would make the electorate less likely to vote for a prodevelopment candidate. The argument is assuming, "If it was true in the last six elections, it will probably be true again", failing to consider that maybe Past ≠ Present. Maybe it's a total coincidence that the last six winners were prodevelopment. Maybe they won in spite of being pro-development, not because of it.
+- **Goal:** Find any answer that would allow us to diminish the author's evidence or to argue that Chu is not likely to win this election.
+
+**Answer choices**
+**A. Lewis has extensive experience in national politics, but not in city politics.** — Strengthens, if anything (0% of students)
+This potentially says something negative about Lewis (she's running for local mayoral office but doesn't have much experience in city politics).
+
+Saying something negative about Lewis would strengthen.
+
+In general, though, answers like this that are *not* comparative have unclear impact when we're judging a comparison. After all, for all we know Chu is also inexperienced in city politics.
+
+**B. Prodevelopment mayoral candidates in Bensburg generally attract more financial backing for their campaigns.** — Strengthens, if anything (1% of students)
+This would help the author's case that a prodevelopment candidate is probably going to win:
+
+1. such a candidate has won the last six elections
+2. such a candidate is better funded (which makes winning elections easier)
+
+**C. Bensburg is facing serious new problems that most voters attribute to overdevelopment.** — Correct (92% of students)
+This shows us that Past ≠ Present, and it helps us to counterargue that Chu is not likely to win this election.
+
+Sure, in the past, voters have gone for the prodevelopment candidate, but it doesn't sound like the electorate is going to be as pro-development in this cycle.
+
+After all, there are serious new problems that most voters attribute to too much development.
+
+All those modifiers are important for giving this the punching strength we want. These problems didn't apply to past election cycles. And they are serious and the majority of voters think that development is to blame.
+
+So the candidacy of Lewis, who wants to place some limits on development, is starting to sound pretty appetizing to these local voters.
+
+**D. Lewis once worked as an aide to a prodevelopment mayor of Bensburg.** — No Impact (2% of students)
+This is too weak of a sentiment to move the needle. Just because she worked as an aide to a prodevelopment mayor doesn't change the fact that Lewis the candidate is running on a platform of limiting development.
+
+**E. Chu was not thought of as a prodevelopment politician before this election.** — No Impact (5% of students)
+This is too weak of a sentiment to move the needle. Just because Chu wasn't previously thought of as prodevelopment doesn't change the fact that Chu the candidate is running on a platform of favoring development.
+
+---
+
+## S1 · Q2 — Flaw
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Rose: Let's not see the movie Winter Fields. I caught a review of it in the local paper and it was the worst review I've read in years.
+
+Chester: I don't understand why that might make you not want to see the movie. And besides, nothing in that paper is particularly well written.
+
+### Prompt
+Chester's response suggests that he misinterpreted which one of the following expressions used by Rose?
+
+### Written (single style)
+**Argument breakdown**
+- **Evaluate:** Since Rose only made two claims, we can just ask ourselves which of them Chester seemed to misinterpret. She said: Let's not see Winter Fields. Did Chester misconstrue that one? No. He's correctly processing that. He's saying, "what? You do not want to see that movie? Just based on that review?" She also said: I caught a review in the local paper. Did Chester misconstrue that? Did he think that she meant caught, like a baseball that was thrown in your direction, rather than caught like "read"? No, he seems to think she read a review, not grabbed an airborne review out of the air with her catcher's mitt. Finally, Rose said: It was the worst review I've read in years. Did Chester misconstrue that? Yes. She means by "worst review" = one of the most negative, scathing evaluations of a movie. I haven't seen a movie reviewer hate a movie that much in years. Chester, meanwhile, thinks she means by "worst review" = wow that a poorly executed review by that movie critic. I've seen critics ineptly write a review, but this was the worst I've seen. It was written more poorly then anything I've read in years. How do we know this is his interpretation? It's because he says, "nothing in that paper is particularly well-written". She, of course, was never talking about how well-written the movie review was, so this comment will puzzle her. But he heard her saying, "The review of this movie was so poorly written that I don't think we should see the movie." He's like, "Why does it matter how bad of a writer the movie critic is? Why would that stop you from seeing a movie? By the way, that newspaper sucks overall, so I expect badly written stuff."
+- **Goal:** Look for "worst review".
+
+**Answer choices**
+**A. see the movie** — Unrelated to Goal (1% of students)
+We're looking for "worst review". Chester didn't misinterpret this phrase.
+
+**B. caught a review** — Unrelated to Goal (8% of students)
+We're looking for "worst review". Chester didn't misinterpret this phrase.
+
+**C. local paper** — Unrelated to Goal (3% of students)
+We're looking for "worst review". Chester didn't misinterpret this phrase.
+
+**D. worst review** — Correct (88% of students)
+Rose meant "this review had the most negative appraisal of a movie that I've seen in years".
+
+Chester heard, "this review was more poorly written than any I've read in years".
+
+**E. in years** — Unrelated to Goal (1% of students)
+We're looking for "worst review". Chester didn't misinterpret this phrase.
+
+---
+
+## S1 · Q3 — Agree/Disagree
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Enrique: The city's transit authority does not have enough money to operate for the next twelve months without cutting service or increasing fares, and the federal government has so far failed to provide additional funding. Nonetheless, the transit authority should continue operating without service cuts or fare increases until it has exhausted its funds. At that point, the federal government will be willing to provide funding to save the authority.
+
+Cynthia: If the transit authority tries that maneuver, the federal government will probably just let the authority go out of business. The transit authority cannot risk allowing that to happen.
+
+### Prompt
+The dialogue most strongly supports the claim that Enrique and Cynthia disagree over whether
+
+### Written (single style)
+**Argument breakdown**
+- **Enrique's Claims:** 1. The transit authority doesn't have enough money to operate for the next 12 months without cutting service or increasing fares. 2. The federal govt. has so far failed to provide additional funding. 3. The transit authority should keep operating w/o service cuts or fare increases until it runs out of money. 4. One it's run out of money, the federal govt. will provide funding to save it.
+- **Cynthia's Responses:** 1. no comment. 2. no comment. 3. Disagrees. Cynthia seems to be arguing that the transit authority should not just keep the status quo and let themselves run out of money. 4. Disagrees. Cynthia isn't saying it's impossible that the federal govt. will swoop in and provide funding, but she says it's more probably that it will just let the authority go out of business.
+- **Goal:** Let's look for an answer dealing with claim 3 or claim 4.
+
+**Answer choices**
+**A. the transit authority should continue operating without cutting service or increasing fares until it has exhausted its funds** — Correct (92% of students)
+This deals with Claim 3, which was one of the two claims we could tell Cynthia disagreed with.
+
+We can infer this answer choice from Enrique's statements, because he explicitly says it in his 2nd sentence.
+
+We can infer the disagree position from Cynthia. She believes the transit authority should not try this plan of operating w/o cutting service or raising fares until it runs out of money.
+
+She says that the transit authority cannot risk the potential backfire of that plan, which would be running out of money and having the federal government say, "Well — I guess you're not a sustainable venture. We're going to just let you go out of business."
+
+**B. the federal government should provide additional funding to the transit authority** — Unsupported Both (1% of students)
+We can't support the Agree or Disagree position here. Enrique and Cynthia both only spoke to would / wouldn't the federal government provide additional funding if the transit authority ran out of money.
+
+Neither of them spoke to should / shouldn't the federal government kick in some money.
+
+**C. it would be better for the transit authority to cut services than it would be to raise fares** — Unsupported Both (0% of students)
+We couldn't infer this position or the disagree version of this position from either paragraph, because neither person discusses the relative merits of "cutting services while maintaining fares" vs. "maintaining services while increasing fares".
+
+**D. the federal government is willing to provide additional funding to the transit authority now** — Unsupported Agree Position (5% of students)
+Technically, we probably can't even infer the disagree position, but since Enrique said that "the feds so far have failed to provide additional funding", we could somewhat support the claim that "the feds are not willing to provide additional funding to the transit authority now".
+
+But we certainly can't derive the Agree position from Cynthia. She doesn't say anything that would support the claim that "the feds are willing to provide additional funding right now".
+
+**E. the transit authority can afford to operate for the next twelve months without cutting service even if it does not receive additional funding** — Unsupported Agree Position (1% of students)
+This relates to Enrique's claim 1, which we know Cynthia didn't comment on, so this can't be the answer.
+
+But there's no way we could infer this claim from either person's statements:
+"they don't cut services + they don't receive funding, but they CAN afford to operate for the next 12 months"
+
+---
+
+## S1 · Q4 — Flaw
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+A survey published in a leading medical journal in the early 1970s found that the more frequently people engaged in aerobic exercise, the lower their risk of lung disease tended to be. Since other surveys have confirmed these results, it must be the case that aerobic exercise has a significant beneficial effect on people's health.
+
+### Prompt
+The reasoning above is questionable because the argument
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (it must be):** Aerobic exercise has a significant beneficial effect on people's health.
+- **Evidence (since):** Other surveys in addition to one in a leading medical journal in the early 1970s have found that the more frequently people engaged in aerobic exercise, the lower their risk of lung disease tended to be.
+- **Evaluate:** Since the evidence is presenting a Correlation (the more X, the more there tends to be Y) and the conclusion is suddenly moving to Causation (X has a significant beneficial effect on Y), we can use our Explain Curious Fact framework. Curious Fact ... Why do these studies find a correlation between more frequent aerobic exercise and lower risk of lung disease? Author's Explanation ... Aerobic exercise is having a beneficial effect on people's health, thereby causing their risk of lung disease to be lessened. We always evaluate this framework by asking 1. Could there be some Alternate Explanation for the curious fact? 2. How plausible is the Author's Explanation? When we encounter arguments like this one where the author says, "X and Y are correlated. Therefore, X causes Y", we reflexively consider the two alternate explanations that LSAT loves to test: - what if it's Reverse Cause? What if Y causes X? In this case, that means what if having lung disease (or the precursors of lung disease) causes people to not partake of aerobic exercise? - what if there's some 3rd Factor? What if Z causes X and Y? In this case, that means what if there is some causal factor that both explains why someone does a lot of aerobic exercise and explains why they have lower risk of heart disease (or a factor that explains why people don't exercise and do have lower risk of heart disease).
+- **Goal:** On Flaw and Weaken, we're unlikely to see answers that make the author's hypothesis seem implausible. We're much more likely to see answers that deal with the existence of Alternative Explanations for the curious fact. On Flaw, we can simply point out that the author has illegally convinced herself that a correlation indicates a causal relationshp. Or we can raise the possibility of an alternate explanation (such as reverse cause or 3rd factor).
+
+**Answer choices**
+**A. ignores anecdotal evidence and bases its conclusion entirely on scientific research** — Not a Flaw (1% of students)
+This is a true description but not an objectionable description. We love our conclusions to be evidence-based, and scientific research is a stronger source of evidence than is anecdotal evidence.
+
+**B. considers only surveys published in one particular medical journal** — Bad Evidence Match (2% of students)
+This argument isn't based off only one journal's study. It says that "other surveys have confirmed these results".
+
+Honestly, even if the evidence were only based off one leading medical journal, that in and of itself isn't objectionable.
+
+What's objectionable to LSAT is the certainty with which author draw their causal conclusions. If one medical journal publishes data that shows that "people who eat lots of eggs have high cholesterol", we're totally allowed to say, "Thus, it may be that eggs increase our cholesterol".
+
+We're not allowed to say, "Thus, it must be that eggs increase our cholesterol."
+
+**C. concludes merely from the fact that two things are correlated that one causes the other** — Correct (79% of students)
+Since this answer is structured,
+concludes merely from the fact that Y that X
+we know that Y should match the evidence and X should match the conclusion.
+
+Did the evidence say that "two things are correlated"?
+
+Yes, there's a correlation (a statistical association) between aerobic exercise and lower risk of lung disease.
+
+Does the conclusion act like "one of those things causes the other"?
+
+Yes, the conclusion is acting like "aerobic exercise caused the lower risk of lung disease", because it's saying that aerobic exercise had a significant beneficial effect on people's health (and the only available match for "beneficial effect on health" is the idea of "lower risk of lung disease").
+
+**D. presumes, without providing justification, that anyone who does not have lung disease is in good health** — Too Strong (17% of students)
+Since this answer begins with presumes / takes for granted / fails to establish, we treat it like Necessary Assumption.
+
+Did the author assume that every single person in the world that doesn't have lung disease is in good health?
+
+Heavens no. That's an absurd claim. That would be saying that people with lupus, with covid, with malaria, with a flesh-eating bacteria are all in good health (as long as they don't have lung disease).
+
+The author presumes that something that has lowered one's risk of lung disease has had a beneficial effect on overall health.
+
+**E. fails to consider that even infrequent aerobic exercise may have some beneficial effect on people's health** — Not an Objection (1% of students)
+Since this answer begins with fails to consider / overlooks the possibility, we treat it like Weaken and ask ourselves if this would be a good objection to the argument.
+
+Can we hurt the author's argument by saying that "infrequent aerobic exercise may have some beneficial effect on health"?
+
+No. The author didn't say "only frequent aerobic exercise has any beneficial effect on health", so we're not disagreeing with him at all by saying "infrequent aerobic exercise could sometimes have some beneficial effect".
+
+---
+
+## S1 · Q5 — Strengthen
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Researchers examined 100 people suffering from herniated disks in their backs. Five of them were found to have a defect in a particular gene. The researchers also examined 100 people who had no problems with the disks in their backs; none had the genetic defect. They concluded that the genetic defect increases the likelihood of herniated disks.
+
+### Prompt
+Which one of the following, if true, most strengthens the researchers' reasoning?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (they concluded):** The genetic defect increases the likelihood of herniated disks.
+- **Evidence:** 5 of 100 people who had disk problems had a defect in gene X. 0 of 100 people who didn't have disk problems had a defect in gene X.
+- **Evaluate:** This argument is a little weird, because 95 of the 100 people who had disk problems did not have any issues with gene X. But the author's thought is that, "If messed up gene X showed up among people with back problems but not among people without back problems, then a messed up gene X must relate to back problems." The author isn't arguing that everyone with back problems has a messed up gene X, just that it increases the likelihood of herniated disks.
+- **Goal:** We can strengthen this by ruling out an alternate explanation for why the 5 (of 200) people who had messed up gene X were all people with herniated disks (i.e. rule out the idea that having a herniated disk can cause gene X to be messed up / rule out the idea that some 3rd factor is causing both a deformed gene X and a herniated back). We can also strengthen this by making it seem more plausible that this genetic defect increases likelihood of a herniated disk (more data points where the defect and the herniated disks go together).
+
+**Answer choices**
+**A. The researchers also examined a group of 100 people who did not have the defective gene; 80 were found to have herniated disks in their backs.** — Weakens, if Anything (0% of students)
+This answer is offering what seems to be Effect w/o Cause, because it's talking about data points that have the supposed effect (herniated disk) but don't have the supposed cause (genetic defect).
+
+But we already had 95 examples in the argument of people who have a herniated disk but don't have a defective gene. So getting 80 more with that profile doesn't change anything.
+
+**B. When the researchers examined a group of 100 people with the defective gene, they found that 2 of them had herniated disks in their backs.** — Unclear Impact (1% of students)
+This certainly doesn't seem like impressive evidence for the author's conclusion. If he thinks that this defective gene increases the odds of a herniated disk, then it's not very compelling to say that 2% of people with the gene have herniated disks.
+
+But this answer could potentially still strengthen. We would need to know what percent of the general population ends up with herniated disks.
+
+If only 1% of the general population gets a herniated disk, but 2% of the population with this defective gene gets a herniated disk, then that would strengthen the idea that this gene increases the likelihood of getting a herniated disk.
+
+**C. When the researchers examined the families of the 5 subjects who had the defective gene, they found that 30 family members also had the defective gene, and each of them suffered from herniated disks.** — Correct (98% of students)
+This adds more data points in which the supposed cause (defective gene) and supposed effect (higher likelihood of herniated disk) go hand in hand.
+
+This one is 30 for 30. All 30 of the family members that had the defective gene suffered from herniated disks.
+
+That's strong evidence that this defective gene is influencing risk of herniated disks.
+
+**D. Another team of researchers examined a different group of 100 people who suffered from herniated disks, and they found that none of them had the defective gene.** — Weakens (0% of students)
+This is giving us Cause w/o Effect weakening data points. These 100 people have the supposed cause (defective gene) but don't have the supposed effect (herniated disk).
+
+**E. When the researchers examined the family of one of the subjects who did not suffer from herniated disks, they found 30 family members who did not have the defective gene, and 20 of them suffered from herniated disks.** — Weakens, if Anything (0% of students)
+This only provides us with 20 Effect w/o Cause data points, which weaken the argument.
+
+These 20 people had the supposed effect (herniated disks) but didn't have the supposed cause (defective gene).
+
+---
+
+## S1 · Q6 — Parallel Flaw
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+The only vehicles that have high resale values are those that are well maintained. Thus any well-maintained vehicle has a high resale value.
+
+### Prompt
+The flawed nature of the argument can most effectively be demonstrated by noting that, by parallel reasoning, we could argue that
+
+### Written (single style)
+**Argument breakdown**
+- **Evidence:** The only vehicles that have high resale value are those that are well maintained.
+```
+High Resale → Well Maintained
+```
+- **Conclusion:** Any vehicle that is well maintained has a high resale value.
+```
+Well Maintained → High Resale
+```
+- **Evaluate:** This argument just presents a conditional premise (A → B) and then illegally concludes that the reverse would be true (B → A). (country accent) We call that the famous Necessary vs. Sufficient flaw around these here parts. "the only" is a sufficient indicator that means "put this idea on the LEFT of the arrow". It's more common cousins, "only if" and "only" are necessary indicators that mean "put this idea on the RIGHT side of the arrow". "any" is a sufficient (LEFT side) indicator, just like all other universals (e.g. all, each, every, none)
+- **Goal:** Let's look for an answer that presents a conditional premise and then offers a conclusion that is just the illegal reversal of that conditional rule.
+
+**Answer choices**
+**A. since none of the plants in this garden have been pruned before, no plant in this garden needs pruning** — Bad Conclusion Match (3% of students)
+We can tell this is more than a simple reversal, since the evidence talks about "whether it's been pruned before" and the conclusion talks about "whether it needs pruning".
+
+There can't be any new ideas in the conclusion, just the same two ideas in reverse logical order.
+
+The correct conclusion here, given the initial premise, would be,
+Thus, if a plant has never been pruned, it must be in this garden.
+
+**B. since the best mediators have the longest track records, the worst mediators have the shortest track records** — Weak Evidence/Conclusion Match / Opposite vs. Reversal (1% of students)
+This premise and conclusion are not conditional claims, so we can stop reading upon seeing that. If the conclusion were reversing the premise, it would sound like, "Thus, mediators with the longest track records are the best mediators".
+
+Instead of reversing, this conclusion tried to Flip the Illegal Light switch, by just saying the opposite of both ideas in the evidence.
+
+**C. since only those who desire to become astronauts actually become astronauts, that desire must be the most important factor involved in determining who will become an astronaut** — Bad Conclusion Match (5% of students)
+Since the conclusion isn't a conditional idea (it's just saying that "X is the most important factor involved in Y"), we can immediately bail.
+
+If the conclusion were reversing the logic of the premise's conditional, we'd get something like,
+
+Thus, any person who desires to become an astronaut will actually become an astronaut.
+
+**D. since all city dwellers prefer waterfalls to traffic jams, anyone who prefers waterfalls to traffic jams is a city dweller** — Correct (86% of students)
+Both premise and conclusion are conditional ideas. They both contain the same two concepts and simply reverse the logical order of them.
+
+Premise
+```
+city dweller → prefer waterfall to traffic jam
+```
+
+Conclusion
+```
+prefer waterfall to traffic jam → city dweller
+```
+
+**E. since one's need for medical care decreases as one's health improves, a person who is in an excellent state of health has no need of medical care** — Bad Premise Match (5% of students)
+This premise is not conditional. It's a Volume Dial type idea "the more improved health, the less need for medical care". Once we see the premise isn't conditional, we know we can't replicate the Necessary vs. Sufficient error (aka the Conditional Logic flaw).
+
+It's also not really a reversal. The conclusion is just an overly hyperbolic application of the volume dial idea.
+
+If someone is in excellent health, we would think that they need medical care less than someone in good to poor health. But we wouldn't be able to go to the extreme language of no need for medical care.
+
+---
+
+## S1 · Q7 — Agree/Disagree
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Rita: No matter how you look at them, your survey results are misleading. Since people generally lie on such surveys, the numbers you collected are serious underestimates.
+
+Hiro: I have no doubt that people lie on surveys of this type. The question is whether some people lie more than others. While the raw numbers surely underestimate what I'm trying to measure, the relative rates those numbers represent are probably close to being accurate.
+
+### Prompt
+Rita and Hiro disagree over whether
+
+### Written (single style)
+**Argument breakdown**
+- **Rita's 1st Claim:** No matter how you look at your survey results, they are misleading. Does Hiro argue that there is a non-misleading way to look at the survey results? Yes! Hiro says that "the relative rates those numbers [on my survey] represent are probably close to being accurate". So we have potentially found the correct answer here, with this first claim.
+- **Rita's 2nd Claim:** People generally lie on surveys of this type. Does Hiro argue that people don't generally lie on surveys of this type? No, he seems to agree with this claim. He says, "I have no doubt that people lie on surveys of this type".
+- **Rita's 3rd Claim:** The numbers you collected are serious underestimates. Does Hiro argue that his numbers aren't serious underestimates? No, he seems to agree because he says, "The raw numbers surely underestimate what I'm trying to measure".
+- **Evaluate / Goal:** If we hadn't found an explicit claim (Rita's 1st) that Hiro was disagreeing with, then we wuld start to fish around for things that Rita was assuming that maybe Hiro disagreed with, but since we already have an explicit contender, we can head to the answers. We're looking for whether or not there's a way to look at these survey results that is not misleading. Or, to put that more in Hiro's language, whether or not the relative rates the underestimated numbers represent still present a fairly accurate picture.
+
+**Answer choices**
+**A. the survey results are misleading regardless of how they are interpreted** — Correct (83% of students)
+Yes, this looks like Rita's first claim, which was our prediction.
+
+Rita will agree with this, since she "no matter how you look at them (regardless of how they are interpreted), your survey results are misleading."
+
+Hiro will disagree with this. Even though the sample is underestimating the raw numbers, the relative rates can be interpreted in a non-misleading way (probably close to being accurate).
+
+**B. people tend to lie on certain kinds of surveys** — Both Agree (0% of students)
+As we assessed, Hiro and Rita agree about this claim.
+Rita: people generally lie on such surveys
+Hiro: I have no doubt that people lie on surveys of this type
+
+**C. a different type of measure than a survey would produce results that are less misleading** — Out of Scope: different measure (2% of students)
+We can't support what either one of these people would say about different types of measures.
+
+The fact that Rita thinks that this method is misleading doesn't commit her to thinking that some other way therefore is not misleading.
+
+I might tell you that your plan to get to Saturn is not viable, while simultaneously believing "there is no viable plan to get to Saturn".
+
+And of course we have no idea what Hiro's comparative assessment would be when it comes to this survey vs. other measures.
+
+**D. the raw numbers collected are serious underestimates** — Both Agree (11% of students)
+As we assessed, Hiro and Rita agree about this claim.
+Rita: the numbers you collected are serious underestimates.
+Hiro: the raw numbers surely underestimate
+
+**E. the number of people surveyed was adequate for the survey's purpose** — Out of Scope: the survey's purpose / Out of Scope: number surveyed (3% of students)
+We never talked about what the survey's purpose was. The two people are discussing whether the survey has any non-misleading takeaways, but even if there is a credible takeaway, that doesn't mean it's related to the original purpose of the survey.
+
+In science (even data-collecting science), often there are important discoveries that are gleaned from data that is totally tangential to the original purpose of the data gathering.
+
+Furthermore, Rita's concern was not that an insufficient number of people were surveyed. It was that people (whatever number of respondents) don't supply truthful answers.
+
+---
+
+## S1 · Q8 — Method
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Lopez: Our university is not committed to liberal arts, as evidenced by its decision to close the classics department. The study of classical antiquity is crucial to the liberal arts, and it has been so since the Renaissance.
+
+Warrington: Although the study of classical works is essential to the liberal arts, a classics department isn't, since other departments often engage in that study.
+
+### Prompt
+Warrington's argument proceeds by
+
+### Written (single style)
+**Argument breakdown**
+- **Lopez's Conclusion:** Our university isn't committed to liberal arts.
+- **Lopez's Evidence:** It decided to close the classics department, and the study of classical antiquity has been crucial to the liberal arts since the Renaissance.
+- **Warrington's Response:** Studying classical works is definitely crucial to a liberal arts education, but you don't need a classics department to make that happen. Other departments often engage in that study.
+- **Evaluate:** Our job is to characterize the type of rebuttal or response Warrington offered. We can consider the Big 8 repertoire of Method answers (the most common structures they test): - analogy - counter/example for general claim - implications of logic - ruling out alternatives - suggesting alternate explanation - calling out a dubious assumption - raising an overlooked consideration - making a definition or distinction. If we were choosing from this list (we don't need to), we would probably go with "raising an overlooked consideration" or "making a distinction". Warrington is saying to Lopez, "Chill out, dude, they're not getting rid of the study of classical antiquity. It'll still be taught by other departments."
+- **Goal:** Raising the overlooked consideration that the study of classical works will still be done in other departments helps Warrington to make a distinction between "getting rid of the classic department" and "getting rid of the study of classical works". Let's pick any answer that we can match to the text.
+
+**Answer choices**
+**A. offering additional reasons in favor of the conclusion of Lopez's argument** — Opposite: in favor (1% of students)
+Warrington is pushing back against Lopez's argument, not adding another premise in agreement.
+
+**B. claiming that the reasoning in Lopez's argument rests on an illicit appeal to tradition** — Out of Scope: appeal to tradition (2% of students)
+Nothing Warrington says claims that Lopez is appealing to tradition. Warrington just says that Lopez is failing to consider that classical works will continue to be taught at this university, just within other departments.
+
+**C. mounting a direct challenge to the conclusion of Lopez's argument** — Too Strong: direct challenge to conclusion (10% of students)
+If Warrington were directly challenging Lopez's conclusion, then she would be arguing (directly) that "our university is committed to liberal arts".
+
+She never speaks directly on that subject. She is only speaking on whether closing down the classic department is a sign that the university doesn't care about liberal arts. She doesn't think Lopez is right to see the end of the classics department as the end of classical antiquity being studied at this university.
+
+**D. responding to a possible objection to the reasoning in Lopez's argument** — Offering Objection, not Responding to (6% of students)
+Warrington is offering a possible objection to the reasoning in Lopez's argument. Responding to a possible objection would be something you'd do to help assist someone's argument.
+
+"Brian says we should have coffee, not tea at the wedding. And while some people might say that tea is more appropriate for the fancy setting of the wedding, the fact is the bride and groom are coffee lovers so Brian is right."
+
+**E. presenting a consideration in order to undermine the reasoning in Lopez's argument** — Correct (81% of students)
+Warrington presented the consideration that the study of classical works will continue on, even after the classics department is closed, in order to undermine Lopez's fatalism that the university is not committed to liberal arts.
+
+---
+
+## S1 · Q9 — Principle-Strengthen
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Ted, a senior employee, believes he is underpaid and attempts to compensate by routinely keeping short hours, though it is obvious to everyone that he still makes some valuable, unique, and perhaps irreplaceable contributions. Tatiana, Ted's supervisor, is aware of the deficit in Ted's performance, and realizes other workers work harder than they should to make up for it. Nevertheless, Tatiana decides that she should not request that Ted be replaced.
+
+### Prompt
+Which one of the following principles, if valid, would most help to justify Tatiana's decision?
+
+### Written (single style)
+**Argument breakdown**
+- **Decision:** Ted should not be replaced.
+- **Evidence:** It's obvious to everyone that Ted makes some valuable, unique, and perhaps irreplaceable contributions.
+- **Evaluate:** Usually for Strengthen-Principle questions, we just predict an "If Premise, then Conclusion" link, so in this case that would be something like
+```
+if X obviously makes some valuable, unique,
+or perhaps irreplaceable contributions
+  → then you shouldn't request that X be replaced
+```
+However, the final claim is prefaced by Nevertheless signaling the tension of Tatiana deciding to keep Ted, given that we were told he does have some deficits in his performance that other coworkers have to work harder to compensate for. When we're doing Strengthen-Principle and we see that the argument is wrestling with a positive and a negative, then the answer will often feel more like it's Weighing Tradeoffs.
+- **Goal:** Look for the linking idea we predicted, or look for something saying the positives of Ted (valuable, unique, possibly irreplaceable contributions) outweigh the negatives (a deficit in performance that other coworkers have to work harder to make up for).
+
+**Answer choices**
+**A. Supervisors should request that an employee be replaced only if they know that all the work done by that employee can be performed equally well by another employee.** — Correct (58% of students)
+If we contrapose this, it's saying
+```
+if you don't know all the work done by X can be
+performed equally well by another employee
+  → then you should not request that an employee be replaced
+```
+The right side of this conditional matches our conclusion, which is the #1 goal for a Strengthen-Principle answer choice. Does the trigger apply to Ted and Tatiana?
+
+Does Tatiana know that all the work by done by Ted could be performed equally well by another employee?
+
+She does not. After all, Ted makes some unique and perhaps irreplaceable contributions. If they are 'perhaps irreplaceable' then we are not sure it could be done equally well by another employee.
+
+This rule applies to Ted and instructs Tatiana to not request a replacement.
+
+**B. Employers should compensate all their employees in a way that is adequate in relation to the value of the contributions they make.** — Unrelated to Goal (3% of students)
+This is a rule about how employers should compensate an employee. We're looking for a rule about whether an employer should request a replacement for an employee.
+
+**C. Only someone with greater authority than a particular employee's supervisor is entitled to decide whether that employee should be replaced.** — Unrelated to Goal (3% of students)
+This is a rule about how who should be entitled to decide on whether Ted should be replaced.
+
+We're not trying to justify that Tatiana is a person who's entitled to request a replacement for Ted. We're trying to justify Tatiana's decision to not request a replacement.
+
+**D. Workers in a work setting should regard themselves as jointly responsible for the work to be performed.** — Unrelated to Goal (2% of students)
+This is a rule about whether a coworker should consider themselves responsible for work.
+
+We're looking for a rule about whether an employer should request a replacement for an employee.
+
+**E. An employee's contributions in the workplace are not always a function of the amount of time spent on the job.** — Very Weak (34% of students)
+This would mildly strengthen. Ted works short hours, but we're trying to justify a decision to keep him. So it helps a little to say that "just because he works short hours doesn't mean he only makes 'short' contributions. An employee's contributions are not always a function of time spent on the job."
+
+But the strength of "X is not always Y" is really just saying, "at least once, something was X but not Y". Not much heft there. When we compare this to (A), it's not even close. (A) is a conditional that applies to our situation and basically proves Tatiana's decision is the correct one.
+
+---
+
+## S1 · Q10 — Paradox
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+One adaptation that enables an animal species to survive despite predation by other species is effective camouflage. Yet some prey species with few or no other adaptations to counteract predation have endured for a long time with black-and-white coloration that seems unlikely to provide effective camouflage.
+
+### Prompt
+Which one of the following, if true, most contributes to a resolution of the apparent discrepancy mentioned above?
+
+### Written (single style)
+**Argument breakdown**
+- **Given that ...:** Camouflage helps some species elude predation
+- **How can it be that:** Some prey species with few or no other adaptations to elude predation have endured for a while with black-and-white coloration that seems unlikely to provide effective camouflage?
+- **Evaluate / Goal:** I'm gonna level with you right away. This is maybe Top 3 of my least favorite problems. I think it's hot garbage from top to bottom. So take this explanation as, "Here's how LSAC might try to explain this", but it does not represent me condoning it. Based on the paragraph I would have been thinking, "Given that these species have coloration that wouldn't provide camouflage, how have they endured for a long time?" And so I would be looking for an answer that explained how they could survive for a long time, given that they have generally ineffective camouflage and few or no other adaptations. But apparently LSAC wanted us to be thinking, "Given that the black-and-white coloration seems unlikely to provide camouflage, how is it that in reality it is providing camouflage?"
+
+**Answer choices**
+**A. Most species with black-and-white coloration are more populous than the species that prey upon them.** — Too Weak (20% of students)
+We might have thought, "well, they have no adaptations to counteract predation, but because they're more populous than the species that prey upon them, they've been able to survive for a long time".
+
+For example, cicadas come out of the ground every 17 years or so, in such staggering numbers that even though squirrels and birds and other animals feast on as many cicadas as they can eat, there are enough cicadas that still live to mate / reproduce, and keep the species going.
+
+But this answer isn't saying that they're the black-and-white creatures are way more populous, such that the predators would get full or tired before decimating the prey population.
+
+We'd be adding too many of our own assumptions to make this answer work.
+
+**B. No form of camouflage is completely effective against all kinds of predators.** — Too Weak / Unrelated to Goal (2% of students)
+This is a super weak answer, since it just says "there at least one form a camouflage that is not 100% effective against 100% of predators".
+
+But that is kind of an obvious given about the world, kinda like no medicine is completely effective against all kinds of illnesses.
+
+More importantly, this is an answer about a species that has camouflage but not protection from predators. We're trying to solve a mystery about species that don't seem to camouflage but do have protection from predators.
+
+**C. Animals of many predatory species do not perceive color or pattern in the same manner as humans do.** — Correct (64% of students)
+This answer is supposed to be communicating, "these black and white species really DO have effective camouflage! Even though their coloration seems (to human perception) to be unlikely to provide effective camouflage, to many animals species, their perception of color and pattern might be such that to them this black and white coloration is effective camouflage."
+
+Where do I begin with my problems with this answer choice?
+- when I read in an LSAT paragraph that these species have coloration that seems unlikely to provide effective camouflage, I am assuming that this is a FACT coming from a source that is informed about the animal kingdom, not an uninformed opinion by someone who just looks at black and white and says "I reckon that wouldn't be good camouflage".
+
+- it seems like a high percentage of us (maybe even a majority) already know what (C) is saying. It doesn't provide any new information, because it is already thoroughly within normal common sense that there are differences in how animals of different species perceive color and pattern.
+
+- the intended logical force of this answer is only very weakly suggested by the actual language of the answer. There's a big gap between "many animals perceive color/pattern differently from how humans do" and "these animals find this black and white coloration difficult to discern".
+
+My recommendation for all of us is to ignore this question ever existed. There is nothing to learn here except the humility that comes with knowing that the test writers sometimes just write terrible questions that we can't blame ourselves for not finding our way through.
+
+**D. Conspicuous black-and-white areas help animals of the same species avoid encounters with one another.** — Unrelated to Goal (4% of students)
+We're not interested in how this B&W coloration relates to how these species deal with other members of their species. We're only interested in how this B&W coloration relates to how these species manage to evade predation.
+
+**E. Black-and-white coloration is not as great a liability against predators at night as it is during the day.** — Unclear Impact (10% of students)
+This might be useful if we knew that these species were purely nocturnal, and thus their black and white coloration was still provided some camouflage at night, but we don't know if they're nocturnal.
+
+Also, saying "not as great a liability" is not the same as "NOT a liability", so it's still a pretty weak explanation for how they're able to avoid predation.
+
+---
+
+## S1 · Q11 — Most Supported
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Lecturer: If I say, "I tried to get my work done on time," the meanings of my words do not indicate that I didn't get it done on time. But usually you would correctly understand me to be saying that I didn't. After all, if I had gotten my work done on time, I would instead just say, "I got my work done on time." And this example is typical of how conversation works.
+
+### Prompt
+The lecturer's statements, if true, most strongly support which one of the following statements?
+
+### Written (single style)
+**Argument breakdown**
+- **Statements:** Saying "I tried to get my work done on time" doesn't actually mean that the person failed to get their work on time, but that is what the speaker is trying to convey. Had they gotten their work done on time, they would have said "I got my work done on time". This is typical of how conversation works.
+- **Evaluate:** This is a very odd Inference stimulus. There don't seem to be any of the usual wording clues that suggest where they might want to go with this (conditional / causal / pivots / math-y stuff). We're basically just hearing that it's typical in conversation for the implied meaning to be different from the literal meaning. Someone who did get their work done on time could also truthfully say, "they tried to get their work done on time", because "to try" means you applied intention and effort, which would clearly be true of anyone who completed their work.
+- **Goal:** Let's just look for a safely-worded claim that can be supported by the fact that "it's typical that we mean something different from what our statements literally convey".
+
+**Answer choices**
+**A. Understanding what people say often requires more than just understanding the meanings of the words they use.** — Correct (91% of students)
+If people are typically trying to convey an idea that isn't captured by the literal meaning of the words they used, then understanding what others mean with their statements typically involves understanding more than just the literal meaning of the words they use.
+
+Typically is even stronger than often, so we're safe in supporting that frequency modifier.
+
+**B. It is unusual for English words to function in communication in the way that "tried" does.** — Opposite (1% of students)
+The last sentence basically contradicts this. It says, "this example we just spelled out with tried is typical", not an anomaly.
+
+**C. Understanding what people use a word to mean often requires detecting their nonverbal cues.** — Out of Scope: nonverbal cues (1% of students)
+While this is undoubtedly true in real-life, nothing in the paragraph talks about nonverbal cues.
+
+If someone were talking to us on the phone (i.e. we had no nonverbal cues), we would still know that "I tried to get my work done on time" implies "I tried and failed to get my work done on time".
+
+**D. Speakers often convey more information in conversation than they intend to convey.** — Opposite (5% of students)
+The 2nd sentence is saying that it would be a correct understanding to hear "I tried to get my work done on time" as conveying both
+1. I tried
+2. I failed
+
+The "and I failed to get it done on time" is not "more information than the speaker intended to convey". It is information the speaker intended to convey.
+
+**E. Listeners cannot reasonably be expected to have the knowledge typically required for successful communication.** — Out of Scope: knowledge required (1% of students)
+We don't know what knowledge is typically required for successful communication.
+
+And this answer is giving off a vibe of, "Listeners are in a hopeless predicament! Don't blame them for misunderstanding what you mean. We can't expect them to know what they'd need to know to understand you."
+
+The passage, meanwhile, was acting more like listeners have no issue with understanding the extra meaning built into "I tried to get my work done".
+
+---
+
+## S1 · Q12 — Flaw
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Legislator: The recently passed highway bill is clearly very unpopular with voters. After all, polls predict that the majority party, which supported the bill's passage, will lose more than a dozen seats in the upcoming election.
+
+### Prompt
+The reasoning in the legislator's argument is most vulnerable to criticism on the grounds that the argument
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (clearly):** The recently passed highway bill is very unpopular with voters.
+- **Evidence (after all):** Poll predict that the majority party, which supported the bill's passage, will lose more than a dozen seats in the upcoming election.
+- **Evaluate:** The author is concluding a causal hypothesis for a Curious Fact: why is the majority party expected to lose more than a dozen seats in the upcoming election? He is positing this Explanation: the majority party supported the highway bill's passage, people don't like this bill, they blame the majority party, and they plan to vote out people belonging to the majority party as electoral punishment for this bad bill. Whenever author's are trying to Explain a Curious Fact, we look at two different pressure points: 1. Could there be some Alternate Explanation for why the majority party is expected to lose more than a dozen seats? (maybe there was a census and after re-districting, there aren't as many voting districts that favor that party / maybe the majority party started an unpopular war or caused a recession or botched a pandemic response) 2. How plausible is the Author's Explanation? (did anyone ever express displeasure with the highway bill? are voters aware of it? do voters blame the majority party for it, or was it a bi-partisan measure supported by both parties?)
+- **Goal:** Usually Flaw is much more concerned with the potential for Alternate Explanations. The essence of the famous Causal flaw is that an author is simply too sure of his causal explanation, when other causal explanations could potentially exist.
+
+**Answer choices**
+**A. gives no reason to think that the predicted election outcome would be different if the majority party had not supported the bill** — Correct (71% of students)
+It's true that the author provides to reason to think the majority party wouldn't be losing so many seats if it hadn't supported the highway bill.
+
+But does that speak to a logical problem with the argument?
+
+Yes! It speaks to the Causal flaw. Why should we believe this causal storyline the author invented, in which we should blame the loss of seats in the upcoming election on the highway bill? Who said that the highway bill is the causal difference-maker that's responsible for the predicted election outcome? Couldn't there be other reasons?
+
+The author hasn't given us any compelling reason to believe his explanation is plausible. He is concluding that this highway bill is unpopular, and his only premises are that the majority party supported the bill and will lose seats in the upcoming election. He's clearly assuming that these two things are related.
+
+And this answer is just saying, "He's assuming these two things are related", which is accurate. If the election outcome would be the same whether or not the majority party supported the highway bill, then those two things are not related.
+
+**B. focuses on the popularity of the bill to the exclusion of its merit** — Out of Scope Objection (4% of students)
+We can't say, "Hey, author — you're focusing on popularity, when you should be thinking about the merits of the bill as well."
+
+He would just say, "I'm not arguing that the bill is good or bad, so I don't need to talk about its merits. I'm only arguing that it's unpopular with voters, so it makes sense for my evidence to only care about the bill's popularity."
+
+**C. infers that the bill is unpopular from a claim that presupposes its unpopularity** — Wrong Flaw: Not Circular / Bad Evidence Match (23% of students)
+This answer refers to the famous Circular reasoning flaw, in which the evidence is a restatement of the conclusion or assumes the truth of the conclusion. Circular reasoning answers are wrong at least 95% of the time we see them.
+
+But if we don't know that, we can examine this answer by doing what we always do when we see "infers X from a claim that Y". We can ask ourselves whether X matches with the Conclusion/Assumption and whether Y matches the evidence.
+
+This argument does infer that a bill is unpopular. That matches the Conclusion.
+
+But is the evidence a claim that presupposes unpopularity?
+
+In order to claim "the majority party supported Bill X", do we have to presuppose that "Bill X is unpopular"? No.
+
+In order to claim "the majority party is expected to lose more than a dozen seats", do we have to presuppose that "Bill X is unpopular"? No.
+
+**D. takes for granted that the bill is unpopular just because the legislator wishes it to be unpopular** — Bad Evidence Match (1% of students)
+If an answer says that an author "takes for granted that X because Y", we can ask ourselves whether X matches the Conclusion/Assumption and whether Y matches the evidence.
+
+The author certainly concludes/assumes that the bill is unpopular.
+
+Do we have a premise that says, "The legislator wishes it to be unpopular"?
+
+Nope. We have a premise that says the majority party supported the bill and a premise saying the majority party is expected to lose more than a dozen seats.
+
+**E. bases its conclusion on the views of voters without establishing their relevant expertise on the issues involved** — Bad Evidence Match (2% of students)
+This says that the conclusion is based on views of voters.
+
+Was the evidence of this argument telling us about the views of voters?
+
+Not at all. It told us that the majority party supported the highway bill and that the majority party is expected to lose seats in the upcoming election.
+
+The conclusion itself is about the views of voters, not the basis for the conclusion.
+
+---
+
+## S1 · Q13 — Must be True
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Songwriters get much of the money they earn from their songs from radio airplay. A hit song is played thousands of times, and the songwriter is paid for each play. Only a fraction of songwriters actually achieve a hit, however, and even fewer manage to write several. Writers of hit songs are often asked to write songs for movie sound tracks, but they sometimes decline, because although such songs frequently become hits, their writers receive single up-front payments rather than continued revenues from radio airplay.
+
+### Prompt
+If the statements above are true, which one of the following must be true?
+
+### Written (single style)
+**Argument breakdown**
+- **Statements:** Scanning for Conditional, Math-y, Causal, or Comparative wording, I don't see anything screaming out to me. So I would just take two read-throughs (the 2nd one going slow enough to feel like I understood every claim) and then head to the answers. Every claim is hedged somewhat: - Songwriter's get much of their money from radio play - only a fraction of Songwriter's have hits, even fewer have several - Songwriter's with hits are often asked to write for movies - those Songwriter's sometimes decline. There's a mathematical aspect to how you get paid as a songwriter: - hit song on radio, get paid for each play - hit song from movie on radio, got paid an upfront fee. And there's a causal idea related to this — because of this payment structure, writers of hit songs often decline to write songs for movie sound tracks.
+- **Evaluate:** The only place where I sense a possible synthesis would be when hit songwriters "sometimes" decline to write songs for movie sound tracks, because of the payment structure. They are presumably thinking they'll make less money getting paid up front (for this eventual hit song) than they would if they just released it straight to the radio (where the songwriter is paid for each play). But this feels a little speculative, and this is a Must Be True.
+- **Goal:** With 8 or 9 different claims, there's too much here to have a strong prediction of what the answer will be. So let's just "try on" each answer, asking ourselves whether we could possibly derive this info from only the provided information.
+
+**Answer choices**
+**A. Any songwriter who receives revenue from radio airplay has written a hit song.** — Reversed Logic / Too Strong: any (3% of students)
+We were told that
+if you have a hit song on the radio,
+then you will get paid for each play.
+
+This is saying
+if you are getting paid for radio play
+then you have a hit song on the radio
+
+That's an illegal reversal. The paragraph never said that the only way to get paid from radio airplay is to write a hit song, which is what (A) is implying.
+
+**B. All songwriters who write songs for movie sound tracks have had their songs played on the radio thousands of times.** — Too Strong: all (3% of students)
+We were told that songwriters who write a hit will have their hit song played on the radio thousands of times, and that songwriters who write a hit often write songs for movie sound tracks.
+
+But we can't say that every single songwriter who writes a song for a soundtrack has already hat a hit song played on the radio thousands of times.
+
+**C. Some songs written for movie sound tracks are played on the radio thousands of times.** — Correct (65% of students)
+Ah, there's that lovably weak language: some
+
+Is there a way to derive that at least one song written for a movie sound track has been played on the radio thousands of times?
+
+Yes, we know two things that allow us to derive this:
+- songs for movie soundtracks frequently become hits
+- a hit song is played thousands of times
+
+**D. Most songwriters prefer the possibility of continued income to single up-front payments for their songs.** — Too Strong: most (17% of students)
+If we weren't ever given a fact about "Most X", then we can't derive a fact about "Most X", simple as that.
+
+Does it say anywhere in the passage that something is true of most songwriters?
+
+Yes, in a sneaky way. We know that "most songwriters don't ever achieve a hit" (only a fraction do).
+
+So can we derive that these songwriters who don't ever achieve a hit prefer continued income to single-up front payments?
+
+Heavens no. We don't know anything about these songwriters beyond the fact that they never had a hit. They would probably be happy with any type of income for their songs. (Speaking from personal experience here) :)
+
+This answer is trying to bait people into the speculative inference we discussed in our evaluation, where we imagine that the hit songwriters who sometimes decline to write songs for movies are doing so because they prefer the possibility of continued income (via publishing their song straight to radio) to the possibility of up-front payments (if they gave that song to a movie sound track).
+
+**E. Some songwriters earn money solely from the radio airplay of their songs.** — Too Strong: solely (12% of students)
+We were told that songwriters get much of their money from radio airplay. We can't say that any of them get all of their money from radio airplay.
+
+---
+
+## S1 · Q14 — Necessary Assumption
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Debate coach: Britta's command of the historical facts was better than Robert's, and that led to the distinct impression that Britta won the debate. But it's also important to evaluate how reasonable the debaters' arguments were, regardless of their ability to bring the facts to bear in those arguments. When you take that into consideration, Robert's debate performance was as good as Britta's.
+
+### Prompt
+The debate coach's argument depends on the assumption that
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** Robert's debate performance was as good as Britta's.
+- **Evidence:** Sure Britta's command of historical facts was better and so that gave people the impression that Britta won. But we should also consider how reasonable the arguments were, regardless of whether factual support was provided.
+- **Evaluate:** Okay, let's consider how reasonable the arguments were: were Robert's arguments more reasonable? The author seems to be assuming yes. If Robert doesn't have an advantage in that category, then Britta's advantage in the "command of facts" category would make her the winner. The author also has to assume that winning the "reasonableness" category can tie you with someone who won the "command of the facts" category (the fact that each of them would win one category doesn't mean that Robert's performance was as good, if we weight the importance of command of the facts higher than we weight the importance of reasonableness).
+- **Goal:** Look for an answer pointing out the author's assumption that Robert's arguments were more reasonable than Britta's. Or look for a defender answer that sounds like, "Being more factual does not count for more than does being more reasonable, when it comes to judging debate performance".
+
+**Answer choices**
+**A. Britta's arguments were quite unreasonable** — Too Strong: quite unreasonable (3% of students)
+The author doesn't have to assume in absolute terms that Britta's arguments were unreasonable. He just needs to assume that Robert's arguments were at least as reasonable.
+
+**B. Robert's arguments were more reasonable than Britta's** — Correct (75% of students)
+In order for the author to think that Robert had just as good a performance as Britta, when he concedes that Robert lost the "battle of the facts", he must be assuming that Robert won the "battle of the reasonableness".
+
+If we were to negate this, saying "Robert's arguments weren't any more reasonable than Britta's", that would work as an Objection because we could say, "at best, Robert tied Britta in terms of reasonableness, and Robert lost in terms of facts, so how can we say that Robert did just as good?"
+
+**C. good debate performances require very reasonable arguments** — Too Strong: require / very reasonable / Relative vs. Absolute (18% of students)
+The author doesn't need to assume that good performances require very reasonable arguments. Negating this would basically mean, "there has been at least one good debate performance that only had reasonable (not VERY reasonable) arguments. That's no objection.
+
+Furthermore, our author isn't actually try to label either person's performance good (absolute), just as good (relative).
+
+**D. neither Britta nor Robert was in full command of the facts** — Too Specific: full command (1% of students)
+The author is conceding that Robert wasn't in full command of the facts (since he grants that Britta's command was better), but the author might accept that Britta was in full command of the facts. Thus, negating this answer wouldn't turn into any sort of objection.
+
+**E. winning a debate requires having a good command of the facts** — Too Strong: requires / Opposite (3% of students)
+The author hasn't committed himself to any stringent rules about what winning a debate requires, and if anything this assumption would work against his argument, since Britta had a better command of the facts.
+
+---
+
+## S1 · Q15 — Most Supported
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Physicists attempting to create new kinds of atoms often do so by fusing together two existing atoms. For such fusion to occur, the two atoms must collide with enough energy—that is, at high enough speeds—to overcome the electromagnetic force by which atoms repel each other. But if the energy with which two atoms collide greatly exceeds the minimum required for the fusion to take place, the excess energy will be converted into heat, making the resulting new atom very hot. And the hotter the atom is, the greater the chance that it will immediately split apart again.
+
+### Prompt
+Which one of the following is most strongly supported by the information above?
+
+### Written (single style)
+**Argument breakdown**
+- **Statements:** To create a new kind of atom, we often try to fuse together two existing ones.
+  - conditional (must):
+```
+Fusion of two existing atoms into a new one
+  → collide fast enough to overcome electromagnetic force of atoms repelling each other
+```
+  - pivot (but), conditional (if):
+```
+they collide super fast → new atom is very hot
+```
+  - volume dial (the more X, the more Y):
+```
+the hotter the atom, the greater the chance is immediately splits apart
+```
+- **Evaluate:** There are two conditionals that have some overlap (in the sense that both of them are talking about atoms colliding and the energy of the collision). But the symbols there aren't a match, so we can't chain the conditionals together. There's also a big conspicuous pivot: But, so we want to think about how to reconcile what comes before and after that pivot. For two different atoms to fuse together, the collision has to be fast enough to overcome electromagnetic force. But if it's too fast, then the new atom will be super hot and might split apart again into the two constituent atoms.
+- **Goal:** It's hard to predict where this is headed, but we might see an answer saying, "Physicists have to dial in the collision speed to the sweet spot, where it's energetic enough to overcome electromagnetic force but not so energetic that the new atom is super heated and splits apart again.
+
+**Answer choices**
+**A. When physicists create new kinds of atoms by fusing together two existing atoms, the new atoms usually split apart again immediately.** — Too Strong: usually (1% of students)
+The information we've heard supports the possibility that when physicists create new kinds of atoms, the new atoms might split apart again immediately.
+
+But we have no support for the idea that in more than 50% of cases it splits apart again immediately.
+
+**B. If a new atom produced by the collision of two other atoms immediately splits apart again, then the collision did not produce enough energy to overcome the electromagnetic force by which atoms repel each other.** — Contradicted, if anything (3% of students)
+The information is telling us,
+
+too little energy → electromagnetic force repels atoms, new one never forms
+just right energy → electromagnetic is overcome, new atom stays together
+too much energy → electromagnetic is overcome, new atom forms, but then splits apart again
+
+So if the new atom splits apart, that means we had too much energy. It "greatly exceeds the minimum required for the fusion to take place (for the separate atoms to overcome the electromagnetic force).
+
+**C. The stronger the electromagnetic force by which two atoms repel each other, the hotter any new atom will be that is created by the fusion of those two atoms.** — Too Strong: the more X, the more Y (6% of students)
+This seems pretty tempting. The stronger the electromagnetic force, the more collision energy two atoms would have to have to overcome it and create a new atom.
+
+Were we told that "the more energy there is in the collision, the hotter the new atom is"?
+
+Not quite. We were told that excess energy will be converted into heat. So it's not the absolute amount of energy needed to overcome the electromagnetic force, it's the relative sense of how much we overshoot that threshold.
+
+If atoms A and B repel each other with 50 units of repellant, we'll need at least 51 units of collision energy to make a new atom. If they collide with 60 units of collision energy, the excess (+10) will be converted to heat.
+
+If atoms X and Y repel each other with 100 units of repellant, we'll need at least 101 units of collision energy to make a new atom. If they collide with 110 units of collision energy, the excess (+10) will be converted to heat.
+
+We can only prove the new atom formed is only going to be hotter if one collision overshoots the minimum energy more than another new atom does. But if a collision just barely eclipses the minimum energy, then even if the minimum energy is some huge amount, it still won't heat up the atom.
+
+**D. Whenever two existing atoms are made to collide and fuse together into a new atom, little energy is produced in the collision unless the new atom immediately splits apart.** — Too Strong: little produced unless (2% of students)
+We can't sign off on any massive generalization about two atoms colliding to fuse into a new atom. All we know is that the collision was enough to overcome the electromagnetic force.
+
+We don't know how much energy was or wasn't produced in the collision, and we have no way to permanently anchor that concept to whether the new atom did or didn't immediately split apart.
+
+**E. If two atoms collide with considerably more energy than is needed for fusion to take place, the new atom will be likely to immediately split apart again.** — Correct (89% of students)
+This is just saying, "if we miss the sweet spot and collide with too much energy (considerably more than the minimum), then the excess energy will be converted into heat, making the atom very hot, increasing the chance that it will immediately split apart again".
+
+---
+
+## S1 · Q16 — Flaw
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Fremont: Simpson is not a viable candidate for chief executive of Pod Oil because he has no background in the oil industry.
+
+Galindo: I disagree. An oil industry background is no guarantee of success. Look no further than Pod Oil's last chief executive, who had decades of oil industry experience but steered the company to the brink of bankruptcy.
+
+### Prompt
+Galindo's argument is flawed in that it
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** I disagree (the fact that Simpson has no background in the oil industry doesn't prove he's not a viable CEO of Pod Oil). In other words, someone with no background in the oil industry could still be a viable candidate for CEO of Pod Oil.
+- **Evidence:** An oil background is no guarantee of success; for example, the last CEO had an oil background and was terrible.
+- **Evaluate:** Galindo's first comment seems to imply that Fremont was thinking that "a background in oil is a guarantee of success". But Fremont certainly never argued that. Fremont is probably thinking "an oil background" is a minimum requirement, not a sufficient guarantee of success.
+- **Goal:** Look for an answer pointing out that Galindo implicitly accuses F of a position that F never espoused (this is called Straw Man), or an answer that says "even if people with backgrounds in oil can still be crappy CEO's, it might still be true that people without backgrounds in oil can't be successful CEO's).
+
+**Answer choices**
+**A. fails to justify its presumption that Fremont's objection is based on personal bias** — Out of Scope: personal bias (0% of students)
+Nothing in this conversation hints at the idea that Galindo is assuming that Fremont is arguing based on personal bias.
+
+**B. fails to distinguish between relevant experience and irrelevant experience** — Opposite (1% of students)
+The conversation is definitely distinguishing between relevant and irrelevant experience, because both speakers are weighing the value of having relevant experience (oil background).
+
+**C. rests on a confusion between whether an attribute is necessary for success and whether that attribute is sufficient for success** — Correct (58% of students)
+Fremont argued, "b/c no oil experience, not viable".
+```
+~oil experience → ~viable candidate
+```
+Then Galindo turns around and says, "Hey, I don't agree that oil experience guarantees success", which would look like this,
+```
+oil experience → viable candidate
+```
+So the response is confusing whether we're saying that the attribute of oil experience is a requirement of a successful CEO or whether oil experience is supposed to guarantee having a successful CEO.
+
+Galindo presents a counterexample to the latter claim, but F was arguing the former claim.
+
+**D. bases a conclusion that an attribute is always irrelevant to success on evidence that it is sometimes irrelevant to success** — Bad Conclusion Match (13% of students)
+Does Galindo's conclusion say that "oil background" is always irrelevant to success?
+
+Nope, it says that "oil background is not a guarantee of success". So we can eliminate this answer at this point and stop reading.
+
+If I saw "having an LSAT tutor is not a guarantee of success", I'm not saying that "having an LSAT tutor is irrelevant to success".
+
+**E. presents only one instance of a phenomenon as the basis for a broad generalization about that phenomenon** — Wrong Flaw (28% of students)
+This refers to the famous flaw Sampling. It is true that Galindo presents only one instance, however, his conclusion is trying to invalidate a universal claim.
+
+If you're trying to shoot down a universal, like "All men like football", you only need one instance to do so.
+
+So since Galindo's conclusion is trying to invalidate a universal, it's not a logical problem that he's only presenting one instance.
+
+The logical problem is that Galindo is trying to invalidate the wrong universal. Fremont was arguing that "oil background is necessary to viable CEO", so Galindo would have disagreed by providing an example of a CEO that had no oil experience but was still successful.
+
+---
+
+## S1 · Q17 — Necessary Assumption
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Discharges of lightning from a volcanic ash cloud occur only when the cloud's highest point exceeds an altitude of 5 kilometers. Those discharges become progressively more frequent as the ash cloud moves higher still. Weather radar can measure the altitude of ash clouds, but it is not available in all parts of the world. Hence lightning discharge data can sometimes be our only reliable indicator of the altitude of ash clouds.
+
+### Prompt
+Which one of the following is an assumption required by the argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (hence):** Lightning discharge data can sometimes be our only reliable indicator of the altitude of ash clouds.
+- **Evidence:** Weather radar can measure the altitude of ash clouds, but it is not available in all parts of the world. Lightning discharges from an ash cloud can happen once the top of the cloud passes an altitude of 5 km.
+- **Evaluate:** The conclusion has some really strong wording, "our only reliable indicator". Why can't we use anything but lightning discharge data to measure the altitude of ash clouds sometimes? The only thing close to a reason we heard was that weather radar isn't available in all parts of the world. Okay, then we're assuming a few things - lightning discharge data is available in those parts of the world - lightning discharge data is a reliable indicator of altitude (even though it can't measure anything until the ash cloud gets at least 5km high) - no other method is available to measure the altitude of ash clouds (in those areas where weather radar isn't available)
+- **Goal:** Look for one of our anticipated assumptions, or pick an any answer that, if negated, would badly weaken the argument.
+
+**Answer choices**
+**A. The highest point of any volcanic ash cloud will eventually exceed an altitude of 5 kilometers.** — Too Strong: any (6% of students)
+The author doesn't need to believe that all ash clouds exceed 5 km. They need to exceed that height in order for lightning discharge data to be a viable method of collecting data (since lightning doesn't start discharging until that height).
+
+But the author doesn't need to believe that lightning discharge data is always a viable method. He's only claiming that it's sometimes the only viable method.
+
+So he just has to assume that, "sometimes when weather radar (and any other means) is not available to measure ash cloud altitude, that ash cloud will exceed an altitude of 5 km".
+
+**B. Lightning discharges can be detected in some regions in which weather radar is unavailable.** — Correct (83% of students)
+The author's argument boils down to this: "Sometimes lightning discharge data is our only source of data, because weather radar isn't available in all parts of the world."
+
+That is assuming that in some of those spots where weather radar isn't an option, lightning discharge data is.
+
+If we negated this, it would be saying "There is nowhere in the world where weather radar is unavailable yet lightning discharges can be detected". That negation totally kills the author's conclusion, so we know this answer needed to be assumed (the negation only needs to weaken the argument to be a correct answer, but the stronger the weakening the better).
+
+**C. Weather radar is no less accurate in determining the altitude of volcanic ash clouds than it is in determining the altitude of regular clouds.** — Out of Scope: regular clouds (3% of students)
+Nothing in this argument has anything to do with measuring the altitude of regular clouds. The author isn't assuming anything about how weather radar's accuracy compares in different situations.
+
+**D. A volcanic ash cloud whose highest point exceeds an altitude of 5 kilometers is likely to be at least partly beyond the reach of weather radar.** — Too Strong: likely (6% of students)
+There's no reason the author needs to assume that most ash clouds that exceed 5 km are at least partly beyond the reach of weather radar. The conclusion is only saying that sometimes lightning discharge data is our only chance at measuring altitude.
+
+The author needs to assume that some ash clouds that are beyond the reach of weather radar exceed 5 km (in order to believe that when weather radar is out of reach, lightning discharge data would potentially be an option).
+
+**E. Lightning discharges are no more frequent for large volcanic ash clouds than for small volcanic ash clouds.** — Out of Scope Comparison (2% of students)
+The argument is never talking about small vs. large clouds, so the author hasn't made any assumptions about that sort of comparison.
+
+We know that lightning discharges become more frequent the higher the ash cloud moves above 5 km, but that's the height of the cloud, not the size.
+
+If we were equating height with size, then we'd say the author's argument more or less contradicts this answer, since the higher ones have more frequent discharges.
+
+---
+
+## S1 · Q18 — Must be True
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+If the standards committee has a quorum, then the general assembly will begin at 6:00 P.M. today. If the awards committee has a quorum, then the general assembly will begin at 7:00 P.M. today.
+
+### Prompt
+Which one of the following statements follows logically from the statements above?
+
+### Written (single style)
+**Argument breakdown**
+- **Statements:** conditionals: if (left side)
+```
+standards committee has quorum → general assembly begins at 6pm
+awards committee has quorum → general assembly beings at 7pm
+```
+- **Evaluate:** When we get multiple conditionals, we look to see whether they chain together or get triggered by any available facts. There aren't any facts in this stimulus. Do these two rules have any overlapping ideas? Yes, they both talk about the General Assembly. Would we chain them? Yes, since the outcome of either rule triggers the contrapositive of the other.
+```
+stnd comm has quorum → gen assem @ 6pm → ~awards comm quorum
+```
+If the General Assembly begins at 6pm, then it doesn't begin at 7pm, and vice versa. This one could probably be thought of more intuitively, without diagramming. Since these two rules have contradictory outcomes, they certainly can't both happen. It is mutually exclusive that the standards committee and Awards committee have a quorum.
+- **Goal:** Look for an answer saying
+```
+standards has quorum → ~awards committee has quorum
+awards has quorum → ~standards committee has quorum
+```
+(remember that it's possible that neither of them have a quorum)
+
+**Answer choices**
+**A. If the general assembly does not begin at 6:00 P.M. today, then the awards committee has a quorum.** — Opposite (8% of students)
+This acts like we're sure at least one of them will have a quorum, but we don't have any rules that guarantee a quorum will take place.
+
+These rules tell us what happens if a quorum takes place, and they could guarantee that a quorum won't take place.
+
+But if the assembly doesn't being at 6pm, all we know is that the standards committee doesn't have a quorum.
+
+We have no way to say "if standards committee doesn't have quorum, then awards committee must".
+
+We just have a way to say
+"If standards committee does have quorum, then awards committee cannot" (and vice versa)
+
+**B. If the standards committee does not have a quorum, then the awards committee has a quorum.** — Opposite (3% of students)
+This is literally the same as (awards committee), in terms of the illicit move it's trying to make.
+
+We have no way to say "if standards committee doesn't have quorum, then awards committee must".
+
+We just have a way to say
+"If standards committee does have quorum, then awards committee cannot" (and vice versa)
+
+**C. If the general assembly begins at 6:00 P.M. today, then the standards committee has a quorum.** — Reversal (30% of students)
+This acts like we're sure at least one of them will have a quorum, but we don't have any rules that guarantee a quorum will take place.
+
+We know "if standards committee has quorum, general assembly begins at 6",
+but this says "if general assembly begins at 6, standards committee has quorum"
+
+**D. If the general assembly does not begin at 7:00 P.M. today, then the standards committee has a quorum.** — Opposite (8% of students)
+This acts like we're sure at least one of them will have a quorum, but we don't have any rules that guarantee a quorum will take place.
+
+If the general assembly doesn't begin at 7pm, then we know that the awards committee doesn't have a quorum.
+
+But we have no way to say "if awards committee doesn't have quorum, then standards committee must".
+
+We just have a way to say
+"If awards committee does have quorum, then standards committee cannot" (and vice versa)
+
+**E. If the standards committee has a quorum, then the awards committee does not have a quorum.** — Correct (50% of students)
+This is what we predicted. Since the two outcomes contradict each other, there's no way that both triggers can fire.
+
+Hence, if one trigger is true then the other is false.
+
+Or, if we want to see it derived
+```
+standards committee quorum → general assembly at 6pm → ~awards committee quorum
+(~general assembly at 7pm)
+```
+
+---
+
+## S1 · Q19 — Paradox
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+One of the things lenders do in evaluating the risk of a potential borrower defaulting on a loan is to consider the potential borrower's credit score. In general, the higher the credit score, the less the risk of default. Yet for mortgage loans, the proportion of defaults is much higher for borrowers with the highest credit scores than for other borrowers.
+
+### Prompt
+Which one of the following, if true, most helps to resolve the apparent discrepancy in the statements above?
+
+### Written (single style)
+**Argument breakdown**
+- **Paradox:** Normally, higher credit score = less default risk. Makes sense — credit scores measure how reliably people pay debts. But for mortgage loans specifically, the very top scorers default more than everyone else. That's the puzzle.
+- **Evaluate:** The credit score isn't suddenly broken — it still predicts well at lower score ranges and for non-mortgage loans. So something must be unique about high-score mortgage borrowers. One natural possibility: lenders treat top-scoring mortgage applicants differently. If the credit score is so high that the lender just stamps "approved" without checking other risk factors (job stability, debt-to-income, savings), then any hidden risks fly under the radar. Those hidden risks then show up as defaults.
+- **Goal:** Find the answer that gives a reason top-scoring mortgage applicants get less scrutiny — letting hidden risks through.
+
+**Answer choices**
+**A. Mortgage lenders are much less likely to consider risk factors other than credit score when evaluating borrowers with the highest credit scores.** — Correct (70% of students)
+This is the explanation. Mortgage lenders apparently treat top-score borrowers as a sure thing — skipping the deeper risk checks they'd run on everyone else.
+
+That means top-score borrowers can have real, serious problems — unstable income, hidden debts, fragile finances — that simply never get flagged. Lower-score borrowers get all those things examined, and the riskiest ones get rejected or asked for safeguards. So when the top-score group ends up defaulting more, it's because their loans went out without the scrubbing the rest of the loans got. The credit score wasn't catching all the risk by itself, and nobody else was checking. Paradox resolved.
+
+**B. Credit scores reported to mortgage lenders are based on collections of data that sometimes include errors or omit relevant information.** — No Impact (9% of students)
+This says credit scores can have errors. Sure — but that would affect all credit scores, high and low. To explain why specifically the highest scorers default more, we need something unique to that group. Generic data errors don't do that.
+
+**C. A potential borrower's credit score is based in part on the potential borrower's past history in paying off debts in full and on time.** — No Impact (4% of students)
+This explains how credit scores are built — past debt repayment. That's background, not an explanation. It doesn't tell us anything about why top scorers in particular default more on mortgages.
+
+**D. For most consumers, a mortgage is a much larger loan than any other loan the consumer obtains.** — No Impact (15% of students)
+This says mortgages are bigger than other loans. True for everyone — high-score and low-score borrowers alike. So it doesn't explain why one specific group inside the mortgage pool defaults more.
+
+**E. Most potential borrowers have credit scores that are neither very low nor very high** — No Impact (1% of students)
+This says most people score in the middle — fine, but it doesn't tell us why the people at the top default more. The shape of the distribution and the behavior of the top group are different things.
+
+---
+
+## S1 · Q20 — Principle-Strengthen
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Computer modeling of reasoning tasks is far easier than computer modeling of other cognitive tasks, such as the processing of sense images. Computers can defeat chess champions, but cannot see. So, it appears that we understand the analytical capabilities of our minds much better than we understand our senses.
+
+### Prompt
+Which one of the following principles, if valid, most helps to justify the reasoning above?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (So):** It appears that we understand the analytical capabilities of our minds much better than we understand our senses.
+- **Evidence:** Computers can defeat chess champions, but cannot see. Computer modeling of reasoning tasks is way easier than computer modeling of sense images.
+- **Evaluate:** The language we're trying to prove in the Conclusion is "we understand X much better than we do Y". We weren't given a rule by which to judge whether we understand one thing better than another, so the correct answer will have to supply us with a rule for why we would understand one thing better than another. The reference to "analytical capabilities" in the conclusion seems intended as a callback to "chess" and "reasoning tasks". The reference to "our senses" seems intended as a callback to "seeing" and "processing of sense images". Why would our author be thinking we understand that first threesome better than we do that second threesome? There are two comparative advantages mentioned: - computer modeling of A is far easier than that of B - computers can beat humans at A but can't accomplish B.
+- **Goal:** So they've provided us two different launchpads in the Evidence, that can potentially get us to the landing zone in the Conclusion.
+```
+If computer modeling of A is much easier than computer modeling of B
+  → Then we understand A much better than we understand B
+```
+or
+```
+If computers can beat humans at A but computers can't even do B
+  → Then we understand A much better than we understand B
+```
+
+**Answer choices**
+**A. The degree of difficulty of constructing computer models of cognitive tasks is a good index of the degree of difficulty of performing those tasks.** — Unrelated to Goal (7% of students)
+Since this answer has no language that would allow you to use this rule and judge which thing we understand better, it's of no use to us.
+
+**B. The better we understand a computer's ability to perform a type of task, the better we will understand our own ability to perform it.** — Weak Evidence/Conclusion Match (24% of students)
+This is tempting. It's definitely sounding related to our conclusion language.
+
+This rule would allow us to say "we understand our ability to perform task X better than we understand our ability to perform task Y".
+
+The conclusion was not about tasks as much as capabilities / capacities, so it's actually not a great match for the conclusion.
+
+Also, the evidence half of this answer is talking about how well we "understand a computer's ability to perform a task". That doesn't really match with our evidence, which never once mentions understanding.
+
+Our evidence was only saying "modeling X on a computer is much easier", not "we understand how computers are able to perform X better".
+
+**C. A computer's defeat of a chess champion should count as an indication that the computer possesses true intelligence.** — Unrelated to Goal (1% of students)
+Since this answer has no language that would allow you to use this rule and judge which thing we understand better, it's of no use to us.
+
+**D. The less difficult it is to construct a computer model of a process the better understood is that process.** — Correct (65% of students)
+This is similar to (B), but it has a better match for our Evidence language and our Conclusion language.
+
+The argument was thinking
+
+Since computer modeling analytical tasks is far easier than computer modeling sensory tasks,
+we can conclude that we understand analytical processes better than sensory processes.
+
+This answer is saying, "The easier it is to construct computer models of X, the better we understand X", so this gives us a great bridge from the launching pad in the first sentence to the landing zone in the conclusion.
+
+**E. We should not underestimate the usefulness of computer modeling to the study of human cognition.** — Unrelated to Goal (3% of students)
+Since this answer has no language that would allow you to use this rule and judge which thing we understand better, it's of no use to us.
+
+---
+
+## S1 · Q21 — Necessary Assumption
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Archaeologist: Our team discovered 5,000-year-old copper tools near a Canadian river, in a spot that offered easy access to the raw materials for birchbark canoes—birch, cedar, and spruce trees. The tools are of a sort used by the region's Aboriginal people in making birchbark canoes in more recent times. It is likely therefore that Aboriginal people in Canada built birchbark canoes 5,000 years ago.
+
+### Prompt
+The archaeologist's argument depends on the assumption that the copper tools that were found
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** Aboriginal people in Canada built birchbark canoes 5,000 years ago.
+- **Evidence:** We found tools from 5,000 years ago that are like Aboriginal tools used in recent times to make birchbark canoes. And we found the tools near a river that offered easy access to the all the ingredients of a birchbark canoe.
+- **Evaluate:** Since the author is interpreting the significance behind these found copper tools from 5,000 years ago, we can use our Explain Curious Fact mindset. Curious Fact - what were these 5000 year old tools all about? Author's Explanation - they were used by Aboriginal people to make birchbark canoes. We always evaluate these arguments by asking two questions: - how else could we explain the curious fact? - how plausible is the author's hypothesis? What could be an alternate explanation for these 5,000 year old copper tools? Maybe they were used for something other than canoe-making. Maybe they were used by somebody other than the Aboriginal people. How plausible is the author's story? Pretty good. The Aboriginal people nowadays use tools like these to make birchbark canoes, and the tools were found in an area that had access to all the raw materials for birchbark canoe-making.
+- **Goal:** We're assuming that the Aboriginal people have been making canoes with tools like these for 5,000 years or more (they didn't just recently develop this habit of using these tools to make birchbark canoes). We're assuming that the tools we found were used by people who were from this area, where the raw materials were found. Tough to predict an answer; we can just remind ourselves that the correct answer, if negated, will be an objection to the idea that these tools show us that Aboriginals were making birchbark canoes 5,000 years ago.
+
+**Answer choices**
+**A. had no trade value 5,000 years ago** — Too Strong: no value (1% of students)
+Why does the author have to assume these rad copper tools had zero trade value. If they had some trade value, would that be an objection? No.
+
+**B. were present in the region 5,000 years ago** — Correct (56% of students)
+If we negated this and said, "Hey author, these tools weren't even in this region 5,000 years ago", then that would badly weaken his case that these tools show that the Aboriginal people were making birchbark canoes 5,000 years ago.
+
+In most LSAT arguments involving some found piece of archeological evidence, some artifact, the author tries to learn something about the local inhabitants from this found object.
+
+Those authors are always assuming that the found object is actually a local object, not some object that was brought from a different region and just dropped there.
+
+**C. were designed to be used on material from birch, cedar, and spruce trees only** — Too Strong: only (4% of students)
+The author only needs to assume that these tools were relevant / useful to making birchbark canoes. She doesn't need to assume that the tools only had that use.
+
+Just because birch, cedar, and spruce were the only trees mentioned in relation to raw materials for building birchbark canoes, that doesn't mean the tools were only good for those trees.
+
+This is a common trap answer:
+Only Ones Mentioned → The Only Ones
+
+**D. were the only kind of tool that would have been used for canoe making 5,000 years ago** — Too Strong: only (12% of students)
+The author needs to assume that these copper tools could have been used to make canoes 5,000 years ago, and she's concluding that they were used. But these doesn't need to believe that no other tools were ever used in the canoe building process.
+
+If I found evidence that a certain civilization had spatulas, maple syrup, and flour, I can speculatively conclude that "This civilization knew how to make pancakes!" without committing myself to believing that all you need to make pancakes is a spatula, maple syrup, and flour.
+
+**E. are not known to have been used by the region's Aboriginal people for any task other than canoe making** — Out of Scope: other than canoe making (27% of students)
+This is yet another Only Thing Mentioned → The Only Thing trap answer. Most of the trap answers on this problem are using this same trap, and making answers that are too extreme.
+
+The author thinks that these tools were used at some point to gather some raw materials from some local trees and turn them into a birchbark canoe.
+
+(C) they only gathered raw materials from those 3 trees mentioned.
+(D) they were the only tools used to make the canoe.
+(E) they were used to make only canoes.
+
+---
+
+## S1 · Q22 — Flaw
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Advertisement: Hypnosis videos work to alter behavior by subliminally directing the subconscious to act in certain ways. Directions to the subconscious must, however, be repeated many times in order to be effective. Hypnosis videos from Mesmosis, Inc. induce a hypnotic state and then issue an initial command to the subject's subconscious to experience each subsequent instruction as if it had been repeated 1,000 times. Because of the initial instruction, the subsequent instructions on Mesmosis videos are extremely effective—it is as if they had actually been repeated 1,000 times!
+
+### Prompt
+The advertisement's reasoning is most vulnerable to criticism on the grounds that the advertisement
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** Subsequent instructions on Mesmosis videos are extremely effective.
+- **Evidence:** To be effective, instructions given to the subconscious must be repeated many times.
+- **Intermediate Conclusion:** For the listener, it's as though those subsequent instructions have been repeated 1,000 times.
+- **Evidence (because):** Once a hypnotic state has been induced, the first instruction given to the listener's subconscious is to experience each subsequent instruction as if it had actually been repeated 1,000 times.
+- **Evaluate:** The 2nd sentence of the argument is a conditional, "X must occur in order for Y to happen". Whenever we see a Flaw question that has a conditional logic premise, we want to immediately be on guard for the #1 Famous Flaw Necessary vs. Sufficient. This rule says: Effective → Repeated Many Times. An argument committing the Nec vs. Suff flaw would proceed to argue via an Illegal Reversal (This thing repeats many times. Thus, it must be effective) or via an Illegal Negation (This thing isn't effective. Thus, it must not repeat many times). This argument does do the former. It attempts to establish that Mesmosis provides instructions that are "repeated" 1,000 times. And it then concludes that those instructions are very effective. So we could definitely bust this author on assuming that a condition required for effectiveness (repeated many times) is also sufficient for effectiveness. But there's another Famous Flaw lurking in here too, the much more rare Self Contradiction, or at least Self-Undermining. We are told that a direction to the subconscious is effective only if it's repeated many times. If it's not repeated many times, then it's not effective. The Mesmosis videos hypnotize someone and then issue an initial command (seemingly only once): interpret each command that follows as though you've heard it 1,000 times. Well according to the author's own provided rule, since the initial command isn't repeated many times, we have no reason to think that it will be effective, so we have no reason to think that people will actually treat subsequent instructions like they've been said 1,000 times.
+- **Goal:** Look for an answer calling out the Necessary vs. Sufficient conflation, or look for an answer calling out the fact that the author's own provided rule undermines the scheme by which these videos are supposed to work.
+
+**Answer choices**
+**A. overlooks a requirement that it states for the effectiveness of directions to the subconscious** — Correct (55% of students)
+Normally, when Flaw answers begin with fails to consider / overlooks the possibility, we read them more or less like answer choices on Weaken: if true, could this hurt the argument? could I use this idea as an objection?
+
+In this case, could we use the stated requirement for effectiveness as an objection?
+
+Yes! This gets to the Self-Undermining flaw we were pointing out. The ad states that "if something isn't repeated many times, it's not effective". That rule basically ruins the way the videos supposedly work. Supposedly, the initial command to experience everything as though it's been said 1,000 times is why these videos work so well.
+
+But the initial command isn't repeated many times, so it won't be effective. People won't actually follow its instruction, so they won't experience each subsequent instruction as though it was said 1,000 times.
+
+**B. takes for granted that the effectiveness of a direction to the subconscious is always directly proportional to the number of times the direction is repeated** — Too Strong: always directly proportional (23% of students)
+When answers start with takes for granted / presumes / fails to establish, we're just asking ourselves, "DID the author actually make this assumption?"
+
+We can't accuse this argument of committing to the idea that effectiveness is always directly proportional to number of times.
+
+That's Volume Dial language (the more x, the more y). We were only told in absolute language "if not repeated many times, not effective".
+
+The author doesn't need to assume that 20,000 repetition are precisely two times as effective as 10,000 repetitions.
+
+**C. concludes that hypnosis is the most effective technique for altering behavior without considering evidence supporting other techniques** — Bad Conclusion Match (3% of students)
+Does the author conclude that hypnosis is the most effective technique for altering behavior?
+
+Not at all. The conclusion is "the subsequent instructions on Mesmosis videos are extremely effective".
+
+This answer is borrowing language from the first sentence of the stimulus, which was just a background claim.
+
+**D. draws a conclusion that simply restates a claim presented in support of that conclusion** — Not Circular (17% of students)
+This describes the famous Circular Reasoning flaw, which is almost never the correct answer. Circular arguments are ones in which the evidence restates or assumes the truth of the conclusion.
+
+The conclusion here was that "the subsequent instructions on Mesmosis videos are extremely effective". Was there a premise that also said that?
+
+Definitely not.
+
+**E. concludes that hypnosis videos will be effective simply because they have never been proven to be ineffective** — Bad Evidence Match / Not Unproven vs. Proven False (2% of students)
+This alludes to the famous Unproven vs. Proven False flaw, but the evidence in this argument has nothing to do with saying "No one has ever proven that hypnosis videos are ineffective".
+
+---
+
+## S1 · Q23 — Strengthen
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+The traditional view of the Roman emperor Caligula as a cruel and insane tyrant has been challenged by some modern historians. They point out that little documentation of Caligula's alleged cruelty or outrageous behavior survives from the time of his reign and that the histories that have come down to us were written by his enemies.
+
+### Prompt
+Which one of the following, if true, adds the most support for the challenge from the modern historians?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** Caligula was not a cruel and insane tyrant.
+- **Evidence:** Little documentation of his supposed cruelty or outrageous behavior has survived, and what has survived was written by his enemies.
+- **Evaluate:** The two big questions I would have for this author's evidence are 1. How much documentation do you expect to have from the time period of an ancient Roman emperor, or how much do you expect from an emperor if they were cruel and insane? Is it possible that Caligula did crazy mean stuff, but whatever documentation there was has just been lost to the sands of time? Do we have ample documentation of his reign suggesting that he was a normal emperor? If we have almost no documentation of his reign at all, then that doesn't really seem like evidence one way or the other. Is it possible that, were he to be cruel and insane, he might have aggressively prosecuted anyone who was attempting to document his cruelty? 2. The fact that the surviving histories are written by his enemies doesn't mean they're false histories. If Caligula were as cruel and insane as alleged, then wouldn't he have tons of enemies? Thus, it might be that any history from the period (but for that of his most ardent loyalists) is going to sound like, "This Caligula guy was nuts!"
+- **Goal:** We either want to rule out one of these objections or find an answer that supplies more plausibility to the idea that Caligula was not cruel and insane.
+
+**Answer choices**
+**A. There is less documentation of any sort from Caligula's reign than from the reigns of most other Roman emperors of Caligula's era.** — Weakens, if anything (27% of students)
+If Caligula was anomalous for providing us with less documentation than other emperors did, then it somewhat hurts the author's argument.
+
+Our author is thinking, "There's little documentation because his reign was unremarkable. There really weren't these cruel and insane deeds to document."
+
+But if we say, "Actually there's little documentation for some other reason; his reign in general is a blind spot when it comes to documentation" then the lack of documentation no longer works as a premise for the author's case.
+
+**B. People who have lived under someone regarded as a cruel tyrant are more likely to view that person unfavorably than favorably.** — Weakens, if anything (13% of students)
+This starts to sound like the objection we were making:
+maybe it's "written by his enemies" because anyone living under the reign of a cruel and insane dude would be his enemy!
+
+Overall, this answer should seem like it's telling us very little more than common sense. People who are subjected to cruel overlord are more likely to have an unfavorable than favorable view of that person.
+
+It doesn't have anything to do specifically with Caligula, so it's not helping us to assess whether he was / wasn't a cruel and insane tyrant.
+
+**C. The specific outrageous acts attributed to Caligula in Roman documentation are very similar to acts attributed in earlier writings to other rulers alleged to be cruel tyrants.** — Correct (48% of students)
+Before I defend this answer, I want to acknowledge that I definitely didn't pick this, and when I found out it was correct it basically broke my heart. I believe I said stuff like, "I just don't get you anymore, LSAT." :)
+
+The idea behind this answer is that it adds some plausibility to the author's argument, by making it seem like the allegations of cruelty and insanity leveled against Caligula were just recycled fabrications that had been used on previous leaders.
+
+It's kind of like if parents who were nervous about TikTok recycled all the bad things people used to say about Facebook, which recycled all the bad things people used to say about video games, which recycled all the bad things people used to say about MTV. The idea is that when the same accusation is continually leveled against different things, it starts to lose credibility.
+
+If Megan keeps breaking up with people for the same reason: they "have a toxic energy", then maybe her friends start doubting that accusation and think the problem is really with Megan.
+
+What's supposed to make this answer sound "suspicious" is that the specific things attributed to Caligula were very similar to things attributed to other rules alleged to be cruel.
+
+If we hear that "Caligula used to rip the fingernails off his political opponents" it sounds scary. But if we find out that earlier writings accused previous rulers of being so cruel that they would "rip the fingernails off their political opponents", then it starts to sound less like an honest description and more like fear-mongering done by opponents.
+
+So, again, the intent of this answer is that it tries to make the specific allegations against Caligula sound more phony because it's unlikely that multiple cruel tyrants would engage in specific outrageous acts that were very similar. [face palm]
+
+**D. The little documentation that survives from Caligula's reign indicates that the Roman people believed Caligula to be crueler than other emperors who were widely thought to be tyrants.** — Weakens, if anything (6% of students)
+The author has tried to devalue the legitimacy of the surviving evidence, saying that it's written by enemies.
+
+This answer makes Caligula sound crueler than other tyrants, so that goes in the opposite direction of the author's argument.
+
+**E. There is ample documentation of modern tyrants being responsible for outrageous acts worse than those attributed to Caligula.** — No Impact (6% of students)
+If this answer referred to other ancient tyrants and said, "For these other tyrants, who are known to have been cruel, there was ample documentation", that would strengthen the argument.
+
+It would rule out the objection that we lack documentation, not because Caligula didn't do awful things, but because it's been a couple millennia so documentation is just hard to come by no matter what.
+
+Since this is instead about modern tyrants (who live in a world of smartphones and digital cameras and 24 hour news and the internet, etc), it's not really surprising that there's ample documentation.
+
+---
+
+## S1 · Q24 — Paradox
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Critics of a plan to create new building sites from land that currently lies under only 5 meters of water claim that it will reduce the habitat area available to a local subpopulation of dolphins. It is true that the dolphins never enter water more than 30 meters deep, and the current area of habitation is bounded on one side by land and everywhere else by water that is considerably deeper than that. Nevertheless, the critics are mistaken, because _______.
+
+### Prompt
+Which one of the following most logically completes the argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Given That ...:** there's a plan to build on land that lies under 5m of water, and there's a local subpopulation of dolphins, who only live in water under 30m of water, and currently live in an area bounded on on side by land and everywhere else by water
+- **How Can We Say That ....:** Building on this land will not reduce the habitat area available to those dolphins?
+- **Evaluate / Goal:** We know the dolphins' habitat area is basically all the stuff less than 30m but not land. This building area is going to claim all of that underwater area that's less than 5m deep. So if we're trying to say that we're not stealing habitat area, we either have to find an answer that says we're balancing out the underwater area we're snatching with some new habitable area for the dolphins, or we need to say that the under 5m parcel of underwater land we're snatching was not really part of the dolphins' habitable area in the first place.
+
+**Answer choices**
+**A. the dolphins' current habitat area is large enough to support a dolphin population several times the size of the current one** — No Impact (13% of students)
+We're not analyzing a claim about how many dolphins a certain habitat area can support.
+
+We're analyzing a claim about whether the square footage of this habitat area is being reduced. So learning that the habitat area could handle way more dolphins is really irrelevant.
+
+We're just judging whether this habitat goes from 1000 square meters to 800 square meters. We're not judging the relative density of dolphins that would live within that area.
+
+**B. the dolphins do not inhabit water that is less than 10 meters deep** — Correct (70% of students)
+This allows us to say, "since we're only grabbing underwater land that's in 5m deep water, we're not reducing the dolphins' habitat area at all".
+
+After all, if dolphins to not inhabit water less than 10m deep, then their habitable area is the underwater area that's between 10 - 30m deep.
+
+This new building site wouldn't be touching any of that land, so it wouldn't reduce the dolphins habitat area.
+
+**C. the most serious threat to the dolphin subpopulation is not habitat reduction but disease and ocean pollution** — No Impact (4% of students)
+We don't care at all what's the #1, #2 , #3 most serious threat to dolphins. This author isn't claiming that habitat reduction is a dire issue, or the most dire issue.
+
+She is only claiming that this action would not reduce habitat. Our correct answer will only be about whether or not grabbing this parcel of land under 5m of water is taking some habitat away from this local dolphin population. It doesn't matter whether doing so would be terrible for them, mildly bad for them, neutral for them, etc.
+
+**D. the average depth of water in the dolphins' habitat area is 25 meters** — Too Weak (9% of students)
+This is somewhat suggestive that dolphins might be living closer to the -30m depth than to the -5m depth where we want to build.
+
+But it's too weak compared to the correct answer. If the -5m water is just a tiny part of their habitat area, then the average could still be -25m.
+
+For example, let's say this is their habitat area -
+five acres that are 29m deep
+one acre that is 5m deep
+
+This would produce an average depth of 25m. If the new building claims that one acre that is 5m deep, then we are still reducing the dolphins' habitat.
+
+In short, this answer provides us no guidance as to whether the -5m land we want to use for this building site is or isn't part of the dolphins' habitat.
+
+**E. a short distance from the dolphins' habitat area, the ocean floor drops to a depth of 100 meters** — No Impact (4% of students)
+We don't care how deep it gets once it gets deeper than 30m. We already have a premise that locks in the idea that the dolphins aren't going beyond the -30m mark.
+
+So whether it dropped to -35m or -1000m wouldn't make any difference.
+
+---
+
+## S1 · Q25 — Parallel
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Any popular television series that is groundbreaking is critically acclaimed. But not all popular television series are critically acclaimed. Thus, not all popular television series are groundbreaking.
+
+### Prompt
+The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?
+
+### Written (single style)
+**Argument breakdown**
+- **Evidence:** (conditional: all)
+```
+Popular television series and groundbreaking → critically acclaimed
+```
+(fact: not all A's are B = some A's are ~B)
+Some popular television series are not critically acclaimed
+- **Conclusion:** Some popular television series are not groundbreaking
+- **Evaluate:** This is a valid argument. Since there is a conditional and some quantifiers (not all / some) and some repeating ideas (groundbreaking / popular television series / critically acclaimed), we probably want to diagram this.
+```
+Any A that is B is C.        A and B → C
+Not all A's are C.           Some A's are ~C
+So, Not all A's are B        Some A's are ~B
+```
+- **Goal:** The number one thing to look for is a conditional that has an "and" or a qualifier "Any A that is B". If we find it, the conclusion should be saying "Not all A are B".
+
+**Answer choices**
+**A. If articles use specialized technical terminology, they are not widely read. So, since all academic works use specialized technical terminology, articles are not widely read if they are academic works.** — Bad Conclusion Match (5% of students)
+We see a conditional that could be thought of as
+Article and Use Specialized Term →
+
+Is the conclusion saying "not all articles use specialized terms"?
+No, the conclusion is a conditional and it uses a new term like "academic works".
+```
+              Original Argument    This Answer
+Premise 1:    A and B → C          A and B → ~C
+Premise 2:    Not all A's are C.   D → B
+Conclusion:   Not all A's are B.   D → ~C
+```
+
+**B. Professor Attah gives students high grades if she thinks their work is greatly improved. So, since she gives some of her students high grades, she thinks those students' work is greatly improved.** — Bad Premise Match (3% of students)
+The conditional here doesn't seem to have a trigger that could be split into two things.
+Thinks Improved → gives high grades
+
+There's no way to replicate the argument structure without two ideas in the trigger.
+```
+              Original Argument    This Answer
+Premise 1:    A and B → C          A → B
+Premise 2:    Not all A's are C.   Some A.
+Conclusion:   Not all A's are B.   Some B.
+```
+
+**C. If a biography is unbiased, it contains embarrassing facts about its subject. So, since not all biographies contain embarrassing facts about their subjects, not all biographies are unbiased.** — Correct (75% of students)
+The conditional here could be split into a two thing trigger:
+Bio and Unbiased → Embarrassing Facts
+
+The conclusion would have to be "Not all bio are unbiased" or "Some bio are biased", and it is!
+
+Okay, let's verify the other premise. Does it say "not all biographies contain embarrassing facts?" Yes.
+```
+              Original Argument    This Answer
+Premise 1:    A and B → C          B and U → CEF
+Premise 2:    Not all A's are C.   Not all B is CEF.
+Conclusion:   Not all A's are B.   Not all B are U.
+```
+
+**D. Mr. Schwartz is polite to anyone who is polite to him. So, since all of his colleagues are polite to him, it must be that he is polite to all his colleagues.** — Bad Premise Match (3% of students)
+The conditional here doesn't seem to have a trigger that could be split into two things.
+Polite to Mr. Schwartz → Mr. Schwartz Polite to Them
+
+There's no way to replicate the argument structure without two ideas in the trigger.
+```
+              Original Argument    This Answer
+Premise 1:    A and B → C          A → B
+Premise 2:    Not all A's are C.   All C's are A.
+Conclusion:   Not all A's are B.   All C's are B.
+```
+
+**E. If a book is worth reading, it is worth buying. So, since not all books are worth reading, not all books are worth buying.** — Reversed Premise/Conclusion Match (14% of students)
+The conditional here could be split into a two thing trigger:
+Book and Worth Reading → Worth Buying
+
+The conclusion would have to be "Not all books are worth reading" or "Some books are not worth reading", but that shows up as a premise instead. The conclusion involves the right side of the conditional, "worth buying".
+```
+              Original Argument    This Answer
+Premise 1:    A and B → C          B and WR → WB
+Premise 2:    Not all A's are C.   Not all B are WR.
+Conclusion:   Not all A's are B.   Not all B are WB.
+```
+
+---
+
+# Section 3 (Logical Reasoning)
+
+## S3 · Q1 — Weaken
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Advertisement: Most nutritionists recommend eating fish twice a week. Eating tilapia fillets is a perfect choice for those who want the benefits of eating fish but do not care for the taste of fish. Tilapia fillets lack the strong fishy taste that many people find objectionable.
+
+### Prompt
+Which one of the following, if true, most seriously weakens the advertisement's argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Evidence:** Tilapia fillets lack the strong fishy taste that many people find objectionable.
+- **Conclusion:** Eating tilapia fillets is a perfect choice for those who want the benefits of eating fish but do not care for the taste of fish.
+- **Evaluate:** This argument doesn't gift us with any clear premise indicators or conclusion indicators, but we can use the context and content of the statements to understand the role that each statement plays. The first sentence describing what nutritionists recommend looks like a statement of fact. So does the final sentence about the taste of tilapia. The middle sentence contains a value judgement, calling tilapia a "perfect choice." The final sentence also seems to be acting as support for this middle sentence. All of this taken together indicates that the middle sentence is the conclusion. It's useful to notice that the conclusion makes a claim about both taste and the benefits of eating tilapia, but the evidence only discusses the taste of tilapia compared to other fish. We aren't given any evidence about the benefits of eating tilapia compared to other fish. This argument is based on an incomplete comparison. There's no evidence supporting the claim that tilapia provides the same benefit as other fish.
+- **Goal:** A correct answer might highlight the argument's lack of evidence about the benefits of tilapia compared to other fish. But we should keep an open mind, since a correct answer might weaken the argument in a different way that we haven't predicted. Beware of answers that actually strengthen the argument.
+
+**Answer choices**
+**A. Eating more than the recommended amount of fish can cause toxins that are present in high concentrations in many varieties of fish to accumulate in a person's body.** — No Impact / Irrelevant Causality (0% of students)
+Nothing in the argument suggests or involves eating more than the recommended amount of fish, so this answer choice about doing that isn't relevant. This answer choice seems to be casting doubt on the whole idea of eating fish, but that's not what the question is asking us to do.
+
+**B. Tilapia are invasive species that crowd out native species of fish in lakes throughout the world.** — Opposite (if anything) / Irrelevant Distinction (0% of students)
+We could argue that this strengthens the conclusion by providing another reason to eat tilapia. Let's chow down on invasive species and get rid of them! I'll have the tilapia with a side of braised kudzu. But our job in this question is to weaken the argument. And in a broader sense, this answer choice ignores the fact that the argument is based on taste and benefits of eating tilapia. Tilapia being invasive is actually not relevant to the reasoning in this argument.
+
+**C. Tilapia fillets contain little of the beneficial fish oils that are the main reason nutritionists recommend eating fish frequently.** — Correct (97% of students)
+This answer suggests that people who want the benefits of eating fish won't get those benefits by eating tilapia.
+
+**D. Most people who do not care for the taste of fish eat less fish than is recommended by most nutritionists.** — Opposite (if anything) (2% of students)
+This answer seems to provide another reason to eat tilapia. But that would strengthen the argument, if anything.
+
+**E. People who rarely or never eat fish usually dislike any food with a strong fishy taste.** — Opposite (if anything) (0% of students)
+Like other incorrect answers, this would seem to strengthen the argument. This answer suggests that people who rarely or never eat fish might be willing to try tilapia. But we're supposed to choose an answer that weakens the argument, not one that strengthens it.
+
+---
+
+## S3 · Q2 — Flaw
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Domestication of animals is a cooperative activity, and cooperative activities require a sophisticated means of communication. Language provides just such a means. It is likely, therefore, that language developed primarily to facilitate animal domestication.
+
+### Prompt
+A flaw in the argument is that the argument
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (therefore):** It's likely that language developed primarily to facilitate animal domestication.
+- **Evidence:** Domesticating animals is a cooperate activity, and cooperative activities requires a sophisticated means of communication.
+- **Evaluate:** The author's evidence definitely establishes that the evolution of sophisticated language was primarily driven by a need / desire to domesticate animals. But there are presumably other human activities that are also cooperative and would also require sophisticated communication: (agriculture, hunting, building cities, sorting out ethical rules, etc.) Who knows which of those came first or which would be considered the primary reason that language developed?
+- **Goal:** The author seems to be treating one possible thing that could have been the driving force behind developing language as though that thing likely is the primary reason we developed language. Or we could object by saying something besides domesticating animals was the primary / earlier reason we developed language.
+
+**Answer choices**
+**A. conflates being necessary for the development of a phenomenon with guaranteeing the development of that phenomenon** — Out of Scope: guaranteeing phenomenon (11% of students)
+This answer alludes to the #1 famous flaw Necessary vs. Sufficient, in which the author presents a conditional relationship as a premise, and then the author ultimately reaches her conclusion by using that relationship in some backwards or inverted fashion.
+
+Do we have a conditional premise? Is there something identified as "necessary for the development of a phenomenon?"
+
+Sure, a sophisticated means of communication is required for cooperative activities ... so, I guess we could say it's required for the development of the phenomenon of 'cooperative activities'? Hmm. That feels too awkward to be correct.
+
+But that is our only option. The only necessary thing discussed in the argument is that sophisticated communication is necessary for cooperative activities.
+
+This answer is referring to "development of a phenomenon", so it's a more natural fit for matching up with the phenomenon of language, since the conclusion alludes to the development of language.
+
+But was there any trait we said was necessary for the development of language?
+
+Nope. So either way we slice it, we can't get off the ground with trying to match up the abstract wording from the answer with the specifics of the argument.
+
+**B. takes for granted that every phenomenon has a unique cause** — Too Strong: every (0% of students)
+Any time the answer on Flaw begins takes for granted / presumes / fails to establish, the answer is claiming that the author needed to assume the idea that follows.
+
+If this were a Necessary Assumption question, would we say this author just committed to the idea that "every phenomenon has a unique cause"?
+
+Definitely not. That is way too extreme a claim for anyone to believe.
+
+Sometimes multiple phenomena have the same cause: the phenomena of Leon blushing and David smiling were both caused by Emilia walking out of the coffee shop and blowing a kiss in their direction. Our author doesn't have any problem with that type of situation. She doesn't need to assume that sort of thing never happens.
+
+**C. infers that the development of one phenomenon caused the development of another merely because the two phenomena developed around the same time** — Bad Evidence Match (2% of students)
+Any time a Flaw answer choice describes a 2-part reasoning move, such as ...
+confuses X with Y
+infers Y on the basis of X
+takes for granted that Y because X
+concludes, from the claim that X, that Y
+
+... we check to see whether the evidence part (X) matches the evidence, and whether the conclusion part (Y) matches the author's conclusion, or an assumption she made en route to the conclusion.
+
+Here, we're asking ourselves, "Did the author conclude that the development of one phenomenon caused the development of another?"
+
+Kind of, but it's a stretch. We could say that the author is concluding that the desire to domesticate animals caused the development of language.
+
+Okay, does the evidence say that these two phenomena (domesticating animals + language) developed around the same time?
+
+No, it does not. We never hear that domestication of animals and language developed around the same time.
+
+This answer is teasing the famous Causal flaw, in which authors commonly assume that just because two things coincide, that one causes the other.
+
+Our objection here was more like, "Just because language fulfilled a need that X had doesn't prove that language developed primarily because of X".
+
+**D. draws a conclusion that merely restates a claim presented in support of that conclusion** — Not Circular (1% of students)
+This answer describes the famous Circular Reasoning flaw, which is almost never a correct answer. Circular arguments are weird; the evidence restates the conclusion or assumes the truth of the conclusion.
+
+The conclusion here is that "language developed primarily to facilitate animal domestication". Is there a premise that says or assumes "language developed primarily to facilitate animal domestication"?
+
+Nope. Language and animal domestication never even appear in the same sentence together, within the premises.
+
+**E. assumes that if something serves a purpose it must have developed in order to serve that purpose** — Correct (86% of students)
+This answer is describing an assumption the author supposedly made, and the assumption is in conditional form, so the best way to analyze it is to ask ourselves whether the author 'made this move':
+
+if X serves a purpose → X must have developed in order to serve that purpose
+
+We know that "language served the purpose of facilitating animal domestication", because animal domestication, as a cooperative activity, required a sophisticated means of communication, and "language provides such a means".
+
+Does the author move from that idea to the idea that "language must have developed in order to serve the purpose of facilitating animal domestication"?
+
+Yes, mostly.
+
+I mean, it's incredibly sloppy of LSAC to use softer wording in the conclusion (it is likely that language developed primarily to facilitate X) and then ask us to pick an answer that accuses the author of thinking that language must have developed to facilitate X.
+
+Nowadays, we see correct answers that are just sloppy like this. LSAT on more modern tests plays a little bit fast and loose with "necessary" assumption language. If it's fitting the gist and there isn't a better answer, then we need to sort of 'play along'.
+
+---
+
+## S3 · Q3 — Necessary Assumption
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Many employers treat their employees fairly. Thus, using others as a means to one's own ends is not always morally reprehensible or harmful to others.
+
+### Prompt
+The argument requires the assumption that
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (thus):** Using others as a means to one's own ends is not always morally reprehensible or harmful to others.
+- **Evidence:** Many employers treat their employees fairly.
+- **Evaluate:** What a weird, sparse argument. First, let's focus on our burden of proof if we're trying to prove a claim that Doing X is not always Y or Z. To prove this claim, we just need at least one example in which X is done, but neither Y nor Z happen. So this author has to establish - Person A used Person B as a means to A's ends - B was not harmed - this was not morally reprehensible. In the author's example of employers treating employees fairly, has she established any of these things? No.
+- **Goal:** Look for an answer saying, in these cases of employers treating employees fairly, - the employer was using the employee as a means to their ends - the employee was not harmed - this arrangement was not morally reprehensible
+
+**Answer choices**
+**A. some employers act in a morally reprehensible manner only when they harm those whom they employ** — Too Strong: only when (5% of students)
+This argument is only concerned with a time when employers aren't acting in a morally reprehensible way. The author doesn't need to assume anything about the cases in which (or frequency with which) employers do act morally reprehensible.
+
+It wouldn't hurt this argument at all to negate this and say, "hey, author, sometimes employers act in morally reprehensible ways with people who aren't employees". The author would be like, "Sure. That's true. So what?"
+
+**B. no employers who act morally use their employees as a means to their own ends** — Too Strong: no employers (5% of students)
+The author is only saying that "many" employers treat their employees fairly, and using them as a counterexample to a general principle.
+
+She doesn't have to assume anything about the total set of all employers who act morally.
+
+**C. some or all employers use their employees as a means to their own ends** — Correct (82% of students)
+In positive form, this answer is just suggesting, "The author was assuming that the crap he said about employers treating employees fairly is somehow relevant to the stuff he's talking about in the conclusion about using someone as a means to their own ends".
+
+This was one of the three possible answers we predicted.
+
+If we negated this, it would say "no employers ever use their employees as a means to their own ends", which would destroy this argument by making the example of "fair employers" completely irrelevant to a generalization about "using people as a means to your own ends".
+
+**D. making a profit from the labor of others is personally advantageous but never harmful** — Too Strong: never / Out of Scope: profit (3% of students)
+The author never discusses profit and certainly never commits herself to a crazy-extreme claim that "profiting from others' labor is never harmful"
+
+**E. it is not possible to harm someone else without treating that person as a means to one's own ends** — Too Strong: impossible (5% of students)
+The author never commits to an extreme position like "it's impossible to harm someone else unless you're treating them as a means to your ends".
+
+I'm pretty sure the author is still okay with saying "punching someone in the face harms them". Nothing in her paragraph ruled that out.
+
+---
+
+## S3 · Q4 — Flaw
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Editorial: It is common to find essays offering arguments that seem to show that our nation is in decline. There is no cause for alarm, however. The anxious tone of these essays shows that the problem is with the psychological state of their writers rather than with the actual condition of our nation.
+
+### Prompt
+Which one of the following most accurately describes a flaw in the editorial's reasoning?
+
+### Written (single style)
+**Argument breakdown**
+- **Main Conclusion:** There's no cause for alarm that our nation is in decline.
+- **Intermediate Conclusion (this shows that):** The anxious tone of the essays is due to the psychological state of the writers, not the actual condition of the nation.
+- **Evidence:** There are essays that seem to show that our nation is in decline.
+- **Evaluate:** This should strike us as a pretty weird argument. People have written essays offering arguments that seem to show that our nation is in decline. This author is saying, 'We don't need to worry about these essays. There's nothing wrong with our nation. These essays sound alarmist just because the writers are psychologically disturbed." Where's your evidence for that buddy? Why should we just believe that these writers are overly pessimistic alarmists? You're just asking us to take your word for it?
+- **Goal:** Let's look for an answer complaining that this is a totally unfair way to dismiss an argument. If I write an essay showing that our environment is in decline because of global warming, citing the massive loss of over 50% of species, and describing the tens of millions of climate refugees we'll have when the oceans rise a foot or two, can this guy just say, "There's no cause for alarm. Patrick is just an anxious person"? Of course not.
+
+**Answer choices**
+**A. The editorial dismisses a claim without considering any reasons presented in arguments for that claim.** — Correct (86% of students)
+Does the author dismiss a claim?
+
+Yes, she dismisses the claim that our nation is in decline, saying there's no problem with the actual condition of the nation.
+
+Does the author fail to consider any reasons presented in support of that claim?
+
+Yes, she doesn't respond to any of the arguments that seem to show that our nation is in decline. She just says, "Ahhh, don't listen to them. They're just anxious people."
+
+This is basically a version of the famous Ad Hominem flaw, because the argument is dismissing a view by talking about the source of the view rather than by engaging with the content of the ideas.
+
+**B. The editorial compares two situations without considering the obvious differences between them.** — Out of Scope: two situations (3% of students)
+Does the author compare two situations?
+
+Nope. There's an essay. The essay describes a situation. The author says, "Don't worry. That situation ain't true. The writer is just anxious."
+
+This answer sounds like it's describing a Flawed Comparison, like the argument tried to argue by analogy but failed to consider a crucial difference.
+
+**C. The editorial confuses claims about a cultural decline with claims about a political decline.** — Out of Scope: cultural vs. political (0% of students)
+When we see flaw answers structured like,
+confuses X with Y
+mistakes X for Y
+
+they are only correct if X is what we were talking about in the evidence (or what we could correctly infer from the evidence) while Y is what the author is talking about in the conclusion.
+
+So we would ask ourselves here, "Did this author go from talking about a cultural decline to talking about a political decline?"
+
+Definitely not. The argument just talks about the nation being in decline. It never gets specific about whether we mean cultural, economic, political, social decline, etc.
+
+**D. The editorial overlooks the possibility that the nation is neither thriving nor in decline.** — Not an Objection (1% of students)
+When an answer begins with fails to consider / overlooks the possibility, then we can ask ourselves whether the idea that follows would Weaken.
+
+Would it hurt this author if we said, "Yo, author — the nation is neither thriving nor in decline. They're just doing kinda okay"?
+
+Nope. Doesn't hurt the author. She was never arguing that the nation is thriving. She was just arguing that the nation isn't in decline.
+
+This answer choice seems to describe an argument that committed a False Choice flaw, where the author failed to perceive a middle ground between two extremes (thriving vs. in decline).
+
+**E. The editorial dismisses a particular view while offering evidence that actually supports that view.** — Not Self-Contradiction (9% of students)
+This describes one of the 10 Famous Flaws, Self-Contradiction, in which the author says something early on that undermines/contradicts something they say later.
+
+This answer is almost never correct
+
+Our author did indeed dismiss a particular view (the view in these common essays). But she never offered evidence that supports the idea that the nation is in decline.
+
+---
+
+## S3 · Q5 — Strengthen
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Eating turmeric, a spice commonly found in curries, probably helps prevent Alzheimer's disease. More turmeric is consumed per capita in India than in the rest of the world, and the incidence of Alzheimer's disease is much lower there than it is worldwide. Furthermore, Alzheimer's disease is characterized by the buildup of amyloid protein plaques in the brain, and studies on animals found that curcumin—a compound found in turmeric—reduces the accumulation of amyloid proteins.
+
+### Prompt
+Which one of the following, if true, most strengthens the argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (probably = Opinion):** Eating turmeric probably helps prevent Alzheimer's disease.
+- **Evidence (X, furthermore Y):** More turmeric per capita is consumed in India than in the rest of the world, and India's rate of Alzheimer's is much lower than the global average. Also, Alzheimer's is characterized by the buildup of amyloid protein plaques in the brain, and studies have found that a compound in turmeric (curcumin) reduces that amyloid plaque buildup.
+- **Evaluate:** Well this argument is already pretty strong! The last sentence gives a Causal Mechanism explanation of how turmeric could plausibly impact Alzheimer's. The 2nd sentence gives us a Correlation to Causation type piece of evidence. There's a strong correlation in India of turmeric consumption and low rate of Alzheimer's, but we don't know for sure that this means one causes the other. We could use our Explain Curious Fact framework: Curious Fact ... Why do people in India have higher than average turmeric consumption and lower than average Alzheimer's? Author's Explanation ... The turmeric consumption is lowering their risk of Alzheimer's, because the curcumin in turmeric reduces the amyloid plaque buildup that characterizes Alzheimer's.
+- **Goal:** We could strengthen this argument by ruling out an Alternate Explanation for why India has a lower rate of Alzheimer's. Or we can strengthen by adding to the plausibility of the author's explanation, that eating turmeric helps to prevent Alzheimer's.
+
+**Answer choices**
+**A. Rosemary and ginger, which contain compounds that affect amyloid protein accumulation much like curcumin does, are commonly found in the diets of people living in India.** — Weakens (4% of students)
+This suggests an Alternate Explanation for why Indian people have lower rates of Alzheimer's. It's not the turmeric; it's the rosemary and ginger!
+
+Technically, it could be all three. So even if we want to think "this doesn't weaken", that's fair. But it certainly doesn't strengthen.
+
+It could add to the plausibility of this author's hypothesis if we were told "rosemary and ginger have ingredients that act like curcumin, and they are also correlated with lower rates of Alzheimer's in any culture that consumes them heavily".
+
+**B. Many scientists believe that the buildup of amyloid protein plaques in the brain is a symptom of Alzheimer's disease rather than a cause.** — Weakens, if Anything (1% of students)
+It's very weak impact to talk about what a handful of scientists believe. But it seems like even if we went with their idea, it would weaken.
+
+The author's causal story is this
+1. eat turmeric
+2. curcumin in your blood
+3. curcumin breaks down amyloid plaques in your brain
+4. keeps you from getting Alzheimer's
+
+The move from 3 to 4 assumes that the plaque causes the Alzheimer's. The author is thinking, "reduce the plaque → prevent Alzheimer's". But if the plaque is a symptom of Alzheimer's, then turmeric just reduces a symptom; it doesn't prevent the disease.
+
+**C. The proportion of people living in India who fall within the age group that is most prone to developing Alzheimer's disease is smaller than the proportion of people worldwide who fall within that age group.** — Weakens (6% of students)
+This provides an Alternate Explanation for why India has a lower than average rate of Alzheimer's. It's not the turmeric, it's the fact that there's a smaller percentage of the population that is at the age that is highest risk of Alzheimer's.
+
+Like if Alzheimer's is most common amongst people in their 70s, but India has a smaller percent of its population in their 70s than other countries do, then that would explain why they have a lower incidence of Alzheimer's.
+
+**D. None of the other compounds found in turmeric have been studied to see whether they affect the accumulation of amyloid proteins.** — No Impact (0% of students)
+This has no effect, since it's just saying that we haven't studied something.
+
+**E. The parts of India that have the highest per capita rates of curry consumption have the lowest incidence of Alzheimer's disease.** — Correct (89% of students)
+This strengthens the plausibility of the author's causal hypothesis (that turmeric helps prevent Alzheimer's) by giving us More Cause, More Effect data points.
+
+It's showing us more evidence of correlations between turmeric and Alzheimer's rates.
+
+Turmeric is commonly found in curries, and the parts of India where they eat the most curry (and thus presumably the most turmeric) are the places with the lowest incidence of Alzheimer's.
+
+This adds to the body of evidence we have suggesting that turmeric helps lower incidence of Alzheimer's.
+
+---
+
+## S3 · Q6 — Role
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Forestry official: Many people think that if forest fires are not extinguished as quickly as possible, the Forestry Department is not doing its job properly. But relatively frequent, small fires clear out small trees and forest debris, which, if allowed to accumulate, would create the conditions for large, devastating fires. Therefore, it's best to let small fires burn.
+
+### Prompt
+The statement that relatively frequent, small fires clear out small trees and forest debris plays which one of the following roles in the official's argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (Therefore):** It's best to let small fires burn.
+- **Evidence:** Relatively frequent, small fires clear out small trees and forest debris, which, if allowed to accumulate, would create the conditions for large, devastating fires.
+- **Evaluate:** When we read the arguments on a Main Conclusion or Role question, we know that 90% of the time the conclusion will be the First Sentence or some Rebuttal / Pivot idea. But here we have the leftover 10% where they just put the conclusion in the final claim and even announce it with a conclusion indicator, Therefore. This argument is still a Rebuttal, so there's also an implicit conclusion going against the original position. Implicit Rebuttal Conclusion: The Forestry Dept is doing its job properly sometimes when they don't extinguish a forest fire as soon as possible. why is that? Because it's best to let small fires burn. why is that? Because frequently small fires just clear out debris and make large, devastating fires less likely.
+- **Goal:** We're being asked about that second to last sentence, which is the author's premise, supporting the conclusion that "it's best to let small fires burn" (which then supports the implicit the conclusion that the Forestry Department may be doing its job properly even if it doesn't put out a forest fire as soon as possible).
+
+**Answer choices**
+**A. It is offered as support for the contention that the Forestry Department is not doing its job properly if it does not extinguish forest fires as quickly as possible.** — Bad Conclusion Match (3% of students)
+This answer correctly labels the role of our claim as support, but it's directly supporting the idea that "it's best to let small fires burn" and indirectly supporting the idea that "the Forestry Dept. is doing its job properly".
+
+**B. It is used as evidence against the contention that the Forestry Department is not doing its job properly if it does not extinguish forest fires as quickly as possible.** — Correct (89% of students)
+This answer correctly labels the role of our claim as evidence, and it tests our understanding of the implicit rebuttal conclusion the whole argument is directed towards.
+
+Our claim directly supports the conclusion that "it's best to let small fires burn", which is rebutting the idea that "if the Forestry Department doesn't put out forest fires as quickly as possible, then it's not doing its job properly".
+
+**C. It is used to show what the consequences would be if the Forestry Department based its policies on the ideas most people have about how it should do its job.** — Out of Scope: most (6% of students)
+We could get into a more complicated and nuanced objection to this answer, based on the fact that the author's goal in telling us about what small fires do is just to demonstrate that it's proper policy to let small fires burn.
+
+She isn't trying to rub out faces in it and be like, "SEE what you did? THIS is what happens when you let the Forestry Department go off the public's ideas of how things should work."
+
+But the quicker, easier way to know this answer is wrong is that we never even talked about ideas most people have about how the Department should do its job.
+
+The first sentence just says, "Many people think .."
+
+Many is an unspecific quantity that we can think of as "at least 5". Most is very specific, because it means more than 50% of the population.
+
+**D. It is an example used to illustrate the claim that most people believe the Forestry Department should quickly extinguish all forest fires.** — Out of Scope: most / Illustrate vs. Counter (1% of students)
+Again, our quickest way to disqualify this answer is to just see "most people believe" and remind ourselves that the argument never talked about what most people believe.
+
+On a deeper level, our claim wasn't trying to illustrate the fact that most people believe something. It was trying to counter the thing that "many people" believe in the first sentence.
+
+**E. It is a conclusion based on the premise in the argument that it is best to let small forest fires burn.** — Wrong Role (1% of students)
+We're looking for premise, not conclusion.
+
+Our claim is not supported by the final claim. The Therefore keyword would never allow that.
+
+You can't possibly have
+Claim 2. Therefore, Claim 3
+and say that 2 is a conclusion based on 3.
+
+That keyword instructs us that in the author's mind, 3 is a conclusion based on 2.
+
+---
+
+## S3 · Q7 — Agree/Disagree
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Gerald: Unless a consumer secures his or her home wireless Internet service, anyone strolling by is able to access that person's service with certain laptop computers or smartphones. Such use cannot be considered illegal under current laws: it's no more like trespassing than is enjoying music playing on someone's radio as you walk down the street.
+
+Kendra: But unlike hearing music while walking by, accessing wireless service requires stopping for a considerable length of time. And that could be considered loitering or even harassment.
+
+### Prompt
+Gerald's and Kendra's positions indicate that they disagree over whether accessing someone's wireless Internet service while walking down the street
+
+### Written (single style)
+**Argument breakdown**
+- **Gerald's Claims:** 1. If a consumer doesn't secure their home wifi network, then anyone strolling by is able to access that service with their laptop or smartphone. 2. Such use cannot be considered illegal under current laws. 3. It wouldn't be considered trespassing, just like it wouldn't be considered trespassing to walk by someone's house and enjoy the music you hear coming out of their window.
+- **Kendra's Responses:** 1. No comment. 2. Possible Disagree? She seems to argue that stopping to use someone's wifi could be considered loitering or harassment, both of which can be considered illegal. 3. Definitely disagrees with analogy. She might agree that it's not trespassing, but she doesn't think the hearing music analogy is solid, because it omits the crucial difference that with hearing music you keep strolling whereas with using someone's wifi, you actually stop for a considerable length of time right outside their house.
+- **Evaluate / Goal:** The areas of disagreement are whether or not stopping to use someone's wifi could be considered illegal (like loitering or harassment), as well as whether or not it's fair to compare using someone's wifi to listening to the music that is playing inside their house.
+
+**Answer choices**
+**A. can be considered illegal under current law** — Correct (80% of students)
+We can derive the Agree position from Kendra's statements, since she says that using someone's wifi requires stopping for a while, which could be considered loitering or harassment (both of which are presumably illegal under current law).
+
+We can derive the Disagree position from Gerald, who explicitly says in his 2nd claim that it can't be considered illegal.
+
+**B. is like trespassing** — Unsupported Agree Position (9% of students)
+We know that Gerald disagrees. He says it's not trespassing, or at least implies it by saying, "it's no more trespassing than [this other thing that is not trespassing]."
+
+But we have no support for the idea that Kendra thinks it is trespassing.
+
+**C. should be prohibited by law** — Out of Scope: should be (5% of students)
+Neither person is speaking about whether this behavior should / shouldn't be prohibited, only about whether it is / isn't illegal.
+
+**D. requires a considerable length of time** — Unsupported Disagree Position (2% of students)
+We know that Kendra agrees with this, but we can't support from Gerald's statements that he believes that stopping to use someone's wifi does not require a considerable length of time.
+
+**E. could be done without intending to do so** — Out of Scope: accidental log-in (4% of students)
+Neither party is talking about whether people occasionally access someone else's wifi without intending to do so. We certainly couldn't infer from either person's statements that "accessing someone else's wifi cannot be done unintentionally".
+
+---
+
+## S3 · Q8 — Strengthen
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Over the last thousand years, plant species native to islands have gone extinct at a much faster rate than have those native to mainland regions. Biologists believe that this is because island plants have not adapted the defenses against being eaten by large land mammals that mainland plants have. Ordinarily, populations of large land mammals are not established on islands until after the island is colonized by humans.
+
+### Prompt
+Which one of the following, if true, most strongly supports the biologist's explanation cited above?
+
+### Written (single style)
+**Argument breakdown**
+- **Curious Fact:** How come, over the past 1000 years, plant species native to islands have gone extinct at a much faster rate than those native to mainland regions.
+- **Biologists' Explanation:** Mainland plants have evolved defenses against being eaten by large land mammals, whereas island plants have not, since large land mammals don't show up on islands until after an island is colonized by humans.
+- **Evaluate:** The two pressure points for any Explain Curious Fact argument are 1. Alternate Explanations for the curious fact 2. the Plausibility of the Author's Explanation. We can strengthen such an argument by ruling out an alternative explanation or by increasing the plausibility of the explanation offered by the author. On Strengthen questions (especially those whose question stem asks us to strengthen explanation / hypothesis), the correct answer is much more likely to increase plausibility. The most common form of that type of answer is "Where the cause was absent, the effect was absent" (i.e. No Cause / No Effect data points). The author thinks that "not being exposed to large land mammals until more recent time" caused island plants to go extinct more quickly. So a No Cause / No Effect answer could sound like, "On islands where large land mammals have lived for a long time, the plant species haven't gone extinct as much".
+- **Goal:** Let's look for anything that corroborates this idea that islands don't have large land mammals until humans show up. Once humans show up with large land mammals, those land mammals eat the plants into extinction (sooner than the plants can evolve defense mechanisms).
+
+**Answer choices**
+**A. Most of the plant species in the world that have not yet gone extinct are native to mainland regions.** — Rate vs. Number (9% of students)
+First of all, this is really just reiterating the background fact. We already know that mainland plant species have gone extinct at a slower rate than have island plant species.
+
+We don't need to be convinced of that, but that seems to be what this answer is trying to do: "most living plant species are native to mainland!"
+
+But we also wouldn't do anything with this answer no matter what because it's talking about raw numbers, whereas the argument cared about rates.
+
+When we think about how much land mass on Earth is mainland vs. how much is island, it's probably at least 10 to 1 in favor of mainland.
+
+With 10x as much square footage, we would certainly expect there to be 10x as many plants and maybe 10x as many species on mainland. So we don't care about the raw numbers.
+
+We care about what percent of those species are going extinct. It's no fair to compare the raw numbers, since mainland will have such a higher total to start with.
+
+**B. Many plant species that are not native to islands have become very well established on islands throughout the world.** — No Impact (4% of students)
+This is saying that "at least 5 plant species that are native to mainland have been well established on islands".
+
+Okay, cool?
+
+That's a very weak idea and it doesn't help us assess whether the higher extinction rate of island plants is due to large land mammals.
+
+**C. Commercial development on many islands has resulted in loss of habitat for many native plants.** — Weakens (2% of students)
+This points to a potential Alternate Explanation:
+
+"Plants on islands aren't going extinct faster because they don't have defenses for large land mammals, they're going extinct faster because we keep uprooting their habitats to build our seaside resorts".
+
+**D. The rate of extinction of native plant species on an island tends to increase dramatically after human colonization.** — Correct (83% of students)
+This has some punch, "tends to increase dramatically" after human colonization.
+
+Did the biologists think that human colonization was part of why island plants go extinct more often?
+
+Yes! The story the biologists are telling is that humans colonize an island, then they bring their large land mammals over, then those mammals eat up a bunch of plant species to extinction.
+
+In a sense, this answer is providing the No Cause / No Effect form we were predicting, because it's saying, "prior to humans arriving (and thus prior to there being any large land mammals on the island), the rate of extinction was way lower".
+
+That makes it seem like the arrival of humans is a big causal difference-maker. And since large land mammals don't arrive until humans arrive, we have a three-way correlation with "no humans || no large mammals || much lower extinction rate" vs. "humans || large mammals || higher extinction rate".
+
+It could be that humans are causing these island extinctions some way besides bringing over large land mammals, but the answer doesn't need to prove the biologists are right. It just has to add some plausibility to the causal story they're telling, which this does.
+
+**E. Large land mammals tend to prefer plants from species native to mainland regions over plants from species native to islands.** — Weakens (3% of students)
+This hurts the plausibility of the biologists' causal story. They are saying that humans arrive at an island, then large mammals come with them, then the large mammals eat some of these island plants to extinction.
+
+But this answer throws a monkeywrench into that story by saying, "Nahh ... those large land mammals wouldn't have been interested in chowing down on island plants. They prefer mainland plants."
+
+---
+
+## S3 · Q9 — Paradox
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+As regards memory, the brain responds best to repeated patterns, such as the melodic and rhythmic patterns of music. This is why we can remember long strings of information or text, which would normally be impossible to memorize, when they are put to music. Given that music aids memory, it might seem that funny jokes would be easy to remember, since, like music, they normally elicit an emotional response in us. However, jokes are usually very difficult to remember, since _______.
+
+### Prompt
+Which one of the following most logically completes the passage?
+
+### Written (single style)
+**Argument breakdown**
+- **Given That ...:** Music aids memory and that Jokes, like music, elicit an emotional response
+- **Why is it That ...:** Jokes are usually very difficult to remember.
+- **Evaluate:** When we're doing Fill in the Blank (aka Logical Completion), we check to see whether the word prefacing the blank is expecting a Conclusion or a Supporting claim. The blank is prefaced by SINCE, and since/because always indicate supporting claims. That means this could be Strengthen or Paradox, depending on whether we're supporting a Conclusion or a Surprising Idea, respectively. Because the previous claim begins with HOWEVER, we know we're supporting some Surprising Idea.
+- **Goal:** We need a distinction between music and jokes that will allow us to explain how even though music/jokes are similar on one level, there's a reason why music aids memory and jokes don't.
+
+**Answer choices**
+**A. jokes, unlike music, always have content that is verbal or at least clearly symbolic** — Unclear Impact (2% of students)
+This answer might seem good at first because it describes a difference between jokes and music. And "content that is verbal or at least clearly symbolic" might seem similar to "strings of information or text." But we're told that long strings of information or text can be memorized if they're set to music. Without more information, this answer doesn't help explain why jokes are difficult to remember.
+
+**B. some successful jokes are short and pithy, whereas others are long and involved** — Opposite (if anything) (1% of students)
+If anything, it seems like short pithy jokes might be easy to remember. But knowing that "some successful jokes" are short and pithy while "others" aren't neither supports nor weakens the claim that jokes are usually difficult to remember.
+
+**C. jokes work not by conforming to repeated patterns but by breaking them** — Correct (92% of students)
+The statements we're given explain that repeated patterns help us remember things. If jokes work by breaking patterns, that would likely make them more difficult to remember.
+
+**D. for most people, certain memories elicit a strong emotional response** — Opposite (if anything) (0% of students)
+We're told that jokes normally elicit an emotional response. This answer makes a connection between emotional responses and memories. If anything, a correct answer would weaken the link between emotional responses and memory.
+
+**E. people can hold in short-term memory only a few chunks of unpatterned information at a time** — Unclear Impact (4% of students)
+We were already told that long strings of information can be impossible to memorize if they aren't connected to a repeated pattern like ones found in music. This just seems add a bit more detail to that statement. But without being told how this answer connects to emotional responses or jokes, it's not clear how this supports the claim that jokes are are usually difficult to remember.
+
+---
+
+## S3 · Q10 — Most Supported
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+The prehistoric fish Tiktaalik is the earliest known animal with fingers. Since variations were so great among prehistoric fish species, Tiktaalik would not have stood out as unusual at the time. However, Tiktaalik's fingers were an important development in animal evolution because it is likely that Tiktaalik is an ancestor to the many land animals with fingers.
+
+### Prompt
+The statements above, if true, most strongly support which one of the following?
+
+### Written (single style)
+**Argument breakdown**
+- **Statements:** TikTok (sorry, can we just call it that?) was the first fingered animal. But having fingers wouldn't have made TikTok stand out as a weirdo, because there were so many variations in species that every fish had some wacky adaptation. However, TikTok's fingers were probably a very important step in animal evolution because later land animals that had fingers probably trace back to TikTok.
+- **Evaluate:** Did we see anything Conditional, Causal, Math-y, or Comparative? We saw some comparative language (and we had a Pivot). TikTok was different in the sense that he had fingers but similar in the sense that he had some unusual variation to him. There's something vaguely causal in the last sentence that makes it seem like TikTok is causally linked to the evolution of fingers in many land animals.
+- **Goal:** This seems like one where I would have little to no idea what they want us to say, so we'll just read it a second time and then go to the answers, being wary of strong language, new concepts, or unknown comparisons.
+
+**Answer choices**
+**A. Tiktaalik likely used its fingers to move on land.** — Out of Scope: move on land (19% of students)
+We don't know what function the fingers served for TikTok. The fact that land animals later (may have) evolved from TikTok doesn't mean that T used its fish fingers to move on land.
+
+**B. Tiktaalik's fingers were its only feature to play a significant role in the development of modern land animals.** — Too Strong: only / Only Thing Mentioned ≠ Only Thing (6% of students)
+We only heard about T's fingers having an influence on land animals, but that doesn't mean that T's fingers were its only influence on land animals.
+
+**C. Tiktaalik is not the ancestor of any currently surviving fish species.** — Too Strong: not any / Only Thing Mentioned ≠ Only Thing (4% of students)
+We only heard about T being an ancestor of many land animals, but that doesn't mean that T was only an ancestor of many land animals.
+
+**D. No fish without fingers would ever be able to move on land.** — Too Strong: no fish / ever able (6% of students)
+We have no idea if T's fingers were ever used to help it move on land, so we can't even say that fingers would be useful for moving on land. This goes way farther than that — not only does it assume fingers are useful for moving on land but it also assumes that nothing else would allow a fish to move on land.
+
+**E. The evolutionary significance of Tiktaalik could not be determined just through comparison to fish species of its time.** — Correct (66% of students)
+We're going to pick this mainly through elimination, since the other answers were bringing up new ideas (using fingers to move on land?) and using really extreme language.
+
+This is very soft language: "you could not determine Jenny's value as a person just through comparing her LSAT score to those of others".
+
+The opposite of this claim would be strong: "you CAN determine X just through looking at Y".
+
+The support for this answer comes from the fact that TikTok and his fingers are important, in the grand scale of evolutionary significance, but if you had seen T back its day, you wouldn't have known is was going to be special.
+
+Since there was so much variation among fish species in T's time, scientists in that era (had humans existed then) would have had no idea which of these 1000 variations they were looking at would end up being important.
+
+It defies common sense to think that ALL those variations would end up being very significant. And since you couldn't really see that T was special, compared to its peers, you wouldn't have been able to just look at it and say, "Man, that fish is going to have a done of evolutionary significance!"
+
+---
+
+## S3 · Q11 — Agree/Disagree
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Gabriella: By raising interest rates, the government has induced people to borrow less money and therefore to spend less, thereby slowing the country's economy.
+
+Ivan: I disagree with your analysis. The country's economy is tied to the global economy. Whatever happens to the global economy also happens here, and the global economy has slowed. Therefore, the government's action did not cause the economy's slowdown.
+
+### Prompt
+Gabriella and Ivan disagree about whether
+
+### Written (single style)
+**Argument breakdown**
+- **Gabriella's Claims:** 1. The government has raised interest rates 2. Doing so caused people to borrow less money. 3. Borrowing less money caused less spending. 4. Less spending slowed down the economy
+- **Ivan's Responses:** 1. Implicitly agrees ("the government's action") 2. No comment. Ivan thinks that the government's action did not cause the slowdown, but he doesn't say anything to let us know which part of this causal chain he thinks is off. 3. No comment (same as #2) 4. Ivan implicitly agrees that the economy has slowed down, but thinks that a global slowdown is what caused this country's slowdown.
+- **Evaluate:** Ivan doesn't seem to object to any specific claim Gabriella makes. As he says, he disagrees with her overall analysis. He doesn't think the government's move to raise interest rates is the principal cause of the economic slowdown. She implicitly does, because she lays out a causal chain that starts with the government's raising of interest rates and ends with the economic slowdown.
+- **Goal:** The answer will probably sound like whether the government's action to raise interest rates should be blamed for the recent economic slowdown (vs. whether it was caused by a global slowdown).
+
+**Answer choices**
+**A. the economic slowdown in the country has caused people to spend less** — Unsupported Agree Position (1% of students)
+We can't derive support for affirming this answer from either speaker. Speaker 1 thought spending less caused the economic slowdown (this answer says the reverse).
+
+Speaker 2 thought the global slowdown caused this country's economic slowdown.
+
+**B. the economy of the country is tied to the economies of other countries** — Unsupported Disagree Position (3% of students)
+Person 2 clearly agrees with this answer, but we have no support that Person 1 disagrees. The Disagree position is pretty harsh:
+
+this country's economy is not tied to the economies of any other countries.
+
+Person 1 doesn't think international economic interdependence is what caused this recent slowdown, but she still might agree that international economic interdependence exists for this country.
+
+**C. raising interest rates caused a significant decrease in borrowing** — Unsupported Disagree Position (0% of students)
+Person 1 would plausibly agree with this (although this says significant decrease, which goes a little farther than Person 1 went), but we can't support that Person 2 thinks that "raising interest rates did not cause a significant decrease in borrowing".
+
+We know that Person 2 thinks "raising interest rates did not cause the economy's slowdown", but we can't get more specific than that.
+
+**D. raising interest rates caused the country's economy to slow** — Correct (95% of students)
+Gabriella implicitly agrees with this, because she lays out a causal chain that starts from the the government's action to raise rates and ends with the economic slowdown.
+
+By raising rates, the govt. induced less borrowing and therefore less spending, thereby slowing the economy.
+
+Ivan implicitly disagrees with this because he says "the government's action (of raising interest rates) did not cause the economy's slowdown."
+
+**E. the global economy has slowed** — Unsupported Disagree Position (0% of students)
+We know Ivan agrees with this, but we have no support from Gabriella's claims that she believes "the global economy has not slowed".
+
+---
+
+## S3 · Q12 — Must be False
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+In a scene in an ancient Greek play, Knights, the character Demosthenes opens a writing tablet on which an oracle had written a prophecy, and while looking at the tablet, he continuously expresses his amazement at its contents. His companion presses him for information, whereupon Demosthenes explains what the oracle had written.
+
+### Prompt
+Of the following claims, which one can most justifiably be rejected on the basis of the statements above?
+
+### Written (single style)
+**Argument breakdown**
+- **Statements:** In a play, Demosthenes starts reading a tablet with a prophecy on it, from an oracle. Demosthenes's buddy can see the amazement on Demosthenes's face and is like, "What is it? What is it?" So, Demosthenes tells his buddy what's up.
+- **Evaluate:** This is an odd question stem, but the idea of , "Based on the paragraph, which of these answers can be most justifiably rejected?" is closest to a Must Be False task. On Must Be False questions, the correct answer usually contradicts a conditional rule or contradicts an available inference. But in the paragraph we read there was no conditional rule and there aren't any obvious inferences that can be made. We could infer stuff like, "What the oracle prophesied was not what Demosthenes was expecting", since we know that Demosthenes reacted with surprise. We could say ""Demosthenes's buddy didn't have a good view of the front of the tablet", since the buddy had to ask "what is it? what is it?" We can infer that "Demosthenes is willing to share some prophetic messages with other people", since Demosthenes shared the news with his buddy.
+- **Goal:** We would have practically no idea what we're looking for. So with each answer, we'll just ask ourselves, "Does the passage seem to contradict this?" If an answer brings up something we never talked about, then it's probably automatically wrong, because we can only contradict stuff we talked about.
+
+**Answer choices**
+**A. In ancient Greek plays, characters are presumed to know how to read unless their illiteracy is specifically mentioned.** — Out of Scope: presumed to be literate (13% of students)
+Nothing in this paragraph talks about the audience's expectations regarding characters' literacy, so we wouldn't be able to contradict an answer dealing with that.
+
+**B. The character of Demosthenes in Knights is not based on a historical figure.** — Out of Scope: historical figure (7% of students)
+We have no idea what the character of Demosthenes was based on, so we have no ammunition to contradict this claim.
+
+**C. In ancient Greek plays, the reading aloud of written texts commonly occurred as part of the on-stage action.** — Too Weak (17% of students)
+This is worth keeping on a first pass, since we have an example in which Demosthenes did not initially read aloud the written text on the tablet (we know this because his buddy had to ask him, "What does it say?!")
+
+But this answer choice only says "commonly", not "always". If someone says "Professional violinists commonly took lessons when they're in elementary school", we're not contradicting them by saying "Not Marissa! She's a pro and didn't take lessons until college".
+
+Our ammunition for pushing back on this claim is weak, because saying "X didn't happen in this case" is not a strong way to argue "X doesn't commonly occur".
+
+**D. In ancient Greece, people did not read silently to themselves.** — Correct (54% of students)
+Since this is categorical, it's easier to contradict (you only need one example).
+
+Do we have at least one example of someone in Ancient Greece who did read silently to themselves?
+
+Yes, when Demosthenes first reads the tablet, it's silently to himself. Otherwise, his buddy wouldn't need to ask "What is it? What is it?"
+
+The one weird thing about picking this answer is that we're contradicting an answer choice that's about actual Ancient Greece, not about characters in ancient Greek plays.
+
+However, it's not a true must be false question stem, just a most justifiably rejected stem, so we're allowed a little fuzziness.
+
+**E. Only rarely in ancient Greece were prophecies written down on writing tablets.** — Too Weak (8% of students)
+Similar to (C), we have an example that goes against this trend, but a counterexample does not invalidate a soft generalization.
+
+We're making a weak counterargument if we say, "What do you mean rarely? Prophecies were commonly written down on writing tablets! After all, I have one example from a play where that happened."
+
+We might know someone didn't meet his biological mother until he was in his 50s. That wouldn't prove that "people commonly don't meet their biological mothers until they're in their 50s."
+
+---
+
+## S3 · Q13 — Sufficient Assumption
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Science cannot adequately explain emotional phenomena such as feeling frustrated, falling in love, or being moved by a painting. Since they cannot be explained by physics, chemistry, or neurophysiology, human emotions must not be physical phenomena.
+
+### Prompt
+The conclusion follows logically if which one of the following is assumed?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** Human emotions must not be physical phenomena.
+- **Evidence (since):** Human emotions cannot be explained by physics, chemistry, or neurophysiology. Science can't adequately explain emotional phenomena such as feeling frustrated, falling in love, or being moved by a painting.
+- **Evaluate:** Our goal is to prove that X is not a physical phenomena. Has the argument provided any proving mechanism, like "If ____ is true, then it's not a physical phenomenon?" No. So that means the correct answer must be some sort of rule that can output the language or idea of "not a physical phenomenon". We're trying to prove this about human emotions, so what do we know about human emotions? - science can't adequately explain some of them (3 different examples listed) - they can't be explained by physics, chemistry, or neurophysiology
+- **Goal:** We want an answer that takes something we know to be true about human emotions and says that this proves that human emotions are not physical phenomena. The most predictable answer would sound like,
+```
+If X can't be explained by phys, chem, or neurophysio
+  → X is not a physical phenomenon
+```
+
+**Answer choices**
+**A. Whatever is not a physical phenomenon cannot be explained by science.** — Illegal Reversal (17% of students)
+The word whatever is a sufficient indicator, because it refers to a universal, a categorical statement. Whatever, whenever, whoever, wherever, etc. would all be sufficient indicators.
+
+So this answer says:
+```
+If not a physical phenomena → can't be explained by science
+```
+We'd love to have the reversal of that, because that could be a correct answer. But this is nothing. Any time an answer puts the Conclusion into the trigger, it's wrong.
+
+The conclusion always has to match the right side, the Outcome, of the conditional.
+
+**B. Nothing that can be felt by only one subject can be studied scientifically.** — Unrelated to Goal (1% of students)
+This isn't providing any proving mechanism with the words (or idea) "not physical phenomena", so it's functionally hopeless.
+
+We will only be able to derive that something is not a physical phenomena if we find an answer that defines some necessary trait of physical phenomena.
+
+**C. Physics, chemistry, and neurophysiology have similar explanatory frameworks.** — Unrelated to Goal (1% of students)
+This isn't providing any proving mechanism with the words (or idea) "not physical phenomena", so it's functionally hopeless.
+
+We will only be able to derive that something is not a physical phenomena if we find an answer that defines some necessary trait of physical phenomena.
+
+**D. Whatever is not a physical phenomenon is an emotional one.** — If-Conclusion (5% of students)
+The word whatever is a sufficient indicator, because it refers to a universal, a categorical statement. Whatever, whenever, whoever, wherever, etc. would all be sufficient indicators.
+
+So this answer says:
+```
+If not a physical phenomena → then an emotional phenomena
+```
+We'd love to have the reversal of that, because that could be a correct answer. But this is nothing. Any time an answer puts the Conclusion into the trigger, it's wrong.
+
+The conclusion always has to match the right side, the Outcome, of the conditional.
+
+**E. Every physical phenomenon can be explained by physics, chemistry, or neurophysiology.** — Correct (76% of students)
+Like most correct answers on Sufficient Assumption, we have to contrapose it to understand why it works. As stated, the universal word every would mean the rule looks like this:
+```
+Physical phenomenon → can be explained by phys, chem, or neurophysiology
+```
+The contrapositive perfectly matches the move from the premise (Since) to the conclusion.
+```
+cannot be explained by phys, chem, or neurophysiology → not physical phenomenon
+```
+We know that human emotions can't be explained by Phys / Chem / Neuro, and so according to this rule, human emotions are not physical phenomena.
+
+---
+
+## S3 · Q14 — Most Supported
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Several Tyrannosaurus rex skeletons found in North America contain tooth marks that only a large carnivore could have made. At the time T. rex lived, it was the only large carnivore in North America. The tooth marks could have resulted only from combat or feeding. But such tooth marks would have been almost impossible to inflict on the skeleton of a live animal.
+
+### Prompt
+The information above most strongly supports which one of the following?
+
+### Written (single style)
+**Argument breakdown**
+- **Statements:** Several T-rex skeletons found in North America have tooth marks from a large carnivore. At that time, T-rex was the only large carnivore. (infer: the toothmarks on these T-rex skeletons came from a T-rex) The tooth marks could have resulted only from combat or feeding. (infer: either T-rex 1 was fighting T-rex 2 or eating T-rex 2) It would have been almost impossible to inflict these tooth marks on the skeleton of a live animal. (infer: T-rex 1 was not fighting a live T-rex 2. It was feeding on a dead T-rex 2)
+- **Goal:** Unlike many Most Supported paragraphs, which are a hodge-podge of disorganized facts, this paragraph sort of led us, in order, through several opportunities to stop and combine ideas. So let's look for the most provable answer, but it will probably be something like - Some of these T-rex skeletons we found have tooth marks that were caused by another T-rex that was eating it after it had died.
+
+**Answer choices**
+**A. T. rex regularly engaged in combat with smaller carnivores.** — No Support: smaller carnivores (1% of students)
+We have no support that T. rex ever engaged in combat with anyone, let alone smaller carnivores.
+
+**B. At the time T. rex lived, it was common for carnivores to feed on other carnivores.** — Too Strong: common (9% of students)
+We only have support here that some T. rex's had their dead body eaten by other T. rex's.
+
+We don't know if this was common among T. rex's, let alone common among carnivores in general.
+
+**C. T. rex sometimes engaged in cannibalism.** — Correct (79% of students)
+We have support here that some T. rex's had their dead body eaten by other T. rex's.
+
+Since "cannibalism" just means eating something the same species as you, then, yes, we can strongly support the idea that there were at least some instances of T. rex's eating other T. rex's.
+
+**D. T. rex sometimes engaged in intraspecies combat.** — No Support: intraspecies combat (9% of students)
+We have no support that T. rex ever engaged in combat with anyone. We know the teeth marks found on some T. rex skeletons had to come from fighting another T. rex or having their dead body eaten by another T. rex.
+
+But the final sentence heavily tips the scales towards that latter option, since it says that it would have been almost impossible for the first option to have occurred.
+
+**E. At the time T. rex lived, there were large carnivores on continents other than North America.** — Out of Scope: other than North America (2% of students)
+We didn't get any information about continents other than North America.
+
+---
+
+## S3 · Q15 — Flaw
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+There is a popular view among literary critics that a poem can never be accurately paraphrased because a poem is itself the only accurate expression of its meaning. But these same critics hold that their own paraphrases of particular poems are accurate. Thus, their view that poetry cannot be accurately paraphrased is false.
+
+### Prompt
+The reasoning in the argument is most vulnerable to the criticism that the argument
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** The view that poetry cannot be accurately paraphrased is false. (i.e. poetry can be accurately paraphrased)
+- **Evidence:** The critics say a poem can't be paraphrased because a poem itself is the only accurate expression of its meaning. But these critics think that their own paraphrases of poems are accurate.
+- **Evaluate:** It's hard to argue with the idea that the critics are wrong about something, given that they're saying "no poem can be accurately paraphrased" as well as "our paraphrases are accurate". They are definitely contradicting themselves. But the author's conclusion didn't say, "Thus these critics are contradicting themselves". It says their view about whether poetry can be accurately paraphrased is wrong. The author didn't present any evidence for or against the idea that poetry can be accurately paraphrased. She told us that these critics consider their own paraphrases accurate, but we wouldn't accept their opinions as proof that their paraphrases are accurate.
+- **Goal:** This feels kind of like an Unproven vs. Proven False move. The author found a problem with someone's argument (in this case: their other beliefs contradict their conclusion). His conclusion should be like, "Thus their argument seems weird. Thus they contradict themselves." Given a contradiction, "poems can never be accurately paraphrased" + "our own paraphrases are accurate", we know they can't both be right, but we don't know which one is correct. The author is arbitrarily choosing one of those two options.
+
+**Answer choices**
+**A. presupposes the falsity of the view that it sets out to refute** — Wrong Flaw (22% of students)
+This describes (a weird objection-version of) the famous Circular Reasoning flaw, in which the author presumes the truth of her conclusion.
+
+Saying the author assumes the truth of her conclusion is kind of like saying the premise was the same as the conclusion.
+
+But this argument had a premise that was distinct from its conclusion — the premise is the fact that these critics seem to contradict themselves by thinking their own paraphrases are accurate.
+
+**B. takes for granted that the main purpose of poems is to convey information rather than express feelings** — Too Strong: main purpose (3% of students)
+The author hasn't assumed (taken for granted) anything about what is or isn't the main purpose of poems.
+
+The argument is simply about whether poems can or can't be accurately paraphrased.
+
+**C. takes for granted that a paraphrase of a poem cannot be useful to its readers unless it accurately expresses a poem's meaning** — Too Strong: cannot be useful unless (19% of students)
+The author hasn't assumed (taken for granted) anything about when poems can or can't be useful.
+
+The argument is simply about whether poems can or can't be accurately paraphrased.
+
+**D. provides no justification for favoring one of the literary critics' beliefs over the other** — Correct (40% of students)
+The critics have two contradictory beliefs
+1. poems can never be accurately paraphrased
+2. some of our paraphrases are accurate
+
+The author concludes that #1 is wrong, but why couldn't it be that #2 is wrong instead?
+
+**E. provides no justification for following one particular definition of "paraphrase"** — Same Definition (16% of students)
+The argument never switches what is means by "paraphrase". It seems to be used consistently throughout.
+
+---
+
+## S3 · Q16 — Necessary Assumption
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+The tax bill passed 2 years ago provides substantial incentives for businesses that move to this area and hire 50 or more employees. Critics say the bill reduces the government's tax revenues. Yet clearly it has already created many jobs in this area. Last year, Plastonica qualified for incentives under the bill by opening a new plastics factory here that hired 75 employees.
+
+### Prompt
+The argument's reasoning depends on which one of the following assumptions?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (clearly):** The tax bill has already created many jobs in this area.
+- **Evidence:** It provided substantial incentives for businesses that move to this area and hire 50 or more employees. Last year, Plastonica qualified for the incentives by opening a new plastics factory that hired 75 employees.
+- **Evaluate:** It doesn't seem like this is testing a Linking idea, because that would be "if Plastonica hired 75 employees, then the bill has create many jobs in this area". We should probably go into debate mode: Given that .. Plastonica qualified for the bill's incentives by opening a new plastics factory that hired 75 employees, How could we argue that ... The bill has not created many jobs in this area. Maybe we could say Plastonica's jobs aren't really in this area? Maybe we could say the bill wasn't the reason that Plastonica opened that factory / it would have done so anyway? We could potentially see this argument in our Explain Curious Fact mindset, with the curious fact being "Why did Plastonica open a new plastics factory with 75 employees" and the author's causal assumption being, "They did so, at least in part, because of this tax incentive". Thus, the author is assuming that Plastonica did not open the new factory "entirely for reason X (not the incentive)". And she has to assume bare minimums when it comes to the plausibility of her explanation, such as "Plastonica was aware that it qualified for the tax incentive when it decided to open the factory here".
+- **Goal:** Look for an answer assuring us that these 75 hired employees represent "jobs in this area", or an answer ruling out the possibility that "something else caused Plastonica to build the factory; the bill's incentives made no difference".
+
+**Answer choices**
+**A. If Plastonica had not opened the plastics factory in the area, it would not have opened a plastics factory at all.** — Out of Scope: opening elsewhere (2% of students)
+There's no reason the author has to believe that this city was the only possible place Plastonica would build a factory.
+
+It wouldn't hurt the argument at all to negate this and get, "Plastonica might have opened a plastics factory elsewhere, if they hadn't opened one in the area".
+
+Let's say that Plastonica was considering this area or Shelbyville. Does that hurt the argument?
+
+No. In fact the author can argue that what lured them away from Shelbyville was the bill and its incentives, thus proving her point that the bill has already created many jobs.
+
+**B. Plastonica would not have opened the plastics factory in the area had it not been for the incentives.** — Correct (79% of students)
+This is definitely in the author's head, if they think that "the bill created these jobs". By saying that, we're implying that the bill had a meaningful impact. These jobs wouldn't have existed without the bill.
+
+If we negate this, it says, "Plastonica would have opened the plastics factory in the area even if there weren't any incentives".
+
+That would badly weaken the argument. We can't give the bill credit for creating these jobs if they would have existed anyway.
+
+**C. Most critics of the tax bill claim that it will not create any more new jobs.** — Too Strong: most / Out of Scope: critics (5% of students)
+All we're analyzing is whether or not the bill has already created jobs. What critics claim or believe is immaterial to that case.
+
+We only care about what is actually the case. Did / didn't the bill lure a company here?
+
+It's also the case that the word "most" is wrong on Necessary Assumption 99% of the time you see it.
+
+Does the author really need to believe that at least 51% of critics claim something? Would the argument be badly hurt if it was only at most 49% of critics that claimed it?
+
+Of course not. The difference between at least 51% and at most 49% is so slight that it's almost never necessary for the author to believe that something is over the 50% mark.
+
+**D. If Plastonica had not opened the plastics factory in the area, it would have opened it somewhere else.** — Out of Scope: opening elsewhere (3% of students)
+There's no reason the author has to believe that Plastonica was definitely going to open a factory no matter what.
+
+It wouldn't hurt the argument at all to negate this answer and say, "It was either this area or nowhere". Plastonica might already have factories in lots of cities. It wasn't sure whether it would be worth building a new one, but then they heard about the rad incentives in this bill and it made them think, "Okay, let's build one more factory".
+
+That story is compatible with the author's notion that the bill's incentives have created these Plastonica jobs. Since the negation doesn't weaken, it can't be the correct answer.
+
+**E. Critics of the tax bill believe that it has not created any jobs in the area.** — Out of Scope: critics' beliefs (11% of students)
+All we're analyzing is whether or not the bill has already created jobs. What critics claim or believe is irrelevant.
+
+We only care about what is actually the case. Did / didn't the bill lure a company here?
+
+If we negated this, it would be saying, "Critics believe that the bill has created jobs in the area". Would that weaken?
+
+No, that would strengthen! That agrees with the conclusion.
+
+---
+
+## S3 · Q17 — Most Supported
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+When a chain of service stations began applying a surcharge of $0.25 per purchase on fuel paid for by credit card, the chain's owners found that this policy made their customers angry. So they decided instead to simply raise the price of fuel a compensatory amount and give a $0.25 discount to customers paying with cash. Customers were much happier with this policy.
+
+### Prompt
+Which one of the following generalizations does the situation described above most clearly illustrate?
+
+### Written (single style)
+**Argument breakdown**
+- **Situation:** 1st move: $0.25 surcharge if you paid for gas with a credit card. Aftermath: the customers were angry. 2nd move: raised the price of gas by $0.25, and then offered a $0.25 discount if you pay by cash. Aftermath: the customers were happier
+- **Evaluate:** Lots of Proposition / Generalization situations deal with a before / after that seems to suggest a Causal Difference-Maker. Why were customers angry with the first system and happy with the second one? It seems like customers are willing to pay whatever price is posted, but if they're suddenly surprised by a surcharge they get angry. Obviously, if cash-paying customers are suddenly surprised by a discount they won't be angry.
+- **Goal:** Look for a safely worded answer reflecting the idea that people paying with credit cards are happier to pay the same price if it's built into the price of gas rather than added as a surcharge.
+
+**Answer choices**
+**A. People usually adopt beliefs without carefully assessing the evidence for and against those beliefs.** — Out of Scope: adopt beliefs / Too Strong: usually (0% of students)
+It's not an automatic dealbreaker for an answer to generalize from one situation to generally, but it's a big red flag.
+
+What truly kills this answer is the fact the passage never talks about people "adopting beliefs" at all.
+
+**B. People's perceptions of the fairness of a policy sometimes depend on whether that policy benefits them personally.** — No Distinction: benefits them personally (6% of students)
+We're trying to explain the difference between paying $50.00 for gas with a $0.25 surcharge, and paying $50.25 for gas.
+
+Credit card customers were angry at the former but fine with the latter.
+
+Since they're paying the same total price either way ($50.25), the difference can't be a matter of "one system benefited them personally more than the other".
+
+**C. People usually become emotional when considering financial issues.** — No Distinction: financial issues / Too Strong: usually (0% of students)
+We're trying to explain the difference between paying $50.00 for gas with a $0.25 surcharge, and paying $50.25 for gas.
+
+Credit card customers were angry (emotional) at the former but fine with the latter.
+
+Since both situations involve dealing with financial issues, we can't say that they got emotional in the former case because it dealt with financial issues.
+
+**D. People often change their minds about issues that do not make significant differences to their lives.** — Out of Scope: don't make big difference (1% of students)
+The situation described was about gas prices. Is that an "issue that doesn't make a significant difference to their lives"?
+
+Who knows? We didn't talk about anything like that. For many people on tight budgets, the price of gas does make a significant difference to their lives.
+
+This answer also insinuates that credit card users went from angry to happier just because they "changed their minds", not because the gas stations changed their policies.
+
+**E. People's evaluations of a situation sometimes depend less on the situation itself than on how it is presented to them.** — Correct (93% of students)
+We're trying to explain the difference between paying $50.00 for gas with a $0.25 surcharge, and paying $50.25 for gas.
+
+Credit card customers were angry at the former but fine with the latter.
+
+Since they're paying the same total price either way ($50.25), the only difference is in how the price is presented to them.
+
+Is it presented as "the normal price of gas + a surcharge" or is it presented as "the normal price of gas"?
+
+The credit card payers evaluated the former presentation angrily and the latter presentation more happily.
+
+---
+
+## S3 · Q18 — Necessary Assumption
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Herbalist: Many herbal medicines work best when they have a chance to influence the body gently over several months. However, many of these herbal medicines have toxic side effects when taken daily for such long periods. Therefore, at least some people who use herbal medicines daily should occasionally skip their usual dose for a day or two, to give the body a chance to recuperate.
+
+### Prompt
+Which one of the following is an assumption required by the herbalist's argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (therefore):** At least some people who use herbal meds daily should occasionally skip their usual dose for a day or two, to give the body a chance to recuperate.
+- **Evidence:** Even though taking herbal meds over several months is how you get herbal meds to work best, many herbal meds have toxic side effects when taken daily for long periods.
+- **Evaluate:** The author's conclusion is making a recommendation, which is inherently Comparative. When we recommend some approach or tactic, we're assuming the world in which you follow our recommendation will be better than the present world. We can use our Plan / Goal thinking to analyze this argument. The author's Goal is that we harness the value of herbal meds without incurring the toxic downside. The author's Plan is for us to skip a usual dose for a day or two. When authors suggest Plans to achieve a certain Goal, we're typically worried that the Plan isn't feasible, won't work as they're envisioning, or that it will backfire by having some unanticipated consequence.
+- **Goal:** This author seems to assume that "skipping a dose for a day or two" is enough time to "avoid the toxic side effects" of long term herbal med usage (she's assuming that her Plan would actually help with the Goal). But she also has to assume that skipping a usual dose for a day or two would not result in some bad backfire consequence that's at least as bad as the toxic side effects would have been. Maybe, once you've gotten your body acclimated to a certain daily dose of herbal meds, it has a bad reaction when you don't have that substance (like how regular coffee drinkers get bad headaches if they don't have their daily caffeine).
+
+**Answer choices**
+**A. At least some people who use herbal medicines daily use them for periods long enough for the medicines to have side effects.** — Correct (77% of students)
+This was not an answer I saw coming, but because it's so weakly worded (at least some), it's tempting. When we negate weak wording we get a strong idea:
+
+No one who uses herbal meds daily uses them for long enough to have side effects.
+
+Does that weaken the argument?
+
+Heck yeah! If no one uses them long enough to have the toxic side effects, then there's not even a Problem that needs solving, so the author's advice to "skip a dose for a day or two" is completely pointless.
+
+On Necessary Assumption, if negating an answer choice turns that answer into a big objection, then it's the correct answer.
+
+**B. At least some herbal medicines work less well in achieving their desired effects if one occasionally skips one's usual dose than if one does not.** — Weakens (3% of students)
+There's no reason we can say the author needs to believe this, when this idea actually presents a downside to following her advice.
+
+According to this, if you follow the author's advice, you'll be making your herbal meds work less well.
+
+We don't know one way or the other what the author would say about this issue, but it's more conservative to think she's hoping that by only skipping a dose for a day or two, you're still getting the same benefit, just without the toxic side effect harm.
+
+**C. Some herbal medicines have toxic side effects when taken for several months, even if the usual dose is occasionally skipped for a day or two to give the body a chance to recuperate.** — Weakens (2% of students)
+There's no reason we can say the author needs to believe this, when this idea actually makes it seem like her recommendation wouldn't succeed, for some herbal meds.
+
+According to this, if you follow the author's advice, you might not be spared the toxic side effects, because for some herbal meds, you get those side effects even if you follow the author's advice of sporadically skipping a dose.
+
+**D. Anyone who uses herbal medicines should give those medicines a chance to influence the body gently over several months at least.** — Unrelated to Goal / Too Strong: anyone (2% of students)
+This answer has nothing to do with the author's conclusion, which is about skipping doses intermittently, if you're already taking herbal meds daily.
+
+This answer makes a very bold claim "every single person who uses herbal meds should give them a chance to influence the body over at least several months".
+
+The first sentence, which was not part of the argument, is where people would find some support for this notion.
+
+But just because the author said, "many herbal meds work best when absorbed gently over several months", that doesn't mean she holds the position that "every single person who uses any herbal med should use it for several months".
+
+**E. One should occasionally skip one's usual dose of an herbal medicine for a day or two only if doing so will reduce or eliminate toxic side effects from several months of use.** — Reversed Logic (16% of students)
+"Only if" is a necessary indicator meaning that any idea that follows "only if" should go on the right of the arrow.
+
+So this answer looks like this
+```
+Should occasionally skip usual dose for a day or two → reduce / eliminate toxic side effects
+```
+But this doesn't match the move from Premise to Conclusion. It's reversed.
+
+The author was arguing
+```
+Since ... long term use comes with toxic side effects we'd want to reduce or eliminate
+Therefore ... should occasionally skip a dose for a day or two
+```
+
+---
+
+## S3 · Q19 — Principle-Strengthen
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Business owner: Around noon in one section of the city, food trucks that sell lunch directly to customers on the sidewalk occupy many of the limited metered parking spaces available, thus worsening already bad traffic congestion. This led the city council to consider a bill to prohibit food trucks from parking in metered spaces in any commercially zoned area. This bill should be rejected since there is plenty of available parking and little traffic congestion in most areas of the city.
+
+### Prompt
+Which one of the following principles, if valid, most helps to justify the business owner's argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Opposing Evidence:** In one section of the city, food trucks occupy many of the limited metered parking spaces available, thus worsening already bad traffic congestion.
+- **Evidence (since):** There is plenty of available parking and little traffic congestion in most areas of the city.
+- **Conclusion:** This bill [prohibiting food trucks from parking in metered spaces in any commercially zoned area] should be rejected.
+- **Evaluate:** "Thus" is usually a conclusion indicator, but it's not performing that function here. The second sentence in the argument describes a cause and effect relationship where the food trucks are causing traffic congestion. It's important to recognize the recommendation in the final sentence—"this bill should be rejected." Recommendations like this almost always function as conclusions in LR arguments. And in this case, that recommendation acts more clearly as the conclusion of the argument than the statement about traffic congestion. Food trucks parking in metered spots don't seem to be causing problems in most areas of the city. That seems like a decent reason to reject the proposed bill. But in LSAT LR, it's not enough for the link between the evidence and the conclusion to just be pretty good. We want to notice that the link between evidence and conclusion isn't airtight. We could strengthen this argument by explicitly stating that, if problem caused by an activity does not affect most areas of the city, any bill which would prohibit that activity should be rejected.
+- **Goal:** Look for an answer which states a bill prohibiting an activity should be rejected if the activity does not cause problems in most areas. Beware of answers that bring in irrelevant details which don't actually impact the argument.
+
+**Answer choices**
+**A. Unless a business provides a product or service that is valued by consumers, the business should not be allowed to make use of scarce city resources.** — Bad Evidence Match / Bad Conclusion Match (1% of students)
+This answer choice would have the same meaning if it stated, "if a business does not provide a product or service that is valued by consumers then the business should not be allowed to make use of scarce city resources." The evidence does not state in any way that food trucks aren't providing a service that is valued by customers. And the argument does not conclude that food trucks should not be allowed to make use of city resources. We could call the metered parking spots "city resources," but the conclusion indicates that food trucks should be allowed to use those spaces.
+
+**B. If a serious problem exists in one part of a city, the city government should address the problem before it spreads to another area of the city.** — Bad Conclusion Match (1% of students)
+By stating that the city government "should address the problem," this answer would support an argument which concludes that the city council should pass the bill. We want support the actual conclusion, which states that the bill should be rejected.
+
+**C. No proposed solution to a city problem should be implemented until the problem has been thoroughly studied.** — Bad Evidence Match (2% of students)
+This answer choice would have the same meaning if it stated, "if a problem has not been thoroughly studied then no proposed solution to the problem should be implemented." But the evidence in the argument states nothing about the problem not being thoroughly studied. We have no idea if the food truck problem has been thoroughly studied or not.
+
+**D. A law that would disadvantage businesses of a certain type throughout a city should not be used to solve a problem that does not affect most areas of the city.** — Correct (95% of students)
+This answer mentions disadvantaging "businesses of a certain type." That would refer to the food trucks in the argument. Food trucks throughout the city would be disadvantaged by a bill prohibiting them from parking in metered spaces in any commercially zoned area.
+
+**E. If a city has a serious problem, then it should not implement any policy that would aggravate that problem even if the policy would address another serious problem.** — Bad Evidence Match (1% of students)
+The idea of aggravating an existing problem doesn't match the evidence that we were given. The argument doesn't state that the bill prohibiting food trucks from parking in metered spaces would aggravate any existing problem. It seems like the bill would create a new problem for food trucks that are currently using the metered spaces.
+
+---
+
+## S3 · Q20 — Agree/Disagree
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Michele: In my professional experience, it's usually not a good idea for a company to overhaul its databases. The rewards rarely exceed the problems experienced along the way, and I'd suggest that anyone considering a database overhaul think twice before proceeding.
+
+Alvaro: But the problems are always caused by a failure to recode the database properly. The best advice for a company considering a database overhaul is to do the job right.
+
+### Prompt
+Michele and Alvaro disagree with each other about which one of the following?
+
+### Written (single style)
+**Argument breakdown**
+- **Michele's Claims:** 1. It's usually not a good idea for a company to overhaul its databases. 2. The rewards rarely exceed the problems experienced along the way. 3. People considering a database overhaul should think twice before proceeding.
+- **Alvaro's Responses:** 1. Did Alvaro argue that ... usually it is a good idea for a company to overhaul its databases? No, not really. It doesn't seem like Alvaro weighs in on the usually modifier that dictates the truth value of this claim. He doesn't seem to address whether it's a good idea for companies to overhaul databases in most cases. 2. Did Alvaro argue that ... The rewards frequently exceed the problems experienced along the way? Not really. There isn't any discussion of rewards outweighing problem. 3. Did Alvaro argue that ... People considering a database overhaul should not think twice? Yes, kind of. He's definitely countering Michele's advice in her final claim. For her, the best advice for a company considering a database overhaul is to "think twice", which is an expression that means "you probably shouldn't do it". If we say, "I would think twice before emailing your boss while you're drunk", that's another way of saying, "I don't think you should email your boss while you're drunk". So Michele is saying companies should probably avoid overhauling their database, whereas Alvaro is saying "they should feel fine about doing it, as long as they do it the right way."
+- **Goal:** The disconnect seemed to be concentrated around the idea of generic advice about overhauling databases. Michele: "I'd think twice / it's usually not a good idea" Alvaro: "It's fine, just do the job right"
+
+**Answer choices**
+**A. why companies should consider overhauling their databases** — Unsupported Both (4% of students)
+We don't have either person's position on why companies should consider overhauling their databases.
+
+This answer is saying that Michele thinks, "they should consider overhauling for reason X" whereas Alvaro thinks, "they should consider overhauling for reason Y".
+
+We don't have a reason for overhauling from either of them, let alone two competing reasons.
+
+**B. whether the problems experienced during a database overhaul ever outweigh the rewards** — Unsupported Disagree Position / Too Strong: never outweigh (13% of students)
+This relates to Michele's 2nd claim, which we decided Alvaro took no position on.
+
+In order to pick this answer, we would need one person to agree that "the problems experienced during a database overhaul sometimes outweigh the rewards" (which Michele would definitely agree with) and we'd need the other person to agree that "the problems experienced during a database overhaul never outweigh the rewards".
+
+We certainly can't support that Alvaro believes that very extreme claim.
+
+**C. which kinds of database overhauls have more problems than are justified by the rewards** — Out of Scope: kinds of overhauls (2% of students)
+Neither person gets into discussing different types of database overhauls, so we don't have a fight where one person says, "Overhauls of type X have more problems than rewards" whereas the other person says, "No, overhauls of type Y have more problems than rewards".
+
+**D. what a company should do when considering a database overhaul** — Correct (81% of students)
+Michela's advice for a company considering a database overhaul:
+- think twice; it's usually not a good idea
+
+Alvaro's advice
+- do the job right
+
+**E. when professional experience is required to correctly recode a database** — Out of Scope: recoding experience (0% of students)
+Neither person talks about when professional experience is / isn't needed to correctly recode a database.
+
+According to this answer, one person says, "In cases such as X, professional experience is required to correctly recode a database" and the other person says, "no, it's in cases such as Y that professional experience is required to correctly recode a database".
+
+---
+
+## S3 · Q21 — Must be True
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+In an experiment, subjects were shown a series of images on a computer screen, appearing usually at the top but occasionally at the bottom. Subjects were asked to guess each time where the next image would appear on the screen. They guessed correctly less than half of the time. The subjects all reported that they based their guesses on patterns they believed they saw in the sequence. Instead, if they had simply guessed that the next image would always appear at the top, they would have been correct most of the time.
+
+### Prompt
+If all of the statements above are true, which one of the following must also be true?
+
+### Written (single style)
+**Argument breakdown**
+- **Statements:** People where shown images that usually appeared at the top of the screen but sometimes appeared at the bottom. After each appearance, they were asked to guess where the next image would appear. They were wrong most of the time. All of them said they were basing their guess on a pattern they believed they saw. If they had simply guessed that next image would always appear at the top, they would have been correct most of the time.
+- **Evaluate:** This is a tough one to anticipate. We're usually looking for Conditional / Causal / Quantitative language as a clue for where the answer choice inference may come from, but this paragraph is long and messy. There's a counterfactual conditional in the final sentence, saying that "if they had simply guessed next image will be on top, then they would have been correct most of the time". We know they were basing their guess on a pattern they thought they perceived, so apparently they didn't perceive a pattern of next image is always on top.
+- **Goal:** Because of how long this paragraph is, with five sentences, we should probably just re-read the paragraph one more time for good understanding and then use the answers to guide us. If an answer seems somewhat provable, then we'll research the details in the paragraph.
+
+**Answer choices**
+**A. If the subjects had always guessed that the next image would appear at the top, they would not have been basing their guesses on any pattern they believed they saw in the sequence.** — Unsupported Relationship (19% of students)
+Let's stop at the trigger and ask ourselves if we know anything ...
+were there any people that always guessed the next image would appear at the top?
+
+We don't really know. We know that most of them didn't guess that, since they were wrong most of the time. And the final sentence is giving us a counterfactual about what would have been true if they had all always guessed "next image will be on top".
+
+So given that we don't know anything about this trigger, it's hard to say we can derive a must be true of what would follow.
+
+If we assume that nobody was constantly guessing "next image on top", then this answer is just talking about a counterfactual.
+
+It's saying, "Yeah, nobody guessed X, but if they had guessed X, it wouldn't have been based on any pattern they believed they saw."
+
+How would we prove that counterfactual?
+
+How can we say in a hypothetical situation what someone would / wouldn't have believed they saw in the sequence?
+
+The contrapositive of this conditional rule is saying:
+```
+if they were basing their guesses on a pattern they believed they saw
+  → they would not have always guessed next image on top
+```
+We know for a fact that all of the subjects were guessing based on a pattern they believed they saw.
+
+So according to this answer choice, none of them would have guessed "next image will appear on top".
+
+That's too strong. We know most of them weren't guessing "next image will appear on top" because most of the time they were wrong, but it's still possible that some of the subjects guessed "next image will appear on top".
+
+It's possible that some subjects guessed perfectly. The low accuracy of all the other subjects could lower the group's accuracy to where it's still true to say "the subjects guessed correctly less than half of the time".
+
+(as a desperation move, you might avoid guessing this tempting answer because Must Be True questions often put a very tempting but wrong answer non-coincidentally into the slot for choice (A). Given that this answer was conditional strength and in a famously trappy spot, we might convince ourselves we're safer choosing something farther down in the answer choices that also makes sense)
+
+**B. Basing one's guesses about what will happen next on the basis of patterns one believes one sees is less likely to lead to correct guesses than always guessing that what has happened before will happen next.** — Too Broad / Strong (9% of students)
+This answer is too strong because it's presented as a truism that goes beyond this experiment.
+
+We would only be able to comment on what sort of guessing would have had what sort of accuracy for this experiment. We can't extrapolate a rule that's applicable to other situations.
+
+**C. There was no predictable pattern that one could reasonably believe occurred in the series of images on the computer screen.** — Too Strong: no pattern (6% of students)
+It's possible there was a predictable pattern someone could have reasonably believed occurred.
+
+Maybe it looked like it was doing "3 tops, 1 bottom, 3 tops, 1 bottom".
+
+Even if it didn't end up doing that exact pattern, it might have been close enough to that for us to say there was a predictable pattern that one could reasonably believe occurred.
+
+The fact that these people thought they saw patterns, but were largely wrong, doesn't make those patterns unreasonable ones to believe you saw.
+
+**D. Some of the subjects sometimes guessed that the next image would appear at the bottom of the computer screen, but were incorrect.** — Correct (56% of students)
+This is weird, but at least appealing because of how safe/soft the language is. Can we prove that at least once in this experiment, some guessed "next image will be at the bottom" and ended up being wrong?
+
+It sure sounds very very plausible. After all, we know that they were mostly wrong and that the images were mostly occurring at the top of the screen, so you'd assume that there was at least one time where one of the wrong guesses was "next image will be bottom."
+
+In order for this weak statement to be false, we'd have to show that it's possible that people were never wrong when they guessed "bottom". All of their wrong answers came from guessing "top" and being wrong.
+
+We can prove this statement using Most + Most quantifier logic. Whenever we have these two ideas:
+Most A's are B
+Most A's are C
+we can infer Some B are C
+
+We know that
+Most images appeared at the top
+Most images were incorrectly guessed
+
+So we can infer that
+"some incorrect guesses were images that appeared at the top".
+
+We know that most images appeared at the top because the first sentence says that images usually (i.e. more than 50% of the time) were on top.
+
+We know that most guesses were incorrect, because "they guessed correctly less than half of the time", so they guessed incorrectly more than half of the time.
+
+Thus, (and nauseatingly), we can derive that at least one of those wrong guesses had to occur when the image appeared at the top of the screen.
+
+In order to have a wrong guess about an image that appears at the top of the screen, it must be that the person guessed bottom of the screen.
+
+**E. The most rational strategy for guessing correctly where the next image would appear would have been simply to always guess that the image would appear at the top.** — Out of Scope: rational / Too Strong: most rational (10% of students)
+Just because the subjects turned out to be wrong most of the time doesn't mean they were necessarily behaving irrationally. They thought they perceived a pattern. Making a guess based on a perceived pattern is pretty rational. We call that inductive reasoning.
+
+We certainly don't have any ammunition in this paragraph for deciding what the most rational strategy was here.
+
+---
+
+## S3 · Q22 — Paradox (EXCEPT)
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+The temperature in Taychester is always at least 10 degrees lower than the temperature in Charlesville. However, the average resident of Charlesville spends 10 to 20 percent more on winter heating expenses than does the average resident of Taychester.
+
+### Prompt
+Each of the following, if true, helps to resolve the apparent paradox described above except:
+
+### Written (single style)
+**Argument breakdown**
+- **Given That ....:** The temperature in T is always at least 10 degrees lower than the temperature in C.
+- **How Can it Be That ...:** The average resident of C spends 10 to 20 percent more on winter heating expenses than does the average resident of T.
+- **Evaluate / Goal:** We need four reasons why people in the warmer city (C) are spending more on winter heating expenses, or, equivalently, why people in the colder city (T) are spending less on winter heating expenses. (Since this is about averages, we don't care about real number totals or individual data points.)
+
+**Answer choices**
+**A. Heat loss due to wind is less in Taychester than in Charlesville.** — Helps Explain (10% of students)
+This says that Charlesville loses more heat due to wind than Taychester does.
+
+So even though Charlesville has warmer temperatures, they lose more of that heat due to wind, and so that could explain why in the end it ends up feeling cold enough for people in C to run their heaters more.
+
+Put another way, it sounds like even though Taychester gets less radiation from the sun (lower temperatures), it has an easier time preserving the heat it receives.
+
+By analogy, if Chester gets a bigger allowance every week than Tommy, but Chester loses more of his allowance from leaky pockets, then Tommy could still end up having more money.
+
+**B. Although Charlesville is always fairly warm during the daytime, temperatures in Charlesville drop steeply at night.** — Correct (60% of students)
+It doesn't matter how cold it gets in Charlesville at night, since we were told that the temperature in Taychester is always at least 10 degrees lower.
+
+So if the temperature in Charlesville plummets to 40 degrees Fahrenheit at night, then according to our background fact, it's at most 30 degrees Fahrenheit in Taychester.
+
+Hence, this doesn't give us a way to explain why Charlesville's heating expenses are higher.
+
+**C. Utility rates in Taychester are lower than utility rates in Charlesville.** — Helps Explain (12% of students)
+Charlesville is the warmer city, and so all other things being equal, houses in Charlesville don't need to run their heater quite as long or as hard as houses in Taychester would have to (in order to achieve comparable indoor temperatures).
+
+But if the utility rates are higher in Charlesville, then even though they're running their heaters less or on lower strength, the exorbitant utility rates could still lead to their expenses on heating being higher.
+
+**D. People who are used to warmer temperatures generally keep their homes warmer in the winter than do people who are used to colder temperatures.** — Helps Explain (11% of students)
+Since Charlesville is the warmer city, the people of Charlesville would generally want to keep their homes warmer during the winter than would people who live in Taychester.
+
+Thus, even though it's colder in Taychester during the winter (and all other parts of the year), they are so used to wearing thermal underwear and seeing their breath and relishing the brisk temperatures that they don't set their thermostat during the winter at much lower temperatures than the people in Charlesville do.
+
+As an analogy ...
+
+People in Los Angeles get used to balmy temperatures and so during the cold winter months, they're trying to make the inside of their house feel like a summer's day, so they're running their heaters on high so that they can continue wearing shorts / T-shirts.
+
+Meanwhile, people in Minneapolis get used to brisk temperatures and so during the cold winter months, they're still wearing multiple layers and thick socks inside their barely-heated homes.
+
+So even though LA is warmer during the winter than Minneapolis, LA residents are paying more for their heating expenses because they're trying to heat their homes to a summery level.
+
+**E. Houses in colder climates are usually better insulated than houses in warmer climates.** — Helps Explain (7% of students)
+This one is similar to how (A) explains things. There is less heat coming into Taychester, but Taychester has an easier time preserving that heat.
+
+Since they are in the colder climate, their houses are better insulated, so when they run their heaters during the winter, the heat produced stays inside the house better.
+
+In Charlesville, they run their heaters and much of the heat leaks outside the house, causing the heaters to need to run more constantly / at a stronger level.
+
+---
+
+## S3 · Q23 — Parallel
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Each new car in the lot at Rollway Motors costs more than $18,000. Any car in their lot that is ten or more years old costs less than $5,000. Thus, if a car in Rollway's lot costs between $5,000 and $18,000, it is a used car that is less than ten years old.
+
+### Prompt
+The pattern of reasoning in which one of the following arguments is most similar to that in the argument above?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:**
+```
+Costs $5 - $18 → used < 10 yrs. old
+```
+- **Evidence:**
+```
+New → costs > $18
+≥ 10 yrs old → costs < $5
+```
+- **Evaluate:** This conclusion takes the contrapositive of each rule to derive the upper and lower boundary of its conclusion. If it costs < $18, then it's not new (i.e. Used). If it costs > $5, then it's less than 10 yrs old. Thus, if it's between $5 - 18, then it's got to be Used and less than 10 yrs. old.
+- **Goal:** The argument needs to give us two conditional premises. The conclusion's trigger should be the net effect of being "Not outcome 1 + Not outcome 2". The premises' outcomes were → more than $18. → less than $5. And the conclusion's trigger was between $5 and $18. The outcome of the conclusion should combine the negation of the two triggers. The premises' triggers were New →, 10 or more yrs old →. So the conclusion's outcome was Used and less than 10 yrs old
+
+**Answer choices**
+**A. Each apartment above the fourth floor of the building has more than two bedrooms. But all apartments below the fourth floor have fewer than two bedrooms. Thus, any apartment on the fourth floor of the building has exactly two bedrooms.** — Reversed Conclusion (13% of students)
+Given these premises ...
+```
+Above 4th → more than 2 bedrooms
+Below 4th → fewer than 2 bedrooms
+```
+... the trigger for the conclusion should be contradicting both outcomes.
+
+The only idea that contradicts both is "exactly 2 bedrooms". It's not more than 2, it's not fewer than 2.
+
+And the outcome for the conclusion should be contradicting both triggers, which would be "4th floor".
+
+So the proper conclusion would be
+"if exactly 2 bedrooms, then 4th floor".
+
+Instead, we get the reversal:
+"if 4th floor, exactly 2 bedrooms"
+
+**B. Each apartment above the fourth floor of the building has two or three bedrooms. But no apartment below the fourth floor has more than two bedrooms. Thus, all of the building's three-bedroom apartments are on the fourth floor or higher.** — Bad Conclusion Match (12% of students)
+Given these premises ...
+```
+Above 4th → 2 or 3 bedrooms
+Below 4th → not more than 2 bedrooms
+```
+... the trigger for the conclusion should be contradicting both outcomes.
+
+The only idea that contradicts "2 or 3" and "not more than 2" would be 0 or 1. If it's 0 or 1 bedrooms, then it's not 2 or 3 and it's not more than 2.
+
+And the outcome for the conclusion should be contradicting both triggers, which would be "4th floor".
+
+So the proper conclusion would be
+"if exactly 1 or none bedrooms, then 4th floor".
+
+Instead, we get:
+"if 3 bedrooms, then 4th or higher"
+
+**C. No apartment above the fourth floor of the building has fewer than three bedrooms. But all apartments below the fourth floor have fewer than two bedrooms. Thus, if there are apartments in the building with exactly two bedrooms, they are on the fourth floor.** — Correct (51% of students)
+Given these premises ...
+```
+Above 4th → 3 or more bedrooms
+Below 4th → fewer than 2 bedrooms
+```
+... the trigger for the conclusion should be contradicting both outcomes.
+
+The idea that contradicts both is "exactly 2 bedrooms". If there are exactly 2, then there aren't 3 or more and there aren't fewer than 2.
+
+And the outcome for the conclusion should be contradicting both triggers, which would be "4th floor".
+
+So the proper conclusion would be
+"if exactly 2 bedrooms, then 4th floor".
+
+And that's the conclusion we get!
+
+**D. No apartment above the fourth floor of the building has more than two bedrooms. But only three-bedroom apartments have balconies. Thus, if any apartment in the building has a balcony, it is on the fourth floor or lower.** — Bad Conclusion Match (11% of students)
+Given these premises ...
+```
+Above 4th → 2 or fewer bedrooms
+Balcony → 3 bedrooms
+```
+... the trigger for the conclusion should be contradicting both outcomes.
+
+The only idea that contradicts both is "4 or more bedrooms". If it's got 4 or more, then it isn't 2 or fewer and it isn't a 3 bedroom.
+
+The outcome for the conclusion should be contradicting both triggers, which would be "4th floor or below without a balcony".
+
+So the proper conclusion would be
+"if an apartment on the 4th floor or lower lacks a balcony, then it has 4 or more bedrooms".
+
+Instead, we get
+"if balcony, then 4th or lower"
+
+**E. Each apartment above the fourth floor of the building has more than two bedrooms. The building has no vacant apartments on or below the fourth floor. Thus, if there is any vacant apartment in the building, it will have more than two bedrooms.** — Bad Premise Match (13% of students)
+Given these premises ...
+```
+Above 4th → more than 2 bedrooms
+4th or lower → not vacant
+```
+... the trigger for the conclusion should be contradicting both outcomes, but this would be a weird blend of ideas that aren't quantitatively related, like all the other options were.
+
+The only idea that contradicts both is "1 or 0 bedrooms and occupied".
+
+And the outcome for the conclusion should be contradicting both triggers, which is impossible. The two triggers (above 4) and (4 or lower) account for all possible numbers.
+
+So it would be impossible to derive a conclusion like that of the original.
+
+---
+
+## S3 · Q24 — Strengthen
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Meteorologist: The number of tornadoes reported annually has more than doubled since the 1950s. But their actual number has probably not increased. Our ability to find tornadoes has improved, so we're probably just finding a higher percentage of them than we used to.
+
+### Prompt
+Which one of the following, if true, provides the most support for the meteorologist's argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** We're probably finding a higher percentage of tornadoes than we used to.
+- **Evidence:** The number of reported tornadoes per year has doubled since the 1950s. There probably has not been an increase in the number of tornadoes. Our ability to find tornadoes has improved.
+- **Evaluate:** Since we're interpreting the cause of a changing statistic, we can use our Curious Fact / Explanation mindset. Curious Comparison ... why are we reporting twice as many tornadoes per year nowadays, compared to the 1950s? Author's Explanation ... it's not that there are more tornadoes; it's probably that our improved ability to find tornadoes is resulting is our being able to find a higher percentage of them than we used to. To Strengthen this argument we would need to either 1. Rule out an Alternate Explanation for the curious fact or 2. Increase the plausibility of the Author's Explanation
+- **Goal:** So let's look for an answer ruling out some other reason why there are more reported tornadoes (maybe it's way easier to report them than it used to be ... 5 mins online vs. 30 min phone call) or for an answer increasing the plausibility that we're reporting more tornadoes because our ability to find them has improved so we're catching a higher percentage of them than before (this explanation assumes that in the 1950s we were failing to report at least half o the tornadoes that occurred)
+
+**Answer choices**
+**A. The physical damage caused by the average tornado has remained roughly constant since the 1950s.** — No Impact (16% of students)
+This is just saying that the relative strength of a tornado is the same.
+
+If this answer were more about the aggregate damage of all tornadoes (in a year), it would be a little more useful to us.
+
+If there were now more tornadoes occurring, we'd expect more tornado damage than before. So if we were told that there isn't more tornado damage than before, there probably aren't more tornadoes than before.
+
+But this is about the average damage per tornado. It doesn't tell us anything about whether overall there's more / less / comparable damage.
+
+**B. The number of tornadoes hitting major population centers annually has more than doubled since the 1950s.** — Weakens (8% of students)
+Our author is maintaining that the number of tornadoes has probably not increased, so a fact that says there are more than twice as many tornadoes hitting urban areas goes against that.
+
+This suggests that the real reason why reports of tornadoes have doubled is that there are, in fact, way more tornadoes nowadays.
+
+**C. The number of large and medium sized tornadoes reported annually has remained roughly constant since the 1950s.** — Correct (52% of students)
+We know that twice as many tornadoes per year are reported now vs. in 1950.
+
+Let's say for example,
+1950 - 100 tornadoes reported per year
+2020 - 200 tornadoes reported per year
+
+This answer is saying that the number of Large/Medium tornadoes reported has not gone up. Let's pretend it's 90 in both cases.
+```
+            1950    Now
+Large/Med   90      90
+Small
+Total       100     200
+```
+So, by subtraction, that tells us how many Small tornadoes were detected in each time period.
+```
+            1950    Now
+Large/Med   90      90
+Small       10      110
+Total       100     200
+```
+It, of course, doesn't matter what numbers we use (or that we use numbers at all). The point of the answer choice is "All of the increase in reported tornadoes comes from smaller tornadoes".
+
+If we're reporting twice as many tornadoes, and the increase is purely due to an uptick in smaller tornadoes, that boosts the plausibility of the author's hypothesis that what has really changed is our improved tornado-finding abilities.
+
+With primitive tornado-finding abilities, we would be able to detect Large / Medium pretty easily, but we would struggle to detect the Smaller ones.
+
+With improved tornado-finding abilities, we would now be able to detect more Smaller ones.
+
+So this is a piece of information that helps corroborate our author's storyline.
+
+**D. The annual number of deaths due to tornadoes has increased steadily since the 1950s.** — Unclear Impact (1% of students)
+Number of deaths from tornadoes isn't a perfect indicator of whether there are more / fewer / same number of tornadoes, but in general if we hear that more people die of tornadoes nowadays, we're going to assume that this means that there are either more tornadoes or more severe tornadoes.
+
+More severe tornadoes would somewhat strengthen the author's argument, because we will certainly have an easier time finding a higher percentage of tornadoes if they've grown more deadly. But more tornadoes would weaken the argument, because the author is explicitly saying, "I don't think the cause of the uptick in reported tornadoes is just a higher volume of tornadoes".
+
+So since we don't know whether increased number or increased severity is causing the uptick in tornado deaths (could also just be that the same number / intensity of tornadoes is now hitting more populated areas), we can't ascertain what effect this fact would have.
+
+**E. The geographic range in which tornadoes are most prevalent has remained roughly constant since the 1950s.** — No Impact (22% of students)
+The fact that the Tornado Zone of the country hasn't shifted doesn't really do anything.
+
+If it shifted to more populated areas, that could add some plausibility to the author's idea that "the same # of tornadoes are occurring, but we just detect a higher % of them".
+
+If it shifted to less populated areas, that could weaken the author's idea that "nowadays, we're just reporting more of the ones that occur".
+
+But staying the same doesn't seem to have much effect.
+
+---
+
+## S3 · Q25 — Strengthen
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Salesperson: If your vacuuming needs are limited to cleaning small areas of uncarpeted floors, an inexpensive handheld vacuum cleaner is likely to be sufficient. After all, most are easy to use and will likely satisfy all your vacuuming needs on wood and tile floors.
+
+### Prompt
+The conclusion of the salesperson's argument is most strongly supported if which one of the following is assumed?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** If you only need to clean small areas of uncarpeted floors, a cheap handheld is likely sufficient.
+- **Evidence:** Most cheap handhelds are easy to use and will probably satisfy all your needs for wood / tile floors.
+- **Evaluate:** The "satisfy all your needs" in the premise matches pretty well with the "likely sufficient" in the conclusion. It seems like the biggest vulnerability of this argument is that the sales pitch is directed at wood / tile floors. Maybe there's some other non-carpeted surface we would want to be vacuuming.
+- **Goal:** The answer needs to make us feel better about wood/tile being the main surfaces this vacuum would be used on, making it seem like ease of use is in important factor in buying a vacuum, or ruling out any potential downsides the cheap handheld vacuum might have.
+
+**Answer choices**
+**A. The only types of floor surfaces that most consumers encounter are carpet, wood, and tile.** — Correct (54% of students)
+The conclusion excluded the possibility that people wanted this for carpet surfaces. It said, "if your needs are limited to non-carpeted floors".
+
+So, according to this answer, the only non-carpeted surfaces most consumers would be using this on are wood and tile, and the argument already established that this vacuum is likely to be sufficient on wood / tile.
+
+**B. Inexpensive handheld vacuum cleaners are sufficient for cleaning small areas of carpeted floors.** — Out of Scope: carpeted floors (10% of students)
+This sales pitch is only being made to people whose needs in a vacuum are "non-carpeted" floors. So an answer telling us what it does on carpeted floors has no bearing or impact on the argument.
+
+Conversationally, we might think, "But, isn't it a good thing to have options? Now if I want to use it on carpet I can." But logically it's irrelevant to assessing "whether or not this is a good vacuum choice for people whose needs are limited to non-carpeted surfaces".
+
+**C. Any handheld vacuum cleaner that is easy to use but sufficient only for cleaning small areas of uncarpeted floors is likely to be inexpensive.** — No Impact (18% of students)
+This answer choice wants people to think we were supposed to be doing something with the internal logic of the adjectives we used to describe this vacuum.
+
+This answer just tells us a relationship that "all handhelds good for small stuff tend to be inexpensive".
+
+Great, there's a lot of consistency within that class of vacuum. But that doesn't help me assess whether I should buy that type of vacuum.
+
+**D. If your household cleaning needs include cleaning small areas of uncarpeted floors, it is likely that you will need a vacuum cleaner.** — No Impact (13% of students)
+This answer is just trying to convince us that we should buy a vacuum cleaner. The correct answer needs to help convince us to buy a certain type of vacuum cleaner.
+
+**E. The more versatile a vacuum cleaner is, the more likely it is to be expensive.** — No Impact (5% of students)
+We actually don't know whether these small handhelds are more / less / similarly versatile to other vacuums. The fact that the author doesn't seem to be suggesting them for carpeted floors might suggest they're of limited versatility. But those huge vacuums that do well on carpet might not be able to do small tile surfaces that well.
+
+So there's not even a way to apply this rule, since we don't know which types of vacuums are more or less versatile.
+
+---
+
+## S3 · Q26 — Parallel Flaw
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Decreased reliance on fossil fuels is required if global warming is to be halted. The current reliance would decrease if economic incentives to develop alternative energy sources were present. So ending global warming requires offering economic incentives to develop alternative energy sources.
+
+### Prompt
+The flawed pattern of reasoning exhibited by the argument above most closely parallels that exhibited by which one of the following?
+
+### Written (single style)
+**Argument breakdown**
+- **Premise 1 (conditional):** Ending global warming requires ↓ fossil fuels
+```
+To do X → Y (requires)
+```
+- **Premise 2 (conditional):** $ incentives for alt energy leads to ↓ fossil fuels
+```
+if Z → then Y
+```
+- **Conclusion (conditional):** Ending global warming requires offering $ incentives for alt energy
+```
+To do X → Z (requires)
+```
+- **Evaluate:** Like so many proud Parallel Flaw before him, this guy is doing the Necessary vs. Sufficient flaw. We know that ending global warming requires decreased reliance on fossil fuels. One sufficient means of getting less reliance on fossil fuels is if there were economic incentives to develop alternatives. But the author's conclusion is acting like those economic incentives are required.
+- **Goal:** We need two conditional premises, both of which point to the same outcome.
+```
+X → Y
+Z → Y
+```
+Then the conclusion should (erroneously) conclude that there's some conditional connection between the two trigger ideas.
+```
+X → Z
+```
+Or, conversationally, we need to see the author act like something sufficient is instead something required.
+
+**Answer choices**
+**A. If we end poverty we will end hunger. Ending unemployment will end poverty. So ending unemployment will end hunger.** — Bad Premise Match / Valid (6% of students)
+These two premises chain together, so the argument is valid.
+End poverty → End hunger
+End unemployment → End poverty
+
+We want two conditionals that have the same outcome, so they don't chain together.
+
+**B. Daily exercise guarantees good health. Good health ensures a happy life. So daily exercise is required for good health.** — Bad Premise Match (7% of students)
+These two premises chain together.
+good health → happy life
+daily exercise → good health
+
+We want two conditionals that have the same outcome, so they don't chain together.
+```
+Original argument    This argument
+X → Y                X → Y
+Z → Y                Y → Z
+so, X → Z            so, Z → X
+```
+
+**C. Going to college is required for getting a professional job. Graduating from high school is necessary for going to college. So graduating from high school is necessary for getting a professional job.** — Bad Premise Match / Valid (10% of students)
+These two premises chain together.
+college → graduating
+getting professional job → college
+
+We want two conditionals that have the same outcome, so they don't chain together.
+```
+Original argument    This argument
+X → Y                X → Y
+Z → Y                Y → Z
+so, X → Z            so, X → Z
+```
+
+**D. Keeping good teachers is necessary for improving education. If teachers' salaries were improved, good teachers would remain in the profession. So an increase in teachers' salaries is necessary to improve education.** — Correct (65% of students)
+These two premises have the same outcome.
+improving education → keeping teachers
+improve teachers salaries → keeping teachers
+
+Then the answer concludes a conditional relationship between the triggers.
+improving education → improve teachers salaries
+
+To improve education we need to keep teachers in the profession. Improved salaries are one possible way to keep teachers in the profession, but the author is acting like improved salaries are necessary to keep teachers in the profession.
+
+**E. Preventing abuse of prescription drugs requires expanding drug education efforts. Increased cooperation between schools and law enforcement agencies is needed if drug education efforts are to be expanded. So, if cooperation between law enforcement and schools increases, the abuse of prescription drugs will be prevented.** — Bad Premise Match (12% of students)
+These two premises chain together.
+expand education → cooperate ↑
+prevent abuse → expand education
+
+We want two conditionals that have the same outcome, so they don't chain together.
+```
+Original argument    This argument
+X → Y                X → Y
+Z → Y                Y → Z
+so, X → Z            so, Z → X
+```
+This argument ends up being flawed because it reads the chain backwards.
+
+We knew X → Y → Z, and it concludes Z → X, but that's a different flaw from the original, in which the two conditional premises didn't chain together at all.
+
+---
+
+# Section 4 (Logical Reasoning)
+
+> Note: S4 · Q1 (Paradox) was video-only (no authored written explanation) and is omitted.
+
+## S4 · Q2 — Weaken
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector). This one has no left-panel argument breakdown, only per-choice explanations.
+
+### Stimulus
+When the ancient fossils of a primitive land mammal were unearthed in New Zealand, they provided the first concrete evidence that the island country had once had indigenous land mammals. Until that discovery, New Zealand had no known native land mammals. The discovery thus falsifies the theory that New Zealand's rich and varied native bird population owes its existence to the lack of competition from mammals.
+
+### Prompt
+Which one of the following, if true, most seriously weakens the argument?
+
+### Written (single style)
+**Answer choices**
+**A. The unearthed land mammal is only one of several ancient land mammals that were indigenous to New Zealand.** — Strengthens (4% of students)
+This choice implies that there were several mammals, which would suggest more competition, which helps the author argue "See? There was lots of competition from mammals. So that theory is wrong."
+
+**B. The recently discovered land mammal became extinct long before the native bird population was established.** — Correct (90% of students)
+This choice states that the newly discovered mammal went extinct long before the birds established themselves in New Zealand. It weakens the conclusion by allowing the original theory to hold—that the birds thrived due to a lack of competition with any existing mammals when their population was growing.
+
+**C. The site at which the primitive land mammal was unearthed also contains the fossils of primitive reptile and insect species.** — No Impact (2% of students)
+Finding reptiles and insects alongside mammal fossils does not affect the causality concerning bird populations and mammalian competition, leaving the conclusion unchallenged.
+
+**D. Countries with rich and varied native land mammal populations do not have rich and varied native bird populations.** — No Impact (3% of students)
+This sort of reinforces the background idea that "when there are tons of mammals, birds won't do as well". Both the author and her opponents accept this.
+
+The opponents think that NZ didn't have mammals, so that's why birds did well. The author thinks that NZ did have mammals, so there must be some other reason why NZ birds did well.
+
+We don't know if NZ ever had a rich and varied land mammal population. So this doesn't help us analyze whether NZ's bird population was ever competing with mammals.
+
+**E. Some other island countries that are believed to have no native land mammals in fact had indigenous land mammals at one time.** — No Impact (1% of students)
+This refers to other island countries having unexpected land mammals and aligns with the author's evidence, slightly reinforcing it rather than undermining it. It has no substantial effect on the argument about the lack of competition leading to New Zealand's rich bird population.
+
+---
+
+## S4 · Q4 — Necessary Assumption
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector). This one has no left-panel argument breakdown, only per-choice explanations.
+
+### Stimulus
+It has been hypothesized that our solar system was formed from a cloud of gas and dust produced by a supernova — an especially powerful explosion of a star. Supernovas produce the isotope iron-60, so if this hypothesis were correct, then iron-60 would have been present in the early history of the solar system. But researchers have found no iron-60 in meteorites that formed early in the solar system's history, thereby disproving the hypothesis.
+
+### Prompt
+Which one of the following is an assumption required by the argument?
+
+### Written (single style)
+**Answer choices**
+**A. If a meteorite is formed early in the solar system's history, it contains chemical elements that are unlikely to be found in gas and dust produced by a supernova.** — Opposite: unlikely (3% of students)
+The author is thinking that a meteorite from around the time of the early solar system would be likely (if not certain) to contain chemical elements (such as iron-60) that were present in the supernova.
+
+**B. Other solar systems are not formed from clouds of gas and dust produced by supernovas.** — Out of Scope: other solar systems (1% of students)
+This argument is only about the story of our solar system, so the author doesn't need to assume anything about what goes on elsewhere.
+
+**C. Supernovas do not produce significant quantities of any form of iron other than iron-60.** — Negation Doesn't Weaken / Only Thing Mentioned ≠ Only Thing (6% of students)
+Tons of correct answers on Necessary Assumption are written in a ruling-out "not" style, so we can negate this and see if it weakens.
+
+Would it hurt the argument to say that, "Supernovas do produce significant quantities of other forms of iron as well"?
+
+No, that does nothing. The author's argument could also work by saying, "Supernovas also produce iron-45, but there's no iron-45 in meteorites either", but that's not any objection to the argument the author is making.
+
+This answer is doing the classic Necessary Assumption trap of acting like "since the argument only mentioned iron-60, they must be assuming that iron-60 is the only type of iron we care about".
+
+We can never assume that because an author chooses to say "Y is true of X" that he's assuming that X is the only thing / the most important thing for which Y is true.
+
+**D. Researchers have found iron-60 in meteorites that were formed relatively late in the solar system's history.** — Out of Scope: late history (2% of students)
+The author's argument has nothing to do with later in the solar system's history. She doesn't really care whether iron-60 meteorites were or weren't found later.
+
+She is simply saying, since they weren't found early, that proves that the solar system wasn't created from a supernova's debris.
+
+**E. If there had been iron-60 present in the early history of the solar system, it would be found in meteorites formed early in the solar system's history.** — Correct (89% of students)
+This shows us the Linking move we predicted, but in contrapositive form (as most correct answers on Assumption like to do, in order to better "hide" its correctness).
+
+We knew that the argument fell short of establishing the contrapositive trigger that "iron-60 was not present in the early history of the solar system" because all it told us was "iron-60 wasn't found in meteorites in the early solar system".
+
+The author was assuming that link of, "If we didn't find it meteorites, then it wasn't in the early solar system".
+
+And by contrapositive, "If it was in the early solar system, then we would find it in meteorites."
+
+Generally, it's unwise to negate conditional answers, but if we're negating (if X, then Y), we're getting "it's possible that X is true and Y isn't".
+
+So the negation here is, "It's possible that there was iron-60 in the early solar system, but not iron-60 in meteorites."
+
+---
+
+## S4 · Q5 — Paradox
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Safety expert: Tuna is often treated with carbon monoxide so that it will not turn brown as it ages. Treating tuna with carbon monoxide does not make it harmful in any way. Nonetheless, there is a danger that such treatment will result in more people getting sick from eating tuna.
+
+### Prompt
+Which one of the following, if true, most helps to resolve the apparent discrepancy in the safety expert's statements?
+
+### Written (single style)
+**Argument breakdown**
+- **Background:** Treating tuna with carbon monoxide (as is done to prevent browning) doesn't harm the tuna in any way.
+- **Surprising Claim:** There's a danger that doing this treatment will lead to more people getting sick from eating tuna
+- **Evaluation:** Given that treatment doesn't harm the tuna, How is it that more ppl get sick from eating it. A lot of correct answers to Paradox like to use the "breadcrumbs", the extra details, they included. Since this treatment -> doesn't get brown as it ages, I would imagine this correct answer is going to show us a way that not browning as ages -> more ppl get sick eating
+
+**Answer choices**
+**A. Workers in fish processing plants can be sickened by exposure to carbon monoxide if the appropriate safety procedures are not followed at those plants.** — Out of Scope / Too Weak (3% of students)
+We only care about how people are getting sick from eating tuna. These workers aren't getting sick by eating it.
+
+Also, answers that say "if measures aren't taken / if appropriate steps aren't followed" are inherently weak because we have no reason to think that appropriate procedures would not be followed.
+
+**B. Over the last several years, tuna consumption has increased in most parts of the world.** — Unrelated to Goal (1% of students)
+This doesn't have anything to do with the carbon monoxide browning treatment. Independently, more people eating tuna leads to more people getting sick from tuna, but this has no tie-in to the causal connection between the treatment and the uptick in tuna-sick.
+
+We'd have to add in an assumption that "the treatment has led to increased tuna consumption in the most parts of the world".
+
+**C. Tuna that is treated with carbon monoxide provides no visible indication when it has spoiled to the point that it can cause food poisoning.** — Correct (94% of students)
+This connects the idea of "not browning" to "people get sick eating it".
+
+If there were some treatment that would prevent milk from smelling like spoiled milk once it had gone bad, then people would probably keep drinking the milk even once it had gone rotten and would get sick from it more often.
+
+This is similarly saying that the browning treatment is making it so that people can't tell when their tuna is rotten sometimes, so they're eating rotten tuna and getting sick.
+
+**D. Treating tuna with carbon monoxide is the only way to keep it from turning brown as it ages.** — Unrelated to Goal (1% of students)
+This doesn't explain in any way why people are getting sick from the treated tuna.
+
+**E. Most consumers strongly prefer tuna that is not brown because they believe that brown tuna is not fresh.** — Unrelated to Goal (1% of students)
+Just like (D), this offers a reason why the treatment is given, but we need a reason why people are getting sick from eating the treated tuna.
+
+---
+
+## S4 · Q6 — Strengthen
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Astrophysicist: Gamma ray bursts (GRBs)—explosions of powerful radiation from deep space—have traditionally been classified as either "short" or "long," terms that reflect the explosion's relative duration. However, an unusual GRB has been sighted. Its duration was long, but in every other respect it had the properties of a short GRB. Clearly, the descriptive labels "short" and "long" have now outlived their usefulness.
+
+### Prompt
+The conclusion of the astrophysicist's argument is most strongly supported if which one of the following is assumed?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** The descriptive labels "short" and "long" have now outlived their usefulness.
+- **Evidence:** These labels reflect the duration of a GRB's explosion. But we sighted a weird GRB whose duration was long (so it would be labeled "long") but in every other respect it had the properties of one we'd typically label "short".
+- **Evaluate:** Is this one bad data point enough to get rid of these labels? Maybe our measurement of this GRB was just off, and so it didn't fit nicely into our traditional labels because our data on it was skewed. Shouldn't we wait for more data points that defy this classification system before we get rid of it? Since we can make objections such as the above, we could Strengthen the argument with ideas that counter those objections, like "our data on this unusual one is definitely accurate / this isn't just a one-time exception, we expect to find more things like this / we've got a better way to categorize GRBs if we were to get rid of this labeling system". We might also object, "What's the harm in just calling it long, since it did have a long duration?" So we could strengthen the argument by saying, "it would not be cool to just pretend that this is a long GRB."
+- **Goal:** It's hard to know where the correct answer will go with this one. Let's just cue up our mantra of "We should get rid of these labels, because ... [answer choice]."
+
+**Answer choices**
+**A. No other GRBs with unusual properties have been sighted.** — Weakens (5% of students)
+This was one of our objections — "what if this is a total outlier? Let's not ditch a system because of one stray data point".
+
+**B. The classification of GRBs can sometimes be made on the basis of duration alone.** — Too Weak (10% of students)
+Answer choices with the strength of "can, may, might, some, sometimes" are almost always wrong on Strengthen, Weaken, and Paradox, because they have such little impact.
+
+If anything, this answer would probably weaken, because it sounds like we could just go ahead an call this unusual GRB a "long" one (classify it on duration alone, and don't worry about how all its other properties matched up with short GRBs).
+
+**C. Properties other than duration are more important than duration in the proper classification of the unusual GRB.** — Correct (77% of students)
+This helps us to complete the sentence, "We should get rid of this labeling system, because ..."
+
+Because according to this labeling system we would classify this as "long" (it had a long explosion duration), but according to this answer choice, the other properties, the ones that correspond more with "short" are more important.
+
+So this answer, combined with our facts, makes it seem like our current labeling system would slap the wrong label on this recent unusual GRB.
+
+**D. GRBs cannot be classified according to the different types of cosmic events that create them.** — Weakens, if Anything (3% of students)
+By denying the possibility of an alternative classification system, we're certainly not helping this argument. If anything, it's making it seem more like we'd be stuck with our current labeling system.
+
+**E. Descriptive labels are easily replaced with nondescriptive labels such as "type I" and "type II."** — Unclear Impact (5% of students)
+This answer seems somewhat tempting, because it makes it seem like we could easily change our labeling system.
+
+But it's dodging the real issue of how we would categorize this weird GRB we just sighted.
+
+Changing the names from "long" and "short" to "type 1" and "type 2" wouldn't really solve the classification problem with this GRB. Would we call it a type 1 or 2?
+
+It has the duration of a typical type 1 but all the other properties match type 2.
+
+This is not really solving the problem, just re-naming the same problem. Also, the Conclusion isn't actually saying "we should get rid of these labels and create new ones to replace them". It's only saying "we should get rid of these labels". It may be that the author just thinks we should stop grouping them all as "short" / "long" but not be proposing that we come up with a different classification system to replace them.
+
+When it comes to the main issue of, "should we stop labeling them short/long?", (C) makes a stronger case for why these old labels are bad.
+
+Saying "they could be easily replaced" doesn't make a strong case for the idea that the old labels are bad.
+
+---
+
+## S4 · Q7 — Flaw
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+In one study, hospital patients' immune systems grew stronger when the patients viewed comic videos. This indicates that laughter can aid recovery from illness. But much greater gains in immune system strength occurred in the patients whose tendency to laugh was greater to begin with. So hospital patients with a greater tendency to laugh are helped more in their recovery from illness even when they laugh a little than other patients are helped when they laugh a greater amount.
+
+### Prompt
+The argument is most vulnerable to criticism on the grounds that it
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** A silly person who laughs a little is helped more in their recovery than a stoic person who laughs a lot.
+- **Intermediate Conclusion:** Laugher can aid recovery from illness.
+- **Evidence:** In a study, patients who saw comic videos saw had immune systems that got stronger. Silly people saw bigger immune system gains than did stoic people.
+- **Evaluation:** We have a Correlation to Causality move as we go from Premise to Intermediate Conclusion. Just because the immune systems of the people who watched the video grew stronger doesn't mean that "laughter helps with recovery from illness". First of all, who said anyone was laughing? We just know they watched a comic video. The author is assuming some of them laughed. Secondly, the immune system gain could have been caused by something else (maybe the people who saw the video also got more exercise / also got more sunlight / also had more social interaction). However, the conclusion itself is a random thought. Nowhere in the evidence did we talk about the silly people only laughing a little while the stoic people laughed a lot. It doesn't make any sense where that specific comparison came from.
+- **Goal:** Look for an answer calling out the illicit Correlation vs. Causation assumption, or one calling out the bizarre conclusion comparison that doesn't appear at all in the evidence.
+
+**Answer choices**
+**A. overlooks the possibility that the patients whose tendency to laugh was greater to begin with laughed more at the comic videos than did the other patients** — Correct (34% of students)
+The weird just gets weirder. This correct answer is an objection, since the author can't make any comparison between "silly people who only laughed a little" and "stoic people who laughed a lot", if it turns out that the silly people laughed more than everyone else.
+
+There's no way to have predicted the language/formulation of this answer. We just needed to be reacting to the bizarre new comparison in the conclusion, and to recognize that this would hurt the author's ability to draw that conclusion.
+
+When flaw answer choices begin with "fails to consider / overlooks the possibility / neglects the possibility", we just ask ourselves, "Would this be an objection to the author's reasoning?" If so, it's a good answer.
+
+**B. fails to address adequately the possibility that the patients whose tendency to laugh was greatest to begin with already had stronger immune systems than the other patients** — Not An Objection (38% of students)
+It doesn't affect this argument one way or the other whether silly people or stoic people started out with stronger immune systems (or whether they were equally strong).
+
+The author is talking only about how much improvement they make from whatever their starting point was.
+
+He's claiming that silly people who laughed a little had +10 improvement points whereas stoic people who laughed a lot only had +5 improvement points.
+
+So it makes no difference what their initial immune system "score" was.
+
+**C. presumes, without providing justification, that hospital patients have immune systems representative of those of the entire population** — Too Strong: representative of entire population (2% of students)
+The author isn't committed to this sampling assumption. Her conclusion is only about "hospital patients" so she isn't claiming or assuming anything about the non-hospital patient segment of the population.
+
+**D. takes for granted that the gains in immune system strength did not themselves influence the patients' tendency to laugh** — Not Being Assumed (21% of students)
+She assumes that laughter helps the immune system. Does it hurt her argument if improvements in the immune system help with laughter? No, it can be a two way street.
+
+That wouldn't hurt her argument, so it's not necessary for her to assume this isn't happening.
+
+**E. presumes, without providing justification, that the patients whose tendency to laugh was greatest to begin with recovered from their illnesses more rapidly than the other patients** — Not Being Assumed (5% of students)
+We are told that the sillier patients had greater gains in immune strength than the non-silly patients.
+
+If we are equating "greater gains in immune strength" with "recovered more rapidly", then this answer would be describing a Premise, not an assumption.
+
+If "greater gains in immune strength" ≠ "recovered more rapidly", then this answer is just bringing in something out of scope.
+
+So either way we interpret this answer it would be wrong.
+
+---
+
+## S4 · Q8 — Strengthen
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+A study of guppy fish shows that a male guppy will alter its courting patterns in response to feedback from a female guppy. Males with more orange on one side than the other were free to vary which side they showed to a female. Females were drawn to those males with more orange showing, and males tended to show the females their more orange side when courting.
+
+### Prompt
+Which one of the following, if true, provides the most support for the argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** A male guppy will alter its courting patterns in response to feedback from a female guppy.
+- **Evidence:** Males with more orange on one side than the other were free to vary which side they showed to a female. Females were drawn to those males with more orange showing, and males tended to show the females their more orange side when courting.
+- **Evaluate:** Since the author is interpreting the results of a study and drawing a causal conclusion (X happens in response to Y), we can use our Explain Curious Fact mindset. Curious Fact ... why were the males tending to show the females their more orange side when courting? Author's Explanation ... The male guppy was swimming normally, then noticed that females were drawn to males with more orange showing, and so they altered their courting patterns to highlight more of their orange side.
+- **Goal:** Since this is Strengthen, we have two different options for how the correct answer will work: - rule out an Alternate Explanation of the curious fact (get rid of some other explanation for why males tend to show more of their orange side). - boost the Plausibility of the Author's Explanation (provide more evidence that corroborates the idea that males show more orange in response to feedback from a female. there are lots of ways to do this, but the #1 formula is No Cause, No Effect, i.e. an answer that shows when a male guppy does not get feedback from a female guppy, it does not alter its courting patterns to show more orange).
+
+**Answer choices**
+**A. When a model of a female guppy was substituted for the female guppy, male guppies still courted, but were not more likely to show their side with more orange.** — Correct (76% of students)
+This strengthens in the classic No Cause, No Effect style. The author is arguing that a male guppy shows more orange in response to feedback from a female guppy.
+```
+CAUSE                   EFFECT
+feedback from female    male shows more orange
+```
+We can make this seem more plausible by demonstrating that when the supposed cause is absent, the effect is absent.
+
+That's what this answer does. A model of a female guppy cannot give feedback, because it's motionless.
+
+When feedback from a female wasn't present, the "showing more orange" alteration to courting patterns no longer happened.
+
+**B. In many other species females show a preference for symmetry of coloring rather than quantity of coloring.** — No Impact (3% of students)
+The fact that this mismatches with what we heard about female guppies technically has no strengthening or weakening effect, but given that superficially it feels more like weaken than strengthen, we can safely get rid of this one.
+
+Female guppies didn't seem to care as much about symmetry as they did about maximizing the quantity of orange.
+
+**C. No studies have been done on whether male guppies with more orange coloring father more offspring than those with less orange coloring.** — No Impact: orange heredity (1% of students)
+The argument doesn't really care whether splotchy orange is a trait that gets passed on via the male bloodline.
+
+It only cares about whether the males were showing off their orange side in response to female feedback.
+
+**D. Female guppies have little if any orange coloring on their sides.** — No Impact (4% of students)
+It wouldn't change this argument one bit if females were 100% orange, 0% orange, or anything in between.
+
+**E. The male and female guppies were kept in separate tanks so they could see each other but not otherwise directly interact.** — No Impact (16% of students)
+Separate tanks vs. the same tank doesn't have any clear relevance. This answer isn't ruling out an alternate explanation for why the males showed more orange. And it's not adding any plausibility to the story that they showed more orange in response to female feedback.
+
+So, it's not doing anything for us.
+
+---
+
+## S4 · Q9 — Main Conclusion
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Politician: Some proponents of unilateral nuclear arms reduction argue that it would encourage other countries to reduce their own nuclear arsenals, eventually leading to an international agreement on nuclear arms reduction. Our acting on the basis of this argument would be dangerous, because the argument ignores the countries presently on the verge of civil wars. These countries, many of which have nuclear capability, cannot be relied upon to conform to any international military policy.
+
+### Prompt
+Which one of the following most accurately expresses the conclusion of the politician's argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (dangerous = opinion):** Acting on the basis of the argument that, "if we unilaterally disarm our nukes, it will encourage other countries to reduce theirs, eventually leading to an international agreement on nuclear arms reduction" would be dangerous.
+- **Evidence (because):** This argument ignores the countries that are presently on the verge of civil wars. Many of these countries have nukes, and we can't rely on them to conform to any international military policy.
+- **Evaluate:** Whenever we do Main Conclusion (or Role), we remind ourselves that the Conclusion shows up, at least 85% of the time, in one of two ways: - it's the very first sentence - it's some pivot / rebuttal idea. The first sentence here is not our author's opinion, so we know it's not the conclusion. But since it's somebody else's opinion, ("some proponents"), it sends a huge warning sign that the author will probably rebut this idea. Sure enough, the 2nd sentence begins with a rebuttal opinion: acting on this argument would be dangerous. The final claims support this opinion.
+- **Goal:** We're looking for the closest meaning match to "Our acting on the basis of this argument would be dangerous". What would be a synonymous way to say the same thing? What does this argument refer to? A synonymous expression would be, "We should not act on the basis of this argument", or "It would be dangerous for us to act on the basis of this argument". But if we substitute the pronoun "this argument" for its referent, we should be looking for something like, "We should not act to disarm our nukes on the basis of the idea that other countries will follow and an international agreement will ensue".
+
+**Answer choices**
+**A. Countries that are on the verge of civil wars are unlikely to agree to reduce either their nuclear arms or their conventional weapons.** — Unstated Assumption (11% of students)
+This does not at all seem like a rephrasing of "our acting on the basis of this argument would be dangerous".
+
+This answer reflects an idea that was never said, so it can't be the Main Conclusion. This is more an assumption that undergirds the final sentence.
+
+**B. Unilateral nuclear arms reduction by the politician's country would encourage all countries to reduce their nuclear arsenals.** — Opposite (1% of students)
+This does not at all seem like a rephrasing of "our acting on the basis of this argument would be dangerous".
+
+This answer reflects the opinion of "some proponents", but our author's conclusion is rejecting their argument as a dangerous basis for action.
+
+**C. Many countries cannot be relied upon to disclose the extent of their nuclear capability.** — Unstated / Unrelated to Goal (3% of students)
+This does not at all seem like a rephrasing of "our acting on the basis of this argument would be dangerous".
+
+This answer talks about whether or not countries would disclose the full extent of their capability, which was unstated and undiscussed, so it can't possibly be the Main Conclusion.
+
+**D. It is unlikely that an international agreement on nuclear disarmament will ever be achieved.** — Unstated / Unrelated to Goal (3% of students)
+This does not at all seem like a rephrasing of "our acting on the basis of this argument would be dangerous".
+
+This answer reflects an idea that was never said, so it can't be the Main Conclusion. The author is making a point about what is presently the case, whereas this answer is about the indefinite future.
+
+**E. It is risky for the politician's country to unilaterally reduce nuclear arms in hopes of achieving an international agreement on arms reduction.** — Correct (82% of students)
+This seems like our best available rephrasing of "our acting on the basis of this argument would be dangerous".
+
+Instead of 'dangerous', they said 'risky'.
+
+Instead of 'our acting', they said "the politician's country to unilaterally reduce nuclear arms".
+
+And instead of "on the basis of this argument", they said "in hopes of achieving an international agreement on arms reduction".
+
+---
+
+## S4 · Q10 — Flaw
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Advertisement: Auto accidents are the most common cause of whiplash injury, a kind of injury that is caused by a sudden sharp motion of the neck. However, many other types of accidents can produce a sudden sharp motion of the neck and thereby result in whiplash injury. A sudden sharp motion of the neck can be caused by a fall, a bump on the head, or even by being shoved from behind. That is why you should insist on receiving Lakeside Injury Clinic's complete course of treatment for whiplash after any accident that involves a fall or a bump on the head.
+
+### Prompt
+Which one of the following, if true, provides the strongest basis for criticizing the reasoning in the advertisement?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (that is why):** You should insist on receiving LIC's complete course of treatment for whiplash after any accident that involves a fall or a bump on the head.
+- **Evidence:** Whiplash is caused by a sudden sharp motion of the neck. Many types of accidents can produce a sudden sharp motion of the next (a fall, a bump on the head, being shoved from behind, or most commonly an auto accident).
+- **Evaluate:** Well, this conclusion is completely overstated, but that's pretty common for an Advertisement. They're prone to hyperbole. The conclusion is conditional, since it has the word "any".
+```
+accident that involves fall or bump of head
+  → complete course of treatment for whiplash from LIC
+```
+To argue with a conditional conclusion, you have to think of a way where the Left side would be true, but the Right wouldn't. How is it possible that we have a fall or bump on the head but we needn't insist on a complete course of treatment for whiplash from LIC? There are a lot of different stories we could tell: - the fall/bump just aren't that bad to merit any medical attention - the fall/bump doesn't actually involve whiplash - the fall/bump involves whiplash, but we don't have health insurance or enough money to pay for LIC's complete course of treatment, so we're going to just YouTube whiplash exercises for free - the fall/bump involves whiplash, and we have means of paying for treatments, but we don't need the complete course of treatment, when just part of it would suffice - the fall/bump involves whiplash, and we have the means of paying, and we need a complete course of treatment, but it doesn't need to be LIC's. Maybe another clinic is more convenient / less expensive / better rated.
+- **Goal:** Look for an answer that presents a way to argue that one might have a fall or bump on the head but not need to get LIC's complete whiplash treatment.
+
+**Answer choices**
+**A. Being shoved from behind rarely causes whiplash.** — Out of Scope (2% of students)
+The conclusion is about falls or bumps on the head, not shoves from behind.
+
+**B. Auto accidents often involve falling or being bumped on the head.** — No Impact (1% of students)
+The conclusion doesn't care where our fall or head-bump came from, so it's pretty immaterial what frequency of them result from auto accidents. The fact that an auto accident might have led to our fall or head-bump doesn't give us any way to argue that "See? In this case, we needn't get a complete course of treatment from LIC."
+
+**C. Nonautomobile accidents other than those involving falls or bumps on the head also occasionally cause whiplash injuries.** — No Impact (4% of students)
+This has the same feel as (B). Some falls and head-bumps come from auto accidents; some come from non-auto accidents. So what?
+
+The conclusion doesn't care where the falls or head-bumps came from, so the frequency with which they come from cars or not-cars has no impact.
+
+**D. It is very uncommon for falling or being bumped on the head to result in a sudden sharp motion of the neck.** — Correct (78% of students)
+This weakens the argument by giving us a storyline in which "we have a fall or head-bump", but "we do not need to insist on a complete course of whiplash treatment".
+
+After all, if most falls or head-bumps don't result in a sudden sharp motion of the neck, then they don't result in "whiplash", so there'd be no reason to get a complete course of whiplash treatment.
+
+This correct answer is easier to like if you see the buried conditional trigger in the conclusion (any) and think of how strong and universal that makes the conclusion:
+every single time you have a fall or a bump on the head, you should get a complete course of whiplash treatment?
+
+**E. The appropriate treatment for whiplash caused by a fall or a bump on the head is no different from that for whiplash caused by an auto accident.** — Strengthens (15% of students)
+If anything, this lack of distinction would help the author's conclusion (which is not distinguishing between different types of falls or bumps on the head).
+
+If the appropriate treatments for different types of whiplash were different, that could potentially be an objection to the conclusion, which is making a blanket recommendation for all injuries of a certain type.
+
+---
+
+## S4 · Q11 — Flaw
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+A group of citizens opposes developing a nearby abandoned railroad grade into a hiking trail. Its members argue that trail users will likely litter the area with food wrappers and other debris. But this objection is groundless. Most trail users will be dedicated hikers who have great concern for the environment. Consequently, development of the trail should proceed.
+
+### Prompt
+The argument above is flawed in that it
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** Development of the trail should proceed
+- **Evidence:** Some people oppose it out of fear that the trails will get littered with food wrappers and other trash, but most trail users will be responsible hikers with great concern for the environment.
+- **Evaluation:** This is vulnerable to several objections: - he's assuming that "hikers with great concern for the environment" don't litter. - he's arguing that "at least 51% of the trail users won't litter", but what about the up to 49% that aren't responsible hikers? Couldn't that still be a significant amount of litter? - even if we reject the argument that the opposition was making, that doesn't mean we've offered positive evidence in favor of the conclusion. One of the famous flaws, Unproven vs. Proven False, is this idea that "just because an argument for X fails doesn't mean we conclude the opposite of X". X should just still be in doubt. Just because an argument that "we shouldn't make these trails" failed doesn't mean that we should conclude that "we should make these trails".
+- **Goal:** Look for the Unproven vs. Proven False answer choice, or an answer that makes the objection that "responsible hikers still litter" or that "the other 49% that aren't irresponsible hikers might still leave a lot of trash"
+
+**Answer choices**
+**A. bases its conclusion mainly on a claim that an opposing argument is weak** — Correct (38% of students)
+This is a novel phrasing, but this is getting at the Unproven vs. Proven False move. "Why should we develop this trail? Because one argument against it, that it will lead to lots of litter, is not compelling.
+
+**B. illicitly infers that because each member of a set has a certain property that set itself has the property** — Bad Evidence / Conclusion Match (15% of students)
+Does the conclusion say that "each member of a set has a certain property"? No, it says that we should develop the trail.
+
+This answer refers to the famous flaw Part vs. Whole, which we can't match up here at all. That flaw recycles a trait.
+
+e.g.: "Because the whole trail is worth building, each rest stop along the trail is worth building"
+
+**C. illicitly assumes as one of its premises the contention it purports to show** — Not Circular (8% of students)
+When we hear that "the conclusion restates a premise" or that the author "assumes the conclusion", those are keywords that mean Circular Reasoning.
+
+**D. illicitly infers that an attribute of a few users of the proposed trail will characterize a majority of users of the trail** — Bad Evidence / Conclusion Match (38% of students)
+The author is thinking that an attribute of a majority of the users (most users will be responsible people who care for environment) will characterize all users of the trail.
+
+Our author thinks, "since most of the users won't litter, there won't be an overall problem with litter". This answer says that the argument is "since some users won't litter, most won't litter."
+
+**E. attacks the citizens in the group rather than their objection to developing the trail** — Not Ad Hominem (1% of students)
+The author addresses their objection about littering by assuaging them that most users are responsible hikers who presumably wouldn't dream of littering.
+
+This answer choice describes the famous flaw Ad Hominem, in which we dismiss a point of view because of the speaker's ulterior motive or conflicting behavior/statements.
+
+---
+
+## S4 · Q12 — Strengthen
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+For years, university administrators, corporations, and government agencies have been predicting an imminent and catastrophic shortage of scientists and engineers. But since there is little noticeable upward pressure on the salaries of scientists and engineers, and unemployment is as high in these fields as any other, these doomsayers are turning out to be wrong.
+
+### Prompt
+Which one of the following would, if true, most strengthen the argument above?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** These doomsdayers are turning out to be wrong. rephrased: There isn't an imminent and catastrophic shortage of scientists and engineers.
+- **Evidence (since):** There is little noticeable upward pressure on the salaries of scientists and engineers, and unemployment is as high in these fields as in any other.
+- **Evaluate:** We should take our time to understand the intended meaning / significance of the premises, because (for me at least) it takes asking myself some questions about the real world, to pretend like I'm a grown up who understands that real world. What is upward pressure on salaries? That means that something is driving the salaries up. What drives salaries up or down? Laws could do that, if the minimum wage was raised. But that's more like a mandate, than pressure. What causes downward pressure on prices of retail goods? Competition. If I'm the only gas station in town (like when you drive through Big Sur, California), I can charge $2 / banana, because you don't have any better options. But if there were a rival gas station across the street who charged $1 per banana, that would put some downward pressure on how I price my bananas. Similarly, that gas station can pay its employees minimum wage, if there's no competition for those employees. But if there are only 5 people in town eligible to work at this gas station, and the rival across the street is willing to pay them $20 / hr, then that puts upward pressure on the pay (i.e. salary) that I offer. So labor markets, just like retail markets, operate off principles of supply and demand, and LSAC definitely expects us to have a common sense understanding that low supply or high demand drive up prices. The "doomsayers" were predicting that there was going to be a labor shortage of scientists and engineers. So if you're a science or engineering firm and are looking to hire a scientist or engineer, there are going to be lots of rival firms competing for the same eligible employees. You're going to have to compete with their salary offers, if you hope to lure one of the rare scientist / engineers to work at your company. The author is saying, "Since we're not seeing upward pressure on salaries, I guess that means there isn't a shortage of eligible workers." Why does she mention unemployment being as high as any other field. Why would it matter if unemployment were lower or higher than other fields? If unemployment were low, that means that almost all the scientists / engineers looking for jobs are finding them. If unemployment were high, that would mean there were too many workers looking for jobs (a surplus of eligible science / engineering workers), a labor surplus. The doomsayers who thought there wouldn't be enough scientists / engineers would assume that in this field unemployment would be lower than in others, since firms would be so desperate and labor would be in such short supply that all the eligible workers would find jobs. The author is thinking, "since unemployment is just as high in these fields, it doesn't look like any sort of labor shortage is happening".
+- **Goal:** Because of all the effort it takes to understand this argument, we'd frankly be out of time to dissect the logic. We should probably just head to the answers thinking, "convince me even more that there's no shortage of scientists and engineers".
+
+**Answer choices**
+**A. The proportion of all research in science and engineering being carried out by corporations is larger than it was five years ago.** — Unclear Impact (6% of students)
+There's no common sense connection between a higher proportion of corporate-sponsored research and whether or not there's a shortage vs. adequate amount of scientists and engineers.
+
+A higher amount of research would suggest that there are plenty of scientists and engineers producing work, but a proportional increase can happen even as an overall total is shrinking.
+
+**B. Most students choose fields of study that offer some prospect of financial success.** — Unclear Impact (7% of students)
+We don't really know whether the fields of science and engineering would be considered fields with a prospect of financial success.
+
+All we know is that salaries in these fields seem consistent over time, but we don't know in relation to other fields of study whether they'd be considered financially successful salaries or not.
+
+**C. The number of students in university programs in science and engineering has increased significantly in the last five years.** — Correct (82% of students)
+This definitely is fitting the bill of, "help convince me that there isn't going to be an imminent shortage of scientists and engineers".
+
+Not only do we seem to have plenty science and engineering workers now (unemployment isn't unusually low / salaries aren't being driven up by bidding wars for scarce employees), it also seems like we're going to be well stocked in the future with scientists and engineers, since there is an increasing number of them starting the educational pipeline to that career track.
+
+**D. Certain specializations in science and engineering have an oversupply of labor and others have shortages.** — Mixed Impact (5% of students)
+Part of this strengthens (oversupply) and part of it weakens (shortage). So in the end it loses out to the correct answer which purely strengthens.
+
+**E. The knowledge and skills acquired during university programs in science and engineering need to be kept current through periodic retraining and professional experience.** — No Impact (1% of students)
+This is just a timeless fact. It doesn't help us assess whether the labor supply is going up, going down, or staying the same.
+
+---
+
+## S4 · Q13 — Principle-Strengthen
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Rhonda: As long as the cost is not too great, you should use your time, energy, or money to help others. People who are active participants in charitable causes have richer lives than miserly hermits, however prosperous the hermits may be.
+
+Brad: You should ignore the problems of complete strangers and focus your generosity on your immediate relatives and close friends, since these are the people who will remember your sacrifices and return the kindness when you yourself need help.
+
+### Prompt
+Which one of the following principles, if valid, would most help to justify both Rhonda's and Brad's arguments?
+
+### Written (single style)
+**Argument breakdown**
+- **Rhonda's Conclusion:** You should use your time/energy/money to help others.
+- **Rhonda's Evidence:** People active with charities have richer lives than miserly hermits.
+- **Brad's Conclusion:** Ignore strangers and focus on your relatives/friends
+- **Brad's Evidence:** These people will remember what you did for them and help you when you need it.
+- **Evaluation:** What a weird question task. We need a principle that will help both arguments. So we need to think about where's there's overlap in Brad and Rhonda's conclusion and in their premises. Both conclusions are about where you should focus your time and energy. So the principle should sound something like you should focus your time and energy on xyz. Rhonda wants to focus on others, probably strangers, because she thinks that people involved in charities live richer lives. Brad wants to focus on people we know, because they'll be more likely to repay the favor one day. What do those have in common? Both of them are choosing who to focus on by thinking about what you'll get in return: richer life / help when you need it.
+- **Goal:** It seems like we'll need a principle that sounds something like, "If focusing on this group would potentially give you back something positive in return, do it".
+
+**Answer choices**
+**A. One should always do what will produce the most benefit for the most people.** — Bad Brad Match (5% of students)
+This would help Rhonda argue that we should be charitable givers, but it doesn't really help Brad argue that we should help family/friends.
+
+Technically, neither person argued based on "maximizing benefit for others".
+
+**B. One should treat others as one expects to be treated by them.** — Bad Rhonda Match (6% of students)
+Brad's argument consists of some reciprocity: you help them now, and they'll remember and help you out when you need it.
+
+Rhonda's, though, does not say you should give to others because they will give back to you. She says do it because it leads to a richer life.
+
+**C. One should act in ways that will benefit oneself.** — Correct (77% of students)
+What a silly-simple moral principle: if it helps you, do it.
+
+As we examined, the common ingredient of Brad and Rhonda's rationale was that the giver would stand to benefit (either by getting help later when they needed it or by living a richer life).
+
+So this principle helps both of them argue for their advice.
+
+**D. One should make sacrifices for others only if they will eventually return the favor.** — Bad Rhonda Match (3% of students)
+This aligns with Brad's thinking about our family/friends remembering what we did for them and returning the favor when we need it.
+
+But it contains nothing that has to do with Rhonda's "help others so that you'll have a richer life" argument.
+
+**E. One should always act in a manner that one can reflect on with pride.** — Bad Match For Both (9% of students)
+Neither of them cite "do this, so that you can reflect with pride" as a basis for their advice.
+
+---
+
+## S4 · Q15 — Role
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+The ancient reptile Thrinaxodon, an ancestor of mammals, had skull features suggesting that it had sensory whiskers. If Thrinaxodon had whiskers, it clearly also had hair on other parts of its body, which would have served as insulation that regulated body temperature. Therefore, Thrinaxodon was probably warm-blooded, for such insulation would be of little use to a cold-blooded animal.
+
+### Prompt
+Which one of the following most accurately describes the role played in the argument by the statement that if Thrinaxodon had whiskers, it clearly also had hair on other parts of its body, which would have served as insulation that regulated body temperature?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (therefore):** Thrinaxodon was probably warm-blooded.
+- **Evidence (for):** Its skull suggests it had sensory whiskers. If it had whiskers, Thrinaxadon had hair on other parts of its body, which would have served as insulation. Insulation would be of little use to a cold-blooded animal.
+- **Evaluate:** Usually, on Main Conclusion and Role, they like to avoid putting the Main Conclusion as the final claim, and here the Conclusion is in the final sentence but not the final claim. The support indicator "for" (FABS = for, after all, because, since) tells us the final claim is support. The argument sort of takes this voyage: 1. its skull suggests that it had sensory whiskers 2. so it probably had other body hair 3. that other body hair would serve as insulation 4. insulation is of little use to a cold-blooded animal 5. so it was probably warm blooded
+- **Goal:** We're being asked about something that is part of the Support. The answers might force us to consider whether it's an Intermediate Conclusion or just a Premise, but let's cross that bridge if/when we come to it. We might be able to get our answer just by knowing that this claim being asked about was support for the Main Conclusion that Thrina was probably warm-blooded.
+
+**Answer choices**
+**A. It is a premise offered in support of the conclusion that insulation regulating body temperature would be of little use to a cold-blooded animal.** — Bad Conclusion Match (14% of students)
+This correctly labels our claim a premise, but incorrectly says it's there to support "insulation would be of little use to a cold-blooded animal".
+
+That last claim isn't the conclusion. "Thrina was probably warm-blooded" is the main conclusion".
+
+We can also convince ourselves that "insulation regulating body temp would be of little use to a cold-blooded animal" is not a conclusion at all, because no support is offered.
+
+If we asked, "Why would insulation be of little use to a cold-blooded animal?", the support would sound like, "Because ... cold-blooded animals don't heat themselves internally. They lie on a rock and absorb solar radiation. Insulation is only useful if you have an internal heat source and want to keep heat from escaping."
+
+**B. It is a premise offered in support of the main conclusion drawn in the argument.** — Correct (75% of students)
+Every claim in this paragraph, other than 'Thrina was probably warm-blooded', was a premise offered in support of the main conclusion.
+
+Even if we thought the second sentence qualified as some sort of Intermediate Conclusion, an Intermediate Conclusion is still a premise. We can call an Intermediate Conclusion "a supported premise" and call regular ol' premises "unsupported premises".
+
+**C. It is a conclusion for which the claim that Thrinaxodon had skull features suggesting that it had sensory whiskers is offered as support.** — Unsupported (4% of students)
+This answer is testing us on whether it's fair to call this 2nd sentence a(n Intermediate) conclusion.
+
+It's tempting to think that the 2nd sentence could be an intermediate conclusion because it uses the Opinion Indicator "clearly", which is frequently used to signify conclusions.
+
+But if we subject either claim in this 2nd sentence to the Support Test, we'll see that there wasn't any support provided.
+
+"If T had whiskers, then it clearly also had hair on other parts of its body"
+why should we believe that? why can't something that have whiskers but otherwise be hairless?
+
+Support for this would sound like, "There isn't any animal we know of that has whiskers without also having other body hair. Whiskers only evolve in species that have body hair."
+
+We definitely don't have any claims like that.
+
+"The other body hair on T would have served as insulation that regulated body temperature"
+why should we believe that? why does body hair have to serve as insulation? couldn't it be for camouflage or for giving young members of the species something cuddly to snuggle with?
+
+Support for this would sound like, "Camouflage can be achieved more easily by means of scales or skin coloration. Animals evolve body hair in habitats with cold outdoor temperatures, where survival requires insulating body heat."
+
+We don't have any claims like that.
+
+**D. It is a statement of a hypothesis that the argument attempts to show is false.** — Opposite: show is false (1% of students)
+The argument definitely isn't trying to show that this 2nd sentence is false. It's one of the author's supporting ideas.
+
+**E. It is offered as an explanation of the phenomenon described by the argument's main conclusion, but it is not itself used to provide support for that conclusion.** — Opposite: not used to support (6% of students)
+We're looking for an answer that says this was part of the Support, and this answer says it wasn't used to provide support.
+
+The conclusion was that Thrina was probably warm-blooded, which is principally supported by combining the ideas that "Thrina had body hair that served as insulation" (our claim) and that "such insultation would be of little use to a cold-blooded animal".
+
+---
+
+## S4 · Q17 — Principle-Strengthen
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Meade: People who are injured as a result of their risky behaviors not only cause harm to themselves but, because we all have important ties to other people, inevitably impose emotional and financial costs on others. To protect the interests of others, therefore, governments are justified in outlawing behavior that puts one's own health at risk.
+
+### Prompt
+Which one of the following principles, if valid, most undermines the reasoning in Meade's argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (therefore):** To protect the interests of others, governments are justified in outlawing behavior that puts one's own health at risk.
+- **Evidence:** People who put themselves at risk and injure themselves inevitably impose emotional and financial costs on others.
+- **Evaluate:** If I'm your friend, and I buy a motorcycle, and 3 rad months later I end up in the ER with twenty broken bones, you are going to be emotionally taxed by worrying about me. You may even have to bring me soup. Similarly, society is subsidizing my hospital bills with its tax dollars. So my risk-taking imposed financial and emotional costs on others. The author is saying, "Because of all this, the government should outlaw the riding of motorcycles." That seems like a pretty harsh leap, right? We don't want the government to outlaw any risky behavior that could lead to injury (goodbye, dreams of winning Steeplechase competitions).
+- **Goal:** Let's look for a principle that stands up for our rights to engage in risky behavior with our own bodies. Since this principle is meant to weaken the argument, it should help us argue that "governments shouldn't outlaw risky behaviors."
+
+**Answer choices**
+**A. Endangering the social ties that one has to other people is itself a harm to oneself.** — Unrelated to Goal (2% of students)
+This answer isn't about the government, so it's not going to help us weaken this conclusion. We need a principle that lets us argue governments should not outlaw risky behavior.
+
+**B. People who have important ties to others have a personal obligation not to put their own health at risk.** — Unrelated to Goal (4% of students)
+This answer isn't about the government, so it's not going to help us weaken this conclusion. We need a principle that lets us argue governments should not outlaw risky behavior.
+
+**C. Governments are not justified in limiting an individual's behavior unless that behavior imposes emotional or financial costs on others.** — Bad Trigger Match (8% of students)
+This is a rule that lets one prove that "governments are not justified in outlawing a behavior", which is our goal with this answer choice.
+
+Does the trigger apply to "risky behaviors"?
+```
+Behavior doesn't impose any emot / financial costs on others
+  → govt not justified in outlawing
+```
+Were we told that risky behaviors don't impose any emotional or financial costs on others?
+
+No, we were told the opposite. So, since the trigger doesn't apply to "risky behaviors" we can't do anything with this answer.
+
+**D. Preventing harm to others is not by itself a sufficient justification for laws that limit personal freedom.** — Correct (83% of students)
+The author wants to outlaw risky behavior to prevent the harm it can cause others, in the form of emotional and financial costs.
+
+This principle says, "Sorry, that's not enough of a reason to limit personal freedom."
+
+This principle is sticking up for our rights to take risks. Yes, we may accidentally hurt ourselves and impose costs on others, but that's the price of livin'!
+
+Preventing harm to others isn't a sufficient justification for taking away our freedom to take some risks in life. So, no, the government isn't justified in outlawing behavior that puts one's own health at risk.
+
+**E. People's obligation to avoid harming others outweighs their obligation to avoid harming themselves.** — Unrelated to Goal (2% of students)
+This answer isn't about the government, so it's not going to help us weaken this conclusion. We need a principle that lets us argue governments should not outlaw risky behavior.
+
+---
+
+## S4 · Q18 — Necessary Assumption
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Sanderson intentionally did not tell his cousin about overhearing someone say that the factory would close, knowing that if he withheld this information, his cousin would assume it would remain open. Clearly this was morally wrong. After all, lying is morally wrong. And making a statement with the intention of misleading someone is lying. True, it was Sanderson's failing to state something that misled his cousin. Yet there is no moral difference between stating and failing to state if they are done with the same intention.
+
+### Prompt
+Which one of the following is an assumption required by the argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** It was morally wrong for Sanderson to intentionally withhold from his cousin the fact that he overheard someone say the factory would close.
+- **Evidence:** Making a statement with the intention of misleading is lying. Lying is morally wrong. + Yes, Sanderson didn't actually make a statement, but there's no difference between stating something and failing to state something if they are done with the same intention.
+- **Evaluation:** We're trying to conclude that an action is morally wrong, and the author has provided us with the conditional rules we'll be using to try to derive that idea. According to these rules, if you make an intentionally misleading statement, it's lying, which is morally wrong. We know Sanderson didn't make an intentionally misleading statement, but our author is saying that Sanderson intended to mislead by failing to say something (and those are morally equivalent). On a first read, it's hard for me to see the wiggle room here. According to these rules, isn't Sanderson guilty of something morally wrong? If Sanderson's failure to say something was done with the intent to mislead, then he was lying, and so he did something morally wrong. So how can we argue that Sanderson's failure to say something was not done with the intent to mislead? We know that Sanderson was aware that by withholding info, his cousin would assume the factory would remain open. Do we know for a fact that "it's misleading to suggest that the factory will remain open?" We don't. The person that Sanderson overheard is not necessarily right about the factory. If Sanderson knows that random dude who said "the factory is gonna close" is dead wrong about that, then withholding that story from his cousin, and letting his cousin continue to believe that the factory will remain open, is not intentionally misleading. If I overhear an anti-vaxxer saying that "vaccines cause autism" and I refrain from saying that to my cousin, knowing that my cousin will otherwise (continue to) think that vaccines don't cause autism, I'm not intentionally misleading my cousin or lying to her. I'm just protecting her from what I believe is erroneous information.
+- **Goal:** Since the only possible objection to this argument is, "What if Sanderson thinks the factory will remain open / what if Sanderson assumed that person he overheard was wrong?", the correct answer will probably rule out one of those objections. - Sanderson does not think the factory will remain open - Sanderson believed the person he overheard was saying something true
+
+**Answer choices**
+**A. Sanderson believed that his cousin would not want to be informed about the factory closing.** — Out of Scope: "want to be informed" (5% of students)
+The language of these rules / considerations is really only about truth / falsity, and whether or not we're misleading.
+
+The issue of whether or not we're pleasing someone's desire is irrelevant.
+
+**B. No one ever told Sanderson's cousin about the factory closing.** — Too Strong: "no one told the cousin" (5% of students)
+It wouldn't hurt the argument to negate this and get, "at least one person told Sanderson's cousin about the factory closing".
+
+That wouldn't change anything. I can be rightfully accused of lying to my cousin about X, even if some other person told my cousin the truth about X.
+
+**C. Sanderson believed that the factory would in fact be closing.** — Correct (57% of students)
+If we negate this, it is an objection!
+
+If Sanderson didn't think the factory was actually closing, then Sanderson would have heard the person who said "it's closing" and thought, "no it isn't". This would mean that allowing his cousin to continue believing that the factory would remain open wasn't an act of deliberate misleading by Sanderson.
+
+It would mean that by withholding the story about the guy he overheard, Sanderson was allowing his cousin to continue believe what Sanderson himself believed to be true.
+
+In other words, you have to establish that Sanderson believes the factory is closing, in order for it to qualify as deliberately misleading when Sanderson allows his cousin to believe that the factory will remain open.
+
+**D. Sanderson would have lied to his cousin if his cousin had asked him whether the factory would be closing.** — Out of Scope: Predicts a Hypothetical (27% of students)
+Answers that predict what would happen in a hypothetical or counterfactual situation are almost always wrong on Necessary Assumption.
+
+Our author might think that Sanderson lied through omission, but our author could still believe that Sanderson wouldn't have lied outright.
+
+If we negate this answer and learn that Sanderson might have told the truth if his cousin has asked him point-blank about the factory, that doesn't hurt the author's argument. She could just say, "I'm glad he would be honest if confronted, but that doesn't change the fact that his misleading omission still qualifies as a morally wrong lie."
+
+**E. Sanderson had something to gain by his cousin's continuing to believe that the factory would remain open.** — Out of Scope: something to gain (5% of students)
+So cynical, (E). We don't have to assume anything about what Sanderson's possible motivations could have been, if he in fact was trying to mislead his cousin.
+
+---
+
+## S4 · Q19 — Principle-Conform
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+After a judge has made the first ruling on a particular point of law, judges must follow that precedent if the original ruling is not contrary to the basic moral values of society. In the absence of precedent, when judges' own legal views do not contradict any widespread public opinion-and only then-they may abide by their own legal views in deciding a case.
+
+### Prompt
+Of the rulings described below, which one conforms most closely to the principles stated above?
+
+### Written (single style)
+**Argument breakdown**
+- **Principle:**
+```
+Rule 1: Orig ruling not contrary to basic moral values of society
+  → judges must follow that first ruling
+
+Rule 2: No precedent + judges views don't contradict broad public opinion
+  ←→ abide by own views when deciding
+```
+- **Evaluation:** Gross. They gave us two rules, one of which is bi-conditional (signified by "when and only then"). One rule deals with how you judge when there is a precedent. The other deals with how you judge when there isn't a precedent. So as we look through these answers, we'll first check whether we're dealing with a situation in which there is a precedent, in which case we'll use rule 1, or whether it's a situation with no precedent, in which case we would use rule 2.
+
+**Answer choices**
+**A. Judge Swoboda is confronted with a legal issue never before decided. Realizing that his own view on the issue contradicts what most people believe, he nonetheless issues a ruling that accords with his own legal views.** — Contradicts Rule 2 (1% of students)
+Because there's no precedent, we know we're using rule 2 for this one. According to that rule, the judge is only allowed to abide by his own views if his view does not go against what is widespread public opinion (i.e. what most people believe).
+
+**B. Judge Valenzuela decides, in the absence of any precedent, whether children as young as twelve can be legally tried as adults. There is overwhelming public support for trying children twelve and older as adults, a practice that violates Judge Valenzuela's personal moral views. So Judge Valenzuela rules, in keeping with his own legal beliefs, against trying twelve-year-olds as adults.** — Contradicts Rule 2 / Exact Same As (A) (4% of students)
+Everything is the same as (A) — no precedent, so the judge should use his own opinion unless it goes against the majority of public opinion. in which case he shouldn't use his own opinion.
+
+But here, as in (A), the judge stubbornly insists on his own opinion, flouting the mainstream view.
+
+**C. Judge Levinsky sets a legal precedent when she rules that the "starfish exception" applies to children. In deciding a later case concerning the starfish exception, Judge Wilson adheres to his own legal views rather than Judge Levinsky's ruling, even though he does not believe that Judge Levinsky's ruling opposes the basic moral values of society.** — Contradicts Rule 1 (4% of students)
+Since there is already a legal precedent set by Judge L, we'll be using rule 1. As long as the original ruling didn't go against a basic rule of society, we should abide by that ruling.
+
+Instead, Judge W goes with his own views instead, even though Judge L's original ruling did not oppose basic moral values.
+
+(Also, I hope you chuckled when you read "starfish exception")
+
+**D. Judge Watanabe must decide a case that depends on an issue for which no legal precedent exists. There is no widespread public opinion on the issue, so Judge Watanabe rules against the defendant because that conforms to her own legal view about the issue.** — Correct (90% of students)
+Since there's no precedent, we're using rule 2. The judge should use her own view, unless it goes against majority opinion, in which case she shouldn't use her own view.
+
+There is no majority opinion, so the judge's view does not go against majority opinion.
+
+Hence, she should rule using her own opinion on the matter, and she does.
+
+**E. Judge Balila rules against the defendant because doing so conforms to her own views about the legal issues involved. However, this ruling is contrary to relevant precedents, all of which conform to the basic moral values of society.** — Contradicts Rule 1 (1% of students)
+Since there is a precedent, we're using rule 1. The judge should follow the precedent unless it goes against basic moral values of society.
+
+The precedent does not go against moral values, yet the judge still rejects the precedent.
+
+---
+
+## S4 · Q20 — Most Supported
+
+**Correct answer:** B
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Neuroscientists subjected volunteers with amusia — difficulty telling different melodies apart and remembering simple tunes — to shifts in pitch comparable to those that occur when someone plays one piano key and then another. The volunteers were unable to discern a difference between the tones. But the volunteers were able to track timed sequences of musical tones and perceive slight changes in timing.
+
+### Prompt
+The statements above, if true, most strongly support which one of the following hypotheses?
+
+### Written (single style)
+**Argument breakdown**
+- **Statements:** Amusia means "it's hard to tell different melodies apart or to remember simple tunes". In an experiment, they played some shifting pitches to people with amusia (the part about piano is just establishing that these pitches are discernibly different — people w/o amusia can easily hear the difference when someone switches from playing middle C to playing the D key right next to it). The amusia folk could not tell the difference in pitches/tones. But ... they could track the timing of tones and notice differences in timing.
+- **Evaluate:** This seems like a Reconcile the Pivot type setup. We get all this information about people who can't tell the difference between melodies, can't remember simple tunes, can't hear a difference between different tones .... BUT ... they can tell the difference between different timing.
+- **Goal:** It's hard to anticipate how a correct answer here will sound, but it will likely reconcile the fact that people with amusia can detect timing changes with the fact that they can't detect pitch/melody changes.
+
+**Answer choices**
+**A. People who are unable to discern pitch compensate by developing a heightened perception of timing.** — Too Strong: heightened perception (16% of students)
+These people with amusia might just have normal perception of timing. They have abnormal perception of pitch (they don't hear differences that the rest of us hear).
+
+But this paragraph doesn't say that people with amusia are able to hear differences in timing that the rest of us don't hear, so there's no reason to think they have a heightened perception of timing.
+
+**B. Amusia results more from an inability to discern pitch than from an inability to discern timing.** — Correct (58% of students)
+To understand this answer, we would first want to re-read the definition of amusia:
+difficulty telling different melodies apart / remembering simple tunes
+
+What causes this?
+
+If you were to hum a melody / a simple tune (like the "Happy Birthday" song), you would be making different pitches in a certain rhythm. A melody is a combination of pitch and timing.
+
+Since these facts established that people with amusia can't tell different pitches apart but can tell different timed sequences apart, they it's supportable to say what's stopping them from being able to hear and remember melodies is pitch, not rhythm.
+
+What confused me a lot in processing this answer was that I thought of amusia as an underlying condition that causes people to not be able discern pitch, whereas this answer is saying it in reverse (being unable to discern pitch is what causes amusia).
+
+For example, Crohn's Disease causes a lot of digestive discomfort. We wouldn't say that digestive discomfort causes Crohn's Disease.
+
+But apparently amusia is a name for the symptom, not a name for the underlying cause. I had to think about other words that end with that same suffix to realize that these are all conditions, not causes:
+- aphasia
+- amusia
+- amnesia
+- dementia
+- pneumonia
+
+All these conditions are caused by more than one thing.
+
+Aphasia (inability to express your thoughts) or dementia (confused thoughts) could be caused by a stroke or by Alzheimer's.
+
+Pneumonia (cloudy lungs) could be caused by a bacterial infection or by COVID.
+
+... and so forth
+
+So if you think about "amusia" as a condition that results from something, this answer makes a lot more sense.
+
+**C. People who are unable to tell pitches apart in isolation are able to do so in the context of a melody by relying upon timing.** — Contradicted (15% of students)
+We were told that these people with amusia cannot tell melodies apart. This answer is saying, "Well ... sure they can; they just focus on timing".
+
+No. They can tell one timed sequence apart from another, but they can't tell melodies apart, as we were told.
+
+**D. The ability to tell melodies apart depends on the discernment of pitch alone and not at all on the perception of timing.** — Too Strong: alone / not at all (7% of students)
+We can definitely infer that "the ability to tell melodies apart depends at least in part on the discernment of pitch", but we have no way to say that it depends entirely on pitch.
+
+It's possible it depends on pitch and timing, and since people with amusia can't hear pitch, they can't tell melodies apart.
+
+**E. Whereas perception of timing can apparently be learned, discernment of pitch is most likely innate.** — Out of Scope: learned / innate (4% of students)
+Nothing in this paragraph would allow us to speculate that people with amusia learned to detect differences in timing. We have just as much reason to think that they have an innate capacity to hear different timed sequences but don't have an innate capacity to hear pitch.
+
+---
+
+## S4 · Q21 — Principle-Strengthen
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+Literary critic: There is little of social significance in contemporary novels, for readers cannot enter the internal world of the novelist's mind unless they experience that world from the moral perspective of the novel's characters. But in contemporary novels, the transgressions committed by some characters against others are sensationalistic spectacles whose only purpose is to make readers wonder what will happen next, rather than events whose purpose is to be seen as the injustices they are.
+
+### Prompt
+Which one of the following principles, if valid, would most help to justify the literary critic's argument?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion:** There is little of social significance in contemporary novels.
+- **Evidence:**
+```
+can't experience world from moral perspective of novel's characters
+  → can't enter internal world of the novelist's mind
+```
+In contemporary novels, the (moral) transgressions are just spectacles, not events whose purpose is to be seen as the injustices they are.
+- **Evaluate:** Good Lord, argument, I want to award you some Reddit badge for "Least readable". This is not fun to digest. I'm relying a lot on stopping as I read and saying to myself where this is going / what I'll need to hear. If I said, "There is nothing fun about ferris wheels, because you cannot confuse the body's senses unless you go fast", there are two implicit assumptions there: 1. Ferris wheels don't go fast 2. If you don't confuse the body's senses, it's not fun. Try it on the original first sentence: "There is little of social significance in contemporary novels, because you can't enter internal world of writer's mind unless you experience that world from the moral perspective of the novel's characters". What are the two assumptions? 1. In contemporary novels, you don't experience the world from the moral perspective of the novel's characters. 2. If you don't enter the internal world of the writer's mind, then there is little social significance. The 2nd sentence (yes, shockingly, this is only two sentences) is trying to establish one of these negatives. It's saying "in contemporary novels, X is this, rather than that." We would probably try to match this with #1 above. They're trying to establish that you don't experience the world from the moral perspective of the novel's characters. They say that the transgressions committed (immoral actions) are not events whose purpose is to be seen as the injustices they are.
+- **Goal:** This would make me think we're headed towards, "if moral transgressions aren't presented as events whose purpose is to be seen as the injustices they are, then you won't be able to experience the world of the novel from the moral perspective of the novel's characters." But given how hard this feels, I'd be willing to consider other missing links, and I'm planning to mainly get rid of wrong answers by finding stuff that sounds Too Strong or Out of Scope.
+
+**Answer choices**
+**A. An artist who wants to engage the moral sensibilities of his or her audience should not assume that forms of artistic expression that previously served this purpose continue to do so.** — Out of Scope: should (2% of students)
+Phew, a quick bailout with "should". The author doesn't use any normative language, so we're not allowed to be assigning her any normative assumptions.
+
+She is just describing contemporary novels as lacking in social significance. That doesn't necessarily mean that the author thinks that contemporary novels should change.
+
+I could describe how Starburst candy is devoid of nutritional value but not be assuming "Starburst should put more protein and vitamins in their candy".
+
+**B. A novelist who wants to make a reader empathize with a victim of injustice should avoid sensationalistic spectacles whose only purpose is to make readers wonder what will happen next.** — Out of Scope: should (21% of students)
+Awesome, another answer with "should". The author doesn't use any normative language, so we're not allowed to be assigning her any normative assumptions.
+
+She is just describing contemporary novels as lacking in social significance. She doesn't need to make any assumptions about what "should" be the case.
+
+**C. A work of art is socially important only if it engages the moral sensibilities of its audience.** — Weaker Trigger Match (17% of students)
+This is fairly close. It's saying
+```
+doesn't engage moral sensibilities of audience → not socially important
+```
+The conclusion is essentially saying
+```
+can't experience world from moral perspective of novel's characters → little of social significance
+```
+The outcomes are pretty interchangeable. If we know something is not socially important, then we can definitely support the idea that there's "little of social significance".
+
+But the trigger doesn't match. As an audience member, having your moral sensibilities engaged is very different from experiencing the world from the moral perspective of a character.
+
+Perhaps a character is having an affair, but they feel justified in doing so because they blame their spouse for a loveless marriage. They don't consider their affair wrong.
+
+An audience member experiencing the world from the moral perspective of that character would agree there's nothing wrong with the affair. But a different audience member might be repulsed by the affair and think that the character is totally wrong for betraying their spouse. That audience member still had their moral sensibilities engaged, but didn't experience the world from the moral perspective of the character.
+
+**D. If a novel allows a reader to understand injustice from the point of view of its victims, it will be socially significant.** — Reversed Logic (15% of students)
+This is the ol' Illegal Lightswitch move, where they flip both ideas.
+
+The argument was close to saying
+```
+novel doesn't allow reader to understand justice from point of view of victims → there is not much social significance
+```
+And this answer is just illegally flipping both ideas to get,
+```
+if novel does allow → there is social significance
+```
+
+**E. Novels have social significance only to the extent that they allow readers to enter the internal world of the novelist's mind.** — Correct (45% of students)
+This is one of those original two assumptions we pulled out of the first sentence. It's weird that this correct answer is internal to the first sentence and doesn't really make use of the second one. I can't really remember another example of that.
+
+The word "for" in the first sentence (of FABS fame ... for, after all, because, since) shows that the first clause is a conclusion being supported by what comes after "for".
+
+The author is indicating that whether or not a novel has much social significance is related to whether or not readers can enter the internal world of the novelist's mind.
+
+The author's overall argument is trying to say that, when it comes to contemporary novels ...
+
+moral transgressions are not events whose purpose is to be seen as moral injustices,
+and thus
+you don't experience the novel's world from the moral perspective of the novel's characters
+and thus
+you can't cant enter the internal world of the novelist's mind,
+and thus
+there is little of social significance.
+
+This answer provides that last link.
+
+---
+
+## S4 · Q22 — Flaw
+
+**Correct answer:** E
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+A recent study revealed that people who follow precisely all the standard recommendations for avoidance of infection by pathogenic microorganisms in meat-based foods are more likely to contract diseases caused by these pathogens than are those who deviate considerably from the standard recommendations. Hence, the standard recommendations for avoidance of infection by these pathogens must be counterproductive.
+
+### Prompt
+The argument is most vulnerable to criticism on the grounds that it fails to take into account which one of the following possibilities?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (hence):** The standard recommendations for avoidance of infection by these pathogens must be counterproductive (i.e. the advice being given is actually leading to more infections).
+- **Evidence:** People who precisely follow the recommendations are more likely to contract diseases caused by these pathogens than are people who deviate considerably from them.
+- **Evaluate:** Does the fact that the rule-followers are worse off than the rule-disobeyers show that the rule sucks? This feels a bit like an Anti-Causal type of argument. The author's conclusion is like, "See? These rules don't work. In fact, they probably make stuff worse" (that part makes it slightly causal in the reverse direction). How do we object to Anti-Causal arguments? Usually, we point out that the two groups aren't actually fair to compare, the way the author is doing so. For example, let's say "people who regularly follow seatbelt laws are more likely to get injured in a car crash than are people who regularly drive w/o their seatbelt on". Does that show that seat belts only worsen your chances of getting injured in a car crash? Not necessarily. Maybe the group of people who regularly follow seatbelt laws are a much higher-risk group: they commute every day, on the highway, so they are routinely driving at higher speeds with more likelihood of injury. Meanwhile, maybe the group of people who regularly don't wear their seatbelt live in rural towns and drive 25-35mph on lonely roads. So we could probably object to the author's conclusion here with a similar move.
+- **Goal:** Look for something like, "the author fails to consider that the people who precisely follow the meat recommendations might be a way higher risk group (when it comes to contracting diseases from meat pathogens) than are the people who deviate from the standard recs". This is kind of like the idea that people who are extremely sensitive to getting sick might wash their hands more than others but still get sick more than others (does that show washing hands is counterproductive?)
+
+**Answer choices**
+**A. Pathogenic microorganisms can reproduce in foods that are not meat-based.** — Out of Scope: not meat-based (8% of students)
+We're only talking about the pathogens in meat. When the conclusion says "the standard recommendations for avoidance of infection by these pathogens", she's referring to the aforementioned pathogens in meat-based foods.
+
+Any other type of pathogen is irrelevant to the conversation about whether the standard advice for meat is leading to more infections from meat-based pathogens.
+
+**B. Many people do follow precisely all the standard recommendations for avoidance of infection by pathogenic microorganisms in meat-based foods.** — No Impact (2% of students)
+Yes, we already know this. The evidence talks about people who follow precisely all the standard recommendations (vs. people who deviate considerably). So we already knew that many people precisely follow all the recommendations.
+
+We can't weaken an argument by reiterating something we know.
+
+**C. Not all diseases caused by microorganisms have readily recognizable symptoms.** — Too Broad / Too Weak (3% of students)
+Always translate "Not all A's are B" into "Some A's are ~B".
+
+This answer is saying,
+there is at least one disease caused by a microorganism that does not have easily recognizable symptoms.
+
+Cool? Not only is this answer insanely weak, we have no idea if the disease / microorganism combo they're referring to is related to meat in any way.
+
+**D. Preventing infection by pathogenic microorganisms is simply a matter of following the appropriate set of recommendations.** — Strengthens, if anything (4% of students)
+The author would probably agree with this answer, so it's definitely not weakening her argument. She thinks the standard recommendations are not an appropriate set of recommendations, since she feels that they are making the infection situation worse.
+
+This answer helps to support her judgment — it's saying, if the recommendations were appropriate, then that would be all it took to prevent infection.
+
+**E. Those most concerned with avoiding pathogenic infections from meat-based foods are those most susceptible to them.** — Correct (83% of students)
+This gives us the classic "these two groups are not fair to compare" objection to Anti-Causal arguments.
+
+Consider people who are very immunocompromised — they are most susceptible to getting sick because their immune systems don't work as well as staving off illness. They would be the group most likely to precisely follow all recommendations about washing hands, don't touch your face or eyes, wear a mask, etc.
+
+But they still may end up getting sick more often than the rest of the population, because they're so susceptible.
+
+Similarly, people who have digestive issues that make them very susceptible to diseases from meat-based pathogens would be found more in the "follow recommendations precisely" group than in the "deviate considerably from recommendations" group.
+
+Thus, the follow recommendations group is contracting diseases more often not because the recommendations are wrong / counterproductive, but because no recommendations are perfect and these people are the highest-risk for contracting diseases in the first place.
+
+---
+
+## S4 · Q23 — Parallel
+
+**Correct answer:** C
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+No nonfiction book published by Carriage Books has ever earned a profit. Since Carriage Books earned a profit on every book it published last year, it clearly did not publish a nonfiction book last year.
+
+### Prompt
+The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (clearly):** ~Carriage Books did not publish a nonfiction book last year.
+- **Evidence (since):** Carriage Books earned a profit on every book it published last year, and no nonfiction book published by Carriage Books has ever earned a profit.
+- **Evaluate:** After reading the argument on a Parallel question, we have to decide whether we think it would be more effective to make an Algebra Recipe for the argument or to just boil it down to a Principle or Reasoning Pattern. My general rule of thumb is that if there's conditional logic or quantifiers or Overlapping Ideas, then I'll go for Algebra. The first two premises are quantified/conditional logic (no / every). And there are Overlapping Ideas: Carriage Books, nonfiction book, profit, publish are all mentioned at least twice. So if we assign them some variables, we can look at the logic.
+```
+Premise 1 — No X's from Thing A have ever been Y.
+  For Thing A (all time): if X → no Y
+Premise 2 — Every Z from Thing A's last year was Y.
+  For Thing A (last year): if Z → yes Y
+Conclusion — Thing A last year didn't have any Z's that were X
+  For Thing A (last year): if Z → not X
+```
+Since Carriage Books is the common ingredient to all three claims, I would focus more on the movings parts.
+```
+Nonfiction is never profitable.   N → ~P
+Last yr's books were profitable.  Last yr = P
+So, last yr's books were fiction. Last yr = ~N
+```
+- **Goal:** The form seems to be to provide a very broad conditional (N → ~P), then tell us about something specific (P) that would trigger the contrapositive (P → ~N), and then conclude the outcome of that contrapositive (~N).
+
+**Answer choices**
+**A. No actor represented by the talent agent Mira Roberts has ever won an important role in a major movie. Since every actor represented by Ms. Roberts had at least one important acting role last year, it is clear that none of those actors worked in a movie last year.** — Movie vs. Major Movie (15% of students)
+Ouch, this is mean. I would keep this on a first pass.
+
+We get our broad conditional:
+For all time, Ms. R's actors never win important roles in major movies.
+
+We get our specific contrapositive fact:
+Last year, Ms. R's actors won some important roles.
+
+The correct conclusion would be:
+Last year, Ms. R's actors were not in major movies.
+
+But it's a flawed conclusion to say they weren't in any movies. They might have landed these important roles in small time, obscure movies.
+
+**B. No hotel owned by the Bidmore Group specializes in serving business travelers. Since the Cray Springs Hotel is owned by the Bidmore Group, it clearly does not specialize in serving business travelers.** — Weaker Logic Match / Lacks Timeframe (11% of students)
+This is an airtight argument that involves applying a broad rule to a specific fact. But the relationship between the two premises is not as tight as it could be.
+```
+ORIGINAL
+P1 - No nonfiction has ever been profitable
+P2 - Last year, X's were profitable
+
+THIS ANSWER
+P1 - No hotels by BG ever serve biz travel
+P2 - X is a hotel by BG
+```
+In the original, the second premise dealt with the end of the No statement. In this answer, the second premise deals with the beginning of the No statement.
+
+This is definitely worth keeping on a first pass, but ultimately this difference makes it an inferior answer. The other difference is that the second premise and the conclusion are not dealing with a specific period of time, the way the original and the correct answer do.
+
+**C. Pranwich Corporation has never given a bonus to an employee in its marketing division. Since Pranwich gave bonuses to every one of its systems analysts last year, it is clear that the company employed no systems analysts in its marketing division at that time.** — Correct (56% of students)
+```
+ORIGINAL
+P1 - No nonfiction has ever been profitable
+P2 - Last year, X's were profitable
+Conc - X's were not nonfiction
+
+THIS ANSWER
+P1 - No marketing emp has ever been given bonus
+P2 - Last year, X's were given bonus
+Conc - X's were not marketing emp
+```
+X's, of course, here would be the "systems analysts".
+
+If we were thinking back to our original recipe of,
+```
+P1 A → B
+P2 X is not B.
+C  X is not A.
+```
+That would match up here with
+```
+P1 Marketing → No Bonus
+P2 Sys Analysts were not (No Bonus).
+C  Sys Analysts were not (Marketing).
+```
+Clearly, the double negative is annoying, and the first premise was disguised by using "never" instead of "No" to create the same negative relationship.
+
+**D. James Benson has never done business with the city of Waldville. Since Waldville only maintains business files on individuals that it does business with, it clearly does not have a business file on James Benson.** — Weaker Logic Match / No Timeframe (11% of students)
+This argument does involve applying a broad rule to a specific fact. But the relationship between the two premises is not as tight as it could be.
+```
+ORIGINAL
+Premise 1 No nonfiction has ever been profitable
+Premise 2 Last year, X's were profitable
+
+THIS ANSWER
+Premise 1 No non-biz-affiliate is ever File Maintained
+Premise 2 X is a non-biz-affiliate.
+```
+In the original, the second premise dealt with the end of the No statement. In this answer, the second premise deals with the beginning of the No statement.
+
+This is definitely worth keeping on a first pass, but ultimately this difference makes it an inferior answer. It's also maybe unclear whether "doesn't maintain a file" is actually equivalent to "doesn't have a file". The other difference is that the second premise and the conclusion are not dealing with a specific period of time, the way the original and the correct answer do.
+
+**E. Conway Flooring has never installed hardwood flooring for any customer in Woodridge. Since Conway Flooring has had a lot of customers in Woodridge, the company clearly does not install hardwood flooring.** — Invalid Logic / No Timeframe (6% of students)
+This is not airtight logic, so we don't need to scrutinize its structure. Just because Conway Flooring has never installed hardwood in Woodridge (despite having had lots of customers in Woodridge), that doesn't prove the company doesn't offer that kind of flooring.
+
+Maybe the customers in Woodridge are too low-budget (or too ritzy) to request hardwood flooring, but Conway still provides hardwood flooring to other cities.
+
+This also lacks the timeframe dimension of the original.
+
+---
+
+## S4 · Q24 — Must be True
+
+**Correct answer:** A
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+All unemployed artists are sympathetic to social justice. And no employed artists are interested in the prospect of great personal fame.
+
+### Prompt
+If the claims made above are true, then which one of the following must be true?
+
+### Written (single style)
+**Argument breakdown**
+- **Statements:** conditional / quantifier (all, no)
+```
+Unemployed artist → sympathetic to social justice
+Employed artist → not interested in prospect of great personal fame
+```
+- **Evaluate:** Whenever we get a conditional claim on Inference, we ask ourselves two things: 1. Are there any other conditionals to which I could chain this one? 2. Are there any facts to which I could apply this rule? (usually via contrapositive) In this problem, we can tell there are two conditionals. Do they overlap? Is there any common term? (if not, they can't chain) It looks like they're both talking about the concept of whether or not an artist is employed. If we contrapose the first rule, it's saying, "If you're not sympathetic to social justice, then you're not an unemployed artist." Does that mean that you're an employed artist? No, it could just mean that you're not an artist at all. However, if we restrict ourselves to talking about artists, then we would be able to chain these conditionals together. And we have a motivated interest in doing so, since that's how Inference questions with conditionals work. when it comes to artists .... If you're not sympathetic to social justice, then you're not unemployed, which means you are employed, so you are not interested in great fame. by contrapositive, when it comes to artists .. If you're interested in great personal fame then you're not employed, which means you're unemployed, so you're sympathetic to social justice
+- **Goal:** Look for the most provable claim, but the most likely type of answer would combine the two claims by chaining them together, and reward us for seeing the connection between "being interested in fame and being sympathetic to social justice."
+
+**Answer choices**
+**A. If there are artists interested in the prospect of great personal fame, they are sympathetic to social justice.** — Correct (61% of students)
+The second sentence tells us that
+If there are artists interested in fame, then they are not employed artists, which means they're unemployed artists.
+
+And the first sentence says that
+If they're unemployed artists, then they are sympathetic to social justice.
+
+So we can derive what this answer is saying.
+```
+FOR ARTISTS
+interested in great fame → not employed → sympathetic to social justice
+```
+
+**B. All artists uninterested in the prospect of great personal fame are sympathetic to social justice.** — Unknown Trigger (13% of students)
+We can't say anything about "all people uninterested in fame" because that wasn't any of our triggers. We only know these four things:
+unemployed → sympathetic to SJ
+not sympathetic → not unemployed
+employed → not interested in fame
+interested in fame → not employed
+
+This answer is starting from a trigger idea we don't have,
+not interested in fame →
+so we can't prove anything about the group of all people not interested in fame (which includes all employed artists and potentially some unemployed artists as well).
+
+**C. Every unemployed artist is interested in the prospect of great personal fame.** — Illegal Negation (6% of students)
+The only thing we know about every unemployed artist is that they're sympathetic to social justice.
+
+This answer might be trying to bait people into thinking,
+"Since they told me that employed artists are not interested in fame, that must mean that unemployed artists are interested in fame."
+
+That's an illegal negation.
+
+If I tell you that "North American countries are affected by climate change", that doesn't mean that I'm saying "South American countries are not affected by climate change".
+
+**D. If an artist is sympathetic to social justice, that artist is unemployed.** — Unknown Trigger / Reversed Logic (11% of students)
+Just like (B), we can't say anything about "all people sympathetic to social justice" because that wasn't any of our triggers. We only know these four things:
+unemployed → sympathetic to SJ
+not sympathetic → not unemployed
+employed → not interested in fame
+interested in fame → not employed
+
+This answer is starting from a trigger idea we don't have,
+sympathetic to social justice →
+
+This answer is just reversing the conditional in the first sentence.
+
+**E. All artists are either sympathetic to social justice or are interested in the prospect of great personal fame.** — One-Word Off (10% of students)
+This answer is trying to play off our binary set of triggers. If you're an artist, you have to either be employed or unemployed, because that is a binary, exhaustive set of options.
+
+As an artist, since you're bound to be be employed or unemployed, you're bound to trigger one of those rules, so you're bound to be sympathetic to social justice, not interested in great fame, or both.
+
+But this answer says they are interested in great fame. If it said "all artists are sympathetic to social justice or not interested in great fame", it would also be correct.
+
+---
+
+## S4 · Q25 — Parallel Flaw
+
+**Correct answer:** D
+
+> Note: LSAT Lab offers only a single authored written explanation for this question (no Standard / Brief / Another Way selector).
+
+### Stimulus
+The police department has two suspects for the burglary that occurred last night, Schaeffer and Forster. Schaeffer has an ironclad alibi, so Forster must be the burglar.
+
+### Prompt
+Which one of the following arguments exhibits a flawed pattern of reasoning that is most similar to that exhibited by the argument above?
+
+### Written (single style)
+**Argument breakdown**
+- **Conclusion (so):** Forster must be the burglar.
+- **Evidence:** The police department has two suspects: Schaeffer and Forster. It's not Schaeffer (he has an ironclad alibi).
+- **Evaluate:** This argument is attempting to use this reasoning pattern.
+```
+X is either A or B.
+X is not A.
+So, X is B.
+```
+That would be a valid argument. The problem is "the police has two suspects: S and F" is not the same as saying "the burglar was either S or F". This argument is presenting a False Choice. It's acting like S and F are the only two options there are for the burglar, but it never established that they are the only two options. It only established that the police only have those two as suspects. We don't need to assume that the burglar is definitely one of the suspects the police have. We could fight this conclusion by saying, "Maybe Forster also has an ironclad alibi, and the police just don't have the right suspects for the burglary". This author is Assuming a Difference. She's assuming that Forster does not also have an ironclad alibi.
+- **Goal:** Let's look for an argument that tries to present two options, rule out one, and conclude the other. But it should be flawed because it never clearly established that those are the only two options we can possibly consider (they will just be the only two things mentioned).
+
+**Answer choices**
+**A. It has been known for some time that the Wrightsburg Zoo might build a new primate house and that it might refurbish its polar bear exhibit. There is now good reason to believe the zoo will build a new primate house. Therefore, the zoo will not refurbish its polar bear exhibit.** — Bad Flaw Match (6% of students)
+This is somewhat similar. There are two options presented. But instead of the author assuming, "one of these has to be a YES", this argument is assuming "one of these has to be a NO".
+
+The author is illicitly thinking that the two options are mutually exclusive (if one is a YES, the other must be a NO).
+
+The original argument was thinking that at least one of the options had to be correct (if one is a NO, then the other must be a YES).
+
+**B. If Watson, a robbery suspect, had been picked out of a police lineup by the victim, then charging Watson with robbery would have been reasonable. But the victim did not pick Watson out of the lineup. So Watson should not be charged.** — Topic Trap: burglary / robbery / Bad Evidence Match (4% of students)
+As soon as we see the first premise is conditional, we can pretty much bail. It should also smell very fishy that they're using a very similar topic (who's the burglar? who's the robber? who are the suspects?)
+
+The flaw here is a Nec vs. Suff error, because the author is thinking if the trigger isn't true, then the outcome isn't true.
+
+**C. If Iano Industries does not borrow money so that it can upgrade its factories, it will be unable to compete. While it is undesirable for Iano to take on more debt, being unable to compete would be even worse. So Iano should borrow the money needed to upgrade its factories.** — Bad Evidence/Conclusion Match (2% of students)
+This one doesn't really have any matching features. It has a conditional premise, which immediately should cause us to bail.
+
+The conclusion is a "should" claim, which could immediately cause us to bail.
+
+**D. Baxim Corporation announced last year that it was considering moving its headquarters to Evansville and that it was also considering moving to Rivertown. But Baxim has now decided not to move to Evansville. Thus, we can be sure that Baxim will move to Rivertown.** — Correct (76% of students)
+This replicates the False Choice of the original. The author is thinking that "one of these two options is definitely the one", even though there was never any language cinching in that idea.
+
+This author, like our original argument, is assuming "If one of them is a NO, then the other must be a YES".
+
+But just like the original argument, this is vulnerable to the objection of "isn't it possible that both of them are NO's, and we just need to expand our list of contenders?"
+
+Our original author thought the burglar must be S or F, but all we knew is that S and F were two suspects under consideration.
+
+This author thinks that Baxim will move to E or R, but all we know is that E and R are two sites under consideration.
+
+**E. The only viable candidates in the mayoral race are Slater and Gonzales. Political analysts believe that Slater has little chance of winning. Therefore, it is likely that Gonzales will win the election.** — Pretty Valid / Bad Evidence Match (12% of students)
+This argument can't replicate our False Choice flaw because in this argument the author does establish that the two options being discussed are the only two options we are allowed to consider:
+
+the only viable candidates are S and G
+
+If we were objecting to this argument, we'd pretty much be stuck arguing that "political analysts don't know what they're talking about", and that's not similar to the original argument.

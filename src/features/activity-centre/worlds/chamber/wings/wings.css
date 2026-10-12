@@ -1,0 +1,33 @@
+/*
+ * The chamber's two wings. Same room, smaller work, so they inherit the palette
+ * from `.chamber` and add only what the floor does not have.
+ */
+
+.ch-wing {
+  overflow-y: auto;
+}
+
+/* The argument shown as context rather than as a plinth: this is the record
+   being consulted, not a position anyone is holding. */
+.ch-context {
+  border: 1px solid hsl(var(--ch-edge) / 0.4);
+  background: hsl(var(--ch-stone) / 0.4);
+  color: hsl(var(--ch-ink-dim));
+}
+
+/*
+ * The answer under examination. Set apart from both plinths on purpose: it is
+ * nobody's position in this room, it is a specimen on the table, and it should
+ * not read as though the chamber endorses it.
+ */
+.ch-specimen {
+  border: 1px dashed hsl(var(--ch-edge));
+  background: hsl(var(--ch-floor) / 0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-choice,
+  .ch-button {
+    transition-duration: 1ms !important;
+  }
+}

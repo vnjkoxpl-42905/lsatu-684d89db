@@ -1,0 +1,5761 @@
+{
+  "summary": {
+    "generated_at": "2026-06-24T01:49:14.104Z",
+    "guided_drills": 114,
+    "manifest_entries": 108,
+    "lsatlab_reference_rows": 190,
+    "captured_lsatlab_cards": 213,
+    "lr_questions": 3964,
+    "classification_counts": {
+      "matched-by-lsatlab-card": 59,
+      "needs-human-review": 30,
+      "needs-qid-selection": 24,
+      "defer-rc": 1
+    }
+  },
+  "rows": [
+    {
+      "slug": "w4-01-reconcile-the-pivot",
+      "title": "Reconcile the Pivot",
+      "week": 4,
+      "order_in_week": 1,
+      "category": "Pacing",
+      "estimated_minutes": 40,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Reconcile the Pivot"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Reconcile the Pivot (First Taste)",
+        "week": "Week 3",
+        "category": "Patterns",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Reconcile the Pivot Drill One",
+        "slug": "reconcile-the-pivot-drill-one",
+        "sourceFile": "12_reconcile_the_pivot_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "recommended_question_features": [
+        "Important Pivot"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 13,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w4-02-blended-set-parallel-paradox",
+      "title": "BLENDED SET: Parallel + Paradox",
+      "week": 4,
+      "order_in_week": 2,
+      "category": "Pacing",
+      "estimated_minutes": 40,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Parallel",
+        "Paradox"
+      ],
+      "current_question_features": [
+        "Blended Set"
+      ],
+      "current_reasoning_types": [
+        "Comparative Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "BLENDED SET:  Parallel + Paradox",
+        "week": "Week 8",
+        "category": "Pacing",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Blended Set Parallel and Paradox",
+        "slug": "blended-set-parallel-and-paradox",
+        "sourceFile": "39_blended_set_parallel_and_paradox_drill.html",
+        "score": 45
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Parallel Reasoning",
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact",
+        "Alternatives"
+      ],
+      "recommended_reasoning_types": [
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 3,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Broad feature placeholder: Blended Set",
+        "Recommended pool only finds 3/6 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w4-01-principle-strengthen-set-2",
+      "title": "Principle-Strengthen (set 2)",
+      "week": 4,
+      "order_in_week": 1,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": null,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Principle-Strengthen"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Principle-Strengthen (set 2)",
+        "week": "Week 8",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Principle-Strengthen"
+      ],
+      "recommended_question_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 78,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w4-02-principle-strengthen-application-set-1",
+      "title": "Principle-Strengthen + Application (Set 1)",
+      "week": 4,
+      "order_in_week": 2,
+      "category": "Process",
+      "estimated_minutes": 26,
+      "question_count": null,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Principle-Strengthen",
+        "Application"
+      ],
+      "current_question_features": [
+        "Principle-Strengthen"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Principle-Strengthen + Application  (Set 1)",
+        "week": "Week 8",
+        "category": "Process",
+        "time": "13 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Principle-Strengthen",
+        "Principle-Conform"
+      ],
+      "recommended_question_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 170,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w4-03-reconcile-the-pivot-set-2",
+      "title": "Reconcile the Pivot (set 2)",
+      "week": 4,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 9,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Reconcile the Pivot"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Reconcile the Pivot  (set 2)",
+        "week": "Week 8",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "recommended_question_features": [
+        "Important Pivot"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 13,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w4-04-causal-chains-set-2",
+      "title": "Causal Chains - Set 2",
+      "week": 4,
+      "order_in_week": 4,
+      "category": "Process",
+      "estimated_minutes": 70,
+      "question_count": 9,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True",
+        "Necessary Assumption"
+      ],
+      "current_question_features": [
+        "Causal Chains"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Causal Chains - Set 2",
+        "week": "Week 8",
+        "category": "Process",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Causal Chains",
+        "slug": "causal-chains",
+        "sourceFile": "17_causal_chains_drill.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Necessary Assumption"
+      ],
+      "recommended_question_features": [
+        "Causal Chains"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 37,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w4-05-causal-difference-maker-first-taste",
+      "title": "Causal Difference-Maker (First Taste)",
+      "week": 4,
+      "order_in_week": 5,
+      "category": "Patterns",
+      "estimated_minutes": 50,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Causal Difference-Maker (First Taste)",
+        "week": "Week 8",
+        "category": "Patterns",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Causal Difference Maker Drill One",
+        "slug": "causal-difference-maker-drill-one",
+        "sourceFile": "44_causal_difference_maker_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "recommended_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 58,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w4-06-missing-links-color-coded-set-2",
+      "title": "Missing Links (color-coded) Set 2",
+      "week": 4,
+      "order_in_week": 6,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Missing Links / Common Terms / Color-Coding"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Missing Links (color-coded) Set 2",
+        "week": "Week 9",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "recommended_question_features": [
+        "Missing Link / Idea",
+        "Links Between Premises"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 291,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w4-07-assumption-family-medium-set-1",
+      "title": "Assumption Family (Medium) Set 1",
+      "week": 4,
+      "order_in_week": 7,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Three Main Reasoning Structures"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons",
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Assumption Family (Medium) Set 1",
+        "week": "Week 9",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons",
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 480,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: Three Main Reasoning Structures",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w4-08-famous-flaw-easier-set-1",
+      "title": "Famous Flaw (Easier) Set 1",
+      "week": 4,
+      "order_in_week": 8,
+      "category": "Pacing",
+      "estimated_minutes": 70,
+      "question_count": 12,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Famous Flaws"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Famous Flaw (Easier) Set 1",
+        "week": "Week 9",
+        "category": "Pacing",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Famous Flaws"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 174,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w4-09-intermediate-conclusion-set-1",
+      "title": "Intermediate Conclusion - (Set 1)",
+      "week": 4,
+      "order_in_week": 9,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Intermediate Conclusions"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Intermediate Conclusion - (Set 1)",
+        "week": "Week 10",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "recommended_question_features": [
+        "Intermediate Conclusions"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 44,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-01-famous-flaws-medium-set-1",
+      "title": "Famous Flaws (Medium) Set 1",
+      "week": 8,
+      "order_in_week": 1,
+      "category": "Pacing",
+      "estimated_minutes": 40,
+      "question_count": 5,
+      "difficulty_min": 3,
+      "difficulty_max": 4,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Famous Flaws"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Famous Flaws (Medium) Set 1",
+        "week": "Week 17",
+        "category": "Pacing",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Famous Flaws"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 3,
+      "recommended_difficulty_max": 4,
+      "recommended_pool_count": 106,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-02-conditional-logic-medium-set-6",
+      "title": "Conditional Logic (Medium) Set 6",
+      "week": 8,
+      "order_in_week": 2,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 8,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Medium) Set 6",
+        "week": "Week 18",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 205,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-03-must-be-false-medium-set-1",
+      "title": "Must Be False (Medium) Set 1",
+      "week": 8,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 36,
+      "question_count": null,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Must Be False"
+      ],
+      "current_question_features": [
+        "First / Medium Must Be False"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Must Be False (Medium) Set 1",
+        "week": "Week 18",
+        "category": "Process",
+        "time": "18 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Must Be False"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 1,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: First / Medium Must Be False",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-04-parallel-flaw-famous-flaws-set-2",
+      "title": "Parallel Flaw + Famous Flaws (Set 2)",
+      "week": 8,
+      "order_in_week": 4,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Parallel Flaw"
+      ],
+      "current_question_features": [
+        "Famous Flaws"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Parallel Flaw + Famous Flaws (Set 2)",
+        "week": "Week 18",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Parallel Flaw"
+      ],
+      "recommended_question_features": [
+        "Famous Flaws"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 40,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-05-relative-vs-absolute",
+      "title": "Relative vs. Absolute",
+      "week": 8,
+      "order_in_week": 5,
+      "category": "Patterns",
+      "estimated_minutes": 50,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Relative vs. Absolute"
+      ],
+      "current_reasoning_types": [
+        "Comparative Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Relative vs. Absolute",
+        "week": "Week 18",
+        "category": "Patterns",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Relative vs Absolute",
+        "slug": "relative-vs-absolute",
+        "sourceFile": "77_relative_vs_absolute_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Relative vs. Absolute"
+      ],
+      "recommended_reasoning_types": [
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 19,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-06-science-strengthen-weaken",
+      "title": "Science + Strengthen / Weaken",
+      "week": 8,
+      "order_in_week": 6,
+      "category": "Process",
+      "estimated_minutes": 70,
+      "question_count": 8,
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "current_question_types": [
+        "Strengthen",
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Science-heavy Stimulus"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Science + Strengthen / Weaken",
+        "week": "Week 18",
+        "category": "Process",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Science Strengthen Weaken",
+        "slug": "science-strengthen-weaken",
+        "sourceFile": "78_science_strengthen_weaken_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Strengthen",
+        "Weaken"
+      ],
+      "recommended_question_features": [
+        "Science",
+        "Plausibility",
+        "Missing Link / Idea"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 4,
+      "recommended_difficulty_max": 5,
+      "recommended_pool_count": 63,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-07-principle-conform-principle-in-stimulus-set-1",
+      "title": "Principle-Conform + Principle in Stimulus (set 1)",
+      "week": 8,
+      "order_in_week": 7,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 8,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Principle-Conform"
+      ],
+      "current_question_features": [
+        "Principle in Stimulus"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Principle-Conform + Principle in Stimulus (set 1)",
+        "week": "Week 18",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Principle-Conform"
+      ],
+      "recommended_question_features": [
+        "Principles in Stimulus"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 46,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-08-principle-conform-principles-in-answers-set-1",
+      "title": "Principle-Conform + Principles in Answers (Set 1)",
+      "week": 8,
+      "order_in_week": 8,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Principle-Conform"
+      ],
+      "current_question_features": [
+        "Principles in Answers"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Principle-Conform + Principles in Answers (Set 1)",
+        "week": "Week 18",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Principle-Conform"
+      ],
+      "recommended_question_features": [
+        "Principles in Answers"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 91,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-09-most-supported-causal",
+      "title": "Most Supported + Causal",
+      "week": 8,
+      "order_in_week": 9,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported"
+      ],
+      "current_question_features": [
+        "Causal Relationship"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Most Supported + Causal",
+        "week": "Week 18",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Most Supported Causal",
+        "slug": "most-supported-causal",
+        "sourceFile": "81_most_supported_causal_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 15,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-10-quantifiers-trait-overlap-inferences",
+      "title": "Quantifiers: Trait Overlap inferences",
+      "week": 8,
+      "order_in_week": 10,
+      "category": "Process",
+      "estimated_minutes": 70,
+      "question_count": 8,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Trait Overlap Inferences"
+      ],
+      "current_reasoning_types": [
+        "Quantifiers"
+      ],
+      "lsatlab_match": {
+        "title": "Quantifiers: Trait Overlap inferences",
+        "week": "Week 19",
+        "category": "Process",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Quantifiers Trait Overlap Inferences",
+        "slug": "quantifiers-trait-overlap-inferences",
+        "sourceFile": "82_quantifiers_trait_overlap_inferences_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Trait Overlap Inferences",
+        "Quantifiers"
+      ],
+      "recommended_reasoning_types": [
+        "Quantifiers"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 0,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended feature not currently in bank vocabulary: Trait Overlap Inferences",
+        "Recommended pool only finds 0/8 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-11-must-be-false-medium-set-2",
+      "title": "Must Be False (Medium) Set 2",
+      "week": 8,
+      "order_in_week": 11,
+      "category": "Process",
+      "estimated_minutes": 40,
+      "question_count": 4,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Must Be False"
+      ],
+      "current_question_features": [
+        "Medium Must Be False"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Must Be False (Medium) Set 2",
+        "week": "Week 19",
+        "category": "Process",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Must Be False"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 1,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Broad feature placeholder: Medium Must Be False",
+        "Recommended pool only finds 1/4 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-01-causal-difference-maker-set-1",
+      "title": "Causal Difference-Maker (Set 1)",
+      "week": 5,
+      "order_in_week": 1,
+      "category": "Patterns",
+      "estimated_minutes": 50,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Causal Difference-Maker (Set 1)",
+        "week": "Week 10",
+        "category": "Patterns",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "recommended_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 58,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-02-conditional-logic-easier-set-4",
+      "title": "Conditional Logic (Easier) Set 4",
+      "week": 5,
+      "order_in_week": 2,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 9,
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Easier) Set 4",
+        "week": "Week 12",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 2,
+      "recommended_pool_count": 51,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-03-anti-causal-set-2",
+      "title": "Anti-Causal - Set 2",
+      "week": 5,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 8,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Weaken",
+        "Flaw",
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "Anti-Causal"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Anti-Causal - Set 2",
+        "week": "Week 12",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Weaken",
+        "Flaw",
+        "Strengthen"
+      ],
+      "recommended_question_features": [
+        "Anti-Causal"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 69,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-04-explain-curious-fact-medium-set-1",
+      "title": "Explain Curious Fact (Medium) Set 1",
+      "week": 5,
+      "order_in_week": 4,
+      "category": "Pacing",
+      "estimated_minutes": 56,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Explain Curious Fact (Medium) Set 1",
+        "week": "Week 12",
+        "category": "Pacing",
+        "time": "28 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 5,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended pool only finds 5/6 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-05-assumption-family-medium-set-3",
+      "title": "Assumption Family (Medium) Set 3",
+      "week": 5,
+      "order_in_week": 5,
+      "category": "Process",
+      "estimated_minutes": 56,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Three Main Reasoning Types"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons",
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Assumption Family (Medium) Set 3",
+        "week": "Week 12",
+        "category": "Process",
+        "time": "28 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons",
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 480,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: Three Main Reasoning Types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-06-causal-difference-maker-set-2",
+      "title": "Causal Difference-Maker (set 2)",
+      "week": 5,
+      "order_in_week": 6,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 10,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True",
+        "Necessary Assumption"
+      ],
+      "current_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Causal Difference-Maker (set 2)",
+        "week": "Week 13",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Necessary Assumption"
+      ],
+      "recommended_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 61,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-07-describing-arguments-set-2",
+      "title": "Describing Arguments (set 2)",
+      "week": 5,
+      "order_in_week": 7,
+      "category": "Pacing",
+      "estimated_minutes": 70,
+      "question_count": 10,
+      "difficulty_min": 1,
+      "difficulty_max": 4,
+      "current_question_types": [
+        "Role",
+        "Method",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Describing Arguments"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": null,
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "recommended_question_features": [
+        "Describing Arguments",
+        "Focused on Evidence"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 4,
+      "recommended_pool_count": 4,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended feature not currently in bank vocabulary: Describing Arguments",
+        "Recommended pool only finds 4/10 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-08-agree-disagree-set-2",
+      "title": "Agree/Disagree - Set 2",
+      "week": 5,
+      "order_in_week": 8,
+      "category": "Pacing",
+      "estimated_minutes": 40,
+      "question_count": 5,
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "current_question_types": [
+        "Point at Issue / Agree-Disagree"
+      ],
+      "current_question_features": [
+        "Timed Agree/Disagree"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Agree/Disagree - Set 2",
+        "week": "Week 13",
+        "category": "Pacing",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Agree/Disagree"
+      ],
+      "recommended_question_features": [
+        "2-Speaker",
+        "Battle of Opinions"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 2,
+      "recommended_difficulty_max": 4,
+      "recommended_pool_count": 70,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-09-conditional-logic-medium-set-1",
+      "title": "Conditional Logic (Medium) Set 1",
+      "week": 5,
+      "order_in_week": 9,
+      "category": "Pacing",
+      "estimated_minutes": 70,
+      "question_count": 10,
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Medium) Set 1",
+        "week": "Week 13",
+        "category": "Pacing",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 2,
+      "recommended_difficulty_max": 4,
+      "recommended_pool_count": 122,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-10-evaluate-first-taste",
+      "title": "Evaluate - First Taste",
+      "week": 5,
+      "order_in_week": 10,
+      "category": "Process",
+      "estimated_minutes": 56,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Evaluate - First Taste",
+        "week": "Week 13",
+        "category": "Process",
+        "time": "28 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Evaluate Drill One",
+        "slug": "evaluate-drill-one",
+        "sourceFile": "58_evaluate_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Plausibility",
+        "Alternatives"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 3,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Broad feature placeholder: First Taste",
+        "Recommended pool only finds 3/7 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-11-evaluate-set-1",
+      "title": "Evaluate (set 1)",
+      "week": 5,
+      "order_in_week": 11,
+      "category": "Process",
+      "estimated_minutes": 40,
+      "question_count": 4,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Evaluate"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Evaluate  (set 1)",
+        "week": "Week 13",
+        "category": "Process",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Evaluate",
+        "Plausibility",
+        "Alternatives"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 3,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended feature not currently in bank vocabulary: Evaluate",
+        "Recommended pool only finds 3/4 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-12-most-supported-causal-difference-maker",
+      "title": "Most Supported + Causal Difference-Maker",
+      "week": 5,
+      "order_in_week": 12,
+      "category": "Patterns",
+      "estimated_minutes": 46,
+      "question_count": 4,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported"
+      ],
+      "current_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Most Supported + Causal Difference-Maker",
+        "week": "Week 13",
+        "category": "Patterns",
+        "time": "23 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Most Supported Causal Difference Maker",
+        "slug": "most-supported-causal-difference-maker",
+        "sourceFile": "60_most_supported_causal_difference_maker_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported"
+      ],
+      "recommended_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 51,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w5-13-conditional-logic-medium-set-2",
+      "title": "Conditional Logic (Medium) Set 2",
+      "week": 5,
+      "order_in_week": 13,
+      "category": "Process",
+      "estimated_minutes": 56,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Medium) Set 2",
+        "week": "Week 13",
+        "category": "Process",
+        "time": "28 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Principle-Strengthen"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 32,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w9-01-abstract-flaw-set-2",
+      "title": "Abstract + Flaw (set 2)",
+      "week": 9,
+      "order_in_week": 1,
+      "category": "Process",
+      "estimated_minutes": 90,
+      "question_count": 10,
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Abstract Answer Choices"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Abstract + Flaw (set 2)",
+        "week": "Week 20",
+        "category": "Process",
+        "time": "45 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Abstract Answers",
+        "Famous Flaws"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 4,
+      "recommended_difficulty_max": 5,
+      "recommended_pool_count": 85,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w9-02-science-sufficient-assumption",
+      "title": "Science + Sufficient Assumption",
+      "week": 9,
+      "order_in_week": 2,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Sufficient Assumption"
+      ],
+      "current_question_features": [
+        "Science-heavy Stimulus"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Science + Sufficient Assumption",
+        "week": "Week 20",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Science Sufficient Assumption",
+        "slug": "science-sufficient-assumption",
+        "sourceFile": "89_science_sufficient_assumption_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption"
+      ],
+      "recommended_question_features": [
+        "Science",
+        "Missing Link / Idea",
+        "Conditional Conclusion"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 83,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w9-03-except-set-1",
+      "title": "EXCEPT (set 1)",
+      "week": 9,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox"
+      ],
+      "current_question_features": [
+        "EXCEPT"
+      ],
+      "current_reasoning_types": [
+        "Comparative Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "EXCEPT  (set 1)",
+        "week": "Week 20",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "EXCEPT"
+      ],
+      "recommended_reasoning_types": [
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 25,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w9-04-weaken-explain-curious-fact",
+      "title": "Weaken + Explain Curious Fact",
+      "week": 9,
+      "order_in_week": 4,
+      "category": "Patterns",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Weaken + Explain Curious Fact",
+        "week": "Week 20",
+        "category": "Patterns",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Weaken Explain Curious Fact",
+        "slug": "weaken-explain-curious-fact",
+        "sourceFile": "91_weaken_explain_curious_fact_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Weaken"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 89,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w9-05-conditional-logic-harder-set-1",
+      "title": "Conditional Logic (Harder) Set 1",
+      "week": 9,
+      "order_in_week": 5,
+      "category": "Pacing",
+      "estimated_minutes": 80,
+      "question_count": 8,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Harder) Set 1",
+        "week": "Week 20",
+        "category": "Pacing",
+        "time": "40 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 205,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w9-06-must-be-false-harder-set-2",
+      "title": "Must Be False (Harder) Set 2",
+      "week": 9,
+      "order_in_week": 6,
+      "category": "Process",
+      "estimated_minutes": 54,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Must Be False"
+      ],
+      "current_question_features": [
+        "Harder Must Be False"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Must Be False (Harder) Set 2",
+        "week": "Week 21",
+        "category": "Process",
+        "time": "27 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Must Be False"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 1,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Broad feature placeholder: Harder Must Be False",
+        "Recommended pool only finds 1/6 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w9-07-strengthen-weaken-science",
+      "title": "Strengthen / Weaken + Science",
+      "week": 9,
+      "order_in_week": 7,
+      "category": "Patterns",
+      "estimated_minutes": 70,
+      "question_count": 10,
+      "difficulty_min": 3,
+      "difficulty_max": 5,
+      "current_question_types": [
+        "Strengthen",
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Science-heavy Stimulus"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Strengthen / Weaken + Science",
+        "week": "Week 21",
+        "category": "Patterns",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Strengthen Weaken Science",
+        "slug": "strengthen-weaken-science",
+        "sourceFile": "94_strengthen_weaken_science_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Strengthen",
+        "Weaken"
+      ],
+      "recommended_question_features": [
+        "Science",
+        "Plausibility",
+        "Missing Link / Idea"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 3,
+      "recommended_difficulty_max": 5,
+      "recommended_pool_count": 95,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w9-08-anti-causal-hard-mini-set",
+      "title": "Anti-Causal (Hard Mini-Set)",
+      "week": 9,
+      "order_in_week": 8,
+      "category": "Patterns",
+      "estimated_minutes": 30,
+      "question_count": 3,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Anti-Causal"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Anti-Causal (Hard Mini-Set)",
+        "week": "Week 21",
+        "category": "Patterns",
+        "time": "15 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Anti Causal Hard Mini Set",
+        "slug": "anti-causal-hard-mini-set",
+        "sourceFile": "95_anti_causal_hard_mini_set.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Weaken"
+      ],
+      "recommended_question_features": [
+        "Anti-Causal"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 24,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w10-01-conditional-logic-harder-set-2",
+      "title": "Conditional Logic (Harder) Set 2",
+      "week": 10,
+      "order_in_week": 1,
+      "category": "Pacing",
+      "estimated_minutes": 50,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Harder) Set 2",
+        "week": "Week 22",
+        "category": "Pacing",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 205,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w10-02-quantifiers-set-2",
+      "title": "Quantifiers Set 2",
+      "week": 10,
+      "order_in_week": 2,
+      "category": "Process",
+      "estimated_minutes": 110,
+      "question_count": 8,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Trait Overlap Inferences"
+      ],
+      "current_reasoning_types": [
+        "Quantifiers"
+      ],
+      "lsatlab_match": {
+        "title": "Quantifiers Set 2",
+        "week": "Week 22",
+        "category": "Process",
+        "time": "55 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Trait Overlap Inferences",
+        "Quantifiers"
+      ],
+      "recommended_reasoning_types": [
+        "Quantifiers"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 0,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended feature not currently in bank vocabulary: Trait Overlap Inferences",
+        "Recommended pool only finds 0/8 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w10-03-explain-curious-fact-harder-set-1",
+      "title": "Explain Curious Fact (Harder) Set 1",
+      "week": 10,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 46,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Explain Curious Fact (Harder) Set 1",
+        "week": "Week 22",
+        "category": "Process",
+        "time": "23 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 5,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w10-04-except-set-2",
+      "title": "EXCEPT (set 2)",
+      "week": 10,
+      "order_in_week": 4,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox",
+        "Flaw",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "EXCEPT"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning",
+        "Comparative Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "EXCEPT (set 2)",
+        "week": "Week 22",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox",
+        "Flaw",
+        "Must Be True"
+      ],
+      "recommended_question_features": [
+        "EXCEPT"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 33,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w10-05-conditional-logic-harder-set-3",
+      "title": "Conditional Logic (Harder) Set 3",
+      "week": 10,
+      "order_in_week": 5,
+      "category": "Pacing",
+      "estimated_minutes": 50,
+      "question_count": 6,
+      "difficulty_min": 5,
+      "difficulty_max": 5,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Harder) Set 3",
+        "week": "Week 23",
+        "category": "Pacing",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 5,
+      "recommended_difficulty_max": 5,
+      "recommended_pool_count": 44,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-01-explain-curious-fact-medium-set-2",
+      "title": "Explain Curious Fact (Medium) Set 2",
+      "week": 7,
+      "order_in_week": 1,
+      "category": "Pacing",
+      "estimated_minutes": 60,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Explain Curious Fact (Medium) Set 2",
+        "week": "Week 14",
+        "category": "Pacing",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 5,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended pool only finds 5/7 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-02-complete-the-analogy-set-3",
+      "title": "Complete the Analogy (set 3)",
+      "week": 7,
+      "order_in_week": 2,
+      "category": "Patterns",
+      "estimated_minutes": 60,
+      "question_count": 8,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Fill in the Blank",
+        "Method",
+        "Assumption Family"
+      ],
+      "current_question_features": [
+        "Complete the Analogy"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Complete the Analogy (set 3)",
+        "week": "Week 14",
+        "category": "Patterns",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Method of Reasoning"
+      ],
+      "recommended_question_features": [
+        "Analogies"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 44,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Assumption Family",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-03-assumes-similarity-mini-set",
+      "title": "Assumes Similarity (Mini-Set)",
+      "week": 7,
+      "order_in_week": 3,
+      "category": "Patterns",
+      "estimated_minutes": 40,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Weaken",
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "Assumes Similarity"
+      ],
+      "current_reasoning_types": [
+        "Comparison"
+      ],
+      "lsatlab_match": {
+        "title": "Assumes Similarity (Mini-Set)",
+        "week": "Week 14",
+        "category": "Patterns",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Assumes Similarity Mini Set",
+        "slug": "assumes-similarity-mini-set",
+        "sourceFile": "64_assumes_similarity_mini_set.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Weaken",
+        "Strengthen"
+      ],
+      "recommended_question_features": [
+        "Assumes Similarity"
+      ],
+      "recommended_reasoning_types": [
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 29,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-04-conditional-logic-medium-set-3",
+      "title": "Conditional Logic (Medium) Set 3",
+      "week": 7,
+      "order_in_week": 4,
+      "category": "Pacing",
+      "estimated_minutes": 50,
+      "question_count": 7,
+      "difficulty_min": 4,
+      "difficulty_max": 4,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Medium) Set 3",
+        "week": "Week 15",
+        "category": "Pacing",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 4,
+      "recommended_difficulty_max": 4,
+      "recommended_pool_count": 52,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-05-explain-curious-fact-medium-set-3",
+      "title": "Explain Curious Fact (Medium) Set 3",
+      "week": 7,
+      "order_in_week": 5,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Explain Curious Fact (Medium) Set 3",
+        "week": "Week 15",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 5,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended pool only finds 5/7 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-06-causal-chains-mini-set",
+      "title": "Causal Chains (Mini Set)",
+      "week": 7,
+      "order_in_week": 6,
+      "category": "Patterns",
+      "estimated_minutes": 36,
+      "question_count": 4,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Causal Chains"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Causal Chains (Mini Set)",
+        "week": "Week 15",
+        "category": "Patterns",
+        "time": "18 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Causal Chains Mini Set",
+        "slug": "causal-chains-mini-set",
+        "sourceFile": "67_causal_chains_mini_set.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "recommended_question_features": [
+        "Causal Chains"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 27,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-07-evaluate-set-2",
+      "title": "Evaluate (set 2)",
+      "week": 7,
+      "order_in_week": 7,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Evaluate"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Evaluate (set 2)",
+        "week": "Week 15",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Evaluate",
+        "Plausibility",
+        "Alternatives"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 3,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended feature not currently in bank vocabulary: Evaluate",
+        "Recommended pool only finds 3/7 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-08-conditional-logic-medium-set-4",
+      "title": "Conditional Logic (Medium) Set 4",
+      "week": 7,
+      "order_in_week": 8,
+      "category": "Process",
+      "estimated_minutes": 70,
+      "question_count": 9,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Medium) Set 4",
+        "week": "Week 15",
+        "category": "Process",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 205,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-09-intermediate-conclusions-set-2",
+      "title": "Intermediate Conclusions Set 2",
+      "week": 7,
+      "order_in_week": 9,
+      "category": "Process",
+      "estimated_minutes": 40,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Intermediate Conclusions"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Intermediate Conclusions Set 2",
+        "week": "Week 16",
+        "category": "Process",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "recommended_question_features": [
+        "Intermediate Conclusions"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 44,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-10-describing-arguments-set-3",
+      "title": "Describing Arguments (set 3)",
+      "week": 7,
+      "order_in_week": 10,
+      "category": "Pacing",
+      "estimated_minutes": 50,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Role",
+        "Method",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Describing Arguments"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Describing Arguments (set 3)",
+        "week": "Week 16",
+        "category": "Pacing",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "recommended_question_features": [
+        "Describing Arguments",
+        "Focused on Evidence"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 4,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended feature not currently in bank vocabulary: Describing Arguments",
+        "Recommended pool only finds 4/6 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w7-11-causal-chains-set-3",
+      "title": "Causal Chains - Set 3",
+      "week": 7,
+      "order_in_week": 11,
+      "category": "Patterns",
+      "estimated_minutes": 60,
+      "question_count": 8,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Assumption",
+        "Inference"
+      ],
+      "current_question_features": [
+        "Causal Chains"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Causal Chains - Set 3",
+        "week": "Week 16",
+        "category": "Patterns",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Causal Chains",
+        "slug": "causal-chains",
+        "sourceFile": "17_causal_chains_drill.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Necessary Assumption",
+        "Must Be True"
+      ],
+      "recommended_question_features": [
+        "Causal Chains"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 14,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w11-01-principle-strengthen-set-1",
+      "title": "Principle-Strengthen (Set 1)",
+      "week": 11,
+      "order_in_week": 1,
+      "category": "Process",
+      "estimated_minutes": 70,
+      "question_count": 7,
+      "difficulty_min": 3,
+      "difficulty_max": 5,
+      "current_question_types": [
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Principle-Strengthen / Conditional Principle"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Principle-Strengthen (Set 1)",
+        "week": "Week 23",
+        "category": "Process",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Principle-Strengthen"
+      ],
+      "recommended_question_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 3,
+      "recommended_difficulty_max": 5,
+      "recommended_pool_count": 22,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w11-02-explain-curious-fact-harder-set-2",
+      "title": "Explain Curious Fact (Harder) Set 2",
+      "week": 11,
+      "order_in_week": 2,
+      "category": "Pacing",
+      "estimated_minutes": 60,
+      "question_count": 8,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Explain Curious Fact (Harder) Set 2",
+        "week": "Week 23",
+        "category": "Pacing",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 5,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended pool only finds 5/8 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w11-03-assumption-family-harder-set-1",
+      "title": "Assumption Family (Harder) Set 1",
+      "week": 11,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 80,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Three Main Reasoning Structures"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons",
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Assumption Family (Harder) Set 1",
+        "week": "Week 23",
+        "category": "Process",
+        "time": "40 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons",
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 480,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: Three Main Reasoning Structures",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w11-04-speedwalking-lr-set-1",
+      "title": "Speedwalking LR (set 1)",
+      "week": 11,
+      "order_in_week": 4,
+      "category": "Pacing",
+      "estimated_minutes": 44,
+      "question_count": 15,
+      "difficulty_min": 1,
+      "difficulty_max": 1,
+      "current_question_types": [
+        "Paradox",
+        "Flaw",
+        "Role",
+        "Main Conclusion",
+        "Necessary Assumption",
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Speedwalking LR"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning",
+        "Comparative Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Speedwalking LR (set 1)",
+        "week": "Week 23",
+        "category": "Pacing",
+        "time": "22 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox",
+        "Flaw",
+        "Role",
+        "Main Conclusion",
+        "Necessary Assumption",
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method of Reasoning",
+        "Must Be True"
+      ],
+      "recommended_question_features": [],
+      "recommended_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 1,
+      "recommended_pool_count": 198,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: Speedwalking LR",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-01-explain-curious-fact-medium-set-4",
+      "title": "Explain Curious Fact (Medium) Set 4",
+      "week": 8,
+      "order_in_week": 1,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Explain Curious Fact (Medium) Set 4",
+        "week": "Week 17",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 5,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-02-assumes-similarity-set-1",
+      "title": "Assumes Similarity (set 1)",
+      "week": 8,
+      "order_in_week": 2,
+      "category": "Patterns",
+      "estimated_minutes": 50,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Weaken",
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "Assumes Similarity"
+      ],
+      "current_reasoning_types": [
+        "Comparison"
+      ],
+      "lsatlab_match": {
+        "title": "Assumes Similarity (set 1)",
+        "week": "Week 17",
+        "category": "Patterns",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Weaken",
+        "Strengthen"
+      ],
+      "recommended_question_features": [
+        "Assumes Similarity"
+      ],
+      "recommended_reasoning_types": [
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 29,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-03-anti-causal-set-3",
+      "title": "Anti-Causal - Set 3",
+      "week": 8,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Anti-Causal"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Anti-Causal - Set 3",
+        "week": "Week 17",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Weaken"
+      ],
+      "recommended_question_features": [
+        "Anti-Causal"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 24,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w8-04-conditional-logic-medium-set-5",
+      "title": "Conditional Logic (Medium) Set 5",
+      "week": 8,
+      "order_in_week": 4,
+      "category": "Pacing",
+      "estimated_minutes": 70,
+      "question_count": 10,
+      "difficulty_min": 4,
+      "difficulty_max": 4,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Medium) Set 5",
+        "week": "Week 17",
+        "category": "Pacing",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 4,
+      "recommended_difficulty_max": 4,
+      "recommended_pool_count": 52,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w12-01-assumption-family-harder-set-2",
+      "title": "Assumption Family (Harder) Set 2",
+      "week": 12,
+      "order_in_week": 1,
+      "category": "Pacing",
+      "estimated_minutes": 80,
+      "question_count": 10,
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Principle",
+        "Necessary Assumption",
+        "Parallel Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Assumption Family Continuum / Timed Harder Set"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Assumption Family (Harder) Set 2",
+        "week": "Week 24",
+        "category": "Pacing",
+        "time": "40 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Principle-Conform",
+        "Necessary Assumption",
+        "Parallel Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 4,
+      "recommended_difficulty_max": 5,
+      "recommended_pool_count": 164,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: Assumption Family Continuum / Timed Harder Set",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w12-02-explain-curious-fact-harder-set-3",
+      "title": "Explain Curious Fact (Harder) Set 3",
+      "week": 12,
+      "order_in_week": 2,
+      "category": "Process",
+      "estimated_minutes": 56,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Explain Curious Fact (Harder) Set 3",
+        "week": "Week 24",
+        "category": "Process",
+        "time": "28 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 5,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w12-03-conditional-logic-harder-set-4",
+      "title": "Conditional Logic (Harder) Set 4",
+      "week": 12,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 7,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Harder) Set 4",
+        "week": "Week 25",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 165,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w12-04-speedwalking-lr-set-2",
+      "title": "Speedwalking LR (set 2)",
+      "week": 12,
+      "order_in_week": 4,
+      "category": "Pacing",
+      "estimated_minutes": 60,
+      "question_count": 15,
+      "difficulty_min": 1,
+      "difficulty_max": 1,
+      "current_question_types": [
+        "Paradox",
+        "Flaw",
+        "Role",
+        "Main Conclusion",
+        "Necessary Assumption",
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Speedwalking LR"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning",
+        "Comparative Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Speedwalking LR (set 2)",
+        "week": "Week 25",
+        "category": "Pacing",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox",
+        "Flaw",
+        "Role",
+        "Main Conclusion",
+        "Necessary Assumption",
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method of Reasoning",
+        "Must Be True"
+      ],
+      "recommended_question_features": [],
+      "recommended_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 1,
+      "recommended_pool_count": 198,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: Speedwalking LR",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w1-01-first-sentence-conclusions",
+      "title": "First Sentence Conclusions",
+      "week": 1,
+      "order_in_week": 1,
+      "category": "Patterns",
+      "estimated_minutes": 30,
+      "question_count": 6,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Main Conclusion",
+        "Role"
+      ],
+      "current_question_features": [
+        "First Sentence Conclusion"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "First Sentence Conclusions",
+        "week": "Week 2",
+        "category": "Patterns",
+        "time": "15 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "First Sentence Conclusions",
+        "slug": "first-sentence-conclusions",
+        "sourceFile": "01_first_sentence_conclusions_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Main Conclusion",
+        "Role"
+      ],
+      "recommended_question_features": [
+        "First Sentence Conclusion"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 49,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w1-02-the-core-connection",
+      "title": "The Core Connection",
+      "week": 1,
+      "order_in_week": 2,
+      "category": "Patterns",
+      "estimated_minutes": 50,
+      "question_count": null,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Flaw",
+        "Weaken",
+        "Strengthen",
+        "Principle-Strengthen",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Missing Link / Core Connection"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "The Core Connection",
+        "week": "Week 2",
+        "category": "Patterns",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "The Core Connection",
+        "slug": "the-core-connection",
+        "sourceFile": "02_the_core_connection_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Flaw",
+        "Weaken",
+        "Strengthen",
+        "Principle-Strengthen",
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Missing Link / Idea",
+        "Links Between Premises"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 238,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w1-03-assumption-family-easier-set-1",
+      "title": "Assumption Family (Easier) Set 1",
+      "week": 1,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 70,
+      "question_count": 9,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Mixed Assumption Family / Internal Logic vs Courtroom Debate"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Assumption Family (Easier) Set 1",
+        "week": "Week 2",
+        "category": "Process",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Missing Link / Idea",
+        "Argue the Anti-Conclusion"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 336,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: Mixed Assumption Family / Internal Logic vs Courtroom Debate",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w1-04-framework-sampler",
+      "title": "Framework Sampler",
+      "week": 1,
+      "order_in_week": 4,
+      "category": "Patterns",
+      "estimated_minutes": 40,
+      "question_count": null,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [],
+      "current_question_features": [],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Framework Sampler",
+        "week": "Week 2",
+        "category": "Patterns",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Framework Sampler",
+        "slug": "framework-sampler",
+        "sourceFile": "04_framework_sampler_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [],
+      "recommended_question_features": [],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 2599,
+      "classification": "defer-rc",
+      "notes": [
+        "RC-oriented card; defer until an RC bank/track exists."
+      ]
+    },
+    {
+      "slug": "w1-05-paradox-first-taste",
+      "title": "Paradox - (First Taste)",
+      "week": 1,
+      "order_in_week": 5,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 6,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Paradox"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "current_reasoning_types": [
+        "Comparative Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Paradox - (First Taste)",
+        "week": "Week 2",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Paradox Drill One",
+        "slug": "paradox-drill-one",
+        "sourceFile": "05_paradox_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact",
+        "Alternatives"
+      ],
+      "recommended_reasoning_types": [
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 2,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Broad feature placeholder: First Taste",
+        "Recommended pool only finds 2/6 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w1-06-explain-curious-fact-first-taste",
+      "title": "Explain Curious Fact (First Taste)",
+      "week": 1,
+      "order_in_week": 6,
+      "category": "Patterns",
+      "estimated_minutes": 60,
+      "question_count": 8,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Explain Curious Fact (First Taste)",
+        "week": "Week 2",
+        "category": "Patterns",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Explain Curious Fact Drill One",
+        "slug": "explain-curious-fact-drill-one",
+        "sourceFile": "06_explain_curious_fact_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 5,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended pool only finds 5/8 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w1-07-flaw-first-taste",
+      "title": "Flaw - First Taste",
+      "week": 1,
+      "order_in_week": 7,
+      "category": "Process",
+      "estimated_minutes": 80,
+      "question_count": 7,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Flaw - First Taste",
+        "week": "Week 2",
+        "category": "Process",
+        "time": "40 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Flaw Drill One",
+        "slug": "flaw-drill-one",
+        "sourceFile": "07_flaw_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Famous Flaws"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 174,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: First Taste",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-01-sampling",
+      "title": "Sampling",
+      "week": 2,
+      "order_in_week": 1,
+      "category": "Patterns",
+      "estimated_minutes": 70,
+      "question_count": 10,
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Sampling",
+        "Part vs. Whole"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Sampling Flaws",
+        "week": "Week 2",
+        "category": "Patterns",
+        "time": "35 mins",
+        "score": 70
+      },
+      "html_match": {
+        "title": "Sampling",
+        "slug": "sampling",
+        "sourceFile": "08_sampling_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Sampling",
+        "Part vs. Whole"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 2,
+      "recommended_difficulty_max": 4,
+      "recommended_pool_count": 34,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-02-abstract-flaw-set-1",
+      "title": "Abstract + Flaw (set 1)",
+      "week": 2,
+      "order_in_week": 2,
+      "category": "Process",
+      "estimated_minutes": 70,
+      "question_count": 10,
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Abstract Answer Choices"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Abstract + Flaw (set 1)",
+        "week": "Week 2",
+        "category": "Process",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Abstract Answers",
+        "Famous Flaws"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 2,
+      "recommended_difficulty_max": 4,
+      "recommended_pool_count": 192,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-03-must-be-true-first-taste",
+      "title": "Must Be True - First Taste",
+      "week": 2,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 6,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Must Be True - First Taste",
+        "week": "Week 2",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Must Be True Drill One",
+        "slug": "must-be-true-drill-one",
+        "sourceFile": "10_must_be_true_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Must Be True"
+      ],
+      "recommended_question_features": [
+        "Ruling Out Options"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 1,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Broad feature placeholder: First Taste",
+        "Recommended pool only finds 1/6 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-04-conditional-logic-easier-set-1",
+      "title": "Conditional Logic (Easier) Set 1",
+      "week": 2,
+      "order_in_week": 4,
+      "category": "Process",
+      "estimated_minutes": 56,
+      "question_count": 9,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Easier) Set 1",
+        "week": "Week 3",
+        "category": "Process",
+        "time": "28 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 89,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-05-reconcile-the-pivot-first-taste",
+      "title": "Reconcile the Pivot (First Taste)",
+      "week": 2,
+      "order_in_week": 5,
+      "category": "Patterns",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Reconcile the Pivot"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Reconcile the Pivot (First Taste)",
+        "week": "Week 3",
+        "category": "Patterns",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Reconcile the Pivot Drill One",
+        "slug": "reconcile-the-pivot-drill-one",
+        "sourceFile": "12_reconcile_the_pivot_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "recommended_question_features": [
+        "Important Pivot"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 9,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-06-missing-links-first-taste",
+      "title": "Missing Links: First Taste",
+      "week": 2,
+      "order_in_week": 6,
+      "category": "Patterns",
+      "estimated_minutes": 60,
+      "question_count": 6,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Missing Links"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Missing Links: First Taste",
+        "week": "Week 3",
+        "category": "Patterns",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Missing Links Drill One",
+        "slug": "missing-links-drill-one",
+        "sourceFile": "13_missing_links_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "recommended_question_features": [
+        "Missing Link / Idea"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 185,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-07-necessary-assumption-first-taste",
+      "title": "Necessary Assumption - First Taste",
+      "week": 2,
+      "order_in_week": 7,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 10,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Necessary Assumption"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Necessary Assumption - First Taste",
+        "week": "Week 3",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Necessary Assumption Drill One",
+        "slug": "necessary-assumption-drill-one",
+        "sourceFile": "14_necessary_assumption_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Necessary Assumption"
+      ],
+      "recommended_question_features": [
+        "Defender"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 98,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: First Taste",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-08-assumption-family-easier-set-2",
+      "title": "Assumption Family (Easier) Set 2",
+      "week": 2,
+      "order_in_week": 8,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 6,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Three Main Reasoning Types"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons",
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Assumption Family (Easier) Set 2",
+        "week": "Week 3",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons",
+        "Causation"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 300,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: Three Main Reasoning Types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-09-most-supported-first-taste",
+      "title": "Most Supported - First Taste",
+      "week": 2,
+      "order_in_week": 9,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 8,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Most Supported"
+      ],
+      "current_question_features": [
+        "First Taste / Most Supported Variations"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Most Supported - First Taste",
+        "week": "Week 3",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Most Supported Drill One",
+        "slug": "most-supported-drill-one",
+        "sourceFile": "16_most_supported_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported"
+      ],
+      "recommended_question_features": [
+        "Ruling Out Options"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 1,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Broad feature placeholder: First Taste / Most Supported Variations",
+        "Recommended pool only finds 1/8 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-10-causal-chains",
+      "title": "Causal Chains",
+      "week": 2,
+      "order_in_week": 10,
+      "category": "Patterns",
+      "estimated_minutes": 36,
+      "question_count": 3,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Causal Chains"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Causal Chains",
+        "week": "Week 3",
+        "category": "Patterns",
+        "time": "18 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Causal Chains",
+        "slug": "causal-chains",
+        "sourceFile": "17_causal_chains_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "recommended_question_features": [
+        "Causal Chains"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 18,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-11-assumption-family-easier-set-3",
+      "title": "Assumption Family (Easier) Set 3",
+      "week": 2,
+      "order_in_week": 11,
+      "category": "Process",
+      "estimated_minutes": 70,
+      "question_count": 8,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Mixed Assumption Family / Internal Logic vs Courtroom Debate"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Assumption Family (Easier) Set 3",
+        "week": "Week 3",
+        "category": "Process",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Missing Link / Idea",
+        "Argue the Anti-Conclusion"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 336,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: Mixed Assumption Family / Internal Logic vs Courtroom Debate",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-12-missing-links-color-coded",
+      "title": "Missing Links (color-coded)",
+      "week": 2,
+      "order_in_week": 12,
+      "category": "Patterns",
+      "estimated_minutes": 70,
+      "question_count": 9,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Missing Links / Common Terms / Color-Coding"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Missing Links (color-coded)",
+        "week": "Week 4",
+        "category": "Patterns",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "recommended_question_features": [
+        "Missing Link / Idea",
+        "Links Between Premises"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 188,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-13-principle-conform-first-taste",
+      "title": "Principle-Conform - (First Taste)",
+      "week": 2,
+      "order_in_week": 13,
+      "category": "Process",
+      "estimated_minutes": 24,
+      "question_count": 6,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Principle-Conform"
+      ],
+      "current_question_features": [
+        "First Taste / Principle Matching"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Principle-Conform - (First Taste)",
+        "week": "Week 4",
+        "category": "Process",
+        "time": "12 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Principle Conform Drill One",
+        "slug": "principle-conform-drill-one",
+        "sourceFile": "20_principle_conform_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Principle-Conform"
+      ],
+      "recommended_question_features": [
+        "Principles in Answers"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 66,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: First Taste / Principle Matching",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-14-principle-strengthen-first-taste",
+      "title": "Principle-Strengthen - (First Taste)",
+      "week": 2,
+      "order_in_week": 14,
+      "category": "Process",
+      "estimated_minutes": 26,
+      "question_count": 4,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "First Taste / Conditional Principle"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Principle-Strengthen - (First Taste)",
+        "week": "Week 4",
+        "category": "Process",
+        "time": "13 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Principle Strengthen Drill One",
+        "slug": "principle-strengthen-drill-one",
+        "sourceFile": "21_principle_strengthen_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Principle-Strengthen"
+      ],
+      "recommended_question_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 29,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: First Taste / Conditional Principle",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w2-15-strengthen-first-taste",
+      "title": "Strengthen - (First Taste)",
+      "week": 2,
+      "order_in_week": 15,
+      "category": "Process",
+      "estimated_minutes": 40,
+      "question_count": 6,
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Strengthen - (First Taste)",
+        "week": "Week 4",
+        "category": "Process",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Principle Strengthen Drill One",
+        "slug": "principle-strengthen-drill-one",
+        "sourceFile": "21_principle_strengthen_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Strengthen"
+      ],
+      "recommended_question_features": [
+        "Plausibility",
+        "Missing Link / Idea"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 59,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: First Taste",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-01-except-first-taste",
+      "title": "EXCEPT - First Taste",
+      "week": 3,
+      "order_in_week": 1,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Paradox",
+        "Strengthen",
+        "Most Supported"
+      ],
+      "current_question_features": [
+        "EXCEPT"
+      ],
+      "current_reasoning_types": [
+        "Comparative Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "EXCEPT - First Taste",
+        "week": "Week 5",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "EXCEPT Drill One",
+        "slug": "except-drill-one",
+        "sourceFile": "23_except_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox",
+        "Strengthen",
+        "Most Strongly Supported"
+      ],
+      "recommended_question_features": [
+        "EXCEPT"
+      ],
+      "recommended_reasoning_types": [
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 27,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-02-anti-causal-set-1",
+      "title": "Anti-Causal - Set 1",
+      "week": 3,
+      "order_in_week": 2,
+      "category": "Patterns",
+      "estimated_minutes": 40,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Weaken",
+        "Flaw",
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "Anti-Causal"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Anti-Causal - Set 1",
+        "week": "Week 5",
+        "category": "Patterns",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Weaken",
+        "Flaw",
+        "Strengthen"
+      ],
+      "recommended_question_features": [
+        "Anti-Causal"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 69,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-03-explain-curious-fact-easier-set-1",
+      "title": "Explain Curious Fact (Easier) Set 1",
+      "week": 3,
+      "order_in_week": 3,
+      "category": "Process",
+      "estimated_minutes": 46,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Explain Curious Fact (Easier) Set 1",
+        "week": "Week 5",
+        "category": "Process",
+        "time": "23 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 5,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended pool only finds 5/6 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-04-analogies-set-1",
+      "title": "Analogies (set 1)",
+      "week": 3,
+      "order_in_week": 4,
+      "category": "Patterns",
+      "estimated_minutes": 40,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Must Be True",
+        "Most Supported"
+      ],
+      "current_question_features": [
+        "Analogies"
+      ],
+      "current_reasoning_types": [
+        "Conditional Reasoning"
+      ],
+      "lsatlab_match": {
+        "title": "Analogies (set 1)",
+        "week": "Week 5",
+        "category": "Patterns",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Must Be True",
+        "Most Strongly Supported"
+      ],
+      "recommended_question_features": [
+        "Analogies"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 2,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended pool only finds 2/6 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-05-break-the-comparison",
+      "title": "Break the Comparison!",
+      "week": 3,
+      "order_in_week": 5,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 8,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Flaw",
+        "Weaken",
+        "Necessary Assumption",
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "Break the Comparison"
+      ],
+      "current_reasoning_types": [
+        "Comparison"
+      ],
+      "lsatlab_match": {
+        "title": "Break the Comparison!",
+        "week": "Week 5",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Break the Comparison",
+        "slug": "break-the-comparison",
+        "sourceFile": "27_break_the_comparison_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Flaw",
+        "Weaken",
+        "Necessary Assumption",
+        "Strengthen"
+      ],
+      "recommended_question_features": [
+        "Assumes Difference",
+        "Assumes Similarity"
+      ],
+      "recommended_reasoning_types": [
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 151,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-06-agree-disagree-set-1",
+      "title": "Agree/Disagree - Set 1",
+      "week": 3,
+      "order_in_week": 6,
+      "category": "Pacing",
+      "estimated_minutes": 60,
+      "question_count": 8,
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "current_question_types": [
+        "Point at Issue / Agree-Disagree"
+      ],
+      "current_question_features": [
+        "Timed Agree/Disagree"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Agree/Disagree - Set 1",
+        "week": "Week 6",
+        "category": "Pacing",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Agree/Disagree"
+      ],
+      "recommended_question_features": [
+        "2-Speaker",
+        "Battle of Opinions"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 2,
+      "recommended_difficulty_max": 4,
+      "recommended_pool_count": 70,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-07-rebuttal-conclusions",
+      "title": "Rebuttal Conclusions",
+      "week": 3,
+      "order_in_week": 7,
+      "category": "Patterns",
+      "estimated_minutes": 30,
+      "question_count": 4,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Rebuttal Conclusions"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Rebuttal Conclusions",
+        "week": "Week 6",
+        "category": "Patterns",
+        "time": "15 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Rebuttal Conclusions",
+        "slug": "rebuttal-conclusions",
+        "sourceFile": "29_rebuttal_conclusions_drill.html",
+        "score": 100
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Main Conclusion"
+      ],
+      "recommended_question_features": [
+        "Rebuttals"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 78,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-08-describing-arguments-set-1",
+      "title": "Describing Arguments (set 1)",
+      "week": 3,
+      "order_in_week": 8,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 5,
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "current_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Describing Arguments"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Describing Arguments (set 1)",
+        "week": "Week 6",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "recommended_question_features": [
+        "Describing Arguments",
+        "Focused on Evidence"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 2,
+      "recommended_pool_count": 0,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended feature not currently in bank vocabulary: Describing Arguments",
+        "Recommended pool only finds 0/5 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-09-assumption-family-easier-set-4",
+      "title": "Assumption Family (Easier) Set 4",
+      "week": 3,
+      "order_in_week": 9,
+      "category": "Process",
+      "estimated_minutes": 56,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle",
+        "Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Idea Math vs Courtroom Debate"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Assumption Family (Easier) Set 4",
+        "week": "Week 6",
+        "category": "Process",
+        "time": "28 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Conform",
+        "Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Missing Link / Idea",
+        "Argue the Anti-Conclusion"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 548,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-10-fill-in-the-blank-logical-completion-first-taste",
+      "title": "Fill in the Blank (Logical Completion) - First Taste",
+      "week": 3,
+      "order_in_week": 10,
+      "category": "Pacing",
+      "estimated_minutes": 40,
+      "question_count": 4,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Fill in the Blank"
+      ],
+      "current_question_features": [
+        "Logical Completion"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Fill in the Blank (Logical Completion) - First Taste",
+        "week": "Week 7",
+        "category": "Pacing",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": {
+        "title": "Fill in the Blank Logical Completion Drill One",
+        "slug": "fill-in-the-blank-logical-completion-drill-one",
+        "sourceFile": "32_fill_in_the_blank_logical_completion_drill_one.html",
+        "score": 70
+      },
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported"
+      ],
+      "recommended_question_features": [
+        "Logical Completion"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 56,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-11-complete-the-analogy-set-1",
+      "title": "Complete the Analogy (set 1)",
+      "week": 3,
+      "order_in_week": 11,
+      "category": "Process",
+      "estimated_minutes": 40,
+      "question_count": 5,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Fill in the Blank"
+      ],
+      "current_question_features": [
+        "Complete the Analogy"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Complete the Analogy (set 1)",
+        "week": "Week 7",
+        "category": "Process",
+        "time": "20 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported"
+      ],
+      "recommended_question_features": [
+        "Analogies"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 22,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-12-conditional-logic-easier-set-2",
+      "title": "Conditional Logic (Easier) Set 2",
+      "week": 3,
+      "order_in_week": 12,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 7,
+      "difficulty_min": 2,
+      "difficulty_max": 3,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "lsatlab_match": {
+        "title": "Conditional Logic (Easier) Set 2",
+        "week": "Week 7",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "recommended_difficulty_min": 2,
+      "recommended_difficulty_max": 3,
+      "recommended_pool_count": 77,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad qtype placeholder: Mixed LR question types",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-13-weaken-comparison",
+      "title": "Weaken + Comparison",
+      "week": 3,
+      "order_in_week": 13,
+      "category": "Process",
+      "estimated_minutes": 50,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Weaken + Comparison"
+      ],
+      "current_reasoning_types": [
+        "Comparison"
+      ],
+      "lsatlab_match": {
+        "title": "Weaken + Comparison",
+        "week": "Week 7",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Weaken"
+      ],
+      "recommended_question_features": [
+        "Assumes Difference",
+        "Assumes Similarity"
+      ],
+      "recommended_reasoning_types": [
+        "Comparisons"
+      ],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 23,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-14-complete-the-analogy-set-2",
+      "title": "Complete the Analogy (set 2)",
+      "week": 3,
+      "order_in_week": 14,
+      "category": "Process",
+      "estimated_minutes": 60,
+      "question_count": 9,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Necessary Assumption",
+        "Strengthen",
+        "Principle",
+        "Most Supported",
+        "Flaw",
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Complete the Analogy"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Complete the Analogy (set 2)",
+        "week": "Week 7",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Necessary Assumption",
+        "Strengthen",
+        "Principle-Conform",
+        "Most Strongly Supported",
+        "Flaw",
+        "Weaken"
+      ],
+      "recommended_question_features": [
+        "Analogies"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 64,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w3-15-role-main-conclusion-set-1",
+      "title": "Role + Main Conclusion (set 1)",
+      "week": 3,
+      "order_in_week": 15,
+      "category": "Process",
+      "estimated_minutes": 46,
+      "question_count": 7,
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "current_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Role + Main Conclusion"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Role + Main Conclusion (set 1)",
+        "week": "Week 8",
+        "category": "Process",
+        "time": "23 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "recommended_question_features": [
+        "Role + Main Conclusion"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 2,
+      "recommended_pool_count": 0,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended feature not currently in bank vocabulary: Role + Main Conclusion",
+        "Recommended pool only finds 0/7 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w10-assumption-family-medium-set-2",
+      "title": "Assumption Family (Medium) Set 2",
+      "week": 10,
+      "order_in_week": 6,
+      "category": "Process",
+      "estimated_minutes": 40,
+      "question_count": 10,
+      "difficulty_min": 3,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Three Main Reasoning Structures"
+      ],
+      "current_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons",
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Assumption Family (Medium) Set 2",
+        "week": "Week 10",
+        "category": "Process",
+        "time": "40 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "recommended_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "recommended_reasoning_types": [
+        "Conditional Logic",
+        "Comparisons",
+        "Causation"
+      ],
+      "recommended_difficulty_min": 3,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 279,
+      "classification": "needs-human-review",
+      "notes": [
+        "Broad feature placeholder: Three Main Reasoning Structures",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w11-explain-curious-fact-easier-set-2",
+      "title": "Explain Curious Fact (Easier) Set 2",
+      "week": 11,
+      "order_in_week": 5,
+      "category": "Pacing",
+      "estimated_minutes": 25,
+      "question_count": 6,
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "current_reasoning_types": [
+        "Causation"
+      ],
+      "lsatlab_match": {
+        "title": "Explain Curious Fact (Easier) Set 2",
+        "week": "Week 11",
+        "category": "Pacing",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Paradox"
+      ],
+      "recommended_question_features": [
+        "Explain Curious Fact"
+      ],
+      "recommended_reasoning_types": [
+        "Causation"
+      ],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 2,
+      "recommended_pool_count": 3,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended pool only finds 3/6 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w10-famous-flaws-easier",
+      "title": "Famous Flaws (Easier)",
+      "week": 10,
+      "order_in_week": 7,
+      "category": "Process",
+      "estimated_minutes": 25,
+      "question_count": 5,
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Famous Flaws"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Famous Flaws (Easier)",
+        "week": "Week 10",
+        "category": "Process",
+        "time": "25 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Famous Flaws"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 2,
+      "recommended_pool_count": 112,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w10-famous-flaws-easier-set-2",
+      "title": "Famous Flaws (Easier) Set 2",
+      "week": 10,
+      "order_in_week": 8,
+      "category": "Pacing",
+      "estimated_minutes": 30,
+      "question_count": 5,
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Famous Flaws"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Famous Flaws (Easier) Set 2",
+        "week": "Week 10",
+        "category": "Pacing",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Flaw"
+      ],
+      "recommended_question_features": [
+        "Famous Flaws"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": 1,
+      "recommended_difficulty_max": 2,
+      "recommended_pool_count": 112,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w12-missing-links-set-2",
+      "title": "Missing Links Set 2",
+      "week": 12,
+      "order_in_week": 5,
+      "category": "Process",
+      "estimated_minutes": 30,
+      "question_count": 6,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Missing Links"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Missing Links Set 2",
+        "week": "Week 12",
+        "category": "Process",
+        "time": "30 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "recommended_question_features": [
+        "Missing Link / Idea"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 288,
+      "classification": "matched-by-lsatlab-card",
+      "notes": [
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    },
+    {
+      "slug": "w13-describing-arguments-match-family",
+      "title": "Describing Arguments (Match Family)",
+      "week": 13,
+      "order_in_week": 1,
+      "category": "Process",
+      "estimated_minutes": 35,
+      "question_count": 10,
+      "difficulty_min": null,
+      "difficulty_max": null,
+      "current_question_types": [
+        "Role",
+        "Method",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Describing Arguments"
+      ],
+      "current_reasoning_types": [],
+      "lsatlab_match": {
+        "title": "Describing Arguments (Match Family)",
+        "week": "Week 13",
+        "category": "Process",
+        "time": "35 mins",
+        "score": 100
+      },
+      "html_match": null,
+      "exact_qids_count": 0,
+      "qid_stats": null,
+      "recommended_question_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "recommended_question_features": [
+        "Describing Arguments",
+        "Focused on Evidence"
+      ],
+      "recommended_reasoning_types": [],
+      "recommended_difficulty_min": null,
+      "recommended_difficulty_max": null,
+      "recommended_pool_count": 4,
+      "classification": "needs-qid-selection",
+      "notes": [
+        "Recommended feature not currently in bank vocabulary: Describing Arguments",
+        "Recommended pool only finds 4/10 questions; needs qid selection or metadata adjustment.",
+        "No exact qids attached; deterministic pool still needs selection before final migration."
+      ]
+    }
+  ]
+}

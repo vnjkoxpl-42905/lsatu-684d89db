@@ -1,0 +1,625 @@
+[
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Educators studied the performance of 200 students in a university's history classes. They found that those students who performed the best had either part-time jobs or full-time jobs, had their history classes early in the morning, and had a very limited social life, whereas those students who performed the worst had no jobs, had their history classes early in the morning, and had a very active social life.",
+    "questionStem": "Which one of the following, if true, most helps to explain the educators' findings?",
+    "answerChoices": {
+      "A": "The students compensated for any study time lost due to their jobs but they did not compensate for any study time lost due to their social lives.",
+      "B": "The students who had full-time jobs typically worked late-night hours at those jobs.",
+      "C": "Better students tend to choose classes that are scheduled to meet early in the morning.",
+      "D": "A larger percentage of those students interested in majoring in history had part-time jobs than had full-time jobs.",
+      "E": "Although having a job tends to provide a release from stress, thus increasing academic performance, having a full-time job, like having an active social life, can distract a student from studying."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Politician: Most of those at the meeting were not persuaded by Kuyler's argument, nor should they have been, for Kuyler's argument implied that it would be improper to enter into a contract with the government; and yet as many people know-Kuyler's company has had numerous lucrative contracts with the government.",
+    "questionStem": "Which one of the following describes a flaw in the politician's argument?",
+    "answerChoices": {
+      "A": "It concludes that an argument is defective merely on the grounds that the argument has failed to persuade anyone of the truth of its conclusion.",
+      "B": "It relies on testimony that is likely to be biased.",
+      "C": "It rejects an argument merely on the grounds that the arguer has not behaved in a way that is consistent with the argument.",
+      "D": "It rejects a position merely on the grounds that an inadequate argument has been given for it.",
+      "E": "It rejects an argument on the basis of an appeal to popular opinion."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Although free international trade allows countries to specialize, which in turn increases productivity, such specialization carries risks. After all, small countries often rely on one or two products for the bulk of their exports. If those products are raw materials, the supply is finite and can be used up. If they are foodstuffs, a natural disaster can wipe out a season’s production overnight.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the argument as a whole?",
+    "answerChoices": {
+      "A": "Specialization within international trade comes with risks.",
+      "B": "A natural disaster can destroy a whole season’s production overnight, devastating a small country’s economy.",
+      "C": "A small country’s supply of raw materials can be used up in a short period.",
+      "D": "Some countries rely on a small number of products for the export-based sectors of their economies.",
+      "E": "When international trade is free, countries can specialize in what they export."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Two randomly selected groups of 30 adults each were asked to write short stories on a particular topic. One group was told that the best stories would be awarded cash prizes, while the other group was not told of any prizes. Each story was evaluated by a team of judges who were given no indication of the group from which the story came. The stories submitted by those who thought they were competing for prizes were ranked on average significantly lower than the stories from the other group.",
+    "questionStem": "Which one of the following, if true, most helps to explain the difference in average ranking between the two groups’ stories?",
+    "answerChoices": {
+      "A": "The cash prizes were too small to motivate an average adult to make a significant effort to produce stories of high quality.",
+      "B": "People writing to win prizes show a greater than usual tendency to produce stereotypical stories that show little creativity.",
+      "C": "Most adults show little originality in writing stories on a topic suggested by someone else.",
+      "D": "The team of judges was biased in favor of stories that they judged to be more realistic.",
+      "E": "No one explained clearly to either group what standards would be used in judging their stories."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Method",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Hernandez: I recommend that staff cars be replaced every four years instead of every three years. Three-year-old cars are still in good condition and this would result in big savings. Green: I disagree. Some of our salespeople with big territories wear out their cars in three years. Hernandez: I meant three-year-old cars subjected to normal use.",
+    "questionStem": "In the conversation, Hernandez responds to Green's objection in which one of the following ways?",
+    "answerChoices": {
+      "A": "by explicitly qualifying a premise used earlier",
+      "B": "by criticizing salespeople who wear out their cars in three years",
+      "C": "by disputing the accuracy of Green's evidence",
+      "D": "by changing the subject to the size of sales territories",
+      "E": "by indicating that Green used a phrase ambiguously"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals",
+      "2-Speaker",
+      "Clarification/Misunderstanding"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Economist: As should be obvious, raising the minimum wage significantly would make it more expensive for businesses to pay workers for minimum-wage jobs. Therefore, businesses could not afford to continue to employ as many workers for such jobs. So raising the minimum wage significantly will cause an increase in unemployment.",
+    "questionStem": "Which one of the following, if true, most weakens the economist's argument?",
+    "answerChoices": {
+      "A": "Businesses typically pass the cost of increased wages on to consumers without adversely affecting profits.",
+      "B": "When the difference between minimum wage and a skilled worker's wage is small, a greater percentage of a business's employees will be skilled workers.",
+      "C": "A modest increase in unemployment is acceptable because the current minimum wage is not a livable wage.",
+      "D": "Most workers are earning more than the current minimum wage.",
+      "E": "The unemployment rate has been declining steadily in recent years."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Net Effect",
+      "Predictions",
+      "Intermediate Conclusions",
+      "Focused on Evidence"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Scientists removed all viruses from a seawater sample and then measured the growth rate of the plankton population in the water. They expected the rate to increase dramatically, but the population actually got smaller.",
+    "questionStem": "Which one of the following, if true, most helps to explain the unexpected result described above?",
+    "answerChoices": {
+      "A": "Viruses in seawater help to keep the plankton population below the maximum level that the resources in the water will support.",
+      "B": "Plankton and viruses in seawater compete for some of the same nutrients.",
+      "C": "Plankton utilize the nutrients released by the death of organisms killed by viruses.",
+      "D": "The absence of viruses can facilitate the flourishing of bacteria that sometimes damage other organisms.",
+      "E": "At any given time, a considerable portion of the plankton in seawater are already infected by viruses."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "City council member: The Senior Guild has asked for a temporary exception to the ordinance prohibiting automobiles in municipal parks. Their case does appear to deserve the exception. However, if we grant this exception, we will find ourselves granting many other exceptions to this ordinance, some of which will be undeserved. Before long, we will be granting exceptions to all manner of other city ordinances. If we are to prevent anarchy in our city, we must deny the Senior Guild’s request.",
+    "questionStem": "The city council member’s argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "distorts an argument and then attacks this distorted argument",
+      "B": "dismisses a claim because of its source rather than because of its content",
+      "C": "presumes, without sufficient warrant, that one event will lead to a particular causal sequence of events",
+      "D": "contains premises that contradict one another",
+      "E": "fails to make a needed distinction between deserved exceptions and undeserved ones"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Chains",
+      "Rebuttals",
+      "Conditional Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Physician: In comparing our country with two other countries of roughly the same population size, I found that even though we face the same dietary, bacterial, and stress-related causes of ulcers as they do, prescriptions for ulcer medicines in all socioeconomic strata are much rarer here than in those two countries. It's clear that we suffer significantly fewer ulcers, per capita, than they do.",
+    "questionStem": "Which one of the following, if true, most strengthens the physician's argument?",
+    "answerChoices": {
+      "A": "The two countries that were compared with the physician's country had approximately the same ulcer rates as each other.",
+      "B": "The people of the physician's country have a cultural tradition of stoicism that encourages them to ignore physical ailments rather than to seek remedies for them.",
+      "C": "Several other countries not covered in the physician's comparisons have more prescriptions for ulcer medication than does the physician's country.",
+      "D": "A person in the physician's country who is suffering from ulcers is just as likely to obtain a prescription for the ailment as is a person suffering from ulcers in one of the other two countries.",
+      "E": "The physician's country has a much better system for reporting the number of prescriptions of a given type that are obtained each year than is present in either of the other two countries."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Defender",
+      "Alternatives",
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Columnist: The failure of bicyclists to obey traffic regulations is a causal factor in more than one quarter of the traffic accidents involving bicycles. Since inadequate bicycle safety equipment is also a factor in more than a quarter of such accidents, bicyclists are at least partially responsible for more than half of the traffic accidents involving bicycles.",
+    "questionStem": "The columnist’s reasoning is flawed in that it",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that motorists are a factor in less than half of the traffic accidents involving bicycles",
+      "B": "improperly infers the presence of a causal connection on the basis of a correlation",
+      "C": "fails to consider the possibility that more than one factor may contribute to a given accident",
+      "D": "fails to provide the source of the figures it cites",
+      "E": "fails to consider that the severity of injuries to bicyclists from traffic accidents can vary widely"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Many vaccines create immunity to viral diseases by introducing a certain portion of the disease-causing virus's outer coating into the body. Exposure to that part of a virus is as effective as exposure to the whole virus in stimulating production of antibodies that will subsequently recognize and kill the whole virus. To create a successful vaccine of this type, doctors must first isolate in the disease-causing virus a portion that stimulates antibody production. Now that a suitable portion of the virus that causes hepatitis E has been isolated, doctors claim they can produce a vaccine that will produce permanent immunity to that disease.",
+    "questionStem": "Which one of the following, if true, most strongly counters the doctors' claim?",
+    "answerChoices": {
+      "A": "Most of the people who contract hepatitis E are young adults who were probably exposed to the virus in childhood also.",
+      "B": "Some laboratory animals exposed to one strain of the hepatitis virus developed immunity to all strains of the virus.",
+      "C": "Researchers developed a successful vaccine for another strain of hepatitis, hepatitis B, after first isolating the virus that causes it.",
+      "D": "The virus that causes hepatitis E is very common in some areas, so the number of people exposed to that virus is likely to be quite high in those areas.",
+      "E": "Many children who are exposed to viruses that cause childhood diseases such as chicken pox never develop those diseases."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Predictions",
+      "Science",
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Editorial: To qualify as an effective law, as opposed to merely an impressive declaration, a command must be backed up by an effective enforcement mechanism. That is why societies have police. The power of the police to enforce a society's laws makes those laws effective. But there is currently no international police force. Hence, what is called \"international law\" is not effective law.",
+    "questionStem": "Which one of the following is an assumption required by the editorial's argument?",
+    "answerChoices": {
+      "A": "No one obeys a command unless mechanisms exist to compel obedience.",
+      "B": "If an international police force were established, then so-called international law would become effective law.",
+      "C": "The only difference between international law and the law of an individual society is the former's lack of an effective enforcement mechanism.",
+      "D": "The primary purpose of a police force is to enforce the laws of the society.",
+      "E": "Only an international police force could effectively enforce international law."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Contrapositive Logic",
+      "Untriggered Conditional",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Art historian: More than any other genre of representational painting, still-life painting lends itself naturally to art whose goal is the artist's self-expression, rather than merely the reflection of a preexisting external reality. This is because in still-life painting, the artist invariably chooses, modifies, and arranges the objects to be painted. Thus, the artist has considerably more control over the composition and subject of a still-life painting than over those of a landscape painting or portrait, for example.",
+    "questionStem": "Which one of the following is most strongly supported by the art historian's statements?",
+    "answerChoices": {
+      "A": "Landscape painting and portraiture are the artistic genres that lend themselves most naturally to the mere reflection of a preexisting external reality.",
+      "B": "The only way in which artists control the composition and subject of a painting is by choosing, modifying, and arranging the objects to be represented in that painting.",
+      "C": "Nonrepresentational painting does not lend itself as naturally as still-life painting does to the goal of the artist's self-expression.",
+      "D": "In genres of representational painting other than still-life painting, the artist does not always choose, modify, and arrange the objects to be painted.",
+      "E": "When painting a portrait, artists rarely attempt to express themselves through the choice, modification, or arrangement of the background elements against which the subject of the portrait is painted."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Food labeling regulation: Food of a type that does not ordinarily contain fat cannot be labeled \"nonfat\" unless most people mistakenly believe the food ordinarily contains fat. If most people mistakenly believe that a food ordinarily contains fat, the food may be labeled \"nonfat\" if the label also states that the food ordinarily contains no fat.",
+    "questionStem": "Which one of the following situations violates the food labeling regulation?",
+    "answerChoices": {
+      "A": "Although most people know that bran flakes do not normally contain fat, Lester's Bran Flakes are not labeled \"nonfat.\"",
+      "B": "Although most people are aware that lasagna ordinarily contains fat, Lester's Lasagna, which contains no fat, is not labeled \"nonfat.\"",
+      "C": "Although most garlic baguettes contain fat, Lester's Garlic Baguettes are labeled \"nonfat.\"",
+      "D": "Although most people are aware that applesauce does not ordinarily contain fat, Lester's Applesauce is labeled \"nonfat.\"",
+      "E": "Although most people mistakenly believe that salsa ordinarily contains fat, the label on Lester's Zesty Salsa says \"This product, like all salsas, is nonfat.\""
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus",
+      "Complex Conditionals"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Medical ethicist: Assuming there is a reasonable chance for a cure, it is acceptable to offer experimental treatments for a disease to patients who suffer from extreme symptoms of that disease. Such patients are best able to weigh a treatment's risks against the benefits of a cure. Therefore, it is never acceptable to offer experimental treatments to patients who experience no extreme symptoms of the relevant disease.",
+    "questionStem": "The flawed reasoning in which one of the following is most similar to the flawed reasoning in the medical ethicist's argument?",
+    "answerChoices": {
+      "A": "Even a geological engineer with a background in economics can lose money investing in mineral extraction. So, those who are less knowledgeable about geology or economics should not expect to make money in every investment in mineral extraction.",
+      "B": "One is always in a better position to judge whether an automobile would be worth its cost if one has test-driven that automobile. Therefore, if an automobile proves to be not worth its cost, it is likely that it was not test-driven.",
+      "C": "Someone born and raised in a country, who has lived abroad and then returned, is exceptionally qualified to judge the merits of living in that country. That is why someone who has not lived in that country should not form judgments about the merits of living there.",
+      "D": "One can never eliminate all of the risks of daily life, and even trying to avoid every risk in life is costly. Therefore, anyone who is reasonable will accept some of the risks of daily life.",
+      "E": "Almost any industrial development will have unwelcome environmental side effects. Therefore, it is not worthwhile to weigh the costs of potential environmental side effects since such side effects are unavoidable."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Critic: As modern methods of communication and transportation have continued to improve, the pace of life today has become faster than ever before. This speed has created feelings of impermanence and instability, making us feel as if we never have enough time to achieve what we want—or at least what we think we want.",
+    "questionStem": "The critic’s statements most closely conform to which one of the following assessments?",
+    "answerChoices": {
+      "A": "The fast pace of modern life has made it difficult for people to achieve their goals.",
+      "B": "The disadvantages of technological progress often outweigh the advantages.",
+      "C": "Changes in people’s feelings about life can result from technological changes.",
+      "D": "The perception of impermanence in contemporary life makes it more difficult for people to know what they want.",
+      "E": "Changes in people’s feelings fuel the need for technological advancement."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Proposition/Generalization",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Consumer: If you buy a watch at a department store and use it only in the way it was intended to be used, but the watch stops working the next day, then the department store will refund your money. So by this very reasonable standard, Bingham's Jewelry Store should give me a refund even though they themselves are not a department store, since the watch I bought from them stopped working the very next day.",
+    "questionStem": "The consumer's argument relies on the assumption that",
+    "answerChoices": {
+      "A": "one should not sell something unless one expects that it will function in the way it was originally designed to function",
+      "B": "a watch bought at a department store and a watch bought at Bingham's Jewelry Store can both be expected to keep working for about the same length of time if each is used only as it was intended to be used",
+      "C": "a seller should refund the money that was paid for a product if the product does not perform as the purchaser expected it to perform",
+      "D": "the consumer did not use the watch in a way contrary to the way it was intended to be used",
+      "E": "the watch that was purchased from Bingham's Jewelry Store was not a new watch"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A study found that patients referred by their doctors to psychotherapists practicing a new experimental form of therapy made more progress with respect to their problems than those referred to psychotherapists practicing traditional forms of therapy. Therapists practicing the new form of therapy, therefore, are more effective than therapists practicing traditional forms.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the argument?",
+    "answerChoices": {
+      "A": "It ignores the possibility that therapists trained in traditional forms of therapy use the same techniques in treating their patients as therapists trained in the new form of therapy do.",
+      "B": "It ignores the possibility that the patients referred to therapists practicing the new form of therapy had problems more amenable to treatment than did those referred to therapists practicing traditional forms.",
+      "C": "It presumes, without providing justification, that any psychotherapist trained in traditional forms of therapy is untrained in the new form of therapy.",
+      "D": "It ignores the possibility that therapists practicing the new form of therapy systematically differ from therapists practicing traditional forms of therapy with regard to some personality attribute relevant to effective treatment.",
+      "E": "It presumes, without providing justification, that the personal rapport between therapist and patient has no influence on the effectiveness of the treatment the patient receives."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Famous Flaws",
+      "Alternatives",
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Principle Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Essayist: One of the drawbacks of extreme personal and political freedom is that free choices are often made for the worst. To expect people to thrive when they are given the freedom to make unwise decisions is frequently unrealistic. Once people see the destructive consequences of extreme freedom, they may prefer to establish totalitarian political regimes that allow virtually no freedom. Thus, one should not support political systems that allow extreme freedom.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the essayist's reasoning?",
+    "answerChoices": {
+      "A": "One should not support any political system that will inevitably lead to the establishment of a totalitarian political regime.",
+      "B": "One should not expect everyone to thrive even in a political system that maximizes people's freedom in the long run.",
+      "C": "One should support only those political systems that give people the freedom to make wise choices.",
+      "D": "One should not support any political system whose destructive consequences could lead people to prefer totalitarian political regimes.",
+      "E": "One should not support any political system that is based on unrealistic expectations about people's behavior under that system."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Parallel",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Ethicist: Every moral action is the keeping of an agreement, and keeping an agreement is nothing more than an act of securing mutual benefit. Clearly, however, not all instances of agreement-keeping are moral actions. Therefore, some acts of securing mutual benefit are not moral actions.",
+    "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the ethicist's argument?",
+    "answerChoices": {
+      "A": "All calculators are kinds of computers, and all computers are devices for automated reasoning. However, not all devices for automated reasoning are calculators. Therefore, some devices for automated reasoning are not computers.",
+      "B": "All exercise is beneficial, and all things that are beneficial promote health. However, not all things that are beneficial are forms of exercise. Therefore, some exercise does not promote health.",
+      "C": "All metaphors are comparisons, and not all comparisons are surprising. However, all metaphors are surprising. Therefore, some comparisons are not metaphors.",
+      "D": "All architecture is design and all design is art. However, not all design is architecture. Therefore, some art is not design.",
+      "E": "All books are texts, and all texts are documents. However, not all texts are books. Therefore, some documents are not books."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers",
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Role",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Sociologist: The more technologically advanced a society is, the more marked its members' resistance to technological innovations. This is not surprising, because the more technologically advanced a society is, the more aware its members are of technology's drawbacks. Specifically, people realize that sophisticated technologies deeply affect the quality of human relations.",
+    "questionStem": "The claim that the more technologically advanced a society is, the more aware its members are of technology's drawbacks plays which one of the following roles in the sociologist's argument?",
+    "answerChoices": {
+      "A": "It is a conclusion supported by the claim that people realize that sophisticated technologies deeply affect the quality of human relations.",
+      "B": "It is offered as an explanation of why people's resistance to technological innovations is more marked the more technologically advanced the society in which they live is.",
+      "C": "It is a premise in support of the claim that the quality of human relations in technologically advanced societies is extremely poor.",
+      "D": "It is a generalization based on the claim that the more people resist technological innovations, the more difficult it is for them to adjust to those innovations.",
+      "E": "It is an example presented to illustrate the claim that resistance to technological innovations deeply affects the quality of human relations."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Volume Dial"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "To win democratic elections that are not fully subsidized by the government, nonwealthy candidates must be supported by wealthy patrons. This makes plausible the belief that these candidates will compromise their views to win that support. But since the wealthy are dispersed among the various political parties in roughly equal proportion to their percentage in the overall population, this belief is false.",
+    "questionStem": "The argument is vulnerable to criticism on the grounds that it fails to consider that",
+    "answerChoices": {
+      "A": "the primary function of political parties in democracies whose governments do not subsidize elections might not be to provide a means of negating the influence of wealth on elections",
+      "B": "in democracies in which elections are not fully subsidized by the government, positions endorsed by political parties might be much less varied than the positions taken by candidates",
+      "C": "in democracies, government-subsidized elections ensure that the views expressed by the people who run for office might not be overly influenced by the opinions of the wealthiest people in those countries",
+      "D": "in democracies in which elections are not fully subsidized by the government, it might be no easier for a wealthy person to win an election than it is for a nonwealthy person to win an election",
+      "E": "a democracy in which candidates do not compromise their views in order to be elected to office might have other flaws"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Assumes Similarity",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "In modern \"brushless\" car washes, cloth strips called mitters have replaced brushes. Mitters are easier on most cars' finishes than brushes are. This is especially important with the new clear-coat finishes found on many cars today, which are more easily scratched than older finishes are.",
+    "questionStem": "Which one of the following is most strongly supported by the statements above, if those statements are true?",
+    "answerChoices": {
+      "A": "When car washes all used brushes rather than mitters, there were more cars on the road with scratched finishes than there are today.",
+      "B": "Modern \"brushless\" car washes were introduced as a direct response to the use of clear-coat finishes on cars.",
+      "C": "Modern \"brushless\" car washes usually do not produce visible scratches on cars with older finishes.",
+      "D": "Brushes are more effective than mitters and are preferred for cleaning cars with older finishes.",
+      "E": "More cars in use today have clear-coat finishes rather than older finishes."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Comparative Reasoning",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "It is widely believed that lancelets—small, primitive sea animals—do not have hearts. Each lancelet has a contracting vessel, but this vessel is considered an artery rather than a heart. However, this vessel is indeed a heart. After all, it strongly resembles the structure of the heart of certain other sea animals. Moreover, the muscular contractions in the lancelet's vessel closely resemble the muscular contractions of other animals' hearts.",
+    "questionStem": "The argument's conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Only animals that have contracting vessels have hearts.",
+      "B": "Some primitive animals other than lancelets have what is widely held to be a heart.",
+      "C": "A vessel whose structure and actions closely resemble those of other animal hearts is a heart.",
+      "D": "For a vessel in an animal to be properly considered a heart, that vessel must undergo muscular contractions.",
+      "E": "No animal that has a heart lacks an artery."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Rebuttals",
+      "Part vs. Whole",
+      "New Concept in Conclusion",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT129",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Manager: I recommend that our company reconsider the decision to completely abandon our allegedly difficult-to-use computer software and replace it companywide with a new software package advertised as more flexible and easier to use. Several other companies in our region officially replaced the software we currently use with the new package, and while their employees can all use the new software, unofficially many continue to use their former software as much as possible.",
+    "questionStem": "Which one of the following is most strongly supported by the manager's statements?",
+    "answerChoices": {
+      "A": "The current company software is as flexible as the proposed new software package.",
+      "B": "The familiarity that employees have with a computer software package is a more important consideration in selecting software than flexibility or initial ease of use.",
+      "C": "The employees of the manager's company would find that the new software package lacks some of the capabilities of the present software.",
+      "D": "Adopting the new software package would create two classes of employees, those who can use it and those who cannot.",
+      "E": "Many of the employees in the manager's company would not prefer the new software package to the software currently in use."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Assumes Similarity",
+      "Rebuttals"
+    ]
+  }
+]
