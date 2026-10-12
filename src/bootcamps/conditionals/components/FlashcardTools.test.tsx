@@ -39,8 +39,8 @@ it('does not expose a concept set the work does not include', () => {
 it('turns a key-term card with one tap and moves on', () => {
   render(<MemoryRouter initialEntries={[`${url('tools')}&deck=foundation`]}><Harness/></MemoryRouter>);
   expect(screen.getByText('Card 1 of 4')).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: /enough on its own to guarantee/ }));
-  expect(screen.getByRole('button', { name: /Sufficient condition It goes on the left/ })).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: /enough, by itself, to guarantee/ }));
+  expect(screen.getByRole('button', { name: /Sufficient condition It goes on the left of the arrow/ })).toBeVisible();
   fireEvent.click(screen.getByRole('button', { name: 'Next' }));
   expect(screen.getByText('Card 2 of 4')).toBeVisible();
 });
