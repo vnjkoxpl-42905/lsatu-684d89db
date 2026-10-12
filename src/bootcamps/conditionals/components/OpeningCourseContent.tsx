@@ -1,4 +1,4 @@
-import { FlipAndNegateDemo, Neg, PulseWord, PunchWord, RuleStage, ThreeMoves, WorldPicker } from './ContrapositiveVisuals';
+import { FlipAndNegateDemo, Neg, PulseWord, PunchWord, RuleDrill, RuleStage, ThreeMoves, WorldPicker } from './ContrapositiveVisuals';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
@@ -41,14 +41,13 @@ function NoteSection({ title, children }: { title: string; children: ReactNode }
   return <section className="co-section"><div className="co-section-heading"><h2>{title}</h2></div>{children}</section>;
 }
 
-function ReferenceBody({ number, omitTransition = false, keep, title }: { number: number; omitTransition?: boolean; keep?: number[]; title?: string }) {
+function ReferenceBody({ number, omitTransition = false }: { number: number; omitTransition?: boolean }) {
   const source = reference(number);
-  const all = Children.toArray(source.props.children);
-  const children = keep ? all.filter((_, index) => keep.includes(index)) : all;
+  const children = Children.toArray(source.props.children);
   // These source sections end in navigation prose for the former ordering.
   // The course shell now owns transitions; the teaching stays in its source.
   return <section className={`co-section cr-course-section ${source.props.dark ? 'cr-dark' : ''}`} data-reference-source={number}>
-    <div className="co-section-heading"><h2>{title ?? source.props.title}</h2></div>
+    <div className="co-section-heading"><h2>{source.props.title}</h2></div>
     <div className="cr-step-body">{omitTransition ? children.slice(0, -1) : children}</div>
   </section>;
 }
@@ -118,6 +117,13 @@ function MissingRequirementNote() {
   </>;
 }
 
+function FourRules() {
+  return <NoteSection title="Try it on four rules">
+    <p>A rule can have a “not” nowhere, on the right, on the left or on both sides. Every time: flip the sides, put “not” on both ideas, and take off any “not” that was already there. Try one of each.</p>
+    <RuleDrill/>
+  </NoteSection>;
+}
+
 function ContrapositiveNote() {
   return <>
     <NoteSection title="What a contrapositive is">
@@ -160,9 +166,9 @@ function ContrapositiveNote() {
       </ol>
     </NoteSection>
     <NoteSection title="What it is not">
-      <p>Two other moves look like the contrapositive. They are not. Each one turns the rule into a different rule, and the original does not guarantee it.</p>
+      <p>Two other changes look like the contrapositive. They are not. Each one turns the rule into a different rule, and the original does not guarantee it.</p>
       <ThreeMoves/>
-      <p>Wrong answer choices use the reverse and the inverse on purpose. Each one is one move away from the right answer.</p>
+      <p>Wrong answer choices use the reverse and the inverse on purpose. Each one is one change away from the right answer.</p>
     </NoteSection>
     <NoteSection title="Read it, don't always write it">
       <p>Every rule can be read two ways.</p>
@@ -414,7 +420,7 @@ function Content({ id }: { id: string }) {
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
     case 'whole-meaning': return <WholeMeaningNote/>;
     case 'missing-requirement': return <MissingRequirementNote/>;
-    case 'contrapositive': return <><ContrapositiveNote/><ReferenceBody number={9} keep={[2, 3]} title="Try the four patterns"/><WholeConditionNegation/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection></>;
+    case 'contrapositive': return <><ContrapositiveNote/><FourRules/><WholeConditionNegation/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection></>;
     case 'foundation-practice': return <FoundationPractice/>;
     case 'sufficient-practice': return <StagedReasoningDrill mode="sufficient"/>;
     case 'mixed-practice': return <StagedReasoningDrill mode="mixed"/>;
