@@ -4,7 +4,6 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { indicatorFlashcards } from '../content/indicatorFlashcards';
 import { StudyDeck } from './StudyDeck';
 import { IndicatorWordDeck } from './IndicatorWordDeck';
-import { IndicatorWordStudy } from './IndicatorWordStudy';
 import type { OpeningCourseUrl } from './OpeningCourse';
 
 export const CourseFlashcardUrl = createContext<OpeningCourseUrl | null>(null);
@@ -25,31 +24,20 @@ export function flashcardUrl(url: OpeningCourseUrl, group: string, card?: string
   if (from) params.set('from', from);
   return `${path}?${params}`;
 }
-export function IndicatorFlashcardLink({ group, card, children }: { group: string; card?: string; children?: React.ReactNode }) {
-  const url = useContext(CourseFlashcardUrl);
-  if (!url) return children ? <>{children}</> : null;
-  return <Link className={card ? 'co-indicator-card-link' : 'oc-action co-flashcard-entry'} to={flashcardUrl(url, group, card, group === 'group-1' ? 'sufficient' : 'necessary')}>{children || 'Go to flashcards'}<ArrowRight size={16} aria-hidden="true"/></Link>;
-}
 const sets = [
   { id: 'foundation', title: 'Terms and concepts', description: 'Sufficient, necessary, arrow direction, and the difference between a rule and a fact.' },
-  { id: 'group-1', title: 'Group 1 words', description: 'Turn each Group 1 word over to see what it tells you.' },
-  { id: 'group-2', title: 'Group 2 words', description: 'Turn each Group 2 word over to see what it tells you.' },
-  { id: 'indicators', title: 'Indicator words, both groups', description: 'One word at a time. Say which group it belongs to, and the card tells you right away.' },
+  { id: 'indicators', title: 'Indicator words', description: 'One word at a time. Say which group it belongs to, and the card tells you right away.' },
 ];
 export function FlashcardTools({ url, allowed }: { url: OpeningCourseUrl; allowed: string[] }) {
   const [params, setParams] = useSearchParams();
-  // Each group's words open with that group's lesson. The mixed quiz deck opens once the work covers both.
-  const available = [...allowed, ...(allowed.includes('group-1') && allowed.includes('group-2') ? ['indicators'] : [])];
-  const set = sets.find(item => item.id === params.get('deck') && available.includes(item.id));
+  // The word deck always mixes both groups, so it is one set for everyone. Old Group 1 and Group 2 links land on it.
+  const available = [...allowed.filter(id => id === 'foundation'), 'indicators'];
+  const requested = ['group-1', 'group-2'].includes(params.get('deck') ?? '') ? 'indicators' : params.get('deck');
+  const set = sets.find(item => item.id === requested && available.includes(item.id));
   if (!set) return <div className="oc-course-note co-flashcard-tools">
     <header data-course-heading><p className="oc-label">Tools</p><h1>Flashcards</h1><p>Choose the set you want to practice.</p></header>
     <div className="co-flashcard-sets">{sets.filter(item => available.includes(item.id)).map(item => <section key={item.id}><h2>{item.title}</h2><p>{item.description}</p><Link className="oc-action" to={flashcardUrl(url, item.id)}>Go to flashcards<ArrowRight size={16} aria-hidden="true"/></Link></section>)}</div>
     {!available.length && <p>No flashcards are available in this work.</p>}
-  </div>;
-  if (set.id === 'group-1' || set.id === 'group-2') return <div className="oc-course-note co-flashcard-tools">
-    <nav className="co-flashcard-return" aria-label="Flashcard navigation"><Link to={url('tools')}><ArrowLeft size={16}/>All flashcard sets</Link>{(params.get('from') === 'sufficient' || params.get('from') === 'necessary') && <Link to={url(params.get('from')!)}>Back to {params.get('from') === 'sufficient' ? 'sufficient' : 'necessary'} condition<ArrowRight size={16}/></Link>}</nav>
-    <header data-course-heading><p className="oc-label">Flashcards</p><h1>{set.title}</h1><p>{set.description}</p></header>
-    <IndicatorWordStudy group={set.id === 'group-1' ? 1 : 2}/>
   </div>;
   if (set.id === 'indicators') return <div className="oc-course-note co-flashcard-tools">
     <nav className="co-flashcard-return" aria-label="Flashcard navigation"><Link to={url('tools')}><ArrowLeft size={16}/>All flashcard sets</Link>{(params.get('from') === 'sufficient' || params.get('from') === 'necessary') && <Link to={url(params.get('from')!)}>Back to {params.get('from') === 'sufficient' ? 'sufficient' : 'necessary'} condition<ArrowRight size={16}/></Link>}</nav>

@@ -17,23 +17,22 @@ it('keeps flashcards out of the lessons', () => {
   render(<MemoryRouter initialEntries={[url('necessary')]}><Harness/></MemoryRouter>);
   expect(screen.queryByRole('link', { name: 'Go to flashcards' })).toBeNull();
 });
-it('lists each group deck and the mixed quiz deck beside the concept cards, and shows which side the idea goes on', () => {
+it('lists one mixed word deck beside the concept cards, and old group links open it', () => {
   render(<MemoryRouter initialEntries={[url('tools')]}><Harness/></MemoryRouter>);
   expect(screen.getByRole('heading', { name: 'Terms and concepts' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Group 1 words' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Group 2 words' })).toBeVisible();
-  expect(screen.getByRole('heading', { name: 'Indicator words, both groups' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: /Group [12] words/ })).toBeNull();
   cleanup();
-  render(<MemoryRouter initialEntries={[`${url('tools')}&deck=group-1`]}><Harness/></MemoryRouter>);
-  expect(screen.getByRole('heading', { level: 1, name: 'Group 1 words' })).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'Turn card' }));
-  expect(document.querySelector('.iw-back')!.textContent).toMatch(/Group 1.*Sufficient condition indicator.*left side/);
-  cleanup();
-  render(<MemoryRouter initialEntries={[`${url('tools')}&deck=indicators`]}><Harness/></MemoryRouter>);
-  expect(screen.getByRole('button', { name: 'Group 2' })).toBeVisible();
+  for (const deck of ['indicators', 'group-1', 'group-2']) {
+    render(<MemoryRouter initialEntries={[`${url('tools')}&deck=${deck}`]}><Harness/></MemoryRouter>);
+    expect(screen.getByText('Which group?')).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Group 1' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Group 2' })).toBeVisible();
+    cleanup();
+  }
 });
-it('does not expose a disallowed set through the query', () => {
-  render(<MemoryRouter initialEntries={[`${url('tools')}&deck=group-2`]}><OpeningCourseScreen view="tools" steps={[]} url={url}/></MemoryRouter>);
-  expect(screen.getByText('No flashcards are available in this work.')).toBeVisible();
-  expect(screen.queryByRole('button', { name: 'Group 1' })).toBeNull();
+it('does not expose a concept set the work does not include', () => {
+  render(<MemoryRouter initialEntries={[`${url('tools')}&deck=foundation`]}><OpeningCourseScreen view="tools" steps={[]} url={url}/></MemoryRouter>);
+  expect(screen.getByRole('heading', { name: 'Indicator words' })).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Terms and concepts' })).toBeNull();
 });
