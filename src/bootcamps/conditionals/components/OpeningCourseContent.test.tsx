@@ -346,3 +346,18 @@ it('shows every combination of the two conditions and rejects only a win without
   expect(rows.filter(row => row[2].startsWith('No.')).map(row => row.slice(0, 2))).toEqual([['Yes', 'No']]);
   expect(recap.textContent).toContain('not a claim that any of them happened');
 });
+
+it('explains the contrapositive before the sign patterns: what it is, what it means, how to get it, why it matters', () => {
+  render(<OpeningCourseContent id="contrapositive"/>);
+  for (const name of ['What the contrapositive is', 'What it means', 'How to get it', 'Why it matters']) expect(screen.getByRole('heading', { name })).toBeVisible();
+  expect(screen.getByText('Swap the sides.')).toBeVisible();
+  expect(screen.getByText('Negate both.')).toBeVisible();
+  const text = document.body.textContent ?? '';
+  expect(text.indexOf('What the contrapositive is')).toBeLessThan(text.indexOf('Write the meaning you already understand'));
+  expect(text).not.toMatch(/[—–]/);
+});
+
+it('tells the student what the arrow says, where to start reading and what it is for', () => {
+  render(<OpeningCourseContent id="must-arrow"/>);
+  for (const name of ['What the arrow says', 'Start at the left', 'What the arrow is for']) expect(screen.getByRole('heading', { name })).toBeVisible();
+});

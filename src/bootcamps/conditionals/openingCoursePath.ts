@@ -12,7 +12,7 @@ export const OPENING_COURSE_PATH: OpeningCourseStep[] = [
   { id: 'meaning', type: 'note', title: 'What conditionals are', description: 'Separate a rule from a fact, and see what a conditional actually promises.', unitId: 'orientation' },
   { id: 'sufficient', type: 'note', title: 'The Sufficient Condition', description: 'When one condition guarantees another.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'necessary', type: 'note', title: 'The Necessary Condition', description: 'What the sufficient condition requires.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
-  { id: 'must-arrow', type: 'note', title: 'Must arrow', description: 'Show what must be true.', unitId: 'orientation' },
+  { id: 'must-arrow', type: 'note', title: 'Must arrow', description: 'What the arrow says, where to start reading it, and what it is for.', unitId: 'orientation' },
   { id: 'missing-requirement', type: 'note', title: 'The contrapositive', description: 'See what follows when a necessary condition is false.', unitId: 'orientation' },
   { id: 'foundation-practice', type: 'drill', title: 'Spot the condition', description: 'Identify sufficient and necessary conditions, place them beside the arrow, recognize indicators, and decide what the facts prove.', unitId: 'sufficient-necessary', alsoAvailableIn: ['orientation'] },
   { id: 'sufficient-words', type: 'note', title: 'Find the complete condition', description: 'Identify the full sufficient condition, including the words that limit who or what the rule covers.', unitId: 'group-1' },
