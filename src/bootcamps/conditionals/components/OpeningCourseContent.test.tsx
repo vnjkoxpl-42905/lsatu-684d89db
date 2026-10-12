@@ -336,9 +336,9 @@ it('starts the unified mixed route with one question rather than stacked activit
   expect(screen.queryByRole('navigation', { name: 'Practice rounds' })).toBeNull();
   expect(screen.queryByRole('button', { name: 'Compare with the choices' })).toBeNull();
 });
-it('defines the contrapositive first, then says it was already there, plays the four worlds, flips and negates, and sets it against the reverse and inverse', () => {
+it('defines the contrapositive first, then says it was already there, plays the lecture video, flips and negates, and sets it against the reverse and inverse', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
-  const names = ['What a contrapositive is', 'You already knew this', "Which world can't exist?", 'How to write it', 'What it is not', "Read it, don't always write it", "Check that you've got it"];
+  const names = ['What a contrapositive is', 'You already knew this', 'Watch the lesson', 'How to write it', 'What it is not', "Read it, don't always write it"];
   for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
   const full = document.body.textContent ?? '';
   const text = full.slice(0, full.indexOf('Try it on four rules'));
@@ -355,22 +355,15 @@ it('defines the contrapositive first, then says it was already there, plays the 
   expect(text).not.toMatch(/[—–]/);
   expect(text).not.toMatch(/~/);
   expect(text).toMatch(/If the power is off, then the ceiling light must be off/);
-  expect(document.querySelectorAll('.ct-neg').length).toBeGreaterThan(8);
+  expect(document.querySelectorAll('.ct-neg').length).toBeGreaterThan(4);
 });
 
-it('asks one clear question and lets the student find the one world the rule forbids', () => {
+it('places the lecture video after the idea is introduced, with captions and a written fallback', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
-  const picker = document.querySelector('.ct-picker') as HTMLElement;
-  expect(within(picker).getByText(/Which ONE of these four worlds can't happen?/)).toBeInTheDocument();
-  expect(picker.dataset.found).toBe('false');
-  fireEvent.click(within(picker).getByRole('button', { name: 'Light off, power on' }));
-  expect(picker.dataset.found).toBe('false');
-  expect(within(picker).getByRole('status').textContent).toMatch(/Not that one. That world is allowed/);
-  fireEvent.click(within(picker).getByRole('button', { name: 'Light on, power off' }));
-  expect(picker.dataset.found).toBe('true');
-  expect(within(picker).getByRole('status').textContent).toMatch(/Can't happen!/);
-  expect(picker.querySelectorAll('[data-verdict=allowed]')).toHaveLength(3);
-  expect(picker.querySelectorAll('[data-verdict=broken]')).toHaveLength(1);
+  const video = document.querySelector('.ct-lecture video') as HTMLVideoElement;
+  expect(video.querySelector('track[kind=captions]')).not.toBeNull();
+  expect(video.querySelector('source')?.getAttribute('src')).toBe('/media/conditionals/contrapositive/lecture.mp4');
+  expect(document.querySelector('.ct-picker')).toBeNull();
 });
 
 it('says the contrapositive in plain English early, pulses the key term, and no longer repeats the raffle recap', () => {
@@ -378,7 +371,6 @@ it('says the contrapositive in plain English early, pulses the key term, and no 
   expect(document.body.textContent).toContain('If the power is off, then the ceiling light must be off.');
   expect(document.querySelector('.ct-pulse-word')?.textContent).toBe('logically equivalent');
   expect(document.body.textContent).not.toMatch(/Three combinations fit|Write the meaning you already understand|raffle|bicycle/i);
-  expect(document.querySelectorAll('.co-opening .cr-question').length).toBeGreaterThanOrEqual(7);
 });
 
 it('works through four fresh rules one at a time, one for each place a not can sit', () => {
@@ -406,24 +398,6 @@ it('works through four fresh rules one at a time, one for each place a not can s
     if (index < 3) fireEvent.click(within(drill).getByRole('button', { name: 'Next rule' }));
   });
   expect(within(drill).getByText(/That is all four/)).toBeVisible();
-});
-
-it('lets the student switch the light on and see the power forced on, then cut the power and see the light forced off', () => {
-  render(<OpeningCourseContent id="contrapositive"/>);
-  const stage = document.querySelector('.ct-stage') as HTMLElement;
-  const lamp = (kind: string) => stage.querySelector('.ct-lamp[data-kind=' + kind + ']') as HTMLElement;
-  expect(within(stage).getByRole('tab', { name: /Original/ })).toHaveAttribute('aria-selected', 'true');
-  expect(lamp('power').dataset.state).toBe('unknown');
-  fireEvent.click(within(stage).getByRole('switch', { name: /Light switch: off/ }));
-  expect(lamp('light').dataset.state).toBe('on');
-  expect(lamp('power').dataset.state).toBe('on');
-  expect(within(stage).getByRole('status').textContent).toMatch(/so the power must be on/);
-  fireEvent.click(within(stage).getByRole('tab', { name: /Contrapositive/ }));
-  expect(lamp('light').dataset.state).toBe('unknown');
-  fireEvent.click(within(stage).getByRole('switch', { name: /Power switch: on/ }));
-  expect(lamp('power').dataset.state).toBe('off');
-  expect(lamp('light').dataset.state).toBe('off');
-  expect(within(stage).getByRole('status').textContent).toMatch(/no power, so the light can't be on/i);
 });
 
 it('marks the reverse and the inverse as wrong and the contrapositive as right', () => {

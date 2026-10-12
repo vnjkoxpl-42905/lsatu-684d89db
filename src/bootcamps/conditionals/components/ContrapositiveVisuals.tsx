@@ -293,3 +293,20 @@ export function RuleDrill() {
       : <button type="button" className="ct-drill-next" onClick={next}>Next rule</button>)}
   </div>;
 }
+
+const LECTURE_TRANSCRIPT = "Here's a rule: if the ceiling light is on, then the power must be on. Now flip the question. What if the power goes out? Could the light still be on? Nope. No power, no light. That's a second rule, and it was hiding inside the first one. If the power is off, then the light must be off. That's the contrapositive. If the necessary condition is absent, the sufficient condition is absent too. Here's how you write it. Start with the rule: Light, arrow, Power. Step one: flip the sides. Power goes on the left, and Light goes on the right. Step two: put a not on both. Not power, arrow, not light. Read it back: if there's no power, the light is not on. The original and the contrapositive are logically equivalent. If one is true, the other is true, so you can use either one. They're interchangeable! Be careful, though. Only flipping the sides is not the contrapositive, and neither is only adding a not. Each one is a different rule, and the original doesn't give it to you. You need both changes together. So when you see a rule, flip it, put a not on both sides, and you've got the contrapositive. Now try it on the next few rules yourself.";
+
+/** Short narrated lecture. The written lesson below stands on its own if the video cannot load. */
+export function ContrapositiveLecture() {
+  const [failed, setFailed] = useState(false);
+  const [read, setRead] = useState(false);
+  return <figure className="ct-lecture">
+    <video controls preload="metadata" playsInline poster="/media/conditionals/contrapositive/lecture.jpg" aria-label="A short lecture on the contrapositive" onError={() => setFailed(true)}>
+      <source src="/media/conditionals/contrapositive/lecture.mp4" type="video/mp4" onError={() => setFailed(true)}/>
+      <track kind="captions" src="/media/conditionals/contrapositive/lecture.vtt" srcLang="en" label="English"/>
+      Your browser cannot play this video. The lesson is written out below.
+    </video>
+    {failed && <p role="alert" className="ct-lecture-error">The video couldn't load. The lesson is written out below.</p>}
+    <details open={failed || undefined} onToggle={event => setRead(event.currentTarget.open)}><summary>Read the video</summary>{(read || failed) && <p>{LECTURE_TRANSCRIPT}</p>}</details>
+  </figure>;
+}

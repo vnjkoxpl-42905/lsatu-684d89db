@@ -1,8 +1,7 @@
-import { FlipAndNegateDemo, Neg, PulseWord, PunchWord, RuleDrill, RuleStage, ThreeMoves, WorldPicker } from './ContrapositiveVisuals';
+import { ContrapositiveLecture, FlipAndNegateDemo, Neg, PulseWord, PunchWord, RuleDrill, ThreeMoves } from './ContrapositiveVisuals';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
-import { NegativeCaseLab } from './CounterexampleLab';
 import { StagedReasoningDrill } from './StagedReasoningDrill';
 import { DrillOneExperience, type DrillOneQuestion } from './DrillOneExperience';
 import './must-arrow-note.css';
@@ -127,62 +126,33 @@ function FourRules() {
 function ContrapositiveNote() {
   return <>
     <NoteSection title="What a contrapositive is">
-      <p>You already know the core of every conditional. If the sufficient condition happens, the necessary condition <strong>must</strong> happen. The left side of the arrow guarantees the right side. Every time.</p>
+      <p>If the sufficient condition happens, the necessary condition <strong>must</strong> happen. The left side of the arrow guarantees the right side.</p>
       <p>The contrapositive is what you know when the right side of the arrow goes missing:</p>
       <p className="ct-definition"><strong>If the <span className="ct-hl">necessary condition</span> is absent, the <span className="ct-hl" data-tone="amber">sufficient condition</span> is absent too.</strong></p>
-      <p>Take this rule: <strong>If the ceiling light is on, then the power must be on.</strong></p>
-      <p>So if the light is on, it needs power. It has to have power to come on. The power is completely necessary. Now, what if there's no power? Then the light doesn't have what it needs. Could it be on? Nope. No power, no light. As a rule: <strong>If the power is off, then the ceiling light must be off.</strong></p>
-      <p>Here is the rule, and the contrapositive you just worked out. Switch between the two tabs and try each one:</p>
-      <RuleStage/>
+      <p>Take this rule: <strong>If the ceiling light is on, then the power must be on.</strong> With no power, the light can't be on. No power, no light. As a rule: <strong>If the power is off, then the ceiling light must be off.</strong></p>
     </NoteSection>
     <NoteSection title="You already knew this">
-      <p>Here's the good news: you didn't just learn a new rule. You found one that was already there. The contrapositive was hiding inside the original the whole time, waiting for you to spot it.</p>
-      <p>That's why the original and its contrapositive are <PulseWord>logically equivalent</PulseWord>. Same relationship. Same meaning. If one is true, the other is true, and the other way around. Use either one. They're <PunchWord>interchangeable!</PunchWord></p>
+      <p>The contrapositive was inside the original rule the whole time, waiting for you to spot it. That's why the two are <PulseWord>logically equivalent</PulseWord>: if one is true, the other is true, and you can use either. They're <PunchWord>interchangeable!</PunchWord></p>
     </NoteSection>
-    <NoteSection title="Which world can't exist?">
-      <p>A rule rules something out. See if you can find what.</p>
-      <WorldPicker/>
+    <NoteSection title="Watch the lesson">
+      <ContrapositiveLecture/>
     </NoteSection>
     <NoteSection title="How to write it">
-      <p>Write the rule with an arrow: <strong>Light → Power</strong>. The sufficient condition goes on the left side of the arrow. The necessary condition goes on the right side.</p>
-      <p>The contrapositive is <strong><Neg>Power</Neg> → <Neg>Light</Neg></strong>. A line through an idea means “not.” Watch how you get there:</p>
-      <FlipAndNegateDemo/>
-      <p>Here are more pairs:</p>
-      <table className="co-combination-table ct-compare">
-        <caption>Original and contrapositive</caption>
-        <thead><tr><th scope="col">Original</th><th scope="col">Contrapositive</th></tr></thead>
-        <tbody>
-          <tr><td>C → D</td><td><Neg>D</Neg> → <Neg>C</Neg></td></tr>
-          <tr><td>M → <Neg>N</Neg></td><td>N → <Neg>M</Neg></td></tr>
-          <tr><td><Neg>G</Neg> → H</td><td><Neg>H</Neg> → G</td></tr>
-          <tr><td><Neg>S</Neg> → <Neg>T</Neg></td><td>T → S</td></tr>
-        </tbody>
-      </table>
+      <p>Write the rule with an arrow: <strong>Light → Power</strong>. The sufficient condition goes on the left side of the arrow. The necessary condition goes on the right side of the arrow.</p>
+      <p>The contrapositive is <strong><Neg>Power</Neg> → <Neg>Light</Neg></strong>. A line through an idea means “not.” You get there in two steps:</p>
       <ol className="ct-moves">
-        <li><strong>Write the rule as a diagram.</strong></li>
-        <li><strong>Flip the sides.</strong> The right side goes on the left, and the left side goes on the right.</li>
-        <li><strong>Put “not” on both.</strong> If a side already has a “not,” the “not” comes off.</li>
-        <li><strong>Read it back in plain English.</strong> If there's no power, the light is not on. Does the rule say that? It does.</li>
+        <li><strong>Step 1: Flip the sides.</strong> The right side goes on the left, and the left side goes on the right.</li>
+        <li><strong>Step 2: Negate both.</strong> Put “not” on each idea. If an idea already has a “not,” the two cancel: a double negative turns positive.</li>
       </ol>
+      <FlipAndNegateDemo/>
+      <p>Try one that starts negative. <strong><Neg>Light</Neg> → <Neg>Power</Neg></strong> flips to <strong><Neg>Power</Neg> → <Neg>Light</Neg></strong>. Negating both cancels each “not,” so the contrapositive is <strong>Power → Light</strong>.</p>
     </NoteSection>
     <NoteSection title="What it is not">
-      <p>Two other changes look like the contrapositive. They are not. Each one turns the rule into a different rule, and the original does not guarantee it.</p>
+      <p>Two other changes look like the contrapositive. Each one gives you a different rule that the original does not guarantee. Wrong answer choices use them on purpose.</p>
       <ThreeMoves/>
-      <p>Wrong answer choices use the reverse and the inverse on purpose. Each one is one change away from the right answer.</p>
     </NoteSection>
     <NoteSection title="Read it, don't always write it">
-      <p>Every rule can be read two ways.</p>
-      <ul className="ct-list">
-        <li>Forward, from left to right.</li>
-        <li>Backward, from right to left, putting a “not” on everything as you go. That reads the contrapositive without writing it.</li>
-      </ul>
-      <p>If you can read it, extra notation just adds noise. Write the contrapositive when it helps you see the rule more clearly, or when you need to connect it to another rule.</p>
-    </NoteSection>
-    <NoteSection title="Check that you've got it">
-      <p>The LSAT gives you a rule one way and then uses it the other way. Three quick checks. Use what the page just showed you.</p>
-      <ReferenceQuestion prompt="Rule: If a visitor enters the lab, the visitor has a badge. Which is the contrapositive?" options={['If a visitor has a badge, the visitor enters the lab.', 'If a visitor does not enter the lab, the visitor has no badge.', 'If a visitor has no badge, the visitor does not enter the lab.']} correct={2} feedback={['This only flips the sides. That is the reverse. A badge could be required without being enough.', 'This only adds “not.” Staying out of the lab leaves the badge question open.', 'No badge, no entry. The sides flipped and both conditions got a “not.”']}/>
-      <ReferenceQuestion prompt="Rule: If a player is on the team, the player has signed the waiver. Jordan has not signed the waiver. What do you know about Jordan?" options={['Jordan is not on the team.', 'Jordan is on the team anyway.', 'Nothing. The rule says nothing about players who have not signed.']} correct={0} feedback={['No waiver, no spot on the team. That is the contrapositive at work.', 'Every player on the team has signed. A player with no waiver cannot be on it.', 'The rule does speak here. Signing is required, so a missing signature rules out the team.']}/>
-      <ReferenceQuestion prompt="Same rule. Sam has signed the waiver. What do you know about Sam?" options={['Sam is on the team.', 'Sam is not on the team.', 'Nothing. Signing is required for the team, but it does not put Sam on it.']} correct={2} feedback={['That is the reverse. The waiver is a requirement, not a guarantee of a spot.', 'Nothing in the rule keeps Sam off the team. Signing is required, not forbidden.', 'The signature only meets a requirement. Sam could still be off the team.']}/>
+      <p>You can read a rule backward without writing anything: go from right to left and put a “not” on everything. Write the contrapositive when it helps you see the rule or connect it to another rule.</p>
     </NoteSection>
   </>;
 }
@@ -398,18 +368,6 @@ function PermissionBoundary() {
   return <NoteSection title="Keep permission and instructions distinct"><p>A conditional can give permission or an instruction. Keep that strength instead of turning it into a report of what someone did.</p>{Children.toArray(boundary.props.children).slice(3)}</NoteSection>;
 }
 
-function WholeConditionNegation() {
-  return <NoteSection title="Negate the whole condition">
-    <p>To negate a condition, describe what makes <strong>that complete claim false</strong>. Adding “not” to one convenient word can change the claim.</p>
-    <ReferenceQuestion prompt="A form is signed and dated. What makes that complete condition false?" options={['It is missing a signature, a date, or both.', 'It has neither a signature nor a date.']} correct={0} feedback={['One missing part is enough. Not both does not require both to be missing.', 'That is one way to fail, but not the only way. A signed form with no date also fails the complete condition.']}/>
-    <ReferenceQuestion prompt="Every covered duty is superseded. What is the negation?" options={['No covered duty is superseded.', 'At least one covered duty is not superseded.']} correct={1} feedback={['None is stronger than needed. One duty that is not superseded already makes every false.', 'Not every means at least one exception. It does not mean none.']}/>
-    <ReferenceQuestion prompt="An evaluator with current authorization signs the form. What makes this false?" options={['One evaluator does not sign.', 'No evaluator with current authorization signs.']} correct={1} feedback={['Another authorized evaluator might sign. One person failing does not rule out a qualifying signer.', 'Keep the qualification. The negation rules out every signer who meets it, not just one evaluator.']}/>
-    <p><strong>Numbers need the same care.</strong> If a condition means “at least three reviewers request revision,” its negation is “fewer than three do.” If it means “exactly three,” the negation is “not exactly three.” Never silently change the numerical meaning.</p>
-    <p>When a condition is long, define a symbol for the <strong>whole condition</strong> and write NOT with that symbol. Then explain what its falsity means in ordinary words.</p>
-  </NoteSection>;
-}
-
-
 function Content({ id }: { id: string }) {
   switch (id) {
     case 'meaning': return <ReferenceBody number={1} omitTransition/>;
@@ -420,7 +378,7 @@ function Content({ id }: { id: string }) {
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
     case 'whole-meaning': return <WholeMeaningNote/>;
     case 'missing-requirement': return <MissingRequirementNote/>;
-    case 'contrapositive': return <><ContrapositiveNote/><FourRules/><WholeConditionNegation/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection></>;
+    case 'contrapositive': return <><ContrapositiveNote/><FourRules/></>;
     case 'foundation-practice': return <FoundationPractice/>;
     case 'sufficient-practice': return <StagedReasoningDrill mode="sufficient"/>;
     case 'mixed-practice': return <StagedReasoningDrill mode="mixed"/>;
