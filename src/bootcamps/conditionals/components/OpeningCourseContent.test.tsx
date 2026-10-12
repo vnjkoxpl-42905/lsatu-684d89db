@@ -347,13 +347,15 @@ it('shows every combination of the two conditions and rejects only a win without
   expect(recap.textContent).toContain('not a claim that any of them happened');
 });
 
-it('explains the contrapositive before the sign patterns: what it is, what it means, how to get it, why it matters', () => {
+it('explains what the contrapositive is before any example, then shows it, writes it, and sets it against the reverse and inverse', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
-  for (const name of ['What the contrapositive is', 'What it means', 'How to get it', 'Why it matters']) expect(screen.getByRole('heading', { name })).toBeVisible();
-  expect(screen.getByText('Swap the sides.')).toBeVisible();
-  expect(screen.getByText('Negate both.')).toBeVisible();
+  const names = ['What a contrapositive is', 'Watch it work', 'How to write it', 'What it is not', 'The steps', 'Why it matters'];
+  for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
   const text = document.body.textContent ?? '';
-  expect(text.indexOf('What the contrapositive is')).toBeLessThan(text.indexOf('Write the meaning you already understand'));
+  const order = names.map(name => text.indexOf(name));
+  expect(order).toEqual([...order].sort((m, n) => m - n));
+  expect(text.indexOf('What a contrapositive is')).toBeLessThan(text.indexOf('raffle'));
+  expect(text.indexOf('The steps')).toBeLessThan(text.indexOf('Write the meaning you already understand'));
   expect(text).not.toMatch(/[—–]/);
 });
 

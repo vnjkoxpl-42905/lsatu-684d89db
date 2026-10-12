@@ -118,32 +118,61 @@ function MissingRequirementNote() {
 
 function ContrapositiveNote() {
   return <>
-    <NoteSection title="What the contrapositive is">
-      <p>Take the raffle rule: <strong>If you win the raffle, you get a bicycle.</strong> As a diagram, it is <strong>Win → Bicycle</strong>.</p>
-      <p>Now suppose you did not get a bicycle. Could you have won? No. A win would have brought a bicycle, and none came. So you did not win.</p>
-      <p>That conclusion is the <strong>contrapositive</strong>: <strong>If you do not get a bicycle, you do not win the raffle.</strong> The diagram is <strong>~Bicycle → ~Win</strong>. The ~ sign means not.</p>
-      <h3>What it means</h3>
-      <p>The contrapositive is not a second rule. It is the same rule, read from its other end. The original starts with the left condition and tells you what must follow. The contrapositive starts with the missing requirement and tells you what that rules out.</p>
+    <NoteSection title="What a contrapositive is">
+      <p>Every rule makes a promise. When the left condition is true, the right condition has to be true too.</p>
+      <p>Think about what that says about the right condition. The left one can't happen without it. The left condition depends on the right one.</p>
+      <p>So what if the right condition is missing? Then the left condition has nothing to stand on. It can't be true either.</p>
+      <p>That is the <strong>contrapositive</strong>: <strong>when the right condition is false, the left condition is false.</strong></p>
       <figure className="cr-contrapositive-pair">
-        <figcaption>One rule, two ways to read it</figcaption>
-        <p><strong>Original</strong></p><RuleDiagram left="Win the raffle" right="Get a bicycle"/>
-        <p><strong>Contrapositive</strong></p><RuleDiagram left="Do not get a bicycle" right="Do not win the raffle"/>
+        <figcaption>One rule, read from both ends</figcaption>
+        <p><strong>Original.</strong> The left is true, so the right is true.</p><RuleDiagram left="Left condition" right="Right condition"/>
+        <p><strong>Contrapositive.</strong> The right is false, so the left is false.</p><RuleDiagram left="Right condition is false" right="Left condition is false"/>
       </figure>
-      <p>Both lines say the same thing: nobody wins without getting a bicycle.</p>
-      <h3>How to get it</h3>
-      <p>Two moves, in this order.</p>
+      <p>You didn't get a new rule. The contrapositive is the same rule, told from the other end. If the rule holds, the contrapositive holds. The two can't come apart.</p>
+    </NoteSection>
+    <NoteSection title="Watch it work">
+      <p>Here is a rule: <strong>If you win the raffle, you get a bicycle.</strong> Winning is on the left. The bicycle is on the right.</p>
+      <ReferenceQuestion prompt="You did not get a bicycle. Could you have won the raffle?" options={['Yes, you could still have won.', 'No, you could not have won.', 'The rule leaves it open.']} correct={1} feedback={['If you had won, the rule says a bicycle comes with it. Check that against what you were told.', 'Right. A win requires a bicycle. The requirement is missing, so the win is ruled out.', 'This fact does settle it. When the required result is missing, the rule tells you about the left side.']}/>
+      <p>That is the contrapositive at work: <strong>If you do not get a bicycle, you do not win the raffle.</strong> The ~ sign means not.</p>
+      <figure className="cr-contrapositive-pair">
+        <figcaption>The raffle rule, both ways</figcaption>
+        <p><strong>Original</strong></p><RuleDiagram left="Win the raffle" right="Get a bicycle"/>
+        <p><strong>Contrapositive</strong></p><RuleDiagram left="~Get a bicycle" right="~Win the raffle"/>
+      </figure>
+    </NoteSection>
+    <NoteSection title="How to write it">
+      <p>Start with the original: <strong>Win → Bicycle</strong>. Two moves turn it into the contrapositive.</p>
+      <p>First, swap the sides: <strong>Bicycle → Win</strong>. Second, put “not” on both conditions: <strong>~Bicycle → ~Win</strong>.</p>
+      <p>Now read it back in English. If you did not get a bicycle, you did not win. Does the rule require that? It does. That check catches most mistakes.</p>
+      <p>When a condition already has a “not” in it, negating it takes the “not” away. The practice below shows all four cases.</p>
+    </NoteSection>
+    <NoteSection title="What it is not">
+      <p>Two other moves look like the contrapositive. Each one does only half of the work.</p>
+      <table className="co-combination-table ct-compare">
+        <caption>Three ways to change Win → Bicycle</caption>
+        <thead><tr><th scope="col">What you do</th><th scope="col">What you get</th><th scope="col">Does the rule guarantee it?</th></tr></thead>
+        <tbody>
+          <tr><td>Swap the sides only. This is the reverse.</td><td>Bicycle → Win</td><td>No. A bicycle could be a gift.</td></tr>
+          <tr><td>Add “not” only. This is the inverse.</td><td>~Win → ~Bicycle</td><td>No. Not winning doesn't mean no bicycle.</td></tr>
+          <tr><td>Swap the sides and add “not” to both. This is the contrapositive.</td><td>~Bicycle → ~Win</td><td>Yes. A missing bicycle rules out a win.</td></tr>
+        </tbody>
+      </table>
+      <p>Wrong answer choices use the reverse and the inverse on purpose. Each one is a single move away from the right answer.</p>
+    </NoteSection>
+    <NoteSection title="The steps">
       <ol className="ct-moves">
-        <li><strong>Swap the sides.</strong> Win → Bicycle becomes Bicycle → Win.</li>
-        <li><strong>Negate both.</strong> Put “not” on each condition. Bicycle → Win becomes ~Bicycle → ~Win.</li>
+        <li><strong>Write the rule as a diagram.</strong> The sufficient condition goes on the left. The necessary condition goes on the right.</li>
+        <li><strong>Swap the sides.</strong></li>
+        <li><strong>Put “not” on both conditions.</strong></li>
+        <li><strong>Read it back in English.</strong> Check it against what the rule requires.</li>
       </ol>
-      <p>You need both moves. Swapping alone gives <strong>Bicycle → Win</strong>, the reverse. A bicycle could arrive as a gift, so it does not prove a win. Negating alone gives <strong>~Win → ~Bicycle</strong>, the inverse. Not winning does not mean no bicycle. Only the two moves together give a conclusion the rule guarantees.</p>
-      <p>Then read it back in English: if you did not get a bicycle, you did not win. Does the rule require that? Yes. That check catches most mistakes.</p>
-      <h3>Why it matters</h3>
+    </NoteSection>
+    <NoteSection title="Why it matters">
       <p>LSAT arguments often tell you something is missing and ask what follows. The contrapositive is the one direction that gives you a guaranteed answer from a “not.”</p>
       <blockquote>Everyone who wins the raffle gets a bicycle. Priya did not get a bicycle. So Priya did not win.</blockquote>
-      <p>That conclusion is guaranteed. Compare it with this one:</p>
+      <p>That conclusion is guaranteed. Now change one move:</p>
       <blockquote>Everyone who wins the raffle gets a bicycle. Priya did not win. So Priya did not get a bicycle.</blockquote>
-      <p>That one is not guaranteed. She could have received a bicycle as a gift. Answer choices use this kind of swap on purpose, because the wrong move sits so close to the right one.</p>
+      <p>That one is not guaranteed. She could have received a bicycle as a gift.</p>
       <ReferenceQuestion prompt="Rule: If a visitor enters the lab, the visitor has a badge. Which is the contrapositive?" options={['If a visitor has a badge, the visitor enters the lab.', 'If a visitor does not enter the lab, the visitor has no badge.', 'If a visitor has no badge, the visitor does not enter the lab.']} correct={2} feedback={['This swaps the sides but keeps both conditions as they were. That is the reverse. A badge could be required without being enough.', 'This puts “not” on both conditions but leaves the sides where they were. Staying out of the lab leaves the badge question open.', 'Right. A missing badge rules out entering. The sides swapped and both conditions are negated.']}/>
     </NoteSection>
   </>;
@@ -364,7 +393,7 @@ function CompatibleCasesRecap() {
   return <NoteSection title="Three combinations fit. One breaks the rule.">
     <blockquote>If you win the raffle, you get a bicycle.</blockquote>
     <p>The rule requires a bicycle when you win. Let's compare all four possible combinations. These are possible cases, not a claim that any of them happened.</p>
-    <table className="co-combination-table">
+    <table className="co-combination-table ct-compare">
       <caption>Possible cases under the raffle rule</caption>
       <thead><tr><th scope="col">Win the raffle?</th><th scope="col">Get a bicycle?</th><th scope="col">Fits the rule?</th></tr></thead>
       <tbody>
