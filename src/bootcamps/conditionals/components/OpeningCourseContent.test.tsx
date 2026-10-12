@@ -347,18 +347,25 @@ it('shows every combination of the two conditions and rejects only a win without
   expect(recap.textContent).toContain('not a claim that any of them happened');
 });
 
-it('says the contrapositive is logically equivalent before any example, then shows it, writes it, and sets it against the reverse and inverse', () => {
+it('runs the contrapositive as a guess-then-turn thought experiment, then names it as logically equivalent', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
-  const names = ['What a contrapositive is', 'See it work', 'How to write it', 'What it is not', 'The steps', 'Why it matters'];
+  const names = ['Something hiding inside every rule', 'Say it out loud once more', 'How to write it', 'What it is not', "Read it, don't always write it", 'Why it matters'];
   for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
   const full = document.body.textContent ?? '';
   const text = full.slice(0, full.indexOf('Write the meaning you already understand'));
   const order = names.map(name => text.indexOf(name));
   expect(order).toEqual([...order].sort((m, n) => m - n));
-  expect(text.indexOf('logically equivalent')).toBeLessThan(text.indexOf('elevator'));
-  expect(text).not.toMatch(/promise|nothing to stand on|depends on/i);
-  expect(text).not.toMatch(/raffle|the one other thing/i);
+  expect(screen.getByLabelText('Put your guess here')).toBeVisible();
+  fireEvent.change(screen.getByLabelText('Put your guess here'), { target: { value: 'It is off' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Turn the card' }));
+  expect(document.querySelector('.cg-card')?.getAttribute('data-flipped')).toBe('true');
+  expect(screen.getByText(/Your coat is not on/)).toBeInTheDocument();
+  expect(document.querySelector('.cg-yours')?.textContent).toContain('It is off');
+  expect(text.indexOf('Thought experiment')).toBeLessThan(text.indexOf('logically equivalent'));
+  expect(text).toMatch(/left side of the arrow/);
+  expect(text).toMatch(/right side of the arrow/);
   expect(text).toMatch(/interchangeable/);
+  expect(text).not.toMatch(/promise|nothing to stand on|depends on|raffle|elevator|breathing|Logic Games|the one other thing/i);
   expect(text).not.toMatch(/[—–]/);
 });
 

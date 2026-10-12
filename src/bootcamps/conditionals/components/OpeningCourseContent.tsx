@@ -1,3 +1,4 @@
+import { ContrapositiveGuessCard } from './ContrapositiveGuessCard';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
@@ -118,60 +119,86 @@ function MissingRequirementNote() {
 
 function ContrapositiveNote() {
   return <>
-    <NoteSection title="What a contrapositive is">
-      <p>The contrapositive is the same rule, said a different way. The two are <strong>logically equivalent</strong>. They say exactly the same thing. If one is true, the other is true, and the other way around. You can use either one. They're interchangeable.</p>
-      <p>Here is what it says: <strong>if the right side of a rule didn't happen, the left side didn't happen either.</strong></p>
-      <p>Why? Because if the left side had happened, the right side would have come with it. It didn't come. So the left side didn't happen.</p>
+    <NoteSection title="Something hiding inside every rule">
+      <p>So far, you know this about a rule: <strong>if the condition on the left side of the arrow is true, the condition on the right side must be true.</strong> That holds every time. Keep it in mind for a thought experiment.</p>
+      <ContrapositiveGuessCard
+        story={<><p>Imagine you hate the cold. <strong>If your coat is on, you're going outside.</strong> Going outside is the only reason you ever put your coat on. Every single time the coat is on, you're headed out the door.</p><RuleDiagram left="Coat on" right="Going outside"/></>}
+        question={<p>Now imagine you are <strong>not</strong> going outside. What do you know about your coat?</p>}
+        answer={<><p><strong>Your coat is not on.</strong></p><p>You're not going outside, so the requirement for wearing the coat is missing. Could the coat be on? No. If it were on, you'd be headed out the door. You're not, so it isn't.</p><p className="cg-remember"><strong>Remember:</strong> if the right side of the arrow is missing, the left side is missing too. This is the contrapositive.</p></>}
+      />
+      <p>You didn't need a new rule to get that answer. It was sitting inside the original rule, waiting to be recognized.</p>
+      <p>The original and the contrapositive are <strong>logically equivalent</strong>. They say exactly the same thing. If one is true, the other is true, and the other way around. You can use either one. They're interchangeable.</p>
       <figure className="cr-contrapositive-pair">
         <figcaption>One rule, said two ways</figcaption>
-        <p><strong>Original.</strong> The left side is true, so the right side is true.</p><RuleDiagram left="Left side" right="Right side"/>
-        <p><strong>Contrapositive.</strong> The right side is false, so the left side is false.</p><RuleDiagram left="Right side is false" right="Left side is false"/>
+        <p><strong>Original.</strong> The left side of the arrow is true, so the right side is true.</p><RuleDiagram left="Left side" right="Right side"/>
+        <p><strong>Contrapositive.</strong> The right side of the arrow is false, so the left side is false.</p><RuleDiagram left="Right side is false" right="Left side is false"/>
       </figure>
-      <p>Because the two are equivalent, you never have to choose between them. If you know the rule, you know its contrapositive. If you know the contrapositive, you know the rule.</p>
     </NoteSection>
-    <NoteSection title="See it work">
-      <p>Here is a rule: <strong>If an elevator is moving, its doors are closed.</strong> Moving is on the left. Closed doors are on the right.</p>
-      <ReferenceQuestion prompt="You see an elevator with its doors open. Could it be moving?" options={['Yes, it could be moving with the doors open.', 'No, it cannot be moving.', 'The rule leaves it open.']} correct={1} feedback={['If it were moving, the rule says its doors would be closed. Check that against what you were told.', 'Right. A moving elevator has closed doors. These doors are open, so it is not moving.', 'This fact does settle it. When the right side is false, the rule tells you about the left side.']}/>
-      <p>That's the contrapositive: <strong>If an elevator's doors are open, it is not moving.</strong> The ~ sign means not.</p>
-      <figure className="cr-contrapositive-pair">
-        <figcaption>The elevator rule, said two ways</figcaption>
-        <p><strong>Original</strong></p><RuleDiagram left="Moving" right="Doors closed"/>
-        <p><strong>Contrapositive</strong></p><RuleDiagram left="~Doors closed" right="~Moving"/>
-      </figure>
-      <p>Read them side by side. &ldquo;If it's moving, the doors are closed&rdquo; and &ldquo;If the doors are open, it isn't moving&rdquo; are one rule. Say it whichever way is easier.</p>
+    <NoteSection title="Say it out loud once more">
+      <p>Here is another one: <strong>If the ceiling light is on, then the power is on.</strong></p>
+      <p>So if the light is on, it needs power. It has to have power for the light to come on. The power is completely necessary. What if there's no power? Then the light doesn't have what it needs. It can't be on.</p>
+      <p>Power sits on the right side of the arrow. When the right side is missing, the left side can't happen.</p>
+      <table className="co-combination-table ct-compare">
+        <caption>What the rule tells you, and when</caption>
+        <thead><tr><th scope="col">Situation</th><th scope="col">What has to happen?</th><th scope="col">If the light is on, then the power is on</th></tr></thead>
+        <tbody>
+          <tr><td>Left side true</td><td>The right side must be true.</td><td>The light is on, so the power must be on.</td></tr>
+          <tr><td>Right side false</td><td>The left side can't be true.</td><td>There's no power, so the light can't be on.</td></tr>
+          <tr><td>Left side false</td><td>Nothing.</td><td>The light is off. The power could be on or off. We don't know.</td></tr>
+          <tr><td>Right side true</td><td>Nothing.</td><td>The power is on. The light could be on or off. We don't know.</td></tr>
+        </tbody>
+      </table>
+      <p>The first two rows are the two situations that make the rule do something. In the last two, the rule settles nothing, and you need other information.</p>
     </NoteSection>
     <NoteSection title="How to write it">
-      <p>Start with the original: <strong>Moving → Closed</strong>. Two moves turn it into the contrapositive.</p>
-      <p>Swap the sides: <strong>Closed → Moving</strong>. Then put “not” on both: <strong>~Closed → ~Moving</strong>.</p>
-      <p>Read it back in plain English. If the doors are not closed, the elevator is not moving. Does the rule say that? It does. That check catches most mistakes.</p>
-      <p>If a condition already has a “not” in it, negating it takes the “not” away. The practice below covers all four cases.</p>
+      <p>Write the rule with an arrow: <strong>Light → Power</strong>. The sufficient condition goes on the left side of the arrow. The necessary condition goes on the right side.</p>
+      <p>Now the contrapositive: <strong>~Power → ~Light</strong>. The ~ is a squiggle. Read it as “not.”</p>
+      <table className="co-combination-table ct-compare">
+        <caption>Original and contrapositive</caption>
+        <thead><tr><th scope="col">Original</th><th scope="col">Contrapositive</th></tr></thead>
+        <tbody>
+          <tr><td>C → D</td><td>~D → ~C</td></tr>
+          <tr><td>M → ~N</td><td>N → ~M</td></tr>
+          <tr><td>~G → H</td><td>~H → G</td></tr>
+          <tr><td>~S → ~T</td><td>T → S</td></tr>
+        </tbody>
+      </table>
+      <p>Once you have the original written down, flip and negate to get the contrapositive.</p>
+      <ol className="ct-moves">
+        <li><strong>Write the rule as a diagram.</strong></li>
+        <li><strong>Flip the sides.</strong> The right side goes on the left, and the left side goes on the right.</li>
+        <li><strong>Put “not” on both.</strong> If a side already has a “not,” the “not” comes off.</li>
+        <li><strong>Read it back in plain English.</strong> Check it against the rule.</li>
+      </ol>
+      <p>Read it back: if there's no power, the light is not on. Does the rule say that? It does. That check catches most mistakes.</p>
     </NoteSection>
     <NoteSection title="What it is not">
       <p>Two other moves look like the contrapositive. Each one does only half the work.</p>
       <table className="co-combination-table ct-compare">
-        <caption>Three ways to change Moving → Closed</caption>
+        <caption>Three ways to change Light → Power</caption>
         <thead><tr><th scope="col">What you do</th><th scope="col">What you get</th><th scope="col">Do you know it's true?</th></tr></thead>
         <tbody>
-          <tr><td>Swap the sides only. This is the reverse.</td><td>Closed → Moving</td><td>No. An elevator can sit still with its doors closed.</td></tr>
-          <tr><td>Add “not” only. This is the inverse.</td><td>~Moving → ~Closed</td><td>No. A stopped elevator can still have closed doors.</td></tr>
-          <tr><td>Swap the sides and add “not” to both. This is the contrapositive.</td><td>~Closed → ~Moving</td><td>Yes. It says the same thing as the original.</td></tr>
+          <tr><td>Flip the sides only. This is the reverse.</td><td>Power → Light</td><td>No. The power can be on with the light off.</td></tr>
+          <tr><td>Add “not” only. This is the inverse.</td><td>~Light → ~Power</td><td>No. A light that's off doesn't mean the power is off.</td></tr>
+          <tr><td>Flip the sides and add “not” to both. This is the contrapositive.</td><td>~Power → ~Light</td><td>Yes. It says the same thing as the original.</td></tr>
         </tbody>
       </table>
       <p>Wrong answer choices use the reverse and the inverse on purpose. Each one is a single move away from the right answer.</p>
     </NoteSection>
-    <NoteSection title="The steps">
-      <ol className="ct-moves">
-        <li><strong>Write the rule as a diagram.</strong> The sufficient condition goes on the left. The necessary condition goes on the right.</li>
-        <li><strong>Swap the sides.</strong></li>
-        <li><strong>Put “not” on both conditions.</strong></li>
-        <li><strong>Read it back in plain English.</strong> Check it against the rule.</li>
-      </ol>
+    <NoteSection title="Read it, don't always write it">
+      <p>Every rule can be read two ways.</p>
+      <ul className="ct-list">
+        <li>Forward, from left to right.</li>
+        <li>Backward, from right to left, putting a “not” on everything as you go. That reads the contrapositive without writing it.</li>
+      </ul>
+      <p>You don't need to write the contrapositive for every rule. If you can write it, you can already read it, and extra notation just adds noise. Write it when it helps you see the rule more clearly, or when you need to connect it to another rule.</p>
+      <p>The drills in this lesson ask you to write it anyway. That shows you can find it. Once your contrapositives match the answer key, you'll be ready to just read them.</p>
     </NoteSection>
     <NoteSection title="Why it matters">
       <p>The LSAT often gives you a rule one way and then uses it the other way. You'll see the contrapositive as a conclusion, as an answer choice, or as one link in a chain. Since it says the same thing as the rule, you can treat the two as one fact.</p>
-      <blockquote>Every moving elevator has its doors closed. So an elevator with its doors open is not moving.</blockquote>
+      <blockquote>If the ceiling light is on, then the power is on. So if the power is off, the ceiling light is not on.</blockquote>
       <p>The second sentence isn't new information. It's the first sentence turned around. A student who doesn't see that treats it as a leap. A student who does sees a rule they already had.</p>
-      <ReferenceQuestion prompt="Rule: If a visitor enters the lab, the visitor has a badge. Which is the contrapositive?" options={['If a visitor has a badge, the visitor enters the lab.', 'If a visitor does not enter the lab, the visitor has no badge.', 'If a visitor has no badge, the visitor does not enter the lab.']} correct={2} feedback={['This only swaps the sides. That is the reverse. A badge could be required without being enough.', 'This only adds “not.” Staying out of the lab leaves the badge question open.', 'Right. No badge, no entry. The sides swapped and both conditions got a “not.”']}/>
+      <ReferenceQuestion prompt="Rule: If a visitor enters the lab, the visitor has a badge. Which is the contrapositive?" options={['If a visitor has a badge, the visitor enters the lab.', 'If a visitor does not enter the lab, the visitor has no badge.', 'If a visitor has no badge, the visitor does not enter the lab.']} correct={2} feedback={['This only flips the sides. That is the reverse. A badge could be required without being enough.', 'This only adds “not.” Staying out of the lab leaves the badge question open.', 'Right. No badge, no entry. The sides flipped and both conditions got a “not.”']}/>
     </NoteSection>
   </>;
 }
