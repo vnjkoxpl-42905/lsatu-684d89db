@@ -116,6 +116,39 @@ function MissingRequirementNote() {
   </>;
 }
 
+function ContrapositiveNote() {
+  return <>
+    <NoteSection title="What the contrapositive is">
+      <p>Take the raffle rule: <strong>If you win the raffle, you get a bicycle.</strong> As a diagram, it is <strong>Win → Bicycle</strong>.</p>
+      <p>Now suppose you did not get a bicycle. Could you have won? No. A win would have brought a bicycle, and none came. So you did not win.</p>
+      <p>That conclusion is the <strong>contrapositive</strong>: <strong>If you do not get a bicycle, you do not win the raffle.</strong> The diagram is <strong>~Bicycle → ~Win</strong>. The ~ sign means not.</p>
+      <h3>What it means</h3>
+      <p>The contrapositive is not a second rule. It is the same rule, read from its other end. The original starts with the left condition and tells you what must follow. The contrapositive starts with the missing requirement and tells you what that rules out.</p>
+      <figure className="cr-contrapositive-pair">
+        <figcaption>One rule, two ways to read it</figcaption>
+        <p><strong>Original</strong></p><RuleDiagram left="Win the raffle" right="Get a bicycle"/>
+        <p><strong>Contrapositive</strong></p><RuleDiagram left="Do not get a bicycle" right="Do not win the raffle"/>
+      </figure>
+      <p>Both lines say the same thing: nobody wins without getting a bicycle.</p>
+      <h3>How to get it</h3>
+      <p>Two moves, in this order.</p>
+      <ol>
+        <li><strong>Swap the sides.</strong> Win → Bicycle becomes Bicycle → Win.</li>
+        <li><strong>Negate both.</strong> Put “not” on each condition. Bicycle → Win becomes ~Bicycle → ~Win.</li>
+      </ol>
+      <p>You need both moves. Swapping alone gives <strong>Bicycle → Win</strong>, the reverse. A bicycle could arrive as a gift, so it does not prove a win. Negating alone gives <strong>~Win → ~Bicycle</strong>, the inverse. Not winning does not mean no bicycle. Only the two moves together give a conclusion the rule guarantees.</p>
+      <p>Then read it back in English: if you did not get a bicycle, you did not win. Does the rule require that? Yes. That check catches most mistakes.</p>
+      <h3>Why it matters</h3>
+      <p>LSAT arguments often tell you something is missing and ask what follows. The contrapositive is the one direction that gives you a guaranteed answer from a “not.”</p>
+      <blockquote>Everyone who wins the raffle gets a bicycle. Priya did not get a bicycle. So Priya did not win.</blockquote>
+      <p>That conclusion is guaranteed. Compare it with this one:</p>
+      <blockquote>Everyone who wins the raffle gets a bicycle. Priya did not win. So Priya did not get a bicycle.</blockquote>
+      <p>That one is not guaranteed. She could have received a bicycle as a gift. Answer choices use this kind of swap on purpose, because the wrong move sits so close to the right one.</p>
+      <ReferenceQuestion prompt="Rule: If a visitor enters the lab, the visitor has a badge. Which is the contrapositive?" options={['If a visitor has a badge, the visitor enters the lab.', 'If a visitor does not enter the lab, the visitor has no badge.', 'If a visitor has no badge, the visitor does not enter the lab.']} correct={2} feedback={['This swaps the sides but keeps both conditions as they were. That is the reverse. A badge could be required without being enough.', 'This puts “not” on both conditions but leaves the sides where they were. Staying out of the lab leaves the badge question open.', 'Right. A missing badge rules out entering. The sides swapped and both conditions are negated.']}/>
+    </NoteSection>
+  </>;
+}
+
 function IndicatorNote({ group }: { group: 'group-1' | 'group-2' }) {
   const [selected, setSelected] = useState(0);
   const [opened, setOpened] = useState<number[]>([0]);
@@ -154,18 +187,32 @@ function IndicatorNote({ group }: { group: 'group-1' | 'group-2' }) {
 // Teach placement and reading through the familiar relationship, then require a decision.
 function MustArrowNote() {
   return <section className="co-section cr-course-section ma-lesson" data-reference-source={8}>
-    <div className="co-section-heading"><h2>Left: sufficient. Right: necessary.</h2></div>
+    <div className="co-section-heading"><h2>What the arrow says</h2></div>
     <div className="cr-step-body">
-      <p className="ma-lead">The arrow points from the <strong>sufficient condition</strong> to the <strong>necessary condition</strong>.</p>
+      <p className="ma-lead">An arrow joins the two conditions in a rule. It says one thing: <strong>if the condition on the left is true, the condition on the right must be true.</strong></p>
       <figure className="ma-example" aria-label="If you are enrolled in law school, you must be a student">
-        <figcaption className="ma-read-instruction">Read left to right: <strong>“If the left side is true, the right side must be true.”</strong></figcaption>
+        <figcaption className="ma-read-instruction">Read it as a sentence: <strong>“If you are enrolled in law school, then you must be a student.”</strong></figcaption>
         <div className="ma-relationship">
           <div className="ma-condition"><span className="ma-side"><small>Left side</small>Sufficient condition</span><strong>You are enrolled in law school</strong><span className="ma-meaning">Enough to guarantee the right side</span></div>
           <div className="ma-arrow" aria-hidden="true"><span>must</span><svg viewBox="0 0 100 32" fill="none"><path d="M3 16H93M77 3L94 16L77 29" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
           <div className="ma-condition"><span className="ma-side"><small>Right side</small>Necessary condition</span><strong>You are a student</strong><span className="ma-meaning">Required when the left side is true</span></div>
         </div>
       </figure>
-      <p>Being enrolled in law school is <strong>enough</strong> to know you are a student. That is why enrollment goes on the <strong>left</strong>. Being a student is <strong>required</strong>, so it goes on the <strong>right</strong>.</p>
+      <p>Being enrolled in law school is <strong>enough</strong> to know you are a student. That is why enrollment goes on the <strong>left</strong>. Being a student is <strong>required</strong> for enrollment, so it goes on the <strong>right</strong>. The arrow points from what is enough to what is required.</p>
+      <section className="ma-where" aria-label="Where to start reading">
+        <h3>Start at the left</h3>
+        <p>A rule begins where the arrow begins. Say “if” and read the left condition. Then say “then” and read the right one: <strong>If you are enrolled in law school, then you are a student.</strong></p>
+        <p>Reading from the right says something else. “You are a student, so you are enrolled” is not what this rule says. The arrow only runs one way, and you start at its tail.</p>
+      </section>
+      <section className="ma-purpose" aria-label="What the arrow is for">
+        <h3>What the arrow is for</h3>
+        <p>A rule can take a full sentence to say. The arrow shows what it promises in one line, so you can test a fact against it without rereading the sentence.</p>
+        <ul>
+          <li>You learn the <strong>left</strong> side is true. The right side must be true too.</li>
+          <li>You learn the <strong>right</strong> side is true. The left side stays open.</li>
+        </ul>
+        <p>This matters on the LSAT because arguments turn on which way a rule runs. A conclusion that follows the arrow is supported. A conclusion that runs against it needs something the rule never gave you.</p>
+      </section>
       <section className="ma-placement" aria-label="Place and read the conditions">
         <h3>Place the conditions. Then read the arrow.</h3>
         <p>Choose what belongs on each side, then use the same direction with a new rule.</p>
@@ -353,7 +400,7 @@ function Content({ id }: { id: string }) {
     case 'necessary-words': return <><IndicatorNote group="group-2"/><PermissionBoundary/></>;
     case 'whole-meaning': return <WholeMeaningNote/>;
     case 'missing-requirement': return <MissingRequirementNote/>;
-    case 'contrapositive': return <><ReferenceBody number={9}/><WholeConditionNegation/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection><CompatibleCasesRecap/></>;
+    case 'contrapositive': return <><ContrapositiveNote/><ReferenceBody number={9}/><WholeConditionNegation/><details className="co-practical-note"><summary>Practical questions about diagramming</summary><ReferenceBody number={10} omitTransition/></details><NoteSection title="Two possible rooms, one limit"><NegativeCaseLab/></NoteSection><CompatibleCasesRecap/></>;
     case 'foundation-practice': return <FoundationPractice/>;
     case 'sufficient-practice': return <StagedReasoningDrill mode="sufficient"/>;
     case 'mixed-practice': return <StagedReasoningDrill mode="mixed"/>;
