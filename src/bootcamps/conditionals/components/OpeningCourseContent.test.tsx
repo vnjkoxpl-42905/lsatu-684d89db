@@ -341,7 +341,7 @@ it('defines the contrapositive first, then says it was already there, plays the 
   const names = ['What a contrapositive is', 'You already knew this', "Which world can't exist?", 'How to write it', 'What it is not', "Read it, don't always write it", "Check that you've got it"];
   for (const name of names) expect(screen.getByRole('heading', { name })).toBeVisible();
   const full = document.body.textContent ?? '';
-  const text = full.slice(0, full.indexOf('Try the four patterns'));
+  const text = full.slice(0, full.indexOf('Try it on four rules'));
   const order = names.map(name => text.indexOf(name));
   expect(order).toEqual([...order].sort((m, n) => m - n));
   expect(text.indexOf('If the necessary condition is absent, the sufficient condition is absent too')).toBeLessThan(text.indexOf('ceiling light'));
@@ -381,22 +381,31 @@ it('says the contrapositive in plain English early, pulses the key term, and no 
   expect(document.querySelectorAll('.co-opening .cr-question').length).toBeGreaterThanOrEqual(7);
 });
 
-it('gives four fresh rules, one for each place a not can sit, and checks the contrapositive of each', () => {
+it('works through four fresh rules one at a time, one for each place a not can sit', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
-  expect(screen.getByRole('heading', { name: 'Try the four patterns' })).toBeVisible();
-  const cards = [...document.querySelectorAll<HTMLElement>('.cr-pattern')];
-  expect(cards).toHaveLength(4);
-  const answers = [['L → W', 'not W → not L'], ['O → not D', 'D → not O'], ['not L → G', 'not G → L'], ['not S → not V', 'V → S']];
-  cards.forEach((card, index) => {
-    const [original, correct] = answers[index];
-    expect(card.querySelector('.cr-formula')?.textContent).toBe(original);
-    const question = card.querySelector('.cr-question') as HTMLElement;
-    const wrong = [...question.querySelectorAll('button')].find(button => button.getAttribute('aria-pressed') !== null && button.textContent !== correct)!;
+  expect(screen.getByRole('heading', { name: 'Try it on four rules' })).toBeVisible();
+  expect(document.body.textContent).not.toMatch(/patterns?/i);
+  const drill = document.querySelector('.ct-drill') as HTMLElement;
+  const rules = [
+    ['If a guest is on the list, the guest gets a wristband.', 'not W → not L'],
+    ['If the shop is open, the shutters are not down.', 'D → not O'],
+    ['If the gate is not locked, the dog can get out.', 'not G → L'],
+    ['If a ticket is not stamped, it is not valid.', 'V → S'],
+  ];
+  rules.forEach(([sentence, correct], index) => {
+    expect(within(drill).getByText(sentence)).toBeVisible();
+    expect(within(drill).getByText('Rule ' + (index + 1) + ' of 4', { exact: false })).toBeVisible();
+    const options = [...drill.querySelectorAll<HTMLButtonElement>('.ct-drill-option')];
+    expect(options).toHaveLength(3);
+    const wrong = options.find(option => option.getAttribute('aria-label') !== correct)!;
     fireEvent.click(wrong);
-    expect(question.querySelector('.cr-correct')).toBeNull();
-    fireEvent.click(within(question).getByRole('button', { name: correct }));
-    expect(question.querySelector('.cr-correct')).toBeTruthy();
+    expect(wrong.dataset.state).toBe('wrong');
+    expect(within(drill).getByRole('status').textContent).toMatch(/Not that one/);
+    fireEvent.click(within(drill).getByRole('button', { name: correct }));
+    expect(within(drill).getByRole('button', { name: correct }).dataset.state).toBe('right');
+    if (index < 3) fireEvent.click(within(drill).getByRole('button', { name: 'Next rule' }));
   });
+  expect(within(drill).getByText(/That is all four/)).toBeVisible();
 });
 
 it('lets the student switch the light on and see the power forced on, then cut the power and see the light forced off', () => {
@@ -425,11 +434,10 @@ it('marks the reverse and the inverse as wrong and the contrapositive as right',
   expect(cards.map(card => card.querySelector('.ct-move-name')?.textContent)).toEqual(['The reverse', 'The inverse', 'The contrapositive']);
 });
 
-it('never shows a squiggle anywhere on the contrapositive page, including the reference practice and answer choices', () => {
+it('never shows a squiggle anywhere on the contrapositive page, including the practice answer choices', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
   expect(document.body.textContent).not.toMatch(/[~∼¬]/);
-  const choices = [...document.querySelectorAll('.cr-answer-options button')].filter(button => button.querySelector('.ct-neg'));
-  expect(choices.length).toBeGreaterThan(6);
+  expect(document.querySelectorAll('.ct-drill-option .ct-pill[data-not=true]').length).toBeGreaterThan(3);
 });
 
 it('lets the student click Step 1 to flip and Step 2 to put not on both', () => {

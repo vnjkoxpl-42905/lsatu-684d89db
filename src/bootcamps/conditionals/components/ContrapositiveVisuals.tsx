@@ -171,3 +171,125 @@ export function ThreeMoves() {
     </div>
   </div>;
 }
+
+type Tone = 'amber' | 'teal';
+
+/** One idea as a coloured pill. A struck pill is the idea with "not" on it. */
+function Pill({ code, tone, negated }: { code: string; tone: Tone; negated: boolean }) {
+  return <span className="ct-pill" data-tone={tone} data-not={negated}>{negated && <span className="ct-sr">not </span>}{code}</span>;
+}
+
+type Idea = { code: string; meaning: string; negated: boolean };
+type RuleCase = { tag: string; sentence: string; left: Idea; right: Idea; place: number; why: { reverse: string; inverse: string; contrapositive: string } };
+
+const ruleCases: RuleCase[] = [
+  {
+    tag: 'No “not” in the rule',
+    sentence: 'If a guest is on the list, the guest gets a wristband.',
+    left: { code: 'L', meaning: 'the guest is on the list', negated: false },
+    right: { code: 'W', meaning: 'the guest gets a wristband', negated: false },
+    place: 2,
+    why: {
+      reverse: 'This only flips the sides. A wristband does not prove the guest is on the list.',
+      inverse: 'This changes the “nots” without flipping the sides. Being off the list leaves the wristband open.',
+      contrapositive: 'No wristband, not on the list. The sides flip, and both ideas get a “not.”',
+    },
+  },
+  {
+    tag: 'A “not” on the right',
+    sentence: 'If the shop is open, the shutters are not down.',
+    left: { code: 'O', meaning: 'the shop is open', negated: false },
+    right: { code: 'D', meaning: 'the shutters are down', negated: true },
+    place: 0,
+    why: {
+      reverse: 'This only flips the sides. Shutters that are up do not prove the shop is open.',
+      inverse: 'This changes the “nots” without flipping the sides. A closed shop could still have its shutters up.',
+      contrapositive: 'Shutters down rule out an open shop. The sides flip, the “not” on D comes off, and O gets one.',
+    },
+  },
+  {
+    tag: 'A “not” on the left',
+    sentence: 'If the gate is not locked, the dog can get out.',
+    left: { code: 'L', meaning: 'the gate is locked', negated: true },
+    right: { code: 'G', meaning: 'the dog can get out', negated: false },
+    place: 1,
+    why: {
+      reverse: 'This only flips the sides. The dog could get out another way, so getting out does not prove the gate is unlocked.',
+      inverse: 'This changes the “nots” without flipping the sides. The rule only speaks about an unlocked gate, so a locked gate leaves the dog open.',
+      contrapositive: 'If the dog can\'t get out, the gate must be locked. The sides flip, and the “not” on L comes off.',
+    },
+  },
+  {
+    tag: 'A “not” on both sides',
+    sentence: 'If a ticket is not stamped, it is not valid.',
+    left: { code: 'S', meaning: 'the ticket is stamped', negated: true },
+    right: { code: 'V', meaning: 'the ticket is valid', negated: true },
+    place: 2,
+    why: {
+      reverse: 'This only flips the sides. An invalid ticket might be stamped.',
+      inverse: 'This changes the “nots” without flipping the sides. A stamp alone does not make a ticket valid.',
+      contrapositive: 'A valid ticket must be stamped. The sides flip, and both “nots” come off.',
+    },
+  },
+];
+
+type Choice = { kind: 'reverse' | 'inverse' | 'contrapositive'; left: Idea; right: Idea; leftTone: Tone; rightTone: Tone };
+
+const spoken = (idea: Idea) => (idea.negated ? 'not ' : '') + idea.code;
+
+/** The three look-alikes for a rule, with the contrapositive at the position the case asks for. Colour follows the idea. */
+function choicesFor(rule: RuleCase): Choice[] {
+  const flip = (idea: Idea): Idea => ({ ...idea, negated: !idea.negated });
+  const options: Choice[] = [
+    { kind: 'reverse', left: rule.right, right: rule.left, leftTone: 'teal', rightTone: 'amber' },
+    { kind: 'inverse', left: flip(rule.left), right: flip(rule.right), leftTone: 'amber', rightTone: 'teal' },
+  ];
+  options.splice(rule.place, 0, { kind: 'contrapositive', left: flip(rule.right), right: flip(rule.left), leftTone: 'teal', rightTone: 'amber' });
+  return options;
+}
+
+/** Four rules, one at a time: which of three diagrams is the contrapositive? */
+export function RuleDrill() {
+  const [step, setStep] = useState(0);
+  const [wrong, setWrong] = useState<number[]>([]);
+  const [solved, setSolved] = useState<number | null>(null);
+  const rule = ruleCases[step];
+  const choices = choicesFor(rule);
+  const last = step === ruleCases.length - 1;
+  const lastTried = wrong.length ? choices[wrong[wrong.length - 1]] : null;
+  const message = solved !== null
+    ? rule.why.contrapositive
+    : lastTried ? `Not that one. ${rule.why[lastTried.kind as 'reverse' | 'inverse']} Try another.` : 'Pick the diagram that says the same thing as the rule.';
+  const next = () => { setStep(value => value + 1); setWrong([]); setSolved(null); };
+  const restart = () => { setStep(0); setWrong([]); setSolved(null); };
+  return <div className="ct-drill" data-step={step}>
+    <div className="ct-drill-top">
+      <p className="ct-picker-kicker">Your turn</p>
+      <p className="ct-drill-count">Rule {step + 1} of {ruleCases.length}<span className="ct-drill-dots" aria-hidden="true">{ruleCases.map((item, index) => <i key={item.tag} data-state={index < step ? 'done' : index === step ? 'now' : 'todo'}/>)}</span></p>
+    </div>
+    <p className="ct-drill-tag">{rule.tag}</p>
+    <p className="ct-drill-sentence">{rule.sentence}</p>
+    <div className="ct-drill-original" role="img" aria-label={`The rule: ${spoken(rule.left)} implies ${spoken(rule.right)}`}>
+      <Pill code={rule.left.code} tone="amber" negated={rule.left.negated}/><span className="ct-drill-arrow" aria-hidden="true">→</span><Pill code={rule.right.code} tone="teal" negated={rule.right.negated}/>
+    </div>
+    <ul className="ct-drill-legend">
+      <li><Pill code={rule.left.code} tone="amber" negated={false}/> {rule.left.meaning}</li>
+      <li><Pill code={rule.right.code} tone="teal" negated={false}/> {rule.right.meaning}</li>
+    </ul>
+    <p className="ct-picker-question" id={`ct-drill-q-${step}`}>Which one is the contrapositive?</p>
+    <div className="ct-drill-options" role="group" aria-labelledby={`ct-drill-q-${step}`}>
+      {choices.map((choice, index) => {
+        const state = solved === index ? 'right' : wrong.includes(index) ? 'wrong' : 'open';
+        return <button key={choice.kind} type="button" className="ct-drill-option" data-state={state} disabled={solved !== null && solved !== index} aria-label={`${spoken(choice.left)} → ${spoken(choice.right)}`} onClick={() => { if (solved !== null) return; if (choice.kind === 'contrapositive') setSolved(index); else setWrong(items => items.includes(index) ? items : [...items, index]); }}>
+          <span aria-hidden="true" className="ct-drill-diagram"><Pill code={choice.left.code} tone={choice.leftTone} negated={choice.left.negated}/><span className="ct-drill-arrow">→</span><Pill code={choice.right.code} tone={choice.rightTone} negated={choice.right.negated}/></span>
+          {state === 'right' && <span className="ct-drill-mark" data-kind="right"><Check size={16} strokeWidth={3} aria-hidden="true"/>Yes</span>}
+          {state === 'wrong' && <span className="ct-drill-mark" data-kind="wrong"><X size={16} strokeWidth={3} aria-hidden="true"/>No</span>}
+        </button>;
+      })}
+    </div>
+    <p className="ct-picker-message" role="status" data-solved={solved !== null}>{message}</p>
+    {solved !== null && (last
+      ? <div className="ct-drill-end"><strong>That is all four. Same two steps every time.</strong><button type="button" className="ct-drill-next" onClick={restart}><RotateCcw size={15} aria-hidden="true"/>Try them again</button></div>
+      : <button type="button" className="ct-drill-next" onClick={next}>Next rule</button>)}
+  </div>;
+}
