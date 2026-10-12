@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Check, Play, RotateCcw, X } from 'lucide-react';
+import { Check, RotateCcw, X, Zap, ZapOff } from 'lucide-react';
 import './contrapositive-visuals.css';
 
 /** True once the element has scrolled into view. Without IntersectionObserver (old browsers, tests) it is true straight away. */
@@ -16,7 +16,6 @@ function useInView<T extends Element>(): [React.RefObject<T>, boolean] {
   return [ref, inView];
 }
 
-const reducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 /** An idea shown as false: struck through from its top left corner to its bottom right, with a hidden "not" for screen readers. */
 export function Neg({ children }: { children: ReactNode }) {
@@ -34,75 +33,101 @@ export function PunchWord({ children }: { children: ReactNode }) {
   return <span ref={ref} className="ct-punch" data-in-view={inView}>{children}</span>;
 }
 
-/** Two diagrams of one rule, with a pulsing "same rule" badge between them. */
+/** A key term that keeps breathing: a glowing highlight that swells and settles for as long as the page is open. */
+export function PulseWord({ children }: { children: ReactNode }) {
+  return <span className="ct-pulse-word">{children}</span>;
+}
+
+type Tone = 'amber' | 'teal';
+
+/** One rule as two coloured ideas joined by a flowing arrow. Colour follows the idea, so it stays with it when the sides swap. */
+export function ArrowRule({ left, right, leftNot, rightNot, tones = ['amber', 'teal'] }: { left: string; right: string; leftNot?: boolean; rightNot?: boolean; tones?: [Tone, Tone] }) {
+  const pill = (text: string, negated: boolean | undefined, tone: Tone) => <span className="ct-pill" data-tone={tone} data-not={!!negated}>{negated && <span className="ct-sr">not </span>}{text}</span>;
+  return <div className="ct-arrow-rule" role="img" aria-label={`${leftNot ? 'not ' : ''}${left} implies ${rightNot ? 'not ' : ''}${right}`}>
+    {pill(left, leftNot, tones[0])}
+    <svg className="ct-flow" viewBox="0 0 90 20" aria-hidden="true"><path className="ct-flow-line" d="M4 10h70"/><path className="ct-flow-head" d="M66 3l16 7-16 7"/></svg>
+    {pill(right, rightNot, tones[1])}
+  </div>;
+}
+
+/** Two sides of one rule, with a pulsing "same rule" badge between them. */
 export function TwinRules({ original, contrapositive }: { original: ReactNode; contrapositive: ReactNode }) {
   const [ref, inView] = useInView<HTMLDivElement>();
-  return <div ref={ref} className="ct-twin" data-in-view={inView}>
-    <div className="ct-twin-side">{original}</div>
+  return <div className="ct-twin-frame"><div ref={ref} className="ct-twin" data-in-view={inView}>
+    <div className="ct-twin-side"><p className="ct-twin-label" data-kind="original">Original</p>{original}</div>
     <div className="ct-equals" aria-label="These say the same thing"><span aria-hidden="true">=</span><small>same rule</small></div>
-    <div className="ct-twin-side">{contrapositive}</div>
+    <div className="ct-twin-side"><p className="ct-twin-label" data-kind="contrapositive">Contrapositive</p>{contrapositive}</div>
+  </div></div>;
+}
+
+type World = { key: string; light: boolean; power: boolean; allowed: boolean; reason: string };
+
+const worlds: World[] = [
+  { key: 'light-on-power-on', light: true, power: true, allowed: true, reason: 'The light is on, and the power is on, just as the rule demands.' },
+  { key: 'light-off-power-on', light: false, power: true, allowed: true, reason: 'The rule only speaks when the light is on. Power with the light off breaks nothing.' },
+  { key: 'light-on-power-off', light: true, power: false, allowed: false, reason: 'A light that is on must have power. No power, no light. That is the contrapositive at work.' },
+  { key: 'light-off-power-off', light: false, power: false, allowed: true, reason: 'The light is off, so the rule has nothing to say about the power.' },
+];
+
+const worldName = (world: World) => `Light ${world.light ? 'on' : 'off'}, power ${world.power ? 'on' : 'off'}`;
+
+function Bulb({ lit, broken }: { lit: boolean; broken: boolean }) {
+  return <svg className="ct-bulb-icon" viewBox="0 0 80 100" width="54" height="68" aria-hidden="true" data-lit={lit} data-broken={broken}>
+    <circle className="ct-glass" cx="40" cy="38" r="26"/>
+    <path className="ct-base" d="M28 64h24v9H28zM31 75h18v8H31z"/>
+    <path className="ct-filament" d="M32 42l8-10 8 10"/>
+    <path className="ct-cross" d="M26 24l28 28M54 24L26 52"/>
+  </svg>;
+}
+
+/** The four possible worlds. The student taps the one the rule rules out. */
+export function WorldPicker() {
+  const [picked, setPicked] = useState<string | null>(null);
+  const pickedWorld = worlds.find(world => world.key === picked);
+  const found = !!pickedWorld && !pickedWorld.allowed;
+  const message = !pickedWorld
+    ? 'Tap the world you think the rule rules out.'
+    : found
+      ? `Yes. Can't happen! ${pickedWorld.reason}`
+      : `Not that one. That world is allowed. ${pickedWorld.reason} Try another.`;
+  return <div className="ct-picker" data-found={found}>
+    <p className="ct-picker-kicker">Your turn</p>
+    <p className="ct-picker-rule">The rule: <strong>If the light is on, then the power must be on.</strong></p>
+    <p className="ct-picker-question">Which ONE of these four worlds can't happen?</p>
+    <div className="ct-worlds" role="group" aria-label="Four possible worlds">
+      {worlds.map(world => {
+        const shown = found || picked === world.key;
+        const broken = shown && !world.allowed;
+        return <button key={world.key} type="button" className="ct-world" aria-label={worldName(world)} aria-pressed={picked === world.key} data-verdict={shown ? (world.allowed ? 'allowed' : 'broken') : 'open'} onClick={() => setPicked(world.key)}>
+          <Bulb lit={world.light} broken={broken}/>
+          <span className="ct-world-line" data-on={world.light}>Light {world.light ? 'on' : 'off'}</span>
+          <span className="ct-world-line" data-on={world.power}>{world.power ? <Zap size={15} aria-hidden="true"/> : <ZapOff size={15} aria-hidden="true"/>}Power {world.power ? 'on' : 'off'}</span>
+          <span className="ct-world-verdict">{shown ? (world.allowed ? 'Allowed' : "Can't happen") : 'Tap to test'}</span>
+        </button>;
+      })}
+    </div>
+    <p className="ct-picker-message" role="status">{message}</p>
   </div>;
 }
 
-/** Light and power, four possible worlds. Three fit the rule. The one with a lit light and no power breaks it. */
-export function BulbBoard() {
-  const [power, setPower] = useState(true);
-  const [light, setLight] = useState(true);
-  const broken = light && !power;
-  const lit = light && power;
-  const message = broken
-    ? 'Can\'t happen! If the light is on, the power must be on. No power means the light cannot be on.'
-    : lit
-      ? 'Fits the rule. The light is on, so the power must be on. And it is.'
-      : power
-        ? 'Fits the rule. The power is on, but that doesn\'t force the light on. The rule says nothing about it.'
-        : 'Fits the rule. The light is off, so the rule has nothing to say about the power.';
-  return <div className="ct-board" data-state={broken ? 'broken' : lit ? 'lit' : 'dark'}>
-    <div className="ct-bulb" aria-hidden="true">
-      <svg viewBox="0 0 80 110" width="96" height="132">
-        <circle className="ct-glass" cx="40" cy="40" r="28"/>
-        <path className="ct-base" d="M28 70h24v10H28zM31 82h18v8H31z"/>
-        <path className="ct-filament" d="M32 44l8-10 8 10"/>
-        <path className="ct-cross" d="M26 26l28 28M54 26L26 54"/>
-      </svg>
-    </div>
-    <div className="ct-board-body">
-      <div className="ct-toggles" role="group" aria-label="Set the light and the power">
-        <button type="button" aria-pressed={power} onClick={() => setPower(value => !value)}>Power: {power ? 'on' : 'off'}</button>
-        <button type="button" aria-pressed={light} onClick={() => setLight(value => !value)}>Light: {light ? 'on' : 'off'}</button>
-      </div>
-      <p className="ct-board-message" role="status">{message}</p>
-    </div>
-  </div>;
-}
+const stageText = ['This is the rule. Click Step 1.', 'The sides are flipped. Now click Step 2.', 'Both ideas are crossed out. That is “not” on both, and it is the contrapositive.'];
 
-const stageText = ['Start with the rule.', 'Flip the sides.', 'Cross out both ideas. That is “not” on both, and it is the contrapositive.'];
-
-/** Light → Power becomes ~Power → ~Light in two moves: the sides swap, then each idea gets crossed out. */
+/** Light → Power becomes the contrapositive in two clicks: Step 1 swaps the sides, Step 2 crosses out each idea. */
 export function FlipAndNegateDemo() {
-  const [ref, inView] = useInView<HTMLDivElement>();
   const [stage, setStage] = useState(0);
-  const [runId, setRunId] = useState(0);
-  const timers = useRef<number[]>([]);
-  useEffect(() => {
-    if (!inView || reducedMotion()) return;
-    setStage(0);
-    timers.current.forEach(window.clearTimeout);
-    timers.current = [window.setTimeout(() => setStage(1), 1600), window.setTimeout(() => setStage(2), 3600)];
-    return () => timers.current.forEach(window.clearTimeout);
-  }, [inView, runId]);
   const flipped = stage >= 1;
   const negated = stage >= 2;
-  return <div ref={ref} className="ct-flip" data-stage={stage}>
+  return <div className="ct-flip" data-stage={stage}>
     <div className="ct-flip-row">
-      <span className="ct-chip" data-side="left" data-moved={flipped} data-struck={negated}>Light</span>
+      <span className="ct-chip" data-tone="amber" data-side="left" data-moved={flipped} data-struck={negated}>Light</span>
       <span className="ct-flip-arrow" aria-hidden="true">→</span>
-      <span className="ct-chip" data-side="right" data-moved={flipped} data-struck={negated}>Power</span>
+      <span className="ct-chip" data-tone="teal" data-side="right" data-moved={flipped} data-struck={negated}>Power</span>
     </div>
     <p className="ct-flip-caption" role="status">{stageText[stage]}</p>
     <div className="ct-flip-controls">
-      <button type="button" disabled={stage >= 2} onClick={() => setStage(value => Math.min(2, value + 1))}><Play size={15} aria-hidden="true"/>Next step</button>
-      <button type="button" onClick={() => { setStage(0); setRunId(value => value + 1); }}><RotateCcw size={15} aria-hidden="true"/>Play it again</button>
+      <button type="button" className="ct-step" data-ready={stage === 0} data-done={stage >= 1} disabled={stage !== 0} onClick={() => setStage(1)}><b aria-hidden="true">{stage >= 1 ? <Check size={16} strokeWidth={3}/> : 1}</b>Step 1. Click here to flip the sides</button>
+      <button type="button" className="ct-step" data-ready={stage === 1} data-done={stage >= 2} disabled={stage !== 1} onClick={() => setStage(2)}><b aria-hidden="true">{stage >= 2 ? <Check size={16} strokeWidth={3}/> : 2}</b>Step 2. Click here to put “not” on both</button>
+      {stage > 0 && <button type="button" className="ct-flip-reset" onClick={() => setStage(0)}><RotateCcw size={15} aria-hidden="true"/>Start over</button>}
     </div>
   </div>;
 }
