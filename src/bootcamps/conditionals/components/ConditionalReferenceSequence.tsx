@@ -9,6 +9,7 @@ import { necessaryConditionFilms } from '../content/necessaryConditionFilms';
 import { NecessaryConditionExperience } from './NecessaryConditionExperience';
 import { NecessaryConditionStatement } from './NecessaryConditionStatement';
 import { NecessaryIndicatorExplorer } from './NecessaryIndicatorExplorer';
+import { Neg, Notation } from './ContrapositiveVisuals';
 
 const raffleRule = 'If you win the raffle, you get a bicycle.';
 
@@ -23,8 +24,8 @@ export function ReferenceQuestion({ prompt, options, correct, feedback, onAttemp
   const [choice, setChoice] = useState<number | null>(null);
   const id = useId();
   const firstChoice = useRef<HTMLButtonElement>(null);
-  return <div className="cr-question co-check"><h3 id={id}>{prompt}</h3><div className="cr-answer-options" role="group" aria-labelledby={id}>
-    {options.map((option, index) => <button ref={index === 0 ? firstChoice : undefined} type="button" key={option} aria-pressed={choice === index} onClick={() => { setChoice(index); onAttempt?.(index); }}>{option}</button>)}
+  return <div className="cr-question co-check"><h3 id={id}><Notation text={prompt}/></h3><div className="cr-answer-options" role="group" aria-labelledby={id}>
+    {options.map((option, index) => <button ref={index === 0 ? firstChoice : undefined} type="button" key={option} aria-pressed={choice === index} onClick={() => { setChoice(index); onAttempt?.(index); }}><Notation text={option}/></button>)}
   </div><div role="status" aria-live="polite">{choice !== null && <div className={`cr-feedback ${choice === correct ? 'cr-correct' : 'cr-revise'}`}><strong>{choice === correct ? 'Correct.' : 'Not quite.'}</strong><p>{feedback[choice]}</p></div>}</div>
     {choice !== null && <button className="cr-reset" type="button" onClick={() => { firstChoice.current?.focus(); setChoice(null); onAttempt?.(null); }}>Try again</button>}
   </div>;
@@ -119,8 +120,9 @@ function ContrapositiveDiscovery() {
   </div>;
 }
 
-export function RuleDiagram({ left, right, label }: { left: string; right: string; label?: string }) {
-  return <div className="cr-diagram" role="img" aria-label={label || `${left} implies ${right}`}><strong>{left}</strong><span aria-hidden="true">→</span><strong>{right}</strong></div>;
+export function RuleDiagram({ left, right, label, leftNot, rightNot }: { left: string; right: string; label?: string; leftNot?: boolean; rightNot?: boolean }) {
+  const side = (text: string, negated?: boolean) => negated ? <Neg>{text}</Neg> : text;
+  return <div className="cr-diagram" role="img" aria-label={label || `${leftNot ? 'not ' : ''}${left} implies ${rightNot ? 'not ' : ''}${right}`}><strong>{side(left, leftNot)}</strong><span aria-hidden="true">→</span><strong>{side(right, rightNot)}</strong></div>;
 }
 const writingSteps = [
   { button: 'Find the indicator', explanation: 'I see if. It introduces the sufficient condition: you win the raffle.' },
@@ -145,7 +147,7 @@ const signPatterns = [
   { label: 'Both sides negative', sentence: 'If an item is not marked fragile, it is not on the glass shelf.', legend: 'F = item is marked fragile. G = item is on the glass shelf.', original: '~F → ~G', options: ['~G → ~F', 'G → F', 'F → G'], correct: 1, reading: 'If an item is on the glass shelf, it is marked fragile.', wrongFeedback: ['A fragile item on another shelf fits the original. Off the glass shelf does not mean not fragile. Reverse and negate both conditions, so both existing not-signs disappear.', '', 'A fragile item can be stored elsewhere. Your arrow gives every fragile item a place on this shelf. Negating both conditions without reversing them changes the rule.'] },
 ];
 function SignPatterns() {
-  return <div className="cr-pattern-grid">{signPatterns.map((item, index) => <div className="cr-pattern" key={item.label}><p className="co-kicker">{index + 1}. {item.label}</p><p>{item.sentence}</p><p className="cr-legend">{item.legend}</p><div className="cr-formula">{item.original}</div><ReferenceQuestion prompt={`Which is the contrapositive of ${item.original}?`} options={item.options} correct={item.correct} feedback={item.options.map((_, option) => option === item.correct ? `${item.reading} This is the same rule: the missing necessary condition rules out the sufficient one.` : item.wrongFeedback[option])}/></div>)}</div>;
+  return <div className="cr-pattern-grid">{signPatterns.map((item, index) => <div className="cr-pattern" key={item.label}><p className="co-kicker">{index + 1}. {item.label}</p><p>{item.sentence}</p><p className="cr-legend">{item.legend}</p><div className="cr-formula"><Notation text={item.original}/></div><ReferenceQuestion prompt={`Which is the contrapositive of ${item.original}?`} options={item.options} correct={item.correct} feedback={item.options.map((_, option) => option === item.correct ? `${item.reading} This is the same rule: the missing necessary condition rules out the sufficient one.` : item.wrongFeedback[option])}/></div>)}</div>;
 }
 
 type TargetExample = { label: string; before: string; target: string; after: string; options: string[]; correct: number; feedback: string[] };
@@ -201,10 +203,10 @@ export function IntegratedItem({ item, number, onChecked }: { item: PracticeItem
   const change = (value: number, isContra: boolean) => { setChecked(false); onChecked?.(false); if (isContra) setContra(value); else setOriginal(value); };
   const reset = () => { setOriginal(null); setContra(null); setChecked(false); onChecked?.(false); };
   return <div className="cr-integrated-item co-check" data-reference-practice={number}><header><span className="cr-item-number">{String(number).padStart(2, '0')}</span><h3>{item.sentence}</h3></header><dl className="cr-practice-legend">{labels.map(label => <div key={label.code}><dt>{label.code}</dt><dd>{label.meaning}</dd></div>)}</dl>
-    <fieldset><legend>Original diagram for item {number}</legend><div className="cr-answer-options cr-symbol-options">{practiceChoices(item, false).map((option, index) => <button key={option} type="button" aria-pressed={original === index} onClick={() => change(index, false)}>{option}</button>)}</div></fieldset>
-    <fieldset><legend>Contrapositive for item {number}</legend><div className="cr-answer-options cr-symbol-options">{practiceChoices(item, true).map((option, index) => <button key={option} type="button" aria-pressed={contra === index} onClick={() => change(index, true)}>{option}</button>)}</div></fieldset>
+    <fieldset><legend>Original diagram for item {number}</legend><div className="cr-answer-options cr-symbol-options">{practiceChoices(item, false).map((option, index) => <button key={option} type="button" aria-pressed={original === index} onClick={() => change(index, false)}><Notation text={option}/></button>)}</div></fieldset>
+    <fieldset><legend>Contrapositive for item {number}</legend><div className="cr-answer-options cr-symbol-options">{practiceChoices(item, true).map((option, index) => <button key={option} type="button" aria-pressed={contra === index} onClick={() => change(index, true)}><Notation text={option}/></button>)}</div></fieldset>
     <div className="cr-control-row"><button type="button" className="cr-primary" disabled={original === null || contra === null} aria-label={`Check both diagrams for item ${number}`} onClick={() => { setChecked(true); onChecked?.(true); }}>Check both diagrams</button><button type="button" className="cr-reset" onClick={reset}>Try item {number} again</button></div>
-    <div role="status">{checked && <div className={`cr-feedback ${correct ? 'cr-correct' : 'cr-revise'}`}><strong>{correct ? 'Both diagrams are correct.' : 'Review the rule.'}</strong><p>{original === item.originalPosition ? 'Your original keeps the direction.' : 'Your original changes the direction or negates conditions the rule did not negate.'} {contra === item.contraPosition ? 'Your contrapositive reverses and negates both complete conditions.' : 'Your contrapositive must start from the missing requirement and rule out the sufficient condition.'}</p><p>{item.why}</p><p className="cr-answer-key">Original: {practiceDiagrams(item).original}<br/>Contrapositive: {practiceDiagrams(item).contra}</p><p>Read the original: {item.readback}</p><p>Read its contrapositive: {item.contraReadback}</p></div>}</div>
+    <div role="status">{checked && <div className={`cr-feedback ${correct ? 'cr-correct' : 'cr-revise'}`}><strong>{correct ? 'Both diagrams are correct.' : 'Review the rule.'}</strong><p>{original === item.originalPosition ? 'Your original keeps the direction.' : 'Your original changes the direction or negates conditions the rule did not negate.'} {contra === item.contraPosition ? 'Your contrapositive reverses and negates both complete conditions.' : 'Your contrapositive must start from the missing requirement and rule out the sufficient condition.'}</p><p>{item.why}</p><p className="cr-answer-key">Original: <Notation text={practiceDiagrams(item).original}/><br/>Contrapositive: <Notation text={practiceDiagrams(item).contra}/></p><p>Read the original: {item.readback}</p><p>Read its contrapositive: {item.contraReadback}</p></div>}</div>
   </div>;
 }
 
@@ -372,7 +374,7 @@ export function conditionalReferenceContent() {
 
     <ReferenceStep number={9} label="Write and read the contrapositive" title="Write the meaning you already understand">
       <p>Win means you win the raffle. Get bicycle means you get a bicycle. Our original is Win → Get bicycle.</p>
-      <p>We already know that not getting a bicycle rules out winning. Write that as <strong>~Get bicycle → ~Win</strong>. The <strong>~</strong> sign means <strong>not</strong>. Not getting the outcome is different from not having received it yet.</p>
+      <p>We already know that not getting a bicycle rules out winning. Write that as <strong><Neg>Get bicycle</Neg> → <Neg>Win</Neg></strong>. A line through an idea means <strong>not</strong>. Not getting the outcome is different from not having received it yet.</p>
       <p>To write a contrapositive from a diagram, reverse the two sides and negate <strong>both complete conditions</strong>. A condition already containing not loses that not when we negate it. Let's try all four patterns.</p>
       <SignPatterns/>
       <div className="cr-method"><p className="co-kicker">The complete five-step routine</p><ol><li><strong>Find the indicator.</strong> Read its job in the whole rule.</li><li><strong>Identify both complete ideas.</strong> Keep restrictions such as current or submitted by Friday.</li><li><strong>Place the roles.</strong> Sufficient goes left; necessary goes right. Choose labels you can read back.</li><li><strong>Write the contrapositive.</strong> Reverse the sides and negate both complete conditions.</li><li><strong>Read both in English.</strong> Compare them with what the original sentence actually requires.</li></ol></div>
