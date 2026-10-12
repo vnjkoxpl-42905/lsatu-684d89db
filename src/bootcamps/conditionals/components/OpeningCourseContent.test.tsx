@@ -381,21 +381,22 @@ it('says the contrapositive in plain English early, pulses the key term, and no 
   expect(document.querySelectorAll('.co-opening .cr-question').length).toBeGreaterThanOrEqual(7);
 });
 
-it('lets the student switch the light on and see the power forced on, then cut the power and see the light blocked', () => {
+it('lets the student switch the light on and see the power forced on, then cut the power and see the light forced off', () => {
   render(<OpeningCourseContent id="contrapositive"/>);
   const stage = document.querySelector('.ct-stage') as HTMLElement;
-  expect(within(stage).getByRole('tab', { name: 'Original' })).toHaveAttribute('aria-selected', 'true');
-  expect(stage.querySelector('[data-kind=power]')).toHaveAttribute('data-state', 'unknown');
+  const lamp = (kind: string) => stage.querySelector('.ct-lamp[data-kind=' + kind + ']') as HTMLElement;
+  expect(within(stage).getByRole('tab', { name: /Original/ })).toHaveAttribute('aria-selected', 'true');
+  expect(lamp('power').dataset.state).toBe('unknown');
   fireEvent.click(within(stage).getByRole('switch', { name: /Light switch: off/ }));
-  expect(stage.querySelector('[data-kind=power]')).toHaveAttribute('data-state', 'on');
-  expect(within(stage).getByRole('status').textContent).toMatch(/the power MUST be on/);
-  fireEvent.click(within(stage).getByRole('tab', { name: 'Contrapositive' }));
-  expect(within(stage).getByText('If the power is off, then the ceiling light must be off.')).toBeVisible();
+  expect(lamp('light').dataset.state).toBe('on');
+  expect(lamp('power').dataset.state).toBe('on');
+  expect(within(stage).getByRole('status').textContent).toMatch(/so the power must be on/);
+  fireEvent.click(within(stage).getByRole('tab', { name: /Contrapositive/ }));
+  expect(lamp('light').dataset.state).toBe('unknown');
   fireEvent.click(within(stage).getByRole('switch', { name: /Power switch: on/ }));
-  expect(stage.querySelector('[data-kind=light]')).toHaveAttribute('data-state', 'blocked');
-  fireEvent.click(within(stage).getByRole('button', { name: 'Try the light switch anyway' }));
-  expect(within(stage).getByRole('status').textContent).toMatch(/Nothing happens. No power, no light./);
-  expect(stage.querySelector('[data-kind=light]')).toHaveAttribute('data-state', 'blocked');
+  expect(lamp('power').dataset.state).toBe('off');
+  expect(lamp('light').dataset.state).toBe('off');
+  expect(within(stage).getByRole('status').textContent).toMatch(/no power, so the light can't be on/i);
 });
 
 it('marks the reverse and the inverse as wrong and the contrapositive as right', () => {
