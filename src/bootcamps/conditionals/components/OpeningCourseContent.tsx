@@ -1,4 +1,4 @@
-import { ArrowRule, FlipAndNegateDemo, Neg, PulseWord, PunchWord, ThreeMoves, TwinRules, WorldPicker } from './ContrapositiveVisuals';
+import { FlipAndNegateDemo, Neg, PulseWord, PunchWord, RuleStage, ThreeMoves, WorldPicker } from './ContrapositiveVisuals';
 import { Children, cloneElement, Fragment, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { Fundamentals, GroupLessons } from './ConditionalOpeningLesson';
 import { conditionalReferenceContent, ReferenceQuestion, RuleDiagram, TargetReader, targetExamples, WordFamily } from './ConditionalReferenceSequence';
@@ -125,12 +125,9 @@ function ContrapositiveNote() {
       <p>The contrapositive is what you know when the right side of the arrow goes missing:</p>
       <p className="ct-definition"><strong>If the <span className="ct-hl">necessary condition</span> is absent, the <span className="ct-hl" data-tone="amber">sufficient condition</span> is absent too.</strong></p>
       <p>Take this rule: <strong>If the ceiling light is on, then the power must be on.</strong></p>
-      <p>So if the light is on, it needs power. It has to have power to come on. The power is completely necessary. Now, what if there's no power? Then the light doesn't have what it needs. Could it be on? Nope. No power, no light.</p>
-      <p>Here is the rule next to what you just worked out:</p>
-      <TwinRules
-        original={<><ArrowRule left="Light" right="Power"/><p className="ct-twin-sentence">If the ceiling light is on, then the power must be on.</p></>}
-        contrapositive={<><ArrowRule left="Power" right="Light" leftNot rightNot tones={['teal', 'amber']}/><p className="ct-twin-sentence">If the power is off, then the ceiling light must be off.</p></>}
-      />
+      <p>So if the light is on, it needs power. It has to have power to come on. The power is completely necessary. Now, what if there's no power? Then the light doesn't have what it needs. Could it be on? Nope. No power, no light. As a rule: <strong>If the power is off, then the ceiling light must be off.</strong></p>
+      <p>Here is the rule, and the contrapositive you just worked out. Switch between the two tabs and try each one:</p>
+      <RuleStage/>
     </NoteSection>
     <NoteSection title="You already knew this">
       <p>Here's the good news: you didn't just learn a new rule. You found one that was already there. The contrapositive was hiding inside the original the whole time, waiting for you to spot it.</p>

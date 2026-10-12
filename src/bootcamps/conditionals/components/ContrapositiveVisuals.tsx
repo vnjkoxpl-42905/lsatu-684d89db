@@ -38,26 +38,43 @@ export function PulseWord({ children }: { children: ReactNode }) {
   return <span className="ct-pulse-word">{children}</span>;
 }
 
-type Tone = 'amber' | 'teal';
+type Side = 'original' | 'contrapositive';
+type Lamp = 'on' | 'off' | 'unknown';
 
-/** One rule as two coloured ideas joined by a flowing arrow. Colour follows the idea, so it stays with it when the sides swap. */
-export function ArrowRule({ left, right, leftNot, rightNot, tones = ['amber', 'teal'] }: { left: string; right: string; leftNot?: boolean; rightNot?: boolean; tones?: [Tone, Tone] }) {
-  const pill = (text: string, negated: boolean | undefined, tone: Tone) => <span className="ct-pill" data-tone={tone} data-not={!!negated}>{negated && <span className="ct-sr">not </span>}{text}</span>;
-  return <div className="ct-arrow-rule" role="img" aria-label={`${leftNot ? 'not ' : ''}${left} implies ${rightNot ? 'not ' : ''}${right}`}>
-    {pill(left, leftNot, tones[0])}
-    <svg className="ct-flow" viewBox="0 0 90 20" aria-hidden="true"><path className="ct-flow-line" d="M4 10h70"/><path className="ct-flow-head" d="M66 3l16 7-16 7"/></svg>
-    {pill(right, rightNot, tones[1])}
+/** The rule and its contrapositive, one tab each. Original: switch the light on and the power has to be on.
+ *  Contrapositive: cut the power and the light has to be off. One switch, two lamps, one sentence. */
+export function RuleStage() {
+  const [side, setSide] = useState<Side>('original');
+  const [light, setLight] = useState(false);
+  const [power, setPower] = useState(true);
+  const [touched, setTouched] = useState<Record<Side, boolean>>({ original: false, contrapositive: false });
+  const original = side === 'original';
+  const powerLamp: Lamp = original ? (light ? 'on' : 'unknown') : (power ? 'on' : 'off');
+  const lightLamp: Lamp = original ? (light ? 'on' : 'off') : (power ? 'unknown' : 'off');
+  const message = original
+    ? (light ? 'The light is on, so the power must be on.' : touched.original ? 'The light is off. The rule says nothing about the power.' : 'Turn the light on. Watch the power.')
+    : (!power ? 'There is no power, so the light can\'t be on.' : touched.contrapositive ? 'The power is on. The rule says nothing about the light.' : 'Cut the power. Watch the light.');
+  const flip = () => { setTouched(value => ({ ...value, [side]: true })); if (original) setLight(value => !value); else setPower(value => !value); };
+  return <div className="ct-stage" data-side={side}>
+    <div className="ct-tabs" role="tablist" aria-label="The rule and its contrapositive">
+      <button type="button" role="tab" id="ct-tab-original" aria-selected={original} aria-controls="ct-panel" data-kind="original" onClick={() => setSide('original')}><small>Original</small><span>Light → Power</span></button>
+      <button type="button" role="tab" id="ct-tab-contrapositive" aria-selected={!original} aria-controls="ct-panel" data-kind="contrapositive" onClick={() => setSide('contrapositive')}><small>Contrapositive</small><span><Neg>Power</Neg> → <Neg>Light</Neg></span></button>
+    </div>
+    <div className="ct-stage-panel" role="tabpanel" id="ct-panel" aria-labelledby={`ct-tab-${side}`}>
+      <div className="ct-lamps">
+        <div className="ct-lamp" data-kind="light" data-state={lightLamp}>
+          <Bulb lit={lightLamp === 'on'} broken={false}/>
+          <span className="ct-lamp-name">Light</span>
+        </div>
+        <div className="ct-lamp" data-kind="power" data-state={powerLamp}>
+          <span className="ct-power-ring"><Zap size={38} aria-hidden="true"/></span>
+          <span className="ct-lamp-name">Power</span>
+        </div>
+      </div>
+      <button type="button" role="switch" aria-checked={original ? light : power} className="ct-switch" data-invite={!touched[side]} onClick={flip}><span className="ct-switch-track"><span className="ct-switch-knob"/></span>{original ? 'Light switch' : 'Power switch'}: {(original ? light : power) ? 'on' : 'off'}</button>
+      <p className="ct-stage-message" role="status">{message}</p>
+    </div>
   </div>;
-}
-
-/** Two sides of one rule, with a pulsing "same rule" badge between them. */
-export function TwinRules({ original, contrapositive }: { original: ReactNode; contrapositive: ReactNode }) {
-  const [ref, inView] = useInView<HTMLDivElement>();
-  return <div className="ct-twin-frame"><div ref={ref} className="ct-twin" data-in-view={inView}>
-    <div className="ct-twin-side"><p className="ct-twin-label" data-kind="original">Original</p>{original}</div>
-    <div className="ct-equals" aria-label="These say the same thing"><span aria-hidden="true">=</span><small>same rule</small></div>
-    <div className="ct-twin-side"><p className="ct-twin-label" data-kind="contrapositive">Contrapositive</p>{contrapositive}</div>
-  </div></div>;
 }
 
 type World = { key: string; light: boolean; power: boolean; allowed: boolean; reason: string };
