@@ -63,9 +63,9 @@ const EMPTY: Placed = { left: null, right: null };
 
 const VERDICT_TEXT: Record<Exclude<UnlessVerdict, "correct">, string> = {
   "no-answer": "Time ran out before both sides were filled.",
-  "kept-both": "You left both ideas as written. Negate the idea that is not attached to unless.",
-  reversed: "Right pieces, wrong direction. The negated idea goes on the left and the unless idea goes on the right.",
-  "changed-unless": "You changed the unless idea. It goes on the right exactly as written.",
+  "kept-both": "You left both ideas as written. Choose one, negate it and put it on the left.",
+  reversed: "Right pieces, wrong direction. The idea you negated goes on the left.",
+  "changed-unless": "You negated both ideas. Negate only one. The other goes on the right exactly as written.",
   other: "Each side needs a different idea: one from each part of the statement.",
 };
 
@@ -205,17 +205,17 @@ export default function UnlessDrill() {
         <div className="ud-move">
           <p className="ud-move-title">The Group 3 move</p>
           <ol className="cir-steps">
-            <li>Find the idea that is not attached to <strong>unless</strong>.</li>
+            <li>Choose either idea.</li>
             <li>Negate it.</li>
             <li>Put it on the left.</li>
-            <li>Put the unless idea on the right, exactly as written.</li>
+            <li>Take the other idea and put it on the right, exactly as written.</li>
           </ol>
           <div className="ud-example">
             <span className="ud-example-label">Example</span>
             <span className="ud-example-statement"><UnlessText round={{ pattern: 1, x: "A", y: "B" }} /></span>
-            <span className="ud-example-row">Not attached to unless: <Tok text="/A" />. Negate it: <Tok text="A" /> (the two slashes cancel). That goes left. <Tok text="B" /> goes right, as written.</span>
+            <span className="ud-example-row">Choose <Tok text="/A" />. Negate it: <Tok text="A" /> (the two slashes cancel). That goes left. <Tok text="B" /> goes right, exactly as written.</span>
             <span className="ud-example-row"><Diagram left="A" right="B" /></span>
-            <span className="ud-example-row ud-muted">The contrapositive, <Diagram left="/B" right="/A" />, is also correct.</span>
+            <span className="ud-example-row ud-muted">Choose <Tok text="B" /> instead and you get <Diagram left="/B" right="/A" />, the contrapositive. Also correct.</span>
           </div>
         </div>
         <p className="cir-feedback">
@@ -354,9 +354,9 @@ function ReviewRow({ n, result }: { n: number; result: UnlessResult }) {
       </div>
       {!ok && <p className="ud-why">{VERDICT_TEXT[result.verdict as Exclude<UnlessVerdict, "correct">]}</p>}
       <p className="ud-steps">
-        Not attached to unless: <Tok text={other} />. Negate it: <Tok text={negateToken(other)} />
+        Choose <Tok text={other} />. Negate it: <Tok text={negateToken(other)} />
         {other.startsWith("/") ? " (the two slashes cancel)" : ""}. That goes left.{" "}
-        The unless idea, <Tok text={after} />, goes right as written.
+        <Tok text={after} /> goes right, exactly as written.
       </p>
     </div>
   );

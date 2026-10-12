@@ -231,8 +231,9 @@ export function unlessParts({ pattern, x, y }: UnlessRound): { after: string; ot
 }
 
 /**
- * Joshua's answer key: negate the idea not attached to "unless" and put it on
- * the left; the unless idea goes on the right exactly as written.
+ * Joshua's answer key: choose either idea, negate it and put it on the left;
+ * the other idea goes on the right exactly as written. The key chooses the
+ * idea that is not the unless idea; choosing the unless idea gives the contrapositive.
  * (/A, unless B. -> A -> B; Unless B, A. -> /A -> B; Unless /B, /A. -> A -> /B; A, unless /B. -> /A -> /B)
  */
 export function unlessAnswer(round: UnlessRound): { left: string; right: string } {
