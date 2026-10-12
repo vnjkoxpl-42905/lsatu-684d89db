@@ -10,26 +10,24 @@ function Harness() {
   const location = useLocation();
   return <OpeningCourseScreen view={new URLSearchParams(location.search).get('page') || 'lessons'} url={url}/>;
 }
-it('opens the Group 1 words from the Group 1 list, and returns to the lesson', () => {
+it('keeps flashcards out of the lessons', () => {
   render(<MemoryRouter initialEntries={[url('sufficient')]}><Harness/></MemoryRouter>);
-  const list = screen.getByRole('region', { name: 'Group 1 indicator words' });
-  expect(within(list).getByRole('link', { name: 'Go to flashcards' })).toHaveAttribute('href', flashcardUrl(url, 'group-1', undefined, 'sufficient'));
-  fireEvent.click(within(list).getByRole('link', { name: 'Go to flashcards' }));
-  expect(screen.getByRole('heading', { level: 1, name: 'Group 1 words' })).toBeVisible();
-  expect(screen.getByRole('button', { name: 'Turn card' })).toBeVisible();
-  expect(screen.queryByRole('button', { name: 'Group 2' })).toBeNull();
-  fireEvent.click(screen.getByRole('link', { name: 'Back to sufficient condition' }));
-  expect(screen.getByRole('heading', { level: 1, name: 'The Sufficient Condition' })).toBeVisible();
-});
-it('lists each group deck and the mixed quiz deck beside the concept cards', () => {
+  expect(screen.queryByRole('link', { name: 'Go to flashcards' })).toBeNull();
+  cleanup();
   render(<MemoryRouter initialEntries={[url('necessary')]}><Harness/></MemoryRouter>);
-  fireEvent.click(screen.getByRole('link', { name: 'Go to flashcards' }));
-  expect(screen.getByRole('heading', { level: 1, name: 'Group 2 words' })).toBeVisible();
-  fireEvent.click(screen.getByRole('link', { name: 'All flashcard sets' }));
+  expect(screen.queryByRole('link', { name: 'Go to flashcards' })).toBeNull();
+});
+it('lists each group deck and the mixed quiz deck beside the concept cards, and shows which side the idea goes on', () => {
+  render(<MemoryRouter initialEntries={[url('tools')]}><Harness/></MemoryRouter>);
   expect(screen.getByRole('heading', { name: 'Terms and concepts' })).toBeVisible();
   expect(screen.getByRole('heading', { name: 'Group 1 words' })).toBeVisible();
   expect(screen.getByRole('heading', { name: 'Group 2 words' })).toBeVisible();
   expect(screen.getByRole('heading', { name: 'Indicator words, both groups' })).toBeVisible();
+  cleanup();
+  render(<MemoryRouter initialEntries={[`${url('tools')}&deck=group-1`]}><Harness/></MemoryRouter>);
+  expect(screen.getByRole('heading', { level: 1, name: 'Group 1 words' })).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: 'Turn card' }));
+  expect(document.querySelector('.iw-back')!.textContent).toMatch(/Group 1.*Sufficient condition indicator.*left side/);
   cleanup();
   render(<MemoryRouter initialEntries={[`${url('tools')}&deck=indicators`]}><Harness/></MemoryRouter>);
   expect(screen.getByRole('button', { name: 'Group 2' })).toBeVisible();

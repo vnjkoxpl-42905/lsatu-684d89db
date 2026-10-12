@@ -54,15 +54,6 @@ it('exposes only the current page, focuses its heading, and retains a checked ca
   expect(screen.getByText('This fits the rule and disproves the reverse.')).toBeVisible();
 });
 
-it('keeps the quiz deck out of the lessons: the recall page only offers a flashcards link', () => {
-  localStorage.clear();
-  render(lesson('group-2'));
-  jumpTo('Recall the indicators');
-  expect(screen.getByText('Practice these words on cards, one at a time.')).toBeVisible();
-  expect(screen.queryByText('Card 1 of 20')).toBeNull();
-  expect(screen.queryByRole('button', { name: 'Group 1' })).toBeNull();
-});
-
 it('requires an explicit end-page action to record reading, including after a contents jump', async () => {
   const complete = vi.fn();
   render(lesson('group-1', complete));
@@ -81,16 +72,14 @@ it('requires an explicit end-page action to record reading, including after a co
   expect(complete).toHaveBeenCalledTimes(1);
 });
 
-it('starts a changed unit at its first page and keeps the flashcards out of the lesson', () => {
+it('starts a changed unit at its first page and has no flashcards page', () => {
   localStorage.clear();
   const { rerender } = render(lesson('group-1'));
-  jumpTo('Recall the indicators');
-  expect(screen.queryByRole('button', { name: 'Group 1' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Recall the indicators' })).toBeNull();
 
   rerender(lesson('group-2'));
   expect(screen.getByRole('heading', { name: 'Find what is required' })).toBeVisible();
-  jumpTo('Recall the indicators');
-  expect(screen.queryByRole('button', { name: 'Group 1' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Recall the indicators' })).toBeNull();
 
   rerender(lesson('group-1'));
   expect(screen.getByRole('heading', { name: 'Find the sufficient idea' })).toBeVisible();

@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import { IndicatorWordDeck } from './IndicatorWordDeck';
 import { CourseProgressProvider, useDeviceCourseProgress } from '../courseProgress';
-import { displayWord, groupSentence, indicatorWordCards } from '../content/indicatorWordCards';
+import { displayWord, indicatorWordCards } from '../content/indicatorWordCards';
 
 beforeEach(() => localStorage.clear());
 afterEach(cleanup);
@@ -16,8 +16,8 @@ it('shows only the word, flips on a choice, and says the group in one line', () 
   expect(screen.queryByRole('textbox')).toBeNull();
   const card = answer(true);
   expect(document.querySelector('.iw-stage')).toHaveAttribute('data-result', 'right');
-  expect(document.querySelector('.iw-back')!.textContent).toContain(groupSentence(card.group));
-  expect(screen.getByText('Right')).toBeInTheDocument();
+  expect(document.querySelector('.iw-back')!.textContent).toContain(`Group ${card.group}`);
+  expect(screen.getByText('Correct')).toBeInTheDocument();
 });
 
 it('shakes and corrects on a wrong choice, then brings the card back once at the end of the round', () => {
@@ -25,7 +25,7 @@ it('shakes and corrects on a wrong choice, then brings the card back once at the
   const missed = answer(false);
   expect(document.querySelector('.iw-stage')).toHaveAttribute('data-result', 'wrong');
   expect(screen.getByText('Not quite')).toBeInTheDocument();
-  expect(document.querySelector('.iw-back')!.textContent).toContain(groupSentence(missed.group));
+  expect(document.querySelector('.iw-back')!.textContent).toContain(`Group ${missed.group}`);
   click('Next card');
   for (let i = 1; i < 20; i += 1) { answer(true); click(i === 19 ? 'Next card' : 'Next card'); }
   expect(screen.getByText('Second look 1 of 1')).toBeVisible();

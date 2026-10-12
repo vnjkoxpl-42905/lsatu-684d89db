@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { displayWord, groupSentence, indicatorWordCards, type IndicatorGroup } from '../content/indicatorWordCards';
+import { displayWord, indicatorWordCards, type IndicatorGroup } from '../content/indicatorWordCards';
+import { IndicatorCardBack } from './IndicatorCardBack';
 import './indicator-word-deck.css';
 
 /** One group's words, turned over at the student's own pace. No scoring: the quiz lives in the mixed deck. */
@@ -19,7 +20,7 @@ export function IndicatorWordStudy({ group }: { group: IndicatorGroup }) {
           <span className="iw-word">{displayWord(card.word)}</span>
         </div>
         <div className="iw-face iw-back" aria-hidden={!flipped}>
-          <span className="iw-line"><strong>{displayWord(card.word)}.</strong> {groupSentence(card.group)}</span>
+          <IndicatorCardBack card={card}/>
         </div>
       </div>
     </div>

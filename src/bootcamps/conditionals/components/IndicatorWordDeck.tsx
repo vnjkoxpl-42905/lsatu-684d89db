@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, RotateCcw } from 'lucide-react';
-import { displayWord, groupSentence, indicatorWordCards, type IndicatorGroup } from '../content/indicatorWordCards';
+import { displayWord, groupSentence, groupSide, indicatorWordCards, type IndicatorGroup } from '../content/indicatorWordCards';
 import { useCourseStep } from '../courseProgress';
 import { advance, cardById, isFinished, newRound, pick, readDeckState, summarize, type DeckState } from '../indicatorWordDeck';
+import { IndicatorCardBack } from './IndicatorCardBack';
 import './indicator-word-deck.css';
 
 export const INDICATOR_DECK_STEP = 'flashcards-indicators';
@@ -64,12 +65,11 @@ export function IndicatorWordDeck({ stepId = INDICATOR_DECK_STEP }: { stepId?: s
           <span className="iw-word">{displayWord(card.word)}</span>
         </div>
         <div className="iw-face iw-back" aria-hidden={!answered}>
-          <span className="iw-verdict">{right ? 'Right' : 'Not quite'}</span>
-          <span className="iw-line"><strong>{displayWord(card.word)}.</strong> {groupSentence(card.group)}</span>
+          <IndicatorCardBack card={card} verdict={right ? 'Correct' : 'Not quite'}/>
         </div>
       </div>
     </div>
-    <p className="iw-sr" role="status">{answered ? `${right ? 'Right' : 'Not quite'}. ${displayWord(card.word)}. ${groupSentence(card.group)}` : ''}</p>
+    <p className="iw-sr" role="status">{answered ? `${right ? 'Correct' : 'Not quite'}. ${displayWord(card.word)}. ${groupSentence(card.group)} Put the idea on the ${groupSide(card.group)} side.` : ''}</p>
     {answered
       ? <button ref={next} type="button" className="iw-primary" onClick={() => setState(advance)}>{lastCard ? 'See my results' : 'Next card'}<ArrowRight size={17} aria-hidden="true"/></button>
       : <div className="iw-choices" role="group" aria-label={`Which group is ${card.word}?`}>
