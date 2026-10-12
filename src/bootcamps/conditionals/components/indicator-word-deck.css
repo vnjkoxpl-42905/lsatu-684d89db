@@ -48,3 +48,10 @@
 .dark .iw-back-group{color:#9fd3bc}
 .dark .iw-back-kind{color:#c0cccd}
 .dark .iw-back-side{border-color:#50636a}
+.iw-term-card{display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;font:inherit;color:inherit}
+.iw-term{font-size:clamp(28px,5vw,40px)}
+.iw-nav{display:flex;gap:12px;flex-wrap:wrap}
+.iw-nav button{display:inline-flex;align-items:center;gap:8px;padding:13px 18px;font-size:16px;font-weight:700;color:#173544;background:#fffdf7;border:2px solid #254d65;border-radius:10px;cursor:pointer}
+.iw-nav button:disabled{opacity:.4;cursor:default}
+.dark .iw-nav button{color:#edf3ed;background:#203b40;border-color:#89c4ac}
+.iw-deck{margin-left:0;margin-right:0;max-width:640px}
